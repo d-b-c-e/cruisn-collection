@@ -1,7 +1,7 @@
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 1/6] POC: env-gated DMA quad logging + one-shot state dump for
+Subject: [PATCH 1/7] POC: env-gated DMA quad logging + one-shot state dump for
  midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -122,7 +122,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 2/6] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 2/7] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -381,7 +381,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 3/6] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 3/7] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1321,7 +1321,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 4/6] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 4/7] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1359,7 +1359,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 5/6] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 5/7] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1394,7 +1394,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 6/6] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 6/7] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1479,6 +1479,68 @@ index d9cac7bb..296b263a 100644
  
  		// ---- drain ----
  		uint64_t w = *lv.wpos, r = *lv.rpos;
+-- 
+2.55.0.windows.3
+
+
+From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 14:35:05 -0500
+Subject: [PATCH 7/7] POC: classify 2D screens by axis-aligned-rectangle
+ dominance
+
+Quad-count thresholds cannot separate 2D screens (~160 quads) from
+sparse 3D scenes (~260): the high-score screen presented wide and
+exposed its margin texture garbage at the rig. 2D UI is drawn almost
+entirely from axis-aligned rectangles and 3D almost never is; crop to
+4:3 when >=70% of a scene's quads are axis-aligned.
+---
+ src/mame/midway/midvunit_v.cpp | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 296b263a..7936ea9f 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -594,6 +594,7 @@ void thread_main()
+ 	bool pend_valid[2] = {};
+ 	static uint16_t shadow[2][HEIGHT * 512];
+ 	bool quad_fresh[2] = {};
++	bool crop2d[2] = {};
+ 	int quad_count[2] = {};
+ 	int visible = 0;
+ 	std::vector<uint8_t> staging(8 << 20);
+@@ -714,6 +715,21 @@ void thread_main()
+ 			pend_valid[pg] = false;
+ 			build_vertices(pend[pg], float(MARGIN), fdata, udata);
+ 			quad_count[pg] = int(pend[pg].size());
++			// 2D screens (menus, high scores) are drawn almost entirely from
++			// axis-aligned rectangles; 3D scenes almost never are. Quad-count
++			// thresholds proved unreliable (2D ~160 vs 3D dipping to ~260).
++			int axis = 0;
++			for (auto const &q : pend[pg])
++			{
++				int16_t const x0 = int16_t(q.dma[2]), y0 = int16_t(q.dma[3]);
++				int16_t const x1 = int16_t(q.dma[4]), y1 = int16_t(q.dma[5]);
++				int16_t const x2 = int16_t(q.dma[6]), y2 = int16_t(q.dma[7]);
++				int16_t const x3 = int16_t(q.dma[8]), y3 = int16_t(q.dma[9]);
++				if ((y0 == y1 && y2 == y3 && x1 == x2 && x3 == x0) ||
++					(x0 == x1 && x2 == x3 && y1 == y2 && y3 == y0))
++					++axis;
++			}
++			crop2d[pg] = (axis * 10 >= int(pend[pg].size()) * 7);
+ 			gl.UseProgram(prog);
+ 			gl.BindVertexArray(vao);
+ 			gl.BindBuffer(ARRAY_BUFFER, vbo_f);
+@@ -735,7 +751,7 @@ void thread_main()
+ 		gl.Viewport(0, 0, cw, ch);
+ 		gl.ClearColor(0, 0, 0, 1);
+ 		gl.Clear(0x4000);
+-		bool const wide3d = quad_fresh[visible] && quad_count[visible] >= 120;
++		bool const wide3d = quad_fresh[visible] && !crop2d[visible];
+ 		float const content_w = wide3d ? float(WIDE) : 512.0f;
+ 		float const aspect = (content_w * PAR) / float(HEIGHT);
+ 		int vw = cw, vh = int(cw / aspect + 0.5f);
 -- 
 2.55.0.windows.3
 
