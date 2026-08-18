@@ -1,7 +1,7 @@
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 1/8] POC: env-gated DMA quad logging + one-shot state dump for
+Subject: [PATCH 1/9] POC: env-gated DMA quad logging + one-shot state dump for
  midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -122,7 +122,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 2/8] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 2/9] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -381,7 +381,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 3/8] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 3/9] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1321,7 +1321,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 4/8] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 4/9] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1359,7 +1359,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 5/8] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 5/9] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1394,7 +1394,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 6/8] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 6/9] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1486,7 +1486,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 7/8] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 7/9] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1548,7 +1548,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 8/8] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 8/9] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1604,6 +1604,44 @@ index 7936ea9f..3d5b3200 100644
  			gl.ActiveTexture(TEXTURE0);
  			gl.BindTexture(0x0DE1, texram);
  			gl.DrawArrays(0x0004 /*TRIANGLES*/, 0, int(pend[pg].size() * 6));
+-- 
+2.55.0.windows.3
+
+
+From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 14:44:03 -0500
+Subject: [PATCH 9/9] POC: 2px overscan inset - CRT-hidden edge pixels showed
+ as a thin border
+
+---
+ src/mame/midway/midvunit_v.cpp | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 3d5b3200..af795ef7 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -749,9 +749,17 @@ void thread_main()
+ 			// strips beside a 4:3 screen and a thin border at crop edges.
+ 			gl.Enable(0x0C11 /*SCISSOR_TEST*/);
+ 			gl.ClearColor(0, 0, 0, 0);
+-			gl.Scissor(0, 0, MARGIN * S, fh);
++			// widen by a 2-pixel overscan inset: the outermost rows/columns
++			// of the hardware region carry edge pixels a real CRT never
++			// showed (seen as a thin bright border at the rig)
++			int const os = 2 * S;
++			gl.Scissor(0, 0, MARGIN * S + os, fh);
+ 			gl.Clear(0x4000);
+-			gl.Scissor(fw - MARGIN * S, 0, MARGIN * S, fh);
++			gl.Scissor(fw - MARGIN * S - os, 0, MARGIN * S + os, fh);
++			gl.Clear(0x4000);
++			gl.Scissor(0, 0, fw, os);
++			gl.Clear(0x4000);
++			gl.Scissor(0, fh - os, fw, os);
+ 			gl.Clear(0x4000);
+ 			gl.Disable(0x0C11);
+ 			gl.ActiveTexture(TEXTURE0);
 -- 
 2.55.0.windows.3
 
