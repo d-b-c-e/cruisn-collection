@@ -1,0 +1,120 @@
+From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 17 Aug 2026 23:54:14 -0500
+Subject: [PATCH] POC: env-gated DMA quad logging + one-shot state dump for
+ midvunit
+
+MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
+page_control, the 16 raw DMA words) from process_dma_queue.
+MIDV_STATEDUMP_FRAME/_DIR dump videoram, textureram and paletteram from
+screen_update once, after the poly wait. Both are inert unless the env
+vars are set. Supports the Cruis'n USA renderer-replacement POC at
+E:/Source/cruisn-poc.
+---
+ src/mame/midway/midvunit_v.cpp | 76 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 385c7287..2e3cabdc 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -14,6 +14,36 @@
+ #include "cpu/adsp2100/adsp2100.h"
+ #include "cpu/tms34010/tms34010.h"
+ 
++// ── POC instrumentation (env-gated, zero cost when unset) ────────────────
++//
++// MIDV_QUADLOG=<file>          append every DMA quad as a binary record:
++//                              u32 frame, u16 page_control, u16 dma_data[16]
++// MIDV_STATEDUMP_FRAME=<n>     at screen_update of frame >= n, dump
++// MIDV_STATEDUMP_DIR=<dir>     videoram/textureram/paletteram + meta there
++//
++// Purpose: prove process_dma_queue() is the complete render surface by
++// re-rasterizing the captured stream offline and diffing against videoram.
++#include <cstdio>
++#include <cstdlib>
++
++namespace {
++
++FILE *quadlog_open()
++{
++	const char *path = std::getenv("MIDV_QUADLOG");
++	if (!path)
++		return nullptr;
++	FILE *f = std::fopen(path, "wb");
++	if (f)
++	{
++		setvbuf(f, nullptr, _IOFBF, 1 << 20);
++		std::fwrite("MVQ1", 1, 4, f);
++	}
++	return f;
++}
++
++} // anonymous namespace
++
+ #define LOG_DMA             (1U << 1)
+ 
+ #define VERBOSE (0)
+@@ -278,6 +308,17 @@ void midvunit_renderer::make_vertices_inclusive(vertex_t *vert)
+ 
+ void midvunit_renderer::process_dma_queue()
+ {
++	// POC: log the raw quad before any processing, tagged with frame + page
++	static FILE *s_quadlog = quadlog_open();
++	if (s_quadlog)
++	{
++		uint32_t const frame = uint32_t(m_state.m_screen->frame_number());
++		uint16_t const page = m_state.m_page_control;
++		std::fwrite(&frame, 4, 1, s_quadlog);
++		std::fwrite(&page, 2, 1, s_quadlog);
++		std::fwrite(m_state.m_dma_data, 2, 16, s_quadlog);
++	}
++
+ 	// if we're rendering to the same page we're viewing, it has changed
+ 	if ((((m_state.m_page_control >> 2) ^ m_state.m_page_control) & 1) == 0 || WATCH_RENDER)
+ 		m_state.m_video_changed = true;
+@@ -545,6 +586,41 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
+ 
+ 	m_poly->wait("Refresh Time");
+ 
++	// POC: one-shot memory dump so the quad stream can be re-rasterized and
++	// verified offline. Runs after the poly wait, so all quads have landed.
++	{
++		static bool s_dumped = false;
++		static const char *s_dir = std::getenv("MIDV_STATEDUMP_DIR");
++		static const char *s_frame = std::getenv("MIDV_STATEDUMP_FRAME");
++		if (!s_dumped && s_dir && s_frame
++			&& screen.frame_number() >= strtoul(s_frame, nullptr, 10))
++		{
++			s_dumped = true;
++			auto dump = [&](const char *name, const void *data, size_t bytes)
++			{
++				std::string path = std::string(s_dir) + "/" + name;
++				if (FILE *f = std::fopen(path.c_str(), "wb"))
++				{
++					std::fwrite(data, 1, bytes, f);
++					std::fclose(f);
++				}
++			};
++			dump("videoram.bin", m_videoram.target(), m_videoram.bytes());
++			dump("textureram.bin", m_textureram.target(), m_textureram.bytes());
++			dump("paletteram.bin", m_paletteram.target(), m_paletteram.bytes());
++			std::string meta = std::string(s_dir) + "/meta.txt";
++			if (FILE *f = std::fopen(meta.c_str(), "w"))
++			{
++				std::fprintf(f, "frame %u\npage_control %u\n"
++					"visible_page_offset 0x%x\nvisarea %d %d\n",
++					uint32_t(screen.frame_number()), m_page_control,
++					(m_page_control & 1) ? 0x40000 : 0x00000,
++					screen.visible_area().max_x, screen.visible_area().max_y);
++				std::fclose(f);
++			}
++		}
++	}
++
+ 	// if the video didn't change, indicate as much
+ 	if (!m_video_changed)
+ 		return UPDATE_HAS_NOT_CHANGED;
+-- 
+2.55.0.windows.3
+
