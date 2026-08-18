@@ -36,7 +36,7 @@ rig = os.path.join(POC, "rig")
 ini = os.path.join(rig, "ini")
 for d in (ini, os.path.join(rig, "cfg"), os.path.join(rig, "nvram")):
     os.makedirs(d, exist_ok=True)
-open(os.path.join(ini, "mame.ini"), "w").write("skip_gameinfo 1\n")
+open(os.path.join(ini, "mame.ini"), "w").write("skip_gameinfo 1\nvideo gdi\n")
 open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
 seed = os.path.join(POC, "fixtures", f"nvram-{args.rom}")
 dst = os.path.join(rig, "nvram", args.rom)
