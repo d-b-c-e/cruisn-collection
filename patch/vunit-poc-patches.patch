@@ -1,7 +1,7 @@
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 1/5] POC: env-gated DMA quad logging + one-shot state dump for
+Subject: [PATCH 1/6] POC: env-gated DMA quad logging + one-shot state dump for
  midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -122,7 +122,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 2/5] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 2/6] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -381,7 +381,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 3/5] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 3/6] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1321,7 +1321,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 4/5] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 4/6] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1359,7 +1359,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 5/5] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 5/6] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1387,6 +1387,98 @@ index cf52d88f..d9cac7bb 100644
  	RECT rc; GetClientRect(parent, &rc);
  	// disabled + no-activate child: paints over MAME, never takes input
  	HWND child = CreateWindowExA(WS_EX_NOACTIVATE | WS_EX_TRANSPARENT,
+-- 
+2.55.0.windows.3
+
+
+From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 14:33:05 -0500
+Subject: [PATCH 6/6] POC: overlay is an owned top-level popup, not a child
+ window
+
+WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
+window DC - clip regions are fixed at DC acquisition, so neither the
+style bit nor SWP_FRAMECHANGED reach it, and its blit kept punching
+through (rig evidence: alternating stretched/letterboxed frames, made
+distinguishable by -nokeepaspect). An owned WS_POPUP is composited by
+DWM and occludes the owner absolutely - no GDI clipping involved.
+NOACTIVATE+TRANSPARENT+DISABLED keep keyboard focus, mouse and
+DirectInput foreground on MAME's window; the loop tracks the owner's
+client rect in screen coords and hides on minimize.
+---
+ src/mame/midway/midvunit_v.cpp | 45 +++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 17 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index d9cac7bb..296b263a 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -466,26 +466,26 @@ void thread_main()
+ 	for (int i = 0; i < 100 && !parent; i++) { Sleep(100); parent = find_mame_window(); }
+ 	if (!parent) { logf("no MAME window found"); return; }
+ 
++	// Owned top-level popup, NOT a child: MAME's gdi renderer caches its
++	// window DC, so child-clipping (WS_CLIPCHILDREN, even with
++	// SWP_FRAMECHANGED) never reaches it and its blit punches through the
++	// overlay - seen at the rig as alternating stretched/letterboxed frames.
++	// A separate owned window is composited by DWM and occludes the owner
++	// absolutely. NOACTIVATE+TRANSPARENT+DISABLED keep every input event
++	// (keyboard focus, mouse, DirectInput foreground) on MAME's window.
+ 	WNDCLASSA wc = {};
+ 	wc.lpfnWndProc = DefWindowProcA;
+ 	wc.hInstance = GetModuleHandleA(nullptr);
+ 	wc.lpszClassName = "MidvGLOverlay";
+ 	RegisterClassA(&wc);
+-	// parent must clip children or MAME's own present fights our overlay -
+-	// seen at the rig as alternating sharp/chunky frames
+-	SetWindowLongPtrA(parent, GWL_STYLE,
+-		GetWindowLongPtrA(parent, GWL_STYLE) | WS_CLIPCHILDREN);
+-	// style changes are NOT applied until a frame change is forced - without
+-	// this, MAME's own blit keeps punching through the overlay (seen at the
+-	// rig as alternating stretched/letterboxed frames)
+-	SetWindowPos(parent, nullptr, 0, 0, 0, 0,
+-		SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_FRAMECHANGED);
+ 	RECT rc; GetClientRect(parent, &rc);
+-	// disabled + no-activate child: paints over MAME, never takes input
+-	HWND child = CreateWindowExA(WS_EX_NOACTIVATE | WS_EX_TRANSPARENT,
+-		"MidvGLOverlay", "", WS_CHILD | WS_VISIBLE | WS_DISABLED,
+-		0, 0, rc.right, rc.bottom, parent, nullptr, wc.hInstance, nullptr);
+-	if (!child) { logf("child window failed"); return; }
++	POINT tl = { 0, 0 };
++	ClientToScreen(parent, &tl);
++	HWND child = CreateWindowExA(
++		WS_EX_NOACTIVATE | WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW,
++		"MidvGLOverlay", "", WS_POPUP | WS_VISIBLE | WS_DISABLED,
++		tl.x, tl.y, rc.right, rc.bottom, parent, nullptr, wc.hInstance, nullptr);
++	if (!child) { logf("overlay window failed"); return; }
+ 
+ 	HDC dc = GetDC(child);
+ 	PIXELFORMATDESCRIPTOR pfd = {};
+@@ -629,9 +629,20 @@ void thread_main()
+ 		MSG msg;
+ 		while (PeekMessageA(&msg, child, 0, 0, PM_REMOVE)) DispatchMessageA(&msg);
+ 		GetClientRect(parent, &rc);
+-		RECT crc; GetClientRect(child, &crc);
+-		if (crc.right != rc.right || crc.bottom != rc.bottom)
+-			MoveWindow(child, 0, 0, rc.right, rc.bottom, FALSE);
++		POINT ntl = { 0, 0 };
++		ClientToScreen(parent, &ntl);
++		RECT crc; GetWindowRect(child, &crc);
++		if (IsIconic(parent))
++			ShowWindow(child, SW_HIDE);
++		else
++		{
++			if (!IsWindowVisible(child))
++				ShowWindow(child, SW_SHOWNA);
++			if (crc.left != ntl.x || crc.top != ntl.y ||
++				crc.right - crc.left != rc.right || crc.bottom - crc.top != rc.bottom)
++				SetWindowPos(child, nullptr, ntl.x, ntl.y, rc.right, rc.bottom,
++					SWP_NOACTIVATE | SWP_NOZORDER);
++		}
+ 
+ 		// ---- drain ----
+ 		uint64_t w = *lv.wpos, r = *lv.rpos;
 -- 
 2.55.0.windows.3
 
