@@ -1,0 +1,444 @@
+"""GPU renderer prototype for the midvunit quad stream (moderngl / OpenGL 4.3).
+
+Architecture - what the real port's renderer would do, exercised offline:
+
+  one scene (one page_control run) -> ONE draw call
+    - each quad becomes 2 triangles covering its bounding box; all quad data
+      rides as flat varyings (positions already nudged per
+      make_vertices_inclusive on the CPU, in float32)
+    - the fragment shader ports poly.h analytically: the forward/backward
+      edge walk, per-scanline extents with round_coordinate's
+      midpoint-toward--inf rule, param interpolation with left-clip
+      adjustment, and midvunit's four fill modes + dither mask. Pixels
+      outside MAME's coverage are discarded, so GPU rasterization rules
+      never leak in.
+    - output is an R16UI *index* framebuffer - the game's palette-index
+      space, exactly like the hardware framebuffer
+  palette pass: full-screen triangle, index -> pal5bit RGB
+
+  exact mode (scale=1): u/v use MAME's integer-DDA semantics
+      (float32 start/step truncated to int32, stepped per pixel), so the
+      output is comparable WORD FOR WORD with MAME's videoram dump.
+  quality mode (scale>1): u/v interpolated in float at sub-pixel
+      precision, coverage evaluated continuously -> clean edges at 4x,
+      optional 16:9 margins. This is the shipping configuration.
+
+Usage:
+  python gpu/renderer.py results/capture-8000            # verify vs MAME
+  python gpu/renderer.py results/capture-8000 --scale 4 --wide
+"""
+import argparse
+import os
+import sys
+import time
+
+import moderngl
+import numpy as np
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(
+    os.path.abspath(__file__))), "harness"))
+from rasterize import make_vertices_inclusive, load_meta  # noqa: E402
+
+F = np.float32
+
+VS = """
+#version 430
+uniform vec2 uCanvas;      // coarse canvas size (W, H)
+in vec2 in_corner;         // bbox corner, coarse pixel space
+in vec2 in_v0; in vec2 in_v1; in vec2 in_v2; in vec2 in_v3;
+in vec4 in_uv01;           // u0,v0,u1,v1
+in vec4 in_uv23;           // u2,v2,u3,v3
+in uvec4 in_meta;          // pixdata, mode, dither, texbase
+flat out vec2 v0; flat out vec2 v1; flat out vec2 v2; flat out vec2 v3;
+flat out vec4 uv01; flat out vec4 uv23;
+flat out uvec4 meta;
+void main() {
+    v0 = in_v0; v1 = in_v1; v2 = in_v2; v3 = in_v3;
+    uv01 = in_uv01; uv23 = in_uv23; meta = in_meta;
+    // y-down pixel space -> NDC (y flipped)
+    gl_Position = vec4(in_corner.x / uCanvas.x * 2.0 - 1.0,
+                       1.0 - in_corner.y / uCanvas.y * 2.0, 0.0, 1.0);
+}
+"""
+
+FS = """
+#version 430
+uniform int  uScale;       // 1 = exact mode, >1 = quality mode
+uniform vec2 uCanvas;      // coarse canvas size
+uniform int  uClipRight;   // coarse cliprect right (W-1)
+uniform usampler2D texram; // 4096-wide R8UI, 8 MB of texture RAM
+uniform int  texMask;      // byte-size mask (size-1)
+flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;
+flat in vec4 uv01; flat in vec4 uv23;
+flat in uvec4 meta;
+out uint outIndex;
+
+int round_coord(float f) {           // poly.h: floor, +1 iff frac > 0.5
+    float ip = floor(f);
+    return int(ip) + (((f - ip) > 0.5) ? 1 : 0);
+}
+int c_int32(float f) {               // C float->int32: trunc, OOR -> INT_MIN
+    if (!(abs(f) < 2147483648.0)) return -2147483648;
+    return int(f);
+}
+uint fetch_texel(int idx) {
+    idx &= texMask;
+    return texelFetch(texram, ivec2(idx & 4095, idx >> 12), 0).r;
+}
+
+void main() {
+    vec2 vx[4] = vec2[4](v0, v1, v2, v3);
+    float fx = gl_FragCoord.x;
+    float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down
+    float cx = fx / float(uScale);
+    float cy = fy / float(uScale);
+    int px = int(floor(cx));
+    int py = int(floor(cy));
+    // exact mode evaluates at MAME's scanline centre; quality mode uses the
+    // fine fragment's own continuous coordinate
+    precise float fully = (uScale == 1) ? float(py) + 0.5 : cy;
+
+    // ---- min/max Y vertices (poly.h render_polygon) ----
+    int minv = 0, maxv = 0;
+    for (int i = 1; i < 4; i++) {
+        if (vx[i].y < vx[minv].y) minv = i;
+        else if (vx[i].y > vx[maxv].y) maxv = i;
+    }
+    if (round_coord(vx[maxv].y) - round_coord(vx[minv].y) <= 0) discard;
+    float maxvy = vx[maxv].y;
+
+    // poly.h renders scanlines [round(miny), round(maxy)) only - the expanded
+    // bounding box generates fragments beyond that, where extrapolated edges
+    // still yield plausible x-extents. Without this cut, later quads steal
+    // their neighbours' shared-edge rows.
+    if (uScale == 1) {
+        if (py < round_coord(vx[minv].y) || py >= round_coord(maxvy)) discard;
+    } else {
+        if (cy < vx[minv].y || cy >= maxvy) discard;
+    }
+
+    // ---- forward / backward edge lists (<=3 each) ----
+    // e[k] = (v1x, v1y, v2y, dxdy), p[k] = (u1, v1_p, dudy, dvdy)
+    precise vec4 fe[3]; precise vec4 fp[3]; int fn = 0;
+    precise vec4 be[3]; precise vec4 bp[3]; int bn = 0;
+    vec4 uvs[4] = vec4[4](vec4(uv01.xy, 0, 0), vec4(uv01.zw, 0, 0),
+                          vec4(uv23.xy, 0, 0), vec4(uv23.zw, 0, 0));
+    for (int curv = minv; curv != maxv; curv = (curv + 1) & 3) {
+        int nxt = (curv + 1) & 3;
+        if (vx[nxt].y != vx[curv].y) {
+            precise float ooy = 1.0 / (vx[nxt].y - vx[curv].y);
+            fe[fn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,
+                          (vx[nxt].x - vx[curv].x) * ooy);
+            fp[fn] = vec4(uvs[curv].xy,
+                          (uvs[nxt].x - uvs[curv].x) * ooy,
+                          (uvs[nxt].y - uvs[curv].y) * ooy);
+            fn++;
+        }
+    }
+    for (int curv = minv; curv != maxv; curv = (curv - 1) & 3) {
+        int nxt = (curv - 1) & 3;
+        if (vx[nxt].y != vx[curv].y) {
+            precise float ooy = 1.0 / (vx[nxt].y - vx[curv].y);
+            be[bn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,
+                          (vx[nxt].x - vx[curv].x) * ooy);
+            bp[bn] = vec4(uvs[curv].xy,
+                          (uvs[nxt].x - uvs[curv].x) * ooy,
+                          (uvs[nxt].y - uvs[curv].y) * ooy);
+            bn++;
+        }
+    }
+    if (fn == 0 || bn == 0) discard;
+
+    // ---- left/right decision (poly.h:1194) ----
+    bool sharedFirst = (fe[0].x == be[0].x) && (fe[0].y == be[0].y);
+    bool fwd_left = (sharedFirst && fe[0].w < be[0].w)
+                 || (!sharedFirst && fe[0].x < be[0].x);
+
+    // ---- advance to the edge pair spanning this scanline ----
+    int li = 0, ri = 0;
+    vec4 le, lp, re, rp;
+    if (fwd_left) {
+        while (fully > fe[li].z && fully < maxvy && li + 1 < fn) li++;
+        while (fully > be[ri].z && fully < maxvy && ri + 1 < bn) ri++;
+        le = fe[li]; lp = fp[li]; re = be[ri]; rp = bp[ri];
+    } else {
+        while (fully > be[li].z && fully < maxvy && li + 1 < bn) li++;
+        while (fully > fe[ri].z && fully < maxvy && ri + 1 < fn) ri++;
+        le = be[li]; lp = bp[li]; re = fe[ri]; rp = fp[ri];
+    }
+
+    precise float startx = le.x + (fully - le.y) * le.w;
+    precise float stopx  = re.x + (fully - re.y) * re.w;
+    int istartx = round_coord(startx);
+    int istopx  = round_coord(stopx);
+    if (istartx > istopx) { int t = istartx; istartx = istopx; istopx = t; }
+
+    // ---- params at this scanline (poly.h:1250) ----
+    precise float ldy = fully - le.y;
+    precise float rdy = fully - re.y;
+    precise float oox = 1.0 / (stopx - startx);
+    precise float lu = lp.x + ldy * lp.z;
+    precise float lv = lp.y + ldy * lp.w;
+    precise float dudx = (rp.x + rdy * rp.z - lu) * oox;
+    precise float dvdx = (rp.y + rdy * rp.w - lv) * oox;
+    precise float su = lu + (float(istartx) + 0.5 - startx) * dudx;
+    precise float sv = lv + (float(istartx) + 0.5 - startx) * dvdx;
+
+    // ---- left/right clip with param adjust ----
+    if (istartx < 0) {
+        su += float(-istartx) * dudx;
+        sv += float(-istartx) * dvdx;
+        istartx = 0;
+    }
+    if (istopx > uClipRight) istopx = uClipRight + 1;
+    if (istartx >= istopx) discard;
+
+    // ---- coverage ----
+    if (uScale == 1) {
+        if (px < istartx || px >= istopx) discard;
+    } else {
+        // continuous edges at fine resolution; clip window still applies
+        float lo = max(min(startx, stopx), 0.0);
+        float hi = min(max(startx, stopx), float(uClipRight + 1));
+        if (cx < lo || cx >= hi) discard;
+    }
+
+    uint pixdata = meta.x, mode = meta.y, dither = meta.z;
+    if (dither == 1u && ((px ^ py) & 1) != 0) discard;   // coarse-space mask
+
+    if (mode == 0u) { outIndex = pixdata & 0xffffu; return; }
+
+    int ui, vi;
+    if (uScale == 1) {   // MAME's integer DDA, analytically
+        ui = c_int32(su) + (px - istartx) * c_int32(dudx);
+        vi = c_int32(sv) + (px - istartx) * c_int32(dvdx);
+    } else {             // sub-pixel float interpolation
+        ui = c_int32(lu + (cx - startx) * dudx);
+        vi = c_int32(lv + (cx - startx) * dvdx);
+    }
+    uint texel = fetch_texel(int(meta.w) + ((vi >> 8) & 0xff00) + (ui >> 16));
+    if (mode == 1u)      outIndex = (pixdata + texel) & 0xffffu;
+    else if (mode == 2u) { if (texel == 0u) discard;
+                           outIndex = (pixdata + texel) & 0xffffu; }
+    else                 { if (texel == 0u) discard;
+                           outIndex = pixdata & 0xffffu; }
+}
+"""
+
+PAL_VS = """
+#version 430
+out vec2 uv;
+void main() {  // full-screen triangle
+    vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2);
+    uv = p;
+    gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+}
+"""
+
+PAL_FS = """
+#version 430
+uniform usampler2D idxTex;
+uniform usampler2D palTex;   // 256x128 R32UI - 32768 palette words
+in vec2 uv;
+out vec4 color;
+void main() {
+    ivec2 sz = textureSize(idxTex, 0);
+    ivec2 p = ivec2(uv * vec2(sz));
+    uint pen = texelFetch(idxTex, p, 0).r & 0x7fffu;
+    uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;
+    uint r = (w >> 10) & 31u, g = (w >> 5) & 31u, b = w & 31u;
+    color = vec4(float((r << 3) | (r >> 2)) / 255.0,
+                 float((g << 3) | (g >> 2)) / 255.0,
+                 float((b << 3) | (b >> 2)) / 255.0, 1.0);
+}
+"""
+
+
+def load_scene(cap, history=True):
+    """Return (quads, page_control, meta) for the last complete scene.
+
+    With history=True the previous scene rendered to the SAME page is
+    prepended. The game leaves sub-pixel cracks between adjacent quads
+    (3 px on the canyon scene) where the hardware shows whatever the page
+    held from the frame before - a real renderer never clears pages, so it
+    reproduces this for free; an isolated-scene replay must prepend the
+    prior same-page scene to match MAME bit-for-bit.
+    """
+    meta = load_meta(os.path.join(cap, "meta.txt"))
+    raw = open(os.path.join(cap, "quads.bin"), "rb").read()
+    rec = np.frombuffer(raw[4:len(raw) - (len(raw) - 4) % 38], dtype=np.uint8)
+    rec = rec.reshape(-1, 38)
+    pages = rec[:, 4:6].copy().view("<u2").ravel()
+    dmas = rec[:, 6:38].copy().view("<u2").reshape(-1, 16)
+    change = np.flatnonzero(np.diff(pages.astype(np.int32)) != 0) + 1
+    starts = np.concatenate([[0], change])
+    ends = np.concatenate([change, [len(pages)]])
+    s, e = starts[-2], ends[-2]
+    quads = dmas[s:e]
+    if history and len(starts) >= 4:
+        ps, pe = starts[-4], ends[-4]
+        assert int(pages[ps]) == int(pages[s]), "page alternation broke"
+        quads = np.concatenate([dmas[ps:pe], quads])
+    return quads, int(pages[s]), meta
+
+
+def build_vertices(quads, xoff):
+    """Quad records -> interleaved GPU vertex data (6 verts per quad)."""
+    n = len(quads)
+    fdata = np.zeros((n * 6, 18), dtype=np.float32)
+    udata = np.zeros((n * 6, 4), dtype=np.uint32)
+    for q in range(n):
+        dma = quads[q].astype(np.uint32)
+        vx = [F(np.int16(dma[2 + i * 2]) + F(0.5) + F(xoff)) for i in range(4)]
+        vy = [F(np.int16(dma[3 + i * 2]) + F(0.5)) for i in range(4)]
+        pixdata = int(dma[1])
+        textured = (dma[0] & 0x300) == 0x100
+        dither = 1 if (dma[0] & 0x2000) else 0
+        if not textured:
+            mode = 0
+            pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff
+            us = vs = [0.0] * 4
+        else:
+            us = [float(F(F(dma[10 + i] & 0xff) * F(65536.0) + F(32768.0)))
+                  for i in range(4)]
+            vs = [float(F(F(dma[10 + i] >> 8) * F(65536.0) + F(32768.0)))
+                  for i in range(4)]
+            sel = dma[0] & 0xc00
+            if sel == 0x000:
+                mode = 1
+            elif sel == 0x800:
+                mode = 2
+            elif sel == 0xc00:
+                mode = 3
+                pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff
+            else:
+                mode = 0
+                pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff
+        make_vertices_inclusive(vx, vy)
+
+        x0, x1 = min(vx) - 1.0, max(vx) + 1.0
+        y0, y1 = min(vy) - 1.0, max(vy) + 1.0
+        corners = [(x0, y0), (x1, y0), (x1, y1), (x0, y0), (x1, y1), (x0, y1)]
+        row = ([c for i in range(4) for c in (float(vx[i]), float(vy[i]))]
+               + [us[0], vs[0], us[1], vs[1], us[2], vs[2], us[3], vs[3]])
+        base = q * 6
+        for k in range(6):
+            fdata[base + k, 0:2] = corners[k]
+            fdata[base + k, 2:18] = row
+        udata[base:base + 6] = (pixdata, mode, dither, int(dma[14]) * 256)
+    return fdata, udata
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("capture_dir")
+    ap.add_argument("--scale", type=int, default=1)
+    ap.add_argument("--wide", action="store_true")
+    ap.add_argument("--bench", type=int, default=0, help="timed re-renders")
+    args = ap.parse_args()
+    cap = args.capture_dir
+    S = args.scale
+    exact = (S == 1 and not args.wide)
+
+    quads, pc, meta = load_scene(cap)
+    height = meta["visarea"][1] + 1
+    margin = 86 if args.wide else 0
+    W = 512 + 2 * margin
+    print(f"scene: {len(quads)} quads, page_control {pc}, canvas {W}x{height} "
+          f"scale {S} ({'exact/DDA' if exact else 'quality'} mode)")
+
+    texram = np.fromfile(os.path.join(cap, "textureram.bin"), dtype=np.uint8)
+    pal = np.fromfile(os.path.join(cap, "paletteram.bin"), dtype="<u4")
+
+    ctx = moderngl.create_context(standalone=True, require=430)
+    print("GL:", ctx.info["GL_RENDERER"])
+
+    # texture RAM as a 4096-wide R8UI texture; palette as 256x128 R32UI
+    texsize = len(texram)
+    tex2d = ctx.texture((4096, texsize // 4096), 1, texram.tobytes(),
+                        dtype="u1", alignment=1)
+    paltex = ctx.texture((256, 128), 1, pal.astype("<u4").tobytes(), dtype="u4")
+
+    prog = ctx.program(vertex_shader=VS, fragment_shader=FS)
+    prog["uCanvas"].value = (float(W), float(height))
+    prog["uScale"].value = S
+    prog["uClipRight"].value = W - 1
+    prog["texram"].value = 0
+    prog["texMask"].value = texsize - 1
+    tex2d.use(0)
+
+    fdata, udata = build_vertices(quads, margin)
+    vbo_f = ctx.buffer(fdata.tobytes())
+    vbo_u = ctx.buffer(udata.tobytes())
+    vao = ctx.vertex_array(prog, [
+        (vbo_f, "2f 2f 2f 2f 2f 4f 4f",
+         "in_corner", "in_v0", "in_v1", "in_v2", "in_v3",
+         "in_uv01", "in_uv23"),
+        (vbo_u, "4u", "in_meta"),
+    ])
+
+    fw, fh = W * S, height * S
+    idx_tex = ctx.texture((fw, fh), 1, dtype="u2")
+    fbo = ctx.framebuffer(color_attachments=[idx_tex])
+    fbo.use()
+    ctx.viewport = (0, 0, fw, fh)
+
+    def draw():
+        fbo.clear()
+        vao.render(moderngl.TRIANGLES)
+
+    draw()
+    ctx.finish()
+
+    if args.bench:
+        t0 = time.perf_counter()
+        for _ in range(args.bench):
+            draw()
+        ctx.finish()
+        dt = (time.perf_counter() - t0) / args.bench
+        print(f"bench: {dt*1000:.3f} ms/scene at {fw}x{fh} "
+              f"({1.0/dt:,.0f} fps equivalent)")
+
+    # ---- read back the index buffer ----
+    data = np.frombuffer(fbo.read(components=1, dtype="u2"), dtype="<u2")
+    gpu = np.flipud(data.reshape(fh, fw)).copy()
+
+    tag = f"gpu-{'wide-' if args.wide else ''}s{S}"
+    if exact:
+        ref_vram = np.fromfile(os.path.join(cap, "videoram.bin"), dtype="<u2")
+        off = 0x40000 if pc & 4 else 0
+        ref = ref_vram[off:off + 0x40000].reshape(512, 512)[:height]
+        match = 100.0 * (gpu == ref).sum() / ref.size
+        diff = int((gpu != ref).sum())
+        print(f"GPU vs MAME videoram: {match:.4f}% bit-exact "
+              f"({diff} differing pixels of {ref.size})")
+
+    # ---- palette pass -> PNG ----
+    pprog = ctx.program(vertex_shader=PAL_VS, fragment_shader=PAL_FS)
+    pprog["idxTex"].value = 1
+    pprog["palTex"].value = 2
+    idx_tex.use(1)
+    paltex.use(2)
+    rgb_tex = ctx.texture((fw, fh), 4)
+    fbo2 = ctx.framebuffer(color_attachments=[rgb_tex])
+    fbo2.use()
+    ctx.viewport = (0, 0, fw, fh)
+    pvao = ctx.vertex_array(pprog, [])
+    pvao.vertices = 3
+    pvao.render(moderngl.TRIANGLES)
+    img = np.frombuffer(fbo2.read(components=4), dtype=np.uint8)
+    img = np.flipud(img.reshape(fh, fw, 4)).copy()
+
+    from PIL import Image
+    out = os.path.join(cap, f"{tag}.png")
+    Image.fromarray(img).save(out)
+    # display-corrected copy (PAR 1.0417) for viewing
+    disp = Image.fromarray(img).resize(
+        (int(fw * 1.0417), fh), Image.LANCZOS if S > 1 else Image.NEAREST)
+    disp.save(os.path.join(cap, f"{tag}-view.png"))
+    print(f"wrote {out} (+ -view.png)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

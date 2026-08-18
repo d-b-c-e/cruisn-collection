@@ -124,3 +124,65 @@ Additional findings:
 still pop in at margins during long play — sweep more frames during real
 development. HUD/text stays 4:3-centred (authentic). Vertical overhang exists
 too (y −4956..1481), so 21:9 is likely equally free.
+
+---
+
+# GPU renderer prototype — 2026-08-18 (follow-up session)
+
+**The pipeline the real port needs, running on the real GPU (RTX 5080,
+OpenGL 4.3 via moderngl), verified bit-for-bit against MAME.**
+
+## Architecture (`gpu/renderer.py`)
+
+- **One scene → one draw call.** Each quad = 2 triangles covering its
+  bounding box; all quad data rides as flat varyings. GL's primitive-order
+  guarantee provides the painter's algorithm within the draw call.
+- **The fragment shader is poly.h, analytically**: the forward/backward edge
+  walk, per-scanline extents with `round_coordinate`'s midpoint rule, param
+  interpolation with left-clip adjustment, the four fill modes, the dither
+  mask, and C's float→int32 truncation. GPU rasterization rules never leak
+  in: fragments outside MAME's coverage are discarded.
+- **Index-space rendering**: R16UI framebuffer holding palette indices —
+  the hardware's own framebuffer format — with a palette pass to RGB after.
+  Readback of the index buffer enables word-for-word verification.
+- **Exact mode** (`--scale 1`): u/v follow MAME's integer-DDA semantics.
+  **Quality mode** (`--scale N --wide`): continuous coverage and float u/v
+  at sub-pixel precision — the shipping configuration.
+
+## Verification
+
+| scene | GPU vs MAME videoram | speed (native) |
+|---|---|---|
+| title (frame 2398) | **100.0000% — 0 of 204,800 differ** | 0.135 ms/scene |
+| canyon (frame 7998) | **100.0000% — 0 of 204,800 differ** | 0.189 ms/scene |
+
+Quality mode at 4× + 16:9 (2736×1600): **3.5 ms/scene ≈ 289 fps** — 5×
+headroom over the 57 Hz target, in a Python-orchestrated prototype.
+
+Proof images: `results/proof/gpu-canyon-4x-wide.png`, `gpu-title-4x-wide.png`.
+
+## Bugs found on the way (all now encoded in the shader)
+
+1. **Missing scanline-range check** (97.24% → 99.9985%): poly.h renders rows
+   `[round(miny), round(maxy))`; bounding-box fragments outside that range
+   extrapolated plausible x-extents and let later quads steal shared-edge
+   rows from earlier neighbours. 5,646 of 5,647 bad pixels were ownership
+   flips from this.
+2. **Page history** (99.9985% → 100%): the game leaves sub-pixel cracks
+   between adjacent quads (3 px on the canyon scene) where the hardware
+   shows the page's previous frame. A real renderer reproduces this for
+   free by never clearing pages; isolated-scene replays must prepend the
+   prior same-page scene.
+3. `shared` is a GLSL reserved word.
+4. GLSL float division is only spec'd to 2.5 ULP; NVIDIA's is IEEE-correct
+   in practice, and an fp64-reciprocal "fix" made nothing better (double
+   rounding). Verified irrelevant here; worth re-checking on other vendors.
+
+## What this retires
+
+The renderer-replacement concept is now demonstrated end to end: capture →
+GPU pipeline → bit-exact against the oracle → 4×/16:9 output with 5×
+performance headroom. Remaining work is *integration*, not proof: feeding
+quads from the live emulator instead of a capture file, presenting the GPU
+image instead of MAME's software frame, texture/palette upload on write,
+and input/FFB — engineering with no open research questions.
