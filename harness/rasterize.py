@@ -39,6 +39,15 @@ def round_coordinate(value):
     return int(ipart) + (1 if (value - ipart) > F(0.5) else 0)
 
 
+def c_int32(f):
+    """C 'int32_t x = float_expr' on x86: cvttss2si - truncate toward zero,
+    out-of-range/NaN becomes INT_MIN. Degenerate quads hit this for real."""
+    f = float(f)
+    if not np.isfinite(f) or f >= 2147483648.0 or f < -2147483648.0:
+        return np.int32(-2147483648)
+    return np.int32(int(f))
+
+
 def make_vertices_inclusive(vx, vy):
     """midvunit_v.cpp - nudge right/bottom vertices so they rasterize."""
     rmask = bmask = eqmask = 0
@@ -62,10 +71,13 @@ def make_vertices_inclusive(vx, vy):
             vy[vnum] = F(vy[vnum] + F(0.001))
 
 
-def render_quad(dma, page_control, vram, texram, clip_right, clip_bottom):
+def render_quad(dma, page_control, vram, texram, clip_right, clip_bottom,
+                cover=None):
     """One captured DMA record -> pixels, exactly as MAME would."""
     destbase = 0x40000 if (page_control & 4) else 0x00000
     dest = vram[destbase:destbase + 0x40000].reshape(512, 512)  # rows x 512 stride
+    cov = (cover[destbase:destbase + 0x40000].reshape(512, 512)
+           if cover is not None else None)
 
     vx = [F(np.int16(dma[2 + i * 2]) + F(0.5)) for i in range(4)]
     vy = [F(np.int16(dma[3 + i * 2]) + F(0.5)) for i in range(4)]
@@ -192,22 +204,27 @@ def render_quad(dma, page_control, vram, texram, clip_right, clip_bottom):
         xstep = dither + 1
         sx = istartx
         row = dest[curscan]
+        crow = cov[curscan] if cov is not None else None
 
         if mode == "flat":
             sx += (curscan ^ sx) & dither
             if xstep == 1:
                 row[sx:istopx] = pixdata
+                if crow is not None:
+                    crow[sx:istopx] = True
                 pixels += max(0, istopx - sx)
             else:
                 row[sx:istopx:2] = pixdata
+                if crow is not None:
+                    crow[sx:istopx:2] = True
                 pixels += len(range(sx, istopx, 2))
             continue
 
         # textured paths: int32 fixed-point with C truncation semantics
-        u = np.int32(int(pstart[0]))   # float->int32 trunc toward zero
-        v = np.int32(int(pstart[1]))
-        dudx = np.int32(int(pdpdx[0]))
-        dvdx = np.int32(int(pdpdx[1]))
+        u = c_int32(pstart[0])
+        v = c_int32(pstart[1])
+        dudx = c_int32(pdpdx[0])
+        dvdx = c_int32(pdpdx[1])
         if xstep == 2:
             if (curscan ^ sx) & 1:
                 sx += 1
@@ -230,14 +247,20 @@ def render_quad(dma, page_control, vram, texram, clip_right, clip_bottom):
 
         if mode == "tex":
             row[xs] = (pixdata + texels).astype(np.uint16)
+            if crow is not None:
+                crow[xs] = True
             pixels += n
         elif mode == "textrans":
             m = texels != 0
             row[xs[m]] = (pixdata + texels[m]).astype(np.uint16)
+            if crow is not None:
+                crow[xs[m]] = True
             pixels += int(m.sum())
         else:  # textransmask
             m = texels != 0
             row[xs[m]] = pixdata
+            if crow is not None:
+                crow[xs[m]] = True
             pixels += int(m.sum())
     return mode, pixels
 
@@ -267,6 +290,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("capture_dir", help="dir with quads.bin + state dumps")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--min-frame", type=int, default=0,
+                    help="replay only quads from this frame on. The game "
+                    "redraws the whole back page every cycle, so a small "
+                    "window before the dump should fully cover the visible "
+                    "page - and coverage is measured, not assumed.")
     args = ap.parse_args()
     cap = args.capture_dir
     out = args.out or cap
@@ -294,34 +322,59 @@ def main():
     print(f"quad log: {len(rec)} quads across frames "
           f"{frames.min()}..{frames.max()}")
 
-    # Replay everything up to and including the dump frame.
-    keep = frames <= dump_frame
+    # Replay the window up to and including the dump frame.
+    keep = (frames <= dump_frame) & (frames >= args.min_frame)
     dmas, pages, frames = dmas[keep], pages[keep], frames[keep]
-    print(f"replaying {len(dmas)} quads up to frame {dump_frame}...")
+    print(f"replaying {len(dmas)} quads "
+          f"(frames {args.min_frame}..{dump_frame})...")
 
     sim = np.zeros(0x80000, dtype=np.uint16)
+    cover = np.zeros(0x80000, dtype=bool) if args.min_frame else None
     stats = {}
     for i in range(len(dmas)):
         mode, px = render_quad(dmas[i].astype(np.uint32), int(pages[i]),
-                               sim, texram, clip_right, clip_bottom)
+                               sim, texram, clip_right, clip_bottom, cover)
         stats[mode] = stats.get(mode, 0) + 1
         if i % 20000 == 0:
             print(f"  {i}/{len(dmas)} quads (frame {frames[i]})")
 
     print("mode distribution:", dict(sorted(stats.items())))
 
-    # ---- compare visible pages ----
-    ref = ref_vram[vis_off // 1:vis_off + 0x40000].reshape(512, 512)
+    # ---- compare pages ----
+    # The dump can fire mid page-flip, leaving meta's visible-page pointer one
+    # step stale (observed: meta said 0x40000 while the freshly completed
+    # frame sat in page 0). The unambiguous target is the dest page of the
+    # last FULLY replayed frame - that page holds the frame MAME finished
+    # rendering most recently, and the dump caught it intact.
+    full_frames = [f for f in np.unique(frames) if (frames == f).sum() > 100]
+    if full_frames:
+        last_full = max(full_frames)
+        last_pc = int(pages[frames == last_full][-1])
+        vis_off = 0x40000 if (last_pc & 4) else 0x00000
+        print(f"comparison page: 0x{vis_off:05x} "
+              f"(dest of last full frame {last_full}, page_control {last_pc})")
+    ref = ref_vram[vis_off:vis_off + 0x40000].reshape(512, 512)
     mine = sim[vis_off:vis_off + 0x40000].reshape(512, 512)
     ref_vis = ref[:height, :width]
     my_vis = mine[:height, :width]
 
     total = ref_vis.size
+    if cover is not None:
+        cov_vis = cover[vis_off:vis_off + 0x40000].reshape(512, 512)[:height, :width]
+        covered = int(cov_vis.sum())
+        print(f"coverage: {covered}/{total} = {100.0*covered/total:.2f}% of "
+              f"visible pixels written by the replay window")
+
     exact = int((ref_vis == my_vis).sum())
     display = int(((ref_vis & 0x7fff) == (my_vis & 0x7fff)).sum())
     print(f"\npixel match (visible {width}x{height}):")
     print(f"  raw u16 : {exact}/{total} = {100.0*exact/total:.2f}%")
     print(f"  display : {display}/{total} = {100.0*display/total:.2f}%  (&0x7fff)")
+    if cover is not None and covered:
+        cm = cov_vis
+        exact_c = int(((ref_vis == my_vis) & cm).sum())
+        print(f"  covered : {exact_c}/{covered} = {100.0*exact_c/covered:.2f}%"
+              f"  (raw match within written pixels)")
 
     from PIL import Image
     Image.fromarray(to_rgb(ref_vis, pal)).save(os.path.join(out, "reference.png"))

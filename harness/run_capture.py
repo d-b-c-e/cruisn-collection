@@ -58,7 +58,12 @@ env = dict(
     os.environ,
     SNAP_FRAMES=str(DUMP_FRAME),
     MIDV_QUADLOG=os.path.join(cap, "quads.bin"),
-    MIDV_STATEDUMP_FRAME=str(DUMP_FRAME),
+    # Lua exits right after its snapshot at DUMP_FRAME, and that snapshot's
+    # screen_update still sees frame_number() == DUMP_FRAME-1 - so a gate at
+    # DUMP_FRAME never fires before exit. Dump two frames early instead; the
+    # comparison target is the dump itself, so alignment with the snapshot
+    # PNG is cosmetic.
+    MIDV_STATEDUMP_FRAME=str(DUMP_FRAME - 2),
     MIDV_STATEDUMP_DIR=cap,
 )
 print(f"capture: {os.path.basename(VUNIT)} {ROM} -> {cap}")
