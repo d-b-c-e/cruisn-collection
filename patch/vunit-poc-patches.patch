@@ -1,7 +1,7 @@
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 1/7] POC: env-gated DMA quad logging + one-shot state dump for
+Subject: [PATCH 1/8] POC: env-gated DMA quad logging + one-shot state dump for
  midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -122,7 +122,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 2/7] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 2/8] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -381,7 +381,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 3/7] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 3/8] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1321,7 +1321,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 4/7] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 4/8] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1359,7 +1359,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 5/7] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 5/8] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1394,7 +1394,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 6/7] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 6/8] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1486,7 +1486,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 7/7] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 7/8] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1541,6 +1541,69 @@ index 296b263a..7936ea9f 100644
  		float const content_w = wide3d ? float(WIDE) : 512.0f;
  		float const aspect = (content_w * PAR) / float(HEIGHT);
  		int vw = cw, vh = int(cw / aspect + 0.5f);
+-- 
+2.55.0.windows.3
+
+
+From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 14:41:30 -0500
+Subject: [PATCH 8/8] POC: scissor-clear the margin strips per scene -
+ stale-margin artifacts
+
+The hardware guarantees repaint of the 512-wide region only; the 16:9
+margins are ours, so scenes that draw nothing there (2D screens, the
+car showcase whose 3D car defeats the axis classifier) showed the
+previous scene's margins - scenery strips flanking 4:3 content and a
+thin stale border at crop edges. The hardware region stays persistent
+(the 3-pixel-crack authenticity); only the margins clear.
+---
+ src/mame/midway/midvunit_v.cpp | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 7936ea9f..3d5b3200 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -219,6 +219,9 @@ struct GL
+ 	void (WINAPI *TexSubImage2D)(unsigned, int, int, int, int, int, unsigned, unsigned, const void *);
+ 	void (WINAPI *PixelStorei)(unsigned, int);
+ 	void (WINAPI *DrawArrays)(unsigned, int, int);
++	void (WINAPI *Enable)(unsigned);
++	void (WINAPI *Disable)(unsigned);
++	void (WINAPI *Scissor)(int, int, int, int);
+ 	void (WINAPI *ReadPixels)(int, int, int, int, unsigned, unsigned, void *);
+ 	unsigned (WINAPI *GetError)();
+ 	// modern (via wglGetProcAddress)
+@@ -275,7 +278,8 @@ struct GL
+ 		L(GenTextures, "glGenTextures") L(BindTexture, "glBindTexture")
+ 		L(TexParameteri, "glTexParameteri") L(TexImage2D, "glTexImage2D")
+ 		L(TexSubImage2D, "glTexSubImage2D") L(PixelStorei, "glPixelStorei")
+-		L(DrawArrays, "glDrawArrays") L(ReadPixels, "glReadPixels") L(GetError, "glGetError")
++		L(DrawArrays, "glDrawArrays") L(Enable, "glEnable")
++		L(Disable, "glDisable") L(Scissor, "glScissor") L(ReadPixels, "glReadPixels") L(GetError, "glGetError")
+ 		L(CreateShader, "glCreateShader") L(ShaderSource, "glShaderSource")
+ 		L(CompileShader, "glCompileShader") L(GetShaderiv, "glGetShaderiv")
+ 		L(GetShaderInfoLog, "glGetShaderInfoLog") L(CreateProgram, "glCreateProgram")
+@@ -738,6 +742,18 @@ void thread_main()
+ 			gl.BufferData(ARRAY_BUFFER, udata.size() * 4, udata.data(), STREAM_DRAW);
+ 			gl.BindFramebuffer(FRAMEBUFFER, fbo[pg]);
+ 			gl.Viewport(0, 0, fw, fh);
++			// The game guarantees repainting only the 512-wide hardware
++			// region; the 16:9 margins are ours. Scenes that draw nothing
++			// there (2D screens, showcase scenes) would otherwise show the
++			// previous scene's stale margins - seen at the rig as scenery
++			// strips beside a 4:3 screen and a thin border at crop edges.
++			gl.Enable(0x0C11 /*SCISSOR_TEST*/);
++			gl.ClearColor(0, 0, 0, 0);
++			gl.Scissor(0, 0, MARGIN * S, fh);
++			gl.Clear(0x4000);
++			gl.Scissor(fw - MARGIN * S, 0, MARGIN * S, fh);
++			gl.Clear(0x4000);
++			gl.Disable(0x0C11);
+ 			gl.ActiveTexture(TEXTURE0);
+ 			gl.BindTexture(0x0DE1, texram);
+ 			gl.DrawArrays(0x0004 /*TRIANGLES*/, 0, int(pend[pg].size() * 6));
 -- 
 2.55.0.windows.3
 
