@@ -22,9 +22,10 @@ POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VUNIT = sys.argv[1] if len(sys.argv) > 1 else r"E:\Source\mame-src\vunit.exe"
 ROM = "crusnusa"
 ROMPATH = r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286\roms"
-DUMP_FRAME = 2400   # title screen, per the oracle reference set
+DUMP_FRAME = int(sys.argv[2]) if len(sys.argv) > 2 else 2400
+SUFFIX = f"-{DUMP_FRAME}" if len(sys.argv) > 2 else ""
 
-cap = os.path.join(POC, "results", "capture")
+cap = os.path.join(POC, "results", "capture" + SUFFIX)
 if os.path.isdir(cap):
     shutil.rmtree(cap)
 run = os.path.join(cap, "run")
@@ -50,7 +51,7 @@ cmd = [
     "-snapshot_directory", os.path.join(run, "snap"),
     "-autoboot_script", os.path.join(POC, "lua", "snap.lua"),
     "-autoboot_delay", "0",
-    "-seconds_to_run", "120",
+    "-seconds_to_run", str(DUMP_FRAME // 57 + 30),   # backstop past the Lua exit
     "-nothrottle", "-video", "none", "-sound", "none",
     "-skip_gameinfo", "-snapview", "native",
 ]

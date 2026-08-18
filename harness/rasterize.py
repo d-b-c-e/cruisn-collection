@@ -72,14 +72,20 @@ def make_vertices_inclusive(vx, vy):
 
 
 def render_quad(dma, page_control, vram, texram, clip_right, clip_bottom,
-                cover=None):
-    """One captured DMA record -> pixels, exactly as MAME would."""
-    destbase = 0x40000 if (page_control & 4) else 0x00000
-    dest = vram[destbase:destbase + 0x40000].reshape(512, 512)  # rows x 512 stride
-    cov = (cover[destbase:destbase + 0x40000].reshape(512, 512)
+                cover=None, stride=512, xoff=0):
+    """One captured DMA record -> pixels, exactly as MAME would.
+
+    stride/xoff generalize the canvas for the widescreen experiment: a wider
+    framebuffer with the original screen occupying columns [xoff, xoff+512).
+    Defaults reproduce MAME's real 512-stride pages exactly.
+    """
+    page_words = 512 * stride
+    destbase = page_words if (page_control & 4) else 0
+    dest = vram[destbase:destbase + page_words].reshape(512, stride)
+    cov = (cover[destbase:destbase + page_words].reshape(512, stride)
            if cover is not None else None)
 
-    vx = [F(np.int16(dma[2 + i * 2]) + F(0.5)) for i in range(4)]
+    vx = [F(np.int16(dma[2 + i * 2]) + F(0.5) + F(xoff)) for i in range(4)]
     vy = [F(np.int16(dma[3 + i * 2]) + F(0.5)) for i in range(4)]
 
     pixdata = dma[1]
@@ -342,17 +348,21 @@ def main():
 
     # ---- compare pages ----
     # The dump can fire mid page-flip, leaving meta's visible-page pointer one
-    # step stale (observed: meta said 0x40000 while the freshly completed
-    # frame sat in page 0). The unambiguous target is the dest page of the
-    # last FULLY replayed frame - that page holds the frame MAME finished
-    # rendering most recently, and the dump caught it intact.
-    full_frames = [f for f in np.unique(frames) if (frames == f).sum() > 100]
-    if full_frames:
-        last_full = max(full_frames)
-        last_pc = int(pages[frames == last_full][-1])
-        vis_off = 0x40000 if (last_pc & 4) else 0x00000
+    # step stale, and the final scene in the log is in-progress. The robust
+    # target is structural: consecutive frames sharing a page_control form one
+    # scene, and the last COMPLETE scene is the second-to-last such run (the
+    # final run is the scene still being drawn when the dump fired). A
+    # quad-count threshold is NOT robust - gameplay scene-start chunks grew
+    # past 100 quads and broke it.
+    if len(pages):
+        runs = [int(pages[0])]
+        for pc in pages[1:]:
+            if int(pc) != runs[-1]:
+                runs.append(int(pc))
+        target_pc = runs[-2] if len(runs) >= 2 else runs[-1]
+        vis_off = 0x40000 if (target_pc & 4) else 0x00000
         print(f"comparison page: 0x{vis_off:05x} "
-              f"(dest of last full frame {last_full}, page_control {last_pc})")
+              f"(dest of last complete scene, page_control {target_pc})")
     ref = ref_vram[vis_off:vis_off + 0x40000].reshape(512, 512)
     mine = sim[vis_off:vis_off + 0x40000].reshape(512, 512)
     ref_vis = ref[:height, :width]

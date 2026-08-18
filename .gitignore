@@ -3,3 +3,4 @@ results/oracle-runs/
 __pycache__/
 results/build.log
 results/capture/
+results/capture-*/

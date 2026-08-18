@@ -78,3 +78,49 @@ shader variants cover the entire hardware.
   shell — the profile clears the inherited value.
 - Build: `make SUBTARGET=vunit SOURCES=src/mame/midway/midvunit.cpp
   REGENIE=1 NOWERROR=1 TOOLS=0 -j18`
+
+---
+
+# Widescreen spike — 2026-08-18 (follow-up session)
+
+**The gating unknown is RESOLVED: true Hor+ 16:9 needs NO game-code changes.**
+
+The decisive fact was already in the captured stream: **the TMS32031 does not
+clip projected geometry to the viewport.** Vertex x runs −8427..12935 against
+a 0..511 screen with no pile-up at boundary values (no DSP clamping), ~7% of
+vertices land outside 4:3 horizontally, and **65,698 quads lie entirely
+outside the 4:3 window** — submitted by the game, discarded by MAME's
+rasterizer at its cliprect. The 4:3 picture is a raster-time crop, not a
+game-side frustum.
+
+`widescreen.py` re-rendered two captured scenes into a 684×400 window
+(16:9 at the original pixel aspect, 86 px margins each side):
+
+| scene | margin pixels rendered | centre vs MAME dump |
+|---|---|---|
+| title screen (frame 2398) | **100.00%** both sides | 99.99% (DDA drift, see below) |
+| canyon demo race (frame 7998) | **100.00%** both sides | **100.00%** |
+
+Proof images: `results/proof/widescreen-title.png`, `widescreen-canyon.png`.
+Canyon walls, road edges and lane markings continue seamlessly into the
+margins in both scenes.
+
+Additional findings:
+
+- **Scene/page structure**: consecutive frames sharing a `page_control` form
+  one scene (~27-quad setup chunk + ~1,200-quad body in attract; ~105 + ~1,230
+  in gameplay). The last complete scene is the second-to-last run — a
+  quad-count threshold is not a robust way to find it.
+- **DDA drift**: quads MAME clips at x=0/511 get u/v starts adjusted
+  analytically at the clip edge; the wide render reaches the same pixels by
+  int32 DDA stepping from further left. Same math, different rounding —
+  ~0.01% of centre pixels. Irrelevant to a real GPU renderer (which
+  interpolates analytically per-pixel anyway); visible only against the
+  software oracle.
+- Capture backstop must scale with the dump frame (`-str` at 120 s ends
+  before frame ~6,900).
+
+**Honest caveats**: two scenes tested; objects the game distance-culls could
+still pop in at margins during long play — sweep more frames during real
+development. HUD/text stays 4:3-centred (authentic). Vertical overhang exists
+too (y −4956..1481), so 21:9 is likely equally free.
