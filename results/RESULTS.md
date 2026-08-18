@@ -244,3 +244,28 @@ Bugs this stage surfaced (all fixed, all documented in the patch):
 remains available via MIDV_LIVE=1). Remaining for the rig: FFB Arcade Plugin
 drop-in next to vunit.exe, wheel/audio verification, 2D-crop threshold
 sanity-check across a full attract rotation.
+
+---
+
+# OPEN ISSUE at session end (2026-08-18): residual flashing
+
+record_diag caught it objectively during a run_rig boot: intermittent
+X.X.X.X frame-diff bursts (~frames 283+, 305+ of an 8s 60fps desktop
+capture). The alternating frames LOOK identical at 960px scale - the change
+is subtle/localized. Saved pairs in results/flash-evidence/.
+
+Next session, first move: numpy-diff flash_283 vs flash_284 and print the
+bounding box of changed pixels - that localizes whether it's MAME's window
+region (present-fight surviving gdi+CLIPCHILDREN), the overlay's own
+letterbox bars, taskbar/toast noise, or cursor blink. The user reports one
+earlier run looked flash-free (window config differed: 1368x800 + scale 3 +
+sound none measured clean, mean diff 0.06).
+
+Also fixed at session end: run_rig now passes -keepaspect 0 - without it
+MAME's -maximize keeps the GAME's 4:3 aspect, so the window itself stays
+4:3 and the 16:9 overlay letterboxes inside it (user report). UNVERIFIED
+at the rig since.
+
+Rig checklist standing: FFB Arcade Plugin drop-in beside vunit.exe;
+JOYCODE_1_BUTTON33+ tokens from EmuEzRacing get dropped by the token parser
+(coin/start on high buttons may not bind - keyboard works meanwhile).

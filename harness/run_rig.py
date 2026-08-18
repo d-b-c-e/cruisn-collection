@@ -53,7 +53,7 @@ mame = subprocess.Popen(
      "-ctrlr", "EmuEzRacing",
      "-nvram_directory", os.path.join(rig, "nvram"),
      "-cfg_directory", os.path.join(rig, "cfg"),
-     "-window", "-maximize",
+     "-window", "-maximize", "-keepaspect", "0",
      "-skip_gameinfo"],
     env=dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(args.scale)),
     cwd=os.path.dirname(args.mame))
