@@ -43,11 +43,8 @@ dst = os.path.join(rig, "nvram", args.rom)
 if os.path.isdir(seed) and not os.path.isdir(dst):
     shutil.copytree(seed, dst)   # persistent from then on - scores survive
 
-viewer = subprocess.Popen(
-    [sys.executable, os.path.join(POC, "gpu", "live_viewer.py"),
-     "--scale", str(args.scale), "--fullscreen"])
-time.sleep(1.5)
-
+# In-process GL (Phase 1 step 2): one window, one process. The external
+# viewer path still works - set MIDV_LIVE=1 and start live_viewer.py instead.
 mame = subprocess.Popen(
     [args.mame, args.rom,
      "-rompath", os.path.join(RACING, "roms"),
@@ -56,11 +53,9 @@ mame = subprocess.Popen(
      "-ctrlr", "EmuEzRacing",
      "-nvram_directory", os.path.join(rig, "nvram"),
      "-cfg_directory", os.path.join(rig, "cfg"),
-     "-window", "-resolution", "512x400",
+     "-window", "-maximize",
      "-skip_gameinfo"],
-    env=dict(os.environ, MIDV_LIVE="1"),
+    env=dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(args.scale)),
     cwd=os.path.dirname(args.mame))
-print("MAME (focused, small window) + viewer (fullscreen). "
-      "Play into the MAME window; watch the big one. Esc in MAME quits.")
+print("Single window: MAME with the in-process GL overlay. Esc quits.")
 mame.wait()
-viewer.terminate()

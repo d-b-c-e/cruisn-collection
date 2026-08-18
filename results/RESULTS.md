@@ -215,3 +215,32 @@ Proof: `results/proof/live-park-16x9.png`, `live-hiscore-letterboxed.png`.
 
 **Phase 1 step 2 (next): in-process GL inside the vunit build** — one
 window, no IPC. The out-of-process viewer stays as the reference/fallback.
+
+---
+
+# Phase 1 step 2 — IN-PROCESS GL renderer (2026-08-18)
+
+**One process, one window.** `MIDV_GL=1 vunit.exe` spawns a render thread that
+consumes the ring in-process and presents through a disabled, no-activate
+overlay child over MAME's own window — input/audio/dinput8-proxying stay
+stock MAME, which is exactly what the FFB Arcade Plugin needs. Shaders are
+GENERATED from the verified Python reference (`midvunit_gl_shaders.h`).
+Verified via backbuffer BMP self-capture: boot (CPU screens), 2D quad
+screens, and 3D attract all render through the whole cycle.
+
+Bugs this stage surfaced (all fixed, all documented in the patch):
+- **WS_CLIPCHILDREN** missing on MAME's window → MAME's present alternated
+  with the overlay (the "every other frame is a different resolution" report
+  from the rig — that live observation was the diagnosis). `-video gdi`
+  underneath makes the clip airtight.
+- **Boot was black**: palette/texture sync only fired from the quad path,
+  and boot screens draw before any quad exists → sync moved to screen_update.
+- **Presentation flapping**: real 3D scenes can be as small as ~260 quads;
+  the 2D-crop threshold at 300 made aspect mode flip per scene. Now 120.
+- ++presents in a condition plus an else-increment = the snapshot cadence
+  check only ever saw odd values. Rookie hour.
+
+`run_rig.py` now launches the single-process configuration (external viewer
+remains available via MIDV_LIVE=1). Remaining for the rig: FFB Arcade Plugin
+drop-in next to vunit.exe, wheel/audio verification, 2D-crop threshold
+sanity-check across a full attract rotation.

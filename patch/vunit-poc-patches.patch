@@ -1,0 +1,1319 @@
+From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 17 Aug 2026 23:54:14 -0500
+Subject: [PATCH 1/3] POC: env-gated DMA quad logging + one-shot state dump for
+ midvunit
+
+MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
+page_control, the 16 raw DMA words) from process_dma_queue.
+MIDV_STATEDUMP_FRAME/_DIR dump videoram, textureram and paletteram from
+screen_update once, after the poly wait. Both are inert unless the env
+vars are set. Supports the Cruis'n USA renderer-replacement POC at
+E:/Source/cruisn-poc.
+---
+ src/mame/midway/midvunit_v.cpp | 76 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 385c7287..2e3cabdc 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -14,6 +14,36 @@
+ #include "cpu/adsp2100/adsp2100.h"
+ #include "cpu/tms34010/tms34010.h"
+ 
++// ── POC instrumentation (env-gated, zero cost when unset) ────────────────
++//
++// MIDV_QUADLOG=<file>          append every DMA quad as a binary record:
++//                              u32 frame, u16 page_control, u16 dma_data[16]
++// MIDV_STATEDUMP_FRAME=<n>     at screen_update of frame >= n, dump
++// MIDV_STATEDUMP_DIR=<dir>     videoram/textureram/paletteram + meta there
++//
++// Purpose: prove process_dma_queue() is the complete render surface by
++// re-rasterizing the captured stream offline and diffing against videoram.
++#include <cstdio>
++#include <cstdlib>
++
++namespace {
++
++FILE *quadlog_open()
++{
++	const char *path = std::getenv("MIDV_QUADLOG");
++	if (!path)
++		return nullptr;
++	FILE *f = std::fopen(path, "wb");
++	if (f)
++	{
++		setvbuf(f, nullptr, _IOFBF, 1 << 20);
++		std::fwrite("MVQ1", 1, 4, f);
++	}
++	return f;
++}
++
++} // anonymous namespace
++
+ #define LOG_DMA             (1U << 1)
+ 
+ #define VERBOSE (0)
+@@ -278,6 +308,17 @@ void midvunit_renderer::make_vertices_inclusive(vertex_t *vert)
+ 
+ void midvunit_renderer::process_dma_queue()
+ {
++	// POC: log the raw quad before any processing, tagged with frame + page
++	static FILE *s_quadlog = quadlog_open();
++	if (s_quadlog)
++	{
++		uint32_t const frame = uint32_t(m_state.m_screen->frame_number());
++		uint16_t const page = m_state.m_page_control;
++		std::fwrite(&frame, 4, 1, s_quadlog);
++		std::fwrite(&page, 2, 1, s_quadlog);
++		std::fwrite(m_state.m_dma_data, 2, 16, s_quadlog);
++	}
++
+ 	// if we're rendering to the same page we're viewing, it has changed
+ 	if ((((m_state.m_page_control >> 2) ^ m_state.m_page_control) & 1) == 0 || WATCH_RENDER)
+ 		m_state.m_video_changed = true;
+@@ -545,6 +586,41 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
+ 
+ 	m_poly->wait("Refresh Time");
+ 
++	// POC: one-shot memory dump so the quad stream can be re-rasterized and
++	// verified offline. Runs after the poly wait, so all quads have landed.
++	{
++		static bool s_dumped = false;
++		static const char *s_dir = std::getenv("MIDV_STATEDUMP_DIR");
++		static const char *s_frame = std::getenv("MIDV_STATEDUMP_FRAME");
++		if (!s_dumped && s_dir && s_frame
++			&& screen.frame_number() >= strtoul(s_frame, nullptr, 10))
++		{
++			s_dumped = true;
++			auto dump = [&](const char *name, const void *data, size_t bytes)
++			{
++				std::string path = std::string(s_dir) + "/" + name;
++				if (FILE *f = std::fopen(path.c_str(), "wb"))
++				{
++					std::fwrite(data, 1, bytes, f);
++					std::fclose(f);
++				}
++			};
++			dump("videoram.bin", m_videoram.target(), m_videoram.bytes());
++			dump("textureram.bin", m_textureram.target(), m_textureram.bytes());
++			dump("paletteram.bin", m_paletteram.target(), m_paletteram.bytes());
++			std::string meta = std::string(s_dir) + "/meta.txt";
++			if (FILE *f = std::fopen(meta.c_str(), "w"))
++			{
++				std::fprintf(f, "frame %u\npage_control %u\n"
++					"visible_page_offset 0x%x\nvisarea %d %d\n",
++					uint32_t(screen.frame_number()), m_page_control,
++					(m_page_control & 1) ? 0x40000 : 0x00000,
++					screen.visible_area().max_x, screen.visible_area().max_y);
++				std::fclose(f);
++			}
++		}
++	}
++
+ 	// if the video didn't change, indicate as much
+ 	if (!m_video_changed)
+ 		return UPDATE_HAS_NOT_CHANGED;
+-- 
+2.55.0.windows.3
+
+
+From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 12:04:11 -0500
+Subject: [PATCH 2/3] POC: MIDV_LIVE shared-memory bridge for live external
+ rendering
+
+MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
+and streams, in strict emulation order: quads (from process_dma_queue),
+page flips (page_control_w), coalesced CPU videoram writes (spans of up
+to 2048 contiguous words), and full texture/palette snapshots whenever
+the respective RAM was dirtied. Single producer on the scheduler
+thread, single consumer, drop-with-counter on overflow - dirty flags
+survive drops so big state is retried at the next scene. Zero cost
+when the env var is unset.
+
+m_paletteram moves to the public section so the renderer-side hook can
+snapshot it; everything else was already public.
+---
+ src/mame/midway/midvunit.h     |   3 +
+ src/mame/midway/midvunit_v.cpp | 172 +++++++++++++++++++++++++++++++++
+ 2 files changed, 175 insertions(+)
+
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index 35d9129c..ff5f72a1 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -115,7 +115,10 @@ protected:
+ 	required_device<palette_device> m_palette;
+ 	required_device_array<timer_device, 2> m_timer;
+ 	required_device<dcs_audio_device> m_dcs;
++public:
++	// POC live bridge reads this from midvunit_renderer (see midvunit_v.cpp)
+ 	required_shared_ptr<uint32_t> m_paletteram;
++protected:
+ 	required_shared_ptr<uint32_t> m_ram_base;
+ 	required_shared_ptr<uint32_t> m_tms320c31_control;
+ 
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 2e3cabdc..f00e97a8 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -42,6 +42,151 @@ FILE *quadlog_open()
+ 	return f;
+ }
+ 
++// ── MIDV_LIVE: stream the render state to an external GPU renderer ──────
++//
++// MIDV_LIVE=1 opens a named shared-memory ring ("Local\\MIDV_LIVE") and
++// streams, in strict emulation order: quads, page flips, coalesced CPU
++// videoram writes, and texture/palette snapshots when dirty. A viewer
++// process (cruisn-poc/gpu/live_viewer.py) renders and presents them live.
++// Single producer (the scheduler thread), single consumer. Zero cost when
++// the env var is unset.
++//
++// Ring layout: 64-byte header {magic 'MVL1', u32 size, u64 wpos, u64 rpos,
++// u64 dropped, u32 flags} then the data region. Messages are 8-byte
++// aligned: {u32 type, u32 payload_len, payload}.
++//   1 QUAD    u32 frame, u16 pc, u16 pad, u16 dma[16]
++//   2 FLIP    u32 frame, u16 old_pc, u16 new_pc
++//   3 PALETTE u32 frame, u8 bytes[]
++//   4 TEXTURE u32 frame, u8 bytes[]
++//   5 VRAM    u32 frame, u32 offset, u32 count, u16 data[count]
++#ifdef _WIN32
++#include <windows.h>
++
++struct midv_live
++{
++	static constexpr uint32_t RING_SIZE = 128u << 20;
++	static constexpr uint32_t HDR_SIZE = 64;
++
++	volatile uint8_t *base = nullptr;
++	volatile uint64_t *wpos = nullptr;
++	volatile uint64_t *rpos = nullptr;
++	volatile uint64_t *dropped = nullptr;
++	uint8_t *data = nullptr;
++	bool enabled = false;
++	bool tex_dirty = true;    // force initial snapshots
++	bool pal_dirty = true;
++	uint32_t last_frame = 0;
++
++	// coalescing buffer for CPU videoram writes
++	uint32_t span_start = 0xffffffff;
++	uint32_t span_count = 0;
++	uint16_t span_data[2048];
++
++	midv_live()
++	{
++		if (!std::getenv("MIDV_LIVE"))
++			return;
++		HANDLE h = CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr,
++			PAGE_READWRITE, 0, HDR_SIZE + RING_SIZE, "Local\\MIDV_LIVE");
++		if (!h)
++			return;
++		base = (volatile uint8_t *)MapViewOfFile(h, FILE_MAP_ALL_ACCESS, 0, 0, 0);
++		if (!base)
++			return;
++		memset((void *)base, 0, HDR_SIZE);
++		memcpy((void *)base, "MVL1", 4);
++		*(volatile uint32_t *)(base + 4) = RING_SIZE;
++		wpos = (volatile uint64_t *)(base + 8);
++		rpos = (volatile uint64_t *)(base + 16);
++		dropped = (volatile uint64_t *)(base + 24);
++		data = (uint8_t *)(base + HDR_SIZE);
++		enabled = true;
++	}
++
++	bool write_msg(uint32_t type, const void *p1, uint32_t l1,
++	               const void *p2 = nullptr, uint32_t l2 = 0)
++	{
++		if (!enabled)
++			return false;
++		uint32_t const need = (8 + l1 + l2 + 7) & ~7u;
++		uint64_t const w = *wpos, r = *rpos;
++		if (RING_SIZE - uint32_t(w - r) < need)
++		{
++			++*dropped;
++			return false;
++		}
++		auto put = [&](uint64_t at, const void *src, uint32_t len)
++		{
++			uint32_t off = uint32_t(at % RING_SIZE);
++			uint32_t first = std::min(len, RING_SIZE - off);
++			memcpy(data + off, src, first);
++			if (len > first)
++				memcpy(data, (const uint8_t *)src + first, len - first);
++		};
++		uint32_t hdr[2] = { type, l1 + l2 };
++		put(w, hdr, 8);
++		put(w + 8, p1, l1);
++		if (l2)
++			put(w + 8 + l1, p2, l2);
++		*wpos = w + need;   // x86: plain store publishes after the memcpys
++		return true;
++	}
++
++	void flush_span()
++	{
++		if (span_count == 0)
++			return;
++		uint32_t hdr[3] = { last_frame, span_start, span_count };
++		write_msg(5, hdr, 12, span_data, span_count * 2);
++		span_start = 0xffffffff;
++		span_count = 0;
++	}
++
++	void vram_write(uint32_t frame, uint32_t offset, uint16_t value)
++	{
++		last_frame = frame;
++		if (span_count > 0 &&
++			(offset != span_start + span_count || span_count >= 2048))
++			flush_span();
++		if (span_count == 0)
++			span_start = offset;
++		span_data[span_count++] = value;
++	}
++
++	// call at any scene-ordered point to push pending big state
++	void sync_state(uint32_t frame, const void *pal, uint32_t pal_len,
++	                const void *tex, uint32_t tex_len)
++	{
++		flush_span();
++		if (pal_dirty && write_msg(3, &frame, 4, pal, pal_len))
++			pal_dirty = false;
++		if (tex_dirty && write_msg(4, &frame, 4, tex, tex_len))
++			tex_dirty = false;   // stays dirty on drop; retried next scene
++	}
++};
++
++midv_live &live()
++{
++	static midv_live s;
++	return s;
++}
++
++#else
++struct midv_live
++{
++	bool enabled = false;
++	bool tex_dirty = false, pal_dirty = false;
++	uint32_t last_frame = 0;
++	bool write_msg(uint32_t, const void *, uint32_t,
++	               const void * = nullptr, uint32_t = 0) { return false; }
++	void flush_span() {}
++	void vram_write(uint32_t, uint32_t, uint16_t) {}
++	void sync_state(uint32_t, const void *, uint32_t,
++	                const void *, uint32_t) {}
++};
++midv_live &live() { static midv_live s; return s; }
++#endif
++
+ } // anonymous namespace
+ 
+ #define LOG_DMA             (1U << 1)
+@@ -319,6 +464,19 @@ void midvunit_renderer::process_dma_queue()
+ 		std::fwrite(m_state.m_dma_data, 2, 16, s_quadlog);
+ 	}
+ 
++	// live bridge: pending big state first (order matters), then the quad
++	if (live().enabled)
++	{
++		uint32_t const frame = uint32_t(m_state.m_screen->frame_number());
++		live().last_frame = frame;
++		live().sync_state(frame,
++			m_state.m_paletteram.target(), uint32_t(m_state.m_paletteram.bytes()),
++			m_state.m_textureram.target(), uint32_t(m_state.m_textureram.bytes()));
++		struct { uint32_t frame; uint16_t pc, pad; } h =
++			{ frame, m_state.m_page_control, 0 };
++		live().write_msg(1, &h, 8, m_state.m_dma_data, 32);
++	}
++
+ 	// if we're rendering to the same page we're viewing, it has changed
+ 	if ((((m_state.m_page_control >> 2) ^ m_state.m_page_control) & 1) == 0 || WATCH_RENDER)
+ 		m_state.m_video_changed = true;
+@@ -457,6 +615,15 @@ void midvunit_base_state::page_control_w(uint32_t data)
+ 			LOGMASKED(LOG_DMA, "##########################################################\n");
+ 		m_screen->update_partial(m_screen->vpos() - 1);
+ 	}
++	if (live().enabled)
++	{
++		uint32_t const frame = uint32_t(m_screen->frame_number());
++		live().last_frame = frame;
++		live().flush_span();
++		struct { uint32_t frame; uint16_t oldpc, newpc; } h =
++			{ frame, uint16_t(m_page_control), uint16_t(data) };
++		live().write_msg(2, &h, 8);
++	}
+ 	m_page_control = data;
+ }
+ 
+@@ -523,6 +690,9 @@ void midvunit_base_state::videoram_w(offs_t offset, uint32_t data, uint32_t mem_
+ 			m_video_changed = true;
+ 	}
+ 	COMBINE_DATA(&m_videoram[offset]);
++	if (live().enabled)   // post-COMBINE value, so masking is already applied
++		live().vram_write(uint32_t(m_screen->frame_number()), offset,
++			uint16_t(m_videoram[offset]));
+ }
+ 
+ 
+@@ -546,6 +716,7 @@ void midvunit_base_state::paletteram_w(offs_t offset, uint32_t data, uint32_t me
+ 	COMBINE_DATA(&m_paletteram[offset]);
+ 	uint32_t const newword = m_paletteram[offset];
+ 	m_palette->set_pen_color(offset, pal5bit(newword >> 10), pal5bit(newword >> 5), pal5bit(newword >> 0));
++	live().pal_dirty = true;
+ }
+ 
+ 
+@@ -562,6 +733,7 @@ void midvunit_base_state::textureram_w(offs_t offset, uint32_t data)
+ 	m_poly->wait("Texture RAM write");
+ 	base[offset * 2] = data;
+ 	base[offset * 2 + 1] = data >> 8;
++	live().tex_dirty = true;
+ }
+ 
+ 
+-- 
+2.55.0.windows.3
+
+
+From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 14:03:18 -0500
+Subject: [PATCH 3/3] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+
+MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
+same ring as the external viewer, renders scenes with the verified
+shaders (midvunit_gl_shaders.h is GENERATED from the bit-exact Python
+reference), and presents into a WS_DISABLED no-activate overlay child
+covering MAME's own window - input, audio and dinput8 proxying stay
+stock. Dynamic GL loading via opengl32.dll only; 4.3 core context;
+R16UI index pipeline with palette pass; per-scene 16:9 vs 4:3-crop
+presentation; CPU-drawn screens via a native underlay.
+
+Hard-won details: the parent window needs WS_CLIPCHILDREN or MAME's own
+present alternates with the overlay (seen as flashing/resolution
+changes at the rig; forcing -video gdi underneath makes the clip
+airtight); palette/texture sync must fire from screen_update because
+boot screens draw before any quad exists (boot was black otherwise);
+and scenes as small as ~260 quads are real 3D, so the 2D-crop
+heuristic threshold sits at 120 (was 300, which made presentation flap
+between aspect modes every scene - the other component of the observed
+flashing).
+---
+ src/mame/midway/midvunit_gl_shaders.h | 217 +++++++++
+ src/mame/midway/midvunit_v.cpp        | 642 +++++++++++++++++++++++++-
+ 2 files changed, 857 insertions(+), 2 deletions(-)
+ create mode 100644 src/mame/midway/midvunit_gl_shaders.h
+
+diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
+new file mode 100644
+index 00000000..856c18bc
+--- /dev/null
++++ b/src/mame/midway/midvunit_gl_shaders.h
+@@ -0,0 +1,217 @@
++// GENERATED from cruisn-poc/gpu/renderer.py - do not edit by hand.
++// These shaders are verified 100.0000% bit-exact against MAME's
++// software rasterizer (see cruisn-poc/results/RESULTS.md).
++
++static const char *MVGL_VS = R"GLSL(
++#version 430
++uniform vec2 uCanvas;      // coarse canvas size (W, H)
++in vec2 in_corner;         // bbox corner, coarse pixel space
++in vec2 in_v0; in vec2 in_v1; in vec2 in_v2; in vec2 in_v3;
++in vec4 in_uv01;           // u0,v0,u1,v1
++in vec4 in_uv23;           // u2,v2,u3,v3
++in uvec4 in_meta;          // pixdata, mode, dither, texbase
++flat out vec2 v0; flat out vec2 v1; flat out vec2 v2; flat out vec2 v3;
++flat out vec4 uv01; flat out vec4 uv23;
++flat out uvec4 meta;
++void main() {
++    v0 = in_v0; v1 = in_v1; v2 = in_v2; v3 = in_v3;
++    uv01 = in_uv01; uv23 = in_uv23; meta = in_meta;
++    // y-down pixel space -> NDC (y flipped)
++    gl_Position = vec4(in_corner.x / uCanvas.x * 2.0 - 1.0,
++                       1.0 - in_corner.y / uCanvas.y * 2.0, 0.0, 1.0);
++}
++)GLSL";
++
++static const char *MVGL_FS = R"GLSL(
++#version 430
++uniform int  uScale;       // 1 = exact mode, >1 = quality mode
++uniform vec2 uCanvas;      // coarse canvas size
++uniform int  uClipRight;   // coarse cliprect right (W-1)
++uniform usampler2D texram; // 4096-wide R8UI, 8 MB of texture RAM
++uniform int  texMask;      // byte-size mask (size-1)
++flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;
++flat in vec4 uv01; flat in vec4 uv23;
++flat in uvec4 meta;
++out uint outIndex;
++
++int round_coord(float f) {           // poly.h: floor, +1 iff frac > 0.5
++    float ip = floor(f);
++    return int(ip) + (((f - ip) > 0.5) ? 1 : 0);
++}
++int c_int32(float f) {               // C float->int32: trunc, OOR -> INT_MIN
++    if (!(abs(f) < 2147483648.0)) return -2147483648;
++    return int(f);
++}
++uint fetch_texel(int idx) {
++    idx &= texMask;
++    return texelFetch(texram, ivec2(idx & 4095, idx >> 12), 0).r;
++}
++
++void main() {
++    vec2 vx[4] = vec2[4](v0, v1, v2, v3);
++    float fx = gl_FragCoord.x;
++    float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down
++    float cx = fx / float(uScale);
++    float cy = fy / float(uScale);
++    int px = int(floor(cx));
++    int py = int(floor(cy));
++    // exact mode evaluates at MAME's scanline centre; quality mode uses the
++    // fine fragment's own continuous coordinate
++    precise float fully = (uScale == 1) ? float(py) + 0.5 : cy;
++
++    // ---- min/max Y vertices (poly.h render_polygon) ----
++    int minv = 0, maxv = 0;
++    for (int i = 1; i < 4; i++) {
++        if (vx[i].y < vx[minv].y) minv = i;
++        else if (vx[i].y > vx[maxv].y) maxv = i;
++    }
++    if (round_coord(vx[maxv].y) - round_coord(vx[minv].y) <= 0) discard;
++    float maxvy = vx[maxv].y;
++
++    // poly.h renders scanlines [round(miny), round(maxy)) only - the expanded
++    // bounding box generates fragments beyond that, where extrapolated edges
++    // still yield plausible x-extents. Without this cut, later quads steal
++    // their neighbours' shared-edge rows.
++    if (uScale == 1) {
++        if (py < round_coord(vx[minv].y) || py >= round_coord(maxvy)) discard;
++    } else {
++        if (cy < vx[minv].y || cy >= maxvy) discard;
++    }
++
++    // ---- forward / backward edge lists (<=3 each) ----
++    // e[k] = (v1x, v1y, v2y, dxdy), p[k] = (u1, v1_p, dudy, dvdy)
++    precise vec4 fe[3]; precise vec4 fp[3]; int fn = 0;
++    precise vec4 be[3]; precise vec4 bp[3]; int bn = 0;
++    vec4 uvs[4] = vec4[4](vec4(uv01.xy, 0, 0), vec4(uv01.zw, 0, 0),
++                          vec4(uv23.xy, 0, 0), vec4(uv23.zw, 0, 0));
++    for (int curv = minv; curv != maxv; curv = (curv + 1) & 3) {
++        int nxt = (curv + 1) & 3;
++        if (vx[nxt].y != vx[curv].y) {
++            precise float ooy = 1.0 / (vx[nxt].y - vx[curv].y);
++            fe[fn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,
++                          (vx[nxt].x - vx[curv].x) * ooy);
++            fp[fn] = vec4(uvs[curv].xy,
++                          (uvs[nxt].x - uvs[curv].x) * ooy,
++                          (uvs[nxt].y - uvs[curv].y) * ooy);
++            fn++;
++        }
++    }
++    for (int curv = minv; curv != maxv; curv = (curv - 1) & 3) {
++        int nxt = (curv - 1) & 3;
++        if (vx[nxt].y != vx[curv].y) {
++            precise float ooy = 1.0 / (vx[nxt].y - vx[curv].y);
++            be[bn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,
++                          (vx[nxt].x - vx[curv].x) * ooy);
++            bp[bn] = vec4(uvs[curv].xy,
++                          (uvs[nxt].x - uvs[curv].x) * ooy,
++                          (uvs[nxt].y - uvs[curv].y) * ooy);
++            bn++;
++        }
++    }
++    if (fn == 0 || bn == 0) discard;
++
++    // ---- left/right decision (poly.h:1194) ----
++    bool sharedFirst = (fe[0].x == be[0].x) && (fe[0].y == be[0].y);
++    bool fwd_left = (sharedFirst && fe[0].w < be[0].w)
++                 || (!sharedFirst && fe[0].x < be[0].x);
++
++    // ---- advance to the edge pair spanning this scanline ----
++    int li = 0, ri = 0;
++    vec4 le, lp, re, rp;
++    if (fwd_left) {
++        while (fully > fe[li].z && fully < maxvy && li + 1 < fn) li++;
++        while (fully > be[ri].z && fully < maxvy && ri + 1 < bn) ri++;
++        le = fe[li]; lp = fp[li]; re = be[ri]; rp = bp[ri];
++    } else {
++        while (fully > be[li].z && fully < maxvy && li + 1 < bn) li++;
++        while (fully > fe[ri].z && fully < maxvy && ri + 1 < fn) ri++;
++        le = be[li]; lp = bp[li]; re = fe[ri]; rp = fp[ri];
++    }
++
++    precise float startx = le.x + (fully - le.y) * le.w;
++    precise float stopx  = re.x + (fully - re.y) * re.w;
++    int istartx = round_coord(startx);
++    int istopx  = round_coord(stopx);
++    if (istartx > istopx) { int t = istartx; istartx = istopx; istopx = t; }
++
++    // ---- params at this scanline (poly.h:1250) ----
++    precise float ldy = fully - le.y;
++    precise float rdy = fully - re.y;
++    precise float oox = 1.0 / (stopx - startx);
++    precise float lu = lp.x + ldy * lp.z;
++    precise float lv = lp.y + ldy * lp.w;
++    precise float dudx = (rp.x + rdy * rp.z - lu) * oox;
++    precise float dvdx = (rp.y + rdy * rp.w - lv) * oox;
++    precise float su = lu + (float(istartx) + 0.5 - startx) * dudx;
++    precise float sv = lv + (float(istartx) + 0.5 - startx) * dvdx;
++
++    // ---- left/right clip with param adjust ----
++    if (istartx < 0) {
++        su += float(-istartx) * dudx;
++        sv += float(-istartx) * dvdx;
++        istartx = 0;
++    }
++    if (istopx > uClipRight) istopx = uClipRight + 1;
++    if (istartx >= istopx) discard;
++
++    // ---- coverage ----
++    if (uScale == 1) {
++        if (px < istartx || px >= istopx) discard;
++    } else {
++        // continuous edges at fine resolution; clip window still applies
++        float lo = max(min(startx, stopx), 0.0);
++        float hi = min(max(startx, stopx), float(uClipRight + 1));
++        if (cx < lo || cx >= hi) discard;
++    }
++
++    uint pixdata = meta.x, mode = meta.y, dither = meta.z;
++    if (dither == 1u && ((px ^ py) & 1) != 0) discard;   // coarse-space mask
++
++    if (mode == 0u) { outIndex = pixdata & 0xffffu; return; }
++
++    int ui, vi;
++    if (uScale == 1) {   // MAME's integer DDA, analytically
++        ui = c_int32(su) + (px - istartx) * c_int32(dudx);
++        vi = c_int32(sv) + (px - istartx) * c_int32(dvdx);
++    } else {             // sub-pixel float interpolation
++        ui = c_int32(lu + (cx - startx) * dudx);
++        vi = c_int32(lv + (cx - startx) * dvdx);
++    }
++    uint texel = fetch_texel(int(meta.w) + ((vi >> 8) & 0xff00) + (ui >> 16));
++    if (mode == 1u)      outIndex = (pixdata + texel) & 0xffffu;
++    else if (mode == 2u) { if (texel == 0u) discard;
++                           outIndex = (pixdata + texel) & 0xffffu; }
++    else                 { if (texel == 0u) discard;
++                           outIndex = pixdata & 0xffffu; }
++}
++)GLSL";
++
++static const char *MVGL_PAL_VS = R"GLSL(
++#version 430
++out vec2 uv;
++void main() {  // full-screen triangle
++    vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2);
++    uv = p;
++    gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
++}
++)GLSL";
++
++static const char *MVGL_PAL_FS = R"GLSL(
++#version 430
++uniform usampler2D idxTex;
++uniform usampler2D palTex;   // 256x128 R32UI - 32768 palette words
++uniform int uCrop;           // fine pixels to crop from each side (2D screens)
++in vec2 uv;
++out vec4 color;
++void main() {
++    ivec2 sz = textureSize(idxTex, 0);
++    ivec2 p = ivec2(float(uCrop) + uv.x * float(sz.x - 2 * uCrop),
++                    uv.y * float(sz.y));
++    uint pen = texelFetch(idxTex, p, 0).r & 0x7fffu;
++    uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;
++    uint r = (w >> 10) & 31u, g = (w >> 5) & 31u, b = w & 31u;
++    color = vec4(float((r << 3) | (r >> 2)) / 255.0,
++                 float((g << 3) | (g >> 2)) / 255.0,
++                 float((b << 3) | (b >> 2)) / 255.0, 1.0);
++}
++)GLSL";
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index f00e97a8..f0e71a36 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -25,6 +25,15 @@
+ // re-rasterizing the captured stream offline and diffing against videoram.
+ #include <cstdio>
+ #include <cstdlib>
++#include <cstdarg>
++#include <algorithm>
++#include <thread>
++#include <vector>
++#include <string>
++#ifdef _WIN32
++#include <windows.h>
++#include "midvunit_gl_shaders.h"
++#endif
+ 
+ namespace {
+ 
+@@ -60,7 +69,6 @@ FILE *quadlog_open()
+ //   4 TEXTURE u32 frame, u8 bytes[]
+ //   5 VRAM    u32 frame, u32 offset, u32 count, u16 data[count]
+ #ifdef _WIN32
+-#include <windows.h>
+ 
+ struct midv_live
+ {
+@@ -84,7 +92,7 @@ struct midv_live
+ 
+ 	midv_live()
+ 	{
+-		if (!std::getenv("MIDV_LIVE"))
++		if (!std::getenv("MIDV_LIVE") && !std::getenv("MIDV_GL"))
+ 			return;
+ 		HANDLE h = CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr,
+ 			PAGE_READWRITE, 0, HDR_SIZE + RING_SIZE, "Local\\MIDV_LIVE");
+@@ -165,9 +173,631 @@ struct midv_live
+ 	}
+ };
+ 
++midv_live &live();
++
++// ── MIDV_GL: in-process GL renderer (Phase 1 step 2) ─────────────────────
++//
++// MIDV_GL=1 spawns a render thread that consumes the same ring the external
++// viewer uses, renders scenes with the verified shaders, and presents into a
++// DISABLED overlay child window covering MAME's own window - so input,
++// audio, FFB proxying and window focus all stay exactly as stock MAME.
++// MIDV_GL_SCALE (default 3) sets internal scale; MIDV_GL_SNAP=<dir> writes a
++// backbuffer BMP every ~150 presents for unattended verification.
++namespace mvgl {
++
++// ---- minimal dynamic GL loader (no link-time deps beyond user32/gdi32) ----
++#define MVGL_E(n, v) constexpr unsigned n = v;
++MVGL_E(FRAGMENT_SHADER, 0x8B30) MVGL_E(VERTEX_SHADER, 0x8B31)
++MVGL_E(COMPILE_STATUS, 0x8B81) MVGL_E(LINK_STATUS, 0x8B82)
++MVGL_E(ARRAY_BUFFER, 0x8892) MVGL_E(STREAM_DRAW, 0x88E0)
++MVGL_E(FRAMEBUFFER, 0x8D40) MVGL_E(COLOR_ATTACHMENT0, 0x8CE0)
++MVGL_E(FRAMEBUFFER_COMPLETE, 0x8CD5) MVGL_E(TEXTURE0, 0x84C0)
++MVGL_E(R16UI, 0x8234) MVGL_E(R8UI, 0x8232) MVGL_E(R32UI, 0x8236)
++MVGL_E(RED_INTEGER, 0x8D94)
++#undef MVGL_E
++
++typedef unsigned uint;
++typedef ptrdiff_t glsizeiptr;
++struct GL
++{
++	HMODULE dll = nullptr;
++	// wgl
++	HGLRC (WINAPI *CreateContext)(HDC);
++	BOOL (WINAPI *DeleteContext)(HGLRC);
++	BOOL (WINAPI *MakeCurrent)(HDC, HGLRC);
++	PROC (WINAPI *GetProc)(LPCSTR);
++	HGLRC (WINAPI *CreateContextAttribs)(HDC, HGLRC, const int *);
++	BOOL (WINAPI *SwapIntervalEXT)(int);
++	// gl 1.1 (from opengl32.dll directly)
++	void (WINAPI *Viewport)(int, int, int, int);
++	void (WINAPI *ClearColor)(float, float, float, float);
++	void (WINAPI *Clear)(unsigned);
++	void (WINAPI *GenTextures)(int, uint *);
++	void (WINAPI *BindTexture)(unsigned, uint);
++	void (WINAPI *TexParameteri)(unsigned, unsigned, int);
++	void (WINAPI *TexImage2D)(unsigned, int, int, int, int, int, unsigned, unsigned, const void *);
++	void (WINAPI *TexSubImage2D)(unsigned, int, int, int, int, int, unsigned, unsigned, const void *);
++	void (WINAPI *PixelStorei)(unsigned, int);
++	void (WINAPI *DrawArrays)(unsigned, int, int);
++	void (WINAPI *ReadPixels)(int, int, int, int, unsigned, unsigned, void *);
++	unsigned (WINAPI *GetError)();
++	// modern (via wglGetProcAddress)
++	uint (WINAPI *CreateShader)(unsigned);
++	void (WINAPI *ShaderSource)(uint, int, const char *const *, const int *);
++	void (WINAPI *CompileShader)(uint);
++	void (WINAPI *GetShaderiv)(uint, unsigned, int *);
++	void (WINAPI *GetShaderInfoLog)(uint, int, int *, char *);
++	uint (WINAPI *CreateProgram)();
++	void (WINAPI *AttachShader)(uint, uint);
++	void (WINAPI *LinkProgram)(uint);
++	void (WINAPI *GetProgramiv)(uint, unsigned, int *);
++	void (WINAPI *GetProgramInfoLog)(uint, int, int *, char *);
++	void (WINAPI *UseProgram)(uint);
++	int (WINAPI *GetUniformLocation)(uint, const char *);
++	void (WINAPI *Uniform1i)(int, int);
++	void (WINAPI *Uniform2f)(int, float, float);
++	int (WINAPI *GetAttribLocation)(uint, const char *);
++	void (WINAPI *GenBuffers)(int, uint *);
++	void (WINAPI *BindBuffer)(unsigned, uint);
++	void (WINAPI *BufferData)(unsigned, glsizeiptr, const void *, unsigned);
++	void (WINAPI *BufferSubData)(unsigned, glsizeiptr, glsizeiptr, const void *);
++	void (WINAPI *GenVertexArrays)(int, uint *);
++	void (WINAPI *BindVertexArray)(uint);
++	void (WINAPI *EnableVertexAttribArray)(uint);
++	void (WINAPI *VertexAttribPointer)(uint, int, unsigned, unsigned char, int, const void *);
++	void (WINAPI *VertexAttribIPointer)(uint, int, unsigned, int, const void *);
++	void (WINAPI *GenFramebuffers)(int, uint *);
++	void (WINAPI *BindFramebuffer)(unsigned, uint);
++	void (WINAPI *FramebufferTexture2D)(unsigned, unsigned, unsigned, uint, int);
++	unsigned (WINAPI *CheckFramebufferStatus)(unsigned);
++	void (WINAPI *ActiveTexture)(unsigned);
++
++	template <typename T> void load1(T &fn, const char *name)
++	{
++		fn = (T)(void *)GetProcAddress(dll, name);
++		if (!fn)
++			fn = (T)(void *)GetProc(name);
++	}
++	bool load_base()
++	{
++		dll = LoadLibraryA("opengl32.dll");
++		if (!dll) return false;
++		CreateContext = (decltype(CreateContext))(void *)GetProcAddress(dll, "wglCreateContext");
++		DeleteContext = (decltype(DeleteContext))(void *)GetProcAddress(dll, "wglDeleteContext");
++		MakeCurrent = (decltype(MakeCurrent))(void *)GetProcAddress(dll, "wglMakeCurrent");
++		GetProc = (decltype(GetProc))(void *)GetProcAddress(dll, "wglGetProcAddress");
++		return CreateContext && MakeCurrent && GetProc;
++	}
++	bool load_rest()
++	{
++#define L(f, n) load1(f, n); if (!(f)) return false;
++		L(Viewport, "glViewport") L(ClearColor, "glClearColor") L(Clear, "glClear")
++		L(GenTextures, "glGenTextures") L(BindTexture, "glBindTexture")
++		L(TexParameteri, "glTexParameteri") L(TexImage2D, "glTexImage2D")
++		L(TexSubImage2D, "glTexSubImage2D") L(PixelStorei, "glPixelStorei")
++		L(DrawArrays, "glDrawArrays") L(ReadPixels, "glReadPixels") L(GetError, "glGetError")
++		L(CreateShader, "glCreateShader") L(ShaderSource, "glShaderSource")
++		L(CompileShader, "glCompileShader") L(GetShaderiv, "glGetShaderiv")
++		L(GetShaderInfoLog, "glGetShaderInfoLog") L(CreateProgram, "glCreateProgram")
++		L(AttachShader, "glAttachShader") L(LinkProgram, "glLinkProgram")
++		L(GetProgramiv, "glGetProgramiv") L(GetProgramInfoLog, "glGetProgramInfoLog")
++		L(UseProgram, "glUseProgram") L(GetUniformLocation, "glGetUniformLocation")
++		L(Uniform1i, "glUniform1i") L(Uniform2f, "glUniform2f")
++		L(GetAttribLocation, "glGetAttribLocation") L(GenBuffers, "glGenBuffers")
++		L(BindBuffer, "glBindBuffer") L(BufferData, "glBufferData")
++		L(BufferSubData, "glBufferSubData") L(GenVertexArrays, "glGenVertexArrays")
++		L(BindVertexArray, "glBindVertexArray")
++		L(EnableVertexAttribArray, "glEnableVertexAttribArray")
++		L(VertexAttribPointer, "glVertexAttribPointer")
++		L(VertexAttribIPointer, "glVertexAttribIPointer")
++		L(GenFramebuffers, "glGenFramebuffers") L(BindFramebuffer, "glBindFramebuffer")
++		L(FramebufferTexture2D, "glFramebufferTexture2D")
++		L(CheckFramebufferStatus, "glCheckFramebufferStatus")
++		L(ActiveTexture, "glActiveTexture")
++#undef L
++		load1(CreateContextAttribs, "wglCreateContextAttribsARB");
++		load1(SwapIntervalEXT, "wglSwapIntervalEXT");
++		return true;
++	}
++};
++
++// ---- CPU-side quad -> vertex building (scalar port of the verified path) ----
++struct QuadMsg { uint32_t frame; uint16_t pc, pad; uint16_t dma[16]; };
++
++static void make_inclusive(float *vx, float *vy)
++{
++	int rmask = 0, bmask = 0, eqmask = 0;
++	for (int v = 0; v < 4; v++)
++	{
++		int n = (v + 1) & 3;
++		if (vy[n] == vy[v] && vx[n] == vx[v]) eqmask |= 1 << v;
++		if (vy[n] > vy[v] || (vy[n] == vy[v] && vx[n] < vx[v])) rmask |= 1 << v;
++		if (vx[n] < vx[v] || (vx[n] == vx[v] && vy[n] < vy[v])) bmask |= 1 << v;
++	}
++	if (eqmask == 0x0f) return;
++	for (int v = 0; v < 4; v++)
++	{
++		int eff = v;
++		while (eqmask & (1 << eff)) eff = (eff + 1) & 3;
++		if (rmask & (1 << eff)) vx[v] += 0.001f;
++		if (bmask & (1 << eff)) vy[v] += 0.001f;
++	}
++}
++
++static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
++	std::vector<float> &fdata, std::vector<uint32_t> &udata)
++{
++	fdata.resize(quads.size() * 6 * 18);
++	udata.resize(quads.size() * 6 * 4);
++	for (size_t q = 0; q < quads.size(); q++)
++	{
++		const uint16_t *dma = quads[q].dma;
++		float vx[4], vy[4], us[4] = {}, vs[4] = {};
++		for (int i = 0; i < 4; i++)
++		{
++			vx[i] = float(int16_t(dma[2 + i * 2])) + 0.5f + xoff;
++			vy[i] = float(int16_t(dma[3 + i * 2])) + 0.5f;
++		}
++		uint32_t pixdata = dma[1];
++		bool const textured = (dma[0] & 0x300) == 0x100;
++		uint32_t const dither = (dma[0] & 0x2000) ? 1 : 0;
++		uint32_t mode = 0;
++		if (!textured)
++			pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff;
++		else
++		{
++			for (int i = 0; i < 4; i++)
++			{
++				us[i] = float(dma[10 + i] & 0xff) * 65536.0f + 32768.0f;
++				vs[i] = float(dma[10 + i] >> 8) * 65536.0f + 32768.0f;
++			}
++			switch (dma[0] & 0xc00)
++			{
++			case 0x000: mode = 1; break;
++			case 0x800: mode = 2; break;
++			case 0xc00: mode = 3; pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff; break;
++			default: mode = 0; pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff; break;
++			}
++		}
++		make_inclusive(vx, vy);
++		float x0 = vx[0], x1 = vx[0], y0 = vy[0], y1 = vy[0];
++		for (int i = 1; i < 4; i++)
++		{
++			x0 = std::min(x0, vx[i]); x1 = std::max(x1, vx[i]);
++			y0 = std::min(y0, vy[i]); y1 = std::max(y1, vy[i]);
++		}
++		x0 -= 1.0f; x1 += 1.0f; y0 -= 1.0f; y1 += 1.0f;
++		const float cx[6] = { x0, x1, x1, x0, x1, x0 };
++		const float cy[6] = { y0, y0, y1, y0, y1, y1 };
++		for (int k = 0; k < 6; k++)
++		{
++			float *f = &fdata[(q * 6 + k) * 18];
++			f[0] = cx[k]; f[1] = cy[k];
++			for (int i = 0; i < 4; i++) { f[2 + i * 2] = vx[i]; f[3 + i * 2] = vy[i]; }
++			f[10] = us[0]; f[11] = vs[0]; f[12] = us[1]; f[13] = vs[1];
++			f[14] = us[2]; f[15] = vs[2]; f[16] = us[3]; f[17] = vs[3];
++			uint32_t *u = &udata[(q * 6 + k) * 4];
++			u[0] = pixdata; u[1] = mode; u[2] = dither; u[3] = uint32_t(dma[14]) * 256;
++		}
++	}
++}
++
++// ---- the render thread ----
++constexpr int MARGIN = 86, WIDE = 512 + 2 * MARGIN, HEIGHT = 400;
++constexpr float PAR = 1.0417f;
++
++static FILE *s_log;
++static void logf(const char *fmt, ...)
++{
++	if (!s_log) return;
++	va_list ap; va_start(ap, fmt);
++	vfprintf(s_log, fmt, ap);
++	fprintf(s_log, "\n");
++	fflush(s_log);
++	va_end(ap);
++}
++
++static HWND find_mame_window()
++{
++	struct Ctx { DWORD pid; HWND found; } ctx{ GetCurrentProcessId(), nullptr };
++	EnumWindows([](HWND h, LPARAM lp) -> BOOL
++	{
++		Ctx &c = *(Ctx *)lp;
++		DWORD pid = 0;
++		GetWindowThreadProcessId(h, &pid);
++		if (pid != c.pid || !IsWindowVisible(h)) return TRUE;
++		char cls[64] = {};
++		GetClassNameA(h, cls, 63);
++		if (strcmp(cls, "MAME") == 0) { c.found = h; return FALSE; }
++		return TRUE;
++	}, (LPARAM)&ctx);
++	return ctx.found;
++}
++
++static uint compile(GL &gl, unsigned type, const char *src)
++{
++	uint sh = gl.CreateShader(type);
++	gl.ShaderSource(sh, 1, &src, nullptr);
++	gl.CompileShader(sh);
++	int ok = 0;
++	gl.GetShaderiv(sh, COMPILE_STATUS, &ok);
++	if (!ok)
++	{
++		char buf[4096]; int n = 0;
++		gl.GetShaderInfoLog(sh, 4095, &n, buf);
++		logf("shader compile failed:\n%.*s", n, buf);
++		return 0;
++	}
++	return sh;
++}
++
++static uint link(GL &gl, const char *vs, const char *fs)
++{
++	uint p = gl.CreateProgram();
++	uint v = compile(gl, VERTEX_SHADER, vs);
++	uint f = compile(gl, FRAGMENT_SHADER, fs);
++	if (!v || !f) return 0;
++	gl.AttachShader(p, v);
++	gl.AttachShader(p, f);
++	gl.LinkProgram(p);
++	int ok = 0;
++	gl.GetProgramiv(p, LINK_STATUS, &ok);
++	if (!ok)
++	{
++		char buf[4096]; int n = 0;
++		gl.GetProgramInfoLog(p, 4095, &n, buf);
++		logf("link failed:\n%.*s", n, buf);
++		return 0;
++	}
++	return p;
++}
++
++void thread_main()
++{
++	midv_live &lv = live();
++	if (std::getenv("MIDV_GL_LOG"))
++		s_log = fopen("midv_gl.log", "w");
++	int const S = std::getenv("MIDV_GL_SCALE") ? atoi(std::getenv("MIDV_GL_SCALE")) : 3;
++	const char *snapdir = std::getenv("MIDV_GL_SNAP");
++	int const fw = WIDE * S, fh = HEIGHT * S;
++
++	// wait for MAME's window
++	HWND parent = nullptr;
++	for (int i = 0; i < 100 && !parent; i++) { Sleep(100); parent = find_mame_window(); }
++	if (!parent) { logf("no MAME window found"); return; }
++
++	WNDCLASSA wc = {};
++	wc.lpfnWndProc = DefWindowProcA;
++	wc.hInstance = GetModuleHandleA(nullptr);
++	wc.lpszClassName = "MidvGLOverlay";
++	RegisterClassA(&wc);
++	// parent must clip children or MAME's own present fights our overlay -
++	// seen at the rig as alternating sharp/chunky frames
++	SetWindowLongPtrA(parent, GWL_STYLE,
++		GetWindowLongPtrA(parent, GWL_STYLE) | WS_CLIPCHILDREN);
++	RECT rc; GetClientRect(parent, &rc);
++	// disabled + no-activate child: paints over MAME, never takes input
++	HWND child = CreateWindowExA(WS_EX_NOACTIVATE | WS_EX_TRANSPARENT,
++		"MidvGLOverlay", "", WS_CHILD | WS_VISIBLE | WS_DISABLED,
++		0, 0, rc.right, rc.bottom, parent, nullptr, wc.hInstance, nullptr);
++	if (!child) { logf("child window failed"); return; }
++
++	HDC dc = GetDC(child);
++	PIXELFORMATDESCRIPTOR pfd = {};
++	pfd.nSize = sizeof(pfd); pfd.nVersion = 1;
++	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
++	pfd.iPixelType = PFD_TYPE_RGBA; pfd.cColorBits = 32;
++	SetPixelFormat(dc, ChoosePixelFormat(dc, &pfd), &pfd);
++
++	GL gl;
++	if (!gl.load_base()) { logf("opengl32 load failed"); return; }
++	HGLRC legacy = gl.CreateContext(dc);
++	gl.MakeCurrent(dc, legacy);
++	if (!gl.load_rest()) { logf("GL function resolution failed"); return; }
++	if (gl.CreateContextAttribs)
++	{
++		const int attrs[] = { 0x2091, 4, 0x2092, 3, 0x9126, 1, 0 };  // 4.3 core
++		HGLRC core = gl.CreateContextAttribs(dc, nullptr, attrs);
++		if (core)
++		{
++			gl.MakeCurrent(dc, core);
++			gl.DeleteContext(legacy);
++			gl.load_rest();   // re-resolve in the core context
++		}
++	}
++	if (gl.SwapIntervalEXT) gl.SwapIntervalEXT(1);
++
++	uint prog = link(gl, MVGL_VS, MVGL_FS);
++	uint pal = link(gl, MVGL_PAL_VS, MVGL_PAL_FS);
++	if (!prog || !pal) return;
++
++	gl.PixelStorei(0x0CF5 /*GL_UNPACK_ALIGNMENT*/, 1);
++	auto make_tex = [&](int w, int h, unsigned ifmt) -> uint
++	{
++		uint t; gl.GenTextures(1, &t);
++		gl.BindTexture(0x0DE1, t);
++		gl.TexParameteri(0x0DE1, 0x2801, 0x2600);  // MIN_FILTER NEAREST
++		gl.TexParameteri(0x0DE1, 0x2800, 0x2600);  // MAG_FILTER NEAREST
++		gl.TexParameteri(0x0DE1, 0x2802, 0x812F);  // WRAP_S CLAMP_TO_EDGE
++		gl.TexParameteri(0x0DE1, 0x2803, 0x812F);
++		unsigned fmt = RED_INTEGER;
++		unsigned type = (ifmt == R8UI) ? 0x1401 : (ifmt == R16UI) ? 0x1403 : 0x1405;
++		gl.TexImage2D(0x0DE1, 0, int(ifmt), w, h, 0, fmt, type, nullptr);
++		return t;
++	};
++	uint texram = make_tex(4096, 2048, R8UI);
++	uint paltex = make_tex(256, 128, R32UI);
++	uint pageTex[2] = { make_tex(fw, fh, R16UI), make_tex(fw, fh, R16UI) };
++	uint underTex[2] = { make_tex(512, HEIGHT, R16UI), make_tex(512, HEIGHT, R16UI) };
++	uint fbo[2];
++	gl.GenFramebuffers(2, fbo);
++	for (int i = 0; i < 2; i++)
++	{
++		gl.BindFramebuffer(FRAMEBUFFER, fbo[i]);
++		gl.FramebufferTexture2D(FRAMEBUFFER, COLOR_ATTACHMENT0, 0x0DE1, pageTex[i], 0);
++		if (gl.CheckFramebufferStatus(FRAMEBUFFER) != FRAMEBUFFER_COMPLETE)
++			logf("fbo %d incomplete", i);
++		gl.Clear(0x4000);
++	}
++	gl.BindFramebuffer(FRAMEBUFFER, 0);
++
++	// geometry VAO: two streamed VBOs, attributes by name
++	uint vao, vbo_f, vbo_u, vao_empty;
++	gl.GenVertexArrays(1, &vao);
++	gl.GenVertexArrays(1, &vao_empty);
++	gl.GenBuffers(1, &vbo_f);
++	gl.GenBuffers(1, &vbo_u);
++	gl.BindVertexArray(vao);
++	gl.BindBuffer(ARRAY_BUFFER, vbo_f);
++	const char *fattr[] = { "in_corner", "in_v0", "in_v1", "in_v2", "in_v3", "in_uv01", "in_uv23" };
++	int const fsize[] = { 2, 2, 2, 2, 2, 4, 4 };
++	int off = 0;
++	for (int i = 0; i < 7; i++)
++	{
++		int loc = gl.GetAttribLocation(prog, fattr[i]);
++		if (loc >= 0)
++		{
++			gl.EnableVertexAttribArray(loc);
++			gl.VertexAttribPointer(loc, fsize[i], 0x1406 /*FLOAT*/, 0, 18 * 4,
++				(const void *)(uintptr_t)(off * 4));
++		}
++		off += fsize[i];
++	}
++	gl.BindBuffer(ARRAY_BUFFER, vbo_u);
++	{
++		int loc = gl.GetAttribLocation(prog, "in_meta");
++		gl.EnableVertexAttribArray(loc);
++		gl.VertexAttribIPointer(loc, 4, 0x1405 /*UNSIGNED_INT*/, 16, nullptr);
++	}
++
++	gl.UseProgram(prog);
++	gl.Uniform2f(gl.GetUniformLocation(prog, "uCanvas"), float(WIDE), float(HEIGHT));
++	gl.Uniform1i(gl.GetUniformLocation(prog, "uScale"), S);
++	gl.Uniform1i(gl.GetUniformLocation(prog, "uClipRight"), WIDE - 1);
++	gl.Uniform1i(gl.GetUniformLocation(prog, "texram"), 0);
++	gl.Uniform1i(gl.GetUniformLocation(prog, "texMask"), (8 << 20) - 1);
++	gl.UseProgram(pal);
++	gl.Uniform1i(gl.GetUniformLocation(pal, "idxTex"), 1);
++	gl.Uniform1i(gl.GetUniformLocation(pal, "palTex"), 2);
++	int const uCrop = gl.GetUniformLocation(pal, "uCrop");
++	logf("GL up: scale %d canvas %dx%d snapdir=%s", S, fw, fh,
++		snapdir ? snapdir : "(null)");
++
++	// ---- stream state ----
++	std::vector<QuadMsg> run, pend[2];
++	uint16_t run_pc = 0xffff, pend_pc[2] = {};
++	bool pend_valid[2] = {};
++	static uint16_t shadow[2][HEIGHT * 512];
++	bool quad_fresh[2] = {};
++	int quad_count[2] = {};
++	int visible = 0;
++	std::vector<uint8_t> staging(8 << 20);
++	static uint32_t pal_copy[32768];
++	std::vector<float> fdata;
++	std::vector<uint32_t> udata;
++	uint64_t presents = 0, n_quads = 0, n_scenes = 0, n_pal = 0, n_tex = 0, n_vram = 0;
++	int snap_n = 0;
++
++	auto ring_read = [&](uint64_t pos, void *dst, uint32_t len)
++	{
++		uint32_t o = uint32_t(pos % midv_live::RING_SIZE);
++		uint32_t first = std::min(len, midv_live::RING_SIZE - o);
++		memcpy(dst, lv.data + o, first);
++		if (len > first) memcpy((uint8_t *)dst + first, lv.data, len - first);
++	};
++	uint64_t n_flips = 0;
++	int logged_runs = 0;
++	auto complete_run = [&]()
++	{
++		if (run.empty()) return;
++		if (logged_runs < 30)
++			logf("run: pc=%u quads=%zu", run_pc, run.size()), ++logged_runs;
++		int pg = (run_pc & 4) ? 1 : 0;
++		pend[pg].swap(run);
++		pend_pc[pg] = run_pc;
++		pend_valid[pg] = true;
++		run.clear();
++	};
++
++	while (IsWindow(parent))
++	{
++		MSG msg;
++		while (PeekMessageA(&msg, child, 0, 0, PM_REMOVE)) DispatchMessageA(&msg);
++		GetClientRect(parent, &rc);
++		RECT crc; GetClientRect(child, &crc);
++		if (crc.right != rc.right || crc.bottom != rc.bottom)
++			MoveWindow(child, 0, 0, rc.right, rc.bottom, FALSE);
++
++		// ---- drain ----
++		uint64_t w = *lv.wpos, r = *lv.rpos;
++		while (r < w)
++		{
++			uint32_t hdr[2];
++			ring_read(r, hdr, 8);
++			uint32_t const type = hdr[0], len = hdr[1];
++			if (len > staging.size()) staging.resize(len);
++			ring_read(r + 8, staging.data(), len);
++			r += (8 + len + 7) & ~7u;
++			*lv.rpos = r;
++			switch (type)
++			{
++			case 1:
++			{
++				QuadMsg q;
++				memcpy(&q, staging.data(), sizeof(q));
++				if (run_pc != 0xffff && q.pc != run_pc) complete_run();
++				run_pc = q.pc;
++				run.push_back(q);
++				++n_quads;
++				break;
++			}
++			case 2:
++			{
++				++n_flips;
++				complete_run();
++				uint16_t newpc; memcpy(&newpc, staging.data() + 6, 2);
++				visible = (newpc & 1) ? 1 : 0;
++				break;
++			}
++			case 3:
++				++n_pal;
++				memcpy(pal_copy, staging.data() + 4, sizeof(pal_copy));
++				gl.ActiveTexture(TEXTURE0 + 2);
++				gl.BindTexture(0x0DE1, paltex);
++				gl.TexSubImage2D(0x0DE1, 0, 0, 0, 256, 128, RED_INTEGER, 0x1405, staging.data() + 4);
++				break;
++			case 4:
++				++n_tex;
++				gl.ActiveTexture(TEXTURE0);
++				gl.BindTexture(0x0DE1, texram);
++				gl.TexSubImage2D(0x0DE1, 0, 0, 0, 4096, 2048, RED_INTEGER, 0x1401, staging.data() + 4);
++				break;
++			case 5:
++			{
++				uint32_t o, n;
++				memcpy(&o, staging.data() + 4, 4);
++				memcpy(&n, staging.data() + 8, 4);
++				int pg = (o & 0x40000) ? 1 : 0;
++				uint32_t rel = o & 0x3ffff;
++				++n_vram;
++				if (rel < HEIGHT * 512)
++				{
++					uint32_t end = std::min(rel + n, uint32_t(HEIGHT * 512));
++					memcpy(&shadow[pg][rel], staging.data() + 12, (end - rel) * 2);
++					quad_fresh[pg] = false;
++				}
++				break;
++			}
++			}
++		}
++
++		// ---- render pending scenes (skip-to-latest already applied) ----
++		for (int pg = 0; pg < 2; pg++)
++		{
++			if (!pend_valid[pg]) continue;
++			pend_valid[pg] = false;
++			build_vertices(pend[pg], float(MARGIN), fdata, udata);
++			quad_count[pg] = int(pend[pg].size());
++			gl.UseProgram(prog);
++			gl.BindVertexArray(vao);
++			gl.BindBuffer(ARRAY_BUFFER, vbo_f);
++			gl.BufferData(ARRAY_BUFFER, fdata.size() * 4, fdata.data(), STREAM_DRAW);
++			gl.BindBuffer(ARRAY_BUFFER, vbo_u);
++			gl.BufferData(ARRAY_BUFFER, udata.size() * 4, udata.data(), STREAM_DRAW);
++			gl.BindFramebuffer(FRAMEBUFFER, fbo[pg]);
++			gl.Viewport(0, 0, fw, fh);
++			gl.ActiveTexture(TEXTURE0);
++			gl.BindTexture(0x0DE1, texram);
++			gl.DrawArrays(0x0004 /*TRIANGLES*/, 0, int(pend[pg].size() * 6));
++			gl.BindFramebuffer(FRAMEBUFFER, 0);
++			quad_fresh[pg] = true;
++			++n_scenes;
++		}
++
++		// ---- present ----
++		int const cw = rc.right, ch = rc.bottom;
++		gl.Viewport(0, 0, cw, ch);
++		gl.ClearColor(0, 0, 0, 1);
++		gl.Clear(0x4000);
++		bool const wide3d = quad_fresh[visible] && quad_count[visible] >= 120;
++		float const content_w = wide3d ? float(WIDE) : 512.0f;
++		float const aspect = (content_w * PAR) / float(HEIGHT);
++		int vw = cw, vh = int(cw / aspect + 0.5f);
++		if (vh > ch) { vh = ch; vw = int(ch * aspect + 0.5f); }
++		gl.UseProgram(pal);
++		gl.Uniform1i(uCrop, (quad_fresh[visible] && !wide3d) ? MARGIN * S : 0);
++		gl.ActiveTexture(TEXTURE0 + 1);
++		if (quad_fresh[visible])
++			gl.BindTexture(0x0DE1, pageTex[visible]);
++		else
++		{
++			gl.BindTexture(0x0DE1, underTex[visible]);
++			gl.TexSubImage2D(0x0DE1, 0, 0, 0, 512, HEIGHT, RED_INTEGER, 0x1403, shadow[visible]);
++		}
++		gl.ActiveTexture(TEXTURE0 + 2);
++		gl.BindTexture(0x0DE1, paltex);
++		gl.Viewport((cw - vw) / 2, (ch - vh) / 2, vw, vh);
++		gl.BindVertexArray(vao_empty);
++		gl.DrawArrays(0x0004, 0, 3);
++
++		++presents;
++		if (s_log && (presents % 300) == 0)
++			logf("t=%llu quads=%llu scenes=%llu pal=%llu tex=%llu vram=%llu "
++				"flips=%llu backlog=%llu vis=%d fresh=%d cnt=%d err=%u",
++				(unsigned long long)presents, (unsigned long long)n_quads,
++				(unsigned long long)n_scenes, (unsigned long long)n_pal,
++				(unsigned long long)n_tex, (unsigned long long)n_vram,
++				(unsigned long long)n_flips,
++				(unsigned long long)(*lv.wpos - *lv.rpos), visible,
++				int(quad_fresh[visible]), quad_count[visible], gl.GetError());
++		if (snapdir && (presents % 150) == 0)
++		{
++			std::vector<uint8_t> px(size_t(cw) * ch * 3);
++			gl.ReadPixels(0, 0, cw, ch, 0x80E0 /*BGR*/, 0x1401, px.data());
++			char path[512];
++			snprintf(path, sizeof(path), "%s\\mvgl_%03d.bmp", snapdir, snap_n++);
++			FILE *f = fopen(path, "wb");
++			logf("snap %s -> %s", path, f ? "ok" : "FOPEN FAILED");
++			if (f)
++			{
++				int const rowsz = (cw * 3 + 3) & ~3;
++				uint32_t const img = rowsz * ch;
++				uint8_t bh[54] = { 'B', 'M' };
++				*(uint32_t *)(bh + 2) = 54 + img;
++				*(uint32_t *)(bh + 10) = 54;
++				*(uint32_t *)(bh + 14) = 40;
++				*(int32_t *)(bh + 18) = cw;
++				*(int32_t *)(bh + 22) = ch;
++				*(uint16_t *)(bh + 26) = 1;
++				*(uint16_t *)(bh + 28) = 24;
++				*(uint32_t *)(bh + 34) = img;
++				fwrite(bh, 1, 54, f);
++				std::vector<uint8_t> row(rowsz, 0);
++				for (int y = 0; y < ch; y++)
++				{
++					memcpy(row.data(), &px[size_t(y) * cw * 3], cw * 3);
++					fwrite(row.data(), 1, rowsz, f);
++				}
++				fclose(f);
++			}
++		}
++		SwapBuffers(dc);
++	}
++	logf("parent gone after %llu presents, %d snaps", (unsigned long long)presents, snap_n);
++}
++
++} // namespace mvgl
++
+ midv_live &live()
+ {
+ 	static midv_live s;
++	static bool gl_spawned = [&]() -> bool
++	{
++		if (s.enabled && std::getenv("MIDV_GL"))
++			std::thread(mvgl::thread_main).detach();
++		return true;
++	}();
++	(void)gl_spawned;
+ 	return s;
+ }
+ 
+@@ -758,6 +1388,14 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
+ 
+ 	m_poly->wait("Refresh Time");
+ 
++	// live bridge: palette/texture must flow even before any quad is drawn -
++	// boot and test screens are CPU-drawn, and without this the palette never
++	// reaches the renderer until the first 3D scene (boot showed black).
++	if (live().enabled)
++		live().sync_state(uint32_t(screen.frame_number()),
++			m_paletteram.target(), uint32_t(m_paletteram.bytes()),
++			m_textureram.target(), uint32_t(m_textureram.bytes()));
++
+ 	// POC: one-shot memory dump so the quad stream can be re-rasterized and
+ 	// verified offline. Runs after the poly wait, so all quads have landed.
+ 	{
+-- 
+2.55.0.windows.3
+
