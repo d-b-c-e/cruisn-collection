@@ -4,3 +4,4 @@ __pycache__/
 results/build.log
 results/capture/
 results/capture-*/
+rig/

@@ -107,6 +107,9 @@ def main():
                     help="save a backbuffer PNG every ~2s (for unattended tests)")
     ap.add_argument("--seconds", type=float, default=0,
                     help="exit after N seconds (0 = run until closed)")
+    ap.add_argument("--fullscreen", action="store_true",
+                    help="borderless fullscreen on the primary monitor, and "
+                         "never steal focus - MAME keeps it for wheel/keys")
     args = ap.parse_args()
     S = args.scale
 
@@ -118,7 +121,19 @@ def main():
     glfw.window_hint(glfw.CONTEXT_VERSION_MAJOR, 4)
     glfw.window_hint(glfw.CONTEXT_VERSION_MINOR, 3)
     glfw.window_hint(glfw.OPENGL_PROFILE, glfw.OPENGL_CORE_PROFILE)
+    if args.fullscreen:
+        # Borderless on the primary monitor. FOCUSED/FOCUS_ON_SHOW off so the
+        # MAME window keeps keyboard + DirectInput foreground acquisition -
+        # the user looks at this window but plays "into" MAME's.
+        glfw.window_hint(glfw.DECORATED, glfw.FALSE)
+        glfw.window_hint(glfw.FOCUSED, glfw.FALSE)
+        glfw.window_hint(glfw.FOCUS_ON_SHOW, glfw.FALSE)
+        glfw.window_hint(glfw.FLOATING, glfw.TRUE)
+        mode = glfw.get_video_mode(glfw.get_primary_monitor())
+        win_w, win_h = mode.size.width, mode.size.height
     win = glfw.create_window(win_w, win_h, "Cruis'n USA - live GPU renderer", None, None)
+    if args.fullscreen:
+        glfw.set_window_pos(win, 0, 0)
     glfw.make_context_current(win)
     glfw.swap_interval(1)        # vsync paces presentation
     ctx = moderngl.create_context()
