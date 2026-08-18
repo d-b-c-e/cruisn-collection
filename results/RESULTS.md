@@ -186,3 +186,32 @@ performance headroom. Remaining work is *integration*, not proof: feeding
 quads from the live emulator instead of a capture file, presenting the GPU
 image instead of MAME's software frame, texture/palette upload on write,
 and input/FFB — engineering with no open research questions.
+
+---
+
+# Phase 1 step 1 — LIVE out-of-process rendering (2026-08-18)
+
+**The GPU renderer now runs the game live.** MAME (vunit.exe, `MIDV_LIVE=1`)
+streams into a 128 MB shared-memory ring; `gpu/live_viewer.py` renders and
+presents in its own window in real time.
+
+- Stream contents, in strict emulation order: quads, page flips, coalesced
+  CPU videoram spans, texture/palette snapshots on dirty.
+- **Sustained 136 fps at 3× 16:9 (2052×1200), zero ring drops, over full
+  attract cycles** — presentation outruns the 57 Hz emulator more than 2:1.
+- Both content regimes handled: 3D scenes present full 16:9 (margins are
+  real geometry); **2D quad screens (high scores, logos) auto-crop to 4:3**
+  via a quad-count heuristic (<300 quads/scene), since their 16:9 margins
+  hold texture garbage the game never meant to show. CPU-drawn screens
+  (boot/test) arrive via the vram-span path and letterbox natively.
+- Perf work that mattered: `build_vertices_fast` (vectorized, bit-identical
+  to the scalar builder, ~2 ms vs ~65 ms per scene — the difference between
+  12 fps and 136 fps) and skip-to-latest scene scheduling under backlog
+  (lossless: every scene fully repaints its page).
+- Traps: moderngl's `clear()` respects the current viewport (reset before
+  clearing); pygame has no Python 3.14 wheels yet (glfw used instead).
+
+Proof: `results/proof/live-park-16x9.png`, `live-hiscore-letterboxed.png`.
+
+**Phase 1 step 2 (next): in-process GL inside the vunit build** — one
+window, no IPC. The out-of-process viewer stays as the reference/fallback.

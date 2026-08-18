@@ -1,0 +1,379 @@
+From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 17 Aug 2026 23:54:14 -0500
+Subject: [PATCH 1/2] POC: env-gated DMA quad logging + one-shot state dump for
+ midvunit
+
+MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
+page_control, the 16 raw DMA words) from process_dma_queue.
+MIDV_STATEDUMP_FRAME/_DIR dump videoram, textureram and paletteram from
+screen_update once, after the poly wait. Both are inert unless the env
+vars are set. Supports the Cruis'n USA renderer-replacement POC at
+E:/Source/cruisn-poc.
+---
+ src/mame/midway/midvunit_v.cpp | 76 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 385c7287..2e3cabdc 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -14,6 +14,36 @@
+ #include "cpu/adsp2100/adsp2100.h"
+ #include "cpu/tms34010/tms34010.h"
+ 
++// ── POC instrumentation (env-gated, zero cost when unset) ────────────────
++//
++// MIDV_QUADLOG=<file>          append every DMA quad as a binary record:
++//                              u32 frame, u16 page_control, u16 dma_data[16]
++// MIDV_STATEDUMP_FRAME=<n>     at screen_update of frame >= n, dump
++// MIDV_STATEDUMP_DIR=<dir>     videoram/textureram/paletteram + meta there
++//
++// Purpose: prove process_dma_queue() is the complete render surface by
++// re-rasterizing the captured stream offline and diffing against videoram.
++#include <cstdio>
++#include <cstdlib>
++
++namespace {
++
++FILE *quadlog_open()
++{
++	const char *path = std::getenv("MIDV_QUADLOG");
++	if (!path)
++		return nullptr;
++	FILE *f = std::fopen(path, "wb");
++	if (f)
++	{
++		setvbuf(f, nullptr, _IOFBF, 1 << 20);
++		std::fwrite("MVQ1", 1, 4, f);
++	}
++	return f;
++}
++
++} // anonymous namespace
++
+ #define LOG_DMA             (1U << 1)
+ 
+ #define VERBOSE (0)
+@@ -278,6 +308,17 @@ void midvunit_renderer::make_vertices_inclusive(vertex_t *vert)
+ 
+ void midvunit_renderer::process_dma_queue()
+ {
++	// POC: log the raw quad before any processing, tagged with frame + page
++	static FILE *s_quadlog = quadlog_open();
++	if (s_quadlog)
++	{
++		uint32_t const frame = uint32_t(m_state.m_screen->frame_number());
++		uint16_t const page = m_state.m_page_control;
++		std::fwrite(&frame, 4, 1, s_quadlog);
++		std::fwrite(&page, 2, 1, s_quadlog);
++		std::fwrite(m_state.m_dma_data, 2, 16, s_quadlog);
++	}
++
+ 	// if we're rendering to the same page we're viewing, it has changed
+ 	if ((((m_state.m_page_control >> 2) ^ m_state.m_page_control) & 1) == 0 || WATCH_RENDER)
+ 		m_state.m_video_changed = true;
+@@ -545,6 +586,41 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
+ 
+ 	m_poly->wait("Refresh Time");
+ 
++	// POC: one-shot memory dump so the quad stream can be re-rasterized and
++	// verified offline. Runs after the poly wait, so all quads have landed.
++	{
++		static bool s_dumped = false;
++		static const char *s_dir = std::getenv("MIDV_STATEDUMP_DIR");
++		static const char *s_frame = std::getenv("MIDV_STATEDUMP_FRAME");
++		if (!s_dumped && s_dir && s_frame
++			&& screen.frame_number() >= strtoul(s_frame, nullptr, 10))
++		{
++			s_dumped = true;
++			auto dump = [&](const char *name, const void *data, size_t bytes)
++			{
++				std::string path = std::string(s_dir) + "/" + name;
++				if (FILE *f = std::fopen(path.c_str(), "wb"))
++				{
++					std::fwrite(data, 1, bytes, f);
++					std::fclose(f);
++				}
++			};
++			dump("videoram.bin", m_videoram.target(), m_videoram.bytes());
++			dump("textureram.bin", m_textureram.target(), m_textureram.bytes());
++			dump("paletteram.bin", m_paletteram.target(), m_paletteram.bytes());
++			std::string meta = std::string(s_dir) + "/meta.txt";
++			if (FILE *f = std::fopen(meta.c_str(), "w"))
++			{
++				std::fprintf(f, "frame %u\npage_control %u\n"
++					"visible_page_offset 0x%x\nvisarea %d %d\n",
++					uint32_t(screen.frame_number()), m_page_control,
++					(m_page_control & 1) ? 0x40000 : 0x00000,
++					screen.visible_area().max_x, screen.visible_area().max_y);
++				std::fclose(f);
++			}
++		}
++	}
++
+ 	// if the video didn't change, indicate as much
+ 	if (!m_video_changed)
+ 		return UPDATE_HAS_NOT_CHANGED;
+-- 
+2.55.0.windows.3
+
+
+From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 12:04:11 -0500
+Subject: [PATCH 2/2] POC: MIDV_LIVE shared-memory bridge for live external
+ rendering
+
+MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
+and streams, in strict emulation order: quads (from process_dma_queue),
+page flips (page_control_w), coalesced CPU videoram writes (spans of up
+to 2048 contiguous words), and full texture/palette snapshots whenever
+the respective RAM was dirtied. Single producer on the scheduler
+thread, single consumer, drop-with-counter on overflow - dirty flags
+survive drops so big state is retried at the next scene. Zero cost
+when the env var is unset.
+
+m_paletteram moves to the public section so the renderer-side hook can
+snapshot it; everything else was already public.
+---
+ src/mame/midway/midvunit.h     |   3 +
+ src/mame/midway/midvunit_v.cpp | 172 +++++++++++++++++++++++++++++++++
+ 2 files changed, 175 insertions(+)
+
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index 35d9129c..ff5f72a1 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -115,7 +115,10 @@ protected:
+ 	required_device<palette_device> m_palette;
+ 	required_device_array<timer_device, 2> m_timer;
+ 	required_device<dcs_audio_device> m_dcs;
++public:
++	// POC live bridge reads this from midvunit_renderer (see midvunit_v.cpp)
+ 	required_shared_ptr<uint32_t> m_paletteram;
++protected:
+ 	required_shared_ptr<uint32_t> m_ram_base;
+ 	required_shared_ptr<uint32_t> m_tms320c31_control;
+ 
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 2e3cabdc..f00e97a8 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -42,6 +42,151 @@ FILE *quadlog_open()
+ 	return f;
+ }
+ 
++// ── MIDV_LIVE: stream the render state to an external GPU renderer ──────
++//
++// MIDV_LIVE=1 opens a named shared-memory ring ("Local\\MIDV_LIVE") and
++// streams, in strict emulation order: quads, page flips, coalesced CPU
++// videoram writes, and texture/palette snapshots when dirty. A viewer
++// process (cruisn-poc/gpu/live_viewer.py) renders and presents them live.
++// Single producer (the scheduler thread), single consumer. Zero cost when
++// the env var is unset.
++//
++// Ring layout: 64-byte header {magic 'MVL1', u32 size, u64 wpos, u64 rpos,
++// u64 dropped, u32 flags} then the data region. Messages are 8-byte
++// aligned: {u32 type, u32 payload_len, payload}.
++//   1 QUAD    u32 frame, u16 pc, u16 pad, u16 dma[16]
++//   2 FLIP    u32 frame, u16 old_pc, u16 new_pc
++//   3 PALETTE u32 frame, u8 bytes[]
++//   4 TEXTURE u32 frame, u8 bytes[]
++//   5 VRAM    u32 frame, u32 offset, u32 count, u16 data[count]
++#ifdef _WIN32
++#include <windows.h>
++
++struct midv_live
++{
++	static constexpr uint32_t RING_SIZE = 128u << 20;
++	static constexpr uint32_t HDR_SIZE = 64;
++
++	volatile uint8_t *base = nullptr;
++	volatile uint64_t *wpos = nullptr;
++	volatile uint64_t *rpos = nullptr;
++	volatile uint64_t *dropped = nullptr;
++	uint8_t *data = nullptr;
++	bool enabled = false;
++	bool tex_dirty = true;    // force initial snapshots
++	bool pal_dirty = true;
++	uint32_t last_frame = 0;
++
++	// coalescing buffer for CPU videoram writes
++	uint32_t span_start = 0xffffffff;
++	uint32_t span_count = 0;
++	uint16_t span_data[2048];
++
++	midv_live()
++	{
++		if (!std::getenv("MIDV_LIVE"))
++			return;
++		HANDLE h = CreateFileMappingA(INVALID_HANDLE_VALUE, nullptr,
++			PAGE_READWRITE, 0, HDR_SIZE + RING_SIZE, "Local\\MIDV_LIVE");
++		if (!h)
++			return;
++		base = (volatile uint8_t *)MapViewOfFile(h, FILE_MAP_ALL_ACCESS, 0, 0, 0);
++		if (!base)
++			return;
++		memset((void *)base, 0, HDR_SIZE);
++		memcpy((void *)base, "MVL1", 4);
++		*(volatile uint32_t *)(base + 4) = RING_SIZE;
++		wpos = (volatile uint64_t *)(base + 8);
++		rpos = (volatile uint64_t *)(base + 16);
++		dropped = (volatile uint64_t *)(base + 24);
++		data = (uint8_t *)(base + HDR_SIZE);
++		enabled = true;
++	}
++
++	bool write_msg(uint32_t type, const void *p1, uint32_t l1,
++	               const void *p2 = nullptr, uint32_t l2 = 0)
++	{
++		if (!enabled)
++			return false;
++		uint32_t const need = (8 + l1 + l2 + 7) & ~7u;
++		uint64_t const w = *wpos, r = *rpos;
++		if (RING_SIZE - uint32_t(w - r) < need)
++		{
++			++*dropped;
++			return false;
++		}
++		auto put = [&](uint64_t at, const void *src, uint32_t len)
++		{
++			uint32_t off = uint32_t(at % RING_SIZE);
++			uint32_t first = std::min(len, RING_SIZE - off);
++			memcpy(data + off, src, first);
++			if (len > first)
++				memcpy(data, (const uint8_t *)src + first, len - first);
++		};
++		uint32_t hdr[2] = { type, l1 + l2 };
++		put(w, hdr, 8);
++		put(w + 8, p1, l1);
++		if (l2)
++			put(w + 8 + l1, p2, l2);
++		*wpos = w + need;   // x86: plain store publishes after the memcpys
++		return true;
++	}
++
++	void flush_span()
++	{
++		if (span_count == 0)
++			return;
++		uint32_t hdr[3] = { last_frame, span_start, span_count };
++		write_msg(5, hdr, 12, span_data, span_count * 2);
++		span_start = 0xffffffff;
++		span_count = 0;
++	}
++
++	void vram_write(uint32_t frame, uint32_t offset, uint16_t value)
++	{
++		last_frame = frame;
++		if (span_count > 0 &&
++			(offset != span_start + span_count || span_count >= 2048))
++			flush_span();
++		if (span_count == 0)
++			span_start = offset;
++		span_data[span_count++] = value;
++	}
++
++	// call at any scene-ordered point to push pending big state
++	void sync_state(uint32_t frame, const void *pal, uint32_t pal_len,
++	                const void *tex, uint32_t tex_len)
++	{
++		flush_span();
++		if (pal_dirty && write_msg(3, &frame, 4, pal, pal_len))
++			pal_dirty = false;
++		if (tex_dirty && write_msg(4, &frame, 4, tex, tex_len))
++			tex_dirty = false;   // stays dirty on drop; retried next scene
++	}
++};
++
++midv_live &live()
++{
++	static midv_live s;
++	return s;
++}
++
++#else
++struct midv_live
++{
++	bool enabled = false;
++	bool tex_dirty = false, pal_dirty = false;
++	uint32_t last_frame = 0;
++	bool write_msg(uint32_t, const void *, uint32_t,
++	               const void * = nullptr, uint32_t = 0) { return false; }
++	void flush_span() {}
++	void vram_write(uint32_t, uint32_t, uint16_t) {}
++	void sync_state(uint32_t, const void *, uint32_t,
++	                const void *, uint32_t) {}
++};
++midv_live &live() { static midv_live s; return s; }
++#endif
++
+ } // anonymous namespace
+ 
+ #define LOG_DMA             (1U << 1)
+@@ -319,6 +464,19 @@ void midvunit_renderer::process_dma_queue()
+ 		std::fwrite(m_state.m_dma_data, 2, 16, s_quadlog);
+ 	}
+ 
++	// live bridge: pending big state first (order matters), then the quad
++	if (live().enabled)
++	{
++		uint32_t const frame = uint32_t(m_state.m_screen->frame_number());
++		live().last_frame = frame;
++		live().sync_state(frame,
++			m_state.m_paletteram.target(), uint32_t(m_state.m_paletteram.bytes()),
++			m_state.m_textureram.target(), uint32_t(m_state.m_textureram.bytes()));
++		struct { uint32_t frame; uint16_t pc, pad; } h =
++			{ frame, m_state.m_page_control, 0 };
++		live().write_msg(1, &h, 8, m_state.m_dma_data, 32);
++	}
++
+ 	// if we're rendering to the same page we're viewing, it has changed
+ 	if ((((m_state.m_page_control >> 2) ^ m_state.m_page_control) & 1) == 0 || WATCH_RENDER)
+ 		m_state.m_video_changed = true;
+@@ -457,6 +615,15 @@ void midvunit_base_state::page_control_w(uint32_t data)
+ 			LOGMASKED(LOG_DMA, "##########################################################\n");
+ 		m_screen->update_partial(m_screen->vpos() - 1);
+ 	}
++	if (live().enabled)
++	{
++		uint32_t const frame = uint32_t(m_screen->frame_number());
++		live().last_frame = frame;
++		live().flush_span();
++		struct { uint32_t frame; uint16_t oldpc, newpc; } h =
++			{ frame, uint16_t(m_page_control), uint16_t(data) };
++		live().write_msg(2, &h, 8);
++	}
+ 	m_page_control = data;
+ }
+ 
+@@ -523,6 +690,9 @@ void midvunit_base_state::videoram_w(offs_t offset, uint32_t data, uint32_t mem_
+ 			m_video_changed = true;
+ 	}
+ 	COMBINE_DATA(&m_videoram[offset]);
++	if (live().enabled)   // post-COMBINE value, so masking is already applied
++		live().vram_write(uint32_t(m_screen->frame_number()), offset,
++			uint16_t(m_videoram[offset]));
+ }
+ 
+ 
+@@ -546,6 +716,7 @@ void midvunit_base_state::paletteram_w(offs_t offset, uint32_t data, uint32_t me
+ 	COMBINE_DATA(&m_paletteram[offset]);
+ 	uint32_t const newword = m_paletteram[offset];
+ 	m_palette->set_pen_color(offset, pal5bit(newword >> 10), pal5bit(newword >> 5), pal5bit(newword >> 0));
++	live().pal_dirty = true;
+ }
+ 
+ 
+@@ -562,6 +733,7 @@ void midvunit_base_state::textureram_w(offs_t offset, uint32_t data)
+ 	m_poly->wait("Texture RAM write");
+ 	base[offset * 2] = data;
+ 	base[offset * 2 + 1] = data >> 8;
++	live().tex_dirty = true;
+ }
+ 
+ 
+-- 
+2.55.0.windows.3
+

@@ -239,11 +239,13 @@ PAL_FS = """
 #version 430
 uniform usampler2D idxTex;
 uniform usampler2D palTex;   // 256x128 R32UI - 32768 palette words
+uniform int uCrop;           // fine pixels to crop from each side (2D screens)
 in vec2 uv;
 out vec4 color;
 void main() {
     ivec2 sz = textureSize(idxTex, 0);
-    ivec2 p = ivec2(uv * vec2(sz));
+    ivec2 p = ivec2(float(uCrop) + uv.x * float(sz.x - 2 * uCrop),
+                    uv.y * float(sz.y));
     uint pen = texelFetch(idxTex, p, 0).r & 0x7fffu;
     uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;
     uint r = (w >> 10) & 31u, g = (w >> 5) & 31u, b = w & 31u;
@@ -327,6 +329,86 @@ def build_vertices(quads, xoff):
             fdata[base + k, 2:18] = row
         udata[base:base + 6] = (pixdata, mode, dither, int(dma[14]) * 256)
     return fdata, udata
+
+
+def build_vertices_fast(quads, xoff):
+    """Vectorized build_vertices - identical output, no per-quad Python loop.
+
+    The live viewer calls this per scene at 57 Hz; the scalar version costs
+    ~65 ms for 1,300 quads, this costs ~2 ms.
+    """
+    n = len(quads)
+    dma = np.asarray(quads, dtype=np.uint32)
+    vx = (dma[:, 2:10:2].astype(np.int16).astype(np.float32)
+          + np.float32(0.5) + np.float32(xoff))
+    vy = (dma[:, 3:10:2].astype(np.int16).astype(np.float32)
+          + np.float32(0.5))
+
+    textured = (dma[:, 0] & 0x300) == 0x100
+    sel = dma[:, 0] & 0xc00
+    dither = ((dma[:, 0] & 0x2000) != 0).astype(np.uint32)
+    mode = np.zeros(n, dtype=np.uint32)
+    mode[textured & (sel == 0x000)] = 1
+    mode[textured & (sel == 0x800)] = 2
+    mode[textured & (sel == 0xc00)] = 3
+    # 0x400 = invalid textured combo -> flat (mode stays 0)
+    addpix = (~textured) | (textured & (sel == 0xc00)) | (textured & (sel == 0x400))
+    pixdata = np.where(addpix, (dma[:, 1] + (dma[:, 0] & 0xff)) & 0xffff,
+                       dma[:, 1]).astype(np.uint32)
+
+    us = ((dma[:, 10:14] & 0xff).astype(np.float32) * np.float32(65536.0)
+          + np.float32(32768.0))
+    vs = ((dma[:, 10:14] >> 8).astype(np.float32) * np.float32(65536.0)
+          + np.float32(32768.0))
+    us[~textured] = 0.0
+    vs[~textured] = 0.0
+
+    # ---- make_vertices_inclusive, vectorized ----
+    nx = [1, 2, 3, 0]
+    vxn, vyn = vx[:, nx], vy[:, nx]
+    eq = (vyn == vy) & (vxn == vx)
+    rmask = (vyn > vy) | ((vyn == vy) & (vxn < vx))
+    bmask = (vxn < vx) | ((vxn == vx) & (vyn < vy))
+    all_eq = eq.all(axis=1)
+    # eff vertex: first non-eq walking forward (<=3 steps)
+    eff = np.tile(np.arange(4, dtype=np.int64), (n, 1))
+    for _ in range(3):
+        stuck = np.take_along_axis(eq, eff % 4, axis=1)
+        eff = np.where(stuck, eff + 1, eff)
+    eff %= 4
+    radj = np.take_along_axis(rmask, eff, axis=1) & ~all_eq[:, None]
+    badj = np.take_along_axis(bmask, eff, axis=1) & ~all_eq[:, None]
+    vx = np.where(radj, (vx + np.float32(0.001)).astype(np.float32), vx)
+    vy = np.where(badj, (vy + np.float32(0.001)).astype(np.float32), vy)
+
+    # ---- bbox corners, 6 verts per quad ----
+    x0 = vx.min(axis=1) - 1.0
+    x1 = vx.max(axis=1) + 1.0
+    y0 = vy.min(axis=1) - 1.0
+    y1 = vy.max(axis=1) + 1.0
+    corners = np.empty((n, 6, 2), dtype=np.float32)
+    corners[:, 0] = np.stack([x0, y0], 1)
+    corners[:, 1] = np.stack([x1, y0], 1)
+    corners[:, 2] = np.stack([x1, y1], 1)
+    corners[:, 3] = np.stack([x0, y0], 1)
+    corners[:, 4] = np.stack([x1, y1], 1)
+    corners[:, 5] = np.stack([x0, y1], 1)
+
+    row = np.empty((n, 16), dtype=np.float32)
+    row[:, 0:8:2] = vx
+    row[:, 1:8:2] = vy
+    row[:, 8:16:2] = us
+    row[:, 9:16:2] = vs
+
+    fdata = np.empty((n, 6, 18), dtype=np.float32)
+    fdata[:, :, 0:2] = corners
+    fdata[:, :, 2:18] = row[:, None, :]
+    udata = np.empty((n, 6, 4), dtype=np.uint32)
+    udata[:, :, 0] = pixdata[:, None]
+    udata[:, :, 1] = mode[:, None]
+    udata[:, :, 2] = dither[:, None]
+    udata[:, :, 3] = (dma[:, 14] * 256)[:, None]
+    return fdata.reshape(-1, 18), udata.reshape(-1, 4)
 
 
 def main():
