@@ -1,7 +1,7 @@
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 1/3] POC: env-gated DMA quad logging + one-shot state dump for
+Subject: [PATCH 1/4] POC: env-gated DMA quad logging + one-shot state dump for
  midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -122,7 +122,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 2/3] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 2/4] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -381,7 +381,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 3/3] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 3/4] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1314,6 +1314,44 @@ index f00e97a8..f0e71a36 100644
  	// POC: one-shot memory dump so the quad stream can be re-rasterized and
  	// verified offline. Runs after the poly wait, so all quads have landed.
  	{
+-- 
+2.55.0.windows.3
+
+
+From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 14:05:15 -0500
+Subject: [PATCH 4/4] POC: fix vertically flipped CPU-drawn screens in the
+ in-process renderer
+
+The palette pass samples rows bottom-up (the quad path flips Y in its
+vertex shader), but the CPU underlay uploaded the shadow top-down -
+boot and test screens displayed upside down, reported from the rig as
+'backwards'. Upload row-reversed.
+---
+ src/mame/midway/midvunit_v.cpp | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index f0e71a36..cf52d88f 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -731,8 +731,14 @@ void thread_main()
+ 			gl.BindTexture(0x0DE1, pageTex[visible]);
+ 		else
+ 		{
++			// the pal pass samples rows bottom-up (the quad path flips Y in
++			// its VS); the CPU shadow is top-down, so upload row-reversed or
++			// boot/test screens display vertically flipped
++			static uint16_t flipped[HEIGHT * 512];
++			for (int y = 0; y < HEIGHT; y++)
++				memcpy(&flipped[y * 512], &shadow[visible][(HEIGHT - 1 - y) * 512], 512 * 2);
+ 			gl.BindTexture(0x0DE1, underTex[visible]);
+-			gl.TexSubImage2D(0x0DE1, 0, 0, 0, 512, HEIGHT, RED_INTEGER, 0x1403, shadow[visible]);
++			gl.TexSubImage2D(0x0DE1, 0, 0, 0, 512, HEIGHT, RED_INTEGER, 0x1403, flipped);
+ 		}
+ 		gl.ActiveTexture(TEXTURE0 + 2);
+ 		gl.BindTexture(0x0DE1, paltex);
 -- 
 2.55.0.windows.3
 
