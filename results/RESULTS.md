@@ -269,3 +269,21 @@ at the rig since.
 Rig checklist standing: FFB Arcade Plugin drop-in beside vunit.exe;
 JOYCODE_1_BUTTON33+ tokens from EmuEzRacing get dropped by the token parser
 (coin/start on high buttons may not bind - keyboard works meanwhile).
+
+---
+
+# RESOLVED at the rig (2026-08-18, late): the flashing/artifact family
+
+User-confirmed clean after four root-caused fixes, each diagnosed from
+live rig observation:
+1. **Alternating renders** -> the overlay is now an owned top-level popup
+   (MAME's gdi caches its window DC, so child-clipping can never work).
+2. **Stale margins** (scenery strips beside 4:3 screens, borders at crop
+   edges) -> per-scene scissor-clear of the margin strips; the 512-wide
+   hardware region stays persistent.
+3. **2D screens presenting wide** -> axis-aligned-rectangle dominance
+   classifier (>=70%), replacing fragile quad-count thresholds.
+4. **Thin bright border** -> 2px overscan inset, CRT-style.
+
+Phase 1 fully verified at the rig. Next session: FFB Arcade Plugin
+drop-in beside vunit.exe, JOYCODE button-33+ token drops, sound-on play.
