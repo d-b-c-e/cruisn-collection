@@ -287,3 +287,22 @@ live rig observation:
 
 Phase 1 fully verified at the rig. Next session: FFB Arcade Plugin
 drop-in beside vunit.exe, JOYCODE button-33+ token drops, sound-on play.
+
+---
+
+# STAGED for wheel test (2026-08-18 evening)
+
+FFB Arcade Plugin is dropped in beside vunit.exe (dinput8.dll +
+FFBPlugin.ini with the racing build's Cruis'n tuning + SDL2.dll) and
+run_rig.py sets `output windows`. To test at the wheel:
+
+    cd E:\Source\cruisn-poc && python harness/run_rig.py
+
+- Coin = 5, Start = 1 (keyboard; wheel high-button tokens still dropped)
+- Expect steering + road-feel/bump FFB once driving
+- Known plugin quirk: ~50% first-launch hang during device enumeration -
+  kill and relaunch, second try lands
+- NEVER hard-kill mid-game with FFB active (stranded-torque trap);
+  Esc out normally, Stop FFB Stream Deck key clears a stuck wheel
+- If wheel steers but stays mute: flip `output windows` -> `output network`
+  in run_rig.py's ini writer (one word) - first thing to try
