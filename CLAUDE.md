@@ -118,16 +118,29 @@ Semantics that everything relies on (full detail in RESULTS.md):
 
 ## Rig facts
 
-- Launch: `python harness/run_rig.py` (uses racing build's roms + EmuEzRacing
-  ctrlr; persistent nvram in `rig/`). Coin=**5**, Start=**1** on keyboard.
+- Launch: `python harness/run_rig.py` (uses racing build's roms; persistent
+  nvram in `rig/`). Coin=**5**, Start=**1** on keyboard. Stream Deck entry:
+  Elgato "Games" profile key [7,2] → `Launchbox-Racing\scripts\
+  Launch-Cruisn.bat` (start /min wrapper) — same launcher.
+- run_rig makes MAME's window **borderless-fullscreen** post-boot
+  (`--windowed` opts out) and **enforces fg+focus on MAME's window** —
+  keyboard and foreground-mode DirectInput FFB die without it. Never
+  activate the overlay (owner's last-active-popup redirection eats keys;
+  SwitchToThisWindow is banned).
 - ⚠️ **Never hard-kill with FFB active** — stranded constant-force torque on
-  the Moza; Esc out normally; Stream Deck "Stop FFB" key clears a stuck wheel.
-- FFB plugin quirk: ~50% first-launch hang in device enumeration — kill,
-  relaunch, second try lands.
+  the Moza; Esc out normally; Stream Deck "Stop FFB" key clears a stuck
+  wheel. Remote/automation quit: WM_CLOSE on MAME's window is clean.
+- FFB plugin quirk: ~50% first-launch hang in device enumeration —
+  run_rig auto-detects (no responsive window in 20 s) and relaunches once.
 - If wheel steers but FFB is silent: flip `output windows` → `output network`
   in run_rig.py's ini writer (one word) — first thing to try.
-- Known: `JOYCODE_1_BUTTON33+` tokens from EmuEzRacing are dropped by the
-  token parser (wheel's high-numbered coin/start buttons don't bind yet).
+- Known: `JOYCODE_1_BUTTON33+` tokens are dropped by the token parser AND
+  invalidate the whole seq (killed keyboard Start). run_rig writes a
+  sanitized EmuEzRacing copy to `rig/ctrlr/` (never edits the racing
+  build's). Root cause vs the 128-button DIJOYSTATE2 patch: open item.
+- Probe facts: GDI screen capture shows the GL overlay as pure black — use
+  `MIDV_GL_SNAP` for ground truth; keybd_event-injected keys never reach
+  MAME's rawinput — keyboard verification needs physical keys.
 - The user's live observations at the screen are the best debugger this
   project has — four artifact root-causes came from them. Describe-what-you-
   see beats instrumentation; `record_diag.py` catches what screenshots can't.

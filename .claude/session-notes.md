@@ -38,12 +38,17 @@ The entire POC-to-playable arc:
 
 ## Open Items
 
-- [ ] **Wheel test tonight** (user): `python harness/run_rig.py` — steering,
-      FFB feel, sound. Checklist at the end of results/RESULTS.md.
-- [ ] If FFB silent: flip `output windows` → `output network` in run_rig.py.
-- [ ] `JOYCODE_1_BUTTON33+` dropped by token parser — wheel coin/start dead
-      (keyboard 5/1 meanwhile). Investigate MAME's joycode token validation
-      vs our 128-button DIJOYSTATE2 patch.
+- [x] **Wheel test PASSED** (2026-08-18 night): coin/Start/Esc/steering/FFB
+      all confirmed through the Stream Deck button, fullscreen. Along the
+      way run_rig.py gained: `output windows` (was documented but missing —
+      FFB was silent without it), borderless-fullscreen + focus enforcement
+      (button launches had dead keyboard), ctrlr sanitizer (BUTTON33+ tokens
+      invalidated whole seqs, killing keyboard Start), and hang auto-retry.
+      Details in RESULTS.md's 2026-08-18-night sections.
+- [ ] `JOYCODE_1_BUTTON33+` dropped by token parser — wheel coin/start on
+      high buttons still don't bind (sanitized ctrlr works around it;
+      keyboard 5/1 fine). Root-cause MAME's joycode token validation vs our
+      128-button DIJOYSTATE2 patch.
 - [ ] Verify crusnwld + offroadc through the renderer (same driver; oracle
       harness works unchanged — needs their NVRAM fixtures).
 - [ ] 16:9 margin pop-in sweep across long gameplay (2 scenes verified clean).
@@ -56,8 +61,9 @@ The entire POC-to-playable arc:
 
 ## Next Steps
 
-1. Ingest the user's wheel-test results; fix what they surface.
-2. JOYCODE high-button tokens (wheel coin/start).
+1. ~~Ingest the user's wheel-test results; fix what they surface.~~ DONE —
+   Phase 1 closed end-to-end (rig-verified playable via Stream Deck).
+2. JOYCODE high-button tokens root cause (wheel coin/start).
 3. crusnwld/offroadc verification passes.
 4. Begin the collection shell / config layer.
 

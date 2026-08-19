@@ -306,3 +306,69 @@ run_rig.py sets `output windows`. To test at the wheel:
   Esc out normally, Stop FFB Stream Deck key clears a stuck wheel
 - If wheel steers but stays mute: flip `output windows` -> `output network`
   in run_rig.py's ini writer (one word) - first thing to try
+
+---
+
+# Stream Deck button chain: three launch bugs fixed + verified (2026-08-18, night)
+
+User's first button-press test (Elgato "Games" profile, key stored as [7,2],
+System-Open -> Launchbox-Racing\scripts\Launch-Cruisn.bat) surfaced three
+issues. All root-caused; the fix lives entirely in run_rig.py + the bat.
+
+**0. FFB staging gap found first**: the docs claimed run_rig.py set
+`output windows` but the ini writer never emitted it - the FFB Arcade Plugin
+reads MAME's Windows outputs, so the wheel would have steered silently. One
+line added; user then confirmed FFB alive at the wheel.
+
+**1. "Can't fullscreen"** - MAME ran `-window -maximize`, and the overlay
+tracks MAME's client rect, so the game lived inside a titled maximized
+window. run_rig.py now strips the frame post-boot (GWL_STYLE) and spans the
+window across its monitor; the overlay follows on its own. `--windowed`
+opts out. Verified: window rect == monitor rect (3840x2160), no
+caption/thickframe bits.
+
+**2. "No keyboard at all"** - the button's console held the foreground;
+MAME's window never got focus, which kills both keyboard and the wheel's
+foreground-mode DirectInput. run_rig.py now runs enforce_foreground():
+ALT-tap (releases the foreground lock) + SetForegroundWindow in a loop that
+verifies BOTH GetForegroundWindow AND GetGUIThreadInfo.hwndFocus equal
+MAME's window, for up to 45 s until stable. Pitfall discovered on the way:
+activation can land on the OVERLAY instead (Windows redirects activation to
+an owner's last-active owned popup; SwitchToThisWindow reliably triggers
+this) and the overlay's DefWindowProc eats every key - never use
+SwitchToThisWindow here, and treat fg==overlay as failure. Verified stable
+fg=focus=MAME t=5s..40s after a cold bat launch.
+
+**3. "Coin works, Start doesn't"** (user's second test - the report that
+cracked it) - EmuEzRacing.cfg binds START1 as
+`KEYCODE_1 OR JOYCODE_1_BUTTON35`. vunit's parser drops BUTTON33+ tokens
+and MAME invalidates the whole sequence, killing the keyboard alternative
+too; COIN1 (`... OR JOYCODE_1_BUTTON22`) parses fine, hence the split.
+run_rig.py now writes a sanitized rig-local copy (rig/ctrlr/) with invalid
+alternatives stripped (START1 -> KEYCODE_1; 264 all-invalid ports across
+the file removed so MAME defaults apply); axes/pedals/shifter untouched;
+the racing build's file is never modified. Root cause of the token drop
+(validation vs the 128-button DIJOYSTATE2 patch) stays an open item.
+
+Also landed: the bat now `start /min`s python; run_rig auto-detects the FFB
+plugin's ~50% first-launch enumeration hang (no responsive MAME window in
+20 s -> kill + one relaunch; safe, pre-FFB) so the button is one-press.
+
+Probe lessons (for future automation): GDI screen capture (BitBlt /
+PIL ImageGrab) shows the GL overlay as pure black - use MIDV_GL_SNAP for
+ground truth (full 3840x2160 16:9 attract confirmed pixel-perfect, proof:
+results/proof/2026-08-18-fullscreen-button-launch.png). Synthesized keys
+(keybd_event) never reach MAME's rawinput provider - keyboard claims need
+physical keys. WM_CLOSE on MAME's window is a clean remote quit (used 5x,
+zero stranded-torque incidents).
+
+Standing at section close: physical Start=1 / Esc / wheel+FFB pass by the
+user pending on the sanitized-ctrlr build (game left running at the rig).
+
+---
+
+# WHEEL TEST PASSED (2026-08-18, night)
+
+User confirmed at the rig on the sanitized-ctrlr build: "it worked!" —
+coin, Start, Esc, steering, and FFB all live through the one-press Stream
+Deck button, fullscreen. Phase 1 (playable rig) is closed end-to-end.
