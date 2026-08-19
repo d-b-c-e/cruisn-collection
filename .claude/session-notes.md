@@ -45,10 +45,12 @@ The entire POC-to-playable arc:
       (button launches had dead keyboard), ctrlr sanitizer (BUTTON33+ tokens
       invalidated whole seqs, killing keyboard Start), and hang auto-retry.
       Details in RESULTS.md's 2026-08-18-night sections.
-- [ ] `JOYCODE_1_BUTTON33+` dropped by token parser — wheel coin/start on
-      high buttons still don't bind (sanitized ctrlr works around it;
-      keyboard 5/1 fine). Root-cause MAME's joycode token validation vs our
-      128-button DIJOYSTATE2 patch.
+- [ ] **DEFERRED (user decision 2026-08-18):** wheel coin/start on high
+      buttons (`JOYCODE_1_BUTTON33+` token drop) — keyboard 5/1 is the
+      accepted interim. Fold into the collection shell's **wheel-mapping
+      frontend** (wanszai-style setup UI): that phase either root-causes the
+      token validation vs the 128-button DIJOYSTATE2 patch or replaces
+      ctrlr-file mapping entirely with our own input config.
 - [ ] Verify crusnwld + offroadc through the renderer (same driver; oracle
       harness works unchanged — needs their NVRAM fixtures).
 - [ ] 16:9 margin pop-in sweep across long gameplay (2 scenes verified clean).
@@ -63,9 +65,9 @@ The entire POC-to-playable arc:
 
 1. ~~Ingest the user's wheel-test results; fix what they surface.~~ DONE —
    Phase 1 closed end-to-end (rig-verified playable via Stream Deck).
-2. JOYCODE high-button tokens root cause (wheel coin/start).
-3. crusnwld/offroadc verification passes.
-4. Begin the collection shell / config layer.
+2. crusnwld/offroadc verification passes.
+3. Begin the collection shell / config layer — includes the wheel-mapping
+   frontend (wanszai-style), which absorbs the deferred JOYCODE work.
 
 ## Context for Next Session
 

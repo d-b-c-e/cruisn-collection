@@ -137,7 +137,9 @@ Semantics that everything relies on (full detail in RESULTS.md):
 - Known: `JOYCODE_1_BUTTON33+` tokens are dropped by the token parser AND
   invalidate the whole seq (killed keyboard Start). run_rig writes a
   sanitized EmuEzRacing copy to `rig/ctrlr/` (never edits the racing
-  build's). Root cause vs the 128-button DIJOYSTATE2 patch: open item.
+  build's). Root cause vs the 128-button DIJOYSTATE2 patch: **deferred by
+  user decision (2026-08-18) into the collection shell's wheel-mapping
+  frontend** — keyboard 5/1 is the accepted interim for coin/start.
 - Probe facts: GDI screen capture shows the GL overlay as pure black — use
   `MIDV_GL_SNAP` for ground truth; keybd_event-injected keys never reach
   MAME's rawinput — keyboard verification needs physical keys.
