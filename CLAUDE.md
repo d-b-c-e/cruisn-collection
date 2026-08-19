@@ -27,7 +27,10 @@ staged for wheel testing.
 ```
 cruisn-poc/
 ├── harness/
-│   ├── run_rig.py        ← THE product launcher (in-process GL, sound, wheel)
+│   ├── collection.py     ← THE product entry: fullscreen game-select shell
+│   │                     (Stream Deck button opens this; config rig/collection.ini)
+│   ├── run_rig.py        single-game launcher (in-process GL, sound, wheel);
+│   │                     importable: collection.py calls launch_game()
 │   ├── run_oracle.py     determinism oracle (2 cleanroom runs, pixel diff)
 │   ├── run_capture.py    instrumented capture (quads + state dumps)
 │   ├── rasterize.py      CPU reference rasterizer (bit-exact vs MAME)
@@ -48,8 +51,10 @@ cruisn-poc/
 
 - The emulator half lives in **`E:\Source\mame-src`**, branch **`poc/quadlog`**
   (MAME 0.286 + our DIJOYSTATE2 base patch `6f55ed93` + the POC series).
-  All POC code is in **`src/mame/midway/midvunit_v.cpp`** (one file, env-gated,
-  zero cost when unset) + `midvunit.h` (one visibility change).
+  POC code: **`src/mame/midway/midvunit_v.cpp`** (env-gated, zero cost when
+  unset) + `midvunit.h` (one visibility change) + one 7-line env-gated block
+  in `src/frontend/mame/ui/ui.cpp` (`MIDV_SKIP_STARTUP_SCREENS` — BAD_DUMP
+  warning screens refuse skip_warnings by design and block launcher boots).
 - Build product is **`E:\Source\mame-src\vunit.exe`** (subtarget build —
   physically cannot clobber `mame.exe`).
 - **`midvunit_gl_shaders.h` is GENERATED — never hand-edit.** Regenerate after
@@ -87,6 +92,8 @@ cruisn-poc/
 |---|---|
 | `MIDV_GL=1` | **in-process GL renderer** (the product path) |
 | `MIDV_GL_SCALE` | internal scale (default 3; rig uses 4) |
+| `MIDV_GL_CRT=1` | CRT pass on at boot (mask+scanlines+curvature); **F9** toggles live |
+| `MIDV_SKIP_STARTUP_SCREENS=1` | boot straight past MAME warning/info screens (frontend gate) |
 | `MIDV_GL_SNAP=<dir>` | backbuffer BMP every ~150 presents (unattended verify) |
 | `MIDV_GL_LOG=1` | diagnostics to `midv_gl.log` in cwd |
 | `MIDV_LIVE=1` | shared-memory ring only (drive `gpu/live_viewer.py`) |
@@ -118,10 +125,14 @@ Semantics that everything relies on (full detail in RESULTS.md):
 
 ## Rig facts
 
-- Launch: `python harness/run_rig.py` (uses racing build's roms; persistent
-  nvram in `rig/`). Coin=**5**, Start=**1** on keyboard. Stream Deck entry:
-  Elgato "Games" profile key [7,2] → `Launchbox-Racing\scripts\
-  Launch-Cruisn.bat` (start /min wrapper) — same launcher.
+- Product entry: `python harness/collection.py` — fullscreen shell, all
+  three games; C toggles CRT per launch; config `rig/collection.ini`.
+  Stream Deck entry: Elgato "Games" profile key [7,2] →
+  `Launchbox-Racing\scripts\Launch-Cruisn.bat` (start /min wrapper) opens
+  the shell. Direct single game: `python harness/run_rig.py --rom crusnusa
+  [--crt]`. Coin=**5**, Start=**1** on keyboard, **F9** = CRT live toggle.
+  crusnwld needs a ONE-TIME wheel calibration at first boot (persists in
+  `rig/nvram`; crusnusa's fixture already has it, offroadc boots clean).
 - run_rig makes MAME's window **borderless-fullscreen** post-boot
   (`--windowed` opts out) and **enforces fg+focus on MAME's window** —
   keyboard and foreground-mode DirectInput FFB die without it. Never

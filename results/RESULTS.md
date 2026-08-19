@@ -372,3 +372,77 @@ user pending on the sanitized-ctrlr build (game left running at the rig).
 User confirmed at the rig on the sanitized-ctrlr build: "it worked!" —
 coin, Start, Esc, steering, and FFB all live through the one-press Stream
 Deck button, fullscreen. Phase 1 (playable rig) is closed end-to-end.
+
+---
+
+# OVERNIGHT BUILD (2026-08-19, unattended): CRT pass + collection shell + 3-game boot
+
+User prioritized launcher + CRT (Phase 4/5 items pulled forward) and left
+for the night. All work below is machine-verified; the rig pass is the
+morning checklist at the end.
+
+## CRT pass — live in the product
+
+- `gpu/renderer.py` PAL_FS grew a `uCrt`-gated block: gentle barrel warp
+  (black outside the glass), per-source-line gaussian scanlines with
+  brightness-dependent beam width, 3-tap horizontal beam softness,
+  two-phase magenta/green shadow mask (rainbow-free at any output size —
+  the first cut used RGB triads and produced ugly moiré), rounded corners
+  + vignette + 1.42 gain. The uCrt=0 path is untouched, and the exact-mode
+  invariant compares the index buffer upstream of the palette pass anyway:
+  re-verified **100.0000% / 0 differing pixels** twice.
+- `--crt` flag renders offline previews; header regenerated per the
+  documented workflow; `midvunit_v.cpp` reads `MIDV_GL_CRT=1` at boot and
+  **F9 toggles live** (GetAsyncKeyState edge-poll in the present loop).
+- **Lesson (cost ~40 min of ghost-chasing):** downscaled screenshots
+  AVERAGE AWAY scanlines and mask — three "the CRT isn't working" probe
+  runs were actually fine (uniform readback said uCrt=1 all along); a 1:1
+  crop of the 4K backbuffer showed the effect immediately. Never judge a
+  subpixel effect on a resized preview.
+
+## Collection shell — the deck button is now the product
+
+- `harness/collection.py`: fullscreen borderless game-select menu on the
+  glfw+moderngl stack. Cards = LaunchBox title screenshots + clear logos
+  (racing repo's Images/Arcade tree), gold pulse on selection, footer
+  hints. Keyboard: arrows/A-D select, Enter/Space launch, **C toggles CRT
+  for the next launch**, Esc quits. Best-effort joystick nav (hat +
+  buttons). Config persists in `rig/collection.ini` (crt/scale/last rom).
+  `--shot out.png` renders one offscreen frame (automation/preview).
+- Launches via `run_rig.launch_game()` — run_rig.py refactored into an
+  importable module (same CLI, plus `--crt`). Shell hides during play,
+  returns + re-takes foreground after Esc.
+- `Launch-Cruisn.bat` (the Stream Deck button) now opens the shell.
+- **E2E machine-verified:** bat → shell fullscreen+focused → Enter →
+  crusnusa fullscreen+focused → WM_CLOSE → shell returns focused → Esc
+  exits. Proof: `results/proof/2026-08-19-collection-shell.png`.
+
+## Startup screens + first boots of the other two games
+
+- crusnwld stopped dead at MAME's bad-dump warning (`c31boot.bin` is a
+  known BAD_DUMP): `skip_warnings` is REFUSED whenever
+  `rom_load().warnings() != 0` (frontend ui.cpp:781, by design), and
+  injected keys cannot dismiss it — rawinput ignores keybd_event, and the
+  win32 keyboard provider didn't register them either (tried, reverted).
+- Fix: **`MIDV_SKIP_STARTUP_SCREENS`** env gate in
+  `display_startup_screens` — the first patch outside the driver files
+  (frontend `ui.cpp`, 7 lines, inert unset). run_rig sets it. This is
+  also the wishlist "boot-straight-to-attract" behavior.
+- **offroadc: FULL 3D ATTRACT through the renderer on first ever run** —
+  16:9 margins filled with real geometry, letterboxed correctly on the
+  3440x1440 ultrawide. Zero renderer changes needed. Proof:
+  `results/proof/2026-08-19-offroadc-first-attract.png`.
+- crusnwld boots to **CALIBRATE CONTROLS** (no NVRAM fixture — crusnusa
+  needed its fixture for the same reason). Renders correctly (underlay
+  path). One-time calibration at the rig persists in `rig/nvram`.
+
+## Morning checklist (user)
+
+1. Deck button → shell appears → pick each game, drive.
+2. **F9 in-game**: A/B the CRT look at the rig. Tuning knobs are all in
+   `gpu/renderer.py` PAL_FS (mask strength 0.62, gain 1.42, beam widths
+   0.35/0.65, warp 0.041/0.052) — regen header + rebuild after edits.
+3. crusnwld: run its one-time CALIBRATE CONTROLS (service/TEST = F2).
+4. Off Road Challenge gameplay + FFB feel — FFBPlugin GameId=22 is the
+   Cruis'n tuning; offroadc may deserve its own profile later.
+5. C key in the shell chooses CRT-on/off per launch; it persists.

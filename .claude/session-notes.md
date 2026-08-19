@@ -1,78 +1,66 @@
 # Session Notes
 <!-- Handoff notes. Read these first, then CLAUDE.md, then results/RESULTS.md. -->
 
-- **Date:** 2026-08-18
-- **Branch:** master (mame-src side: `poc/quadlog`)
+- **Date:** 2026-08-19 (overnight session, user away)
+- **Branch:** master (mame-src side: `poc/quadlog` @ b565ee3e)
 
-## What Was Done (single marathon session, 08-17 → 08-18)
+## What Was Done (2026-08-18 day → 2026-08-19 overnight)
 
-The entire POC-to-playable arc:
-1. **Oracle**: attract mode proven bit-identical across cleanroom runs.
-2. **Capture + CPU re-render**: 1.25M quads captured; Python rasterizer
-   reproduces MAME's framebuffer 100.0000% bit-exact.
-3. **Widescreen**: TMS32031 never clips — true Hor+ 16:9 is a raster-window
-   change; both margins fill 100% with real geometry.
-4. **GPU prototype**: moderngl pipeline 100.0000% bit-exact both scenes;
-   4×/16:9 at 3.5 ms/scene (~289 fps).
-5. **Live, out-of-process**: shared-memory ring + viewer at 136 fps sustained.
-6. **Live, in-process**: GL thread inside vunit.exe, owned-popup overlay,
-   one window. **Rig-verified artifact-free** after four fixes driven by the
-   user's live observations (owned popup vs DC-cache punch-through; per-scene
-   margin scissor-clear; axis-aligned 2D classifier; 2px overscan inset).
-7. **FFB staged**: plugin files beside vunit.exe, `output windows` set,
-   racing-build Cruis'n tuning (GameId=22).
-8. Product reframed as **V-Unit Cruis'n Collection** (USA + World + Off Road
-   Challenge); Exotica = Zeus hardware, stretch goal gated on a scoping capture.
+1. **Wheel test PASSED** (user-confirmed): coin/Start/Esc/steering/FFB
+   through the Stream Deck button, fullscreen. Along the way: `output
+   windows` staging gap fixed, borderless-fullscreen + focus enforcement
+   added to run_rig, ctrlr sanitizer (BUTTON33+ tokens killed keyboard
+   Start), FFB-hang auto-retry, bat start /min.
+2. **CRT pass shipped** (user-prioritized): mask+scanlines+curvature in
+   PAL_FS, uCrt-gated; MIDV_GL_CRT=1 at boot, F9 live toggle; exact mode
+   re-verified 100.0000%. In-process verified via MIDV_GL_SNAP 1:1 crops.
+3. **Collection shell shipped**: harness/collection.py fullscreen menu
+   (3 games, LaunchBox art, C=CRT toggle, config rig/collection.ini,
+   --shot test mode); run_rig refactored importable; deck button now opens
+   the shell. E2E machine-verified round trip shell→game→shell.
+4. **MIDV_SKIP_STARTUP_SCREENS** added to frontend ui.cpp (first non-driver
+   patch; env-gated): BAD_DUMP warning screens refuse skip_warnings by
+   design and blocked crusnwld boots; injected keys can't dismiss (rawinput).
+5. **offroadc runs full 3D attract through the renderer** — first ever run,
+   zero changes. crusnwld boots to its one-time CALIBRATE CONTROLS screen.
 
 ## Decisions Made
 
-- Renderer-replacement over MAME (wanszai architecture), not recompilation —
-  TMS32031 has no tooling ecosystem; MAME already emulates it.
-- Index-space rendering (R16UI palette indices) so verification is
-  word-for-word vs videoram; palette pass after.
-- Overlay = owned top-level popup, never a child window (MAME caches its
-  window DC; child clipping is unfixable).
-- Shaders generated into mame-src from `gpu/renderer.py` — one source of truth.
-- Exact mode exists for verification; quality mode (float u/v, continuous
-  coverage) is the shipping configuration.
+- CRT look: "full fat" (mask + scanlines + curvature), two-phase
+  magenta/green mask (RGB triads = moiré), tuning constants in PAL_FS.
+- Launcher: fullscreen shell is the product entry; deck button opens it.
+- JOYCODE high-button root cause stays deferred to the mapping frontend.
+- Probe lore: GDI captures show GL content black; downscaled previews hide
+  scanlines/mask (judge at 1:1); injected keys never reach MAME input.
 
-## Open Items
+## Open Items (morning checklist for the user first)
 
-- [x] **Wheel test PASSED** (2026-08-18 night): coin/Start/Esc/steering/FFB
-      all confirmed through the Stream Deck button, fullscreen. Along the
-      way run_rig.py gained: `output windows` (was documented but missing —
-      FFB was silent without it), borderless-fullscreen + focus enforcement
-      (button launches had dead keyboard), ctrlr sanitizer (BUTTON33+ tokens
-      invalidated whole seqs, killing keyboard Start), and hang auto-retry.
-      Details in RESULTS.md's 2026-08-18-night sections.
-- [ ] **DEFERRED (user decision 2026-08-18):** wheel coin/start on high
-      buttons (`JOYCODE_1_BUTTON33+` token drop) — keyboard 5/1 is the
-      accepted interim. Fold into the collection shell's **wheel-mapping
-      frontend** (wanszai-style setup UI): that phase either root-causes the
-      token validation vs the 128-button DIJOYSTATE2 patch or replaces
-      ctrlr-file mapping entirely with our own input config.
-- [ ] Verify crusnwld + offroadc through the renderer (same driver; oracle
-      harness works unchanged — needs their NVRAM fixtures).
-- [ ] 16:9 margin pop-in sweep across long gameplay (2 scenes verified clean).
-- [ ] 2D-vs-3D classifier: watch for misclassified scenes during real play.
-- [ ] Multi-hour soak (texture churn, leaks, ring health).
-- [ ] Collection shell (Phase 5): game-select menu, config file, CRT pass —
-      wishlist in the racing repo's feasibility doc.
-- [ ] Zeus scoping capture for Exotica (stretch): find midzeus's render choke
-      point, assess like we did process_dma_queue.
+- [ ] **Rig pass on the night's work**: deck button → shell → each game;
+      F9 A/B the CRT look (tuning knobs in gpu/renderer.py PAL_FS: mask
+      0.62, gain 1.42, beam 0.35/0.65, warp 0.041/0.052 — regen header +
+      rebuild after edits); C in shell persists CRT choice.
+- [ ] **crusnwld one-time calibration** at the rig (CALIBRATE CONTROLS,
+      TEST=F2), persists in rig/nvram. Consider snapshotting a
+      fixtures/nvram-crusnwld afterward for cleanroom boots.
+- [ ] offroadc FFB feel — plugin runs the Cruis'n GameId=22 tuning; may
+      deserve its own FFBPlugin profile.
+- [ ] Oracle verification passes for crusnwld/offroadc (needs their NVRAM
+      fixtures + capture runs; harness unchanged).
+- [ ] Shell polish backlog: per-card "needs calibration" badge, settings
+      page (scale/aspect), attract-video cards, wheel-mapping frontend
+      (absorbs deferred JOYCODE work).
+- [ ] 16:9 margin pop-in sweep + multi-hour soak (unchanged from before).
 
 ## Next Steps
 
-1. ~~Ingest the user's wheel-test results; fix what they surface.~~ DONE —
-   Phase 1 closed end-to-end (rig-verified playable via Stream Deck).
-2. crusnwld/offroadc verification passes.
-3. Begin the collection shell / config layer — includes the wheel-mapping
-   frontend (wanszai-style), which absorbs the deferred JOYCODE work.
+1. Ingest the user's morning rig feedback (CRT taste + shell feel).
+2. crusnwld/offroadc NVRAM fixtures + oracle passes.
+3. Shell settings page / mapping frontend.
 
 ## Context for Next Session
 
-Everything is committed: cruisn-poc (master), mame-src (`poc/quadlog`, series
-exported to `patch/`), racing repo (feasibility doc + ROADMAP current).
-`RESULTS.md` is the full engineering log — trust it over memory. The user has
-FFB staged and untested; their live screen observations have been the most
-effective debugging instrument in the project — solicit them.
+Everything committed: cruisn-poc (master), mame-src (`poc/quadlog`,
+b565ee3e, patch series exported), Launchbox-Racing (bat → shell). Proofs in
+results/proof/2026-08-19-*.png. The rig config the user verified by hand is
+unchanged except: vunit.exe rebuilt (CRT + startup-skip, both env-gated
+default-off), launcher entry is now the shell.

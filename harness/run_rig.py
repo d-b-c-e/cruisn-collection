@@ -1,22 +1,26 @@
-"""Rig launcher - play Cruis'n USA through the in-process GPU renderer.
+"""Rig launcher - play the V-Unit games through the in-process GPU renderer.
 
 One process, one window: vunit.exe with the GL overlay (MIDV_GL=1), sound on,
-wheel mappings from the racing build's ctrlr dir, FFB Arcade Plugin loaded
-from vunit.exe's directory (dinput8.dll proxy), MAME outputs on (the plugin
-reads Windows outputs - no outputs, no forces).
+wheel mappings from a sanitized copy of the racing build's ctrlr, FFB Arcade
+Plugin loaded from vunit.exe's directory (dinput8.dll proxy), MAME outputs on
+(the plugin reads Windows outputs - no outputs, no forces).
 
 After launch the MAME window is made borderless-fullscreen on its monitor and
-forced to the foreground, so keyboard (Coin=5, Start=1, Esc quits) and the
-wheel's foreground-mode DirectInput work no matter how we were started -
-terminal, Stream Deck, or LaunchBox all leave focus on their own console
-otherwise. --windowed keeps the normal maximized window.
+forced to the foreground, so keyboard (Coin=5, Start=1, Esc quits, F9 toggles
+the CRT pass) and the wheel's foreground-mode DirectInput work no matter how
+we were started - terminal, Stream Deck, or LaunchBox all leave focus on
+their own console otherwise. --windowed keeps the normal maximized window.
 
 A launch that never shows a responsive MAME window within ~20 s (the FFB
 plugin's known ~50% first-launch device-enumeration hang) is killed and
 relaunched once automatically - safe because the hang happens before any
 force effect is created.
 
+Importable: the collection shell calls launch_game(rom=..., crt=...), which
+blocks until the game exits and returns vunit's exit code.
+
 Usage: python harness/run_rig.py [--scale 4] [--rom crusnusa] [--windowed]
+                                 [--crt]
 """
 import argparse
 import ctypes
@@ -32,58 +36,6 @@ import xml.etree.ElementTree as ET
 POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RACING = r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286"
 VUNIT = r"E:\Source\mame-src\vunit.exe"
-
-ap = argparse.ArgumentParser()
-ap.add_argument("--rom", default="crusnusa")
-ap.add_argument("--scale", type=int, default=4)
-ap.add_argument("--mame", default=VUNIT)
-ap.add_argument("--windowed", action="store_true",
-                help="keep MAME's maximized window (skip borderless fullscreen)")
-args = ap.parse_args()
-
-rig = os.path.join(POC, "rig")
-ini = os.path.join(rig, "ini")
-for d in (ini, os.path.join(rig, "cfg"), os.path.join(rig, "nvram")):
-    os.makedirs(d, exist_ok=True)
-# output windows: the FFB Arcade Plugin reads MAME's Windows outputs -
-# without it the wheel steers but never gets a force (racing build matches).
-open(os.path.join(ini, "mame.ini"), "w").write(
-    "skip_gameinfo 1\nvideo gdi\noutput windows\n")
-open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
-seed = os.path.join(POC, "fixtures", f"nvram-{args.rom}")
-dst = os.path.join(rig, "nvram", args.rom)
-if os.path.isdir(seed) and not os.path.isdir(dst):
-    shutil.copytree(seed, dst)   # persistent from then on - scores survive
-
-
-def sanitized_ctrlrpath():
-    """Rig-local copy of EmuEzRacing.cfg with the Moza's high-numbered
-    button tokens stripped. vunit's token parser drops JOYCODE_x_BUTTON33+
-    and MAME then invalidates the WHOLE sequence, taking the keyboard
-    alternative down with it - START1 "KEYCODE_1 OR JOYCODE_1_BUTTON35"
-    left keyboard Start dead while COIN1 (BUTTON22, valid) worked. Keep the
-    valid alternatives; drop a port entirely when nothing survives so MAME
-    defaults apply. Root cause (token validation vs the 128-button
-    DIJOYSTATE2 patch) is a standing open item; the racing build's file is
-    never modified."""
-    bad = re.compile(r"JOYCODE_\d+_BUTTON(3[3-9]|[4-9]\d|\d{3})\b")
-    tree = ET.parse(os.path.join(RACING, "ctrlr", "EmuEzRacing.cfg"))
-    for inp in tree.getroot().iter("input"):
-        for port in list(inp.findall("port")):
-            empty = True
-            for seq in port.findall("newseq"):
-                alts = [a.strip() for a in (seq.text or "").split(" OR ")]
-                keep = [a for a in alts if a and not bad.search(a)]
-                seq.text = " OR ".join(keep)
-                if keep:
-                    empty = False
-            if empty:
-                inp.remove(port)
-    out = os.path.join(rig, "ctrlr")
-    os.makedirs(out, exist_ok=True)
-    tree.write(os.path.join(out, "EmuEzRacing.cfg"),
-               encoding="utf-8", xml_declaration=True)
-    return out
 
 # ---- win32 window management ------------------------------------------------
 u32 = ctypes.windll.user32
@@ -236,44 +188,122 @@ def enforce_foreground(hwnd, seconds=45):
     return fg == hwnd and focus == hwnd
 
 
+# ---- rig preparation --------------------------------------------------------
+def prepare_rig(rom):
+    """Write the rig's ini set and seed NVRAM; returns (rig, inipath)."""
+    rig = os.path.join(POC, "rig")
+    ini = os.path.join(rig, "ini")
+    for d in (ini, os.path.join(rig, "cfg"), os.path.join(rig, "nvram")):
+        os.makedirs(d, exist_ok=True)
+    # output windows: the FFB Arcade Plugin reads MAME's Windows outputs -
+    # without it the wheel steers but never gets a force (racing build matches).
+    open(os.path.join(ini, "mame.ini"), "w").write(
+        "skip_gameinfo 1\nvideo gdi\noutput windows\n")
+    open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
+    seed = os.path.join(POC, "fixtures", f"nvram-{rom}")
+    dst = os.path.join(rig, "nvram", rom)
+    if os.path.isdir(seed) and not os.path.isdir(dst):
+        shutil.copytree(seed, dst)   # persistent from then on - scores survive
+    return rig, ini
+
+
+def sanitized_ctrlrpath(rig):
+    """Rig-local copy of EmuEzRacing.cfg with the Moza's high-numbered
+    button tokens stripped. vunit's token parser drops JOYCODE_x_BUTTON33+
+    and MAME then invalidates the WHOLE sequence, taking the keyboard
+    alternative down with it - START1 "KEYCODE_1 OR JOYCODE_1_BUTTON35"
+    left keyboard Start dead while COIN1 (BUTTON22, valid) worked. Keep the
+    valid alternatives; drop a port entirely when nothing survives so MAME
+    defaults apply. Root cause (token validation vs the 128-button
+    DIJOYSTATE2 patch) is deferred to the mapping frontend; the racing
+    build's file is never modified."""
+    bad = re.compile(r"JOYCODE_\d+_BUTTON(3[3-9]|[4-9]\d|\d{3})\b")
+    tree = ET.parse(os.path.join(RACING, "ctrlr", "EmuEzRacing.cfg"))
+    for inp in tree.getroot().iter("input"):
+        for port in list(inp.findall("port")):
+            empty = True
+            for seq in port.findall("newseq"):
+                alts = [a.strip() for a in (seq.text or "").split(" OR ")]
+                keep = [a for a in alts if a and not bad.search(a)]
+                seq.text = " OR ".join(keep)
+                if keep:
+                    empty = False
+            if empty:
+                inp.remove(port)
+    out = os.path.join(rig, "ctrlr")
+    os.makedirs(out, exist_ok=True)
+    tree.write(os.path.join(out, "EmuEzRacing.cfg"),
+               encoding="utf-8", xml_declaration=True)
+    return out
+
+
 # ---- launch -----------------------------------------------------------------
-def launch():
-    return subprocess.Popen(
-        [args.mame, args.rom,
-         "-rompath", os.path.join(RACING, "roms"),
-         "-inipath", ini,
-         "-ctrlrpath", sanitized_ctrlrpath(),
-         "-ctrlr", "EmuEzRacing",
-         "-nvram_directory", os.path.join(rig, "nvram"),
-         "-cfg_directory", os.path.join(rig, "cfg"),
-         "-window", "-maximize", "-nokeepaspect",
-         "-skip_gameinfo"],
-        env=dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(args.scale)),
-        cwd=os.path.dirname(args.mame))
+def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
+                mame=VUNIT):
+    """Launch one game through the GL overlay; blocks until it exits.
+    Returns vunit's exit code (raises SystemExit on startup failure)."""
+    rig, ini = prepare_rig(rom)
+    ctrlr = sanitized_ctrlrpath(rig)
+    # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
+    # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
+    # at "press any key", which injected keys cannot dismiss)
+    env = dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(scale),
+               MIDV_GL_CRT="1" if crt else "0",
+               MIDV_SKIP_STARTUP_SCREENS="1")
+
+    def start():
+        return subprocess.Popen(
+            [mame, rom,
+             "-rompath", os.path.join(RACING, "roms"),
+             "-inipath", ini,
+             "-ctrlrpath", ctrlr,
+             "-ctrlr", "EmuEzRacing",
+             "-nvram_directory", os.path.join(rig, "nvram"),
+             "-cfg_directory", os.path.join(rig, "cfg"),
+             "-window", "-maximize", "-nokeepaspect",
+             "-skip_gameinfo"],
+            env=env, cwd=os.path.dirname(mame))
+
+    proc = hwnd = None
+    for attempt in (1, 2):
+        proc = start()
+        hwnd = find_mame_hwnd(proc, timeout=20)
+        if hwnd and responsive(hwnd):
+            break
+        if proc.poll() is not None:
+            sys.exit(f"vunit.exe exited during startup (code {proc.returncode})")
+        proc.kill()   # pre-FFB hang: no force effects exist yet, kill is safe
+        proc.wait()
+        hwnd = None
+        if attempt == 1:
+            print("no responsive MAME window in 20s (FFB plugin first-launch "
+                  "enumeration hang) - relaunching")
+    else:
+        sys.exit("no responsive MAME window after 2 attempts - "
+                 "check FFBPlugin.ini / midv_gl.log beside vunit.exe")
+
+    if not windowed:
+        make_fullscreen(hwnd)
+    focused = enforce_foreground(hwnd)
+    print("Single fullscreen window%s. Coin=5 Start=1, Esc quits, F9 CRT." %
+          ("" if focused else " (WARNING: could not take foreground - "
+           "click the game once for keyboard/wheel)"))
+    return proc.wait()
 
 
-mame = hwnd = None
-for attempt in (1, 2):
-    mame = launch()
-    hwnd = find_mame_hwnd(mame, timeout=20)
-    if hwnd and responsive(hwnd):
-        break
-    if mame.poll() is not None:
-        sys.exit(f"vunit.exe exited during startup (code {mame.returncode})")
-    mame.kill()   # pre-FFB hang: no force effects exist yet, kill is safe
-    mame.wait()
-    hwnd = None
-    if attempt == 1:
-        print("no responsive MAME window in 20s (FFB plugin first-launch "
-              "enumeration hang) - relaunching")
-else:
-    sys.exit("no responsive MAME window after 2 attempts - "
-             "check FFBPlugin.ini / midv_gl.log beside vunit.exe")
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rom", default="crusnusa")
+    ap.add_argument("--scale", type=int, default=4)
+    ap.add_argument("--mame", default=VUNIT)
+    ap.add_argument("--windowed", action="store_true",
+                    help="keep MAME's maximized window (skip borderless fullscreen)")
+    ap.add_argument("--crt", action="store_true",
+                    help="start with the CRT pass on (F9 toggles live)")
+    args = ap.parse_args()
+    return launch_game(rom=args.rom, scale=args.scale, windowed=args.windowed,
+                       crt=args.crt, mame=args.mame)
 
-if not args.windowed:
-    make_fullscreen(hwnd)
-focused = enforce_foreground(hwnd)
-print("Single fullscreen window%s. Coin=5 Start=1, Esc quits." %
-      ("" if focused else " (WARNING: could not take foreground - "
-       "click the game once for keyboard/wheel)"))
-mame.wait()
+
+if __name__ == "__main__":
+    sys.exit(main())

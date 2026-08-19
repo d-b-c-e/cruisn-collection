@@ -1,8 +1,8 @@
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 1/9] POC: env-gated DMA quad logging + one-shot state dump for
- midvunit
+Subject: [PATCH 01/12] POC: env-gated DMA quad logging + one-shot state dump
+ for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
 page_control, the 16 raw DMA words) from process_dma_queue.
@@ -122,7 +122,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 2/9] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 02/12] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -381,7 +381,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 3/9] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 03/12] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1321,7 +1321,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 4/9] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 04/12] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1359,7 +1359,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 5/9] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 05/12] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1394,7 +1394,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 6/9] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 06/12] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1486,7 +1486,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 7/9] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 07/12] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1548,7 +1548,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 8/9] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 08/12] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1611,7 +1611,7 @@ index 7936ea9f..3d5b3200 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 9/9] POC: 2px overscan inset - CRT-hidden edge pixels showed
+Subject: [PATCH 09/12] POC: 2px overscan inset - CRT-hidden edge pixels showed
  as a thin border
 
 ---
@@ -1642,6 +1642,263 @@ index 3d5b3200..af795ef7 100644
  			gl.Clear(0x4000);
  			gl.Disable(0x0C11);
  			gl.ActiveTexture(TEXTURE0);
+-- 
+2.55.0.windows.3
+
+
+From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 18 Aug 2026 21:22:25 -0500
+Subject: [PATCH 10/12] POC-NOTES: point sessions opened here at the cruisn-poc
+ project home
+
+---
+ POC-NOTES.md | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+ create mode 100644 POC-NOTES.md
+
+diff --git a/POC-NOTES.md b/POC-NOTES.md
+new file mode 100644
+index 00000000..1b4841d0
+--- /dev/null
++++ b/POC-NOTES.md
+@@ -0,0 +1,14 @@
++# POC branch notes (poc/quadlog)
++
++This branch carries the Cruis'n POC: the DIJOYSTATE2 base patch plus the
++renderer-replacement instrumentation and in-process GL renderer, all in
++`src/mame/midway/midvunit_v.cpp` (+ one visibility change in `midvunit.h`).
++
++**The project home is `E:\Source\cruisn-poc`** — read its
++`.claude/session-notes.md`, `CLAUDE.md` and `results/RESULTS.md` before
++working here. Key rules: `midvunit_gl_shaders.h` is GENERATED from
++`cruisn-poc/gpu/renderer.py` (never hand-edit); build with the command in
++cruisn-poc's CLAUDE.md (E:\msys64, OS=Windows_NT exported inside the shell);
++after committing here, refresh `cruisn-poc/patch/vunit-poc-patches.patch`
++via `git format-patch --stdout 6f55ed93..HEAD`. The FFB Arcade Plugin files
++beside vunit.exe are untracked on purpose.
+-- 
+2.55.0.windows.3
+
+
+From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 19 Aug 2026 02:08:42 -0500
+Subject: [PATCH 11/12] CRT pass: mask + scanlines + curvature in the palette
+ stage, F9 live toggle
+
+PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
+exact-mode invariant compares the index buffer upstream anyway, re-verified
+100.0000%): gentle barrel warp with black outside the glass, gaussian
+scanlines per source line with brightness-dependent beam width, 3-tap
+horizontal beam softness, two-phase magenta/green shadow mask (rainbow-free
+at any output size), rounded corners + vignette.
+
+midvunit_v.cpp reads MIDV_GL_CRT=1 at boot and polls F9 (edge-triggered,
+GetAsyncKeyState) for a live toggle; adds glUniform1f to the loader.
+Header regenerated from gpu/renderer.py per the documented workflow.
+
+Verified in-process at 4K: scanlines + mask visible in MIDV_GL_SNAP crops
+(downscaled previews average the effect away - always inspect crops at 1:1).
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
+---
+ src/mame/midway/midvunit_gl_shaders.h | 68 +++++++++++++++++++++++----
+ src/mame/midway/midvunit_v.cpp        | 25 +++++++++-
+ 2 files changed, 81 insertions(+), 12 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
+index 856c18bc..233e8a13 100644
+--- a/src/mame/midway/midvunit_gl_shaders.h
++++ b/src/mame/midway/midvunit_gl_shaders.h
+@@ -1,6 +1,4 @@
+-// GENERATED from cruisn-poc/gpu/renderer.py - do not edit by hand.
+-// These shaders are verified 100.0000% bit-exact against MAME's
+-// software rasterizer (see cruisn-poc/results/RESULTS.md).
++// GENERATED from cruisn-poc/gpu/renderer.py
+ 
+ static const char *MVGL_VS = R"GLSL(
+ #version 430
+@@ -201,17 +199,67 @@ static const char *MVGL_PAL_FS = R"GLSL(
+ uniform usampler2D idxTex;
+ uniform usampler2D palTex;   // 256x128 R32UI - 32768 palette words
+ uniform int uCrop;           // fine pixels to crop from each side (2D screens)
++uniform int uCrt;            // 1 = CRT pass (mask+scanline+curvature), 0 = raw
++uniform float uSrcH;         // simulated source scanline count (coarse height)
+ in vec2 uv;
+ out vec4 color;
+-void main() {
+-    ivec2 sz = textureSize(idxTex, 0);
+-    ivec2 p = ivec2(float(uCrop) + uv.x * float(sz.x - 2 * uCrop),
+-                    uv.y * float(sz.y));
++
++vec3 fetch_at(ivec2 p) {
+     uint pen = texelFetch(idxTex, p, 0).r & 0x7fffu;
+     uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;
+     uint r = (w >> 10) & 31u, g = (w >> 5) & 31u, b = w & 31u;
+-    color = vec4(float((r << 3) | (r >> 2)) / 255.0,
+-                 float((g << 3) | (g >> 2)) / 255.0,
+-                 float((b << 3) | (b >> 2)) / 255.0, 1.0);
++    return vec3(float((r << 3) | (r >> 2)) / 255.0,
++                float((g << 3) | (g >> 2)) / 255.0,
++                float((b << 3) | (b >> 2)) / 255.0);
++}
++
++ivec2 src_px(vec2 tuv) {
++    ivec2 sz = textureSize(idxTex, 0);
++    return ivec2(float(uCrop) + tuv.x * float(sz.x - 2 * uCrop),
++                 tuv.y * float(sz.y));
++}
++
++vec3 fetch_rgb(vec2 tuv) { return fetch_at(src_px(tuv)); }
++
++void main() {
++    if (uCrt == 0) {                       // raw path - untouched product look
++        color = vec4(fetch_rgb(uv), 1.0);
++        return;
++    }
++
++    // ---- tube geometry: gentle barrel warp, black outside the glass ----
++    vec2 c = uv * 2.0 - 1.0;
++    c *= vec2(1.0 + 0.041 * c.y * c.y, 1.0 + 0.052 * c.x * c.x);
++    vec2 wuv = c * 0.5 + 0.5;
++    if (any(lessThan(wuv, vec2(0.0))) || any(greaterThan(wuv, vec2(1.0)))) {
++        color = vec4(0.0, 0.0, 0.0, 1.0);
++        return;
++    }
++    // ---- horizontal beam softness: 3-tap blur in fine pixels ----
++    ivec2 p = src_px(wuv);
++    int s = max(1, int(float(textureSize(idxTex, 0).y) / uSrcH * 0.45));
++    vec3 rgb = 0.5 * fetch_at(p)
++             + 0.25 * fetch_at(p + ivec2(s, 0))
++             + 0.25 * fetch_at(p - ivec2(s, 0));
++
++    // ---- scanlines: gaussian beam per source line, bright beams bloom ----
++    float d = fract(wuv.y * uSrcH) - 0.5;
++    float lum = dot(rgb, vec3(0.299, 0.587, 0.114));
++    float width = mix(0.35, 0.65, lum);
++    float scan = exp(-(d * d) / (2.0 * width * width));
++
++    // ---- shadow mask: two-phase magenta/green (rainbow-free at any res) ----
++    vec3 mask = ((int(gl_FragCoord.x) & 1) == 0)
++        ? vec3(1.0, 0.62, 1.0) : vec3(0.62, 1.0, 0.62);
++
++    // ---- rounded corners + vignette ----
++    vec2 cc = abs(wuv * 2.0 - 1.0);
++    float cornerd = length(max(cc - vec2(0.94), 0.0)) / 0.06;
++    float cornerm = 1.0 - smoothstep(0.8, 1.0, cornerd);
++    float vig = 1.0 - 0.10 * dot(cc, cc);
++
++    rgb *= scan * cornerm * vig * 1.42;
++    color = vec4(min(rgb * mask, 1.0), 1.0);
+ }
+ )GLSL";
++
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index af795ef7..e302e1f4 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -238,6 +238,7 @@ struct GL
+ 	void (WINAPI *UseProgram)(uint);
+ 	int (WINAPI *GetUniformLocation)(uint, const char *);
+ 	void (WINAPI *Uniform1i)(int, int);
++	void (WINAPI *Uniform1f)(int, float);
+ 	void (WINAPI *Uniform2f)(int, float, float);
+ 	int (WINAPI *GetAttribLocation)(uint, const char *);
+ 	void (WINAPI *GenBuffers)(int, uint *);
+@@ -286,7 +287,8 @@ struct GL
+ 		L(AttachShader, "glAttachShader") L(LinkProgram, "glLinkProgram")
+ 		L(GetProgramiv, "glGetProgramiv") L(GetProgramInfoLog, "glGetProgramInfoLog")
+ 		L(UseProgram, "glUseProgram") L(GetUniformLocation, "glGetUniformLocation")
+-		L(Uniform1i, "glUniform1i") L(Uniform2f, "glUniform2f")
++		L(Uniform1i, "glUniform1i") L(Uniform1f, "glUniform1f")
++		L(Uniform2f, "glUniform2f")
+ 		L(GetAttribLocation, "glGetAttribLocation") L(GenBuffers, "glGenBuffers")
+ 		L(BindBuffer, "glBindBuffer") L(BufferData, "glBufferData")
+ 		L(BufferSubData, "glBufferSubData") L(GenVertexArrays, "glGenVertexArrays")
+@@ -589,7 +591,16 @@ void thread_main()
+ 	gl.Uniform1i(gl.GetUniformLocation(pal, "idxTex"), 1);
+ 	gl.Uniform1i(gl.GetUniformLocation(pal, "palTex"), 2);
+ 	int const uCrop = gl.GetUniformLocation(pal, "uCrop");
+-	logf("GL up: scale %d canvas %dx%d snapdir=%s", S, fw, fh,
++	// CRT pass: MIDV_GL_CRT=1 enables at boot, F9 toggles live. The raw
++	// (uCrt=0) shader path is byte-identical to the pre-CRT palette pass.
++	int const uCrt = gl.GetUniformLocation(pal, "uCrt");
++	int const uSrcH = gl.GetUniformLocation(pal, "uSrcH");
++	bool crt = std::getenv("MIDV_GL_CRT") && atoi(std::getenv("MIDV_GL_CRT")) != 0;
++	gl.Uniform1i(uCrt, crt ? 1 : 0);
++	gl.Uniform1f(uSrcH, float(HEIGHT));
++	bool f9_prev = false;
++	logf("GL up: scale %d canvas %dx%d crt=%d locs crop=%d crt=%d srch=%d err=%u snapdir=%s",
++		S, fw, fh, int(crt), uCrop, uCrt, uSrcH, gl.GetError(),
+ 		snapdir ? snapdir : "(null)");
+ 
+ 	// ---- stream state ----
+@@ -633,6 +644,16 @@ void thread_main()
+ 	{
+ 		MSG msg;
+ 		while (PeekMessageA(&msg, child, 0, 0, PM_REMOVE)) DispatchMessageA(&msg);
++		// F9: live CRT toggle (edge-triggered; global key, only polled here)
++		bool const f9 = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
++		if (f9 && !f9_prev)
++		{
++			crt = !crt;
++			gl.UseProgram(pal);
++			gl.Uniform1i(uCrt, crt ? 1 : 0);
++			logf("F9 -> crt=%d", int(crt));
++		}
++		f9_prev = f9;
+ 		GetClientRect(parent, &rc);
+ 		POINT ntl = { 0, 0 };
+ 		ClientToScreen(parent, &ntl);
+-- 
+2.55.0.windows.3
+
+
+From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 19 Aug 2026 02:32:30 -0500
+Subject: [PATCH 12/12] MIDV_SKIP_STARTUP_SCREENS: env-gated
+ boot-straight-to-game (frontend)
+
+BAD_DUMP sets (crusnwld c31boot) force the warning screen past
+skip_warnings by design (ui.cpp display_startup_screens), which blocks
+unattended launcher boots - and injected keys cannot dismiss it (rawinput
+ignores them). First patch outside the driver files; inert when the env
+var is unset. run_rig sets it.
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
+---
+ src/frontend/mame/ui/ui.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/frontend/mame/ui/ui.cpp b/src/frontend/mame/ui/ui.cpp
+index f2c9b7d1..0cc79ff2 100644
+--- a/src/frontend/mame/ui/ui.cpp
++++ b/src/frontend/mame/ui/ui.cpp
+@@ -48,6 +48,7 @@
+ #include "../osd/modules/lib/osdlib.h"
+ #include "../osd/modules/lib/osdobj_common.h"
+ 
++#include <cstdlib>
+ #include <functional>
+ #include <type_traits>
+ 
+@@ -641,6 +642,12 @@ void mame_ui_manager::display_startup_screens(bool first_time)
+ 	if (!first_time || (str > 0 && str < 60*5) || &machine().system() == &GAME_NAME(___empty) || (machine().debug_flags & DEBUG_FLAG_ENABLED) || video_none)
+ 		show_gameinfo = show_warnings = false;
+ 
++	// V-Unit collection build (env-gated, inert when unset): boot straight to
++	// the game - BAD_DUMP sets (crusnwld c31boot) force the warning screen
++	// past skip_warnings by design, which blocks unattended rig launches
++	if (std::getenv("MIDV_SKIP_STARTUP_SCREENS"))
++		show_gameinfo = show_warnings = false;
++
+ #if defined(__EMSCRIPTEN__)
+ 	// also disable for the JavaScript port since the startup screens do not run asynchronously
+ 	show_gameinfo = show_warnings = false;
 -- 
 2.55.0.windows.3
 
