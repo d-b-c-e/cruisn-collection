@@ -233,6 +233,10 @@ def enforce_foreground(hwnd, seconds=45):
 # constraint - give them d3d for decent scaling of MAME's own renderer
 ZEUS_ROMS = {"crusnexo"}
 
+# coarse scanline counts per game (offroadc runs a 512x401 mode; everything
+# else is 400) - fed to the overlay as MIDV_GL_HEIGHT
+GAME_HEIGHT = {"offroadc": 401}
+
 
 # ---- rig preparation --------------------------------------------------------
 def prepare_rig(rom):
@@ -465,6 +469,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # at "press any key", which injected keys cannot dismiss)
     env = dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(scale),
                MIDV_GL_CRT="1" if crt else "0",
+               MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
                MIDV_SKIP_STARTUP_SCREENS="1")
     # UDP telemetry: env wins, else collection.ini [telemetry] udp=host:port
     if "MIDV_TELEM_UDP" not in env:
