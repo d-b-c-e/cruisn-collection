@@ -305,6 +305,34 @@ void main() {
 """
 
 
+MENU_VS = """
+#version 430
+uniform vec4 uRect;    // x, y, w, h in window pixels, y-down from top-left
+uniform vec2 uScreen;  // window size
+out vec2 uv;
+void main() {
+    vec2 p = vec2(float(gl_VertexID & 1), float((gl_VertexID >> 1) & 1));
+    uv = p;
+    vec2 px = uRect.xy + p * uRect.zw;
+    gl_Position = vec4(px.x / uScreen.x * 2.0 - 1.0,
+                       1.0 - px.y / uScreen.y * 2.0, 0.0, 1.0);
+}
+"""
+
+MENU_FS = """
+#version 430
+uniform sampler2D uTex;   // A8 label bitmap
+uniform vec4 uColor;      // rgb tint, a = opacity
+uniform int uSolid;       // 1 = ignore texture (solid fill)
+in vec2 uv;
+out vec4 color;
+void main() {
+    float a = (uSolid == 1) ? 1.0 : texture(uTex, uv).r;
+    color = vec4(uColor.rgb, uColor.a * a);
+}
+"""
+
+
 def load_scene(cap, history=True):
     """Return (quads, page_control, meta) for the last complete scene.
 

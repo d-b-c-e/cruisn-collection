@@ -112,6 +112,7 @@ cruisn-poc/
 | `MIDV_GL_SCALE` | internal scale (default 3; rig uses 4) |
 | `MIDV_GL_CRT=1` | CRT pass on at boot (mask+scanlines+curvature); **F9** toggles live |
 | `MIDV_SKIP_STARTUP_SCREENS=1` | boot straight past MAME warning/info screens (frontend gate) |
+| `MIDV_TELEM_UDP=host:port` | mirror MAME outputs (wheel force, lamps) as JSON UDP datagrams (SimHub/Buttkicker); also via collection.ini `[telemetry] udp=` |
 | `MIDV_GL_SNAP=<dir>` | backbuffer BMP every ~150 presents (unattended verify) |
 | `MIDV_GL_LOG=1` | diagnostics to `midv_gl.log` in cwd |
 | `MIDV_LIVE=1` | shared-memory ring only (drive `gpu/live_viewer.py`) |
@@ -151,7 +152,10 @@ Semantics that everything relies on (full detail in RESULTS.md):
   Config `rig/collection.ini`. Stream Deck entry: Elgato "Games" key [7,2]
   → `Launchbox-Racing\scripts\Launch-Cruisn.bat` opens the shell. Direct:
   `python harness/run_rig.py --rom crusnusa [--crt]`. Coin=**5**,
-  Start=**1** keyboard, **F9** = CRT live toggle. crusnwld needs ONE-TIME
+  Start=**1** keyboard, **Esc = in-game options menu** (Resume / CRT
+  toggle / Exit to launcher — drawn by the GL overlay, physical-key
+  polled), **F9** = CRT live toggle, **F12** = emergency instant quit
+  (UI_CANCEL is remapped off Esc in the generated ctrlr). crusnwld needs ONE-TIME
   wheel calibration at first boot (persists; headless runs always
   re-demand it — no input devices — so captures must run in rig config).
 - All three games verified **100.0000% bit-exact** vs MAME videoram

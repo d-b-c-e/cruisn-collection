@@ -290,6 +290,27 @@ def sanitized_ctrlrpath(rig):
                     empty = False
             if empty:
                 inp.remove(port)
+    # in-game Esc opens the overlay options menu (the GL thread polls the
+    # physical key), so detach MAME's quit from Esc; F12 stays bound as the
+    # emergency instant-quit and menu-back key
+    root = tree.getroot()
+    for system in root.iter("system"):
+        if system.get("name") != "default":
+            continue
+        inp = system.find("input")
+        if inp is None:
+            inp = ET.SubElement(system, "input")
+        port = None
+        for p in inp.findall("port"):
+            if p.get("type") == "UI_CANCEL":
+                port = p
+                break
+        if port is None:
+            port = ET.SubElement(inp, "port", {"type": "UI_CANCEL"})
+            ET.SubElement(port, "newseq", {"type": "standard"})
+        port.find("newseq").text = "KEYCODE_F12"
+        break
+
     apply_wheelmap(tree, rig)
     out = os.path.join(rig, "ctrlr")
     os.makedirs(out, exist_ok=True)
@@ -445,6 +466,14 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     env = dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(scale),
                MIDV_GL_CRT="1" if crt else "0",
                MIDV_SKIP_STARTUP_SCREENS="1")
+    # UDP telemetry: env wins, else collection.ini [telemetry] udp=host:port
+    if "MIDV_TELEM_UDP" not in env:
+        import configparser
+        cp = configparser.ConfigParser()
+        cp.read(os.path.join(rig, "collection.ini"))
+        telem = cp.get("telemetry", "udp", fallback=None)
+        if telem:
+            env["MIDV_TELEM_UDP"] = telem
 
     def start():
         return subprocess.Popen(
@@ -482,7 +511,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         threading.Thread(target=enforce_fullscreen, args=(hwnd,),
                          daemon=True).start()
     focused = enforce_foreground(hwnd)
-    print("Single fullscreen window%s. Coin=5 Start=1, Esc quits, F9 CRT." %
+    print("Single fullscreen window%s. Coin=5 Start=1, Esc=options menu "
+          "(Exit inside), F9=CRT, F12=force quit." %
           ("" if focused else " (WARNING: could not take foreground - "
            "click the game once for keyboard/wheel)"))
     return proc, hwnd
