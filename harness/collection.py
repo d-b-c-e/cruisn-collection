@@ -32,8 +32,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
 
 POC = run_rig.POC
-ART = os.environ.get("CRUISN_ART",
-                     r"E:\Source\launchbox\Launchbox-Racing\Images\Arcade")
+ART = os.environ.get(
+    "CRUISN_ART",
+    os.path.join(POC, "art") if run_rig.FROZEN
+    else r"E:\Source\launchbox\Launchbox-Racing\Images\Arcade")
 CFG = os.path.join(POC, "rig", "collection.ini")
 
 GAMES = [

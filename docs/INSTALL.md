@@ -9,30 +9,33 @@ builds from source (the full patch series against MAME is in `patch/`).
 
 ## Player setup (release folder)
 
-### What you need
-
-1. **Windows 10/11, 64-bit**, a GPU with OpenGL 4.3 (anything from the last
-   decade).
-2. **Python 3.12+** from https://python.org (check "Add to PATH" during
-   install).
-3. **Your own ROM sets** (MAME 0.286 romset names): `crusnusa.zip`,
-   `crusnwld.zip`, `offroadc.zip`, and optionally `crusnexo.zip`.
-4. **A `vunit.exe`** built from the patch series (see developer section), or
-   from a trusted build of this project you obtained yourself.
-5. Optional, for force feedback: the **FFB Arcade Plugin** by Boomslangnz
-   (https://github.com/Boomslangnz/FFBArcadePlugin) — you need these four
-   files beside `vunit.exe`: `dinput8.dll`, `SDL2.dll`, `MAME64.dll`,
-   `FFBPlugin.ini` (set `GameId=22`, Logging off, your wheel's GUID).
+The release folder is self-contained: frozen launcher (**no Python
+needed**), the emulator (`vunit.exe`, statically linked — no runtimes), the
+FFB Arcade Plugin (GPL-3.0, license included), NVRAM fixtures, and this
+documentation. The only things you supply are **your own ROM dumps** and,
+optionally, menu music.
 
 ### Steps
 
-1. Unpack/clone this folder anywhere (e.g. `C:\Games\CruisnCollection`).
-2. Run **`setup.ps1`** (right-click → Run with PowerShell). It checks all of
-   the above, installs the Python packages, asks where your ROMs and
-   `vunit.exe` live, and writes a `CruisnCollection.bat` you can pin to
-   Start, Stream Deck, or a frontend.
-3. Put your ROM zips where you told setup they'd be.
-4. Double-click `CruisnCollection.bat`. Pick a game. Drive.
+1. Unzip anywhere (e.g. `C:\Games\CruisnCollection`).
+2. Copy your MAME 0.286 ROM sets into `roms\`: `crusnusa.zip`,
+   `crusnwld.zip`, `offroadc.zip`, `crusnexo.zip` (any subset works).
+3. Run **`setup.ps1`** once (right-click → Run with PowerShell). It
+   verifies everything, can auto-download the FFB plugin if absent, and
+   writes a pinnable `CruisnCollection.bat`.
+4. Double-click **`CruisnCollection.exe`**. Pick a game. Drive.
+
+For wheel force feedback, put your wheel's GUID in `FFBPlugin.ini`
+(`DeviceGUID=`; set `Logging=1` for one run and read it from
+`FFBlog.txt`, then turn logging back off).
+
+### Building a release folder (maintainer)
+
+`.\make_release.ps1` from the dev checkout: freezes the shell
+(PyInstaller), assembles `build\release\CruisnCollection\` (launcher +
+vunit.exe + FFB plugin with the wheel GUID blanked + fixtures + patch +
+source + docs), and zips it (~50 MB). Requirements: Python + pyinstaller,
+a built vunit.exe, the four FFB plugin files beside it.
 
 ### In the launcher
 

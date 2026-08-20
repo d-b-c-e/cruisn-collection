@@ -34,14 +34,26 @@ import threading
 import time
 import xml.etree.ElementTree as ET
 
-POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# all overridable for non-dev installs (see docs/INSTALL.md + setup.ps1)
-RACING = os.environ.get("CRUISN_MAME_DIR",
-                        r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286")
-VUNIT = os.environ.get("CRUISN_VUNIT", r"E:\Source\mame-src\vunit.exe")
-ROMPATH = os.environ.get("CRUISN_ROMS", os.path.join(RACING, "roms"))
-CTRLR_SRC = os.environ.get("CRUISN_CTRLR",
-                           os.path.join(RACING, "ctrlr", "EmuEzRacing.cfg"))
+# Frozen (PyInstaller release folder): everything lives beside the exe.
+# Dev checkout: this repo + the racing build's assets. All overridable via
+# CRUISN_* env vars (see docs/INSTALL.md + setup.ps1).
+FROZEN = getattr(sys, "frozen", False)
+if FROZEN:
+    POC = os.environ.get("CRUISN_HOME", os.path.dirname(sys.executable))
+    RACING = os.environ.get("CRUISN_MAME_DIR", POC)
+    VUNIT = os.environ.get("CRUISN_VUNIT", os.path.join(POC, "vunit.exe"))
+    ROMPATH = os.environ.get("CRUISN_ROMS", os.path.join(POC, "roms"))
+    CTRLR_SRC = os.environ.get(
+        "CRUISN_CTRLR", os.path.join(POC, "ctrlr", "EmuEzRacing.cfg"))
+else:
+    POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    RACING = os.environ.get(
+        "CRUISN_MAME_DIR",
+        r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286")
+    VUNIT = os.environ.get("CRUISN_VUNIT", r"E:\Source\mame-src\vunit.exe")
+    ROMPATH = os.environ.get("CRUISN_ROMS", os.path.join(RACING, "roms"))
+    CTRLR_SRC = os.environ.get(
+        "CRUISN_CTRLR", os.path.join(RACING, "ctrlr", "EmuEzRacing.cfg"))
 
 # ---- win32 window management ------------------------------------------------
 u32 = ctypes.windll.user32
