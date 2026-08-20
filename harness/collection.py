@@ -417,9 +417,34 @@ def main():
                     help="render one offscreen frame and exit")
     ap.add_argument("--windowed", action="store_true",
                     help="pass through to the game launch")
+    ap.add_argument("--joydump", action="store_true",
+                    help="print connected joysticks as JSON and exit "
+                         "(support-bundle diagnostics)")
     args = ap.parse_args()
     if args.shot:
         render_shot(args.shot)
+        return 0
+    if args.joydump:
+        import glfw
+        import json
+        glfw.init()
+        out = []
+        for jid in range(16):
+            if not glfw.joystick_present(jid):
+                continue
+            name = glfw.get_joystick_name(jid)
+            if isinstance(name, bytes):
+                name = name.decode(errors="replace")
+            b = glfw.get_joystick_buttons(jid)
+            h = glfw.get_joystick_hats(jid)
+            a = glfw.get_joystick_axes(jid)
+            count = lambda r: (r[1] if isinstance(r, tuple) and len(r) == 2
+                               and not isinstance(r[0], int) else len(r or ()))
+            out.append({"jid": jid, "name": name, "buttons": count(b),
+                        "hats": count(h), "axes": count(a),
+                        "gamepad": bool(glfw.joystick_is_gamepad(jid))})
+        glfw.terminate()
+        print(json.dumps(out, indent=1))
         return 0
 
     import glfw

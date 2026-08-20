@@ -33,6 +33,8 @@ if (-not (Test-Path (Join-Path $root "build\dist\CruisnSetup.exe"))) {
     Write-Host "  freezing setup GUI (PyInstaller onefile)..."
     & python -m PyInstaller --noconfirm --onefile --noconsole --name CruisnSetup `
         --add-data "$(Join-Path $root 'harness\roms_manifest.json');." `
+        --add-data "$(Join-Path $root 'lua\input_dump.lua');." `
+        --hidden-import support_bundle `
         --distpath (Join-Path $root "build\dist") --workpath (Join-Path $root "build\work") `
         --specpath (Join-Path $root "build") (Join-Path $root "harness\cruisn_setup.py") | Out-Null
 }

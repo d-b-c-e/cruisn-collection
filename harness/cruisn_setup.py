@@ -246,12 +246,29 @@ def run_gui():
     style = dict(bg="#2a2344", fg=FG, activebackground="#3a3060",
                  activeforeground=FG, font=("Bahnschrift", 11), bd=0,
                  padx=14, pady=6)
+    def support():
+        import threading
+
+        def work():
+            try:
+                import support_bundle
+                say("building support bundle - a game window will appear "
+                    "for ~10 seconds...")
+                out = support_bundle.bundle(progress=say)
+                say(f"Attach {os.path.basename(out)} to your bug report.")
+            except Exception as e:
+                say(f"support bundle failed: {e}")
+
+        threading.Thread(target=work, daemon=True).start()
+
     tk.Button(btns, text="Add ROM file(s)...", command=add_roms,
               **style).pack(side="left", padx=6)
     tk.Button(btns, text="Open ROMs folder",
               command=lambda: os.startfile(run_rig.ROMPATH)
               if os.path.isdir(run_rig.ROMPATH)
               else os.makedirs(run_rig.ROMPATH) or os.startfile(run_rig.ROMPATH),
+              **style).pack(side="left", padx=6)
+    tk.Button(btns, text="Save support bundle", command=support,
               **style).pack(side="left", padx=6)
     tk.Button(btns, text="Launch Collection", command=launch,
               **style).pack(side="left", padx=6)
