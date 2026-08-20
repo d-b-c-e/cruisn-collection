@@ -33,7 +33,22 @@
 - Probe lore: GDI captures show GL content black; downscaled previews hide
   scanlines/mask (judge at 1:1); injected keys never reach MAME input.
 
-## Open Items (morning checklist for the user first)
+## Evening session results (2026-08-19, user at rig)
+
+- FFB game forces FIXED: MAME64.dll (MAME output client) was missing beside
+  vunit.exe — RomName/RunningFFB now latch. User to re-feel.
+- Audio crackle FIXED: `priority 1` in rig mame.ini (ambient load had MAME
+  at 94-97%; now 99.8%+). User confirmed "improved".
+- Crash triage: GL thread exonerated (headless repro without it) + hardened
+  with machine-exit notifier; residual post-exit AV = plugin teardown,
+  cosmetic; WER minidumps armed → rig/crashdumps/. One mid-game EIP=0
+  crash (8:46pm) unexplained singleton — watch.
+- **crusnwld renderer VERIFIED 100.0000% bit-exact** (frame-3400 attract,
+  61 MB quads). "Bad emulation" was the perf underrun, not emulation.
+  fixtures/nvram-crusnwld added (rig-config captures only: headless runs
+  re-demand calibration — no devices). run_capture.py takes a rom arg now.
+
+## Open Items (user first)
 
 - [ ] **Rig pass on the night's work**: deck button → shell → each game;
       F9 A/B the CRT look (tuning knobs in gpu/renderer.py PAL_FS: mask

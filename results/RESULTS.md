@@ -446,3 +446,59 @@ morning checklist at the end.
 4. Off Road Challenge gameplay + FFB feel — FFBPlugin GameId=22 is the
    Cruis'n tuning; offroadc may deserve its own profile later.
 5. C key in the shell chooses CRT-on/off per launch; it persists.
+
+---
+
+# Evening debugging session (2026-08-19): FFB root cause, perf, crash forensics, crusnwld VERIFIED
+
+User's morning-after reports, all root-caused with the user live at the rig:
+
+## 1. "FFB centers but no game forces" + MAME64.dll error → FIXED
+The FFB Arcade Plugin's MAME mode needs **MAME64.dll** (the MAME output
+client: init_mame() + callbacks deliver the rom name via mame_copydata and
+per-frame force values via mame_output). The original 3-file copy beside
+vunit.exe missed it. With it copied: FFBlog.txt shows `RomName = crusnusa`,
+`RunningFFB = RacingFullValueActive2` — same active mode as the racing
+build. Game forces live.
+
+## 2. Audio crackle / "performance issues" → FIXED (priority 1)
+Average speed had sunk to 94-97% (audio crackle = MAME underrun). A/B
+proved the FFB client innocent (97.2% with, 94.2% without). Ambient load
+(Defender, Pit House, Spotify all active) + default priority was the
+cause: `priority 1` in the rig mame.ini → 99.7-99.9% across three runs.
+User independently reported the next run "seemed improved".
+
+## 3. Intermittent crash → GL thread exonerated, plugin teardown implicated
+Event Log chain: msvcrt!memcpy AVs at ~every second EXIT (post-stats,
+teardown phase), plus one mid-game EIP=0 crash (8:46pm, unexplained
+singleton — watch). Evidence: racing build (same plugin, mame.exe) has
+ZERO faults in 60 days; a HEADLESS capture run (our GL thread never
+started) still exited 0xC0000005 → not our thread. Hardened anyway:
+`mvgl_exit()` machine-exit notifier flags the GL thread down and waits
+for acknowledgement before teardown ("machine exit" now in the GL log at
+every close; 3/3 clean cycles). Remaining teardown AV is post-exit
+cosmetic, almost certainly the plugin's exit path (it TerminateProcess-
+hooks exit and leaves scanner threads running). WER LocalDumps now armed
+→ rig/crashdumps/ collects minidumps for real attribution when it recurs.
+
+## 4. "Cruis'n World emulation is really very bad" → IT ISN'T. VERIFIED 100.0000%
+MAME flags crusnwld fully-working (no imperfect-graphics/sound flags), and
+the oracle now proves OUR renderer is faithful on it too:
+- fixtures/nvram-crusnwld snapshotted from the user's rig calibration.
+  Caveat learned: headless runs re-demand CALIBRATE CONTROLS (no input
+  devices → analog sanity check fails), so crusnwld captures must run in
+  the rig config with the wheel attached. run_capture.py generalized to
+  take a rom argument.
+- Capture at frame 3400 of 3D attract (61.7 MB quads) with Lua-exit
+  alignment (first attempt compared a scene ~800 frames past the dump —
+  0.001% "mismatch" that was pure harness misalignment, not renderer).
+- **GPU vs MAME videoram: 100.0000% bit-exact (0 differing pixels).**
+What the user actually experienced was the perf underrun (#2) + first-boot
+calibration + (possibly) CRT mask taste — NOT emulation quality. The
+"throw Fable at the emulation" question dissolves: there is nothing to fix
+in the core for crusnwld.
+
+Standing after this session: user to re-feel FFB in USA + re-judge World
+at speed; stretch goals queued (launcher music/SFX, wanszai-style Esc
+settings overlay in-game); analyze first minidump when the teardown AV
+recurs.

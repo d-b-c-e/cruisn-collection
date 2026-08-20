@@ -20,10 +20,11 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VUNIT = sys.argv[1] if len(sys.argv) > 1 else r"E:\Source\mame-src\vunit.exe"
-ROM = "crusnusa"
+ROM = sys.argv[3] if len(sys.argv) > 3 else "crusnusa"
 ROMPATH = r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286\roms"
 DUMP_FRAME = int(sys.argv[2]) if len(sys.argv) > 2 else 2400
-SUFFIX = f"-{DUMP_FRAME}" if len(sys.argv) > 2 else ""
+SUFFIX = (f"-{ROM}" if ROM != "crusnusa" else "") + \
+         (f"-{DUMP_FRAME}" if len(sys.argv) > 2 else "")
 
 cap = os.path.join(POC, "results", "capture" + SUFFIX)
 if os.path.isdir(cap):

@@ -1,7 +1,7 @@
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 01/12] POC: env-gated DMA quad logging + one-shot state dump
+Subject: [PATCH 01/13] POC: env-gated DMA quad logging + one-shot state dump
  for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -122,7 +122,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 02/12] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 02/13] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -381,7 +381,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 03/12] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 03/13] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1321,7 +1321,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 04/12] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 04/13] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1359,7 +1359,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 05/12] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 05/13] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1394,7 +1394,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 06/12] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 06/13] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1486,7 +1486,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 07/12] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 07/13] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1548,7 +1548,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 08/12] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 08/13] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1611,7 +1611,7 @@ index 7936ea9f..3d5b3200 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 09/12] POC: 2px overscan inset - CRT-hidden edge pixels showed
+Subject: [PATCH 09/13] POC: 2px overscan inset - CRT-hidden edge pixels showed
  as a thin border
 
 ---
@@ -1649,7 +1649,7 @@ index 3d5b3200..af795ef7 100644
 From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 21:22:25 -0500
-Subject: [PATCH 10/12] POC-NOTES: point sessions opened here at the cruisn-poc
+Subject: [PATCH 10/13] POC-NOTES: point sessions opened here at the cruisn-poc
  project home
 
 ---
@@ -1684,7 +1684,7 @@ index 00000000..1b4841d0
 From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:08:42 -0500
-Subject: [PATCH 11/12] CRT pass: mask + scanlines + curvature in the palette
+Subject: [PATCH 11/13] CRT pass: mask + scanlines + curvature in the palette
  stage, F9 live toggle
 
 PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
@@ -1859,7 +1859,7 @@ index af795ef7..e302e1f4 100644
 From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:32:30 -0500
-Subject: [PATCH 12/12] MIDV_SKIP_STARTUP_SCREENS: env-gated
+Subject: [PATCH 12/13] MIDV_SKIP_STARTUP_SCREENS: env-gated
  boot-straight-to-game (frontend)
 
 BAD_DUMP sets (crusnwld c31boot) force the warning screen past
@@ -1899,6 +1899,121 @@ index f2c9b7d1..0cc79ff2 100644
  #if defined(__EMSCRIPTEN__)
  	// also disable for the JavaScript port since the startup screens do not run asynchronously
  	show_gameinfo = show_warnings = false;
+-- 
+2.55.0.windows.3
+
+
+From 1bc48fcea8b586a0a60b4359ccdb7aeedaca39ed Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 19 Aug 2026 21:17:53 -0500
+Subject: [PATCH 13/13] GL thread teardown handshake: stop before machine
+ destruction
+
+Exit-time msvcrt!memcpy AVs logged at roughly every second close. A
+headless run (GL thread never spawned) still crashed at exit, exonerating
+this thread - but harden it anyway: video_start registers a
+MACHINE_NOTIFY_EXIT notifier (mvgl_exit) that flags the GL loop down and
+waits up to 1 s for acknowledgement (RAII guard covers early-exit paths).
+GL log now shows "machine exit" on every clean close. Residual post-exit
+AV is the FFB plugin's teardown (TerminateProcess hook + scanner threads);
+WER LocalDumps collect minidumps for attribution.
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
+---
+ src/mame/midway/midvunit.h     |  1 +
+ src/mame/midway/midvunit_v.cpp | 29 +++++++++++++++++++++++++++--
+ 2 files changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index ff5f72a1..3de6ee73 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -83,6 +83,7 @@ protected:
+ 	virtual void machine_start() override ATTR_COLD;
+ 	virtual void machine_reset() override ATTR_COLD;
+ 	virtual void video_start() override ATTR_COLD;
++	void mvgl_exit();   // POC: stop the GL overlay thread before teardown
+ 
+ 	void cmos_protect_w(uint32_t data);
+ 	void dma_queue_w(uint32_t data);
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index e302e1f4..28e33519 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -23,6 +23,7 @@
+ //
+ // Purpose: prove process_dma_queue() is the complete render surface by
+ // re-rasterizing the captured stream offline and diffing against videoram.
++#include <atomic>
+ #include <cstdio>
+ #include <cstdlib>
+ #include <cstdarg>
+@@ -185,6 +186,11 @@ midv_live &live();
+ // backbuffer BMP every ~150 presents for unattended verification.
+ namespace mvgl {
+ 
++// teardown handshake: machine exit flags the GL thread down and waits for
++// its acknowledgement (see midvunit_base_state::mvgl_exit)
++static std::atomic<bool> s_stop{false};
++static std::atomic<bool> s_done{false};
++
+ // ---- minimal dynamic GL loader (no link-time deps beyond user32/gdi32) ----
+ #define MVGL_E(n, v) constexpr unsigned n = v;
+ MVGL_E(FRAGMENT_SHADER, 0x8B30) MVGL_E(VERTEX_SHADER, 0x8B31)
+@@ -460,6 +466,8 @@ static uint link(GL &gl, const char *vs, const char *fs)
+ 
+ void thread_main()
+ {
++	// every exit path must acknowledge shutdown or mvgl_exit stalls 1 s
++	struct DoneGuard { ~DoneGuard() { s_done.store(true); } } done_guard;
+ 	midv_live &lv = live();
+ 	if (std::getenv("MIDV_GL_LOG"))
+ 		s_log = fopen("midv_gl.log", "w");
+@@ -640,7 +648,7 @@ void thread_main()
+ 		run.clear();
+ 	};
+ 
+-	while (IsWindow(parent))
++	while (IsWindow(parent) && !s_stop.load())
+ 	{
+ 		MSG msg;
+ 		while (PeekMessageA(&msg, child, 0, 0, PM_REMOVE)) DispatchMessageA(&msg);
+@@ -866,7 +874,9 @@ void thread_main()
+ 		}
+ 		SwapBuffers(dc);
+ 	}
+-	logf("parent gone after %llu presents, %d snaps", (unsigned long long)presents, snap_n);
++	logf("%s after %llu presents, %d snaps",
++		s_stop.load() ? "machine exit" : "parent gone",
++		(unsigned long long)presents, snap_n);
+ }
+ 
+ } // namespace mvgl
+@@ -942,8 +952,23 @@ TIMER_CALLBACK_MEMBER(midvunit_base_state::eoi_timer_cb)
+ 	m_maincpu->set_input_line(0, CLEAR_LINE);
+ }
+ 
++void midvunit_base_state::mvgl_exit()
++{
++	// POC: a detached GL thread that outlives the machine races teardown
++	// (msvcrt!memcpy AVs logged at roughly every second exit). Flag it down
++	// and give it up to a second to acknowledge before destruction proceeds.
++	mvgl::s_stop.store(true);
++	for (int i = 0; i < 100 && !mvgl::s_done.load(); i++)
++		Sleep(10);
++}
++
+ void midvunit_base_state::video_start()
+ {
++	// POC: only when the GL overlay can actually spawn
++	if (std::getenv("MIDV_GL"))
++		machine().add_notifier(MACHINE_NOTIFY_EXIT,
++			machine_notify_delegate(&midvunit_base_state::mvgl_exit, this));
++
+ 	m_scanline_timer = timer_alloc(FUNC(midvunit_base_state::scanline_timer_cb), this);
+ 	m_eoi_timer = timer_alloc(FUNC(midvunit_base_state::eoi_timer_cb), this);
+ 
 -- 
 2.55.0.windows.3
 

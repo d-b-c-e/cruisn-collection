@@ -197,8 +197,10 @@ def prepare_rig(rom):
         os.makedirs(d, exist_ok=True)
     # output windows: the FFB Arcade Plugin reads MAME's Windows outputs -
     # without it the wheel steers but never gets a force (racing build matches).
+    # priority 1: raise MAME's thread priority - ambient load (Defender,
+    # Pit House, Spotify) showed up as 94-97% average speed = audio crackle
     open(os.path.join(ini, "mame.ini"), "w").write(
-        "skip_gameinfo 1\nvideo gdi\noutput windows\n")
+        "skip_gameinfo 1\nvideo gdi\noutput windows\npriority 1\n")
     open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
     seed = os.path.join(POC, "fixtures", f"nvram-{rom}")
     dst = os.path.join(rig, "nvram", rom)

@@ -52,9 +52,10 @@ cruisn-poc/
 - The emulator half lives in **`E:\Source\mame-src`**, branch **`poc/quadlog`**
   (MAME 0.286 + our DIJOYSTATE2 base patch `6f55ed93` + the POC series).
   POC code: **`src/mame/midway/midvunit_v.cpp`** (env-gated, zero cost when
-  unset) + `midvunit.h` (one visibility change) + one 7-line env-gated block
-  in `src/frontend/mame/ui/ui.cpp` (`MIDV_SKIP_STARTUP_SCREENS` — BAD_DUMP
-  warning screens refuse skip_warnings by design and block launcher boots).
+  unset) + `midvunit.h` (visibility + `mvgl_exit` teardown hook) + one
+  7-line env-gated block in `src/frontend/mame/ui/ui.cpp`
+  (`MIDV_SKIP_STARTUP_SCREENS` — BAD_DUMP warning screens refuse
+  skip_warnings by design and block launcher boots).
 - Build product is **`E:\Source\mame-src\vunit.exe`** (subtarget build —
   physically cannot clobber `mame.exe`).
 - **`midvunit_gl_shaders.h` is GENERATED — never hand-edit.** Regenerate after
@@ -62,9 +63,16 @@ cruisn-poc/
   `python -c "import sys; sys.path[:0]=['gpu','harness']; import renderer as R; open(r'E:\Source\mame-src\src\mame\midway\midvunit_gl_shaders.h','w',newline='\n').write('// GENERATED from cruisn-poc/gpu/renderer.py\n\n' + ''.join('static const char *MVGL_%s = R\"GLSL(%s)GLSL\";\n\n' % (n, getattr(R,n)) for n in ('VS','FS','PAL_VS','PAL_FS')))"`
   (run from cruisn-poc; the header names are MVGL_VS/FS/PAL_VS/PAL_FS).
 - **FFB Arcade Plugin** files sit UNTRACKED beside vunit.exe (`dinput8.dll`,
-  `FFBPlugin.ini`, `SDL2.dll` — copied from the racing build's mame286, which
-  holds the tuned Cruis'n settings, GameId=22). MAME's own .gitignore hides
-  them; re-copy if missing.
+  `FFBPlugin.ini`, `SDL2.dll`, **`MAME64.dll`** — copied from the racing
+  build's mame286, which holds the tuned Cruis'n settings, GameId=22).
+  MAME's own .gitignore hides them; re-copy if missing. ⚠️ Without
+  MAME64.dll (the MAME output client) the plugin shows a "MAME64.dll is
+  missing!" dialog and FFB is static spring/damper only — game forces need
+  it (success = `RomName = <rom>` in FFBlog.txt beside vunit.exe).
+- Known-cosmetic: vunit exits sometimes log a post-exit ACCESS VIOLATION
+  (Event Log; also fires headless with our GL thread not running — plugin
+  teardown race). Our GL thread stops cleanly via a machine-exit notifier.
+  WER minidumps land in `rig/crashdumps/` for future forensics.
 - After committing in mame-src, refresh the exported series:
   `git format-patch --stdout 6f55ed93..HEAD > E:/Source/cruisn-poc/patch/vunit-poc-patches.patch`
 - ⚠️ **NEVER touch the racing build's deployed
