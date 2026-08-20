@@ -100,3 +100,9 @@ Launchbox-Racing unchanged tonight. Build command now needs BOTH sources
   exit. Cosmetic, post-game. Second dump class = call into unloaded code.
 - CI v0.1.0 attempt 2 running (permissions fixed; cache missed -> full
   MAME rebuild ~50 min).
+
+## Parked ideas
+- [ ] **Achievements** (local, RA-style): researched and documented in
+      docs/ACHIEVEMENTS.md - viable via frozen build + Lua RAM reads +
+      overlay toasts; RAM hunt shared with telemetry Phase B. Idea only,
+      no implementation planned until user says go.
