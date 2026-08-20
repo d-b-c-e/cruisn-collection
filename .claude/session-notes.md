@@ -1,81 +1,69 @@
 # Session Notes
 <!-- Handoff notes. Read these first, then CLAUDE.md, then results/RESULTS.md. -->
 
-- **Date:** 2026-08-19 (overnight session, user away)
-- **Branch:** master (mame-src side: `poc/quadlog` @ b565ee3e)
+- **Date:** 2026-08-19 (overnight session 2 complete, user away)
+- **Branch:** master (mame-src side: `poc/quadlog` @ cc0aff8c)
 
-## What Was Done (2026-08-18 day → 2026-08-19 overnight)
+## Where things stand
 
-1. **Wheel test PASSED** (user-confirmed): coin/Start/Esc/steering/FFB
-   through the Stream Deck button, fullscreen. Along the way: `output
-   windows` staging gap fixed, borderless-fullscreen + focus enforcement
-   added to run_rig, ctrlr sanitizer (BUTTON33+ tokens killed keyboard
-   Start), FFB-hang auto-retry, bat start /min.
-2. **CRT pass shipped** (user-prioritized): mask+scanlines+curvature in
-   PAL_FS, uCrt-gated; MIDV_GL_CRT=1 at boot, F9 live toggle; exact mode
-   re-verified 100.0000%. In-process verified via MIDV_GL_SNAP 1:1 crops.
-3. **Collection shell shipped**: harness/collection.py fullscreen menu
-   (3 games, LaunchBox art, C=CRT toggle, config rig/collection.ini,
-   --shot test mode); run_rig refactored importable; deck button now opens
-   the shell. E2E machine-verified round trip shell→game→shell.
-4. **MIDV_SKIP_STARTUP_SCREENS** added to frontend ui.cpp (first non-driver
-   patch; env-gated): BAD_DUMP warning screens refuse skip_warnings by
-   design and blocked crusnwld boots; injected keys can't dismiss (rawinput).
-5. **offroadc runs full 3D attract through the renderer** — first ever run,
-   zero changes. crusnwld boots to its one-time CALIBRATE CONTROLS screen.
+Phase 1 remains rig-verified; the collection shell is the product entry
+(deck button). **All three games verified 100.0000% bit-exact** vs MAME.
+CRT pass shipped with F9 live toggle. FFB game forces fixed (MAME64.dll).
+Perf crackle fixed (priority 1). Wheel high-button root cause found and
+fixed at BOTH levels (winhybrid DIJoystick2 + BUTTONnn→ADDSW translation).
+Wheel-setup wizard shipped in the shell (S key). Shell has music/blips and
+returns 0.6 s after game exit. Overlay cursor/click fixed; fullscreen now
+enforced for the window's lifetime (crusnwld's mode-change resize).
 
-## Decisions Made
+## Morning checklist (user, at the wheel)
 
-- CRT look: "full fat" (mask + scanlines + curvature), two-phase
-  magenta/green mask (RGB triads = moiré), tuning constants in PAL_FS.
-- Launcher: fullscreen shell is the product entry; deck button opens it.
-- JOYCODE high-button root cause stays deferred to the mapping frontend.
-- Probe lore: GDI captures show GL content black; downscaled previews hide
-  scanlines/mask (judge at 1:1); injected keys never reach MAME input.
+1. **Deck button → shell**: music + blips; navigate (wheel hat works too).
+2. **S → WHEEL SETUP**: press wheel/shifter buttons for COIN, START,
+   VIEW1-3, RADIO, GEAR1-4 (Esc skips a step, Backspace cancels). Then
+   launch a game and test every bound button. This exercises the whole
+   new input chain (winhybrid DIJoystick2 + ADDSW translation + wizard).
+3. **FFB**: real game forces should now fire (collisions, road) — the
+   plugin logs `RunningFFB = RacingFullValueActive2` when active.
+4. **Cruis'n World**: should now hold fullscreen; cursor should vanish
+   over the game; clicking should refocus (no beep). Re-judge "emulation
+   quality" at full speed — it is bit-exact vs MAME; the dark dithered
+   rectangles are MAME's own output (research: no matching bug report;
+   MT 01798 = known green-neutral-gear artifact, minor, open since 2008).
+5. F9 CRT A/B taste check still open from yesterday.
 
-## Evening session results (2026-08-19, user at rig)
+## Open Items
 
-- FFB game forces FIXED: MAME64.dll (MAME output client) was missing beside
-  vunit.exe — RomName/RunningFFB now latch. User to re-feel.
-- Audio crackle FIXED: `priority 1` in rig mame.ini (ambient load had MAME
-  at 94-97%; now 99.8%+). User confirmed "improved".
-- Crash triage: GL thread exonerated (headless repro without it) + hardened
-  with machine-exit notifier; residual post-exit AV = plugin teardown,
-  cosmetic; WER minidumps armed → rig/crashdumps/. One mid-game EIP=0
-  crash (8:46pm) unexplained singleton — watch.
-- **crusnwld renderer VERIFIED 100.0000% bit-exact** (frame-3400 attract,
-  61 MB quads). "Bad emulation" was the perf underrun, not emulation.
-  fixtures/nvram-crusnwld added (rig-config captures only: headless runs
-  re-demand calibration — no devices). run_capture.py takes a rom arg now.
-
-## Open Items (user first)
-
-- [ ] **Rig pass on the night's work**: deck button → shell → each game;
-      F9 A/B the CRT look (tuning knobs in gpu/renderer.py PAL_FS: mask
-      0.62, gain 1.42, beam 0.35/0.65, warp 0.041/0.052 — regen header +
-      rebuild after edits); C in shell persists CRT choice.
-- [ ] **crusnwld one-time calibration** at the rig (CALIBRATE CONTROLS,
-      TEST=F2), persists in rig/nvram. Consider snapshotting a
-      fixtures/nvram-crusnwld afterward for cleanroom boots.
-- [ ] offroadc FFB feel — plugin runs the Cruis'n GameId=22 tuning; may
-      deserve its own FFBPlugin profile.
-- [ ] Oracle verification passes for crusnwld/offroadc (needs their NVRAM
-      fixtures + capture runs; harness unchanged).
-- [ ] Shell polish backlog: per-card "needs calibration" badge, settings
-      page (scale/aspect), attract-video cards, wheel-mapping frontend
-      (absorbs deferred JOYCODE work).
-- [ ] 16:9 margin pop-in sweep + multi-hour soak (unchanged from before).
+- [ ] Physical wheel test of wizard bindings + FFB (above).
+- [ ] **Esc in-game settings overlay** (wanszai parity) — designed, not
+      built: GL-thread menu drawn in the overlay, polled via
+      GetAsyncKeyState (rawinput ignores injection; physical Esc IS
+      pollable), Exit = WM_CLOSE to owner, CRT/FFB toggles as items.
+      MAME's Tab menu remains the deep-settings path meanwhile.
+- [ ] C++ overlay HEIGHT=400 vs offroadc's 401-line mode (last line not
+      presented; cosmetic).
+- [ ] Margin pop-in class: floating parked geometry at margin edges
+      (crusnwld left edge); sky black-bars where 3D sky runs out
+      (scene-dependent). Possible heuristics later; documented.
+- [ ] Mid-game EIP=0 crash singleton (8:46pm 08-19) — unexplained; WER
+      minidumps now land in rig/crashdumps/ for attribution.
+- [ ] Plugin teardown AV at exit (cosmetic, post-exit; masked by instant
+      shell return). Analyze first minidump eventually.
+- [ ] Multi-hour soak + margin sweep (unchanged).
+- [ ] Zeus scoping capture for Exotica (stretch, unchanged).
 
 ## Next Steps
 
-1. Ingest the user's morning rig feedback (CRT taste + shell feel).
-2. crusnwld/offroadc NVRAM fixtures + oracle passes.
-3. Shell settings page / mapping frontend.
+1. Ingest morning wheel-test results (wizard, FFB, World re-judgment).
+2. Esc in-game overlay implementation.
+3. Shell settings page (scale/aspect/FFB strength — wanszai settings.ini
+   is the model, see RESULTS teardown notes).
+4. Consider upstreaming the winhybrid DIJoystick2 fix (benefits vanilla
+   MAME users with >32-button wheels).
 
 ## Context for Next Session
 
-Everything committed: cruisn-poc (master), mame-src (`poc/quadlog`,
-b565ee3e, patch series exported), Launchbox-Racing (bat → shell). Proofs in
-results/proof/2026-08-19-*.png. The rig config the user verified by hand is
-unchanged except: vunit.exe rebuilt (CRT + startup-skip, both env-gated
-default-off), launcher entry is now the shell.
+All committed: cruisn-poc master, mame-src poc/quadlog @ cc0aff8c (patch
+series exported), Launchbox-Racing (bat → shell). The Lua input-dump
+harness pattern (dump joystick items + resolved seqs) lives in RESULTS —
+recreate from there if needed; it is the fastest way to verify binding
+questions without touching the wheel.

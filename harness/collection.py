@@ -17,6 +17,7 @@ Usage: python harness/collection.py [--shot out.png] [--windowed]
 """
 import argparse
 import configparser
+import ctypes
 import math
 import os
 import sys
@@ -133,6 +134,36 @@ class Shell:
             self.cards.append((self.tex(simg), simg.size,
                                self.tex(limg), limg.size, name))
         self.foot_cache = {}
+        self.text_cache = {}
+
+    def text_tex(self, s, px):
+        key = (s, px)
+        if key not in self.text_cache:
+            self.text_cache[key] = self.tex(text_image(s, px))
+        return self.text_cache[key]
+
+    def center_text(self, s, px, y, tint=(1, 1, 1, 1)):
+        tx = self.text_tex(s, px)
+        th = px * 1.9
+        tw = tx.width * th / tx.height
+        self.rect(tx, (self.w - tw) / 2, y, tw, th, tint)
+
+    def draw_wizard(self, prompt, done, total, last):
+        self.ctx.enable(moderngl.BLEND)
+        self.rect(self.bg, 0, 0, self.w, self.h)
+        tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
+        self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
+                  tw, self.h / 14 * 1.9)
+        self.center_text("WHEEL SETUP", self.h // 20, self.h * 0.28,
+                         (1.0, 0.85, 0.4, 1.0))
+        self.center_text(f"PRESS A WHEEL BUTTON FOR:", self.h // 34, self.h * 0.42)
+        self.center_text(prompt, self.h // 12, self.h * 0.50,
+                         (0.5, 1.0, 0.6, 1.0))
+        if last:
+            self.center_text(last, self.h // 40, self.h * 0.66,
+                             (0.7, 0.7, 0.8, 1.0))
+        self.center_text(f"{done} / {total}    ESC SKIP    BACKSPACE CANCEL",
+                         self.h // 40, self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
 
     def tex(self, img):
         t = self.ctx.texture(img.size, 4, img.tobytes())
@@ -143,7 +174,8 @@ class Shell:
     def footer_tex(self, crt):
         if crt not in self.foot_cache:
             msg = ("<  >  SELECT      ENTER / START  LAUNCH      "
-                   f"C  CRT: {'ON' if crt else 'OFF'}      ESC  QUIT")
+                   f"C  CRT: {'ON' if crt else 'OFF'}      "
+                   "S  WHEEL SETUP      ESC  QUIT")
             self.foot_cache[crt] = self.tex(text_image(
                 msg, self.h // 36, fill=(210, 210, 220, 255)))
         return self.foot_cache[crt]
@@ -194,6 +226,65 @@ class Shell:
         self.rect(foot, (self.w - fw) / 2, self.h * 0.90, fw, fh)
 
 
+class Audio:
+    """Menu music (mci, loops an extracted video-snap track) + synth blips
+    (winsound, plays alongside mci). All best-effort: missing files or a
+    missing audio device silently disable sound."""
+
+    def __init__(self):
+        self.assets = os.path.join(POC, "rig", "assets")
+        self.music = False
+        try:
+            self._mci = ctypes.windll.winmm.mciSendStringW
+        except Exception:
+            self._mci = None
+
+    def mci(self, cmd):
+        if self._mci:
+            try:
+                self._mci(cmd, None, 0, None)
+            except Exception:
+                pass
+
+    def start_music(self):
+        m = os.path.join(self.assets, "menumusic.wav")
+        if os.path.isfile(m) and not self.music:
+            self.mci(f'open "{m}" type mpegvideo alias menumusic')
+            self.mci("play menumusic repeat")
+            self.music = True
+
+    def stop_music(self):
+        if self.music:
+            self.mci("stop menumusic")
+            self.mci("close menumusic")
+            self.music = False
+
+    def blip(self, name):
+        try:
+            import winsound
+            f = os.path.join(self.assets, f"{name}.wav")
+            if os.path.isfile(f):
+                winsound.PlaySound(f, winsound.SND_FILENAME | winsound.SND_ASYNC
+                                   | winsound.SND_NODEFAULT)
+        except Exception:
+            pass
+
+
+# wheel-setup wizard: (prompt label, collection.ini key, MAME port type)
+WIZARD_STEPS = [
+    ("COIN",      "coin",   "COIN1"),
+    ("START",     "start",  "START1"),
+    ("VIEW 1",    "view1",  "P1_BUTTON1"),
+    ("VIEW 2",    "view2",  "P1_BUTTON2"),
+    ("VIEW 3",    "view3",  "P1_BUTTON3"),
+    ("RADIO",     "radio",  "P1_BUTTON4"),
+    ("GEAR 1",    "gear1",  "P1_BUTTON5"),
+    ("GEAR 2",    "gear2",  "P1_BUTTON6"),
+    ("GEAR 3",    "gear3",  "P1_BUTTON7"),
+    ("GEAR 4",    "gear4",  "P1_BUTTON8"),
+]
+
+
 def load_config():
     cp = configparser.ConfigParser()
     cp.read(CFG)
@@ -205,8 +296,19 @@ def load_config():
 
 def save_config(state):
     cp = configparser.ConfigParser()
+    cp.read(CFG)   # preserve other sections (wheelmap)
     cp["collection"] = {"crt": "1" if state["crt"] else "0",
                         "scale": str(state["scale"]), "rom": state["rom"]}
+    os.makedirs(os.path.dirname(CFG), exist_ok=True)
+    with open(CFG, "w") as f:
+        cp.write(f)
+
+
+def save_wheelmap(bindings):
+    """bindings: {ini_key: (device_name, button_index)} from the wizard."""
+    cp = configparser.ConfigParser()
+    cp.read(CFG)
+    cp["wheelmap"] = {k: f"{dev}|{btn}" for k, (dev, btn) in bindings.items()}
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
         cp.write(f)
@@ -262,6 +364,8 @@ def main():
     state = load_config()
     sel = next((i for i, g in enumerate(GAMES) if g[0] == state["rom"]), 0)
     actions = []
+    audio = Audio()
+    audio.start_music()
 
     # a Stream Deck launch has no foreground rights; claim them for the shell
     shell_hwnd = int(glfw.get_win32_window(win))
@@ -273,65 +377,137 @@ def main():
             actions.append(key)
 
     glfw.set_key_callback(win, on_key)
-    hat_prev, btn_prev = 0, ()
+    hat_prev = 0
+    joy_prev = {}
 
-    launch = None
-    while not glfw.window_should_close(win):
-        glfw.poll_events()
-        # joystick nav: hat left/right, low buttons launch (best-effort;
-        # wheel mapping proper is the deferred mapping-frontend work)
+    def joy_presses():
+        """New button presses this frame across all joysticks:
+        [(jid, name, button_index), ...]"""
+        out = []
         try:
-            for jid in range(2):
+            for jid in range(4):
                 if not glfw.joystick_present(jid):
+                    joy_prev.pop(jid, None)
                     continue
-                hats = glfw.get_joystick_hats(jid)
-                hat = hats[0] if hats is not None and len(hats) else 0
-                if hat & glfw.HAT_LEFT and not (hat_prev & glfw.HAT_LEFT):
-                    actions.append(glfw.KEY_LEFT)
-                if hat & glfw.HAT_RIGHT and not (hat_prev & glfw.HAT_RIGHT):
-                    actions.append(glfw.KEY_RIGHT)
-                hat_prev = hat
                 b = glfw.get_joystick_buttons(jid)
-                btns = tuple(b[:4]) if b is not None else ()
-                if any(btns) and not any(btn_prev):
-                    actions.append(glfw.KEY_ENTER)
-                btn_prev = btns
-                break
+                cur = tuple(b) if b is not None else ()
+                prev = joy_prev.get(jid, cur)
+                for i in range(min(len(cur), len(prev))):
+                    if cur[i] and not prev[i]:
+                        name = glfw.get_joystick_name(jid)
+                        if isinstance(name, bytes):
+                            name = name.decode(errors="replace")
+                        out.append((jid, name, i))
+                joy_prev[jid] = cur
         except Exception:
             pass
-        for key in actions:
-            if key in (glfw.KEY_LEFT, glfw.KEY_A):
-                sel = (sel - 1) % len(GAMES)
-            elif key in (glfw.KEY_RIGHT, glfw.KEY_D):
-                sel = (sel + 1) % len(GAMES)
-            elif key == glfw.KEY_C:
-                state["crt"] = not state["crt"]
-                save_config(state)
-            elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
-                launch = GAMES[sel][0]
-            elif key == glfw.KEY_ESCAPE:
-                glfw.set_window_should_close(win, True)
-        actions.clear()
+        return out
+
+    launch = None
+    mode = "menu"
+    wiz_idx = 0
+    wiz_bind = {}
+    wiz_last = ""
+    while not glfw.window_should_close(win):
+        glfw.poll_events()
+        presses = joy_presses()
+        # hat nav (menu only)
+        if mode == "menu":
+            try:
+                for jid in range(4):
+                    if not glfw.joystick_present(jid):
+                        continue
+                    hats = glfw.get_joystick_hats(jid)
+                    hat = hats[0] if hats is not None and len(hats) else 0
+                    if hat & glfw.HAT_LEFT and not (hat_prev & glfw.HAT_LEFT):
+                        actions.append(glfw.KEY_LEFT)
+                    if hat & glfw.HAT_RIGHT and not (hat_prev & glfw.HAT_RIGHT):
+                        actions.append(glfw.KEY_RIGHT)
+                    hat_prev = hat
+                    break
+            except Exception:
+                pass
+            if presses:
+                actions.append(glfw.KEY_ENTER)
+
+        if mode == "wizard":
+            for key in actions:
+                if key == glfw.KEY_ESCAPE:          # skip this binding
+                    audio.blip("nav")
+                    wiz_idx += 1
+                elif key == glfw.KEY_BACKSPACE:     # abort wizard
+                    audio.blip("select")
+                    mode = "menu"
+            actions.clear()
+            if mode == "wizard" and presses:
+                jid, name, btn = presses[0]
+                wiz_bind[WIZARD_STEPS[wiz_idx][1]] = (name, btn)
+                wiz_last = f"{WIZARD_STEPS[wiz_idx][0]}  =  {name}  BUTTON {btn + 1}"
+                audio.blip("nav")
+                wiz_idx += 1
+            if mode == "wizard" and wiz_idx >= len(WIZARD_STEPS):
+                save_wheelmap(wiz_bind)
+                audio.blip("select")
+                mode = "menu"
+        else:
+            for key in actions:
+                if key in (glfw.KEY_LEFT, glfw.KEY_A):
+                    sel = (sel - 1) % len(GAMES)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_RIGHT, glfw.KEY_D):
+                    sel = (sel + 1) % len(GAMES)
+                    audio.blip("nav")
+                elif key == glfw.KEY_C:
+                    state["crt"] = not state["crt"]
+                    save_config(state)
+                    audio.blip("nav")
+                elif key == glfw.KEY_S:
+                    mode = "wizard"
+                    wiz_idx = 0
+                    wiz_bind = {}
+                    wiz_last = ""
+                    audio.blip("select")
+                elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
+                    launch = GAMES[sel][0]
+                    audio.blip("select")
+                elif key == glfw.KEY_ESCAPE:
+                    glfw.set_window_should_close(win, True)
+            actions.clear()
 
         ctx.clear(0, 0, 0, 1)
-        shell.draw(sel, state["crt"], time.time() % 3600)
+        if mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
+            shell.draw_wizard(WIZARD_STEPS[wiz_idx][0], wiz_idx,
+                              len(WIZARD_STEPS), wiz_last)
+        else:
+            shell.draw(sel, state["crt"], time.time() % 3600)
         glfw.swap_buffers(win)
 
         if launch:
             state["rom"] = launch
             save_config(state)
+            audio.stop_music()
             glfw.hide_window(win)
             try:
-                run_rig.launch_game(rom=launch, scale=state["scale"],
-                                    windowed=args.windowed, crt=state["crt"])
+                proc, game_hwnd = run_rig.launch_game_async(
+                    rom=launch, scale=state["scale"],
+                    windowed=args.windowed, crt=state["crt"])
+                # watch the WINDOW, not the process: teardown (FFB plugin
+                # exit races, WER dumps) drags for seconds after the player
+                # Esc-quits - reappear the instant the game window dies and
+                # let the process finish dying in the background
+                while run_rig.u32.IsWindow(game_hwnd) and proc.poll() is None:
+                    time.sleep(0.25)
+                threading.Thread(target=proc.wait, daemon=True).start()
             except SystemExit as e:
                 print("launch failed:", e)
             launch = None
             glfw.show_window(win)
             glfw.focus_window(win)
+            audio.start_music()
             threading.Thread(target=run_rig.enforce_foreground,
                              args=(shell_hwnd, 10), daemon=True).start()
 
+    audio.stop_music()
     save_config(state)
     glfw.terminate()
     return 0

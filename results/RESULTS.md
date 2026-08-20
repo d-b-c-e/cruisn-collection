@@ -502,3 +502,101 @@ Standing after this session: user to re-feel FFB in USA + re-judge World
 at speed; stretch goals queued (launcher music/SFX, wanszai-style Esc
 settings overlay in-game); analyze first minidump when the teardown AV
 recurs.
+
+---
+
+# Overnight session 2 (2026-08-19 night): all three games verified, wheel wizard, shell polish
+
+User's evening feedback (5 items) all root-caused or shipped; the wanszai
+teardown reshaped the input roadmap.
+
+## ALL THREE GAMES NOW 100.0000% BIT-EXACT
+
+offroadc's first verification pass showed 401 differing pixels - exactly
+one column (x=511): offroadc runs a 512x401 mode with visarea right edge
+at x=510, and gpu/renderer.py hardcoded the cliprect at 511. rasterize.py
+always honored meta's visarea; renderer.py now does too (wide mode still
+deliberately unclips into the margins). After the fix:
+
+| game | exact-mode result |
+|---|---|
+| crusnusa | 100.0000% (0 of 204,800) |
+| crusnwld | 100.0000% (0 of 204,800) |
+| offroadc | 100.0000% (0 of 205,312 - 512x401 mode) |
+
+Note for the C++ renderer: HEIGHT=400 is a constant; offroadc's 401st line
+is currently not presented by the overlay (cosmetic, one line - open item).
+
+## Wheel high-buttons: REAL root cause found and fixed
+
+The DIJOYSTATE2 base patch only touched the pure dinput module - but the
+default Windows joystick provider is **winhybrid**, which still passed
+c_dfDIJoystick (32-button legacy, no fallback). New verbose diagnostic
+showed "128 buttons reported, DIJoystick (32-button legacy) format
+accepted" for the Moza. This means the high buttons NEVER worked in the
+racing build either. Fixed winhybrid to request DIJoystick2 with legacy
+fallback (mame-src 3cac3d67): Moza now exposes 140 items.
+
+Second half: MAME's items for buttons 33-48 use standard tokens
+ADDSW1..ADDSW16 (ITEM_ID_ADD_SWITCH; 49+ collapse into OTHER_SWITCH and
+are unaddressable). EmuEZ's BUTTONnn dialect never parses - the launcher's
+ctrlr translator now maps BUTTON33-48 -> ADDSW1-16. Verified live via a
+Lua input-dump harness (scratchpad dump_input.lua pattern -
+manager.machine.ioport fields + input:seq_to_tokens): START1 resolves to
+"KEYCODE_1 OR JOYCODE_1_ADDSW3" (wheel button 35), gears land on wheel
+buttons 33/34. Physical presses = user's morning test.
+
+## Wheel-setup wizard (wanszai teardown -> feature)
+
+Inspected the installed Ridge Racer Collection: RRC.exe is a full wrapper
+owning DirectInput (settings.ini with crt/curve/ffb/maps; wheel_di.ini
+written by an in-game press-to-bind wizard; menumusic.mp3 + bgra menu
+assets; multi-device aux binding incl. the user's DS-8X shifter + Stalk).
+Our v1 equivalent shipped in the shell: **S = WHEEL SETUP** - press-to-bind
+COIN/START/VIEW1-3/RADIO/GEAR1-4 across all connected joysticks (glfw),
+saved to collection.ini [wheelmap], applied at every launch by the ctrlr
+generator (device name -> mapdevice JOYCODE index, auto-added for new
+devices; button n -> BUTTONn+1 or ADDSW; game-specific EmuEz sections are
+stripped of wizard-claimed ports so the wizard always wins). E2E-verified
+via simulated wheelmap + Lua dump: gear1 on the DS-8X resolves as
+JOYCODE_2_BUTTON1.
+
+## Shell polish
+
+- Menu music (extracted from the LaunchBox Cruis'n USA video snap via
+  ffmpeg -> rig/assets/menumusic.wav, mci loop) + synth nav/select blips
+  (winsound, coexists with mci). Music pauses during play.
+- Instant return: the shell now watches the game WINDOW and reappears when
+  it dies (0.6 s measured), reaping vunit's slow teardown (FFB plugin exit
+  races + WER dump writes = the old "several seconds") in the background.
+  run_rig gained launch_game_async(); blocking launch_game kept for CLI.
+
+## Fullscreen + cursor fixes (user reports)
+
+- crusnwld snapped back to 4:3: MAME resizes its own window on video-mode
+  changes. run_rig now runs an enforce_fullscreen watcher for the window's
+  lifetime (skips while minimized).
+- Cursor floating + error-beep clicks: the overlay was DISABLED+
+  TRANSPARENT - EX_TRANSPARENT passes no hit-tests without EX_LAYERED, so
+  clicks hit a disabled window = beep. Overlay now has a real wndproc:
+  cursor hidden over the game, clicks SetForegroundWindow(owner)
+  (mame-src cc0aff8c).
+
+## Rendering-artifact research (user request)
+
+- The dark dithered rectangles (user's Cruis'n World screenshot; also in
+  our frame-3400 capture next to the CHECK gantry) sit INSIDE the 4:3
+  area where we are bit-exact -> they are MAME's own output (authentic or
+  an unreported core inaccuracy; no matching MAMETesters report).
+- Known open: MT 01798 (crusnwld green artifacts in manual-mode neutral,
+  minor, open since 2008). offroadc texture colors (MT 05356) fixed in
+  MAME 0.152.
+- Sky black-bars at 16:9 edges: World's sky IS 3D geometry extending past
+  4:3 (tiles span x -61..705 in the captured scene) - margins fill in most
+  scenes; where the geometry runs out, margins go black (scene-dependent).
+  A floating hillside box at the left margin edge = off-screen parked
+  geometry the game never meant to show - the known margin-pop-in class.
+
+Standing: physical wheel test of wizard bindings + FFB forces; Esc in-game
+settings overlay (designed, not built: GL-thread menu polled via
+GetAsyncKeyState, WM_CLOSE exit path, MAME Tab menu meanwhile).

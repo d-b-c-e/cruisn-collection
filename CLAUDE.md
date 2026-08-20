@@ -134,13 +134,24 @@ Semantics that everything relies on (full detail in RESULTS.md):
 ## Rig facts
 
 - Product entry: `python harness/collection.py` — fullscreen shell, all
-  three games; C toggles CRT per launch; config `rig/collection.ini`.
-  Stream Deck entry: Elgato "Games" profile key [7,2] →
-  `Launchbox-Racing\scripts\Launch-Cruisn.bat` (start /min wrapper) opens
-  the shell. Direct single game: `python harness/run_rig.py --rom crusnusa
-  [--crt]`. Coin=**5**, Start=**1** on keyboard, **F9** = CRT live toggle.
-  crusnwld needs a ONE-TIME wheel calibration at first boot (persists in
-  `rig/nvram`; crusnusa's fixture already has it, offroadc boots clean).
+  three games, menu music + blips (`rig/assets/`, regenerable via ffmpeg
+  from LaunchBox video snaps); C toggles CRT per launch; **S = wheel-setup
+  wizard** (press-to-bind → `[wheelmap]` in `rig/collection.ini`, applied
+  by the ctrlr generator each launch; wins over EmuEz per-game sections).
+  Config `rig/collection.ini`. Stream Deck entry: Elgato "Games" key [7,2]
+  → `Launchbox-Racing\scripts\Launch-Cruisn.bat` opens the shell. Direct:
+  `python harness/run_rig.py --rom crusnusa [--crt]`. Coin=**5**,
+  Start=**1** keyboard, **F9** = CRT live toggle. crusnwld needs ONE-TIME
+  wheel calibration at first boot (persists; headless runs always
+  re-demand it — no input devices — so captures must run in rig config).
+- All three games verified **100.0000% bit-exact** vs MAME videoram
+  (offroadc runs 512×**401** with visarea right edge 510 — renderer.py
+  honors meta visarea in exact mode; C++ overlay HEIGHT=400 misses
+  offroadc's last line: open cosmetic item).
+- Wheel buttons 33-48 = MAME tokens `ADDSW1-16` (not BUTTON33+; 49+ are
+  unaddressable OTHER_SWITCH). winhybrid (default provider) needed the
+  DIJoystick2 fix (mame-src 3cac3d67) — without it every wheel caps at 32
+  buttons (this also silently afflicted the racing build).
 - run_rig makes MAME's window **borderless-fullscreen** post-boot
   (`--windowed` opts out) and **enforces fg+focus on MAME's window** —
   keyboard and foreground-mode DirectInput FFB die without it. Never

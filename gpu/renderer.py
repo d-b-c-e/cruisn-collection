@@ -496,7 +496,10 @@ def main():
     prog = ctx.program(vertex_shader=VS, fragment_shader=FS)
     prog["uCanvas"].value = (float(W), float(height))
     prog["uScale"].value = S
-    prog["uClipRight"].value = W - 1
+    # exact/native mode honors the hardware cliprect (offroadc's visarea is
+    # 511 wide - right edge x=510); wide mode deliberately unclips into the
+    # margins, which is the whole point
+    prog["uClipRight"].value = (W - 1) if args.wide else meta["visarea"][0]
     prog["texram"].value = 0
     prog["texMask"].value = texsize - 1
     tex2d.use(0)

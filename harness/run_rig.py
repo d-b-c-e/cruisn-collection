@@ -30,6 +30,7 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import xml.etree.ElementTree as ET
 
@@ -40,7 +41,10 @@ VUNIT = r"E:\Source\mame-src\vunit.exe"
 # ---- win32 window management ------------------------------------------------
 u32 = ctypes.windll.user32
 u32.GetWindowThreadProcessId.argtypes = [ctypes.c_void_p, ctypes.POINTER(wt.DWORD)]
+u32.IsWindow.argtypes = [ctypes.c_void_p]
+u32.IsIconic.argtypes = [ctypes.c_void_p]
 u32.IsWindowVisible.argtypes = [ctypes.c_void_p]
+u32.GetWindowRect.argtypes = [ctypes.c_void_p, ctypes.POINTER(wt.RECT)]
 u32.GetClassNameW.argtypes = [ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_int]
 u32.ShowWindow.argtypes = [ctypes.c_void_p, ctypes.c_int]
 u32.GetWindowLongW.argtypes = [ctypes.c_void_p, ctypes.c_int]
@@ -141,6 +145,26 @@ def make_fullscreen(hwnd):
                      SWP_FRAMECHANGED | SWP_NOZORDER | SWP_NOACTIVATE)
 
 
+def enforce_fullscreen(hwnd):
+    """MAME resizes its own window on video-mode changes (crusnwld does one
+    after boot, snapping back to 4:3) - watch for the window's lifetime and
+    reapply the borderless-fullscreen surgery whenever it deviates. Skips
+    while minimized so a deliberate alt-tab isn't fought."""
+    while u32.IsWindow(hwnd):
+        if not u32.IsIconic(hwnd):
+            mi = MONITORINFO()
+            mi.cbSize = ctypes.sizeof(MONITORINFO)
+            u32.GetMonitorInfoW(
+                u32.MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST),
+                ctypes.byref(mi))
+            r, m = wt.RECT(), mi.rcMonitor
+            u32.GetWindowRect(hwnd, ctypes.byref(r))
+            if (r.left, r.top, r.right, r.bottom) != (m.left, m.top,
+                                                      m.right, m.bottom):
+                make_fullscreen(hwnd)
+        time.sleep(1.0)
+
+
 def focus_state():
     """(foreground hwnd, focus hwnd of the foreground thread)."""
     fg = int(u32.GetForegroundWindow() or 0)
@@ -210,28 +234,33 @@ def prepare_rig(rom):
 
 
 def sanitized_ctrlrpath(rig):
-    """Rig-local copy of EmuEzRacing.cfg with the Moza's high-numbered
-    button tokens stripped. vunit's token parser drops JOYCODE_x_BUTTON33+
-    and MAME then invalidates the WHOLE sequence, taking the keyboard
-    alternative down with it - START1 "KEYCODE_1 OR JOYCODE_1_BUTTON35"
-    left keyboard Start dead while COIN1 (BUTTON22, valid) worked. Keep the
-    valid alternatives; drop a port entirely when nothing survives so MAME
-    defaults apply. Root cause (token validation vs the 128-button
-    DIJOYSTATE2 patch) is deferred to the mapping frontend; the racing
+    """Rig-local TRANSLATED copy of EmuEzRacing.cfg.
+
+    EmuEZ tokenizes high wheel buttons as JOYCODE_x_BUTTON33+, but MAME's
+    items for buttons 33-48 carry the standard tokens ADDSW1..ADDSW16
+    (ITEM_ID_ADD_SWITCH; buttons 49+ collapse into OTHER_SWITCH and cannot
+    be addressed by number). BUTTONnn for nn>32 never parses, killing the
+    whole sequence including keyboard alternatives (START1's KEYCODE_1 died
+    this way). Translate 33-48 -> ADDSWn; strip 49+ alternatives; drop a
+    port entirely when nothing survives so MAME defaults apply. Requires
+    the winhybrid DIJoystick2 fix so the items exist at all. The racing
     build's file is never modified."""
-    bad = re.compile(r"JOYCODE_\d+_BUTTON(3[3-9]|[4-9]\d|\d{3})\b")
+    hi = re.compile(r"(JOYCODE_\d+_)BUTTON(3[3-9]|4[0-8])\b")
+    bad = re.compile(r"JOYCODE_\d+_BUTTON(49|[5-9]\d|\d{3})\b")
     tree = ET.parse(os.path.join(RACING, "ctrlr", "EmuEzRacing.cfg"))
     for inp in tree.getroot().iter("input"):
         for port in list(inp.findall("port")):
             empty = True
             for seq in port.findall("newseq"):
                 alts = [a.strip() for a in (seq.text or "").split(" OR ")]
-                keep = [a for a in alts if a and not bad.search(a)]
+                keep = [hi.sub(lambda m: f"{m.group(1)}ADDSW{int(m.group(2)) - 32}", a)
+                        for a in alts if a and not bad.search(a)]
                 seq.text = " OR ".join(keep)
                 if keep:
                     empty = False
             if empty:
                 inp.remove(port)
+    apply_wheelmap(tree, rig)
     out = os.path.join(rig, "ctrlr")
     os.makedirs(out, exist_ok=True)
     tree.write(os.path.join(out, "EmuEzRacing.cfg"),
@@ -239,11 +268,102 @@ def sanitized_ctrlrpath(rig):
     return out
 
 
+# collection.ini [wheelmap] key -> MAME port type (kept in sync with the
+# shell's WIZARD_STEPS) and the keyboard alternative to preserve
+WHEELMAP_PORTS = {
+    "coin":  ("COIN1", "KEYCODE_5"),
+    "start": ("START1", "KEYCODE_1"),
+    "view1": ("P1_BUTTON1", None),
+    "view2": ("P1_BUTTON2", None),
+    "view3": ("P1_BUTTON3", None),
+    "radio": ("P1_BUTTON4", None),
+    "gear1": ("P1_BUTTON5", None),
+    "gear2": ("P1_BUTTON6", None),
+    "gear3": ("P1_BUTTON7", None),
+    "gear4": ("P1_BUTTON8", None),
+}
+
+
+def apply_wheelmap(tree, rig):
+    """Overlay the shell wizard's press-to-bind results ([wheelmap] in
+    rig/collection.ini, entries 'DeviceName|buttonIndex') onto the default
+    system section. Device names resolve to JOYCODE indices via the file's
+    <mapdevice> entries; unknown devices get a new mapdevice appended.
+    glfw button index n (0-based) == DirectInput rgbButtons[n] == MAME
+    BUTTONn+1 for n<32, ADDSW(n-31) for 32..47; 48+ cannot be addressed."""
+    import configparser
+    cp = configparser.ConfigParser()
+    cp.read(os.path.join(rig, "collection.ini"))
+    if "wheelmap" not in cp:
+        return
+    root = tree.getroot()
+    default_inp = None
+    for system in root.iter("system"):
+        if system.get("name") == "default":
+            default_inp = system.find("input")
+            break
+    if default_inp is None:
+        return
+    joycode = {}
+    for md in default_inp.findall("mapdevice"):
+        m = re.match(r"JOYCODE_(\d+)", md.get("controller", ""))
+        if m:
+            joycode[md.get("device")] = int(m.group(1))
+
+    for key, val in cp["wheelmap"].items():
+        if key not in WHEELMAP_PORTS or "|" not in val:
+            continue
+        porttype, kbd = WHEELMAP_PORTS[key]
+        dev, btn = val.rsplit("|", 1)
+        btn = int(btn)
+        if dev not in joycode:
+            idx = max(joycode.values(), default=0) + 1
+            ET.SubElement(default_inp, "mapdevice",
+                          {"device": dev, "controller": f"JOYCODE_{idx}"})
+            joycode[dev] = idx
+        n = btn + 1
+        if n <= 32:
+            tok = f"JOYCODE_{joycode[dev]}_BUTTON{n}"
+        elif n <= 48:
+            tok = f"JOYCODE_{joycode[dev]}_ADDSW{n - 32}"
+        else:
+            print(f"wheelmap: {key} on button {n} > 48 - not addressable, skipped")
+            continue
+        seqtext = f"{kbd} OR {tok}" if kbd else tok
+        port = None
+        for p in default_inp.findall("port"):
+            if p.get("type") == porttype:
+                port = p
+                break
+        if port is None:
+            port = ET.SubElement(default_inp, "port", {"type": porttype})
+            ET.SubElement(port, "newseq", {"type": "standard"})
+        seq = port.find("newseq")
+        seq.text = seqtext
+
+    # game-specific sections override default in MAME's ctrlr merge - remove
+    # wizard-claimed ports from them so the wizard's bindings always win
+    wiz_ports = {WHEELMAP_PORTS[k][0] for k in cp["wheelmap"]
+                 if k in WHEELMAP_PORTS}
+    for system in root.iter("system"):
+        if system.get("name") == "default":
+            continue
+        inp = system.find("input")
+        if inp is None:
+            continue
+        for p in list(inp.findall("port")):
+            if p.get("type") in wiz_ports:
+                inp.remove(p)
+
+
 # ---- launch -----------------------------------------------------------------
-def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
-                mame=VUNIT):
-    """Launch one game through the GL overlay; blocks until it exits.
-    Returns vunit's exit code (raises SystemExit on startup failure)."""
+def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
+                      mame=VUNIT):
+    """Launch one game through the GL overlay; returns (proc, hwnd) once the
+    window is up, fullscreen and focused. The caller decides how to wait -
+    the collection shell watches the WINDOW (gone = player exited) so it can
+    reappear instantly while vunit's teardown (FFB plugin exit races, WER
+    dump writes) drags on for seconds in the background."""
     rig, ini = prepare_rig(rom)
     ctrlr = sanitized_ctrlrpath(rig)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
@@ -286,10 +406,20 @@ def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
 
     if not windowed:
         make_fullscreen(hwnd)
+        threading.Thread(target=enforce_fullscreen, args=(hwnd,),
+                         daemon=True).start()
     focused = enforce_foreground(hwnd)
     print("Single fullscreen window%s. Coin=5 Start=1, Esc quits, F9 CRT." %
           ("" if focused else " (WARNING: could not take foreground - "
            "click the game once for keyboard/wheel)"))
+    return proc, hwnd
+
+
+def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
+                mame=VUNIT):
+    """Blocking wrapper: launch and wait for full process exit."""
+    proc, _ = launch_game_async(rom=rom, scale=scale, windowed=windowed,
+                                crt=crt, mame=mame)
     return proc.wait()
 
 
