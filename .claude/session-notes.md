@@ -106,3 +106,13 @@ Launchbox-Racing unchanged tonight. Build command now needs BOTH sources
       docs/ACHIEVEMENTS.md - viable via frozen build + Lua RAM reads +
       overlay toasts; RAM hunt shared with telemetry Phase B. Idea only,
       no implementation planned until user says go.
+
+## Repo renamed (2026-08-20)
+GitHub: d-b-c-e/cruisn-poc -> **d-b-c-e/cruisn-collection** (gh redirects
+the old URL; release/CI/cache intact; local remote updated). The LOCAL
+folder stays E:\Source\cruisn-poc for now - renaming it mid-session breaks
+the running Claude session's anchors. To rename locally (when no session
+is open): rename the folder, then update (1) Launchbox-Racing\scripts\
+Launch-Cruisn.bat `cd /d` line, (2) CLAUDE.md path mentions, (3) mame-src
+CLAUDE patch-refresh path. Claude Code project memory/session history is
+keyed to the folder path and will start fresh under the new name.
