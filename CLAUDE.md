@@ -2,10 +2,14 @@
 
 ## What this is
 
-Working proof-of-concept for a **native PC port of the Midway V-Unit racers**
-(Cruis'n USA, Cruis'n World, Off Road Challenge — the "**V-Unit Cruis'n
-Collection**"), built as a renderer-replacement over MAME, the same
-architecture as wanszai's arcade ports. As of 2026-08-18 the whole chain is
+Working proof-of-concept for a **native PC port of the Midway Cruis'n
+games** (Cruis'n USA, Cruis'n World, Off Road Challenge — V-Unit hardware,
+renderer-replaced and verified bit-exact — plus **Cruis'n Exotica**, Zeus2
+hardware, running through MAME's own renderer in the same exe; flagged
+NOT_WORKING/IMPERFECT upstream but play-tested on this rig, GL-replacement
+scoped viable at ≤6.3k quads/frame via zeus2_draw_quad). Built as a
+renderer-replacement over MAME, the same architecture as wanszai's arcade
+ports. As of 2026-08-18 the whole chain is
 **working and rig-verified**: the game runs in one window with an in-process
 GPU renderer at 16:9 / 3-4× internal resolution, artifact-free, with FFB
 staged for wheel testing.
@@ -57,11 +61,14 @@ cruisn-poc/
   (`MIDV_SKIP_STARTUP_SCREENS` — BAD_DUMP warning screens refuse
   skip_warnings by design and block launcher boots).
 - Build product is **`E:\Source\mame-src\vunit.exe`** (subtarget build —
-  physically cannot clobber `mame.exe`).
-- **`midvunit_gl_shaders.h` is GENERATED — never hand-edit.** Regenerate after
-  any shader change in `gpu/renderer.py`:
-  `python -c "import sys; sys.path[:0]=['gpu','harness']; import renderer as R; open(r'E:\Source\mame-src\src\mame\midway\midvunit_gl_shaders.h','w',newline='\n').write('// GENERATED from cruisn-poc/gpu/renderer.py\n\n' + ''.join('static const char *MVGL_%s = R\"GLSL(%s)GLSL\";\n\n' % (n, getattr(R,n)) for n in ('VS','FS','PAL_VS','PAL_FS')))"`
-  (run from cruisn-poc; the header names are MVGL_VS/FS/PAL_VS/PAL_FS).
+  physically cannot clobber `mame.exe`). Since 2026-08-20 the subtarget
+  includes **midzeus** (Cruis'n Exotica): build with
+  `SOURCES=src/mame/midway/midvunit.cpp,src/mame/midway/midzeus.cpp`.
+- **`midvunit_gl_shaders.h` is GENERATED — never hand-edit.** Regenerate
+  after any shader change in `gpu/renderer.py`:
+  **`python harness/gen_shaders.py`** (emits escaped C strings — genie's
+  REGENIE source scanner cannot tokenize raw strings and dies with
+  "unterminated character literal").
 - **FFB Arcade Plugin** files sit UNTRACKED beside vunit.exe (`dinput8.dll`,
   `FFBPlugin.ini`, `SDL2.dll`, **`MAME64.dll`** — copied from the racing
   build's mame286, which holds the tuned Cruis'n settings, GameId=22).
@@ -86,7 +93,8 @@ cruisn-poc/
   ```
   env MSYSTEM=MINGW64 /e/msys64/usr/bin/bash.exe -lc "export OS=Windows_NT; \
     cd /e/Source/mame-src && make SUBTARGET=vunit \
-    SOURCES=src/mame/midway/midvunit.cpp NOWERROR=1 TOOLS=0 -j18"
+    SOURCES=src/mame/midway/midvunit.cpp,src/mame/midway/midzeus.cpp \
+    NOWERROR=1 TOOLS=0 -j18"
   ```
 - ⚠️ `OS=Windows_NT` must be exported **inside** the MSYS2 login shell — its
   profile clears the inherited value and MAME's makefile then fails OS

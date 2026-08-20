@@ -35,8 +35,13 @@ import time
 import xml.etree.ElementTree as ET
 
 POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RACING = r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286"
-VUNIT = r"E:\Source\mame-src\vunit.exe"
+# all overridable for non-dev installs (see docs/INSTALL.md + setup.ps1)
+RACING = os.environ.get("CRUISN_MAME_DIR",
+                        r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286")
+VUNIT = os.environ.get("CRUISN_VUNIT", r"E:\Source\mame-src\vunit.exe")
+ROMPATH = os.environ.get("CRUISN_ROMS", os.path.join(RACING, "roms"))
+CTRLR_SRC = os.environ.get("CRUISN_CTRLR",
+                           os.path.join(RACING, "ctrlr", "EmuEzRacing.cfg"))
 
 # ---- win32 window management ------------------------------------------------
 u32 = ctypes.windll.user32
@@ -212,6 +217,11 @@ def enforce_foreground(hwnd, seconds=45):
     return fg == hwnd and focus == hwnd
 
 
+# Zeus-hardware games: no GL overlay (midvunit hooks are inert), so no gdi
+# constraint - give them d3d for decent scaling of MAME's own renderer
+ZEUS_ROMS = {"crusnexo"}
+
+
 # ---- rig preparation --------------------------------------------------------
 def prepare_rig(rom):
     """Write the rig's ini set and seed NVRAM; returns (rig, inipath)."""
@@ -222,9 +232,11 @@ def prepare_rig(rom):
     # output windows: the FFB Arcade Plugin reads MAME's Windows outputs -
     # without it the wheel steers but never gets a force (racing build matches).
     # priority 1: raise MAME's thread priority - ambient load (Defender,
-    # Pit House, Spotify) showed up as 94-97% average speed = audio crackle
+    # Pit House, Spotify) showed up as 94-97% average speed = audio crackle.
+    # video gdi is REQUIRED under the GL overlay (V-Unit games only).
+    video = "d3d" if rom in ZEUS_ROMS else "gdi"
     open(os.path.join(ini, "mame.ini"), "w").write(
-        "skip_gameinfo 1\nvideo gdi\noutput windows\npriority 1\n")
+        f"skip_gameinfo 1\nvideo {video}\noutput windows\npriority 1\n")
     open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
     seed = os.path.join(POC, "fixtures", f"nvram-{rom}")
     dst = os.path.join(rig, "nvram", rom)
@@ -247,7 +259,13 @@ def sanitized_ctrlrpath(rig):
     build's file is never modified."""
     hi = re.compile(r"(JOYCODE_\d+_)BUTTON(3[3-9]|4[0-8])\b")
     bad = re.compile(r"JOYCODE_\d+_BUTTON(49|[5-9]\d|\d{3})\b")
-    tree = ET.parse(os.path.join(RACING, "ctrlr", "EmuEzRacing.cfg"))
+    if os.path.isfile(CTRLR_SRC):
+        tree = ET.parse(CTRLR_SRC)
+    else:
+        # no EmuEZ file (fresh install): bare ctrlr, wizard bindings only
+        tree = ET.ElementTree(ET.fromstring(
+            '<mameconfig version="10">'
+            '<system name="default"><input/></system></mameconfig>'))
     for inp in tree.getroot().iter("input"):
         for port in list(inp.findall("port")):
             empty = True
@@ -376,7 +394,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     def start():
         return subprocess.Popen(
             [mame, rom,
-             "-rompath", os.path.join(RACING, "roms"),
+             "-rompath", ROMPATH,
              "-inipath", ini,
              "-ctrlrpath", ctrlr,
              "-ctrlr", "EmuEzRacing",

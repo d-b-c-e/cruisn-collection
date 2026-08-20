@@ -32,7 +32,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
 
 POC = run_rig.POC
-ART = r"E:\Source\launchbox\Launchbox-Racing\Images\Arcade"
+ART = os.environ.get("CRUISN_ART",
+                     r"E:\Source\launchbox\Launchbox-Racing\Images\Arcade")
 CFG = os.path.join(POC, "rig", "collection.ini")
 
 GAMES = [
@@ -45,6 +46,12 @@ GAMES = [
     ("offroadc", "OFF ROAD CHALLENGE",
      os.path.join(ART, "Clear Logo", "Off Road Challenge-01.png"),
      os.path.join(ART, "Screenshot - Game Title", "Off Road Challenge-01.png")),
+    # Zeus2 hardware, not V-Unit: runs through MAME's own renderer (flagged
+    # NOT_WORKING/IMPERFECT upstream but play-tested daily on this rig);
+    # the GL overlay is inert for it, run_rig gives it video d3d
+    ("crusnexo", "CRUIS'N EXOTICA",
+     os.path.join(ART, "Clear Logo", "North America", "Cruis_n Exotica-01.png"),
+     os.path.join(ART, "Screenshot - Game Title", "Cruis_n Exotica-02.png")),
 ]
 
 GOLD = (1.0, 0.78, 0.22, 1.0)
@@ -125,12 +132,21 @@ class Shell:
         self.white = self.tex(Image.new("RGBA", (2, 2), (255, 255, 255, 255)))
         self.bg = self.tex(background_image(w, h))
         self.title = self.tex(text_image(
-            "V-UNIT  CRUIS'N  COLLECTION", h // 14,
+            "CRUIS'N  COLLECTION", h // 14,
             fill=(255, 224, 160, 255), glow=(255, 96, 32, 200)))
         self.cards = []
         for rom, name, logo, shot in GAMES:
-            simg = Image.open(shot).convert("RGBA")
-            limg = Image.open(logo).convert("RGBA")
+            # art is optional (LaunchBox library on the dev box); fall back
+            # to generated cards so a fresh install still has a full menu
+            try:
+                simg = Image.open(shot).convert("RGBA")
+            except Exception:
+                simg = Image.new("RGBA", (640, 480), (12, 12, 28, 255))
+            try:
+                limg = Image.open(logo).convert("RGBA")
+            except Exception:
+                limg = text_image(name, 72, fill=(255, 214, 130, 255),
+                                  glow=(255, 96, 32, 200))
             self.cards.append((self.tex(simg), simg.size,
                                self.tex(limg), limg.size, name))
         self.foot_cache = {}
@@ -171,14 +187,11 @@ class Shell:
         t.filter = (moderngl.LINEAR_MIPMAP_LINEAR, moderngl.LINEAR)
         return t
 
-    def footer_tex(self, crt):
-        if crt not in self.foot_cache:
-            msg = ("<  >  SELECT      ENTER / START  LAUNCH      "
-                   f"C  CRT: {'ON' if crt else 'OFF'}      "
-                   "S  WHEEL SETUP      ESC  QUIT")
-            self.foot_cache[crt] = self.tex(text_image(
+    def footer_tex(self, msg):
+        if msg not in self.foot_cache:
+            self.foot_cache[msg] = self.tex(text_image(
                 msg, self.h // 36, fill=(210, 210, 220, 255)))
-        return self.foot_cache[crt]
+        return self.foot_cache[msg]
 
     def rect(self, tex, x, y, w, h, tint=(1, 1, 1, 1)):
         tex.use(0)
@@ -186,7 +199,7 @@ class Shell:
         self.prog["uTint"].value = tuple(map(float, tint))
         self.vao.render(moderngl.TRIANGLES)
 
-    def draw(self, sel, crt, t):
+    def draw(self, sel, crt, t, row=0):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14) / self.title.height * 1.0
@@ -194,18 +207,20 @@ class Shell:
         tw = self.title.width * th / self.title.height
         self.rect(self.title, (self.w - tw) / 2, self.h * 0.05, tw, th)
 
-        cw = self.w * 0.24
+        n = len(self.cards)
+        cw = self.w * (0.24 if n <= 3 else 0.19)
         ch = cw * 0.75
-        gap = self.w * 0.045
-        total = 3 * cw + 2 * gap
-        y0 = self.h * 0.28
+        gap = self.w * (0.045 if n <= 3 else 0.03)
+        total = n * cw + (n - 1) * gap
+        y0 = self.h * 0.26
         for i, (stex, ssz, ltex, lsz, name) in enumerate(self.cards):
             x = (self.w - total) / 2 + i * (cw + gap)
-            s = 1.0 if i == sel else 0.88
-            dim = 1.0 if i == sel else 0.45
+            focused = (row == 0 and i == sel)
+            s = 1.0 if focused else 0.88
+            dim = 1.0 if focused else (0.6 if i == sel else 0.45)
             ew, eh = cw * s, ch * s
             ex, ey = x + (cw - ew) / 2, y0 + (ch - eh) / 2
-            if i == sel:
+            if focused:
                 pulse = 0.75 + 0.25 * math.sin(t * 4.0)
                 b = self.h * 0.008
                 self.rect(self.white, ex - b, ey - b, ew + 2 * b, eh + 2 * b,
@@ -220,24 +235,84 @@ class Shell:
                 lh, lw = maxlh, lsz[0] * maxlh / lsz[1]
             self.rect(ltex, ex + (ew - lw) / 2, y0 + ch + self.h * 0.035,
                       lw, lh, (dim, dim, dim, 1))
-        foot = self.footer_tex(crt)
+        # SETTINGS row under the cards
+        if row == 1:
+            pulse = 0.6 + 0.4 * math.sin(t * 4.0)
+            self.center_text("SETTINGS", self.h // 24, self.h * 0.80,
+                             (GOLD[0], GOLD[1], GOLD[2], pulse))
+        else:
+            self.center_text("SETTINGS", self.h // 24, self.h * 0.80,
+                             (0.55, 0.55, 0.62, 1.0))
+        foot = self.footer_tex(
+            "<  >  ^  v  NAVIGATE      ENTER / START  OK      ESC  QUIT")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
-        self.rect(foot, (self.w - fw) / 2, self.h * 0.90, fw, fh)
+        self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
+
+    def draw_settings(self, ssel, crt, t):
+        self.ctx.enable(moderngl.BLEND)
+        self.rect(self.bg, 0, 0, self.w, self.h)
+        tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
+        self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
+                  tw, self.h / 14 * 1.9)
+        self.center_text("SETTINGS", self.h // 18, self.h * 0.26,
+                         (1.0, 0.85, 0.4, 1.0))
+        items = [f"CRT EFFECTS      {'ON' if crt else 'OFF'}",
+                 "WHEEL SETUP", "BACK"]
+        for i, label in enumerate(items):
+            if i == ssel:
+                pulse = 0.65 + 0.35 * math.sin(t * 4.0)
+                col = (GOLD[0], GOLD[1], GOLD[2], pulse)
+            else:
+                col = (0.75, 0.75, 0.8, 1.0)
+            self.center_text(label, self.h // 26, self.h * (0.42 + 0.10 * i), col)
+        foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
+        fh = self.h / 36 * 1.9
+        fw = foot.width * fh / foot.height
+        self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
 
 
 class Audio:
-    """Menu music (mci, loops an extracted video-snap track) + synth blips
-    (winsound, plays alongside mci). All best-effort: missing files or a
-    missing audio device silently disable sound."""
+    """Menu music (mci loop; build/replace via harness/make_music.py) +
+    synth blips (winsound, plays alongside mci). All best-effort: missing
+    files or a missing audio device silently disable sound."""
 
     def __init__(self):
         self.assets = os.path.join(POC, "rig", "assets")
         self.music = False
+        self.ensure_blips()
         try:
             self._mci = ctypes.windll.winmm.mciSendStringW
         except Exception:
             self._mci = None
+
+    def ensure_blips(self):
+        """Synthesize the UI blips on first run (they live in gitignored
+        rig/assets, so a fresh install has none)."""
+        try:
+            import wave
+            os.makedirs(self.assets, exist_ok=True)
+
+            def synth(path, freqs, length, decay, vol):
+                if os.path.isfile(path):
+                    return
+                sr = 44100
+                t = np.arange(int(sr * length)) / sr
+                sig = sum(np.sin(2 * np.pi * f * t) * a for f, a in freqs)
+                sig = sig * np.exp(-t * decay) * vol
+                with wave.open(path, "w") as w:
+                    w.setnchannels(1)
+                    w.setsampwidth(2)
+                    w.setframerate(sr)
+                    w.writeframes((np.clip(sig, -1, 1) * 32000)
+                                  .astype("<i2").tobytes())
+
+            synth(os.path.join(self.assets, "nav.wav"),
+                  [(880, 1.0)], 0.07, 60, 0.6)
+            synth(os.path.join(self.assets, "select.wav"),
+                  [(220, 1.0), (440, 0.5)], 0.25, 14, 0.7)
+        except Exception:
+            pass
 
     def mci(self, cmd):
         if self._mci:
@@ -380,17 +455,35 @@ def main():
     hat_prev = 0
     joy_prev = {}
 
+    def joy_buttons(jid):
+        """pyGLFW returns (LP_c_ubyte, count) - unpack to a tuple of ints."""
+        r = glfw.get_joystick_buttons(jid)
+        if r is None:
+            return ()
+        if isinstance(r, tuple) and len(r) == 2 and not isinstance(r[0], int):
+            ptr, n = r
+            return tuple(ptr[i] for i in range(n))
+        return tuple(r)
+
+    def joy_hat(jid):
+        r = glfw.get_joystick_hats(jid)
+        if r is None:
+            return 0
+        if isinstance(r, tuple) and len(r) == 2 and not isinstance(r[0], int):
+            ptr, n = r
+            return ptr[0] if n else 0
+        return r[0] if len(r) else 0
+
     def joy_presses():
         """New button presses this frame across all joysticks:
         [(jid, name, button_index), ...]"""
         out = []
         try:
-            for jid in range(4):
+            for jid in range(16):
                 if not glfw.joystick_present(jid):
                     joy_prev.pop(jid, None)
                     continue
-                b = glfw.get_joystick_buttons(jid)
-                cur = tuple(b) if b is not None else ()
+                cur = joy_buttons(jid)
                 prev = joy_prev.get(jid, cur)
                 for i in range(min(len(cur), len(prev))):
                     if cur[i] and not prev[i]:
@@ -404,31 +497,36 @@ def main():
         return out
 
     launch = None
-    mode = "menu"
+    mode = "menu"        # menu | settings | wizard
+    row = 0              # menu: 0 = game cards, 1 = SETTINGS
+    ssel = 0             # settings: item index
     wiz_idx = 0
     wiz_bind = {}
     wiz_last = ""
     while not glfw.window_should_close(win):
         glfw.poll_events()
         presses = joy_presses()
-        # hat nav (menu only)
-        if mode == "menu":
+
+        # wheel hat -> arrow keys (menu + settings)
+        if mode in ("menu", "settings"):
             try:
-                for jid in range(4):
+                for jid in range(16):
                     if not glfw.joystick_present(jid):
                         continue
-                    hats = glfw.get_joystick_hats(jid)
-                    hat = hats[0] if hats is not None and len(hats) else 0
-                    if hat & glfw.HAT_LEFT and not (hat_prev & glfw.HAT_LEFT):
-                        actions.append(glfw.KEY_LEFT)
-                    if hat & glfw.HAT_RIGHT and not (hat_prev & glfw.HAT_RIGHT):
-                        actions.append(glfw.KEY_RIGHT)
-                    hat_prev = hat
+                    hat = joy_hat(jid)
+                    if hat != hat_prev:
+                        for h, key in ((glfw.HAT_LEFT, glfw.KEY_LEFT),
+                                       (glfw.HAT_RIGHT, glfw.KEY_RIGHT),
+                                       (glfw.HAT_UP, glfw.KEY_UP),
+                                       (glfw.HAT_DOWN, glfw.KEY_DOWN)):
+                            if hat & h and not (hat_prev & h):
+                                actions.append(key)
+                        hat_prev = hat
                     break
             except Exception:
                 pass
             if presses:
-                actions.append(glfw.KEY_ENTER)
+                actions.append(glfw.KEY_ENTER)   # any wheel button = OK
 
         if mode == "wizard":
             for key in actions:
@@ -437,7 +535,7 @@ def main():
                     wiz_idx += 1
                 elif key == glfw.KEY_BACKSPACE:     # abort wizard
                     audio.blip("select")
-                    mode = "menu"
+                    mode = "settings"
             actions.clear()
             if mode == "wizard" and presses:
                 jid, name, btn = presses[0]
@@ -448,38 +546,73 @@ def main():
             if mode == "wizard" and wiz_idx >= len(WIZARD_STEPS):
                 save_wheelmap(wiz_bind)
                 audio.blip("select")
-                mode = "menu"
-        else:
+                mode = "settings"
+
+        elif mode == "settings":
             for key in actions:
-                if key in (glfw.KEY_LEFT, glfw.KEY_A):
-                    sel = (sel - 1) % len(GAMES)
+                if key in (glfw.KEY_UP, glfw.KEY_W):
+                    ssel = (ssel - 1) % 3
                     audio.blip("nav")
-                elif key in (glfw.KEY_RIGHT, glfw.KEY_D):
-                    sel = (sel + 1) % len(GAMES)
+                elif key in (glfw.KEY_DOWN, glfw.KEY_S):
+                    ssel = (ssel + 1) % 3
                     audio.blip("nav")
-                elif key == glfw.KEY_C:
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 0:
                     state["crt"] = not state["crt"]
                     save_config(state)
                     audio.blip("nav")
-                elif key == glfw.KEY_S:
-                    mode = "wizard"
-                    wiz_idx = 0
-                    wiz_bind = {}
-                    wiz_last = ""
-                    audio.blip("select")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
-                    launch = GAMES[sel][0]
+                    if ssel == 0:
+                        state["crt"] = not state["crt"]
+                        save_config(state)
+                        audio.blip("nav")
+                    elif ssel == 1:
+                        mode = "wizard"
+                        wiz_idx = 0
+                        wiz_bind = {}
+                        wiz_last = ""
+                        audio.blip("select")
+                    else:
+                        mode = "menu"
+                        audio.blip("select")
+                elif key == glfw.KEY_ESCAPE:
+                    mode = "menu"
+                    audio.blip("nav")
+            actions.clear()
+
+        else:   # menu
+            for key in actions:
+                if key in (glfw.KEY_LEFT, glfw.KEY_A):
+                    if row == 0:
+                        sel = (sel - 1) % len(GAMES)
+                        audio.blip("nav")
+                elif key in (glfw.KEY_RIGHT, glfw.KEY_D):
+                    if row == 0:
+                        sel = (sel + 1) % len(GAMES)
+                        audio.blip("nav")
+                elif key in (glfw.KEY_DOWN, glfw.KEY_UP,
+                             glfw.KEY_W, glfw.KEY_S):
+                    row = 1 - row
+                    audio.blip("nav")
+                elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
+                    if row == 0:
+                        launch = GAMES[sel][0]
+                    else:
+                        mode = "settings"
+                        ssel = 0
                     audio.blip("select")
                 elif key == glfw.KEY_ESCAPE:
                     glfw.set_window_should_close(win, True)
             actions.clear()
 
         ctx.clear(0, 0, 0, 1)
+        t = time.time() % 3600
         if mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
             shell.draw_wizard(WIZARD_STEPS[wiz_idx][0], wiz_idx,
                               len(WIZARD_STEPS), wiz_last)
+        elif mode == "settings":
+            shell.draw_settings(ssel, state["crt"], t)
         else:
-            shell.draw(sel, state["crt"], time.time() % 3600)
+            shell.draw(sel, state["crt"], t, row)
         glfw.swap_buffers(win)
 
         if launch:

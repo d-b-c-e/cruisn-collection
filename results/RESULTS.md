@@ -600,3 +600,86 @@ JOYCODE_2_BUTTON1.
 Standing: physical wheel test of wizard bindings + FFB forces; Esc in-game
 settings overlay (designed, not built: GL-thread menu polled via
 GetAsyncKeyState, WM_CLOSE exit path, MAME Tab menu meanwhile).
+
+---
+
+# Overnight session 3 (2026-08-20): Exotica lands, nav overhaul, install story
+
+## Cruis'n Exotica — "simpler than we think" confirmed
+
+The user asked to go hard at Exotica support. Decisive prior fact: the rig's
+FFB log shows RomName=crusnexo 20,000+ times — the user already plays it via
+MAME 0.286, so "supported at parity" only needs packaging.
+
+- **One exe, four games**: midzeus.cpp added to the vunit subtarget
+  (SOURCES=midvunit.cpp,midzeus.cpp + REGENIE). Blocker on the way: genie's
+  source scanner cannot tokenize the raw-string shader header
+  ("unterminated character literal") — generator rewritten to emit escaped
+  C strings (harness/gen_shaders.py, now the documented regen path).
+- Shell shows 4 cards ("CRUIS'N COLLECTION" now — Exotica is not V-Unit);
+  run_rig gives Zeus games `video d3d` (no GL overlay to punch through —
+  MIDV_GL hooks are inert for zeus) and everything else applies unchanged:
+  fullscreen surgery, focus enforcement, FFB plugin (racing log proves
+  crusnexo FFB works), startup-screen skip (crusnexo is NOT_WORKING-flagged
+  → warning screen; env-gated skip handles it), NVRAM fixture seeded from
+  the racing build (fixtures/nvram-crusnexo).
+- **E2E verified**: TRANS SELECT attract at 100.00%, fullscreen 3840x2160,
+  focused, clean close.
+
+## Zeus renderer-replacement scoping (the gated stretch item) — VIABLE
+
+`zeus2_renderer::zeus2_draw_quad` (devices/video/zeus2.cpp:1550) is the
+choke point, and it is as clean as V-Unit's process_dma_queue: every quad
+arrives as structured data (4 verts, u/v, texdata) with the model-view
+matrix in device state. Env-gated counter POC (MIDZ_STATS=1) profiled
+attract: **24–2,067 quads/frame typical, 6,325 peak** — far inside the GPU
+budget (V-Unit: 2,654 peak, rendered at 289 fps at 4x).
+
+Three-level assessment recorded:
+1. Parity packaging — DONE tonight.
+2. GL replacement over zeus2_draw_quad — same arc as the V-Unit POC
+   (capture → reference → GL → in-process), architecturally EASIER
+   (perspective-correct + Z-buffer are native GPU concepts); oracle
+   compares vs MAME's own imperfect output.
+3. True arcade accuracy — Zeus2 has unemulated features upstream
+   (NOT_WORKING flag); a level-2 renderer could approximate/fix visuals
+   ABOVE the emulation, wanszai-style, without core work.
+
+## Launcher: proper navigation + wizard input fixed
+
+- User report "wizard ignored my wheel buttons": pyGLFW returns
+  (LP_c_ubyte pointer, count) tuples from get_joystick_buttons/hats — the
+  code iterated the 2-tuple, so no press ever registered and hat nav
+  silently TypeError'd. Proper unpacking now; jid scan 0-15 (Moza=3,
+  Stalk=4 — the old range(4) missed the stalk entirely).
+- Menu restructure per user: game cards row + SETTINGS row (up/down),
+  Settings screen = CRT toggle / WHEEL SETUP / BACK. Wizard returns to
+  Settings. Wheel: hat navigates, any button = OK.
+- Menu music: harness/make_music.py pipeline (yt-dlp → trim → loudnorm →
+  rig/assets/menumusic.wav); user's requested track installed (866 s,
+  first 17 s trimmed). Blips self-regenerate on first run.
+
+## Install/distribution story (user request)
+
+- docs/INSTALL.md: player path (release folder + setup.ps1 + own ROMs +
+  FFB plugin download) and developer path (MSYS2 build from the patch
+  series). Legal posture restated: no ROMs, no assets, no binaries.
+- setup.ps1: checks Python/deps (auto-installs), locates vunit.exe + ROMs,
+  verifies the four FFB plugin files, writes CruisnCollection.bat with the
+  CRUISN_* env overrides.
+- Portability pass: CRUISN_VUNIT/ROMS/MAME_DIR/CTRLR/ART env overrides;
+  missing art → generated cards; missing EmuEZ ctrlr → wizard-only ctrlr;
+  missing audio → silence.
+
+## UDP telemetry (user stretch idea) — design sketch, not built
+
+- Force: the FFB value already flows through MAME outputs (the plugin
+  consumes it) — a UDP mirror is trivial: env-gated sender in our patch or
+  a second output client. Phase A.
+- Speed/RPM: live in game RAM (HUD renders them) — needs per-game address
+  hunting (Lua memory search while driving at known speed), then the same
+  env-gated UDP sender reads them per frame. Phase B. Target consumer:
+  SimHub custom-UDP profile driving a Buttkicker.
+
+Standing after session 3: user to re-test wizard + nav + music; Exotica
+from the shell; then the Esc overlay and telemetry Phase A are next.

@@ -1,69 +1,54 @@
 # Session Notes
 <!-- Handoff notes. Read these first, then CLAUDE.md, then results/RESULTS.md. -->
 
-- **Date:** 2026-08-19 (overnight session 2 complete, user away)
-- **Branch:** master (mame-src side: `poc/quadlog` @ cc0aff8c)
+- **Date:** 2026-08-20 (overnight session 3 complete)
+- **Branch:** master (mame-src side: `poc/quadlog` @ ad4d2d8b)
 
 ## Where things stand
 
-Phase 1 remains rig-verified; the collection shell is the product entry
-(deck button). **All three games verified 100.0000% bit-exact** vs MAME.
-CRT pass shipped with F9 live toggle. FFB game forces fixed (MAME64.dll).
-Perf crackle fixed (priority 1). Wheel high-button root cause found and
-fixed at BOTH levels (winhybrid DIJoystick2 + BUTTONnn→ADDSW translation).
-Wheel-setup wizard shipped in the shell (S key). Shell has music/blips and
-returns 0.6 s after game exit. Overlay cursor/click fixed; fullscreen now
-enforced for the window's lifetime (crusnwld's mode-change resize).
+**CRUIS'N COLLECTION is now four games in one exe** (midzeus joined the
+vunit subtarget): USA/World/Off Road bit-exact through our GL renderer,
+Exotica through MAME's own renderer at rig-parity (NOT_WORKING-flagged
+upstream but play-tested; GL replacement scoped VIABLE — zeus2_draw_quad,
+≤6.3k quads/frame). Shell has proper nav (games row + Settings screen),
+working wheel/wizard input (pyGLFW pointer-tuple bug fixed), the user's
+chosen soundtrack via the make_music.py pipeline, install docs + setup.ps1.
 
-## Morning checklist (user, at the wheel)
+## Morning checklist (user)
 
-1. **Deck button → shell**: music + blips; navigate (wheel hat works too).
-2. **S → WHEEL SETUP**: press wheel/shifter buttons for COIN, START,
-   VIEW1-3, RADIO, GEAR1-4 (Esc skips a step, Backspace cancels). Then
-   launch a game and test every bound button. This exercises the whole
-   new input chain (winhybrid DIJoystick2 + ADDSW translation + wizard).
-3. **FFB**: real game forces should now fire (collisions, road) — the
-   plugin logs `RunningFFB = RacingFullValueActive2` when active.
-4. **Cruis'n World**: should now hold fullscreen; cursor should vanish
-   over the game; clicking should refocus (no beep). Re-judge "emulation
-   quality" at full speed — it is bit-exact vs MAME; the dark dithered
-   rectangles are MAME's own output (research: no matching bug report;
-   MT 01798 = known green-neutral-gear artifact, minor, open since 2008).
-5. F9 CRT A/B taste check still open from yesterday.
+1. Deck button → new nav: up/down to SETTINGS, CRT toggle + WHEEL SETUP
+   inside. **Wizard should now react to wheel/shifter/stalk buttons** —
+   bind everything, then verify in-game from the wheel.
+2. **Exotica card** → launches fullscreen d3d; FFB as in the racing build.
+3. Music: the requested track plays in the shell (swap any time:
+   `python harness/make_music.py <url> --skip N`).
+4. Still watching: CRT taste (F9), World margin black-bars, mid-game
+   crash singleton (dumps in rig/crashdumps).
 
 ## Open Items
 
-- [ ] Physical wheel test of wizard bindings + FFB (above).
-- [ ] **Esc in-game settings overlay** (wanszai parity) — designed, not
-      built: GL-thread menu drawn in the overlay, polled via
-      GetAsyncKeyState (rawinput ignores injection; physical Esc IS
-      pollable), Exit = WM_CLOSE to owner, CRT/FFB toggles as items.
-      MAME's Tab menu remains the deep-settings path meanwhile.
-- [ ] C++ overlay HEIGHT=400 vs offroadc's 401-line mode (last line not
-      presented; cosmetic).
-- [ ] Margin pop-in class: floating parked geometry at margin edges
-      (crusnwld left edge); sky black-bars where 3D sky runs out
-      (scene-dependent). Possible heuristics later; documented.
-- [ ] Mid-game EIP=0 crash singleton (8:46pm 08-19) — unexplained; WER
-      minidumps now land in rig/crashdumps/ for attribution.
-- [ ] Plugin teardown AV at exit (cosmetic, post-exit; masked by instant
-      shell return). Analyze first minidump eventually.
-- [ ] Multi-hour soak + margin sweep (unchanged).
-- [ ] Zeus scoping capture for Exotica (stretch, unchanged).
+- [ ] Physical wizard/nav/Exotica pass (above).
+- [ ] Esc in-game settings overlay (designed; GL-thread menu +
+      GetAsyncKeyState + WM_CLOSE exit).
+- [ ] UDP telemetry Phase A (mirror the FFB output value to UDP for
+      Buttkicker/SimHub) then Phase B (speed/RPM via Lua RAM hunt).
+- [ ] Zeus GL renderer (level 2): capture → reference → GL over
+      zeus2_draw_quad; MIDZ_STATS=1 profiler is in.
+- [ ] Release packaging dry-run: follow docs/INSTALL.md + setup.ps1 on a
+      clean layout; consider PyInstaller freeze of the shell.
+- [ ] C++ overlay HEIGHT=400 vs offroadc's 401 lines (cosmetic).
+- [ ] Teardown-AV minidump analysis; margin pop-in heuristics; soak.
 
 ## Next Steps
 
-1. Ingest morning wheel-test results (wizard, FFB, World re-judgment).
-2. Esc in-game overlay implementation.
-3. Shell settings page (scale/aspect/FFB strength — wanszai settings.ini
-   is the model, see RESULTS teardown notes).
-4. Consider upstreaming the winhybrid DIJoystick2 fix (benefits vanilla
-   MAME users with >32-button wheels).
+1. Ingest wheel-test results (wizard + Exotica).
+2. Esc overlay implementation; telemetry Phase A (both small C++/launcher).
+3. Zeus GL capture arc when a session can afford it.
 
 ## Context for Next Session
 
-All committed: cruisn-poc master, mame-src poc/quadlog @ cc0aff8c (patch
-series exported), Launchbox-Racing (bat → shell). The Lua input-dump
-harness pattern (dump joystick items + resolved seqs) lives in RESULTS —
-recreate from there if needed; it is the fastest way to verify binding
-questions without touching the wheel.
+All committed: cruisn-poc master, mame-src poc/quadlog @ ad4d2d8b (patch
+series exported — now includes zeus2 + winhybrid + frontend files),
+Launchbox-Racing unchanged tonight. Build command now needs BOTH sources
+(midvunit + midzeus) — see CLAUDE.md; shader regen is
+`python harness/gen_shaders.py` (raw strings break REGENIE).
