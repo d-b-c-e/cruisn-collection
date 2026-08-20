@@ -13,7 +13,7 @@ import sys
 import tempfile
 
 POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(POC, "rig", "assets", "menumusic.wav")
+OUT = os.path.join(POC, "rig", "assets", "menumusic.mp3")
 
 
 def main():
@@ -35,11 +35,12 @@ def main():
         if args.duration:
             cmd += ["-t", str(args.duration)]
         cmd += ["-vn", "-ac", "2", "-ar", "44100",
-                "-af", "loudnorm=I=-18", OUT]
+                "-af", "loudnorm=I=-18", "-b:a", "192k", OUT]
         subprocess.run(cmd, check=True)
-    import wave
-    with wave.open(OUT) as w:
-        print(f"wrote {OUT}: {w.getnframes() / w.getframerate():.0f}s")
+    dur = subprocess.run(["ffprobe", "-v", "error", "-show_entries",
+                          "format=duration", "-of", "csv=p=0", OUT],
+                         capture_output=True, text=True).stdout.strip()
+    print(f"wrote {OUT}: {float(dur or 0):.0f}s")
 
 
 if __name__ == "__main__":

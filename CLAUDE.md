@@ -80,8 +80,10 @@ cruisn-poc/
   (Event Log; also fires headless with our GL thread not running — plugin
   teardown race). Our GL thread stops cleanly via a machine-exit notifier.
   WER minidumps land in `rig/crashdumps/` for future forensics.
-- After committing in mame-src, refresh the exported series:
-  `git format-patch --stdout 6f55ed93..HEAD > E:/Source/cruisn-poc/patch/vunit-poc-patches.patch`
+- After committing in mame-src, refresh the exported series (FULL series
+  from the upstream tag — CI and INSTALL.md apply it onto a clean mame0286
+  clone, so the DIJOYSTATE2 base commit must be included):
+  `git format-patch --stdout mame0286..HEAD > E:/Source/cruisn-poc/patch/vunit-poc-patches.patch`
 - ⚠️ **NEVER touch the racing build's deployed
   `Launchbox-Racing\Emulators\mame286\mame.exe`.** The POC only reads its
   `roms/`, `ctrlr/`, and nvram fixtures.

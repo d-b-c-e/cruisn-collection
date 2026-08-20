@@ -324,11 +324,15 @@ class Audio:
                 pass
 
     def start_music(self):
-        m = os.path.join(self.assets, "menumusic.wav")
-        if os.path.isfile(m) and not self.music:
-            self.mci(f'open "{m}" type mpegvideo alias menumusic')
-            self.mci("play menumusic repeat")
-            self.music = True
+        if self.music:
+            return
+        for ext in ("mp3", "wav"):
+            m = os.path.join(self.assets, f"menumusic.{ext}")
+            if os.path.isfile(m):
+                self.mci(f'open "{m}" type mpegvideo alias menumusic')
+                self.mci("play menumusic repeat")
+                self.music = True
+                return
 
     def stop_music(self):
         if self.music:

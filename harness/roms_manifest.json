@@ -1,0 +1,2548 @@
+{
+ "crusnusa": {
+  "desc": "Cruis'n USA v4.5",
+  "parent": true,
+  "roms": {
+   "l1_cruisin_u.s.a._sound_rom_u2.u2": {
+    "size": 524288,
+    "crc": "b9338332"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u3.u3": {
+    "size": 524288,
+    "crc": "cd8325d6"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u4.u4": {
+    "size": 524288,
+    "crc": "fab457f3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u5.u5": {
+    "size": 524288,
+    "crc": "becc92f4"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u6.u6": {
+    "size": 524288,
+    "crc": "a9f915d3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u7.u7": {
+    "size": 524288,
+    "crc": "424f0bbc"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u8.u8": {
+    "size": 524288,
+    "crc": "03c28199"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u9.u9": {
+    "size": 524288,
+    "crc": "24ba6371"
+   },
+   "v4.5_4-11-95_cruisn_usa_u10_86b3.u10": {
+    "size": 524288,
+    "crc": "b623eab9"
+   },
+   "v4.5_4-11-95_cruisn_usa_u11_6d73.u11": {
+    "size": 524288,
+    "crc": "2e47ee94"
+   },
+   "v4.5_4-11-95_cruisn_usa_u12_4b32.u12": {
+    "size": 524288,
+    "crc": "e9197942"
+   },
+   "v4.5_4-11-95_cruisn_usa_u13_430e.u13": {
+    "size": 524288,
+    "crc": "4a7c434c"
+   },
+   "l1_cruisin_u.s.a._game_rom_u14.u14": {
+    "size": 524288,
+    "crc": "6a4ae622"
+   },
+   "l1_cruisin_u.s.a._game_rom_u15.u15": {
+    "size": 524288,
+    "crc": "1a0ad3b7"
+   },
+   "l1_cruisin_u.s.a._game_rom_u16.u16": {
+    "size": 524288,
+    "crc": "799d4dd6"
+   },
+   "l1_cruisin_u.s.a._game_rom_u17.u17": {
+    "size": 524288,
+    "crc": "3d68b660"
+   },
+   "l1_cruisin_u.s.a._game_rom_u18.u18": {
+    "size": 524288,
+    "crc": "9e8193fb"
+   },
+   "l1_cruisin_u.s.a._game_rom_u19.u19": {
+    "size": 524288,
+    "crc": "0bf60cde"
+   },
+   "l1_cruisin_u.s.a._game_rom_u20.u20": {
+    "size": 524288,
+    "crc": "c07f68f0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u21.u21": {
+    "size": 524288,
+    "crc": "b0264aed"
+   },
+   "l1_cruisin_u.s.a._game_rom_u22.u22": {
+    "size": 524288,
+    "crc": "ad137193"
+   },
+   "l1_cruisin_u.s.a._game_rom_u23.u23": {
+    "size": 524288,
+    "crc": "842449b0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u24.u24": {
+    "size": 524288,
+    "crc": "0b2275be"
+   },
+   "l1_cruisin_u.s.a._game_rom_u25.u25": {
+    "size": 524288,
+    "crc": "2b9fe68f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u26.u26": {
+    "size": 524288,
+    "crc": "ae56b871"
+   },
+   "l1_cruisin_u.s.a._game_rom_u27.u27": {
+    "size": 524288,
+    "crc": "2d977a8e"
+   },
+   "l1_cruisin_u.s.a._game_rom_u28.u28": {
+    "size": 524288,
+    "crc": "cffa5fb1"
+   },
+   "l1_cruisin_u.s.a._game_rom_u29.u29": {
+    "size": 524288,
+    "crc": "cbe52c60"
+   }
+  }
+ },
+ "crusnusa44": {
+  "desc": "Cruis'n USA v4.4",
+  "parent": false,
+  "roms": {
+   "l1_cruisin_u.s.a._sound_rom_u2.u2": {
+    "size": 524288,
+    "crc": "b9338332"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u3.u3": {
+    "size": 524288,
+    "crc": "cd8325d6"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u4.u4": {
+    "size": 524288,
+    "crc": "fab457f3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u5.u5": {
+    "size": 524288,
+    "crc": "becc92f4"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u6.u6": {
+    "size": 524288,
+    "crc": "a9f915d3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u7.u7": {
+    "size": 524288,
+    "crc": "424f0bbc"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u8.u8": {
+    "size": 524288,
+    "crc": "03c28199"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u9.u9": {
+    "size": 524288,
+    "crc": "24ba6371"
+   },
+   "v4.4_3-15-95_cruisn_usa_u10_87df.u10": {
+    "size": 524288,
+    "crc": "e77e2a0c"
+   },
+   "v4.4_3-15-95_cruisn_usa_u11_6e35.u11": {
+    "size": 524288,
+    "crc": "6eb3e187"
+   },
+   "v4.4_3-15-95_cruisn_usa_u12_4c08.u12": {
+    "size": 524288,
+    "crc": "5942b6d6"
+   },
+   "v4.4_3-15-95_cruisn_usa_u13_43ea.u13": {
+    "size": 524288,
+    "crc": "9da2124a"
+   },
+   "l1_cruisin_u.s.a._game_rom_u14.u14": {
+    "size": 524288,
+    "crc": "6a4ae622"
+   },
+   "l1_cruisin_u.s.a._game_rom_u15.u15": {
+    "size": 524288,
+    "crc": "1a0ad3b7"
+   },
+   "l1_cruisin_u.s.a._game_rom_u16.u16": {
+    "size": 524288,
+    "crc": "799d4dd6"
+   },
+   "l1_cruisin_u.s.a._game_rom_u17.u17": {
+    "size": 524288,
+    "crc": "3d68b660"
+   },
+   "l1_cruisin_u.s.a._game_rom_u18.u18": {
+    "size": 524288,
+    "crc": "9e8193fb"
+   },
+   "l1_cruisin_u.s.a._game_rom_u19.u19": {
+    "size": 524288,
+    "crc": "0bf60cde"
+   },
+   "l1_cruisin_u.s.a._game_rom_u20.u20": {
+    "size": 524288,
+    "crc": "c07f68f0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u21.u21": {
+    "size": 524288,
+    "crc": "b0264aed"
+   },
+   "l1_cruisin_u.s.a._game_rom_u22.u22": {
+    "size": 524288,
+    "crc": "ad137193"
+   },
+   "l1_cruisin_u.s.a._game_rom_u23.u23": {
+    "size": 524288,
+    "crc": "842449b0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u24.u24": {
+    "size": 524288,
+    "crc": "0b2275be"
+   },
+   "l1_cruisin_u.s.a._game_rom_u25.u25": {
+    "size": 524288,
+    "crc": "2b9fe68f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u26.u26": {
+    "size": 524288,
+    "crc": "ae56b871"
+   },
+   "l1_cruisin_u.s.a._game_rom_u27.u27": {
+    "size": 524288,
+    "crc": "2d977a8e"
+   },
+   "l1_cruisin_u.s.a._game_rom_u28.u28": {
+    "size": 524288,
+    "crc": "cffa5fb1"
+   },
+   "l1_cruisin_u.s.a._game_rom_u29.u29": {
+    "size": 524288,
+    "crc": "cbe52c60"
+   }
+  }
+ },
+ "crusnusa41": {
+  "desc": "Cruis'n USA v4.1",
+  "parent": false,
+  "roms": {
+   "l1_cruisin_u.s.a._sound_rom_u2.u2": {
+    "size": 524288,
+    "crc": "b9338332"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u3.u3": {
+    "size": 524288,
+    "crc": "cd8325d6"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u4.u4": {
+    "size": 524288,
+    "crc": "fab457f3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u5.u5": {
+    "size": 524288,
+    "crc": "becc92f4"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u6.u6": {
+    "size": 524288,
+    "crc": "a9f915d3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u7.u7": {
+    "size": 524288,
+    "crc": "424f0bbc"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u8.u8": {
+    "size": 524288,
+    "crc": "03c28199"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u9.u9": {
+    "size": 524288,
+    "crc": "24ba6371"
+   },
+   "l4.1_dual_game_linking_cruisin_u.s.a._u10_game_rom.u10": {
+    "size": 524288,
+    "crc": "eb9372d1"
+   },
+   "l4.1_dual_game_linking_cruisin_u.s.a._u11_game_rom.u11": {
+    "size": 524288,
+    "crc": "76f3cd40"
+   },
+   "l4.1_dual_game_linking_cruisin_u.s.a._u12_game_rom.u12": {
+    "size": 524288,
+    "crc": "9021a376"
+   },
+   "l4.1_dual_game_linking_cruisin_u.s.a._u13_game_rom.u13": {
+    "size": 524288,
+    "crc": "1687c932"
+   },
+   "l1_cruisin_u.s.a._game_rom_u14.u14": {
+    "size": 524288,
+    "crc": "6a4ae622"
+   },
+   "l1_cruisin_u.s.a._game_rom_u15.u15": {
+    "size": 524288,
+    "crc": "1a0ad3b7"
+   },
+   "l1_cruisin_u.s.a._game_rom_u16.u16": {
+    "size": 524288,
+    "crc": "799d4dd6"
+   },
+   "l1_cruisin_u.s.a._game_rom_u17.u17": {
+    "size": 524288,
+    "crc": "3d68b660"
+   },
+   "l1_cruisin_u.s.a._game_rom_u18.u18": {
+    "size": 524288,
+    "crc": "9e8193fb"
+   },
+   "l1_cruisin_u.s.a._game_rom_u19.u19": {
+    "size": 524288,
+    "crc": "0bf60cde"
+   },
+   "l1_cruisin_u.s.a._game_rom_u20.u20": {
+    "size": 524288,
+    "crc": "c07f68f0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u21.u21": {
+    "size": 524288,
+    "crc": "b0264aed"
+   },
+   "l1_cruisin_u.s.a._game_rom_u22.u22": {
+    "size": 524288,
+    "crc": "ad137193"
+   },
+   "l1_cruisin_u.s.a._game_rom_u23.u23": {
+    "size": 524288,
+    "crc": "842449b0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u24.u24": {
+    "size": 524288,
+    "crc": "0b2275be"
+   },
+   "l1_cruisin_u.s.a._game_rom_u25.u25": {
+    "size": 524288,
+    "crc": "2b9fe68f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u26.u26": {
+    "size": 524288,
+    "crc": "ae56b871"
+   },
+   "l1_cruisin_u.s.a._game_rom_u27.u27": {
+    "size": 524288,
+    "crc": "2d977a8e"
+   },
+   "l1_cruisin_u.s.a._game_rom_u28.u28": {
+    "size": 524288,
+    "crc": "cffa5fb1"
+   },
+   "l1_cruisin_u.s.a._game_rom_u29.u29": {
+    "size": 524288,
+    "crc": "cbe52c60"
+   }
+  }
+ },
+ "crusnusa40": {
+  "desc": "Cruis'n USA v4.0",
+  "parent": false,
+  "roms": {
+   "l1_cruisin_u.s.a._sound_rom_u2.u2": {
+    "size": 524288,
+    "crc": "b9338332"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u3.u3": {
+    "size": 524288,
+    "crc": "cd8325d6"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u4.u4": {
+    "size": 524288,
+    "crc": "fab457f3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u5.u5": {
+    "size": 524288,
+    "crc": "becc92f4"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u6.u6": {
+    "size": 524288,
+    "crc": "a9f915d3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u7.u7": {
+    "size": 524288,
+    "crc": "424f0bbc"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u8.u8": {
+    "size": 524288,
+    "crc": "03c28199"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u9.u9": {
+    "size": 524288,
+    "crc": "24ba6371"
+   },
+   "l4_cruisin_u.s.a._game_rom_u10.u10": {
+    "size": 524288,
+    "crc": "7526d8bf"
+   },
+   "l4_cruisin_u.s.a._game_rom_u11.u11": {
+    "size": 524288,
+    "crc": "bfc691b9"
+   },
+   "l4_cruisin_u.s.a._game_rom_u12.u12": {
+    "size": 524288,
+    "crc": "059c2234"
+   },
+   "l4_cruisin_u.s.a._game_rom_u13.u13": {
+    "size": 524288,
+    "crc": "39e0ff7d"
+   },
+   "l1_cruisin_u.s.a._game_rom_u14.u14": {
+    "size": 524288,
+    "crc": "6a4ae622"
+   },
+   "l1_cruisin_u.s.a._game_rom_u15.u15": {
+    "size": 524288,
+    "crc": "1a0ad3b7"
+   },
+   "l1_cruisin_u.s.a._game_rom_u16.u16": {
+    "size": 524288,
+    "crc": "799d4dd6"
+   },
+   "l1_cruisin_u.s.a._game_rom_u17.u17": {
+    "size": 524288,
+    "crc": "3d68b660"
+   },
+   "l1_cruisin_u.s.a._game_rom_u18.u18": {
+    "size": 524288,
+    "crc": "9e8193fb"
+   },
+   "l1_cruisin_u.s.a._game_rom_u19.u19": {
+    "size": 524288,
+    "crc": "0bf60cde"
+   },
+   "l1_cruisin_u.s.a._game_rom_u20.u20": {
+    "size": 524288,
+    "crc": "c07f68f0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u21.u21": {
+    "size": 524288,
+    "crc": "b0264aed"
+   },
+   "l1_cruisin_u.s.a._game_rom_u22.u22": {
+    "size": 524288,
+    "crc": "ad137193"
+   },
+   "l1_cruisin_u.s.a._game_rom_u23.u23": {
+    "size": 524288,
+    "crc": "842449b0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u24.u24": {
+    "size": 524288,
+    "crc": "0b2275be"
+   },
+   "l1_cruisin_u.s.a._game_rom_u25.u25": {
+    "size": 524288,
+    "crc": "2b9fe68f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u26.u26": {
+    "size": 524288,
+    "crc": "ae56b871"
+   },
+   "l1_cruisin_u.s.a._game_rom_u27.u27": {
+    "size": 524288,
+    "crc": "2d977a8e"
+   },
+   "l1_cruisin_u.s.a._game_rom_u28.u28": {
+    "size": 524288,
+    "crc": "cffa5fb1"
+   },
+   "l1_cruisin_u.s.a._game_rom_u29.u29": {
+    "size": 524288,
+    "crc": "cbe52c60"
+   }
+  }
+ },
+ "crusnusa21": {
+  "desc": "Cruis'n USA v2.1",
+  "parent": false,
+  "roms": {
+   "l1_cruisin_u.s.a._sound_rom_u2.u2": {
+    "size": 524288,
+    "crc": "b9338332"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u3.u3": {
+    "size": 524288,
+    "crc": "cd8325d6"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u4.u4": {
+    "size": 524288,
+    "crc": "fab457f3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u5.u5": {
+    "size": 524288,
+    "crc": "becc92f4"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u6.u6": {
+    "size": 524288,
+    "crc": "a9f915d3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u7.u7": {
+    "size": 524288,
+    "crc": "424f0bbc"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u8.u8": {
+    "size": 524288,
+    "crc": "03c28199"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u9.u9": {
+    "size": 524288,
+    "crc": "24ba6371"
+   },
+   "l2.1_cruisin_u.s.a._game_rom_u10.u10": {
+    "size": 524288,
+    "crc": "bb759945"
+   },
+   "l2.1_cruisin_u.s.a._game_rom_u11.u11": {
+    "size": 524288,
+    "crc": "4d2da096"
+   },
+   "l2.1_cruisin_u.s.a._game_rom_u12.u12": {
+    "size": 524288,
+    "crc": "4b66fe5e"
+   },
+   "l2.1_cruisin_u.s.a._game_rom_u13.u13": {
+    "size": 524288,
+    "crc": "a165359f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u14.u14": {
+    "size": 524288,
+    "crc": "6a4ae622"
+   },
+   "l1_cruisin_u.s.a._game_rom_u15.u15": {
+    "size": 524288,
+    "crc": "1a0ad3b7"
+   },
+   "l1_cruisin_u.s.a._game_rom_u16.u16": {
+    "size": 524288,
+    "crc": "799d4dd6"
+   },
+   "l1_cruisin_u.s.a._game_rom_u17.u17": {
+    "size": 524288,
+    "crc": "3d68b660"
+   },
+   "l1_cruisin_u.s.a._game_rom_u18.u18": {
+    "size": 524288,
+    "crc": "9e8193fb"
+   },
+   "l1_cruisin_u.s.a._game_rom_u19.u19": {
+    "size": 524288,
+    "crc": "0bf60cde"
+   },
+   "l1_cruisin_u.s.a._game_rom_u20.u20": {
+    "size": 524288,
+    "crc": "c07f68f0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u21.u21": {
+    "size": 524288,
+    "crc": "b0264aed"
+   },
+   "l1_cruisin_u.s.a._game_rom_u22.u22": {
+    "size": 524288,
+    "crc": "ad137193"
+   },
+   "l1_cruisin_u.s.a._game_rom_u23.u23": {
+    "size": 524288,
+    "crc": "842449b0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u24.u24": {
+    "size": 524288,
+    "crc": "0b2275be"
+   },
+   "l1_cruisin_u.s.a._game_rom_u25.u25": {
+    "size": 524288,
+    "crc": "2b9fe68f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u26.u26": {
+    "size": 524288,
+    "crc": "ae56b871"
+   },
+   "l1_cruisin_u.s.a._game_rom_u27.u27": {
+    "size": 524288,
+    "crc": "2d977a8e"
+   },
+   "l1_cruisin_u.s.a._game_rom_u28.u28": {
+    "size": 524288,
+    "crc": "cffa5fb1"
+   },
+   "l1_cruisin_u.s.a._game_rom_u29.u29": {
+    "size": 524288,
+    "crc": "cbe52c60"
+   }
+  }
+ },
+ "crusnusa20": {
+  "desc": "Cruis'n USA v2.0",
+  "parent": false,
+  "roms": {
+   "l1_cruisin_u.s.a._sound_rom_u2.u2": {
+    "size": 524288,
+    "crc": "b9338332"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u3.u3": {
+    "size": 524288,
+    "crc": "cd8325d6"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u4.u4": {
+    "size": 524288,
+    "crc": "fab457f3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u5.u5": {
+    "size": 524288,
+    "crc": "becc92f4"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u6.u6": {
+    "size": 524288,
+    "crc": "a9f915d3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u7.u7": {
+    "size": 524288,
+    "crc": "424f0bbc"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u8.u8": {
+    "size": 524288,
+    "crc": "03c28199"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u9.u9": {
+    "size": 524288,
+    "crc": "24ba6371"
+   },
+   "l2.0_cruisin_u.s.a._game_rom_u10.u10": {
+    "size": 524288,
+    "crc": "5cdeaee9"
+   },
+   "l2.0_cruisin_u.s.a._game_rom_u11.u11": {
+    "size": 524288,
+    "crc": "87aaaeef"
+   },
+   "l2.0_cruisin_u.s.a._game_rom_u12.u12": {
+    "size": 524288,
+    "crc": "587b01ad"
+   },
+   "l2.0_cruisin_u.s.a._game_rom_u13.u13": {
+    "size": 524288,
+    "crc": "23f1a96c"
+   },
+   "l1_cruisin_u.s.a._game_rom_u14.u14": {
+    "size": 524288,
+    "crc": "6a4ae622"
+   },
+   "l1_cruisin_u.s.a._game_rom_u15.u15": {
+    "size": 524288,
+    "crc": "1a0ad3b7"
+   },
+   "l1_cruisin_u.s.a._game_rom_u16.u16": {
+    "size": 524288,
+    "crc": "799d4dd6"
+   },
+   "l1_cruisin_u.s.a._game_rom_u17.u17": {
+    "size": 524288,
+    "crc": "3d68b660"
+   },
+   "l1_cruisin_u.s.a._game_rom_u18.u18": {
+    "size": 524288,
+    "crc": "9e8193fb"
+   },
+   "l1_cruisin_u.s.a._game_rom_u19.u19": {
+    "size": 524288,
+    "crc": "0bf60cde"
+   },
+   "l1_cruisin_u.s.a._game_rom_u20.u20": {
+    "size": 524288,
+    "crc": "c07f68f0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u21.u21": {
+    "size": 524288,
+    "crc": "b0264aed"
+   },
+   "l1_cruisin_u.s.a._game_rom_u22.u22": {
+    "size": 524288,
+    "crc": "ad137193"
+   },
+   "l1_cruisin_u.s.a._game_rom_u23.u23": {
+    "size": 524288,
+    "crc": "842449b0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u24.u24": {
+    "size": 524288,
+    "crc": "0b2275be"
+   },
+   "l1_cruisin_u.s.a._game_rom_u25.u25": {
+    "size": 524288,
+    "crc": "2b9fe68f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u26.u26": {
+    "size": 524288,
+    "crc": "ae56b871"
+   },
+   "l1_cruisin_u.s.a._game_rom_u27.u27": {
+    "size": 524288,
+    "crc": "2d977a8e"
+   },
+   "l1_cruisin_u.s.a._game_rom_u28.u28": {
+    "size": 524288,
+    "crc": "cffa5fb1"
+   },
+   "l1_cruisin_u.s.a._game_rom_u29.u29": {
+    "size": 524288,
+    "crc": "cbe52c60"
+   }
+  }
+ },
+ "crusnusa11": {
+  "desc": "Cruis'n USA v1.1",
+  "parent": false,
+  "roms": {
+   "l1_cruisin_u.s.a._sound_rom_u2.u2": {
+    "size": 524288,
+    "crc": "b9338332"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u3.u3": {
+    "size": 524288,
+    "crc": "cd8325d6"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u4.u4": {
+    "size": 524288,
+    "crc": "fab457f3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u5.u5": {
+    "size": 524288,
+    "crc": "becc92f4"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u6.u6": {
+    "size": 524288,
+    "crc": "a9f915d3"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u7.u7": {
+    "size": 524288,
+    "crc": "424f0bbc"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u8.u8": {
+    "size": 524288,
+    "crc": "03c28199"
+   },
+   "l1_cruisin_u.s.a._sound_rom_u9.u9": {
+    "size": 524288,
+    "crc": "24ba6371"
+   },
+   "l1.1_cruisin_u.s.a._game_rom_u10.u10": {
+    "size": 524288,
+    "crc": "44f36b34"
+   },
+   "l1.1_cruisin_u.s.a._game_rom_u11.u11": {
+    "size": 524288,
+    "crc": "f0328c25"
+   },
+   "l1.1_cruisin_u.s.a._game_rom_u12.u12": {
+    "size": 524288,
+    "crc": "0e529551"
+   },
+   "l1.1_cruisin_u.s.a._game_rom_u13.u13": {
+    "size": 524288,
+    "crc": "bd5fa269"
+   },
+   "l1_cruisin_u.s.a._game_rom_u14.u14": {
+    "size": 524288,
+    "crc": "6a4ae622"
+   },
+   "l1_cruisin_u.s.a._game_rom_u15.u15": {
+    "size": 524288,
+    "crc": "1a0ad3b7"
+   },
+   "l1_cruisin_u.s.a._game_rom_u16.u16": {
+    "size": 524288,
+    "crc": "799d4dd6"
+   },
+   "l1_cruisin_u.s.a._game_rom_u17.u17": {
+    "size": 524288,
+    "crc": "3d68b660"
+   },
+   "l1_cruisin_u.s.a._game_rom_u18.u18": {
+    "size": 524288,
+    "crc": "9e8193fb"
+   },
+   "l1_cruisin_u.s.a._game_rom_u19.u19": {
+    "size": 524288,
+    "crc": "0bf60cde"
+   },
+   "l1_cruisin_u.s.a._game_rom_u20.u20": {
+    "size": 524288,
+    "crc": "c07f68f0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u21.u21": {
+    "size": 524288,
+    "crc": "b0264aed"
+   },
+   "l1_cruisin_u.s.a._game_rom_u22.u22": {
+    "size": 524288,
+    "crc": "ad137193"
+   },
+   "l1_cruisin_u.s.a._game_rom_u23.u23": {
+    "size": 524288,
+    "crc": "842449b0"
+   },
+   "l1_cruisin_u.s.a._game_rom_u24.u24": {
+    "size": 524288,
+    "crc": "0b2275be"
+   },
+   "l1_cruisin_u.s.a._game_rom_u25.u25": {
+    "size": 524288,
+    "crc": "2b9fe68f"
+   },
+   "l1_cruisin_u.s.a._game_rom_u26.u26": {
+    "size": 524288,
+    "crc": "ae56b871"
+   },
+   "l1_cruisin_u.s.a._game_rom_u27.u27": {
+    "size": 524288,
+    "crc": "2d977a8e"
+   },
+   "l1_cruisin_u.s.a._game_rom_u28.u28": {
+    "size": 524288,
+    "crc": "cffa5fb1"
+   },
+   "l1_cruisin_u.s.a._game_rom_u29.u29": {
+    "size": 524288,
+    "crc": "cbe52c60"
+   }
+  }
+ },
+ "crusnwld": {
+  "desc": "Cruis'n World v2.5",
+  "parent": true,
+  "roms": {
+   "1.0_cruisn_world_u2_sound.u2": {
+    "size": 524288,
+    "crc": "7a233c89"
+   },
+   "1.0_cruisn_world_u3_sound.u3": {
+    "size": 524288,
+    "crc": "be9a5ff0"
+   },
+   "1.0_cruisn_world_u4_sound.u4": {
+    "size": 524288,
+    "crc": "69f02d84"
+   },
+   "1.0_cruisn_world_u5_sound.u5": {
+    "size": 524288,
+    "crc": "9d0b9071"
+   },
+   "1.0_cruisn_world_u6_sound.u6": {
+    "size": 524288,
+    "crc": "df28f492"
+   },
+   "1.0_cruisn_world_u7_sound.u7": {
+    "size": 524288,
+    "crc": "0128913e"
+   },
+   "1.0_cruisn_world_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5127c08e"
+   },
+   "1.0_cruisn_world_u9_sound.u9": {
+    "size": 524288,
+    "crc": "84cdc781"
+   },
+   "2.5_cruisn_world_automatic_u10.u10": {
+    "size": 1048576,
+    "crc": "fd776872"
+   },
+   "2.5_cruisn_world_automatic_u11.u11": {
+    "size": 1048576,
+    "crc": "0c99a405"
+   },
+   "2.5_cruisn_world_automatic_u12.u12": {
+    "size": 1048576,
+    "crc": "3ba9fad8"
+   },
+   "2.5_cruisn_world_automatic_u13.u13": {
+    "size": 1048576,
+    "crc": "21a79c9a"
+   },
+   "1.1_cruisn_world_u14_image.u14": {
+    "size": 1048576,
+    "crc": "ee815091"
+   },
+   "1.1_cruisn_world_u15_image.u15": {
+    "size": 1048576,
+    "crc": "e2da7bf1"
+   },
+   "1.1_cruisn_world_u16_image.u16": {
+    "size": 1048576,
+    "crc": "05a7ad2f"
+   },
+   "1.1_cruisn_world_u17_image.u17": {
+    "size": 1048576,
+    "crc": "d6278c0c"
+   },
+   "1.1_cruisn_world_u18_image.u18": {
+    "size": 1048576,
+    "crc": "e2dc2733"
+   },
+   "1.1_cruisn_world_u19_image.u19": {
+    "size": 1048576,
+    "crc": "5223a070"
+   },
+   "1.1_cruisn_world_u20_image.u20": {
+    "size": 1048576,
+    "crc": "db535625"
+   },
+   "1.1_cruisn_world_u21_image.u21": {
+    "size": 1048576,
+    "crc": "92a080e8"
+   },
+   "1.1_cruisn_world_u22_image.u22": {
+    "size": 1048576,
+    "crc": "77c56318"
+   },
+   "1.1_cruisn_world_u23_image.u23": {
+    "size": 1048576,
+    "crc": "6b920fc7"
+   },
+   "1.1_cruisn_world_u24_image.u24": {
+    "size": 1048576,
+    "crc": "83485401"
+   },
+   "1.1_cruisn_world_u25_image.u25": {
+    "size": 1048576,
+    "crc": "0dad97a9"
+   },
+   "449_cruisn_world_upr.u904": {
+    "size": 8192,
+    "crc": "65d9b301"
+   }
+  }
+ },
+ "crusnwld24": {
+  "desc": "Cruis'n World v2.4",
+  "parent": false,
+  "roms": {
+   "1.0_cruisn_world_u2_sound.u2": {
+    "size": 524288,
+    "crc": "7a233c89"
+   },
+   "1.0_cruisn_world_u3_sound.u3": {
+    "size": 524288,
+    "crc": "be9a5ff0"
+   },
+   "1.0_cruisn_world_u4_sound.u4": {
+    "size": 524288,
+    "crc": "69f02d84"
+   },
+   "1.0_cruisn_world_u5_sound.u5": {
+    "size": 524288,
+    "crc": "9d0b9071"
+   },
+   "1.0_cruisn_world_u6_sound.u6": {
+    "size": 524288,
+    "crc": "df28f492"
+   },
+   "1.0_cruisn_world_u7_sound.u7": {
+    "size": 524288,
+    "crc": "0128913e"
+   },
+   "1.0_cruisn_world_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5127c08e"
+   },
+   "1.0_cruisn_world_u9_sound.u9": {
+    "size": 524288,
+    "crc": "84cdc781"
+   },
+   "2.4_cruisn_world_u10_game.u10": {
+    "size": 1048576,
+    "crc": "551ec903"
+   },
+   "2.4_cruisn_world_u11_game.u11": {
+    "size": 1048576,
+    "crc": "4c57faf2"
+   },
+   "2.4_cruisn_world_u12_game.u12": {
+    "size": 1048576,
+    "crc": "3a4d9a30"
+   },
+   "2.4_cruisn_world_u13_game.u13": {
+    "size": 1048576,
+    "crc": "ca6a0c94"
+   },
+   "1.1_cruisn_world_u14_image.u14": {
+    "size": 1048576,
+    "crc": "ee815091"
+   },
+   "1.1_cruisn_world_u15_image.u15": {
+    "size": 1048576,
+    "crc": "e2da7bf1"
+   },
+   "1.1_cruisn_world_u16_image.u16": {
+    "size": 1048576,
+    "crc": "05a7ad2f"
+   },
+   "1.1_cruisn_world_u17_image.u17": {
+    "size": 1048576,
+    "crc": "d6278c0c"
+   },
+   "1.1_cruisn_world_u18_image.u18": {
+    "size": 1048576,
+    "crc": "e2dc2733"
+   },
+   "1.1_cruisn_world_u19_image.u19": {
+    "size": 1048576,
+    "crc": "5223a070"
+   },
+   "1.1_cruisn_world_u20_image.u20": {
+    "size": 1048576,
+    "crc": "db535625"
+   },
+   "1.1_cruisn_world_u21_image.u21": {
+    "size": 1048576,
+    "crc": "92a080e8"
+   },
+   "1.1_cruisn_world_u22_image.u22": {
+    "size": 1048576,
+    "crc": "77c56318"
+   },
+   "1.1_cruisn_world_u23_image.u23": {
+    "size": 1048576,
+    "crc": "6b920fc7"
+   },
+   "1.1_cruisn_world_u24_image.u24": {
+    "size": 1048576,
+    "crc": "83485401"
+   },
+   "1.1_cruisn_world_u25_image.u25": {
+    "size": 1048576,
+    "crc": "0dad97a9"
+   }
+  }
+ },
+ "crusnwld23": {
+  "desc": "Cruis'n World v2.3",
+  "parent": false,
+  "roms": {
+   "1.0_cruisn_world_u2_sound.u2": {
+    "size": 524288,
+    "crc": "7a233c89"
+   },
+   "1.0_cruisn_world_u3_sound.u3": {
+    "size": 524288,
+    "crc": "be9a5ff0"
+   },
+   "1.0_cruisn_world_u4_sound.u4": {
+    "size": 524288,
+    "crc": "69f02d84"
+   },
+   "1.0_cruisn_world_u5_sound.u5": {
+    "size": 524288,
+    "crc": "9d0b9071"
+   },
+   "1.0_cruisn_world_u6_sound.u6": {
+    "size": 524288,
+    "crc": "df28f492"
+   },
+   "1.0_cruisn_world_u7_sound.u7": {
+    "size": 524288,
+    "crc": "0128913e"
+   },
+   "1.0_cruisn_world_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5127c08e"
+   },
+   "1.0_cruisn_world_u9_sound.u9": {
+    "size": 524288,
+    "crc": "84cdc781"
+   },
+   "2.3_cruisn_world_u10_game.u10": {
+    "size": 1048576,
+    "crc": "956e0642"
+   },
+   "2.3_cruisn_world_u11_game.u11": {
+    "size": 1048576,
+    "crc": "b4ed2929"
+   },
+   "2.3_cruisn_world_u12_game.u12": {
+    "size": 1048576,
+    "crc": "cd12528e"
+   },
+   "2.3_cruisn_world_u13_game.u13": {
+    "size": 1048576,
+    "crc": "b096d211"
+   },
+   "1.1_cruisn_world_u14_image.u14": {
+    "size": 1048576,
+    "crc": "ee815091"
+   },
+   "1.1_cruisn_world_u15_image.u15": {
+    "size": 1048576,
+    "crc": "e2da7bf1"
+   },
+   "1.1_cruisn_world_u16_image.u16": {
+    "size": 1048576,
+    "crc": "05a7ad2f"
+   },
+   "1.1_cruisn_world_u17_image.u17": {
+    "size": 1048576,
+    "crc": "d6278c0c"
+   },
+   "1.1_cruisn_world_u18_image.u18": {
+    "size": 1048576,
+    "crc": "e2dc2733"
+   },
+   "1.1_cruisn_world_u19_image.u19": {
+    "size": 1048576,
+    "crc": "5223a070"
+   },
+   "1.1_cruisn_world_u20_image.u20": {
+    "size": 1048576,
+    "crc": "db535625"
+   },
+   "1.1_cruisn_world_u21_image.u21": {
+    "size": 1048576,
+    "crc": "92a080e8"
+   },
+   "1.1_cruisn_world_u22_image.u22": {
+    "size": 1048576,
+    "crc": "77c56318"
+   },
+   "1.1_cruisn_world_u23_image.u23": {
+    "size": 1048576,
+    "crc": "6b920fc7"
+   },
+   "1.1_cruisn_world_u24_image.u24": {
+    "size": 1048576,
+    "crc": "83485401"
+   },
+   "1.1_cruisn_world_u25_image.u25": {
+    "size": 1048576,
+    "crc": "0dad97a9"
+   }
+  }
+ },
+ "crusnwld20": {
+  "desc": "Cruis'n World v2.0",
+  "parent": false,
+  "roms": {
+   "1.0_cruisn_world_u2_sound.u2": {
+    "size": 524288,
+    "crc": "7a233c89"
+   },
+   "1.0_cruisn_world_u3_sound.u3": {
+    "size": 524288,
+    "crc": "be9a5ff0"
+   },
+   "1.0_cruisn_world_u4_sound.u4": {
+    "size": 524288,
+    "crc": "69f02d84"
+   },
+   "1.0_cruisn_world_u5_sound.u5": {
+    "size": 524288,
+    "crc": "9d0b9071"
+   },
+   "1.0_cruisn_world_u6_sound.u6": {
+    "size": 524288,
+    "crc": "df28f492"
+   },
+   "1.0_cruisn_world_u7_sound.u7": {
+    "size": 524288,
+    "crc": "0128913e"
+   },
+   "1.0_cruisn_world_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5127c08e"
+   },
+   "1.0_cruisn_world_u9_sound.u9": {
+    "size": 524288,
+    "crc": "84cdc781"
+   },
+   "2.0_cruisn_world_u10_game.u10": {
+    "size": 1048576,
+    "crc": "2a04da6d"
+   },
+   "2.0_cruisn_world_u11_game.u11": {
+    "size": 1048576,
+    "crc": "26a8ad51"
+   },
+   "2.0_cruisn_world_u12_game.u12": {
+    "size": 1048576,
+    "crc": "236caec0"
+   },
+   "2.0_cruisn_world_u13_game.u13": {
+    "size": 1048576,
+    "crc": "7e056e53"
+   },
+   "1.1_cruisn_world_u14_image.u14": {
+    "size": 1048576,
+    "crc": "ee815091"
+   },
+   "1.1_cruisn_world_u15_image.u15": {
+    "size": 1048576,
+    "crc": "e2da7bf1"
+   },
+   "1.1_cruisn_world_u16_image.u16": {
+    "size": 1048576,
+    "crc": "05a7ad2f"
+   },
+   "1.1_cruisn_world_u17_image.u17": {
+    "size": 1048576,
+    "crc": "d6278c0c"
+   },
+   "1.1_cruisn_world_u18_image.u18": {
+    "size": 1048576,
+    "crc": "e2dc2733"
+   },
+   "1.1_cruisn_world_u19_image.u19": {
+    "size": 1048576,
+    "crc": "5223a070"
+   },
+   "1.1_cruisn_world_u20_image.u20": {
+    "size": 1048576,
+    "crc": "db535625"
+   },
+   "1.1_cruisn_world_u21_image.u21": {
+    "size": 1048576,
+    "crc": "92a080e8"
+   },
+   "1.1_cruisn_world_u22_image.u22": {
+    "size": 1048576,
+    "crc": "77c56318"
+   },
+   "1.1_cruisn_world_u23_image.u23": {
+    "size": 1048576,
+    "crc": "6b920fc7"
+   },
+   "1.1_cruisn_world_u24_image.u24": {
+    "size": 1048576,
+    "crc": "83485401"
+   },
+   "1.1_cruisn_world_u25_image.u25": {
+    "size": 1048576,
+    "crc": "0dad97a9"
+   }
+  }
+ },
+ "crusnwld19": {
+  "desc": "Cruis'n World v1.9",
+  "parent": false,
+  "roms": {
+   "1.0_cruisn_world_u2_sound.u2": {
+    "size": 524288,
+    "crc": "7a233c89"
+   },
+   "1.0_cruisn_world_u3_sound.u3": {
+    "size": 524288,
+    "crc": "be9a5ff0"
+   },
+   "1.0_cruisn_world_u4_sound.u4": {
+    "size": 524288,
+    "crc": "69f02d84"
+   },
+   "1.0_cruisn_world_u5_sound.u5": {
+    "size": 524288,
+    "crc": "9d0b9071"
+   },
+   "1.0_cruisn_world_u6_sound.u6": {
+    "size": 524288,
+    "crc": "df28f492"
+   },
+   "1.0_cruisn_world_u7_sound.u7": {
+    "size": 524288,
+    "crc": "0128913e"
+   },
+   "1.0_cruisn_world_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5127c08e"
+   },
+   "1.0_cruisn_world_u9_sound.u9": {
+    "size": 524288,
+    "crc": "84cdc781"
+   },
+   "1.9_cruisn_world_u10_game.u10": {
+    "size": 1048576,
+    "crc": "c5cf5316"
+   },
+   "1.9_cruisn_world_u11_game.u11": {
+    "size": 1048576,
+    "crc": "0b183a06"
+   },
+   "1.9_cruisn_world_u12_game.u12": {
+    "size": 1048576,
+    "crc": "e32d1a8d"
+   },
+   "1.9_cruisn_world_u13_game.u13": {
+    "size": 1048576,
+    "crc": "91fcae27"
+   },
+   "1.1_cruisn_world_u14_image.u14": {
+    "size": 1048576,
+    "crc": "ee815091"
+   },
+   "1.1_cruisn_world_u15_image.u15": {
+    "size": 1048576,
+    "crc": "e2da7bf1"
+   },
+   "1.1_cruisn_world_u16_image.u16": {
+    "size": 1048576,
+    "crc": "05a7ad2f"
+   },
+   "1.1_cruisn_world_u17_image.u17": {
+    "size": 1048576,
+    "crc": "d6278c0c"
+   },
+   "1.1_cruisn_world_u18_image.u18": {
+    "size": 1048576,
+    "crc": "e2dc2733"
+   },
+   "1.1_cruisn_world_u19_image.u19": {
+    "size": 1048576,
+    "crc": "5223a070"
+   },
+   "1.1_cruisn_world_u20_image.u20": {
+    "size": 1048576,
+    "crc": "db535625"
+   },
+   "1.1_cruisn_world_u21_image.u21": {
+    "size": 1048576,
+    "crc": "92a080e8"
+   },
+   "1.1_cruisn_world_u22_image.u22": {
+    "size": 1048576,
+    "crc": "77c56318"
+   },
+   "1.1_cruisn_world_u23_image.u23": {
+    "size": 1048576,
+    "crc": "6b920fc7"
+   },
+   "1.1_cruisn_world_u24_image.u24": {
+    "size": 1048576,
+    "crc": "83485401"
+   },
+   "1.1_cruisn_world_u25_image.u25": {
+    "size": 1048576,
+    "crc": "0dad97a9"
+   }
+  }
+ },
+ "crusnwld17": {
+  "desc": "Cruis'n World v1.7",
+  "parent": false,
+  "roms": {
+   "1.0_cruisn_world_u2_sound.u2": {
+    "size": 524288,
+    "crc": "7a233c89"
+   },
+   "1.0_cruisn_world_u3_sound.u3": {
+    "size": 524288,
+    "crc": "be9a5ff0"
+   },
+   "1.0_cruisn_world_u4_sound.u4": {
+    "size": 524288,
+    "crc": "69f02d84"
+   },
+   "1.0_cruisn_world_u5_sound.u5": {
+    "size": 524288,
+    "crc": "9d0b9071"
+   },
+   "1.0_cruisn_world_u6_sound.u6": {
+    "size": 524288,
+    "crc": "df28f492"
+   },
+   "1.0_cruisn_world_u7_sound.u7": {
+    "size": 524288,
+    "crc": "0128913e"
+   },
+   "1.0_cruisn_world_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5127c08e"
+   },
+   "1.0_cruisn_world_u9_sound.u9": {
+    "size": 524288,
+    "crc": "84cdc781"
+   },
+   "1.7_cruisn_world_u10_game.u10": {
+    "size": 1048576,
+    "crc": "afca0f15"
+   },
+   "1.7_cruisn_world_u11_game.u11": {
+    "size": 1048576,
+    "crc": "6610af52"
+   },
+   "1.7_cruisn_world_u12_game.u12": {
+    "size": 1048576,
+    "crc": "ef0107b1"
+   },
+   "1.7_cruisn_world_u13_game.u13": {
+    "size": 1048576,
+    "crc": "c1d68aa0"
+   },
+   "1.1_cruisn_world_u14_image.u14": {
+    "size": 1048576,
+    "crc": "ee815091"
+   },
+   "1.1_cruisn_world_u15_image.u15": {
+    "size": 1048576,
+    "crc": "e2da7bf1"
+   },
+   "1.1_cruisn_world_u16_image.u16": {
+    "size": 1048576,
+    "crc": "05a7ad2f"
+   },
+   "1.1_cruisn_world_u17_image.u17": {
+    "size": 1048576,
+    "crc": "d6278c0c"
+   },
+   "1.1_cruisn_world_u18_image.u18": {
+    "size": 1048576,
+    "crc": "e2dc2733"
+   },
+   "1.1_cruisn_world_u19_image.u19": {
+    "size": 1048576,
+    "crc": "5223a070"
+   },
+   "1.1_cruisn_world_u20_image.u20": {
+    "size": 1048576,
+    "crc": "db535625"
+   },
+   "1.1_cruisn_world_u21_image.u21": {
+    "size": 1048576,
+    "crc": "92a080e8"
+   },
+   "1.1_cruisn_world_u22_image.u22": {
+    "size": 1048576,
+    "crc": "77c56318"
+   },
+   "1.1_cruisn_world_u23_image.u23": {
+    "size": 1048576,
+    "crc": "6b920fc7"
+   },
+   "1.1_cruisn_world_u24_image.u24": {
+    "size": 1048576,
+    "crc": "83485401"
+   },
+   "1.1_cruisn_world_u25_image.u25": {
+    "size": 1048576,
+    "crc": "0dad97a9"
+   }
+  }
+ },
+ "crusnwld13": {
+  "desc": "Cruis'n World v1.3",
+  "parent": false,
+  "roms": {
+   "1.0_cruisn_world_u2_sound.u2": {
+    "size": 524288,
+    "crc": "7a233c89"
+   },
+   "1.0_cruisn_world_u3_sound.u3": {
+    "size": 524288,
+    "crc": "be9a5ff0"
+   },
+   "1.0_cruisn_world_u4_sound.u4": {
+    "size": 524288,
+    "crc": "69f02d84"
+   },
+   "1.0_cruisn_world_u5_sound.u5": {
+    "size": 524288,
+    "crc": "9d0b9071"
+   },
+   "1.0_cruisn_world_u6_sound.u6": {
+    "size": 524288,
+    "crc": "df28f492"
+   },
+   "1.0_cruisn_world_u7_sound.u7": {
+    "size": 524288,
+    "crc": "0128913e"
+   },
+   "1.0_cruisn_world_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5127c08e"
+   },
+   "1.0_cruisn_world_u9_sound.u9": {
+    "size": 524288,
+    "crc": "84cdc781"
+   },
+   "1.3_cruisn_world_u10_game.u10": {
+    "size": 1048576,
+    "crc": "d361d17d"
+   },
+   "1.3_cruisn_world_u11_game.u11": {
+    "size": 1048576,
+    "crc": "b0c0a462"
+   },
+   "1.3_cruisn_world_u12_game.u12": {
+    "size": 1048576,
+    "crc": "5e7c566b"
+   },
+   "1.3_cruisn_world_u13_game.u13": {
+    "size": 1048576,
+    "crc": "46886e9c"
+   },
+   "1.1_cruisn_world_u14_image.u14": {
+    "size": 1048576,
+    "crc": "ee815091"
+   },
+   "1.1_cruisn_world_u15_image.u15": {
+    "size": 1048576,
+    "crc": "e2da7bf1"
+   },
+   "1.1_cruisn_world_u16_image.u16": {
+    "size": 1048576,
+    "crc": "05a7ad2f"
+   },
+   "1.1_cruisn_world_u17_image.u17": {
+    "size": 1048576,
+    "crc": "d6278c0c"
+   },
+   "1.1_cruisn_world_u18_image.u18": {
+    "size": 1048576,
+    "crc": "e2dc2733"
+   },
+   "1.1_cruisn_world_u19_image.u19": {
+    "size": 1048576,
+    "crc": "5223a070"
+   },
+   "1.1_cruisn_world_u20_image.u20": {
+    "size": 1048576,
+    "crc": "db535625"
+   },
+   "1.1_cruisn_world_u21_image.u21": {
+    "size": 1048576,
+    "crc": "92a080e8"
+   },
+   "1.1_cruisn_world_u22_image.u22": {
+    "size": 1048576,
+    "crc": "77c56318"
+   },
+   "1.1_cruisn_world_u23_image.u23": {
+    "size": 1048576,
+    "crc": "6b920fc7"
+   },
+   "1.1_cruisn_world_u24_image.u24": {
+    "size": 1048576,
+    "crc": "83485401"
+   },
+   "1.1_cruisn_world_u25_image.u25": {
+    "size": 1048576,
+    "crc": "0dad97a9"
+   }
+  }
+ },
+ "offroadc": {
+  "desc": "Off Road Challenge v1.63",
+  "parent": true,
+  "roms": {
+   "1.0_off_road_u2_sound.u2": {
+    "size": 524288,
+    "crc": "69976e9d"
+   },
+   "offroad_challenge_5341-15511-01_u3_sound.u3": {
+    "size": 524288,
+    "crc": "2db9b548"
+   },
+   "offroad_challenge_5341-15511-02_u4_sound.u4": {
+    "size": 524288,
+    "crc": "42bdf9d0"
+   },
+   "offroad_challenge_5341-15511-03_u5_sound.u5": {
+    "size": 524288,
+    "crc": "569cc84b"
+   },
+   "offroad_challenge_5341-15511-04_u6_sound.u6": {
+    "size": 524288,
+    "crc": "0896f679"
+   },
+   "offroad_challenge_5341-15511-05_u7_sound.u7": {
+    "size": 524288,
+    "crc": "fe242d6a"
+   },
+   "offroad_challenge_5341-15511-06_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5da13f12"
+   },
+   "offroad_challenge_5341-15511-07_u9_sound.u9": {
+    "size": 524288,
+    "crc": "7ad27f69"
+   },
+   "1.63_off_road_u10_game.u10": {
+    "size": 1048576,
+    "crc": "faaf81b8"
+   },
+   "1.63_off_road_u11_game.u11": {
+    "size": 1048576,
+    "crc": "f68e9655"
+   },
+   "1.63_off_road_u12_game.u12": {
+    "size": 1048576,
+    "crc": "6a5295b3"
+   },
+   "1.63_off_road_u13_game.u13": {
+    "size": 1048576,
+    "crc": "cb9233b5"
+   },
+   "offroad_challenge_5341-15510-01_u14_video_image.u14": {
+    "size": 1048576,
+    "crc": "1e41d14b"
+   },
+   "offroad_challenge_5341-15510-02_u15_video_image.u15": {
+    "size": 1048576,
+    "crc": "654d623d"
+   },
+   "offroad_challenge_5341-15510-03_u16_video_image.u16": {
+    "size": 1048576,
+    "crc": "259774d8"
+   },
+   "offroad_challenge_5341-15510-04_u17_video_image.u17": {
+    "size": 1048576,
+    "crc": "50c61434"
+   },
+   "offroad_challenge_5341-15510-05_u18_video_image.u18": {
+    "size": 1048576,
+    "crc": "015be91c"
+   },
+   "offroad_challenge_5341-15510-06_u19_video_image.u19": {
+    "size": 1048576,
+    "crc": "cfc6b70e"
+   },
+   "offroad_challenge_5341-15510-07_u20_video_image.u20": {
+    "size": 1048576,
+    "crc": "f48d6e33"
+   },
+   "offroad_challenge_5341-15510-08_u21_video_image.u21": {
+    "size": 1048576,
+    "crc": "17794b56"
+   },
+   "offroad_challenge_5341-15510-09_u22_video_image.u22": {
+    "size": 1048576,
+    "crc": "f2a6e622"
+   },
+   "offroad_challenge_5341-15510-10_u23_video_image.u23": {
+    "size": 1048576,
+    "crc": "1cba6e20"
+   },
+   "offroad_challenge_5341-15510-11_u24_video_image.u24": {
+    "size": 1048576,
+    "crc": "fd3ce11f"
+   },
+   "offroad_challenge_5341-15510-12_u25_video_image.u25": {
+    "size": 1048576,
+    "crc": "78f8e5db"
+   }
+  }
+ },
+ "offroadc5": {
+  "desc": "Off Road Challenge v1.50",
+  "parent": false,
+  "roms": {
+   "1.0_off_road_u2_sound.u2": {
+    "size": 524288,
+    "crc": "69976e9d"
+   },
+   "offroad_challenge_5341-15511-01_u3_sound.u3": {
+    "size": 524288,
+    "crc": "2db9b548"
+   },
+   "offroad_challenge_5341-15511-02_u4_sound.u4": {
+    "size": 524288,
+    "crc": "42bdf9d0"
+   },
+   "offroad_challenge_5341-15511-03_u5_sound.u5": {
+    "size": 524288,
+    "crc": "569cc84b"
+   },
+   "offroad_challenge_5341-15511-04_u6_sound.u6": {
+    "size": 524288,
+    "crc": "0896f679"
+   },
+   "offroad_challenge_5341-15511-05_u7_sound.u7": {
+    "size": 524288,
+    "crc": "fe242d6a"
+   },
+   "offroad_challenge_5341-15511-06_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5da13f12"
+   },
+   "offroad_challenge_5341-15511-07_u9_sound.u9": {
+    "size": 524288,
+    "crc": "7ad27f69"
+   },
+   "1.5_off_road_u10_game.u10": {
+    "size": 1048576,
+    "crc": "f464be4f"
+   },
+   "1.5_off_road_u11_game.u11": {
+    "size": 1048576,
+    "crc": "eaddc9ac"
+   },
+   "1.5_off_road_u12_game.u12": {
+    "size": 1048576,
+    "crc": "a2da68da"
+   },
+   "1.5_off_road_u13_game.u13": {
+    "size": 1048576,
+    "crc": "b4755ee2"
+   },
+   "offroad_challenge_5341-15510-01_u14_video_image.u14": {
+    "size": 1048576,
+    "crc": "1e41d14b"
+   },
+   "offroad_challenge_5341-15510-02_u15_video_image.u15": {
+    "size": 1048576,
+    "crc": "654d623d"
+   },
+   "offroad_challenge_5341-15510-03_u16_video_image.u16": {
+    "size": 1048576,
+    "crc": "259774d8"
+   },
+   "offroad_challenge_5341-15510-04_u17_video_image.u17": {
+    "size": 1048576,
+    "crc": "50c61434"
+   },
+   "offroad_challenge_5341-15510-05_u18_video_image.u18": {
+    "size": 1048576,
+    "crc": "015be91c"
+   },
+   "offroad_challenge_5341-15510-06_u19_video_image.u19": {
+    "size": 1048576,
+    "crc": "cfc6b70e"
+   },
+   "offroad_challenge_5341-15510-07_u20_video_image.u20": {
+    "size": 1048576,
+    "crc": "f48d6e33"
+   },
+   "offroad_challenge_5341-15510-08_u21_video_image.u21": {
+    "size": 1048576,
+    "crc": "17794b56"
+   },
+   "offroad_challenge_5341-15510-09_u22_video_image.u22": {
+    "size": 1048576,
+    "crc": "f2a6e622"
+   },
+   "offroad_challenge_5341-15510-10_u23_video_image.u23": {
+    "size": 1048576,
+    "crc": "1cba6e20"
+   },
+   "offroad_challenge_5341-15510-11_u24_video_image.u24": {
+    "size": 1048576,
+    "crc": "fd3ce11f"
+   },
+   "offroad_challenge_5341-15510-12_u25_video_image.u25": {
+    "size": 1048576,
+    "crc": "78f8e5db"
+   }
+  }
+ },
+ "offroadc4": {
+  "desc": "Off Road Challenge v1.40",
+  "parent": false,
+  "roms": {
+   "1.0_off_road_u2_sound.u2": {
+    "size": 524288,
+    "crc": "69976e9d"
+   },
+   "offroad_challenge_5341-15511-01_u3_sound.u3": {
+    "size": 524288,
+    "crc": "2db9b548"
+   },
+   "offroad_challenge_5341-15511-02_u4_sound.u4": {
+    "size": 524288,
+    "crc": "42bdf9d0"
+   },
+   "offroad_challenge_5341-15511-03_u5_sound.u5": {
+    "size": 524288,
+    "crc": "569cc84b"
+   },
+   "offroad_challenge_5341-15511-04_u6_sound.u6": {
+    "size": 524288,
+    "crc": "0896f679"
+   },
+   "offroad_challenge_5341-15511-05_u7_sound.u7": {
+    "size": 524288,
+    "crc": "fe242d6a"
+   },
+   "offroad_challenge_5341-15511-06_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5da13f12"
+   },
+   "offroad_challenge_5341-15511-07_u9_sound.u9": {
+    "size": 524288,
+    "crc": "7ad27f69"
+   },
+   "1.4_off_road_u10_game.u10": {
+    "size": 1048576,
+    "crc": "d263b078"
+   },
+   "1.4_off_road_u11_game.u11": {
+    "size": 1048576,
+    "crc": "1b443a72"
+   },
+   "1.4_off_road_u12_game.u12": {
+    "size": 1048576,
+    "crc": "4e82a34b"
+   },
+   "1.4_off_road_u13_game.u13": {
+    "size": 1048576,
+    "crc": "558b859c"
+   },
+   "offroad_challenge_5341-15510-01_u14_video_image.u14": {
+    "size": 1048576,
+    "crc": "1e41d14b"
+   },
+   "offroad_challenge_5341-15510-02_u15_video_image.u15": {
+    "size": 1048576,
+    "crc": "654d623d"
+   },
+   "offroad_challenge_5341-15510-03_u16_video_image.u16": {
+    "size": 1048576,
+    "crc": "259774d8"
+   },
+   "offroad_challenge_5341-15510-04_u17_video_image.u17": {
+    "size": 1048576,
+    "crc": "50c61434"
+   },
+   "offroad_challenge_5341-15510-05_u18_video_image.u18": {
+    "size": 1048576,
+    "crc": "015be91c"
+   },
+   "offroad_challenge_5341-15510-06_u19_video_image.u19": {
+    "size": 1048576,
+    "crc": "cfc6b70e"
+   },
+   "offroad_challenge_5341-15510-07_u20_video_image.u20": {
+    "size": 1048576,
+    "crc": "f48d6e33"
+   },
+   "offroad_challenge_5341-15510-08_u21_video_image.u21": {
+    "size": 1048576,
+    "crc": "17794b56"
+   },
+   "offroad_challenge_5341-15510-09_u22_video_image.u22": {
+    "size": 1048576,
+    "crc": "f2a6e622"
+   },
+   "offroad_challenge_5341-15510-10_u23_video_image.u23": {
+    "size": 1048576,
+    "crc": "1cba6e20"
+   },
+   "offroad_challenge_5341-15510-11_u24_video_image.u24": {
+    "size": 1048576,
+    "crc": "fd3ce11f"
+   },
+   "offroad_challenge_5341-15510-12_u25_video_image.u25": {
+    "size": 1048576,
+    "crc": "78f8e5db"
+   }
+  }
+ },
+ "offroadc3": {
+  "desc": "Off Road Challenge v1.30",
+  "parent": false,
+  "roms": {
+   "1.0_off_road_u2_sound.u2": {
+    "size": 524288,
+    "crc": "69976e9d"
+   },
+   "offroad_challenge_5341-15511-01_u3_sound.u3": {
+    "size": 524288,
+    "crc": "2db9b548"
+   },
+   "offroad_challenge_5341-15511-02_u4_sound.u4": {
+    "size": 524288,
+    "crc": "42bdf9d0"
+   },
+   "offroad_challenge_5341-15511-03_u5_sound.u5": {
+    "size": 524288,
+    "crc": "569cc84b"
+   },
+   "offroad_challenge_5341-15511-04_u6_sound.u6": {
+    "size": 524288,
+    "crc": "0896f679"
+   },
+   "offroad_challenge_5341-15511-05_u7_sound.u7": {
+    "size": 524288,
+    "crc": "fe242d6a"
+   },
+   "offroad_challenge_5341-15511-06_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5da13f12"
+   },
+   "offroad_challenge_5341-15511-07_u9_sound.u9": {
+    "size": 524288,
+    "crc": "7ad27f69"
+   },
+   "1.3_off_road_u10.u10": {
+    "size": 1048576,
+    "crc": "71c62ce2"
+   },
+   "1.3_off_road_u11.u11": {
+    "size": 1048576,
+    "crc": "9e362dbb"
+   },
+   "1.3_off_road_u12.u12": {
+    "size": 1048576,
+    "crc": "9e0a5b06"
+   },
+   "1.3_off_road_u13.u13": {
+    "size": 1048576,
+    "crc": "d602db7e"
+   },
+   "offroad_challenge_5341-15510-01_u14_video_image.u14": {
+    "size": 1048576,
+    "crc": "1e41d14b"
+   },
+   "offroad_challenge_5341-15510-02_u15_video_image.u15": {
+    "size": 1048576,
+    "crc": "654d623d"
+   },
+   "offroad_challenge_5341-15510-03_u16_video_image.u16": {
+    "size": 1048576,
+    "crc": "259774d8"
+   },
+   "offroad_challenge_5341-15510-04_u17_video_image.u17": {
+    "size": 1048576,
+    "crc": "50c61434"
+   },
+   "offroad_challenge_5341-15510-05_u18_video_image.u18": {
+    "size": 1048576,
+    "crc": "015be91c"
+   },
+   "offroad_challenge_5341-15510-06_u19_video_image.u19": {
+    "size": 1048576,
+    "crc": "cfc6b70e"
+   },
+   "offroad_challenge_5341-15510-07_u20_video_image.u20": {
+    "size": 1048576,
+    "crc": "f48d6e33"
+   },
+   "offroad_challenge_5341-15510-08_u21_video_image.u21": {
+    "size": 1048576,
+    "crc": "17794b56"
+   },
+   "offroad_challenge_5341-15510-09_u22_video_image.u22": {
+    "size": 1048576,
+    "crc": "f2a6e622"
+   },
+   "offroad_challenge_5341-15510-10_u23_video_image.u23": {
+    "size": 1048576,
+    "crc": "1cba6e20"
+   },
+   "offroad_challenge_5341-15510-11_u24_video_image.u24": {
+    "size": 1048576,
+    "crc": "fd3ce11f"
+   },
+   "offroad_challenge_5341-15510-12_u25_video_image.u25": {
+    "size": 1048576,
+    "crc": "78f8e5db"
+   }
+  }
+ },
+ "offroadc1": {
+  "desc": "Off Road Challenge v1.10",
+  "parent": false,
+  "roms": {
+   "1.0_off_road_u2_sound.u2": {
+    "size": 524288,
+    "crc": "69976e9d"
+   },
+   "offroad_challenge_5341-15511-01_u3_sound.u3": {
+    "size": 524288,
+    "crc": "2db9b548"
+   },
+   "offroad_challenge_5341-15511-02_u4_sound.u4": {
+    "size": 524288,
+    "crc": "42bdf9d0"
+   },
+   "offroad_challenge_5341-15511-03_u5_sound.u5": {
+    "size": 524288,
+    "crc": "569cc84b"
+   },
+   "offroad_challenge_5341-15511-04_u6_sound.u6": {
+    "size": 524288,
+    "crc": "0896f679"
+   },
+   "offroad_challenge_5341-15511-05_u7_sound.u7": {
+    "size": 524288,
+    "crc": "fe242d6a"
+   },
+   "offroad_challenge_5341-15511-06_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5da13f12"
+   },
+   "offroad_challenge_5341-15511-07_u9_sound.u9": {
+    "size": 524288,
+    "crc": "7ad27f69"
+   },
+   "1.1_off_road_u10.u10": {
+    "size": 1048576,
+    "crc": "4729660c"
+   },
+   "1.1_off_road_u11.u11": {
+    "size": 1048576,
+    "crc": "6272d013"
+   },
+   "1.1_off_road_u12.u12": {
+    "size": 1048576,
+    "crc": "9c8326be"
+   },
+   "1.1_off_road_u13.u13": {
+    "size": 1048576,
+    "crc": "53bbc181"
+   },
+   "offroad_challenge_5341-15510-01_u14_video_image.u14": {
+    "size": 1048576,
+    "crc": "1e41d14b"
+   },
+   "offroad_challenge_5341-15510-02_u15_video_image.u15": {
+    "size": 1048576,
+    "crc": "654d623d"
+   },
+   "offroad_challenge_5341-15510-03_u16_video_image.u16": {
+    "size": 1048576,
+    "crc": "259774d8"
+   },
+   "offroad_challenge_5341-15510-04_u17_video_image.u17": {
+    "size": 1048576,
+    "crc": "50c61434"
+   },
+   "offroad_challenge_5341-15510-05_u18_video_image.u18": {
+    "size": 1048576,
+    "crc": "015be91c"
+   },
+   "offroad_challenge_5341-15510-06_u19_video_image.u19": {
+    "size": 1048576,
+    "crc": "cfc6b70e"
+   },
+   "offroad_challenge_5341-15510-07_u20_video_image.u20": {
+    "size": 1048576,
+    "crc": "f48d6e33"
+   },
+   "offroad_challenge_5341-15510-08_u21_video_image.u21": {
+    "size": 1048576,
+    "crc": "17794b56"
+   },
+   "offroad_challenge_5341-15510-09_u22_video_image.u22": {
+    "size": 1048576,
+    "crc": "f2a6e622"
+   },
+   "offroad_challenge_5341-15510-10_u23_video_image.u23": {
+    "size": 1048576,
+    "crc": "1cba6e20"
+   },
+   "offroad_challenge_5341-15510-11_u24_video_image.u24": {
+    "size": 1048576,
+    "crc": "fd3ce11f"
+   },
+   "offroad_challenge_5341-15510-12_u25_video_image.u25": {
+    "size": 1048576,
+    "crc": "78f8e5db"
+   }
+  }
+ },
+ "offroadc0": {
+  "desc": "Off Road Challenge v1.00",
+  "parent": false,
+  "roms": {
+   "1.0_off_road_u2_sound.u2": {
+    "size": 524288,
+    "crc": "69976e9d"
+   },
+   "offroad_challenge_5341-15511-01_u3_sound.u3": {
+    "size": 524288,
+    "crc": "2db9b548"
+   },
+   "offroad_challenge_5341-15511-02_u4_sound.u4": {
+    "size": 524288,
+    "crc": "42bdf9d0"
+   },
+   "offroad_challenge_5341-15511-03_u5_sound.u5": {
+    "size": 524288,
+    "crc": "569cc84b"
+   },
+   "offroad_challenge_5341-15511-04_u6_sound.u6": {
+    "size": 524288,
+    "crc": "0896f679"
+   },
+   "offroad_challenge_5341-15511-05_u7_sound.u7": {
+    "size": 524288,
+    "crc": "fe242d6a"
+   },
+   "offroad_challenge_5341-15511-06_u8_sound.u8": {
+    "size": 524288,
+    "crc": "5da13f12"
+   },
+   "offroad_challenge_5341-15511-07_u9_sound.u9": {
+    "size": 524288,
+    "crc": "7ad27f69"
+   },
+   "off_road_u10_game.u10": {
+    "size": 1048576,
+    "crc": "f3535a2c"
+   },
+   "off_road_u11_game.u11": {
+    "size": 1048576,
+    "crc": "16c904ee"
+   },
+   "off_road_u12_game.u12": {
+    "size": 1048576,
+    "crc": "d267d7bf"
+   },
+   "off_road_u13_game.u13": {
+    "size": 1048576,
+    "crc": "e6274bb3"
+   },
+   "offroad_challenge_5341-15510-01_u14_video_image.u14": {
+    "size": 1048576,
+    "crc": "1e41d14b"
+   },
+   "offroad_challenge_5341-15510-02_u15_video_image.u15": {
+    "size": 1048576,
+    "crc": "654d623d"
+   },
+   "offroad_challenge_5341-15510-03_u16_video_image.u16": {
+    "size": 1048576,
+    "crc": "259774d8"
+   },
+   "offroad_challenge_5341-15510-04_u17_video_image.u17": {
+    "size": 1048576,
+    "crc": "50c61434"
+   },
+   "offroad_challenge_5341-15510-05_u18_video_image.u18": {
+    "size": 1048576,
+    "crc": "015be91c"
+   },
+   "offroad_challenge_5341-15510-06_u19_video_image.u19": {
+    "size": 1048576,
+    "crc": "cfc6b70e"
+   },
+   "offroad_challenge_5341-15510-07_u20_video_image.u20": {
+    "size": 1048576,
+    "crc": "f48d6e33"
+   },
+   "offroad_challenge_5341-15510-08_u21_video_image.u21": {
+    "size": 1048576,
+    "crc": "17794b56"
+   },
+   "offroad_challenge_5341-15510-09_u22_video_image.u22": {
+    "size": 1048576,
+    "crc": "f2a6e622"
+   },
+   "offroad_challenge_5341-15510-10_u23_video_image.u23": {
+    "size": 1048576,
+    "crc": "1cba6e20"
+   },
+   "offroad_challenge_5341-15510-11_u24_video_image.u24": {
+    "size": 1048576,
+    "crc": "fd3ce11f"
+   },
+   "offroad_challenge_5341-15510-12_u25_video_image.u25": {
+    "size": 1048576,
+    "crc": "78f8e5db"
+   }
+  }
+ },
+ "crusnexo": {
+  "desc": "Cruis'n Exotica v2.4",
+  "parent": true,
+  "roms": {
+   "cruisn_exotica_u2_rev.1.0.u2": {
+    "size": 2097152,
+    "crc": "d2d54acf"
+   },
+   "cruisn_exotica_u3_rev.1.0.u3": {
+    "size": 4194304,
+    "crc": "28a3a13d"
+   },
+   "cruisn_exotica_u4_rev.1.0.u4": {
+    "size": 4194304,
+    "crc": "213f7fd8"
+   },
+   "472_cruisn_exot_27.u53": {
+    "size": 4096,
+    "crc": "7ff41d76"
+   },
+   "cruisn_exotica_u10_rev_2.4.u10": {
+    "size": 2097152,
+    "crc": "5e702f7c"
+   },
+   "cruisn_exotica_u11_rev_2.4.u11": {
+    "size": 2097152,
+    "crc": "5ecb2cbc"
+   },
+   "cruisn_exotica_u12_rev.1.0.u12": {
+    "size": 2097152,
+    "crc": "21f122b2"
+   },
+   "cruisn_exotica_u13_rev.1.0.u13": {
+    "size": 2097152,
+    "crc": "cf9d3609"
+   },
+   "cruisn_exotica_u14_rev.1.0.u14": {
+    "size": 4194304,
+    "crc": "84452fc2"
+   },
+   "cruisn_exotica_u15_rev.1.0.u15": {
+    "size": 4194304,
+    "crc": "b6aaebdb"
+   },
+   "cruisn_exotica_u16_rev.1.0.u16": {
+    "size": 4194304,
+    "crc": "aac6d2a5"
+   },
+   "cruisn_exotica_u17_rev.1.0.u17": {
+    "size": 4194304,
+    "crc": "71cf5404"
+   },
+   "cruisn_exotica_u22_rev.1.0.u22": {
+    "size": 4194304,
+    "crc": "ad6dcda7"
+   },
+   "cruisn_exotica_u23_rev.1.0.u23": {
+    "size": 4194304,
+    "crc": "1f103a68"
+   },
+   "cruisn_exotica_u24_rev.1.0.u24": {
+    "size": 4194304,
+    "crc": "6312feef"
+   },
+   "cruisn_exotica_u25_rev.1.0.u25": {
+    "size": 4194304,
+    "crc": "b8277b16"
+   },
+   "cruisn_exotica_u18_rev.1.0.u18": {
+    "size": 4194304,
+    "crc": "06efb00e"
+   },
+   "cruisn_exotica_u19_rev.1.0.u19": {
+    "size": 4194304,
+    "crc": "2e75bf61"
+   }
+  }
+ },
+ "crusnexoa": {
+  "desc": "Cruis'n Exotica v2.0",
+  "parent": false,
+  "roms": {
+   "cruisn_exotica_u2_rev.1.0.u2": {
+    "size": 2097152,
+    "crc": "d2d54acf"
+   },
+   "cruisn_exotica_u3_rev.1.0.u3": {
+    "size": 4194304,
+    "crc": "28a3a13d"
+   },
+   "cruisn_exotica_u4_rev.1.0.u4": {
+    "size": 4194304,
+    "crc": "213f7fd8"
+   },
+   "472_cruisn_exot_27.u53": {
+    "size": 4096,
+    "crc": "7ff41d76"
+   },
+   "cruisn_exotica_u10_rev_2.0.u10": {
+    "size": 2097152,
+    "crc": "43d80f54"
+   },
+   "cruisn_exotica_u11_rev_2.0.u11": {
+    "size": 2097152,
+    "crc": "dba26b69"
+   },
+   "cruisn_exotica_u12_rev.1.0.u12": {
+    "size": 2097152,
+    "crc": "21f122b2"
+   },
+   "cruisn_exotica_u13_rev.1.0.u13": {
+    "size": 2097152,
+    "crc": "cf9d3609"
+   },
+   "cruisn_exotica_u14_rev.1.0.u14": {
+    "size": 4194304,
+    "crc": "84452fc2"
+   },
+   "cruisn_exotica_u15_rev.1.0.u15": {
+    "size": 4194304,
+    "crc": "b6aaebdb"
+   },
+   "cruisn_exotica_u16_rev.1.0.u16": {
+    "size": 4194304,
+    "crc": "aac6d2a5"
+   },
+   "cruisn_exotica_u17_rev.1.0.u17": {
+    "size": 4194304,
+    "crc": "71cf5404"
+   },
+   "cruisn_exotica_u22_rev.1.0.u22": {
+    "size": 4194304,
+    "crc": "ad6dcda7"
+   },
+   "cruisn_exotica_u23_rev.1.0.u23": {
+    "size": 4194304,
+    "crc": "1f103a68"
+   },
+   "cruisn_exotica_u24_rev.1.0.u24": {
+    "size": 4194304,
+    "crc": "6312feef"
+   },
+   "cruisn_exotica_u25_rev.1.0.u25": {
+    "size": 4194304,
+    "crc": "b8277b16"
+   },
+   "cruisn_exotica_u18_rev.1.0.u18": {
+    "size": 4194304,
+    "crc": "06efb00e"
+   },
+   "cruisn_exotica_u19_rev.1.0.u19": {
+    "size": 4194304,
+    "crc": "2e75bf61"
+   }
+  }
+ },
+ "crusnexob": {
+  "desc": "Cruis'n Exotica v1.6",
+  "parent": false,
+  "roms": {
+   "cruisn_exotica_u2_rev.1.0.u2": {
+    "size": 2097152,
+    "crc": "d2d54acf"
+   },
+   "cruisn_exotica_u3_rev.1.0.u3": {
+    "size": 4194304,
+    "crc": "28a3a13d"
+   },
+   "cruisn_exotica_u4_rev.1.0.u4": {
+    "size": 4194304,
+    "crc": "213f7fd8"
+   },
+   "472_cruisn_exot_27.u53": {
+    "size": 4096,
+    "crc": "7ff41d76"
+   },
+   "cruisn_exotica_u10_rev_1.6.u10": {
+    "size": 2097152,
+    "crc": "65450140"
+   },
+   "cruisn_exotica_u11_rev_1.6.u11": {
+    "size": 2097152,
+    "crc": "e994891f"
+   },
+   "cruisn_exotica_u12_rev.1.0.u12": {
+    "size": 2097152,
+    "crc": "21f122b2"
+   },
+   "cruisn_exotica_u13_rev.1.0.u13": {
+    "size": 2097152,
+    "crc": "cf9d3609"
+   },
+   "cruisn_exotica_u14_rev.1.0.u14": {
+    "size": 4194304,
+    "crc": "84452fc2"
+   },
+   "cruisn_exotica_u15_rev.1.0.u15": {
+    "size": 4194304,
+    "crc": "b6aaebdb"
+   },
+   "cruisn_exotica_u16_rev.1.0.u16": {
+    "size": 4194304,
+    "crc": "aac6d2a5"
+   },
+   "cruisn_exotica_u17_rev.1.0.u17": {
+    "size": 4194304,
+    "crc": "71cf5404"
+   },
+   "cruisn_exotica_u22_rev.1.0.u22": {
+    "size": 4194304,
+    "crc": "ad6dcda7"
+   },
+   "cruisn_exotica_u23_rev.1.0.u23": {
+    "size": 4194304,
+    "crc": "1f103a68"
+   },
+   "cruisn_exotica_u24_rev.1.0.u24": {
+    "size": 4194304,
+    "crc": "6312feef"
+   },
+   "cruisn_exotica_u25_rev.1.0.u25": {
+    "size": 4194304,
+    "crc": "b8277b16"
+   },
+   "cruisn_exotica_u18_rev.1.0.u18": {
+    "size": 4194304,
+    "crc": "06efb00e"
+   },
+   "cruisn_exotica_u19_rev.1.0.u19": {
+    "size": 4194304,
+    "crc": "2e75bf61"
+   }
+  }
+ },
+ "crusnexoc": {
+  "desc": "Cruis'n Exotica v1.3",
+  "parent": false,
+  "roms": {
+   "cruisn_exotica_u2_rev.1.0.u2": {
+    "size": 2097152,
+    "crc": "d2d54acf"
+   },
+   "cruisn_exotica_u3_rev.1.0.u3": {
+    "size": 4194304,
+    "crc": "28a3a13d"
+   },
+   "cruisn_exotica_u4_rev.1.0.u4": {
+    "size": 4194304,
+    "crc": "213f7fd8"
+   },
+   "472_cruisn_exot_27.u53": {
+    "size": 4096,
+    "crc": "7ff41d76"
+   },
+   "cruisn_exotica_u10_rev_1.3.u10": {
+    "size": 2097152,
+    "crc": "ab7f1b5e"
+   },
+   "cruisn_exotica_u11_rev_1.3.u11": {
+    "size": 2097152,
+    "crc": "62d3c966"
+   },
+   "cruisn_exotica_u12_rev.1.0.u12": {
+    "size": 2097152,
+    "crc": "21f122b2"
+   },
+   "cruisn_exotica_u13_rev.1.0.u13": {
+    "size": 2097152,
+    "crc": "cf9d3609"
+   },
+   "cruisn_exotica_u14_rev.1.0.u14": {
+    "size": 4194304,
+    "crc": "84452fc2"
+   },
+   "cruisn_exotica_u15_rev.1.0.u15": {
+    "size": 4194304,
+    "crc": "b6aaebdb"
+   },
+   "cruisn_exotica_u16_rev.1.0.u16": {
+    "size": 4194304,
+    "crc": "aac6d2a5"
+   },
+   "cruisn_exotica_u17_rev.1.0.u17": {
+    "size": 4194304,
+    "crc": "71cf5404"
+   },
+   "cruisn_exotica_u22_rev.1.0.u22": {
+    "size": 4194304,
+    "crc": "ad6dcda7"
+   },
+   "cruisn_exotica_u23_rev.1.0.u23": {
+    "size": 4194304,
+    "crc": "1f103a68"
+   },
+   "cruisn_exotica_u24_rev.1.0.u24": {
+    "size": 4194304,
+    "crc": "6312feef"
+   },
+   "cruisn_exotica_u25_rev.1.0.u25": {
+    "size": 4194304,
+    "crc": "b8277b16"
+   },
+   "cruisn_exotica_u18_rev.1.0.u18": {
+    "size": 4194304,
+    "crc": "06efb00e"
+   },
+   "cruisn_exotica_u19_rev.1.0.u19": {
+    "size": 4194304,
+    "crc": "2e75bf61"
+   }
+  }
+ },
+ "crusnexod": {
+  "desc": "Cruis'n Exotica v1.0",
+  "parent": false,
+  "roms": {
+   "cruisn_exotica_u2_rev.1.0.u2": {
+    "size": 2097152,
+    "crc": "d2d54acf"
+   },
+   "cruisn_exotica_u3_rev.1.0.u3": {
+    "size": 4194304,
+    "crc": "28a3a13d"
+   },
+   "cruisn_exotica_u4_rev.1.0.u4": {
+    "size": 4194304,
+    "crc": "213f7fd8"
+   },
+   "472_cruisn_exot_27.u53": {
+    "size": 4096,
+    "crc": "7ff41d76"
+   },
+   "cruisn_exotica_u10_rev.1.0.u10": {
+    "size": 2097152,
+    "crc": "305fe2c1"
+   },
+   "cruisn_exotica_u11_rev.1.0.u11": {
+    "size": 2097152,
+    "crc": "50b241ff"
+   },
+   "cruisn_exotica_u12_rev.1.0.u12": {
+    "size": 2097152,
+    "crc": "21f122b2"
+   },
+   "cruisn_exotica_u13_rev.1.0.u13": {
+    "size": 2097152,
+    "crc": "cf9d3609"
+   },
+   "cruisn_exotica_u14_rev.1.0.u14": {
+    "size": 4194304,
+    "crc": "84452fc2"
+   },
+   "cruisn_exotica_u15_rev.1.0.u15": {
+    "size": 4194304,
+    "crc": "b6aaebdb"
+   },
+   "cruisn_exotica_u16_rev.1.0.u16": {
+    "size": 4194304,
+    "crc": "aac6d2a5"
+   },
+   "cruisn_exotica_u17_rev.1.0.u17": {
+    "size": 4194304,
+    "crc": "71cf5404"
+   },
+   "cruisn_exotica_u22_rev.1.0.u22": {
+    "size": 4194304,
+    "crc": "ad6dcda7"
+   },
+   "cruisn_exotica_u23_rev.1.0.u23": {
+    "size": 4194304,
+    "crc": "1f103a68"
+   },
+   "cruisn_exotica_u24_rev.1.0.u24": {
+    "size": 4194304,
+    "crc": "6312feef"
+   },
+   "cruisn_exotica_u25_rev.1.0.u25": {
+    "size": 4194304,
+    "crc": "b8277b16"
+   },
+   "cruisn_exotica_u18_rev.1.0.u18": {
+    "size": 4194304,
+    "crc": "06efb00e"
+   },
+   "cruisn_exotica_u19_rev.1.0.u19": {
+    "size": 4194304,
+    "crc": "2e75bf61"
+   }
+  }
+ }
+}

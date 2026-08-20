@@ -1,13 +1,16 @@
 # Assemble a self-contained, shareable release folder + zip.
-#   .\make_release.ps1            (uses dev-machine defaults)
+#   .\make_release.ps1            full release (menu art + music included -
+#                                 LaunchBox/wanszai bundling precedent)
+#   .\make_release.ps1 -NoMedia   clean variant: no art, no music (generated
+#                                 fallback cards, silent menu)
 # Produces build\release\CruisnCollection\ and build\CruisnCollection-<date>.zip
 #
-# The release contains NO ROMs and NO game art/music - the player supplies
-# ROMs; art/music degrade to generated fallbacks. It DOES contain:
+# Never contains ROMs. Always contains:
 #   - CruisnCollection.exe (PyInstaller-frozen shell - no Python needed)
 #   - vunit.exe (statically-linked; GPL source = patch\ + source\ + MAME)
 #   - FFB Arcade Plugin files (GPL-3.0, license included, GUID blanked)
 #   - NVRAM fixtures, setup.ps1, docs
+param([switch]$NoMedia)
 $ErrorActionPreference = "Stop"
 $root   = $PSScriptRoot
 $vunit  = if ($env:CRUISN_VUNIT) { $env:CRUISN_VUNIT } else { "E:\Source\mame-src\vunit.exe" }
@@ -17,12 +20,21 @@ $rel    = Join-Path $root "build\release\CruisnCollection"
 
 Write-Host "== building release ==" -ForegroundColor Cyan
 
-# 1. frozen shell (rebuild if missing)
+# 1. frozen shell + setup GUI (rebuild if missing)
+$glfwdll = & python -c "import glfw.library; print(glfw.library.glfw._name)"
 if (-not (Test-Path (Join-Path $dist "CruisnCollection.exe"))) {
     Write-Host "  freezing shell (PyInstaller)..."
     & python -m PyInstaller --noconfirm --onedir --noconsole --name CruisnCollection `
+        --add-binary "$glfwdll;glfw" `
         --distpath (Join-Path $root "build\dist") --workpath (Join-Path $root "build\work") `
         --specpath (Join-Path $root "build") (Join-Path $root "harness\collection.py") | Out-Null
+}
+if (-not (Test-Path (Join-Path $root "build\dist\CruisnSetup.exe"))) {
+    Write-Host "  freezing setup GUI (PyInstaller onefile)..."
+    & python -m PyInstaller --noconfirm --onefile --noconsole --name CruisnSetup `
+        --add-data "$(Join-Path $root 'harness\roms_manifest.json');." `
+        --distpath (Join-Path $root "build\dist") --workpath (Join-Path $root "build\work") `
+        --specpath (Join-Path $root "build") (Join-Path $root "harness\cruisn_setup.py") | Out-Null
 }
 
 # 2. layout
@@ -36,6 +48,7 @@ if (Test-Path $rel) {
 }
 New-Item -ItemType Directory -Force $rel | Out-Null
 Copy-Item -Recurse (Join-Path $dist "*") $rel
+Copy-Item (Join-Path $root "build\dist\CruisnSetup.exe") $rel -ErrorAction SilentlyContinue
 foreach ($d in "fixtures", "patch", "docs") { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $rel $d) }
 New-Item -ItemType Directory -Force (Join-Path $rel "roms") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $rel "source") | Out-Null
@@ -49,8 +62,9 @@ foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll") {
     else { Write-Host "  [!] $f not found beside vunit.exe - player must run setup's FFB download" -ForegroundColor Yellow }
 }
 if (Test-Path (Join-Path $vdir "FFBPlugin.ini")) {
-    # ship the tuned ini but blank the machine-specific wheel GUID + logging
+    # ship the ini configured for MAME-outputs mode, wheel GUID blanked
     (Get-Content (Join-Path $vdir "FFBPlugin.ini")) `
+        -replace '^GameId=.*', 'GameId=22' `
         -replace '^DeviceGUID=.*', 'DeviceGUID=' `
         -replace '^Logging=.*', 'Logging=0' |
         Set-Content (Join-Path $rel "FFBPlugin.ini")
@@ -63,22 +77,54 @@ try {
         Set-Content (Join-Path $rel "FFBPLUGIN-LICENSE.txt")
 }
 
+# 3b. menu art + music (skippable with -NoMedia); repo media/ preferred so
+# CI builds work without the LaunchBox library
+if (-not $NoMedia) {
+    $artsrc = if (Test-Path (Join-Path $root "media\art")) { Join-Path $root "media\art" }
+              elseif ($env:CRUISN_ART) { $env:CRUISN_ART }
+              else { "E:\Source\launchbox\Launchbox-Racing\Images\Arcade" }
+    $artfiles = @(
+        "Clear Logo\Cruis_n USA-01.png",
+        "Clear Logo\Cruis_n World-01.png",
+        "Clear Logo\Off Road Challenge-01.png",
+        "Clear Logo\North America\Cruis_n Exotica-01.png",
+        "Screenshot - Game Title\Cruis_n USA-01.jpg",
+        "Screenshot - Game Title\Cruis_n World-01.png",
+        "Screenshot - Game Title\Off Road Challenge-01.png",
+        "Screenshot - Game Title\Cruis_n Exotica-02.png")
+    foreach ($f in $artfiles) {
+        $src = Join-Path $artsrc $f
+        if (Test-Path $src) {
+            $dst = Join-Path $rel "art\$f"
+            New-Item -ItemType Directory -Force (Split-Path $dst) | Out-Null
+            Copy-Item $src $dst
+        } else { Write-Host "  [!] art missing: $f (menu falls back to generated card)" -ForegroundColor Yellow }
+    }
+    $music = Join-Path $root "media\menumusic.mp3"
+    if (-not (Test-Path $music)) { $music = Join-Path $root "rig\assets\menumusic.mp3" }
+    if (Test-Path $music) {
+        New-Item -ItemType Directory -Force (Join-Path $rel "rig\assets") | Out-Null
+        Copy-Item $music (Join-Path $rel "rig\assets\menumusic.mp3")
+    } else { Write-Host "  [!] no menumusic.mp3 (menu will be silent; harness\make_music.py builds one)" -ForegroundColor Yellow }
+    Write-Host "  media bundled (use -NoMedia for a clean variant)"
+}
+
 # 4. README
 @"
 CRUIS'N COLLECTION
 ==================
-1. Put your own MAME 0.286 ROM sets in roms\
-   (crusnusa.zip, crusnwld.zip, offroadc.zip, crusnexo.zip)
-2. Run setup.ps1 once (right-click -> Run with PowerShell)
-3. Double-click CruisnCollection.exe
+1. Double-click CruisnSetup.exe and add your own ROM files - any
+   filename works, they are identified by their contents and installed
+   automatically. It also health-checks everything else.
+2. Hit "Launch Collection" (or double-click CruisnCollection.exe).
 
 Wheel setup, CRT effects: SETTINGS inside the launcher.
 In-game: 5=coin, 1=start, F9=CRT toggle, Esc=back to launcher.
-Full docs: docs\INSTALL.md.
+Advanced/scripted setup: setup.ps1. Full docs: docs\INSTALL.md.
 
-This package contains no ROMs and no Midway assets. Emulator: MAME
-(GPL-2.0+), patch series in patch\, launcher source in source\.
-FFB Arcade Plugin (c) Boomslangnz, GPL-3.0 (FFBPLUGIN-LICENSE.txt).
+This package contains no ROMs. Emulator: MAME (GPL-2.0+), patch series
+in patch\, launcher source in source\. FFB Arcade Plugin (c)
+Boomslangnz, GPL-3.0 (FFBPLUGIN-LICENSE.txt).
 "@ | Set-Content (Join-Path $rel "README.txt")
 
 # 5. zip

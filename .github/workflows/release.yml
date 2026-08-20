@@ -1,0 +1,91 @@
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: false
+          install: >-
+            git make
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-python
+
+      - name: Cache built emulator
+        id: mame-cache
+        uses: actions/cache@v4
+        with:
+          path: mame-src/vunit.exe
+          key: vunit-${{ hashFiles('patch/vunit-poc-patches.patch') }}
+
+      - name: Build vunit.exe (MAME 0.286 + patch series)
+        if: steps.mame-cache.outputs.cache-hit != 'true'
+        shell: msys2 {0}
+        run: |
+          set -e
+          export OS=Windows_NT
+          rm -rf mame-src
+          git clone --depth 1 --branch mame0286 https://github.com/mamedev/mame mame-src
+          cd mame-src
+          git config user.email ci@local
+          git config user.name ci
+          git am ../patch/vunit-poc-patches.patch
+          make SUBTARGET=vunit \
+               SOURCES=src/mame/midway/midvunit.cpp,src/mame/midway/midzeus.cpp \
+               REGENIE=1 NOWERROR=1 TOOLS=0 -j4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Python deps
+        run: python -m pip install numpy pillow moderngl glfw pyinstaller
+
+      - name: FFB Arcade Plugin (GPL-3.0)
+        run: |
+          $api = Invoke-RestMethod "https://api.github.com/repos/Boomslangnz/FFBArcadePlugin/releases/latest"
+          $asset = $api.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
+          Invoke-WebRequest -UseBasicParsing -OutFile ffb.zip $asset.browser_download_url
+          Expand-Archive ffb.zip ffbx
+          $m64 = Get-ChildItem -Recurse ffbx -Filter "MAME64.dll" | Select-Object -First 1
+          foreach ($f in "dinput8.dll","SDL2.dll","MAME64.dll","FFBPlugin.ini") {
+            Copy-Item (Join-Path $m64.DirectoryName $f) mame-src\ -ErrorAction SilentlyContinue
+          }
+          Remove-Item -Recurse -Force ffb.zip, ffbx
+
+      - name: Assemble release
+        run: |
+          $env:CRUISN_VUNIT = "$PWD\mame-src\vunit.exe"
+          .\make_release.ps1
+
+      - name: Rename zip with version
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $zip = Get-ChildItem build\CruisnCollection-*.zip | Select-Object -First 1
+          Move-Item $zip.FullName "build\CruisnCollection-$tag.zip"
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/CruisnCollection-*.zip
+          generate_release_notes: true
+
+      - name: Upload artifact (manual runs)
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: actions/upload-artifact@v4
+        with:
+          name: CruisnCollection
+          path: build/CruisnCollection-*.zip
