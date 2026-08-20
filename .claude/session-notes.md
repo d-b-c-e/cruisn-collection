@@ -52,3 +52,32 @@ series exported — now includes zeus2 + winhybrid + frontend files),
 Launchbox-Racing unchanged tonight. Build command now needs BOTH sources
 (midvunit + midzeus) — see CLAUDE.md; shader regen is
 `python harness/gen_shaders.py` (raw strings break REGENIE).
+
+## Addendum (2026-08-20 afternoon): distribution sprint
+
+- **CruisnSetup.exe** (tkinter, frozen onefile): identifies ANY zip by
+  member names+CRCs vs roms_manifest.json (from vunit -listroms, 25 sets)
+  - filename-independent, clone-aware, missing-file reporting, installs
+  under correct set name. Verified: real/renamed/wrong-game zips.
+- **Support bundle** (GUI button + harness/support_bundle.py): MAME input
+  dump (lua/input_dump.lua), -verbose device lines, glfw joydump, FFB log,
+  configs -> CruisnSupport-<stamp>.zip for bug reports.
+- **Media bundled** (user decision): media/ in repo (8 art + menumusic.mp3
+  as mp3); make_release -NoMedia for clean variant. ROMs stay out.
+- **Patch series is now FULL from mame0286 tag** (17 patches - clean-clone
+  git am was silently missing the DIJOYSTATE2 base before).
+- **GitHub**: repo d-b-c-e/cruisn-poc (private), pushed; release.yml
+  builds vunit from upstream+series (cached), freezes both apps, downloads
+  FFB plugin, publishes zip on tag. **v0.1.0 tagged - first CI run in
+  progress** (watch: gh run list).
+- Release zip (local build): 86 MB, E2E-verified from the folder.
+
+### Newly queued features
+- [ ] Gamepad support: wizard already binds gamepad BUTTONS (glfw sees
+      XInput pads); verify MAME's default XInput axis mapping for
+      steer/gas/brake and add axis coverage to the wizard if needed.
+- [ ] Keyboard remapping: wizard capture mode for KEYCODE_x bindings
+      (glfw key -> MAME token table).
+- [ ] UDP telemetry Phase A/B (design in RESULTS 2026-08-20 section).
+- [ ] Esc in-game overlay (design standing).
+- [ ] CI first-run shakeout (MAME build on runner ~1 h; expect iteration).
