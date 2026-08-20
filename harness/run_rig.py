@@ -298,20 +298,64 @@ def sanitized_ctrlrpath(rig):
     return out
 
 
-# collection.ini [wheelmap] key -> MAME port type (kept in sync with the
-# shell's WIZARD_STEPS) and the keyboard alternative to preserve
+# collection.ini [wheelmap] key -> ([MAME port types], keyboard alternative
+# to preserve). Kept in sync with the shell's WIZARD_STEPS. The analog keys
+# write every steering-style port type so all three games pick them up.
 WHEELMAP_PORTS = {
-    "coin":  ("COIN1", "KEYCODE_5"),
-    "start": ("START1", "KEYCODE_1"),
-    "view1": ("P1_BUTTON1", None),
-    "view2": ("P1_BUTTON2", None),
-    "view3": ("P1_BUTTON3", None),
-    "radio": ("P1_BUTTON4", None),
-    "gear1": ("P1_BUTTON5", None),
-    "gear2": ("P1_BUTTON6", None),
-    "gear3": ("P1_BUTTON7", None),
-    "gear4": ("P1_BUTTON8", None),
+    "steer": (["P1_PADDLE", "P1_DIAL", "P1_AD_STICK_X"], None),
+    "gas":   (["P1_PEDAL"], None),
+    "brake": (["P1_PEDAL2"], None),
+    "coin":  (["COIN1"], "KEYCODE_5"),
+    "start": (["START1"], "KEYCODE_1"),
+    "view1": (["P1_BUTTON1"], None),
+    "view2": (["P1_BUTTON2"], None),
+    "view3": (["P1_BUTTON3"], None),
+    "radio": (["P1_BUTTON4"], None),
+    "gear1": (["P1_BUTTON5"], None),
+    "gear2": (["P1_BUTTON6"], None),
+    "gear3": (["P1_BUTTON7"], None),
+    "gear4": (["P1_BUTTON8"], None),
 }
+
+# glfw axis index -> MAME axis token, positional. Both stacks enumerate
+# HID axes in X,Y,Z,RX,RY,RZ,Slider order for DirectInput devices; XInput
+# gamepads use glfw's fixed LS/RS/trigger order mapped to MAME's xinput
+# item tokens. Approximation - the support bundle shows the truth when a
+# device deviates.
+AXIS_TOKENS_DINPUT = ["XAXIS", "YAXIS", "ZAXIS", "RXAXIS", "RYAXIS",
+                      "RZAXIS", "SLIDER1", "SLIDER2"]
+AXIS_TOKENS_XINPUT = ["XAXIS", "YAXIS", "RXAXIS", "RZAXIS",
+                      "SLIDER1", "SLIDER2"]
+
+
+def _wheelmap_token(joyidx, val):
+    """Translate one wizard value string to a MAME token, or None."""
+    if val.startswith("key:"):
+        return val[4:]
+    if val.startswith("btn:"):
+        n = int(val[4:]) + 1
+        if n <= 32:
+            return f"JOYCODE_{joyidx}_BUTTON{n}"
+        if n <= 48:
+            return f"JOYCODE_{joyidx}_ADDSW{n - 32}"
+        return None
+    if val.startswith("axis:"):
+        parts = val.split(":")
+        idx, gp = int(parts[1]), parts[2] == "1" if len(parts) > 2 else False
+        table = AXIS_TOKENS_XINPUT if gp else AXIS_TOKENS_DINPUT
+        if idx < len(table):
+            return f"JOYCODE_{joyidx}_{table[idx]}"
+        return None
+    # legacy plain button index
+    try:
+        n = int(val) + 1
+    except ValueError:
+        return None
+    if n <= 32:
+        return f"JOYCODE_{joyidx}_BUTTON{n}"
+    if n <= 48:
+        return f"JOYCODE_{joyidx}_ADDSW{n - 32}"
+    return None
 
 
 def apply_wheelmap(tree, rig):
@@ -343,38 +387,37 @@ def apply_wheelmap(tree, rig):
     for key, val in cp["wheelmap"].items():
         if key not in WHEELMAP_PORTS or "|" not in val:
             continue
-        porttype, kbd = WHEELMAP_PORTS[key]
-        dev, btn = val.rsplit("|", 1)
-        btn = int(btn)
-        if dev not in joycode:
-            idx = max(joycode.values(), default=0) + 1
-            ET.SubElement(default_inp, "mapdevice",
-                          {"device": dev, "controller": f"JOYCODE_{idx}"})
-            joycode[dev] = idx
-        n = btn + 1
-        if n <= 32:
-            tok = f"JOYCODE_{joycode[dev]}_BUTTON{n}"
-        elif n <= 48:
-            tok = f"JOYCODE_{joycode[dev]}_ADDSW{n - 32}"
+        porttypes, kbd = WHEELMAP_PORTS[key]
+        dev, spec = val.split("|", 1)
+        if dev == "KEYBOARD":
+            tok = _wheelmap_token(0, spec)
         else:
-            print(f"wheelmap: {key} on button {n} > 48 - not addressable, skipped")
+            if dev not in joycode:
+                idx = max(joycode.values(), default=0) + 1
+                ET.SubElement(default_inp, "mapdevice",
+                              {"device": dev, "controller": f"JOYCODE_{idx}"})
+                joycode[dev] = idx
+            tok = _wheelmap_token(joycode[dev], spec)
+        if not tok:
+            print(f"wheelmap: {key} = {val!r} not addressable, skipped")
             continue
         seqtext = f"{kbd} OR {tok}" if kbd else tok
-        port = None
-        for p in default_inp.findall("port"):
-            if p.get("type") == porttype:
-                port = p
-                break
-        if port is None:
-            port = ET.SubElement(default_inp, "port", {"type": porttype})
-            ET.SubElement(port, "newseq", {"type": "standard"})
-        seq = port.find("newseq")
-        seq.text = seqtext
+        for porttype in porttypes:
+            port = None
+            for p in default_inp.findall("port"):
+                if p.get("type") == porttype:
+                    port = p
+                    break
+            if port is None:
+                port = ET.SubElement(default_inp, "port", {"type": porttype})
+                ET.SubElement(port, "newseq", {"type": "standard"})
+            seq = port.find("newseq")
+            seq.text = seqtext
 
     # game-specific sections override default in MAME's ctrlr merge - remove
     # wizard-claimed ports from them so the wizard's bindings always win
-    wiz_ports = {WHEELMAP_PORTS[k][0] for k in cp["wheelmap"]
-                 if k in WHEELMAP_PORTS}
+    wiz_ports = {pt for k in cp["wheelmap"] if k in WHEELMAP_PORTS
+                 for pt in WHEELMAP_PORTS[k][0]}
     for system in root.iter("system"):
         if system.get("name") == "default":
             continue

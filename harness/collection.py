@@ -166,16 +166,18 @@ class Shell:
         tw = tx.width * th / tx.height
         self.rect(tx, (self.w - tw) / 2, y, tw, th, tint)
 
-    def draw_wizard(self, prompt, done, total, last):
+    def draw_wizard(self, prompt, done, total, last, kind="button"):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
         self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
                   tw, self.h / 14 * 1.9)
-        self.center_text("WHEEL SETUP", self.h // 20, self.h * 0.28,
-                         (1.0, 0.85, 0.4, 1.0))
-        self.center_text(f"PRESS A WHEEL BUTTON FOR:", self.h // 34, self.h * 0.42)
-        self.center_text(prompt, self.h // 12, self.h * 0.50,
+        self.center_text("WHEEL / CONTROLLER SETUP", self.h // 20,
+                         self.h * 0.28, (1.0, 0.85, 0.4, 1.0))
+        hint = ("MOVE THE CONTROL FOR:" if kind == "axis"
+                else "PRESS A BUTTON (OR KEYBOARD KEY) FOR:")
+        self.center_text(hint, self.h // 34, self.h * 0.42)
+        self.center_text(prompt, self.h // 16, self.h * 0.50,
                          (0.5, 1.0, 0.6, 1.0))
         if last:
             self.center_text(last, self.h // 40, self.h * 0.66,
@@ -351,19 +353,52 @@ class Audio:
             pass
 
 
-# wheel-setup wizard: (prompt label, collection.ini key, MAME port type)
+# wheel/controller-setup wizard: (prompt, ini key, kind)
+# kind "button": press a joystick button OR a keyboard key
+# kind "axis":   move an axis (turn wheel / press pedal / tilt stick)
 WIZARD_STEPS = [
-    ("COIN",      "coin",   "COIN1"),
-    ("START",     "start",  "START1"),
-    ("VIEW 1",    "view1",  "P1_BUTTON1"),
-    ("VIEW 2",    "view2",  "P1_BUTTON2"),
-    ("VIEW 3",    "view3",  "P1_BUTTON3"),
-    ("RADIO",     "radio",  "P1_BUTTON4"),
-    ("GEAR 1",    "gear1",  "P1_BUTTON5"),
-    ("GEAR 2",    "gear2",  "P1_BUTTON6"),
-    ("GEAR 3",    "gear3",  "P1_BUTTON7"),
-    ("GEAR 4",    "gear4",  "P1_BUTTON8"),
+    ("STEERING  (turn the wheel / tilt the stick)", "steer", "axis"),
+    ("GAS  (press the pedal / trigger)",            "gas",   "axis"),
+    ("BRAKE  (press the pedal / trigger)",          "brake", "axis"),
+    ("COIN",      "coin",   "button"),
+    ("START",     "start",  "button"),
+    ("VIEW 1",    "view1",  "button"),
+    ("VIEW 2",    "view2",  "button"),
+    ("VIEW 3",    "view3",  "button"),
+    ("RADIO",     "radio",  "button"),
+    ("GEAR 1",    "gear1",  "button"),
+    ("GEAR 2",    "gear2",  "button"),
+    ("GEAR 3",    "gear3",  "button"),
+    ("GEAR 4",    "gear4",  "button"),
 ]
+
+# glfw key -> MAME KEYCODE token (wizard keyboard capture). Esc/Backspace
+# are wizard controls and deliberately absent.
+def _keycode_table():
+    import glfw
+    t = {}
+    for ch in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        t[getattr(glfw, f"KEY_{ch}")] = f"KEYCODE_{ch}"
+    for d in "0123456789":
+        t[getattr(glfw, f"KEY_{d}")] = f"KEYCODE_{d}"
+    for i in range(1, 13):
+        t[getattr(glfw, f"KEY_F{i}")] = f"KEYCODE_F{i}"
+    t.update({
+        glfw.KEY_SPACE: "KEYCODE_SPACE", glfw.KEY_ENTER: "KEYCODE_ENTER",
+        glfw.KEY_TAB: "KEYCODE_TAB",
+        glfw.KEY_LEFT: "KEYCODE_LEFT", glfw.KEY_RIGHT: "KEYCODE_RIGHT",
+        glfw.KEY_UP: "KEYCODE_UP", glfw.KEY_DOWN: "KEYCODE_DOWN",
+        glfw.KEY_LEFT_SHIFT: "KEYCODE_LSHIFT",
+        glfw.KEY_RIGHT_SHIFT: "KEYCODE_RSHIFT",
+        glfw.KEY_LEFT_CONTROL: "KEYCODE_LCONTROL",
+        glfw.KEY_RIGHT_CONTROL: "KEYCODE_RCONTROL",
+        glfw.KEY_LEFT_ALT: "KEYCODE_LALT",
+        glfw.KEY_RIGHT_ALT: "KEYCODE_RALT",
+        glfw.KEY_COMMA: "KEYCODE_COMMA", glfw.KEY_PERIOD: "KEYCODE_STOP",
+        glfw.KEY_SLASH: "KEYCODE_SLASH", glfw.KEY_SEMICOLON: "KEYCODE_COLON",
+        glfw.KEY_MINUS: "KEYCODE_MINUS", glfw.KEY_EQUAL: "KEYCODE_EQUALS",
+    })
+    return t
 
 
 def load_config():
@@ -386,10 +421,12 @@ def save_config(state):
 
 
 def save_wheelmap(bindings):
-    """bindings: {ini_key: (device_name, button_index)} from the wizard."""
+    """bindings: {ini_key: value_string} from the wizard. Value formats:
+    'Device Name|btn:N', 'Device Name|axis:N:G' (G=1 for XInput gamepads),
+    'KEYBOARD|key:KEYCODE_X'."""
     cp = configparser.ConfigParser()
     cp.read(CFG)
-    cp["wheelmap"] = {k: f"{dev}|{btn}" for k, (dev, btn) in bindings.items()}
+    cp["wheelmap"] = dict(bindings)
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
         cp.write(f)
@@ -527,6 +564,16 @@ def main():
             pass
         return out
 
+    def joy_axes(jid):
+        r = glfw.get_joystick_axes(jid)
+        if r is None:
+            return ()
+        if isinstance(r, tuple) and len(r) == 2 and not isinstance(r[0], (int, float)):
+            ptr, n = r
+            return tuple(ptr[i] for i in range(n))
+        return tuple(r)
+
+    KEYCODES = _keycode_table()
     launch = None
     mode = "menu"        # menu | settings | wizard
     row = 0              # menu: 0 = game cards, 1 = SETTINGS
@@ -534,6 +581,7 @@ def main():
     wiz_idx = 0
     wiz_bind = {}
     wiz_last = ""
+    wiz_base = None      # axis baselines {jid: axes tuple}
     while not glfw.window_should_close(win):
         glfw.poll_events()
         presses = joy_presses()
@@ -560,20 +608,65 @@ def main():
                 actions.append(glfw.KEY_ENTER)   # any wheel button = OK
 
         if mode == "wizard":
+            step = WIZARD_STEPS[wiz_idx] if wiz_idx < len(WIZARD_STEPS) else None
             for key in actions:
                 if key == glfw.KEY_ESCAPE:          # skip this binding
                     audio.blip("nav")
                     wiz_idx += 1
+                    wiz_base = None
                 elif key == glfw.KEY_BACKSPACE:     # abort wizard
                     audio.blip("select")
                     mode = "settings"
+                elif step and step[2] == "button" and key in KEYCODES:
+                    # keyboard remap: any mappable key binds this action
+                    wiz_bind[step[1]] = f"KEYBOARD|key:{KEYCODES[key]}"
+                    wiz_last = (f"{step[0]}  =  KEYBOARD  "
+                                f"{KEYCODES[key].replace('KEYCODE_', '')}")
+                    audio.blip("nav")
+                    wiz_idx += 1
+                    wiz_base = None
+                    break
             actions.clear()
-            if mode == "wizard" and presses:
-                jid, name, btn = presses[0]
-                wiz_bind[WIZARD_STEPS[wiz_idx][1]] = (name, btn)
-                wiz_last = f"{WIZARD_STEPS[wiz_idx][0]}  =  {name}  BUTTON {btn + 1}"
-                audio.blip("nav")
-                wiz_idx += 1
+            if mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
+                label, ikey, kind = WIZARD_STEPS[wiz_idx]
+                if kind == "button" and presses:
+                    jid, name, btn = presses[0]
+                    wiz_bind[ikey] = f"{name}|btn:{btn}"
+                    wiz_last = f"{label}  =  {name}  BUTTON {btn + 1}"
+                    audio.blip("nav")
+                    wiz_idx += 1
+                    wiz_base = None
+                elif kind == "axis":
+                    cur = {}
+                    try:
+                        for jid in range(16):
+                            if glfw.joystick_present(jid):
+                                cur[jid] = joy_axes(jid)
+                    except Exception:
+                        pass
+                    if wiz_base is None:
+                        wiz_base = cur
+                    else:
+                        hit = None
+                        for jid, axes in cur.items():
+                            base = wiz_base.get(jid, axes)
+                            for i in range(min(len(axes), len(base))):
+                                if abs(axes[i] - base[i]) > 0.55:
+                                    hit = (jid, i)
+                                    break
+                            if hit:
+                                break
+                        if hit:
+                            jid, i = hit
+                            name = glfw.get_joystick_name(jid)
+                            if isinstance(name, bytes):
+                                name = name.decode(errors="replace")
+                            gp = 1 if glfw.joystick_is_gamepad(jid) else 0
+                            wiz_bind[ikey] = f"{name}|axis:{i}:{gp}"
+                            wiz_last = f"{label.split('(')[0].strip()}  =  {name}  AXIS {i}"
+                            audio.blip("nav")
+                            wiz_idx += 1
+                            wiz_base = None
             if mode == "wizard" and wiz_idx >= len(WIZARD_STEPS):
                 save_wheelmap(wiz_bind)
                 audio.blip("select")
@@ -639,7 +732,8 @@ def main():
         t = time.time() % 3600
         if mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
             shell.draw_wizard(WIZARD_STEPS[wiz_idx][0], wiz_idx,
-                              len(WIZARD_STEPS), wiz_last)
+                              len(WIZARD_STEPS), wiz_last,
+                              WIZARD_STEPS[wiz_idx][2])
         elif mode == "settings":
             shell.draw_settings(ssel, state["crt"], t)
         else:

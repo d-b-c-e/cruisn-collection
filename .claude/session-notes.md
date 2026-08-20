@@ -81,3 +81,22 @@ Launchbox-Racing unchanged tonight. Build command now needs BOTH sources
 - [ ] UDP telemetry Phase A/B (design in RESULTS 2026-08-20 section).
 - [ ] Esc in-game overlay (design standing).
 - [ ] CI first-run shakeout (MAME build on runner ~1 h; expect iteration).
+
+## Addendum 2 (2026-08-20 evening): controller/keyboard support + crash attribution
+
+- Wizard now captures AXES (move-to-bind: steering/gas/brake as the first
+  three steps) and KEYBOARD keys (press any mappable key on a button step
+  -> KEYCODE binding). New wheelmap grammar: dev|btn:N, dev|axis:N:G,
+  KEYBOARD|key:KEYCODE_X (legacy dev|N still parses).
+- E2E-verified via simulated bindings + Lua dump: pad LSX->steering
+  (:WHEEL Paddle = JOYCODE_3_XAXIS), RT/LT->gas/brake (SLIDER2/1 - these
+  ports are EMPTY in stock MAME defaults, so the wizard is REQUIRED for
+  pad-only installs), pad button coin, KEYCODE_ENTER start.
+- PHYSICAL capture test (turn wheel / press pedal detection) needs a human:
+  tonight's checklist. NOTE: the Moza idle-sleeps when unused - wake it
+  before wizard runs.
+- Teardown crash ATTRIBUTED with minidump stack evidence: faulting thread's
+  chain includes dinput8.dll+0x22AAD (FFB plugin proxy) in msvcrt memcpy at
+  exit. Cosmetic, post-game. Second dump class = call into unloaded code.
+- CI v0.1.0 attempt 2 running (permissions fixed; cache missed -> full
+  MAME rebuild ~50 min).
