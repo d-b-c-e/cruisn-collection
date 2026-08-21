@@ -147,6 +147,42 @@ auto-relaunch), wizard (Enter gate, no return-spring misbind), Exotica
 (4:3 sharp, no panel, Esc quits, gears/views right, flutter gone?),
 Off Road gameplay with crack fill ON vs OFF (SETTINGS toggle).
 
+## Round 2 first observations (2026-08-21, user at wheel) — fixed same night
+
+1. **Hat-left launched the card it landed on**: the wheel d-pad reports
+   as hat AND buttons; the hat moved selection while the button hit "any
+   wheel button = OK". 2. **Esc-quit → relaunch again**: latched shifter
+   gear reappearing as a fresh 0→1 edge after re-enumeration (debounce
+   forgets after minutes). ONE fix kills both classes: menu/settings OK
+   now fires on button RELEASE with no hat movement between press and
+   release — d-pad presses always move the hat first (suppressed), and
+   latched phantoms never release (can never fire).
+3. **CRT menu/game drift**: F9 + Esc-menu toggles never persisted. Now:
+   overlay writes `crt=` to `MIDV_GL_STATEFILE` (rig/gl_state.txt) at
+   teardown; shell reads it back into collection.ini after each game.
+4. **Card art**: per-game title screenshots never lined up → cards are
+   now the clear logo centered on a uniform gradient panel
+   (card_panel_image); screenshots dropped from the menu entirely.
+
+## ZEUS2 BACKPORTS — Exotica rendering (the big one)
+
+Jos van Mourik (mourix) is actively fixing zeus2 upstream RIGHT NOW, and
+our 0.286 base (2026-02-26) predates all of it. Backported onto
+poc/quadlog (clean applies, zeus2.cpp/.h only):
+- **mamedev/mame#15719** (merged 2026-07-18): road disappearing (bad
+  fast-HSR pre-cull), nearest road segment dropped (near-plane clip
+  instead of reject), perspective-correct texturing.
+- **mamedev/mame#15723** (OPEN, "Assisted by Claude Opus 4.8"): fast-clear
+  depth-0 guard (stuck black overlay post-race), untextured solid-color
+  quads via texmode bits 10-11 (triple flag-girl sprites), clamp 1.8
+  fixed-point translucency before rgb_t::scale8 (**cars scaled
+  near-black — the rig-observed black cars**). Watch the PR for review
+  changes before v0.2.0; re-sync if upstream amends it.
+- NOT taken: #15760 (crusnexo.lay dashboard rework — we hide the layout
+  with -view "Screen 0").
+User verdict pending at the wheel. If Exotica becomes playable-good,
+consider thanking/tracking mourix's future zeus2 PRs each MAME bump.
+
 ## Open items
 
 - [ ] Rig test above; ingest findings.

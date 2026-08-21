@@ -524,10 +524,18 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
+    # the overlay writes its final live-toggle state (F9 / Esc-menu CRT)
+    # here at teardown; the shell reads it back so settings stay truthful
+    statefile = os.path.join(rig, "gl_state.txt")
+    try:
+        os.remove(statefile)
+    except OSError:
+        pass
     env = dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(scale),
                MIDV_GL_CRT="1" if crt else "0",
                MIDV_GL_CRACKFILL="1" if crackfill else "0",
                MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
+               MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
     # UDP telemetry: env wins, else collection.ini [telemetry] udp=host:port
     if "MIDV_TELEM_UDP" not in env:

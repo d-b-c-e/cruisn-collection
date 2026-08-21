@@ -107,6 +107,21 @@ def text_image(text, size, names=("bahnschrift.ttf", "arialbd.ttf"),
     return img
 
 
+def card_panel_image(w=640, h=480):
+    """Uniform card face: dark gradient panel with a soft top sheen. The
+    per-game title screenshots never lined up (mixed sources/aspects), so
+    cards show the clear logo on this panel instead."""
+    y = np.linspace(0.0, 1.0, h)[:, None]
+    x = np.linspace(-1.0, 1.0, w)[None, :]
+    top = np.array([26, 30, 60], float)
+    bot = np.array([10, 10, 24], float)
+    img = np.zeros((h, w, 3)) \
+        + top[None, None, :] * (1 - y[..., None]) + bot[None, None, :] * y[..., None]
+    sheen = np.exp(-((y - 0.22) ** 2) / 0.05) * np.exp(-(x ** 2) / 1.4)
+    img += sheen[..., None] * np.array([34, 30, 54], float)[None, None, :]
+    return Image.fromarray(np.clip(img, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+
+
 def background_image(w, h):
     """Static backdrop: deep asphalt gradient + horizon glow + vignette."""
     y = np.linspace(0.0, 1.0, h)[:, None]
@@ -136,21 +151,17 @@ class Shell:
         self.title = self.tex(text_image(
             "CRUIS'N  COLLECTION", h // 14,
             fill=(255, 224, 160, 255), glow=(255, 96, 32, 200)))
+        self.cardbg = self.tex(card_panel_image())
         self.cards = []
         for rom, name, logo, shot in GAMES:
             # art is optional (LaunchBox library on the dev box); fall back
-            # to generated cards so a fresh install still has a full menu
-            try:
-                simg = Image.open(shot).convert("RGBA")
-            except Exception:
-                simg = Image.new("RGBA", (640, 480), (12, 12, 28, 255))
+            # to generated text so a fresh install still has a full menu
             try:
                 limg = Image.open(logo).convert("RGBA")
             except Exception:
                 limg = text_image(name, 72, fill=(255, 214, 130, 255),
                                   glow=(255, 96, 32, 200))
-            self.cards.append((self.tex(simg), simg.size,
-                               self.tex(limg), limg.size, name))
+            self.cards.append((self.tex(limg), limg.size, name))
         self.foot_cache = {}
         self.text_cache = {}
 
@@ -247,7 +258,7 @@ class Shell:
         gap = self.w * (0.045 if n <= 3 else 0.03)
         total = n * cw + (n - 1) * gap
         y0 = self.h * 0.26
-        for i, (stex, ssz, ltex, lsz, name) in enumerate(self.cards):
+        for i, (ltex, lsz, name) in enumerate(self.cards):
             x = (self.w - total) / 2 + i * (cw + gap)
             focused = (row == 0 and i == sel)
             s = 1.0 if focused else 0.88
@@ -259,15 +270,15 @@ class Shell:
                 b = self.h * 0.008
                 self.rect(self.white, ex - b, ey - b, ew + 2 * b, eh + 2 * b,
                           (GOLD[0], GOLD[1], GOLD[2], pulse))
-            self.rect(self.white, ex, ey, ew, eh, (0, 0, 0, 1))
-            self.rect(stex, ex, ey, ew, eh, (dim, dim, dim, 1))
-            # clear logo on its own line below the card
-            lw = ew * 0.85
+            self.rect(self.cardbg, ex, ey, ew, eh, (dim, dim, dim, 1))
+            # clear logo centered on the panel - the one art asset every
+            # game has in a consistent style
+            lw = ew * 0.82
             lh = lsz[1] * lw / lsz[0]
-            maxlh = self.h * 0.13 * s
+            maxlh = eh * 0.60
             if lh > maxlh:
                 lh, lw = maxlh, lsz[0] * maxlh / lsz[1]
-            self.rect(ltex, ex + (ew - lw) / 2, y0 + ch + self.h * 0.035,
+            self.rect(ltex, ex + (ew - lw) / 2, ey + (eh - lh) / 2,
                       lw, lh, (dim, dim, dim, 1))
         # SETTINGS row under the cards
         if row == 1:
@@ -586,12 +597,12 @@ def main():
         return r[0] if len(r) else 0
 
     def joy_presses():
-        """New button presses this frame across all joysticks:
-        [(jid, name, button_index), ...]. A device's first second after it
-        appears is silent: its initial reads can be zeros with the true
-        held/toggle state arriving a few polls later, and that 0->1 settle
-        must not count as a press."""
-        out = []
+        """Button edges this frame across all joysticks. Returns (downs,
+        ups): downs = [(jid, name, button)], ups = [(jid, button)]. A
+        device's first second after it appears is silent: its initial reads
+        can be zeros with the true held/toggle state arriving a few polls
+        later, and that 0->1 settle must not count as a press."""
+        downs, ups = [], []
         now = time.time()
         try:
             for jid in range(16):
@@ -613,14 +624,16 @@ def main():
                             name = glfw.get_joystick_name(jid)
                             if isinstance(name, bytes):
                                 name = name.decode(errors="replace")
-                            out.append((jid, name, i))
+                            downs.append((jid, name, i))
+                        elif prev[i] and not cur[i]:
+                            ups.append((jid, i))
                 for i, v in enumerate(cur):
                     if v:
                         joy_lastdown[(jid, i)] = now
                 joy_prev[jid] = cur
         except Exception:
             pass
-        return out
+        return downs, ups
 
     def joy_axes(jid):
         r = glfw.get_joystick_axes(jid)
@@ -646,12 +659,14 @@ def main():
     wiz_cool = 0.0       # ignore-everything deadline after each bind/skip
     wiz_settle = None    # last axis sample while waiting for rest
     wiz_settle_t = 0.0
+    ok_pending = {}      # (jid, btn) -> hat_changes count at press
+    hat_changes = 0
     while not glfw.window_should_close(win):
         glfw.poll_events()
-        presses = joy_presses()
+        presses, releases = joy_presses()
         if launching is not None:
             # boot in progress: the shell just shows LAUNCHING and stays deaf
-            presses = []
+            presses, releases = [], []
             actions.clear()
 
         # wheel hat -> arrow keys (menu + settings)
@@ -675,6 +690,7 @@ def main():
                         continue
                     hat = joy_hat(jid)
                     if hat != hat_prev:
+                        hat_changes += 1
                         if armed:
                             for h, key in ((glfw.HAT_LEFT, glfw.KEY_LEFT),
                                            (glfw.HAT_RIGHT, glfw.KEY_RIGHT),
@@ -686,8 +702,21 @@ def main():
                     break
             except Exception:
                 pass
-            if presses and armed:
-                actions.append(glfw.KEY_ENTER)   # any wheel button = OK
+            # any wheel button = OK, fired on RELEASE with no hat movement
+            # in between: a d-pad reports as hat AND buttons (press-based OK
+            # made hat navigation launch the selected card), and a latched
+            # phantom press (shifter gear reappearing after re-enumeration)
+            # never releases, so it can never fire
+            if armed:
+                for jid, name, btn in presses:
+                    ok_pending[(jid, btn)] = hat_changes
+                for jid, btn in releases:
+                    hc = ok_pending.pop((jid, btn), None)
+                    if hc is not None and hc == hat_changes:
+                        actions.append(glfw.KEY_ENTER)
+                        break
+            else:
+                ok_pending.clear()
 
         if mode == "wizard":
             now = time.time()
@@ -921,9 +950,22 @@ def main():
                 # reads them as fresh presses and instantly relaunches
                 joy_prev.clear()
                 joy_seen.clear()
+                ok_pending.clear()
                 hat_prev = 0
                 actions.clear()
                 armed_at = time.time() + 1.0
+                # in-game CRT toggles (F9 / Esc menu) persist back: the GL
+                # overlay writes its final state at teardown - without this
+                # the SETTINGS row and the next launch drift from reality
+                try:
+                    txt = open(os.path.join(POC, "rig", "gl_state.txt")).read()
+                    if "crt=" in txt:
+                        newcrt = txt.split("crt=")[1][:1] == "1"
+                        if newcrt != state["crt"]:
+                            state["crt"] = newcrt
+                            save_config(state)
+                except OSError:
+                    pass
                 glfw.focus_window(win)
                 audio.start_music()
                 fg_stop = threading.Event()
