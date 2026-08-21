@@ -24,7 +24,13 @@ staged for wheel testing.
    posture (WB owns a live brand: no ROMs shipped, no binaries hosted, GPL
    obligations from deriving from MAME).
 
-`.claude/session-notes.md` has the immediate open items.
+`.claude/session-notes.md` has the immediate open items and a complete
+self-sufficient handoff (written for context-loss resilience).
+
+**GitHub:** `d-b-c-e/cruisn-collection` (private; renamed from cruisn-poc
+2026-08-20 — old URL redirects). Releases publish via tag push
+(`.github/workflows/release.yml`); v0.1.0 is live. The local folder may
+still be named `cruisn-poc` — see session notes for the rename checklist.
 
 ## Repo map
 
