@@ -6,3 +6,4 @@ results/capture/
 results/capture-*/
 rig/
 build/
+results/verify-*/

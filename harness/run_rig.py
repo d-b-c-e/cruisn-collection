@@ -77,6 +77,7 @@ u32.SendMessageTimeoutW.argtypes = [ctypes.c_void_p, ctypes.c_uint,
                                     ctypes.c_uint, ctypes.c_uint,
                                     ctypes.POINTER(wt.DWORD)]
 u32.SetForegroundWindow.argtypes = [ctypes.c_void_p]
+u32.SetCursorPos.argtypes = [ctypes.c_int, ctypes.c_int]
 u32.GetForegroundWindow.restype = ctypes.c_void_p
 u32.AttachThreadInput.argtypes = [wt.DWORD, wt.DWORD, wt.BOOL]
 u32.SetFocus.argtypes = [ctypes.c_void_p]
@@ -146,6 +147,18 @@ def responsive(hwnd, tries=3):
     return False
 
 
+def window_responding(hwnd, timeout_ms=1000):
+    """True while the window's thread is pumping messages. MAME answers a
+    WM_NULL within a frame during play; once teardown starts the pump stops
+    and this times out - the collection shell uses that as its exit signal,
+    because the window object can outlive the pump by seconds while the FFB
+    plugin exit race and WER dump writes drag teardown out."""
+    res = wt.DWORD()
+    return bool(u32.SendMessageTimeoutW(hwnd, WM_NULL, None, None,
+                                        SMTO_ABORTIFHUNG, timeout_ms,
+                                        ctypes.byref(res)))
+
+
 def make_fullscreen(hwnd):
     """Strip the frame and span the window's monitor; the GL overlay tracks
     the client rect every present, so it follows to fullscreen on its own."""
@@ -191,7 +204,7 @@ def focus_state():
     return fg, int(gti.hwndFocus or 0)
 
 
-def enforce_foreground(hwnd, seconds=45):
+def enforce_foreground(hwnd, seconds=45, stop=None):
     """Keep claiming the foreground for MAME's window until it sticks.
 
     Keyboard and the wheel's foreground-mode DirectInput both die unless
@@ -207,6 +220,8 @@ def enforce_foreground(hwnd, seconds=45):
     good = 0
     deadline = time.monotonic() + seconds
     while time.monotonic() < deadline:
+        if stop is not None and stop.is_set():
+            return False   # caller handed the foreground to someone else
         fg, focus = focus_state()
         if fg == hwnd and focus == hwnd:
             good += 1
@@ -261,7 +276,7 @@ def prepare_rig(rom):
     return rig, ini
 
 
-def sanitized_ctrlrpath(rig):
+def sanitized_ctrlrpath(rig, rom="crusnusa"):
     """Rig-local TRANSLATED copy of EmuEzRacing.cfg.
 
     EmuEZ tokenizes high wheel buttons as JOYCODE_x_BUTTON33+, but MAME's
@@ -296,9 +311,11 @@ def sanitized_ctrlrpath(rig):
                 inp.remove(port)
     # in-game Esc opens the overlay options menu (the GL thread polls the
     # physical key), so detach MAME's quit from Esc; F12 stays bound as the
-    # emergency instant-quit and menu-back key
+    # emergency instant-quit and menu-back key. Zeus games have NO overlay
+    # (the menu can never appear), so they keep MAME's stock Esc = quit -
+    # rig test round 1: Exotica was unquittable without task manager.
     root = tree.getroot()
-    for system in root.iter("system"):
+    for system in [] if rom in ZEUS_ROMS else root.iter("system"):
         if system.get("name") != "default":
             continue
         inp = system.find("input")
@@ -351,6 +368,29 @@ AXIS_TOKENS_DINPUT = ["XAXIS", "YAXIS", "ZAXIS", "RXAXIS", "RYAXIS",
                       "RZAXIS", "SLIDER1", "SLIDER2"]
 AXIS_TOKENS_XINPUT = ["XAXIS", "YAXIS", "RXAXIS", "RZAXIS",
                       "SLIDER1", "SLIDER2"]
+
+# crusnexo (Zeus) wires its cabinet differently from the V-Unit games:
+# gears are BUTTON2-5, radio BUTTON6, views BUTTON7-10 (midzeus.cpp JAMMA
+# sheet; BUTTON1 is unused). Same wizard keys, game-specific port types -
+# written into a <system name="crusnexo"> section, which wins over the
+# default section in MAME's ctrlr merge. Without this the latched shifter
+# held a wrong button down in-game (rig test round 1: throttle "flutter",
+# dead shifter).
+WHEELMAP_PORTS_CRUSNEXO = {
+    "steer": (["P1_PADDLE"], None),
+    "gas":   (["P1_PEDAL"], None),
+    "brake": (["P1_PEDAL2"], None),
+    "coin":  (["COIN1"], "KEYCODE_5"),
+    "start": (["START1"], "KEYCODE_1"),
+    "view1": (["P1_BUTTON7"], None),
+    "view2": (["P1_BUTTON8"], None),
+    "view3": (["P1_BUTTON9"], None),
+    "radio": (["P1_BUTTON6"], None),
+    "gear1": (["P1_BUTTON2"], None),
+    "gear2": (["P1_BUTTON3"], None),
+    "gear3": (["P1_BUTTON4"], None),
+    "gear4": (["P1_BUTTON5"], None),
+}
 
 
 def _wheelmap_token(joyidx, val):
@@ -409,35 +449,39 @@ def apply_wheelmap(tree, rig):
         if m:
             joycode[md.get("device")] = int(m.group(1))
 
-    for key, val in cp["wheelmap"].items():
-        if key not in WHEELMAP_PORTS or "|" not in val:
-            continue
-        porttypes, kbd = WHEELMAP_PORTS[key]
+    def resolve(val):
         dev, spec = val.split("|", 1)
         if dev == "KEYBOARD":
-            tok = _wheelmap_token(0, spec)
-        else:
-            if dev not in joycode:
-                idx = max(joycode.values(), default=0) + 1
-                ET.SubElement(default_inp, "mapdevice",
-                              {"device": dev, "controller": f"JOYCODE_{idx}"})
-                joycode[dev] = idx
-            tok = _wheelmap_token(joycode[dev], spec)
-        if not tok:
-            print(f"wheelmap: {key} = {val!r} not addressable, skipped")
-            continue
-        seqtext = f"{kbd} OR {tok}" if kbd else tok
-        for porttype in porttypes:
-            port = None
-            for p in default_inp.findall("port"):
-                if p.get("type") == porttype:
-                    port = p
-                    break
-            if port is None:
-                port = ET.SubElement(default_inp, "port", {"type": porttype})
-                ET.SubElement(port, "newseq", {"type": "standard"})
-            seq = port.find("newseq")
-            seq.text = seqtext
+            return _wheelmap_token(0, spec)
+        if dev not in joycode:
+            idx = max(joycode.values(), default=0) + 1
+            ET.SubElement(default_inp, "mapdevice",
+                          {"device": dev, "controller": f"JOYCODE_{idx}"})
+            joycode[dev] = idx
+        return _wheelmap_token(joycode[dev], spec)
+
+    def write_ports(inp, table):
+        for key, val in cp["wheelmap"].items():
+            if key not in table or "|" not in val:
+                continue
+            porttypes, kbd = table[key]
+            tok = resolve(val)
+            if not tok:
+                print(f"wheelmap: {key} = {val!r} not addressable, skipped")
+                continue
+            seqtext = f"{kbd} OR {tok}" if kbd else tok
+            for porttype in porttypes:
+                port = None
+                for p in inp.findall("port"):
+                    if p.get("type") == porttype:
+                        port = p
+                        break
+                if port is None:
+                    port = ET.SubElement(inp, "port", {"type": porttype})
+                    ET.SubElement(port, "newseq", {"type": "standard"})
+                port.find("newseq").text = seqtext
+
+    write_ports(default_inp, WHEELMAP_PORTS)
 
     # game-specific sections override default in MAME's ctrlr merge - remove
     # wizard-claimed ports from them so the wizard's bindings always win
@@ -453,22 +497,36 @@ def apply_wheelmap(tree, rig):
             if p.get("type") in wiz_ports:
                 inp.remove(p)
 
+    # crusnexo gets its own translated section (see WHEELMAP_PORTS_CRUSNEXO)
+    exo_inp = None
+    for system in root.iter("system"):
+        if system.get("name") == "crusnexo":
+            exo_inp = system.find("input")
+            if exo_inp is None:
+                exo_inp = ET.SubElement(system, "input")
+            break
+    if exo_inp is None:
+        sysel = ET.SubElement(root, "system", {"name": "crusnexo"})
+        exo_inp = ET.SubElement(sysel, "input")
+    write_ports(exo_inp, WHEELMAP_PORTS_CRUSNEXO)
+
 
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
-                      mame=VUNIT):
+                      crackfill=True, mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
     reappear instantly while vunit's teardown (FFB plugin exit races, WER
     dump writes) drags on for seconds in the background."""
     rig, ini = prepare_rig(rom)
-    ctrlr = sanitized_ctrlrpath(rig)
+    ctrlr = sanitized_ctrlrpath(rig, rom)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
     env = dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(scale),
                MIDV_GL_CRT="1" if crt else "0",
+               MIDV_GL_CRACKFILL="1" if crackfill else "0",
                MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
                MIDV_SKIP_STARTUP_SCREENS="1")
     # UDP telemetry: env wins, else collection.ini [telemetry] udp=host:port
@@ -481,17 +539,24 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             env["MIDV_TELEM_UDP"] = telem
 
     def start():
-        return subprocess.Popen(
-            [mame, rom,
-             "-rompath", ROMPATH,
-             "-inipath", ini,
-             "-ctrlrpath", ctrlr,
-             "-ctrlr", "EmuEzRacing",
-             "-nvram_directory", os.path.join(rig, "nvram"),
-             "-cfg_directory", os.path.join(rig, "cfg"),
-             "-window", "-maximize", "-nokeepaspect",
-             "-skip_gameinfo"],
-            env=env, cwd=os.path.dirname(mame))
+        cmd = [mame, rom,
+               "-rompath", ROMPATH,
+               "-inipath", ini,
+               "-ctrlrpath", ctrlr,
+               "-ctrlr", "EmuEzRacing",
+               "-nvram_directory", os.path.join(rig, "nvram"),
+               "-cfg_directory", os.path.join(rig, "cfg"),
+               "-window", "-maximize",
+               "-skip_gameinfo"]
+        if rom in ZEUS_ROMS:
+            # MAME's own d3d presents these: keep 4:3 (rig test round 1:
+            # -nokeepaspect stretched Exotica to 16:9), sharpen the upscale
+            # (default prescale 1 + bilinear = fuzz), and show only the
+            # screen - the internal lamp/7seg panel ate the bottom fifth
+            cmd += ["-keepaspect", "-prescale", "4", "-view", "Screen 0"]
+        else:
+            cmd += ["-nokeepaspect"]   # the GL overlay owns presentation
+        return subprocess.Popen(cmd, env=env, cwd=os.path.dirname(mame))
 
     proc = hwnd = None
     for attempt in (1, 2):
@@ -516,6 +581,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         threading.Thread(target=enforce_fullscreen, args=(hwnd,),
                          daemon=True).start()
     focused = enforce_foreground(hwnd)
+    # park the pointer in the bottom-right corner: the arrow glyph hangs
+    # below-right of its hotspot, so at the corner it renders off-screen.
+    # Nothing in these games uses the mouse, and MAME won't hide it for a
+    # borderless -window window.
+    u32.SetCursorPos(32767, 32767)
     print("Single fullscreen window%s. Coin=5 Start=1, Esc=options menu "
           "(Exit inside), F9=CRT, F12=force quit." %
           ("" if focused else " (WARNING: could not take foreground - "
@@ -524,10 +594,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
 
 
 def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
-                mame=VUNIT):
+                crackfill=True, mame=VUNIT):
     """Blocking wrapper: launch and wait for full process exit."""
     proc, _ = launch_game_async(rom=rom, scale=scale, windowed=windowed,
-                                crt=crt, mame=mame)
+                                crt=crt, crackfill=crackfill, mame=mame)
     return proc.wait()
 
 

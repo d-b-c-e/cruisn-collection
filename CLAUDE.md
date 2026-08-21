@@ -29,13 +29,13 @@ self-sufficient handoff (written for context-loss resilience).
 
 **GitHub:** `d-b-c-e/cruisn-collection` (private; renamed from cruisn-poc
 2026-08-20 — old URL redirects). Releases publish via tag push
-(`.github/workflows/release.yml`); v0.1.0 is live. The local folder may
-still be named `cruisn-poc` — see session notes for the rename checklist.
+(`.github/workflows/release.yml`); v0.1.0 is live. Local folder renamed
+to `E:\Source\cruisn-collection` 2026-08-20 (matches the repo name).
 
 ## Repo map
 
 ```
-cruisn-poc/
+cruisn-collection/
 ├── harness/
 │   ├── collection.py     ← THE product entry: fullscreen game-select shell
 │   │                     (Stream Deck button opens this; config rig/collection.ini)
@@ -89,7 +89,7 @@ cruisn-poc/
 - After committing in mame-src, refresh the exported series (FULL series
   from the upstream tag — CI and INSTALL.md apply it onto a clean mame0286
   clone, so the DIJOYSTATE2 base commit must be included):
-  `git format-patch --stdout mame0286..HEAD > E:/Source/cruisn-poc/patch/vunit-poc-patches.patch`
+  `git format-patch --stdout mame0286..HEAD > E:/Source/cruisn-collection/patch/vunit-poc-patches.patch`
 - ⚠️ **NEVER touch the racing build's deployed
   `Launchbox-Racing\Emulators\mame286\mame.exe`.** The POC only reads its
   `roms/`, `ctrlr/`, and nvram fixtures.
@@ -117,6 +117,7 @@ cruisn-poc/
 | `MIDV_GL=1` | **in-process GL renderer** (the product path) |
 | `MIDV_GL_SCALE` | internal scale (default 3; rig uses 4) |
 | `MIDV_GL_CRT=1` | CRT pass on at boot (mask+scanlines+curvature); **F9** toggles live |
+| `MIDV_GL_CRACKFILL=0` | disable crack fill (default ON: unwritten hardware quad-crack pixels get filled from axis-bounded neighbours in the palette pass; 3D scenes only; shell SETTINGS has the toggle) |
 | `MIDV_SKIP_STARTUP_SCREENS=1` | boot straight past MAME warning/info screens (frontend gate) |
 | `MIDV_TELEM_UDP=host:port` | mirror MAME outputs (wheel force, lamps) as JSON UDP datagrams (SimHub/Buttkicker); also via collection.ini `[telemetry] udp=` |
 | `MIDV_GL_SNAP=<dir>` | backbuffer BMP every ~150 presents (unattended verify) |
@@ -202,7 +203,7 @@ Semantics that everything relies on (full detail in RESULTS.md):
 - RESULTS.md is append-only chronology: add dated sections, never rewrite
   history. Keep proof images in `results/proof/` (capture dirs are regenerated
   and gitignored).
-- Commit mame-src and cruisn-poc separately; refresh the patch series after
+- Commit mame-src and cruisn-collection separately; refresh the patch series after
   mame-src commits.
 - Bit-exactness claims require four decimal places — "100.00%" once hid a
   99.9985 that cost an hour.

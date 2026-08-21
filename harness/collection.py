@@ -166,6 +166,36 @@ class Shell:
         tw = tx.width * th / tx.height
         self.rect(tx, (self.w - tw) / 2, y, tw, th, tint)
 
+    def draw_loading(self, name, t):
+        self.ctx.enable(moderngl.BLEND)
+        self.rect(self.bg, 0, 0, self.w, self.h)
+        tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
+        self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
+                  tw, self.h / 14 * 1.9)
+        self.center_text("LAUNCHING", self.h // 24, self.h * 0.42,
+                         (0.8, 0.8, 0.85, 1.0))
+        pulse = 0.65 + 0.35 * math.sin(t * 3.0)
+        self.center_text(name, self.h // 14, self.h * 0.50,
+                         (GOLD[0], GOLD[1], GOLD[2], pulse))
+
+    def draw_wizard_begin(self, t):
+        self.ctx.enable(moderngl.BLEND)
+        self.rect(self.bg, 0, 0, self.w, self.h)
+        tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
+        self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
+                  tw, self.h / 14 * 1.9)
+        self.center_text("WHEEL / CONTROLLER SETUP", self.h // 20,
+                         self.h * 0.28, (1.0, 0.85, 0.4, 1.0))
+        self.center_text("YOU WILL MOVE OR PRESS EACH CONTROL IN TURN",
+                         self.h // 34, self.h * 0.44)
+        self.center_text("RELEASE EVERYTHING, THEN", self.h // 34,
+                         self.h * 0.50)
+        pulse = 0.65 + 0.35 * math.sin(t * 4.0)
+        self.center_text("PRESS ENTER TO BEGIN", self.h // 16, self.h * 0.57,
+                         (GOLD[0], GOLD[1], GOLD[2], pulse))
+        self.center_text("ESC / BACKSPACE  CANCEL", self.h // 40,
+                         self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
+
     def draw_wizard(self, prompt, done, total, last, kind="button"):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
@@ -253,7 +283,7 @@ class Shell:
         fw = foot.width * fh / foot.height
         self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
 
-    def draw_settings(self, ssel, crt, t):
+    def draw_settings(self, ssel, crt, fill, t):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -262,6 +292,7 @@ class Shell:
         self.center_text("SETTINGS", self.h // 18, self.h * 0.26,
                          (1.0, 0.85, 0.4, 1.0))
         items = [f"CRT EFFECTS      {'ON' if crt else 'OFF'}",
+                 f"CRACK FILL      {'ON' if fill else 'OFF'}",
                  "WHEEL SETUP", "BACK"]
         for i, label in enumerate(items):
             if i == ssel:
@@ -406,6 +437,7 @@ def load_config():
     cp.read(CFG)
     sec = cp["collection"] if "collection" in cp else {}
     return {"crt": str(sec.get("crt", "1")) == "1",
+            "crackfill": str(sec.get("crackfill", "1")) == "1",
             "scale": int(sec.get("scale", 4)),
             "rom": sec.get("rom", "crusnusa")}
 
@@ -414,6 +446,7 @@ def save_config(state):
     cp = configparser.ConfigParser()
     cp.read(CFG)   # preserve other sections (wheelmap)
     cp["collection"] = {"crt": "1" if state["crt"] else "0",
+                        "crackfill": "1" if state["crackfill"] else "0",
                         "scale": str(state["scale"]), "rom": state["rom"]}
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
@@ -498,6 +531,7 @@ def main():
     mx, my = glfw.get_monitor_pos(mon)
     win = glfw.create_window(w, h, "V-Unit Cruis'n Collection", None, None)
     glfw.set_window_pos(win, mx, my)
+    glfw.set_input_mode(win, glfw.CURSOR, glfw.CURSOR_HIDDEN)
     glfw.make_context_current(win)
     glfw.swap_interval(1)
     ctx = moderngl.create_context()
@@ -512,8 +546,10 @@ def main():
 
     # a Stream Deck launch has no foreground rights; claim them for the shell
     shell_hwnd = int(glfw.get_win32_window(win))
+    fg_stop = threading.Event()
     threading.Thread(target=run_rig.enforce_foreground,
-                     args=(shell_hwnd, 10), daemon=True).start()
+                     args=(shell_hwnd, 10), kwargs={"stop": fg_stop},
+                     daemon=True).start()
 
     def on_key(_, key, sc, action, mods):
         if action == glfw.PRESS:
@@ -522,6 +558,13 @@ def main():
     glfw.set_key_callback(win, on_key)
     hat_prev = 0
     joy_prev = {}
+    joy_seen = {}
+    joy_lastdown = {}
+    # joystick input is ignored for a moment after boot and after a game
+    # returns: device enumeration (and the Moza waking from idle-sleep) can
+    # report zeros before real state arrives, and that settle read as a
+    # phantom press - the "boots straight into the last game" bug
+    armed_at = time.time() + 1.5
 
     def joy_buttons(jid):
         """pyGLFW returns (LP_c_ubyte, count) - unpack to a tuple of ints."""
@@ -544,21 +587,36 @@ def main():
 
     def joy_presses():
         """New button presses this frame across all joysticks:
-        [(jid, name, button_index), ...]"""
+        [(jid, name, button_index), ...]. A device's first second after it
+        appears is silent: its initial reads can be zeros with the true
+        held/toggle state arriving a few polls later, and that 0->1 settle
+        must not count as a press."""
         out = []
+        now = time.time()
         try:
             for jid in range(16):
                 if not glfw.joystick_present(jid):
                     joy_prev.pop(jid, None)
+                    joy_seen.pop(jid, None)
                     continue
                 cur = joy_buttons(jid)
+                joy_seen.setdefault(jid, now)
                 prev = joy_prev.get(jid, cur)
-                for i in range(min(len(cur), len(prev))):
-                    if cur[i] and not prev[i]:
-                        name = glfw.get_joystick_name(jid)
-                        if isinstance(name, bytes):
-                            name = name.decode(errors="replace")
-                        out.append((jid, name, i))
+                if now - joy_seen[jid] >= 1.0:
+                    for i in range(min(len(cur), len(prev))):
+                        if cur[i] and not prev[i]:
+                            # a button that was down <0.6 s ago is a
+                            # re-enumeration/wake glitch (latched toggles
+                            # read 1->0->1), not a human press
+                            if now - joy_lastdown.get((jid, i), 0.0) < 0.6:
+                                continue
+                            name = glfw.get_joystick_name(jid)
+                            if isinstance(name, bytes):
+                                name = name.decode(errors="replace")
+                            out.append((jid, name, i))
+                for i, v in enumerate(cur):
+                    if v:
+                        joy_lastdown[(jid, i)] = now
                 joy_prev[jid] = cur
         except Exception:
             pass
@@ -575,6 +633,8 @@ def main():
 
     KEYCODES = _keycode_table()
     launch = None
+    launching = None     # in-flight launch box (background thread)
+    game_proc = None     # last vunit process, until teardown completes
     mode = "menu"        # menu | settings | wizard
     row = 0              # menu: 0 = game cards, 1 = SETTINGS
     ssel = 0             # settings: item index
@@ -582,91 +642,148 @@ def main():
     wiz_bind = {}
     wiz_last = ""
     wiz_base = None      # axis baselines {jid: axes tuple}
+    wiz_ready = False    # gate screen: capture starts on Enter, not entry
+    wiz_cool = 0.0       # ignore-everything deadline after each bind/skip
+    wiz_settle = None    # last axis sample while waiting for rest
+    wiz_settle_t = 0.0
     while not glfw.window_should_close(win):
         glfw.poll_events()
         presses = joy_presses()
+        if launching is not None:
+            # boot in progress: the shell just shows LAUNCHING and stays deaf
+            presses = []
+            actions.clear()
 
         # wheel hat -> arrow keys (menu + settings)
         if mode in ("menu", "settings"):
+            armed = time.time() >= armed_at
+            if game_proc is not None:
+                # the previous vunit is still tearing down in the background:
+                # when the FFB plugin finally releases DirectInput the wheel
+                # re-enumerates and can fire phantom presses SECONDS after
+                # the shell is back - hold joystick input until the process
+                # is well and truly gone, then arm 2 s later
+                if game_proc.poll() is None:
+                    armed = False
+                else:
+                    game_proc = None
+                    armed_at = time.time() + 2.0
+                    armed = False
             try:
                 for jid in range(16):
                     if not glfw.joystick_present(jid):
                         continue
                     hat = joy_hat(jid)
                     if hat != hat_prev:
-                        for h, key in ((glfw.HAT_LEFT, glfw.KEY_LEFT),
-                                       (glfw.HAT_RIGHT, glfw.KEY_RIGHT),
-                                       (glfw.HAT_UP, glfw.KEY_UP),
-                                       (glfw.HAT_DOWN, glfw.KEY_DOWN)):
-                            if hat & h and not (hat_prev & h):
-                                actions.append(key)
+                        if armed:
+                            for h, key in ((glfw.HAT_LEFT, glfw.KEY_LEFT),
+                                           (glfw.HAT_RIGHT, glfw.KEY_RIGHT),
+                                           (glfw.HAT_UP, glfw.KEY_UP),
+                                           (glfw.HAT_DOWN, glfw.KEY_DOWN)):
+                                if hat & h and not (hat_prev & h):
+                                    actions.append(key)
                         hat_prev = hat
                     break
             except Exception:
                 pass
-            if presses:
+            if presses and armed:
                 actions.append(glfw.KEY_ENTER)   # any wheel button = OK
 
         if mode == "wizard":
-            step = WIZARD_STEPS[wiz_idx] if wiz_idx < len(WIZARD_STEPS) else None
-            for key in actions:
-                if key == glfw.KEY_ESCAPE:          # skip this binding
-                    audio.blip("nav")
-                    wiz_idx += 1
-                    wiz_base = None
-                elif key == glfw.KEY_BACKSPACE:     # abort wizard
-                    audio.blip("select")
-                    mode = "settings"
-                elif step and step[2] == "button" and key in KEYCODES:
-                    # keyboard remap: any mappable key binds this action
-                    wiz_bind[step[1]] = f"KEYBOARD|key:{KEYCODES[key]}"
-                    wiz_last = (f"{step[0]}  =  KEYBOARD  "
-                                f"{KEYCODES[key].replace('KEYCODE_', '')}")
-                    audio.blip("nav")
-                    wiz_idx += 1
-                    wiz_base = None
-                    break
-            actions.clear()
-            if mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
-                label, ikey, kind = WIZARD_STEPS[wiz_idx]
-                if kind == "button" and presses:
-                    jid, name, btn = presses[0]
-                    wiz_bind[ikey] = f"{name}|btn:{btn}"
-                    wiz_last = f"{label}  =  {name}  BUTTON {btn + 1}"
-                    audio.blip("nav")
-                    wiz_idx += 1
-                    wiz_base = None
-                elif kind == "axis":
-                    cur = {}
-                    try:
-                        for jid in range(16):
-                            if glfw.joystick_present(jid):
-                                cur[jid] = joy_axes(jid)
-                    except Exception:
-                        pass
-                    if wiz_base is None:
-                        wiz_base = cur
-                    else:
-                        hit = None
-                        for jid, axes in cur.items():
-                            base = wiz_base.get(jid, axes)
-                            for i in range(min(len(axes), len(base))):
-                                if abs(axes[i] - base[i]) > 0.55:
-                                    hit = (jid, i)
+            now = time.time()
+            if not wiz_ready:
+                # gate screen: nothing is read until the player says go
+                for key in actions:
+                    if key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER,
+                               glfw.KEY_SPACE):
+                        wiz_ready = True
+                        wiz_cool = now + 0.8
+                        audio.blip("select")
+                    elif key in (glfw.KEY_ESCAPE, glfw.KEY_BACKSPACE):
+                        mode = "settings"
+                        audio.blip("nav")
+                actions.clear()
+            elif now < wiz_cool:
+                # cooldown after every bind/skip: swallow all input while
+                # the previous control is released (the wheel springing
+                # back to center must not bind the next step)
+                actions.clear()
+            else:
+                step = WIZARD_STEPS[wiz_idx] if wiz_idx < len(WIZARD_STEPS) else None
+                for key in actions:
+                    if key == glfw.KEY_ESCAPE:          # skip this binding
+                        audio.blip("nav")
+                        wiz_idx += 1
+                        wiz_base = wiz_settle = None
+                        wiz_cool = now + 0.8
+                    elif key == glfw.KEY_BACKSPACE:     # abort wizard
+                        audio.blip("select")
+                        mode = "settings"
+                    elif step and step[2] == "button" and key in KEYCODES:
+                        # keyboard remap: any mappable key binds this action
+                        wiz_bind[step[1]] = f"KEYBOARD|key:{KEYCODES[key]}"
+                        wiz_last = (f"{step[0]}  =  KEYBOARD  "
+                                    f"{KEYCODES[key].replace('KEYCODE_', '')}")
+                        audio.blip("nav")
+                        wiz_idx += 1
+                        wiz_base = wiz_settle = None
+                        wiz_cool = now + 1.0
+                        break
+                actions.clear()
+                if (mode == "wizard" and now >= wiz_cool
+                        and wiz_idx < len(WIZARD_STEPS)):
+                    label, ikey, kind = WIZARD_STEPS[wiz_idx]
+                    if kind == "button" and presses:
+                        jid, name, btn = presses[0]
+                        wiz_bind[ikey] = f"{name}|btn:{btn}"
+                        wiz_last = f"{label}  =  {name}  BUTTON {btn + 1}"
+                        audio.blip("nav")
+                        wiz_idx += 1
+                        wiz_base = wiz_settle = None
+                        wiz_cool = now + 1.0
+                    elif kind == "axis":
+                        cur = {}
+                        try:
+                            for jid in range(16):
+                                if glfw.joystick_present(jid):
+                                    cur[jid] = joy_axes(jid)
+                        except Exception:
+                            pass
+                        if wiz_base is None:
+                            # arm only once every axis has sat still for a
+                            # full sample interval - a control still moving
+                            # (wheel returning, pedal easing up) must never
+                            # become the reference it is measured against
+                            if wiz_settle is None or now - wiz_settle_t >= 0.35:
+                                if wiz_settle is not None and all(
+                                        abs(a - b) < 0.06
+                                        for j, axes in cur.items()
+                                        for a, b in zip(axes,
+                                                        wiz_settle.get(j, axes))):
+                                    wiz_base = cur
+                                wiz_settle, wiz_settle_t = cur, now
+                        else:
+                            hit = None
+                            for jid, axes in cur.items():
+                                base = wiz_base.get(jid, axes)
+                                for i in range(min(len(axes), len(base))):
+                                    if abs(axes[i] - base[i]) > 0.55:
+                                        hit = (jid, i)
+                                        break
+                                if hit:
                                     break
                             if hit:
-                                break
-                        if hit:
-                            jid, i = hit
-                            name = glfw.get_joystick_name(jid)
-                            if isinstance(name, bytes):
-                                name = name.decode(errors="replace")
-                            gp = 1 if glfw.joystick_is_gamepad(jid) else 0
-                            wiz_bind[ikey] = f"{name}|axis:{i}:{gp}"
-                            wiz_last = f"{label.split('(')[0].strip()}  =  {name}  AXIS {i}"
-                            audio.blip("nav")
-                            wiz_idx += 1
-                            wiz_base = None
+                                jid, i = hit
+                                name = glfw.get_joystick_name(jid)
+                                if isinstance(name, bytes):
+                                    name = name.decode(errors="replace")
+                                gp = 1 if glfw.joystick_is_gamepad(jid) else 0
+                                wiz_bind[ikey] = f"{name}|axis:{i}:{gp}"
+                                wiz_last = f"{label.split('(')[0].strip()}  =  {name}  AXIS {i}"
+                                audio.blip("nav")
+                                wiz_idx += 1
+                                wiz_base = wiz_settle = None
+                                wiz_cool = now + 1.0
             if mode == "wizard" and wiz_idx >= len(WIZARD_STEPS):
                 save_wheelmap(wiz_bind)
                 audio.blip("select")
@@ -675,25 +792,30 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 3
+                    ssel = (ssel - 1) % 4
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 3
+                    ssel = (ssel + 1) % 4
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 0:
-                    state["crt"] = not state["crt"]
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
+                    k = "crt" if ssel == 0 else "crackfill"
+                    state[k] = not state[k]
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
-                    if ssel == 0:
-                        state["crt"] = not state["crt"]
+                    if ssel in (0, 1):
+                        k = "crt" if ssel == 0 else "crackfill"
+                        state[k] = not state[k]
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel == 1:
+                    elif ssel == 2:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
                         wiz_last = ""
+                        wiz_ready = False
+                        wiz_base = wiz_settle = None
+                        wiz_cool = 0.0
                         audio.blip("select")
                     else:
                         mode = "menu"
@@ -730,40 +852,86 @@ def main():
 
         ctx.clear(0, 0, 0, 1)
         t = time.time() % 3600
-        if mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
+        if launching is not None:
+            shell.draw_loading(launching["name"], t)
+        elif mode == "wizard" and not wiz_ready:
+            shell.draw_wizard_begin(t)
+        elif mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
             shell.draw_wizard(WIZARD_STEPS[wiz_idx][0], wiz_idx,
                               len(WIZARD_STEPS), wiz_last,
                               WIZARD_STEPS[wiz_idx][2])
         elif mode == "settings":
-            shell.draw_settings(ssel, state["crt"], t)
+            shell.draw_settings(ssel, state["crt"], state["crackfill"], t)
         else:
             shell.draw(sel, state["crt"], t, row)
         glfw.swap_buffers(win)
 
-        if launch:
+        if launch and launching is None:
             state["rom"] = launch
             save_config(state)
-            audio.stop_music()
-            glfw.hide_window(win)
-            try:
-                proc, game_hwnd = run_rig.launch_game_async(
-                    rom=launch, scale=state["scale"],
-                    windowed=args.windowed, crt=state["crt"])
-                # watch the WINDOW, not the process: teardown (FFB plugin
-                # exit races, WER dumps) drags for seconds after the player
-                # Esc-quits - reappear the instant the game window dies and
-                # let the process finish dying in the background
+            fg_stop.set()   # the game owns the foreground now, stop fighting
+            launching = {"name": next(g[1] for g in GAMES if g[0] == launch),
+                         "result": None, "err": None, "done": False}
+
+            def _do_launch(box=launching, rom=launch):
+                # background thread: the shell keeps rendering LAUNCHING
+                # instead of vanishing to the desktop while MAME boots
+                try:
+                    box["result"] = run_rig.launch_game_async(
+                        rom=rom, scale=state["scale"],
+                        windowed=args.windowed, crt=state["crt"],
+                        crackfill=state["crackfill"])
+                except BaseException as e:
+                    box["err"] = str(e) or repr(e)
+                box["done"] = True
+
+            threading.Thread(target=_do_launch, daemon=True).start()
+            launch = None
+
+        if launching is not None and launching["done"]:
+            if launching["err"] is not None:
+                print("launch failed:", launching["err"])
+                armed_at = time.time() + 1.0
+                audio.blip("nav")
+            else:
+                proc, game_hwnd = launching["result"]
+                game_proc = proc
+                audio.stop_music()
+                # the shell window stays alive and fullscreen BEHIND the
+                # game for the whole session - no desktop flash on launch
+                # or return. Watch the WINDOW, not the process: teardown
+                # (FFB plugin exit races, WER dumps) drags for seconds
+                # after the player Esc-quits, and the window can outlive
+                # its message pump through that drag, so two consecutive
+                # WM_NULL timeouts also mean "exiting". Keep pumping our
+                # own queue so Windows never ghosts the hidden shell.
+                unresp = 0
                 while run_rig.u32.IsWindow(game_hwnd) and proc.poll() is None:
+                    glfw.poll_events()
+                    if run_rig.window_responding(game_hwnd):
+                        unresp = 0
+                    else:
+                        unresp += 1
+                        if unresp >= 2:
+                            break
                     time.sleep(0.25)
                 threading.Thread(target=proc.wait, daemon=True).start()
-            except SystemExit as e:
-                print("launch failed:", e)
-            launch = None
-            glfw.show_window(win)
-            glfw.focus_window(win)
-            audio.start_music()
-            threading.Thread(target=run_rig.enforce_foreground,
-                             args=(shell_hwnd, 10), daemon=True).start()
+                # joystick states changed while we were blocked (buttons
+                # pressed in-game) - rebaseline or the first poll back
+                # reads them as fresh presses and instantly relaunches
+                joy_prev.clear()
+                joy_seen.clear()
+                hat_prev = 0
+                actions.clear()
+                armed_at = time.time() + 1.0
+                glfw.focus_window(win)
+                audio.start_music()
+                fg_stop = threading.Event()
+                threading.Thread(target=run_rig.enforce_foreground,
+                                 args=(shell_hwnd, 10),
+                                 kwargs={"stop": fg_stop},
+                                 daemon=True).start()
+            launching = None
 
     audio.stop_music()
     save_config(state)

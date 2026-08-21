@@ -64,7 +64,7 @@ file's URL into `python harness/make_music.py <url> --skip <seconds>`.
    ```
    git clone --branch mame0286 https://github.com/mamedev/mame mame-src
    cd mame-src
-   git am path\to\cruisn-poc\patch\vunit-poc-patches.patch
+   git am path\to\cruisn-collection\patch\vunit-poc-patches.patch
    ```
 3. Build the subtarget (from an MSYS2 MinGW64 shell; `OS=Windows_NT` must be
    exported inside the shell):

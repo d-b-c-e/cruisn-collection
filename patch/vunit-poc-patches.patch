@@ -1,7 +1,7 @@
 From 6f55ed93ce5df76f01007096657cfd2491000ad0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 28 Mar 2026 20:27:47 -0500
-Subject: [PATCH 01/19] dinput joystick: use DIJOYSTATE2 for 128-button support
+Subject: [PATCH 01/20] dinput joystick: use DIJOYSTATE2 for 128-button support
  Use c_dfDIJoystick2 as the primary data format for DirectInput joystick
  devices, with c_dfDIJoystick as a fallback. This raises the button limit from
  32 (DIJOYSTATE) to 128 (DIJOYSTATE2). The existing code already handles up to
@@ -63,7 +63,7 @@ index 98fdfb01..c01403ee 100644
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 02/19] POC: env-gated DMA quad logging + one-shot state dump
+Subject: [PATCH 02/20] POC: env-gated DMA quad logging + one-shot state dump
  for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -184,7 +184,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 03/19] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 03/20] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -443,7 +443,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 04/19] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 04/20] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1383,7 +1383,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 05/19] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 05/20] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1421,7 +1421,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 06/19] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 06/20] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1456,7 +1456,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 07/19] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 07/20] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1548,7 +1548,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 08/19] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 08/20] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1610,7 +1610,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 09/19] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 09/20] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1673,7 +1673,7 @@ index 7936ea9f..3d5b3200 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 10/19] POC: 2px overscan inset - CRT-hidden edge pixels showed
+Subject: [PATCH 10/20] POC: 2px overscan inset - CRT-hidden edge pixels showed
  as a thin border
 
 ---
@@ -1711,7 +1711,7 @@ index 3d5b3200..af795ef7 100644
 From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 21:22:25 -0500
-Subject: [PATCH 11/19] POC-NOTES: point sessions opened here at the cruisn-poc
+Subject: [PATCH 11/20] POC-NOTES: point sessions opened here at the cruisn-poc
  project home
 
 ---
@@ -1746,7 +1746,7 @@ index 00000000..1b4841d0
 From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:08:42 -0500
-Subject: [PATCH 12/19] CRT pass: mask + scanlines + curvature in the palette
+Subject: [PATCH 12/20] CRT pass: mask + scanlines + curvature in the palette
  stage, F9 live toggle
 
 PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
@@ -1921,7 +1921,7 @@ index af795ef7..e302e1f4 100644
 From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:32:30 -0500
-Subject: [PATCH 13/19] MIDV_SKIP_STARTUP_SCREENS: env-gated
+Subject: [PATCH 13/20] MIDV_SKIP_STARTUP_SCREENS: env-gated
  boot-straight-to-game (frontend)
 
 BAD_DUMP sets (crusnwld c31boot) force the warning screen past
@@ -1968,7 +1968,7 @@ index f2c9b7d1..0cc79ff2 100644
 From 1bc48fcea8b586a0a60b4359ccdb7aeedaca39ed Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:17:53 -0500
-Subject: [PATCH 14/19] GL thread teardown handshake: stop before machine
+Subject: [PATCH 14/20] GL thread teardown handshake: stop before machine
  destruction
 
 Exit-time msvcrt!memcpy AVs logged at roughly every second close. A
@@ -2083,7 +2083,7 @@ index e302e1f4..28e33519 100644
 From 3cac3d671118aa443ce4701e8cd9364f6d4f578d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:42:26 -0500
-Subject: [PATCH 15/19] winhybrid: DIJoystick2 primary format - 128-button
+Subject: [PATCH 15/20] winhybrid: DIJoystick2 primary format - 128-button
  support in the default provider
 
 The DIJOYSTATE2 base patch updated only the pure dinput module's enum
@@ -2150,7 +2150,7 @@ index d6f33d2d..856fb333 100644
 From cc0aff8c51463d6d006c837ba4fcccdabc8db7fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:53:03 -0500
-Subject: [PATCH 16/19] Overlay wndproc: hide cursor over the game, clicks
+Subject: [PATCH 16/20] Overlay wndproc: hide cursor over the game, clicks
  refocus MAME's window
 
 The DISABLED+TRANSPARENT overlay made every click a Windows error beep
@@ -2221,7 +2221,7 @@ index 28e33519..6a3395fd 100644
 From ad4d2d8bb312ffc1c05d1513d7b162e3306dfa14 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 01:24:00 -0500
-Subject: [PATCH 17/19] Zeus scoping counters + scanner-safe shader header
+Subject: [PATCH 17/20] Zeus scoping counters + scanner-safe shader header
  (midzeus joins the subtarget)
 
 - zeus2.cpp: env-gated MIDZ_STATS=1 quads/frame profiler at the
@@ -2827,7 +2827,7 @@ index 233e8a13..e27ff2e3 100644
 From a97419f068281bab1cc1c8e20f8b036b22a5d3cb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:23:43 -0500
-Subject: [PATCH 18/19] In-game Esc options menu + UDP telemetry (Phase A)
+Subject: [PATCH 18/20] In-game Esc options menu + UDP telemetry (Phase A)
 
 - Esc menu drawn by the GL overlay itself: MENU_VS/FS shaders (generated),
   pre-rendered A8 label bitmaps (midvunit_menu_assets.h, generated),
@@ -6266,7 +6266,7 @@ index 6a3395fd..0f0e0efd 100644
 From 366f811988600fc2abc62f534d0107cbde4a173c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:46:12 -0500
-Subject: [PATCH 19/19] Overlay: runtime coarse height - offroadc's 401st
+Subject: [PATCH 19/20] Overlay: runtime coarse height - offroadc's 401st
  scanline restored
 
 offroadc runs a 512x401 mode (visarea bottom 400); HEIGHT=400 was compiled
@@ -6381,6 +6381,181 @@ index 0f0e0efd..f363dcb7 100644
  		}
  		gl.ActiveTexture(TEXTURE0 + 2);
  		gl.BindTexture(0x0DE1, paltex);
+-- 
+2.55.0.windows.3
+
+
+From 71e566039517000202fd4c3848d438227d9de430 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Thu, 20 Aug 2026 21:52:44 -0500
+Subject: [PATCH 20/20] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
+ on)
+
+Scene pass gains an R8UI "written this scene" mask on attachment 1
+(glDrawBuffers; mask-only glClearBufferuiv per scene so pages still
+persist). The palette pass redirects pixels the scene left unwritten -
+hardware quad cracks that show the stale page - to their nearest written
+neighbour, only when bounded on both sides along an axis, so silhouettes
+against the cleared 16:9 margins are never smeared. 3D scenes only;
+radius 4*scale fine px; MIDV_GL_CRACKFILL=0 restores raw hardware.
+Shaders regenerated from gpu/renderer.py (exact mode untouched -
+re-verified 100.0000% on both captures).
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
+---
+ src/mame/midway/midvunit_gl_shaders.h | 34 ++++++++++++++++++++++++++-
+ src/mame/midway/midvunit_v.cpp        | 29 +++++++++++++++++++++++
+ 2 files changed, 62 insertions(+), 1 deletion(-)
+
+diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
+index c1808d5b..88ae831a 100644
+--- a/src/mame/midway/midvunit_gl_shaders.h
++++ b/src/mame/midway/midvunit_gl_shaders.h
+@@ -32,7 +32,8 @@ static const char *MVGL_FS =
+ 	"flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;\n"
+ 	"flat in vec4 uv01; flat in vec4 uv23;\n"
+ 	"flat in uvec4 meta;\n"
+-	"out uint outIndex;\n"
++	"layout(location = 0) out uint outIndex;\n"
++	"layout(location = 1) out uint outMask;   // 1 = this scene wrote the pixel\n"
+ 	"\n"
+ 	"int round_coord(float f) {           // poly.h: floor, +1 iff frac > 0.5\n"
+ 	"    float ip = floor(f);\n"
+@@ -167,6 +168,7 @@ static const char *MVGL_FS =
+ 	"    uint pixdata = meta.x, mode = meta.y, dither = meta.z;\n"
+ 	"    if (dither == 1u && ((px ^ py) & 1) != 0) discard;   // coarse-space mask\n"
+ 	"\n"
++	"    outMask = 1u;   // every non-discarded fragment marks its pixel written\n"
+ 	"    if (mode == 0u) { outIndex = pixdata & 0xffffu; return; }\n"
+ 	"\n"
+ 	"    int ui, vi;\n"
+@@ -205,10 +207,40 @@ static const char *MVGL_PAL_FS =
+ 	"uniform int uCrop;           // fine pixels to crop from each side (2D screens)\n"
+ 	"uniform int uCrt;            // 1 = CRT pass (mask+scanline+curvature), 0 = raw\n"
+ 	"uniform float uSrcH;         // simulated source scanline count (coarse height)\n"
++	"uniform usampler2D maskTex;  // R8UI: 1 = written by the CURRENT scene\n"
++	"uniform int uFillR;          // crack-fill search radius in fine px; 0 = off\n"
+ 	"in vec2 uv;\n"
+ 	"out vec4 color;\n"
+ 	"\n"
++	"ivec2 fill_px(ivec2 p) {\n"
++	"    // Crack fill: the hardware leaves sub-pixel gaps between adjacent quads\n"
++	"    // where the page's PREVIOUS frame shows through (authentic, but it\n"
++	"    // shimmers). An unwritten pixel is redirected to its nearest written\n"
++	"    // neighbour - only when written pixels exist on BOTH sides along some\n"
++	"    // axis (a true between-polys crack). One-sided pixels (silhouettes\n"
++	"    // against the cleared 16:9 margins) are left untouched.\n"
++	"    if (uFillR == 0 || texelFetch(maskTex, p, 0).r != 0u) return p;\n"
++	"    ivec2 sz = textureSize(maskTex, 0);\n"
++	"    int dl = 0, dr = 0, du = 0, dd = 0;\n"
++	"    for (int i = 1; i <= uFillR; i++) {\n"
++	"        if (dl == 0 && p.x - i >= 0\n"
++	"            && texelFetch(maskTex, p - ivec2(i, 0), 0).r != 0u) dl = i;\n"
++	"        if (dr == 0 && p.x + i < sz.x\n"
++	"            && texelFetch(maskTex, p + ivec2(i, 0), 0).r != 0u) dr = i;\n"
++	"        if (du == 0 && p.y - i >= 0\n"
++	"            && texelFetch(maskTex, p - ivec2(0, i), 0).r != 0u) du = i;\n"
++	"        if (dd == 0 && p.y + i < sz.y\n"
++	"            && texelFetch(maskTex, p + ivec2(0, i), 0).r != 0u) dd = i;\n"
++	"    }\n"
++	"    int wh = (dl > 0 && dr > 0) ? dl + dr : 1 << 20;\n"
++	"    int wv = (du > 0 && dd > 0) ? du + dd : 1 << 20;\n"
++	"    if (min(wh, wv) >= (1 << 20)) return p;   // unbounded: not a crack\n"
++	"    if (wh <= wv) return p + ((dl <= dr) ? ivec2(-dl, 0) : ivec2(dr, 0));\n"
++	"    return p + ((du <= dd) ? ivec2(0, -du) : ivec2(0, dd));\n"
++	"}\n"
++	"\n"
+ 	"vec3 fetch_at(ivec2 p) {\n"
++	"    p = fill_px(p);\n"
+ 	"    uint pen = texelFetch(idxTex, p, 0).r & 0x7fffu;\n"
+ 	"    uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;\n"
+ 	"    uint r = (w >> 10) & 31u, g = (w >> 5) & 31u, b = w & 31u;\n"
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index f363dcb7..95d0e3ea 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -316,6 +316,8 @@ struct GL
+ 	void (WINAPI *FramebufferTexture2D)(unsigned, unsigned, unsigned, uint, int);
+ 	unsigned (WINAPI *CheckFramebufferStatus)(unsigned);
+ 	void (WINAPI *ActiveTexture)(unsigned);
++	void (WINAPI *DrawBuffers)(int, const unsigned *);
++	void (WINAPI *ClearBufferuiv)(unsigned, int, const uint *);
+ 
+ 	template <typename T> void load1(T &fn, const char *name)
+ 	{
+@@ -362,6 +364,7 @@ struct GL
+ 		L(FramebufferTexture2D, "glFramebufferTexture2D")
+ 		L(CheckFramebufferStatus, "glCheckFramebufferStatus")
+ 		L(ActiveTexture, "glActiveTexture")
++		L(DrawBuffers, "glDrawBuffers") L(ClearBufferuiv, "glClearBufferuiv")
+ #undef L
+ 		load1(CreateContextAttribs, "wglCreateContextAttribsARB");
+ 		load1(SwapIntervalEXT, "wglSwapIntervalEXT");
+@@ -626,6 +629,10 @@ void thread_main()
+ 	uint texram = make_tex(4096, 2048, R8UI);
+ 	uint paltex = make_tex(256, 128, R32UI);
+ 	uint pageTex[2] = { make_tex(fw, fh, R16UI), make_tex(fw, fh, R16UI) };
++	// crack-fill mask: attachment 1 flags pixels the CURRENT scene wrote;
++	// the palette pass fills unwritten slivers (hardware quad cracks that
++	// would show the stale page) from axis-bounded neighbours
++	uint maskTex[2] = { make_tex(fw, fh, R8UI), make_tex(fw, fh, R8UI) };
+ 	uint underTex[2] = { make_tex(512, H, R16UI), make_tex(512, H, R16UI) };
+ 	uint fbo[2];
+ 	gl.GenFramebuffers(2, fbo);
+@@ -633,6 +640,9 @@ void thread_main()
+ 	{
+ 		gl.BindFramebuffer(FRAMEBUFFER, fbo[i]);
+ 		gl.FramebufferTexture2D(FRAMEBUFFER, COLOR_ATTACHMENT0, 0x0DE1, pageTex[i], 0);
++		gl.FramebufferTexture2D(FRAMEBUFFER, COLOR_ATTACHMENT0 + 1, 0x0DE1, maskTex[i], 0);
++		unsigned const bufs[2] = { COLOR_ATTACHMENT0, COLOR_ATTACHMENT0 + 1 };
++		gl.DrawBuffers(2, bufs);
+ 		if (gl.CheckFramebufferStatus(FRAMEBUFFER) != FRAMEBUFFER_COMPLETE)
+ 			logf("fbo %d incomplete", i);
+ 		gl.Clear(0x4000);
+@@ -682,9 +692,15 @@ void thread_main()
+ 	// (uCrt=0) shader path is byte-identical to the pre-CRT palette pass.
+ 	int const uCrt = gl.GetUniformLocation(pal, "uCrt");
+ 	int const uSrcH = gl.GetUniformLocation(pal, "uSrcH");
++	int const uFillR = gl.GetUniformLocation(pal, "uFillR");
+ 	bool crt = std::getenv("MIDV_GL_CRT") && atoi(std::getenv("MIDV_GL_CRT")) != 0;
++	// crack fill defaults ON (a pure improvement: only pixels the scene
++	// never wrote are touched); MIDV_GL_CRACKFILL=0 restores raw hardware
++	bool const fill_on = !(std::getenv("MIDV_GL_CRACKFILL")
++			&& atoi(std::getenv("MIDV_GL_CRACKFILL")) == 0);
+ 	gl.Uniform1i(uCrt, crt ? 1 : 0);
+ 	gl.Uniform1f(uSrcH, float(H));
++	gl.Uniform1i(gl.GetUniformLocation(pal, "maskTex"), 3);
+ 	bool f9_prev = false;
+ 
+ 	// ---- in-game Esc options menu (drawn by the overlay itself) ----
+@@ -924,6 +940,13 @@ void thread_main()
+ 			gl.BufferData(ARRAY_BUFFER, udata.size() * 4, udata.data(), STREAM_DRAW);
+ 			gl.BindFramebuffer(FRAMEBUFFER, fbo[pg]);
+ 			gl.Viewport(0, 0, fw, fh);
++			// reset the crack-fill mask to "unwritten" for the whole frame -
++			// glClearBufferuiv touches ONLY attachment 1, so the page itself
++			// still persists between scenes (hardware behavior)
++			{
++				uint const zero[4] = { 0, 0, 0, 0 };
++				gl.ClearBufferuiv(0x1800 /*GL_COLOR*/, 1, zero);
++			}
+ 			// The game guarantees repainting only the 512-wide hardware
+ 			// region; the 16:9 margins are ours. Scenes that draw nothing
+ 			// there (2D screens, showcase scenes) would otherwise show the
+@@ -964,6 +987,12 @@ void thread_main()
+ 		if (vh > ch) { vh = ch; vw = int(ch * aspect + 0.5f); }
+ 		gl.UseProgram(pal);
+ 		gl.Uniform1i(uCrop, (quad_fresh[visible] && !wide3d) ? MARGIN * S : 0);
++		// fill only live 3D scenes (2D screens and the CPU-shadow path have
++		// no meaningful mask; persistence there may be intentional)
++		gl.Uniform1i(uFillR,
++			(fill_on && quad_fresh[visible] && !crop2d[visible]) ? 4 * S : 0);
++		gl.ActiveTexture(TEXTURE0 + 3);
++		gl.BindTexture(0x0DE1, maskTex[visible]);
+ 		gl.ActiveTexture(TEXTURE0 + 1);
+ 		if (quad_fresh[visible])
+ 			gl.BindTexture(0x0DE1, pageTex[visible]);
 -- 
 2.55.0.windows.3
 

@@ -5,8 +5,9 @@
      resets Claude's project context. -->
 
 - **Repo:** GitHub **d-b-c-e/cruisn-collection** (private; renamed from
-  cruisn-poc 2026-08-20, old URL redirects). Local folder is STILL
-  `E:\Source\cruisn-poc` (rename checklist at the bottom).
+  cruisn-poc 2026-08-20, old URL redirects). Local folder renamed to
+  `E:\Source\cruisn-collection` 2026-08-20 (checklist at bottom DONE:
+  Launch-Cruisn.bat + CLAUDE.md paths updated).
 - **Branches:** this repo `master` (pushed); emulator half in
   `E:\Source\mame-src` branch `poc/quadlog` @ 366f8119 (NOT on GitHub —
   the full patch series `patch/vunit-poc-patches.patch`, 20 patches from
@@ -77,6 +78,75 @@ programmatically at the binding/render level:
 4. World at full speed (perf was the "bad emulation" — priority 1 fixed).
 5. If good → `git tag v0.2.0 && git push origin v0.2.0`.
 
+## Rig test round 1 (2026-08-20, user at wheel) — findings + fixes
+
+1. **Boot went straight into last game (offroadc)** — shell remembers
+   `state["rom"]`, and a phantom wheel-button press during device
+   enumeration (Moza wake: zeros first, real state later; 0→1 settle
+   read as a press) became ENTER. FIXED in collection.py: per-device 1 s
+   silence after a joystick appears, 1.5 s input arming after boot,
+   1.0 s after game return, and joy_prev/joy_seen/hat rebaseline on
+   return (the stale-joy_prev instant-relaunch latent bug too).
+2. **Several seconds of desktop + weird focus after quitting** — MAME's
+   window outlives its message pump through the teardown drag (FFB exit
+   race + WER dump), so the IsWindow watch waited it out. FIXED: shell
+   also exits its wait after two consecutive 1 s WM_NULL timeouts
+   (`run_rig.window_responding`).
+3. **Wizard bound the wheel's return-spring to GAS** — baseline was
+   snapshotted while the wheel was still returning. FIXED: press-Enter-
+   to-begin gate screen, 0.8–1.0 s swallow-everything cooldown after
+   every bind/skip, and axis baselines armed only after ALL axes are
+   still (0.35 s samples, <0.06 delta).
+4. **Off Road: momentary see-through gaps between ground polys** (user
+   observation, not game-breaking). Matches the documented V-Unit crack
+   class — pages persist between scenes, cracks show prior-frame pixels —
+   so likely authentic to hardware/MAME, possibly widened by the 4×
+   upscale. Triage later: MIDV_GL_SNAP captures vs native res / plain
+   MAME comparison.
+
+Fixes 1–3 are code-verified only (compile + --shot render); NOT yet
+re-verified at the wheel. Deck bat runs live source — next launch has them.
+
+## Overnight session (2026-08-20 night, user away) — round 2
+
+**Shell (collection.py):** stays alive fullscreen BEHIND the game for the
+whole session (wanszai-style — no desktop flash either direction);
+LAUNCHING screen while MAME boots (launch on a background thread); cursor
+hidden in shell + parked off-screen corner in-game; auto-relaunch phantom
+fixed twice over (joystick input dead while old vunit still tearing down
++2 s, and per-button 0.6 s debounce vs re-enumeration 1→0→1 glitches);
+shell foreground-enforce is stoppable so it never fights the game's.
+
+**Exotica (all config-level, run_rig.py):** -keepaspect (was stretched),
+-prescale 4 (was fuzzy), -view "Screen 0" (drops the internal lamp/7seg
+panel that ate the bottom fifth), Esc keeps MAME quit (UI_CANCEL→F12 now
+V-Unit-only — Exotica was unquittable), and a `<system name="crusnexo">`
+ctrlr section translating the wizard map to Exotica's wiring (gears
+BUTTON2-5, radio 6, views 7-10 — the latched shifter was holding a wrong
+button: prime suspect for the throttle "flutter"). Its black-car/sprite
+garbage is upstream zeus2 emulation (racing build identical) — only the
+Zeus GL arc could improve it.
+
+**CRACK FILL shipped end-to-end** (`MIDV_GL_CRACKFILL`, default ON, shell
+SETTINGS toggle, 3D scenes only): scene pass writes a "written this
+frame" R8UI mask (attachment 1); palette pass redirects unwritten pixels
+to the nearest written neighbour ONLY when bounded on both sides along an
+axis (true cracks; silhouettes vs margins untouched). renderer.py is
+reference (—crackfill); exact mode untouched — re-verified **100.0000%**
+on capture + capture-8000. Live-verified: crusnusa (99.97%) + offroadc
+(100% speed, 512×401) attract snaps clean, GL err=0.
+
+**Finding:** quality mode's continuous coverage already closes almost all
+static cracks (canyon 4×: 166 px filled; offroadc capture: 11 px). The
+in-game "see-through ground" the user saw is likely transient (game's own
+LOD/pop or a live-path scene-timing case) — needs an at-the-wheel capture
+(record_diag or MIDV_GL_SNAP while driving Off Road) to classify.
+
+**Round-2 re-test list (user):** launch flow (no flash, cursor, no
+auto-relaunch), wizard (Enter gate, no return-spring misbind), Exotica
+(4:3 sharp, no panel, Esc quits, gears/views right, flutter gone?),
+Off Road gameplay with crack fill ON vs OFF (SETTINGS toggle).
+
 ## Open items
 
 - [ ] Rig test above; ingest findings.
@@ -101,6 +171,9 @@ programmatically at the binding/render level:
       (fixtures exist; captures must run in rig config — headless
       re-demands calibration, no input devices).
 - [ ] Consider upstreaming the winhybrid DIJoystick2 fix to MAME proper.
+- [ ] mame-src still says `cruisn-poc` in POC-NOTES.md and generated-header
+      comments — piggyback the path fix on the NEXT mame-src commit (any
+      standalone fix forces a patch-series refresh + CI cache invalidation).
 
 ## Parked ideas
 - Achievements: docs/ACHIEVEMENTS.md (research complete, idea only).

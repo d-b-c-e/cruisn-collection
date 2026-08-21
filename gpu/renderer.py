@@ -71,7 +71,8 @@ uniform int  texMask;      // byte-size mask (size-1)
 flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;
 flat in vec4 uv01; flat in vec4 uv23;
 flat in uvec4 meta;
-out uint outIndex;
+layout(location = 0) out uint outIndex;
+layout(location = 1) out uint outMask;   // 1 = this scene wrote the pixel
 
 int round_coord(float f) {           // poly.h: floor, +1 iff frac > 0.5
     float ip = floor(f);
@@ -206,6 +207,7 @@ void main() {
     uint pixdata = meta.x, mode = meta.y, dither = meta.z;
     if (dither == 1u && ((px ^ py) & 1) != 0) discard;   // coarse-space mask
 
+    outMask = 1u;   // every non-discarded fragment marks its pixel written
     if (mode == 0u) { outIndex = pixdata & 0xffffu; return; }
 
     int ui, vi;
@@ -242,10 +244,40 @@ uniform usampler2D palTex;   // 256x128 R32UI - 32768 palette words
 uniform int uCrop;           // fine pixels to crop from each side (2D screens)
 uniform int uCrt;            // 1 = CRT pass (mask+scanline+curvature), 0 = raw
 uniform float uSrcH;         // simulated source scanline count (coarse height)
+uniform usampler2D maskTex;  // R8UI: 1 = written by the CURRENT scene
+uniform int uFillR;          // crack-fill search radius in fine px; 0 = off
 in vec2 uv;
 out vec4 color;
 
+ivec2 fill_px(ivec2 p) {
+    // Crack fill: the hardware leaves sub-pixel gaps between adjacent quads
+    // where the page's PREVIOUS frame shows through (authentic, but it
+    // shimmers). An unwritten pixel is redirected to its nearest written
+    // neighbour - only when written pixels exist on BOTH sides along some
+    // axis (a true between-polys crack). One-sided pixels (silhouettes
+    // against the cleared 16:9 margins) are left untouched.
+    if (uFillR == 0 || texelFetch(maskTex, p, 0).r != 0u) return p;
+    ivec2 sz = textureSize(maskTex, 0);
+    int dl = 0, dr = 0, du = 0, dd = 0;
+    for (int i = 1; i <= uFillR; i++) {
+        if (dl == 0 && p.x - i >= 0
+            && texelFetch(maskTex, p - ivec2(i, 0), 0).r != 0u) dl = i;
+        if (dr == 0 && p.x + i < sz.x
+            && texelFetch(maskTex, p + ivec2(i, 0), 0).r != 0u) dr = i;
+        if (du == 0 && p.y - i >= 0
+            && texelFetch(maskTex, p - ivec2(0, i), 0).r != 0u) du = i;
+        if (dd == 0 && p.y + i < sz.y
+            && texelFetch(maskTex, p + ivec2(0, i), 0).r != 0u) dd = i;
+    }
+    int wh = (dl > 0 && dr > 0) ? dl + dr : 1 << 20;
+    int wv = (du > 0 && dd > 0) ? du + dd : 1 << 20;
+    if (min(wh, wv) >= (1 << 20)) return p;   // unbounded: not a crack
+    if (wh <= wv) return p + ((dl <= dr) ? ivec2(-dl, 0) : ivec2(dr, 0));
+    return p + ((du <= dd) ? ivec2(0, -du) : ivec2(0, dd));
+}
+
 vec3 fetch_at(ivec2 p) {
+    p = fill_px(p);
     uint pen = texelFetch(idxTex, p, 0).r & 0x7fffu;
     uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;
     uint r = (w >> 10) & 31u, g = (w >> 5) & 31u, b = w & 31u;
@@ -354,11 +386,13 @@ def load_scene(cap, history=True):
     ends = np.concatenate([change, [len(pages)]])
     s, e = starts[-2], ends[-2]
     quads = dmas[s:e]
+    nhist = 0
     if history and len(starts) >= 4:
         ps, pe = starts[-4], ends[-4]
         assert int(pages[ps]) == int(pages[s]), "page alternation broke"
         quads = np.concatenate([dmas[ps:pe], quads])
-    return quads, int(pages[s]), meta
+        nhist = int(pe - ps)
+    return quads, int(pages[s]), meta, nhist
 
 
 def build_vertices(quads, xoff):
@@ -496,13 +530,17 @@ def main():
     ap.add_argument("--crt", action="store_true",
                     help="CRT pass in the palette stage (preview only; "
                          "index-buffer verification is upstream of it)")
+    ap.add_argument("--crackfill", action="store_true",
+                    help="fill pixels the scene left unwritten (hardware "
+                         "quad cracks showing the stale page) from bounded "
+                         "neighbours - quality mode only")
     ap.add_argument("--bench", type=int, default=0, help="timed re-renders")
     args = ap.parse_args()
     cap = args.capture_dir
     S = args.scale
     exact = (S == 1 and not args.wide)
 
-    quads, pc, meta = load_scene(cap)
+    quads, pc, meta, nhist = load_scene(cap)
     height = meta["visarea"][1] + 1
     margin = 86 if args.wide else 0
     W = 512 + 2 * margin
@@ -544,13 +582,25 @@ def main():
 
     fw, fh = W * S, height * S
     idx_tex = ctx.texture((fw, fh), 1, dtype="u2")
-    fbo = ctx.framebuffer(color_attachments=[idx_tex])
+    mask_tex = ctx.texture((fw, fh), 1, dtype="u1")
+    fbo = ctx.framebuffer(color_attachments=[idx_tex, mask_tex])
+    mask_fbo = ctx.framebuffer(color_attachments=[mask_tex])
     fbo.use()
     ctx.viewport = (0, 0, fw, fh)
 
     def draw():
         fbo.clear()
-        vao.render(moderngl.TRIANGLES)
+        if nhist and not exact:
+            # stale-page history first, then reset the mask so it flags only
+            # pixels the FINAL scene wrote - the crack fill keys off it.
+            # Exact mode keeps the original single call, bit-for-bit.
+            vao.render(moderngl.TRIANGLES, vertices=nhist * 6)
+            mask_fbo.clear()
+            fbo.use()
+            vao.render(moderngl.TRIANGLES, first=nhist * 6,
+                       vertices=(len(quads) - nhist) * 6)
+        else:
+            vao.render(moderngl.TRIANGLES)
 
     draw()
     ctx.finish()
@@ -568,7 +618,8 @@ def main():
     data = np.frombuffer(fbo.read(components=1, dtype="u2"), dtype="<u2")
     gpu = np.flipud(data.reshape(fh, fw)).copy()
 
-    tag = f"gpu-{'wide-' if args.wide else ''}{'crt-' if args.crt else ''}s{S}"
+    tag = (f"gpu-{'wide-' if args.wide else ''}{'crt-' if args.crt else ''}"
+           f"{'fill-' if args.crackfill else ''}s{S}")
     if exact:
         ref_vram = np.fromfile(os.path.join(cap, "videoram.bin"), dtype="<u2")
         off = 0x40000 if pc & 4 else 0
@@ -584,8 +635,11 @@ def main():
     pprog["palTex"].value = 2
     pprog["uCrt"].value = 1 if args.crt else 0
     pprog["uSrcH"].value = float(height)
+    pprog["maskTex"].value = 3
+    pprog["uFillR"].value = (4 * S) if (args.crackfill and not exact) else 0
     idx_tex.use(1)
     paltex.use(2)
+    mask_tex.use(3)
     rgb_tex = ctx.texture((fw, fh), 4)
     fbo2 = ctx.framebuffer(color_attachments=[rgb_tex])
     fbo2.use()

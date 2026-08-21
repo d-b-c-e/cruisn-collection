@@ -683,3 +683,82 @@ Three-level assessment recorded:
 
 Standing after session 3: user to re-test wizard + nav + music; Exotica
 from the shell; then the Esc overlay and telemetry Phase A are next.
+
+---
+
+# Rig test round 1 + crack fill — 2026-08-20/21 (overnight session 4)
+
+## Rig findings (user at the wheel) and their fixes
+
+1. **Shell booted straight into the last game** (offroadc): a phantom
+   wheel-button press during device enumeration (Moza wake reports zeros
+   before real state; the 0→1 settle read as a press) hit the "any wheel
+   button = OK" menu rule with the remembered selection. Fixed in
+   collection.py: 1 s per-device silence after a joystick appears, input
+   arming windows after boot/return, per-button 0.6 s debounce (a button
+   down <0.6 s ago is a re-enumeration glitch, not a press), and joystick
+   input held dead while the previous vunit is still tearing down + 2 s
+   (teardown's DirectInput release re-enumerates the wheel SECONDS after
+   the shell is back — this was the "auto-relaunched a few seconds later"
+   report).
+2. **Seconds of desktop + weird focus after quitting**: MAME's window
+   outlives its message pump through the teardown drag (FFB exit race +
+   WER dump), so the IsWindow watch waited it out. The shell now also
+   treats two consecutive 1 s WM_NULL timeouts as "exiting"
+   (run_rig.window_responding). And the shell now NEVER hides: it stays
+   fullscreen behind the game for the whole session (wanszai-style) with
+   a LAUNCHING screen while MAME boots — no desktop flash either way.
+3. **Wizard bound the wheel's return-spring to GAS**: baseline was
+   snapshotted while the wheel was still returning. Now: Press-Enter-to-
+   begin gate, ~1 s swallow-everything cooldown after every bind/skip,
+   and axis baselines arm only after ALL axes sit still (0.35 s samples,
+   <0.06 delta).
+4. **Exotica**: stretched (`-nokeepaspect` is wrong for the d3d path →
+   now `-keepaspect`), fuzzy (`-prescale 4`), lamp/7seg panel ate the
+   bottom fifth (`-view "Screen 0"`), Esc dead / unquittable (UI_CANCEL→
+   F12 remap is now V-Unit-only), throttle "flutter" + dead shifter:
+   crusnexo wires gears=BUTTON2-5, radio=6, views=7-10 (midzeus.cpp) —
+   the wizard's V-Unit-convention default section had the latched shifter
+   holding a wrong button. New translated `<system name="crusnexo">`
+   ctrlr section. Black opponent cars / sprite garbage = upstream zeus2
+   emulation (unchanged from the racing build); only the Zeus GL arc
+   could address it.
+5. Cursor: hidden in the shell (glfw), parked in the bottom-right corner
+   in-game (SetCursorPos 32767,32767 — the arrow glyph renders
+   off-screen; MAME never hides it for a borderless -window window).
+
+## Crack fill (MIDV_GL_CRACKFILL, default ON, shell SETTINGS toggle)
+
+The hardware leaves sub-pixel cracks between quads where the persisted
+page's previous frame shows through (authentic, but it shimmers). Fix
+shipped through the full stack:
+
+- Scene pass gains a second render target: R8UI "written this scene"
+  mask (renderer.py FS `outMask`; C++ overlay attachment 1 +
+  glDrawBuffers, mask-only glClearBufferuiv per scene so the page itself
+  still persists).
+- Palette pass: an unwritten pixel is redirected to its nearest written
+  neighbour ONLY when written pixels exist on both sides along some axis
+  (true between-poly cracks). One-sided pixels — geometry silhouettes
+  against the cleared 16:9 margins — stay untouched. Radius 4×scale fine
+  px. 3D scenes only (2D screens / CPU-shadow path keep persistence).
+- Exact mode untouched by construction (single-draw path, fill radius 0)
+  — re-verified **100.0000%** vs MAME videoram on `results/capture` and
+  `results/capture-8000` after the shader changes.
+- Live-verified on the rig build: crusnusa (99.97% avg speed) and
+  offroadc (100.00%, 512×401 mode) attract runs, MIDV_GL_SNAP snaps
+  artifact-free, GL err=0, FBOs complete.
+
+**Honest finding**: quality mode's continuous coverage already closes
+nearly all static cracks that exact/integer mode shows (canyon 4× wide:
+166 of 4.4M pixels filled; offroadc rig capture: 11). So the "momentary
+see-through ground" seen in offroadc GAMEPLAY is probably NOT the static
+crack class — candidates: the game's own transient LOD/pop seams
+(authentic), or a live-path scene-timing case. Needs an at-the-wheel
+capture session (record_diag or MIDV_GL_SNAP while driving) to classify.
+The fill stands regardless: it is a strict no-op wherever the scene
+covers the frame.
+
+Standing after session 4: user re-tests round 2 (launch flow, wizard
+gate, Exotica fixes, crack fill A/B on Off Road); v0.2.0 tag once the
+rig test passes.
