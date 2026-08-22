@@ -262,6 +262,33 @@ The Exotica renderer-replacement arc is two-thirds real:
   Coverage gap: texel modes 0 (4-bit) and 2 (rgb555/texture-alpha) not
   yet in any capture — grab a GAMEPLAY capture (user driving) first.
 
+## Round 4 (2026-08-22) — user's 16-item list; project aim upgraded to
+## "improve on the original in every facet that's feasible"
+
+Fixed same session: circular glow (1), wizard cooldown bar + >32-button
+note (2,3-UX), hotkey legend + CONTROLS SETUP rename (4,5), WER ding via
+inherited SetErrorMode — trade-off: no new vunit minidumps (6), Esc menu
+now PAUSES the machine (10), margin extend = clamp-stretch boundary
+column into unwritten margin pixels, MIDV_GL_MARGINFILL (7,14), volume
+=/- uniform across all games (8 interim).
+
+BACKLOG (new, from the "improve everything" mandate):
+- [ ] Steering feel (9): shell settings page writing MAME per-game cfg
+      analog attrs (sensitivity etc.); first advise Moza Pit House 270°
+      rotation + in-game service recalibration.
+- [ ] Auto-volume (8 full): find the CMOS volume byte per game (RAM/NVRAM
+      hunt) and poke it at boot via Lua or nvram patch - no user action.
+- [ ] Wizard >32 buttons (3 full): raw DirectInput (DIJOYSTATE2) capture
+      via ctypes COM, or a MAME-side Lua input reader.
+- [ ] Off Road coinage (13): needs one-time service-menu change (F2) or
+      locate coinage in CMOS and patch the fixture; add "free play" note.
+- [ ] Exotica boot popup (15): unidentified - need user description/photo.
+- [ ] Render distance (11): would need game-code (TMS32031) culling
+      patches - research arc, no promise.
+- [ ] Exotica sharpness (16): = the Zeus GL live-integration arc (next
+      session); no ReShade needed.
+- Exotica desktop flash on exit, once, unreproduced (12): watch.
+
 ## Parked ideas
 - Achievements: docs/ACHIEVEMENTS.md (research complete, idea only).
 
