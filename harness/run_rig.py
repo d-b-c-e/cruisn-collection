@@ -366,11 +366,11 @@ def sanitized_ctrlrpath(rig, rom="crusnusa"):
     dflt = system_input("default")
     set_port(dflt, "UI_FRAMESKIP_DEC", "NONE")
     set_port(dflt, "UI_FRAMESKIP_INC", "NONE")
-    # Exotica's DCS mix boots much quieter than the V-Unit games; its
-    # cabinet volume buttons persist to CMOS - hold = / - in-game once
-    exo = system_input("crusnexo")
-    set_port(exo, "VOLUME_UP", "KEYCODE_EQUALS")
-    set_port(exo, "VOLUME_DOWN", "KEYCODE_MINUS")
+    # Every game in the collection has cabinet volume buttons whose level
+    # persists to CMOS - a uniform = / - binding lets the player level all
+    # four games once (Exotica boots much quieter than the V-Unit three)
+    set_port(dflt, "VOLUME_UP", "KEYCODE_EQUALS")
+    set_port(dflt, "VOLUME_DOWN", "KEYCODE_MINUS")
 
     apply_wheelmap(tree, rig)
     out = os.path.join(rig, "ctrlr")
@@ -605,6 +605,12 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         else:
             cmd += ["-nokeepaspect"]   # the GL overlay owns presentation
         return subprocess.Popen(cmd, env=env, cwd=os.path.dirname(mame))
+
+    # the known-cosmetic FFB-plugin teardown AV must not raise the WER UI:
+    # its "app crashed" notification ding fired on every (re)launch. Error
+    # mode is inherited by child processes. Trade-off: WER LocalDumps stop
+    # collecting new vunit minidumps in rig/crashdumps.
+    ctypes.windll.kernel32.SetErrorMode(0x8003)
 
     proc = hwnd = None
     for attempt in (1, 2):

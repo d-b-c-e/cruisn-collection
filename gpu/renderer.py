@@ -246,6 +246,7 @@ uniform int uCrt;            // 1 = CRT pass (mask+scanline+curvature), 0 = raw
 uniform float uSrcH;         // simulated source scanline count (coarse height)
 uniform usampler2D maskTex;  // R8UI: 1 = written by the CURRENT scene
 uniform int uFillR;          // crack-fill search radius in fine px; 0 = off
+uniform int uMargin;         // margin width in fine px for clamp-extend; 0 = off
 in vec2 uv;
 out vec4 color;
 
@@ -271,7 +272,21 @@ ivec2 fill_px(ivec2 p) {
     }
     int wh = (dl > 0 && dr > 0) ? dl + dr : 1 << 20;
     int wv = (du > 0 && dd > 0) ? du + dd : 1 << 20;
-    if (min(wh, wv) >= (1 << 20)) return p;   // unbounded: not a crack
+    if (min(wh, wv) >= (1 << 20)) {
+        // not a crack. Margin extend: the 16:9 margins show black holes
+        // where the game's 4:3-era culling never drew - clamp-extend the
+        // nearest written hardware-boundary pixel instead (one tap).
+        if (uMargin > 0) {
+            if (p.x < uMargin) {
+                ivec2 q = ivec2(uMargin, p.y);
+                if (texelFetch(maskTex, q, 0).r != 0u) return q;
+            } else if (p.x >= sz.x - uMargin) {
+                ivec2 q = ivec2(sz.x - 1 - uMargin, p.y);
+                if (texelFetch(maskTex, q, 0).r != 0u) return q;
+            }
+        }
+        return p;
+    }
     if (wh <= wv) return p + ((dl <= dr) ? ivec2(-dl, 0) : ivec2(dr, 0));
     return p + ((du <= dd) ? ivec2(0, -du) : ivec2(0, dd));
 }
@@ -637,6 +652,8 @@ def main():
     pprog["uSrcH"].value = float(height)
     pprog["maskTex"].value = 3
     pprog["uFillR"].value = (4 * S) if (args.crackfill and not exact) else 0
+    pprog["uMargin"].value = (margin * S) if (args.crackfill and not exact
+                                              and args.wide) else 0
     idx_tex.use(1)
     paltex.use(2)
     mask_tex.use(3)

@@ -109,15 +109,17 @@ def text_image(text, size, names=("bahnschrift.ttf", "arialbd.ttf"),
 
 def glow_image(size=384):
     """Soft radial gold glow drawn behind the focused logo - the logos
-    float free on the backdrop (no card frame), so focus reads as light."""
+    float free on the backdrop (no card frame), so focus reads as light.
+    Alpha reaches exactly zero at the inscribed circle: a gaussian left
+    ~4% alpha at the texture edge, which showed as a faint rectangle."""
     y, x = np.mgrid[0:size, 0:size].astype(float)
     c = (size - 1) / 2.0
-    r2 = ((x - c) ** 2 + (y - c) ** 2) / (c * c)
+    r = np.sqrt((x - c) ** 2 + (y - c) ** 2) / c
     img = np.zeros((size, size, 4), np.uint8)
     img[..., 0] = 255
     img[..., 1] = 205
     img[..., 2] = 90
-    img[..., 3] = (np.exp(-r2 * 3.2) * 230).astype(np.uint8)
+    img[..., 3] = (np.clip(1.0 - r, 0.0, 1.0) ** 2.2 * 235).astype(np.uint8)
     return Image.fromarray(img, "RGBA")
 
 
@@ -206,7 +208,7 @@ class Shell:
         self.center_text("ESC / BACKSPACE  CANCEL", self.h // 40,
                          self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
 
-    def draw_wizard(self, prompt, done, total, last, kind="button"):
+    def draw_wizard(self, prompt, done, total, last, kind="button", cool=0.0):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -222,6 +224,19 @@ class Shell:
         if last:
             self.center_text(last, self.h // 40, self.h * 0.66,
                              (0.7, 0.7, 0.8, 1.0))
+        if cool > 0.0:
+            # cooldown after each bind: shrinking bar + release prompt
+            self.center_text("RELEASE ALL CONTROLS...", self.h // 40,
+                             self.h * 0.72, (1.0, 0.75, 0.3, 0.9))
+            bw = self.w * 0.26 * min(cool, 1.0)
+            self.rect(self.white, (self.w - bw) / 2, self.h * 0.770,
+                      bw, self.h * 0.010,
+                      (GOLD[0], GOLD[1], GOLD[2], 0.9))
+        if kind == "button":
+            self.center_text("BUTTONS ABOVE 32 CAN'T BE CAPTURED HERE - "
+                             "ESC SKIPS (THEY STILL WORK IN-GAME)",
+                             self.h // 48, self.h * 0.83,
+                             (0.55, 0.55, 0.62, 1.0))
         self.center_text(f"{done} / {total}    ESC SKIP    BACKSPACE CANCEL",
                          self.h // 40, self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
 
@@ -231,11 +246,12 @@ class Shell:
         t.filter = (moderngl.LINEAR_MIPMAP_LINEAR, moderngl.LINEAR)
         return t
 
-    def footer_tex(self, msg):
-        if msg not in self.foot_cache:
-            self.foot_cache[msg] = self.tex(text_image(
-                msg, self.h // 36, fill=(210, 210, 220, 255)))
-        return self.foot_cache[msg]
+    def footer_tex(self, msg, div=36):
+        key = (msg, div)
+        if key not in self.foot_cache:
+            self.foot_cache[key] = self.tex(text_image(
+                msg, self.h // div, fill=(210, 210, 220, 255)))
+        return self.foot_cache[key]
 
     def rect(self, tex, x, y, w, h, tint=(1, 1, 1, 1)):
         tex.use(0)
@@ -288,7 +304,15 @@ class Shell:
             "<  >  ^  v  NAVIGATE      ENTER / START  OK      ESC  QUIT")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
-        self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
+        self.rect(foot, (self.w - fw) / 2, self.h * 0.905, fw, fh)
+        # in-game hotkey legend (keys that live outside the wheel bindings)
+        leg = self.footer_tex(
+            "IN-GAME:   5 COIN    1 START    ESC MENU / QUIT    F9 CRT    "
+            "= / - VOLUME    F12 FORCE QUIT", div=46)
+        lh = self.h / 46 * 1.9
+        lw = leg.width * lh / leg.height
+        self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
+                  (0.75, 0.75, 0.8, 1.0))
 
     def draw_settings(self, ssel, crt, fill, t):
         self.ctx.enable(moderngl.BLEND)
@@ -300,7 +324,7 @@ class Shell:
                          (1.0, 0.85, 0.4, 1.0))
         items = [f"CRT EFFECTS      {'ON' if crt else 'OFF'}",
                  f"CRACK FILL      {'ON' if fill else 'OFF'}",
-                 "WHEEL SETUP", "BACK"]
+                 "CONTROLS SETUP  (WHEEL / PAD / KEYBOARD)", "BACK"]
         for i, label in enumerate(items):
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
@@ -884,7 +908,8 @@ def main():
         elif mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
             shell.draw_wizard(WIZARD_STEPS[wiz_idx][0], wiz_idx,
                               len(WIZARD_STEPS), wiz_last,
-                              WIZARD_STEPS[wiz_idx][2])
+                              WIZARD_STEPS[wiz_idx][2],
+                              max(0.0, wiz_cool - time.time()))
         elif mode == "settings":
             shell.draw_settings(ssel, state["crt"], state["crackfill"], t)
         else:
