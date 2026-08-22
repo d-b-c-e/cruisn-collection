@@ -380,6 +380,51 @@ def sanitized_ctrlrpath(rig, rom="crusnusa"):
     return out
 
 
+# steering analog port per game (tag/type; all use mask 255, defvalue 128).
+# The shell's STEERING SENS setting is asserted into the per-game MAME cfg
+# before each launch; MAME's own default is sensitivity 25.
+STEER_PORT = {
+    "crusnusa": (":WHEEL", "P1_PADDLE"),
+    "crusnwld": (":WHEEL", "P1_PADDLE"),
+    "offroadc": (":WHEEL", "P1_PADDLE"),
+    "crusnexo": (":ANALOG3", "P1_PADDLE"),
+}
+
+
+def write_steer_cfg(rig, rom, sens):
+    """Assert steering sensitivity in rig/cfg/<rom>.cfg (merged, preserving
+    everything MAME saved there). sens None = leave MAME's value alone."""
+    if sens is None or rom not in STEER_PORT:
+        return
+    tag, ptype = STEER_PORT[rom]
+    path = os.path.join(rig, "cfg", f"{rom}.cfg")
+    if os.path.isfile(path):
+        tree = ET.parse(path)
+    else:
+        tree = ET.ElementTree(ET.fromstring(
+            f'<mameconfig version="10"><system name="{rom}"/></mameconfig>'))
+    system = None
+    for s in tree.getroot().iter("system"):
+        if s.get("name") == rom:
+            system = s
+            break
+    if system is None:
+        system = ET.SubElement(tree.getroot(), "system", {"name": rom})
+    inp = system.find("input")
+    if inp is None:
+        inp = ET.SubElement(system, "input")
+    port = None
+    for p in inp.findall("port"):
+        if p.get("tag") == tag and p.get("type") == ptype:
+            port = p
+            break
+    if port is None:
+        port = ET.SubElement(inp, "port", {
+            "tag": tag, "type": ptype, "mask": "255", "defvalue": "128"})
+    port.set("sensitivity", str(int(sens)))
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+
+
 # collection.ini [wheelmap] key -> ([MAME port types], keyboard alternative
 # to preserve). Kept in sync with the shell's WIZARD_STEPS. The analog keys
 # write every steering-style port type so all three games pick them up.
@@ -553,7 +598,7 @@ def apply_wheelmap(tree, rig):
 
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
-                      crackfill=True, mame=VUNIT):
+                      crackfill=True, steersens=None, mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -561,6 +606,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     dump writes) drags on for seconds in the background."""
     rig, ini = prepare_rig(rom, crt=crt)
     ctrlr = sanitized_ctrlrpath(rig, rom)
+    write_steer_cfg(rig, rom, steersens)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)

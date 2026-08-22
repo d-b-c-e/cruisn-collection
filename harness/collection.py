@@ -314,7 +314,7 @@ class Shell:
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
                   (0.75, 0.75, 0.8, 1.0))
 
-    def draw_settings(self, ssel, crt, fill, t):
+    def draw_settings(self, ssel, crt, fill, sens, t):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -324,6 +324,8 @@ class Shell:
                          (1.0, 0.85, 0.4, 1.0))
         items = [f"CRT EFFECTS      {'ON' if crt else 'OFF'}",
                  f"CRACK FILL      {'ON' if fill else 'OFF'}",
+                 "STEERING SENS      "
+                 + ("GAME DEFAULT" if sens is None else f"{sens}  (< > ADJUST)"),
                  "CONTROLS SETUP  (WHEEL / PAD / KEYBOARD)", "BACK"]
         for i, label in enumerate(items):
             if i == ssel:
@@ -331,7 +333,7 @@ class Shell:
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
             else:
                 col = (0.75, 0.75, 0.8, 1.0)
-            self.center_text(label, self.h // 26, self.h * (0.42 + 0.10 * i), col)
+            self.center_text(label, self.h // 26, self.h * (0.40 + 0.09 * i), col)
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
@@ -467,8 +469,10 @@ def load_config():
     cp = configparser.ConfigParser()
     cp.read(CFG)
     sec = cp["collection"] if "collection" in cp else {}
+    ss = str(sec.get("steersens", "")).strip()
     return {"crt": str(sec.get("crt", "1")) == "1",
             "crackfill": str(sec.get("crackfill", "1")) == "1",
+            "steersens": int(ss) if ss.isdigit() else None,
             "scale": int(sec.get("scale", 4)),
             "rom": sec.get("rom", "crusnusa")}
 
@@ -478,6 +482,8 @@ def save_config(state):
     cp.read(CFG)   # preserve other sections (wheelmap)
     cp["collection"] = {"crt": "1" if state["crt"] else "0",
                         "crackfill": "1" if state["crackfill"] else "0",
+                        "steersens": ("" if state["steersens"] is None
+                                      else str(state["steersens"])),
                         "scale": str(state["scale"]), "rom": state["rom"]}
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
@@ -841,14 +847,22 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 4
+                    ssel = (ssel - 1) % 5
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 4
+                    ssel = (ssel + 1) % 5
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
                     state[k] = not state[k]
+                    save_config(state)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 2:
+                    # MAME sensitivity: game default is 25; below 5 = default
+                    step = 5 if key == glfw.KEY_RIGHT else -5
+                    cur = state["steersens"]
+                    nxt = (25 if cur is None else cur) + step
+                    state["steersens"] = None if nxt < 5 else min(nxt, 200)
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
@@ -858,6 +872,8 @@ def main():
                         save_config(state)
                         audio.blip("nav")
                     elif ssel == 2:
+                        audio.blip("nav")   # adjust with < > arrows
+                    elif ssel == 3:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -911,7 +927,8 @@ def main():
                               WIZARD_STEPS[wiz_idx][2],
                               max(0.0, wiz_cool - time.time()))
         elif mode == "settings":
-            shell.draw_settings(ssel, state["crt"], state["crackfill"], t)
+            shell.draw_settings(ssel, state["crt"], state["crackfill"],
+                                state["steersens"], t)
         else:
             shell.draw(sel, state["crt"], t, row)
         glfw.swap_buffers(win)
@@ -930,7 +947,8 @@ def main():
                     box["result"] = run_rig.launch_game_async(
                         rom=rom, scale=state["scale"],
                         windowed=args.windowed, crt=state["crt"],
-                        crackfill=state["crackfill"])
+                        crackfill=state["crackfill"],
+                        steersens=state["steersens"])
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)
                 box["done"] = True
