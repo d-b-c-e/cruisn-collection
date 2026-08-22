@@ -816,3 +816,38 @@ the bit-exact reference, exactly as rasterize.py does for V-Unit.
 Blend states (blend_enable, srcAlpha, dstAlpha) group into consecutive
 runs for batched draws; depth = gl_FragDepth from the shader-computed
 24-bit value; per-quad palettes bake into a 2D array texture.
+
+## ZEUS GL ARC, phase 2: GPU renderer prototype — same session
+
+**gpu/zeus_renderer.py renders the capture stream on the GPU.** One
+universal blend config (shader premultiplies by srcAlpha / per-pixel
+texture alpha, outputs dstAlpha as fragment alpha, ONE/SRC_ALPHA);
+gl_FragDepth carries zeus2's 24-bit depth (clear/min variants in-shader);
+batches split only on (blend, depth test, effective depth write, page row
+base, cliprect); per-batch scissor applies the hardware cliprect in
+quad-local y — without it, back-page quads with slightly out-of-range
+local y spill into the DISPLAYED page (found as a corner blob of wrong
+pixels; the bug class to remember for the live overlay). Swizzled texel
+fetchers, SSE bilinear, palettes as a 256-wide array texture (one row per
+pal_table load), full 512x2048 FB space as the render target, direct-op
+records applied via CPU mirror sync at segment boundaries.
+
+Verification vs the bit-exact CPU oracle (display window, scale 1):
+
+| capture | exact | within ±1 | within ±4 | max delta |
+|---|---|---|---|---|
+| register screen | **100.0000%** | 100.0000% | 100.0000% | 0 |
+| title showcase | 93.63% | 99.9360% | 99.9927% | 206 (≈15 px, silhouette edges) |
+| transition/heavy | 33.26% | 99.9595% | **100.0000%** | 3 |
+
+The ±1 mass is GL float blending rounding vs scale8 truncation (documented
+stance: CPU oracle = bit-exact reference; GL = product path). The
+transition capture is ~all blended pixels, hence low "exact" but max
+delta 3. Quality mode at 4x (2048x1600): glass-smooth geometry, crisp
+HUD/plate text — proof image `results/proof/zeus-gl-showcase-4x.png`.
+
+**Remaining for the arc** (next session): in-process live integration -
+hook zeus2_draw_quad + present like the midvunit overlay (window
+machinery reusable), env gates, Esc menu/CRT for Exotica, then the shell
+flips crusnexo off the d3d path. Perf note: 6.5k quads/frame in dozens of
+batches is trivial GPU load at 4x.
