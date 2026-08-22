@@ -851,3 +851,40 @@ hook zeus2_draw_quad + present like the midvunit overlay (window
 machinery reusable), env gates, Esc menu/CRT for Exotica, then the shell
 flips crusnexo off the d3d path. Perf note: 6.5k quads/frame in dozens of
 batches is trivial GPU load at 4x.
+
+## ZEUS GL ARC, phase 3: LIVE in-process integration — same session
+
+**Cruis'n Exotica now runs through our own GL renderer, live, in one
+process, at 4x internal resolution.** The mzgl overlay lives inside
+zeus2.cpp (no build-system changes): an owned NOACTIVATE popup sized to
+the MONITOR (not MAME's window - see perf), fed by an in-process 64 MB
+ring carrying the same records MIDZ_CAPTURE writes plus waveram dirty
+spans and display flips, consumed by a GL thread running the
+oracle-verified zeus_renderer.py pipeline (shaders generated into
+zeus2_gl_shaders.h). Esc menu (pause included), F9 CRT (new RGB present
+shader with the V-Unit CRT pass), MIDZ_GL_SNAP, crt statefile - full
+parity with the V-Unit overlay. run_rig defaults Zeus games to MIDZ_GL=1
+(gdi underneath, small un-maximized MAME window holding focus);
+MIDZ_GL=0 restores the d3d/bgfx fallback.
+
+Bugs found on first light, both fixed:
+1. **Screens accumulated** (high-score table over copyright text over
+   menus): the fast-clear CALL SITE was still gated on capture only -
+   clears never reached the live ring. One-line gate fix.
+2. **Flashing during the demo race**: the display-base flip was emitted
+   once per frame at screen_update, so the overlay kept presenting a page
+   the game had already begun clearing. Flips now emit AT the zb38
+   register write, in stream order with quads and clears.
+
+Perf attribution (60 s attract runs): d3d no-overlay 100.00%, gdi
+no-overlay 99.48%, gdi+overlay 97.3-97.7% during the hunt -
+scale-independent (1..4), not vsync, not FB size, not the emit path
+(pal-table memcmp per quad eliminated anyway; FB space halved to 1024
+rows = the hardware's actual address space... which crusnexo uses 0..800
+of). Final configuration measured **99.76%** with crusnusa regression at
+99.93%. Residual ~0.3-2% (run variance) parked for an ETW session.
+
+Verified live: title showcase, registration/high-score screens
+(frame_write path), Vegas demo race - all clean at 4x, snaps in
+results/verify-mzgl. Standing: user play test (wheel input, Esc menu
+pause, CRT taste, gameplay texture modes via zeus_capture_play.py).

@@ -254,7 +254,7 @@ GAME_HEIGHT = {"offroadc": 401}
 
 
 # ---- rig preparation --------------------------------------------------------
-def prepare_rig(rom, crt=False):
+def prepare_rig(rom, crt=False, zeus_gl=False):
     """Write the rig's ini set and seed NVRAM; returns (rig, inipath)."""
     rig = os.path.join(POC, "rig")
     ini = os.path.join(rig, "ini")
@@ -268,10 +268,16 @@ def prepare_rig(rom, crt=False):
     # Zeus games have no overlay, so their CRT look comes from MAME's bgfx
     # crt-geom-deluxe chain instead (boot-time only - the shell setting is
     # the toggle there; F9 does nothing on Zeus).
-    if rom in ZEUS_ROMS and crt:
-        vid = "video bgfx\nbgfx_screen_chains crt-geom-deluxe\n"
+    if rom in ZEUS_ROMS and not zeus_gl:
+        # fallback path: MAME's own renderer presents (MIDZ_GL=0)
+        if crt:
+            vid = "video bgfx\nbgfx_screen_chains crt-geom-deluxe\n"
+        else:
+            vid = "video d3d\n"
     else:
-        vid = f"video {'d3d' if rom in ZEUS_ROMS else 'gdi'}\n"
+        # our GL overlay presents; gdi underneath is REQUIRED (V-Unit) /
+        # cheapest (Zeus)
+        vid = "video gdi\n"
     open(os.path.join(ini, "mame.ini"), "w").write(
         f"skip_gameinfo 1\n{vid}output windows\npriority 1\n")
     open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
@@ -282,7 +288,7 @@ def prepare_rig(rom, crt=False):
     return rig, ini
 
 
-def sanitized_ctrlrpath(rig, rom="crusnusa"):
+def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False):
     """Rig-local TRANSLATED copy of EmuEzRacing.cfg.
 
     EmuEZ tokenizes high wheel buttons as JOYCODE_x_BUTTON33+, but MAME's
@@ -320,8 +326,11 @@ def sanitized_ctrlrpath(rig, rom="crusnusa"):
     # emergency instant-quit and menu-back key. Zeus games have NO overlay
     # (the menu can never appear), so they keep MAME's stock Esc = quit -
     # rig test round 1: Exotica was unquittable without task manager.
+    # (with the live Zeus overlay the Esc menu exists there too, so the
+    # Esc->F12 remap applies to Zeus games as well)
     root = tree.getroot()
-    for system in [] if rom in ZEUS_ROMS else root.iter("system"):
+    for system in ([] if (rom in ZEUS_ROMS and not zeus_gl)
+                   else root.iter("system")):
         if system.get("name") != "default":
             continue
         inp = system.find("input")
@@ -604,8 +613,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     the collection shell watches the WINDOW (gone = player exited) so it can
     reappear instantly while vunit's teardown (FFB plugin exit races, WER
     dump writes) drags on for seconds in the background."""
-    rig, ini = prepare_rig(rom, crt=crt)
-    ctrlr = sanitized_ctrlrpath(rig, rom)
+    # the live Zeus GL overlay is the default for Zeus games; MIDZ_GL=0
+    # in the environment falls back to MAME's own d3d/bgfx presentation
+    zeus_gl = rom in ZEUS_ROMS and os.environ.get("MIDZ_GL", "1") != "0"
+    rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
+    ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
     write_steer_cfg(rig, rom, steersens)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
@@ -617,7 +629,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         os.remove(statefile)
     except OSError:
         pass
-    env = dict(os.environ, MIDV_GL="1", MIDV_GL_SCALE=str(scale),
+    env = dict(os.environ, MIDV_GL="1", MIDZ_GL="1" if zeus_gl else "0",
+               MIDV_GL_SCALE=str(scale),
                MIDV_GL_CRT="1" if crt else "0",
                MIDV_GL_CRACKFILL="1" if crackfill else "0",
                MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
@@ -640,9 +653,13 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                "-ctrlr", "EmuEzRacing",
                "-nvram_directory", os.path.join(rig, "nvram"),
                "-cfg_directory", os.path.join(rig, "cfg"),
-               "-window", "-maximize",
+               "-window",
                "-skip_gameinfo"]
-        if rom in ZEUS_ROMS:
+        if not zeus_gl:
+            # under the Zeus overlay MAME's window stays SMALL: its gdi
+            # software-stretch to 4K cost ~3% speed; it only holds focus
+            cmd += ["-maximize"]
+        if rom in ZEUS_ROMS and not zeus_gl:
             # MAME's own d3d presents these: keep 4:3 (rig test round 1:
             # -nokeepaspect stretched Exotica to 16:9), sharpen the upscale
             # (default prescale 1 + bilinear = fuzz), and show only the
@@ -676,7 +693,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         sys.exit("no responsive MAME window after 2 attempts - "
                  "check FFBPlugin.ini / midv_gl.log beside vunit.exe")
 
-    if not windowed:
+    if not windowed and not zeus_gl:
         make_fullscreen(hwnd)
         threading.Thread(target=enforce_fullscreen, args=(hwnd,),
                          daemon=True).start()

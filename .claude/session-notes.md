@@ -322,3 +322,21 @@ Rename `E:\Source\cruisn-poc` → `E:\Source\cruisn-collection`, then:
 3. Claude Code project memory is keyed to the folder path — first session
    under the new path starts fresh; say "catch up" and these notes +
    CLAUDE.md + RESULTS.md carry everything.
+
+## ZEUS GL ARC COMPLETE — phase 3 LIVE (2026-08-22, autonomous block)
+
+**Exotica runs through our GL renderer live at 4x** (mzgl inside
+zeus2.cpp; MIDZ_GL=1 default via run_rig; MIDZ_GL=0 = d3d fallback).
+Esc menu WITH pause, F9 CRT (new RGB present shader), snaps, statefile.
+First-light bugs fixed: fast-clear live gate (screens accumulated),
+flips now emitted AT the zb38 write (was per-frame sample = flashing).
+Perf: final 99.76% (d3d baseline 100.00; attribution data in RESULTS —
+residual variance parked for ETW). V-Unit regression clean (99.93%).
+MAME window stays SMALL under the Zeus overlay (monitor-sized popup
+follows the monitor, not the window).
+USER TEST PENDING: wheel input, Esc menu pause feel, CRT taste,
+flashing-gone confirmation, and zeus_capture_play.py gameplay captures
+(texture-alpha/4-bit coverage for the oracle).
+Round-4/5 items still pending user: glow/cooldown-bar/legend/steering
+sens look, button_monitor run for the Start button, service-menu passes
+for volume/coinage baking (nvram_tool.py flow ready).

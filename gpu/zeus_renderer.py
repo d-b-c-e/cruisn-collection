@@ -146,6 +146,15 @@ void main() {
     dv = clamp(dv, 0, 0xffffff);
     gl_FragDepth = float(dv) / 16777215.0;
 
+    if ((flags & 256u) != 0u) {
+        // raw fill: fast clears and frame_writes replayed as rectangles -
+        // RGB24 in meta1.y, depth from p.x, no blend/texture
+        uint fc = meta1.y;
+        color = vec4(vec3(uvec3((fc >> 16) & 0xffu, (fc >> 8) & 0xffu,
+                                fc & 0xffu)) / 255.0, 0.0);
+        return;
+    }
+
     bool blend = (flags & 2u) != 0u;
     if (blend && srcA == 0u) discard;
 
@@ -205,8 +214,69 @@ void main() {
 }
 """
 
+PRESENT_VS = """
+#version 430
+out vec2 uv;
+void main() {  // full-screen triangle
+    vec2 p = vec2((gl_VertexID << 1) & 2, gl_VertexID & 2);
+    uv = p;
+    gl_Position = vec4(p * 2.0 - 1.0, 0.0, 1.0);
+}
+"""
+
+PRESENT_FS = """
+#version 430
+uniform sampler2D fbTex;     // RGBA8 512*S x 2048*S frame-buffer space
+uniform int uScale;
+uniform int uBaseRow;        // display base row (coarse; from zb38)
+uniform int uCrt;            // 1 = CRT pass, 0 = raw
+uniform float uSrcH;         // 400
+in vec2 uv;
+out vec4 color;
+
+vec3 fetch_at(ivec2 p) { return texelFetch(fbTex, p, 0).rgb; }
+
+ivec2 src_px(vec2 tuv) {
+    float ry = float(uBaseRow) + (1.0 - tuv.y) * uSrcH;
+    return ivec2(int(tuv.x * 512.0 * float(uScale)),
+                 int(ry * float(uScale)));
+}
+
+void main() {
+    if (uCrt == 0) {
+        color = vec4(fetch_at(src_px(uv)), 1.0);
+        return;
+    }
+    vec2 c = uv * 2.0 - 1.0;
+    c *= vec2(1.0 + 0.041 * c.y * c.y, 1.0 + 0.052 * c.x * c.x);
+    vec2 wuv = c * 0.5 + 0.5;
+    if (any(lessThan(wuv, vec2(0.0))) || any(greaterThan(wuv, vec2(1.0)))) {
+        color = vec4(0.0, 0.0, 0.0, 1.0);
+        return;
+    }
+    ivec2 p = src_px(wuv);
+    int s = max(1, uScale / 2);
+    vec3 rgb = 0.5 * fetch_at(p)
+             + 0.25 * fetch_at(p + ivec2(s, 0))
+             + 0.25 * fetch_at(p - ivec2(s, 0));
+    float d = fract(wuv.y * uSrcH) - 0.5;
+    float lum = dot(rgb, vec3(0.299, 0.587, 0.114));
+    float width = mix(0.35, 0.65, lum);
+    float scan = exp(-(d * d) / (2.0 * width * width));
+    vec3 mask = ((int(gl_FragCoord.x) & 1) == 0)
+        ? vec3(1.0, 0.62, 1.0) : vec3(0.62, 1.0, 0.62);
+    vec2 cc = abs(wuv * 2.0 - 1.0);
+    float cornerd = length(max(cc - vec2(0.94), 0.0)) / 0.06;
+    float cornerm = 1.0 - smoothstep(0.8, 1.0, cornerd);
+    float vig = 1.0 - 0.10 * dot(cc, cc);
+    rgb *= scan * cornerm * vig * 1.42;
+    color = vec4(min(rgb * mask, 1.0), 1.0);
+}
+"""
+
 FLAG_SOLID, FLAG_BLEND, FLAG_DMIN, FLAG_DTEST, FLAG_DWRITE, FLAG_DCLEAR, \
     FLAG_TALPHA, FLAG_RGB555 = (1 << i for i in range(8))
+FLAG_RAW = 256      # fast clears / frame_writes replayed as rectangles
 
 
 def build_quads(records):

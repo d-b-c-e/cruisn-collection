@@ -123,6 +123,7 @@ cruisn-collection/
 | `MIDV_GL_SNAP=<dir>` | backbuffer BMP every ~150 presents (unattended verify) |
 | `MIDV_GL_LOG=1` | diagnostics to `midv_gl.log` in cwd |
 | `MIDV_LIVE=1` | shared-memory ring only (drive `gpu/live_viewer.py`) |
+| `MIDZ_GL=1` | **live Zeus GL overlay** (Cruis'n Exotica renderer-replacement; default ON via run_rig, =0 falls back to MAME d3d/bgfx). MIDZ_GL_SCALE/CRT/SNAP/LOG/VSYNC variants |
 | `MIDV_QUADLOG=<file>` | offline quad capture (38-byte records) |
 | `MIDV_STATEDUMP_FRAME/DIR` | one-shot videoram/texram/palette dump |
 
