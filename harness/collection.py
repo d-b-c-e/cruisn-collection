@@ -107,19 +107,18 @@ def text_image(text, size, names=("bahnschrift.ttf", "arialbd.ttf"),
     return img
 
 
-def card_panel_image(w=640, h=480):
-    """Uniform card face: dark gradient panel with a soft top sheen. The
-    per-game title screenshots never lined up (mixed sources/aspects), so
-    cards show the clear logo on this panel instead."""
-    y = np.linspace(0.0, 1.0, h)[:, None]
-    x = np.linspace(-1.0, 1.0, w)[None, :]
-    top = np.array([26, 30, 60], float)
-    bot = np.array([10, 10, 24], float)
-    img = np.zeros((h, w, 3)) \
-        + top[None, None, :] * (1 - y[..., None]) + bot[None, None, :] * y[..., None]
-    sheen = np.exp(-((y - 0.22) ** 2) / 0.05) * np.exp(-(x ** 2) / 1.4)
-    img += sheen[..., None] * np.array([34, 30, 54], float)[None, None, :]
-    return Image.fromarray(np.clip(img, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
+def glow_image(size=384):
+    """Soft radial gold glow drawn behind the focused logo - the logos
+    float free on the backdrop (no card frame), so focus reads as light."""
+    y, x = np.mgrid[0:size, 0:size].astype(float)
+    c = (size - 1) / 2.0
+    r2 = ((x - c) ** 2 + (y - c) ** 2) / (c * c)
+    img = np.zeros((size, size, 4), np.uint8)
+    img[..., 0] = 255
+    img[..., 1] = 205
+    img[..., 2] = 90
+    img[..., 3] = (np.exp(-r2 * 3.2) * 230).astype(np.uint8)
+    return Image.fromarray(img, "RGBA")
 
 
 def background_image(w, h):
@@ -151,7 +150,7 @@ class Shell:
         self.title = self.tex(text_image(
             "CRUIS'N  COLLECTION", h // 14,
             fill=(255, 224, 160, 255), glow=(255, 96, 32, 200)))
-        self.cardbg = self.tex(card_panel_image())
+        self.glow = self.tex(glow_image())
         self.cards = []
         for rom, name, logo, shot in GAMES:
             # art is optional (LaunchBox library on the dev box); fall back
@@ -261,24 +260,21 @@ class Shell:
         for i, (ltex, lsz, name) in enumerate(self.cards):
             x = (self.w - total) / 2 + i * (cw + gap)
             focused = (row == 0 and i == sel)
-            s = 1.0 if focused else 0.88
-            dim = 1.0 if focused else (0.6 if i == sel else 0.45)
-            ew, eh = cw * s, ch * s
-            ex, ey = x + (cw - ew) / 2, y0 + (ch - eh) / 2
-            if focused:
-                pulse = 0.75 + 0.25 * math.sin(t * 4.0)
-                b = self.h * 0.008
-                self.rect(self.white, ex - b, ey - b, ew + 2 * b, eh + 2 * b,
-                          (GOLD[0], GOLD[1], GOLD[2], pulse))
-            self.rect(self.cardbg, ex, ey, ew, eh, (dim, dim, dim, 1))
-            # clear logo centered on the panel - the one art asset every
-            # game has in a consistent style
-            lw = ew * 0.82
+            s = 1.0 if focused else 0.84
+            dim = 1.0 if focused else (0.62 if i == sel else 0.45)
+            # clear logo floats free in its slot - no card frame; focus is
+            # a pulsing radial glow behind it plus a slight scale-up
+            lw = cw * 0.94 * s
             lh = lsz[1] * lw / lsz[0]
-            maxlh = eh * 0.60
+            maxlh = ch * 0.92 * s
             if lh > maxlh:
                 lh, lw = maxlh, lsz[0] * maxlh / lsz[1]
-            self.rect(ltex, ex + (ew - lw) / 2, ey + (eh - lh) / 2,
+            if focused:
+                pulse = 0.50 + 0.28 * math.sin(t * 4.0)
+                gw, gh = cw * 1.5, ch * 1.45
+                self.rect(self.glow, x + (cw - gw) / 2, y0 + (ch - gh) / 2,
+                          gw, gh, (1.0, 1.0, 1.0, pulse))
+            self.rect(ltex, x + (cw - lw) / 2, y0 + (ch - lh) / 2,
                       lw, lh, (dim, dim, dim, 1))
         # SETTINGS row under the cards
         if row == 1:

@@ -182,6 +182,34 @@ poc/quadlog (clean applies, zeus2.cpp/.h only):
   with -view "Screen 0").
 User verdict pending at the wheel. If Exotica becomes playable-good,
 consider thanking/tracking mourix's future zeus2 PRs each MAME bump.
+**STANDING TASK (user request): check upstream mamedev PRs (zeus2,
+midvunit, midzeus, dcs) for backportable fixes at every catch-up and
+before every release tag.** (Also in Claude project memory.)
+
+## Round 3 (2026-08-21, light testing) — verdicts + fixes
+
+User: Exotica "improved" after the zeus2 backports. New items, all fixed
+same session (Python/config only, no rebuild needed):
+1. **Exotica volume low**: its DCS mix boots quieter; cabinet VOLUME
+   UP/DOWN buttons now bound to = / - for crusnexo (CMOS-persisted —
+   adjust once in-game).
+2. **Wizard can't see the wheel's Start button**: glfw's Win32 joystick
+   backend uses DIJOYSTATE (32 buttons) — same disease as MAME's
+   winhybrid pre-fix. Buttons 33+ are invisible to the wizard, BUT the
+   EmuEz-translated ADDSW binding already covers Start in-game (skipping
+   the wizard start step is correct). Future option: ctypes DirectInput
+   (DIJOYSTATE2) capture in the wizard.
+3. **CRT mismatch on Exotica**: no GL overlay on Zeus → MIDV_GL_CRT was
+   simply inert there. Now Zeus+CRT launches use MAME bgfx
+   crt-geom-deluxe (boot-time; shell setting is the toggle, F9 inert).
+   ⚠️ RELEASE GAP: make_release/release.yml must bundle mame-src's
+   `bgfx/` (chains + shaders) or frozen installs lose Exotica CRT.
+4. **F9 in Exotica did frameskip**: F9 IS MAME's stock Frameskip-Inc —
+   and on V-Unit every F9 CRT toggle was ALSO silently bumping frameskip.
+   UI_FRAMESKIP_INC/DEC now unbound (NONE) in the generated ctrlr for
+   all games.
+5. **Menu**: logos now float free (no card rectangle) with a pulsing
+   radial gold glow + slight scale-up as the focus highlight.
 
 ## Open items
 

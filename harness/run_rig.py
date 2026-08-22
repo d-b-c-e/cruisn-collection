@@ -254,7 +254,7 @@ GAME_HEIGHT = {"offroadc": 401}
 
 
 # ---- rig preparation --------------------------------------------------------
-def prepare_rig(rom):
+def prepare_rig(rom, crt=False):
     """Write the rig's ini set and seed NVRAM; returns (rig, inipath)."""
     rig = os.path.join(POC, "rig")
     ini = os.path.join(rig, "ini")
@@ -265,9 +265,15 @@ def prepare_rig(rom):
     # priority 1: raise MAME's thread priority - ambient load (Defender,
     # Pit House, Spotify) showed up as 94-97% average speed = audio crackle.
     # video gdi is REQUIRED under the GL overlay (V-Unit games only).
-    video = "d3d" if rom in ZEUS_ROMS else "gdi"
+    # Zeus games have no overlay, so their CRT look comes from MAME's bgfx
+    # crt-geom-deluxe chain instead (boot-time only - the shell setting is
+    # the toggle there; F9 does nothing on Zeus).
+    if rom in ZEUS_ROMS and crt:
+        vid = "video bgfx\nbgfx_screen_chains crt-geom-deluxe\n"
+    else:
+        vid = f"video {'d3d' if rom in ZEUS_ROMS else 'gdi'}\n"
     open(os.path.join(ini, "mame.ini"), "w").write(
-        f"skip_gameinfo 1\nvideo {video}\noutput windows\npriority 1\n")
+        f"skip_gameinfo 1\n{vid}output windows\npriority 1\n")
     open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
     seed = os.path.join(POC, "fixtures", f"nvram-{rom}")
     dst = os.path.join(rig, "nvram", rom)
@@ -331,6 +337,40 @@ def sanitized_ctrlrpath(rig, rom="crusnusa"):
             ET.SubElement(port, "newseq", {"type": "standard"})
         port.find("newseq").text = "KEYCODE_F12"
         break
+
+    def system_input(name):
+        for system in root.iter("system"):
+            if system.get("name") == name:
+                inp = system.find("input")
+                if inp is None:
+                    inp = ET.SubElement(system, "input")
+                return inp
+        sysel = ET.SubElement(root, "system", {"name": name})
+        return ET.SubElement(sysel, "input")
+
+    def set_port(inp, ptype, text):
+        for p in inp.findall("port"):
+            if p.get("type") == ptype:
+                ns = p.find("newseq")
+                if ns is None:
+                    ns = ET.SubElement(p, "newseq", {"type": "standard"})
+                ns.text = text
+                return
+        p = ET.SubElement(inp, "port", {"type": ptype})
+        ET.SubElement(p, "newseq", {"type": "standard"}).text = text
+
+    # F8/F9 are MAME's frameskip hotkeys by default - F9 doubles as the
+    # overlay's CRT toggle on V-Unit games (every CRT toggle was silently
+    # bumping frameskip) and read as "some skip frame thing" on Exotica.
+    # Stray frameskip changes only ever hurt here: unbind both everywhere.
+    dflt = system_input("default")
+    set_port(dflt, "UI_FRAMESKIP_DEC", "NONE")
+    set_port(dflt, "UI_FRAMESKIP_INC", "NONE")
+    # Exotica's DCS mix boots much quieter than the V-Unit games; its
+    # cabinet volume buttons persist to CMOS - hold = / - in-game once
+    exo = system_input("crusnexo")
+    set_port(exo, "VOLUME_UP", "KEYCODE_EQUALS")
+    set_port(exo, "VOLUME_DOWN", "KEYCODE_MINUS")
 
     apply_wheelmap(tree, rig)
     out = os.path.join(rig, "ctrlr")
@@ -519,7 +559,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     the collection shell watches the WINDOW (gone = player exited) so it can
     reappear instantly while vunit's teardown (FFB plugin exit races, WER
     dump writes) drags on for seconds in the background."""
-    rig, ini = prepare_rig(rom)
+    rig, ini = prepare_rig(rom, crt=crt)
     ctrlr = sanitized_ctrlrpath(rig, rom)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
