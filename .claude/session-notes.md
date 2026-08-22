@@ -239,6 +239,29 @@ same session (Python/config only, no rebuild needed):
       comments — piggyback the path fix on the NEXT mame-src commit (any
       standalone fix forces a patch-series refresh + CI cache invalidation).
 
+## ZEUS GL ARC — phases 1+2 DONE in one session (2026-08-22)
+
+The Exotica renderer-replacement arc is two-thirds real:
+- **Capture**: zeus2.cpp `MIDZ_CAPTURE=<dir>` + `MIDZ_CAPTURE_FRAME` +
+  `MIDZ_CAPTURE_MINQUADS` (frame numbers drift per boot; Exotica 3D
+  renders every other frame). Records quads + palettes + clears +
+  frame_writes in mutation order, bracketed by full color+depth dumps.
+- **CPU oracle**: `harness/zeus_rasterize.py` — **100.0000% color AND
+  depth on three captures** (38 / 1,723 / 6,489 quads). Bit-exact
+  semantics documented in RESULTS (SSE bilinear halving trick, scale8
+  truncation, transcolor reject-any, integer z stepping).
+- **GPU renderer**: `gpu/zeus_renderer.py` — 100.0000% exact on 2D,
+  99.94%+ within ±1 on 3D (GL blend rounding; documented stance: CPU
+  oracle is the bit-exact ref). 4× proof:
+  `results/proof/zeus-gl-showcase-4x.png` — glass-smooth Exotica.
+- **REMAINING (next session): live in-process integration** — hook
+  zeus2_draw_quad live like midvunit_v.cpp does (window/present machinery
+  reusable), shader export, env gates, Esc menu + CRT + crack-fill-class
+  care (remember: hardware cliprect applies in QUAD-LOCAL y — back-page
+  quads spill into the displayed page without per-quad scissor).
+  Coverage gap: texel modes 0 (4-bit) and 2 (rgb555/texture-alpha) not
+  yet in any capture — grab a GAMEPLAY capture (user driving) first.
+
 ## Parked ideas
 - Achievements: docs/ACHIEVEMENTS.md (research complete, idea only).
 
