@@ -762,3 +762,57 @@ covers the frame.
 Standing after session 4: user re-tests round 2 (launch flow, wizard
 gate, Exotica fixes, crack fill A/B on Off Road); v0.2.0 tag once the
 rig test passes.
+
+---
+
+# ZEUS GL ARC, phase 1: capture + CPU oracle — 2026-08-22 (session 5)
+
+**The Zeus2 renderer-replacement arc is underway and the oracle stage is
+done in one session.** Same methodology as V-Unit: instrument → capture →
+CPU reference bit-exact vs the hardware framebuffer.
+
+## Capture instrumentation (zeus2.cpp/.h, env-gated, zero cost unset)
+
+`MIDZ_CAPTURE=<dir>` + `MIDZ_CAPTURE_FRAME=<floor>` +
+`MIDZ_CAPTURE_MINQUADS=<n>`: records everything that mutates the frame
+buffer, in submission order (poly->wait precedes the direct paths, so
+submission order == mutation order): quads (post-transform, post-near-clip
+verts + complete raster state), pal_table loads (emitted on change), fast
+clears, frame_write register snapshots. Bracketed by full pre/post
+color+depth dumps (4 MB each) + waveram (16 MB) + regs. The min-quads
+trigger arms on the first >=n-quad frame past the floor and records until
+n quads landed — frame numbers drift between boots and Exotica's 3D
+renders every other frame, so frame-number triggers alone are useless.
+
+## CPU oracle (harness/zeus_rasterize.py)
+
+Replays a capture from pre-state and compares against post-state.
+Replicates bit-for-bit: poly.h render_triangle (y-sort, round_coordinate,
+float32 plane-equation params, extents at pixel centres), zeus2
+render_poly_8bit (integer-stepped z, per-pixel perspective divide in
+float32, swizzled texel fetchers, transcolor reject-if-any-of-4,
+`rgbaint_t::bilinear_filter`'s SSE row-lerp-halving
+(((r1>>1)*v + (r0>>1)*(256-v))>>15), rgb_t::scale8 truncation, saturating
+adds, the texture_alpha integer alpha lerp), fast clears and frame_write.
+
+## Verification — three captures, all 100.0000%
+
+| capture | quads | content | color | depth |
+|---|---|---|---|---|
+| register screen | 38 (+460 frame_writes elsewhere) | 2D UI | **100.0000%** | **100.0000%** |
+| title showcase | 1,723 | 3D car + alpha logo glow | **100.0000%** | **100.0000%** |
+| transition/heavy | 6,489 (incl. 3,489 blended, 23 solid, 84 depth-clear) | multi-frame 3D | **100.0000%** | **100.0000%** |
+
+Zero differing pixels in any capture, color AND depth, across the full
+4 MB buffers — not just the display window. Coverage still to exercise:
+texel modes 0 (4-bit) and 2 (rgb555 / texture-alpha, the water-skier
+sprites) — need a gameplay capture; implementations ported from source.
+
+Notes for the GL phase: Zeus2 blending is order-dependent per pixel
+(read-modify-write vs evolving framebuffer), so the GL renderer targets
+bit-exact for non-blended pixels and visually-exact for blended ones
+(GL float blending rounds; zeus scale8 truncates) — the CPU oracle stays
+the bit-exact reference, exactly as rasterize.py does for V-Unit.
+Blend states (blend_enable, srcAlpha, dstAlpha) group into consecutive
+runs for batched draws; depth = gl_FragDepth from the shader-computed
+24-bit value; per-quad palettes bake into a 2D array texture.
