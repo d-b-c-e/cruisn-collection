@@ -118,3 +118,35 @@ MAME tms32031 ground truth + debugger), and it's genuinely novel (first on
 V-Unit). Go in knowing: zero prior art, non-IEEE hex table above, budget
 for multiple sites, and it will likely still show edge backdrop — so it is
 NOT "the fix" for the current bug.
+
+---
+
+## FOV R&D progress (overnight session 7, offroadc) — constant map found
+
+Applied the C3x-float method to Off Road Challenge's program (disassembled
+via MAME debugger `dasm` -> results/offroadc-prog.asm, 131072 words):
+
+**Data constant table located at ~0x11180-0x11260** (program-RAM word
+addrs), decoded with the corrected C3x float format:
+- `0x11185..0x11192` = reciprocal table 1/2, 1/3, 1/4 ... 1/15.
+- `0x11230=256.0  0x11231=512.0  0x11232=400.0` = screen dims (V-Unit is
+  512x400; 256 = horizontal center/half-width).
+- `0x11233..0x11236` decode as INTEGERS 512/400/511/399 = clip bounds.
+- `0x1121F=960  0x11220=640  0x1121D=184  0x1121E=1472` = viewport-ish.
+- `256.0` (0x08000000) recurs in code at 0x0A205, 0x0A2C7, 0x0A300,
+  0x0A39C, 0x0A417, 0x0A49C (LDF sites) — the projection X-scale/center
+  candidates.
+
+**Perspective divide (1/z) found at 0x010AF8** — a Newton-Raphson
+reciprocal `y' = y*(2 - x*y)` (MPYF3/SUBRF 2.0/MPYF/RND, twice). This is
+the projection core; the horizontal FOV scale MULF is in its callers
+(screen_x = x*(1/z)*SCALE_X + 256).
+
+**Next focused step** (a disasm-reading session): trace the callers of
+0x010AF8, find the MULF applying SCALE_X to the X path only (not Y),
+confirm SCALE_X (likely one of the 256.0 LDF sites), test-patch it via
+MIDV_PATCH and observe FOV widen. Per the research this yields true Hor+
+(game culling agrees) but will NOT fix the water artifact and may reveal
+more backdrop — it is a "proper widescreen" R&D goal, not the artifact fix.
+Encoder + search: reproducible via the c3x_encode() snippet in this arc's
+session log.
