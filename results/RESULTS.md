@@ -1112,3 +1112,28 @@ Also tightened s_speed_addr to hunted PARENT romsets only (removed the
 dead, typo'd crusnu40/crusnu21 clone entries; clone builds can relocate
 DSP RAM, so unlisted games get telemetry-off instead of an unverified
 address).
+
+## 2026-08-23 — B2 RPM hunt: leading candidate, needs on-screen tach (session 9)
+
+Re-ran the crusnusa attract with a FINE dump interval (MIDV_RAMDUMP_EVERY=3,
+~1738 dumps over 90s) because RPM's sawtooth is faster than the 30-frame
+speed-hunt cadence could resolve (a gear shift is well under 0.5s; the
+coarse dumps aliased right past it).
+
+Leading RPM candidate: **0x0F0C0 (mirror at 0x0DB67)** — bounded 1.1-1.54,
+present through the race, and it DOES step-drop at shift points
+(1.32 -> 1.12 exactly where the gear changes), which speed does not. Both
+copies are bit-identical (engine writes two mirrors).
+
+Not wired, deliberately. Two unresolved concerns make it unsafe to emit:
+1. It sits FLAT at ~1.20 while speed climbs 4->176 (first gear); true RPM
+   tracks speed linearly within a gear, so this is not cleanly proportional.
+   It may be a gear-normalized or redline-clamped quantity, not raw RPM.
+2. No independent cross-check exists for RPM the way the odometer partner
+   nailed speed, and the 90s fine capture caught only one full race.
+
+Verdict: same class as offroadc speed — needs a one-glance on-screen
+TACHOMETER correlation at the wheel to confirm 0x0F0C0 is the tach (and to
+recover its scale). Until then B2 stays unwired rather than stream a
+possibly-wrong value. Tooling (MIDV_RAMDUMP_DIR + the sawtooth/within-gear
+detector) is turnkey for the confirming pass.
