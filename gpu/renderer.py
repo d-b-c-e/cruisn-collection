@@ -68,6 +68,7 @@ uniform vec2 uCanvas;      // coarse canvas size
 uniform int  uClipRight;   // coarse cliprect right (W-1)
 uniform usampler2D texram; // 4096-wide R8UI, 8 MB of texture RAM
 uniform int  texMask;      // byte-size mask (size-1)
+uniform int  uDbgQuadId;   // debug: if 1, outIndex = quad id (gl_PrimitiveID/2)
 flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;
 flat in vec4 uv01; flat in vec4 uv23;
 flat in uvec4 meta;
@@ -208,6 +209,7 @@ void main() {
     if (dither == 1u && ((px ^ py) & 1) != 0) discard;   // coarse-space mask
 
     outMask = 1u;   // every non-discarded fragment marks its pixel written
+    if (uDbgQuadId == 1) { outIndex = uint(gl_PrimitiveID / 2); return; }
     if (mode == 0u) { outIndex = pixdata & 0xffffu; return; }
 
     int ui, vi;
@@ -592,6 +594,7 @@ def main():
     prog["uClipRight"].value = (W - 1) if args.wide else meta["visarea"][0]
     prog["texram"].value = 0
     prog["texMask"].value = texsize - 1
+    prog["uDbgQuadId"].value = 1 if os.environ.get("MIDV_DBG_QUADID") else 0
     tex2d.use(0)
 
     fdata, udata = build_vertices(quads, margin)

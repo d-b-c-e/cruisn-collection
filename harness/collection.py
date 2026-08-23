@@ -402,11 +402,19 @@ class Audio:
     def __init__(self):
         self.assets = os.path.join(POC, "rig", "assets")
         self.music = False
+        self.cur_rom = None
         self.ensure_blips()
         try:
             self._mci = ctypes.windll.winmm.mciSendStringW
         except Exception:
             self._mci = None
+        # music runs on one worker thread driven toward a target, so ramps
+        # never block rendering and rapid card-nav coalesces to the latest
+        self._target = ("stop", 0.0)     # ("play", rom) | ("stop", fade)
+        self._target_seq = 0
+        self._lock = threading.Lock()
+        self._worker = threading.Thread(target=self._music_loop, daemon=True)
+        self._worker.start()
 
     def ensure_blips(self):
         """Synthesize the UI blips on first run (they live in gitignored
@@ -443,22 +451,78 @@ class Audio:
             except Exception:
                 pass
 
-    def start_music(self):
-        if self.music:
-            return
-        for ext in ("mp3", "wav"):
-            m = os.path.join(self.assets, f"menumusic.{ext}")
-            if os.path.isfile(m):
-                self.mci(f'open "{m}" type mpegvideo alias menumusic')
-                self.mci("play menumusic repeat")
-                self.music = True
-                return
+    def _track_for(self, rom):
+        """Per-game menumusic-<rom>.* if present, else the generic
+        menumusic.*; None if neither exists."""
+        for stem in (f"menumusic-{rom}", "menumusic"):
+            for ext in ("mp3", "wav"):
+                m = os.path.join(self.assets, f"{stem}.{ext}")
+                if os.path.isfile(m):
+                    return m
+        return None
 
-    def stop_music(self):
-        if self.music:
-            self.mci("stop menumusic")
-            self.mci("close menumusic")
-            self.music = False
+    def start_music(self, rom=None):
+        """Request the loop play `rom`'s track (or generic). Non-blocking;
+        the worker cross-fades. Rapid calls coalesce to the last rom."""
+        with self._lock:
+            self._target = ("play", rom)
+            self._target_seq += 1
+
+    def stop_music(self, fade=0.0):
+        """Request stop, optionally fading out first (launch transition)."""
+        with self._lock:
+            self._target = ("stop", fade)
+            self._target_seq += 1
+
+    def _ramp(self, lo, hi, seconds, seq):
+        """Volume ramp lo->hi over `seconds`, aborting if superseded."""
+        if not self._mci:
+            return
+        steps = max(1, int(seconds / 0.03))
+        for i in range(1, steps + 1):
+            if self._target_seq != seq:
+                return   # a newer request arrived - drop this ramp
+            v = int(lo + (hi - lo) * i / steps)
+            self.mci(f"setaudio menumusic volume to {v}")
+            time.sleep(seconds / steps)
+
+    def _music_loop(self):
+        """Drive the loop toward the latest requested target."""
+        while True:
+            with self._lock:
+                kind, arg = self._target
+                seq = self._target_seq
+            if kind == "play":
+                rom = arg
+                if not self.music:
+                    track = self._track_for(rom)
+                    if track:
+                        self.mci(f'open "{track}" type mpegvideo alias menumusic')
+                        self.mci("setaudio menumusic volume to 0")
+                        self.mci("play menumusic repeat")
+                        self.music = True
+                        self.cur_rom = rom
+                        self._ramp(0, 1000, 0.4, seq)
+                elif rom != self.cur_rom:
+                    track = self._track_for(rom)
+                    if track:
+                        self._ramp(1000, 0, 0.22, seq)
+                        if self._target_seq == seq:
+                            self.mci("stop menumusic")
+                            self.mci("close menumusic")
+                            self.mci(f'open "{track}" type mpegvideo alias menumusic')
+                            self.mci("setaudio menumusic volume to 0")
+                            self.mci("play menumusic repeat")
+                            self.cur_rom = rom
+                            self._ramp(0, 1000, 0.28, seq)
+            elif kind == "stop" and self.music:
+                if arg > 0.0:
+                    self._ramp(1000, 0, arg, seq)
+                self.mci("stop menumusic")
+                self.mci("close menumusic")
+                self.music = False
+                self.cur_rom = None
+            time.sleep(0.03)
 
     def blip(self, name):
         try:
@@ -645,7 +709,8 @@ def main():
     sel = next((i for i, g in enumerate(GAMES) if g[0] == state["rom"]), 0)
     actions = []
     audio = Audio()
-    audio.start_music()
+    audio.start_music(GAMES[sel][0])
+    music_sel = sel   # track highlight changes to switch the per-game loop
 
     # a Stream Deck launch has no foreground rights; claim them for the shell
     shell_hwnd = int(glfw.get_win32_window(win))
@@ -1013,6 +1078,10 @@ def main():
                 elif key == glfw.KEY_ESCAPE:
                     glfw.set_window_should_close(win, True)
             actions.clear()
+            # highlighting a different game card cross-fades its attract loop
+            if row == 0 and sel != music_sel:
+                music_sel = sel
+                audio.start_music(GAMES[sel][0])
 
         ctx.clear(0, 0, 0, 1)
         t = time.time() % 3600
@@ -1037,6 +1106,9 @@ def main():
             state["rom"] = launch
             save_config(state)
             fg_stop.set()   # the game owns the foreground now, stop fighting
+            # fade the menu music out as the LAUNCHING screen comes up and
+            # MAME boots (instead of an abrupt cut when the game appears)
+            audio.stop_music(fade=1.2)
             launching = {"name": next(g[1] for g in GAMES if g[0] == launch),
                          "result": None, "err": None, "done": False}
 
@@ -1066,7 +1138,7 @@ def main():
             else:
                 proc, game_hwnd = launching["result"]
                 game_proc = proc
-                audio.stop_music()
+                audio.stop_music()   # already faded at launch; ensure closed
                 # the shell window stays alive and fullscreen BEHIND the
                 # game for the whole session - no desktop flash on launch
                 # or return. Watch the WINDOW, not the process: teardown
@@ -1108,7 +1180,7 @@ def main():
                 except OSError:
                     pass
                 glfw.focus_window(win)
-                audio.start_music()
+                audio.start_music(GAMES[sel][0])
                 fg_stop = threading.Event()
                 threading.Thread(target=run_rig.enforce_foreground,
                                  args=(shell_hwnd, 10),
