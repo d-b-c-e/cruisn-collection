@@ -940,3 +940,35 @@ Also this session: NVRAM reset to a clean fixture-seeded baseline for all
 four games with snapshots (rig/nvram-snapshots, 20260822) as the reference
 for the settings-baking workflow (harness/nvram_tool.py). ROMs verified
 OK by MAME's own checker.
+
+---
+
+# Overnight session 7 (2026-08-22/23) — audio, water artifact, FOV R&D
+
+## Task 2: Off Road water-margin artifact — reproduced, characterized, mitigation shipped
+
+Reproduced the "sky/water through the ground at far L/R" in a 150 s
+fill-off attract sweep: 11 of 60 bright-scene snaps show a light-blue LAKE
+plane in the bottom-corner margins (proof:
+results/proof/offroadc-water-margin-artifact.png, the CHECK POINT scene).
+Confirmed exactly the research-predicted revealed-backdrop class: the lake
+is legitimate world geometry off-screen in 4:3, exposed by the 16:9
+margins; the pixels are WRITTEN by the water quad (not a hole), so
+crack-fill/margin-extend correctly leave them.
+
+**Surgical fix (content-specific backdrop masking) NOT done autonomously -
+by design.** It is an aesthetic, per-content judgment: culling the water
+quad in the margins risks smearing/harming legitimately-wide scenes (the
+canyon race margins show correct rock/terrain). Doing it safely needs
+visual iteration with the user across multiple scenes, not a blind
+heuristic. Tooling gap noted: V-Unit statedump is frame-only; a scene-match
+/ min-quads trigger (like the Zeus MIDZ_CAPTURE_MINQUADS) would make
+capturing a specific 3D scene reliable - worth adding before that session.
+**Shipped mitigation stands: the ASPECT / WIDESCREEN toggle (4:3 CLASSIC /
+16:9 TRIMMED / 16:9 FULL).** Added a MIDV_DBG_QUADID render mode to
+renderer.py (outIndex = gl_PrimitiveID/2) for per-pixel quad attribution
+when that session happens.
+
+## Task 1: per-game menu audio — DONE (see commit)
+Real attract audio per game from LaunchBox video snaps; cross-fade on card
+highlight, 1.2 s fade-out on launch.
