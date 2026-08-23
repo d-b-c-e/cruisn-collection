@@ -491,6 +491,37 @@ Patch series refreshed after both mame-src commits.
   0x0DDDC cluster (see RESULTS 2026-08-23 telemetry section).
 - Off Road on-screen-MPH pass so its speed slot can be picked.
 
+## Session 9 cont. (2026-08-23, user away) — B4/B5/D1 shipped, B2/B3 advanced
+
+Autonomous batch while the user stepped away. All committed, patch series
+refreshed, exact mode re-verified 100.0000%.
+- **B4 FFB STRENGTH — SHIPPED.** New SETTINGS row (0-100%, 10% steps,
+  default 100). run_rig.apply_ffb_strength patches FFBPlugin.ini [Settings]
+  MaxForce + AlternativeMaxForceLeft/Right at launch (per-game suffixed keys
+  untouched; no-op if plugin absent). Persists collection.ini ffb=; also
+  run_rig --ffb. VERIFY at wheel: does the % actually scale the force.
+- **B5 sky-margin streaks — SHIPPED.** Present-pass fetch_smooth vertically
+  gaussian-blurs unwritten 16:9 margin pixels -> clean sky gradient, no
+  horizontal streaks, horizon as soft haze. Gated uMargin>0 (exact
+  untouched). Header regenerated + rebuilt, live overlay err=0. Proof:
+  results/proof/vunit-sky-margin-smoothing.png.
+- **D1 string cleanup — DONE.** midvunit_menu_assets.h header comment
+  cruisn-poc -> cruisn-collection (generator already correct).
+- **B2 RPM — leading candidate, UNWIRED.** 0x0F0C0 (mirror 0x0DB67) via a
+  fine-cadence recapture; step-drops at shifts but flat in 1st gear + no
+  cross-check. VERIFY at wheel: watch the on-screen TACH to confirm + get
+  its scale, then wire.
+- **B3 volume — MEASURED, needs the wheel.** V-Unit trio mutually
+  consistent (~-33 dBFS active, quiet native mix); Exotica silent in
+  headless attract (attract sound likely off in CMOS; heard live when
+  coined). Needs a service-menu pass for Exotica, then a CMOS bake. No safe
+  blind action.
+
+Remaining autonomous-unsafe (need the wheel or approval): B7 gear bindings
+(input hook can't be verified blind - deferred), C1 coinage (service menu /
+CMOS), C2 render distance (research), D4 upstream PR (outward-facing -
+needs approval), F1 v0.3.0 tag (needs the rig test).
+
 ## Note on session model
 The harness reroutes off Fable 5 when security-adjacent keywords appear in
 the request stream (user flagged one like "c-y-b-e-r"). This is pure
