@@ -295,6 +295,41 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
     return rig, ini
 
 
+def apply_ffb_strength(mame_dir, pct):
+    """Scale the FFB Arcade Plugin's overall force ceiling to pct (0-100) by
+    patching the [Settings] block of FFBPlugin.ini beside vunit.exe.
+
+    The plugin runs AlternativeFFB=1, so the active knobs are the alternative
+    max forces (left -100..0, right 0..100); MaxForce (the AlternativeFFB=0
+    path) is scaled too for completeness. Only the bare [Settings] keys are
+    touched - per-game keys carry a game suffix (MaxForceVirtuaRacing etc.)
+    so a ^KEY= match can never hit them. No-op if the ini isn't there (FFB
+    not installed) or pct is None."""
+    if pct is None:
+        return
+    pct = max(0, min(100, int(pct)))
+    path = os.path.join(mame_dir, "FFBPlugin.ini")
+    try:
+        with open(path, "r", encoding="utf-8", errors="replace") as f:
+            text = f.read()
+    except OSError:
+        return   # FFB plugin not installed beside the exe - nothing to tune
+    repl = {
+        "MaxForce": str(pct),
+        "AlternativeMaxForceRight": str(pct),
+        "AlternativeMaxForceLeft": str(-pct),
+    }
+    out = text
+    for key, val in repl.items():
+        out = re.sub(rf"(?m)^{key}=.*$", f"{key}={val}", out)
+    if out != text:
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(out)
+        except OSError:
+            pass
+
+
 def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False):
     """Rig-local TRANSLATED copy of EmuEzRacing.cfg.
 
@@ -647,7 +682,7 @@ def apply_wheelmap(tree, rig):
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
-                      margin=None, mame=VUNIT):
+                      margin=None, ffb=None, mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -659,6 +694,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
     write_steer_cfg(rig, rom, steersens)
+    # FFB overall strength: patch the plugin ini beside the exe before launch
+    # (the plugin reads it at load). None = leave whatever's there untouched.
+    apply_ffb_strength(os.path.dirname(mame), ffb)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
@@ -759,10 +797,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
 
 
 def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
-                crackfill=True, mame=VUNIT):
+                crackfill=True, ffb=None, mame=VUNIT):
     """Blocking wrapper: launch and wait for full process exit."""
     proc, _ = launch_game_async(rom=rom, scale=scale, windowed=windowed,
-                                crt=crt, crackfill=crackfill, mame=mame)
+                                crt=crt, crackfill=crackfill, ffb=ffb, mame=mame)
     return proc.wait()
 
 
@@ -775,9 +813,11 @@ def main():
                     help="keep MAME's maximized window (skip borderless fullscreen)")
     ap.add_argument("--crt", action="store_true",
                     help="start with the CRT pass on (F9 toggles live)")
+    ap.add_argument("--ffb", type=int, default=None,
+                    help="FFB overall strength 0-100%% (patches FFBPlugin.ini)")
     args = ap.parse_args()
     return launch_game(rom=args.rom, scale=args.scale, windowed=args.windowed,
-                       crt=args.crt, mame=args.mame)
+                       crt=args.crt, ffb=args.ffb, mame=args.mame)
 
 
 if __name__ == "__main__":
