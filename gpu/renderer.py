@@ -275,14 +275,23 @@ ivec2 fill_px(ivec2 p) {
     if (min(wh, wv) >= (1 << 20)) {
         // not a crack. Margin extend: the 16:9 margins show black holes
         // where the game's 4:3-era culling never drew - clamp-extend the
-        // nearest written hardware-boundary pixel instead (one tap).
+        // nearest written hardware-boundary pixel. The outermost COVERED
+        // column sits a couple of fine pixels inside the nominal edge
+        // (vertices carry a +0.5 coarse offset), so probe a short inward
+        // run rather than the exact edge column.
         if (uMargin > 0) {
-            if (p.x < uMargin) {
-                ivec2 q = ivec2(uMargin, p.y);
-                if (texelFetch(maskTex, q, 0).r != 0u) return q;
-            } else if (p.x >= sz.x - uMargin) {
-                ivec2 q = ivec2(sz.x - 1 - uMargin, p.y);
-                if (texelFetch(maskTex, q, 0).r != 0u) return q;
+            if (p.x < uMargin + 8) {
+                int start = max(p.x + 1, uMargin);
+                for (int k = start; k <= uMargin + 8; k++) {
+                    ivec2 q = ivec2(k, p.y);
+                    if (texelFetch(maskTex, q, 0).r != 0u) return q;
+                }
+            } else if (p.x >= sz.x - uMargin - 8) {
+                int start = min(p.x - 1, sz.x - 1 - uMargin);
+                for (int k = start; k >= sz.x - 1 - uMargin - 8; k--) {
+                    ivec2 q = ivec2(k, p.y);
+                    if (texelFetch(maskTex, q, 0).r != 0u) return q;
+                }
             }
         }
         return p;
@@ -628,6 +637,13 @@ def main():
         dt = (time.perf_counter() - t0) / args.bench
         print(f"bench: {dt*1000:.3f} ms/scene at {fw}x{fh} "
               f"({1.0/dt:,.0f} fps equivalent)")
+
+    if os.environ.get("MIDV_DBG_MASK"):
+        m = np.frombuffer(mask_tex.read(alignment=1), np.uint8)
+        m = np.flipud(m.reshape(fh, fw)) * 255
+        from PIL import Image as _I
+        _I.fromarray(m).save(os.path.join(cap, "mask.png"))
+        print("wrote mask.png")
 
     # ---- read back the index buffer ----
     data = np.frombuffer(fbo.read(components=1, dtype="u2"), dtype="<u2")
