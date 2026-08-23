@@ -347,3 +347,31 @@ for volume/coinage baking (nvram_tool.py flow ready).
 - **Runtime MIDV_GL_MARGIN SHIPPED** (0..86/side); run_rig per-game GAME_MARGIN (offroadc=64 trims the water wedges, others 86). Margin-EXTEND off-by-half fix also in this build.
 - **NVRAM reset to clean fixture baseline** all 4 games + snapshots (rig/nvram-snapshots/20260822) for the settings-bake workflow. ROMs verified OK.
 - NEXT: user service-menu passes (nvram_tool diff/bake) for coinage/volume/freeplay defaults; steering CURVE 70 taste test; wizard >32-button (rawjoy) rig test.
+
+## Widescreen research complete (2026-08-22) — docs/widescreen-research.md
+- FOV-constant DSP patch is real & we have the tooling, BUT it does NOT
+  avoid the revealed-backdrop artifact (every source converged) - reveals
+  MORE backdrop, not less. TMS320C31 uses NON-IEEE float (IEEE hex won't
+  match; corrected hex table in the doc).
+- **First-choice fix for offroadc water = content-specific backdrop
+  masking at OUR render layer** (how Model 2/3 do it): find the water/
+  backdrop quad via MIDV_QUADLOG and scissor/cull it in the margins.
+- FOV patch = separate R&D (novel, first-on-V-Unit), NOT the artifact fix.
+
+## New feature request (2026-08-22): game-specific menu audio
+- Per-game intro/attract music; switches when you highlight a game card.
+- Music fades out (not abrupt) when a game launches.
+- Need to source proper per-game tracks (LaunchBox video snaps -> ffmpeg,
+  as make_music.py already does for the single menu track). Fade = MCI
+  volume ramp or a short cross-fade in the Audio class.
+
+## OVERNIGHT-SESSION CANDIDATES (unattended, no wheel needed)
+1. Game-specific menu audio + launch fade (NEW request) - self-contained,
+   verifiable offline.
+2. Backdrop-masking fix for offroadc water (research first-choice) -
+   capture-analysis + renderer scissor, oracle-verifiable.
+3. FOV-constant DSP patch R&D (novel Hor+ attempt) - uncertain, uses the
+   corrected C3x hex table + MAME debugger watchpoint.
+4. Telemetry Phase B: RAM-hunt speed/RPM in attract (unblocks achievements).
+5. Multi-hour soak + crusnwld/offroadc oracle determinism passes.
+NOT overnight (need the wheel): CMOS setting-baking, steering taste tests.
