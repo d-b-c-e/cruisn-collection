@@ -209,7 +209,7 @@ class Shell:
         pulse = 0.65 + 0.35 * math.sin(t * 4.0)
         self.center_text("PRESS ENTER TO BEGIN", self.h // 16, self.h * 0.57,
                          (GOLD[0], GOLD[1], GOLD[2], pulse))
-        self.center_text("ESC / BACKSPACE  CANCEL", self.h // 40,
+        self.center_text("ESC  CANCEL", self.h // 40,
                          self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
 
     def draw_wizard(self, prompt, done, total, last, kind="button", cool=0.0):
@@ -236,12 +236,7 @@ class Shell:
             self.rect(self.white, (self.w - bw) / 2, self.h * 0.770,
                       bw, self.h * 0.010,
                       (GOLD[0], GOLD[1], GOLD[2], 0.9))
-        if kind == "button":
-            self.center_text("BUTTONS ABOVE 32 CAN'T BE CAPTURED HERE - "
-                             "ESC SKIPS (THEY STILL WORK IN-GAME)",
-                             self.h // 48, self.h * 0.83,
-                             (0.55, 0.55, 0.62, 1.0))
-        self.center_text(f"{done} / {total}    ESC SKIP    BACKSPACE CANCEL",
+        self.center_text(f"{done} / {total}    BACKSPACE SKIP    ESC CANCEL",
                          self.h // 40, self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
 
     def tex(self, img):
@@ -318,7 +313,7 @@ class Shell:
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
                   (0.75, 0.75, 0.8, 1.0))
 
-    def draw_settings(self, ssel, crt, fill, sens, t):
+    def draw_settings(self, ssel, crt, fill, sens, curve, t):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -330,6 +325,8 @@ class Shell:
                  f"CRACK FILL      {'ON' if fill else 'OFF'}",
                  "STEERING SENS      "
                  + ("GAME DEFAULT" if sens is None else f"{sens}  (< > ADJUST)"),
+                 "STEER CURVE      "
+                 + ("LINEAR (OFF)" if curve is None else f"{curve}  (< > ADJUST)"),
                  "CONTROLS SETUP  (WHEEL / PAD / KEYBOARD)", "BACK"]
         for i, label in enumerate(items):
             if i == ssel:
@@ -337,11 +334,18 @@ class Shell:
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
             else:
                 col = (0.75, 0.75, 0.8, 1.0)
-            self.center_text(label, self.h // 26, self.h * (0.40 + 0.09 * i), col)
+            self.center_text(label, self.h // 26,
+                             self.h * (0.38 + 0.085 * i), col)
         if ssel == 2:
-            self.center_text("HIGHER = SHARPER RESPONSE      LOWER = CALMER"
-                             "      GAME DEFAULT IS 25",
-                             self.h // 44, self.h * 0.87,
+            self.center_text("OVERALL GAIN:   HIGHER = SHARPER RESPONSE      "
+                             "LOWER = CALMER      GAME DEFAULT IS 25",
+                             self.h // 44, self.h * 0.88,
+                             (0.65, 0.65, 0.72, 1.0))
+        elif ssel == 3:
+            self.center_text("RESPONSE SHAPE:   BELOW 100 = MORE BITE NEAR "
+                             "CENTER (FIXES LAZY-CENTER STEERING)      "
+                             "ABOVE 100 = SOFTER CENTER",
+                             self.h // 44, self.h * 0.88,
                              (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
         fh = self.h / 36 * 1.9
@@ -483,9 +487,11 @@ def load_config():
     cp.read(CFG)
     sec = cp["collection"] if "collection" in cp else {}
     ss = str(sec.get("steersens", "")).strip()
+    sc = str(sec.get("steercurve", "")).strip()
     return {"crt": str(sec.get("crt", "1")) == "1",
             "crackfill": str(sec.get("crackfill", "1")) == "1",
             "steersens": int(ss) if ss.isdigit() else None,
+            "steercurve": int(sc) if sc.isdigit() else None,
             "scale": int(sec.get("scale", 4)),
             "rom": sec.get("rom", "crusnusa")}
 
@@ -497,6 +503,8 @@ def save_config(state):
                         "crackfill": "1" if state["crackfill"] else "0",
                         "steersens": ("" if state["steersens"] is None
                                       else str(state["steersens"])),
+                        "steercurve": ("" if state["steercurve"] is None
+                                       else str(state["steercurve"])),
                         "scale": str(state["scale"]), "rom": state["rom"]}
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
@@ -772,7 +780,7 @@ def main():
                         wiz_ready = True
                         wiz_cool = now + 1.8
                         audio.blip("select")
-                    elif key in (glfw.KEY_ESCAPE, glfw.KEY_BACKSPACE):
+                    elif key == glfw.KEY_ESCAPE:
                         mode = "settings"
                         audio.blip("nav")
                 actions.clear()
@@ -784,12 +792,12 @@ def main():
             else:
                 step = WIZARD_STEPS[wiz_idx] if wiz_idx < len(WIZARD_STEPS) else None
                 for key in actions:
-                    if key == glfw.KEY_ESCAPE:          # skip this binding
+                    if key == glfw.KEY_BACKSPACE:       # skip this binding
                         audio.blip("nav")
                         wiz_idx += 1
                         wiz_base = wiz_settle = None
                         wiz_cool = now + 1.8
-                    elif key == glfw.KEY_BACKSPACE:     # abort wizard
+                    elif key == glfw.KEY_ESCAPE:        # cancel wizard
                         audio.blip("select")
                         mode = "settings"
                     elif step and step[2] == "button" and key in KEYCODES:
@@ -874,10 +882,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 5
+                    ssel = (ssel - 1) % 6
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 5
+                    ssel = (ssel + 1) % 6
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -892,15 +900,24 @@ def main():
                     state["steersens"] = None if nxt < 5 else min(nxt, 200)
                     save_config(state)
                     audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 3:
+                    # response-curve exponent percent; 100 = linear = off
+                    step = 10 if key == glfw.KEY_RIGHT else -10
+                    cur = state["steercurve"]
+                    nxt = (100 if cur is None else cur) + step
+                    state["steercurve"] = (None if nxt == 100
+                                           else max(50, min(nxt, 200)))
+                    save_config(state)
+                    audio.blip("nav")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
                     if ssel in (0, 1):
                         k = "crt" if ssel == 0 else "crackfill"
                         state[k] = not state[k]
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel == 2:
+                    elif ssel in (2, 3):
                         audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 3:
+                    elif ssel == 4:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -960,7 +977,7 @@ def main():
                               max(0.0, wiz_cool - time.time()))
         elif mode == "settings":
             shell.draw_settings(ssel, state["crt"], state["crackfill"],
-                                state["steersens"], t)
+                                state["steersens"], state["steercurve"], t)
         else:
             shell.draw(sel, state["crt"], t, row)
         glfw.swap_buffers(win)
@@ -980,7 +997,8 @@ def main():
                         rom=rom, scale=state["scale"],
                         windowed=args.windowed, crt=state["crt"],
                         crackfill=state["crackfill"],
-                        steersens=state["steersens"])
+                        steersens=state["steersens"],
+                        steercurve=state["steercurve"])
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)
                 box["done"] = True

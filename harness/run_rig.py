@@ -629,7 +629,8 @@ def apply_wheelmap(tree, rig):
 
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
-                      crackfill=True, steersens=None, mame=VUNIT):
+                      crackfill=True, steersens=None, steercurve=None,
+                      mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -658,6 +659,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
+    if steercurve is not None:
+        # response-curve exponent percent for PADDLE fields (ioport.cpp
+        # patch): <100 = more bite near center, 100 = linear
+        env["MIDV_STEER_CURVE"] = str(int(steercurve))
     # UDP telemetry: env wins, else collection.ini [telemetry] udp=host:port
     if "MIDV_TELEM_UDP" not in env:
         import configparser
