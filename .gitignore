@@ -11,3 +11,7 @@ results/ramhunt/
 results/boot-capture/
 results/crusnexo-prog.asm
 results/pclog-run/
+results/ramhunt-wld/
+results/ramhunt-orc/
+results/ramhunt-usa-val/
+results/telem-wld-verify/

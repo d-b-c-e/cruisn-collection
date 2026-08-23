@@ -1077,3 +1077,38 @@ code patcher, built + tested inert — ROM files untouched), and the full
 TMS32032 disassembly at results/crusnexo-prog.asm (8.7MB, regenerable via
 MAME debugger dasm). These are the toolkit for C2 (render distance) and
 any future game-code experiments.
+
+## 2026-08-23 — Telemetry B1: World speed hunted + wired (session 9, cont.)
+
+Reusable speed-hunt method (now proven across two games):
+1. `MIDV_RAMDUMP_DIR` + `MIDV_RAMDUMP_EVERY=30` over a ~240s attract demo
+   dumps the 0x20000-word DSP RAM. Attract drives the player car through
+   several full races (5 accel segments), so speed shows as a repeated
+   0→top→0 curve.
+2. Offline (results/ramhunt-<rom>): decode each word as C3x float across
+   time, keep words that (a) sit at ~0 between races, (b) rise smoothly to
+   80-500 with |Δ|<45/dump, (c) do this in ≥2 races.
+3. Disambiguate speed from same-shaped junk by the **odometer partner**:
+   a neighbouring word (±0x40) whose per-dump DELTA correlates (windowed,
+   >0.96) with the candidate's value — distance = ∫speed. This signature
+   self-validated on crusnusa 0x0F22D (partners +6/-56, corr 0.997) and
+   rejected all drone/HUD lookalikes.
+
+crusnwld: the hunt returned a clean 10-field cluster (stride 0xB0, all
+0→~285 with odometer partners at fixed offsets) — one car's physics state,
+not 10 cars (identical segments/on-screen-fraction across all 10). Wired
+the mid-cluster field 0x0DDDC. End-to-end verified: MIDV_TELEM_UDP emits
+0→277 per demo race (53% nonzero). **Open:** one wheel check to confirm
+0x0DDDC is the speedometer field and not a wheel-speed / velocity-component
+sibling (they diverge only under wheelspin/slide; steady-state identical).
+
+offroadc: same pipeline found NO clean speed curve in its attract demo —
+candidates either spike-to-max-and-drop (per-scene latches) or read as
+signed velocity components (go negative). Needs the on-screen-MPH
+correlation pass at the wheel to pick the player slot. Left at 0
+(telemetry-off) rather than wire a guess.
+
+Also tightened s_speed_addr to hunted PARENT romsets only (removed the
+dead, typo'd crusnu40/crusnu21 clone entries; clone builds can relocate
+DSP RAM, so unlisted games get telemetry-off instead of an unverified
+address).

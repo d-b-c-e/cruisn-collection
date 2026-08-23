@@ -23,7 +23,7 @@ capture) · 🙋 needs the user at the wheel
 
 | ID | Item | Status | Effort | Auto | Notes |
 |----|------|--------|--------|------|-------|
-| **B1** | Telemetry Phase B — wire Off Road + World speed | ◐ | S | ⚠️ | USA speed done/wired/live-verified (word 0x0F22D). Off Road = per-car array (needs one on-screen MPH check to pick player slot). World = re-run the turnkey hunt. |
+| **B1** | Telemetry Phase B — wire Off Road + World speed | ◐ | S | ⚠️ | USA done/live-verified (0x0F22D). **World done 2026-08-23** (0x0DDDC, hunted via speed+odometer signature, live-verified 0→277 over UDP) — NEEDS ONE WHEEL CHECK that this field == the on-screen speedo vs a sibling. **Off Road still open**: attract demo shows no clean accelerate-from-0 curve (candidates spike-and-drop / signed velocity); needs an on-screen-MPH correlation pass at the wheel. |
 | **B2** | Telemetry Phase B — RPM | ☐ | M | ⚠️ | No clean candidate on first pass (may be normalized 0..1 / gear-reset). Revisit with on-screen correlation. |
 | **B3** | Auto-volume (full) — bake CMOS volume per game at boot | ☐ | M | ⚠️ | `=`/`-` manual volume shipped. Full = RAM/NVRAM-hunt the volume byte, poke at boot so nobody adjusts. Tooling (nvram_tool.py + RAM-hunt) ready. |
 | **B4** | Steering settings growth — FFB strength + more knobs | ☐ | S | ✅ | SENSITIVITY + CURVE shipped. Add FFB strength (and aspect is already the WIDESCREEN row). Self-contained shell + cfg work. |
