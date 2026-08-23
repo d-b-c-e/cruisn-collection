@@ -417,3 +417,13 @@ User felt "half framerate + choppy audio" in Exotica. Investigation:
   was wrongly reverted because of this). Space builds from measurements.
 - Ambient load facts: Pit House burns ~88% of a core at idle; SimHub adds
   more when open. Cumulative Get-Process CPU is NOT current rate.
+
+## Exotica polish round (2026-08-23 late)
+- Aspect "wobble" FIXED: present-mode hysteresis (wide immediate on quads,
+  4:3 only after ~30 quad-free write iterations). Patch series 39.
+- OPEN: Auto/Manual transmission screen self-selects with no input.
+  Suspects: latched DS-8X shifter holding a gear button (Exotica gears =
+  BUTTON2-5, a held latched position may read as an immediate selection),
+  OR gas-pedal rest value. Investigate with button_monitor + the ADC
+  values at that screen; may be authentic cab behavior with a latched
+  shifter. Needs the user at the wheel to reproduce.
