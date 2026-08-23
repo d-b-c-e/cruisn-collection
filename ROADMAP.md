@@ -16,7 +16,7 @@ capture) · 🙋 needs the user at the wheel
 | ID | Item | Status | Effort | Auto | Notes |
 |----|------|--------|--------|------|-------|
 | **A1a** | Zeus GL internal upscaling (Exotica sharpness) | ☑ | — | — | **DONE (session 5).** Exotica renders live through our GL renderer at 4× internal res with hardware-accurate bilinear textures - crisp. Proof: results/proof/zeus-live-vegas-4x.png. (Roadmap earlier mis-stated this as "native res".) |
-| **A1b** | Exotica 16:9 widescreen | ☐ | L | ⚠️ | The genuine remaining Exotica enhancement: it presents letterboxed 4:3. Give it 16:9 like the V-Unit trio - render Zeus quads into a wider canvas (unclip past 512) + port the backdrop-margin fix to the Zeus signature + present 16:9. Zeus geometry culling may reveal backdrop (that's what the backdrop fix handles). Moderate arc. Optional polish - Exotica already looks great at 4:3. |
+| **A1b** | Exotica 16:9 widescreen | ☑ | — | — | **DONE (2026-08-23).** 3D scenes present 16:9 (wider canvas, margins cleared per frame, aspect hysteresis vs wobble); 2D screens stay 4:3. MIDZ_GL_MARGIN=0 forces 4:3. Perf recovered same session (skip double-rasterization: 94%→99.8%). |
 | **A2** | FOV-constant DSP patch (proper Hor+) | ◐ | L | ⚠️ | Novelty, NOT a fix (water is solved). Groundwork done: C3x constant map, perspective-divide @0x010AF8, projection epilogue @0x0239C. Left: trace the vertex matrix's horizontal-scale term, test-patch. IDA-grade, uncertain. **Recommend skipping** unless the proper-Hor+ experiment is wanted for its own sake - not worth scarce Fable time. `docs/widescreen-research.md`. |
 
 ## B. Features
