@@ -252,6 +252,14 @@ ZEUS_ROMS = {"crusnexo"}
 # else is 400) - fed to the overlay as MIDV_GL_HEIGHT
 GAME_HEIGHT = {"offroadc": 401}
 
+# per-game 16:9 margin width per side (overlay default 86 = full widescreen).
+# offroadc's canyon levels draw a water/backdrop plane that is off-screen in
+# 4:3 but shows in the bottom-corner margins as blue wedges (verified: the
+# ground geometry already extends to x=-366..1000, so it is revealed
+# backdrop, not a hole - no game-code culling fix applies). A trimmed margin
+# keeps most of the widescreen gain without the corner artifact.
+GAME_MARGIN = {"offroadc": 64}
+
 
 # ---- rig preparation --------------------------------------------------------
 def prepare_rig(rom, crt=False, zeus_gl=False):
@@ -657,6 +665,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_GL_CRT="1" if crt else "0",
                MIDV_GL_CRACKFILL="1" if crackfill else "0",
                MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
+               MIDV_GL_MARGIN=os.environ.get(
+                   "MIDV_GL_MARGIN", str(GAME_MARGIN.get(rom, 86))),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
     if steercurve is not None:

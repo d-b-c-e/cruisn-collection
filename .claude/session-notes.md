@@ -340,3 +340,10 @@ flashing-gone confirmation, and zeus_capture_play.py gameplay captures
 Round-4/5 items still pending user: glow/cooldown-bar/legend/steering
 sens look, button_monitor run for the Start button, service-menu passes
 for volume/coinage baking (nvram_tool.py flow ready).
+
+## Session 6 (2026-08-22): patch system + culling investigation
+- **MIDV_PATCH game-code patcher SHIPPED** (in-memory, ROM-safe, verified). Foundation for all game-code fixes. Disasm via MAME debugger `dasm`; patch/game/README.md.
+- **Culling "sky through ground" = revealed backdrop, NOT a cull limit.** Proven: native 4:3 has no corner blue; ground quad verts already span x=-366..1000; wedge pixels are legit water quad, not holes. No game patch applies.
+- **Runtime MIDV_GL_MARGIN SHIPPED** (0..86/side); run_rig per-game GAME_MARGIN (offroadc=64 trims the water wedges, others 86). Margin-EXTEND off-by-half fix also in this build.
+- **NVRAM reset to clean fixture baseline** all 4 games + snapshots (rig/nvram-snapshots/20260822) for the settings-bake workflow. ROMs verified OK.
+- NEXT: user service-menu passes (nvram_tool diff/bake) for coinage/volume/freeplay defaults; steering CURVE 70 taste test; wizard >32-button (rawjoy) rig test.

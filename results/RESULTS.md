@@ -888,3 +888,55 @@ Verified live: title showcase, registration/high-score screens
 (frame_write path), Vegas demo race - all clean at 4x, snaps in
 results/verify-mzgl. Standing: user play test (wheel input, Esc menu
 pause, CRT taste, gameplay texture modes via zeus_capture_play.py).
+
+---
+
+# Game-code patch system + ground-culling investigation — 2026-08-22 (session 6)
+
+## In-memory code patcher (MIDV_PATCH) — SHIPPED
+
+The V-Unit games `memcpy` their whole TMS320C31 program from the maindata
+ROM into program RAM at every reset (midvunit.cpp machine_reset). The new
+`midv_apply_patches` overlays word patches on that RAM copy - **ROM files
+on disk are never touched** (GPL/legal bright line intact). `MIDV_PATCH=
+<file>`, lines `WORDADDR OLD NEW` (hex; OLD verified or `*` to skip, so a
+patch is safe to ship for one version and inert on a mismatch). Verified
+end-to-end (identity patch: "2 applied, 0 skipped"). Docs + disassembly
+recipe in `patch/game/README.md`. This is the foundation for all future
+game-code fixes (coinage, FOV, culling, ...). Full offroadc disassembly
+via MAME's own debugger `dasm` command (no unidasm build needed):
+`results/offroadc-prog.asm`.
+
+## Ground-culling / "sky through ground at far L/R" — INVESTIGATED, not a cull
+
+The bottom-corner blue wedges in offroadc widescreen are NOT a culling
+limit and NOT a renderer hole:
+- Native 4:3 render of the same scene has **zero** blue in the bottom
+  corners - so it is a widescreen-margin-only phenomenon.
+- The ground-plane quads already carry vertices at **x=-366 .. x=+1000**
+  (hardware screen is 0..511) - the geometry is submitted FAR wider than
+  4:3, not clipped at the screen edge. There is no clip constant to widen.
+- At the wedge pixels, hardware x=0 IS written - with water blue
+  (24,115,165), by a legitimately-drawn backdrop/water plane that is
+  off-screen in 4:3. So crack-fill / margin-extend correctly leave it
+  alone (the pixel isn't a hole), and a game-code culling patch would do
+  nothing (the game already draws there).
+
+Conclusion: the corner blue is *revealed backdrop*, an inherent
+consequence of showing more of the world than the 4:3 frustum. The clean
+lever is margin width, not a game patch.
+
+## Runtime 16:9 margin (MIDV_GL_MARGIN) — SHIPPED
+
+MARGIN is now runtime in the overlay (0..86 per side; default 86 = full
+widescreen). run_rig sets a per-game default: **offroadc = 64** (trims the
+outer margin where the canyon water plane showed as corner wedges);
+crusnusa/crusnwld stay at 86. Verified: offroadc bottom-corner blue 0.00
+after the trim, terrain intact, thin clean pillarbox. Also the earlier
+margin-EXTEND fix (probe walks inward past the +0.5-offset dead column)
+ships this build - true black holes now fill from the boundary column.
+
+Also this session: NVRAM reset to a clean fixture-seeded baseline for all
+four games with snapshots (rig/nvram-snapshots, 20260822) as the reference
+for the settings-baking workflow (harness/nvram_tool.py). ROMs verified
+OK by MAME's own checker.
