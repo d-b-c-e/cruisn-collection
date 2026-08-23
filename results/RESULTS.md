@@ -1027,3 +1027,53 @@ fill could refine it later).
 
 This is the artifact the user chased across sessions 5-8; full 16:9 Off
 Road is now clean. GAME_MARGIN can stay empty (full width) as the default.
+
+## 2026-08-23 — Exotica TRUE full 16:9: the game was never culling — WE were clearing it (session 9)
+
+The "Zeus FOV patch" arc ended in the best possible way: **no game-code
+patch is needed at all.** Cruis'n Exotica already renders a full 16:9
+field of view; the black margins were self-inflicted.
+
+The hunt (in order, each step narrowing the truth):
+1. **MIDZ_PCLOG** (new env-gated diag in zeus2.cpp): histogram of game-CPU
+   PCs submitting FIFO commands. Result: ALL 603k model draws come from PC
+   0x0B686 — an IRQ handler draining an 8K-word circular command ring
+   (read ptr $046D, write ptr $046E) to the Zeus FIFO.
+2. **MIDZ_RINGTAP** (new env-gated diag in midzeus.cpp machine_start):
+   RAM write tap cataloguing PCs that write 0x24xxxxxx draw-model headers.
+   Found the ring-fill library (0x067F2-0x06D03), the HUD sprite list
+   builder (0x0E400/0x0E426, screen-center 256/200 convention), and that
+   all queue routines are dispatched via function pointers (zero static
+   callers — why static xref hunting kept failing).
+3. **The decisive measurement** (should have been step 1): column-occupancy
+   of the capture-zeus-race quads across a 688-wide canvas. Left margin
+   ~40 quads/column, right margin ~90-136 (center ~200). A painter's-order
+   flatten showed coherent terrain/horizon/scenery continuing seamlessly
+   through both margins. **The game submits a wide world; there is no 4:3
+   cull to widen.** (The C3x disassembly's CMPF-0.5 sites were RNG rolls;
+   the CMPF-200.0 "clip" candidates were audio-pan distance tests.)
+4. Live-path repro: MIDZ_GL_SNAP sweep showed margins 0.0% lit on every
+   present while offline said they should be full → the drop was OURS.
+
+**Root cause:** the mzgl canvas holds BOTH page-flip buffers (1024 rows;
+present selects the visible band via uBaseRow), but the 16:9 margin clear
+that rides the game's frame-sized fast-clear used a full-height scissor.
+Every frame start, clearing the DRAW page's margins also wiped the
+DISPLAYED page's margins — so margins were black except for the sub-ms
+between flip and the next clear. The center survived because the game's
+own clear (add_span) is page-scoped.
+
+**Fix (zeus2.cpp):** scope the margin clear to the cleared page's rows
+(row0 = addr/CW, nrows = count/CW), mirroring add_span. One scissor change.
+
+**Verified:** attract sweep after fix: margins 75-100% lit in every 3D
+scene (were 0.0%), 2D screens still 4:3, hysteresis intact. Tunnel race:
+road + lane markings + tunnel lights span edge-to-edge; showcase close-up
+fills full width. Proof: results/proof/zeus-true-169-tunnel.png,
+zeus-true-169-showcase.png.
+
+Kept for future work: MIDZ_PCLOG, MIDZ_RINGTAP, MIDZ_PATCH (in-memory
+code patcher, built + tested inert — ROM files untouched), and the full
+TMS32032 disassembly at results/crusnexo-prog.asm (8.7MB, regenerable via
+MAME debugger dasm). These are the toolkit for C2 (render distance) and
+any future game-code experiments.

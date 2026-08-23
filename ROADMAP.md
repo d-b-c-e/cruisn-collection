@@ -17,7 +17,7 @@ capture) · 🙋 needs the user at the wheel
 |----|------|--------|--------|------|-------|
 | **A1a** | Zeus GL internal upscaling (Exotica sharpness) | ☑ | — | — | **DONE (session 5).** Exotica renders live through our GL renderer at 4× internal res with hardware-accurate bilinear textures - crisp. Proof: results/proof/zeus-live-vegas-4x.png. (Roadmap earlier mis-stated this as "native res".) |
 | **A1b** | Exotica 16:9 widescreen | ☑ | — | — | **DONE (2026-08-23).** 3D scenes present 16:9 (wider canvas, margins cleared per frame, aspect hysteresis vs wobble); 2D screens stay 4:3. MIDZ_GL_MARGIN=0 forces 4:3. Perf recovered same session (skip double-rasterization: 94%→99.8%). |
-| **A2** | FOV-constant DSP patch (proper Hor+) | ◐ | L | ⚠️ | Novelty, NOT a fix (water is solved). Groundwork done: C3x constant map, perspective-divide @0x010AF8, projection epilogue @0x0239C. Left: trace the vertex matrix's horizontal-scale term, test-patch. IDA-grade, uncertain. **Recommend skipping** unless the proper-Hor+ experiment is wanted for its own sake - not worth scarce Fable time. `docs/widescreen-research.md`. |
+| **A2** | FOV-constant DSP patch (proper Hor+) | ☑ | — | — | **RESOLVED 2026-08-23 (Exotica) — no game patch needed.** The game already renders full 16:9; black margins were our overlay's page-blind margin clear wiping the displayed page every frame. One scissor fix in zeus2.cpp → true Hor+ (proof: results/proof/zeus-true-169-*.png). V-Unit games keep the shipped margin-extend approach (their transform does clip to 4:3). Toolkit built along the way (MIDZ_PATCH / MIDZ_PCLOG / MIDZ_RINGTAP + full crusnexo disassembly) now serves C2. |
 
 ## B. Features
 
