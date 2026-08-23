@@ -41,7 +41,8 @@ FB_W, FB_H = 512, 2048
 
 VS = """
 #version 430
-uniform vec2 uCanvas;      // FB_W, FB_H (coarse)
+uniform vec2 uCanvas;      // canvas W (incl margins), FB_H (coarse)
+uniform float uMargin;     // 16:9 side margin (coarse px); shifts all x
 in vec2 in_pos;            // x, y (quad-local, coarse pixels)
 in float in_rowbase;       // renderRegs[0x4] row offset
 in vec4 in_p;              // p0 (z 12.12), p1 (u/z), p2 (v/z), p3 (1/z)
@@ -57,7 +58,7 @@ void main() {
     meta0 = in_meta0; meta1 = in_meta1; meta2 = in_meta2;
     // no y flip: FB row order == GL texture row order end-to-end
     float y = in_pos.y + in_rowbase;
-    gl_Position = vec4(in_pos.x / uCanvas.x * 2.0 - 1.0,
+    gl_Position = vec4((in_pos.x + uMargin) / uCanvas.x * 2.0 - 1.0,
                        y / uCanvas.y * 2.0 - 1.0, 0.0, 1.0);
 }
 """
@@ -231,6 +232,8 @@ uniform int uScale;
 uniform int uBaseRow;        // display base row (coarse; from zb38)
 uniform int uCrt;            // 1 = CRT pass, 0 = raw
 uniform float uSrcH;         // 400
+uniform float uSampW;        // source sample width (coarse): 3D=canvas, 2D=512
+uniform float uSampX0;       // source x start (coarse): 3D=0, 2D=margin
 in vec2 uv;
 out vec4 color;
 
@@ -238,7 +241,7 @@ vec3 fetch_at(ivec2 p) { return texelFetch(fbTex, p, 0).rgb; }
 
 ivec2 src_px(vec2 tuv) {
     float ry = float(uBaseRow) + (1.0 - tuv.y) * uSrcH;
-    return ivec2(int(tuv.x * 512.0 * float(uScale)),
+    return ivec2(int((uSampX0 + tuv.x * uSampW) * float(uScale)),
                  int(ry * float(uScale)));
 }
 
@@ -364,6 +367,7 @@ def main():
 
     prog = ctx.program(vertex_shader=VS, fragment_shader=FS)
     prog["uCanvas"].value = (float(FB_W), float(FB_H))
+    prog["uMargin"].value = 0.0   # offline verification renders 4:3 (no margins)
     prog["waveram"].value = 0
     prog["palTex"].value = 1
     wtex.use(0)
