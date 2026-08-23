@@ -30,6 +30,10 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
+try:
+    import rawjoy  # noqa: E402  (Raw Input HID: >32-button wizard capture)
+except Exception:
+    rawjoy = None
 
 POC = run_rig.POC
 ART = os.environ.get(
@@ -228,7 +232,7 @@ class Shell:
             # cooldown after each bind: shrinking bar + release prompt
             self.center_text("RELEASE ALL CONTROLS...", self.h // 40,
                              self.h * 0.72, (1.0, 0.75, 0.3, 0.9))
-            bw = self.w * 0.26 * min(cool, 1.0)
+            bw = self.w * 0.26 * min(cool / 2.0, 1.0)
             self.rect(self.white, (self.w - bw) / 2, self.h * 0.770,
                       bw, self.h * 0.010,
                       (GOLD[0], GOLD[1], GOLD[2], 0.9))
@@ -308,7 +312,7 @@ class Shell:
         # in-game hotkey legend (keys that live outside the wheel bindings)
         leg = self.footer_tex(
             "IN-GAME:   5 COIN    1 START    ESC MENU / QUIT    F9 CRT    "
-            "= / - VOLUME    F12 FORCE QUIT", div=46)
+            "= / - VOLUME    F2 TEST    9 SERVICE    F12 FORCE QUIT", div=46)
         lh = self.h / 46 * 1.9
         lw = leg.width * lh / leg.height
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
@@ -334,6 +338,11 @@ class Shell:
             else:
                 col = (0.75, 0.75, 0.8, 1.0)
             self.center_text(label, self.h // 26, self.h * (0.40 + 0.09 * i), col)
+        if ssel == 2:
+            self.center_text("HIGHER = SHARPER RESPONSE      LOWER = CALMER"
+                             "      GAME DEFAULT IS 25",
+                             self.h // 44, self.h * 0.87,
+                             (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
@@ -434,6 +443,10 @@ WIZARD_STEPS = [
     ("GEAR 2",    "gear2",  "button"),
     ("GEAR 3",    "gear3",  "button"),
     ("GEAR 4",    "gear4",  "button"),
+    ("VOLUME UP",      "volup",   "button"),
+    ("VOLUME DOWN",    "voldn",   "button"),
+    ("TEST MENU  (operator settings)",    "test",    "button"),
+    ("SERVICE CREDIT",                    "service", "button"),
 ]
 
 # glfw key -> MAME KEYCODE token (wizard keyboard capture). Esc/Backspace
@@ -687,6 +700,7 @@ def main():
     wiz_settle_t = 0.0
     ok_pending = {}      # (jid, btn) -> hat_changes count at press
     hat_changes = 0
+    rawlis = None        # Raw Input HID listener, wizard-scoped (>32 buttons)
     while not glfw.window_should_close(win):
         glfw.poll_events()
         presses, releases = joy_presses()
@@ -746,13 +760,17 @@ def main():
 
         if mode == "wizard":
             now = time.time()
+            # drain the raw HID queue every iteration; only the armed
+            # button-step branch below consumes it, everything else
+            # discards so stale presses can never fire later
+            rawp = rawlis.get_presses() if rawlis is not None else []
             if not wiz_ready:
                 # gate screen: nothing is read until the player says go
                 for key in actions:
                     if key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER,
                                glfw.KEY_SPACE):
                         wiz_ready = True
-                        wiz_cool = now + 0.8
+                        wiz_cool = now + 1.8
                         audio.blip("select")
                     elif key in (glfw.KEY_ESCAPE, glfw.KEY_BACKSPACE):
                         mode = "settings"
@@ -770,7 +788,7 @@ def main():
                         audio.blip("nav")
                         wiz_idx += 1
                         wiz_base = wiz_settle = None
-                        wiz_cool = now + 0.8
+                        wiz_cool = now + 1.8
                     elif key == glfw.KEY_BACKSPACE:     # abort wizard
                         audio.blip("select")
                         mode = "settings"
@@ -782,20 +800,26 @@ def main():
                         audio.blip("nav")
                         wiz_idx += 1
                         wiz_base = wiz_settle = None
-                        wiz_cool = now + 1.0
+                        wiz_cool = now + 2.0
                         break
                 actions.clear()
                 if (mode == "wizard" and now >= wiz_cool
                         and wiz_idx < len(WIZARD_STEPS)):
                     label, ikey, kind = WIZARD_STEPS[wiz_idx]
-                    if kind == "button" and presses:
-                        jid, name, btn = presses[0]
+                    if kind == "button" and (presses or rawp):
+                        # glfw first (its device names are proven against
+                        # MAME's mapdevice); Raw Input HID covers buttons
+                        # glfw misses (>32, split HID collections, ...)
+                        if presses:
+                            jid, name, btn = presses[0]
+                        else:
+                            name, btn = rawp[0]
                         wiz_bind[ikey] = f"{name}|btn:{btn}"
                         wiz_last = f"{label}  =  {name}  BUTTON {btn + 1}"
                         audio.blip("nav")
                         wiz_idx += 1
                         wiz_base = wiz_settle = None
-                        wiz_cool = now + 1.0
+                        wiz_cool = now + 2.0
                     elif kind == "axis":
                         cur = {}
                         try:
@@ -838,11 +862,14 @@ def main():
                                 audio.blip("nav")
                                 wiz_idx += 1
                                 wiz_base = wiz_settle = None
-                                wiz_cool = now + 1.0
+                                wiz_cool = now + 2.0
             if mode == "wizard" and wiz_idx >= len(WIZARD_STEPS):
                 save_wheelmap(wiz_bind)
                 audio.blip("select")
                 mode = "settings"
+        if rawlis is not None and mode != "wizard":
+            rawlis.stop()
+            rawlis = None
 
         elif mode == "settings":
             for key in actions:
@@ -881,6 +908,11 @@ def main():
                         wiz_ready = False
                         wiz_base = wiz_settle = None
                         wiz_cool = 0.0
+                        if rawjoy is not None and rawlis is None:
+                            try:
+                                rawlis = rawjoy.RawButtonListener()
+                            except Exception:
+                                rawlis = None
                         audio.blip("select")
                     else:
                         mode = "menu"

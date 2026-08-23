@@ -368,6 +368,20 @@ def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False):
         p = ET.SubElement(inp, "port", {"type": ptype})
         ET.SubElement(p, "newseq", {"type": "standard"}).text = text
 
+    # EmuEz binds SERVICE/TEST to wheel buttons that collided with Start
+    # after translation (rig round 5: Test opened on every Start press and
+    # the game was unenterable). Strip JOYSTICK alternatives from all
+    # SERVICE-class ports; keyboard F2/9 stay, and the wizard's TEST /
+    # SERVICE CREDIT steps add deliberate wheel buttons back.
+    joyalt = re.compile(r"JOYCODE_\S+")
+    for inp in tree.getroot().iter("input"):
+        for port in inp.findall("port"):
+            if str(port.get("type", "")).startswith("SERVICE"):
+                for seq in port.findall("newseq"):
+                    alts = [a.strip() for a in (seq.text or "").split(" OR ")]
+                    seq.text = " OR ".join(
+                        a for a in alts if a and not joyalt.search(a))
+
     # F8/F9 are MAME's frameskip hotkeys by default - F9 doubles as the
     # overlay's CRT toggle on V-Unit games (every CRT toggle was silently
     # bumping frameskip) and read as "some skip frame thing" on Exotica.
@@ -451,6 +465,10 @@ WHEELMAP_PORTS = {
     "gear2": (["P1_BUTTON6"], None),
     "gear3": (["P1_BUTTON7"], None),
     "gear4": (["P1_BUTTON8"], None),
+    "volup":   (["VOLUME_UP"], "KEYCODE_EQUALS"),
+    "voldn":   (["VOLUME_DOWN"], "KEYCODE_MINUS"),
+    "test":    (["SERVICE"], "KEYCODE_F2"),
+    "service": (["SERVICE1"], "KEYCODE_9"),
 }
 
 # glfw axis index -> MAME axis token, positional. Both stacks enumerate
@@ -484,6 +502,10 @@ WHEELMAP_PORTS_CRUSNEXO = {
     "gear2": (["P1_BUTTON3"], None),
     "gear3": (["P1_BUTTON4"], None),
     "gear4": (["P1_BUTTON5"], None),
+    "volup":   (["VOLUME_UP"], "KEYCODE_EQUALS"),
+    "voldn":   (["VOLUME_DOWN"], "KEYCODE_MINUS"),
+    "test":    (["SERVICE"], "KEYCODE_F2"),
+    "service": (["SERVICE1"], "KEYCODE_9"),
 }
 
 
