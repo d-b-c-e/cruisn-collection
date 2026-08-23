@@ -62,6 +62,25 @@ GAMES = [
 
 GOLD = (1.0, 0.78, 0.22, 1.0)
 
+# ASPECT / WIDESCREEN presets: clean named choices over the raw margin
+# width (per side, 0..86). None = 16:9 FULL (the default). Applies to all
+# games. Left/right cycles this list; an out-of-preset value (advanced env
+# override) still shows its number.
+ASPECT_PRESETS = [("4:3 CLASSIC", 0), ("16:9 TRIMMED", 48), ("16:9 FULL", None)]
+
+
+def ASPECT_LABEL(margin):
+    for label, val in ASPECT_PRESETS:
+        if val == margin:
+            return label
+    return f"< {margin} >"
+
+
+def aspect_cycle(margin, forward):
+    vals = [v for _, v in ASPECT_PRESETS]
+    idx = vals.index(margin) if margin in vals else len(vals) - 1
+    return vals[(idx + (1 if forward else -1)) % len(vals)]
+
 VS = """
 #version 430
 uniform vec4 uRect;      // x, y, w, h in pixels, y-down from top-left
@@ -335,9 +354,7 @@ class Shell:
                  "GAME DEFAULT" if sens is None else f"< {sens} >"),
                 ("STEERING CURVE",
                  "LINEAR (OFF)" if curve is None else f"< {curve} >"),
-                ("WIDESCREEN",
-                 "AUTO (PER GAME)" if margin is None
-                 else "OFF (4:3)" if margin == 0 else f"< {margin} >"),
+                ("ASPECT / WIDESCREEN", ASPECT_LABEL(margin)),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
                 ("BACK", "")]
         x0, x1 = self.w * 0.30, self.w * 0.70
@@ -366,8 +383,9 @@ class Shell:
                              self.h // 48, self.h * 0.86,
                              (0.65, 0.65, 0.72, 1.0))
         elif ssel == 4:
-            self.center_text("SIDE WIDTH:   HIGHER = MORE WIDESCREEN      "
-                             "LOWER = CLEANER EDGES      0 = 4:3 (NO SIDES)",
+            self.center_text("4:3 = ORIGINAL ARCADE      16:9 = FILLS A "
+                             "WIDE SCREEN      TRIMMED = 16:9 WITH CLEANER "
+                             "EDGES",
                              self.h // 48, self.h * 0.86,
                              (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
@@ -937,17 +955,8 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 4:
-                    # 16:9 margin per side, 0..86; None = per-game auto.
-                    # From AUTO, first press drops to a clean 32 / jumps
-                    # to full 86 so both directions do something sensible.
-                    step = 8 if key == glfw.KEY_RIGHT else -8
-                    cur = state["margin"]
-                    if cur is None:
-                        state["margin"] = 40 if key == glfw.KEY_RIGHT else 24
-                    else:
-                        nxt = cur + step
-                        state["margin"] = (None if nxt > 86
-                                           else max(0, nxt))
+                    state["margin"] = aspect_cycle(
+                        state["margin"], key == glfw.KEY_RIGHT)
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
