@@ -516,8 +516,13 @@ WHEELMAP_PORTS_CRUSNEXO = {
 }
 
 
-def _wheelmap_token(joyidx, val):
-    """Translate one wizard value string to a MAME token, or None."""
+def _wheelmap_token(joyidx, val, pedal=False):
+    """Translate one wizard value string to a MAME token, or None.
+
+    pedal=True + a recorded press direction emits a HALF-axis token
+    (_POS/_NEG_ABSOLUTE): pedals that rest at CENTER (Moza reports 0.0 at
+    rest) otherwise read as 50% pressed in MAME - seen as Exotica's
+    transmission screen instantly picking AUTO (gas "held")."""
     if val.startswith("key:"):
         return val[4:]
     if val.startswith("btn:"):
@@ -529,10 +534,15 @@ def _wheelmap_token(joyidx, val):
         return None
     if val.startswith("axis:"):
         parts = val.split(":")
-        idx, gp = int(parts[1]), parts[2] == "1" if len(parts) > 2 else False
+        idx = int(parts[1])
+        gp = len(parts) > 2 and parts[2] == "1"
+        sgn = parts[3] if len(parts) > 3 else None
         table = AXIS_TOKENS_XINPUT if gp else AXIS_TOKENS_DINPUT
         if idx < len(table):
-            return f"JOYCODE_{joyidx}_{table[idx]}"
+            tok = f"JOYCODE_{joyidx}_{table[idx]}"
+            if pedal and sgn in ("pos", "neg"):
+                tok += "_POS_ABSOLUTE" if sgn == "pos" else "_NEG_ABSOLUTE"
+            return tok
         return None
     # legacy plain button index
     try:
@@ -572,23 +582,23 @@ def apply_wheelmap(tree, rig):
         if m:
             joycode[md.get("device")] = int(m.group(1))
 
-    def resolve(val):
+    def resolve(val, pedal=False):
         dev, spec = val.split("|", 1)
         if dev == "KEYBOARD":
-            return _wheelmap_token(0, spec)
+            return _wheelmap_token(0, spec, pedal)
         if dev not in joycode:
             idx = max(joycode.values(), default=0) + 1
             ET.SubElement(default_inp, "mapdevice",
                           {"device": dev, "controller": f"JOYCODE_{idx}"})
             joycode[dev] = idx
-        return _wheelmap_token(joycode[dev], spec)
+        return _wheelmap_token(joycode[dev], spec, pedal)
 
     def write_ports(inp, table):
         for key, val in cp["wheelmap"].items():
             if key not in table or "|" not in val:
                 continue
             porttypes, kbd = table[key]
-            tok = resolve(val)
+            tok = resolve(val, pedal=key in ("gas", "brake"))
             if not tok:
                 print(f"wheelmap: {key} = {val!r} not addressable, skipped")
                 continue

@@ -39,7 +39,29 @@ def hats(jid):
     return tuple(r)
 
 
+def axes(jid):
+    r = glfw.get_joystick_axes(jid)
+    if r is None:
+        return ()
+    if isinstance(r, tuple) and len(r) == 2 and not isinstance(r[0], (int, float)):
+        ptr, n = r
+        return tuple(ptr[i] for i in range(n))
+    return tuple(r)
+
+
 print("watching for button presses (Ctrl+C to stop)...")
+print("\nAXIS REST VALUES (glfw -1..+1; a pedal at rest should sit at one")
+print("extreme - a mid-range rest value means the game sees it part-pressed):")
+for jid in range(16):
+    if glfw.joystick_present(jid):
+        nm = glfw.get_joystick_name(jid)
+        if isinstance(nm, bytes):
+            nm = nm.decode(errors="replace")
+        av = axes(jid)
+        if av:
+            print(f"  [{jid}] {nm}: " + "  ".join(
+                f"a{i}={v:+.2f}" for i, v in enumerate(av)))
+print()
 for jid in range(16):
     if glfw.joystick_present(jid):
         nm = glfw.get_joystick_name(jid)

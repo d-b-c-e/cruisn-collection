@@ -29,6 +29,7 @@ capture) · 🙋 needs the user at the wheel
 | **B4** | Steering settings growth — FFB strength + more knobs | ☐ | S | ✅ | SENSITIVITY + CURVE shipped. Add FFB strength (and aspect is already the WIDESCREEN row). Self-contained shell + cfg work. |
 | **B5** | Sky-streak polish — vertical-gradient sky fill in margins | ☐ | S | ✅ | Faint horizontal streaking where sky is clamp-extended in top margins (all 3 V-Unit games). Refine margin-extend to gradient-fill sky. Cosmetic. |
 | **B6** | Wizard >32-button capture already solved via rawjoy | ☑ | — | — | Raw Input HID (rawjoy.py) sees all 128 Moza buttons. (Kept for reference.) |
+| **B7** | GEAR UP / GEAR DOWN sequential-shift bindings | ☐ | M | ✅ | User request (2026-08-23): wizard offers Gear Up/Down for sequential/paddle shifters; a stateful translator (virtual current gear) asserts the right game gear button across all four games. Needs driver-side state (ctrlr mappings are stateless) - env-gated input hook. |
 
 ## C. Game-code patches (unblocked by MIDV_PATCH)
 

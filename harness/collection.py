@@ -975,7 +975,13 @@ def main():
                                 if isinstance(name, bytes):
                                     name = name.decode(errors="replace")
                                 gp = 1 if glfw.joystick_is_gamepad(jid) else 0
-                                wiz_bind[ikey] = f"{name}|axis:{i}:{gp}"
+                                # store the press DIRECTION too: pedals that
+                                # rest at center (Moza) need a half-axis
+                                # binding or MAME reads rest as 50% pressed
+                                base = wiz_base.get(jid, cur[jid])
+                                sgn = ("pos" if cur[jid][i] - base[i] > 0
+                                       else "neg")
+                                wiz_bind[ikey] = f"{name}|axis:{i}:{gp}:{sgn}"
                                 wiz_last = f"{label.split('(')[0].strip()}  =  {name}  AXIS {i}"
                                 audio.blip("nav")
                                 wiz_idx += 1
