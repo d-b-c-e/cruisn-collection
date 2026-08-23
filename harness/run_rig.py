@@ -258,7 +258,7 @@ GAME_HEIGHT = {"offroadc": 401}
 # ground geometry already extends to x=-366..1000, so it is revealed
 # backdrop, not a hole - no game-code culling fix applies). A trimmed margin
 # keeps most of the widescreen gain without the corner artifact.
-GAME_MARGIN = {"offroadc": 64}
+GAME_MARGIN = {"offroadc": 32}
 
 
 # ---- rig preparation --------------------------------------------------------
@@ -638,7 +638,7 @@ def apply_wheelmap(tree, rig):
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
-                      mame=VUNIT):
+                      margin=None, mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -666,7 +666,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_GL_CRACKFILL="1" if crackfill else "0",
                MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
                MIDV_GL_MARGIN=os.environ.get(
-                   "MIDV_GL_MARGIN", str(GAME_MARGIN.get(rom, 86))),
+                   "MIDV_GL_MARGIN",
+                   str(margin if margin is not None
+                       else GAME_MARGIN.get(rom, 86))),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
     if steercurve is not None:
