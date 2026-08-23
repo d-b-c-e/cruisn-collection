@@ -182,6 +182,12 @@ class Shell:
         tw = tx.width * th / tx.height
         self.rect(tx, (self.w - tw) / 2, y, tw, th, tint)
 
+    def text_at(self, s, px, x, y, tint=(1, 1, 1, 1), align="l"):
+        tx = self.text_tex(s, px)
+        th = px * 1.9
+        tw = tx.width * th / tx.height
+        self.rect(tx, x - (tw if align == "r" else 0), y, tw, th, tint)
+
     def draw_loading(self, name, t):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
@@ -200,16 +206,16 @@ class Shell:
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
         self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
                   tw, self.h / 14 * 1.9)
-        self.center_text("WHEEL / CONTROLLER SETUP", self.h // 20,
+        self.center_text("WHEEL / CONTROLLER SETUP", self.h // 24,
                          self.h * 0.28, (1.0, 0.85, 0.4, 1.0))
         self.center_text("YOU WILL MOVE OR PRESS EACH CONTROL IN TURN",
-                         self.h // 34, self.h * 0.44)
-        self.center_text("RELEASE EVERYTHING, THEN", self.h // 34,
+                         self.h // 38, self.h * 0.44)
+        self.center_text("RELEASE EVERYTHING, THEN", self.h // 38,
                          self.h * 0.50)
         pulse = 0.65 + 0.35 * math.sin(t * 4.0)
-        self.center_text("PRESS ENTER TO BEGIN", self.h // 16, self.h * 0.57,
+        self.center_text("PRESS ENTER TO BEGIN", self.h // 20, self.h * 0.57,
                          (GOLD[0], GOLD[1], GOLD[2], pulse))
-        self.center_text("ESC  CANCEL", self.h // 40,
+        self.center_text("ESC  CANCEL", self.h // 44,
                          self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
 
     def draw_wizard(self, prompt, done, total, last, kind="button", cool=0.0):
@@ -218,26 +224,26 @@ class Shell:
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
         self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
                   tw, self.h / 14 * 1.9)
-        self.center_text("WHEEL / CONTROLLER SETUP", self.h // 20,
+        self.center_text("WHEEL / CONTROLLER SETUP", self.h // 24,
                          self.h * 0.28, (1.0, 0.85, 0.4, 1.0))
         hint = ("MOVE THE CONTROL FOR:" if kind == "axis"
                 else "PRESS A BUTTON (OR KEYBOARD KEY) FOR:")
-        self.center_text(hint, self.h // 34, self.h * 0.42)
-        self.center_text(prompt, self.h // 16, self.h * 0.50,
+        self.center_text(hint, self.h // 38, self.h * 0.42)
+        self.center_text(prompt, self.h // 20, self.h * 0.50,
                          (0.5, 1.0, 0.6, 1.0))
         if last:
-            self.center_text(last, self.h // 40, self.h * 0.66,
+            self.center_text(last, self.h // 44, self.h * 0.66,
                              (0.7, 0.7, 0.8, 1.0))
         if cool > 0.0:
             # cooldown after each bind: shrinking bar + release prompt
-            self.center_text("RELEASE ALL CONTROLS...", self.h // 40,
+            self.center_text("RELEASE ALL CONTROLS...", self.h // 44,
                              self.h * 0.72, (1.0, 0.75, 0.3, 0.9))
             bw = self.w * 0.26 * min(cool / 2.0, 1.0)
-            self.rect(self.white, (self.w - bw) / 2, self.h * 0.770,
+            self.rect(self.white, (self.w - bw) / 2, self.h * 0.765,
                       bw, self.h * 0.010,
                       (GOLD[0], GOLD[1], GOLD[2], 0.9))
         self.center_text(f"{done} / {total}    BACKSPACE SKIP    ESC CANCEL",
-                         self.h // 40, self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
+                         self.h // 44, self.h * 0.90, (0.8, 0.8, 0.85, 1.0))
 
     def tex(self, img):
         t = self.ctx.texture(img.size, 4, img.tobytes())
@@ -319,33 +325,42 @@ class Shell:
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
         self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
                   tw, self.h / 14 * 1.9)
-        self.center_text("SETTINGS", self.h // 18, self.h * 0.26,
+        self.center_text("SETTINGS", self.h // 20, self.h * 0.26,
                          (1.0, 0.85, 0.4, 1.0))
-        items = [f"CRT EFFECTS      {'ON' if crt else 'OFF'}",
-                 f"CRACK FILL      {'ON' if fill else 'OFF'}",
-                 "STEERING SENS      "
-                 + ("GAME DEFAULT" if sens is None else f"{sens}  (< > ADJUST)"),
-                 "STEER CURVE      "
-                 + ("LINEAR (OFF)" if curve is None else f"{curve}  (< > ADJUST)"),
-                 "CONTROLS SETUP  (WHEEL / PAD / KEYBOARD)", "BACK"]
-        for i, label in enumerate(items):
+        # block layout: names left-aligned, values right-aligned in a
+        # centered fixed-width column
+        rows = [("CRT EFFECTS", "ON" if crt else "OFF"),
+                ("CRACK FILL", "ON" if fill else "OFF"),
+                ("STEERING SENSITIVITY",
+                 "GAME DEFAULT" if sens is None else f"< {sens} >"),
+                ("STEERING CURVE",
+                 "LINEAR (OFF)" if curve is None else f"< {curve} >"),
+                ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
+                ("BACK", "")]
+        x0, x1 = self.w * 0.30, self.w * 0.70
+        px = self.h // 32
+        for i, (name, value) in enumerate(rows):
+            y = self.h * (0.38 + 0.075 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
+                vcol = col
             else:
                 col = (0.75, 0.75, 0.8, 1.0)
-            self.center_text(label, self.h // 26,
-                             self.h * (0.38 + 0.085 * i), col)
+                vcol = (0.55, 0.55, 0.62, 1.0)
+            self.text_at(name, px, x0, y, col)
+            if value:
+                self.text_at(value, px, x1, y, vcol, align="r")
         if ssel == 2:
             self.center_text("OVERALL GAIN:   HIGHER = SHARPER RESPONSE      "
                              "LOWER = CALMER      GAME DEFAULT IS 25",
-                             self.h // 44, self.h * 0.88,
+                             self.h // 48, self.h * 0.86,
                              (0.65, 0.65, 0.72, 1.0))
         elif ssel == 3:
             self.center_text("RESPONSE SHAPE:   BELOW 100 = MORE BITE NEAR "
                              "CENTER (FIXES LAZY-CENTER STEERING)      "
                              "ABOVE 100 = SOFTER CENTER",
-                             self.h // 44, self.h * 0.88,
+                             self.h // 48, self.h * 0.86,
                              (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
         fh = self.h / 36 * 1.9
