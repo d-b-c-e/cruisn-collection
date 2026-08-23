@@ -1137,3 +1137,20 @@ TACHOMETER correlation at the wheel to confirm 0x0F0C0 is the tach (and to
 recover its scale). Until then B2 stays unwired rather than stream a
 possibly-wrong value. Tooling (MIDV_RAMDUMP_DIR + the sawtooth/within-gear
 detector) is turnkey for the confirming pass.
+
+## 2026-08-23 — B5 sky-margin streak polish (session 9)
+
+The 16:9 margin-extend (clamp-stretch of the 4:3 boundary column) smeared
+the sky's per-row cloud/dither detail into horizontal streaks across the
+synthetic margins (all 3 V-Unit games). Fixed in the present pass
+(gpu/renderer.py fetch_smooth): margin-region UNWRITTEN pixels get a wide
+vertical gaussian blur (radius ~height/24) instead of the single clamped
+tap. A stretched sky should be a smooth gradient, so this is faithful; the
+horizon (sky->terrain) blends over that span as soft atmospheric haze
+rather than a hard streak line. Real geometry is one tap as before.
+
+Safe by construction: the whole thing is gated on uMargin>0, which is 0 in
+exact / 4:3, and the present pass never feeds the exact comparison (that
+reads the index buffer). Re-verified exact mode 100.0000% on capture and
+capture-8000 anyway. Header regenerated (gen_shaders.py), rebuilt, live
+overlay runs err=0. Before/after: results/proof/vunit-sky-margin-smoothing.png.
