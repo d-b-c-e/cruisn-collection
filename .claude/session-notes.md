@@ -375,3 +375,11 @@ for volume/coinage baking (nvram_tool.py flow ready).
 4. Telemetry Phase B: RAM-hunt speed/RPM in attract (unblocks achievements).
 5. Multi-hour soak + crusnwld/offroadc oracle determinism passes.
 NOT overnight (need the wheel): CMOS setting-baking, steering taste tests.
+
+## Overnight session 7 COMPLETE (2026-08-22/23)
+- **Task 1 audio: DONE** - per-game attract music from LaunchBox snaps, cross-fade on highlight, 1.2s launch fade-out. gen_game_music.py.
+- **Task 2 water artifact: reproduced + characterized + documented** (revealed lake, research-confirmed). Surgical backdrop-mask deferred to a with-user visual session (blind culling risks good canyon scenes). ASPECT toggle is shipped mitigation. MIDV_DBG_QUADID debug added.
+- **Task 3 FOV R&D: novel groundwork** - offroadc C3x constant map (screen 512x400, center 256, clip bounds, reciprocal table) + perspective-divide at 0x010AF8. Next: trace divide callers to the X-scale MULF, test-patch. docs/widescreen-research.md.
+- **Task 4 Telemetry Phase B: crusnusa speed CONFIRMED + wired + live-verified** (word 0x0F22D, 4066 UDP datagrams 0..301 mph). RAM-dump hunt tooling (MIDV_RAMDUMP_DIR) is turnkey. offroadc/crusnwld pending (offroadc = per-car array needing on-screen correlation).
+- **Task 5 soak: not reached** (as expected). Patch series now 31.
+- Also shipped this session: game-code patcher (MIDV_PATCH, ROM-safe), runtime MIDV_GL_MARGIN, ASPECT/WIDESCREEN presets, margin-extend probe fix, per-game audio.

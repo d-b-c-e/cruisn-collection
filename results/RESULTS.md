@@ -972,3 +972,28 @@ when that session happens.
 ## Task 1: per-game menu audio — DONE (see commit)
 Real attract audio per game from LaunchBox video snaps; cross-fade on card
 highlight, 1.2 s fade-out on launch.
+
+## Task 4: Telemetry Phase B (speed) — crusnusa CONFIRMED + wired; hunt turnkey
+
+RAM-hunt method built and proven. Added a periodic DSP-RAM dump hook
+(MIDV_RAMDUMP_DIR + MIDV_RAMDUMP_EVERY) and a differential analysis:
+capture RAM across a demo-race acceleration, find the C3x-float word that
+ramps 0->top monotonically and resets per lap.
+
+- **crusnusa speed = DSP word 0x0F22D (C3x float, MPH), CONFIRMED**:
+  trajectory 0->78->176->252->294 cruise, reset 0 per demo lap. Wired into
+  telemetry (`telem_notify("speed", mph)`), verified LIVE: 4066 UDP
+  datagrams, 0..301 mph, correct accel curve. Unblocks SimHub/Buttkicker
+  speed feed and the parked achievements idea. Speed also mirrored at
+  0x0DCD5 (work copy).
+- **offroadc**: a per-car speed ARRAY at ~0x1C1xx-0x1C6xx (player + 3
+  opponents); strong candidates 0x1C40E, 0x1C1D7 (0->73->188->221 vary
+  with terrain). Needs on-screen-MPH correlation to pick the player slot -
+  left as "hunt pending" rather than wire a possibly-wrong address.
+- **crusnwld**: not yet hunted (same turnkey method).
+
+Adding a game: `MIDV_RAMDUMP_DIR=<dir> MIDV_RAMDUMP_EVERY=20 run_rig ...`,
+then the differential analysis (see this session log), then add the addr
+to s_speed_addr[] in midvunit_v.cpp. RPM: no clean candidate found on the
+first pass (may be normalized 0..1 or gear-reset); revisit with the
+on-screen correlation.
