@@ -69,6 +69,10 @@ uniform int  uClipRight;   // coarse cliprect right (W-1)
 uniform usampler2D texram; // 4096-wide R8UI, 8 MB of texture RAM
 uniform int  texMask;      // byte-size mask (size-1)
 uniform int  uDbgQuadId;   // debug: if 1, outIndex = quad id (gl_PrimitiveID/2)
+uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded
+                           // inside the margins so extend fills from the
+                           // 4:3 boundary (sky above, terrain below). 0=off.
+uniform int  uClipW;       // coarse canvas width (for the right margin)
 flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;
 flat in vec4 uv01; flat in vec4 uv23;
 flat in uvec4 meta;
@@ -205,7 +209,14 @@ void main() {
         if (cx < lo || cx >= hi) discard;
     }
 
-    uint pixdata = meta.x, mode = meta.y, dither = meta.z;
+    uint pixdata = meta.x, mode = meta.y, dither = meta.z & 1u;
+    bool backdrop = (meta.z & 2u) != 0u;
+    // suppress backdrop (sky/horizon band) in the 16:9 margins: leaves the
+    // pixel unwritten so the margin-extend fills it from the 4:3 boundary
+    // column - sky in the upper margin, terrain in the lower (covers the
+    // "water through the ground" reveal). Terrain/rock quads are unaffected.
+    if (backdrop && uBgMargin > 0 && (px < uBgMargin || px >= uClipW - uBgMargin))
+        discard;
     if (dither == 1u && ((px ^ py) & 1) != 0) discard;   // coarse-space mask
 
     outMask = 1u;   // every non-discarded fragment marks its pixel written
@@ -433,6 +444,12 @@ def build_vertices(quads, xoff):
         pixdata = int(dma[1])
         textured = (dma[0] & 0x300) == 0x100
         dither = 1 if (dma[0] & 0x2000) else 0
+        # backdrop (sky/horizon band): texbase low byte 0x7f AND full-width
+        # (excludes incidental small 0x7f quads) - distinct from terrain/rock
+        # texbases; flagged into meta bit 1 for 16:9-margin suppress
+        _wx = [int(np.int16(dma[2 + i * 2])) for i in range(4)]
+        if (int(dma[14]) & 0xff) == 0x7f and (max(_wx) - min(_wx)) > 200:
+            dither |= 2
         if not textured:
             mode = 0
             pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff
@@ -484,6 +501,10 @@ def build_vertices_fast(quads, xoff):
     textured = (dma[:, 0] & 0x300) == 0x100
     sel = dma[:, 0] & 0xc00
     dither = ((dma[:, 0] & 0x2000) != 0).astype(np.uint32)
+    # backdrop: texbase low byte 0x7f AND full-width (see build_vertices)
+    _wvx = dma[:, 2:10:2].astype(np.int16)
+    _wwide = (_wvx.max(axis=1).astype(np.int32) - _wvx.min(axis=1)) > 200
+    dither |= ((((dma[:, 14] & 0xff) == 0x7f) & _wwide).astype(np.uint32) << 1)
     mode = np.zeros(n, dtype=np.uint32)
     mode[textured & (sel == 0x000)] = 1
     mode[textured & (sel == 0x800)] = 2
@@ -595,6 +616,8 @@ def main():
     prog["texram"].value = 0
     prog["texMask"].value = texsize - 1
     prog["uDbgQuadId"].value = 1 if os.environ.get("MIDV_DBG_QUADID") else 0
+    prog["uClipW"].value = W
+    prog["uBgMargin"].value = (margin if (args.crackfill and args.wide) else 0)
     tex2d.use(0)
 
     fdata, udata = build_vertices(quads, margin)

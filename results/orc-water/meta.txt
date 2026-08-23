@@ -1,4 +1,0 @@
-frame 4000
-page_control 513
-visible_page_offset 0x40000
-visarea 510 400

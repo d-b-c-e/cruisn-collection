@@ -997,3 +997,33 @@ then the differential analysis (see this session log), then add the addr
 to s_speed_addr[] in midvunit_v.cpp. RPM: no clean candidate found on the
 first pass (may be normalized 0..1 or gear-reset); revisit with the
 on-screen correlation.
+
+## Task 2 SOLVED (session 8): backdrop-margin suppress fixes the water artifact
+
+The FOV-trace pivot paid off differently than planned. Using MIDV_DBG_QUADID
+to attribute the blue "lake" pixels in capture-offroadc-rig's left margin,
+they resolved to quads 0-3 - the sky/horizon BACKDROP band (texbase low
+byte 0x7f, full-width, drawn first), NOT a separate water plane. It shows
+through the 16:9 margins wherever the terrain trapezoid doesn't reach.
+
+**Fix = the research's first-choice content-specific masking, done safely:**
+flag backdrop quads (texbase & 0xff == 0x7f AND width > 200px) into a meta
+bit and discard them inside the 16:9 margins. The pixels go unwritten, so
+the existing margin-extend fills from the 4:3 boundary column - SKY in the
+upper margin, TERRAIN in the lower - which covers the reveal automatically.
+Terrain/rock quads (texbase 0x25xx-0x30xx) are untouched. Width gate
+excludes a stray 16px 0x7f quad in crusnwld (verified: 0 false positives on
+crusnusa canyon/title, crusnwld).
+
+Verified: exact mode still 100.0000% (suppress is off in exact mode);
+capture-offroadc-rig left-margin water 0.643 -> 0.000, right-margin canyon
+rock preserved; LIVE full-16:9 attract sweep bottom-margin water 0.40 ->
+0.02 across the whole cycle, terrain/cacti extend naturally into the
+margins, 100% speed. Proof: results/proof/offroadc-water-FIXED-16x9.png.
+Ships default-on with crack/margin fill (MIDV_GL_CRACKFILL=0 or
+MIDV_GL_MARGINFILL=0 disables). Minor residual: faint horizontal streaking
+where sky is clamp-extended in the upper margins (a vertical-gradient sky
+fill could refine it later).
+
+This is the artifact the user chased across sessions 5-8; full 16:9 Off
+Road is now clean. GAME_MARGIN can stay empty (full width) as the default.
