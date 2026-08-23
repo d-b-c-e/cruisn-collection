@@ -383,3 +383,7 @@ NOT overnight (need the wheel): CMOS setting-baking, steering taste tests.
 - **Task 4 Telemetry Phase B: crusnusa speed CONFIRMED + wired + live-verified** (word 0x0F22D, 4066 UDP datagrams 0..301 mph). RAM-dump hunt tooling (MIDV_RAMDUMP_DIR) is turnkey. offroadc/crusnwld pending (offroadc = per-car array needing on-screen correlation).
 - **Task 5 soak: not reached** (as expected). Patch series now 31.
 - Also shipped this session: game-code patcher (MIDV_PATCH, ROM-safe), runtime MIDV_GL_MARGIN, ASPECT/WIDESCREEN presets, margin-extend probe fix, per-game audio.
+
+## Session 8 (2026-08-23): Task 2 WATER ARTIFACT SOLVED
+- Chased the FOV trace (item 1): found the projection epilogue at 0x0239C-0x023A3 (perspective divide + center offsets 256/200); FOV scale is in the upstream vertex matrix (deep - documented, not completed).
+- PIVOTED to item 3 (renderer backdrop-mask) which SOLVED it: the blue "lake" is the sky/horizon BACKDROP band (texbase 0x7f, full-width, drawn first) showing through the 16:9 margins. Fix: discard backdrop quads in the margins -> margin-extend fills sky-above/terrain-below. Terrain untouched, exact mode 100
