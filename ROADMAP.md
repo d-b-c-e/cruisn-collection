@@ -42,7 +42,7 @@ capture) · 🙋 needs the user at the wheel
 
 | ID | Item | Status | Effort | Auto | Notes |
 |----|------|--------|--------|------|-------|
-| **D1** | mame-src `cruisn-poc` string cleanup | ☐ | S | ✅ | POC-NOTES.md + generated-header comments still say cruisn-poc. Piggyback on the next mame-src commit (forces a patch-series refresh). |
+| **D1** | mame-src `cruisn-poc` string cleanup | ☑ | — | — | **DONE 2026-08-23.** Only stale ref was the midvunit_menu_assets.h header comment (generator already emits cruisn-collection); POC-NOTES.md was already clean. Fixed + patch refreshed. |
 | **D2** | Gamepad axis-order table validation | ☐ | S | 🙋 | Positional/approximate; validate on a pad-only run (support bundle shows truth). |
 | **D3** | Mid-game EIP=0 crash singleton | ☐ | M | ⚠️ | One-time (2026-08-19), unexplained. WER minidumps in rig/crashdumps/. Investigate if it recurs. |
 | **D4** | Upstream the winhybrid DIJoystick2 fix to MAME | ☐ | M | ✅ | Nice-to-have; the 128-button fix benefits mainline. |
