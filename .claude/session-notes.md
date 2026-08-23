@@ -402,3 +402,18 @@ NOT overnight (need the wheel): CMOS setting-baking, steering taste tests.
   streaking in upper margins (refine later with a vertical-gradient sky).
 - Tooling added: MIDV_STATEDUMP_MINQUADS trigger, MIDV_DBG_QUADID mode.
 - Patch series 32. Closes the artifact chased since session 5.
+
+## Exotica perf regression RESOLVED (2026-08-23 evening)
+User felt "half framerate + choppy audio" in Exotica. Investigation:
+- NOT a code regression (yesterday's build measured identically today).
+- Discriminating pair (user's idea): USA 99.81% vs Exotica 94.31% same
+  minute, same load -> Exotica-specific headroom problem, not pure ambient.
+- ROOT CAUSE: with the live overlay the game was rendered TWICE (our GL +
+  MAME's CPU rasterizer into a never-displayed buffer). FIX: skip
+  render_triangle_fan when midz_live, local extra struct (no poly ring).
+  Exotica now 99.7-99.8% under ambient load, matching V-Unit.
+- Measurement lore: freshly built exes get Defender-scanned - perf runs
+  right after a build read 5-15% low (earlier attempt measured 80-86% and
+  was wrongly reverted because of this). Space builds from measurements.
+- Ambient load facts: Pit House burns ~88% of a core at idle; SimHub adds
+  more when open. Cumulative Get-Process CPU is NOT current rate.
