@@ -253,12 +253,11 @@ ZEUS_ROMS = {"crusnexo"}
 GAME_HEIGHT = {"offroadc": 401}
 
 # per-game 16:9 margin width per side (overlay default 86 = full widescreen).
-# offroadc's canyon levels draw a water/backdrop plane that is off-screen in
-# 4:3 but shows in the bottom-corner margins as blue wedges (verified: the
-# ground geometry already extends to x=-366..1000, so it is revealed
-# backdrop, not a hole - no game-code culling fix applies). A trimmed margin
-# keeps most of the widescreen gain without the corner artifact.
-GAME_MARGIN = {"offroadc": 32}
+# All games default to full width now; the shell WIDESCREEN setting is the
+# per-taste dial for the revealed-backdrop edge artifact (offroadc canyon
+# water). Left as a hook for per-game tuning once the widescreen research
+# lands (projection-aspect patch may change the calculus entirely).
+GAME_MARGIN = {}
 
 
 # ---- rig preparation --------------------------------------------------------
