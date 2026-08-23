@@ -444,11 +444,13 @@ def build_vertices(quads, xoff):
         pixdata = int(dma[1])
         textured = (dma[0] & 0x300) == 0x100
         dither = 1 if (dma[0] & 0x2000) else 0
-        # backdrop (sky/horizon band): texbase low byte 0x7f AND full-width
-        # (excludes incidental small 0x7f quads) - distinct from terrain/rock
-        # texbases; flagged into meta bit 1 for 16:9-margin suppress
+        # backdrop (sky/horizon band): per-game texbase low byte AND
+        # full-width (excludes incidental small quads) - distinct from
+        # terrain/rock; flagged into meta bit 1 for 16:9-margin suppress.
+        # offroadc 0x7f, crusnusa 0x56, crusnwld 0xc5 (verified: exactly the
+        # sky quads, no terrain false positives).
         _wx = [int(np.int16(dma[2 + i * 2])) for i in range(4)]
-        if (int(dma[14]) & 0xff) == 0x7f and (max(_wx) - min(_wx)) > 200:
+        if (int(dma[14]) & 0xff) in (0x56, 0x7f, 0xc5) and (max(_wx) - min(_wx)) > 200:
             dither |= 2
         if not textured:
             mode = 0
@@ -501,10 +503,12 @@ def build_vertices_fast(quads, xoff):
     textured = (dma[:, 0] & 0x300) == 0x100
     sel = dma[:, 0] & 0xc00
     dither = ((dma[:, 0] & 0x2000) != 0).astype(np.uint32)
-    # backdrop: texbase low byte 0x7f AND full-width (see build_vertices)
+    # backdrop: per-game texbase low byte AND full-width (see build_vertices)
     _wvx = dma[:, 2:10:2].astype(np.int16)
     _wwide = (_wvx.max(axis=1).astype(np.int32) - _wvx.min(axis=1)) > 200
-    dither |= ((((dma[:, 14] & 0xff) == 0x7f) & _wwide).astype(np.uint32) << 1)
+    _lb = dma[:, 14] & 0xff
+    _isbg = ((_lb == 0x56) | (_lb == 0x7f) | (_lb == 0xc5)) & _wwide
+    dither |= (_isbg.astype(np.uint32) << 1)
     mode = np.zeros(n, dtype=np.uint32)
     mode[textured & (sel == 0x000)] = 1
     mode[textured & (sel == 0x800)] = 2
