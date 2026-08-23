@@ -9,3 +9,5 @@ build/
 results/verify-*/
 results/ramhunt/
 results/boot-capture/
+results/crusnexo-prog.asm
+results/pclog-run/
