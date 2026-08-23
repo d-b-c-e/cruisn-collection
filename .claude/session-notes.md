@@ -427,3 +427,23 @@ User felt "half framerate + choppy audio" in Exotica. Investigation:
   OR gas-pedal rest value. Investigate with button_monitor + the ADC
   values at that screen; may be authentic cab behavior with a latched
   shifter. Needs the user at the wheel to reproduce.
+
+## Exotica "still 4:3" RESOLVED as game-side culling (2026-08-23 late)
+Instrumented: wide_mode=1 through the whole race; black side bars measure
+EXACTLY 86/684 = the margin width. The 16:9 present IS active - Exotica
+itself culls nearly all geometry to the 4:3 frustum (research-predicted;
+Model 3 docs verbatim). Vegas day track shows real margin content; night
+tracks (China/mountain) show black = looks 4:3. TRUE full 16:9 needs the
+Zeus FOV/cull DSP patch (TMS32032, same C3x float family - method ready).
+User to choose: accept partial / edge-extend cosmetics (not recommended,
+smears) / Zeus FOV R&D.
+
+## Per-game steering SHIPPED (2026-08-23 late)
+Steering sens/curve now per-game (edits apply to the game highlighted on
+the menu, short-name labeled). Legacy globals migrated to the V-Unit trio;
+Exotica starts LINEAR (fixes its twitchiness from the global 70 curve).
+
+## STILL PENDING USER ACTION
+- Wizard re-run of GAS + BRAKE steps (captures pedal press direction) -
+  the Exotica transmission auto-select fix is INERT until this is done.
+  Root cause proven: Moza axes rest at center; MAME reads 50% throttle.

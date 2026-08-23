@@ -338,7 +338,8 @@ class Shell:
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
                   (0.75, 0.75, 0.8, 1.0))
 
-    def draw_settings(self, ssel, crt, fill, sens, curve, margin, t):
+    def draw_settings(self, ssel, crt, fill, sens, curve, margin, t,
+                      gamename=""):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -348,11 +349,17 @@ class Shell:
                          (1.0, 0.85, 0.4, 1.0))
         # block layout: names left-aligned, values right-aligned in a
         # centered fixed-width column
+        # steering rows are PER-GAME: they edit the game highlighted on the
+        # menu, named (short) in the row label so it's unambiguous
+        short = {"CRUIS'N USA": "USA", "CRUIS'N WORLD": "WORLD",
+                 "OFF ROAD CHALLENGE": "OFF ROAD",
+                 "CRUIS'N EXOTICA": "EXOTICA"}.get(gamename, gamename)
+        g = f"  ({short})" if gamename else ""
         rows = [("CRT EFFECTS", "ON" if crt else "OFF"),
                 ("CRACK FILL", "ON" if fill else "OFF"),
-                ("STEERING SENSITIVITY",
+                (f"STEERING SENSITIVITY{g}",
                  "GAME DEFAULT" if sens is None else f"< {sens} >"),
-                ("STEERING CURVE",
+                (f"STEERING CURVE{g}",
                  "LINEAR (OFF)" if curve is None else f"< {curve} >"),
                 ("ASPECT / WIDESCREEN", ASPECT_LABEL(margin)),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
@@ -591,13 +598,32 @@ def load_config():
     cp = configparser.ConfigParser()
     cp.read(CFG)
     sec = cp["collection"] if "collection" in cp else {}
-    ss = str(sec.get("steersens", "")).strip()
-    sc = str(sec.get("steercurve", "")).strip()
     mg = str(sec.get("margin", "")).strip()
+
+    # steering is PER-GAME (the games' native response shapes differ - the
+    # V-Unit trio is lazy-centered, Exotica is not, so one global curve
+    # cannot feel right everywhere). Keys: steersens_<rom>/steercurve_<rom>.
+    # Legacy global steersens/steercurve migrate to the V-Unit games only
+    # (the finding that motivated the split: curve 70 fixed V-Unit but made
+    # Exotica twitchy - Exotica starts linear).
+    def _num(key):
+        v = str(sec.get(key, "")).strip()
+        return int(v) if v.lstrip("-").isdigit() else None
+    sens, curve = {}, {}
+    for rom, _, _, _ in GAMES:
+        sens[rom] = _num(f"steersens_{rom}")
+        curve[rom] = _num(f"steercurve_{rom}")
+    legacy_s, legacy_c = _num("steersens"), _num("steercurve")
+    for rom in ("crusnusa", "crusnwld", "offroadc"):
+        if sens[rom] is None and legacy_s is not None:
+            sens[rom] = legacy_s
+        if curve[rom] is None and legacy_c is not None:
+            curve[rom] = legacy_c
+
     return {"crt": str(sec.get("crt", "1")) == "1",
             "crackfill": str(sec.get("crackfill", "1")) == "1",
-            "steersens": int(ss) if ss.isdigit() else None,
-            "steercurve": int(sc) if sc.isdigit() else None,
+            "steersens": sens,
+            "steercurve": curve,
             "margin": int(mg) if mg.isdigit() else None,
             "scale": int(sec.get("scale", 4)),
             "rom": sec.get("rom", "crusnusa")}
@@ -606,15 +632,17 @@ def load_config():
 def save_config(state):
     cp = configparser.ConfigParser()
     cp.read(CFG)   # preserve other sections (wheelmap)
-    cp["collection"] = {"crt": "1" if state["crt"] else "0",
-                        "crackfill": "1" if state["crackfill"] else "0",
-                        "steersens": ("" if state["steersens"] is None
-                                      else str(state["steersens"])),
-                        "steercurve": ("" if state["steercurve"] is None
-                                       else str(state["steercurve"])),
-                        "margin": ("" if state["margin"] is None
-                                   else str(state["margin"])),
-                        "scale": str(state["scale"]), "rom": state["rom"]}
+    sec = {"crt": "1" if state["crt"] else "0",
+           "crackfill": "1" if state["crackfill"] else "0",
+           "margin": ("" if state["margin"] is None
+                      else str(state["margin"])),
+           "scale": str(state["scale"]), "rom": state["rom"]}
+    for rom, _, _, _ in GAMES:
+        sv = state["steersens"].get(rom)
+        cv = state["steercurve"].get(rom)
+        sec[f"steersens_{rom}"] = "" if sv is None else str(sv)
+        sec[f"steercurve_{rom}"] = "" if cv is None else str(cv)
+    cp["collection"] = sec
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
         cp.write(f)
@@ -1010,19 +1038,22 @@ def main():
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 2:
                     # MAME sensitivity: game default is 25; below 5 = default
+                    rom = GAMES[sel][0]
                     step = 5 if key == glfw.KEY_RIGHT else -5
-                    cur = state["steersens"]
+                    cur = state["steersens"].get(rom)
                     nxt = (25 if cur is None else cur) + step
-                    state["steersens"] = None if nxt < 5 else min(nxt, 200)
+                    state["steersens"][rom] = (None if nxt < 5
+                                               else min(nxt, 200))
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 3:
                     # response-curve exponent percent; 100 = linear = off
+                    rom = GAMES[sel][0]
                     step = 10 if key == glfw.KEY_RIGHT else -10
-                    cur = state["steercurve"]
+                    cur = state["steercurve"].get(rom)
                     nxt = (100 if cur is None else cur) + step
-                    state["steercurve"] = (None if nxt == 100
-                                           else max(50, min(nxt, 200)))
+                    state["steercurve"][rom] = (None if nxt == 100
+                                                else max(50, min(nxt, 200)))
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 4:
@@ -1101,9 +1132,11 @@ def main():
                               WIZARD_STEPS[wiz_idx][2],
                               max(0.0, wiz_cool - time.time()))
         elif mode == "settings":
+            rom = GAMES[sel][0]
             shell.draw_settings(ssel, state["crt"], state["crackfill"],
-                                state["steersens"], state["steercurve"],
-                                state["margin"], t)
+                                state["steersens"].get(rom),
+                                state["steercurve"].get(rom),
+                                state["margin"], t, GAMES[sel][1])
         else:
             shell.draw(sel, state["crt"], t, row)
         glfw.swap_buffers(win)
@@ -1126,8 +1159,8 @@ def main():
                         rom=rom, scale=state["scale"],
                         windowed=args.windowed, crt=state["crt"],
                         crackfill=state["crackfill"],
-                        steersens=state["steersens"],
-                        steercurve=state["steercurve"],
+                        steersens=state["steersens"].get(rom),
+                        steercurve=state["steercurve"].get(rom),
                         margin=state["margin"])
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)
