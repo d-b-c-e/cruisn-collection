@@ -1154,3 +1154,31 @@ exact / 4:3, and the present pass never feeds the exact comparison (that
 reads the index buffer). Re-verified exact mode 100.0000% on capture and
 capture-8000 anyway. Header regenerated (gen_shaders.py), rebuilt, live
 overlay runs err=0. Before/after: results/proof/vunit-sky-margin-smoothing.png.
+
+## 2026-08-23 — B3 volume: measurement pass (session 9)
+
+Captured 45s of each game's attract audio headless (-wavwrite, results/
+audio-levels) and measured RMS/peak/active loudness to make any volume fix
+data-driven rather than a blind CMOS poke.
+
+Findings:
+- **V-Unit trio (USA / World / Off Road) are mutually CONSISTENT**: active
+  loudness ~-33 dBFS on all three (attract is ~95% near-silence; the sound
+  effects that do play sit at the same level). No cross-game normalization
+  needed among them. They are quiet in ABSOLUTE terms (peaks ~-23 dBFS),
+  matching the user's "volume low" note - but that's the native attract mix;
+  raising it means the game's internal/CMOS volume (or the amp), not a
+  renderer knob.
+- **Exotica captured as DIGITAL SILENCE** (0 non-zero samples of 4.3M,
+  stereo 48k) even though the user clearly hears it at the wheel. So the
+  headless attract can't measure it. Most likely ATTRACT SOUND is off in
+  its CMOS (a standard operator setting - the user hears audio because
+  they're coined up and driving, not watching attract), or a DCS-headless
+  quirk. Either way the "Exotica quieter" question can't be answered
+  offline.
+
+Conclusion: no safe autonomous action. The V-Unit trio needs nothing.
+Exotica's volume (and whether attract sound is simply disabled) needs a
+one-time service-menu (F2) pass at the wheel - then bake the CMOS into the
+fixture (nvram_tool.py flow ready). Blind CMOS pokes risk the games'
+NVRAM checksum. B3 reclassified as needs-the-wheel for Exotica.
