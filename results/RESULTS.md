@@ -1182,3 +1182,28 @@ Exotica's volume (and whether attract sound is simply disabled) needs a
 one-time service-menu (F2) pass at the wheel - then bake the CMOS into the
 fixture (nvram_tool.py flow ready). Blind CMOS pokes risk the games'
 NVRAM checksum. B3 reclassified as needs-the-wheel for Exotica.
+
+## 2026-08-23 — B2 RPM CONFIRMED + wired (crusnusa), via a real drive (session 9)
+
+The user drove crusnusa ~180s (capture_drive.py, RAM dumped every 6 frames,
+1771 dumps). That real gameplay data settled B2:
+- **Debunked the attract candidate 0x0F0C0**: near-zero during real driving
+  (it was an attract-mode-only value, like 0x0F17A). Good that it wasn't
+  wired.
+- **Confirmed 0x0DC20 = engine RPM / tach.** Speed-anchored hunt on the
+  drive (rpm must track speed within a gear and DROP at shifts while speed
+  continues): 0x0DC20 tracks speed*~2.85 through acceleration, then shows a
+  sharp V-dip exactly at the Lo->Hi gear shift while speed stays pinned -
+  the tach signature speed can't have. Confirmed on the plotted full drive
+  (results/rpm-plot-DC20*.png: the first run's shift-dip is unmistakable).
+  Observed 0..912 (redline ~900; attract spiked to ~1371).
+
+Wired as "rpm" over MIDV_TELEM_UDP alongside speed; verified end-to-end in
+attract (6514 datagrams, tracks speed, dips together at slowdowns). Emitted
+in raw game tach units (like speed's raw units) - downstream (SimHub/
+Buttkicker) scales.
+
+Method note for World/Off Road RPM: same one-command drive
+(harness/capture_drive.py <rom>) + the speed-anchored shift-dip hunt. Their
+RAM layouts differ so each needs its own capture; crusnusa proved the method
+end-to-end.
