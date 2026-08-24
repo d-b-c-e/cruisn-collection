@@ -540,3 +540,33 @@ the request stream (user flagged one like "c-y-b-e-r"). This is pure
 game-renderer / DSP RE work - keep vocabulary neutral in prose, commits,
 and comments so the session stays on the intended model. (In project
 memory too.)
+
+## Session 9 late-night: telemetry ground truth + margin regression (2026-08-23/24)
+
+Full chronicle in RESULTS.md ("telemetry ground-truth saga"). Load-bearing
+facts for next session:
+- **Attract-hunted telemetry words were DRONES** (attract demos are
+  drone-driven). Player speed persists in NO dumped memory (both banks +
+  C31 internal RAM at 0x809800, all decodings vs HUD-OCR ground truth).
+- **crusnusa RPM = 0x0E632.lo16** (uint16 raw 0..~14.6k), confirmed
+  r=+0.91 vs the on-screen tach gauge fill. WIRED. Speed entries zeroed.
+- **Speed fix = HUD-quad DMA tap** (digit identity in dma_data[10..13]
+  texcoords for quads in the MPH box, ~x30-72/y347-370 for USA). World
+  calibrating headless from attract (results/wld-hudcal capture:
+  MIDV_QUADLOG + hud dumps). USA: one short user drive with quadlog, or
+  the font mapping may transfer from World.
+- **HUD-OCR pipeline** (proven): hud_*.bin = visible-page rows 300-399;
+  glyph clustering at 12x18 grayscale, min cell width 2 (else "1" is
+  lost), 3-digit reads drop the leading 1 intermittently (readings >99
+  need continuity checks). RPM gauge fill = count of palette idx 1 in
+  cols 400-512.
+- **Diagnostics**: forza_probe.py (live packet decode + CSV), forza_synth.py
+  (synthetic drive to SimHub - proved read side). MIDV_TELEM_FORZA accepts
+  comma-separated targets. ForzaKeeper zero-packets MUST carry real
+  EngineMaxRpm=7500 (all-zero packets wedge SimHub).
+- **MARGIN FILL defaults OFF** (user's phone photo proved the clean
+  original look; clamp-extend caused the smear complaints). SETTINGS row
+  toggles it. Off Road shows more black at edges with fill off (water
+  backdrop suppressed, no longer extended over).
+- SimHub setup: FH5/FH6 profile, port 8000, rig collection.ini
+  [telemetry] forza=127.0.0.1:8000,127.0.0.1:8001 (dual: dash + probe).
