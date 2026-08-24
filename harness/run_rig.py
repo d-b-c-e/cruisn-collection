@@ -682,7 +682,7 @@ def apply_wheelmap(tree, rig):
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
-                      margin=None, ffb=None, marginfill=True, mame=VUNIT):
+                      margin=None, ffb=None, marginfill=False, mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can

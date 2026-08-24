@@ -698,7 +698,7 @@ def load_config():
     ffb = _num("ffb")
     return {"crt": str(sec.get("crt", "1")) == "1",
             "crackfill": str(sec.get("crackfill", "1")) == "1",
-            "marginfill": str(sec.get("marginfill", "1")) == "1",
+            "marginfill": str(sec.get("marginfill", "0")) == "1",
             "steersens": sens,
             "steercurve": curve,
             "margin": int(mg) if mg.isdigit() else None,
