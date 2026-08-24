@@ -408,6 +408,55 @@ class Shell:
         self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
 
 
+class ForzaKeeper:
+    """Keeps the SimHub dash alive between games.
+
+    SimHub freezes on the last received values when a telemetry stream
+    stops (standard behavior) - so an exited game left the dash stuck on
+    whatever was last sent. Whenever no game is running, this emits zeroed
+    Forza packets (speed 0, rpm 0, gear 1) at 10 Hz to the same target the
+    games use ([telemetry] forza in collection.ini), so gauges rest at zero
+    in the launcher and snap back to zero the moment a game exits - crashes
+    included. Inert when no forza target is configured."""
+
+    def __init__(self):
+        import socket
+        import struct
+        self.game_active = threading.Event()
+        self.target = None
+        try:
+            cp = configparser.ConfigParser()
+            cp.read(CFG)
+            v = cp.get("telemetry", "forza", fallback="").strip()
+            if v:
+                if v.lower() in ("1", "on", "true", "yes"):
+                    v = "127.0.0.1:5300"
+                host, _, port = v.partition(":")
+                self.target = (host or "127.0.0.1", int(port or "5300"))
+        except Exception:
+            self.target = None
+        if self.target is None:
+            return
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._struct = struct
+        threading.Thread(target=self._loop, daemon=True).start()
+
+    def _loop(self):
+        ms = 0
+        pkt = bytearray(324)
+        self._struct.pack_into("<i", pkt, 0, 1)   # IsRaceOn: dash stays live
+        pkt[319] = 1                              # gear 1 (0 shows reverse)
+        while True:
+            if not self.game_active.is_set():
+                ms = (ms + 100) & 0xFFFFFFFF
+                self._struct.pack_into("<I", pkt, 4, ms)
+                try:
+                    self._sock.sendto(bytes(pkt), self.target)
+                except OSError:
+                    pass
+            time.sleep(0.1)
+
+
 class Audio:
     """Menu music (mci loop; build/replace via harness/make_music.py) +
     synth blips (winsound, plays alongside mci). All best-effort: missing
@@ -747,6 +796,7 @@ def main():
     sel = next((i for i, g in enumerate(GAMES) if g[0] == state["rom"]), 0)
     actions = []
     audio = Audio()
+    keeper = ForzaKeeper()   # zeroes the SimHub dash whenever no game runs
     audio.start_music(GAMES[sel][0])
     music_sel = sel   # track highlight changes to switch the per-game loop
 
@@ -1162,6 +1212,7 @@ def main():
             state["rom"] = launch
             save_config(state)
             fg_stop.set()   # the game owns the foreground now, stop fighting
+            keeper.game_active.set()   # hand the telemetry stream to the game
             # fade the menu music out as the LAUNCHING screen comes up and
             # MAME boots (instead of an abrupt cut when the game appears)
             audio.stop_music(fade=1.2)
@@ -1189,6 +1240,7 @@ def main():
         if launching is not None and launching["done"]:
             if launching["err"] is not None:
                 print("launch failed:", launching["err"])
+                keeper.game_active.clear()   # resume zeroing the dash
                 armed_at = time.time() + 1.0
                 audio.blip("nav")
             else:
@@ -1214,6 +1266,7 @@ def main():
                             break
                     time.sleep(0.25)
                 threading.Thread(target=proc.wait, daemon=True).start()
+                keeper.game_active.clear()   # game gone: zero the dash again
                 # joystick states changed while we were blocked (buttons
                 # pressed in-game) - rebaseline or the first poll back
                 # reads them as fresh presses and instantly relaunches
