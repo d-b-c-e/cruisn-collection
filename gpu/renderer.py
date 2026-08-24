@@ -329,40 +329,7 @@ ivec2 src_px(vec2 tuv) {
                  tuv.y * float(sz.y));
 }
 
-vec3 fetch_smooth(ivec2 p) {
-    // Margin sky streak fix: the clamp-extend in fill_px redirects each
-    // margin pixel to its own row's boundary column, so the boundary's
-    // per-row cloud/dither detail smears into horizontal streaks across the
-    // synthetic 16:9 margins. Vertically average the fill (a soft gradient,
-    // exactly what a stretched sky should look like). Only margin-region
-    // UNWRITTEN pixels are touched; real geometry is one tap as before, and
-    // with uMargin==0 (exact / 4:3) this is a straight passthrough.
-    if (uMargin > 0 && texelFetch(maskTex, p, 0).r == 0u) {
-        int mw = textureSize(maskTex, 0).x;
-        if (p.x < uMargin || p.x >= mw - uMargin) {
-            // wide gaussian vertical blur: the sky's cloud BANDS are many
-            // pixels tall, so a narrow window only softens their edges. A
-            // ~1/10-screen-tall window dissolves them into the smooth
-            // gradient a stretched sky should be. The horizon (sky->terrain)
-            // blends over that span too, which reads as atmospheric haze
-            // rather than a hard streak line.
-            int sz = textureSize(maskTex, 0).y;
-            int r = max(4, sz / 24);
-            float sig = float(r) * 0.5;
-            vec3 acc = vec3(0.0);
-            float wsum = 0.0;
-            for (int dy = -r; dy <= r; dy++) {
-                float wt = exp(-float(dy * dy) / (2.0 * sig * sig));
-                acc += wt * fetch_at(ivec2(p.x, p.y + dy));
-                wsum += wt;
-            }
-            return acc / wsum;
-        }
-    }
-    return fetch_at(p);
-}
-
-vec3 fetch_rgb(vec2 tuv) { return fetch_smooth(src_px(tuv)); }
+vec3 fetch_rgb(vec2 tuv) { return fetch_at(src_px(tuv)); }
 
 void main() {
     if (uCrt == 0) {                       // raw path - untouched product look
@@ -381,9 +348,9 @@ void main() {
     // ---- horizontal beam softness: 3-tap blur in fine pixels ----
     ivec2 p = src_px(wuv);
     int s = max(1, int(float(textureSize(idxTex, 0).y) / uSrcH * 0.45));
-    vec3 rgb = 0.5 * fetch_smooth(p)
-             + 0.25 * fetch_smooth(p + ivec2(s, 0))
-             + 0.25 * fetch_smooth(p - ivec2(s, 0));
+    vec3 rgb = 0.5 * fetch_at(p)
+             + 0.25 * fetch_at(p + ivec2(s, 0))
+             + 0.25 * fetch_at(p - ivec2(s, 0));
 
     // ---- scanlines: gaussian beam per source line, bright beams bloom ----
     float d = fract(wuv.y * uSrcH) - 0.5;
