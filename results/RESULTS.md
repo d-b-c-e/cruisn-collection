@@ -1291,3 +1291,27 @@ geometry, no fill. The clamp-stretch margin-extend (added later, default
 on) caused the reported edge smearing. MARGIN FILL is now a SETTINGS row
 and defaults OFF everywhere. (Their photo also proves the dithered
 billboard rectangles are original game pop-in - C2, not a regression.)
+
+## 2026-08-24 — HUD OCR speed SHIPPED (autonomous block)
+
+Postscript to the saga: the DMA-tap plan died on arrival - the entire
+1.6M-quad World rig capture contains ZERO digit-sized quads; the V-Unit
+HUD is CPU-blitted into videoram, not queued. (Attract in USA AND World
+hides the MPH box, so no headless calibration for other games either.)
+
+The final answer is runtime HUD OCR inside the emulator: each frame,
+read the visible page's MPH box and match the glyphs against 10 baked
+digit templates (midvunit_hud_ocr.h, generated from the user's
+calibration drive). The exact C++ algorithm (simple bilinear 12x18 + L2
+nearest template, reject >0.035) was mirror-validated offline first:
+822/823 frame agreement with the reference OCR. Blip suppression
+(>25mph jumps need 2 frames) + missing-box decay to 0. crusnusa wired;
+World/Off Road need one gameplay HUD capture each to pin their box
+coords + confirm the shared font.
+
+ALSO CONFIRMED autonomously: crusnusa RPM 0x0E632.lo16 vs the on-screen
+tach gauge fill, r=+0.91 (existing capture data - no drive needed).
+
+Verification state: attract emits 0/0 correctly (no box, no player).
+IN-GAME verification = the user's next normal drive with SimHub: the
+dash should now read exactly what the screen reads.

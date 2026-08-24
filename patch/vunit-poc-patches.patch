@@ -1,7 +1,7 @@
 From 6f55ed93ce5df76f01007096657cfd2491000ad0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 28 Mar 2026 20:27:47 -0500
-Subject: [PATCH 01/54] dinput joystick: use DIJOYSTATE2 for 128-button support
+Subject: [PATCH 01/55] dinput joystick: use DIJOYSTATE2 for 128-button support
  Use c_dfDIJoystick2 as the primary data format for DirectInput joystick
  devices, with c_dfDIJoystick as a fallback. This raises the button limit from
  32 (DIJOYSTATE) to 128 (DIJOYSTATE2). The existing code already handles up to
@@ -63,7 +63,7 @@ index 98fdfb01..c01403ee 100644
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 02/54] POC: env-gated DMA quad logging + one-shot state dump
+Subject: [PATCH 02/55] POC: env-gated DMA quad logging + one-shot state dump
  for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -184,7 +184,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 03/54] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 03/55] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -443,7 +443,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 04/54] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 04/55] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1383,7 +1383,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 05/54] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 05/55] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1421,7 +1421,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 06/54] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 06/55] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1456,7 +1456,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 07/54] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 07/55] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1548,7 +1548,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 08/54] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 08/55] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1610,7 +1610,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 09/54] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 09/55] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1673,7 +1673,7 @@ index 7936ea9f..3d5b3200 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 10/54] POC: 2px overscan inset - CRT-hidden edge pixels showed
+Subject: [PATCH 10/55] POC: 2px overscan inset - CRT-hidden edge pixels showed
  as a thin border
 
 ---
@@ -1711,7 +1711,7 @@ index 3d5b3200..af795ef7 100644
 From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 21:22:25 -0500
-Subject: [PATCH 11/54] POC-NOTES: point sessions opened here at the cruisn-poc
+Subject: [PATCH 11/55] POC-NOTES: point sessions opened here at the cruisn-poc
  project home
 
 ---
@@ -1746,7 +1746,7 @@ index 00000000..1b4841d0
 From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:08:42 -0500
-Subject: [PATCH 12/54] CRT pass: mask + scanlines + curvature in the palette
+Subject: [PATCH 12/55] CRT pass: mask + scanlines + curvature in the palette
  stage, F9 live toggle
 
 PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
@@ -1921,7 +1921,7 @@ index af795ef7..e302e1f4 100644
 From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:32:30 -0500
-Subject: [PATCH 13/54] MIDV_SKIP_STARTUP_SCREENS: env-gated
+Subject: [PATCH 13/55] MIDV_SKIP_STARTUP_SCREENS: env-gated
  boot-straight-to-game (frontend)
 
 BAD_DUMP sets (crusnwld c31boot) force the warning screen past
@@ -1968,7 +1968,7 @@ index f2c9b7d1..0cc79ff2 100644
 From 1bc48fcea8b586a0a60b4359ccdb7aeedaca39ed Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:17:53 -0500
-Subject: [PATCH 14/54] GL thread teardown handshake: stop before machine
+Subject: [PATCH 14/55] GL thread teardown handshake: stop before machine
  destruction
 
 Exit-time msvcrt!memcpy AVs logged at roughly every second close. A
@@ -2083,7 +2083,7 @@ index e302e1f4..28e33519 100644
 From 3cac3d671118aa443ce4701e8cd9364f6d4f578d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:42:26 -0500
-Subject: [PATCH 15/54] winhybrid: DIJoystick2 primary format - 128-button
+Subject: [PATCH 15/55] winhybrid: DIJoystick2 primary format - 128-button
  support in the default provider
 
 The DIJOYSTATE2 base patch updated only the pure dinput module's enum
@@ -2150,7 +2150,7 @@ index d6f33d2d..856fb333 100644
 From cc0aff8c51463d6d006c837ba4fcccdabc8db7fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:53:03 -0500
-Subject: [PATCH 16/54] Overlay wndproc: hide cursor over the game, clicks
+Subject: [PATCH 16/55] Overlay wndproc: hide cursor over the game, clicks
  refocus MAME's window
 
 The DISABLED+TRANSPARENT overlay made every click a Windows error beep
@@ -2221,7 +2221,7 @@ index 28e33519..6a3395fd 100644
 From ad4d2d8bb312ffc1c05d1513d7b162e3306dfa14 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 01:24:00 -0500
-Subject: [PATCH 17/54] Zeus scoping counters + scanner-safe shader header
+Subject: [PATCH 17/55] Zeus scoping counters + scanner-safe shader header
  (midzeus joins the subtarget)
 
 - zeus2.cpp: env-gated MIDZ_STATS=1 quads/frame profiler at the
@@ -2827,7 +2827,7 @@ index 233e8a13..e27ff2e3 100644
 From a97419f068281bab1cc1c8e20f8b036b22a5d3cb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:23:43 -0500
-Subject: [PATCH 18/54] In-game Esc options menu + UDP telemetry (Phase A)
+Subject: [PATCH 18/55] In-game Esc options menu + UDP telemetry (Phase A)
 
 - Esc menu drawn by the GL overlay itself: MENU_VS/FS shaders (generated),
   pre-rendered A8 label bitmaps (midvunit_menu_assets.h, generated),
@@ -6266,7 +6266,7 @@ index 6a3395fd..0f0e0efd 100644
 From 366f811988600fc2abc62f534d0107cbde4a173c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:46:12 -0500
-Subject: [PATCH 19/54] Overlay: runtime coarse height - offroadc's 401st
+Subject: [PATCH 19/55] Overlay: runtime coarse height - offroadc's 401st
  scanline restored
 
 offroadc runs a 512x401 mode (visarea bottom 400); HEIGHT=400 was compiled
@@ -6388,7 +6388,7 @@ index 0f0e0efd..f363dcb7 100644
 From 71e566039517000202fd4c3848d438227d9de430 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 21:52:44 -0500
-Subject: [PATCH 20/54] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
+Subject: [PATCH 20/55] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
  on)
 
 Scene pass gains an R8UI "written this scene" mask on attachment 1
@@ -6563,7 +6563,7 @@ index f363dcb7..95d0e3ea 100644
 From d5f9f613a339fe6bb7154b9862f21944ef1b1461 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:38 -0500
-Subject: [PATCH 21/54] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
+Subject: [PATCH 21/55] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
  road rendering
 
 Upstream fix by Jos van Mourik (merged 2026-07-18, post-0.286): drop the
@@ -6757,7 +6757,7 @@ index ff15fbc0..5383fa5b 100644
 From 40c0fd8efb3997e126c3d4ab9fe1daff4fbcc919 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:50 -0500
-Subject: [PATCH 22/54] zeus2: backport mamedev/mame#15723 - solid fills, depth
+Subject: [PATCH 22/55] zeus2: backport mamedev/mame#15723 - solid fills, depth
  clear, translucency
 
 Open upstream PR by Jos van Mourik: guard fast-clear depth 0 (stuck black
@@ -6926,7 +6926,7 @@ index 5383fa5b..ff1959b8 100644
 From 93acdd2bb8c8a7953702e213c6a930763ad1659f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:35 -0500
-Subject: [PATCH 23/54] GL overlay: persist live CRT toggle state for the
+Subject: [PATCH 23/55] GL overlay: persist live CRT toggle state for the
  launcher
 
 F9 and the Esc-menu CRT toggle flip the pass live, but the collection
@@ -6970,7 +6970,7 @@ index 95d0e3ea..39290867 100644
 From 3c2dab3df51c1cb22f5bc7102dee557589600773 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:53 -0500
-Subject: [PATCH 24/54] zeus2: include zeus2.h hunk missed from the
+Subject: [PATCH 24/55] zeus2: include zeus2.h hunk missed from the
  #15719/#15723 backports
 
 Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
@@ -7024,7 +7024,7 @@ index cd2c30b2..874bece3 100644
 From c2003def0707ff71f91cfc35cdaa1e4fb516619b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:11:29 -0500
-Subject: [PATCH 25/54] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
+Subject: [PATCH 25/55] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
  the GL-renderer oracle
 
 Env-gated, zero cost unset. Records quads (post-transform clipped verts +
@@ -7312,7 +7312,7 @@ index 874bece3..4ba8ac06 100644
 From d3269e559855935bae803b9f71dfcde329625aad Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:59:58 -0500
-Subject: [PATCH 26/54] GL overlay: Esc-menu pause + margin extend
+Subject: [PATCH 26/55] GL overlay: Esc-menu pause + margin extend
  (MIDV_GL_MARGINFILL)
 
 The Esc options menu now pauses the machine while open (request from the
@@ -7442,7 +7442,7 @@ index 39290867..37c704ad 100644
 From 795ef54adc64bbccb019fd853457209a1618dd93 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 15:52:57 -0500
-Subject: [PATCH 27/54] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
+Subject: [PATCH 27/55] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
  at 4x for real
 
 The mzgl overlay (inside zeus2.cpp, mirroring midvunit_v.cpp): monitor-
@@ -8918,7 +8918,7 @@ index 37c704ad..de3d4830 100644
 From 4a0d50c01d436d3ba8bca454379230164bb71001 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:13:22 -0500
-Subject: [PATCH 28/54] ioport: env-gated steering response curve for PADDLE
+Subject: [PATCH 28/55] ioport: env-gated steering response curve for PADDLE
  fields
 
 MIDV_STEER_CURVE (percent exponent on normalized wheel deflection,
@@ -8984,7 +8984,7 @@ index 8c4cd18e..5197e95e 100644
 From 152fb87ddd321f3100d7cedfe28cf9d6f66867b3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:36:45 -0500
-Subject: [PATCH 29/54] GL overlay: margin extend actually works now
+Subject: [PATCH 29/55] GL overlay: margin extend actually works now
  (off-by-half-pixel probe)
 
 The clamp-extend sampled exactly the nominal margin-edge column - the
@@ -9043,7 +9043,7 @@ index 6c11a6b9..d4380e46 100644
 From ed208255c50c8ad457f1c3efb11671fe1c394e35 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:56:16 -0500
-Subject: [PATCH 30/54] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
+Subject: [PATCH 30/55] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
  16:9 margin
 
 Code patcher: the TMS320C31 program is copied maindata ROM -> program RAM
@@ -9171,7 +9171,7 @@ index de3d4830..02e4fb5a 100644
 From a75813dddec3f7d54b056f8103bada857270a2ea Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 23:47:03 -0500
-Subject: [PATCH 31/54] Telemetry Phase B: live speed over UDP (crusnusa) +
+Subject: [PATCH 31/55] Telemetry Phase B: live speed over UDP (crusnusa) +
  RAM-dump hunt tooling
 
 MIDV_RAMDUMP_DIR/_EVERY dumps DSP work RAM periodically for offline
@@ -9279,7 +9279,7 @@ index 02e4fb5a..baf3c9d1 100644
 From dce4734c36c510e7a739e0d2d37dc06a2e57f137 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 00:47:30 -0500
-Subject: [PATCH 32/54] GL overlay: backdrop-margin suppress fixes the "water
+Subject: [PATCH 32/55] GL overlay: backdrop-margin suppress fixes the "water
  through the ground"
 
 The Off Road bottom-corner "lake" reveal was the sky/horizon BACKDROP band
@@ -9427,7 +9427,7 @@ index baf3c9d1..b45aeed9 100644
 From d49c8acdaae51d904b21c64644ce8003545b156b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 11:57:13 -0500
-Subject: [PATCH 33/54] GL overlay: extend backdrop-margin suppress to crusnusa
+Subject: [PATCH 33/55] GL overlay: extend backdrop-margin suppress to crusnusa
  + crusnwld
 
 Generalize the backdrop signature to the per-game sky texbase low bytes
@@ -9476,7 +9476,7 @@ index b45aeed9..9bd977d9 100644
 From 6b28ed89c5788932d556c277794dcc30a693d70a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:22:32 -0500
-Subject: [PATCH 34/54] Fix Esc-menu resume: block the emu thread instead of
+Subject: [PATCH 34/55] Fix Esc-menu resume: block the emu thread instead of
  machine().pause()
 
 Resume could hang the game paused: machine().pause() paused fine, but the
@@ -9576,7 +9576,7 @@ index 9bd977d9..a92c28a9 100644
 From ffba178f038af29c4efe04deda9fbcd6b2f8576b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:55:30 -0500
-Subject: [PATCH 35/54] A1b: Exotica 16:9 widescreen (Zeus overlay)
+Subject: [PATCH 35/55] A1b: Exotica 16:9 widescreen (Zeus overlay)
 
 Render all Zeus geometry into a wider canvas (CW+2*MARGIN, shifted via a
 VS uMargin uniform); present 3D driving scenes at 16:9 (full wide canvas)
@@ -9768,7 +9768,7 @@ index 18c23b15..9c7d95bf 100644
 From 50e811d75d515932295a7b6fbf0e4319a3db9db1 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 13:04:39 -0500
-Subject: [PATCH 36/54] zeus2: silence the stock resolution-setup debug
+Subject: [PATCH 36/55] zeus2: silence the stock resolution-setup debug
  popmessage
 
 Exotica flashed "reg[30]: ... Screen: 512H X 400V yScale: 0" at the bottom
@@ -9805,7 +9805,7 @@ index 7bffa4b2..e35aceec 100644
 From 5f9bdcc56cc6a74270fed65199df72e491cf9570 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:25:04 -0500
-Subject: [PATCH 37/54] zeus2: skip per-quad frame_number call when live
+Subject: [PATCH 37/55] zeus2: skip per-quad frame_number call when live
  (emu-thread micro-opt)
 
 screen().frame_number() ran ~6.5k times/frame in the live emit path; the
@@ -9844,7 +9844,7 @@ index e35aceec..201bef85 100644
 From 5d0e2f95acee02701803a331d7f78691d51ce0eb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:37:41 -0500
-Subject: [PATCH 38/54] zeus2: skip MAME's CPU rasterization when the live
+Subject: [PATCH 38/55] zeus2: skip MAME's CPU rasterization when the live
  overlay renders
 
 With MIDZ_GL the game was rendered TWICE: our GL renderer draws every quad,
@@ -9907,7 +9907,7 @@ index 201bef85..80d0c937 100644
 From 5d11d1fe3e033e35d664ccec2391b50f851ba817 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:40:11 -0500
-Subject: [PATCH 39/54] zeus2 overlay: aspect-mode hysteresis fixes the width
+Subject: [PATCH 39/55] zeus2 overlay: aspect-mode hysteresis fixes the width
  wobble
 
 An iteration catching only HUD frame writes (no quads, pure timing)
@@ -9955,7 +9955,7 @@ index 80d0c937..f991981e 100644
 From 383046dd1e72d4a461ce5d3a4340ea9e4b958952 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:04:56 -0500
-Subject: [PATCH 40/54] zeus2: true full 16:9 for crusnexo - page-scoped margin
+Subject: [PATCH 40/55] zeus2: true full 16:9 for crusnexo - page-scoped margin
  clear + diag hooks
 
 The game renders a full 16:9 field of view already; the black margins were
@@ -10194,7 +10194,7 @@ index c06d6525..13f9f93b 100644
 From 9bcb20be675f5fe7d4a600ed2d57579958ed0dba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:24:08 -0500
-Subject: [PATCH 41/54] telem: wire crusnwld speed (0x0DDDC), tighten
+Subject: [PATCH 41/55] telem: wire crusnwld speed (0x0DDDC), tighten
  s_speed_addr to hunted parents
 
 Differential RAM-hunt of the crusnwld attract demo (results/ramhunt-wld)
@@ -10259,7 +10259,7 @@ index a92c28a9..25277823 100644
 From e028a2f8a9217603413ae43f8da44e7b04337b2a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:42:55 -0500
-Subject: [PATCH 42/54] midvunit shaders: regen for B5 sky-margin vertical
+Subject: [PATCH 42/55] midvunit shaders: regen for B5 sky-margin vertical
  smoothing
 
 Generated from gpu/renderer.py (never hand-edited). Present-pass margin
@@ -10340,7 +10340,7 @@ index 54113399..06c5cbf1 100644
 From 43ee457e55f05a8b0fdde8462931bf6bf3c1c43c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:45:26 -0500
-Subject: [PATCH 43/54] D1: menu-assets header comment cruisn-poc ->
+Subject: [PATCH 43/55] D1: menu-assets header comment cruisn-poc ->
  cruisn-collection
 
 Matches what gen_menu_assets.py already emits (the header just predated
@@ -10369,7 +10369,7 @@ index 97598357..4ae0a6e4 100644
 From 5f155d26df43bfc80266b780c1737ceb80373df3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:38:55 -0500
-Subject: [PATCH 44/54] Revert B5 sky-margin vertical smoothing - regressed 2D
+Subject: [PATCH 44/55] Revert B5 sky-margin vertical smoothing - regressed 2D
  screens
 
 The vertical gaussian blur smears any structured margin content (e.g. the
@@ -10450,7 +10450,7 @@ index 06c5cbf1..54113399 100644
 From 23adde255511f37970dacd7ec39db84a0525ec79 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:44:42 -0500
-Subject: [PATCH 45/54] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
+Subject: [PATCH 45/55] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
  real drive
 
 A real driving capture (results/drive-capture-crusnusa-*) debunked the
@@ -10523,7 +10523,7 @@ index 25277823..27b2d187 100644
 From ccc6b321980e972870c23538acb4f76029fbda62 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:54:30 -0500
-Subject: [PATCH 46/54] telem Phase C: Forza Horizon "Data Out" packet emitter
+Subject: [PATCH 46/55] telem Phase C: Forza Horizon "Data Out" packet emitter
  (SimHub-native)
 
 MIDV_TELEM_FORZA=host:port (default 127.0.0.1:5300) emits the FH4/5
@@ -10697,7 +10697,7 @@ index 27b2d187..3e2ce518 100644
 From 795d4f1fbc8deb6ccdef5ad842a21f6be7c60e5b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:07:31 -0500
-Subject: [PATCH 47/54] telem: Forza gear byte mirrors the real latched shifter
+Subject: [PATCH 47/55] telem: Forza gear byte mirrors the real latched shifter
 
 Read the driver-maintained m_shifter_state (fed by both the 4-position
 shifter and the sequential shift buttons) via a small accessor and map
@@ -10760,7 +10760,7 @@ index 3e2ce518..6905fd7e 100644
 From def66dab2025f9cf2f4e338ebcbfee5255324cc8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:24:59 -0500
-Subject: [PATCH 48/54] telem: gate speed/rpm - menu garbage pegged SimHub
+Subject: [PATCH 48/55] telem: gate speed/rpm - menu garbage pegged SimHub
  gauges
 
 Live rig finding (forza_probe): outside races the DSP words hold unrelated
@@ -10854,7 +10854,7 @@ index 6905fd7e..6865bc9f 100644
 From f7251ce9e2b65cac39ff992f9a09b734800cc47f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:42:23 -0500
-Subject: [PATCH 49/54] telem: MIDV_TELEM_FORZA accepts comma-separated targets
+Subject: [PATCH 49/55] telem: MIDV_TELEM_FORZA accepts comma-separated targets
 
 So SimHub (8000) and the forza_probe diagnostic (8001) can watch the same
 stream simultaneously - needed to catch the reported stuck-dash in the act.
@@ -10928,7 +10928,7 @@ index 6865bc9f..914472fb 100644
 From 5c3b5787fee2d8111ed84ea1d23902a98fb300d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:51:50 -0500
-Subject: [PATCH 50/54] telem: tighten speed plausibility gate 400 -> 320
+Subject: [PATCH 50/55] telem: tighten speed plausibility gate 400 -> 320
 
 Menu junk observed at 373 slipped under the 400 bound (and at 990 before);
 real max is ~301, so the bound must sit under 373.
@@ -10969,7 +10969,7 @@ index 914472fb..ae7d8706 100644
 From 0f3759db6a29c8f840d6fd0f28cf74564478426a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:13:25 -0500
-Subject: [PATCH 51/54] telem: dump the second work-RAM bank (0x400000) -
+Subject: [PATCH 51/55] telem: dump the second work-RAM bank (0x400000) -
  player physics lives there
 
 Detective chain from the user's 5x accelerate-to-full-stop drive: NO word
@@ -11056,7 +11056,7 @@ index ae7d8706..0368443e 100644
 From 70552419d62a694e61bb409901e73918003c9084 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:25:02 -0500
-Subject: [PATCH 52/54] telem: dump HUD rows (300-399, visible page) alongside
+Subject: [PATCH 52/55] telem: dump HUD rows (300-399, visible page) alongside
  RAM dumps
 
 The on-screen MPH + gear digits are the incorruptible ground truth: OCR
@@ -11102,7 +11102,7 @@ index 0368443e..ff611a5d 100644
 From e22e161bc23a108e1d25595f6691a3e249f85b82 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:40:45 -0500
-Subject: [PATCH 53/54] telem: dump C31 on-chip internal RAM (0x809800, 2K
+Subject: [PATCH 53/55] telem: dump C31 on-chip internal RAM (0x809800, 2K
  words) as ram3
 
 By elimination: the HUD-OCR ground truth from a real drive correlates with
@@ -11151,7 +11151,7 @@ index ff611a5d..b4d3c40e 100644
 From 8bb8d18801c7f71bb2a1c71024305295201f1978 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:56:25 -0500
-Subject: [PATCH 54/54] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
+Subject: [PATCH 54/55] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
  retire drone speed
 
 The HUD ground-truth investigation concluded: the on-screen RPM gauge's
@@ -11293,6 +11293,423 @@ index b4d3c40e..31e52393 100644
  		const float spd_ms = mph * 0.44704f;
  		s_forza_ms += 17;
  		put32(0, &one);              // IsRaceOn
+-- 
+2.55.0.windows.3
+
+
+From f91ec0dca3dba674c669f04083336318a9fa4d7f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Sun, 23 Aug 2026 22:04:19 -0500
+Subject: [PATCH 55/55] telem: runtime HUD OCR - crusnusa speed read straight
+ off the frame
+
+The displayed MPH exists in no memory and the HUD is CPU-blitted (no
+quads), so read it where it provably lives: the framebuffer. Each frame,
+decode the MPH box glyphs from the visible page against 10 baked digit
+templates (midvunit_hud_ocr.h, generated from the calibration drive).
+Algorithm validated offline: 822/823 agreement with the reference OCR
+over a real drive. Single-frame misreads need a second frame to accept a
+>25mph jump; a missing box decays to 0 in ~1s (menus). Per-game HudBox
+table - only crusnusa calibrated so far (rows 347-370, cols 30-72).
+Attract sanity: speed 0 (no box), rpm 0 (no player), full emulation speed.
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
+---
+ src/mame/midway/midvunit_hud_ocr.h | 206 +++++++++++++++++++++++++++++
+ src/mame/midway/midvunit_v.cpp     | 145 ++++++++++++++++++++
+ 2 files changed, 351 insertions(+)
+ create mode 100644 src/mame/midway/midvunit_hud_ocr.h
+
+diff --git a/src/mame/midway/midvunit_hud_ocr.h b/src/mame/midway/midvunit_hud_ocr.h
+new file mode 100644
+index 00000000..017a9c31
+--- /dev/null
++++ b/src/mame/midway/midvunit_hud_ocr.h
+@@ -0,0 +1,206 @@
++// GENERATED by the HUD-OCR calibration (results/drive-capture-crusnusa-
++// 20260823-214142; see RESULTS.md telemetry saga) - never hand-edit.
++// 10 digit glyph templates, 18 rows x 12 cols, grayscale 0-255,
++// from the crusnusa MPH box (rows 47-70, cols 30-72 of hud rows 300-399).
++static const unsigned char s_hud_digit_tmpl[10][18][12] = {
++	{ // '0'
++		{ 114, 217, 113, 140, 181, 188, 190, 177, 163, 108, 218, 136 },
++		{ 144, 156, 95, 82, 107, 113, 113, 107, 96, 86, 155, 153 },
++		{ 147, 188, 96, 29, 34, 36, 36, 34, 32, 83, 193, 160 },
++		{ 168, 209, 96, 4, 0, 0, 0, 0, 2, 81, 217, 188 },
++		{ 173, 218, 97, 4, 13, 27, 29, 28, 25, 84, 226, 197 },
++		{ 167, 213, 105, 6, 16, 33, 32, 31, 30, 88, 215, 184 },
++		{ 172, 211, 81, 3, 12, 27, 29, 31, 30, 72, 204, 192 },
++		{ 188, 167, 53, 0, 12, 29, 31, 34, 31, 56, 158, 206 },
++		{ 68, 33, 11, 0, 17, 33, 28, 27, 26, 32, 49, 75 },
++		{ 122, 54, 8, 9, 24, 30, 25, 24, 24, 37, 138, 180 },
++		{ 159, 171, 57, 26, 27, 30, 26, 28, 25, 80, 221, 177 },
++		{ 159, 215, 94, 18, 28, 28, 28, 30, 27, 79, 218, 173 },
++		{ 175, 221, 90, 5, 17, 26, 26, 24, 24, 79, 228, 194 },
++		{ 194, 224, 83, 2, 12, 24, 24, 24, 23, 72, 226, 226 },
++		{ 199, 218, 84, 3, 15, 27, 27, 26, 26, 71, 212, 224 },
++		{ 191, 201, 91, 46, 86, 96, 95, 89, 66, 82, 197, 211 },
++		{ 115, 171, 86, 94, 149, 151, 151, 147, 110, 81, 173, 132 },
++		{ 41, 146, 101, 108, 160, 160, 160, 160, 125, 94, 156, 38 },
++	},
++	{ // '1'
++		{ 229, 229, 227, 220, 214, 208, 192, 168, 143, 119, 106, 106 },
++		{ 193, 193, 184, 165, 146, 127, 123, 136, 149, 162, 168, 168 },
++		{ 234, 234, 224, 203, 182, 161, 152, 155, 159, 162, 163, 163 },
++		{ 252, 252, 243, 225, 208, 190, 183, 185, 188, 190, 191, 191 },
++		{ 252, 252, 245, 233, 220, 207, 200, 199, 197, 196, 195, 195 },
++		{ 248, 248, 239, 223, 206, 189, 182, 183, 184, 185, 185, 185 },
++		{ 199, 199, 200, 203, 205, 208, 207, 200, 194, 188, 185, 185 },
++		{ 55, 55, 65, 87, 108, 130, 150, 170, 189, 208, 218, 218 },
++		{ 20, 20, 20, 20, 20, 20, 28, 45, 62, 79, 87, 87 },
++		{ 27, 27, 33, 45, 57, 69, 86, 110, 133, 157, 168, 168 },
++		{ 111, 111, 124, 150, 176, 201, 207, 194, 181, 168, 161, 161 },
++		{ 239, 239, 233, 223, 211, 201, 191, 183, 175, 167, 163, 163 },
++		{ 243, 243, 239, 231, 223, 216, 209, 202, 196, 190, 187, 187 },
++		{ 230, 230, 229, 227, 225, 223, 222, 224, 225, 227, 228, 228 },
++		{ 218, 218, 217, 214, 210, 208, 209, 215, 222, 229, 232, 232 },
++		{ 222, 222, 216, 203, 190, 177, 178, 193, 207, 222, 229, 229 },
++		{ 188, 188, 185, 177, 170, 162, 153, 144, 135, 125, 121, 121 },
++		{ 216, 216, 201, 171, 142, 112, 86, 65, 44, 23, 12, 12 },
++	},
++	{ // '2'
++		{ 25, 58, 154, 181, 187, 196, 182, 178, 117, 149, 212, 124 },
++		{ 22, 40, 89, 107, 113, 115, 108, 104, 73, 125, 141, 158 },
++		{ 22, 29, 42, 40, 36, 36, 34, 33, 29, 143, 176, 161 },
++		{ 27, 24, 24, 11, 0, 0, 0, 0, 9, 151, 204, 189 },
++		{ 25, 26, 29, 28, 23, 22, 29, 29, 25, 151, 216, 196 },
++		{ 27, 29, 33, 33, 28, 27, 25, 22, 20, 152, 202, 185 },
++		{ 33, 27, 22, 24, 25, 28, 24, 19, 21, 94, 140, 189 },
++		{ 28, 14, 18, 19, 20, 20, 19, 17, 20, 21, 28, 96 },
++		{ 26, 77, 171, 150, 150, 158, 158, 150, 150, 171, 75, 26 },
++		{ 48, 54, 156, 215, 206, 202, 202, 206, 215, 153, 30, 2 },
++		{ 137, 99, 81, 152, 166, 163, 163, 165, 147, 54, 0, 0 },
++		{ 152, 191, 103, 24, 15, 10, 10, 13, 7, 0, 0, 16 },
++		{ 171, 215, 151, 16, 13, 3, 0, 0, 0, 0, 12, 26 },
++		{ 192, 217, 148, 11, 2, 19, 21, 21, 23, 28, 33, 34 },
++		{ 200, 210, 148, 13, 1, 17, 21, 21, 23, 26, 29, 31 },
++		{ 194, 190, 146, 37, 66, 76, 81, 80, 76, 61, 37, 32 },
++		{ 108, 163, 126, 62, 128, 148, 153, 151, 147, 123, 40, 11 },
++		{ 37, 117, 148, 74, 139, 160, 160, 160, 160, 139, 38, 0 },
++	},
++	{ // '3'
++		{ 133, 181, 181, 189, 199, 181, 181, 172, 47, 229, 205, 106 },
++		{ 75, 107, 108, 115, 115, 108, 107, 99, 39, 193, 117, 168 },
++		{ 38, 46, 34, 36, 36, 34, 33, 32, 26, 234, 150, 163 },
++		{ 24, 24, 0, 0, 0, 0, 0, 0, 20, 252, 181, 191 },
++		{ 25, 25, 22, 22, 30, 22, 22, 22, 21, 252, 200, 195 },
++		{ 26, 26, 26, 26, 26, 26, 29, 29, 28, 248, 180, 185 },
++		{ 30, 27, 27, 27, 27, 30, 30, 30, 17, 199, 210, 185 },
++		{ 24, 20, 20, 20, 20, 23, 23, 23, 14, 65, 140, 218 },
++		{ 179, 161, 142, 154, 158, 158, 154, 142, 161, 179, 45, 87 },
++		{ 96, 235, 199, 209, 201, 201, 209, 199, 235, 92, 51, 168 },
++		{ 27, 134, 167, 165, 163, 163, 165, 166, 127, 97, 214, 161 },
++		{ 29, 29, 33, 13, 9, 9, 13, 13, 16, 239, 195, 163 },
++		{ 29, 29, 28, 17, 0, 0, 0, 0, 17, 243, 212, 187 },
++		{ 33, 33, 28, 28, 22, 22, 22, 22, 11, 230, 221, 228 },
++		{ 20, 21, 21, 21, 21, 21, 21, 20, 13, 218, 206, 232 },
++		{ 33, 82, 74, 82, 82, 76, 77, 49, 25, 222, 171, 229 },
++		{ 77, 150, 148, 153, 153, 148, 147, 105, 32, 188, 158, 121 },
++		{ 95, 159, 160, 160, 160, 160, 159, 123, 37, 216, 97, 12 },
++	},
++	{ // '4'
++		{ 114, 217, 104, 26, 25, 28, 27, 25, 26, 94, 218, 136 },
++		{ 144, 156, 88, 5, 14, 28, 28, 25, 29, 80, 155, 153 },
++		{ 147, 188, 94, 4, 14, 29, 30, 27, 30, 83, 193, 160 },
++		{ 168, 209, 96, 4, 13, 25, 26, 26, 27, 84, 217, 188 },
++		{ 173, 218, 97, 4, 15, 28, 25, 26, 27, 85, 226, 197 },
++		{ 167, 213, 105, 6, 14, 28, 26, 23, 24, 88, 215, 184 },
++		{ 172, 211, 81, 3, 14, 26, 23, 21, 23, 67, 204, 192 },
++		{ 188, 112, 31, 11, 15, 20, 20, 20, 20, 26, 98, 194 },
++		{ 61, 25, 136, 158, 148, 157, 157, 148, 158, 136, 24, 67 },
++		{ 20, 4, 83, 213, 205, 204, 204, 205, 212, 83, 43, 140 },
++		{ 25, 17, 29, 130, 166, 164, 164, 165, 127, 50, 163, 177 },
++		{ 23, 25, 23, 23, 20, 10, 10, 13, 8, 77, 218, 173 },
++		{ 24, 25, 25, 24, 21, 5, 0, 0, 1, 77, 228, 194 },
++		{ 18, 18, 21, 24, 25, 22, 22, 22, 20, 72, 226, 226 },
++		{ 19, 24, 25, 25, 25, 23, 22, 21, 23, 70, 212, 224 },
++		{ 18, 21, 24, 24, 24, 22, 21, 19, 24, 79, 197, 211 },
++		{ 22, 23, 25, 25, 24, 25, 25, 26, 26, 74, 173, 132 },
++		{ 28, 28, 31, 30, 25, 24, 27, 33, 30, 85, 156, 38 },
++	},
++	{ // '5'
++		{ 107, 216, 131, 120, 178, 184, 195, 192, 193, 181, 176, 60 },
++		{ 146, 151, 112, 73, 105, 110, 115, 115, 113, 107, 102, 24 },
++		{ 148, 180, 125, 31, 33, 35, 36, 36, 36, 34, 32, 8 },
++		{ 168, 201, 129, 10, 0, 0, 0, 0, 0, 0, 0, 0 },
++		{ 173, 212, 132, 11, 5, 21, 22, 22, 24, 24, 23, 22 },
++		{ 166, 207, 138, 14, 7, 28, 28, 23, 22, 26, 26, 22 },
++		{ 170, 210, 108, 6, 7, 30, 30, 25, 22, 17, 30, 30 },
++		{ 191, 118, 37, 10, 13, 20, 20, 23, 22, 13, 24, 32 },
++		{ 66, 29, 116, 164, 146, 155, 158, 154, 147, 169, 94, 30 },
++		{ 24, 6, 54, 199, 204, 206, 201, 207, 209, 176, 45, 52 },
++		{ 28, 24, 11, 108, 163, 164, 163, 164, 157, 82, 72, 159 },
++		{ 27, 27, 27, 23, 23, 12, 9, 12, 13, 67, 182, 173 },
++		{ 33, 29, 24, 23, 23, 10, 0, 0, 4, 111, 213, 172 },
++		{ 28, 26, 20, 18, 18, 17, 20, 24, 22, 102, 223, 223 },
++		{ 30, 17, 7, 8, 14, 16, 19, 19, 17, 99, 211, 225 },
++		{ 25, 53, 77, 80, 82, 82, 78, 75, 45, 107, 192, 215 },
++		{ 36, 107, 149, 152, 153, 153, 150, 144, 92, 97, 170, 130 },
++		{ 43, 122, 160, 160, 160, 160, 160, 157, 106, 111, 146, 33 },
++	},
++	{ // '6'
++		{ 114, 217, 104, 28, 26, 26, 27, 25, 24, 24, 27, 28 },
++		{ 144, 156, 88, 5, 13, 25, 29, 27, 29, 28, 25, 26 },
++		{ 147, 188, 94, 4, 12, 24, 26, 29, 32, 30, 26, 29 },
++		{ 155, 203, 96, 4, 14, 31, 33, 33, 32, 27, 26, 31 },
++		{ 171, 211, 96, 4, 17, 28, 27, 32, 34, 33, 29, 26 },
++		{ 173, 218, 99, 5, 15, 26, 24, 28, 28, 28, 26, 24 },
++		{ 178, 211, 84, 4, 16, 31, 27, 24, 22, 25, 25, 25 },
++		{ 188, 112, 31, 11, 17, 24, 20, 19, 18, 22, 25, 25 },
++		{ 68, 28, 136, 158, 148, 157, 157, 148, 158, 138, 31, 36 },
++		{ 122, 56, 87, 213, 205, 204, 204, 205, 212, 83, 44, 140 },
++		{ 159, 171, 68, 132, 166, 164, 164, 165, 127, 50, 163, 177 },
++		{ 159, 215, 94, 18, 20, 10, 10, 13, 8, 77, 218, 173 },
++		{ 175, 221, 90, 5, 14, 6, 0, 0, 1, 77, 228, 194 },
++		{ 194, 224, 83, 2, 17, 30, 26, 25, 23, 72, 226, 226 },
++		{ 199, 218, 84, 3, 12, 23, 23, 21, 19, 70, 212, 224 },
++		{ 191, 201, 91, 47, 78, 79, 80, 76, 54, 81, 197, 211 },
++		{ 115, 171, 86, 94, 149, 151, 151, 147, 110, 81, 173, 132 },
++		{ 41, 146, 101, 108, 160, 160, 160, 160, 125, 94, 156, 38 },
++	},
++	{ // '7'
++		{ 133, 181, 181, 189, 199, 181, 181, 172, 47, 229, 205, 106 },
++		{ 75, 107, 108, 115, 115, 108, 107, 99, 39, 193, 117, 168 },
++		{ 38, 53, 34, 36, 36, 34, 33, 32, 26, 234, 150, 163 },
++		{ 33, 36, 0, 0, 0, 0, 0, 0, 20, 252, 181, 191 },
++		{ 34, 34, 30, 30, 30, 31, 23, 22, 21, 252, 200, 195 },
++		{ 28, 28, 30, 31, 30, 29, 29, 25, 28, 248, 180, 185 },
++		{ 39, 31, 43, 43, 24, 9, 13, 28, 17, 199, 210, 185 },
++		{ 31, 31, 39, 32, 10, 10, 28, 34, 19, 55, 140, 218 },
++		{ 26, 31, 30, 20, 18, 22, 28, 28, 30, 25, 20, 87 },
++		{ 33, 33, 27, 29, 29, 35, 34, 34, 34, 35, 74, 168 },
++		{ 24, 29, 36, 36, 36, 36, 27, 27, 24, 111, 214, 161 },
++		{ 27, 36, 36, 36, 36, 36, 30, 30, 18, 239, 195, 163 },
++		{ 26, 36, 36, 36, 36, 36, 36, 36, 17, 243, 212, 187 },
++		{ 25, 28, 24, 23, 27, 26, 27, 27, 11, 230, 221, 228 },
++		{ 25, 33, 36, 30, 30, 28, 33, 30, 13, 218, 206, 232 },
++		{ 25, 25, 33, 27, 25, 30, 33, 27, 25, 222, 171, 229 },
++		{ 31, 31, 33, 27, 25, 31, 29, 29, 32, 188, 158, 121 },
++		{ 28, 31, 31, 24, 24, 36, 34, 34, 37, 216, 97, 12 },
++	},
++	{ // '8'
++		{ 114, 217, 113, 140, 181, 188, 193, 181, 163, 108, 218, 136 },
++		{ 144, 156, 95, 82, 107, 113, 113, 107, 96, 86, 155, 153 },
++		{ 147, 188, 96, 29, 34, 36, 36, 34, 32, 83, 193, 160 },
++		{ 168, 209, 96, 4, 0, 0, 0, 0, 2, 81, 217, 188 },
++		{ 173, 218, 97, 4, 15, 30, 31, 30, 29, 85, 226, 197 },
++		{ 167, 213, 105, 6, 13, 26, 30, 23, 22, 87, 215, 184 },
++		{ 172, 211, 81, 3, 14, 29, 28, 19, 14, 66, 204, 192 },
++		{ 188, 112, 31, 11, 16, 24, 23, 18, 15, 26, 98, 194 },
++		{ 68, 28, 136, 158, 148, 157, 157, 148, 158, 136, 24, 67 },
++		{ 122, 56, 86, 213, 205, 204, 204, 205, 212, 83, 43, 140 },
++		{ 159, 171, 66, 132, 166, 164, 164, 165, 127, 50, 163, 177 },
++		{ 159, 215, 94, 20, 23, 10, 10, 13, 8, 77, 218, 173 },
++		{ 175, 221, 90, 6, 18, 7, 0, 0, 1, 77, 228, 194 },
++		{ 194, 224, 83, 2, 13, 22, 25, 21, 20, 72, 226, 226 },
++		{ 199, 218, 84, 3, 11, 19, 21, 23, 25, 70, 212, 224 },
++		{ 191, 201, 91, 47, 78, 79, 80, 76, 54, 81, 197, 211 },
++		{ 115, 171, 86, 94, 149, 151, 151, 147, 110, 81, 173, 132 },
++		{ 26, 146, 101, 108, 160, 160, 160, 160, 125, 94, 156, 38 },
++	},
++	{ // '9'
++		{ 114, 217, 113, 140, 181, 188, 193, 181, 163, 108, 218, 136 },
++		{ 144, 156, 95, 82, 107, 113, 113, 107, 96, 86, 155, 153 },
++		{ 147, 188, 96, 29, 34, 36, 36, 34, 32, 83, 193, 160 },
++		{ 168, 209, 96, 4, 0, 0, 0, 0, 2, 81, 217, 188 },
++		{ 173, 218, 97, 4, 12, 24, 24, 23, 21, 84, 226, 197 },
++		{ 167, 213, 105, 6, 14, 25, 26, 32, 20, 87, 215, 184 },
++		{ 172, 211, 81, 3, 13, 26, 25, 22, 16, 66, 204, 192 },
++		{ 188, 112, 31, 11, 16, 22, 20, 18, 16, 26, 98, 194 },
++		{ 68, 28, 136, 158, 148, 157, 157, 148, 158, 136, 24, 67 },
++		{ 122, 56, 87, 213, 205, 204, 204, 205, 212, 83, 43, 140 },
++		{ 100, 136, 68, 133, 166, 164, 164, 165, 127, 50, 163, 177 },
++		{ 5, 128, 94, 21, 23, 10, 10, 13, 8, 77, 218, 173 },
++		{ 9, 43, 30, 4, 15, 5, 0, 0, 1, 77, 228, 194 },
++		{ 11, 5, 0, 0, 14, 26, 25, 25, 24, 72, 226, 226 },
++		{ 9, 5, 0, 0, 10, 20, 21, 21, 20, 70, 212, 224 },
++		{ 10, 5, 0, 22, 78, 79, 80, 76, 54, 81, 197, 211 },
++		{ 8, 5, 0, 41, 149, 151, 151, 147, 110, 81, 173, 132 },
++		{ 11, 5, 0, 43, 160, 160, 160, 160, 125, 94, 156, 38 },
++	},
++};
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 31e52393..7e74f9bb 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -8,6 +8,7 @@
+ 
+ #include "emu.h"
+ #include "midvunit.h"
++#include "midvunit_hud_ocr.h"
+ 
+ #include "williamssound.h"
+ 
+@@ -245,6 +246,117 @@ static void telem_notify(const char *outname, s32 value, void *)
+ 			(const sockaddr *)&s_telem_addr, sizeof(s_telem_addr));
+ }
+ 
++// ---- HUD OCR speed (Phase B final form) -----------------------------------
++// The player's displayed speed exists in NO memory (see RESULTS.md saga);
++// the HUD digits are CPU-blitted into videoram. So read them back: decode
++// the MPH box glyphs from the visible page each frame against the baked
++// templates (validated offline: 822/823 agreement with the calibration
++// OCR). Correct by construction - it reads exactly what the player reads.
++// Per-game box coords (absolute videoram rows/cols); 0-width = not
++// calibrated yet (speed stays 0 for that game).
++struct HudBox { const char *game; int x0, x1, y0, y1; };
++static const HudBox s_hud_box[] = {
++	{ "crusnusa", 30, 72, 347, 370 },
++	{ nullptr, 0, 0, 0, 0 },
++};
++static const HudBox *s_hud = nullptr;   // resolved at telem_init
++static float s_hud_last = 0.0f;
++static float s_hud_pending = -1.0f;
++
++static int hud_ocr_digit(const float *cell, int ch, int cw)
++{
++	// bilinear resample to 12x18, L2-match the baked templates
++	float g[18][12];
++	for (int oy = 0; oy < 18; oy++)
++	{
++		float fy = (oy + 0.5f) * ch / 18.0f - 0.5f;
++		int y0 = int(std::floor(fy));
++		float ty = fy - y0;
++		int y0c = std::min(std::max(y0, 0), ch - 1), y1c = std::min(y0c + 1, ch - 1);
++		for (int ox = 0; ox < 12; ox++)
++		{
++			float fx = (ox + 0.5f) * cw / 12.0f - 0.5f;
++			int x0 = int(std::floor(fx));
++			float tx = fx - x0;
++			int x0c = std::min(std::max(x0, 0), cw - 1), x1c = std::min(x0c + 1, cw - 1);
++			g[oy][ox] = (1 - ty) * ((1 - tx) * cell[y0c * cw + x0c] + tx * cell[y0c * cw + x1c])
++			          + ty * ((1 - tx) * cell[y1c * cw + x0c] + tx * cell[y1c * cw + x1c]);
++		}
++	}
++	int bestk = -1;
++	float bestd = 1e9f;
++	for (int k = 0; k < 10; k++)
++	{
++		float acc = 0;
++		for (int r = 0; r < 18; r++)
++			for (int c = 0; c < 12; c++)
++			{
++				float dd = g[r][c] / 255.0f - s_hud_digit_tmpl[k][r][c] / 255.0f;
++				acc += dd * dd;
++			}
++		acc /= 18 * 12;
++		if (acc < bestd) { bestd = acc; bestk = k; }
++	}
++	return (bestd <= 0.035f) ? bestk : -1;
++}
++
++// returns displayed MPH, or -1 when the box is absent/unreadable
++static int hud_ocr_mph(const uint16_t *videoram, uint16_t page_control,
++		const HudBox *box)
++{
++	uint32_t const base = (page_control & 1) ? 0x40000 : 0x00000;
++	int const W = box->x1 - box->x0, H = box->y1 - box->y0;
++	if (W <= 0 || W > 64 || H <= 0 || H > 32)
++		return -1;
++	float win[32][64];
++	bool coloncol[64];
++	for (int x = 0; x < W; x++) coloncol[x] = false;
++	for (int y = 0; y < H; y++)
++		for (int x = 0; x < W; x++)
++		{
++			float v = float(videoram[base + (box->y0 + y) * 512 + box->x0 + x] & 0xff);
++			win[y][x] = v;
++			if (v > 110.0f) coloncol[x] = true;
++		}
++	// segment cells: lit column runs, gaps >=2 split, min width 2
++	int cells[4][2];
++	int ncell = 0, s0 = -1, gap = 0;
++	for (int x = 0; x < W && ncell < 4; x++)
++	{
++		if (coloncol[x]) { if (s0 < 0) s0 = x; gap = 0; }
++		else if (s0 >= 0 && ++gap >= 2)
++		{
++			if (x - gap - s0 + 1 >= 2) { cells[ncell][0] = s0; cells[ncell][1] = x - gap + 1; ncell++; }
++			s0 = -1; gap = 0;
++		}
++	}
++	if (s0 >= 0 && W - s0 >= 2 && ncell < 4) { cells[ncell][0] = s0; cells[ncell][1] = W; ncell++; }
++	if (ncell < 1 || ncell > 3)
++		return -1;
++	int value = 0;
++	for (int ci = 0; ci < ncell; ci++)
++	{
++		int a = cells[ci][0], b = cells[ci][1];
++		// row bounds of lit pixels
++		int r0 = -1, r1 = -1;
++		for (int y = 0; y < H; y++)
++			for (int x = a; x < b; x++)
++				if (win[y][x] > 110.0f) { if (r0 < 0) r0 = y; r1 = y; }
++		if (r0 < 0 || r1 - r0 + 1 < 12)
++			return -1;
++		int const ch = r1 - r0 + 1, cw = b - a;
++		float cell[32 * 64];
++		for (int y = 0; y < ch; y++)
++			for (int x = 0; x < cw; x++)
++				cell[y * cw + x] = win[r0 + y][a + x];
++		int d = hud_ocr_digit(cell, ch, cw);
++		if (d < 0)
++			return -1;
++		value = value * 10 + d;
++	}
++	return value;
++}
++
+ // Telemetry Phase B: per-game DSP-RAM word address of the car speed (MPH,
+ // TMS320C3x float), found by differential RAM-hunt over a demo-race
+ // acceleration (results/ramhunt; see RESULTS.md). 0 = not yet hunted.
+@@ -303,6 +415,9 @@ static void telem_init(const char *spec, const char *game)
+ 	s_speed_word = 0;
+ 	for (const SpeedAddr *p = s_speed_addr; p->game; ++p)
+ 		if (!strcmp(p->game, game)) { s_speed_word = p->addr; break; }
++	s_hud = nullptr;
++	for (const HudBox *p = s_hud_box; p->game; ++p)
++		if (!strcmp(p->game, game)) { s_hud = p; break; }
+ 	s_rpm_word = 0;
+ 	for (const RpmAddr *p = s_rpm_addr; p->game; ++p)
+ 		if (!strcmp(p->game, game))
+@@ -1939,6 +2054,36 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
+ 		if (v >= 0.0f && v < 320.0f)   // real max ~301; menu junk seen at 373/990
+ 			telem_mph = v;
+ 	}
++	else if (s_hud)
++	{
++		// HUD OCR path: read the displayed MPH straight off the frame.
++		// A lone-frame misread (rare 4/9 confusion) must persist a second
++		// frame before a jump >25 mph is accepted.
++		int const mph = hud_ocr_mph(&m_videoram[0], m_page_control, s_hud);
++		if (mph >= 0 && mph < 400)
++		{
++			float const f = float(mph);
++			if (std::fabs(f - s_hud_last) <= 25.0f)
++			{
++				s_hud_last = f;
++				s_hud_pending = -1.0f;
++			}
++			else if (s_hud_pending >= 0.0f && std::fabs(f - s_hud_pending) <= 25.0f)
++			{
++				s_hud_last = f;
++				s_hud_pending = -1.0f;
++			}
++			else
++				s_hud_pending = f;
++		}
++		// box absent (menus): decay to 0 rather than freeze
++		else if (mph < 0)
++		{
++			static int s_absent = 0;
++			if (++s_absent >= 60) { s_hud_last = 0.0f; s_absent = 0; }
++		}
++		telem_mph = s_hud_last;
++	}
+ 	if (s_rpm_word)
+ 	{
+ 		static uint32_t s_rpm_bits = 0;
 -- 
 2.55.0.windows.3
 
