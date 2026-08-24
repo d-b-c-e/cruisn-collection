@@ -14,6 +14,7 @@ separately:
 If this probe shows correct values but SimHub's dash doesn't, the issue is
 the SimHub game profile (packet layout), not the emitter.
 """
+import os
 import socket
 import struct
 import sys
@@ -24,7 +25,12 @@ PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind(("0.0.0.0", PORT))
 sock.settimeout(0.5)
+LOG = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                   "results", "forza_probe_log.csv")
+logf = open(LOG, "w")
+logf.write("t,src,mph,rpm,maxrpm,gear\n")
 print(f"listening on UDP {PORT} (Forza Data Out)... Ctrl+C to stop")
+print(f"logging every packet to {LOG}")
 
 n = 0
 last_mph = 0.0
@@ -48,6 +54,9 @@ try:
         spd_ms, = struct.unpack_from("<f", d, 256)
         gear = d[319]
         mph = spd_ms / 0.44704
+        src = "keeper" if d[323] == 0x4B else "game"
+        logf.write(f"{time.time()-t0:.2f},{src},{mph:.1f},{cur:.0f},"
+                   f"{maxr:.0f},{gear}\n")
         if mph < last_mph - 0.5:
             drops += 1
         last_mph = mph
@@ -61,9 +70,11 @@ try:
             sys.stdout.flush()
 except KeyboardInterrupt:
     pass
+logf.close()
 dt = time.time() - t0
 print(f"\n\nsummary: {n} packets in {dt:.0f}s ({n/max(dt,1):.0f}/s), "
       f"sizes {sorted(sizes)}")
+print(f"full timeline logged: {LOG}")
 print(f"  max speed {max_mph:.1f} mph, max rpm {max_rpm:.0f}, "
       f"speed decreases seen: {drops}")
 if drops > 0:

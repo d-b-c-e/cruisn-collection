@@ -448,7 +448,15 @@ class ForzaKeeper:
         ms = 0
         pkt = bytearray(324)
         self._struct.pack_into("<i", pkt, 0, 1)   # IsRaceOn: dash stays live
+        # engine constants MUST match the game's packets - an "all zero"
+        # packet (EngineMaxRpm=0) is degenerate and can wedge SimHub's
+        # session/normalization state so it ignores the real stream after
+        self._struct.pack_into("<f", pkt, 8, 7500.0)   # EngineMaxRpm
+        self._struct.pack_into("<f", pkt, 12, 700.0)   # EngineIdleRpm
         pkt[319] = 1                              # gear 1 (0 shows reverse)
+        pkt[323] = 0x4B                           # 'K' marker in the pad byte
+                                                  # (diagnostics: forza_probe
+                                                  # tags these rows "keeper")
         while True:
             if not self.game_active.is_set():
                 ms = (ms + 100) & 0xFFFFFFFF
