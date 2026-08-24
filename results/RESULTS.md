@@ -1315,3 +1315,19 @@ tach gauge fill, r=+0.91 (existing capture data - no drive needed).
 Verification state: attract emits 0/0 correctly (no box, no player).
 IN-GAME verification = the user's next normal drive with SimHub: the
 dash should now read exactly what the screen reads.
+
+## 2026-08-24 — FIRST game-code widescreen on V-Unit (offroadc right edge)
+
+See docs/widescreen-research.md for the full write-up. Summary: located
+offroadc's TMS32031 poly clip/cull screen-bound table ($11235 = x-max =
+511, read at 10 clip sites), widened it to 597 via MIDV_PATCH (ROM
+untouched). Result: 4:3 content bit-identical (center quads 430674 both
+runs - projection unchanged), right margin gains real geometry (+19%
+quads, an opponent vehicle + canyon revealed - proof/offroadc-gamecode-
+widescreen.png), 120s stable. patch/game/offroadc-widescreen.txt. This is
+the "proper Hor+" the A2 research chased, proven viable. Left/top edges
+(sign-tested min bounds) need a small code patch for full symmetry;
+crusnusa/crusnwld need their own bound-table hunts (same method).
+
+Try it live: MIDV_PATCH=<repo>/patch/game/offroadc-widescreen.txt
+python harness/run_rig.py --rom offroadc

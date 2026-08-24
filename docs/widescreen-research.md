@@ -192,3 +192,46 @@ Bottom line: nobody has "solved" game-side culling; the famous clean
 ports never had to face it. For V-Unit, Ridge-Racer-grade 100% width
 needs the game-code patch path (we own the toolkit: MIDV_PATCH, full
 disassembly, constant maps) - a scoped future R&D, not a missed trick.
+
+## 2026-08-24 BREAKTHROUGH: game-code widescreen WORKS on V-Unit (offroadc)
+
+The A2 goal is no longer theoretical. Following the wanszai topology
+finding (V-Unit's clip/cull runs in game DSP code, not the emulator), we
+located and widened that code's screen bound - and it works.
+
+**What was found** (offroadc, results/offroadc-prog.asm):
+- The TMS32031 poly clip/cull reads its screen bounds from a small data
+  table: $11233=512, $11234=400 (dims), **$11235=511 (x-max)**,
+  $11236=399 (y-max), $11230=256.0 (projection center). No runtime writers.
+- The clip/cull lives at 10 sites (0x2008..0x294B), each: load xmax/ymax,
+  AND3 the 4 vertex outcodes (reject if all past an edge = CULL), then
+  SUBI3 bound-coord for the straddle CLIP. Widening the bound widens BOTH
+  the cull and the clip on that edge.
+
+**The experiment** (MIDV_PATCH $11235: 511 -> 597, memory-only, ROMs
+untouched):
+- CENTER region quads BIT-IDENTICAL (430674 -> 430674) - projection did
+  not move a pixel. This is the decisive self-check: it is NOT a zoom/FOV
+  change, it is purely un-culling margin geometry.
+- Right-margin quads +19% (16730 -> 19904); 120s attract stable.
+- VISUAL (results/proof/offroadc-gamecode-widescreen.png): the right
+  canyon wall extends past the old x=511 cut AND an opponent truck that
+  was culled off-screen now appears. Exactly the Ridge-Racer-style result.
+
+This is - as far as the prior research found - the FIRST game-code
+widescreen on Midway V-Unit hardware. Mechanism confirmed; it is the same
+class of fix wanszai gets for free on HLE'd platforms, done here by
+patching the game's own compiled bound.
+
+**Remaining for full symmetric parity:**
+- LEFT/TOP edges are MIN-edge rejects tested by the SIGN of the vertex
+  coord (0x2098 AND3 + BLTD), not a table constant - so left needs a small
+  CODE patch (bias x by +86 before the sign test), not a one-word change.
+  (Baseline already submits 47k quads left of x=0, so the left side is
+  much less culled than the right; right-only is already a big visible win.)
+- Per-game: crusnusa / crusnwld need their own disasm + bound-table hunt
+  (same method; the constants will be at different addresses).
+- Product wiring: gate behind the WIDESCREEN setting; verify live at the
+  wheel (game AI/LOD tied to visibility could misbehave - watch for it).
+- Ultrawide bonus: once the bound is a patched parameter, 21:9 (3440x1440)
+  is just a larger bound + canvas - potentially BEYOND Ridge Racer's 16:9.

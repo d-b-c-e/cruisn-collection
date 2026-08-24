@@ -1,0 +1,14 @@
+# Off Road Challenge (offroadc) — game-code widescreen, RIGHT edge.
+# Widens the TMS32031 poly clip/cull RIGHT bound so the game stops
+# discarding geometry past the 4:3 screen edge. Projection is UNTOUCHED
+# (4:3 content stays pixel-identical); this only lets already-projected
+# margin geometry survive the cull.
+#
+# $11235 = screen x-max clip bound (raw int 0x1FF = 511), read at the
+# 10 poly-clip sites 0x2008..0x294B (SUBI3 xmax-x + AND3 outcode reject).
+# 597 (0x255) = 511 + 86 (our per-side 16:9 margin). No runtime writers.
+# Verified: center quads bit-identical, right-margin quads +19%, an
+# opponent vehicle + more canyon revealed, 120s stable. RESULTS 2026-08-24.
+#
+# WORDADDR OLD NEW  (hex; OLD verified before patch)
+11235 1FF 255
