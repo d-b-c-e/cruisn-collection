@@ -423,19 +423,22 @@ class ForzaKeeper:
         import socket
         import struct
         self.game_active = threading.Event()
-        self.target = None
+        self.targets = []
         try:
             cp = configparser.ConfigParser()
             cp.read(CFG)
             v = cp.get("telemetry", "forza", fallback="").strip()
-            if v:
-                if v.lower() in ("1", "on", "true", "yes"):
-                    v = "127.0.0.1:5300"
-                host, _, port = v.partition(":")
-                self.target = (host or "127.0.0.1", int(port or "5300"))
+            if v.lower() in ("1", "on", "true", "yes"):
+                v = "127.0.0.1:5300"
+            for part in v.split(","):
+                part = part.strip()
+                if not part:
+                    continue
+                host, _, port = part.partition(":")
+                self.targets.append((host or "127.0.0.1", int(port or "5300")))
         except Exception:
-            self.target = None
-        if self.target is None:
+            self.targets = []
+        if not self.targets:
             return
         self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._struct = struct
@@ -450,10 +453,11 @@ class ForzaKeeper:
             if not self.game_active.is_set():
                 ms = (ms + 100) & 0xFFFFFFFF
                 self._struct.pack_into("<I", pkt, 4, ms)
-                try:
-                    self._sock.sendto(bytes(pkt), self.target)
-                except OSError:
-                    pass
+                for tgt in self.targets:
+                    try:
+                        self._sock.sendto(bytes(pkt), tgt)
+                    except OSError:
+                        pass
             time.sleep(0.1)
 
 
