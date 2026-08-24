@@ -150,3 +150,45 @@ MIDV_PATCH and observe FOV widen. Per the research this yields true Hor+
 more backdrop — it is a "proper widescreen" R&D goal, not the artifact fix.
 Encoder + search: reproducible via the c3x_encode() snippet in this arc's
 session log.
+
+## 2026-08-24 addendum: wanszai's method, finally explained (from MAME source)
+
+Question: how do wanszai's ports (Ridge Racer Collection/System 22, Sega
+Rally/Model 2, Virtua Racing + Virtua Fighter/Model 1, Ace Driver/System
+22) achieve clean true 16:9 when V-Unit can't?
+
+His repos are ALL binary-only (no source, no technical docs; checked every
+repo 2026-08-24). But MAME's own source answers the mechanism:
+
+**On System 22, the geometry pipeline IS emulator code.** namcos22.cpp:
+"In MAME, this main task is done in simulate_slavedsp instead" - the slave
+DSP (transform/projection/clip) is HIGH-LEVEL SIMULATED in C++.
+namcos22_v.cpp holds m_camera_zoom, m_camera_vx/vy and the view window
+vu/vd/vl/vr as plain driver variables, applies projection as
+`p->x = v[i].x * m_camera_zoom`, and performs the culling ("fully behind
+camera") itself. The game's 68020 submits an OBJECT LIST + camera block;
+everything after that - projection, view volume, visibility - runs in
+code the porter controls. Widescreen = widen the C++ camera. No game
+patch, no revealed-cull artifacts, because the game never culls to the
+screen in the first place: that was always the (now emulator-side) DSP's
+job. Model 1/2 are the same story (TGP/geometry HLE) - wanszai's entire
+catalog sits on platforms with an open-source camera.
+
+**V-Unit is the opposite topology.** The TMS32031 running GAME CODE does
+transform+clip+cull internally and hands the emulator only final
+screen-space quads. The camera is compiled, proprietary, per-game code.
+There is no emulator-side knob; the choice is (a) present what the game
+submits (our approach - the games overdraw generously, so fill-off 16:9
+is ~95% covered natively) or (b) patch the game's DSP code (the A2-class
+FOV/clip-constant R&D).
+
+**Zeus2 validates the theory perfectly**: Exotica's projection runs on
+the Zeus chip = emulator side, and we achieved TRUE clean 16:9 there with
+an emulator-side fix - exactly the System 22 situation. V-Unit is simply
+the unlucky architecture where the fence runs on the other side of the
+camera.
+
+Bottom line: nobody has "solved" game-side culling; the famous clean
+ports never had to face it. For V-Unit, Ridge-Racer-grade 100% width
+needs the game-code patch path (we own the toolkit: MIDV_PATCH, full
+disassembly, constant maps) - a scoped future R&D, not a missed trick.
