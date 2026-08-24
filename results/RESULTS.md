@@ -1228,3 +1228,66 @@ Verified headless: 3476/5794-packet runs, all 324 bytes, RPM sweeps
 only emits when MIDV_TELEM_UDP is set (Forza-only mode works alone).
 Currently real data = crusnusa speed+rpm, crusnwld speed; other fields
 zeroed until hunted.
+
+## 2026-08-23/24 — The telemetry ground-truth saga (session 9, late night)
+
+The SimHub dash misbehaved through every fix attempt; each user test
+falsified another hypothesis until the real story emerged. Chronicle:
+
+1. **Emit format**: SimHub reads Forza's binary "Data Out" packet, not our
+   JSON. Built the FH4/5 324-byte emitter (Phase C, above). Dash moved but
+   read wrong.
+2. **Diagnostics built**: forza_probe.py (live decode of our packets +
+   CSV timeline; proved the emit side repeatedly), forza_synth.py
+   (synthetic drive straight to SimHub; proved SimHub + the profile +
+   packet layout end-to-end - dash tracked all four signals perfectly).
+3. **Menu garbage**: outside races the drone words held junk (speed ~990
+   -> pegged the dash speedo at dial max; the reported "stuck at 210").
+   Added plausibility + freshness gating. Helped, still wrong in-race.
+4. **The drone revelation**: the user's probe CSV showed emitted speed
+   frozen bit-exact at 246.8 for 45s while rpm lived, and the tach
+   sweeping through shifts while their HUD gear sat in 4th. Conclusion:
+   **the attract-hunted addresses (crusnusa 0x0F22D speed, 0x0DC20 rpm,
+   and by method crusnwld 0x0DDDC) track DRONE cars.** Attract demos are
+   drone-driven - shape-hunting them can never find the player.
+5. **The stop fingerprint**: user drove 4-5 accelerate-to-full-stop
+   cycles. NOTHING in external RAM matched (c3x/int/16-bit/bytes, values,
+   magnitudes, vector pairs, derivatives; detector validated on synthetic
+   data). Exposed + dumped the second RAM bank (0x400000, never captured
+   before): nothing. Dumped the C31's on-chip internal RAM (0x809800, 2K
+   words): nothing. **The player's displayed speed persists in NO memory**
+   - computed transiently each frame.
+6. **HUD ground truth**: added hud_*.bin dumps (visible-page rows 300-399)
+   and OCR'd the on-screen MPH digits (glyph clustering + 7-seg-adjacent
+   labeling; the narrow "1" needs min-cell-width 2, and 3-digit reads drop
+   their leading 1 intermittently - readings >99 must be
+   continuity-verified). 827/1205 frames decoded of the user's final drive.
+7. **RPM FOUND AND CONFIRMED**: rank-correlation of the OCR speed against
+   every word surfaced 0x0E632.lo16 (rho .83); its profile is a tach
+   (pegged at cruise, sawtooth up the gears, idle at stops); and the
+   clincher - the HUD RPM GAUGE's fill-pixel count correlates **r=+0.91**
+   with it. **crusnusa player RPM = 0x0E632 low 16 bits, raw 0..~14650.**
+   Wired (RpmAddr now carries format + per-game Forza scale). Speed
+   entries all zeroed until the proper fix lands.
+8. **The proper speed fix (in progress): the HUD-quad DMA tap.** The MPH
+   digits are textured quads through process_dma_queue; the digit identity
+   is in the texcoord bytes (dma_data[10..13]) at queue time. Read the
+   digits at the source - correct by construction, works for all three
+   V-Unit games. Calibration = align MIDV_QUADLOG quads in the MPH box
+   with OCR'd HUD dumps (crusnwld attract shows the MPH box, so World
+   calibrates headless; USA needs one short user drive or the shared font
+   mapping).
+
+Also this session: ForzaKeeper in the shell (zeroed packets whenever no
+game runs - SimHub freezes on last values otherwise; keeper packets MUST
+carry sane EngineMaxRpm/Idle, an all-zero packet wedges SimHub),
+multi-target MIDV_TELEM_FORZA (SimHub + probe simultaneously), rig
+telemetry on port 8000.
+
+**Margin-fill regression CONFIRMED AND FIXED**: the user's phone photo
+from the first widescreen nights proved the original clean look - the
+V-Unit games draw nearly the full 16:9 natively and margins showed real
+geometry, no fill. The clamp-stretch margin-extend (added later, default
+on) caused the reported edge smearing. MARGIN FILL is now a SETTINGS row
+and defaults OFF everywhere. (Their photo also proves the dithered
+billboard rectangles are original game pop-in - C2, not a regression.)
