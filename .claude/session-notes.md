@@ -517,6 +517,18 @@ refreshed, exact mode re-verified 100.0000%.
   coined). Needs a service-menu pass for Exotica, then a CMOS bake. No safe
   blind action.
 
+CORRECTIONS after the user tested at the wheel (2026-08-23):
+- **B5 REVERTED.** The vertical gaussian blur smeared structured 2D margin
+  content (the boot ROM self-test grid) into vertical streaks. Back to the
+  shipping horizontal clamp-extend. B5 reopened: needs a sky-ONLY /
+  3D-scene-gated fill (must not run on 2D/menu/test screens).
+- **B2 crusnusa RPM CONFIRMED + WIRED.** The user's real drive
+  (capture_drive.py) debunked the attract candidate 0x0F0C0 (near-zero in
+  gameplay) and confirmed **0x0DC20** = tach: tracks speed then V-dips at
+  the Hi/Lo shift while speed stays flat. Emits "rpm" over UDP (verified,
+  0->~912). World/Off Road RPM still need their own drive (RAM differs).
+  Proof: results/proof/crusnusa-rpm-0DC20-drive.png.
+
 Remaining autonomous-unsafe (need the wheel or approval): B7 gear bindings
 (input hook can't be verified blind - deferred), C1 coinage (service menu /
 CMOS), C2 render distance (research), D4 upstream PR (outward-facing -
