@@ -722,14 +722,26 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # response-curve exponent percent for PADDLE fields (ioport.cpp
         # patch): <100 = more bite near center, 100 = linear
         env["MIDV_STEER_CURVE"] = str(int(steercurve))
-    # UDP telemetry: env wins, else collection.ini [telemetry] udp=host:port
-    if "MIDV_TELEM_UDP" not in env:
+    # UDP telemetry: env wins, else collection.ini [telemetry] keys.
+    #   udp   = host:port  -> JSON stream (MIDV_TELEM_UDP)
+    #   forza = host:port | on -> Forza Horizon "Data Out" packets
+    #           (MIDV_TELEM_FORZA; "on"/"1" = default 127.0.0.1:5300, the
+    #           port SimHub's Forza Horizon page listens on)
+    if "MIDV_TELEM_UDP" not in env or "MIDV_TELEM_FORZA" not in env:
         import configparser
         cp = configparser.ConfigParser()
         cp.read(os.path.join(rig, "collection.ini"))
-        telem = cp.get("telemetry", "udp", fallback=None)
-        if telem:
-            env["MIDV_TELEM_UDP"] = telem
+        if "MIDV_TELEM_UDP" not in env:
+            telem = cp.get("telemetry", "udp", fallback=None)
+            if telem:
+                env["MIDV_TELEM_UDP"] = telem
+        if "MIDV_TELEM_FORZA" not in env:
+            forza = cp.get("telemetry", "forza", fallback=None)
+            if forza:
+                forza = forza.strip()
+                if forza.lower() in ("1", "on", "true", "yes"):
+                    forza = "127.0.0.1:5300"
+                env["MIDV_TELEM_FORZA"] = forza
 
     def start():
         cmd = [mame, rom,

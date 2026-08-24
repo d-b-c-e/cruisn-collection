@@ -1207,3 +1207,24 @@ Method note for World/Off Road RPM: same one-command drive
 (harness/capture_drive.py <rom>) + the speed-anchored shift-dip hunt. Their
 RAM layouts differ so each needs its own capture; crusnusa proved the method
 end-to-end.
+
+## 2026-08-23 — Telemetry Phase C: SimHub-native Forza packets (session 9)
+
+The JSON stream was never SimHub-consumable without custom work - SimHub's
+Forza profiles listen for Forza's binary "Data Out" packet. So the emulator
+now speaks it natively: MIDV_TELEM_FORZA=host:port emits the FH4/5 324-byte
+packet per frame (IsRaceOn, timestamp, EngineMax/Idle/CurrentRpm - game
+tach units x8, clamped at redline 7500 - forward velocity + Speed in m/s,
+gear byte). SimHub / dash apps / bass-shaker profiles read the game as
+Forza Horizon with stock profiles.
+
+Config: collection.ini [telemetry] forza=host:port (or "on" = 127.0.0.1:5300);
+rig set to 127.0.0.1:8000 (the user's SimHub FH6 page listens there). If
+the FH6 parser rejects the legacy 324-byte layout, pick Forza Horizon 5/4
+in SimHub instead (that IS our packet) and match its port in collection.ini.
+
+Verified headless: 3476/5794-packet runs, all 324 bytes, RPM sweeps
+0->7500 (clamped), speed to 301 mph across attract demos. JSON stream now
+only emits when MIDV_TELEM_UDP is set (Forza-only mode works alone).
+Currently real data = crusnusa speed+rpm, crusnwld speed; other fields
+zeroed until hunted.
