@@ -682,7 +682,7 @@ def apply_wheelmap(tree, rig):
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
-                      margin=None, ffb=None, mame=VUNIT):
+                      margin=None, ffb=None, marginfill=True, mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -716,6 +716,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                    "MIDV_GL_MARGIN",
                    str(margin if margin is not None
                        else GAME_MARGIN.get(rom, 86))),
+               MIDV_GL_MARGINFILL=os.environ.get(
+                   "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
     if steercurve is not None:
