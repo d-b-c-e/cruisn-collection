@@ -37,6 +37,7 @@ capture) · 🙋 needs the user at the wheel
 |----|------|--------|--------|------|-------|
 | **C1** | Off Road coinage → 1 coin / 1 credit (or free play) | ☐ | S | 🙋 | One service-menu (F2) change to bake into the fixture, OR locate the CMOS coinage byte and patch. Needs a service-menu pass or a hunt. |
 | **C2** | Render distance / texture pop-in | ☐ | L | ⚠️ | Game-code (TMS32031) culling/LOD patch. Research-grade, no promise. Uses the FOV-trace groundwork + patcher. |
+| **C3** | Cruis'n World full-margin coverage | ◐ | M | 🤖 | **SKY half DONE 2026-08-25** (sky engine $9623 widened to 5 panorama tiles - crusnwld-widescreen.txt, corner black 40%→0.1%). Remaining: terrain-side poly cull (World's reject code ≠ offroadc's signature; needs its own hunt - crash-cam left voids). Same for crusnusa if gaps ever show (~99% native). |
 
 ## D. Housekeeping
 

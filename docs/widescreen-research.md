@@ -261,3 +261,46 @@ Remaining niceties (not parity-blocking): offroadc left edge + attract
 showcase corners; crusnwld's ~8% left-margin gap on some scenes. Full
 disassemblies retained (results/{crusnusa,crusnwld}-prog.asm, gitignored)
 for the offroadc left-edge sign-test patch if pursued.
+
+## 2026-08-25: Cruis'n World SKY widened game-side (second V-Unit game-code widescreen)
+
+The corner-black artifact ("sky not rendering in the very corner") was the
+sky engine's coverage, not culling. Full hunt + fix:
+
+**The engine** (found via work-RAM descriptor at $D51C-$D537 → direct-ref
+grep → `$9623-$97FA`): World's sky is a 6-bank scrolling panorama drawn as
+three 256px tiles per frame, streamed STRAIGHT to the quad DMA port
+($600000) — no object list, no cull; the hardware raster crop was the only
+clipping. Yaw × 244.4375 splits into tile index k (>>8, indexes a bank-
+offset table at $95F1 = [0,100,..,500,0,100] — 6-period wrap) and pixel
+phase (&0xFF − 128). Three loops share the structure: simple path ($9657),
+tilted/banked path ($96BF), and a second layer (mountains/overlay, bank
+from $D51F, $97E5), which re-reads per-tile centers saved via pointer
+($95FF). Tile step 255.0 at $95F9; per-frame V-coords patched into a UV
+template; a horizon fill quad (x 0..511) draws when the horizon passes 239.
+
+**The widen** (patch/game/crusnwld-widescreen.txt, 20 words): five tiles
+starting one tile further left — coverage [phase−388, phase+888] ⊇ our
+canvas [−86, 598) at every phase. A 10-entry bank table with a wrap entry
+on EACH side goes into unreachable padding at $162 (after `BU $180`),
+base-pointer word $95F0 repointed so the new left tile reads the wrap bank
+while the original three tiles keep their exact banks (alignment
+preserved); the two `SUBF ($95F9)` starts become `SUBF ($16C)` = 510.0;
+the three RC=2 loop counts become RC=4; the saved-centers array moves to
+scratch at $16D (5 pairs no longer fit the old 3-pair slot at $D539, whose
+neighbours $D53F+ are live); the horizon fill widens to x −86..597.
+
+**Verified** (deterministic attract, frames 1900/2002): England top-right
+corner black 40.0% → 0.1% with seamless cloud continuation; 4:3 centre
+pixel-identical except the last ~6 columns of the sky band on gap frames —
+columns the ORIGINAL left black at that phase (hidden by CRT overscan on
+the cabinet); stream diff = added sky/layer-2 tiles only, zero content
+removed (1-4 records were frame-attribution drift, found intact elsewhere
+in the stream). The panorama bank table lives in program code (not track
+data), so the widen is correct for every track by construction.
+
+**Remaining for World**: terrain-side margin voids below the sky band
+(crash cameras, some trackside gaps) — that's the poly-cull half, and
+World's reject code does NOT match offroadc's signature (zero hits for the
+AND-sign/SUBI3-bound pattern; likely centered-coordinate tests). Separate
+hunt, same toolkit.

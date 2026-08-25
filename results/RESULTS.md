@@ -1472,3 +1472,23 @@ window every 500 ms while MAME wasn't foreground yet. An ALT landing in a
 menu-less dialog rings the system ding. enforce_foreground now uses the
 silent AttachThreadInput unlock (ALT only after 6 failed cycles), and the
 user should close the stray joy.cpl. Verdict pending their next launch.
+
+## 2026-08-25 — Cruis'n World sky: game-code widescreen no. 2
+
+The user's "black area in the very corner - clearly the sky not rendering"
+is fixed game-side. World tiles its sky (three 256px panorama tiles,
+streamed raw to the quad DMA port - no cull anywhere) sized for the 512px
+hardware screen; 689 of 1047 attract sky frames left a left-margin gap and
+232 a right one (worst: sky ends at x=506 → 92px of black). The engine at
+$9623 now draws FIVE tiles from one tile further left (bank-wrap table
+extended in unreachable padding, saved-centers array relocated, all three
+loops RC=4, horizon fill widened): coverage [phase−388, phase+888] covers
+the 16:9 canvas at any yaw. England test frame: corner black 40.0% → 0.1%,
+seamless clouds; centre pixel-identical (modulo ~6 edge columns the
+original left black under CRT overscan); zero records removed. Details in
+docs/widescreen-research.md; auto-applies at 16:9 FULL via the existing
+patch/game/<rom>-widescreen.txt mechanism. The hunt tools that cracked it:
+work-RAM descriptor search in the telemetry RAM dumps, then a direct-
+addressing grep ($D5xx) - the MAME-debugger watchpoint runs were too slow
+and unnecessary in the end. Remaining World work: terrain-side cull (its
+reject code differs from offroadc's - no signature match; future hunt).

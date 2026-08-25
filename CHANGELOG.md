@@ -21,6 +21,12 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   applies that mask at fine pixel granularity (and the crack-filler learned
   to leave it alone). Native/exact mode is untouched — still 100.0000%
   bit-exact.
+- Cruis'n World: the sky now covers the full 16:9 margins (the game drew
+  its scrolling sky panorama only as wide as the original 512px screen, so
+  the corners went black whenever the scroll phase fell short - most
+  visible behind trees/flags at the screen edges). Fixed in the game's own
+  sky engine via the in-memory patch: five panorama tiles instead of
+  three, correct per-track banks by construction.
 - Launcher: the foreground-claim no longer taps ALT (a synthesized
   keystroke that could land in a stray dialog — e.g. a Game Controllers
   panel left open — and ring the system ding at every launch); it uses a

@@ -1,0 +1,38 @@
+# Cruis'n World (crusnwld) - game-code widescreen: SKY into the 16:9 margins.
+# Auto-applied by run_rig at 16:9 FULL (memory-only at reset; ROM untouched).
+#
+# The sky is a 6-bank scrolling panorama drawn as three 256px tiles streamed
+# straight to the quad DMA port (engine at $9623-$97FA), positioned to cover
+# the original 512px screen at the current yaw phase. Whenever the phase put
+# the strip's edge inside our margins, the corners showed unwritten black
+# ("sky not rendering in the very corner"). This widens the SAME engine to
+# five tiles starting one tile further left - coverage becomes
+# [phase-388, phase+888], a superset of our canvas [-86, 598) at any phase,
+# with the game's own bank wrap so every track's panorama stays correct.
+#
+# New data in unreachable alignment padding $162-$17F (after 'BU $180'):
+# 10-entry bank-offset table (wrap entry on each side; base $162 = old
+# table[-1]) + the float 510.0; $16D-$176 becomes the relocated per-tile
+# scratch (5 center pairs - the old array at $D539 only fits 3).
+162 0C800000 00000500   # table[-1] = wrap (bank base + 0x500)
+163 0C800000 00000000   # table[0]
+164 0C800000 00000100
+165 0C800000 00000200
+166 0C800000 00000300
+167 0C800000 00000400
+168 0C800000 00000500
+169 0C800000 00000000   # wrap
+16A 0C800000 00000100   # wrap
+16B 0C800000 00000200   # table[8] (k=5 + 3)
+16C 0C800000 087F0000   # 510.0 (C3x float; 255.0 lives at $95F9)
+# engine pointers/constants:
+95F0 000095F1 00000162   # bank-table base -> new table (index -1 aligned)
+95FF 0000D539 0000016D   # saved-centers array -> 10-word scratch in padding
+9651 17A695F9 17A6016C   # simple path: start = phase - 510 (was - 255)
+96BD 17A695F9 17A6016C   # tilt path: same
+9657 087B0002 087B0004   # simple path: 5 tiles (RC=4)
+96BF 087B0002 087B0004   # tilt path: 5 tiles
+97E5 087B0002 087B0004   # second sky layer: 5 quads (reads 5 saved centers)
+# horizon fill quad (drawn when the horizon rises past y=239): full canvas
+9689 08640000 0864FFAA   # x0: 0 -> -86
+968B 086601FF 08660255   # x1: 511 -> 597

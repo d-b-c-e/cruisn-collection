@@ -613,3 +613,14 @@ suppresses parked position, slides in normally when deployed).
 - Left-margin black voids (cow backdrop, Germany) = crusnwld's native left
   coverage gap = the World game-code widen project (next R&D block, same
   method as offroadc; disasm already captured).
+
+## 2026-08-25 — World SKY game-code widescreen SHIPPED (pending live drive)
+
+- patch/game/crusnwld-widescreen.txt (20 words): sky engine $9623 draws 5
+  panorama tiles instead of 3, one further left; bank table + scratch in
+  padding at $162; three RC loops + 2 SUBF starts + horizon fill patched.
+  Corner black 40% → 0.1% on the England gap frame; centre identical.
+  Auto-applies at 16:9 FULL. Story: widescreen-research.md + RESULTS.
+- Left-margin TERRAIN voids (crash cams etc., below sky band y>237) remain:
+  World's poly reject ≠ offroadc's signature - separate future hunt.
+- 12000-frame stability captures were running at write time.
