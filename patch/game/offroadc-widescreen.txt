@@ -1,14 +1,41 @@
-# Off Road Challenge (offroadc) — game-code widescreen, RIGHT edge.
-# Widens the TMS32031 poly clip/cull RIGHT bound so the game stops
-# discarding geometry past the 4:3 screen edge. Projection is UNTOUCHED
-# (4:3 content stays pixel-identical); this only lets already-projected
-# margin geometry survive the cull.
+# Off Road Challenge (offroadc) - game-code widescreen, BOTH edges.
+# Auto-applied by run_rig at 16:9 FULL (memory-only at reset; ROM untouched).
 #
-# $11235 = screen x-max clip bound (raw int 0x1FF = 511), read at the
-# 10 poly-clip sites 0x2008..0x294B (SUBI3 xmax-x + AND3 outcode reject).
-# 597 (0x255) = 511 + 86 (our per-side 16:9 margin). No runtime writers.
-# Verified: center quads bit-identical, right-margin quads +19%, an
-# opponent vehicle + more canyon revealed, 120s stable. RESULTS 2026-08-24.
-#
-# WORDADDR OLD NEW  (hex; OLD verified before patch)
+# RIGHT (2026-08-24): widen the x-max clip/cull bound 511 -> 597 (= 511 + 86,
+# our per-side 16:9 margin). $11235 is read at the nine poly trivial-reject
+# sites; no runtime writers. Projection untouched: 4:3 content stays
+# pixel-identical (verified: zero center/right records change).
 11235 1FF 255
+#
+# LEFT (2026-08-24, later): the game has no x-min constant - each site rejects a poly when the
+# four vertex X sign bits AND to negative (all four x < 0), via
+# 'BLTD <loop-exit>'. Mirror the right edge (reject only when all four
+# x < -86): that branch becomes 'CALLLT tramp' into a 12-word routine that
+# re-tests x+86 and, on reject, loads R1 (the x-max bound the site is about
+# to test) with INT_MIN so the site's own right-edge test discards the poly.
+# Not rejected: R1 keeps 597 and the site continues exactly as before.
+# R3-R6 are dead at that point (the right test rewrites them on return).
+# The routine lives in alignment padding (28 NOPs after 'BU $2240', no
+# references) - see docs/offroadc-left-edge-handoff.md (RESOLVED section).
+2224 0C800000 08630056   # LDI   $0056,R3      ; 86 = per-side 16:9 margin
+2225 0C800000 08658000   # LDI   $8000,R5      ; -32768 (sign-extended)
+2226 0C800000 09E50010   # LSH   $10,R5        ; R5 = 0x80000000 (INT_MIN)
+2227 0C800000 214403C3   # ADDI3 R3,*AR3,R4    ; v0.x + 86
+2228 0C800000 214603C4   # ADDI3 R3,*AR4,R6    ; v1.x + 86
+2229 0C800000 02840006   # AND   R6,R4
+222A 0C800000 214603C5   # ADDI3 R3,*AR5,R6    ; v2.x + 86
+222B 0C800000 02840006   # AND   R6,R4
+222C 0C800000 214603C6   # ADDI3 R3,*AR6,R6    ; v3.x + 86
+222D 0C800000 02840006   # AND   R6,R4         ; N set iff all four x < -86
+222E 0C800000 53810005   # LDILT R5,R1         ; then x-max bound := INT_MIN -> the site's right test rejects
+222F 0C800000 78800000   # RETSU
+# nine reject sites: BLTD <exit> -> CALLLT $2224 (PC-relative: target = site+1+disp)
+203D 6A27003B 720701E6   # disp +486
+209B 6A270038 72070188   # disp +392
+20F6 6A270047 7207012D   # disp +301
+245F 6A270039 7207FDC4   # disp -572
+24C9 6A27004B 7207FD5A   # disp -678
+2606 6A27003A 7207FC1D   # disp -995
+26C0 6A270037 7207FB63   # disp -1181
+2871 6A270038 7207F9B2   # disp -1614
+294F 6A270052 7207F8D4   # disp -1836

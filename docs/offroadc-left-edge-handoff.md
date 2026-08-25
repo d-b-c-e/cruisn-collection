@@ -197,3 +197,120 @@ not a renderer cover — pursue that first.
   offroadc is the only game needing the game-code treatment.
 - Full session narrative is in `results/RESULTS.md`; widescreen research +
   the wanszai-topology explanation is in `docs/widescreen-research.md`.
+
+---
+
+# RESOLVED — 2026-08-24 (late session, fresh eyes)
+
+Both edges now ship from `patch/game/offroadc-widescreen.txt` (auto-applied
+at 16:9 FULL). Proof: `results/proof/offroadc-left-edge-FIXED.png` (top =
+right-only build, bottom = both edges; attract frame 3398, deterministic).
+
+## Why the right worked and the left didn't (the actual asymmetry)
+
+Every one of the nine poly-emit loops does the same four **trivial-reject**
+tests before DMA-ing the raw screen coordinates to the hardware (there is
+no per-poly clip to the screen at all — the rasterizer clips):
+
+| edge | test | bound |
+|---|---|---|
+| left  | `AND3 *AR4,*AR3,R0; AND *AR5,R0; AND *AR6,R0; BLTD exit` — sign bit survives the AND ⇔ **all four x < 0** | implicit 0 (the sign bit) |
+| right | `SUBI3 R1,*ARn,Rk` ×4, AND, `BLTD exit` ⇔ all four `R1 − x < 0` ⇔ all four x > R1 | `R1 = ($1235)` = 511 → patched 597 |
+| top / bottom | same two shapes on y | sign / `($1236)` = 399 |
+
+The right test has a **data constant**, so one word widened it. The left
+test has **no constant** — it is a sign test — so there was nothing to
+patch. Widening the right kept quads whose bbox lies in `(511, 597]`;
+nothing equivalent existed for `[-86, 0)`, and every ground/wall quad
+whose right edge fell short of x = 0 was still discarded. The backdrop
+(one huge quad, always straddling) survives, so it showed through.
+
+## The flaw in the previous session's "the left isn't culled" conclusion
+
+It counted quads with `max_x < 0` in the DMA stream and found ~0, reading
+that as "nothing is lost on the left". But quads rejected by the game never
+reach the stream — a working all-off-left reject *produces* that zero. The
+measurement was a tautology, not evidence. The right fix measured the same
+way beforehand would also have shown "0 quads with min_x > 511".
+
+Both hypotheses in the handoff were therefore wrong in a useful way: the
+game does not per-poly clip at x = 0 (the "clip" hypothesis), and the
+geometry was not already present (the "gaps" hypothesis). It was
+trivially rejected, exactly as on the right.
+
+## The fix: mirror the right edge — reject only when all four x < −86
+
+Replacing the nine `BLTD` words with `NOP` (reject never) was tried first
+as a diagnostic: left-margin blue on the artifact frame 5.5 % → 0.0 %,
+centre + right streams unchanged. But over the 3,397-frame run it added
+70,628 records, of which **34,569 were entirely off-canvas (x < −86)** and
+**42 had wrapped through the 16-bit DMA port** (a regular strip at
+x ≈ 10,051…32,122 = game-space −55,000…−33,000 & 0xFFFF). Off-canvas polys
+are waste; wrapped ones are on-screen garbage waiting to happen. So the
+shipping fix is the exact mirror of the right edge.
+
+There is no room at the sites for four biased adds, so each site's
+`BLTD <exit>` becomes **`CALLLT $2224`** (PC-relative conditional call,
+op `0x7207xxxx`; the site's three delay-slot `SUBI3`s simply run after the
+return instead) into a shared 12-word routine placed in unreachable
+alignment padding (28 `NOP`s after `BU $2240`, no branch or data
+references):
+
+```
+2224  LDI   $0056,R3        ; 86
+2225  LDI   $8000,R5        ; -32768
+2226  LSH   $10,R5          ; R5 = 0x80000000 (INT_MIN)
+2227  ADDI3 R3,*AR3,R4      ; v0.x + 86
+2228  ADDI3 R3,*AR4,R6      ; v1.x + 86
+2229  AND   R6,R4
+222A  ADDI3 R3,*AR5,R6
+222B  AND   R6,R4
+222C  ADDI3 R3,*AR6,R6
+222D  AND   R6,R4           ; N set  <=>  all four x < -86
+222E  LDILT R5,R1           ; reject: x-max bound := INT_MIN
+222F  RETSU
+```
+
+The trick that makes one routine serve nine sites with different exits and
+return points: it never branches to the exit itself. On reject it loads
+**R1** — the x-max bound the site is about to test — with `INT_MIN`, so the
+site's own right-edge test (`R1 − x` negative for every x ≥ INT_MIN+1)
+discards the poly through its existing `BLTD exit`. Otherwise R1 keeps
+597 and the site continues untouched. R3–R6 are dead at the call (the
+right test rewrites them on return); R1 is reloaded from `($1235)` at the
+top of every iteration. Core semantics checked in MAME's C3x: `LT` = N
+flag; `LSH` count sign-extended from 7 bits (`$10` = left 16);
+`callc_imm` pushes `pc+1` and adds the signed 16-bit displacement.
+
+Sites (all `BLTD` → `CALLLT $2224`): `203D 209B 20F6 245F 24C9 2606 26C0
+2871 294F` (the tenth `($1235)` load at `2008` is a jump-in preamble that
+lands on `20F6`). `294F` is inside the big-poly subdivider (`291E`), so
+sub-pieces of near ground quads get the same treatment — those are exactly
+the bottom-left wedges.
+
+## Verification (attract oracle, frame 3398, `run_capture.py`)
+
+| | records (frames < 3397) | removed vs baseline | added |
+|---|---|---|---|
+| right-only (shipping before) | 567,185 | — | — |
+| + left reject NOP'd | 637,813 | 0 | 70,628 (36,003 in `[-86,0)`, 34,569 off-canvas, 42 wrapped, 14 at x=0) |
+| **+ left mirror (shipping now)** | 603,196 | **0** | **36,011** (36,003 in `[-86,0)`, 8 with a vertex at x = 0 the game over-rejected) |
+
+- Mirror additions are a strict subset of the NOP stream (0 outside it).
+- Frame-3398 wide render: bottom-half blue left 5.5 % → **0.0 %**, right
+  0.0 % → 0.0 %, centre identical; mirror render pixel-identical to the
+  NOP render (100.0000 %).
+- Exact mode still 100.0000 % on `capture` and `capture-8000` (no
+  renderer change was needed — the renderer's margin/cover/extend paths
+  stay OFF; the game now draws its own margins on both sides).
+- Loader: "22 applied, 0 skipped"; run to frame 12000 stable (see RESULTS).
+
+## What's left
+
+- **Live drive** at the rig (attract can't exercise the player's car,
+  heavy subdivision under the camera, or the stack at race load). The
+  patch path is identical to the right-edge one the user already approved.
+- Top/bottom edges use the same two shapes if a vertical widen is ever
+  wanted (not needed for 16:9).
+- crusnusa / crusnwld already cover ~99 % natively; if their last percent
+  is ever wanted, expect the same sign-test shape on their min edges.

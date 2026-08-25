@@ -17,7 +17,7 @@ capture) · 🙋 needs the user at the wheel
 |----|------|--------|--------|------|-------|
 | **A1a** | Zeus GL internal upscaling (Exotica sharpness) | ☑ | — | — | **DONE (session 5).** Exotica renders live through our GL renderer at 4× internal res with hardware-accurate bilinear textures - crisp. Proof: results/proof/zeus-live-vegas-4x.png. (Roadmap earlier mis-stated this as "native res".) |
 | **A1b** | Exotica 16:9 widescreen | ☑ | — | — | **DONE (2026-08-23).** 3D scenes present 16:9 (wider canvas, margins cleared per frame, aspect hysteresis vs wobble); 2D screens stay 4:3. MIDZ_GL_MARGIN=0 forces 4:3. Perf recovered same session (skip double-rasterization: 94%→99.8%). |
-| **A2** | Game-code widescreen (parity with Ridge Racer) | ☑ | — | — | **REACHED 2026-08-24.** offroadc game-code clip patch shipped (rig-verified, auto-applies at 16:9 FULL); crusnusa 99%/99% + crusnwld 92%/99% native margin coverage (overdraw past 4:3 - no patch needed); Exotica native full 16:9 (Zeus chip). Niceties left: offroadc left-edge (sign-test code patch) + attract-showcase corners. Disassemblies retained for that. |
+| **A2** | Game-code widescreen (parity with Ridge Racer) | ☑ | — | — | **REACHED 2026-08-24.** offroadc game-code clip patch shipped (rig-verified, auto-applies at 16:9 FULL); crusnusa 99%/99% + crusnwld 92%/99% native margin coverage (overdraw past 4:3 - no patch needed); Exotica native full 16:9 (Zeus chip). offroadc LEFT edge DONE 2026-08-24 (sign-test reject mirrored via a 12-word CALLLT routine in NOP padding - both edges now game-drawn; awaiting live drive). Nicety left: attract-showcase corners. |
 
 ## B. Features
 

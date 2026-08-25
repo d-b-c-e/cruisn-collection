@@ -1343,3 +1343,48 @@ Remaining: crusnusa/crusnwld bound hunts (their clip structure differs
 from offroadc's [0,511] table - likely centered coords; needs their
 program disassembly), offroadc LEFT edge (sign-test code patch), and the
 attract-showcase corner boxes (game composes sky 4:3-only there; B5).
+
+## 2026-08-24 (late) — offroadc LEFT edge SOLVED: game-code widescreen on BOTH sides
+
+Fresh-eyes session on the left-margin sky-through-ground wedges (the one
+artifact the right-edge patch left behind). Full analysis in
+`docs/offroadc-left-edge-handoff.md` (RESOLVED section); summary:
+
+**Why right ≠ left.** The nine poly-emit loops do four trivial-reject tests
+(no per-poly screen clip; the rasterizer clips). The right test subtracts
+the vertices from a table constant (`$11235`, the word we widened). The
+left test ANDs the four X values and rejects on the sign bit — "all four
+x < 0" — with no constant anywhere. So the right could be widened with one
+data word; the left had nothing to widen, and every ground/wall quad whose
+right edge fell short of x=0 kept being discarded. The previous session's
+"0 quads with max_x < 0 ⇒ nothing is culled" reading was a tautology:
+rejected quads never reach the DMA stream.
+
+**Fix (patch/game/offroadc-widescreen.txt, 21 new words).** Each site's
+`BLTD <exit>` becomes `CALLLT $2224` into a 12-word routine in unreachable
+alignment padding (28 NOPs after `BU $2240`) that re-tests `x + 86` on all
+four vertices and, on reject, loads R1 (the x-max bound the site tests
+next) with INT_MIN so the site's own right-edge test discards the poly.
+One routine serves all nine sites without knowing their exits or return
+points; the not-rejected path is untouched. Mirrors the right exactly:
+reject only if all four x < −86.
+
+**Measured (attract oracle, frame 3398, frames < 3397 as multisets):**
+- records removed vs the right-only build: **0** (centre + right identical)
+- records added: **36,011** — 36,003 with bbox in `[-86, 0)` (the exact
+  class the game discarded) + 8 with a vertex at x = 0 it over-rejected
+- artifact frame, bottom-half sky-blue: left **5.5 % → 0.0 %**, right
+  0.0 % → 0.0 %; proof `results/proof/offroadc-left-edge-FIXED.png`
+- the naive alternative (NOP the nine branches = reject never) was
+  measured and rejected: +70,628 records, 34,569 entirely off-canvas, and
+  42 wrapped through the 16-bit DMA port (game-space x < −32768 → strip at
+  x ≈ 10k–32k) — on-screen garbage waiting to happen. The mirror cannot
+  emit such a quad (a kept quad touches −86; the game subdivides extents
+  ≥ 0x800).
+- exact mode: capture + capture-8000 both still 100.0000 % (no renderer
+  change; the margin cover/extend paths stay OFF)
+- loader "22 applied, 0 skipped"; attract stable to frame 12000
+
+**Pending:** the user's live drive (attract can't load the subdivider or
+stack the way a race does). Same wiring as the right edge: 16:9 FULL
+auto-applies the file.

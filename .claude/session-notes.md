@@ -570,3 +570,21 @@ facts for next session:
   backdrop suppressed, no longer extended over).
 - SimHub setup: FH5/FH6 profile, port 8000, rig collection.ini
   [telemetry] forza=127.0.0.1:8000,127.0.0.1:8001 (dual: dash + probe).
+
+## 2026-08-24 late — offroadc LEFT edge SOLVED (game-code, both sides)
+
+- Root cause: the left trivial-reject is a **sign test** (all four x < 0),
+  no constant to widen; the previous "left isn't culled" measurement was a
+  tautology (rejected quads never reach the DMA stream).
+- Fix shipped in `patch/game/offroadc-widescreen.txt`: nine `BLTD` →
+  `CALLLT $2224`, 12-word routine in NOP padding re-tests x+86 and forces
+  the site's right test to reject (R1 := INT_MIN). Exact mirror of the
+  right (reject only if all four x < −86). Details:
+  `docs/offroadc-left-edge-handoff.md` RESOLVED section; numbers in RESULTS.
+- **OPEN: live drive at the rig** (shell → Off Road at 16:9 FULL; both
+  margins should now be game-drawn, no blue wedges bottom-left, no smear).
+  If anything looks off: ASPECT = TRIMMED/4:3 skips the whole patch; to
+  keep the right edge only, comment out the 21 LEFT lines in the file
+  (every line is an independent word patch).
+- Do NOT replace the routine with plain NOPs on the nine branches: that
+  variant emits off-canvas and int16-wrapped quads (measured, see RESULTS).
