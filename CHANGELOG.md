@@ -3,6 +3,18 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## Unreleased
+
+- Off Road / all games: no more Windows error "ding" after quitting a game
+  (the FFB plugin's exit crash is now bypassed entirely: MIDV_FAST_EXIT).
+- Exotica: launcher focus watchdog — input works immediately, no click
+  needed.
+- Cruis'n USA / World / Off Road: Radio and View 1-3 wheel bindings landed
+  one button off (wizard mapping table was shifted); fixed.
+- Cruis'n World: the radio panel no longer shows parked at the right edge
+  of the 16:9 margin (the game hides it off-screen; now we do too — it
+  still slides in normally when Radio is pressed).
+
 ## v0.2.0 — 2026-08-24
 
 The "improve on the original in every facet that's feasible" release. Four

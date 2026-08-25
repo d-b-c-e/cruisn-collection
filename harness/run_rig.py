@@ -499,10 +499,12 @@ WHEELMAP_PORTS = {
     "brake": (["P1_PEDAL2"], None),
     "coin":  (["COIN1"], "KEYCODE_5"),
     "start": (["START1"], "KEYCODE_1"),
-    "view1": (["P1_BUTTON1"], None),
-    "view2": (["P1_BUTTON2"], None),
-    "view3": (["P1_BUTTON3"], None),
-    "radio": (["P1_BUTTON4"], None),
+    # V-Unit button map (midvunit.cpp): BUTTON1=Radio, BUTTON2-4=View 1-3.
+    # (Was shifted one slot until 2026-08-24: view1 landed on Radio.)
+    "view1": (["P1_BUTTON2"], None),
+    "view2": (["P1_BUTTON3"], None),
+    "view3": (["P1_BUTTON4"], None),
+    "radio": (["P1_BUTTON1"], None),
     "gear1": (["P1_BUTTON5"], None),
     "gear2": (["P1_BUTTON6"], None),
     "gear3": (["P1_BUTTON7"], None),
@@ -716,7 +718,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         os.remove(statefile)
     except OSError:
         pass
-    env = dict(os.environ, MIDV_GL="1", MIDZ_GL="1" if zeus_gl else "0",
+    env = dict(os.environ, MIDV_FAST_EXIT="1",
+               MIDV_GL="1", MIDZ_GL="1" if zeus_gl else "0",
                MIDV_GL_SCALE=str(scale),
                MIDV_GL_CRT="1" if crt else "0",
                MIDV_GL_CRACKFILL="1" if crackfill else "0",
@@ -809,6 +812,24 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         threading.Thread(target=enforce_fullscreen, args=(hwnd,),
                          daemon=True).start()
     focused = enforce_foreground(hwnd)
+    # session-long watchdog: if the foreground ever lands back on OUR OWN
+    # ecosystem (the shell/launcher process, vunit's GL overlay popup, or
+    # nothing at all), reclaim it for MAME - keyboard and foreground-mode
+    # DirectInput FFB die silently otherwise (seen on Exotica launched from
+    # the shell: input dead until the player clicks the screen). A real
+    # alt-tab to another app is left alone.
+    def _focus_watchdog():
+        me = os.getpid()
+        while u32.IsWindow(hwnd) and proc.poll() is None:
+            fg, _focus = focus_state()
+            if fg != hwnd:
+                fgpid = wt.DWORD()
+                if fg:
+                    u32.GetWindowThreadProcessId(fg, ctypes.byref(fgpid))
+                if fg == 0 or fgpid.value in (me, proc.pid):
+                    enforce_foreground(hwnd, seconds=5)
+            time.sleep(2.0)
+    threading.Thread(target=_focus_watchdog, daemon=True).start()
     # park the pointer in the bottom-right corner: the arrow glyph hangs
     # below-right of its hotspot, so at the corner it renders off-screen.
     # Nothing in these games uses the mouse, and MAME won't hide it for a

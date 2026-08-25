@@ -582,3 +582,17 @@ facts for next session:
   (every line is an independent word patch).
 - Do NOT replace the routine with plain NOPs on the nine branches: that
   variant emits off-canvas and int16-wrapped quads (measured, see RESULTS).
+
+## 2026-08-24 late (post-v0.2.0) — minor-list fixes, v0.2.1 candidates
+
+Four user-reported issues fixed in one pass (details in RESULTS):
+launch ding (MIDV_FAST_EXIT in winmain; run_rig sets it), Exotica
+shell-launch focus (run_rig focus watchdog: reclaims only from our own
+windows), World radio/view button map (WHEELMAP_PORTS was shifted -
+V-Unit Radio=BUTTON1, Views=2-4), World floating dithered box in the
+right margin (= the game's RADIO PANEL parked off-screen; meta bit 2
+suppresses parked position, slides in normally when deployed).
+- vunit.exe rebuilt (winmain + midvunit_v + regenerated shader header);
+  patch series refreshed (58 patches).
+- **OPEN: user live-verifies all four**, then tag v0.2.1.
+- v0.2.0 release CI was still building at write time.

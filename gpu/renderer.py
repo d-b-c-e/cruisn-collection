@@ -210,6 +210,11 @@ void main() {
     }
 
     uint pixdata = meta.x, mode = meta.y, dither = meta.z & 1u;
+    // parked screen-space UI (meta bit 2, set only in wide builds): panels
+    // the game slides in from past the 4:3 edge (crusnwld radio) park fully
+    // off-screen where the hardware raster crop hid them - never draw the
+    // parked position; sliding/deployed quads straddle x=511 and stay.
+    if ((meta.z & 4u) != 0u) discard;
     bool backdrop = (meta.z & 2u) != 0u;
     // suppress backdrop (sky/horizon band) in the 16:9 margins: leaves the
     // pixel unwritten so the margin-extend fills it from the 4:3 boundary
@@ -452,6 +457,16 @@ def build_vertices(quads, xoff):
         _wx = [int(np.int16(dma[2 + i * 2])) for i in range(4)]
         if (int(dma[14]) & 0xff) in (0x56, 0x7f, 0xc5) and (max(_wx) - min(_wx)) > 200:
             dither |= 2
+        # parked screen-space UI (see shader): untextured, fully right of
+        # the 4:3 edge, in the HUD band - wide builds only (exact mode
+        # keeps bit clear, preserving bit-exactness by construction)
+        # dithered panel or tiny indicator dot only - moving untextured
+        # margin objects (USA traffic shadows/LOD, ~20px) must stay
+        if xoff > 0 and not textured and min(_wx) >= 512:
+            _wy = [int(np.int16(dma[3 + i * 2])) for i in range(4)]
+            small = (max(_wx) - min(_wx)) <= 8 and (max(_wy) - min(_wy)) <= 8
+            if min(_wy) >= 60 and max(_wy) <= 260 and ((dither & 1) or small):
+                dither |= 4
         if not textured:
             mode = 0
             pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff
@@ -509,6 +524,13 @@ def build_vertices_fast(quads, xoff):
     _lb = dma[:, 14] & 0xff
     _isbg = ((_lb == 0x56) | (_lb == 0x7f) | (_lb == 0xc5)) & _wwide
     dither |= (_isbg.astype(np.uint32) << 1)
+    if xoff > 0:
+        # parked screen-space UI (see build_vertices / shader): dithered
+        # panel or tiny indicator dot only
+        _wvy = dma[:, 3:10:2].astype(np.int16)
+        _small = ((_wvx.max(axis=1) - _wvx.min(axis=1)) <= 8)             & ((_wvy.max(axis=1) - _wvy.min(axis=1)) <= 8)
+        _parked = (~textured) & (_wvx.min(axis=1) >= 512)             & (_wvy.min(axis=1) >= 60) & (_wvy.max(axis=1) <= 260)             & (((dither & 1) != 0) | _small)
+        dither |= (_parked.astype(np.uint32) << 2)
     mode = np.zeros(n, dtype=np.uint32)
     mode[textured & (sel == 0x000)] = 1
     mode[textured & (sel == 0x800)] = 2

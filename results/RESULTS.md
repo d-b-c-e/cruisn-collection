@@ -1398,3 +1398,45 @@ now feeds the GitHub release body (workflow step), README status
 refreshed. Tag `v0.2.0` → CI builds MAME 0.286 + the 57-patch series from
 scratch (patch hash changed since v0.1.0, so no cache hit) and publishes
 the zip. Remaining Off Road imperfections go on the minor list.
+
+## 2026-08-24 (post-v0.2.0) — the user's minor list: four fixes in one pass
+
+User's live drive after v0.2.0 flagged four issues; all root-caused and
+fixed the same night (pending their next drive; batch = v0.2.1 candidate).
+
+1. **Windows "ding" at (re)launch** — Event Log showed EVERY vunit exit
+   tonight AV'ing in teardown (9 Application Error + WER pairs, 8:21-10:19
+   PM): the FFB plugin's dinput8.dll detach race, with the round-4
+   SetErrorMode suppression evidently reset inside the process. Real fix:
+   env-gated MIDV_FAST_EXIT (winmain) — after the frontend returns cleanly
+   (cfg/nvram written), fflush + TerminateProcess so DLL_PROCESS_DETACH
+   never runs. run_rig sets it; captures don't. Smoke: the frame-300
+   headless run went exit 0xC0000005 → exit 0, and teardown drag 7.5s → 3.1s.
+2. **Exotica launches unfocused (click to fix)** — instrumented probe:
+   direct-launch holds fg from t=0 for 55 s straight, so the failure is
+   shell-path-specific (Exotica alone skips make_fullscreen, so it has no
+   strong activation event if the shell/overlay interleaving goes wrong).
+   Fix: session-long focus watchdog in run_rig — if the foreground lands on
+   OUR OWN ecosystem (shell process / GL overlay popup / null), reclaim for
+   MAME; a real alt-tab to another app is never fought.
+3. **World: bound-to-Radio button fired on the wrong input** — real bug in
+   WHEELMAP_PORTS since the wizard shipped: V-Unit is Radio=BUTTON1,
+   View1-3=BUTTON2-4 (midvunit.cpp), our table had view1=BUTTON1...
+   radio=BUTTON4 (all shifted). Fixed; Exotica's table was already correct.
+4. **World: black dithered "texture" floating at the right edge** — it's
+   the RADIO PANEL (dithered translucent box + red/white station dots), a
+   screen-space UI element that PARKS fully off-screen at x 544+ and
+   slides in when Radio is pressed (attract timeline: parked x 600-700 f
+   1304-1568, slides 544→470 f 1569-1611, deployed on-screen x 400-470 f
+   1613+). The hardware raster crop hid the parked position; our 16:9
+   margins revealed it. Fix: meta bit 2 in the vertex builders (python +
+   C++) — untextured AND fully right of x=511 AND y 60-260 AND (dithered
+   panel OR ≤8px dot) → shader discards. Wide builds only. Verified:
+   flag-render pixel-identical to physically removing the records
+   (100.0000% on the parked frame), USA margin traffic unaffected (naive
+   rule matched 193 moving car quads — refined rule 0 on that capture, 244
+   ≤8px specks on 71/7084 frames of capture-8000), offroadc 0 matches,
+   exact mode 100.0000% x2. Deployed/sliding panel still renders (it
+   straddles x=511) — matching original timing.
+
+Also: FFBPlugin.ini Logging=1 had grown FFBlog.txt to 15 MB — set back to 0.
