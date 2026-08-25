@@ -17,7 +17,7 @@ capture) · 🙋 needs the user at the wheel
 |----|------|--------|--------|------|-------|
 | **A1a** | Zeus GL internal upscaling (Exotica sharpness) | ☑ | — | — | **DONE (session 5).** Exotica renders live through our GL renderer at 4× internal res with hardware-accurate bilinear textures - crisp. Proof: results/proof/zeus-live-vegas-4x.png. (Roadmap earlier mis-stated this as "native res".) |
 | **A1b** | Exotica 16:9 widescreen | ☑ | — | — | **DONE (2026-08-23).** 3D scenes present 16:9 (wider canvas, margins cleared per frame, aspect hysteresis vs wobble); 2D screens stay 4:3. MIDZ_GL_MARGIN=0 forces 4:3. Perf recovered same session (skip double-rasterization: 94%→99.8%). |
-| **A2** | Game-code widescreen (proper Hor+) | ◐ | L | ✅ | **PROVEN 2026-08-24 (offroadc right edge).** Widened the game's TMS32031 poly clip/cull bound ($11235 511→597, MIDV_PATCH, ROM untouched): 4:3 content bit-identical, right-margin geometry + a culled opponent revealed (proof/offroadc-gamecode-widescreen.png). First game-code widescreen on V-Unit. Left/top edges = sign-test code patch; crusnusa/wld need own bound hunts; then wire behind WIDESCREEN + wheel-verify AI/LOD. Autonomous-verifiable (quad self-check). |
+| **A2** | Game-code widescreen (parity with Ridge Racer) | ☑ | — | — | **REACHED 2026-08-24.** offroadc game-code clip patch shipped (rig-verified, auto-applies at 16:9 FULL); crusnusa 99%/99% + crusnwld 92%/99% native margin coverage (overdraw past 4:3 - no patch needed); Exotica native full 16:9 (Zeus chip). Niceties left: offroadc left-edge (sign-test code patch) + attract-showcase corners. Disassemblies retained for that. |
 
 ## B. Features
 
