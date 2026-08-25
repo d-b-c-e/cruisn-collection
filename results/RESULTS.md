@@ -1343,3 +1343,30 @@ Remaining: crusnusa/crusnwld bound hunts (their clip structure differs
 from offroadc's [0,511] table - likely centered coords; needs their
 program disassembly), offroadc LEFT edge (sign-test code patch), and the
 attract-showcase corner boxes (game composes sky 4:3-only there; B5).
+
+## 2026-08-24 — sky-through-ground on the LEFT: cover un-gated (user-reported)
+
+The user's driving screenshots showed blue wedges in the left margin -
+the sky/horizon backdrop visible THROUGH gaps in the margin terrain -
+while the right side looked clean. Two findings:
+
+1. **Not a culling problem.** Quads reaching past x<0 are identical with
+   and without the right-edge game patch (26758 vs 26758), i.e. the game
+   already submits all its left-side geometry. (The clip code confirms
+   why the two edges differ structurally: the RIGHT bound is a table
+   constant - SUBI3 against $11235 - while the LEFT reject is the SIGN of
+   the vertex coords, AND3 + branch-if-negative, with no constant to
+   widen. Same concept, different encodings, as written in 1997.)
+2. **The asymmetry has one cause.** The margin backdrop cover shared its
+   gate with the margin-fill clamp-stretch. The user (correctly) runs
+   fill OFF because it smears - which silently disabled the cover too.
+   The RIGHT margin no longer shows the artifact because the game-code
+   widescreen patch fills it with real geometry; the LEFT still has the
+   original gaps, so the backdrop shows through there.
+
+Fix: the cover is now independent (own MIDV_GL_BGCOVER=0 opt-out;
+renderer.py mirror has --nobgcover). Verified on the user's artifact
+scene under exact shipping settings (fill OFF): bottom-left
+sky-through-ground 28% -> 0%, control run with the cover disabled still
+28%. Exact mode 100.0000%, live err=0 at 188% speed.
+Proof: results/proof/offroadc-left-backdrop-fixed.png
