@@ -1331,3 +1331,15 @@ crusnusa/crusnwld need their own bound-table hunts (same method).
 
 Try it live: MIDV_PATCH=<repo>/patch/game/offroadc-widescreen.txt
 python harness/run_rig.py --rom offroadc
+
+## 2026-08-24 — Game-code widescreen SHIPPED (rig-verified)
+
+The user drove offroadc with the widened clip live: "looked great" - right
+margin fills with real geometry, no gameplay side effects observed.
+run_rig now auto-applies patch/game/<rom>-widescreen.txt at 16:9 FULL
+(the ASPECT setting is now the real mechanism switch: 4:3/TRIMMED skip
+the patch). Exotica needs nothing (native wide via the Zeus chip).
+Remaining: crusnusa/crusnwld bound hunts (their clip structure differs
+from offroadc's [0,511] table - likely centered coords; needs their
+program disassembly), offroadc LEFT edge (sign-test code patch), and the
+attract-showcase corner boxes (game composes sky 4:3-only there; B5).
