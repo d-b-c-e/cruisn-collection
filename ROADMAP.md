@@ -58,7 +58,7 @@ capture) · 🙋 needs the user at the wheel
 
 | ID | Item | Status | Notes |
 |----|------|--------|-------|
-| **F1** | Tag v0.3.0 | ☐ | Once the pending rig test passes. Everything since v0.1.0 (v0.2.0 never tagged): all fixes, wizard, telemetry, Exotica live GL, widescreen + backdrop fix, per-game audio. Bundle mame-src `bgfx/` (Exotica CRT) in the release. |
+| **F1** | Tag v0.2.0 | ☑ | **DONE 2026-08-24.** Everything since v0.1.0 (CHANGELOG.md): fixes, wizard, telemetry, Exotica live GL, game-code widescreen both edges, per-game audio. `bgfx/` bundled by make_release.ps1; release body from `docs/release-notes/<tag>.md`. |
 
 ---
 

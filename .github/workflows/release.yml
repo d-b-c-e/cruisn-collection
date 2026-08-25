@@ -79,11 +79,17 @@ jobs:
           $zip = Get-ChildItem build\CruisnCollection-*.zip | Select-Object -First 1
           Move-Item $zip.FullName "build\CruisnCollection-$tag.zip"
 
+      - name: Release notes (docs/release-notes/<tag>.md if present)
+        run: |
+          $f = "docs/release-notes/${{ github.ref_name }}.md"
+          if (Test-Path $f) { Copy-Item $f build/RELEASE_BODY.md } else { "" | Set-Content build/RELEASE_BODY.md }
+
       - name: Publish GitHub release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: build/CruisnCollection-*.zip
+          body_path: build/RELEASE_BODY.md
           generate_release_notes: true
 
       - name: Upload artifact (manual runs)

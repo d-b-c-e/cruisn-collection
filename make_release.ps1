@@ -63,6 +63,11 @@ foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll") {
     if (Test-Path (Join-Path $vdir $f)) { Copy-Item (Join-Path $vdir $f) $rel }
     else { Write-Host "  [!] $f not found beside vunit.exe - player must run setup's FFB download" -ForegroundColor Yellow }
 }
+# MAME's bgfx shader/chain files: used by the Exotica fallback path (MIDZ_GL=0
+# -> video bgfx + crt-geom-deluxe). Beside vunit.exe in dev; in the CI clone.
+if (Test-Path (Join-Path $vdir "bgfx")) {
+    Copy-Item -Recurse (Join-Path $vdir "bgfx") (Join-Path $rel "bgfx")
+} else { Write-Host "  [!] bgfx\ not found beside vunit.exe (Exotica fallback CRT unavailable)" -ForegroundColor Yellow }
 if (Test-Path (Join-Path $vdir "FFBPlugin.ini")) {
     # ship the ini configured for MAME-outputs mode, wheel GUID blanked
     (Get-Content (Join-Path $vdir "FFBPlugin.ini")) `

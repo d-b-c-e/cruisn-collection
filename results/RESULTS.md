@@ -1388,3 +1388,13 @@ reject only if all four x < −86.
 **Pending:** the user's live drive (attract can't load the subdivider or
 stack the way a race does). Same wiring as the right edge: 16:9 FULL
 auto-applies the file.
+
+## 2026-08-24 — v0.2.0 cut
+
+User verdict on the both-edges Off Road widescreen: "not perfect but
+honestly the closest we've gotten to perfect this whole campaign." Shipped:
+`CHANGELOG.md` (everything since v0.1.0), `docs/release-notes/<tag>.md`
+now feeds the GitHub release body (workflow step), README status
+refreshed. Tag `v0.2.0` → CI builds MAME 0.286 + the 57-patch series from
+scratch (patch hash changed since v0.1.0, so no cache hit) and publishes
+the zip. Remaining Off Road imperfections go on the minor list.

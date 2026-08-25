@@ -16,8 +16,7 @@
   scratch: MAME+patches → vunit.exe → frozen apps → FFB plugin download →
   media → publish). Tag = release; emulator build is cached on patch hash.
   NOTE: v0.1.0 predates the axis/keyboard wizard, Esc menu, telemetry and
-  the 401-line fix — **tag v0.2.0 after the rig test passes** to publish
-  everything current.
+  the 401-line fix — **v0.2.0 tagged 2026-08-24** with everything current.
 
 ## What this product is right now
 
@@ -63,20 +62,15 @@ repo — user's decision; `-NoMedia` for clean; ROMs are the bright line).
 (`{"game","out","value"}`); "wheel" = FFB force. Verified with lamp
 outputs in attract. Phase B (speed/RPM via RAM hunt) designed, not built.
 
-## THE PENDING RIG TEST (user, at the wheel — everything else is done)
+## RIG TEST — DONE; v0.2.0 CUT 2026-08-24
 
-Nothing below has physically touched the wheel yet; all verified
-programmatically at the binding/render level:
-1. Deck button → shell → SETTINGS → **WHEEL SETUP**: axis steps first
-   (turn wheel / press pedals), then buttons (wheel/shifter/stalk all
-   visible; keyboard keys also bind). **Wake the Moza first — it
-   idle-sleeps and vanishes from enumeration.**
-2. In-game: wheel buttons (start/gears/views), real FFB forces
-   (MAME64.dll fixed the silent-FFB issue; RunningFFB=RacingFullValueActive2
-   confirmed), **Esc menu** (Resume/CRT/Exit), F9 CRT taste check.
-3. Exotica from the shell (d3d fullscreen; FFB as in racing build).
-4. World at full speed (perf was the "bad emulation" — priority 1 fixed).
-5. If good → `git tag v0.2.0 && git push origin v0.2.0`.
+The list that used to live here (wizard, FFB, Esc menu, Exotica, World
+speed) was worked through in rounds 1–6 below. 2026-08-24 the user's
+verdict on the offroadc both-edges widescreen: "not perfect but honestly
+the closest we've gotten to perfect this whole campaign" → documented,
+tagged **v0.2.0** (CI builds + publishes on the tag; `CHANGELOG.md` +
+`docs/release-notes/v0.2.0.md` are the release text). Next: the minor
+items the user wants to discuss.
 
 ## Rig test round 1 (2026-08-20, user at wheel) — findings + fixes
 

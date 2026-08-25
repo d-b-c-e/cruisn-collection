@@ -1,14 +1,21 @@
-# Cruis'n POC — V-Unit Cruis'n Collection
+# Cruis'n Collection
 
-Native PC port of the Midway V-Unit racers (Cruis'n USA, Cruis'n World,
-Off Road Challenge) as a **renderer-replacement over MAME** — the wanszai
-architecture. Companion to the feasibility study at
-`E:\Source\launchbox\Launchbox-Racing\docs\cruisn-usa-port-feasibility.md`.
+Native PC port of the Midway Cruis'n arcade games — **Cruis'n USA, Cruis'n
+World, Off Road Challenge** (V-Unit) and **Cruis'n Exotica** (Zeus2) — as a
+**renderer-replacement over MAME**, the wanszai architecture. One
+`vunit.exe`, one fullscreen launcher, wheel + force feedback, 16:9 at 3–4×
+internal resolution, optional CRT pass. Releases:
+<https://github.com/d-b-c-e/cruisn-collection/releases> (no ROMs included —
+you supply your own). Changes per version: `CHANGELOG.md`.
 
-**Status (2026-08-18): Phase 1 complete and rig-verified.** Cruis'n USA runs
-in one window with an in-process GPU renderer — 16:9, 3–4× internal
-resolution, per-scene 2D/3D presentation, artifact-free — with wheel input
-via the racing build's ctrlr and force feedback staged for testing.
+**Status (2026-08-24): v0.2.0.** All four games rig-verified. The three
+V-Unit games render 100.0000 % bit-exact vs MAME at native resolution;
+Exotica runs through our GL renderer verified against a CPU oracle. Off
+Road Challenge shows true 16:9 on both edges via in-memory game-code
+patches (a first on V-Unit — `docs/offroadc-left-edge-handoff.md`);
+Exotica is natively full-width; USA/World cover ~99 % of the margins with
+their own overdraw. Telemetry (speed/RPM/FFB/lamps) streams to SimHub as
+JSON or Forza-format UDP.
 
 ```
 python harness/run_rig.py        # play it
@@ -34,7 +41,8 @@ python harness/run_rig.py        # play it
   widescreen analysis, record_diag (60fps flashing detector)
 - `gpu/` — renderer.py (verified pipeline, **shader source of truth**),
   live_viewer.py (out-of-process debug path)
-- `patch/` — full mame-src series vs base `6f55ed93` (branch `poc/quadlog`)
+- `patch/` — full mame-src series vs `mame0286` (branch `poc/quadlog`);
+  `patch/game/` — in-memory game-code patches (Off Road widescreen)
 - `fixtures/` — calibrated NVRAM so boot reaches attract
 - `results/` — RESULTS.md (engineering log) + proof images
 
