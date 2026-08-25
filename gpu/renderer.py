@@ -586,9 +586,6 @@ def main():
                          "quad cracks showing the stale page) from bounded "
                          "neighbours - quality mode only")
     ap.add_argument("--bench", type=int, default=0, help="timed re-renders")
-    ap.add_argument("--nobgcover", action="store_true",
-                    help="disable the 16:9 margin backdrop cover (shows the "
-                         "sky/horizon band through margin terrain gaps)")
     args = ap.parse_args()
     cap = args.capture_dir
     S = args.scale
@@ -624,11 +621,7 @@ def main():
     prog["texMask"].value = texsize - 1
     prog["uDbgQuadId"].value = 1 if os.environ.get("MIDV_DBG_QUADID") else 0
     prog["uClipW"].value = W
-    # backdrop cover is INDEPENDENT of the margin-fill/crack-fill switches
-    # (mirrors the C++ overlay): without it the sky/horizon band shows
-    # THROUGH gaps in the margin terrain while driving. --nobgcover opts out.
-    prog["uBgMargin"].value = (margin if (args.wide and not args.nobgcover)
-                               else 0)
+    prog["uBgMargin"].value = (margin if (args.crackfill and args.wide) else 0)
     tex2d.use(0)
 
     fdata, udata = build_vertices(quads, margin)
