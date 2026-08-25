@@ -1,7 +1,7 @@
 From 6f55ed93ce5df76f01007096657cfd2491000ad0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 28 Mar 2026 20:27:47 -0500
-Subject: [PATCH 01/55] dinput joystick: use DIJOYSTATE2 for 128-button support
+Subject: [PATCH 01/57] dinput joystick: use DIJOYSTATE2 for 128-button support
  Use c_dfDIJoystick2 as the primary data format for DirectInput joystick
  devices, with c_dfDIJoystick as a fallback. This raises the button limit from
  32 (DIJOYSTATE) to 128 (DIJOYSTATE2). The existing code already handles up to
@@ -63,7 +63,7 @@ index 98fdfb01..c01403ee 100644
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 02/55] POC: env-gated DMA quad logging + one-shot state dump
+Subject: [PATCH 02/57] POC: env-gated DMA quad logging + one-shot state dump
  for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -184,7 +184,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 03/55] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 03/57] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -443,7 +443,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 04/55] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 04/57] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1383,7 +1383,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 05/55] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 05/57] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1421,7 +1421,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 06/55] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 06/57] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1456,7 +1456,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 07/55] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 07/57] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1548,7 +1548,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 08/55] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 08/57] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1610,7 +1610,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 09/55] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 09/57] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1673,7 +1673,7 @@ index 7936ea9f..3d5b3200 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 10/55] POC: 2px overscan inset - CRT-hidden edge pixels showed
+Subject: [PATCH 10/57] POC: 2px overscan inset - CRT-hidden edge pixels showed
  as a thin border
 
 ---
@@ -1711,7 +1711,7 @@ index 3d5b3200..af795ef7 100644
 From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 21:22:25 -0500
-Subject: [PATCH 11/55] POC-NOTES: point sessions opened here at the cruisn-poc
+Subject: [PATCH 11/57] POC-NOTES: point sessions opened here at the cruisn-poc
  project home
 
 ---
@@ -1746,7 +1746,7 @@ index 00000000..1b4841d0
 From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:08:42 -0500
-Subject: [PATCH 12/55] CRT pass: mask + scanlines + curvature in the palette
+Subject: [PATCH 12/57] CRT pass: mask + scanlines + curvature in the palette
  stage, F9 live toggle
 
 PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
@@ -1921,7 +1921,7 @@ index af795ef7..e302e1f4 100644
 From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:32:30 -0500
-Subject: [PATCH 13/55] MIDV_SKIP_STARTUP_SCREENS: env-gated
+Subject: [PATCH 13/57] MIDV_SKIP_STARTUP_SCREENS: env-gated
  boot-straight-to-game (frontend)
 
 BAD_DUMP sets (crusnwld c31boot) force the warning screen past
@@ -1968,7 +1968,7 @@ index f2c9b7d1..0cc79ff2 100644
 From 1bc48fcea8b586a0a60b4359ccdb7aeedaca39ed Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:17:53 -0500
-Subject: [PATCH 14/55] GL thread teardown handshake: stop before machine
+Subject: [PATCH 14/57] GL thread teardown handshake: stop before machine
  destruction
 
 Exit-time msvcrt!memcpy AVs logged at roughly every second close. A
@@ -2083,7 +2083,7 @@ index e302e1f4..28e33519 100644
 From 3cac3d671118aa443ce4701e8cd9364f6d4f578d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:42:26 -0500
-Subject: [PATCH 15/55] winhybrid: DIJoystick2 primary format - 128-button
+Subject: [PATCH 15/57] winhybrid: DIJoystick2 primary format - 128-button
  support in the default provider
 
 The DIJOYSTATE2 base patch updated only the pure dinput module's enum
@@ -2150,7 +2150,7 @@ index d6f33d2d..856fb333 100644
 From cc0aff8c51463d6d006c837ba4fcccdabc8db7fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:53:03 -0500
-Subject: [PATCH 16/55] Overlay wndproc: hide cursor over the game, clicks
+Subject: [PATCH 16/57] Overlay wndproc: hide cursor over the game, clicks
  refocus MAME's window
 
 The DISABLED+TRANSPARENT overlay made every click a Windows error beep
@@ -2221,7 +2221,7 @@ index 28e33519..6a3395fd 100644
 From ad4d2d8bb312ffc1c05d1513d7b162e3306dfa14 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 01:24:00 -0500
-Subject: [PATCH 17/55] Zeus scoping counters + scanner-safe shader header
+Subject: [PATCH 17/57] Zeus scoping counters + scanner-safe shader header
  (midzeus joins the subtarget)
 
 - zeus2.cpp: env-gated MIDZ_STATS=1 quads/frame profiler at the
@@ -2827,7 +2827,7 @@ index 233e8a13..e27ff2e3 100644
 From a97419f068281bab1cc1c8e20f8b036b22a5d3cb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:23:43 -0500
-Subject: [PATCH 18/55] In-game Esc options menu + UDP telemetry (Phase A)
+Subject: [PATCH 18/57] In-game Esc options menu + UDP telemetry (Phase A)
 
 - Esc menu drawn by the GL overlay itself: MENU_VS/FS shaders (generated),
   pre-rendered A8 label bitmaps (midvunit_menu_assets.h, generated),
@@ -6266,7 +6266,7 @@ index 6a3395fd..0f0e0efd 100644
 From 366f811988600fc2abc62f534d0107cbde4a173c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:46:12 -0500
-Subject: [PATCH 19/55] Overlay: runtime coarse height - offroadc's 401st
+Subject: [PATCH 19/57] Overlay: runtime coarse height - offroadc's 401st
  scanline restored
 
 offroadc runs a 512x401 mode (visarea bottom 400); HEIGHT=400 was compiled
@@ -6388,7 +6388,7 @@ index 0f0e0efd..f363dcb7 100644
 From 71e566039517000202fd4c3848d438227d9de430 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 21:52:44 -0500
-Subject: [PATCH 20/55] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
+Subject: [PATCH 20/57] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
  on)
 
 Scene pass gains an R8UI "written this scene" mask on attachment 1
@@ -6563,7 +6563,7 @@ index f363dcb7..95d0e3ea 100644
 From d5f9f613a339fe6bb7154b9862f21944ef1b1461 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:38 -0500
-Subject: [PATCH 21/55] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
+Subject: [PATCH 21/57] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
  road rendering
 
 Upstream fix by Jos van Mourik (merged 2026-07-18, post-0.286): drop the
@@ -6757,7 +6757,7 @@ index ff15fbc0..5383fa5b 100644
 From 40c0fd8efb3997e126c3d4ab9fe1daff4fbcc919 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:50 -0500
-Subject: [PATCH 22/55] zeus2: backport mamedev/mame#15723 - solid fills, depth
+Subject: [PATCH 22/57] zeus2: backport mamedev/mame#15723 - solid fills, depth
  clear, translucency
 
 Open upstream PR by Jos van Mourik: guard fast-clear depth 0 (stuck black
@@ -6926,7 +6926,7 @@ index 5383fa5b..ff1959b8 100644
 From 93acdd2bb8c8a7953702e213c6a930763ad1659f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:35 -0500
-Subject: [PATCH 23/55] GL overlay: persist live CRT toggle state for the
+Subject: [PATCH 23/57] GL overlay: persist live CRT toggle state for the
  launcher
 
 F9 and the Esc-menu CRT toggle flip the pass live, but the collection
@@ -6970,7 +6970,7 @@ index 95d0e3ea..39290867 100644
 From 3c2dab3df51c1cb22f5bc7102dee557589600773 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:53 -0500
-Subject: [PATCH 24/55] zeus2: include zeus2.h hunk missed from the
+Subject: [PATCH 24/57] zeus2: include zeus2.h hunk missed from the
  #15719/#15723 backports
 
 Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
@@ -7024,7 +7024,7 @@ index cd2c30b2..874bece3 100644
 From c2003def0707ff71f91cfc35cdaa1e4fb516619b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:11:29 -0500
-Subject: [PATCH 25/55] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
+Subject: [PATCH 25/57] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
  the GL-renderer oracle
 
 Env-gated, zero cost unset. Records quads (post-transform clipped verts +
@@ -7312,7 +7312,7 @@ index 874bece3..4ba8ac06 100644
 From d3269e559855935bae803b9f71dfcde329625aad Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:59:58 -0500
-Subject: [PATCH 26/55] GL overlay: Esc-menu pause + margin extend
+Subject: [PATCH 26/57] GL overlay: Esc-menu pause + margin extend
  (MIDV_GL_MARGINFILL)
 
 The Esc options menu now pauses the machine while open (request from the
@@ -7442,7 +7442,7 @@ index 39290867..37c704ad 100644
 From 795ef54adc64bbccb019fd853457209a1618dd93 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 15:52:57 -0500
-Subject: [PATCH 27/55] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
+Subject: [PATCH 27/57] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
  at 4x for real
 
 The mzgl overlay (inside zeus2.cpp, mirroring midvunit_v.cpp): monitor-
@@ -8918,7 +8918,7 @@ index 37c704ad..de3d4830 100644
 From 4a0d50c01d436d3ba8bca454379230164bb71001 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:13:22 -0500
-Subject: [PATCH 28/55] ioport: env-gated steering response curve for PADDLE
+Subject: [PATCH 28/57] ioport: env-gated steering response curve for PADDLE
  fields
 
 MIDV_STEER_CURVE (percent exponent on normalized wheel deflection,
@@ -8984,7 +8984,7 @@ index 8c4cd18e..5197e95e 100644
 From 152fb87ddd321f3100d7cedfe28cf9d6f66867b3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:36:45 -0500
-Subject: [PATCH 29/55] GL overlay: margin extend actually works now
+Subject: [PATCH 29/57] GL overlay: margin extend actually works now
  (off-by-half-pixel probe)
 
 The clamp-extend sampled exactly the nominal margin-edge column - the
@@ -9043,7 +9043,7 @@ index 6c11a6b9..d4380e46 100644
 From ed208255c50c8ad457f1c3efb11671fe1c394e35 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:56:16 -0500
-Subject: [PATCH 30/55] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
+Subject: [PATCH 30/57] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
  16:9 margin
 
 Code patcher: the TMS320C31 program is copied maindata ROM -> program RAM
@@ -9171,7 +9171,7 @@ index de3d4830..02e4fb5a 100644
 From a75813dddec3f7d54b056f8103bada857270a2ea Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 23:47:03 -0500
-Subject: [PATCH 31/55] Telemetry Phase B: live speed over UDP (crusnusa) +
+Subject: [PATCH 31/57] Telemetry Phase B: live speed over UDP (crusnusa) +
  RAM-dump hunt tooling
 
 MIDV_RAMDUMP_DIR/_EVERY dumps DSP work RAM periodically for offline
@@ -9279,7 +9279,7 @@ index 02e4fb5a..baf3c9d1 100644
 From dce4734c36c510e7a739e0d2d37dc06a2e57f137 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 00:47:30 -0500
-Subject: [PATCH 32/55] GL overlay: backdrop-margin suppress fixes the "water
+Subject: [PATCH 32/57] GL overlay: backdrop-margin suppress fixes the "water
  through the ground"
 
 The Off Road bottom-corner "lake" reveal was the sky/horizon BACKDROP band
@@ -9427,7 +9427,7 @@ index baf3c9d1..b45aeed9 100644
 From d49c8acdaae51d904b21c64644ce8003545b156b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 11:57:13 -0500
-Subject: [PATCH 33/55] GL overlay: extend backdrop-margin suppress to crusnusa
+Subject: [PATCH 33/57] GL overlay: extend backdrop-margin suppress to crusnusa
  + crusnwld
 
 Generalize the backdrop signature to the per-game sky texbase low bytes
@@ -9476,7 +9476,7 @@ index b45aeed9..9bd977d9 100644
 From 6b28ed89c5788932d556c277794dcc30a693d70a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:22:32 -0500
-Subject: [PATCH 34/55] Fix Esc-menu resume: block the emu thread instead of
+Subject: [PATCH 34/57] Fix Esc-menu resume: block the emu thread instead of
  machine().pause()
 
 Resume could hang the game paused: machine().pause() paused fine, but the
@@ -9576,7 +9576,7 @@ index 9bd977d9..a92c28a9 100644
 From ffba178f038af29c4efe04deda9fbcd6b2f8576b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:55:30 -0500
-Subject: [PATCH 35/55] A1b: Exotica 16:9 widescreen (Zeus overlay)
+Subject: [PATCH 35/57] A1b: Exotica 16:9 widescreen (Zeus overlay)
 
 Render all Zeus geometry into a wider canvas (CW+2*MARGIN, shifted via a
 VS uMargin uniform); present 3D driving scenes at 16:9 (full wide canvas)
@@ -9768,7 +9768,7 @@ index 18c23b15..9c7d95bf 100644
 From 50e811d75d515932295a7b6fbf0e4319a3db9db1 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 13:04:39 -0500
-Subject: [PATCH 36/55] zeus2: silence the stock resolution-setup debug
+Subject: [PATCH 36/57] zeus2: silence the stock resolution-setup debug
  popmessage
 
 Exotica flashed "reg[30]: ... Screen: 512H X 400V yScale: 0" at the bottom
@@ -9805,7 +9805,7 @@ index 7bffa4b2..e35aceec 100644
 From 5f9bdcc56cc6a74270fed65199df72e491cf9570 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:25:04 -0500
-Subject: [PATCH 37/55] zeus2: skip per-quad frame_number call when live
+Subject: [PATCH 37/57] zeus2: skip per-quad frame_number call when live
  (emu-thread micro-opt)
 
 screen().frame_number() ran ~6.5k times/frame in the live emit path; the
@@ -9844,7 +9844,7 @@ index e35aceec..201bef85 100644
 From 5d0e2f95acee02701803a331d7f78691d51ce0eb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:37:41 -0500
-Subject: [PATCH 38/55] zeus2: skip MAME's CPU rasterization when the live
+Subject: [PATCH 38/57] zeus2: skip MAME's CPU rasterization when the live
  overlay renders
 
 With MIDZ_GL the game was rendered TWICE: our GL renderer draws every quad,
@@ -9907,7 +9907,7 @@ index 201bef85..80d0c937 100644
 From 5d11d1fe3e033e35d664ccec2391b50f851ba817 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:40:11 -0500
-Subject: [PATCH 39/55] zeus2 overlay: aspect-mode hysteresis fixes the width
+Subject: [PATCH 39/57] zeus2 overlay: aspect-mode hysteresis fixes the width
  wobble
 
 An iteration catching only HUD frame writes (no quads, pure timing)
@@ -9955,7 +9955,7 @@ index 80d0c937..f991981e 100644
 From 383046dd1e72d4a461ce5d3a4340ea9e4b958952 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:04:56 -0500
-Subject: [PATCH 40/55] zeus2: true full 16:9 for crusnexo - page-scoped margin
+Subject: [PATCH 40/57] zeus2: true full 16:9 for crusnexo - page-scoped margin
  clear + diag hooks
 
 The game renders a full 16:9 field of view already; the black margins were
@@ -10194,7 +10194,7 @@ index c06d6525..13f9f93b 100644
 From 9bcb20be675f5fe7d4a600ed2d57579958ed0dba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:24:08 -0500
-Subject: [PATCH 41/55] telem: wire crusnwld speed (0x0DDDC), tighten
+Subject: [PATCH 41/57] telem: wire crusnwld speed (0x0DDDC), tighten
  s_speed_addr to hunted parents
 
 Differential RAM-hunt of the crusnwld attract demo (results/ramhunt-wld)
@@ -10259,7 +10259,7 @@ index a92c28a9..25277823 100644
 From e028a2f8a9217603413ae43f8da44e7b04337b2a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:42:55 -0500
-Subject: [PATCH 42/55] midvunit shaders: regen for B5 sky-margin vertical
+Subject: [PATCH 42/57] midvunit shaders: regen for B5 sky-margin vertical
  smoothing
 
 Generated from gpu/renderer.py (never hand-edited). Present-pass margin
@@ -10340,7 +10340,7 @@ index 54113399..06c5cbf1 100644
 From 43ee457e55f05a8b0fdde8462931bf6bf3c1c43c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:45:26 -0500
-Subject: [PATCH 43/55] D1: menu-assets header comment cruisn-poc ->
+Subject: [PATCH 43/57] D1: menu-assets header comment cruisn-poc ->
  cruisn-collection
 
 Matches what gen_menu_assets.py already emits (the header just predated
@@ -10369,7 +10369,7 @@ index 97598357..4ae0a6e4 100644
 From 5f155d26df43bfc80266b780c1737ceb80373df3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:38:55 -0500
-Subject: [PATCH 44/55] Revert B5 sky-margin vertical smoothing - regressed 2D
+Subject: [PATCH 44/57] Revert B5 sky-margin vertical smoothing - regressed 2D
  screens
 
 The vertical gaussian blur smears any structured margin content (e.g. the
@@ -10450,7 +10450,7 @@ index 06c5cbf1..54113399 100644
 From 23adde255511f37970dacd7ec39db84a0525ec79 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:44:42 -0500
-Subject: [PATCH 45/55] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
+Subject: [PATCH 45/57] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
  real drive
 
 A real driving capture (results/drive-capture-crusnusa-*) debunked the
@@ -10523,7 +10523,7 @@ index 25277823..27b2d187 100644
 From ccc6b321980e972870c23538acb4f76029fbda62 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:54:30 -0500
-Subject: [PATCH 46/55] telem Phase C: Forza Horizon "Data Out" packet emitter
+Subject: [PATCH 46/57] telem Phase C: Forza Horizon "Data Out" packet emitter
  (SimHub-native)
 
 MIDV_TELEM_FORZA=host:port (default 127.0.0.1:5300) emits the FH4/5
@@ -10697,7 +10697,7 @@ index 27b2d187..3e2ce518 100644
 From 795d4f1fbc8deb6ccdef5ad842a21f6be7c60e5b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:07:31 -0500
-Subject: [PATCH 47/55] telem: Forza gear byte mirrors the real latched shifter
+Subject: [PATCH 47/57] telem: Forza gear byte mirrors the real latched shifter
 
 Read the driver-maintained m_shifter_state (fed by both the 4-position
 shifter and the sequential shift buttons) via a small accessor and map
@@ -10760,7 +10760,7 @@ index 3e2ce518..6905fd7e 100644
 From def66dab2025f9cf2f4e338ebcbfee5255324cc8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:24:59 -0500
-Subject: [PATCH 48/55] telem: gate speed/rpm - menu garbage pegged SimHub
+Subject: [PATCH 48/57] telem: gate speed/rpm - menu garbage pegged SimHub
  gauges
 
 Live rig finding (forza_probe): outside races the DSP words hold unrelated
@@ -10854,7 +10854,7 @@ index 6905fd7e..6865bc9f 100644
 From f7251ce9e2b65cac39ff992f9a09b734800cc47f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:42:23 -0500
-Subject: [PATCH 49/55] telem: MIDV_TELEM_FORZA accepts comma-separated targets
+Subject: [PATCH 49/57] telem: MIDV_TELEM_FORZA accepts comma-separated targets
 
 So SimHub (8000) and the forza_probe diagnostic (8001) can watch the same
 stream simultaneously - needed to catch the reported stuck-dash in the act.
@@ -10928,7 +10928,7 @@ index 6865bc9f..914472fb 100644
 From 5c3b5787fee2d8111ed84ea1d23902a98fb300d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:51:50 -0500
-Subject: [PATCH 50/55] telem: tighten speed plausibility gate 400 -> 320
+Subject: [PATCH 50/57] telem: tighten speed plausibility gate 400 -> 320
 
 Menu junk observed at 373 slipped under the 400 bound (and at 990 before);
 real max is ~301, so the bound must sit under 373.
@@ -10969,7 +10969,7 @@ index 914472fb..ae7d8706 100644
 From 0f3759db6a29c8f840d6fd0f28cf74564478426a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:13:25 -0500
-Subject: [PATCH 51/55] telem: dump the second work-RAM bank (0x400000) -
+Subject: [PATCH 51/57] telem: dump the second work-RAM bank (0x400000) -
  player physics lives there
 
 Detective chain from the user's 5x accelerate-to-full-stop drive: NO word
@@ -11056,7 +11056,7 @@ index ae7d8706..0368443e 100644
 From 70552419d62a694e61bb409901e73918003c9084 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:25:02 -0500
-Subject: [PATCH 52/55] telem: dump HUD rows (300-399, visible page) alongside
+Subject: [PATCH 52/57] telem: dump HUD rows (300-399, visible page) alongside
  RAM dumps
 
 The on-screen MPH + gear digits are the incorruptible ground truth: OCR
@@ -11102,7 +11102,7 @@ index 0368443e..ff611a5d 100644
 From e22e161bc23a108e1d25595f6691a3e249f85b82 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:40:45 -0500
-Subject: [PATCH 53/55] telem: dump C31 on-chip internal RAM (0x809800, 2K
+Subject: [PATCH 53/57] telem: dump C31 on-chip internal RAM (0x809800, 2K
  words) as ram3
 
 By elimination: the HUD-OCR ground truth from a real drive correlates with
@@ -11151,7 +11151,7 @@ index ff611a5d..b4d3c40e 100644
 From 8bb8d18801c7f71bb2a1c71024305295201f1978 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:56:25 -0500
-Subject: [PATCH 54/55] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
+Subject: [PATCH 54/57] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
  retire drone speed
 
 The HUD ground-truth investigation concluded: the on-screen RPM gauge's
@@ -11300,7 +11300,7 @@ index b4d3c40e..31e52393 100644
 From f91ec0dca3dba674c669f04083336318a9fa4d7f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 22:04:19 -0500
-Subject: [PATCH 55/55] telem: runtime HUD OCR - crusnusa speed read straight
+Subject: [PATCH 55/57] telem: runtime HUD OCR - crusnusa speed read straight
  off the frame
 
 The displayed MPH exists in no memory and the HUD is CPU-blitted (no
@@ -11710,6 +11710,113 @@ index 31e52393..7e74f9bb 100644
  	if (s_rpm_word)
  	{
  		static uint32_t s_rpm_bits = 0;
+-- 
+2.55.0.windows.3
+
+
+From 381216fdc3df855a5f5e91dfda900bb1fc12c075 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 24 Aug 2026 21:11:55 -0500
+Subject: [PATCH 56/57] Fix sky-through-ground on the left: backdrop cover is
+ now independent
+
+The user's driving screenshots showed the sky/horizon backdrop through
+gaps in the LEFT margin terrain (blue wedges), while the right looked
+clean. Cause: the margin backdrop cover shared a switch with the
+margin-fill clamp-stretch, so turning fill off (it smears - correctly
+defaulted off) also disabled the cover. The apparent left/right asymmetry
+is explained: the right margin is now filled with real geometry by the
+game-code widescreen patch, so nothing shows through there; the left
+still has the original terrain gaps.
+
+Not a culling problem: quads reaching past x<0 are identical with and
+without the right-edge patch (26758 both), so the game already submits
+all its left-side geometry - the left needs cover, not un-culling.
+
+Cover now gated only by MIDV_GL_CRACKFILL, with its own MIDV_GL_BGCOVER=0
+opt-out. Verified on the user's artifact scene: bottom-left sky-through-
+ground 28% -> 0% under exact shipping settings (fill OFF), 28% with
+--nobgcover as the control. Exact mode still 100.0000%; live err=0.
+
+Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
+---
+ src/mame/midway/midvunit_v.cpp | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 7e74f9bb..7fed9666 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -923,14 +923,18 @@ void thread_main()
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "texMask"), (8 << 20) - 1);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uDbgQuadId"), 0);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uClipW"), WIDE);
+-	// suppress the sky/horizon backdrop inside the 16:9 margins (leaves it
+-	// for the margin-extend to fill from the 4:3 boundary - sky above,
+-	// terrain below - covering the "water through the ground" reveal).
+-	// Shares the crack/margin-fill gate; MIDV_GL_CRACKFILL=0 or
+-	// MIDV_GL_MARGINFILL=0 disables it.
++	// Cover the sky/horizon backdrop band inside the 16:9 margins. Without
++	// it the backdrop shows THROUGH gaps in the margin terrain - the user
++	// sees sky/water through the ground on the left while driving (the
++	// right side is covered by the game-code widescreen patch's real
++	// geometry, which is why the artifact looked one-sided).
++	// This is now INDEPENDENT of MIDV_GL_MARGINFILL: the fill's
++	// clamp-stretch is the smear-prone part and defaults off, but covering
++	// the revealed backdrop must stay on or driving shows the artifact.
++	// MIDV_GL_BGCOVER=0 disables it explicitly.
+ 	bool const bg_gate =
+ 		!(std::getenv("MIDV_GL_CRACKFILL") && atoi(std::getenv("MIDV_GL_CRACKFILL")) == 0)
+-		&& !(std::getenv("MIDV_GL_MARGINFILL") && atoi(std::getenv("MIDV_GL_MARGINFILL")) == 0);
++		&& !(std::getenv("MIDV_GL_BGCOVER") && atoi(std::getenv("MIDV_GL_BGCOVER")) == 0);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uBgMargin"), bg_gate ? MARGIN : 0);
+ 	gl.UseProgram(pal);
+ 	gl.Uniform1i(gl.GetUniformLocation(pal, "idxTex"), 1);
+-- 
+2.55.0.windows.3
+
+
+From d7770521dabf9aad82b5882d0df263bb788dffba Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 24 Aug 2026 21:27:44 -0500
+Subject: [PATCH 57/57] Revert "Fix sky-through-ground on the left: backdrop
+ cover is now independent"
+
+This reverts commit 381216fdc3df855a5f5e91dfda900bb1fc12c075.
+---
+ src/mame/midway/midvunit_v.cpp | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 7fed9666..7e74f9bb 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -923,18 +923,14 @@ void thread_main()
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "texMask"), (8 << 20) - 1);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uDbgQuadId"), 0);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uClipW"), WIDE);
+-	// Cover the sky/horizon backdrop band inside the 16:9 margins. Without
+-	// it the backdrop shows THROUGH gaps in the margin terrain - the user
+-	// sees sky/water through the ground on the left while driving (the
+-	// right side is covered by the game-code widescreen patch's real
+-	// geometry, which is why the artifact looked one-sided).
+-	// This is now INDEPENDENT of MIDV_GL_MARGINFILL: the fill's
+-	// clamp-stretch is the smear-prone part and defaults off, but covering
+-	// the revealed backdrop must stay on or driving shows the artifact.
+-	// MIDV_GL_BGCOVER=0 disables it explicitly.
++	// suppress the sky/horizon backdrop inside the 16:9 margins (leaves it
++	// for the margin-extend to fill from the 4:3 boundary - sky above,
++	// terrain below - covering the "water through the ground" reveal).
++	// Shares the crack/margin-fill gate; MIDV_GL_CRACKFILL=0 or
++	// MIDV_GL_MARGINFILL=0 disables it.
+ 	bool const bg_gate =
+ 		!(std::getenv("MIDV_GL_CRACKFILL") && atoi(std::getenv("MIDV_GL_CRACKFILL")) == 0)
+-		&& !(std::getenv("MIDV_GL_BGCOVER") && atoi(std::getenv("MIDV_GL_BGCOVER")) == 0);
++		&& !(std::getenv("MIDV_GL_MARGINFILL") && atoi(std::getenv("MIDV_GL_MARGINFILL")) == 0);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uBgMargin"), bg_gate ? MARGIN : 0);
+ 	gl.UseProgram(pal);
+ 	gl.Uniform1i(gl.GetUniformLocation(pal, "idxTex"), 1);
 -- 
 2.55.0.windows.3
 
