@@ -235,3 +235,29 @@ patching the game's own compiled bound.
   wheel (game AI/LOD tied to visibility could misbehave - watch for it).
 - Ultrawide bonus: once the bound is a patched parameter, 21:9 (3440x1440)
   is just a larger bound + canvas - potentially BEYOND Ridge Racer's 16:9.
+
+## 2026-08-24 — parity assessment: 3 of 4 games were ALREADY there
+
+After shipping the offroadc game-code patch, measured the OTHER games'
+native margin coverage (renderer --wide, fill OFF, no patch):
+- **crusnusa: left 99% / right 99% covered** (172px/side margins)
+- **crusnwld: left 92% / right 99% covered**
+- Exotica: native full 16:9 via the Zeus chip (done earlier)
+
+crusnusa/crusnwld ALREADY draw essentially full 16:9 - they overdraw
+generously past the 4:3 window (confirmed independently by the user's
+first-night photo of World, edge-to-edge clean). Their inline clip
+routines (USA 0x335/0x372, World 0x385/0x3C7; x-max = LDI $01FF
+immediates) WERE patched experimentally (widen 511->597, applied 2/2 per
+the log) and changed the quad stream by ZERO - because nothing is being
+culled there to recover. No patch is needed or shipped for them.
+
+**Bottom line: effective Ridge-Racer parity is reached.**
+- offroadc: game-code clip patch (right edge) - the one game that needed it.
+- crusnusa / crusnwld: native ~full 16:9 (fill OFF shows it clean).
+- crusnexo (Exotica): native full 16:9 (Zeus-side projection).
+
+Remaining niceties (not parity-blocking): offroadc left edge + attract
+showcase corners; crusnwld's ~8% left-margin gap on some scenes. Full
+disassemblies retained (results/{crusnusa,crusnwld}-prog.asm, gitignored)
+for the offroadc left-edge sign-test patch if pursued.
