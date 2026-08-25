@@ -596,3 +596,20 @@ suppresses parked position, slides in normally when deployed).
   patch series refreshed (58 patches).
 - **OPEN: user live-verifies all four**, then tag v0.2.1.
 - v0.2.0 release CI was still building at write time.
+
+## 2026-08-25 small hours — round two on the minor list
+
+- v0.2.0 RELEASE PUBLISHED (CI success).
+- Black textures = coarse-space DITHER TRANSLUCENCY at 4x. Now fine-space
+  (smoked glass); crack-filler skips the 1-px checkerboard; exact mode
+  100.0000% x2 (the invariant caught a y-flip phase bug on the first try -
+  fine coords must use fx/floor(fy), NOT raw gl_FragCoord).
+- Ding: exits fixed (fast-exit, event log clean); launch-time ding traced
+  to our ALT-tap landing in a stray joy.cpl dialog OPEN SINCE AUG 20 -
+  enforce_foreground now uses silent AttachThreadInput (ALT fallback after
+  6 fails). User should close the Game Controllers window.
+- User's 23:01 screenshots were the OLD build (session started pre-22:47
+  rebuild) - parked-panel + radio-map fixes were not in play yet.
+- Left-margin black voids (cow backdrop, Germany) = crusnwld's native left
+  coverage gap = the World game-code widen project (next R&D block, same
+  method as offroadc; disasm already captured).

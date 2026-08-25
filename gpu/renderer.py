@@ -222,7 +222,19 @@ void main() {
     // "water through the ground" reveal). Terrain/rock quads are unaffected.
     if (backdrop && uBgMargin > 0 && (px < uBgMargin || px >= uClipW - uBgMargin))
         discard;
-    if (dither == 1u && ((px ^ py) & 1) != 0) discard;   // coarse-space mask
+    // dither = the hardware's 50% translucency (shadows, HUD boxes, the
+    // radio panel, sprite backboards). At native scale the mask is the
+    // authentic coarse checkerboard (identical to fine there - exact mode
+    // stays bit-perfect); at higher internal scales mask at FINE pixel
+    // granularity so it reads as the smoked glass the CRT made of it
+    // instead of chunky 4x4 blocks.
+    if (dither == 1u) {
+        // fine coords in the same y-down space as px/py (fx,fy above);
+        // at uScale==1 these ARE px,py - exact mode stays bit-perfect
+        int fdx = int(fx);
+        int fdy = int(floor(fy));
+        if (((fdx ^ fdy) & 1) != 0) discard;
+    }
 
     outMask = 1u;   // every non-discarded fragment marks its pixel written
     if (uDbgQuadId == 1) { outIndex = uint(gl_PrimitiveID / 2); return; }
@@ -288,6 +300,15 @@ ivec2 fill_px(ivec2 p) {
         if (dd == 0 && p.y + i < sz.y
             && texelFetch(maskTex, p + ivec2(0, i), 0).r != 0u) dd = i;
     }
+    // fine-dither translucency leaves a 1-px checkerboard: all four axis
+    // neighbours written, all four diagonals unwritten. That is
+    // translucency, not a crack - never fill it.
+    if (dl == 1 && dr == 1 && du == 1 && dd == 1
+        && p.x > 0 && p.y > 0 && p.x + 1 < sz.x && p.y + 1 < sz.y
+        && texelFetch(maskTex, p + ivec2( 1,  1), 0).r == 0u
+        && texelFetch(maskTex, p + ivec2( 1, -1), 0).r == 0u
+        && texelFetch(maskTex, p + ivec2(-1,  1), 0).r == 0u
+        && texelFetch(maskTex, p + ivec2(-1, -1), 0).r == 0u) return p;
     int wh = (dl > 0 && dr > 0) ? dl + dr : 1 << 20;
     int wv = (du > 0 && dd > 0) ? du + dd : 1 << 20;
     if (min(wh, wv) >= (1 << 20)) {

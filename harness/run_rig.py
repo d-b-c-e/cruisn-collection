@@ -225,13 +225,30 @@ def enforce_foreground(hwnd, seconds=45, stop=None):
         fg, focus = focus_state()
         if fg == hwnd and focus == hwnd:
             good += 1
+            enforce_foreground._fails = 0
             if good >= 5:
                 return True
         else:
             good = 0
-            u32.keybd_event(VK_MENU, 0, 0, 0)
-            u32.keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0)
+            fails = getattr(enforce_foreground, "_fails", 0)
+            # silent foreground unlock: attach our input queue to the
+            # current foreground thread instead of tapping ALT. The ALT tap
+            # lands as a real keystroke in whatever holds the foreground -
+            # a menu-less dialog left open (e.g. joy.cpl) answers it with
+            # the system error ding on every launch. ALT stays as a
+            # last-resort fallback only.
+            fgtid = 0
+            if fg:
+                fgtid = u32.GetWindowThreadProcessId(fg, None)
+            if fgtid and fgtid != mame_tid:
+                u32.AttachThreadInput(tid, fgtid, True)
+            if fails >= 6:   # silent unlock isn't sticking - old ALT trick
+                u32.keybd_event(VK_MENU, 0, 0, 0)
+                u32.keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0)
             u32.SetForegroundWindow(hwnd)
+            if fgtid and fgtid != mame_tid:
+                u32.AttachThreadInput(tid, fgtid, False)
+            enforce_foreground._fails = fails + 1
             fg, focus = focus_state()
             if fg == hwnd and focus != hwnd:
                 # foreground landed on our window but focus sits elsewhere

@@ -1440,3 +1440,35 @@ fixed the same night (pending their next drive; batch = v0.2.1 candidate).
    straddles x=511) — matching original timing.
 
 Also: FFBPlugin.ini Logging=1 had grown FFBlog.txt to 15 MB — set back to 0.
+
+## 2026-08-25 (small hours) — translucency done right + the ding, round two
+
+**v0.2.0 published** (CI success, CruisnCollection-v0.2.0.zip, 04:10 UTC).
+
+**"Black textures" root cause, final:** the user's new Germany screenshots
+(flag-girl backboard at the start line, deployed radio panel, ELAPSED
+TIME/MPH boxes) revealed the real story - those are the hardware's
+TRANSLUCENCY, faked as a per-pixel dither checkerboard that the CRT
+blended into smoked glass. Our renderer applied that mask in COARSE pixel
+space, so at 4x internal every dither cell became a 4x4 black block. Fix:
+the scene shader now masks at FINE pixel granularity in the same y-down
+space as px/py (at scale 1 the fine coords ARE px/py, so exact mode is
+bit-identical by construction - first attempt used raw gl_FragCoord,
+inverted the checkerboard phase via the y-flip, and the invariant caught
+it at 99.84%/99.10%; fixed, re-verified 100.0000% x2). The crack-filler
+learned the 1-px checkerboard signature (all four axis neighbours written,
+all four diagonals unwritten = translucency, never fill). Offline s4
+render: HUD boxes and the radio panel read as uniform smoked glass with
+the scene visible through them. The parked-position suppression (earlier
+tonight) stays - hardware showed nothing there.
+
+**Ding, round two:** the user still heard it on FIRST launches, so the WER
+theory only covered exits (fast-exit did eliminate those: the probe exit
+logged ZERO new Application Error events vs one per exit before). New
+lead: a dialog watcher during a live launch found a "Game Controllers"
+(joy.cpl) panel open since Aug 20 23:12 - spanning every dinging session -
+and our enforce_foreground tapped a synthesized ALT into the foreground
+window every 500 ms while MAME wasn't foreground yet. An ALT landing in a
+menu-less dialog rings the system ding. enforce_foreground now uses the
+silent AttachThreadInput unlock (ALT only after 6 failed cycles), and the
+user should close the stray joy.cpl. Verdict pending their next launch.

@@ -14,6 +14,17 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - Cruis'n World: the radio panel no longer shows parked at the right edge
   of the 16:9 margin (the game hides it off-screen; now we do too — it
   still slides in normally when Radio is pressed).
+- All V-Unit games: translucency (shadows, HUD boxes, the radio panel,
+  sprite backboards) now renders as smoked glass at high internal
+  resolution instead of chunky black checkerboards. The hardware fakes 50%
+  alpha with a per-pixel dither that a CRT blends; the renderer now
+  applies that mask at fine pixel granularity (and the crack-filler learned
+  to leave it alone). Native/exact mode is untouched — still 100.0000%
+  bit-exact.
+- Launcher: the foreground-claim no longer taps ALT (a synthesized
+  keystroke that could land in a stray dialog — e.g. a Game Controllers
+  panel left open — and ring the system ding at every launch); it uses a
+  silent input-queue attach instead.
 
 ## v0.2.0 — 2026-08-24
 
