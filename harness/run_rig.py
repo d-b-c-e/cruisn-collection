@@ -697,6 +697,15 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # FFB overall strength: patch the plugin ini beside the exe before launch
     # (the plugin reads it at load). None = leave whatever's there untouched.
     apply_ffb_strength(os.path.dirname(mame), ffb)
+    # Game-code widescreen: when the presentation is full 16:9 and a per-game
+    # widescreen patch exists (patch/game/<rom>-widescreen.txt), apply it via
+    # MIDV_PATCH (memory-only at reset; ROM files untouched). The game then
+    # DRAWS the margins instead of us approximating them. An explicit
+    # MIDV_PATCH in the environment always wins (developer override).
+    gw = os.path.join(POC, "patch", "game", f"{rom}-widescreen.txt")
+    full_wide = (margin is None or margin >= 80)
+    gamepatch = (gw if full_wide and os.path.isfile(gw)
+                 and "MIDV_PATCH" not in os.environ else None)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
@@ -720,6 +729,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                    "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
+    if gamepatch:
+        env["MIDV_PATCH"] = gamepatch
     if steercurve is not None:
         # response-curve exponent percent for PADDLE fields (ioport.cpp
         # patch): <100 = more bite near center, 100 = linear
