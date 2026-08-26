@@ -638,3 +638,19 @@ H-pattern gears mis-detected (edge/level inversion suspicion).
 Telemetry status (user asked): Phase A FFB/lamps + Forza emitter = all
 games; speed+RPM only USA (HUD OCR + 0x0E632); World/Off Road speed needs
 their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
+
+## 2026-08-25 night — wheel-session results (overnight setup complete)
+
+- DING = FFB PLUGIN (A/B conviction: no dinput8.dll -> no ding, all games).
+- NEW G8: fast-exit skips plugin teardown -> wheel keeps stale forces on
+  close. Interim: auto Stop-FFB post-exit; real fix: patched plugin (GPL).
+- G7 SOLVED ON PAPER: MAME CONF "Shifter Type" default "Buttons (sticky)";
+  rig needs "H-Pattern". World-no-manual / Exotica-auto-select likely DSW
+  Cabinet Upright vs Sitdown. B7 = the built-in "Sequential" setting.
+- G3 reclassified UPSTREAM (text broken in d3d too - both screenshots).
+- B3: World master volume = nvram byte 0x93C (user's 11 = 0x0B found).
+  Other games' diffs captured; min-vs-master volume ambiguity noted.
+- Drive captures landed: crusnwld x3 + offroadc x1 (ram+ram2+ram3+hud
+  dumps) for B1 speed OCR calibration + B2 RPM correlation.
+- C1 free play: user set at the wheel (World/Off Road/Exotica).
+- C2 render distance: still on the roadmap, user reconfirmed interest.
