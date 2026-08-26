@@ -664,3 +664,11 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   when gears bound; closed-loop verified via MAME's rewritten cfg.
 - G8 INTERIM: release_ffb() (SDL2 stop-all) after every exit, both paths.
 - All pending the user's next live session for feel/behavior confirmation.
+
+## 2026-08-26 overnight wave 2 — telemetry
+- World speed OCR calibrated (box 14,76,342,368; USA font transfers);
+  offroadc provisional top-screen box (228,270,22,52) + per-game hud dump
+  window in midvunit_v.cpp. Rebuild + patch refresh pending build finish.
+- World RPM inconclusive (needs a dedicated full-throttle capture).
+- Python OCR port lives in the session scratchpad (hud_ocr.py) - recreate
+  from midvunit_v.cpp semantics if needed; the C++ is the source of truth.

@@ -1492,3 +1492,24 @@ work-RAM descriptor search in the telemetry RAM dumps, then a direct-
 addressing grep ($D5xx) - the MAME-debugger watchpoint runs were too slow
 and unnecessary in the end. Remaining World work: terrain-side cull (its
 reject code differs from offroadc's - no signature match; future hunt).
+
+## 2026-08-26 (overnight) — telemetry speed: World calibrated, Off Road provisional
+
+B1 HUD-OCR expansion from the user's evening drive captures:
+- **Ported the in-emulator OCR to python** (same bilinear 12x18 + L2 vs the
+  baked templates; self-test on the USA calibration drive: 82/121 frames
+  readable, clean accel traces). One parser trap: the template header's
+  `// '0'` comments poison a naive digit regex - strip comments first.
+- **crusnwld: MPH box (14,76,342,368)** found by rendering race frames from
+  the drive dumps and grid-scanning candidate boxes with the OCR itself.
+  USA's digit templates read World's digits AS-IS (shared font confirmed).
+  Validated trace over the drives: 0→97 mph with physical accel/decel.
+- **offroadc: the MPH box is at the TOP of the screen** - outside the
+  rows-300-399 hud dump window (why the drive dump showed no digits).
+  Provisional box (228,270,22,52) derived from the user's 4x screenshot
+  geometry; safe because the runtime OCR rejects unreadable frames. The
+  RAMDUMP hud window is now per-game (offroadc rows 0-99) for offline
+  validation from the next drive.
+- **World RPM (B2): attempted, inconclusive** - the volume-session drives
+  had too much menu time (7 aligned race frames) and the tach-arc metric
+  needs recalibrating. Logged the exact capture protocol needed.
