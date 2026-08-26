@@ -672,3 +672,15 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
 - World RPM inconclusive (needs a dedicated full-throttle capture).
 - Python OCR port lives in the session scratchpad (hud_ocr.py) - recreate
   from midvunit_v.cpp semantics if needed; the C++ is the source of truth.
+
+## 2026-08-26 overnight wave 3
+- G4 FIXED: 2D screens get 1-px crack fill (uFillR gate in midvunit_v.cpp).
+- G6: keys exonerated; needs a mode-transition log + user repro. Parked.
+- C3 terrain-cull hunt STARTED, parked with entry points: crusnwld quad
+  emit sites (poll $0082) at $02AA $0315 $03F5 $0B0F $0CDF $0CE4 $3A40
+  $49E4 $553B(sky) $77AE(link comms - NOT poly) $A1B3 $A1F9 $AF3A. The
+  offroadc AND-sign/SUBI3 reject signature does NOT appear - World's
+  reject is structured differently (likely centered coords). Next session:
+  walk back from $A1B3/$AF3A emit loops to their reject tests, same method
+  as offroadc (docs/offroadc-left-edge-handoff.md tooling section).
+- World RPM needs a dedicated full-throttle capture (see B2 note).
