@@ -159,6 +159,34 @@ def window_responding(hwnd, timeout_ms=1000):
                                         ctypes.byref(res)))
 
 
+def release_ffb(mame_dir):
+    """Stop any force-feedback effects left running on the wheel.
+
+    MIDV_FAST_EXIT ends vunit before the FFB plugin's DLL teardown runs
+    (that teardown both crashed AND disarmed the wheel), so a constant-force
+    effect can stay live on the base after quit (rig bug G8). The plugin
+    ships SDL2 beside the exe - borrow it: open every haptic device, stop
+    all effects, close. The game has exited, so nothing holds the device.
+    Best-effort: any failure is swallowed (worst case = old behavior)."""
+    try:
+        sdl = ctypes.CDLL(os.path.join(mame_dir, "SDL2.dll"))
+        SDL_INIT_JOYSTICK, SDL_INIT_HAPTIC = 0x200, 0x1000
+        if sdl.SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC) != 0:
+            return False
+        n = sdl.SDL_NumHaptics()
+        stopped = 0
+        for i in range(max(0, n)):
+            h = ctypes.c_void_p(sdl.SDL_HapticOpen(i))
+            if h:
+                sdl.SDL_HapticStopAll(h)
+                sdl.SDL_HapticClose(h)
+                stopped += 1
+        sdl.SDL_Quit()
+        return stopped > 0
+    except Exception:
+        return False
+
+
 def make_fullscreen(hwnd):
     """Strip the frame and span the window's monitor; the GL overlay tracks
     the client rect every present, so it follows to fullscreen on its own."""
@@ -869,7 +897,9 @@ def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
     """Blocking wrapper: launch and wait for full process exit."""
     proc, _ = launch_game_async(rom=rom, scale=scale, windowed=windowed,
                                 crt=crt, crackfill=crackfill, ffb=ffb, mame=mame)
-    return proc.wait()
+    rc = proc.wait()
+    release_ffb(os.path.dirname(mame))   # G8: never strand wheel forces
+    return rc
 
 
 def main():

@@ -1297,6 +1297,11 @@ def main():
                             break
                     time.sleep(0.25)
                 threading.Thread(target=proc.wait, daemon=True).start()
+                # G8: fast-exit skips the FFB plugin's teardown, which is
+                # what used to disarm the wheel - stop any stranded forces
+                threading.Thread(target=run_rig.release_ffb,
+                                 args=(os.path.dirname(run_rig.VUNIT),),
+                                 daemon=True).start()
                 keeper.game_active.clear()   # game gone: zero the dash again
                 # joystick states changed while we were blocked (buttons
                 # pressed in-game) - rebaseline or the first poll back
