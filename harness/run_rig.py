@@ -214,7 +214,10 @@ def enforce_foreground(hwnd, seconds=45, stop=None):
     the owner's last-active owned popup (the GL overlay, whose DefWindowProc
     eats keys) instead of the owner. The ALT tap releases the foreground
     lock; never use SwitchToThisWindow here (it activates the overlay).
-    Stops early once the state has been stable for ~2.5 s."""
+    Stops early once the state has been stable for ~2.5 s, and aborts as
+    soon as the target window dies or stops answering messages - fighting
+    for a dying window undoes the player's alt-tabs for the full budget
+    and reads as a hard launcher hang (rig bug G2, 2026-08-25)."""
     tid = ctypes.windll.kernel32.GetCurrentThreadId()
     mame_tid = u32.GetWindowThreadProcessId(hwnd, None)
     good = 0
@@ -222,6 +225,8 @@ def enforce_foreground(hwnd, seconds=45, stop=None):
     while time.monotonic() < deadline:
         if stop is not None and stop.is_set():
             return False   # caller handed the foreground to someone else
+        if not u32.IsWindow(hwnd) or not window_responding(hwnd, 500):
+            return False   # target is gone or tearing down - stand down
         fg, focus = focus_state()
         if fg == hwnd and focus == hwnd:
             good += 1
