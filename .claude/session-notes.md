@@ -624,3 +624,17 @@ suppresses parked position, slides in normally when deployed).
 - Left-margin TERRAIN voids (crash cams etc., below sky band y>237) remain:
   World's poly reject ≠ offroadc's signature - separate future hunt.
 - 12000-frame stability captures were running at write time.
+
+## 2026-08-25 evening — user rig report (triaged into ROADMAP section G)
+
+Both screen edges "looking really great now" after the widescreen work.
+New minor list G1-G7: launch ding STILL present (WER + ALT-tap both ruled
+out - next: A/B without dinput8.dll), launcher hang on quick exit (likely
+our enforce_foreground fighting a dying window - small fix, do first),
+Exotica car-select text illegible (Zeus GL), Off Road track-select seams
+(2D cracks by design), settings per-game labels/clutter (submenu rework
+with user), settings screen invisible to screenshots (curiosity), manual
+H-pattern gears mis-detected (edge/level inversion suspicion).
+Telemetry status (user asked): Phase A FFB/lamps + Forza emitter = all
+games; speed+RPM only USA (HUD OCR + 0x0E632); World/Off Road speed needs
+their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.

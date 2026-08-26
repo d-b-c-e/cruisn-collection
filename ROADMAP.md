@@ -39,6 +39,18 @@ capture) · 🙋 needs the user at the wheel
 | **C2** | Render distance / texture pop-in | ☐ | L | ⚠️ | Game-code (TMS32031) culling/LOD patch. Research-grade, no promise. Uses the FOV-trace groundwork + patcher. |
 | **C3** | Cruis'n World full-margin coverage | ◐ | M | 🤖 | **SKY half DONE 2026-08-25** (sky engine $9623 widened to 5 panorama tiles - crusnwld-widescreen.txt, corner black 40%→0.1%). Remaining: terrain-side poly cull (World's reject code ≠ offroadc's signature; needs its own hunt - crash-cam left voids). Same for crusnusa if gaps ever show (~99% native). |
 
+## G. Rig-session triage — 2026-08-25 (user's minor list)
+
+| ID | Item | Status | Effort | Auto | Notes |
+|----|------|--------|--------|------|-------|
+| **G1** | Launch "ding" — STILL present, all four games | ☐ | M | ⚠️ | Ruled out so far: WER on the teardown AV (fast-exit shipped; Event Log now clean) and our ALT-tap (replaced with silent AttachThreadInput 2026-08-25; still dings). Next: A/B one launch with dinput8.dll renamed (FFB plugin absent) to convict/acquit the plugin; if it survives, trace with ProcMon / audio-session watcher. Also confirm the stray joy.cpl window is closed. |
+| **G2** | Launcher hangs on quick game exit (stuck LAUNCHING, alt-tab/alt-f4 dead) | ☐ | S | ✅ | Likely OUR bug, self-inflicted 2026-08-24: enforce_foreground runs up to 45 s re-claiming the foreground every 0.5 s for a window that is already dying — every alt-tab gets undone, looks hard-hung until the timer lapses. Fix: abort enforcement (and the session watchdog) the moment the target window dies or stops answering WM_NULL, and give the shell a "game exited during launch" transition. |
+| **G3** | Exotica car-select stats text illegible | ☐ | M | ⚠️ | Zeus GL overlay: the small white stat text renders as broken blocks (screenshot 2026-08-25). Suspect a zeus2 texture mode / alpha path the GL replacement gets subtly wrong at small glyph size. Compare MIDZ_GL=0 (d3d fallback) same screen to isolate renderer vs game. |
+| **G4** | Off Road track-select: thin black vertical seams | ☐ | S | ⚠️ | 2D screen tile seams at 4x — the crack filler is deliberately 3D-only, so 2D bitmap tile joints show. Either extend a conservative 1-px vertical-seam fill to detected-2D screens or accept. |
+| **G5** | Settings UX: per-game labels unclear + screen cluttered | ☐ | M | 🙋 | SENSITIVITY/CURVE rows are PER-GAME (they follow the selected/last game — both showed "(World)"), which reads as wrong. Rework: split into submenus (DISPLAY / WHEEL / PER-GAME / TELEMETRY), label per-game rows explicitly, maybe an "applies to: <game>" header. Design with the user. |
+| **G6** | Settings screen invisible to screenshots | ☐ | S | ⚠️ | Greenshot captures the menu WITHOUT the settings overlay (background renders fine). Same glfw window + swap_buffers, so not a separate surface. Suspects: the capture hotkey reaching the shell as a key event (settings loop consuming/closing?), or the capture path grabbing a stale composited frame. Curiosity-grade; investigate alongside G5. |
+| **G7** | Manual mode: H-pattern gear engagement mis-detected | ☐ | M | ⚠️ | User: shift into 2nd = nothing; recognized roughly when shifting AWAY on the second cycle — smells inverted edge/level (gear switches are held-closed positions on the real cabinet; IP_ACTIVE_LOW + PORT_CHANGED gear_button vs our ADDSW-mapped wheel buttons). Verify in MAME's input test which edge the game sees; fix in the ctrlr mapping or a gear_button backport. Related: B7 sequential-shift translator would sidestep the H-pattern entirely for paddle users. |
+
 ## D. Housekeeping
 
 | ID | Item | Status | Effort | Auto | Notes |
