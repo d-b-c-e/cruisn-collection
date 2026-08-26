@@ -31,6 +31,32 @@ RIG_NVRAM = os.path.join(POC, "rig", "nvram")
 SNAP_ROOT = os.path.join(POC, "rig", "nvram-snapshots")
 
 
+# CMOS byte map, established 2026-08-26 by single-byte persistence
+# experiments (change one byte, boot headless, verify it survives):
+# NO GAME GUARDS ITS SETTINGS WITH A CHECKSUM - byte pokes are safe.
+#   crusnwld  nvram   0x93C = master volume (user's service-menu 11 = 0x0B)
+#   offroadc  nvram   0x7BC and 0x92C = the two volume fields (menu wrote
+#                     both to 0x32; exact master-vs-minimum split TBD)
+#   crusnexo  m48t35  0x27 = volume-region byte (min-volume session hit it)
+#   crusnusa  nvram   0x200/0x205/0x20A/0x20F = 4x mirrored volume-region
+#                     field (service menu writes all four; the game accepts
+#                     a lone change - write all four to stay tidy)
+# RTC/counters churn at 0x7FF9+ (exotica) and scattered words - ignore.
+
+
+def poke(rom, fname, addr, val):
+    """Set one byte in the rig NVRAM (with a timestamped snapshot first)."""
+    snapshot(rom)
+    path = os.path.join(RIG_NVRAM, rom, fname)
+    with open(path, "rb") as f:
+        data = bytearray(f.read())
+    old = data[addr]
+    data[addr] = val & 0xFF
+    with open(path, "wb") as f:
+        f.write(data)
+    print(f"{rom}/{fname} 0x{addr:X}: 0x{old:02X} -> 0x{val & 0xFF:02X}")
+
+
 def latest_snapshot(rom):
     root = os.path.join(SNAP_ROOT, rom)
     if not os.path.isdir(root):

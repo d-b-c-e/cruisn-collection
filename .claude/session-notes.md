@@ -684,3 +684,9 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   walk back from $A1B3/$AF3A emit loops to their reject tests, same method
   as offroadc (docs/offroadc-left-edge-handoff.md tooling section).
 - World RPM needs a dedicated full-throttle capture (see B2 note).
+
+## 2026-08-26 overnight wave 4 — CMOS volume map complete
+- ALL FOUR GAMES: settings bytes unguarded (no checksums) - proven by
+  single-byte boot-persistence experiments. Map + poke() in nvram_tool.py.
+- G6 forensic log added to collection.py (prints why settings closed).
+- World DMA-port watchpoint run in flight for the C3 terrain hunt.

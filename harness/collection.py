@@ -1185,6 +1185,10 @@ def main():
                     mode = "menu"
                     audio.blip("nav")
             actions.clear()
+            if mode != "settings":
+                # G6 forensics: settings closed - by which key?
+                print(f"settings closed (keys={actions!r} mode={mode})",
+                      flush=True)
 
         else:   # menu
             for key in actions:
