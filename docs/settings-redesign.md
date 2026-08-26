@@ -1,0 +1,44 @@
+# SETTINGS redesign proposal (G5) — draft for discussion, 2026-08-26
+
+The current single-screen settings list has outgrown itself (9 rows, mixed
+scopes), and the per-game model ("highlight a game card, then SETTINGS
+tunes that game") works but is invisible. Confirmed with the user
+2026-08-25: "works, though not intuitive at all."
+
+## Proposed structure: three submenus + an explicit scope banner
+
+```
+SETTINGS
+├── DISPLAY                (global)
+│     CRT EFFECT            on/off
+│     CRACK FILL            on/off
+│     ASPECT                4:3 / TRIMMED / 16:9 FULL   ← per-game? see Q2
+│     MARGIN FILL           on/off
+├── WHEEL & FFB            (global)
+│     WHEEL SETUP…          (wizard)
+│     FFB STRENGTH          0–100%
+│     SHIFTER TYPE          H-Pattern / Sequential / Buttons   ← NEW (G7/B7)
+└── GAME TUNING: <GAME>    (per-game; big banner names the game)
+      STEER SENSITIVITY     5–200 (default 25)
+      STEER CURVE           50–200% (100 = linear)
+      VOLUME                0–max  ← NEW (G9 CMOS poke, per game)
+      FREE PLAY             on/off ← NEW (G9)
+```
+
+Notes:
+- The GAME TUNING page opens scoped to the highlighted game card and shows
+  a **large "TUNING: CRUIS'N WORLD"** header; LEFT/RIGHT on the header row
+  cycles the game without leaving the page.
+- SHIFTER TYPE writes the CONF port per game cfg (today it's inferred from
+  wheelmap gear bindings; a visible setting beats inference — keep the
+  inference as the default value).
+- VOLUME/FREE PLAY use the now-mapped CMOS bytes (nvram_tool poke); no
+  service-menu spelunking for players.
+- Row count per page stays ≤6 — readable at 10 feet.
+
+## Open questions for the user
+1. Should ASPECT be global (one look for the whole collection) or stay
+   per-game? (Today: global.)
+2. Keep the game-card→settings flow at all, or move GAME TUNING behind a
+   long-press/second button on each game card?
+3. Volume: expose the raw 0–N CMOS value or a 0–100% remap?
