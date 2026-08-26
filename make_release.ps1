@@ -73,7 +73,8 @@ if (Test-Path (Join-Path $vdir "FFBPlugin.ini")) {
     (Get-Content (Join-Path $vdir "FFBPlugin.ini")) `
         -replace '^GameId=.*', 'GameId=22' `
         -replace '^DeviceGUID=.*', 'DeviceGUID=' `
-        -replace '^Logging=.*', 'Logging=0' |
+        -replace '^Logging=.*', 'Logging=0' `
+        -replace '^BeepWhenHook=.*', 'BeepWhenHook=0' |
         Set-Content (Join-Path $rel "FFBPlugin.ini")
 }
 try {

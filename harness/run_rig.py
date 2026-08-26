@@ -368,6 +368,9 @@ def apply_ffb_strength(mame_dir, pct):
         "MaxForce": str(pct),
         "AlternativeMaxForceRight": str(pct),
         "AlternativeMaxForceLeft": str(-pct),
+        # the plugin's hook-installed chime = the launch "ding" (G1); the
+        # racing build's tuned ini shipped BeepWhenHook=1 - keep it dead
+        "BeepWhenHook": "0",
     }
     out = text
     for key, val in repl.items():
@@ -378,6 +381,61 @@ def apply_ffb_strength(mame_dir, pct):
                 f.write(out)
         except OSError:
             pass
+
+
+# Shifter-type wiring (rig bug G7, 2026-08-25). MAME's CONF port "Shifter
+# Type" defaults to "Buttons (sticky)" - built for players WITHOUT a
+# shifter, and the reason a real H-pattern registered gears only when
+# leaving them. When the wizard has all four gears bound (a real shifter),
+# write H-Pattern (0) into the game cfg, plus the sitdown-cabinet DIP the
+# games use to decide a shifter exists at all (World hides MANUAL and
+# Exotica auto-selects transmission on shifterless cabinets).
+SHIFTER_CFG = {
+    # rom: list of (tag, type, mask, defvalue, value)
+    "crusnusa": [(":CONF", "CONFIG", 7, 1, 0)],
+    "offroadc": [(":CONF", "CONFIG", 7, 1, 0)],
+    "crusnwld": [(":CONF", "CONFIG", 7, 1, 0),
+                 (":DSW", "DIPSWITCH", 0x20, 0x20, 0)],   # Cabinet: Sitdown
+    "crusnexo": [(":DIPS", "DIPSWITCH", 0x400, 0x400, 0)],  # Cabinet: Sit Down
+}
+
+
+def apply_shifter_config(rig, rom):
+    """Inject shifter CONF/DIP port values into rig/cfg/<rom>.cfg when the
+    wizard has a full H-pattern bound ([wheelmap] gear1-4). MAME loads the
+    values at boot and rewrites the file at exit; re-injecting every launch keeps
+    the intent stable. No-op when no shifter is bound (release installs)."""
+    entries = SHIFTER_CFG.get(rom)
+    if not entries:
+        return
+    import configparser
+    cp = configparser.ConfigParser(interpolation=None)
+    cp.read(os.path.join(POC, "rig", "collection.ini"))
+    if not all(cp.has_option("wheelmap", g) for g in
+               ("gear1", "gear2", "gear3", "gear4")):
+        return
+    path = os.path.join(rig, "cfg", f"{rom}.cfg")
+    try:
+        tree = ET.parse(path)
+        root = tree.getroot()
+    except (OSError, ET.ParseError):
+        root = ET.Element("mameconfig", version="10")
+        tree = ET.ElementTree(root)
+    system = next((sy for sy in root.findall("system")
+                   if sy.get("name") == rom), None)
+    if system is None:
+        system = ET.SubElement(root, "system", name=rom)
+    inp = system.find("input")
+    if inp is None:
+        inp = ET.SubElement(system, "input")
+    for tag, ptype, mask, defvalue, value in entries:
+        for port in list(inp.findall("port")):
+            if (port.get("tag") == tag and port.get("type") == ptype
+                    and port.get("mask") == str(mask)):
+                inp.remove(port)
+        ET.SubElement(inp, "port", tag=tag, type=ptype, mask=str(mask),
+                      defvalue=str(defvalue), value=str(value))
+    tree.write(path, encoding="utf-8", xml_declaration=True)
 
 
 def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False):
@@ -745,6 +803,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     zeus_gl = rom in ZEUS_ROMS and os.environ.get("MIDZ_GL", "1") != "0"
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
+    apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
     write_steer_cfg(rig, rom, steersens)
     # FFB overall strength: patch the plugin ini beside the exe before launch
     # (the plugin reads it at load). None = leave whatever's there untouched.

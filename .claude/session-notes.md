@@ -654,3 +654,13 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   dumps) for B1 speed OCR calibration + B2 RPM correlation.
 - C1 free play: user set at the wheel (World/Off Road/Exotica).
 - C2 render distance: still on the roadmap, user reconfirmed interest.
+
+## 2026-08-25 late — overnight block, first wave SHIPPED
+
+- G1 DING SOLVED: FFBPlugin.ini had BeepWhenHook=1 (plugin's hook chime,
+  default 0). Off on rig + re-forced by apply_ffb_strength + release ini.
+- G2 FIXED: enforcer aborts on dead/unresponsive window (probe: 0.7s).
+- G7 IMPLEMENTED: apply_shifter_config -> CONF H-Pattern + sitdown DIPs
+  when gears bound; closed-loop verified via MAME's rewritten cfg.
+- G8 INTERIM: release_ffb() (SDL2 stop-all) after every exit, both paths.
+- All pending the user's next live session for feel/behavior confirmation.

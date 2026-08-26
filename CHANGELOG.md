@@ -27,6 +27,16 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   visible behind trees/flags at the screen edges). Fixed in the game's own
   sky engine via the in-memory patch: five panorama tiles instead of
   three, correct per-track banks by construction.
+- **The launch "ding" is gone** — it was the FFB plugin's own hook-installed
+  chime (`BeepWhenHook=1` in the tuned ini; plugin default is off). Now
+  forced off on the rig, at every launch, and in release bundles.
+- Real H-pattern shifters work properly: when the wizard has all four
+  gears bound, the games are configured for an H-pattern shifter and a
+  sit-down cabinet — gears engage when you enter them (not when you
+  leave), Cruis'n World offers MANUAL, Exotica shows transmission select.
+- The wheel no longer keeps pulling after you quit a game (forces are
+  released on every exit), and the launcher no longer freezes if you quit
+  a game very quickly after starting it.
 - Launcher: the foreground-claim no longer taps ALT (a synthesized
   keystroke that could land in a stray dialog — e.g. a Game Controllers
   panel left open — and ring the system ding at every launch); it uses a
