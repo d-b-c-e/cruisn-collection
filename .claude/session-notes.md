@@ -690,3 +690,11 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   single-byte boot-persistence experiments. Map + poke() in nvram_tool.py.
 - G6 forensic log added to collection.py (prints why settings closed).
 - World DMA-port watchpoint run in flight for the C3 terrain hunt.
+
+## 2026-08-26 overnight wave 5 — World TERRAIN cull widened (C3 code complete)
+- MIDV_DMA_PCLOG cracked it: 3D loops emit UNCULLED; only the big-poly
+  subdivision path ($379) screen-rejects (sign left, immediate 511 right,
+  parent + per-subquad sites). Patch appended to crusnwld-widescreen.txt
+  (54 words total now): immediates->597, BLTD->CALLLT x+86 routines at
+  $247/$2EA. 12000-frame attract: 0 removed, +134 all-margin. LIVE DRIVE
+  = the real test (crash cams). Handoff detail in widescreen-research.md.

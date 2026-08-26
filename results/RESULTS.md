@@ -1513,3 +1513,18 @@ B1 HUD-OCR expansion from the user's evening drive captures:
 - **World RPM (B2): attempted, inconclusive** - the volume-session drives
   had too much menu time (7 aligned race frames) and the tach-arc metric
   needs recalibrating. Logged the exact capture protocol needed.
+
+## 2026-08-26 (overnight, late) — World terrain cull widened; C3 code complete
+
+The remaining World margin voids (cow corner, crash cams) are now patched
+game-side. Key enabler: MIDV_DMA_PCLOG (native emit-PC logger on the quad
+DMA port; patch series 61) after two debugger-watchpoint attempts proved
+hopeless at ~0.03x. World's 3D loops emit UNCULLED (backface only) - only
+the big-poly subdivision path screen-rejects (sign-bit left, immediate
+511 right), and its dropped sub-quads were the holes. Patch: 4 immediates
+-> 597, 2 sign-branches -> CALLLT x+86 routines in padding. Verified: 0
+records removed anywhere (frames 1900/2002 + full 12000-frame attract),
+centre pixel-identical, +134 margin-only records over the full run.
+Awaiting the user's live drive (crash cams are where it shows). Also this
+wave: volume CMOS map all four games (no checksums; nvram_tool poke),
+World speed OCR shipped, G2/G4/G8 fixes, settings redesign proposal.

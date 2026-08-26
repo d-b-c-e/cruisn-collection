@@ -21,6 +21,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   applies that mask at fine pixel granularity (and the crack-filler learned
   to leave it alone). Native/exact mode is untouched — still 100.0000%
   bit-exact.
+- Cruis'n World: remaining black terrain gaps in the 16:9 margins (crash
+  cameras, close walls) fixed in the game's own polygon clipper — large
+  near polygons' sub-pieces are no longer discarded at the old 4:3 edge.
 - Cruis'n World: the sky now covers the full 16:9 margins (the game drew
   its scrolling sky panorama only as wide as the original 512px screen, so
   the corners went black whenever the scroll phase fell short - most

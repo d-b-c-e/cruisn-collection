@@ -304,3 +304,25 @@ data), so the widen is correct for every track by construction.
 World's reject code does NOT match offroadc's signature (zero hits for the
 AND-sign/SUBI3-bound pattern; likely centered-coordinate tests). Separate
 hunt, same toolkit.
+
+## 2026-08-26: Cruis'n World TERRAIN cull widened (C3 second half)
+
+Found via a new tool (MIDV_DMA_PCLOG: native unique-PC logging on the quad
+DMA port - one full-speed run maps every emit site; the debugger-watchpoint
+route was ~0.03x and never reached the 3D frames). World's landscape:
+- text/glyph renderer at $80A9 (own flusher $AF32/$AF48), sky at $9623,
+  and THREE 3D poly loops at $262/$2A0/$300 - which emit with NO screen
+  cull at all (backface only). That is why World natively covers ~92-99%.
+- Only the BIG-poly path ($353 size check > 0x7FF -> $379) screen-rejects:
+  sign-bit left + IMMEDIATE 511/399 bounds (no data table, unlike
+  offroadc), at two sites: the parent test ($384) and the per-sub-quad
+  test ($3C6) inside the quartering loop. Dropped sub-quads of large near
+  polys = the crash-cam / corner terrain holes.
+- Fix (appended to crusnwld-widescreen.txt): four right-bound immediates
+  511->597; both sign-test BLTDs -> CALLLT into 14-word routines in
+  adjacent unreachable padding ($247, $2EA) that re-test x+86 and jump to
+  the site's own reject exit only when the poly misses our canvas too.
+- Verified: frames 1900/2002 centre 100.0000% identical, 0 removed; full
+  12000-frame attract: 0 removed, +134 added, EVERY one inside the margins
+  (100 left, 34 right). The attract drives gently - the payoff class shows
+  in live play (crash cameras, close walls).
