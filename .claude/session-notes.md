@@ -698,3 +698,15 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   (54 words total now): immediates->597, BLTD->CALLLT x+86 routines at
   $247/$2EA. 12000-frame attract: 0 removed, +134 all-margin. LIVE DRIVE
   = the real test (crash cams). Handoff detail in widescreen-research.md.
+
+## 2026-08-26 — max-volume pass applied to rig NVRAM (user to verify by ear)
+- crusnexo m48t35 0x27 = 0x15 (GAME-CLAMPED max: 0xFF poke normalized to
+  0x15 on boot - also validates the byte as the real volume field).
+- crusnwld 0x93C = 0x00 (pre-user default; evidence reads as attenuation:
+  0 was audibly LOUDER than the user's 11).
+- offroadc 0x7BC/0x92C = 0xC8 (stored = menu x2; menu max presumed 100 -
+  the one SPECULATIVE value; distortion/silence = wrong, user reports).
+- crusnusa nvram wholesale-restored to the pre-min-volume snapshot (its
+  loudest observed config; that session changed volume only).
+- Snapshots taken before all changes (nvram_tool). No free-play flags
+  touched. World/USA/offroadc accept unclamped values (no boot clamp).
