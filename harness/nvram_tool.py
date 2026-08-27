@@ -70,7 +70,7 @@ def snapshot(rom):
     if not os.path.isdir(src):
         sys.exit(f"no rig NVRAM for {rom} ({src})")
     dst = os.path.join(SNAP_ROOT, rom, time.strftime("%Y%m%d-%H%M%S"))
-    shutil.copytree(src, dst)
+    shutil.copytree(src, dst, dirs_exist_ok=True)
     print(f"snapshotted {src} -> {dst}")
 
 
@@ -119,7 +119,7 @@ def bake(rom):
         sys.exit(f"no rig NVRAM for {rom}")
     if os.path.isdir(dst):
         shutil.rmtree(dst)
-    shutil.copytree(src, dst)
+    shutil.copytree(src, dst, dirs_exist_ok=True)
     print(f"baked {src} -> {dst} (commit fixtures/ to ship it)")
 
 
