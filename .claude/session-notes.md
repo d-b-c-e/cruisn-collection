@@ -759,3 +759,19 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   F2 operator adjustment (SHIFTER/TRANSMISSION) - user to look + toggle,
   then diff CMOS. ALSO: found+removed a stray ':DSW mask 128 value 0'
   (Service Mode DIP ON) in crusnwld.cfg - origin unknown, watch for it.
+
+## 2026-08-29 late — NY wedge verdict: buffer-cap theory FALSIFIED
+- Experiment: relocated the sub-quad buffer to virgin bank-2 RAM
+  (0x41F000) + 4x cap via 2 patch words -> frame-4527 hole IDENTICAL
+  (537px) and the quad stream bit-identical (0 added/removed to frame
+  4599). The cap never binds in the attract; patch REVERTED (file back
+  to the proven 54 words).
+- Residual wedge class = geometry never submitted at those margin
+  positions: either genuine track-content limits or an upstream
+  OBJECT-level cull (per-object bounding test before poly generation).
+  Quantified TINY in attract driving frames: 4.2% of one margin band on
+  one sampled frame, 0.2% on another; the sweep's other hits were 2D
+  screens (margins cropped by design). Future hunt: the object-list
+  builder's visibility test. For now: documented known-minor.
+- Tooling kept: wedge_sweep.py (mask-based unwritten-margin scanner) in
+  the session scratchpad; capture-wld-wedgehunt retained for reference.

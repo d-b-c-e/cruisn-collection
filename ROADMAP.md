@@ -37,7 +37,7 @@ capture) · 🙋 needs the user at the wheel
 |----|------|--------|--------|------|-------|
 | **C1** | Off Road coinage → 1 coin / 1 credit (or free play) | ☐ | S | 🙋 | One service-menu (F2) change to bake into the fixture, OR locate the CMOS coinage byte and patch. Needs a service-menu pass or a hunt. |
 | **C2** | Render distance / texture pop-in | ☐ | L | ⚠️ | Game-code (TMS32031) culling/LOD patch. Research-grade, no promise. Uses the FOV-trace groundwork + patcher. |
-| **C3** | Cruis'n World full-margin coverage | ◐ | M | 🤖 | **CODE COMPLETE 2026-08-26, pending live drive.** Sky half (5-tile panorama) AND terrain half (big-poly subdivision path: 4 right-bound immediates 511->597, 2 sign-test branches -> CALLLT x+86 routines in padding) both in crusnwld-widescreen.txt. 12000-frame attract: 0 records removed, +134 all-margin. World's ordinary polys were never screen-culled (hence the high native coverage) - the holes were dropped sub-quads of large near polys, i.e. crash cams / close walls, so the live drive is the real test. crusnusa: same check whenever gaps are ever observed (~99% native). |
+| **C3** | Cruis'n World full-margin coverage | ◐ | M | 🤖 | Sky + terrain-cull halves SHIPPED and live-verified except a RESIDUAL minor class: rare black edge slivers (user's NY report) = geometry never submitted at margin positions - buffer-cap theory tested and FALSIFIED 2026-08-29 (relocated+4x buffer -> zero stream delta). Remaining suspect: upstream object-level visibility cull, a future hunt; quantified tiny (4.2% of one margin band on 1 of ~30 attract driving frames). Known-minor for now. |
 
 ## G. Rig-session triage — 2026-08-25 (user's minor list)
 
