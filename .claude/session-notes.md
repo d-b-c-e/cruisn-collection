@@ -710,3 +710,12 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   loudest observed config; that session changed volume only).
 - Snapshots taken before all changes (nvram_tool). No free-play flags
   touched. World/USA/offroadc accept unclamped values (no boot clamp).
+
+## 2026-08-29 — G10 perf regression fixed (patch series 62)
+- Root cause: PCLOG getenv per DMA word since series 61 (my bug, 3 days
+  live on the rig). USA 60->372%, World 35->416% headless. LESSON: never
+  put getenv (or any O(env) call) in a per-word/per-frame path - cache in
+  a static, like every other MIDV_ hook does.
+- World volume note: byte 0x93C=0x00 showed menu volume 14 (not max!) -
+  user raised to menu max; diff World nvram after their session to
+  calibrate the REAL master-volume byte/scale.

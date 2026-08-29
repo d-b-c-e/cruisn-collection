@@ -54,7 +54,7 @@ capture) · 🙋 needs the user at the wheel
 | **G8** | FFB forces not released when a game closes | ☑ | S | ⚠️ | **INTERIM SHIPPED 2026-08-25**: run_rig.release_ffb() (SDL2 HapticStopAll/Close on every device, borrowed from the plugin's own SDL2.dll - its source confirms DLL_PROCESS_DETACH did exactly this) runs after every game exit in both the blocking launcher and the shell path. Real fix (patched plugin) folded into G1's follow-up if ever needed. |
 | **G9** | B3 volume bytes: first data points | ☑ | M | ⚠️ | **RESOLVED 2026-08-26: no checksums anywhere.** Single-byte persistence experiments on all four games: every poked byte survived a full boot (crusnwld nvram 0x93C, offroadc 0x7BC/0x92C, crusnexo m48t35 0x27, crusnusa 0x200-mirror-set - the game even accepts a lone mirror change). Byte map + `nvram_tool poke` shipped. Remaining polish: label master-vs-minimum for offroadc's two fields from the F2 menu next time someone is at the wheel, then bake shipping defaults (B3). |
 
-| **G10** | Perf regression: USA/World stutter (couple fps on rig) | ◐ | S | 🤖 | Reported 2026-08-29. REPRODUCED headless (USA 60%, World 35% unthrottled - was 300-470%), so emulation-side. Root cause: MIDV_DMA_PCLOG's std::getenv ran PER DMA WORD (>1M environment scans/sec) since patch series 61. Fix: env lookup hoisted to a static; rebuild + re-measure in progress. |
+| **G10** | Perf regression: USA/World stutter (couple fps on rig) | ☑ | S | 🤖 | **FIXED 2026-08-29**: MIDV_DMA_PCLOG's std::getenv ran per DMA word (patch series 61) - USA 60%/World 35% unthrottled headless. Static-cached: 372%/416% restored (was 300-470% historically). Patch series 62. User to confirm on the rig. |
 
 ## D. Housekeeping
 
