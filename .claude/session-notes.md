@@ -719,3 +719,8 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
 - World volume note: byte 0x93C=0x00 showed menu volume 14 (not max!) -
   user raised to menu max; diff World nvram after their session to
   calibrate the REAL master-volume byte/scale.
+
+## 2026-08-29 — free-play bytes pinned (headless attract-text method)
+- crusnwld 0x1AC, offroadc 0x1CC (single reactive candidate each; others
+  produced zero videoram diff). Exotica m48t35 run queued; USA needs one
+  user F2 toggle to produce a diff. Method: scratchpad freeplay_pin.py.

@@ -41,6 +41,12 @@ SNAP_ROOT = os.path.join(POC, "rig", "nvram-snapshots")
 #   crusnusa  nvram   0x200/0x205/0x20A/0x20F = 4x mirrored volume-region
 #                     field (service menu writes all four; the game accepts
 #                     a lone change - write all four to stay tidy)
+# Free play (pinned 2026-08-29 by flipping candidates off and diffing the
+# attract screen videoram against the free-play-ON reference):
+#   crusnwld  nvram   0x1AC = free play (0=coins, 1=free)
+#   offroadc  nvram   0x1CC = free play (0=coins, 1=free)
+#   crusnexo  m48t35  candidates 0x73/0xB7/0x18F/0x193/0x1E3/0x247 - run
+#                     pending; crusnusa unknown (needs one F2 toggle to diff).
 # RTC/counters churn at 0x7FF9+ (exotica) and scattered words - ignore.
 
 
