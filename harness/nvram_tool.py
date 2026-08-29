@@ -34,7 +34,10 @@ SNAP_ROOT = os.path.join(POC, "rig", "nvram-snapshots")
 # CMOS byte map, established 2026-08-26 by single-byte persistence
 # experiments (change one byte, boot headless, verify it survives):
 # NO GAME GUARDS ITS SETTINGS WITH A CHECKSUM - byte pokes are safe.
-#   crusnwld  nvram   0x93C = master volume (user's service-menu 11 = 0x0B)
+#   crusnwld  nvram   0x9C = MASTER volume, 0-255 (user's menu-max wrote
+#                     0xFF there + companion 0x77C=0xFF; calibrated
+#                     2026-08-29). 0x93C is a separate small-scale field
+#                     (likely MINIMUM volume - it held the user's "11")
 #   offroadc  nvram   0x7BC and 0x92C = the two volume fields (menu wrote
 #                     both to 0x32; exact master-vs-minimum split TBD)
 #   crusnexo  m48t35  0x27 = volume-region byte (min-volume session hit it)

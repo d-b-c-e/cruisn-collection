@@ -726,3 +726,9 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   user F2 toggle to produce a diff. Method: scratchpad freeplay_pin.py.
 
 ## 2026-08-29 — Exotica free play pinned: m48t35 0x73 (lua-snapshot method)
+
+## 2026-08-29 — World volume calibrated by the user's menu-max session
+- MASTER volume = nvram 0x9C (0-255; menu max wrote 0xFF) + companion
+  0x77C (also 0xFF at max). 0x93C reattributed: small-scale field, likely
+  MINIMUM volume (held the user's "11"). Audit counters churn at
+  0x64C/0x69C/0x6FC/0x75C/0x78C/0xD2C/0x50C/0xE7C - ignore in diffs.
