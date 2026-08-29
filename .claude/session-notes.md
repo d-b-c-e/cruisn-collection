@@ -732,3 +732,12 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   0x77C (also 0xFF at max). 0x93C reattributed: small-scale field, likely
   MINIMUM volume (held the user's "11"). Audit counters churn at
   0x64C/0x69C/0x6FC/0x75C/0x78C/0xD2C/0x50C/0xE7C - ignore in diffs.
+
+## 2026-08-29 — free-play map COMPLETE (all four games)
+- crusnusa = 0x190-mirror set (only reactive field of ten in the isolation
+  loop). Reconciles the mystery: the user accidentally enabled it in the
+  08-25 volume session; the wholesale restore reverted it. Map now:
+  USA 0x190x4 / World 0x1AC / OffRoad 0x1CC / Exotica m48t35 0x73.
+  Everything the G5 per-game settings rows need is calibrated except
+  offroadc's true master-volume byte (one menu-max visit calibrates it,
+  method proven on World).

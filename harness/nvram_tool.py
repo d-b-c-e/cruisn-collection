@@ -50,7 +50,12 @@ SNAP_ROOT = os.path.join(POC, "rig", "nvram-snapshots")
 #   offroadc  nvram   0x1CC = free play (0=coins, 1=free)
 #   crusnexo  m48t35  0x73 = free play (pinned 2026-08-29, same method via
 #                     lua-snapshot diffs; only reactive candidate of six)
-#   crusnusa  pending the user's F2 toggle diff.
+#   crusnusa  nvram   0x190/0x195/0x19A/0x19F = free play (x4 mirrors,
+#                     write all four; pinned 2026-08-29 by per-field
+#                     attract isolation - the only reactive field of ten).
+#                     USA master volume candidate: the 0x80-mirror set
+#                     (0xFD at loud, dropped during the min session);
+#                     currently restored to 0xFD = effectively max.
 # RTC/counters churn at 0x7FF9+ (exotica) and scattered words - ignore.
 
 
