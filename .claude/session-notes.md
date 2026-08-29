@@ -724,3 +724,5 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
 - crusnwld 0x1AC, offroadc 0x1CC (single reactive candidate each; others
   produced zero videoram diff). Exotica m48t35 run queued; USA needs one
   user F2 toggle to produce a diff. Method: scratchpad freeplay_pin.py.
+
+## 2026-08-29 — Exotica free play pinned: m48t35 0x73 (lua-snapshot method)

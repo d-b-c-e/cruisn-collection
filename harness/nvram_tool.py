@@ -45,8 +45,9 @@ SNAP_ROOT = os.path.join(POC, "rig", "nvram-snapshots")
 # attract screen videoram against the free-play-ON reference):
 #   crusnwld  nvram   0x1AC = free play (0=coins, 1=free)
 #   offroadc  nvram   0x1CC = free play (0=coins, 1=free)
-#   crusnexo  m48t35  candidates 0x73/0xB7/0x18F/0x193/0x1E3/0x247 - run
-#                     pending; crusnusa unknown (needs one F2 toggle to diff).
+#   crusnexo  m48t35  0x73 = free play (pinned 2026-08-29, same method via
+#                     lua-snapshot diffs; only reactive candidate of six)
+#   crusnusa  pending the user's F2 toggle diff.
 # RTC/counters churn at 0x7FF9+ (exotica) and scattered words - ignore.
 
 
