@@ -741,3 +741,21 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   Everything the G5 per-game settings rows need is calibrated except
   offroadc's true master-volume byte (one menu-max visit calibrates it,
   method proven on World).
+
+## 2026-08-29 evening — NY wedge hunt (in progress) + transmission status
+- User reports (NY stage): small black GROUND wedges at extreme margin
+  edges below the sky band; transmission select still absent in World.
+- Wedges: 0xB6A/0xD41 (the unexamined 511 immediates) EXONERATED (data
+  decompressor / screen-wipe). Live suspect: the subdivision WORK BUFFER
+  CAP - $3BD sizes it 0xF0 words (~15 sub-quads), $3C4 bails to $49E when
+  full, silently dropping the remaining pieces (historically off-screen).
+  Note: the 12k multiset check showed 0 removed vs sky-only, so our patch
+  did not worsen drops. Hunting wedge frames via truncate-render sweep;
+  naive black-pixel metric was fooled by the tunnel's dark art - switched
+  to the renderer's write-mask (MIDV_DBG_MASK) measuring UNWRITTEN margin
+  pixels below the sky band. Sweep tooling: scratchpad wedge_sweep.py.
+- Transmission: CONF=H-Pattern + DSW Sitdown VERIFIED applied+persisted in
+  rig/cfg/crusnwld.cfg -> the DIP is not the gate. Next suspect: World's
+  F2 operator adjustment (SHIFTER/TRANSMISSION) - user to look + toggle,
+  then diff CMOS. ALSO: found+removed a stray ':DSW mask 128 value 0'
+  (Service Mode DIP ON) in crusnwld.cfg - origin unknown, watch for it.
