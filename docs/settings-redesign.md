@@ -36,7 +36,22 @@ Notes:
   service-menu spelunking for players.
 - Row count per page stays ≤6 — readable at 10 feet.
 
-## Open questions for the user
+## User's direction (2026-08-29) — supersedes the draft above
+
+Concrete design from the user:
+1. **Global settings live at the bottom of the main menu** (as today's
+   SETTINGS row) but contain ONLY the truly-global items: CRT, crack fill,
+   margin/aspect handling, FFB strength, wheel setup.
+2. **Selecting a game card no longer launches directly** - it opens a
+   per-game submenu: **PLAY** (default highlighted; Enter-Enter still gets
+   you into the game fast) plus the game-specific settings (steer
+   sensitivity, curve, shifter type, volume, free play).
+This kills the invisible "highlighted card scopes the settings" coupling
+entirely. Implementation notes: the per-game page IS the scope banner; the
+double-Enter fast path must stay muscle-memory compatible; wheel-hat
+navigation everywhere.
+
+## Open questions for the user (remaining)
 1. Should ASPECT be global (one look for the whole collection) or stay
    per-game? (Today: global.)
 2. Keep the game-card→settings flow at all, or move GAME TUNING behind a
