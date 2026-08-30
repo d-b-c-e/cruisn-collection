@@ -105,6 +105,49 @@ void main() { color = texture(tex, t) * uTint; }
 """
 
 
+# Per-game CMOS settings bytes (see harness/nvram_tool.py for the full
+# map and how each was pinned; NO game checksums its settings). VOLUME is
+# (file, [addresses], max_value); crusnusa's master volume byte isn't
+# pinned yet so its row defers to the in-game = / - keys. crusnwld24
+# shares crusnwld's layout (verified 2026-08-29).
+VOLUME_CMOS = {
+    "crusnwld": ("nvram", [0x9C], 255),
+    "offroadc": ("nvram", [0x2FC], 255),
+    "crusnexo": ("m48t35", [0x27], 30),
+}
+FREEPLAY_CMOS = {
+    "crusnusa": ("nvram", [0x190, 0x195, 0x19A, 0x19F]),
+    "crusnwld": ("nvram", [0x1AC]),
+    "offroadc": ("nvram", [0x1CC]),
+    "crusnexo": ("m48t35", [0x73]),
+}
+
+
+def cmos_read(rom, fname, addr):
+    """One byte from the rig NVRAM, or None before the game's first boot."""
+    try:
+        with open(os.path.join(POC, "rig", "nvram", rom, fname), "rb") as f:
+            f.seek(addr)
+            b = f.read(1)
+        return b[0] if b else None
+    except OSError:
+        return None
+
+
+def cmos_write(rom, fname, addrs, val):
+    path = os.path.join(POC, "rig", "nvram", rom, fname)
+    try:
+        with open(path, "rb") as f:
+            data = bytearray(f.read())
+        for a in addrs:
+            data[a] = val & 0xFF
+        with open(path, "wb") as f:
+            f.write(data)
+        return True
+    except OSError:
+        return False
+
+
 def load_font(names, size):
     for n in names:
         try:
@@ -325,7 +368,7 @@ class Shell:
             self.center_text("SETTINGS", self.h // 24, self.h * 0.80,
                              (0.55, 0.55, 0.62, 1.0))
         foot = self.footer_tex(
-            "<  >  ^  v  NAVIGATE      ENTER / START  OK      ESC  QUIT")
+            "<  >  ^  v  / STEER  NAVIGATE      ENTER / GAS  OK      ESC  QUIT")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
         self.rect(foot, (self.w - fw) / 2, self.h * 0.905, fw, fh)
@@ -338,8 +381,7 @@ class Shell:
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
                   (0.75, 0.75, 0.8, 1.0))
 
-    def draw_settings(self, ssel, crt, fill, sens, curve, margin, ffb, mfill,
-                      t, gamename=""):
+    def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, t):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -347,29 +389,18 @@ class Shell:
                   tw, self.h / 14 * 1.9)
         self.center_text("SETTINGS", self.h // 20, self.h * 0.26,
                          (1.0, 0.85, 0.4, 1.0))
-        # block layout: names left-aligned, values right-aligned in a
-        # centered fixed-width column
-        # steering rows are PER-GAME: they edit the game highlighted on the
-        # menu, named (short) in the row label so it's unambiguous
-        short = {"CRUIS'N USA": "USA", "CRUIS'N WORLD": "WORLD",
-                 "OFF ROAD CHALLENGE": "OFF ROAD",
-                 "CRUIS'N EXOTICA": "EXOTICA"}.get(gamename, gamename)
-        g = f"  ({short})" if gamename else ""
+        # global items only - per-game tuning lives in each game's submenu
         rows = [("CRT EFFECTS", "ON" if crt else "OFF"),
                 ("CRACK FILL", "ON" if fill else "OFF"),
-                (f"STEERING SENSITIVITY{g}",
-                 "GAME DEFAULT" if sens is None else f"< {sens} >"),
-                (f"STEERING CURVE{g}",
-                 "LINEAR (OFF)" if curve is None else f"< {curve} >"),
                 ("ASPECT / WIDESCREEN", ASPECT_LABEL(margin)),
-                ("FFB STRENGTH", f"< {ffb}% >"),
                 ("MARGIN FILL", "ON" if mfill else "OFF"),
+                ("FFB STRENGTH", f"< {ffb}% >"),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
                 ("BACK", "")]
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.35 + 0.067 * i)
+            y = self.h * (0.36 + 0.067 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -380,36 +411,52 @@ class Shell:
             self.text_at(name, px, x0, y, col)
             if value:
                 self.text_at(value, px, x1, y, vcol, align="r")
-        if ssel == 2:
-            self.center_text("OVERALL GAIN:   HIGHER = SHARPER RESPONSE      "
-                             "LOWER = CALMER      GAME DEFAULT IS 25",
-                             self.h // 48, self.h * 0.86,
-                             (0.65, 0.65, 0.72, 1.0))
-        elif ssel == 3:
-            self.center_text("RESPONSE SHAPE:   BELOW 100 = MORE BITE NEAR "
-                             "CENTER (FIXES LAZY-CENTER STEERING)      "
-                             "ABOVE 100 = SOFTER CENTER",
-                             self.h // 48, self.h * 0.86,
-                             (0.65, 0.65, 0.72, 1.0))
-        elif ssel == 4:
-            self.center_text("4:3 = ORIGINAL ARCADE      16:9 = FILLS A "
-                             "WIDE SCREEN      TRIMMED = 16:9 WITH CLEANER "
-                             "EDGES",
-                             self.h // 48, self.h * 0.86,
-                             (0.65, 0.65, 0.72, 1.0))
-        elif ssel == 5:
-            self.center_text("FORCE-FEEDBACK STRENGTH:   SCALES WHEEL FORCE "
-                             "FROM 0% (OFF) TO 100% (FULL)      LOWER IF THE "
-                             "WHEEL FEELS TOO HARSH",
-                             self.h // 48, self.h * 0.86,
-                             (0.65, 0.65, 0.72, 1.0))
-        elif ssel == 6:
-            self.center_text("ON = STRETCH EDGE PIXELS INTO THE 16:9 SIDES "
-                             "(CAN SMEAR)      OFF = CLEAN EDGES, BLACK "
-                             "WHERE THE GAME DRAWS NOTHING",
-                             self.h // 48, self.h * 0.86,
+        hints = {
+            2: "4:3 = ORIGINAL ARCADE      16:9 = FILLS A WIDE SCREEN      "
+               "TRIMMED = 16:9 WITH CLEANER EDGES",
+            3: "ON = STRETCH EDGE PIXELS INTO THE 16:9 SIDES (CAN SMEAR)"
+               "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING",
+            4: "FORCE-FEEDBACK STRENGTH:   SCALES WHEEL FORCE FROM 0% (OFF)"
+               " TO 100% (FULL)      LOWER IF THE WHEEL FEELS TOO HARSH",
+        }
+        if ssel in hints:
+            self.center_text(hints[ssel], self.h // 48, self.h * 0.86,
                              (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
+        fh = self.h / 36 * 1.9
+        fw = foot.width * fh / foot.height
+        self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
+
+    def draw_game_menu(self, gsel, title, rows, hint, t):
+        """Per-game submenu: PLAY + the game's own tuning (the user's
+        2026-08-29 design - selecting a card opens this instead of
+        launching; ENTER-ENTER still fast-paths into the game)."""
+        self.ctx.enable(moderngl.BLEND)
+        self.rect(self.bg, 0, 0, self.w, self.h)
+        tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
+        self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
+                  tw, self.h / 14 * 1.9)
+        self.center_text(title, self.h // 20, self.h * 0.24,
+                         (1.0, 0.85, 0.4, 1.0))
+        x0, x1 = self.w * 0.30, self.w * 0.70
+        px = self.h // 33
+        for i, (name, value) in enumerate(rows):
+            y = self.h * (0.34 + 0.072 * i)
+            if i == gsel:
+                pulse = 0.65 + 0.35 * math.sin(t * 4.0)
+                col = (GOLD[0], GOLD[1], GOLD[2], pulse)
+                vcol = col
+            else:
+                col = (0.75, 0.75, 0.8, 1.0)
+                vcol = (0.55, 0.55, 0.62, 1.0)
+            self.text_at(name, px, x0, y, col)
+            if value:
+                self.text_at(value, px, x1, y, vcol, align="r")
+        if hint:
+            self.center_text(hint, self.h // 48, self.h * 0.86,
+                             (0.65, 0.65, 0.72, 1.0))
+        foot = self.footer_tex(
+            "^  v  NAVIGATE      <  >  ADJUST      ENTER  OK      ESC  BACK")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
         self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
@@ -634,6 +681,8 @@ WIZARD_STEPS = [
     ("GEAR 2",    "gear2",  "button"),
     ("GEAR 3",    "gear3",  "button"),
     ("GEAR 4",    "gear4",  "button"),
+    ("SHIFT UP  (paddle - BACKSPACE if none)",   "shiftup", "button"),
+    ("SHIFT DOWN  (paddle - BACKSPACE if none)", "shiftdn", "button"),
     ("VOLUME UP",      "volup",   "button"),
     ("VOLUME DOWN",    "voldn",   "button"),
     ("TEST MENU  (operator settings)",    "test",    "button"),
@@ -918,13 +967,170 @@ def main():
             return tuple(ptr[i] for i in range(n))
         return tuple(r)
 
+    def cread(rom, fname, addr):
+        key = (rom, fname, addr)
+        if key not in cmos_cache:
+            cmos_cache[key] = cmos_read(rom, fname, addr)
+        return cmos_cache[key]
+
+    def cwrite(rom, fname, addrs, val):
+        if cmos_write(rom, fname, addrs, val):
+            for a in addrs:
+                cmos_cache[(rom, fname, a)] = val & 0xFF
+            return True
+        return False
+
+    def cmos_rom(card):
+        """The rom whose NVRAM the card's CMOS rows target (World follows
+        the configured revision - 2.4 shares 2.5's byte layout)."""
+        return (state.get("world_rom", "crusnwld24")
+                if card == "crusnwld" else card)
+
+    SENS_HINT = ("OVERALL GAIN:   HIGHER = SHARPER RESPONSE      "
+                 "LOWER = CALMER      GAME DEFAULT IS 25")
+    CURVE_HINT = ("RESPONSE SHAPE:   BELOW 100 = MORE BITE NEAR CENTER "
+                  "(FIXES LAZY-CENTER STEERING)      "
+                  "ABOVE 100 = SOFTER CENTER")
+    VOL_HINT = ("GAME MASTER VOLUME - SAVED INTO THE GAME'S OWN SETTINGS "
+                "MEMORY, SAME AS THE OPERATOR MENU")
+    FP_HINT = ("ON = NO COINS NEEDED      OFF = COIN PER CREDIT "
+               "(KEY 5 / BOUND COIN BUTTON)")
+    VER_HINT = ("2.4 = LAST REVISION WITH MANUAL TRANSMISSION      "
+                "2.5 = FINAL REVISION, AUTOMATIC ONLY")
+
+    def game_rows(card):
+        """(id, label, value, hint) rows for the per-game submenu."""
+        rows = [("play", "PLAY", "", "")]
+        sv = state["steersens"].get(card)
+        rows.append(("sens", "STEERING SENSITIVITY",
+                     "GAME DEFAULT" if sv is None else f"< {sv} >",
+                     SENS_HINT))
+        cv = state["steercurve"].get(card)
+        rows.append(("curve", "STEERING CURVE",
+                     "LINEAR (OFF)" if cv is None else f"< {cv} >",
+                     CURVE_HINT))
+        rom = cmos_rom(card)
+        if card == "crusnusa":
+            rows.append(("volume", "VOLUME", "USE  =  /  -  IN GAME",
+                         "USA'S MASTER VOLUME BYTE ISN'T PINNED YET - "
+                         "USE THE = AND - KEYS IN GAME (SAVES TO CMOS)"))
+        else:
+            fname, addrs, vmax = VOLUME_CMOS[card]
+            v = cread(rom, fname, addrs[0])
+            rows.append(("volume", "VOLUME",
+                         "AFTER FIRST PLAY" if v is None
+                         else f"< {round(v * 100 / vmax)}% >", VOL_HINT))
+        fname, addrs = FREEPLAY_CMOS[card]
+        v = cread(rom, fname, addrs[0])
+        rows.append(("freeplay", "FREE PLAY",
+                     "AFTER FIRST PLAY" if v is None
+                     else f"< {'ON' if v else 'OFF'} >", FP_HINT))
+        if card == "crusnwld":
+            wr = state.get("world_rom", "crusnwld24")
+            rows.append(("version", "GAME REVISION",
+                         "< 2.4 (MANUAL+AUTO) >" if wr == "crusnwld24"
+                         else "< 2.5 (AUTO ONLY) >", VER_HINT))
+        rows.append(("back", "BACK", "", ""))
+        return rows
+
+    # -- steering-wheel / gas menu navigation (uses the wizard's axis
+    # bindings from [wheelmap]; nothing here reads axes in wizard mode) --
+    def parse_navspec():
+        cp = configparser.ConfigParser()
+        cp.read(CFG)
+        out = {}
+        if "wheelmap" in cp:
+            for k in ("steer", "gas"):
+                v = cp["wheelmap"].get(k, "")
+                if "|" in v and "axis:" in v.split("|", 1)[1]:
+                    dev, spec = v.split("|", 1)
+                    parts = spec.split(":")
+                    try:
+                        out[k] = (dev, int(parts[1]),
+                                  parts[3] if len(parts) > 3 else None)
+                    except (ValueError, IndexError):
+                        pass
+        return out
+
+    nav_spec = parse_navspec()
+    nav_state = {"dir": 0, "next": 0.0, "gas": False}
+
+    def nav_jid(dev):
+        for jid in range(16):
+            if glfw.joystick_present(jid):
+                n = glfw.get_joystick_name(jid)
+                if isinstance(n, bytes):
+                    n = n.decode(errors="replace")
+                if n == dev:
+                    return jid
+        return None
+
+    def nav_axis(k):
+        sp = nav_spec.get(k)
+        if not sp:
+            return None, None
+        jid = nav_jid(sp[0])
+        if jid is None:
+            return None, None
+        axes = joy_axes(jid)
+        if sp[1] >= len(axes):
+            return None, None
+        return axes[sp[1]], sp[2]
+
+    def nav_events(vertical):
+        """Key events from steering (LEFT/RIGHT on the card row, UP/DOWN
+        in vertical menus, with hysteresis + auto-repeat) and gas (OK on
+        press edge; honors the wizard's recorded pedal direction so
+        center-resting pedals don't read as held)."""
+        evs = []
+        now = time.time()
+        try:
+            v, _ = nav_axis("steer")
+            if v is not None:
+                d = nav_state["dir"]
+                if d != 0 and v * d < 0.3:
+                    d = 0
+                fire = False
+                if d == 0:
+                    d = 1 if v > 0.5 else (-1 if v < -0.5 else 0)
+                    if d != 0:
+                        nav_state["next"] = now + 0.45
+                        fire = True
+                elif now >= nav_state["next"]:
+                    nav_state["next"] = now + 0.28
+                    fire = True
+                if fire:
+                    if vertical:
+                        evs.append(glfw.KEY_DOWN if d > 0 else glfw.KEY_UP)
+                    else:
+                        evs.append(glfw.KEY_RIGHT if d > 0
+                                   else glfw.KEY_LEFT)
+                nav_state["dir"] = d
+            v, sgn = nav_axis("gas")
+            if v is not None:
+                if sgn == "neg":
+                    v = -v
+                pressed = (v > 0.55 if sgn in ("pos", "neg")
+                           else abs(v) > 0.6)
+                if pressed and not nav_state["gas"]:
+                    evs.append(glfw.KEY_ENTER)
+                    nav_state["gas"] = True
+                elif nav_state["gas"] and (
+                        v < 0.3 if sgn in ("pos", "neg") else abs(v) < 0.3):
+                    nav_state["gas"] = False
+        except Exception:
+            pass
+        return evs
+
     KEYCODES = _keycode_table()
     launch = None
     launching = None     # in-flight launch box (background thread)
     game_proc = None     # last vunit process, until teardown completes
-    mode = "menu"        # menu | settings | wizard
+    mode = "menu"        # menu | game | settings | wizard
     row = 0              # menu: 0 = game cards, 1 = SETTINGS
     ssel = 0             # settings: item index
+    gsel = 0             # game submenu: item index
+    cmos_cache = {}      # (rom, fname, addr) -> byte (invalidated on write)
     wiz_idx = 0
     wiz_bind = {}
     wiz_last = ""
@@ -945,7 +1151,7 @@ def main():
             actions.clear()
 
         # wheel hat -> arrow keys (menu + settings)
-        if mode in ("menu", "settings"):
+        if mode in ("menu", "settings", "game"):
             armed = time.time() >= armed_at
             if game_proc is not None:
                 # the previous vunit is still tearing down in the background:
@@ -992,6 +1198,11 @@ def main():
                         break
             else:
                 ok_pending.clear()
+                nav_state["dir"] = 0
+                nav_state["gas"] = True   # ignore a gas already held
+            if armed:
+                for ev in nav_events(not (mode == "menu" and row == 0)):
+                    actions.append(ev)
 
         if mode == "wizard":
             now = time.time()
@@ -1106,6 +1317,7 @@ def main():
                                 wiz_cool = now + 2.0
             if mode == "wizard" and wiz_idx >= len(WIZARD_STEPS):
                 save_wheelmap(wiz_bind)
+                nav_spec = parse_navspec()   # steering/gas nav follows
                 audio.blip("select")
                 mode = "settings"
         if rawlis is not None and mode != "wizard":
@@ -1115,10 +1327,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 9
+                    ssel = (ssel - 1) % 7
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 9
+                    ssel = (ssel + 1) % 7
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -1126,38 +1338,18 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 2:
-                    # MAME sensitivity: game default is 25; below 5 = default
-                    rom = GAMES[sel][0]
-                    step = 5 if key == glfw.KEY_RIGHT else -5
-                    cur = state["steersens"].get(rom)
-                    nxt = (25 if cur is None else cur) + step
-                    state["steersens"][rom] = (None if nxt < 5
-                                               else min(nxt, 200))
-                    save_config(state)
-                    audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 3:
-                    # response-curve exponent percent; 100 = linear = off
-                    rom = GAMES[sel][0]
-                    step = 10 if key == glfw.KEY_RIGHT else -10
-                    cur = state["steercurve"].get(rom)
-                    nxt = (100 if cur is None else cur) + step
-                    state["steercurve"][rom] = (None if nxt == 100
-                                                else max(50, min(nxt, 200)))
-                    save_config(state)
-                    audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 4:
                     state["margin"] = aspect_cycle(
                         state["margin"], key == glfw.KEY_RIGHT)
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 5:
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 3:
+                    state["marginfill"] = not state.get("marginfill", True)
+                    save_config(state)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 4:
                     # FFB overall strength, 0..100% in 10% steps
                     step = 10 if key == glfw.KEY_RIGHT else -10
                     state["ffb"] = max(0, min(100, state.get("ffb", 100) + step))
-                    save_config(state)
-                    audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 6:
-                    state["marginfill"] = not state.get("marginfill", True)
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
@@ -1166,13 +1358,13 @@ def main():
                         state[k] = not state[k]
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel == 6:
+                    elif ssel == 3:
                         state["marginfill"] = not state.get("marginfill", True)
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel in (2, 3, 4, 5):
+                    elif ssel in (2, 4):
                         audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 7:
+                    elif ssel == 5:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -1198,6 +1390,75 @@ def main():
                 print(f"settings closed (keys={actions!r} mode={mode})",
                       flush=True)
 
+        elif mode == "game":
+            card = GAMES[sel][0]
+            grows = game_rows(card)
+            gsel = min(gsel, len(grows) - 1)
+            for key in actions:
+                if key in (glfw.KEY_UP, glfw.KEY_W):
+                    gsel = (gsel - 1) % len(grows)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_DOWN, glfw.KEY_S):
+                    gsel = (gsel + 1) % len(grows)
+                    audio.blip("nav")
+                else:
+                    rid = grows[gsel][0]
+                    enter = key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER,
+                                    glfw.KEY_SPACE)
+                    lr = key in (glfw.KEY_LEFT, glfw.KEY_RIGHT)
+                    if key == glfw.KEY_ESCAPE or (enter and rid == "back"):
+                        mode = "menu"
+                        audio.blip("nav")
+                    elif enter and rid == "play":
+                        launch = card
+                        mode = "menu"
+                        audio.blip("select")
+                    elif lr and rid == "sens":
+                        step = 5 if key == glfw.KEY_RIGHT else -5
+                        cur = state["steersens"].get(card)
+                        nxt = (25 if cur is None else cur) + step
+                        state["steersens"][card] = (None if nxt < 5
+                                                    else min(nxt, 200))
+                        save_config(state)
+                        audio.blip("nav")
+                    elif lr and rid == "curve":
+                        step = 10 if key == glfw.KEY_RIGHT else -10
+                        cur = state["steercurve"].get(card)
+                        nxt = (100 if cur is None else cur) + step
+                        state["steercurve"][card] = (None if nxt == 100
+                                                     else max(50, min(nxt, 200)))
+                        save_config(state)
+                        audio.blip("nav")
+                    elif lr and rid == "volume" and card in VOLUME_CMOS:
+                        fname, addrs, vmax = VOLUME_CMOS[card]
+                        rom = cmos_rom(card)
+                        cur = cread(rom, fname, addrs[0])
+                        if cur is not None:
+                            step = max(1, round(vmax / 10))
+                            if key == glfw.KEY_LEFT:
+                                step = -step
+                            cwrite(rom, fname, addrs,
+                                   max(0, min(vmax, cur + step)))
+                        audio.blip("nav")
+                    elif (lr or enter) and rid == "freeplay":
+                        fname, addrs = FREEPLAY_CMOS[card]
+                        rom = cmos_rom(card)
+                        cur = cread(rom, fname, addrs[0])
+                        if cur is not None:
+                            cwrite(rom, fname, addrs, 0 if cur else 1)
+                        audio.blip("nav")
+                    elif (lr or enter) and rid == "version":
+                        state["world_rom"] = (
+                            "crusnwld" if state.get("world_rom",
+                                                    "crusnwld24")
+                            == "crusnwld24" else "crusnwld24")
+                        save_config(state)
+                        cmos_cache.clear()
+                        audio.blip("nav")
+                    elif enter:
+                        audio.blip("nav")
+            actions.clear()
+
         else:   # menu
             for key in actions:
                 if key in (glfw.KEY_LEFT, glfw.KEY_A):
@@ -1214,7 +1475,11 @@ def main():
                     audio.blip("nav")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
                     if row == 0:
-                        launch = GAMES[sel][0]
+                        # open the per-game submenu (PLAY highlighted, so
+                        # ENTER-ENTER still fast-paths into the game)
+                        mode = "game"
+                        gsel = 0
+                        cmos_cache.clear()
                     else:
                         mode = "settings"
                         ssel = 0
@@ -1239,13 +1504,15 @@ def main():
                               WIZARD_STEPS[wiz_idx][2],
                               max(0.0, wiz_cool - time.time()))
         elif mode == "settings":
-            rom = GAMES[sel][0]
             shell.draw_settings(ssel, state["crt"], state["crackfill"],
-                                state["steersens"].get(rom),
-                                state["steercurve"].get(rom),
                                 state["margin"], state.get("ffb", 100),
-                                state.get("marginfill", True),
-                                t, GAMES[sel][1])
+                                state.get("marginfill", True), t)
+        elif mode == "game":
+            grows = game_rows(GAMES[sel][0])
+            gsel = min(gsel, len(grows) - 1)
+            shell.draw_game_menu(gsel, GAMES[sel][1],
+                                 [(r[1], r[2]) for r in grows],
+                                 grows[gsel][3], t)
         else:
             shell.draw(sel, state["crt"], t, row)
         glfw.swap_buffers(win)

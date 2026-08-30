@@ -57,3 +57,13 @@ navigation everywhere.
 2. Keep the game-card→settings flow at all, or move GAME TUNING behind a
    long-press/second button on each game card?
 3. Volume: expose the raw 0–N CMOS value or a 0–100% remap?
+
+## IMPLEMENTED 2026-08-29
+
+The user's direction above shipped: per-game submenu (PLAY + sensitivity,
+curve, volume, free play, World's revision toggle), global-only SETTINGS,
+wheel+gas navigation. Answers to the open questions as built: ASPECT
+stayed global (Q1); the card-opens-submenu flow replaced the old scope
+coupling entirely (Q2); volume shows a 0-100% remap of each game's raw
+scale (Q3). Shifter type stayed inferred from the wizard bindings
+(H-pattern > paddles > none) rather than a visible row.

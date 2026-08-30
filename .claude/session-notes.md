@@ -798,3 +798,21 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
 - Lua transmission_probe.lua: PARKED (no longer needed for this; the
   set_value/START mystery stands - heartbeats run, snapshots/inputs don't
   land).
+
+
+## 2026-08-29 late-2 - menu redesign + sequential paddles + volume pins
+
+- User confirmed: World 2.4 manual WORKS (G7 closed). NY wedges deferred
+  to a dedicated session (C3). Off Road/Exotica volumes were sub-max ->
+  user maxed via menu; diffs pinned offroadc 0x2FC (0-255) and crusnexo
+  0x27 (0-30) as masters; crusnwld24 CMOS layout == 2.5 (0x9C/0x1AC).
+- Shipped: per-game submenu (PLAY/sens/curve/VOLUME/FREE PLAY/World
+  REVISION toggle), global-only SETTINGS page, steer+gas menu navigation
+  (parse_navspec/nav_events in collection.py), wizard SHIFT UP/DOWN steps,
+  H-vs-paddles arbitration in apply_wheelmap (BUTTON5/6 collision), CONF
+  0/5 in apply_shifter_config. Exotica: no native sequential mode exists.
+- USA master volume byte still unpinned (row says use = / - in game).
+- User to test at wheel: submenu flow, wheel/gas nav feel, paddle
+  sequential mode (needs re-running the wizard to bind SHIFT UP/DOWN),
+  volume rows vs actual loudness, Off Road track-select lines (screenshot
+  wanted, roadmap G-item).

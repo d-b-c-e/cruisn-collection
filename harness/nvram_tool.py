@@ -38,9 +38,14 @@ SNAP_ROOT = os.path.join(POC, "rig", "nvram-snapshots")
 #                     0xFF there + companion 0x77C=0xFF; calibrated
 #                     2026-08-29). 0x93C is a separate small-scale field
 #                     (likely MINIMUM volume - it held the user's "11")
-#   offroadc  nvram   0x7BC and 0x92C = the two volume fields (menu wrote
-#                     both to 0x32; exact master-vs-minimum split TBD)
-#   crusnexo  m48t35  0x27 = volume-region byte (min-volume session hit it)
+#   offroadc  nvram   0x2FC = MASTER volume, 0-255 (pinned 2026-08-29:
+#                     user's menu-max wrote 0xC8->0xFF there; the earlier
+#                     0x7BC/0x92C candidates moved with play stats, not
+#                     volume)
+#   crusnexo  m48t35  0x27 = MASTER volume, scale 0-30 (pinned 2026-08-29:
+#                     menu-max wrote 0x0C->0x1E)
+#   crusnwld24 nvram  same layout as crusnwld: 0x9C volume, 0x1AC free
+#                     play (verified in the rev 2.4 first-boot CMOS)
 #   crusnusa  nvram   0x200/0x205/0x20A/0x20F = 4x mirrored volume-region
 #                     field (service menu writes all four; the game accepts
 #                     a lone change - write all four to stay tidy)

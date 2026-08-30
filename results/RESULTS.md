@@ -1583,3 +1583,42 @@ Caveats to verify at the wheel:
   entirely - watch for artifacts on the first drive; the oracle can
   quantify 2.4 once a calibrated NVRAM fixture exists (copy
   rig/nvram/crusnwld24 to fixtures/nvram-crusnwld24 after first boot).
+
+
+## 2026-08-29 (later) - volume bytes pinned, menu redesign, sequential paddles
+
+Wheel-session verdicts: World rev 2.4 = **manual transmission working**
+(G7 truly closed); NY margin wedges still visible (C3 stays open for a
+dedicated session); Off Road and Exotica volumes were NOT at max - the
+user maxed them at the wheel, and the nvram diffs against the 2026-08-26
+snapshots pinned the real masters:
+
+- **offroadc nvram 0x2FC = master volume, 0-255** (0xC8 -> 0xFF on
+  menu-max; the earlier 0x7BC/0x92C candidates moved with play stats).
+- **crusnexo m48t35 0x27 = master volume, scale 0-30** (0x0C -> 0x1E).
+- crusnwld 0x9C reconfirmed (0x64 -> 0xFF); **rev 2.4's first-boot CMOS
+  carries the same layout** - 0x9C volume, 0x1AC free play verified.
+- crusnusa master still unpinned (in-game = / - keys meanwhile).
+
+Shell menu redesign (G5, user's design) implemented:
+- Game card ENTER opens a per-game submenu: PLAY (default row -
+  ENTER-ENTER fast path preserved) + STEERING SENSITIVITY / CURVE +
+  VOLUME + FREE PLAY (direct CMOS edits via the pinned bytes, cached
+  reads, "AFTER FIRST PLAY" before a game's NVRAM exists) + for World a
+  GAME REVISION row toggling world_rom 2.4/2.5. SETTINGS row is now
+  global-only (CRT, crack fill, aspect, margin fill, FFB, controls).
+- Steering wheel + gas navigate all menus (feature request): steer =
+  left/right on cards, up/down in lists (0.5 enter / 0.3 exit hysteresis,
+  0.45s then 0.28s auto-repeat); gas = OK on press edge honoring the
+  wizard's recorded pedal direction (center-resting Moza pedals safe).
+  Disarmed alongside button input during game teardown; re-parsed after
+  each wizard run.
+
+Sequential/paddle shifting (B7) implemented natively:
+- midvunit already has a Sequential CONF mode (5) with its own virtual
+  gear (shift_button: Shift Down = P1_BUTTON5, Shift Up = P1_BUTTON6) -
+  no input translator needed. Wizard gained skippable SHIFT UP / SHIFT
+  DOWN steps; apply_wheelmap arbitrates the BUTTON5/6 collision between
+  H-pattern gears and paddles (full H-pattern wins); apply_shifter_config
+  writes CONF=0 or 5 accordingly. Exotica (Zeus) has no sequential mode -
+  paddle-only rigs keep automatic-select there.

@@ -413,7 +413,9 @@ SHIFTER_CFG = {
 
 def apply_shifter_config(rig, rom):
     """Inject shifter CONF/DIP port values into rig/cfg/<rom>.cfg when the
-    wizard has a full H-pattern bound ([wheelmap] gear1-4). MAME loads the
+    wizard has a full H-pattern bound ([wheelmap] gear1-4 -> CONF
+    H-Pattern) or both paddles (shiftup/shiftdn -> CONF Sequential,
+    V-Unit games only). MAME loads the
     values at boot and rewrites the file at exit; re-injecting every launch keeps
     the intent stable. No-op when no shifter is bound (release installs)."""
     entries = SHIFTER_CFG.get(base_rom(rom))
@@ -422,9 +424,21 @@ def apply_shifter_config(rig, rom):
     import configparser
     cp = configparser.ConfigParser(interpolation=None)
     cp.read(os.path.join(POC, "rig", "collection.ini"))
-    if not all(cp.has_option("wheelmap", g) for g in
-               ("gear1", "gear2", "gear3", "gear4")):
+    hpat = all(cp.has_option("wheelmap", g) for g in
+               ("gear1", "gear2", "gear3", "gear4"))
+    seq = (cp.has_option("wheelmap", "shiftup")
+           and cp.has_option("wheelmap", "shiftdn"))
+    if not (hpat or seq):
         return
+    if not hpat and base_rom(rom) == "crusnexo":
+        # Zeus has no sequential mode (gears BUTTON2-5, no CONF port);
+        # paddles-only rigs keep Exotica's automatic-select behavior
+        return
+    # V-Unit CONF "Shifter Type": 0 = H-Pattern, 5 = Sequential
+    conf_val = 0 if hpat else 5
+    entries = [(tag, ptype, mask, defv,
+                conf_val if tag == ":CONF" else value)
+               for tag, ptype, mask, defv, value in entries]
     path = os.path.join(rig, "cfg", f"{rom}.cfg")
     try:
         tree = ET.parse(path)
@@ -628,6 +642,13 @@ WHEELMAP_PORTS = {
     "gear2": (["P1_BUTTON6"], None),
     "gear3": (["P1_BUTTON7"], None),
     "gear4": (["P1_BUTTON8"], None),
+    # sequential / paddle shifting (midvunit CONF "Sequential"=5): Shift
+    # Down is P1_BUTTON5 and Shift Up P1_BUTTON6 - the SAME port types the
+    # H-pattern gears 1/2 use under CONF=0. apply_wheelmap arbitrates: when
+    # a full H-pattern is bound it wins and the paddle keys are skipped
+    # (and vice versa), so the ctrlr never binds both onto one port.
+    "shiftup": (["P1_BUTTON6"], None),
+    "shiftdn": (["P1_BUTTON5"], None),
     "volup":   (["VOLUME_UP"], "KEYCODE_EQUALS"),
     "voldn":   (["VOLUME_DOWN"], "KEYCODE_MINUS"),
     "test":    (["SERVICE"], "KEYCODE_F2"),
@@ -724,6 +745,16 @@ def apply_wheelmap(tree, rig):
     cp.read(os.path.join(rig, "collection.ini"))
     if "wheelmap" not in cp:
         return
+    # shifter-mode arbitration: H-pattern (gear1-4) and sequential
+    # (shiftup/shiftdn) share P1_BUTTON5/6 - only the active mode's keys
+    # may write ports. A full H-pattern outranks paddles (a real shifter
+    # is the reason to bind one); paddles alone select sequential.
+    have = set(cp["wheelmap"])
+    hpat = all(g in have for g in ("gear1", "gear2", "gear3", "gear4"))
+    seq = "shiftup" in have and "shiftdn" in have
+    skip = ({"shiftup", "shiftdn"} if hpat
+            else {"gear1", "gear2", "gear3", "gear4"} if seq
+            else {"shiftup", "shiftdn"})
     root = tree.getroot()
     default_inp = None
     for system in root.iter("system"):
@@ -751,7 +782,7 @@ def apply_wheelmap(tree, rig):
 
     def write_ports(inp, table):
         for key, val in cp["wheelmap"].items():
-            if key not in table or "|" not in val:
+            if key not in table or key in skip or "|" not in val:
                 continue
             porttypes, kbd = table[key]
             tok = resolve(val, pedal=key in ("gas", "brake"))
@@ -774,7 +805,8 @@ def apply_wheelmap(tree, rig):
 
     # game-specific sections override default in MAME's ctrlr merge - remove
     # wizard-claimed ports from them so the wizard's bindings always win
-    wiz_ports = {pt for k in cp["wheelmap"] if k in WHEELMAP_PORTS
+    wiz_ports = {pt for k in cp["wheelmap"]
+                 if k in WHEELMAP_PORTS and k not in skip
                  for pt in WHEELMAP_PORTS[k][0]}
     for system in root.iter("system"):
         if system.get("name") == "default":

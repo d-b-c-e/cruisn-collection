@@ -5,6 +5,24 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Menu redesign** (user design): selecting a game card now opens a
+  per-game submenu - PLAY (default; ENTER-ENTER still launches fast) plus
+  that game's settings: steering sensitivity/curve, VOLUME and FREE PLAY
+  (written straight into the game's CMOS), and for World a GAME REVISION
+  toggle (2.4 manual+auto / 2.5 auto only). The main SETTINGS row is now
+  global-only (CRT, crack fill, aspect, margin fill, FFB, controls setup).
+- **Wheel navigation**: after the setup wizard, the steering wheel
+  navigates every shell menu (left/right on the cards, up/down in lists)
+  and the gas pedal is OK/confirm.
+- **Sequential / paddle shifting**: the wizard offers SHIFT UP / SHIFT
+  DOWN (skippable); paddle-only rigs get MAME's native Sequential shifter
+  mode on the V-Unit games (a full H-pattern still wins when both are
+  bound). Exotica has no sequential mode in hardware and keeps
+  automatic-select for paddle rigs.
+- Volume bytes pinned for Off Road (0x2FC) and Exotica (0x27, 0-30 scale)
+  from the user's menu-max sessions; World rev 2.4 confirmed to share
+  2.5's CMOS layout (volume 0x9C / free play 0x1AC).
+
 - **Cruis'n World manual transmission**: the World card now boots **rev 2.4
   (crusnwld24)** - the last revision with transmission select (rev 2.5's
   factory ROMs are labeled "automatic" and removed the option; no MAME
