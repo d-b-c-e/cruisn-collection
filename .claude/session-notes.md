@@ -775,3 +775,26 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   builder's visibility test. For now: documented known-minor.
 - Tooling kept: wedge_sweep.py (mask-based unwritten-margin scanner) in
   the session scratchpad; capture-wld-wedgehunt retained for reference.
+
+
+## 2026-08-29 late — World transmission SOLVED: rev 2.5 deleted the feature
+
+- User's r/MAME thread (7usphd) + the 2.5 ROM factory labels
+  ("2.5_cruisn_world_automatic_u10") settle it: rev 2.5 REMOVED
+  transmission select; rev 2.4 is the shifter revision. All CONF/DIP work
+  was correct but could not resurrect a deleted feature.
+- Shipped: patch/game/crusnwld24-widescreen.txt (terrain lines identical,
+  sky cluster +0xB; 54/54 OLD-verified vs the 2.4 image AND live loader
+  log "54 applied, 0 skipped"); run_rig base_rom() normalization
+  (SHIFTER_CFG/STEER_PORT/HEIGHT/MARGIN); collection world_rom ini option
+  (DEFAULT crusnwld24, "crusnwld" reverts); midvunit_v.cpp telem_init
+  prefix-match (HUD-OCR speed box carries over; World RAM-addr rows all 0).
+- Expect at the wheel: one-time CALIBRATE CONTROLS on first 2.4 boot (own
+  CMOS), then volume/free-play need re-setting for 2.4 - do NOT poke the
+  2.5 byte map (0x9C/0x1AC) into 2.4 nvram until re-verified. After first
+  boot, seed fixtures/nvram-crusnwld24 from rig/nvram/crusnwld24 to enable
+  captures/oracle on 2.4. Watch the first drive for the 2018-reported 2.4
+  artifacts (may be moot under our renderer).
+- Lua transmission_probe.lua: PARKED (no longer needed for this; the
+  set_value/START mystery stands - heartbeats run, snapshots/inputs don't
+  land).

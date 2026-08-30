@@ -704,6 +704,13 @@ def load_config():
             "margin": int(mg) if mg.isdigit() else None,
             "ffb": 100 if ffb is None else max(0, min(100, ffb)),
             "scale": int(sec.get("scale", 4)),
+            # which World ROM set the CRUIS'N WORLD card boots. Default is
+            # crusnwld24 (rev 2.4): the LAST revision with transmission
+            # select - 2.5's factory ROMs are labeled "automatic" and
+            # dropped the manual option entirely (why the shifter never
+            # unlocked despite correct CONF/DIP config). Set world_rom =
+            # crusnwld to go back to rev 2.5.
+            "world_rom": (sec.get("world_rom") or "crusnwld24").strip(),
             "rom": sec.get("rom", "crusnusa")}
 
 
@@ -716,7 +723,8 @@ def save_config(state):
            "margin": ("" if state["margin"] is None
                       else str(state["margin"])),
            "ffb": str(state.get("ffb", 100)),
-           "scale": str(state["scale"]), "rom": state["rom"]}
+           "scale": str(state["scale"]), "rom": state["rom"],
+           "world_rom": state.get("world_rom", "crusnwld24")}
     for rom, _, _, _ in GAMES:
         sv = state["steersens"].get(rom)
         cv = state["steercurve"].get(rom)
@@ -1253,7 +1261,12 @@ def main():
             launching = {"name": next(g[1] for g in GAMES if g[0] == launch),
                          "result": None, "err": None, "done": False}
 
-            def _do_launch(box=launching, rom=launch):
+            # the World card boots the configured revision (settings keys
+            # and art stay keyed to the crusnwld card identity)
+            real_rom = (state.get("world_rom", "crusnwld24")
+                        if launch == "crusnwld" else launch)
+
+            def _do_launch(box=launching, rom=real_rom, card=launch):
                 # background thread: the shell keeps rendering LAUNCHING
                 # instead of vanishing to the desktop while MAME boots
                 try:
@@ -1261,8 +1274,8 @@ def main():
                         rom=rom, scale=state["scale"],
                         windowed=args.windowed, crt=state["crt"],
                         crackfill=state["crackfill"],
-                        steersens=state["steersens"].get(rom),
-                        steercurve=state["steercurve"].get(rom),
+                        steersens=state["steersens"].get(card),
+                        steercurve=state["steercurve"].get(card),
                         margin=state["margin"], ffb=state.get("ffb", 100),
                         marginfill=state.get("marginfill", True))
                 except BaseException as e:

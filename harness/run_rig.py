@@ -310,6 +310,17 @@ GAME_HEIGHT = {"offroadc": 401}
 GAME_MARGIN = {}
 
 
+def base_rom(rom):
+    """Parent-set key for per-game config tables. Clone revisions (e.g.
+    crusnwld24, the 2.4 SHIFTER revision of Cruis'n World - 2.5 is the
+    factory 'automatic' ROM set with transmission select removed) share the
+    parent's shifter/steering/margin/height config."""
+    for parent in ("crusnwld", "crusnusa", "offroadc", "crusnexo"):
+        if rom.startswith(parent):
+            return parent
+    return rom
+
+
 # ---- rig preparation --------------------------------------------------------
 def prepare_rig(rom, crt=False, zeus_gl=False):
     """Write the rig's ini set and seed NVRAM; returns (rig, inipath)."""
@@ -405,7 +416,7 @@ def apply_shifter_config(rig, rom):
     wizard has a full H-pattern bound ([wheelmap] gear1-4). MAME loads the
     values at boot and rewrites the file at exit; re-injecting every launch keeps
     the intent stable. No-op when no shifter is bound (release installs)."""
-    entries = SHIFTER_CFG.get(rom)
+    entries = SHIFTER_CFG.get(base_rom(rom))
     if not entries:
         return
     import configparser
@@ -567,9 +578,9 @@ STEER_PORT = {
 def write_steer_cfg(rig, rom, sens):
     """Assert steering sensitivity in rig/cfg/<rom>.cfg (merged, preserving
     everything MAME saved there). sens None = leave MAME's value alone."""
-    if sens is None or rom not in STEER_PORT:
+    if sens is None or base_rom(rom) not in STEER_PORT:
         return
-    tag, ptype = STEER_PORT[rom]
+    tag, ptype = STEER_PORT[base_rom(rom)]
     path = os.path.join(rig, "cfg", f"{rom}.cfg")
     if os.path.isfile(path):
         tree = ET.parse(path)
@@ -832,11 +843,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_GL_SCALE=str(scale),
                MIDV_GL_CRT="1" if crt else "0",
                MIDV_GL_CRACKFILL="1" if crackfill else "0",
-               MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(rom, 400)),
+               MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(base_rom(rom), 400)),
                MIDV_GL_MARGIN=os.environ.get(
                    "MIDV_GL_MARGIN",
                    str(margin if margin is not None
-                       else GAME_MARGIN.get(rom, 86))),
+                       else GAME_MARGIN.get(base_rom(rom), 86))),
                MIDV_GL_MARGINFILL=os.environ.get(
                    "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,

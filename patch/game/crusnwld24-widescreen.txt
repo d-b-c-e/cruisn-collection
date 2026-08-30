@@ -1,0 +1,95 @@
+# Cruis'n World rev L2.4 (crusnwld24) - widescreen port of the 2.5 patch.
+# 2026-08-29: rev 2.4 is the SHIFTER revision (2.5 ROMs are factory-labeled
+# 'automatic' and dropped transmission select). Terrain/big-poly lines are
+# address-identical to 2.5; the sky engine cluster sits +0xB words later
+# (table 95F1->95FC, so pointer/float/phase/tile-count/horizon sites moved:
+# 95F0->95FB 95FF->960A 9651->965C 96BD->96C8 9657->9662 96BF->96CA
+# 97E5->97F0 9689->9694 968B->9696). Every OLD word verified against the
+# 2.4 ROM image. Comments below are inherited from the 2.5 file.
+#
+# Cruis'n World (crusnwld) - game-code widescreen: SKY into the 16:9 margins.
+# Auto-applied by run_rig at 16:9 FULL (memory-only at reset; ROM untouched).
+#
+# The sky is a 6-bank scrolling panorama drawn as three 256px tiles streamed
+# straight to the quad DMA port (engine at $9623-$97FA), positioned to cover
+# the original 512px screen at the current yaw phase. Whenever the phase put
+# the strip's edge inside our margins, the corners showed unwritten black
+# ("sky not rendering in the very corner"). This widens the SAME engine to
+# five tiles starting one tile further left - coverage becomes
+# [phase-388, phase+888], a superset of our canvas [-86, 598) at any phase,
+# with the game's own bank wrap so every track's panorama stays correct.
+#
+# New data in unreachable alignment padding $162-$17F (after 'BU $180'):
+# 10-entry bank-offset table (wrap entry on each side; base $162 = old
+# table[-1]) + the float 510.0; $16D-$176 becomes the relocated per-tile
+# scratch (5 center pairs - the old array at $D539 only fits 3).
+162 0C800000 00000500   # table[-1] = wrap (bank base + 0x500)
+163 0C800000 00000000   # table[0]
+164 0C800000 00000100
+165 0C800000 00000200
+166 0C800000 00000300
+167 0C800000 00000400
+168 0C800000 00000500
+169 0C800000 00000000   # wrap
+16A 0C800000 00000100   # wrap
+16B 0C800000 00000200   # table[8] (k=5 + 3)
+16C 0C800000 087F0000   # 510.0 (C3x float; 255.0 lives at $95F9)
+# engine pointers/constants:
+95FB 000095FC 00000162   # bank-table base -> new table (index -1 aligned)
+960A 0000D53F 0000016D   # saved-centers array -> 10-word scratch in padding
+965C 17A69604 17A6016C   # simple path: start = phase - 510 (was - 255)
+96C8 17A69604 17A6016C   # tilt path: same
+9662 087B0002 087B0004   # simple path: 5 tiles (RC=4)
+96CA 087B0002 087B0004   # tilt path: 5 tiles
+97F0 087B0002 087B0004   # second sky layer: 5 quads (reads 5 saved centers)
+# horizon fill quad (drawn when the horizon rises past y=239): full canvas
+9694 08640000 0864FFAA   # x0: 0 -> -86
+9696 086601FF 08660255   # x1: 511 -> 597
+#
+# TERRAIN (2026-08-26): World never screen-culls its ordinary polys (why
+# the margins are ~92-99% covered natively) - only the BIG-poly clip path
+# ($379: near ground/walls, quartered into sub-quads) rejects against the
+# screen: sign-bit on the left, immediate 511 on the right, at two sites
+# (parent + per-sub-quad). Those dropped sub-quads are the crash-cam and
+# corner terrain holes. Same treatment as offroadc: right immediates
+# 511->597, left sign-tests -> CALLLT routines (in unreachable padding)
+# that re-test x+86 and jump to the site's own reject exit only when the
+# poly is beyond our canvas too.
+# left-test routine T1 (parent site; reject exit $49C) at $247 (padding after an unconditional BU)
+247 0C800000 08620056
+248 0C800000 214002C0
+249 0C800000 21410240
+24A 0C800000 02800001
+24B 0C800000 02680004
+24C 0C800000 214102C0
+24D 0C800000 21430240
+24E 0C800000 18680004
+24F 0C800000 02800001
+250 0C800000 02800003
+251 0C800000 6A0A0002
+252 0C800000 0E210000
+253 0C800000 6000049C
+254 0C800000 78800000
+# left-test routine T2 (sub-quad site; reject exit $3C3) at $2EA (padding after an unconditional BU)
+2EA 0C800000 08620056
+2EB 0C800000 214002C0
+2EC 0C800000 21410240
+2ED 0C800000 02800001
+2EE 0C800000 02680004
+2EF 0C800000 214102C0
+2F0 0C800000 21430240
+2F1 0C800000 18680004
+2F2 0C800000 02800001
+2F3 0C800000 02800003
+2F4 0C800000 6A0A0002
+2F5 0C800000 0E210000
+2F6 0C800000 600003C3
+2F7 0C800000 78800000
+# site patches: BLTD -> CALLLT (delay-slot right-test runs after return)
+387 6A270112 7207FEBF
+3C9 6A27FFF7 7207FF20
+# right bound immediates 511 -> 597 (both sites, both registers)
+388 086101FF 08610255
+38C 086301FF 08630255
+3CA 086101FF 08610255
+3CE 086301FF 08630255

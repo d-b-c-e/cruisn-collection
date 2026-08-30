@@ -1528,3 +1528,58 @@ centre pixel-identical, +134 margin-only records over the full run.
 Awaiting the user's live drive (crash cams are where it shows). Also this
 wave: volume CMOS map all four games (no checksums; nvram_tool poke),
 World speed OCR shipped, G2/G4/G8 fixes, settings redesign proposal.
+
+
+## 2026-08-29 - World manual transmission: the answer was the ROM revision (rev 2.4 port)
+
+The World shifter mystery is closed, and it was never a config problem.
+**Cruis'n World rev 2.5 - the parent set MAME boots by default - removed
+transmission select entirely.** The factory ROM labels in the 2.5 set read
+`2.5_cruisn_world_automatic_u10` ("automatic" is Midway's own name for the
+revision); a 2018 r/MAME thread the user surfaced confirms it (rev 2.4 is
+the last revision with shifting options). Every CONF/DIP finding from
+2026-08-25..28 was correct - H-Pattern raw pass-through, Sitdown cabinet
+DIP applied and persisted - aimed at a game with the feature deleted.
+
+Port of the widescreen patch to crusnwld24 (rev L2.4):
+- Program images are 96% identical; ROM word offset == program-RAM word
+  address (identity mapping, verified via the sky bank table).
+- All 34 terrain/big-poly lines are **address-identical** in 2.4.
+- The sky engine cluster moved **+0xB words** (table 95F1->95FC; pointer
+  95F0->95FB, 255.0 float 95F9->9604, phase ops 9651/96BD->965C/96C8, tile
+  counts 9657/96BF/97E5->9662/96CA/97F0, horizon quad 9689/968B->9694/9696).
+  Saved-centers pointer value D539->D53F (+6 data shift). Four OLD words
+  embed shifted addresses and were fixed up; every one of the 54 lines was
+  verified against the interleaved 2.4 ROM image before shipping.
+- Live check: `MIDV_PATCH` on a crusnwld24 boot logs **54 applied, 0
+  skipped**.
+- `crusnwld24` in the shipped romset is "best available" (known BAD_DUMP
+  `c31boot.bin` -> red warning screen; `MIDV_SKIP_STARTUP_SCREENS` already
+  handles it). Headless boot verified (reaches CALIBRATE CONTROLS; headless
+  always re-demands calibration, expected).
+
+Rig wiring:
+- `patch/game/crusnwld24-widescreen.txt` (auto-applied by run_rig at 16:9
+  FULL, same as the 2.5 file).
+- run_rig: `base_rom()` normalization - clone revisions inherit the
+  parent's SHIFTER_CFG (CONF H-Pattern + Sitdown DIP: the whole point),
+  STEER_PORT, GAME_HEIGHT/GAME_MARGIN. Wizard wheel bindings already lived
+  in the ctrlr `default` section, so they apply to any system name.
+- collection: the CRUIS'N WORLD card now boots `world_rom` from
+  collection.ini (**default crusnwld24**; set `world_rom = crusnwld` to
+  return to 2.5). Settings keys and art stay on the crusnwld card identity.
+- midvunit_v.cpp telem_init: table lookups are prefix-matched so
+  crusnwld24 keeps World's HUD-OCR speed box (screen-space, rev-safe;
+  all World RAM-address rows are 0, so nothing rev-specific can misapply).
+
+Caveats to verify at the wheel:
+- First 2.4 boot: one-time CALIBRATE CONTROLS (2.4 initializes its own
+  CMOS - the 2.5 NVRAM doesn't carry over), then volume / free play need
+  setting once for 2.4. The 2.5 CMOS byte map (volume 0x9C, free play
+  0x1AC) may sit at different addresses in 2.4 - recalibrate the map from
+  the new nvram before poking.
+- The 2018 thread reports MAME rendering artifacts in 2.4 that 2.5 lacked.
+  That was 2018-era MAME *and* our renderer replaces the rasterizer
+  entirely - watch for artifacts on the first drive; the oracle can
+  quantify 2.4 once a calibrated NVRAM fixture exists (copy
+  rig/nvram/crusnwld24 to fixtures/nvram-crusnwld24 after first boot).

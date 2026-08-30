@@ -5,6 +5,14 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Cruis'n World manual transmission**: the World card now boots **rev 2.4
+  (crusnwld24)** - the last revision with transmission select (rev 2.5's
+  factory ROMs are labeled "automatic" and removed the option; no MAME
+  config can restore it). Widescreen patch fully ported to 2.4 (54/54 lines
+  verified + live-applied); `world_rom = crusnwld` in collection.ini
+  returns to 2.5. One-time recalibration + volume/free-play redo expected
+  on first 2.4 boot (own CMOS).
+
 - Off Road / all games: no more Windows error "ding" after quitting a game
   (the FFB plugin's exit crash is now bypassed entirely: MIDV_FAST_EXIT).
 - Exotica: launcher focus watchdog — input works immediately, no click
