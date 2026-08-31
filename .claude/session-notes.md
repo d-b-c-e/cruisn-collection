@@ -851,3 +851,21 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
 - User wheel test plan: flip TRANSMISSION to PADDLE SEQUENTIAL, run
   CONTROLS SETUP (15 steps, gears hidden), bind paddles + re-bind
   start/test/service (rawjoy fix makes >32 work on every entry now).
+
+
+## 2026-08-30 late - continue-line fix + C2 render-distance research round 1
+
+- Continue-screen vertical line: FIXED at the source (see RESULTS.md) -
+  quality-mode axis-aligned quads now dilate to the hardware DDA span
+  (renderer.py _dilate_rect + C++ port, mame-src 200e986e); live-verified
+  clean, exact mode 100.0000% x3 (incl. new capture-continue, first 2D
+  verified scene).
+- lua/coinup.lua NEW: scripted COIN/START/GAS via ioport set_value -
+  headless DRIVEN gameplay works (97mph verified). The old "set_value
+  doesn't land" verdict was a probe-script bug.
+- C2 research round 1: crusnusa object system mapped (see RESULTS.md for
+  node layout/pipeline/addresses); 0x727E=80000 draw-threshold hypothesis
+  FALSIFIED (bit-identical A/B driven). Next: MIDV_DBG_QUADID attribution
+  of the Golden-Gate gray-slab pop-in specimen -> real gate.
+- Debugger scripting: logerror-with-args + wpset+g chains reliable;
+  gtime-long flaky; -debugger none dead; save unresolved (use RAMDUMP).

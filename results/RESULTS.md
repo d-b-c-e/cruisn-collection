@@ -1709,6 +1709,61 @@ wide+crackfill+CRT seam gone; live overlay re-run clean on the continue
 screen AND mid-race 3D; patch series refreshed.
 
 
+## 2026-08-30 (later) - C2 render distance: research round 1 (crusnusa)
+
+Deep-RE session while the user was away. No lever found yet - but the
+object system is now MAPPED, the tooling grew a major capability, and
+one attractive hypothesis was properly falsified.
+
+**coinup.lua grew GAS injection** (`GAS_FRAME` env; ioport
+field:set_value(0xff) on :ACCEL): the scripted run now coins up, starts,
+AND DRIVES - 97 mph, place changes, full world streaming, all headless
+and deterministic. This unlocks driven-gameplay captures generally
+(offroadc track lines, NY wedges, telemetry hunts).
+
+The render pipeline skeleton (found via MIDV_DMA_PCLOG + a scripted
+debugger call-chain session; recipe below):
+- 0x53C-area: quad packer (STI to *AR7=0x600000; FIX-packed verts).
+- 0x140-0x166: per-object vertex transform + emit loop; 1/z LUT indexed
+  by depth>>4, index clamped to 0x1387 (=5000 -> depth 80000 - the LUT
+  and the 80000 constant were designed together).
+- 0x91/0x166: linked-list object walker (node: +0 next, +1..3 pos
+  floats, +0xD geometry ptr into maindata ROM, +0xE flags, +0x1C
+  integer view depth, +0x1D per-object distance BIAS).
+- 0x64: frame renderer - walks FOUR lists (page-0 vars 0x43,0x40,0x42,
+  0x44; sentinels 0xC9B2-0xC9B7; rebuilt per frame, torn down after).
+- 0x70BE: insert-object - computes view depth (dot with camera fwd,
+  camera block at 0x809800/0x980F), stores +0x1C, depth-sorted insert;
+  0x727F: per-frame migration between near/far lists with hysteresis.
+- Node pool alloc/free at 0x7050/freelist ($C9B3); builder push caught
+  live at PC 0x70DD.
+
+**Falsified**: word 0x727E holds 80000 (companion 0x727D = 75000), read
+by insert (0x70C6) and migration (0x7280) as the near/far threshold.
+MIDV_PATCH applies cleanly (old-value verified). But patching it to
+20000 AND 160000 produced BIT-IDENTICAL output (quad streams + native
+snapshots) on attract AND on a driven race. The attract demo doesn't
+even run the live object engine (node pool empty - likely canned
+playback). In driven gameplay the pool holds ~200 nodes with depths to
+~193k and ~82 far-flagged - yet rendering is unaffected by the
+threshold, so the far flag must gate LOGIC (AI/activity?), not drawing,
+or the far list is drawn by an unmapped path (DP-relative addressing
+makes the list wiring ambiguous statically).
+
+Debugger scripting recipe (worked, with caveats): `-debug -debugger
+windows -log -debugscript <f>`, output via `logerror fmt~,args`
+(NEVER argless), `wpset ADDR,1,w[,cond]` + chained `g` lines works
+reliably; `gtime <long>` after boot-era is flaky (script silently
+dies) - prefer wp+g. `-debugger none` never runs scripts. save syntax
+unresolved - use MIDV_RAMDUMP_DIR instead.
+
+Next-session plan: driven capture + MIDV_DBG_QUADID at a visible
+pop-in event (the gray slab building on Golden Gate right edge is a
+reliable specimen) -> attribute the popping quads to their emitting
+node -> wp the node's list-membership write at the pop-in frame -> the
+REAL distance gate, whatever it is.
+
+
 ## 2026-08-30 (later) - TRANSMISSION setting; USA volume row dropped
 
 User design call before wheel testing: replace the shifter-mode

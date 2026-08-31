@@ -36,7 +36,7 @@ capture) · 🙋 needs the user at the wheel
 | ID | Item | Status | Effort | Auto | Notes |
 |----|------|--------|--------|------|-------|
 | **C1** | Off Road coinage → 1 coin / 1 credit (or free play) | ☐ | S | 🙋 | One service-menu (F2) change to bake into the fixture, OR locate the CMOS coinage byte and patch. Needs a service-menu pass or a hunt. |
-| **C2** | Render distance / texture pop-in | ☐ | L | ⚠️ | Game-code (TMS32031) culling/LOD patch. Research-grade, no promise. Uses the FOV-trace groundwork + patcher. |
+| **C2** | Render distance / texture pop-in | ◐ | L | ⚠️ | **Research round 1 done 2026-08-30** (RESULTS.md): crusnusa object system fully mapped (node layout, 4 render lists, depth sort, per-object distance bias +0x1D, insert/migration at 0x70BE/0x727F); candidate constant 0x727E=80000 patch-tested both directions on DRIVEN gameplay (new coinup.lua GAS injection) - bit-identical output, falsified as the lever. World data DOES hold geometry to depth ~193k. Next: MIDV_DBG_QUADID attribution of a popping object during a driven capture -> its node -> wp on list membership at pop-in -> the real gate. |
 | **C3** | Cruis'n World full-margin coverage | ◐ | M | 🤖 | Sky + terrain-cull halves SHIPPED and live-verified except a RESIDUAL minor class: rare black edge slivers (user's NY report) = geometry never submitted at margin positions - buffer-cap theory tested and FALSIFIED 2026-08-29 (relocated+4x buffer -> zero stream delta). Remaining suspect: upstream object-level visibility cull, a future hunt; quantified tiny (4.2% of one margin band on 1 of ~30 attract driving frames). Known-minor for now. |
 
 ## G. Rig-session triage — 2026-08-25 (user's minor list)

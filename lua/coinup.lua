@@ -5,6 +5,9 @@
 --   SNAP_FRAMES  "1000,1200,..."  frames to snapshot (as snap.lua)
 --   COIN_FRAMES  "600,700,800"    frames to press COIN1 (held 10 frames)
 --   START_FRAMES "900"            frames to press START1 (held 10 frames)
+--   GAS_FRAME    "3800"           frame to floor the gas pedal (held to
+--                                 exit; drives the car so world streaming
+--                                 and distance culling actually exercise)
 --
 -- Field writes use ioport_field:set_value()/clear_value() - unlike
 -- keybd_event probing (which never reaches rawinput headless), these land
@@ -26,7 +29,8 @@ for n in (os.getenv("SNAP_FRAMES") or ""):gmatch("(%d+)") do
 end
 
 local HOLD = 10
-local coin_f, start_f = nil, nil
+local gas_frame = tonumber(os.getenv("GAS_FRAME") or "")
+local coin_f, start_f, gas_f = nil, nil, nil
 
 local function find_fields()
     local ioport = manager.machine.ioport
@@ -36,11 +40,14 @@ local function find_fields()
                 coin_f = f
             elseif f.type == ioport:token_to_input_type("START1") then
                 start_f = f
+            elseif tag == ":ACCEL" then
+                gas_f = f
             end
         end
     end
-    emu.print_info(string.format("coinup.lua: coin=%s start=%s",
-        coin_f and "found" or "MISSING", start_f and "found" or "MISSING"))
+    emu.print_info(string.format("coinup.lua: coin=%s start=%s gas=%s",
+        coin_f and "found" or "MISSING", start_f and "found" or "MISSING",
+        gas_f and "found" or "MISSING"))
 end
 
 local count = 0
@@ -65,6 +72,10 @@ emu.register_frame_done(function()
             start_f:clear_value()
             emu.print_info("coinup.lua: START up @" .. count)
         end
+    end
+    if gas_frame and count == gas_frame and gas_f then
+        gas_f:set_value(0xff)
+        emu.print_info("coinup.lua: GAS floored @" .. count)
     end
     if snaps[count] then
         manager.machine.video:snapshot()
