@@ -816,3 +816,19 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   sequential mode (needs re-running the wizard to bind SHIFT UP/DOWN),
   volume rows vs actual loudness, Off Road track-select lines (screenshot
   wanted, roadmap G-item).
+
+
+## 2026-08-30 - rawjoy re-entry fix (>32-button wizard capture)
+
+- User's menu test hit "can't bind buttons >32 again" (Start/Test/Service,
+  Moza 33-35). Cause: rawjoy registered the CruisnRawJoy window class with
+  the first listener instance's wndproc; class registration is
+  process-global, so every wizard re-entry in one shell session got a
+  raw-input window wired to the dead first listener - raw queue never
+  fills, glfw (<=32) still binds. First-entry-only usage had masked it.
+- Proved live (wheel chatter): re-created listener got 0 events vs 2304;
+  fixed with module-lifetime _PROC dispatcher -> rawjoy._active; 3
+  consecutive cycles now all receive (~2300 events/2s each).
+- rig collection.ini [wheelmap] untouched by the failed attempt (still
+  start=34/test=33/service=32, no shiftup/shiftdn) - in-game keys were
+  never broken; user still needs one full wizard run to bind paddles.

@@ -103,13 +103,39 @@ class RAWINPUTHEADER(ctypes.Structure):
                 ("hDevice", ctypes.c_void_p), ("wParam", ctypes.c_size_t)]
 
 
+# The window class is registered ONCE per process and lives forever, so its
+# wndproc must not belong to any listener instance: a second listener's
+# window would be created with the first (dead) listener's callback and its
+# queue could never fill - the wizard's >32-button capture silently dies on
+# every re-entry after the first. Route through a module-lifetime proc that
+# dispatches to whichever listener is currently active (last one wins).
+_active = None
+
+
+def _wndproc(hwnd, msg, wp, lp):
+    if msg == WM_INPUT:
+        lis = _active
+        if lis is not None:
+            lis._on_input(lp)
+        return 0
+    if msg == WM_DESTROY:
+        u32.PostQuitMessage(0)
+        return 0
+    return u32.DefWindowProcW(hwnd, msg, wp, lp)
+
+
+_PROC = WNDPROC(_wndproc)
+
+
 class RawButtonListener:
     def __init__(self):
+        global _active
         self._events = deque()
         self._devices = {}          # hDevice -> (name, preparsed buf, maxlen)
         self._pressed = {}          # hDevice -> frozenset of usages
         self._hwnd = None
         self._ready = threading.Event()
+        _active = self
         self._thread = threading.Thread(target=self._run, daemon=True)
         self._thread.start()
         self._ready.wait(2.0)
@@ -123,8 +149,12 @@ class RawButtonListener:
         return out
 
     def stop(self):
+        global _active
+        if _active is self:
+            _active = None
         if self._hwnd:
             u32.PostMessageW(ctypes.c_void_p(self._hwnd), WM_CLOSE, 0, 0)
+            self._hwnd = None
         self._thread.join(2.0)
 
     # ---- device info ----
@@ -159,21 +189,12 @@ class RawButtonListener:
 
     # ---- the listener thread ----
     def _run(self):
-        def wndproc(hwnd, msg, wp, lp):
-            if msg == WM_INPUT:
-                self._on_input(lp)
-                return 0
-            if msg == WM_DESTROY:
-                u32.PostQuitMessage(0)
-                return 0
-            return u32.DefWindowProcW(hwnd, msg, wp, lp)
-
-        self._proc = WNDPROC(wndproc)   # keep alive
         wc = WNDCLASSW()
-        wc.lpfnWndProc = self._proc
+        wc.lpfnWndProc = _PROC
         wc.hInstance = k32.GetModuleHandleW(None)
         wc.lpszClassName = "CruisnRawJoy"
-        u32.RegisterClassW(ctypes.byref(wc))
+        u32.RegisterClassW(ctypes.byref(wc))   # fails after the first: fine,
+        # the registered proc is the same module-lifetime _PROC either way
         self._hwnd = u32.CreateWindowExW(0, "CruisnRawJoy", None, 0,
                                          0, 0, 0, 0, HWND_MESSAGE,
                                          None, wc.hInstance, None)

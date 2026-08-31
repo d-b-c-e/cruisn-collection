@@ -1622,3 +1622,34 @@ Sequential/paddle shifting (B7) implemented natively:
   H-pattern gears and paddles (full H-pattern wins); apply_shifter_config
   writes CONF=0 or 5 accordingly. Exotica (Zeus) has no sequential mode -
   paddle-only rigs keep automatic-select there.
+
+
+## 2026-08-30 - wizard >32-button capture dead on re-entry (rawjoy fix)
+
+User report after testing the new menus: Start / Test / Service (Moza
+buttons 33-35) would no longer bind in the wizard - "back to the
+32-button cap". Root cause was in rawjoy, not the redesign's code: the
+`CruisnRawJoy` window class was registered with the FIRST
+RawButtonListener instance's wndproc, and a Win32 class registration is
+process-global and permanent. The listener is wizard-scoped
+(created on CONTROLS SETUP entry, stopped on exit), so every wizard
+entry after the first in one shell session created its raw-input window
+with the dead first listener's callback - its own queue could never
+fill. glfw binds (buttons <=32) kept working, raw-only binds (>32) went
+silently deaf. The old flow (one wizard run per shell launch) never
+re-entered; the redesign session's menu-wandering did.
+
+Proved live on the rig with the wheel powered (axis chatter as signal):
+listener #1 received 2304 raw events in 2 s, a re-created listener #2
+received **0**, and GetWindowLongPtr showed #2's window proc == #1's
+callback address. Fix: module-lifetime WNDPROC dispatcher routing
+WM_INPUT to the currently-active listener (`rawjoy._active`, last one
+wins), registered once; stop() clears it and is idempotent. After the
+fix three consecutive create/stop cycles each received the full stream
+(2307 / 2282 / 2333 events per 2 s).
+
+Note: the rig's saved [wheelmap] still carries the good pre-redesign
+bindings (start=btn:34, test=33, service=32) and no shiftup/shiftdn -
+the failed re-bind attempt never completed, so nothing was overwritten
+and in-game Start/Test/Service were never at risk. Paddle binding still
+needs one full wizard run.

@@ -5,6 +5,12 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Fixed: wizard button capture above 32 died on re-entry** - entering
+  CONTROLS SETUP a second time in one shell session left the Raw Input
+  listener deaf (stale process-global window class), so wheel buttons
+  33+ (e.g. Start/Test/Service on a Moza base) could not be bound again
+  until the shell was restarted. The raw listener now survives any
+  number of wizard entries.
 - **Menu redesign** (user design): selecting a game card now opens a
   per-game submenu - PLAY (default; ENTER-ENTER still launches fast) plus
   that game's settings: steering sensitivity/curve, VOLUME and FREE PLAY
