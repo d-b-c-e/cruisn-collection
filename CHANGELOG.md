@@ -6,7 +6,7 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 ## Unreleased
 
 - **TRANSMISSION setting** (user design): a global SETTINGS row picks
-  H-PATTERN SHIFTER or PADDLE SEQUENTIAL explicitly, replacing the old
+  H-PATTERN SHIFTER or SEQUENTIAL explicitly, replacing the old
   "full H-pattern wins" inference (which made paddles unreachable on a
   rig that has both). The wizard only asks for the active mode's shift
   steps, and bindings now merge on save - both modes' binds persist, so

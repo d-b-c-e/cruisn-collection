@@ -396,7 +396,7 @@ class Shell:
                 ("MARGIN FILL", "ON" if mfill else "OFF"),
                 ("FFB STRENGTH", f"< {ffb}% >"),
                 ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
-                 else "< PADDLE SEQUENTIAL >"),
+                 else "< SEQUENTIAL >"),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
                 ("BACK", "")]
         x0, x1 = self.w * 0.30, self.w * 0.70
@@ -420,9 +420,9 @@ class Shell:
                "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING",
             4: "FORCE-FEEDBACK STRENGTH:   SCALES WHEEL FORCE FROM 0% (OFF)"
                " TO 100% (FULL)      LOWER IF THE WHEEL FEELS TOO HARSH",
-            5: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      PADDLE = SHIFT "
-               "UP / DOWN ON THE WHEEL      EXOTICA HAS NO PADDLE MODE - "
-               "STAYS AUTOMATIC",
+            5: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
+               "SHIFT UP / DOWN PADDLES      EXOTICA HAS NO SEQUENTIAL "
+               "MODE - STAYS AUTOMATIC",
             6: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
                "SKIPPED STEPS KEEP THEIR SAVED BINDING",
         }
