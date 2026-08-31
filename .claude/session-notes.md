@@ -832,3 +832,22 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
 - rig collection.ini [wheelmap] untouched by the failed attempt (still
   start=34/test=33/service=32, no shiftup/shiftdn) - in-game keys were
   never broken; user still needs one full wizard run to bind paddles.
+
+
+## 2026-08-30 late - TRANSMISSION setting + USA volume row removed
+
+- User design: explicit global TRANSMISSION (H-PATTERN / PADDLE
+  SEQUENTIAL) in SETTINGS replaces bind-inference arbitration (which made
+  sequential unreachable with both DS-8X + paddles bound). Wizard asks
+  only the active mode's shift steps; save_wheelmap MERGES (hidden +
+  BACKSPACE-skipped steps keep saved binds; both modes' binds persist).
+  run_rig.transmission_mode() drives apply_wheelmap skip-set + CONF 0/5;
+  absent key infers old-style (paddle-only rigs stay sequential).
+- Scratch-rig e2e verified: hpattern -> gears on P1_BUTTON5/6 + CONF 0;
+  sequential -> paddles + CONF 5; crusnexo sequential untouched; ADDSW3
+  start intact both modes. Settings page renders sent (8 rows, 0.062).
+- USA VOLUME hotkey-pointer row removed from the submenu (auto-returns if
+  the byte is pinned into VOLUME_CMOS).
+- User wheel test plan: flip TRANSMISSION to PADDLE SEQUENTIAL, run
+  CONTROLS SETUP (15 steps, gears hidden), bind paddles + re-bind
+  start/test/service (rawjoy fix makes >32 work on every entry now).

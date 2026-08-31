@@ -411,31 +411,51 @@ SHIFTER_CFG = {
 }
 
 
+def transmission_mode(cp):
+    """'hpattern' or 'sequential' from [collection] transmission (the
+    shell's TRANSMISSION setting). When the key is absent (configs from
+    before the setting existed) infer it the way the old arbitration
+    did, so paddle-only rigs stay sequential across the upgrade."""
+    v = ""
+    if cp.has_section("collection"):
+        v = cp["collection"].get("transmission", "").strip().lower()
+    if v in ("hpattern", "sequential"):
+        return v
+    wm = cp["wheelmap"] if cp.has_section("wheelmap") else {}
+    hpat = all(g in wm for g in ("gear1", "gear2", "gear3", "gear4"))
+    seq = "shiftup" in wm and "shiftdn" in wm
+    return "sequential" if (seq and not hpat) else "hpattern"
+
+
 def apply_shifter_config(rig, rom):
-    """Inject shifter CONF/DIP port values into rig/cfg/<rom>.cfg when the
-    wizard has a full H-pattern bound ([wheelmap] gear1-4 -> CONF
-    H-Pattern) or both paddles (shiftup/shiftdn -> CONF Sequential,
-    V-Unit games only). MAME loads the
-    values at boot and rewrites the file at exit; re-injecting every launch keeps
-    the intent stable. No-op when no shifter is bound (release installs)."""
+    """Inject shifter CONF/DIP port values into rig/cfg/<rom>.cfg. The
+    TRANSMISSION setting picks the style (CONF H-Pattern=0 or
+    Sequential=5, V-Unit only); the active mode's bindings must exist in
+    [wheelmap] (gear1-4 or shiftup+shiftdn). MAME loads the values at
+    boot and rewrites the file at exit; re-injecting every launch keeps
+    the intent stable. No-op when the active mode has nothing bound
+    (release installs)."""
     entries = SHIFTER_CFG.get(base_rom(rom))
     if not entries:
         return
     import configparser
     cp = configparser.ConfigParser(interpolation=None)
     cp.read(os.path.join(POC, "rig", "collection.ini"))
-    hpat = all(cp.has_option("wheelmap", g) for g in
-               ("gear1", "gear2", "gear3", "gear4"))
-    seq = (cp.has_option("wheelmap", "shiftup")
-           and cp.has_option("wheelmap", "shiftdn"))
-    if not (hpat or seq):
-        return
-    if not hpat and base_rom(rom) == "crusnexo":
-        # Zeus has no sequential mode (gears BUTTON2-5, no CONF port);
-        # paddles-only rigs keep Exotica's automatic-select behavior
-        return
-    # V-Unit CONF "Shifter Type": 0 = H-Pattern, 5 = Sequential
-    conf_val = 0 if hpat else 5
+    mode = transmission_mode(cp)
+    if mode == "hpattern":
+        if not all(cp.has_option("wheelmap", g) for g in
+                   ("gear1", "gear2", "gear3", "gear4")):
+            return
+        conf_val = 0
+    else:
+        if not (cp.has_option("wheelmap", "shiftup")
+                and cp.has_option("wheelmap", "shiftdn")):
+            return
+        if base_rom(rom) == "crusnexo":
+            # Zeus has no sequential mode (gears BUTTON2-5, no CONF
+            # port); Exotica keeps automatic-select in paddle mode
+            return
+        conf_val = 5
     entries = [(tag, ptype, mask, defv,
                 conf_val if tag == ":CONF" else value)
                for tag, ptype, mask, defv, value in entries]
@@ -644,9 +664,10 @@ WHEELMAP_PORTS = {
     "gear4": (["P1_BUTTON8"], None),
     # sequential / paddle shifting (midvunit CONF "Sequential"=5): Shift
     # Down is P1_BUTTON5 and Shift Up P1_BUTTON6 - the SAME port types the
-    # H-pattern gears 1/2 use under CONF=0. apply_wheelmap arbitrates: when
-    # a full H-pattern is bound it wins and the paddle keys are skipped
-    # (and vice versa), so the ctrlr never binds both onto one port.
+    # H-pattern gears 1/2 use under CONF=0. The shell's TRANSMISSION
+    # setting picks which mode's keys write ports (transmission_mode);
+    # the inactive mode's are skipped so the ctrlr never binds both onto
+    # one port, while both binding sets persist in [wheelmap].
     "shiftup": (["P1_BUTTON6"], None),
     "shiftdn": (["P1_BUTTON5"], None),
     "volup":   (["VOLUME_UP"], "KEYCODE_EQUALS"),
@@ -745,16 +766,12 @@ def apply_wheelmap(tree, rig):
     cp.read(os.path.join(rig, "collection.ini"))
     if "wheelmap" not in cp:
         return
-    # shifter-mode arbitration: H-pattern (gear1-4) and sequential
-    # (shiftup/shiftdn) share P1_BUTTON5/6 - only the active mode's keys
-    # may write ports. A full H-pattern outranks paddles (a real shifter
-    # is the reason to bind one); paddles alone select sequential.
-    have = set(cp["wheelmap"])
-    hpat = all(g in have for g in ("gear1", "gear2", "gear3", "gear4"))
-    seq = "shiftup" in have and "shiftdn" in have
-    skip = ({"shiftup", "shiftdn"} if hpat
-            else {"gear1", "gear2", "gear3", "gear4"} if seq
-            else {"shiftup", "shiftdn"})
+    # H-pattern (gear1-4) and sequential (shiftup/shiftdn) share
+    # P1_BUTTON5/6 - only the active mode's keys may write ports. The
+    # TRANSMISSION setting picks the mode; both binding sets persist in
+    # [wheelmap] so switching modes never costs the other's binds.
+    skip = ({"shiftup", "shiftdn"} if transmission_mode(cp) == "hpattern"
+            else {"gear1", "gear2", "gear3", "gear4"})
     root = tree.getroot()
     default_inp = None
     for system in root.iter("system"):

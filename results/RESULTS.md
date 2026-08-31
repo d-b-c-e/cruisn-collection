@@ -1653,3 +1653,36 @@ bindings (start=btn:34, test=33, service=32) and no shiftup/shiftdn -
 the failed re-bind attempt never completed, so nothing was overwritten
 and in-game Start/Test/Service were never at risk. Paddle binding still
 needs one full wizard run.
+
+
+## 2026-08-30 (later) - TRANSMISSION setting; USA volume row dropped
+
+User design call before wheel testing: replace the shifter-mode
+*inference* (full H-pattern outranks paddles) with an explicit global
+**TRANSMISSION** setting - the inference made sequential unreachable on
+a rig with both a DS-8X and paddles, and going into the wizard already
+knowing the mode simplifies binding. Implemented:
+
+- SETTINGS row 5: TRANSMISSION < H-PATTERN SHIFTER / PADDLE SEQUENTIAL >
+  (page is 8 rows now, spacing 0.062; hint notes Exotica has no paddle
+  mode). Stored as [collection] transmission = hpattern|sequential; when
+  the key is absent, load_config/run_rig.transmission_mode() infer it
+  exactly like the old arbitration so paddle-only rigs upgrade cleanly.
+- The wizard only asks the active mode's shift steps (17 steps in
+  H-pattern, 15 in sequential, of 19) and **save_wheelmap now MERGES**
+  into [wheelmap]: hidden steps and BACKSPACE-skipped steps keep their
+  saved binding - switching modes never costs the other mode's binds,
+  and both sets persist side by side.
+- run_rig: apply_wheelmap's skip-set and apply_shifter_config's CONF
+  value (0/5) both key off transmission_mode(); the active mode still
+  requires its own bindings present (no-op otherwise), Exotica still
+  refuses sequential (no CONF port on Zeus).
+- Verified offscreen (settings renders both modes) plus an end-to-end
+  scratch-rig ctrlr test: hpattern -> P1_BUTTON5/6 = shifter gears 1/2 +
+  CONF 0; sequential -> P1_BUTTON5=shift-down / 6=shift-up paddles +
+  CONF 5; crusnexo sequential -> untouched; START btn:34 -> ADDSW3 in
+  both modes.
+- Per-game submenu: the Cruis'n USA VOLUME row is REMOVED (it could only
+  point at the in-game = / - keys - not a setting; user call). The row
+  reappears automatically if USA's master byte ever gets pinned into
+  VOLUME_CMOS.

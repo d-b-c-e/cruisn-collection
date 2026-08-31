@@ -5,6 +5,15 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **TRANSMISSION setting** (user design): a global SETTINGS row picks
+  H-PATTERN SHIFTER or PADDLE SEQUENTIAL explicitly, replacing the old
+  "full H-pattern wins" inference (which made paddles unreachable on a
+  rig that has both). The wizard only asks for the active mode's shift
+  steps, and bindings now merge on save - both modes' binds persist, so
+  switching is instant and never requires rebinding. Skipped wizard
+  steps keep their saved binding.
+- Removed the Cruis'n USA VOLUME row that only pointed at the in-game
+  = / - keys; it returns if USA's master volume byte gets pinned.
 - **Fixed: wizard button capture above 32 died on re-entry** - entering
   CONTROLS SETUP a second time in one shell session left the Raw Input
   listener deaf (stale process-global window class), so wheel buttons

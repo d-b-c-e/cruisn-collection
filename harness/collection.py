@@ -381,7 +381,7 @@ class Shell:
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
                   (0.75, 0.75, 0.8, 1.0))
 
-    def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, t):
+    def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans, t):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -395,12 +395,14 @@ class Shell:
                 ("ASPECT / WIDESCREEN", ASPECT_LABEL(margin)),
                 ("MARGIN FILL", "ON" if mfill else "OFF"),
                 ("FFB STRENGTH", f"< {ffb}% >"),
+                ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
+                 else "< PADDLE SEQUENTIAL >"),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
                 ("BACK", "")]
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.36 + 0.067 * i)
+            y = self.h * (0.36 + 0.062 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -418,6 +420,11 @@ class Shell:
                "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING",
             4: "FORCE-FEEDBACK STRENGTH:   SCALES WHEEL FORCE FROM 0% (OFF)"
                " TO 100% (FULL)      LOWER IF THE WHEEL FEELS TOO HARSH",
+            5: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      PADDLE = SHIFT "
+               "UP / DOWN ON THE WHEEL      EXOTICA HAS NO PADDLE MODE - "
+               "STAYS AUTOMATIC",
+            6: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
+               "SKIPPED STEPS KEEP THEIR SAVED BINDING",
         }
         if ssel in hints:
             self.center_text(hints[ssel], self.h // 48, self.h * 0.86,
@@ -667,6 +674,10 @@ class Audio:
 # wheel/controller-setup wizard: (prompt, ini key, kind)
 # kind "button": press a joystick button OR a keyboard key
 # kind "axis":   move an axis (turn wheel / press pedal / tilt stick)
+# The shift steps are mode-filtered at wizard entry: the TRANSMISSION
+# setting decides whether gear1-4 (H-pattern) or shiftup/shiftdn
+# (sequential paddles) are asked - the inactive mode's steps are hidden
+# and its saved bindings kept (save_wheelmap merges).
 WIZARD_STEPS = [
     ("STEERING  (turn the wheel / tilt the stick)", "steer", "axis"),
     ("GAS  (press the pedal / trigger)",            "gas",   "axis"),
@@ -681,8 +692,8 @@ WIZARD_STEPS = [
     ("GEAR 2",    "gear2",  "button"),
     ("GEAR 3",    "gear3",  "button"),
     ("GEAR 4",    "gear4",  "button"),
-    ("SHIFT UP  (paddle - BACKSPACE if none)",   "shiftup", "button"),
-    ("SHIFT DOWN  (paddle - BACKSPACE if none)", "shiftdn", "button"),
+    ("SHIFT UP  (paddle)",   "shiftup", "button"),
+    ("SHIFT DOWN  (paddle)", "shiftdn", "button"),
     ("VOLUME UP",      "volup",   "button"),
     ("VOLUME DOWN",    "voldn",   "button"),
     ("TEST MENU  (operator settings)",    "test",    "button"),
@@ -744,8 +755,20 @@ def load_config():
         if curve[rom] is None and legacy_c is not None:
             curve[rom] = legacy_c
 
+    # TRANSMISSION mode: which shifter style the games use and the wizard
+    # binds. When the key is absent (configs from before the setting),
+    # infer it the way the old apply_wheelmap arbitration did, so
+    # paddle-only rigs stay sequential across the upgrade.
+    tr = str(sec.get("transmission", "")).strip().lower()
+    if tr not in ("hpattern", "sequential"):
+        wm = cp["wheelmap"] if "wheelmap" in cp else {}
+        hpat = all(g in wm for g in ("gear1", "gear2", "gear3", "gear4"))
+        seq = "shiftup" in wm and "shiftdn" in wm
+        tr = "sequential" if (seq and not hpat) else "hpattern"
+
     ffb = _num("ffb")
     return {"crt": str(sec.get("crt", "1")) == "1",
+            "transmission": tr,
             "crackfill": str(sec.get("crackfill", "1")) == "1",
             "marginfill": str(sec.get("marginfill", "0")) == "1",
             "steersens": sens,
@@ -772,6 +795,7 @@ def save_config(state):
            "margin": ("" if state["margin"] is None
                       else str(state["margin"])),
            "ffb": str(state.get("ffb", 100)),
+           "transmission": state.get("transmission", "hpattern"),
            "scale": str(state["scale"]), "rom": state["rom"],
            "world_rom": state.get("world_rom", "crusnwld24")}
     for rom, _, _, _ in GAMES:
@@ -788,10 +812,15 @@ def save_config(state):
 def save_wheelmap(bindings):
     """bindings: {ini_key: value_string} from the wizard. Value formats:
     'Device Name|btn:N', 'Device Name|axis:N:G' (G=1 for XInput gamepads),
-    'KEYBOARD|key:KEYCODE_X'."""
+    'KEYBOARD|key:KEYCODE_X'. MERGES into the existing [wheelmap]: steps
+    the wizard didn't show (the inactive transmission mode's) and steps
+    skipped with BACKSPACE keep their previous binding, so switching
+    transmission modes never costs the other mode's binds."""
     cp = configparser.ConfigParser()
     cp.read(CFG)
-    cp["wheelmap"] = dict(bindings)
+    merged = dict(cp["wheelmap"]) if "wheelmap" in cp else {}
+    merged.update(bindings)
+    cp["wheelmap"] = merged
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
         cp.write(f)
@@ -1010,11 +1039,10 @@ def main():
                      "LINEAR (OFF)" if cv is None else f"< {cv} >",
                      CURVE_HINT))
         rom = cmos_rom(card)
-        if card == "crusnusa":
-            rows.append(("volume", "VOLUME", "USE  =  /  -  IN GAME",
-                         "USA'S MASTER VOLUME BYTE ISN'T PINNED YET - "
-                         "USE THE = AND - KEYS IN GAME (SAVES TO CMOS)"))
-        else:
+        # no VOLUME row for games whose master byte isn't pinned (USA):
+        # a row that can only point at the in-game = / - keys isn't a
+        # setting. Pin the byte in VOLUME_CMOS and the row appears.
+        if card in VOLUME_CMOS:
             fname, addrs, vmax = VOLUME_CMOS[card]
             v = cread(rom, fname, addrs[0])
             rows.append(("volume", "VOLUME",
@@ -1133,6 +1161,7 @@ def main():
     cmos_cache = {}      # (rom, fname, addr) -> byte (invalidated on write)
     wiz_idx = 0
     wiz_bind = {}
+    wiz_steps = WIZARD_STEPS   # mode-filtered at wizard entry
     wiz_last = ""
     wiz_base = None      # axis baselines {jid: axes tuple}
     wiz_ready = False    # gate screen: capture starts on Enter, not entry
@@ -1228,7 +1257,7 @@ def main():
                 # back to center must not bind the next step)
                 actions.clear()
             else:
-                step = WIZARD_STEPS[wiz_idx] if wiz_idx < len(WIZARD_STEPS) else None
+                step = wiz_steps[wiz_idx] if wiz_idx < len(wiz_steps) else None
                 for key in actions:
                     if key == glfw.KEY_BACKSPACE:       # skip this binding
                         audio.blip("nav")
@@ -1250,8 +1279,8 @@ def main():
                         break
                 actions.clear()
                 if (mode == "wizard" and now >= wiz_cool
-                        and wiz_idx < len(WIZARD_STEPS)):
-                    label, ikey, kind = WIZARD_STEPS[wiz_idx]
+                        and wiz_idx < len(wiz_steps)):
+                    label, ikey, kind = wiz_steps[wiz_idx]
                     if kind == "button" and (presses or rawp):
                         # glfw first (its device names are proven against
                         # MAME's mapdevice); Raw Input HID covers buttons
@@ -1315,7 +1344,7 @@ def main():
                                 wiz_idx += 1
                                 wiz_base = wiz_settle = None
                                 wiz_cool = now + 2.0
-            if mode == "wizard" and wiz_idx >= len(WIZARD_STEPS):
+            if mode == "wizard" and wiz_idx >= len(wiz_steps):
                 save_wheelmap(wiz_bind)
                 nav_spec = parse_navspec()   # steering/gas nav follows
                 audio.blip("select")
@@ -1327,10 +1356,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 7
+                    ssel = (ssel - 1) % 8
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 7
+                    ssel = (ssel + 1) % 8
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -1352,6 +1381,13 @@ def main():
                     state["ffb"] = max(0, min(100, state.get("ffb", 100) + step))
                     save_config(state)
                     audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 5:
+                    state["transmission"] = (
+                        "sequential"
+                        if state.get("transmission", "hpattern") == "hpattern"
+                        else "hpattern")
+                    save_config(state)
+                    audio.blip("nav")
                 elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
                     if ssel in (0, 1):
                         k = "crt" if ssel == 0 else "crackfill"
@@ -1362,9 +1398,17 @@ def main():
                         state["marginfill"] = not state.get("marginfill", True)
                         save_config(state)
                         audio.blip("nav")
+                    elif ssel == 5:
+                        state["transmission"] = (
+                            "sequential"
+                            if state.get("transmission",
+                                         "hpattern") == "hpattern"
+                            else "hpattern")
+                        save_config(state)
+                        audio.blip("nav")
                     elif ssel in (2, 4):
                         audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 5:
+                    elif ssel == 6:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -1372,6 +1416,15 @@ def main():
                         wiz_ready = False
                         wiz_base = wiz_settle = None
                         wiz_cool = 0.0
+                        # the wizard only asks for the ACTIVE transmission
+                        # mode's shift steps; the other mode's saved binds
+                        # survive (save_wheelmap merges)
+                        skipk = ({"shiftup", "shiftdn"}
+                                 if state.get("transmission",
+                                              "hpattern") == "hpattern"
+                                 else {"gear1", "gear2", "gear3", "gear4"})
+                        wiz_steps = [s for s in WIZARD_STEPS
+                                     if s[1] not in skipk]
                         if rawjoy is not None and rawlis is None:
                             try:
                                 rawlis = rawjoy.RawButtonListener()
@@ -1498,15 +1551,16 @@ def main():
             shell.draw_loading(launching["name"], t)
         elif mode == "wizard" and not wiz_ready:
             shell.draw_wizard_begin(t)
-        elif mode == "wizard" and wiz_idx < len(WIZARD_STEPS):
-            shell.draw_wizard(WIZARD_STEPS[wiz_idx][0], wiz_idx,
-                              len(WIZARD_STEPS), wiz_last,
-                              WIZARD_STEPS[wiz_idx][2],
+        elif mode == "wizard" and wiz_idx < len(wiz_steps):
+            shell.draw_wizard(wiz_steps[wiz_idx][0], wiz_idx,
+                              len(wiz_steps), wiz_last,
+                              wiz_steps[wiz_idx][2],
                               max(0.0, wiz_cool - time.time()))
         elif mode == "settings":
             shell.draw_settings(ssel, state["crt"], state["crackfill"],
                                 state["margin"], state.get("ffb", 100),
-                                state.get("marginfill", True), t)
+                                state.get("marginfill", True),
+                                state.get("transmission", "hpattern"), t)
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)
