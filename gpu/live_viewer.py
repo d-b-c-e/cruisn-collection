@@ -215,7 +215,7 @@ def main():
             pending[pg] = None
             p = pages[pg]
             fdata, udata = build_vertices_fast(
-                np.array(quad_list, dtype="<u2"), MARGIN)
+                np.array(quad_list, dtype="<u2"), MARGIN, dilate2d=True)
             vbo_f = ctx.buffer(fdata.tobytes())
             vbo_u = ctx.buffer(udata.tobytes())
             vao = ctx.vertex_array(prog, [

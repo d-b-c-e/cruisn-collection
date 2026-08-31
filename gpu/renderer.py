@@ -458,8 +458,43 @@ def load_scene(cap, history=True):
     return quads, int(pages[s]), meta, nhist
 
 
-def build_vertices(quads, xoff):
-    """Quad records -> interleaved GPU vertex data (6 verts per quad)."""
+def _dilate_rect(vx, vy, ix, iy):
+    """Half-pixel outward dilation for one strict axis-aligned rectangle.
+
+    Quality mode's continuous coverage ends at the vertex CENTERS, so two
+    adjacent 2D tiles each half-cover their shared boundary columns and
+    whatever lies underneath grooves through the seam (the crusnusa
+    continue-map vertical line; offroadc's track-select lines, G4). The
+    hardware DDA fills both endpoint pixels inclusively - expanding every
+    side outward to the pixel's outer edge (0.5, +0.001 guard against
+    coincident-edge tie rules) reproduces that span exactly: adjacent
+    tiles then partition the fine pixels with no gap and no overlap.
+    Exact/DDA mode never calls this (bit-exactness by construction)."""
+    E = 0.501
+    if (ix[0] == ix[1] and ix[2] == ix[3]
+            and iy[1] == iy[2] and iy[3] == iy[0]):
+        sides_x = ((0, 1), (2, 3))
+        sides_y = ((1, 2), (3, 0))
+    elif (iy[0] == iy[1] and iy[2] == iy[3]
+            and ix[1] == ix[2] and ix[3] == ix[0]):
+        sides_x = ((3, 0), (1, 2))
+        sides_y = ((0, 1), (2, 3))
+    else:
+        return
+    for (a, b), (c, d), v, s in ((sides_x[0], sides_x[1], vx, ix),
+                                 (sides_y[0], sides_y[1], vy, iy)):
+        e = E if s[a] <= s[c] else -E
+        v[a] -= e
+        v[b] -= e
+        v[c] += e
+        v[d] += e
+
+
+def build_vertices(quads, xoff, dilate2d=False):
+    """Quad records -> interleaved GPU vertex data (6 verts per quad).
+
+    dilate2d: half-pixel dilation of axis-aligned rects (quality mode
+    only - see _dilate_rect). Exact mode MUST leave it False."""
     n = len(quads)
     fdata = np.zeros((n * 6, 18), dtype=np.float32)
     udata = np.zeros((n * 6, 4), dtype=np.uint32)
@@ -509,6 +544,9 @@ def build_vertices(quads, xoff):
                 mode = 0
                 pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff
         make_vertices_inclusive(vx, vy)
+        if dilate2d:
+            _iy = [int(np.int16(dma[3 + i * 2])) for i in range(4)]
+            _dilate_rect(vx, vy, _wx, _iy)
 
         x0, x1 = min(vx) - 1.0, max(vx) + 1.0
         y0, y1 = min(vy) - 1.0, max(vy) + 1.0
@@ -523,7 +561,7 @@ def build_vertices(quads, xoff):
     return fdata, udata
 
 
-def build_vertices_fast(quads, xoff):
+def build_vertices_fast(quads, xoff, dilate2d=False):
     """Vectorized build_vertices - identical output, no per-quad Python loop.
 
     The live viewer calls this per scene at 57 Hz; the scalar version costs
@@ -585,6 +623,28 @@ def build_vertices_fast(quads, xoff):
     badj = np.take_along_axis(bmask, eff, axis=1) & ~all_eq[:, None]
     vx = np.where(radj, (vx + np.float32(0.001)).astype(np.float32), vx)
     vy = np.where(badj, (vy + np.float32(0.001)).astype(np.float32), vy)
+
+    if dilate2d:
+        # ---- _dilate_rect, vectorized (see the scalar version) ----
+        E = np.float32(0.501)
+        ix = dma[:, 2:10:2].astype(np.int16)
+        iy = dma[:, 3:10:2].astype(np.int16)
+        pa = ((ix[:, 0] == ix[:, 1]) & (ix[:, 2] == ix[:, 3])
+              & (iy[:, 1] == iy[:, 2]) & (iy[:, 3] == iy[:, 0]))
+        pb = ((iy[:, 0] == iy[:, 1]) & (iy[:, 2] == iy[:, 3])
+              & (ix[:, 1] == ix[:, 2]) & (ix[:, 3] == ix[:, 0]))
+        pb &= ~pa   # degenerate quads match both; scalar elif picks A
+        for mask, sx, sy in ((pa, ((0, 1), (2, 3)), ((1, 2), (3, 0))),
+                             (pb, ((3, 0), (1, 2)), ((0, 1), (2, 3)))):
+            if not mask.any():
+                continue
+            for (a, b), (c, d), v, s in ((sx[0], sx[1], vx, ix),
+                                         (sy[0], sy[1], vy, iy)):
+                e = np.where(s[:, a] <= s[:, c], E, -E) * mask
+                v[:, a] -= e
+                v[:, b] -= e
+                v[:, c] += e
+                v[:, d] += e
 
     # ---- bbox corners, 6 verts per quad ----
     x0 = vx.min(axis=1) - 1.0
@@ -667,7 +727,7 @@ def main():
     prog["uBgMargin"].value = (margin if (args.crackfill and args.wide) else 0)
     tex2d.use(0)
 
-    fdata, udata = build_vertices(quads, margin)
+    fdata, udata = build_vertices(quads, margin, dilate2d=not exact)
     vbo_f = ctx.buffer(fdata.tobytes())
     vbo_u = ctx.buffer(udata.tobytes())
     vao = ctx.vertex_array(prog, [

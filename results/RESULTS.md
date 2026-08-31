@@ -1655,6 +1655,60 @@ and in-game Start/Test/Service were never at risk. Paddle binding still
 needs one full wizard run.
 
 
+## 2026-08-30 (later) - continue-screen vertical line: root-caused + fixed
+
+User report: a vertical black line on crusnusa's PRESS START TO CONTINUE
+map after playing a round. Root-caused end-to-end and fixed at the
+source; the G4 offroadc track-select lines share the same root cause.
+
+**New capability unlocked along the way**: `lua/coinup.lua` - scripted
+COIN1/START1 injection via ioport `field:set_value()`, which WORKS
+headless (`-video none`). The parked transmission_probe's "inputs don't
+land" verdict was a script bug, not an API limit - its snapshots didn't
+land either. Gameplay-only screens are now capturable unattended: 3
+coins ("3 CREDITS TO START") + START at deterministic frames rides
+through transmission/car/track select, races idle to TIME EXPIRED, and
+lands on the continue screen (~frame 8600-9400 of the scripted run).
+This also unlocks future NY-wedge (C3) captures.
+
+The hunt (all headless):
+- Attract sweep (41 snaps): the US map screen never appears in attract -
+  gameplay only.
+- MAME native snapshot of the continue screen: NO line. Ours: line.
+- `results/capture-continue` (new instrumented capture at frame 8798):
+  exact mode = **100.0000% bit-exact** - the FIRST verified 2D scene
+  (fourth verified scene overall).
+- Offline quality mode reproduced the line after all (a blue seam my
+  first darkness-only column scan missed - detector error, not absence);
+  live repro via MIDV_GL_SNAP + coinup showed the same seam blue (the
+  user's black = their entry-transition page content; the seam color is
+  whatever lies under the tile gap).
+- Geometry: the map is drawn as ~128px-wide tiles (x1..129 | x130..256)
+  over a full-screen base quad. Hardware DDA fills endpoint pixels
+  INCLUSIVELY - tile A owns column 129, tile B owns 130, no gap.
+  Quality mode's continuous coverage ends at vertex CENTERS: columns
+  129/130 each get half-covered and the base quad grooves through as a
+  1-hw-px seam (proven with a 2-tile synthetic render: 4,4,2,2,4,4
+  fine-px coverage around the boundary).
+
+Fixes (mame-src 200e986e; renderer.py is source of truth for the python
+side, no shader changes):
+- **dilate_rect / _dilate_rect(+fast)**: strict axis-aligned rectangles
+  get every side expanded to the pixel's OUTER edge (0.5 + 0.001 tie
+  guard) in QUALITY mode only - coverage now equals the hardware DDA
+  span; adjacent tiles partition fine pixels with no gap and no
+  overlap. Exact/DDA mode untouched by construction.
+- **complete_run merge**: the game writes page_control every frame but
+  changes it every TWO on 2D screens, so one logical scene arrives as
+  two runs (base+tiles / text) and skip-to-latest could drop the
+  undrawn background half. Same-pc runs now merge instead.
+
+Verified: exact mode 100.0000% x3 (capture, capture-8000,
+capture-continue); scalar==fast vertex builders bit-identical; offline
+wide+crackfill+CRT seam gone; live overlay re-run clean on the continue
+screen AND mid-race 3D; patch series refreshed.
+
+
 ## 2026-08-30 (later) - TRANSMISSION setting; USA volume row dropped
 
 User design call before wheel testing: replace the shifter-mode
