@@ -5,6 +5,13 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Fixed: colored vertical seam lines on 2D screens** - the Cruis'n USA
+  continue-screen map showed a full-height line after a race (and Off
+  Road's track select showed similar lines). 2D screens are drawn as
+  tiles; the renderer's smooth-coverage mode left a half-pixel groove at
+  tile boundaries that the arcade hardware's rasterizer fills. Tiles now
+  cover exactly the hardware span - the lines are gone at the source on
+  every 2D screen.
 - **TRANSMISSION setting** (user design): a global SETTINGS row picks
   H-PATTERN SHIFTER or SEQUENTIAL explicitly, replacing the old
   "full H-pattern wins" inference (which made paddles unreachable on a
