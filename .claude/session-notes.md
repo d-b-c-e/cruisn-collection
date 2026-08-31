@@ -869,3 +869,20 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   of the Golden-Gate gray-slab pop-in specimen -> real gate.
 - Debugger scripting: logerror-with-args + wpset+g chains reliable;
   gtime-long flaky; -debugger none dead; save unresolved (use RAMDUMP).
+
+
+## 2026-08-30 latest - C2 round 2: draw-distance gate FOUND + healed patcher
+
+- crusnusa render gate = word 0x55 (80000, depth-radius test at 0xCB);
+  LOD switches words 0xBF (8000) / 0xC3 (15000). All earlier null
+  results explained: game startup re-copies ROM over words <0x10040
+  AFTER MIDV_PATCH -> mame-src 784bdfc6 adds per-frame self-healing
+  re-assert (only when word reads verified OLD; runtime overrides
+  respected). Control A/B verified live: 20000 -> world truncates
+  (1989->600 quads/frame). Extension beyond 80k limited by the section
+  streamer's spawn window (round 3 target: the 0x70DD-caller loop).
+- Try-me: patch/game/crusnusa-renderdist-experiment.txt (MIDV_PATCH env;
+  no conflict - crusnusa has no widescreen patch). User to eyeball
+  extended LOD/distance in a real drive before any SETTINGS row.
+- Reminder for wizard/menus testing still pending from earlier today:
+  TRANSMISSION setting + paddle binding + rawjoy re-entry fix.

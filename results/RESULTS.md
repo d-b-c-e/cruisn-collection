@@ -1764,6 +1764,51 @@ node -> wp the node's list-membership write at the pop-in frame -> the
 REAL distance gate, whatever it is.
 
 
+## 2026-08-30 (later still) - C2 round 2: THE GATE FOUND + self-healing patcher
+
+Round 2 blew the case open. Dense RAM-dump time series over a DRIVEN
+race (340 dumps, every 20 frames) showed far->near list flips
+clustering at depth ~76k (= 80000 minus per-object bias) - real
+migration at the magic number - while patching 0x727E stayed
+bit-identical. The contradiction broke on a second copy of the
+constant: **word 0x55, inside the renderer's parameter block
+(vars 0x40-0x61), read by the walker's per-object test at 0xC5-0xCC:**
+
+    depth > 8000  -> geometry = node[0x18]   (MED LOD)
+    depth > 15000 -> geometry = node[0x19]   (LOW LOD, flag bit 2)
+    depth - radius > ($0055)=80000 -> SKIP   (THE DRAW-DISTANCE CULL)
+    then 1/z LUT + screen-bounds culls
+
+**Why every experiment null'd**: the game's own startup code
+(0x4B48-0x4B50) re-copies 0x10000 words from maindata ROM 0xC00040 ->
+RAM 0x40 AFTER machine_reset ran MIDV_PATCH - every patch below
+0x10040 was silently reverted (widescreen patches at 0x11235+ survive,
+which is why they always worked). Caught via a debugger wp chain on
+word 0x55: exactly one write, PC 0x4B4F, boot-era.
+
+**Fix shipped (mame-src 784bdfc6): self-healing MIDV_PATCH** - parsed
+entries are re-asserted once per frame from screen_update, rewriting a
+word only when it reads the verified OLD value again (per-track
+runtime overrides stay respected; "*" entries reset-only). This also
+unblocks future low-word patches (C1 coinage lives down there too).
+
+**Verified with the healed patcher, driven-race A/B (bit-level)**:
+- 0x55 -> 20000 (control): 1989 -> 600 quads/frame, ~11k px differ per
+  snapshot - the world visibly truncates. THE KNOB IS REAL.
+- 0x55 -> 160000 (extend): mostly identical - beyond 80k the course's
+  objects largely don't EXIST yet (spawn-depth stats: p75 71.8k, max
+  136.6k); one +218-quad early-draw event (frame 4200) shows the
+  benefit class. The SECTION STREAMER's spawn window is the next wall
+  (round 3 target).
+- LOD thresholds (words 0xBF/0xC3, CMPI immediates) -> 32000: quad
+  deltas confirm high-detail geometry held farther; per-pixel effect
+  needs eyes at the wheel.
+
+Try-me file: patch/game/crusnusa-renderdist-experiment.txt (NOT
+auto-applied; crusnusa has no widescreen patch so MIDV_PATCH env is
+free). Perf: no measurable slowdown unthrottled at x2 distance.
+
+
 ## 2026-08-30 (later) - TRANSMISSION setting; USA volume row dropped
 
 User design call before wheel testing: replace the shifter-mode

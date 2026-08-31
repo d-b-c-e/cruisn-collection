@@ -1,0 +1,22 @@
+# crusnusa v4.5 RENDER DISTANCE EXPERIMENT (C2) - NOT auto-applied.
+# Try with:  MIDV_PATCH=<this file> python harness/run_rig.py --rom crusnusa
+# (note: MIDV_PATCH env overrides the auto widescreen patch - to combine,
+# concatenate this file onto crusnusa-widescreen.txt... which does not
+# exist: crusnusa needs no widescreen patch, so no conflict in practice.)
+#
+# Requires the self-healing patcher (mame-src, 2026-08-30): the game's
+# own startup re-copies ROM over words < 0x10040, and these all sit in
+# that window - the per-frame re-assert makes them stick.
+#
+# word 0x55: renderer draw-distance gate (objects with depth-radius
+# beyond it are skipped). Stock 80000; doubled here. Verified live: the
+# 20000 control collapses the world (1989 -> 600 quads/frame), and the
+# extension draws early-spawned far objects sooner; the section
+# streamer (spawn window ~<=137k) is the next wall.
+00055 00013880 00027100
+# words 0xBF/0xC3: LOD switch depths (8000 / 15000 -> both 32000):
+# high-detail geometry (node +0xD) is kept much farther out before the
+# medium (+0x18) and low (+0x19) meshes take over. 32000 = max short
+# immediate. Verified to change geometry selection (quad deltas).
+000BF 04E21F40 04E27D00
+000C3 04E23A98 04E27D00
