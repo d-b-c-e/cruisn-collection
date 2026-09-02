@@ -114,6 +114,26 @@
    "l1_cruisin_u.s.a._game_rom_u29.u29": {
     "size": 524288,
     "crc": "cbe52c60"
+   },
+   "a-19993.u38": {
+    "size": 741,
+    "crc": "7e8b7b0d"
+   },
+   "a-19670.u43": {
+    "size": 324,
+    "crc": "acafcc97"
+   },
+   "a-19668.u52": {
+    "size": 343,
+    "crc": "7915134e"
+   },
+   "a-19671.u54": {
+    "size": 733,
+    "crc": "b9cce038"
+   },
+   "a-19673.u111": {
+    "size": 733,
+    "crc": "8552977d"
    }
   }
  },
@@ -232,6 +252,26 @@
    "l1_cruisin_u.s.a._game_rom_u29.u29": {
     "size": 524288,
     "crc": "cbe52c60"
+   },
+   "a-19993.u38": {
+    "size": 741,
+    "crc": "7e8b7b0d"
+   },
+   "a-19670.u43": {
+    "size": 324,
+    "crc": "acafcc97"
+   },
+   "a-19668.u52": {
+    "size": 343,
+    "crc": "7915134e"
+   },
+   "a-19671.u54": {
+    "size": 733,
+    "crc": "b9cce038"
+   },
+   "a-19673.u111": {
+    "size": 733,
+    "crc": "8552977d"
    }
   }
  },
@@ -350,6 +390,26 @@
    "l1_cruisin_u.s.a._game_rom_u29.u29": {
     "size": 524288,
     "crc": "cbe52c60"
+   },
+   "a-19993.u38": {
+    "size": 741,
+    "crc": "7e8b7b0d"
+   },
+   "a-19670.u43": {
+    "size": 324,
+    "crc": "acafcc97"
+   },
+   "a-19668.u52": {
+    "size": 343,
+    "crc": "7915134e"
+   },
+   "a-19671.u54": {
+    "size": 733,
+    "crc": "b9cce038"
+   },
+   "a-19673.u111": {
+    "size": 733,
+    "crc": "8552977d"
    }
   }
  },
@@ -468,6 +528,26 @@
    "l1_cruisin_u.s.a._game_rom_u29.u29": {
     "size": 524288,
     "crc": "cbe52c60"
+   },
+   "a-19993.u38": {
+    "size": 741,
+    "crc": "7e8b7b0d"
+   },
+   "a-19670.u43": {
+    "size": 324,
+    "crc": "acafcc97"
+   },
+   "a-19668.u52": {
+    "size": 343,
+    "crc": "7915134e"
+   },
+   "a-19671.u54": {
+    "size": 733,
+    "crc": "b9cce038"
+   },
+   "a-19673.u111": {
+    "size": 733,
+    "crc": "8552977d"
    }
   }
  },
@@ -586,6 +666,22 @@
    "l1_cruisin_u.s.a._game_rom_u29.u29": {
     "size": 524288,
     "crc": "cbe52c60"
+   },
+   "a-19670.u43": {
+    "size": 324,
+    "crc": "acafcc97"
+   },
+   "a-19668.u52": {
+    "size": 343,
+    "crc": "7915134e"
+   },
+   "a-19671.u54": {
+    "size": 733,
+    "crc": "b9cce038"
+   },
+   "a-19673.u111": {
+    "size": 733,
+    "crc": "8552977d"
    }
   }
  },
@@ -704,6 +800,22 @@
    "l1_cruisin_u.s.a._game_rom_u29.u29": {
     "size": 524288,
     "crc": "cbe52c60"
+   },
+   "a-19670.u43": {
+    "size": 324,
+    "crc": "acafcc97"
+   },
+   "a-19668.u52": {
+    "size": 343,
+    "crc": "7915134e"
+   },
+   "a-19671.u54": {
+    "size": 733,
+    "crc": "b9cce038"
+   },
+   "a-19673.u111": {
+    "size": 733,
+    "crc": "8552977d"
    }
   }
  },
@@ -822,6 +934,22 @@
    "l1_cruisin_u.s.a._game_rom_u29.u29": {
     "size": 524288,
     "crc": "cbe52c60"
+   },
+   "a-19670.u43": {
+    "size": 324,
+    "crc": "acafcc97"
+   },
+   "a-19668.u52": {
+    "size": 343,
+    "crc": "7915134e"
+   },
+   "a-19671.u54": {
+    "size": 733,
+    "crc": "b9cce038"
+   },
+   "a-19673.u111": {
+    "size": 733,
+    "crc": "8552977d"
    }
   }
  },
@@ -2152,6 +2280,26 @@
    "offroad_challenge_5341-15510-12_u25_video_image.u25": {
     "size": 1048576,
     "crc": "78f8e5db"
+   }
+  }
+ },
+ "tms320c31": {
+  "desc": "TMS320C31 DSP boot ROM (Cruis'n USA / World / Off Road)",
+  "parent": true,
+  "roms": {
+   "c31boot.bin": {
+    "size": 16384,
+    "crc": "bddc2763"
+   }
+  }
+ },
+ "tms320c32": {
+  "desc": "TMS320C32 DSP boot ROM (Cruis'n Exotica)",
+  "parent": true,
+  "roms": {
+   "c32boot.bin": {
+    "size": 16384,
+    "crc": "ecf84729"
    }
   }
  },

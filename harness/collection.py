@@ -1599,6 +1599,14 @@ def main():
                 if note:
                     print(note)
                     notice, notice_until = note.upper(), time.time() + 12
+            boot_note = run_rig.boot_rom_note(real_rom)
+            if boot_note:
+                # MAME would abort at boot anyway - say why up front
+                print(boot_note)
+                notice = (GAMES[sel][1] + " " + boot_note).upper()[:110]
+                notice_until = time.time() + 15
+                launch = None
+                audio.blip("nav")
 
             def _do_launch(box=launching, rom=real_rom, card=launch):
                 # background thread: the shell keeps rendering LAUNCHING

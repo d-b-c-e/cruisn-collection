@@ -21,6 +21,7 @@ look. **No ROMs are included** — you supply your own.
    | Cruis'n World | `crusnwld` **plus** `crusnwld24` (rev 2.4 keeps the manual transmission; a merged `crusnwld` set already contains it) |
    | Off Road Challenge | `offroadc` |
    | Cruis'n Exotica | `crusnexo` |
+   | all three V-Unit games / Exotica | `tms320c31` / `tms320c32` | tiny DSP boot-ROM *device* sets from the same MAME romset — easy to miss, required |
 
    Any subset works — missing games just don't appear as playable.
 3. **Launch Collection**. Pick a game, drive. Keyboard out of the box:

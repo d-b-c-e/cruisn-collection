@@ -32,13 +32,19 @@ SETS = {
     "offroadc3": "Off Road Challenge v1.30",
     "offroadc1": "Off Road Challenge v1.10",
     "offroadc0": "Off Road Challenge v1.00",
+    # DSP boot ROMs - MAME *device* sets every player needs beside the
+    # game zips (tiny; part of any full 0.286 romset, easy to miss)
+    "tms320c31": "TMS320C31 DSP boot ROM (Cruis'n USA / World / Off Road)",
+    "tms320c32": "TMS320C32 DSP boot ROM (Cruis'n Exotica)",
     "crusnexo": "Cruis'n Exotica v2.4",
     "crusnexoa": "Cruis'n Exotica v2.0", "crusnexob": "Cruis'n Exotica v1.6",
     "crusnexoc": "Cruis'n Exotica v1.3", "crusnexod": "Cruis'n Exotica v1.0",
 }
-PARENTS = {"crusnusa", "crusnwld", "offroadc", "crusnexo"}
+PARENTS = {"crusnusa", "crusnwld", "offroadc", "crusnexo",
+           "tms320c31", "tms320c32"}
 
-ROW = re.compile(r"^(\S+)\s+(\d+)\s+CRC\(([0-9a-f]{8})\)", re.M)
+# "BAD CRC(...)" rows are BAD_DUMP entries MAME still requires present
+ROW = re.compile(r"^(\S+)\s+(\d+)\s+(?:BAD )?CRC\(([0-9a-f]{8})\)", re.M)
 
 
 def main():
@@ -58,6 +64,15 @@ def main():
             "roms": roms,
         }
         print(f"  {setname}: {len(roms)} roms")
+    # device ROMs (the DSP boot files) are listed under every game that
+    # uses the device; they live in their own zips, so strip them from the
+    # game sets or a normal split game zip reads as "1 file missing"
+    devnames = {n for d in ("tms320c31", "tms320c32") if d in manifest
+                for n in manifest[d]["roms"]}
+    for setname, info in manifest.items():
+        if setname not in ("tms320c31", "tms320c32"):
+            for n in devnames:
+                info["roms"].pop(n, None)
     with open(OUT, "w") as f:
         json.dump(manifest, f, indent=1)
     print(f"wrote {OUT}")

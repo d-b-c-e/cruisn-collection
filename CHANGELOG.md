@@ -14,7 +14,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   when the 2.4 files are absent and says so on screen; any failed launch
   shows its reason on the menu (emulator output kept in `rig\launch.log`).
   World 2.4 ships with a calibrated NVRAM fixture (no first-boot
-  calibration screen). **Detect wheel (FFB)** in the setup GUI runs the
+  calibration screen). The DSP boot-ROM device sets (`tms320c31` /
+  `tms320c32`) are now a setup-window row, an identifiable/installable
+  zip, a ROM-table entry, and a pre-launch check with a clear notice
+  (a release-layout test aborted with "c31boot.bin NOT FOUND"). **Detect wheel (FFB)** in the setup GUI runs the
   emulator for about thirty seconds, reads the force-feedback plugin's own device
   list and writes your wheel's GUID into `FFBPlugin.ini` (the plugin is
   silent until that line is set - previously a manual log-file hunt).

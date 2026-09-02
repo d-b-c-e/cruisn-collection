@@ -14,7 +14,8 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 - Windows 10/11, 64-bit. A GPU with **OpenGL 4.3** (GeForce 600+ / Radeon
   HD 7000+ / Intel HD 4000+ or newer; integrated graphics are fine).
 - Your own **MAME 0.286 ROM sets**: `crusnusa`, `crusnwld`, `offroadc`,
-  `crusnexo` — plus **`crusnwld24`** for Cruis'n World (see the ROM table).
+  `crusnexo` — plus **`crusnwld24`** for Cruis'n World and the two DSP boot
+  ROM sets **`tms320c31`** / **`tms320c32`** (see the ROM table).
 - Optional: a wheel (any DirectInput wheel; force feedback via the bundled
   FFB Arcade Plugin), a shifter or paddles, a gamepad.
 
@@ -40,6 +41,7 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 | Cruis'n World | `crusnwld` + `crusnwld24` | The collection boots **rev 2.4** (`crusnwld24`), the last revision with a manual transmission. It is a MAME *clone*: a **merged** `crusnwld.zip` already contains its files; with **split** sets add `crusnwld24.zip` beside `crusnwld.zip`. Without it the launcher falls back to rev 2.5 (automatic only) and says so on screen. |
 | Off Road Challenge | `offroadc` | v1.63 |
 | Cruis'n Exotica | `crusnexo` | v2.4. Upstream MAME emulation is imperfect here: car-select stats text is illegible; occasional sprite glitches. |
+| **DSP boot ROMs** | `tms320c31` (USA / World / Off Road) and `tms320c32` (Exotica) | MAME *device* sets — two tiny zips (one 16 KB file each) that every full MAME 0.286 romset includes. Easy to overlook when you copy only the game zips; without them the game aborts with "c31boot.bin NOT FOUND". The setup window has a row for them. |
 
 ### In the launcher
 
@@ -123,6 +125,8 @@ and so on).
   launcher.
 - **Wheel steers but never pushes back** — force feedback isn't configured
   yet: see *Force feedback* above.
+- **"needs the DSP boot ROM c31boot.bin"** — copy `tms320c31.zip` (and
+  `tms320c32.zip` for Exotica) from your MAME romset into `roms\`.
 - **Cruis'n World says "2.4 ROMs not found"** — add `crusnwld24.zip` beside
   `crusnwld.zip` (or use a merged set); see the ROM table.
 - **Reporting a bug**: `CruisnSetup.exe → Save support bundle` writes one

@@ -351,6 +351,47 @@ def world24_available(rompath=None):
                for n in ("crusnwld24.7z", "crusnwld.7z"))
 
 
+# The V-Unit games need the TMS320C31 boot ROM (c31boot.bin, MAME device
+# set tms320c31) and Exotica the TMS320C32 one (c32boot.bin, tms320c32):
+# tiny BAD_DUMP files MAME insists on, shipped as separate device zips in
+# any full romset - and the first thing a tester with just the four game
+# zips trips over ("c31boot.bin NOT FOUND ... cannot be run").
+BOOT_ROM = {"crusnusa": ("tms320c31", "c31boot.bin"),
+            "crusnwld": ("tms320c31", "c31boot.bin"),
+            "offroadc": ("tms320c31", "c31boot.bin"),
+            "crusnexo": ("tms320c32", "c32boot.bin")}
+
+
+def boot_rom_available(rom, rompath=None):
+    """True when the game's DSP boot ROM exists by name in its device zip
+    or inside the game's own zips (MAME searches both)."""
+    import zipfile
+    rompath = rompath or ROMPATH
+    dev, fname = BOOT_ROM[base_rom(rom)]
+    for z in (dev + ".zip", base_rom(rom) + ".zip", rom + ".zip"):
+        path = os.path.join(rompath, z)
+        if not os.path.isfile(path):
+            continue
+        try:
+            with zipfile.ZipFile(path) as zf:
+                if any(i.filename.rsplit("/", 1)[-1].lower() == fname
+                       for i in zf.infolist()):
+                    return True
+        except (zipfile.BadZipFile, OSError):
+            continue
+    return any(os.path.isfile(os.path.join(rompath, z))
+               for z in (dev + ".7z", base_rom(rom) + ".7z"))
+
+
+def boot_rom_note(rom):
+    """User-facing notice when the boot ROM is missing, else None."""
+    if boot_rom_available(rom):
+        return None
+    dev, fname = BOOT_ROM[base_rom(rom)]
+    return (f"needs the DSP boot ROM {fname} - add {dev}.zip (MAME device "
+            "set) to your ROM folder")
+
+
 def resolve_world_rom(preferred):
     """The World set to boot: the preferred revision when its ROMs exist,
     else the parent (rev 2.5). Returns (rom, note-or-None)."""

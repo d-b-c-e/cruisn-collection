@@ -187,6 +187,15 @@ def env_status():
     ok = os.path.isfile(run_rig.VUNIT)
     rows.append(("emulator (vunit.exe)", ok,
                  run_rig.VUNIT if ok else "not found"))
+    c31 = run_rig.boot_rom_available("crusnusa")
+    c32 = run_rig.boot_rom_available("crusnexo")
+    rows.append(("DSP boot ROMs", c31 and c32,
+                 "tms320c31 + tms320c32 present" if (c31 and c32) else
+                 "missing: " + ", ".join(
+                     n for n, okk in (("tms320c31.zip (USA/World/Off Road)",
+                                       c31),
+                                      ("tms320c32.zip (Exotica)", c32))
+                     if not okk)))
     vdir = os.path.dirname(run_rig.VUNIT)
     missing = [f for f in FFB_FILES
                if not os.path.isfile(os.path.join(vdir, f))]
@@ -230,8 +239,8 @@ def run_gui():
         rows[rom] = (dot, det)
         r += 1
     envrows = []
-    ENV_LABELS = ["emulator (vunit.exe)", "force feedback plugin",
-                  "force feedback wheel"]
+    ENV_LABELS = ["emulator (vunit.exe)", "DSP boot ROMs",
+                  "force feedback plugin", "force feedback wheel"]
     for label in ENV_LABELS:
         dot = tk.Label(frame, text="?", width=2, bg=BG, font=("Consolas", 13))
         dot.grid(row=r, column=0, sticky="w")
@@ -280,6 +289,7 @@ def run_gui():
             v = identify(p, manifest)
             say(verdict_text(v, p))
             if v.get("set") and (v["parent"] or v["set"] == "crusnwld24"):
+                # (device sets tms320c31/tms320c32 are parents too)
                 if v["missing"]:
                     if not messagebox.askyesno(
                             "Incomplete set",
@@ -403,7 +413,8 @@ def run_gui():
               **style).pack(side="left", padx=6)
 
     say("Add your own ROM zips - any filename works, they are identified "
-        "by their contents.")
+        "by their contents. Include the tiny tms320c31.zip / tms320c32.zip "
+        "DSP boot ROM sets from your MAME romset.")
     refresh()
     root.mainloop()
 
