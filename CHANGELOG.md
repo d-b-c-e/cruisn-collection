@@ -18,6 +18,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - **FFB diagnostics** (setup window): logs every force value the game
   sends (`rig\ffb_trace.csv`) alongside the plugin's own `FFBlog.txt`;
   both ride in the support bundle, plus the last `launch.log`.
+- **Painless updates**: unzip a new version over the old folder and keep
+  everything - the detected wheel GUID is remembered in the rig settings
+  and restored into a freshly shipped `FFBPlugin.ini` at launch. Updating
+  into a new folder: `CruisnSetup.exe -> Import previous version...` copies
+  ROMs, bindings, settings, NVRAM (World calibration) and the wheel over.
 
 ## v0.3.0 — 2026-09-02 (alpha test build)
 

@@ -32,6 +32,10 @@ look. **No ROMs are included** — you supply your own.
    (press-to-bind; any wheel, pedals, shifter or paddles). Force feedback
    needs one extra line in `FFBPlugin.ini` — see the guide.
 
+**Updating**: unzip the new version over the old folder (everything you
+set up is kept), or into a new folder and use *Import previous version* in
+the setup window.
+
 Everything else — the in-game menu, per-game settings, force feedback,
 troubleshooting, and how to report a bug with a support bundle — is in
 **[docs/INSTALL.md](docs/INSTALL.md)**. What changed per version:

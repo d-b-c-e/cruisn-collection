@@ -338,8 +338,24 @@ def run_gui():
 
         threading.Thread(target=work, daemon=True).start()
 
+    def import_previous():
+        src = filedialog.askdirectory(
+            title="Pick your previous Cruis'n Collection folder")
+        if not src:
+            return
+        if os.path.normcase(os.path.abspath(src)) ==                 os.path.normcase(os.path.abspath(run_rig.POC)):
+            say("that's this folder - pick the OLD installation")
+            return
+        try:
+            run_rig.import_previous_install(src, progress=say)
+        except Exception as e:
+            say(f"import failed: {e}")
+        refresh()
+
     tk.Button(btns, text="Add ROM file(s)...", command=add_roms,
               **style).pack(side="left", padx=6)
+    tk.Button(btns, text="Import previous version...",
+              command=import_previous, **style).pack(side="left", padx=6)
     tk.Button(btns, text="Open ROMs folder",
               command=lambda: os.startfile(run_rig.ROMPATH)
               if os.path.isdir(run_rig.ROMPATH)
@@ -433,7 +449,9 @@ def run_gui():
 
     say("Add your own ROM zips - any filename works, they are identified "
         "by their contents. Include the tiny tms320c31.zip / tms320c32.zip "
-        "DSP boot ROM sets from your MAME romset.")
+        "DSP boot ROM sets from your MAME romset. Updating from an older "
+        "version in another folder? 'Import previous version' brings your "
+        "ROMs, bindings, settings and wheel over.")
     refresh()
     root.mainloop()
 

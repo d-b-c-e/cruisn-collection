@@ -515,8 +515,80 @@ def ffb_device_guid(mame_dir=None):
     return _ffb_ini_get(mame_dir or os.path.dirname(VUNIT), "DeviceGUID") or ""
 
 
+def _collection_ini_set(section, key, value):
+    import configparser
+    path = os.path.join(POC, "rig", "collection.ini")
+    cp = configparser.ConfigParser(interpolation=None)
+    cp.read(path)
+    if not cp.has_section(section):
+        cp.add_section(section)
+    cp.set(section, key, value)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        cp.write(f)
+
+
+def _collection_ini_get(section, key, default=""):
+    import configparser
+    cp = configparser.ConfigParser(interpolation=None)
+    cp.read(os.path.join(POC, "rig", "collection.ini"))
+    return cp.get(section, key, fallback=default).strip()
+
+
 def set_ffb_device_guid(guid, mame_dir=None):
+    """Write DeviceGUID= into the plugin ini AND remember it in
+    rig/collection.ini [ffb] - the ini beside vunit.exe is replaced by every
+    update (unzip-over-the-top), the rig folder is not."""
+    _collection_ini_set("ffb", "device_guid", guid)
     return _ffb_ini_set(mame_dir or os.path.dirname(VUNIT), "DeviceGUID", guid)
+
+
+def ensure_ffb_guid(mame_dir=None):
+    """Update-proofing, run at every launch: a freshly unzipped
+    FFBPlugin.ini has a blank DeviceGUID; if the rig remembers one, put it
+    back so force feedback survives version updates untouched."""
+    mame_dir = mame_dir or os.path.dirname(VUNIT)
+    saved = _collection_ini_get("ffb", "device_guid")
+    if saved and not (_ffb_ini_get(mame_dir, "DeviceGUID") or ""):
+        _ffb_ini_set(mame_dir, "DeviceGUID", saved)
+        print(f"FFB: restored wheel GUID {saved[:8]}... into FFBPlugin.ini")
+
+
+def import_previous_install(src, progress=print):
+    """Bring ROMs, settings, bindings, NVRAM (World calibration!) and the
+    wheel GUID over from an older CruisnCollection folder. Never overwrites
+    what already exists here; returns a summary string."""
+    import shutil
+    done = []
+    src_roms = os.path.join(src, "roms")
+    if os.path.isdir(src_roms):
+        os.makedirs(ROMPATH, exist_ok=True)
+        n = 0
+        for f in os.listdir(src_roms):
+            if f.lower().endswith((".zip", ".7z")) and                     not os.path.exists(os.path.join(ROMPATH, f)):
+                shutil.copy2(os.path.join(src_roms, f),
+                             os.path.join(ROMPATH, f))
+                n += 1
+        done.append(f"{n} ROM file(s)")
+    rig_src, rig_dst = os.path.join(src, "rig"), os.path.join(POC, "rig")
+    for sub in ("nvram", "cfg", "ctrlr"):
+        s_dir = os.path.join(rig_src, sub)
+        if os.path.isdir(s_dir):
+            shutil.copytree(s_dir, os.path.join(rig_dst, sub),
+                            dirs_exist_ok=True)
+            done.append(sub)
+    cfg = os.path.join(rig_src, "collection.ini")
+    if os.path.isfile(cfg) and not os.path.isfile(
+            os.path.join(rig_dst, "collection.ini")):
+        os.makedirs(rig_dst, exist_ok=True)
+        shutil.copy2(cfg, os.path.join(rig_dst, "collection.ini"))
+        done.append("settings + wheel bindings")
+    old_guid = _ffb_ini_get(src, "DeviceGUID") or         _collection_ini_get("ffb", "device_guid")
+    if old_guid:
+        set_ffb_device_guid(old_guid)
+        done.append("force-feedback wheel")
+    progress("imported: " + (", ".join(done) if done else "nothing found"))
+    return done
 
 
 def steer_device_name():
@@ -1096,6 +1168,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # FFB overall strength: patch the plugin ini beside the exe before launch
     # (the plugin reads it at load). None = leave whatever's there untouched.
     apply_ffb_strength(os.path.dirname(mame), ffb)
+    ensure_ffb_guid(os.path.dirname(mame))
     # Game-code widescreen: when the presentation is full 16:9 and a per-game
     # widescreen patch exists (patch/game/<rom>-widescreen.txt), apply it via
     # MIDV_PATCH (memory-only at reset; ROM files untouched). The game then

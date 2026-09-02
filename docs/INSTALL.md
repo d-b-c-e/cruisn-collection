@@ -43,6 +43,18 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 | Cruis'n Exotica | `crusnexo` | v2.4. Upstream MAME emulation is imperfect here: car-select stats text is illegible; occasional sprite glitches. |
 | **DSP boot ROMs** | `tms320c31` (USA / World / Off Road) and `tms320c32` (Exotica) | MAME *device* sets — two tiny zips (one 16 KB file each) that every full MAME 0.286 romset includes. Easy to overlook when you copy only the game zips; without them the game aborts with "c31boot.bin NOT FOUND". The setup window has a row for them. |
 
+### Updating to a new version
+
+Either works, no manual file juggling:
+
+- **Unzip the new version over your existing folder** (close the launcher
+  first, say yes to overwriting). Your ROMs, wheel bindings, settings,
+  World calibration and force-feedback wheel are all kept — the update only
+  replaces the program files.
+- **Or unzip into a new folder** and use `CruisnSetup.exe → Import previous
+  version…`, pointing it at the old folder. Same result; delete the old
+  folder afterwards.
+
 ### In the launcher
 
 - **Cards row**: ← → (or A/D, or steer the wheel) picks a game; **Enter**
