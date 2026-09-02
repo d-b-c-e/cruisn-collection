@@ -88,10 +88,11 @@ The zip includes the **FFB Arcade Plugin** (GPL-3.0) pre-configured for
 these games. It needs to know *which* device is your wheel — the plugin
 does nothing until `DeviceGUID=` in `FFBPlugin.ini` names it.
 
-**Easy way:** `CruisnSetup.exe → Detect wheel (force feedback)`. A game
-window opens for about thirty seconds while the plugin lists every
-connected device (it enumerates only once the game is running); the setup then picks the device you bound as steering in CONTROLS
-SETUP (or asks, if it can't tell) and writes the line for you.
+**Easy way:** `CruisnSetup.exe → Detect wheel (FFB)`, with the wheel base
+powered on. A game window opens for about thirty seconds while the plugin
+lists every connected device (it enumerates only once the game is
+running); the setup then picks the device you bound as steering in
+CONTROLS SETUP (or asks, if it can't tell) and writes the line for you.
 
 **By hand:** set `Logging=1` in `FFBPlugin.ini` (beside `vunit.exe`), play
 once, open `FFBlog.txt` — each device appears as `Joystick: n / Name: … /
