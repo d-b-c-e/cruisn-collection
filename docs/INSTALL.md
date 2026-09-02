@@ -67,6 +67,13 @@ want for coin, start, views, radio, then your shifter (H-pattern gears 1–4)
 cancels. Wheels with more than 32 buttons are fine. After the wizard the
 wheel and gas pedal also navigate the launcher menus.
 
+**Cruis'n World asks you to calibrate once.** On its first boot with your
+hardware (and again if your wheel/pedals change) World shows CALIBRATE
+CONTROLS: take your hands and feet off the controls, press **F2** (TEST),
+then follow the prompts — turn the wheel fully each way, press each pedal
+fully, F2 to advance. It's stored in the game's own settings memory and
+never asked again. USA and Off Road don't do this.
+
 Pick **TRANSMISSION** first: *H-PATTERN SHIFTER* for a real H-pattern
 shifter, *SEQUENTIAL* for paddles or a sequential stick. Both sets of
 bindings are remembered, so switching later needs no rebinding. (Cruis'n
@@ -127,6 +134,9 @@ and so on).
   yet: see *Force feedback* above.
 - **"needs the DSP boot ROM c31boot.bin"** — copy `tms320c31.zip` (and
   `tms320c32.zip` for Exotica) from your MAME romset into `roms\`.
+- **Cruis'n World shows CALIBRATE CONTROLS** — expected once per rig:
+  press F2 and follow the prompts (see *Controls*). Keyboard-only works
+  too (arrows for the wheel, the gas/brake keys for the pedals).
 - **Cruis'n World says "2.4 ROMs not found"** — add `crusnwld24.zip` beside
   `crusnwld.zip` (or use a merged set); see the ROM table.
 - **Reporting a bug**: `CruisnSetup.exe → Save support bundle` writes one

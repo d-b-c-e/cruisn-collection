@@ -26,6 +26,8 @@ look. **No ROMs are included** — you supply your own.
    Any subset works — missing games just don't appear as playable.
 3. **Launch Collection**. Pick a game, drive. Keyboard out of the box:
    **5** = coin, **1** = start, arrows steer, **Esc** = in-game menu.
+   Cruis'n World asks you to calibrate once on first boot (press **F2**,
+   follow the prompts).
 4. Have a wheel? **SETTINGS → CONTROLS SETUP** binds it in about a minute
    (press-to-bind; any wheel, pedals, shifter or paddles). Force feedback
    needs one extra line in `FFBPlugin.ini` — see the guide.

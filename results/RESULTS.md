@@ -1928,3 +1928,19 @@ Walked the release/setup path as a stranger would and fixed what broke.
    player-first; INSTALL.md rewritten (requirements incl. OpenGL 4.3, ROM
    table, launcher/wizard/in-game keys, FFB, troubleshooting, bug-report
    recipe); v0.3.0 release notes drafted.
+
+8. **World 2.4 still shows CALIBRATE CONTROLS in a release-layout boot**,
+   fixture or not (tested with and without the rig's wheel bindings; the
+   base was powered off): the game validates its stored ADC calibration
+   against what it reads at boot, so ANY hardware change - including a
+   tester's different wheel - re-demands the one-time calibration. The
+   fixture only spares the rig itself. Not fixable from outside without
+   forging ADC ranges; documented instead (INSTALL Controls +
+   troubleshooting, release notes "expected on first boot") and the
+   launcher's LAUNCHING screen for World now says "press F2 and follow
+   the prompts". USA / Off Road do not gate on calibration.
+9. **DSP boot ROMs** (see the commit): a release-layout launch aborted on
+   `c31boot.bin NOT FOUND` - the tms320c31/tms320c32 device zips are now
+   identified, installable, a setup-window row, a ROM-table entry and a
+   pre-launch notice. Re-verified: World 2.4 boots from the assembled
+   release folder (fresh rig dir, no dev ctrlr) at 100% and exits clean.

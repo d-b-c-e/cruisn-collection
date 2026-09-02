@@ -261,6 +261,13 @@ class Shell:
         pulse = 0.65 + 0.35 * math.sin(t * 3.0)
         self.center_text(name, self.h // 14, self.h * 0.50,
                          (GOLD[0], GOLD[1], GOLD[2], pulse))
+        if "WORLD" in name.upper():
+            # first boot on new hardware: the game demands a one-time
+            # wheel/pedal calibration (its CMOS stores the ADC ranges)
+            self.center_text("IF THE GAME ASKS TO CALIBRATE CONTROLS:  "
+                             "PRESS F2 AND FOLLOW THE PROMPTS  (ONE TIME)",
+                             self.h // 40, self.h * 0.64,
+                             (0.75, 0.75, 0.8, 1.0))
 
     def draw_wizard_begin(self, t):
         self.ctx.enable(moderngl.BLEND)
