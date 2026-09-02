@@ -13,8 +13,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   "does not look like this game"). The launcher falls back to World 2.5
   when the 2.4 files are absent and says so on screen; any failed launch
   shows its reason on the menu (emulator output kept in `rig\launch.log`).
-  World 2.4 ships with a calibrated NVRAM fixture (no first-boot
-  calibration screen). The DSP boot-ROM device sets (`tms320c31` /
+  World 2.4 ships with the rig's calibrated NVRAM fixture (other
+  hardware still gets World's one-time CALIBRATE CONTROLS prompt - press
+  F2 and follow it; now explained on the launching screen). The DSP boot-ROM device sets (`tms320c31` /
   `tms320c32`) are now a setup-window row, an identifiable/installable
   zip, a ROM-table entry, and a pre-launch check with a clear notice
   (a release-layout test aborted with "c31boot.bin NOT FOUND"). **Detect wheel (FFB)** in the setup GUI runs the
