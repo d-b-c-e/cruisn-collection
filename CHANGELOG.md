@@ -3,7 +3,7 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased
+## v0.3.0 — 2026-09-02 (alpha test build)
 
 - **Onboarding pass for external testers**: the setup GUI now identifies
   ROM zips by content hash as MAME does (merged sets with renamed or
