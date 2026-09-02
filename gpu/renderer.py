@@ -458,7 +458,7 @@ def load_scene(cap, history=True):
     return quads, int(pages[s]), meta, nhist
 
 
-def _dilate_rect(vx, vy, ix, iy):
+def _dilate_rect(vx, vy, ix, iy, us=None, vs=None):
     """Half-pixel outward dilation for one strict axis-aligned rectangle.
 
     Quality mode's continuous coverage ends at the vertex CENTERS, so two
@@ -469,21 +469,47 @@ def _dilate_rect(vx, vy, ix, iy):
     side outward to the pixel's outer edge (0.5, +0.001 guard against
     coincident-edge tie rules) reproduces that span exactly: adjacent
     tiles then partition the fine pixels with no gap and no overlap.
-    Exact/DDA mode never calls this (bit-exactness by construction)."""
+    Exact/DDA mode never calls this (bit-exactness by construction).
+
+    us/vs (textured quads): the texture params are extrapolated along
+    each axis by the same amount, so du/dx and dv/dy - and therefore
+    which texel every fine pixel samples - stay exactly the hardware's.
+    Moving the vertices alone squeezed each tile's texture inward by up
+    to half a texel and DOUBLED the quality-vs-hardware pixel mismatch
+    on the continue map (15.3% -> 30.6%, review 2026-08-30)."""
     E = 0.501
     if (ix[0] == ix[1] and ix[2] == ix[3]
             and iy[1] == iy[2] and iy[3] == iy[0]):
         sides_x = ((0, 1), (2, 3))
         sides_y = ((1, 2), (3, 0))
+        pairs_x = ((0, 3), (1, 2))   # same-y partners across x
+        pairs_y = ((1, 0), (2, 3))   # same-x partners across y
     elif (iy[0] == iy[1] and iy[2] == iy[3]
             and ix[1] == ix[2] and ix[3] == ix[0]):
         sides_x = ((3, 0), (1, 2))
         sides_y = ((0, 1), (2, 3))
+        pairs_x = ((0, 1), (3, 2))
+        pairs_y = ((0, 3), (1, 2))
     else:
         return
-    for (a, b), (c, d), v, s in ((sides_x[0], sides_x[1], vx, ix),
-                                 (sides_y[0], sides_y[1], vy, iy)):
+    for (a, b), (c, d), v, s, pairs in (
+            (sides_x[0], sides_x[1], vx, ix, pairs_x),
+            (sides_y[0], sides_y[1], vy, iy, pairs_y)):
         e = E if s[a] <= s[c] else -E
+        if us is not None:
+            # float32 throughout, multiply-by-reciprocal - the exact
+            # formulation of build_vertices_fast, so both builders stay
+            # bit-identical (u/v sit near 2^23 where float64 rounding
+            # differs by 0.5)
+            e32 = F(e)
+            for p, q in pairs:        # p moves by -e, q by +e
+                span = F(F(v[q]) - F(v[p]))
+                if span != 0.0:
+                    inv = F(F(1.0) / span)
+                    for arr in (us, vs):
+                        g = F(F(F(arr[q]) - F(arr[p])) * inv)
+                        arr[p] = F(F(arr[p]) - F(e32 * g))
+                        arr[q] = F(F(arr[q]) + F(e32 * g))
         v[a] -= e
         v[b] -= e
         v[c] += e
@@ -546,7 +572,11 @@ def build_vertices(quads, xoff, dilate2d=False):
         make_vertices_inclusive(vx, vy)
         if dilate2d:
             _iy = [int(np.int16(dma[3 + i * 2])) for i in range(4)]
-            _dilate_rect(vx, vy, _wx, _iy)
+            if textured:
+                us, vs = list(us), list(vs)
+                _dilate_rect(vx, vy, _wx, _iy, us, vs)
+            else:
+                _dilate_rect(vx, vy, _wx, _iy)
 
         x0, x1 = min(vx) - 1.0, max(vx) + 1.0
         y0, y1 = min(vy) - 1.0, max(vy) + 1.0
@@ -634,13 +664,26 @@ def build_vertices_fast(quads, xoff, dilate2d=False):
         pb = ((iy[:, 0] == iy[:, 1]) & (iy[:, 2] == iy[:, 3])
               & (ix[:, 1] == ix[:, 2]) & (ix[:, 3] == ix[:, 0]))
         pb &= ~pa   # degenerate quads match both; scalar elif picks A
-        for mask, sx, sy in ((pa, ((0, 1), (2, 3)), ((1, 2), (3, 0))),
-                             (pb, ((3, 0), (1, 2)), ((0, 1), (2, 3)))):
+        for mask, sx, sy, px_, py_ in (
+                (pa, ((0, 1), (2, 3)), ((1, 2), (3, 0)),
+                 ((0, 3), (1, 2)), ((1, 0), (2, 3))),
+                (pb, ((3, 0), (1, 2)), ((0, 1), (2, 3)),
+                 ((0, 1), (3, 2)), ((0, 3), (1, 2)))):
             if not mask.any():
                 continue
-            for (a, b), (c, d), v, s in ((sx[0], sx[1], vx, ix),
-                                         (sy[0], sy[1], vy, iy)):
+            for (a, b), (c, d), v, s, pairs in ((sx[0], sx[1], vx, ix, px_),
+                                                (sy[0], sy[1], vy, iy, py_)):
                 e = np.where(s[:, a] <= s[:, c], E, -E) * mask
+                # texture params ride along (see _dilate_rect); untextured
+                # quads carry zero us/vs so this is a no-op for them
+                for p, q in pairs:
+                    span = v[:, q] - v[:, p]
+                    ok = span != 0
+                    inv = np.where(ok, 1.0 / np.where(ok, span, 1.0), 0.0)
+                    for arr in (us, vs):
+                        g = (arr[:, q] - arr[:, p]) * inv
+                        arr[:, p] -= e * g
+                        arr[:, q] += e * g
                 v[:, a] -= e
                 v[:, b] -= e
                 v[:, c] += e

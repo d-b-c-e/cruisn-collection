@@ -1809,6 +1809,44 @@ auto-applied; crusnusa has no widescreen patch so MIDV_PATCH env is
 free). Perf: no measurable slowdown unthrottled at x2 distance.
 
 
+## 2026-08-30 (review) - second-set-of-eyes pass over the day's work
+
+Cold re-read of all nine commits, backed by measurements. Findings:
+
+1. **Tile dilation was stretching textures (real regression, fixed).**
+   Moving the rect vertices out by 0.501 px without touching the vertex
+   UVs shrank du/dx, so every textured 2D tile sampled its texture up
+   to half a texel inward at the edges. New metric (quality S=4 index
+   buffer vs the bit-exact S=1 buffer upsampled 4x nearest, on
+   capture-continue): dilation OFF 15.29% of fine pixels differ,
+   dilation ON (as shipped) **30.56%** - doubled. Fix: extrapolate the
+   texture params along each axis by the same amount (scalar,
+   vectorized and C++ builders): dilation ON now **14.04%** - closer to
+   hardware than before the seam fix, seams included. Exact mode still
+   100.0000% x3; scalar==fast bit-identical (scalar now mirrors the
+   fast path's float32 multiply-by-reciprocal - u/v sit near 2^23 where
+   float64 differed by 0.5).
+2. **Snapshot writer heap overflow (latent, exposed today).** The
+   MIDV_GL_SNAP path read the backbuffer into a tight cw*ch*3 buffer
+   with GL_PACK_ALIGNMENT left at 4: any window width with cw*3 % 4
+   != 0 pads rows and overruns the vector -> crash at the first snap.
+   Every earlier run happened to open a 2352-px window (aligned); with
+   the user back at the desk the window opened at 1535 and every
+   live run died at ~8 s with 0 snaps. Bisected via a 2x2 of
+   overlay x coin-up (all survive) then env (only MIDV_GL_SNAP
+   crashes). Fix: PixelStorei(PACK_ALIGNMENT, 1). Live run now exits 0
+   with 70 snaps at 1535 wide.
+3. **complete_run merge was unbounded** - a stalled GL thread would
+   accumulate every same-pc scene into one growing draw. Capped at
+   16384 quads; past that it falls back to skip-to-latest.
+4. **coinup.lua exited at frame 1 without SNAP_FRAMES** (last=0). Now
+   never self-exits when unset (-seconds_to_run bounds the run).
+5. Verified-clean on re-read: rawjoy dispatcher, TRANSMISSION plumbing
+   (row indices/hints/handlers), merge-save semantics, run_rig
+   arbitration, self-healing patcher (midvplus_state chains to the
+   base reset, so Off Road is covered).
+
+
 ## 2026-08-30 (later) - TRANSMISSION setting; USA volume row dropped
 
 User design call before wheel testing: replace the shifter-mode

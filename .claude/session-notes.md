@@ -886,3 +886,18 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   extended LOD/distance in a real drive before any SETTINGS row.
 - Reminder for wizard/menus testing still pending from earlier today:
   TRANSMISSION setting + paddle binding + rawjoy re-entry fix.
+
+
+## 2026-08-30 review pass (Fable 5.1 second set of eyes)
+
+- Dilation texture drift found + fixed (UV extrapolation in all 3
+  builders); new fidelity metric: quality S4 vs exact-upsampled on
+  capture-continue: OFF 15.29%, shipped 30.56%, fixed 14.04%.
+- MIDV_GL_SNAP heap overrun (PACK_ALIGNMENT 4 vs tight buffer) - latent,
+  exposed by a 1535-wide window once the user was back at the desk; fixed
+  with PixelStorei(PACK_ALIGNMENT,1). Lesson: a 3-4 s live crash with
+  0 snaps = snapshot path; bisect env before code.
+- complete_run merge capped at 16384 quads; coinup.lua no longer exits
+  at frame 1 without SNAP_FRAMES.
+- Debugger note: logf() output is BUFFERED - "no run: lines" after a
+  crash means nothing.

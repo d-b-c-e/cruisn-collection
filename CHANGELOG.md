@@ -11,7 +11,12 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   tiles; the renderer's smooth-coverage mode left a half-pixel groove at
   tile boundaries that the arcade hardware's rasterizer fills. Tiles now
   cover exactly the hardware span - the lines are gone at the source on
-  every 2D screen.
+  every 2D screen - and their textures stay pixel-aligned with the
+  arcade (the review measured 2D screens now closer to hardware than
+  before the fix).
+- **Fixed: crash at the first `MIDV_GL_SNAP` snapshot on most window
+  widths** (a buffer overrun in the backbuffer capture; only 4-byte-
+  aligned widths ever survived).
 - **TRANSMISSION setting** (user design): a global SETTINGS row picks
   H-PATTERN SHIFTER or SEQUENTIAL explicitly, replacing the old
   "full H-pattern wins" inference (which made paddles unreachable on a

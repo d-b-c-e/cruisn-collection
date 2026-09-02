@@ -80,7 +80,10 @@ emu.register_frame_done(function()
     if snaps[count] then
         manager.machine.video:snapshot()
     end
-    if count >= last then
+    -- no SNAP_FRAMES: never self-exit (the harness's -seconds_to_run
+    -- bounds the run) - snap.lua's default schedule would exit at frame
+    -- 2400, which is before any coined-up screen exists
+    if last > 0 and count >= last then
         manager.machine:exit()
     end
 end)
