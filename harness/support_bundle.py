@@ -109,6 +109,9 @@ def collect(rom="crusnusa", progress=print):
     add_file("midv_gl.log", os.path.join(vdir, "midv_gl.log"))
     add_file("collection.ini",
              os.path.join(run_rig.POC, "rig", "collection.ini"))
+    # FFB diagnostics (CruisnSetup "FFB diagnostics: ON") + last launch
+    add_file("ffb_trace.csv", os.path.join(run_rig.POC, "rig", "ffb_trace.csv"))
+    add_file("launch.log", os.path.join(run_rig.POC, "rig", "launch.log"))
     return files
 
 

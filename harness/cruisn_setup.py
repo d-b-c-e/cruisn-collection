@@ -206,6 +206,10 @@ def env_status():
         rows.append(("force feedback wheel", bool(guid),
                      f"configured (GUID {guid[:8]}...)" if guid
                      else "not set - use Detect wheel"))
+    diag = run_rig.ffb_diag_enabled()
+    rows.append(("FFB diagnostics", True,
+                 "ON - every drive logs rig\ffb_trace.csv + FFBlog.txt "
+                 "(turn off when done)" if diag else "off"))
     return rows
 
 
@@ -240,7 +244,8 @@ def run_gui():
         r += 1
     envrows = []
     ENV_LABELS = ["emulator (vunit.exe)", "DSP boot ROMs",
-                  "force feedback plugin", "force feedback wheel"]
+                  "force feedback plugin", "force feedback wheel",
+                  "FFB diagnostics"]
     for label in ENV_LABELS:
         dot = tk.Label(frame, text="?", width=2, bg=BG, font=("Consolas", 13))
         dot.grid(row=r, column=0, sticky="w")
@@ -405,7 +410,21 @@ def run_gui():
 
         threading.Thread(target=work, daemon=True).start()
 
+    def toggle_diag():
+        on = not run_rig.ffb_diag_enabled()
+        try:
+            run_rig.set_ffb_diag(on)
+        except Exception as e:
+            say(f"could not switch FFB diagnostics: {e}")
+            return
+        say("FFB diagnostics ON: play for a minute, then Save support "
+            "bundle - it includes the force trace and the plugin log."
+            if on else "FFB diagnostics off.")
+        refresh()
+
     tk.Button(btns, text="Detect wheel (FFB)", command=detect_wheel,
+              **style).pack(side="left", padx=6)
+    tk.Button(btns, text="FFB diagnostics", command=toggle_diag,
               **style).pack(side="left", padx=6)
     tk.Button(btns, text="Save support bundle", command=support,
               **style).pack(side="left", padx=6)

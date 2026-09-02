@@ -3,6 +3,22 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## v0.3.1 — 2026-09-02
+
+- **Fixed: v0.3.0 shipped without the force-feedback hook** (`dinput8.dll`)
+  and with a Flycast-flavoured `FFBPlugin.ini` - the release build took
+  the plugin's files from the first folder holding `MAME64.dll`, which is
+  Flycast's. Without the Cruis'n per-game keys the plugin fell back to its
+  120 ms effect length, so forces expired between the game's updates -
+  the first tester's "FFB comes and goes". The build now takes the
+  plugin's "MAME 64bit Outputs" folder (all four files, 64-bit) and ships
+  a repo-owned ini (`ffb\FFBPlugin.ini`: the plugin's MAME defaults,
+  `GameId=22`, 500 ms effects, `AlternativeFFB=0`); the release script
+  refuses to build without the hook DLL.
+- **FFB diagnostics** (setup window): logs every force value the game
+  sends (`rig\ffb_trace.csv`) alongside the plugin's own `FFBlog.txt`;
+  both ride in the support bundle, plus the last `launch.log`.
+
 ## v0.3.0 — 2026-09-02 (alpha test build)
 
 - **Onboarding pass for external testers**: the setup GUI now identifies

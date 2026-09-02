@@ -78,10 +78,10 @@ if (Test-Path $vunit) {
                 Invoke-WebRequest -UseBasicParsing -OutFile $tmpz $asset.browser_download_url
                 if (Test-Path $tmpd) { Remove-Item -Recurse -Force $tmpd }
                 Expand-Archive $tmpz $tmpd
-                $m64 = Get-ChildItem -Recurse $tmpd -Filter "MAME64.dll" | Select-Object -First 1
+                $m64 = Get-ChildItem -Recurse -Directory $tmpd | Where-Object { $_.Name -eq "MAME 64bit Outputs" } | Select-Object -First 1
                 if ($m64) {
                     foreach ($f in $ffb) {
-                        $srcf = Join-Path $m64.DirectoryName $f
+                        $srcf = Join-Path $m64.FullName $f
                         if ((Test-Path $srcf) -and -not (Test-Path (Join-Path $vdir $f))) {
                             Copy-Item $srcf $vdir
                         }

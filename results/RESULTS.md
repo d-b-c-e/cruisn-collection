@@ -1944,3 +1944,39 @@ Walked the release/setup path as a stranger would and fixed what broke.
    identified, installable, a setup-window row, a ROM-table entry and a
    pre-launch notice. Re-verified: World 2.4 boots from the assembled
    release folder (fresh rig dir, no dev ctrlr) at 100% and exits clean.
+
+
+## 2026-09-02 - first tester feedback: FFB "comes and goes" -> packaging bug
+
+Tester (Fanatec CSL DD 8 Nm, GTX 1080): all three Cruis'n games run at a
+steady 60 fps, controls fine, but CruisnSetup reported `dinput8.dll`
+missing; he dropped in one from an older FFB plugin and forces became
+intermittent.
+
+Root cause, confirmed from the CI log ("[!] dinput8.dll not found beside
+vunit.exe") and the published zip: release.yml picked the plugin files
+from the folder of the FIRST `MAME64.dll` found - `Flycast/`, which has no
+`dinput8.dll` and a Flycast ini. The plugin archive (v2.0.0.53) is one
+folder per game; "MAME 64bit Outputs/" is the one with all four 64-bit
+files. So v0.3.0 shipped: no hook DLL, a Flycast ini with `GameId=22`
+stamped on, SDL2/MAME64 from Flycast. The Flycast ini lacks the Cruis'n
+per-game keys (`FeedbackLengthCrusnUSA/CrusnWld`), so the plugin used its
+120 ms default effect length - forces expire between the game's output
+updates: exactly "comes and goes". The mismatched `dinput8.dll` version on
+top of that made it worse, not better.
+
+Plugin facts learned (from its source): `GameId=22` is the generic MAME
+outputs mode and branches by ROM name (`crusnusa*`, `crusnwld*` incl.
+`crusnwld24`, `offroadc*`), so one id covers all three V-Unit games;
+`DeviceGUID` is SDL's joystick GUID string and a blank one matches
+nothing.
+
+Fixes (v0.3.1): release.yml and setup.ps1 select "MAME 64bit Outputs";
+`ffb/FFBPlugin.ini` (repo-owned template: the plugin's MAME 64-bit
+defaults + GameId=22, Logging=0, BeepWhenHook=0, blank GUID, 500 ms
+effects, AlternativeFFB=0) is what ships - NOT the rig's Moza-tuned copy;
+make_release throws if dinput8.dll is absent. Diagnostics: MIDV_FFB_TRACE
+in the driver (every output change, ms-stamped, via the shared global
+notifier), `[collection] ffb_diag=1` in run_rig sets it + plugin
+Logging=1, CruisnSetup toggle + status row, support bundle collects
+`ffb_trace.csv` and `launch.log`.

@@ -111,6 +111,21 @@ GUID: …`. Put your wheel base's GUID on the `DeviceGUID=` line, leave
 Overall strength is **SETTINGS → FFB STRENGTH**. Rotation range (arcade
 Cruis'n wheels turn about 270°) is set in your wheel's own software.
 
+The shipped `FFBPlugin.ini` is the plugin's own MAME defaults (`GameId=22`,
+which covers USA, World and Off Road by ROM name; 500 ms effect length so
+forces don't expire between the game's updates). If your wheel only pulls
+one way or feels weak, try `AlternativeFFB=1` — some bases (Moza,
+Thrustmaster) want it. Keep the four plugin files that come in the zip
+together; mixing a `dinput8.dll` from another plugin version with these
+`SDL2.dll` / `MAME64.dll` makes forces flaky.
+
+**FFB diagnostics** (when forces are missing or intermittent):
+`CruisnSetup.exe → FFB diagnostics` turns on two logs for every drive —
+`rig\ffb_trace.csv` (every force value the game sends, timestamped) and
+the plugin's own `FFBlog.txt` (what it did with them). Drive for a minute,
+then **Save support bundle**; the two logs tell us whether the game stopped
+sending or the wheel stopped listening. Turn it off afterwards.
+
 ### Menu music (optional)
 
 The release ships a menu track. For your own, drop an `.mp3` at
@@ -132,6 +147,9 @@ and so on).
   launcher.
 - **Wheel steers but never pushes back** — force feedback isn't configured
   yet: see *Force feedback* above.
+- **Force feedback comes and goes** — first make sure all four plugin files
+  are the ones from the zip (no `dinput8.dll` from another version), then
+  turn on *FFB diagnostics*, drive a minute, save a support bundle.
 - **"needs the DSP boot ROM c31boot.bin"** — copy `tms320c31.zip` (and
   `tms320c32.zip` for Exotica) from your MAME romset into `roms\`.
 - **Cruis'n World shows CALIBRATE CONTROLS** — expected once per rig:

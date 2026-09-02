@@ -529,6 +529,31 @@ def steer_device_name():
     return v.split("|", 1)[0].strip() if "|" in v else ""
 
 
+def ffb_diag_enabled():
+    """[collection] ffb_diag=1 in rig/collection.ini: launches trace every
+    output the game makes (rig/ffb_trace.csv) and keep the plugin's own
+    Logging=1 (FFBlog.txt) - both land in the support bundle."""
+    import configparser
+    cp = configparser.ConfigParser(interpolation=None)
+    cp.read(os.path.join(POC, "rig", "collection.ini"))
+    return cp.get("collection", "ffb_diag", fallback="0").strip() == "1"
+
+
+def set_ffb_diag(on, mame_dir=None):
+    import configparser
+    path = os.path.join(POC, "rig", "collection.ini")
+    cp = configparser.ConfigParser(interpolation=None)
+    cp.read(path)
+    if not cp.has_section("collection"):
+        cp.add_section("collection")
+    cp.set("collection", "ffb_diag", "1" if on else "0")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w") as f:
+        cp.write(f)
+    _ffb_ini_set(mame_dir or os.path.dirname(VUNIT), "Logging",
+                 "1" if on else "0")
+
+
 def detect_ffb_devices(rom="crusnusa", seconds=30, progress=print):
     """Run the emulator briefly with plugin logging on and return
     [(name, guid)] for every joystick the FFB plugin enumerated. Restores
@@ -1130,6 +1155,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 if forza.lower() in ("1", "on", "true", "yes"):
                     forza = "127.0.0.1:5300"
                 env["MIDV_TELEM_FORZA"] = forza
+
+    if ffb_diag_enabled():
+        env["MIDV_FFB_TRACE"] = os.path.join(rig, "ffb_trace.csv")
+        print("FFB diagnostics on: tracing outputs to rig/ffb_trace.csv "
+              "(plugin Logging=1 -> FFBlog.txt)")
 
     def start():
         cmd = [mame, rom,

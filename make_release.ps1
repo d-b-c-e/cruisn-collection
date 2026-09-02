@@ -65,16 +65,18 @@ Copy-Item (Join-Path $root "setup.ps1") $rel
 Copy-Item $vunit (Join-Path $rel "vunit.exe")
 foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll") {
     if (Test-Path (Join-Path $vdir $f)) { Copy-Item (Join-Path $vdir $f) $rel }
-    else { Write-Host "  [!] $f not found beside vunit.exe - player must run setup's FFB download" -ForegroundColor Yellow }
+    else { throw "$f not found beside vunit.exe - the release would ship without force feedback (v0.3.0 did)" }
 }
 # MAME's bgfx shader/chain files: used by the Exotica fallback path (MIDZ_GL=0
 # -> video bgfx + crt-geom-deluxe). Beside vunit.exe in dev; in the CI clone.
 if (Test-Path (Join-Path $vdir "bgfx")) {
     Copy-Item -Recurse (Join-Path $vdir "bgfx") (Join-Path $rel "bgfx")
 } else { Write-Host "  [!] bgfx\ not found beside vunit.exe (Exotica fallback CRT unavailable)" -ForegroundColor Yellow }
-if (Test-Path (Join-Path $vdir "FFBPlugin.ini")) {
-    # ship the ini configured for MAME-outputs mode, wheel GUID blanked
-    (Get-Content (Join-Path $vdir "FFBPlugin.ini")) `
+# the shipped ini is the repo template (ffb\FFBPlugin.ini: the plugin's own
+# MAME 64-bit defaults + GameId=22), NOT the dev rig's wheel-tuned copy
+$initpl = Join-Path $root "ffb\FFBPlugin.ini"
+if (Test-Path $initpl) {
+    (Get-Content $initpl) `
         -replace '^GameId=.*', 'GameId=22' `
         -replace '^DeviceGUID=.*', 'DeviceGUID=' `
         -replace '^Logging=.*', 'Logging=0' `

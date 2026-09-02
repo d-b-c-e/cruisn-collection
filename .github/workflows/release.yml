@@ -62,9 +62,14 @@ jobs:
           $asset = $api.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
           Invoke-WebRequest -UseBasicParsing -OutFile ffb.zip $asset.browser_download_url
           Expand-Archive ffb.zip ffbx
-          $m64 = Get-ChildItem -Recurse ffbx -Filter "MAME64.dll" | Select-Object -First 1
-          foreach ($f in "dinput8.dll","SDL2.dll","MAME64.dll","FFBPlugin.ini") {
-            Copy-Item (Join-Path $m64.DirectoryName $f) mame-src\ -ErrorAction SilentlyContinue
+          # the archive is one folder per game/emulator; only "MAME 64bit
+          # Outputs" carries the 64-bit dinput8.dll hook + SDL2 + MAME64.dll
+          # together (the alphabetically-first MAME64.dll lives in Flycast/,
+          # which shipped v0.3.0 without dinput8.dll and with a Flycast ini)
+          $dir = Get-ChildItem -Recurse -Directory ffbx | Where-Object { $_.Name -eq "MAME 64bit Outputs" } | Select-Object -First 1
+          if (-not $dir) { throw "FFB plugin archive: 'MAME 64bit Outputs' folder not found" }
+          foreach ($f in "dinput8.dll","SDL2.dll","MAME64.dll") {
+            Copy-Item (Join-Path $dir.FullName $f) mame-src\ -ErrorAction Stop
           }
           Remove-Item -Recurse -Force ffb.zip, ffbx
 
