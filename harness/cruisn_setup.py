@@ -27,16 +27,36 @@ def manifest_path():
     return os.path.join(base, "roms_manifest.json")
 
 
+_MANIFEST = None
+
+
 def load_manifest():
+    global _MANIFEST
     with open(manifest_path()) as f:
-        return json.load(f)
+        _MANIFEST = json.load(f)
+    return _MANIFEST
 
 
-def identify(zpath, manifest):
+def manifest_cache():
+    return _MANIFEST if _MANIFEST is not None else load_manifest()
+
+
+def parent_of(setname, manifest):
+    """Parent set name for a clone (crusnwld24 -> crusnwld)."""
+    for cand in sorted(manifest, key=len, reverse=True):
+        if manifest[cand]["parent"] and setname.startswith(cand):
+            return cand
+    return setname
+
+
+def identify(zpath, manifest, want=None):
     """Best-effort identification of a zip against every known set.
 
-    Returns dict: set, desc, parent(bool), coverage, crc_ok, missing[],
-    bad_crc[], or {'set': None, 'error': ...} when unidentifiable."""
+    want: evaluate the zip against that one set instead of picking the
+    best match (a merged parent zip also fully covers its clones' few
+    unique files, and one redumped file would let a clone outscore the
+    parent). Returns dict: set, desc, parent(bool), coverage, crc_ok,
+    missing[], bad_crc[], or {'set': None, 'error': ...}."""
     try:
         with zipfile.ZipFile(zpath) as z:
             members = {i.filename.rsplit("/", 1)[-1].lower():
@@ -47,25 +67,44 @@ def identify(zpath, manifest):
     if not members:
         return {"set": None, "error": "zip is empty"}
 
+    member_crcs = {crc for _, crc in members.values()}
     best = None
     for setname, info in manifest.items():
+        if want and setname != want:
+            continue
         expected = {n.lower(): (r["size"], int(r["crc"], 16))
                     for n, r in info["roms"].items()}
-        present = [n for n in expected if n in members]
+        if not info["parent"]:
+            # a clone's own files are only those that differ from its
+            # parent (MAME loads the rest from the parent set) - a split
+            # crusnwld24.zip legitimately holds just its 4 game ROMs
+            parent = parent_of(setname, manifest)
+            pexp = {n.lower(): int(r["crc"], 16)
+                    for n, r in manifest[parent]["roms"].items()}
+            expected = {n: v for n, v in expected.items()
+                        if pexp.get(n) != v[1]}
+        # MAME matches ROMs by hash, not filename (merged sets nest files
+        # under subfolders or rename them): a file counts as present when
+        # its name OR its CRC is in the zip
+        present = [n for n in expected
+                   if n in members or expected[n][1] in member_crcs]
         if not present:
             continue
-        crc_ok = sum(1 for n in present if members[n][1] == expected[n][1])
+        crc_ok = sum(1 for n in present
+                     if expected[n][1] in member_crcs)
         cand = {
             "set": setname, "desc": info["desc"], "parent": info["parent"],
             "coverage": len(present) / len(expected),
             "crc_ok": crc_ok / len(expected),
-            "missing": sorted(n for n in expected if n not in members),
+            "missing": sorted(n for n in expected if n not in present),
             "bad_crc": sorted(n for n in present
-                              if members[n][1] != expected[n][1]),
+                              if expected[n][1] not in member_crcs),
         }
-        key = (cand["coverage"], cand["crc_ok"], cand["parent"])
-        if best is None or key > (best["coverage"], best["crc_ok"],
-                                  best["parent"]):
+        # parents outrank clones on equal coverage: a redumped file must
+        # not hand the verdict to a 2-file clone
+        key = (cand["coverage"], cand["parent"], cand["crc_ok"])
+        if best is None or key > (best["coverage"], best["parent"],
+                                  best["crc_ok"]):
             best = cand
     if best is None:
         return {"set": None,
@@ -82,10 +121,15 @@ def verdict_text(v, src):
              f"({v['coverage']:.0%} of files present, "
              f"{v['crc_ok']:.0%} checksums match)"]
     if not v["parent"]:
-        parent = v["set"].rstrip("0123456789ab")
-        lines.append(f"  This is an alternate version - the collection runs "
-                     f"the parent set [{parent}]. This file will NOT work; "
-                     f"you need the {parent} romset.")
+        parent = parent_of(v["set"], manifest_cache())
+        if v["set"] == "crusnwld24":
+            lines.append("  This is the rev-2.4 set the collection prefers "
+                         "for Cruis'n World (it still has the manual "
+                         f"transmission). It needs the {parent} set "
+                         "installed too.")
+        else:
+            lines.append(f"  Alternate revision - the collection runs the "
+                         f"parent set [{parent}]; this file is not used.")
     if v["missing"]:
         show = ", ".join(v["missing"][:5])
         more = f" (+{len(v['missing']) - 5} more)" if len(v["missing"]) > 5 else ""
@@ -119,10 +163,15 @@ def game_status(manifest):
         elif found.endswith(".7z"):
             out.append((rom, title, "ok", "installed (.7z, not verified)"))
         else:
-            v = identify(found, manifest)
+            v = identify(found, manifest, want=rom)
             if v["set"] == rom and not v["missing"]:
                 d = "installed and verified" if not v["bad_crc"] else \
                     f"installed ({len(v['bad_crc'])} checksum oddities)"
+                if rom == "crusnwld":
+                    d += (" - rev 2.4 (manual transmission) available"
+                          if run_rig.world24_available()
+                          else " - rev 2.4 missing: 2.5 automatic only "
+                               "(add crusnwld24.zip)")
                 out.append((rom, title, "ok", d))
             elif v["set"] == rom:
                 out.append((rom, title, "issues",
@@ -143,6 +192,11 @@ def env_status():
                if not os.path.isfile(os.path.join(vdir, f))]
     rows.append(("force feedback plugin", not missing,
                  "present" if not missing else "missing: " + ", ".join(missing)))
+    if not missing:
+        guid = run_rig.ffb_device_guid()
+        rows.append(("force feedback wheel", bool(guid),
+                     f"configured (GUID {guid[:8]}...)" if guid
+                     else "not set - use Detect wheel"))
     return rows
 
 
@@ -176,7 +230,9 @@ def run_gui():
         rows[rom] = (dot, det)
         r += 1
     envrows = []
-    for label, _, _ in env_status():
+    ENV_LABELS = ["emulator (vunit.exe)", "force feedback plugin",
+                  "force feedback wheel"]
+    for label in ENV_LABELS:
         dot = tk.Label(frame, text="?", width=2, bg=BG, font=("Consolas", 13))
         dot.grid(row=r, column=0, sticky="w")
         tk.Label(frame, text=label, bg=BG, fg=FG, width=22, anchor="w",
@@ -205,7 +261,13 @@ def run_gui():
                           fg={"ok": "#50d878", "issues": ACC,
                               "missing": "#666078"}[state])
             det.configure(text=detail)
-        for (dot, det), (label, ok, detail) in zip(envrows, env_status()):
+        status = {label: (ok, detail) for label, ok, detail in env_status()}
+        for (dot, det), label in zip(envrows, ENV_LABELS):
+            if label not in status:      # plugin absent: no wheel row
+                dot.configure(text="-", fg="#666078")
+                det.configure(text="(needs the force feedback plugin)")
+                continue
+            ok, detail = status[label]
             dot.configure(text="●" if ok else "!",
                           fg="#50d878" if ok else ACC)
             det.configure(text=detail)
@@ -217,7 +279,7 @@ def run_gui():
         for p in paths:
             v = identify(p, manifest)
             say(verdict_text(v, p))
-            if v.get("set") and v["parent"]:
+            if v.get("set") and (v["parent"] or v["set"] == "crusnwld24"):
                 if v["missing"]:
                     if not messagebox.askyesno(
                             "Incomplete set",
@@ -267,6 +329,73 @@ def run_gui():
               command=lambda: os.startfile(run_rig.ROMPATH)
               if os.path.isdir(run_rig.ROMPATH)
               else os.makedirs(run_rig.ROMPATH) or os.startfile(run_rig.ROMPATH),
+              **style).pack(side="left", padx=6)
+    def detect_wheel():
+        import threading
+
+        def choose(devices):
+            # ambiguous: let the player pick the wheel BASE by name
+            top = tk.Toplevel(root)
+            top.title("Which device is your wheel?")
+            top.configure(bg=BG)
+            tk.Label(top, text="Pick your wheel base (not the shifter or "
+                     "pedals):", bg=BG, fg=FG,
+                     font=("Bahnschrift", 11)).pack(padx=16, pady=(12, 6))
+            lb = tk.Listbox(top, width=60, height=min(8, len(devices)),
+                            bg="#1d1830", fg=FG, font=("Consolas", 10))
+            for name, guid in devices:
+                lb.insert("end", f"{name}   ({guid})")
+            lb.pack(padx=16, pady=6)
+            lb.selection_set(0)
+            result = {}
+
+            def ok():
+                sel = lb.curselection()
+                if sel:
+                    result["dev"] = devices[sel[0]]
+                top.destroy()
+            tk.Button(top, text="Use this device", command=ok,
+                      **style).pack(pady=(6, 14))
+            top.grab_set()
+            root.wait_window(top)
+            return result.get("dev")
+
+        def work():
+            try:
+                say("detecting force-feedback devices - a game window "
+                    "opens for about 30 seconds, just wait (the plugin "
+                    "lists devices only once the game is running)...")
+                devices = run_rig.detect_ffb_devices(progress=say)
+                if not devices:
+                    say("the plugin reported no joysticks - is the wheel "
+                        "base connected and POWERED ON? Turn it on and "
+                        "try again (FFBlog.txt beside vunit.exe has the "
+                        "details)")
+                    return
+                say("devices: " + "; ".join(n for n, _ in devices))
+                dev = run_rig.pick_ffb_device(devices)
+                if dev is None:
+                    # ambiguous: ask on the Tk main thread, wait here
+                    import time
+                    box = {}
+                    root.after(0, lambda: box.update(dev=choose(devices)))
+                    while "dev" not in box:
+                        time.sleep(0.1)
+                    dev = box["dev"]
+                if dev is None:
+                    say("no device chosen - force feedback left unset")
+                    return
+                if run_rig.set_ffb_device_guid(dev[1]):
+                    say(f"force feedback wheel set: {dev[0]} ({dev[1]})")
+                else:
+                    say("could not write FFBPlugin.ini")
+            except Exception as e:
+                say(f"wheel detection failed: {e}")
+            root.after(0, refresh)
+
+        threading.Thread(target=work, daemon=True).start()
+
+    tk.Button(btns, text="Detect wheel (FFB)", command=detect_wheel,
               **style).pack(side="left", padx=6)
     tk.Button(btns, text="Save support bundle", command=support,
               **style).pack(side="left", padx=6)

@@ -5,6 +5,21 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Onboarding pass for external testers**: the setup GUI now identifies
+  ROM zips by content hash as MAME does (merged sets with renamed or
+  nested files, split sets, clones), accepts and reports the Cruis'n
+  World rev-2.4 set the collection prefers, and evaluates each installed
+  set against its own ROM list (a redumped file no longer flags a game as
+  "does not look like this game"). The launcher falls back to World 2.5
+  when the 2.4 files are absent and says so on screen; any failed launch
+  shows its reason on the menu (emulator output kept in `rig\launch.log`).
+  World 2.4 ships with a calibrated NVRAM fixture (no first-boot
+  calibration screen). **Detect wheel (FFB)** in the setup GUI runs the
+  emulator for about thirty seconds, reads the force-feedback plugin's own device
+  list and writes your wheel's GUID into `FFBPlugin.ini` (the plugin is
+  silent until that line is set - previously a manual log-file hunt).
+  README / INSTALL rewritten player-first; `make_release.ps1` no longer
+  reuses a stale frozen launcher.
 - **Fixed: colored vertical seam lines on 2D screens** - the Cruis'n USA
   continue-screen map showed a full-height line after a race (and Off
   Road's track select showed similar lines). 2D screens are drawn as

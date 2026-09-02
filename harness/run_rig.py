@@ -321,6 +321,46 @@ def base_rom(rom):
     return rom
 
 
+# Cruis'n World rev 2.4 (crusnwld24) is a MAME *clone* of crusnwld: only
+# its four game ROMs differ. MAME finds ROMs by hash inside any zip in the
+# rompath - a merged crusnwld.zip, a split crusnwld24.zip beside
+# crusnwld.zip, or a non-merged crusnwld24.zip all work. These are the
+# 2.4-only CRCs (MAME 0.286 -listroms crusnwld24 minus crusnwld).
+WORLD24_CRCS = {0x551ec903, 0x4c57faf2, 0x3a4d9a30, 0xca6a0c94}
+
+
+def world24_available(rompath=None):
+    """True when the rev-2.4 game ROMs are present somewhere in the
+    rompath (scans crusnwld*.zip central directories - cheap). .7z sets
+    can't be inspected without extra deps and are assumed complete."""
+    import zipfile
+    rompath = rompath or ROMPATH
+    found = set()
+    for name in ("crusnwld24.zip", "crusnwld.zip"):
+        path = os.path.join(rompath, name)
+        if not os.path.isfile(path):
+            continue
+        try:
+            with zipfile.ZipFile(path) as z:
+                found |= {i.CRC & 0xFFFFFFFF for i in z.infolist()}
+        except (zipfile.BadZipFile, OSError):
+            continue
+    if WORLD24_CRCS <= found:
+        return True
+    return any(os.path.isfile(os.path.join(rompath, n))
+               for n in ("crusnwld24.7z", "crusnwld.7z"))
+
+
+def resolve_world_rom(preferred):
+    """The World set to boot: the preferred revision when its ROMs exist,
+    else the parent (rev 2.5). Returns (rom, note-or-None)."""
+    if preferred == "crusnwld24" and not world24_available():
+        return "crusnwld", ("Cruis'n World 2.4 ROMs not found - running "
+                            "2.5 (automatic transmission only). Add "
+                            "crusnwld24.zip beside crusnwld.zip for 2.4.")
+    return preferred, None
+
+
 # ---- rig preparation --------------------------------------------------------
 def prepare_rig(rom, crt=False, zeus_gl=False):
     """Write the rig's ini set and seed NVRAM; returns (rig, inipath)."""
@@ -392,6 +432,128 @@ def apply_ffb_strength(mame_dir, pct):
                 f.write(out)
         except OSError:
             pass
+
+
+# ---- FFB wheel selection --------------------------------------------------
+# The FFB Arcade Plugin only drives the device named by DeviceGUID= in
+# FFBPlugin.ini (an SDL joystick GUID); with the line blank it matches
+# nothing and stays silent (its DllMain: no GUID match -> no haptic). It
+# does, however, log every joystick it sees as "Joystick: n / Name: ... /
+# GUID: ..." when Logging=1 - so the setup GUI can run the emulator for a
+# few seconds, harvest that list, and write the wheel's GUID itself.
+FFB_LOG_ROW = re.compile(r"Joystick:\s*(\d+)\s*/\s*Name:\s*(.*?)\s*/\s*GUID:\s*([0-9a-fA-F]+)")
+
+
+def _ffb_ini_get(mame_dir, key):
+    try:
+        with open(os.path.join(mame_dir, "FFBPlugin.ini"), encoding="utf-8",
+                  errors="replace") as f:
+            m = re.search(rf"(?m)^{key}=(.*)$", f.read())
+        return m.group(1).strip() if m else None
+    except OSError:
+        return None
+
+
+def _ffb_ini_set(mame_dir, key, value):
+    path = os.path.join(mame_dir, "FFBPlugin.ini")
+    try:
+        with open(path, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+    except OSError:
+        return False
+    out, n = re.subn(rf"(?m)^{key}=.*$", f"{key}={value}", text)
+    if n == 0:
+        out = text.replace("[Settings]", "[Settings]" + chr(10) + f"{key}={value}", 1)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(out)
+    return True
+
+
+def ffb_device_guid(mame_dir=None):
+    """The wheel GUID the plugin is configured for ('' = none)."""
+    return _ffb_ini_get(mame_dir or os.path.dirname(VUNIT), "DeviceGUID") or ""
+
+
+def set_ffb_device_guid(guid, mame_dir=None):
+    return _ffb_ini_set(mame_dir or os.path.dirname(VUNIT), "DeviceGUID", guid)
+
+
+def steer_device_name():
+    """Device the wizard bound as steering ('' if none) - the best hint for
+    which of the plugin's joysticks is the wheel base."""
+    import configparser
+    cp = configparser.ConfigParser(interpolation=None)
+    cp.read(os.path.join(POC, "rig", "collection.ini"))
+    v = cp.get("wheelmap", "steer", fallback="")
+    return v.split("|", 1)[0].strip() if "|" in v else ""
+
+
+def detect_ffb_devices(rom="crusnusa", seconds=30, progress=print):
+    """Run the emulator briefly with plugin logging on and return
+    [(name, guid)] for every joystick the FFB plugin enumerated. Restores
+    the previous Logging= value. Needs a ROM set installed for `rom`."""
+    mame_dir = os.path.dirname(VUNIT)
+    prev = _ffb_ini_get(mame_dir, "Logging")
+    if prev is None:
+        raise RuntimeError("FFBPlugin.ini not found beside the emulator")
+    logpath = os.path.join(mame_dir, "FFBlog.txt")
+    try:
+        os.remove(logpath)
+    except OSError:
+        pass
+    _ffb_ini_set(mame_dir, "Logging", "1")
+    try:
+        rig, ini = prepare_rig(rom)
+        ctrlr = sanitized_ctrlrpath(rig)
+        progress(f"starting the emulator for {seconds} s so the force-"
+                 "feedback plugin can list your devices...")
+        env = dict(os.environ, MIDV_SKIP_STARTUP_SCREENS="1")
+        subprocess.run(
+            [VUNIT, rom, "-rompath", ROMPATH, "-inipath", ini,
+             "-ctrlrpath", ctrlr, "-ctrlr", "EmuEzRacing",
+             "-nvram_directory", os.path.join(rig, "nvram"),
+             "-cfg_directory", os.path.join(rig, "cfg"),
+             "-window", "-sound", "none",
+             "-seconds_to_run", str(seconds), "-skip_gameinfo"],
+            capture_output=True, text=True, timeout=seconds + 90,
+            cwd=mame_dir, env=env)
+    finally:
+        _ffb_ini_set(mame_dir, "Logging", prev)
+    try:
+        with open(logpath, encoding="utf-8", errors="replace") as f:
+            text = f.read()
+    except OSError:
+        return []
+    # "numJoysticks = " + count on the next line: proves the plugin got as
+    # far as enumerating (a 10 s run never did - it initializes only once
+    # the game is up, ~20 s in)
+    if "numJoysticks" not in text:
+        progress("the plugin never reached device enumeration - try again "
+                 "(a longer run) or check FFBlog.txt beside vunit.exe")
+    seen, out = set(), []
+    for m in FFB_LOG_ROW.finditer(text):
+        name, guid = m.group(2).strip(), m.group(3).lower()
+        if guid not in seen:
+            seen.add(guid)
+            out.append((name, guid))
+    return out
+
+
+def pick_ffb_device(devices):
+    """Choose the wheel base among detected devices: the wizard's steering
+    device by name (either direction substring, case-insensitive), else
+    the only device. Returns (name, guid) or None when ambiguous."""
+    if not devices:
+        return None
+    hint = steer_device_name().lower()
+    if hint:
+        for name, guid in devices:
+            n = name.lower()
+            if n == hint or hint in n or n in hint:
+                return name, guid
+    if len(devices) == 1:
+        return devices[0]
+    return None
 
 
 # Shifter-type wiring (rig bug G7, 2026-08-25). MAME's CONF port "Shifter
@@ -950,7 +1112,26 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             cmd += ["-keepaspect", "-prescale", "4", "-view", "Screen 0"]
         else:
             cmd += ["-nokeepaspect"]   # the GL overlay owns presentation
-        return subprocess.Popen(cmd, env=env, cwd=os.path.dirname(mame))
+        # vunit's console output goes to rig/launch.log: a startup exit
+        # (missing ROM files, bad ini) is explained by its last lines,
+        # which the launcher surfaces on screen and the support bundle ships
+        log = open(os.path.join(rig, "launch.log"), "w")
+        return subprocess.Popen(cmd, env=env, cwd=os.path.dirname(mame),
+                                stdout=log, stderr=subprocess.STDOUT)
+
+    def launch_log_reason():
+        try:
+            lines = [ln.strip() for ln in
+                     open(os.path.join(rig, "launch.log"), errors="replace")
+                     if ln.strip()]
+        except OSError:
+            return ""
+        # MAME prints the useful line(s) last: "... NOT FOUND", "required
+        # files are missing", "Fatal error: ..."
+        for ln in reversed(lines):
+            if not ln.startswith("Average speed"):
+                return ln[:160]
+        return ""
 
     # the known-cosmetic FFB-plugin teardown AV must not raise the WER UI:
     # its "app crashed" notification ding fired on every (re)launch. Error
@@ -965,7 +1146,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         if hwnd and responsive(hwnd):
             break
         if proc.poll() is not None:
-            sys.exit(f"vunit.exe exited during startup (code {proc.returncode})")
+            why = launch_log_reason()
+            sys.exit(f"the emulator exited during startup"
+                     f"{': ' + why if why else f' (code {proc.returncode})'}")
         proc.kill()   # pre-FFB hang: no force effects exist yet, kill is safe
         proc.wait()
         hwnd = None

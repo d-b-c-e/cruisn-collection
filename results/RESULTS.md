@@ -1878,3 +1878,53 @@ knowing the mode simplifies binding. Implemented:
   point at the in-game = / - keys - not a setting; user call). The row
   reappears automatically if USA's master byte ever gets pinned into
   VOLUME_CMOS.
+
+
+## 2026-09-02 - onboarding review for the first external alpha tester
+
+Walked the release/setup path as a stranger would and fixed what broke.
+
+**Traps found (all fixed):**
+1. **Cruis'n World 2.4 is a MAME clone** and the setup GUI both refused
+   to install `crusnwld24.zip` ("this file will NOT work") and never
+   checked for the four 2.4 game ROMs - a tester with ordinary split
+   sets got a World that silently failed to launch. The rig only works
+   because its `crusnwld.zip` is a MERGED set nesting the 2.4 files under
+   `crusnwld24/` (MAME matches ROMs by hash, not name). Now:
+   `run_rig.world24_available()` checks the four 2.4 CRCs across
+   `crusnwld*.zip`; `resolve_world_rom()` falls back to 2.5 with an
+   on-screen notice; the identifier matches by name OR CRC, scores clones
+   on their unique files, installs crusnwld24, and the World row reports
+   2.4 availability. Verified on merged / split-parent+clone / 2.5-only
+   layouts.
+2. **Launch failures were invisible** (console print only). vunit's
+   output now goes to `rig/launch.log`; a startup exit surfaces its last
+   meaningful line as a menu notice ("COULDN'T START ... : required files
+   are missing" class).
+3. **Set ranking**: one redumped file (the rig's Exotica u18/u19) let a
+   two-file clone outscore the parent -> "does not look like this game".
+   Parents now win coverage ties and installed sets are judged against
+   their own list (`identify(..., want=rom)`): "installed (2 checksum
+   oddities)".
+4. **Force feedback needs the wheel GUID** - confirmed from the plugin's
+   DllMain: a blank `DeviceGUID=` matches nothing and haptics stay NULL;
+   the GUID is SDL's `SDL_JoystickGetGUIDString`. In-process SDL
+   enumeration from Python returned zero devices on every driver hint
+   (and the base was offline at the time), so the automation harvests
+   the plugin's OWN log instead: `detect_ffb_devices()` runs the emulator
+   ~30 s with `Logging=1` (it enumerates only once the game is up -
+   a 10 s run never reached `numJoysticks`), parses "Joystick: n / Name / GUID" lines,
+   `pick_ffb_device()` chooses the wizard's steering device by name (or
+   the only device; else a chooser dialog) and writes `DeviceGUID=`.
+   Setup GUI: "Detect wheel (FFB)" button + a wheel status row.
+5. **`make_release.ps1` reused a stale `build\dist`** (an Aug-20 frozen
+   launcher would have shipped). Always re-freezes now.
+6. **No `fixtures/nvram-crusnwld24`** -> every tester hit CALIBRATE
+   CONTROLS on the first World boot. Seeded from the rig's calibrated
+   2.4 CMOS (same layout as 2.5: volume 0x9C, free play 0x1AC).
+7. Docs were stale/dev-centric (setup.ps1 vs CruisnSetup.exe, WHEEL
+   SETUP vs CONTROLS SETUP, a calibration note that no longer applied, no
+   TRANSMISSION, no clone note, E:\ paths up front). README rewritten
+   player-first; INSTALL.md rewritten (requirements incl. OpenGL 4.3, ROM
+   table, launcher/wizard/in-game keys, FFB, troubleshooting, bug-report
+   recipe); v0.3.0 release notes drafted.

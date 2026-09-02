@@ -326,7 +326,7 @@ class Shell:
         self.prog["uTint"].value = tuple(map(float, tint))
         self.vao.render(moderngl.TRIANGLES)
 
-    def draw(self, sel, crt, t, row=0):
+    def draw(self, sel, crt, t, row=0, notice=""):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14) / self.title.height * 1.0
@@ -372,6 +372,11 @@ class Shell:
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
         self.rect(foot, (self.w - fw) / 2, self.h * 0.905, fw, fh)
+        if notice:
+            # transient status line (a failed launch's reason, a ROM
+            # fallback) - the console print alone left players guessing
+            self.center_text(notice, self.h // 40, self.h * 0.865,
+                             (1.0, 0.55, 0.45, 1.0))
         # in-game hotkey legend (keys that live outside the wheel bindings)
         leg = self.footer_tex(
             "IN-GAME:   5 COIN    1 START    ESC MENU / QUIT    F9 CRT    "
@@ -1153,6 +1158,8 @@ def main():
     KEYCODES = _keycode_table()
     launch = None
     launching = None     # in-flight launch box (background thread)
+    notice = ""          # transient menu status line
+    notice_until = 0.0
     game_proc = None     # last vunit process, until teardown completes
     mode = "menu"        # menu | game | settings | wizard
     row = 0              # menu: 0 = game cards, 1 = SETTINGS
@@ -1568,7 +1575,8 @@ def main():
                                  [(r[1], r[2]) for r in grows],
                                  grows[gsel][3], t)
         else:
-            shell.draw(sel, state["crt"], t, row)
+            shell.draw(sel, state["crt"], t, row,
+                       notice if time.time() < notice_until else "")
         glfw.swap_buffers(win)
 
         if launch and launching is None:
@@ -1586,6 +1594,11 @@ def main():
             # and art stay keyed to the crusnwld card identity)
             real_rom = (state.get("world_rom", "crusnwld24")
                         if launch == "crusnwld" else launch)
+            if launch == "crusnwld":
+                real_rom, note = run_rig.resolve_world_rom(real_rom)
+                if note:
+                    print(note)
+                    notice, notice_until = note.upper(), time.time() + 12
 
             def _do_launch(box=launching, rom=real_rom, card=launch):
                 # background thread: the shell keeps rendering LAUNCHING
@@ -1609,6 +1622,9 @@ def main():
         if launching is not None and launching["done"]:
             if launching["err"] is not None:
                 print("launch failed:", launching["err"])
+                notice = ("COULDN'T START " + launching["name"] + ":  "
+                          + str(launching["err"])).upper()[:110]
+                notice_until = time.time() + 15
                 keeper.game_active.clear()   # resume zeroing the dash
                 armed_at = time.time() + 1.0
                 audio.blip("nav")

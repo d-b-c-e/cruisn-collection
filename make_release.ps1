@@ -20,8 +20,12 @@ $rel    = Join-Path $root "build\release\CruisnCollection"
 
 Write-Host "== building release ==" -ForegroundColor Cyan
 
-# 1. frozen shell + setup GUI (rebuild if missing)
+# 1. frozen shell + setup GUI - ALWAYS re-frozen: a stale build\dist from
+# an earlier session silently shipped a month-old launcher once
 $glfwdll = & python -c "import glfw.library; print(glfw.library.glfw._name)"
+foreach ($stale in (Join-Path $root "build\dist"), (Join-Path $root "build\work")) {
+    if (Test-Path $stale) { Remove-Item -Recurse -Force $stale }
+}
 if (-not (Test-Path (Join-Path $dist "CruisnCollection.exe"))) {
     Write-Host "  freezing shell (PyInstaller)..."
     & python -m PyInstaller --noconfirm --onedir --noconsole --name CruisnCollection `
@@ -121,14 +125,16 @@ if (-not $NoMedia) {
 @"
 CRUIS'N COLLECTION
 ==================
-1. Double-click CruisnSetup.exe and add your own ROM files - any
-   filename works, they are identified by their contents and installed
-   automatically. It also health-checks everything else.
+1. Double-click CruisnSetup.exe and add your own ROM zips (MAME 0.286
+   sets: crusnusa, crusnwld + crusnwld24, offroadc, crusnexo). Any
+   filename works - files are identified by their contents. The window
+   also health-checks the emulator and force-feedback plugin.
 2. Hit "Launch Collection" (or double-click CruisnCollection.exe).
+3. Have a wheel? SETTINGS > CONTROLS SETUP binds it in a minute.
 
-Wheel setup, CRT effects: SETTINGS inside the launcher.
-In-game: 5=coin, 1=start, F9=CRT toggle, Esc=back to launcher.
-Advanced/scripted setup: setup.ps1. Full docs: docs\INSTALL.md.
+In-game: 5 = coin, 1 = start, Esc = menu (resume / CRT / exit),
+F9 = CRT toggle, F12 = instant quit.
+Full guide (wheel, force feedback, troubleshooting): docs\INSTALL.md.
 
 This package contains no ROMs. Emulator: MAME (GPL-2.0+), patch series
 in patch\, launcher source in source\. FFB Arcade Plugin (c)

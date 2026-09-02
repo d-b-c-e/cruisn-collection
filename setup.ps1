@@ -53,6 +53,10 @@ foreach ($r in "crusnusa", "crusnwld", "offroadc", "crusnexo") {
 }
 if ($have) { Ok ("ROMs found: " + ($have -join ", ")) }
 if ($miss) { Warn "missing ROM sets (those games will not run): $($miss -join ', ')" }
+if ($have -contains "crusnwld") {
+    $w24 = (Test-Path (Join-Path $roms "crusnwld24.zip")) -or (Test-Path (Join-Path $roms "crusnwld24.7z"))
+    if (-not $w24) { Warn "crusnwld24 (World rev 2.4, manual transmission) not found - fine if your crusnwld set is merged; otherwise World runs rev 2.5 (automatic only)" }
+}
 if (-not $have) { Fail "no ROM sets in $roms - copy your own dumps there and re-run" }
 
 # --- 4. FFB Arcade Plugin (optional but recommended) -------------------------

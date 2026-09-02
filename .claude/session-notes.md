@@ -901,3 +901,20 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   at frame 1 without SNAP_FRAMES.
 - Debugger note: logf() output is BUFFERED - "no run: lines" after a
   crash means nothing.
+
+
+## 2026-09-02 - onboarding review for the first external alpha tester
+
+- Traps fixed (RESULTS.md has the list): World 2.4 clone handling
+  (world24_available/resolve_world_rom + hash/clone-aware setup GUI),
+  on-screen launch-failure reasons (rig/launch.log), set-ranking fix
+  (parents win ties; per-set status), FFB "Detect wheel" (plugin-log
+  harvest; blank DeviceGUID = no FFB, confirmed from plugin source),
+  make_release always re-freezes, fixtures/nvram-crusnwld24 seeded.
+- Docs: README + docs/INSTALL.md rewritten player-first; release notes
+  docs/release-notes/v0.3.0.md drafted (tag v0.3.0 -> CI builds + publishes).
+- In-process SDL2 (plugin's dll) enumerates ZERO joysticks from python
+  regardless of hints - don't retry that road; the plugin's own FFBlog is
+  the reliable device list.
+- Repo is PRIVATE: the tester must be added as a collaborator to download
+  release assets (or send the zip directly).
