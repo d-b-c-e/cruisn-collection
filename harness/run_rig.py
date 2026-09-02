@@ -463,6 +463,11 @@ def apply_ffb_strength(mame_dir, pct):
         # the plugin's hook-installed chime = the launch "ding" (G1); the
         # racing build's tuned ini shipped BeepWhenHook=1 - keep it dead
         "BeepWhenHook": "0",
+        # 0% = force feedback OFF: an unknown GameId leaves the plugin loaded
+        # but idle (no game handler, no per-frame effect updates) - a clean
+        # A/B lever for "does the plugin cost me speed?" without touching
+        # files. GameId 22 = MAME outputs, covers USA/World/Off Road by ROM.
+        "GameId": "22" if pct > 0 else "0",
     }
     out = text
     for key, val in repl.items():

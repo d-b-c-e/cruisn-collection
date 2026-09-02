@@ -152,6 +152,12 @@ and so on).
 - **Nothing happens for ~20 s, then the game starts** — a known
   first-launch hang in the FFB plugin's device scan; the launcher detects
   it and relaunches automatically.
+- **A game runs slow / stutters** — four one-line experiments, each a
+  SETTINGS row, no files to touch: INTERNAL SCALE 2X (GPU), FFB STRENGTH
+  0% (the force-feedback plugin goes idle), ASPECT 4:3 (no widescreen
+  patch or margins), CRT off (F9). Whichever one fixes it names the
+  culprit; then Save support bundle after the slow game — its
+  `launch.log` ends with the emulator's measured speed.
 - **Black screen or a driver error** — the renderer needs OpenGL 4.3;
   update the GPU driver, and on laptops make sure the game runs on the
   discrete GPU.

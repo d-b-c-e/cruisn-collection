@@ -3,6 +3,18 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## v0.3.2 — 2026-09-02
+
+- **INTERNAL SCALE setting** (SETTINGS, 2X-4X): the render resolution
+  knob, for GPUs that can't hold 60 fps at 4X. Takes effect at the next
+  launch.
+- **FFB STRENGTH 0% now idles the force-feedback plugin** (no game
+  handler at all) instead of driving zero-force effects - a one-line A/B
+  for "is the plugin costing me speed?".
+- Support-bundle diagnostics for slow games: the overlay log carries a
+  periodic MAME speed readout and `launch.log` ends with the measured
+  average; INSTALL has a four-step slow-game recipe.
+
 ## v0.3.1 — 2026-09-02
 
 - **Fixed: v0.3.0 shipped without the force-feedback hook** (`dinput8.dll`)

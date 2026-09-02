@@ -1980,3 +1980,31 @@ in the driver (every output change, ms-stamped, via the shared global
 notifier), `[collection] ffb_diag=1` in run_rig sets it + plugin
 Logging=1, CruisnSetup toggle + status row, support bundle collects
 `ffb_trace.csv` and `launch.log`.
+
+
+## 2026-09-02 - tester: "Off Road incredibly slow" (other three fine) - not reproducible
+
+Measured on the dev rig with the same build the tester has:
+- Headless emulation (`-video none`, 30 emulated s of attract): crusnusa
+  325% (18 procs) / 511% (1 proc), crusnwld 348 / 546, **offroadc 671 /
+  829** - Off Road is the CHEAPEST to emulate, and MAME's poly work queue
+  costs more than it saves on this machine (1 proc faster than 18).
+- Live overlay (`MIDV_GL=1`, attract, unthrottled): crusnusa 269% @4x,
+  crusnwld 316% @4x, **offroadc 466% @4x and 465% @2x** - not GPU-bound
+  at all here; the offroadc widescreen patch was applied.
+- GPU scene pass (renderer.py --bench, 4x wide): USA canyon 3.57 ms/scene,
+  Off Road canyon 2.81 ms - a 4x slower card still fits 57 fps.
+- Sound on vs off: no difference for either game (DCS2 not a cost).
+- Wheel-force output cadence (MIDV_FFB_TRACE, driven): USA 9.2/s, Off
+  Road 1.2/s - Off Road updates the plugin LESS often.
+
+Nothing Off-Road-specific in our stack is slow here. Plugin-side note: the
+FFB Arcade Plugin runs Off Road in its "RacingFullValueActive2" mode
+(different from USA/World) - a per-loop effect strategy on the tester's
+Fanatec driver is the one Off-Road-only variable we cannot measure from
+here. Shipped levers for a one-line A/B on his machine (v0.3.2): SETTINGS
+INTERNAL SCALE 2X-4X (GPU), FFB STRENGTH 0% now idles the plugin
+(GameId=0 - no game handler at all), ASPECT 4:3 (no patch/margins), CRT
+off; the support bundle's launch.log ends with MAME's measured speed and
+midv_gl.log carries a periodic speed readout. Ask: CPU model + a bundle
+after an Off Road session.

@@ -393,7 +393,8 @@ class Shell:
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
                   (0.75, 0.75, 0.8, 1.0))
 
-    def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans, t):
+    def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans,
+                      scale, t):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -407,6 +408,7 @@ class Shell:
                 ("ASPECT / WIDESCREEN", ASPECT_LABEL(margin)),
                 ("MARGIN FILL", "ON" if mfill else "OFF"),
                 ("FFB STRENGTH", f"< {ffb}% >"),
+                ("INTERNAL SCALE", f"< {scale}X >"),
                 ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
                  else "< SEQUENTIAL >"),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
@@ -414,7 +416,7 @@ class Shell:
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.36 + 0.062 * i)
+            y = self.h * (0.35 + 0.057 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -430,12 +432,15 @@ class Shell:
                "TRIMMED = 16:9 WITH CLEANER EDGES",
             3: "ON = STRETCH EDGE PIXELS INTO THE 16:9 SIDES (CAN SMEAR)"
                "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING",
-            4: "FORCE-FEEDBACK STRENGTH:   SCALES WHEEL FORCE FROM 0% (OFF)"
-               " TO 100% (FULL)      LOWER IF THE WHEEL FEELS TOO HARSH",
-            5: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
+            4: "FORCE-FEEDBACK STRENGTH:   0% = PLUGIN OFF (A/B TEST FOR "
+               "SPEED)      LOWER IF THE WHEEL FEELS TOO HARSH",
+            5: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
+               "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT "
+               "THE NEXT LAUNCH",
+            6: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
                "SHIFT UP / DOWN PADDLES      EXOTICA HAS NO SEQUENTIAL "
                "MODE - STAYS AUTOMATIC",
-            6: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
+            7: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
                "SKIPPED STEPS KEEP THEIR SAVED BINDING",
         }
         if ssel in hints:
@@ -1370,10 +1375,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 8
+                    ssel = (ssel - 1) % 9
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 8
+                    ssel = (ssel + 1) % 9
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -1396,6 +1401,14 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 5:
+                    # internal render scale 2x-4x (GPU load ~ scale^2);
+                    # applies at the next launch
+                    step = 1 if key == glfw.KEY_RIGHT else -1
+                    state["scale"] = max(2, min(4, int(state.get("scale", 4))
+                                                + step))
+                    save_config(state)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 6:
                     state["transmission"] = (
                         "sequential"
                         if state.get("transmission", "hpattern") == "hpattern"
@@ -1412,7 +1425,7 @@ def main():
                         state["marginfill"] = not state.get("marginfill", True)
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel == 5:
+                    elif ssel == 6:
                         state["transmission"] = (
                             "sequential"
                             if state.get("transmission",
@@ -1420,9 +1433,9 @@ def main():
                             else "hpattern")
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel in (2, 4):
+                    elif ssel in (2, 4, 5):
                         audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 6:
+                    elif ssel == 7:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -1574,7 +1587,8 @@ def main():
             shell.draw_settings(ssel, state["crt"], state["crackfill"],
                                 state["margin"], state.get("ffb", 100),
                                 state.get("marginfill", True),
-                                state.get("transmission", "hpattern"), t)
+                                state.get("transmission", "hpattern"),
+                                int(state.get("scale", 4)), t)
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)
