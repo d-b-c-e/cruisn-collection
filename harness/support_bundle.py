@@ -105,6 +105,7 @@ def collect(rom="crusnusa", progress=print):
     progress("logs + config...")
     vdir = os.path.dirname(run_rig.VUNIT)
     add_file("FFBlog.txt", os.path.join(vdir, "FFBlog.txt"))
+    add_file("version.txt", os.path.join(vdir, "version.txt"))   # which build (folder names lie)
     add_file("FFBPlugin.ini", os.path.join(vdir, "FFBPlugin.ini"))
     add_file("midv_gl.log", os.path.join(vdir, "midv_gl.log"))
     add_file("collection.ini",

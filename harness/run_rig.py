@@ -586,9 +586,20 @@ def apply_ffb_strength(mame_dir, pct):
         # files. GameId 22 = MAME outputs, covers USA/World/Off Road by ROM.
         "GameId": "22" if pct > 0 else "0",
     }
+    # The plugin's Cruis'n handlers read PER-GAME keys (MaxForceCrusnUSA,
+    # AlternativeMaxForceLeftCrusnWld, ...) - the bare keys above never
+    # reached them, so every game ran at 100% whatever the setting said
+    # (tester: "0% still full force"; the rig's "70%" was 100% too).
+    for game in ("CrusnUSA", "CrusnWld", "OffRoadC"):
+        repl[f"MaxForce{game}"] = str(pct)
+        repl[f"AlternativeMaxForceRight{game}"] = str(pct)
+        repl[f"AlternativeMaxForceLeft{game}"] = str(-pct)
     out = text
     for key, val in repl.items():
-        out = re.sub(rf"(?m)^{key}=.*$", f"{key}={val}", out)
+        out, n = re.subn(rf"(?m)^{key}=.*$", f"{key}={val}", out)
+        if n == 0 and key.endswith(("CrusnUSA", "CrusnWld", "OffRoadC")):
+            # older ini without the per-game line: add it under [Settings]
+            out = out.replace("[Settings]", "[Settings]" + chr(10) + f"{key}={val}", 1)
     if out != text:
         try:
             with open(path, "w", encoding="utf-8") as f:

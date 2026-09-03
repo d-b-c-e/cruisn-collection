@@ -51,8 +51,8 @@ local function find_fields()
                 start_f = f
             elseif tag == ":ACCEL" then
                 gas_f = f
-            elseif tag == ":WHEEL" then
-                wheel_f = f
+            elseif tag == ":WHEEL" or (tag == ":ANALOG3" and not wheel_f) then
+                wheel_f = f          -- V-Unit :WHEEL; Exotica steers on :ANALOG3
             end
         end
     end

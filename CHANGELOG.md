@@ -5,6 +5,12 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## v0.3.5 — 2026-09-03
 
+- **FFB STRENGTH never actually worked.** The plugin's Cruis'n handlers
+  read per-game keys (`MaxForceCrusnUSA`, `AlternativeMaxForceLeftCrusnWld`,
+  ...); the launcher only scaled the bare `MaxForce` keys, so every game
+  ran at 100% whatever the setting said (tester: "0% still full force").
+  The per-game keys are scaled now - expect the games to feel *much*
+  lighter at your usual setting, and re-tune upward.
 - **Force feedback template now runs AlternativeFFB=1**, the mode this
   project's rig was tuned in; testers were getting mode 0.
 - **Measured the games' force law** (headless wheel sweep under the force

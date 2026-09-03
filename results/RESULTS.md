@@ -2175,3 +2175,24 @@ game still shows CREDITS 0):
   attract mode also drives the motor (small ticks) - Off Road sends
   forces without a coin.
 The clamp lives in midvunit_state::wheel_board_w, shared by all three.
+
+
+## 2026-09-03 - FFB STRENGTH was a no-op; the plugin reads per-game keys
+
+Tester (v0.3.1 files in a folder named v0.3.0 - the FFBlog path explains
+the "0.3.0"): "FFB set to zero in settings doesn't work, still full
+force". dinput8.dll strings: the Cruis'n handlers have PER-GAME keys -
+MaxForce/MinForce/AlternativeMin|MaxForceLeft|Right/FeedbackLength/
+EnableDamper/DamperStrength/EnableForceSpringEffect/ForceSpringStrength/
+PowerMode, each suffixed CrusnUSA, CrusnWld, OffRoadC. apply_ffb_strength
+scaled only the bare keys (its docstring even noted the suffixed ones
+"can never be hit"). Both the template and the rig's live ini carry the
+per-game MaxForce/AlternativeMaxForce at 100 - so the rig's "70%" and the
+tester's "0%" were both 100%. Fixed: the per-game trio is scaled too
+(added under [Settings] when an older ini lacks it); verified on the
+template at 40: twelve keys at +-40. Consequence for tuning: everything
+measured "by feel" so far was at 100%; the rig's 70 will feel far lighter
+now and needs re-tuning. His FFBlog also shows the plugin found the
+FANATEC Wheel (haptic), hooked crusnusa as "RacingFullValueActive2", gain
+100, autocenter off - the hookup was fine; the level was the problem.
+Support bundle now carries version.txt (folder names lie).

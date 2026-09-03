@@ -248,6 +248,9 @@ and so on).
   too (arrows for the wheel, the gas/brake keys for the pedals).
 - **Cruis'n World says "2.4 ROMs not found"** — add `crusnwld24.zip` beside
   `crusnwld.zip` (or use a merged set); see the ROM table.
+- **Which version am I on?** The setup window's *version / updates* row
+  says (folder names can lie after unzipping over an old folder), and
+  the support bundle includes `version.txt`.
 - **Reporting a bug**: `CruisnSetup.exe → Save support bundle` writes one
   zip (logs, your controller layout as MAME sees it, settings — never ROMs).
   Attach it with a note on *what you expected vs what you saw*. For visual
