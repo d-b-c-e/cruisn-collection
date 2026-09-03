@@ -61,6 +61,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   the games' force kicks at that value of 127 while small road forces
   keep full strength (`MIDV_FFB_CLAMP` in the emulator, verified headless:
   peaks 100 -> 40, small kicks byte-identical).
+- Known issues (v0.3.5): Exotica manual transmission cannot be selected
+  (emulation gap, see above); graphical glitches remain, notably on
+  Exotica's Amazon track - `exotica_gl = 0` in `[collection]` runs
+  Exotica on MAME's own renderer for comparison. The draw-distance
+  extension stays opt-in (`MIDV_PATCH`) and never applies to Exotica.
 - Fixed: a stray uncalibrated `fixtures/nvram-crusnusa/crusnusa/nvram`
   file shipped in v0.3.3/v0.3.4 (harmless: the launcher seeds from the
   folder's own `nvram`).

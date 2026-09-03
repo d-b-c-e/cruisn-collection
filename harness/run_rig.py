@@ -1260,6 +1260,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # the live Zeus GL overlay is the default for Zeus games; MIDZ_GL=0
     # in the environment falls back to MAME's own d3d/bgfx presentation
     zeus_gl = rom in ZEUS_ROMS and os.environ.get("MIDZ_GL", "1") != "0"
+    if zeus_gl and _collection_ini_get("collection", "exotica_gl", "1") == "0":
+        zeus_gl = False   # [collection] exotica_gl = 0: MAME's own renderer (glitch A/B)
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound

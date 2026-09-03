@@ -224,6 +224,10 @@ and so on).
   patch or margins), CRT off (F9). Whichever one fixes it names the
   culprit; then Save support bundle after the slow game — its
   `launch.log` ends with the emulator's measured speed.
+- **Exotica shows glitches (the Amazon track especially)** — known.
+  To tell our GL overlay from MAME's own Zeus2 emulation, put
+  `exotica_gl = 0` under `[collection]` in `rig\collection.ini`: Exotica
+  then runs on MAME's renderer. Tell us whether the glitch survives.
 - **Black screen or a driver error** — the renderer needs OpenGL 4.3;
   update the GPU driver, and on laptops make sure the game runs on the
   discrete GPU.
