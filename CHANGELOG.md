@@ -62,10 +62,13 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   keep full strength (`MIDV_FFB_CLAMP` in the emulator, verified headless:
   peaks 100 -> 40, small kicks byte-identical).
 - Known issues (v0.3.5): Exotica manual transmission cannot be selected
-  (emulation gap, see above); graphical glitches remain, notably on
-  Exotica's Amazon track - `exotica_gl = 0` in `[collection]` runs
-  Exotica on MAME's own renderer for comparison. The draw-distance
-  extension stays opt-in (`MIDV_PATCH`) and never applies to Exotica.
+  (emulation gap, see above); Exotica's Amazon-track glitches are in our
+  GL overlay (MAME's renderer via `exotica_gl = 0` is clean) - overlay
+  fix queued. The USA draw-distance experiment stays opt-in
+  (`gamepatch_crusnusa` / `MIDV_PATCH`); no visible change seen yet.
+- Fixed: `save_config` replaced the `[collection]` section, wiping keys
+  it did not own (`ffb_diag`, `exotica_gl`, `gamepatch_*`) at every
+  launch; it merges now. `launch.log` starts with the applied env.
 - Fixed: a stray uncalibrated `fixtures/nvram-crusnusa/crusnusa/nvram`
   file shipped in v0.3.3/v0.3.4 (harmless: the launcher seeds from the
   folder's own `nvram`).

@@ -117,3 +117,20 @@ so its Cruis'n handler drives it. Remaining: wheel test on the rig; then
 upstream both halves - a MAME PR for the driver output (drop the "unknown
 purpose") and an FFB Arcade Plugin PR adding a crusnexo handler (after
 which the name spoof goes away).
+
+## Open after the 2026-09-03 rig session
+
+1. **Exotica GL overlay glitches (Amazon track)**: proven ours - MAME's
+   renderer (exotica_gl = 0) is clean. Plan: scripted run to the Amazon
+   track (track-select position via the wheel sweep + snapshots), capture
+   the quad stream at a glitching frame (MIDZ_CAPTURE / MIDZ_CAPTURE_FRAME)
+   and the same frame from MAME's renderer; diff per quad (texture mode,
+   blend, fog, clipping) to find what zeus2_draw_quad's GL path mishandles.
+2. **USA draw-distance experiment**: rig look said "identical". Measure
+   instead: scripted race with and without gamepatch_crusnusa, MIDV_QUADLOG
+   per-frame quad counts and A/B snapshots at the same frames; if the
+   counts match, the section streamer really is the wall (C2 round 3).
+3. **Exotica manual transmission**: TRANS SELECT ignores every input in
+   MAME (RESULTS 2026-09-03). Raise upstream; the virtual sequential
+   shifter (MIDZ_SEQ_SHIFT) is ready behind it.
+4. Distant road specks in USA (cosmetic; screenshot 2026-09-03).

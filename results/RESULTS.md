@@ -2325,3 +2325,28 @@ env-forceable IPT_CUSTOM over IN1's 0xF00D lines (MIDZ_FORCE_IN1=<hex>)
 to test whether the real shifter lives on a line MAME calls unused
 (the driver credits the gear mapping to the manual's pinout sheet,
 unverified; crusnexo is NOT_WORKING upstream).
+
+
+## 2026-09-03 (late) - config-save wipe; Exotica glitches are the overlay's; USA draw distance unverified
+
+Two A/B switches added tonight (exotica_gl, gamepatch_crusnusa) were
+wiped before they could act: save_config replaced [collection] with the
+keys the shell owns, and the shell saves at every launch - so ffb_diag
+was being cleared the same way (the tester's bundle had no ffb_trace.csv
+because of this). Fixed (merge); launch.log now opens with the applied
+env, which is how the next runs were validated.
+
+Exotica, Amazon track, exotica_gl = 0 (launch.log: MIDZ_GL=0): the
+glitches the user saw with the overlay are GONE on MAME's own renderer.
+Conclusion: they live in our zeus2_draw_quad GL path, not in the Zeus2
+emulation. No widescreen patch exists for Exotica, so it is the quad
+handling itself. Queued (ROADMAP).
+
+USA with gamepatch_crusnusa (draw-distance experiment, verified live in
+RAM headless: 0x55=160000, LOD immediates 0x7D00): the user saw no
+difference; launch.log was overwritten by the Exotica run before it
+could confirm the launch env. Turned off; measure with quad counts
+before drawing conclusions (ROADMAP).
+
+Force-line hunt closed: MIDZ_FORCE_IN1 over all seven "Not Used" lines,
+Sit Down cabinet, from boot through a race - AUTO every time.

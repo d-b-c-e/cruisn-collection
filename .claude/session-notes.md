@@ -918,3 +918,18 @@ their HUD captures (B1), RPM via gauge correlation (B2); Exotica unhunted.
   the reliable device list.
 - Repo is PRIVATE: the tester must be added as a collaborator to download
   release assets (or send the zip directly).
+
+## 2026-09-03 handoff (evening/night session, v0.3.5)
+
+Shipped in v0.3.5 (see CHANGELOG): FFB STRENGTH fixed (per-game plugin
+keys), FFB PEAK LIMIT, force law measured, AlternativeFFB=1 template,
+Exotica FFB (wheel output + crusnusa name spoof + wheel power 10 + x4),
+FFBReset.exe, out-of-process release, dinput8 preload (plugin out of the
+launcher), direct launch, Shift+F12, in-app updater (public repo, no
+token), real steering sensitivity (MIDV_STEER_GAIN), old DSP set names,
+pedal-stuck guard, virtual sequential shifter for Exotica (inert until
+manual is selectable), save_config merge fix, launch.log header.
+Open: ROADMAP "Open after the 2026-09-03 rig session" (Exotica overlay
+glitches = ours; USA draw distance unmeasured; Exotica manual = MAME
+gap; USA road specks). Rig config keys: exotica_gl (0 = MAME renderer),
+gamepatch_<rom>. Smoke install at E:/Games/CruisnCollection-smoke.
