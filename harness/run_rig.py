@@ -706,6 +706,89 @@ def ensure_ffb_guid(mame_dir=None):
     if saved and not (_ffb_ini_get(mame_dir, "DeviceGUID") or ""):
         _ffb_ini_set(mame_dir, "DeviceGUID", saved)
         print(f"FFB: restored wheel GUID {saved[:8]}... into FFBPlugin.ini")
+    normalize_ffb_guid(mame_dir)
+
+
+def sdl_joystick_guids(mame_dir=None):
+    """The joysticks as the FFB plugin's OWN SDL2.dll sees them:
+    [(name, guid_hex)]. The plugin picks its wheel by memcmp of DeviceGUID=
+    against SDL's 16-byte joystick GUID, and SDL changed that GUID's layout
+    in 2.26: bytes 2-3 became a CRC16 of the device name (older SDL leaves
+    them zero). The stock FFB Arcade Plugin shipped SDL 2.28 (Moza base =
+    030093e16e34...), FFB Plugin MAME ships SDL 2.24 (030000006e34...) -
+    the same wheel, two strings, and a GUID harvested under one plugin is
+    silent under the other. Asking the DLL beside vunit.exe is the only
+    format-proof answer. [] on any failure (no DLL, no devices, ctypes)."""
+    mame_dir = mame_dir or os.path.dirname(VUNIT)
+    dll_path = os.path.join(mame_dir, "SDL2.dll")
+    if not os.path.isfile(dll_path):
+        return []
+    try:
+        sdl = ctypes.CDLL(dll_path)
+
+        class GUID(ctypes.Structure):
+            _fields_ = [("data", ctypes.c_uint8 * 16)]
+
+        sdl.SDL_SetHint.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+        sdl.SDL_Init.argtypes = [ctypes.c_uint32]
+        sdl.SDL_Init.restype = ctypes.c_int
+        sdl.SDL_JoystickUpdate.restype = None
+        sdl.SDL_NumJoysticks.restype = ctypes.c_int
+        sdl.SDL_JoystickNameForIndex.argtypes = [ctypes.c_int]
+        sdl.SDL_JoystickNameForIndex.restype = ctypes.c_char_p
+        sdl.SDL_JoystickGetDeviceGUID.argtypes = [ctypes.c_int]
+        sdl.SDL_JoystickGetDeviceGUID.restype = GUID
+        sdl.SDL_JoystickGetGUIDString.argtypes = [GUID, ctypes.c_char_p,
+                                                 ctypes.c_int]
+        sdl.SDL_JoystickGetGUIDString.restype = None
+        sdl.SDL_Quit.restype = None
+        sdl.SDL_SetHint(b"SDL_JOYSTICK_RAWINPUT", b"0")   # as the plugin's DllMain
+        if sdl.SDL_Init(0x200) < 0:                       # SDL_INIT_JOYSTICK
+            return []
+        out = []
+        try:
+            sdl.SDL_JoystickUpdate()
+            for i in range(sdl.SDL_NumJoysticks()):
+                g = sdl.SDL_JoystickGetDeviceGUID(i)
+                buf = ctypes.create_string_buffer(64)
+                sdl.SDL_JoystickGetGUIDString(g, buf, 64)
+                name = sdl.SDL_JoystickNameForIndex(i) or b""
+                out.append((name.decode("utf-8", "replace"),
+                            buf.value.decode("ascii", "replace").lower()))
+        finally:
+            sdl.SDL_Quit()
+        return out
+    except Exception as e:
+        print(f"FFB: could not enumerate joysticks through {dll_path}: {e}")
+        return []
+
+
+def normalize_ffb_guid(mame_dir=None, progress=print):
+    """Rewrite DeviceGUID= as the exact string the plugin's shipped SDL2.dll
+    produces for that wheel (see sdl_joystick_guids). Matches on bus, vendor,
+    product and version - everything but the SDL-version-dependent bytes 2-3
+    - and only when exactly one connected device fits. Also updates the
+    remembered [ffb] device_guid when this is the launcher's own vunit
+    folder. Returns the GUID now in force ('' when none)."""
+    mame_dir = mame_dir or os.path.dirname(VUNIT)
+    cur = (_ffb_ini_get(mame_dir, "DeviceGUID") or "").strip().lower()
+    if len(cur) != 32:
+        return cur
+    devs = sdl_joystick_guids(mame_dir)
+    if not devs or any(g == cur for _, g in devs):
+        return cur                      # unknown, or already in this SDL's format
+    same = {g for _, g in devs if g[:4] == cur[:4] and g[8:] == cur[8:]}
+    if len(same) != 1:
+        return cur
+    new = same.pop()
+    _ffb_ini_set(mame_dir, "DeviceGUID", new)
+    if os.path.normcase(os.path.abspath(mame_dir)) == os.path.normcase(
+            os.path.abspath(os.path.dirname(VUNIT))):
+        _collection_ini_set("ffb", "device_guid", new)
+    name = next(n for n, g in devs if g == new)
+    progress(f"FFB: wheel GUID {cur[:8]}... rewritten as {new[:8]}... - the "
+             f"format of this plugin's SDL2.dll ({name})")
+    return new
 
 
 def import_previous_install(src, progress=print):

@@ -159,7 +159,13 @@ forces don't expire between the game's updates). If your wheel only pulls
 one way or feels weak, try `AlternativeFFB=1` — some bases (Moza,
 Thrustmaster) want it. Keep the four plugin files that come in the zip
 together; mixing a `dinput8.dll` from another plugin version with these
-`SDL2.dll` / `MAME64.dll` makes forces flaky.
+`SDL2.dll` / `MAME64.dll` makes forces flaky. One more reason: different
+`SDL2.dll` versions write the *same* wheel's GUID differently (two bytes
+of name checksum), and the plugin only drives an exact match. The
+launcher rewrites `DeviceGUID=` in the shipped SDL's format at every
+launch, so a wheel detected under an older version keeps working after
+an update — if you edit the line by hand, copy it from *this* version's
+`FFBlog.txt`.
 
 **FFB diagnostics** (when forces are missing or intermittent):
 `CruisnSetup.exe → FFB diagnostics` turns on two logs for every drive —
@@ -296,6 +302,12 @@ and so on).
   the wheel software. With FFB diagnostics on, the support bundle's
   trace shows it as rapid alternating kicks
   (`python harness/ffb_trace_report.py` on it).
+- **No force feedback in any game after updating, and `FFBlog.txt` says
+  "No haptic device available" right after listing your wheel** — the
+  saved wheel GUID is in another SDL version's format (see *Force
+  feedback*). The launcher fixes this by itself at launch when the wheel
+  is connected; if it persists, blank the `DeviceGUID=` line in
+  `FFBPlugin.ini` and run `CruisnSetup.exe → Detect wheel (FFB)` again.
 - **Force feedback comes and goes** — first make sure all four plugin files
   are the ones from the zip (no `dinput8.dll` from another version), then
   turn on *FFB diagnostics*, drive a minute, save a support bundle.

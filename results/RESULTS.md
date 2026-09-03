@@ -2474,3 +2474,61 @@ UseConstantInf=1, FeedbackLength<game>=500); make_release fetches the
 fork's LICENSE and credits it; [collection] ffb_constinf knob. The dev
 folder and the smoke install got the fork's files (stock 2.0.0.53
 backed up in mame-src/_plugin-backup-boomslangnz-2.0.0.53/).
+
+
+## 2026-09-03 - Exotica FFB survives the plugin switch; the fork's SDL formats GUIDs differently (FFB-silent regression caught before release)
+
+Question: did substituting FFB Plugin MAME (Endprodukt) lose Cruis'n
+Exotica's force feedback? The Exotica chain is game -> `wheel` output
+(midzeus.cpp, MIDZ_FFB_GAIN) -> MAME win32 output client with the id
+string spoofed to `crusnusa` (MIDV_OUTPUT_NAME) -> the plugin's Cruis'n
+USA handler. Only USA had been re-verified after the switch.
+
+Headless Exotica against the fork's files (scratch copy of vunit.exe +
+the fork's dinput8/SDL2/MAME64, Logging=1, MIDV_OUTPUT_NAME=crusnusa,
+MIDZ_FFB_GAIN=400, coinup.lua coin/start/gas + wheel sweep 128-96-128-160
+-128, 122 s): FFBlog `RomName = crusnusa / RunningFFB =
+RacingFullValueActive2`, **235 "got value" updates**, and the value
+histogram matches the game-side trace (MIDV_FFB_TRACE) one for one
+(43x252, 31x248, 28x4, 26x0, 14x244, 12x192 ...). The fork's handler is
+the stock one plus "0 stops the force", which for Exotica's held
+centering spring is the correct behaviour (stock left the last force
+standing at centre). Exotica FFB: kept.
+
+The same run said **"No haptic device available"** although the Moza was
+enumerated - because the scratch ini had DeviceGUID blank. Chasing why
+the enumerated GUID looked unfamiliar found a real regression:
+
+- SDL changed the joystick GUID layout in 2.26: bytes 2-3 carry a CRC16
+  of the device name (older SDL: zero). Stock FFB Arcade Plugin 2.0.0.53
+  ships SDL **2.28.5** -> Moza R12 Base = `030093e16e3400000600000000000000`;
+  FFB Plugin MAME 1.995 ships SDL **2.24.2** -> `030000006e3400000600000000000000`.
+  (The tester's Fanatec: `03001464b70e...` in his bundle, harvested under
+  the stock plugin.)
+- The plugin matches DeviceGUID= by `memcmp` of all 16 bytes (DllMain
+  initialize loop) -> any GUID harvested under the stock plugin never
+  matches under the fork -> "No haptic device available, FFB effects
+  will be disabled" -> FFB silent in **all four games**. This is also what
+  the tester's failed manual swap of the fork really was (not a partial
+  copy). The rig's dev folder and the smoke install were in that state
+  since the switch.
+
+Fix (run_rig.py): `sdl_joystick_guids(mame_dir)` loads the SDL2.dll
+beside vunit.exe through ctypes (SDL_JOYSTICK_RAWINPUT=0 like the plugin,
+SDL_Init(JOYSTICK), SDL_JoystickGetDeviceGUID + GetGUIDString, SDL_Quit)
+and `normalize_ffb_guid(mame_dir)` rewrites DeviceGUID= to that DLL's
+string for the one connected device that matches on bus/vendor/product/
+version (everything except bytes 2-3); called from `ensure_ffb_guid` at
+every launch, so it self-heals in either direction (and after future SDL
+bumps in the fork). Verified: dev folder and smoke install rewritten
+`030093e1... -> 03000000...`, [ffb] device_guid updated. Both SDL builds
+enumerated in one process for the record: 2.24 lists Stalk / R12 Base /
+DS-8X Shifter, 2.28 listed only the R12 Base (second SDL in the process;
+the string difference is the point).
+
+Re-run of the headless Exotica test with the rewritten GUID in the
+scratch ini: FFBlog **"Haptic joystick found: 1 / Name: MOZA R12 Base"**,
+`RomName = crusnusa / RunningFFB = RacingFullValueActive2`, 235 updates,
+Average speed 99.99% over 121 s (exit-time ACCESS VIOLATION afterwards =
+the known plugin teardown race; FFBReset.exe released the base). Exotica
+FFB through FFB Plugin MAME: proven end to end on the rig's hardware.

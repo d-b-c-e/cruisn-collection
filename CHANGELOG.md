@@ -5,6 +5,15 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Force feedback would have gone silent after this update for anyone
+  whose wheel was detected under the previous plugin** — fixed before it
+  shipped. The two plugins ship different SDL versions, which write the
+  wheel's GUID differently (two bytes of name checksum), and the plugin
+  compares the whole string. The launcher now rewrites `DeviceGUID=` in
+  the format of the `SDL2.dll` that actually sits beside `vunit.exe`, at
+  every launch, so no re-detection is needed. Cruis'n Exotica's force
+  feedback verified working through the new plugin.
+
 - **SETTINGS → FFB DIAGNOSTICS** (on/off) and **SETTINGS → SAVE SUPPORT
   BUNDLE** in the launcher, so a tester never has to leave it; the bundle
   folder opens when done. The setup window keeps its buttons.

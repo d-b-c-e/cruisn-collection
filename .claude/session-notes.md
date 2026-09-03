@@ -933,3 +933,17 @@ Open: ROADMAP "Open after the 2026-09-03 rig session" (Exotica overlay
 glitches = ours; USA draw distance unmeasured; Exotica manual = MAME
 gap; USA road specks). Rig config keys: exotica_gl (0 = MAME renderer),
 gamepatch_<rom>. Smoke install at E:/Games/CruisnCollection-smoke.
+
+Later 2026-09-03 (unreleased, on master): plugin switched to Endprodukt's
+FFB Plugin MAME; FFB knobs (ffb_slew/rumble/alt/power/hold/constinf);
+wheelpos in the trace + report/plot in the bundle; SETTINGS rows FFB
+DIAGNOSTICS + SAVE SUPPORT BUNDLE. **Exotica FFB verified through the
+fork** (235 updates, one-for-one with the trace). **Regression caught:**
+the fork's SDL 2.24 writes joystick GUIDs without the name CRC that the
+stock plugin's SDL 2.28 wrote in bytes 2-3, so every saved DeviceGUID
+stopped matching -> "No haptic device available" -> FFB silent
+everywhere (this was the tester's "failed swap"). run_rig
+normalize_ffb_guid() (ctypes on the shipped SDL2.dll, from
+ensure_ffb_guid at each launch) rewrites the GUID; dev folder + smoke
+install fixed. v0.3.6 not yet tagged - it must carry this fix together
+with the plugin switch.
