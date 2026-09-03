@@ -395,7 +395,7 @@ class Shell:
                   (0.75, 0.75, 0.8, 1.0))
 
     def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans,
-                      scale, t):
+                      scale, t, version="", notice=""):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -413,11 +413,12 @@ class Shell:
                 ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
                  else "< SEQUENTIAL >"),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
+                ("CHECK FOR UPDATES", version),
                 ("BACK", "")]
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.35 + 0.057 * i)
+            y = self.h * (0.34 + 0.052 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -443,8 +444,13 @@ class Shell:
                "MODE - STAYS AUTOMATIC",
             7: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
                "SKIPPED STEPS KEEP THEIR SAVED BINDING",
+            8: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
+               "NEEDS THE GITHUB TOKEN FROM THE SETUP WINDOW (UPDATES...)",
         }
-        if ssel in hints:
+        if notice:
+            self.center_text(notice, self.h // 40, self.h * 0.86,
+                             (1.0, 0.85, 0.4, 1.0))
+        elif ssel in hints:
             self.center_text(hints[ssel], self.h // 48, self.h * 0.86,
                              (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
@@ -865,6 +871,65 @@ def render_shot(path):
     print("wrote", path)
 
 
+def update_step(upd):
+    """SETTINGS -> CHECK FOR UPDATES, one Enter per stage: check -> (newer)
+    download -> install. `upd` is shared with the main loop, which shows
+    upd["msg"] and quits once upd["stage"] == "applied"."""
+    import threading
+    import updater
+
+    def say(msg, secs=20):
+        upd["msg"] = msg.upper()[:120]
+        upd["until"] = time.time() + secs
+
+    stage = upd.get("stage", "idle")
+    if stage in ("checking", "downloading", "applied"):
+        return
+    if stage == "available":
+        if not updater.frozen():
+            say("running from source - update with git pull")
+            return
+        upd["stage"] = "downloading"
+
+        def dl():
+            try:
+                info = upd["info"]
+                last = [-1]
+
+                def prog(done, total):
+                    pct = int(done * 100 / total) if total else 0
+                    if pct != last[0]:
+                        last[0] = pct
+                        say(f"downloading {info['tag']}... {pct}%", 60)
+                z = updater.download(info, progress=prog)
+                say("installing - the launcher will close and reopen", 60)
+                updater.apply(z)
+                upd["stage"] = "applied"
+            except Exception as e:
+                upd["stage"] = "idle"
+                say(f"update failed: {e}", 30)
+        threading.Thread(target=dl, daemon=True).start()
+        return
+    upd["stage"] = "checking"
+    say("checking github...", 30)
+
+    def chk():
+        try:
+            info = updater.check()
+            upd["info"] = info
+            if info["newer"]:
+                upd["stage"] = "available"
+                say(f"{info['tag']} available ({info['size'] / 1e6:.0f} MB)"
+                    " - press enter again to download and install", 60)
+            else:
+                upd["stage"] = "idle"
+                say(f"up to date ({updater.current_version()})")
+        except Exception as e:
+            upd["stage"] = "idle"
+            say(str(e), 30)
+    threading.Thread(target=chk, daemon=True).start()
+
+
 GAME_ALIASES = {
     "usa": "crusnusa", "crusnusa": "crusnusa",
     "world": "crusnwld", "crusnwld": "crusnwld", "crusnwld24": "crusnwld",
@@ -1244,6 +1309,12 @@ def main():
     launching = None     # in-flight launch box (background thread)
     notice = ""          # transient menu status line
     notice_until = 0.0
+    upd = {"stage": "idle", "msg": "", "until": 0.0, "info": None}
+    try:
+        import updater
+        upd_version = updater.current_version().upper()
+    except Exception:
+        upd_version = ""
     game_proc = None     # last vunit process, until teardown completes
     mode = "menu"        # menu | game | settings | wizard
     row = 0              # menu: 0 = game cards, 1 = SETTINGS
@@ -1447,10 +1518,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 9
+                    ssel = (ssel - 1) % 10
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 9
+                    ssel = (ssel + 1) % 10
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -1507,6 +1578,9 @@ def main():
                         audio.blip("nav")
                     elif ssel in (2, 4, 5):
                         audio.blip("nav")   # adjust with < > arrows
+                    elif ssel == 8:
+                        audio.blip("nav")
+                        update_step(upd)
                     elif ssel == 7:
                         mode = "wizard"
                         wiz_idx = 0
@@ -1656,11 +1730,16 @@ def main():
                               wiz_steps[wiz_idx][2],
                               max(0.0, wiz_cool - time.time()))
         elif mode == "settings":
+            if upd["stage"] == "applied":
+                glfw.set_window_should_close(win, True)   # updater takes over
             shell.draw_settings(ssel, state["crt"], state["crackfill"],
                                 state["margin"], state.get("ffb", 100),
                                 state.get("marginfill", True),
                                 state.get("transmission", "hpattern"),
-                                int(state.get("scale", 4)), t)
+                                int(state.get("scale", 4)), t,
+                                version=upd_version,
+                                notice=upd["msg"] if time.time() < upd["until"]
+                                else "")
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)

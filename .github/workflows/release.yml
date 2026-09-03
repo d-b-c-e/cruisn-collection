@@ -76,7 +76,8 @@ jobs:
       - name: Assemble release
         run: |
           $env:CRUISN_VUNIT = "$PWD\mame-src\vunit.exe"
-          .\make_release.ps1
+          $v = if ("${{ github.ref }}".StartsWith("refs/tags/")) { "${{ github.ref_name }}" } else { "dev-" + "${{ github.sha }}".Substring(0, 7) }
+          .\make_release.ps1 -Version $v
 
       - name: Rename zip with version
         run: |

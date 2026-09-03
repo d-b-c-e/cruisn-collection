@@ -15,6 +15,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   exit-time plugin race) is ended after 15 s, and any left-over emulator
   process is ended before a launch - either would keep the wheel and
   MAME's output window, leaving the next game without forces.
+- **In-app updates**: `CruisnSetup.exe -> Updates...` (and SETTINGS ->
+  CHECK FOR UPDATES in the launcher) checks GitHub Releases, downloads the
+  newer zip, closes the launcher, installs over the folder (rig/ and
+  roms/ untouched) and reopens it. Needs a one-time fine-grained GitHub
+  token (private repository); the zip now carries `version.txt`.
 - Support bundle records running emulator processes (`processes.txt`).
 - INSTALL: troubleshooting entry for "FFB works once, then gone".
 

@@ -2081,3 +2081,25 @@ exe) ends left-over copies before a launch - live-tested against a
 deliberate headless zombie (pid ended, none remaining). Support bundle
 adds `processes.txt`. Not reproducible on the rig; verification is the
 tester's next session.
+
+
+## 2026-09-03 - in-app updates (GitHub Releases, private repo)
+
+`harness/updater.py`: check() hits `releases/latest` with a fine-grained
+PAT (Contents: read-only on this repo; testers are collaborators) stored
+in rig/collection.ini [update] token; version from `version.txt` that
+make_release.ps1 now stamps (`-Version`, CI passes the tag; "dev" from
+source, never offered an install). download() takes GitHub's asset
+redirect by hand and fetches the CDN URL WITHOUT the Authorization header
+(the CDN rejects two credentials) - verified against the real v0.3.2
+asset: 89,344,636 bytes, exact. apply() writes rig/update/apply.ps1 and
+starts it with CREATE_NO_WINDOW (a DETACHED_PROCESS powershell never
+runs - no console host; that cost one silent failure): waits up to 120 s
+for every process running from the install folder to exit, Expand-Archive,
+robocopy /E /XD rig roms over the folder, cleanup, Start-Process the
+launcher. Fake-install test: exe replaced, version.txt stamped, rig/ and
+roms/ untouched, extract dir and zip removed. Surfaces: setup window
+"Updates..." (token entry, check, download+install with progress; closes
+itself, the script waits for the launcher too) and SETTINGS -> CHECK FOR
+UPDATES (Enter per stage, notice line; the shell quits once the script is
+launched). Token never leaves the machine except to api.github.com.

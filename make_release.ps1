@@ -10,7 +10,7 @@
 #   - vunit.exe (statically-linked; GPL source = patch\ + source\ + MAME)
 #   - FFB Arcade Plugin files (GPL-3.0, license included, GUID blanked)
 #   - NVRAM fixtures, setup.ps1, docs
-param([switch]$NoMedia)
+param([switch]$NoMedia, [string]$Version = "dev")
 $ErrorActionPreference = "Stop"
 $root   = $PSScriptRoot
 $vunit  = if ($env:CRUISN_VUNIT) { $env:CRUISN_VUNIT } else { "E:\Source\mame-src\vunit.exe" }
@@ -60,6 +60,7 @@ New-Item -ItemType Directory -Force (Join-Path $rel "roms") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $rel "source") | Out-Null
 foreach ($d in "harness", "gpu", "lua") { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $rel "source\$d") }
 Copy-Item (Join-Path $root "setup.ps1") $rel
+$Version | Set-Content (Join-Path $rel "version.txt")   # the in-app updater compares this with GitHub
 
 # 3. emulator + FFB plugin
 Copy-Item $vunit (Join-Path $rel "vunit.exe")

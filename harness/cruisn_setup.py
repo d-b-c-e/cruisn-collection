@@ -245,7 +245,7 @@ def run_gui():
     envrows = []
     ENV_LABELS = ["emulator (vunit.exe)", "DSP boot ROMs",
                   "force feedback plugin", "force feedback wheel",
-                  "FFB diagnostics"]
+                  "FFB diagnostics", "version / updates"]
     for label in ENV_LABELS:
         dot = tk.Label(frame, text="?", width=2, bg=BG, font=("Consolas", 13))
         dot.grid(row=r, column=0, sticky="w")
@@ -276,6 +276,11 @@ def run_gui():
                               "missing": "#666078"}[state])
             det.configure(text=detail)
         status = {label: (ok, detail) for label, ok, detail in env_status()}
+        try:
+            import updater
+            status["version / updates"] = updater.status_row()
+        except Exception as e:
+            status["version / updates"] = (False, f"(updater unavailable: {e})")
         for (dot, det), label in zip(envrows, ENV_LABELS):
             if label not in status:      # plugin absent: no wheel row
                 dot.configure(text="-", fg="#666078")
@@ -438,6 +443,104 @@ def run_gui():
             if on else "FFB diagnostics off.")
         refresh()
 
+    def updates():
+        import threading
+        import updater
+        top = tk.Toplevel(root)
+        top.title("Updates")
+        top.configure(bg=BG)
+        top.geometry("620x300")
+        tk.Label(top, text=f"Installed: {updater.current_version()}", bg=BG,
+                 fg=ACC, font=("Bahnschrift", 13, "bold")).pack(pady=(14, 4))
+        tk.Label(top, bg=BG, fg=FG, justify="left", wraplength=580,
+                 font=("Bahnschrift", 10), text=(
+                     "The project is private on GitHub, so updates need a "
+                     "personal access token (one minute, once): GitHub -> "
+                     "Settings -> Developer settings -> Personal access "
+                     "tokens -> Fine-grained -> Generate. Repository access: "
+                     "only d-b-c-e/cruisn-collection. Permissions: Contents "
+                     "= Read-only. Paste it here.")).pack(padx=16, pady=4)
+        row = tk.Frame(top, bg=BG)
+        row.pack(fill="x", padx=16, pady=6)
+        tok_var = tk.StringVar(value=updater.token())
+        ent = tk.Entry(row, textvariable=tok_var, show="*", width=52,
+                       font=("Consolas", 10))
+        ent.pack(side="left", padx=(0, 8))
+        result = tk.Label(top, text="", bg=BG, fg=FG, wraplength=580,
+                          font=("Bahnschrift", 10))
+        result.pack(padx=16, pady=6)
+        found = {}
+
+        def save():
+            updater.set_token(tok_var.get())
+            result.configure(text="token saved" if tok_var.get().strip()
+                             else "token cleared")
+            refresh()
+
+        def check_now():
+            updater.set_token(tok_var.get())
+
+            def work():
+                try:
+                    info = updater.check()
+                    found.clear()
+                    found.update(info)
+                    mb = info["size"] / 1e6
+                    if info["newer"]:
+                        msg = (f"{info['tag']} is available ({mb:.0f} MB). "
+                               "Download and install closes the launcher "
+                               "and this window, installs, and reopens the "
+                               "launcher. Your ROMs and settings are kept.")
+                        install_btn.configure(state="normal")
+                    else:
+                        msg = (f"up to date ({updater.current_version()}; "
+                               f"latest is {info['tag']})")
+                    top.after(0, lambda: result.configure(text=msg))
+                except Exception as e:
+                    top.after(0, lambda: result.configure(text=str(e)))
+                top.after(0, refresh)
+
+            result.configure(text="checking GitHub...")
+            threading.Thread(target=work, daemon=True).start()
+
+        def install_now():
+            if not found:
+                return
+            if not updater.frozen():
+                result.configure(text="running from source - use git pull")
+                return
+            install_btn.configure(state="disabled")
+
+            def prog(done, total):
+                pct = int(done * 100 / total) if total else 0
+                top.after(0, lambda: result.configure(
+                    text=f"downloading {found['tag']}... {pct}%"))
+
+            def work():
+                try:
+                    z = updater.download(found, progress=prog)
+                    top.after(0, lambda: result.configure(
+                        text="installing - the launcher will reopen"))
+                    updater.apply(z)
+                    top.after(800, root.destroy)
+                except Exception as e:
+                    top.after(0, lambda: result.configure(text=f"update failed: {e}"))
+                    top.after(0, lambda: install_btn.configure(state="normal"))
+
+            threading.Thread(target=work, daemon=True).start()
+
+        brow = tk.Frame(top, bg=BG)
+        brow.pack(pady=8)
+        tk.Button(brow, text="Save token", command=save, **style).pack(
+            side="left", padx=6)
+        tk.Button(brow, text="Check for updates", command=check_now,
+                  **style).pack(side="left", padx=6)
+        install_btn = tk.Button(brow, text="Download and install",
+                                command=install_now, state="disabled", **style)
+        install_btn.pack(side="left", padx=6)
+
+    tk.Button(btns, text="Updates...", command=updates,
+              **style).pack(side="left", padx=6)
     tk.Button(btns, text="Detect wheel (FFB)", command=detect_wheel,
               **style).pack(side="left", padx=6)
     tk.Button(btns, text="FFB diagnostics", command=toggle_diag,
