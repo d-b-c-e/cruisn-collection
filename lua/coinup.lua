@@ -49,8 +49,8 @@ local function find_fields()
                 coin_f = f
             elseif f.type == ioport:token_to_input_type("START1") then
                 start_f = f
-            elseif tag == ":ACCEL" then
-                gas_f = f
+            elseif tag == ":ACCEL" or (tag == ":ANALOG2" and not gas_f) then
+                gas_f = f            -- V-Unit :ACCEL; Exotica gas on :ANALOG2
             elseif tag == ":WHEEL" or (tag == ":ANALOG3" and not wheel_f) then
                 wheel_f = f          -- V-Unit :WHEEL; Exotica steers on :ANALOG3
             end

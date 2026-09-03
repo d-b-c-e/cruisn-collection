@@ -248,6 +248,11 @@ and so on).
   too (arrows for the wheel, the gas/brake keys for the pedals).
 - **Cruis'n World says "2.4 ROMs not found"** — add `crusnwld24.zip` beside
   `crusnwld.zip` (or use a merged set); see the ROM table.
+- **`launch.log` says "ROM NEEDS REDUMP WARNING: the machine might not
+  run correctly"** — MAME's standard note about the DSP boot ROM's known
+  checksum, printed at exit; harmless. The on-screen version of that
+  warning is the one the launcher skips. The "Average speed" line after
+  it is the useful part.
 - **Which version am I on?** The setup window's *version / updates* row
   says (folder names can lie after unzipping over an old folder), and
   the support bundle includes `version.txt`.

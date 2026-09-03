@@ -5,6 +5,14 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## v0.3.5 — 2026-09-03
 
+- **The FFB plugin was loading itself into the launcher.** Its
+  `dinput8.dll` sits beside the launcher, and the launcher's joystick
+  library asks Windows for `dinput8.dll` by name - so a plugin instance
+  ran inside the launcher for the whole session, enumerating the wheel
+  (a tester's FFBlog shows "process name: CruisnCollection.exe"). The
+  launcher now pre-loads the system DLL, so the plugin only ever runs
+  inside the game. Very likely the real "FFB works once per session"
+  cause; the v0.3.4 measures stay as belt and braces.
 - **FFB STRENGTH never actually worked.** The plugin's Cruis'n handlers
   read per-game keys (`MaxForceCrusnUSA`, `AlternativeMaxForceLeftCrusnWld`,
   ...); the launcher only scaled the bare `MaxForce` keys, so every game

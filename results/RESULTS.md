@@ -2196,3 +2196,36 @@ now and needs re-tuning. His FFBlog also shows the plugin found the
 FANATEC Wheel (haptic), hooked crusnusa as "RacingFullValueActive2", gain
 100, autocenter off - the hookup was fine; the level was the problem.
 Support bundle now carries version.txt (folder names lie).
+
+
+## 2026-09-03 - the plugin runs inside the launcher (FFBlog); Exotica motor register found
+
+Tester's FFBlog.txt (v0.3.1 files): after the vunit.exe block, dozens of
+"DLLMAIN ENTERED / process name: ...CruisnCollection.exe" entries and a
+"numJoysticks =" enumeration IN THE LAUNCHER PROCESS. The plugin's
+dinput8.dll sits beside the frozen launcher; glfw's joystick backend
+LoadLibrary("dinput8.dll") and the loader's search order hands it the
+app-folder copy -> a plugin instance with its own FFB thread lives in the
+launcher for the whole session. That is the cleanest explanation yet for
+"FFB on the first game per launcher session only" (v0.3.4's out-of-process
+release and stale-process guard stay). Fix: collection.py pre-loads
+%SystemRoot%\System32\dinput8.dll by full path before glfw init; a later
+load by name resolves to the already-loaded module. (A python.exe test
+cannot reproduce the frozen search order - app dir first - so the proof
+is the next tester FFBlog: no CruisnCollection.exe entries.)
+
+Also in that log: the plugin found "FANATEC Wheel" as haptic, hooked
+crusnusa as RacingFullValueActive2, gain 100, autocenter off - hookup
+fine; level was the per-game-key bug.
+
+Exotica motor: MIDZ_IOLOG (env-gated write log on the LED/lamp board,
+analog board, disk ASICs, keypad select) during a driven race with the
+wheel sweep on :ANALOG3 (coinup.lua learned Exotica's tags: ANALOG3
+wheel, ANALOG2 gas): `crusnexo_leds_w` offset 0 - "unknown purpose" in
+MAME - 8016 writes, 53 distinct values, and they track the sweep at 57 Hz
+frame timing: wheel to 96 (-32) -> +10..+13 HELD (275 writes) until the
+wheel returns; to 160 (+32) -> -12 held; center -> -1/-2 chatter. Sign
+opposite to displacement, magnitude ~0.37/count, held while displaced: a
+centering SPRING (the V-Unit games send decaying kicks instead). Race
+start writes +33/-7 plateaus. Now exposed as output "wheel" on
+crusnexo_state (output_finder, same MIDV_FFB_CLAMP treatment).
