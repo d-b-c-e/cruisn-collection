@@ -2049,3 +2049,35 @@ INSTALL keys table updated.
 identifier already maps it to `tms320c32` by content (verified on the
 rig's own 2022 zip); `boot_rom_available` now also copies an old-name zip
 to the 0.286 name at launch (`BOOT_ROM_OLD_NAMES`), tested on a temp dir.
+
+
+## 2026-09-03 - tester FFB "works once per session" (Fanatec CSL DD): out-of-process release
+
+Report sequence: FFB present on the first USA launch; exit; no FFB in any
+game after; wheel power-cycle no help; Detect wheel no help; running
+another emulator (Model 2 + its plugin copy) restores it for exactly one
+of our launches again. Reading: the broken state lives in OUR long-lived
+launcher process. The only exit-time action no other emulator performs is
+`release_ffb` (G8): ctypes-loads the plugin's SDL2.dll into the shell,
+SDL_Init(JOYSTICK|HAPTIC), opens every haptic device (SDL's DirectInput
+backend = exclusive+background acquire, DISFFC_RESET, gain 10000,
+autocenter off), StopAll, close, SDL_Quit. On the rig's Moza that leaves
+nothing behind; on the Fanatec driver it evidently does (exclusive
+acquire or SDL device state surviving SDL_Quit) until the process dies -
+consistent with "first launch per shell session works" and with Detect
+(shell still open behind the setup window) not helping. Plugin binaries
+confirm the two handles at stake: MAME64.dll finds MAME's output window
+by name (`FindWindowW("MAMEOutput")`, `MAMEOutputRegister`), dinput8.dll
+opens the wheel via `SDL_HapticOpenFromJoystick`.
+
+Changes: `release_ffb_detached` runs the release in a throwaway process
+(`CruisnCollection.exe --release-ffb` when frozen, `run_rig.py
+--release-ffb` from source; falls back in-process if it cannot start),
+used after every exit (shell reap thread, direct launch, blocking
+launcher) and BEFORE every launch (the "other emulator" effect, made
+routine; ~1 s). `wait_or_kill` ends a game process still alive 15 s after
+its window closed; `kill_stale_vunit` (EnumProcesses + image path = our
+exe) ends left-over copies before a launch - live-tested against a
+deliberate headless zombie (pid ended, none remaining). Support bundle
+adds `processes.txt`. Not reproducible on the rig; verification is the
+tester's next session.

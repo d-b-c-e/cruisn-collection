@@ -3,6 +3,21 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## v0.3.4 — 2026-09-03
+
+- **Force feedback lost after the first game of a session** (tester,
+  Fanatec CSL DD; came back only after running another emulator): the
+  post-exit force release used to run inside the long-lived launcher
+  process, loading the plugin's SDL2 and opening the wheel's haptic device
+  there. It now runs in a throwaway process, and the same clean
+  open/stop/close runs before every launch.
+- A game process that hangs after closing its window (the known
+  exit-time plugin race) is ended after 15 s, and any left-over emulator
+  process is ended before a launch - either would keep the wheel and
+  MAME's output window, leaving the next game without forces.
+- Support bundle records running emulator processes (`processes.txt`).
+- INSTALL: troubleshooting entry for "FFB works once, then gone".
+
 ## v0.3.3 — 2026-09-02
 
 - **Direct launch**: `CruisnCollection.exe --game usa|world|offroad|exotica`

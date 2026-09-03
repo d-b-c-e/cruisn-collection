@@ -112,6 +112,16 @@ def collect(rom="crusnusa", progress=print):
     # FFB diagnostics (CruisnSetup "FFB diagnostics: ON") + last launch
     add_file("ffb_trace.csv", os.path.join(run_rig.POC, "rig", "ffb_trace.csv"))
     add_file("launch.log", os.path.join(run_rig.POC, "rig", "launch.log"))
+    # a left-over emulator process is the "FFB worked once, then never
+    # again" signature (it keeps the wheel + MAME's output window)
+    try:
+        procs = run_rig.vunit_processes()
+        add_text("processes.txt",
+                 f"vunit.exe copies running: {len(procs)}" + chr(10)
+                 + chr(10).join(f"  pid {pid}  {path}" for pid, path in procs)
+                 + chr(10))
+    except Exception as e:   # never let diagnostics break the bundle
+        add_text("processes.txt", f"(process check failed: {e})" + chr(10))
     return files
 
 

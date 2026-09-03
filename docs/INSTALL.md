@@ -202,6 +202,16 @@ and so on).
   launcher.
 - **Wheel steers but never pushes back** — force feedback isn't configured
   yet: see *Force feedback* above.
+- **Force feedback works for the first game, then is gone** (no forces
+  in any game after you exit one, even after power-cycling the wheel;
+  another emulator brings them back) — v0.3.4 fixes the cause we found:
+  leftover forces are now stopped in a throwaway helper process, a game
+  process that hangs on exit is ended, and the wheel gets a clean
+  open/close before every launch. If it still happens: close the
+  launcher completely and reopen it (do forces return for one game?
+  tell us), turn on *FFB diagnostics* in the setup window, reproduce,
+  then *Save support bundle* — it now records whether an emulator
+  process was still running.
 - **Force feedback comes and goes** — first make sure all four plugin files
   are the ones from the zip (no `dinput8.dll` from another version), then
   turn on *FFB diagnostics*, drive a minute, save a support bundle.

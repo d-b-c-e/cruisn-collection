@@ -903,15 +903,16 @@ def direct_launch(card, windowed=False):
         margin=state["margin"], ffb=state.get("ffb", 100),
         marginfill=state.get("marginfill", True))
     gaks = ctypes.windll.user32.GetAsyncKeyState
-    while proc.poll() is None:
+    while proc.poll() is None and run_rig.u32.IsWindow(_hwnd):
         # Shift+F12 = quit (same key as in the launcher); WM_CLOSE is the
         # clean path (forces released, NVRAM written)
         if (gaks(0x7B) & 0x8000) and (gaks(0x10) & 0x8000):
             ctypes.windll.user32.PostMessageW(
                 ctypes.c_void_p(_hwnd), 0x0010, 0, 0)
         time.sleep(0.25)
-    run_rig.release_ffb(os.path.dirname(run_rig.VUNIT))   # never strand forces
-    return proc.returncode
+    rc = run_rig.wait_or_kill(proc)   # a hung teardown must not keep the wheel
+    run_rig.release_ffb_detached(os.path.dirname(run_rig.VUNIT))
+    return rc
 
 
 def main():
@@ -919,6 +920,10 @@ def main():
     ap.add_argument("--game", metavar="NAME",
                     help="launch one game directly, no launcher screen: "
                          "usa, world, offroad, exotica (or MAME names)")
+    ap.add_argument("--release-ffb", action="store_true",
+                    help="stop any force-feedback effect left on the wheel "
+                         "and exit (the launcher runs this in a throwaway "
+                         "process after every game)")
     ap.add_argument("--shot", metavar="PNG",
                     help="render one offscreen frame and exit")
     ap.add_argument("--windowed", action="store_true",
@@ -927,6 +932,9 @@ def main():
                     help="print connected joysticks as JSON and exit "
                          "(support-bundle diagnostics)")
     args = ap.parse_args()
+    if args.release_ffb:
+        run_rig.release_ffb(os.path.dirname(run_rig.VUNIT))
+        return 0
     if args.game:
         card = resolve_game_alias(args.game)
         if not card:
@@ -1752,12 +1760,15 @@ def main():
                         if unresp >= 2:
                             break
                     time.sleep(0.25)
-                threading.Thread(target=proc.wait, daemon=True).start()
                 # G8: fast-exit skips the FFB plugin's teardown, which is
-                # what used to disarm the wheel - stop any stranded forces
-                threading.Thread(target=run_rig.release_ffb,
-                                 args=(os.path.dirname(run_rig.VUNIT),),
-                                 daemon=True).start()
+                # what used to disarm the wheel - stop any stranded forces.
+                # First make sure the process is really gone: a teardown
+                # that hangs keeps the wheel's FFB device (and MAME's
+                # output window) - the next game steers but has no FFB.
+                def _reap(p=proc):
+                    run_rig.wait_or_kill(p)
+                    run_rig.release_ffb_detached(os.path.dirname(run_rig.VUNIT))
+                threading.Thread(target=_reap, daemon=True).start()
                 keeper.game_active.clear()   # game gone: zero the dash again
                 # joystick states changed while we were blocked (buttons
                 # pressed in-game) - rebaseline or the first poll back

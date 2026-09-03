@@ -187,6 +187,92 @@ def release_ffb(mame_dir):
         return False
 
 
+def vunit_processes(exe=None):
+    """[(pid, path)] of every running copy of our emulator exe (by image
+    path, so a developer's other MAME builds are never touched)."""
+    exe = os.path.normcase(os.path.abspath(exe or VUNIT))
+    psapi, k32 = ctypes.windll.psapi, ctypes.windll.kernel32
+    arr = (wt.DWORD * 4096)()
+    got = wt.DWORD()
+    if not psapi.EnumProcesses(arr, ctypes.sizeof(arr), ctypes.byref(got)):
+        return []
+    out = []
+    buf = ctypes.create_unicode_buffer(1024)
+    for pid in arr[:got.value // ctypes.sizeof(wt.DWORD)]:
+        if pid == os.getpid():
+            continue
+        h = k32.OpenProcess(0x1000, False, pid)   # QUERY_LIMITED_INFORMATION
+        if not h:
+            continue
+        try:
+            size = wt.DWORD(len(buf))
+            if k32.QueryFullProcessImageNameW(h, 0, buf, ctypes.byref(size)):
+                if os.path.normcase(buf.value) == exe:
+                    out.append((int(pid), buf.value))
+        finally:
+            k32.CloseHandle(h)
+    return out
+
+
+def release_ffb_detached(mame_dir, timeout=20.0):
+    """release_ffb() in a throwaway process. Loading the plugin's SDL2 into
+    the long-lived launcher and opening the wheel's haptic device there
+    (exclusive DirectInput acquire) is the one thing we do at exit that no
+    other emulator does - and a tester's Fanatec CSL DD lost force
+    feedback after the first exit of every launcher session, coming back
+    only after another emulator's plugin had opened and closed the wheel
+    in its own process. A short-lived process cannot keep anything.
+    Falls back to the in-process release if the helper cannot start."""
+    if getattr(sys, "frozen", False):
+        cmd = [sys.executable, "--release-ffb"]
+    else:
+        cmd = [sys.executable, os.path.abspath(__file__), "--release-ffb"]
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True,
+                           timeout=timeout, cwd=mame_dir,
+                           env=dict(os.environ, MIDV_MAME=os.path.join(
+                               mame_dir, os.path.basename(VUNIT))))
+        return r.returncode == 0
+    except (OSError, subprocess.TimeoutExpired):
+        return release_ffb(mame_dir)
+
+
+def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
+    """Wait for a game process that has already closed its window; a
+    teardown that hangs past `timeout` (plugin DLL / crash-at-exit race)
+    is terminated so it cannot hold the wheel for the next launch."""
+    try:
+        return proc.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        print(f"emulator: still running {timeout:.0f} s after its window "
+              "closed - terminating (would hold the wheel's FFB)")
+        proc.kill()
+        return proc.wait()
+
+
+def kill_stale_vunit(exe=None, why="stale"):
+    """End any copy of our emulator still running from an earlier launch
+    (a crash-at-exit or a hung plugin teardown leaves a zombie that keeps
+    the wheel's force-feedback device and MAME's output window - the next
+    game then steers but has no FFB until reboot). Returns the pids ended.
+    Follow with release_ffb(): a killed process never stops its effects."""
+    k32 = ctypes.windll.kernel32
+    ended = []
+    for pid, _path in vunit_processes(exe):
+        h = k32.OpenProcess(0x0001 | 0x100000, False, pid)  # TERMINATE|SYNC
+        if not h:
+            continue
+        try:
+            if k32.TerminateProcess(h, 1):
+                k32.WaitForSingleObject(h, 5000)
+                ended.append(pid)
+        finally:
+            k32.CloseHandle(h)
+    if ended:
+        print(f"emulator: ended {why} vunit.exe process(es) {ended}")
+    return ended
+
+
 def make_fullscreen(hwnd):
     """Strip the frame and span the window's monitor; the GL overlay tracks
     the client rect every present, so it follows to fullscreen on its own."""
@@ -1152,6 +1238,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # (the plugin reads it at load). None = leave whatever's there untouched.
     apply_ffb_strength(os.path.dirname(mame), ffb)
     ensure_ffb_guid(os.path.dirname(mame))
+    kill_stale_vunit(mame, why="left-over")
+    release_ffb_detached(os.path.dirname(mame))
     # Game-code widescreen: when the presentation is full 16:9 and a per-game
     # widescreen patch exists (patch/game/<rom>-widescreen.txt), apply it via
     # MIDV_PATCH (memory-only at reset; ROM files untouched). The game then
@@ -1331,8 +1419,8 @@ def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
     """Blocking wrapper: launch and wait for full process exit."""
     proc, _ = launch_game_async(rom=rom, scale=scale, windowed=windowed,
                                 crt=crt, crackfill=crackfill, ffb=ffb, mame=mame)
-    rc = proc.wait()
-    release_ffb(os.path.dirname(mame))   # G8: never strand wheel forces
+    rc = wait_or_kill(proc, mame)
+    release_ffb_detached(os.path.dirname(mame))   # G8: never strand forces
     return rc
 
 
@@ -1345,9 +1433,17 @@ def main():
                     help="keep MAME's maximized window (skip borderless fullscreen)")
     ap.add_argument("--crt", action="store_true",
                     help="start with the CRT pass on (F9 toggles live)")
+    ap.add_argument("--release-ffb", action="store_true",
+                    help="stop any force-feedback effect left on the wheel "
+                         "and exit (run in a throwaway process by the "
+                         "launcher after every game)")
     ap.add_argument("--ffb", type=int, default=None,
                     help="FFB overall strength 0-100%% (patches FFBPlugin.ini)")
     args = ap.parse_args()
+    if args.release_ffb:
+        ok = release_ffb(os.path.dirname(args.mame))
+        print("FFB release:", "effects stopped" if ok else "no haptic device")
+        return 0
     return launch_game(rom=args.rom, scale=args.scale, windowed=args.windowed,
                        crt=args.crt, ffb=args.ffb, mame=args.mame)
 
