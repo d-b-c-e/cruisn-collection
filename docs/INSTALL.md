@@ -195,6 +195,15 @@ every launch):
 Change one at a time and drive a minute of USA; the launch log's first
 line shows what was applied.
 
+**Show us what the wheel is doing**: turn on *FFB diagnostics* in the
+setup window, drive the minute, then *Save support bundle*. Besides the
+raw trace, the bundle now carries `ffb_trace_report.txt` and
+`ffb_trace.png`: the force the game sent and the **wheel position it read
+back**, on one timeline. An oscillating wheel shows as the blue position
+line swinging in step with the orange force kicks, and the report states
+the swing rate and amplitude. That is the whole force loop as the game
+sees it; only the plugin-to-driver hop is outside our view.
+
 ### Steering feel: sensitivity and curve
 
 Each game card has two steering rows (press Enter on a game, they sit

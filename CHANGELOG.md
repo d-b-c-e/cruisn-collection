@@ -5,6 +5,12 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **FFB diagnostics now capture the whole loop**: the trace records the
+  steering input the game reads (`wheelpos` rows) next to the force it
+  sends; the support bundle adds `ffb_trace_report.txt` (peaks, kicks,
+  and now wheel swing rate/amplitude with a verdict) and `ffb_trace.png`
+  (force and wheel position on one timeline, last 20 s).
+
 - **Force-feedback plugin switched to FFB Plugin MAME** (Endprodukt's
   GPL-3 fork of the FFB Arcade Plugin, the build the tester prefers):
   its ConstantInf mode keeps one long-lived constant force that follows

@@ -112,6 +112,20 @@ def collect(rom="crusnusa", progress=print):
              os.path.join(run_rig.POC, "rig", "collection.ini"))
     # FFB diagnostics (CruisnSetup "FFB diagnostics: ON") + last launch
     add_file("ffb_trace.csv", os.path.join(run_rig.POC, "rig", "ffb_trace.csv"))
+    # the trace summarised + plotted (force vs wheel position) - readable at a glance
+    trace = os.path.join(run_rig.POC, "rig", "ffb_trace.csv")
+    if os.path.isfile(trace):
+        try:
+            import io, contextlib
+            import ffb_trace_report
+            buf = io.StringIO()
+            png = os.path.join(run_rig.POC, "rig", "ffb_trace.png")
+            with contextlib.redirect_stdout(buf):
+                ffb_trace_report.report(trace, png=png)
+            add_text("ffb_trace_report.txt", buf.getvalue())
+            add_file("ffb_trace.png", png)
+        except Exception as e:   # diagnostics never break the bundle
+            add_text("ffb_trace_report.txt", f"(report failed: {e})" + chr(10))
     add_file("launch.log", os.path.join(run_rig.POC, "rig", "launch.log"))
     # a left-over emulator process is the "FFB worked once, then never
     # again" signature (it keeps the wheel + MAME's output window)
