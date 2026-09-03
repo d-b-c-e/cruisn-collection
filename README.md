@@ -29,8 +29,8 @@ look. **No ROMs are included** — you supply your own.
    Cruis'n World asks you to calibrate once on first boot (press **F2**,
    follow the prompts).
 4. Have a wheel? **SETTINGS → CONTROLS SETUP** binds it in about a minute
-   (press-to-bind; any wheel, pedals, shifter or paddles). Force feedback
-   needs one extra line in `FFBPlugin.ini` — see the guide.
+   (press-to-bind; any wheel, pedals, shifter or paddles). For force
+   feedback press **Detect wheel (FFB)** in the setup window once.
 
 **Steering feel**: each game has a **STEERING SENSITIVITY** (how far you
 turn for full lock; 100% = the game's calibration) and a **STEERING
@@ -38,13 +38,33 @@ CURVE** (response shape; below 100 = more bite near center, the cure for
 the games' lazy-center feel). Calibrate in-game first, then tune. Details
 in [docs/INSTALL.md](docs/INSTALL.md#steering-feel-sensitivity-and-curve).
 
-**Frontends / shortcuts**: `CruisnCollection.exe --game usa` (or `world`,
-`offroad`, `exotica`) skips the launcher screen; **Shift+F12** in a game
-quits straight to the desktop.
-
 **Updating**: unzip the new version over the old folder (everything you
 set up is kept), or into a new folder and use *Import previous version* in
 the setup window.
+
+## Skip the launcher (frontends, shortcuts, Stream Deck)
+
+Start one game directly, with your saved settings and no launcher screen:
+
+```
+CruisnCollection.exe --game usa
+```
+
+`usa`, `world`, `offroad` or `exotica` (the MAME names `crusnusa`,
+`crusnwld`, `offroadc`, `crusnexo` work too); add `--windowed` to stay
+windowed. The process ends when the game does, so LaunchBox, a Stream Deck
+key or a desktop shortcut can treat it like any other game executable.
+
+## Keys while playing
+
+| key | does |
+|---|---|
+| **5** / **1** | coin / start (or your bound wheel buttons) |
+| **Esc** | in-game menu: resume, CRT toggle, exit to the launcher |
+| **F9** | CRT look on/off |
+| **F12** | quit the game, back to the launcher |
+| **Shift+F12** | quit the game **and** the launcher — straight to the desktop |
+| **F2** / **9** | game test menu / service |
 
 Everything else — the in-game menu, per-game settings, force feedback,
 troubleshooting, and how to report a bug with a support bundle — is in

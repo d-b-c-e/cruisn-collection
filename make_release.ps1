@@ -128,15 +128,22 @@ if (-not $NoMedia) {
 CRUIS'N COLLECTION
 ==================
 1. Double-click CruisnSetup.exe and add your own ROM zips (MAME 0.286
-   sets: crusnusa, crusnwld + crusnwld24, offroadc, crusnexo). Any
-   filename works - files are identified by their contents. The window
-   also health-checks the emulator and force-feedback plugin.
+   sets: crusnusa, crusnwld + crusnwld24, offroadc, crusnexo, plus the
+   DSP boot-ROM sets tms320c31 / tms320c32 - older romsets call them
+   tms32031 / tms32032, same files). Any filename works - files are
+   identified by their contents. The window also health-checks the
+   emulator and force-feedback plugin.
 2. Hit "Launch Collection" (or double-click CruisnCollection.exe).
-3. Have a wheel? SETTINGS > CONTROLS SETUP binds it in a minute.
+3. Have a wheel? SETTINGS > CONTROLS SETUP binds it in a minute; press
+   "Detect wheel (FFB)" in the setup window once for force feedback.
 
 In-game: 5 = coin, 1 = start, Esc = menu (resume / CRT / exit),
-F9 = CRT toggle, F12 = instant quit.
-Full guide (wheel, force feedback, troubleshooting): docs\INSTALL.md.
+F9 = CRT toggle, F12 = quit to the launcher, Shift+F12 = quit to the
+desktop.
+Frontends / shortcuts: "CruisnCollection.exe --game usa" (or world,
+offroad, exotica) starts that game with no launcher screen.
+Full guide (wheel, force feedback, steering feel, troubleshooting):
+docs\INSTALL.md.
 
 This package contains no ROMs. Emulator: MAME (GPL-2.0+), patch series
 in patch\, launcher source in source\. FFB Arcade Plugin (c)
