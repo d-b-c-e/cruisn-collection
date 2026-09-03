@@ -1,3 +1,0 @@
-c32boot.bin ROM NEEDS REDUMP
-WARNING: the machine might not run correctly.
-Average speed: 99.81% (19 seconds)
