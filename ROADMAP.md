@@ -120,12 +120,13 @@ which the name spoof goes away).
 
 ## Open after the 2026-09-03 rig session
 
-1. **Exotica GL overlay glitches (Amazon track)**: proven ours - MAME's
-   renderer (exotica_gl = 0) is clean. Plan: scripted run to the Amazon
-   track (track-select position via the wheel sweep + snapshots), capture
-   the quad stream at a glitching frame (MIDZ_CAPTURE / MIDZ_CAPTURE_FRAME)
-   and the same frame from MAME's renderer; diff per quad (texture mode,
-   blend, fog, clipping) to find what zeus2_draw_quad's GL path mishandles.
+1. **Exotica GL overlay glitches (Amazon track)**: investigated overnight
+   2026-09-03 (RESULTS): three race captures bit-exact offline, live
+   overlay matches MAME's own renderer frame for frame including the
+   near-camera foliage close-ups (magnified texels + rectangular
+   transparency holes = hardware). Not reproduced as an overlay fault.
+   A latent ring-overflow bug (stale texture memory) was fixed on the
+   way. Re-open only with a screenshot of a specific frame.
 2. **USA draw-distance experiment**: rig look said "identical". Measure
    instead: scripted race with and without gamepatch_crusnusa, MIDV_QUADLOG
    per-frame quad counts and A/B snapshots at the same frames; if the
@@ -134,3 +135,7 @@ which the name spoof goes away).
    MAME (RESULTS 2026-09-03). Raise upstream; the virtual sequential
    shifter (MIDZ_SEQ_SHIFT) is ready behind it.
 4. Distant road specks in USA (cosmetic; screenshot 2026-09-03).
+5. World NY "black textures": the persistent dark rectangle at the right
+   is the game's translucent HUD widget (checkerboard on hardware,
+   smoked glass at 4x) - faithful. Margin slivers (C3) not seen in three
+   NY captures. Nothing to fix unless a screenshot shows otherwise.

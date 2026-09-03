@@ -2350,3 +2350,61 @@ before drawing conclusions (ROADMAP).
 
 Force-line hunt closed: MIDZ_FORCE_IN1 over all seven "Not Used" lines,
 Sit Down cabinet, from boot through a race - AUTO every time.
+
+
+## 2026-09-03/04 (overnight) - World NY "black textures" and Exotica Amazon glitches, both run to ground
+
+**Reaching the spots headless.** Both games select tracks by wheel
+POSITION, not scrolling (holding right parks on one item). Mapped:
+World CHOOSE RACE wheel 16 Egypt, 40 Moscow, 64 Germany, **88 New York**,
+112 England, 136 Cruise the World, 160 France, 184 Japan, 208 China,
+232 Mexico (choose = gas). Exotica TRACK SELECT 16/40 Atlantis, 64
+India, **88 Amazon**, 112 Alaska, 136 Cruise Exotica, 160 Korea, 184
+Mars, 208 Holland, 232 Tibet.
+
+**World, New York (crusnwld24, widescreen patch on).** Three instrumented
+captures (frames 4500 / 6000 / 7600: expressway, Sin City wall, the
+tunnel). Exact mode 100.0000% vs videoram at 4500. Wide 4x renders
+(results/proof/night-2026-09-03/): margins fully populated - walls,
+fences, tunnel - no black slivers in any of the three (C3's residual
+stays "rare"). The one dark rectangle present in EVERY NY frame at the
+right (with a red/white dot) is a HUD widget the hardware draws with
+its 50% checkerboard translucency (exact render: alternating black and
+scene pixels); at 4x it is the smoked-glass panel the 2026-08-25 fix
+produces, average brightness identical to the CRT's blend. Verdict: the
+"subtle black texture" is the game's own translucent panel, faithful.
+
+**Exotica, Amazon.** Three MIDZ_CAPTURE captures during a scripted race
+(frames 4200 start, 6420 bush close-up, 7200): CPU oracle 100.0000%
+colour+depth; offline GPU renderer 100.0000% at scale 1 and 4 on all
+three - the shared shader/batching is right, and the generated live
+shader header is current (regenerated, no diff). Live overlay (windowed,
+MIDZ_GL_SNAP, 74 frames + two dense 60-present windows via the new
+MIDZ_GL_SNAP_EVERY/FROM_SEC/MAX): no flicker (consecutive presents ~2
+grey levels apart in the jungle straight; the river section's 15-30 is
+scene motion). The dramatic frames - a giant blurry green mass with
+rectangular windows filling half the screen at ET 0:38 - are the car
+(steered by the script PLUS the real Moza's offset in windowed runs)
+driving INTO roadside plants: a small leaf texture magnified ~30x by the
+hardware's bilinear filter, with transparent texels rejected at texel
+granularity (rectangular holes). MAME's own d3d renderer, same script,
+same crash, shows the identical picture (proof images: live overlay vs
+MAME d3d, plus the fallen tree). Verdict: hardware-accurate; more
+conspicuous at 4x/16:9 than on a native 4:3 frame, which is likely the
+whole difference the user's A/B saw.
+
+**Real bug found on the way (fixed, not the cause here):** the live
+overlay's 64 MB record ring dropped ANY record when full. A dropped quad
+is a one-frame blip; a dropped waveram span / palette load / display
+tick left the GL texture mirror stale until the game rewrote that
+region - the recipe for sprites drawn from wrong texture bytes.
+ring_push2 now waits (bounded) for the consumer on essential records and
+sets a resync flag that makes the next flush resend the whole 16 MB
+texture memory if a span still could not be queued; counters logged at
+exit. A full Amazon race logged 0 drops, so the Amazon report was not
+this - but a heavier scene or slower GPU would have hit it.
+
+Tools added: coinup.lua WHEEL_SWEEP/GEAR_FRAME/PRESS_FRAMES/PRESS_HOLD/
+FORCE_FRAMES; lua/inputprobe.lua; MIDZ_GL_SNAP_EVERY/FROM/FROM_SEC/MAX;
+the overlay's launch hang (FFB plugin enumeration, ~50%) needs a retry
+loop in scripted windowed runs.

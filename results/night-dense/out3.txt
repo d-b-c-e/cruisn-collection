@@ -1,0 +1,15 @@
+c32boot.bin ROM NEEDS REDUMP
+WARNING: the machine might not run correctly.
+coinup.lua: coin=found start=found gas=found
+coinup.lua: COIN down @1500
+coinup.lua: COIN up @1510
+coinup.lua: COIN down @1700
+coinup.lua: COIN up @1710
+coinup.lua: COIN down @1900
+coinup.lua: COIN up @1910
+coinup.lua: START down @2400
+coinup.lua: START up @2410
+coinup.lua: WHEEL = 88 @2470
+coinup.lua: GAS floored @2520
+coinup.lua: WHEEL = 128 @2700
+Average speed: 100.00% (121 seconds)
