@@ -989,6 +989,18 @@ def direct_launch(card, windowed=False):
 
 
 def main():
+    # The FFB Arcade Plugin's dinput8.dll sits beside the frozen launcher
+    # (same folder as vunit.exe). glfw's joystick backend asks Windows for
+    # "dinput8.dll" and gets THAT copy - the plugin then runs inside the
+    # launcher, enumerates the wheel and can hold its haptic device for the
+    # whole session (a tester's FFBlog shows it: "process name:
+    # CruisnCollection.exe ... numJoysticks"). Pre-load the system DLL by
+    # full path: later loads by name resolve to the already-loaded module.
+    try:
+        ctypes.WinDLL(os.path.join(os.environ.get("SystemRoot", r"C:\Windows"),
+                                   "System32", "dinput8.dll"))
+    except OSError:
+        pass
     ap = argparse.ArgumentParser()
     ap.add_argument("--game", metavar="NAME",
                     help="launch one game directly, no launcher screen: "
@@ -1040,18 +1052,6 @@ def main():
         print(json.dumps(out, indent=1))
         return 0
 
-    # The FFB Arcade Plugin's dinput8.dll sits beside the frozen launcher
-    # (same folder as vunit.exe). glfw's joystick backend asks Windows for
-    # "dinput8.dll" and gets THAT copy - the plugin then runs inside the
-    # launcher, enumerates the wheel and can hold its haptic device for the
-    # whole session (a tester's FFBlog shows it: "process name:
-    # CruisnCollection.exe ... numJoysticks"). Pre-load the system DLL by
-    # full path: later loads by name resolve to the already-loaded module.
-    try:
-        ctypes.WinDLL(os.path.join(os.environ.get("SystemRoot", r"C:\Windows"),
-                                   "System32", "dinput8.dll"))
-    except OSError:
-        pass
     import glfw
     if not glfw.init():
         sys.exit("glfw init failed")

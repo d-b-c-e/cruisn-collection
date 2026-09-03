@@ -2229,3 +2229,27 @@ opposite to displacement, magnitude ~0.37/count, held while displaced: a
 centering SPRING (the V-Unit games send decaying kicks instead). Race
 start writes +33/-7 plateaus. Now exposed as output "wheel" on
 crusnexo_state (output_finder, same MIDV_FFB_CLAMP treatment).
+
+
+## 2026-09-03 - tester support bundle (v0.3.1 files): the "RomName = (empty)" signature
+
+Bundle CruisnSupport-20260903-025536: collection.ini ffb=100, scale=2,
+crt=1, steercurve_crusnusa=120, world_rom=crusnwld (no 2.4), a Fanatec
+wheel + "Generic USB Joystick" button box bound, DeviceGUID set (Detect
+worked). FFBPlugin.ini: AlternativeFFB=0, every per-game MaxForce 100
+(the strength bug, confirmed in the wild). FFBlog.txt 2.2 MB: first
+session "RomName = crusnusa / RunningFFB = RacingFullValueActive2" with
+3218 "got value:" output updates (working); later sessions "RomName = "
+(EMPTY) / "RunningFFB = (null)" x51502 - the plugin's MAME client never
+received the game name from the output window it found, so it ran no
+handler: THAT is what "no FFB after the first game" looks like from the
+plugin's side (an empty id-string reply, i.e. it was talking to the
+wrong/dead MAMEOutput window or a second plugin instance held the
+registration). 16100 "RomName = crusnexo / (null)" = Exotica pre-v0.3.5,
+expected. joysticks_glfw.json is 0 bytes: the frozen --joydump died -
+glfw in that process also loads the plugin's dinput8.dll (preload moved
+to the top of main() so --joydump is covered). mame_verbose_input: the
+Fanatec base enumerates as two DirectInput joysticks (108 and 63
+buttons) - the DIJoystick2 patch is what makes his 63-button unit usable.
+The next bundle from v0.3.5 should show RomName = crusnusa in every
+session and no CruisnCollection.exe entries.
