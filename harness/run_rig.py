@@ -884,10 +884,9 @@ def apply_shifter_config(rig, rom):
         if not (cp.has_option("wheelmap", "shiftup")
                 and cp.has_option("wheelmap", "shiftdn")):
             return
-        if base_rom(rom) == "crusnexo":
-            # Zeus has no sequential mode (gears BUTTON2-5, no CONF
-            # port); Exotica keeps automatic-select in paddle mode
-            return
+        # Exotica has no CONF port (gears BUTTON2-5); in sequential mode
+        # the driver's virtual gear (MIDZ_SEQ_SHIFT, launch env) stands in
+        # for the H-pattern, so the sit-down DIP applies as well
         conf_val = 5
     entries = [(tag, ptype, mask, defv,
                 conf_val if tag == ":CONF" else value)
@@ -1102,6 +1101,10 @@ WHEELMAP_PORTS_CRUSNEXO = {
     "gear2": (["P1_BUTTON3"], None),
     "gear3": (["P1_BUTTON4"], None),
     "gear4": (["P1_BUTTON5"], None),
+    # sequential paddles -> the driver's virtual gear (MIDZ_SEQ_SHIFT=1):
+    # Shift Up = BUTTON11, Shift Down = BUTTON12 (our midzeus patch)
+    "shiftup": (["P1_BUTTON11"], None),
+    "shiftdn": (["P1_BUTTON12"], None),
     "volup":   (["VOLUME_UP"], "KEYCODE_EQUALS"),
     "voldn":   (["VOLUME_DOWN"], "KEYCODE_MINUS"),
     "test":    (["SERVICE"], "KEYCODE_F2"),
@@ -1302,6 +1305,19 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     if gamepatch:
         env["MIDV_PATCH"] = gamepatch
     if base_rom(rom) == "crusnexo":
+        # sequential paddles on Exotica: the driver's virtual gear
+        # (midzeus patch) - only when the shell is in sequential mode with
+        # both paddles bound
+        try:
+            import configparser
+            _cp = configparser.ConfigParser(interpolation=None)
+            _cp.read(os.path.join(POC, "rig", "collection.ini"))
+            if (transmission_mode(_cp) == "sequential"
+                    and _cp.has_option("wheelmap", "shiftup")
+                    and _cp.has_option("wheelmap", "shiftdn")):
+                env["MIDZ_SEQ_SHIFT"] = "1"
+        except Exception:
+            pass
         # Exotica FFB: MAME (our patch) now emits its wheel motor as output
         # "wheel"; the FFB plugin has no crusnexo handler, so the output
         # module reports "crusnusa" to it - the Cruis'n handler (and the

@@ -64,13 +64,13 @@ local function find_fields()
                 gas_f = f            -- V-Unit :ACCEL; Exotica gas on :ANALOG2
             elseif f.type == ioport:token_to_input_type("P1_BUTTON2") and not gear_f then
                 gear_f = f
+            elseif tag == ":WHEEL" or (tag == ":ANALOG3" and not wheel_f) then
+                wheel_f = f          -- V-Unit :WHEEL; Exotica steers on :ANALOG3
             end
             for _, pr in ipairs(presses) do
                 if f.type == ioport:token_to_input_type(pr.token) then
                     pr.field = f
                 end
-            elseif tag == ":WHEEL" or (tag == ":ANALOG3" and not wheel_f) then
-                wheel_f = f          -- V-Unit :WHEEL; Exotica steers on :ANALOG3
             end
         end
     end

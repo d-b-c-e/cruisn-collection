@@ -2253,3 +2253,38 @@ Fanatec base enumerates as two DirectInput joysticks (108 and 63
 buttons) - the DIJoystick2 patch is what makes his 63-button unit usable.
 The next bundle from v0.3.5 should show RomName = crusnusa in every
 session and no CruisnCollection.exe entries.
+
+
+## 2026-09-03 - rig smoke test of the frozen build: brake latch, Exotica FFB level, TRANS SELECT
+
+Smoke install E:/Games/CruisnCollection-smoke (frozen zip + the rig's
+rig/ + ROMs). Proven before touching anything: the frozen launcher's
+--joydump lists all three devices, and the running launcher has
+dinput8.dll loaded from System32 (the preload works in the frozen
+layout).
+
+USA "won't go past 2nd, tyres squealing, even in automatic" (screenshot:
+41 mph, 2nd, smoke, straight road) = the burnout the game does with gas
++ brake. lua/inputprobe.lua (windowed, reads the real devices):
+BRAKE=255 at rest, ACCEL=0. Minutes later, same NEG_ABSOLUTE binding:
+BRAKE=0; full-range binding: 128 (rest at centre, as the ctrlr code
+assumes). So the Moza load-cell brake reports fully pressed until it is
+pressed once after coming up (the user "had to press it a couple of
+times" in the wizard). Launcher guard: refuses to launch while a pedal
+reads pressed (nav_spec now carries the brake axis).
+
+Exotica FFB: with the smoke install's vunit + plugin, headless, plugin
+logging on, MIDV_OUTPUT_NAME=crusnusa: "RomName = crusnusa / RunningFFB
+= RacingFullValueActive2", Moza found, 216 "got value" updates - the
+chain works; the level is the issue (11/127 at +-32 counts, 46 at full
+lock, x0.7). MIDZ_FFB_GAIN added (midzeus WHLCTL write): launcher
+default 250 felt faint on the rig -> 400.
+
+Exotica TRANS SELECT stays AUTO: under all four Cabinet x Game Type DIP
+combinations the screen appears (A / AUTO / M, ~1.5 s) and advances on
+AUTO regardless of: wheel parked right + gas, wheel moving right, wheel
+moving left, 1st gear held before, 1st gear pressed during. Button
+brute force (gears 2-4, radio, views, START during the screen) running.
+Virtual sequential shifter added to the driver meanwhile (gears_r():
+GEARS/SEQ ports, MIDZ_SEQ_SHIFT=1) with the launcher binding paddles to
+the new Shift Up/Down inputs in sequential mode.

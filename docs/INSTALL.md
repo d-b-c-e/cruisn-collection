@@ -93,6 +93,12 @@ bindings are remembered, so switching later needs no rebinding. (Cruis'n
 Exotica has no sequential mode in its hardware — it stays on
 automatic-select with paddles.)
 
+**Cruis'n Exotica and shifting**: the game only knows a 4-position
+H-pattern shifter. With TRANSMISSION set to SEQUENTIAL, the collection
+gives it a virtual one: your shift-up / shift-down paddles move a gear
+1-4 and the game sees that gear engaged (v0.3.5+). With H-PATTERN the
+real shifter is used as-is.
+
 ### In-game keys
 
 | key | action |
@@ -231,6 +237,12 @@ and so on).
   tell us), turn on *FFB diagnostics* in the setup window, reproduce,
   then *Save support bundle* — it now records whether an emulator
   process was still running.
+- **USA (or World / Off Road) crawls in 2nd gear with the tyres
+  squealing, even in automatic** — the game thinks the brake is pressed.
+  Some load-cell pedals (Moza) come up reading fully pressed until they
+  are pressed once: press the brake fully and release it. The launcher
+  now refuses to start a game while a pedal reads pressed and tells you
+  which one.
 - **The wheel slams left-right on its own / forces are harsh** — FFB
   STRENGTH is too high for your base: the games' force is a kick against
   every wheel movement, and a strong wheel turns that into a runaway
