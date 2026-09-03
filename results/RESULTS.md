@@ -2127,3 +2127,35 @@ no crusnexo handler; documented, ROADMAP item added. "Clipping all over"
 on an 8 Nm Fanatec: FFB STRENGTH 100% saturates a direct-drive base -
 docs now say start at 40% (rig runs 70% on the Moza). MAME 0.288 romset:
 fine, sets are identified by content.
+
+
+## 2026-09-03 - the V-Unit force law, measured (tester video: wheel slamming left-right)
+
+Tester video (Fanatec CSL DD 8 Nm, USA, car static): the wheel violently
+turns itself back and forth. Diagnosed headless: coinup.lua gained
+`WHEEL_SWEEP` (park :WHEEL at a value from a frame on) and a scripted
+race (3 coins @600/700/800, START @1000/1600/2200/2800, GAS @3400) ran
+under MIDV_FFB_TRACE with steps of +-32/+-64/+-112 counts from center.
+Result: NO static force at any parked position. Every step produced one
+burst of 12-16 updates a few ms apart, ramping to a peak and decaying to
+0 within ~100 ms, sign opposite to the movement, peak proportional to the
+step: 32 -> 30, 64 -> 63, 112 -> 100 (of 127), all twelve steps matching.
+Encoding: signed byte (255 = -1). So Cruis'n USA's FFB is a DAMPER (kick
+against wheel velocity), not a spring; on the weak arcade motor that read
+as heaviness. With a strong low-friction base the kick moves the wheel,
+the game kicks back, and the loop is unstable - the video. Loop gain is
+the lever: FFB STRENGTH (30-40% on 8 Nm), wheel-side damping, and now
+`MIDV_FFB_CLAMP=N` in midvunit.cpp (env-gated, WHLCTLZ write: clamps the
+signed byte to +-N; small forces untouched).
+
+Template FFBPlugin.ini switched to AlternativeFFB=1 - the rig's live ini
+(the tuned reference, 70%, AlternativeFFB=1, spring on) had never matched
+what testers got (AlternativeFFB=0). `harness/ffb_trace_report.py`
+summarizes a bundle's trace (bursts/s, peak, direction flips, verdict).
+
+Process bug caught: running vunit with `-nvram_directory fixtures/
+nvram-crusnusa` makes MAME create `crusnusa/nvram` INSIDE the fixture
+folder (fresh CMOS -> CALIBRATE CONTROLS on every such run) and `git add
+-A` swept it into dd8c456. Removed; captures must seed a scratch copy
+(`<dir>/crusnusa/nvram` from the fixture's flat `nvram`), as run_capture
+and prepare_rig do.

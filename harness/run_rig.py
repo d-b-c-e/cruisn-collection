@@ -1236,7 +1236,8 @@ def apply_wheelmap(tree, rig):
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
-                      margin=None, ffb=None, marginfill=False, mame=VUNIT):
+                      margin=None, ffb=None, marginfill=False, ffbclamp=None,
+                      mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -1289,6 +1290,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_SKIP_STARTUP_SCREENS="1")
     if gamepatch:
         env["MIDV_PATCH"] = gamepatch
+    if ffbclamp:
+        # FFB PEAK LIMIT: cap the games' force kicks at +-N of 127 (midvunit
+        # WHLCTLZ write) - tames the damper loop on strong direct-drive
+        # wheels while small road forces keep full strength
+        env["MIDV_FFB_CLAMP"] = str(int(ffbclamp))
     if steersens is not None:
         # gain percent on the wheel deflection (ioport.cpp patch; MAME's
         # own cfg "sensitivity" is a no-op for absolute wheels): 200 =

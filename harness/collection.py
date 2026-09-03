@@ -395,7 +395,7 @@ class Shell:
                   (0.75, 0.75, 0.8, 1.0))
 
     def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans,
-                      scale, t, version="", notice=""):
+                      scale, t, version="", notice="", clamp=0):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -409,6 +409,7 @@ class Shell:
                 ("ASPECT / WIDESCREEN", ASPECT_LABEL(margin)),
                 ("MARGIN FILL", "ON" if mfill else "OFF"),
                 ("FFB STRENGTH", f"< {ffb}% >"),
+                ("FFB PEAK LIMIT", "< OFF >" if not clamp else f"< {clamp} >"),
                 ("INTERNAL SCALE", f"< {scale}X >"),
                 ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
                  else "< SEQUENTIAL >"),
@@ -418,7 +419,7 @@ class Shell:
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.34 + 0.052 * i)
+            y = self.h * (0.335 + 0.048 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -436,15 +437,18 @@ class Shell:
                "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING",
             4: "FORCE-FEEDBACK STRENGTH:   0% = PLUGIN OFF (A/B TEST FOR "
                "SPEED)      LOWER IF THE WHEEL FEELS TOO HARSH",
-            5: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
+            5: "CAPS THE GAMES' FORCE KICKS (OF 127)      STOPS A STRONG "
+               "WHEEL SLAMMING LEFT-RIGHT BY ITSELF      TRY 40 ON A "
+               "DIRECT-DRIVE BASE",
+            6: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
                "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT "
                "THE NEXT LAUNCH",
-            6: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
+            7: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
                "SHIFT UP / DOWN PADDLES      EXOTICA HAS NO SEQUENTIAL "
                "MODE - STAYS AUTOMATIC",
-            7: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
+            8: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
                "SKIPPED STEPS KEEP THEIR SAVED BINDING",
-            8: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
+            9: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
                "YOUR ROMS, SETTINGS AND BINDINGS ARE KEPT",
         }
         if notice:
@@ -805,6 +809,8 @@ def load_config():
             "margin": int(mg) if mg.isdigit() else None,
             "ffb": 100 if ffb is None else max(0, min(100, ffb)),
             "scale": int(sec.get("scale", 4)),
+            # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
+            "ffbclamp": int(sec.get("ffbclamp", 0) or 0),
             # which World ROM set the CRUIS'N WORLD card boots. Default is
             # crusnwld24 (rev 2.4): the LAST revision with transmission
             # select - 2.5's factory ROMs are labeled "automatic" and
@@ -826,6 +832,7 @@ def save_config(state):
            "ffb": str(state.get("ffb", 100)),
            "transmission": state.get("transmission", "hpattern"),
            "scale": str(state["scale"]), "rom": state["rom"],
+           "ffbclamp": str(state.get("ffbclamp", 0)),
            "world_rom": state.get("world_rom", "crusnwld24")}
     for rom, _, _, _ in GAMES:
         sv = state["steersens"].get(rom)
@@ -966,7 +973,8 @@ def direct_launch(card, windowed=False):
         steersens=state["steersens"].get(card),
         steercurve=state["steercurve"].get(card),
         margin=state["margin"], ffb=state.get("ffb", 100),
-        marginfill=state.get("marginfill", True))
+        marginfill=state.get("marginfill", True),
+        ffbclamp=state.get("ffbclamp", 0))
     gaks = ctypes.windll.user32.GetAsyncKeyState
     while proc.poll() is None and run_rig.u32.IsWindow(_hwnd):
         # Shift+F12 = quit (same key as in the launcher); WM_CLOSE is the
@@ -1518,10 +1526,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 10
+                    ssel = (ssel - 1) % 11
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 10
+                    ssel = (ssel + 1) % 11
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -1544,6 +1552,15 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 5:
+                    # FFB PEAK LIMIT: OFF, 100, 80, 60, 40, 30 (cap of 127)
+                    steps = [0, 100, 80, 60, 40, 30]
+                    cur = int(state.get("ffbclamp", 0))
+                    i = steps.index(cur) if cur in steps else 0
+                    i = (i + (1 if key == glfw.KEY_RIGHT else -1)) % len(steps)
+                    state["ffbclamp"] = steps[i]
+                    save_config(state)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 6:
                     # internal render scale 2x-4x (GPU load ~ scale^2);
                     # applies at the next launch
                     step = 1 if key == glfw.KEY_RIGHT else -1
@@ -1551,7 +1568,7 @@ def main():
                                                 + step))
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 6:
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 7:
                     state["transmission"] = (
                         "sequential"
                         if state.get("transmission", "hpattern") == "hpattern"
@@ -1568,7 +1585,7 @@ def main():
                         state["marginfill"] = not state.get("marginfill", True)
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel == 6:
+                    elif ssel == 7:
                         state["transmission"] = (
                             "sequential"
                             if state.get("transmission",
@@ -1576,12 +1593,12 @@ def main():
                             else "hpattern")
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel in (2, 4, 5):
+                    elif ssel in (2, 4, 5, 6):
                         audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 8:
+                    elif ssel == 9:
                         audio.blip("nav")
                         update_step(upd)
-                    elif ssel == 7:
+                    elif ssel == 8:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -1739,7 +1756,7 @@ def main():
                                 int(state.get("scale", 4)), t,
                                 version=upd_version,
                                 notice=upd["msg"] if time.time() < upd["until"]
-                                else "")
+                                else "", clamp=int(state.get("ffbclamp", 0)))
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)
@@ -1791,6 +1808,7 @@ def main():
                         steersens=state["steersens"].get(card),
                         steercurve=state["steercurve"].get(card),
                         margin=state["margin"], ffb=state.get("ffb", 100),
+                        ffbclamp=state.get("ffbclamp", 0),
                         marginfill=state.get("marginfill", True))
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)

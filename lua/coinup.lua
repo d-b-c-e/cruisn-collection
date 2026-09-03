@@ -8,6 +8,11 @@
 --   GAS_FRAME    "3800"           frame to floor the gas pedal (held to
 --                                 exit; drives the car so world streaming
 --                                 and distance culling actually exercise)
+--   WHEEL_SWEEP  "4000:128,4300:64,..."  frame:value pairs - park the
+--                                 steering field (:WHEEL, 0-255, 128 =
+--                                 center) at a value from that frame on;
+--                                 with MIDV_FFB_TRACE this measures the
+--                                 game's force-vs-position law headless
 --
 -- Field writes use ioport_field:set_value()/clear_value() - unlike
 -- keybd_event probing (which never reaches rawinput headless), these land
@@ -30,7 +35,11 @@ end
 
 local HOLD = 10
 local gas_frame = tonumber(os.getenv("GAS_FRAME") or "")
-local coin_f, start_f, gas_f = nil, nil, nil
+local coin_f, start_f, gas_f, wheel_f = nil, nil, nil, nil
+local sweep = {}
+for fr, v in (os.getenv("WHEEL_SWEEP") or ""):gmatch("(%d+):(%d+)") do
+    sweep[tonumber(fr)] = tonumber(v)
+end
 
 local function find_fields()
     local ioport = manager.machine.ioport
@@ -42,6 +51,8 @@ local function find_fields()
                 start_f = f
             elseif tag == ":ACCEL" then
                 gas_f = f
+            elseif tag == ":WHEEL" then
+                wheel_f = f
             end
         end
     end
@@ -76,6 +87,10 @@ emu.register_frame_done(function()
     if gas_frame and count == gas_frame and gas_f then
         gas_f:set_value(0xff)
         emu.print_info("coinup.lua: GAS floored @" .. count)
+    end
+    if sweep[count] and wheel_f then
+        wheel_f:set_value(sweep[count])
+        emu.print_info("coinup.lua: WHEEL = " .. sweep[count] .. " @" .. count)
     end
     if snaps[count] then
         manager.machine.video:snapshot()

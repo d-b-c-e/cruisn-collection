@@ -3,6 +3,25 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## v0.3.5 — 2026-09-03
+
+- **Force feedback template now runs AlternativeFFB=1**, the mode this
+  project's rig was tuned in; testers were getting mode 0.
+- **Measured the games' force law** (headless wheel sweep under the force
+  trace): a kick opposite to and proportional to each wheel movement,
+  gone within ~100 ms - a damper, not a spring. A strong direct-drive
+  base at 100% turns it into a runaway left-right oscillation (a tester's
+  video). INSTALL explains it and says to start at 30-40%.
+- `harness/ffb_trace_report.py` summarizes a support bundle's force trace
+  (peaks, kicks per second, direction flips) and states the verdict.
+- **SETTINGS → FFB PEAK LIMIT** (OFF / 100 / 80 / 60 / 40 / 30): caps
+  the games' force kicks at that value of 127 while small road forces
+  keep full strength (`MIDV_FFB_CLAMP` in the emulator, verified headless:
+  peaks 100 -> 40, small kicks byte-identical).
+- Fixed: a stray uncalibrated `fixtures/nvram-crusnusa/crusnusa/nvram`
+  file shipped in v0.3.3/v0.3.4 (harmless: the launcher seeds from the
+  folder's own `nvram`).
+
 ## v0.3.4 — 2026-09-03
 
 - **Force feedback lost after the first game of a session** (tester,

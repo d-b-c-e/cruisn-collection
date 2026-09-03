@@ -122,11 +122,18 @@ once, open `FFBlog.txt` — each device appears as `Joystick: n / Name: … /
 GUID: …`. Put your wheel base's GUID on the `DeviceGUID=` line, leave
 `GameId=22`, set `Logging=0` again.
 
-Overall strength is **SETTINGS → FFB STRENGTH**. The arcade motor was
-weak and the games' force signal saturates easily, so on a direct-drive
-base (Fanatec DD, Moza, Simucube) 100% clips: start at **40%** on an
-8 Nm base (this project's Moza rig runs 70%) and raise until it stops
-feeling harsh. **Cruis'n Exotica has no force feedback**: MAME's Exotica
+Overall strength is **SETTINGS → FFB STRENGTH**. What the games send is
+not a centering spring: every time the wheel moves, the game kicks back
+against the movement, harder for a bigger movement, and the kick fades
+within a tenth of a second (a damper - it made the weak arcade motor
+feel heavy). On a strong direct-drive base (Fanatec DD, Moza, Simucube)
+at 100% the kick itself moves the wheel, the game kicks back again, and
+the wheel starts slamming left-right on its own. So: start at **30-40%**
+on an 8 Nm base (this project's Moza rig runs 70%) and raise until it
+starts to feel nervous, then back off. Adding some damping/friction in
+the wheel's own software helps too. **SETTINGS → FFB PEAK LIMIT** is the
+other tool: it caps the kicks (try **40**) while small road forces keep
+their full strength, so the wheel stays lively without the slamming. **Cruis'n Exotica has no force feedback**: MAME's Exotica
 driver does not emulate the wheel-motor output yet, so there is nothing
 to send to the wheel (Exotica steers fine; the wheel just won't push
 back). Rotation range (arcade
@@ -220,10 +227,14 @@ and so on).
   tell us), turn on *FFB diagnostics* in the setup window, reproduce,
   then *Save support bundle* — it now records whether an emulator
   process was still running.
-- **Forces are harsh or "clip" (slam to full lock)** — FFB STRENGTH is
-  too high for your base; see *Force feedback* (40% on an 8 Nm
-  direct-drive wheel is a good start). Also check the wheel software's
-  own gain.
+- **The wheel slams left-right on its own / forces are harsh** — FFB
+  STRENGTH is too high for your base: the games' force is a kick against
+  every wheel movement, and a strong wheel turns that into a runaway
+  loop (see *Force feedback*). 30-40% on an 8 Nm direct-drive wheel is
+  the place to start, or set **FFB PEAK LIMIT** to 40; add damping in
+  the wheel software. With FFB diagnostics on, the support bundle's
+  trace shows it as rapid alternating kicks
+  (`python harness/ffb_trace_report.py` on it).
 - **Force feedback comes and goes** — first make sure all four plugin files
   are the ones from the zip (no `dinput8.dll` from another version), then
   turn on *FFB diagnostics*, drive a minute, save a support bundle.
