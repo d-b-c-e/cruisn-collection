@@ -8,7 +8,7 @@
 # Never contains ROMs. Always contains:
 #   - CruisnCollection.exe (PyInstaller-frozen shell - no Python needed)
 #   - vunit.exe (statically-linked; GPL source = patch\ + source\ + MAME)
-#   - FFB Arcade Plugin files (GPL-3.0, license included, GUID blanked)
+#   - SDL2.dll (zlib license, included) - the emulator's own force feedback
 #   - NVRAM fixtures, setup.ps1, docs
 param([switch]$NoMedia, [string]$Version = "dev")
 $ErrorActionPreference = "Stop"
@@ -62,75 +62,16 @@ foreach ($d in "harness", "gpu", "lua") { Copy-Item -Recurse (Join-Path $root $d
 Copy-Item (Join-Path $root "setup.ps1") $rel
 $Version | Set-Content (Join-Path $rel "version.txt")   # the in-app updater compares this with GitHub
 
-# 3. emulator + FFB plugin
+# 3. emulator + force-feedback runtime (SDL2, loaded at run time by vunit.exe)
 Copy-Item $vunit (Join-Path $rel "vunit.exe")
-foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll") {
-    if (Test-Path (Join-Path $vdir $f)) { Copy-Item (Join-Path $vdir $f) $rel }
-    else { throw "$f not found beside vunit.exe - the release would ship without force feedback (v0.3.0 did)" }
-}
-# the plugin's reset tool (GPL-3, from the FFB Arcade Plugin package): the
-# launcher runs it at every exit/launch. Optional: beside vunit.exe if the
-# plugin archive carried it, else the copy vendored in ffb\.
-if (Test-Path (Join-Path $vdir "FFBReset.exe")) { Copy-Item (Join-Path $vdir "FFBReset.exe") $rel }
-elseif (Test-Path (Join-Path $root "ffb\FFBReset.exe")) { Copy-Item (Join-Path $root "ffb\FFBReset.exe") $rel }
-else { Write-Host "  [!] FFBReset.exe not found (optional; the built-in release is the fallback)" -ForegroundColor Yellow }
+if (Test-Path (Join-Path $vdir "SDL2.dll")) { Copy-Item (Join-Path $vdir "SDL2.dll") $rel }
+else { throw "SDL2.dll not found beside vunit.exe - the release would ship without force feedback" }
+Copy-Item (Join-Path $root "third_party\SDL2-LICENSE.txt") (Join-Path $rel "SDL2-LICENSE.txt")
 # MAME's bgfx shader/chain files: used by the Exotica fallback path (MIDZ_GL=0
 # -> video bgfx + crt-geom-deluxe). Beside vunit.exe in dev; in the CI clone.
 if (Test-Path (Join-Path $vdir "bgfx")) {
     Copy-Item -Recurse (Join-Path $vdir "bgfx") (Join-Path $rel "bgfx")
 } else { Write-Host "  [!] bgfx\ not found beside vunit.exe (Exotica fallback CRT unavailable)" -ForegroundColor Yellow }
-# the shipped ini is the repo template (ffb\FFBPlugin.ini: the plugin's own
-# MAME 64-bit defaults + GameId=22), NOT the dev rig's wheel-tuned copy
-$initpl = Join-Path $root "ffb\FFBPlugin.ini"
-if (Test-Path $initpl) {
-    (Get-Content $initpl) `
-        -replace '^GameId=.*', 'GameId=22' `
-        -replace '^DeviceGUID=.*', 'DeviceGUID=' `
-        -replace '^Logging=.*', 'Logging=0' `
-        -replace '^BeepWhenHook=.*', 'BeepWhenHook=0' |
-        Set-Content (Join-Path $rel "FFBPlugin.ini")
-}
-try {
-    Invoke-WebRequest -UseBasicParsing -OutFile (Join-Path $rel "FFBPLUGIN-LICENSE.txt") `
-        "https://raw.githubusercontent.com/Endprodukt/FFBPluginRacerMAME/master/LICENSE"
-} catch {
-    "FFB Plugin MAME by Endprodukt (fork of Boomslangnz FFB Arcade Plugin) - GPL-3.0 - https://github.com/Endprodukt/FFBPluginRacerMAME" |
-        Set-Content (Join-Path $rel "FFBPLUGIN-LICENSE.txt")
-}
-
-# 3b. menu art + music (skippable with -NoMedia); repo media/ preferred so
-# CI builds work without the LaunchBox library
-if (-not $NoMedia) {
-    $artsrc = if (Test-Path (Join-Path $root "media\art")) { Join-Path $root "media\art" }
-              elseif ($env:CRUISN_ART) { $env:CRUISN_ART }
-              else { "E:\Source\launchbox\Launchbox-Racing\Images\Arcade" }
-    $artfiles = @(
-        "Clear Logo\Cruis_n USA-01.png",
-        "Clear Logo\Cruis_n World-01.png",
-        "Clear Logo\Off Road Challenge-01.png",
-        "Clear Logo\North America\Cruis_n Exotica-01.png",
-        "Screenshot - Game Title\Cruis_n USA-01.jpg",
-        "Screenshot - Game Title\Cruis_n World-01.png",
-        "Screenshot - Game Title\Off Road Challenge-01.png",
-        "Screenshot - Game Title\Cruis_n Exotica-02.png")
-    foreach ($f in $artfiles) {
-        $src = Join-Path $artsrc $f
-        if (Test-Path $src) {
-            $dst = Join-Path $rel "art\$f"
-            New-Item -ItemType Directory -Force (Split-Path $dst) | Out-Null
-            Copy-Item $src $dst
-        } else { Write-Host "  [!] art missing: $f (menu falls back to generated card)" -ForegroundColor Yellow }
-    }
-    $music = Join-Path $root "media\menumusic.mp3"
-    if (-not (Test-Path $music)) { $music = Join-Path $root "rig\assets\menumusic.mp3" }
-    if (Test-Path $music) {
-        New-Item -ItemType Directory -Force (Join-Path $rel "rig\assets") | Out-Null
-        Copy-Item $music (Join-Path $rel "rig\assets\menumusic.mp3")
-    } else { Write-Host "  [!] no menumusic.mp3 (menu will be silent; harness\make_music.py builds one)" -ForegroundColor Yellow }
-    Write-Host "  media bundled (use -NoMedia for a clean variant)"
-}
-
-# 4. README
 @"
 CRUIS'N COLLECTION
 ==================
@@ -139,10 +80,10 @@ CRUIS'N COLLECTION
    DSP boot-ROM sets tms320c31 / tms320c32 - older romsets call them
    tms32031 / tms32032, same files). Any filename works - files are
    identified by their contents. The window also health-checks the
-   emulator and force-feedback plugin.
+   emulator and force feedback.
 2. Hit "Launch Collection" (or double-click CruisnCollection.exe).
-3. Have a wheel? SETTINGS > CONTROLS SETUP binds it in a minute; press
-   "Detect wheel (FFB)" in the setup window once for force feedback.
+3. Have a wheel? SETTINGS > CONTROLS SETUP binds it in a minute; force
+   feedback then goes to that wheel automatically (SETTINGS > FFB STRENGTH).
 
 In-game: 5 = coin, 1 = start, Esc = menu (resume / CRT / exit),
 F9 = CRT toggle, F12 = quit to the launcher, Shift+F12 = quit to the
@@ -153,8 +94,8 @@ Full guide (wheel, force feedback, steering feel, troubleshooting):
 docs\INSTALL.md.
 
 This package contains no ROMs. Emulator: MAME (GPL-2.0+), patch series
-in patch\, launcher source in source\. FFB Plugin MAME (Endprodukt's fork of Boomslangnz's FFB Arcade Plugin),
-GPL-3.0 (FFBPLUGIN-LICENSE.txt).
+in patch\, launcher source in source\. SDL2 (zlib license, SDL2-LICENSE.txt)
+for wheel force feedback.
 "@ | Set-Content (Join-Path $rel "README.txt")
 
 # 5. zip

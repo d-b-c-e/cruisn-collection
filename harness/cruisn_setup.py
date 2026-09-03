@@ -3,7 +3,7 @@
 Identifies any zip the user hands us by MEMBER names + CRCs against
 roms_manifest.json (generated from vunit.exe itself) - filename-independent,
 clone-aware, reports exactly what's missing or mismatched, and installs
-under the correct set name. Also checks the emulator and FFB plugin.
+under the correct set name. Also checks the emulator and force feedback.
 
 GUI:    python harness/cruisn_setup.py          (or frozen CruisnSetup.exe)
 CLI:    python harness/cruisn_setup.py --check somefile.zip   (JSON verdict)
@@ -19,7 +19,7 @@ import run_rig  # noqa: E402  (POC/VUNIT/ROMPATH resolution, frozen-aware)
 
 GAMES = [("crusnusa", "Cruis'n USA"), ("crusnwld", "Cruis'n World"),
          ("offroadc", "Off Road Challenge"), ("crusnexo", "Cruis'n Exotica")]
-FFB_FILES = ["dinput8.dll", "SDL2.dll", "MAME64.dll", "FFBPlugin.ini"]
+FFB_FILES = ["SDL2.dll"]   # the emulator drives the wheel itself through SDL2 haptics
 
 
 def manifest_path():
@@ -199,16 +199,15 @@ def env_status():
     vdir = os.path.dirname(run_rig.VUNIT)
     missing = [f for f in FFB_FILES
                if not os.path.isfile(os.path.join(vdir, f))]
-    rows.append(("force feedback plugin", not missing,
-                 "present" if not missing else "missing: " + ", ".join(missing)))
-    if not missing:
-        guid = run_rig.ffb_device_guid()
-        rows.append(("force feedback wheel", bool(guid),
-                     f"configured (GUID {guid[:8]}...)" if guid
-                     else "not set - use Detect wheel"))
+    wheel = run_rig.steer_device_name()
+    rows.append(("force feedback", not missing,
+                 ("built in - drives " + (f'"{wheel}" (your steering device)' if wheel
+                                          else "the first wheel found (bind a wheel in "
+                                               "CONTROLS SETUP to pin it)"))
+                 if not missing else "SDL2.dll missing beside vunit.exe"))
     diag = run_rig.ffb_diag_enabled()
     rows.append(("FFB diagnostics", True,
-                 "ON - every drive logs rig\ffb_trace.csv + FFBlog.txt "
+                 "ON - every drive logs rig\ffb_trace.csv + midv_ffb.log "
                  "(turn off when done)" if diag else "off"))
     return rows
 
@@ -244,8 +243,7 @@ def run_gui():
         r += 1
     envrows = []
     ENV_LABELS = ["emulator (vunit.exe)", "DSP boot ROMs",
-                  "force feedback plugin", "force feedback wheel",
-                  "FFB diagnostics", "version / updates"]
+                  "force feedback", "FFB diagnostics", "version / updates"]
     for label in ENV_LABELS:
         dot = tk.Label(frame, text="?", width=2, bg=BG, font=("Consolas", 13))
         dot.grid(row=r, column=0, sticky="w")
@@ -282,9 +280,9 @@ def run_gui():
         except Exception as e:
             status["version / updates"] = (False, f"(updater unavailable: {e})")
         for (dot, det), label in zip(envrows, ENV_LABELS):
-            if label not in status:      # plugin absent: no wheel row
+            if label not in status:
                 dot.configure(text="-", fg="#666078")
-                det.configure(text="(needs the force feedback plugin)")
+                det.configure(text="")
                 continue
             ok, detail = status[label]
             dot.configure(text="●" if ok else "!",
@@ -366,71 +364,6 @@ def run_gui():
               if os.path.isdir(run_rig.ROMPATH)
               else os.makedirs(run_rig.ROMPATH) or os.startfile(run_rig.ROMPATH),
               **style).pack(side="left", padx=6)
-    def detect_wheel():
-        import threading
-
-        def choose(devices):
-            # ambiguous: let the player pick the wheel BASE by name
-            top = tk.Toplevel(root)
-            top.title("Which device is your wheel?")
-            top.configure(bg=BG)
-            tk.Label(top, text="Pick your wheel base (not the shifter or "
-                     "pedals):", bg=BG, fg=FG,
-                     font=("Bahnschrift", 11)).pack(padx=16, pady=(12, 6))
-            lb = tk.Listbox(top, width=60, height=min(8, len(devices)),
-                            bg="#1d1830", fg=FG, font=("Consolas", 10))
-            for name, guid in devices:
-                lb.insert("end", f"{name}   ({guid})")
-            lb.pack(padx=16, pady=6)
-            lb.selection_set(0)
-            result = {}
-
-            def ok():
-                sel = lb.curselection()
-                if sel:
-                    result["dev"] = devices[sel[0]]
-                top.destroy()
-            tk.Button(top, text="Use this device", command=ok,
-                      **style).pack(pady=(6, 14))
-            top.grab_set()
-            root.wait_window(top)
-            return result.get("dev")
-
-        def work():
-            try:
-                say("detecting force-feedback devices - a game window "
-                    "opens for about 30 seconds, just wait (the plugin "
-                    "lists devices only once the game is running)...")
-                devices = run_rig.detect_ffb_devices(progress=say)
-                if not devices:
-                    say("the plugin reported no joysticks - is the wheel "
-                        "base connected and POWERED ON? Turn it on and "
-                        "try again (FFBlog.txt beside vunit.exe has the "
-                        "details)")
-                    return
-                say("devices: " + "; ".join(n for n, _ in devices))
-                dev = run_rig.pick_ffb_device(devices)
-                if dev is None:
-                    # ambiguous: ask on the Tk main thread, wait here
-                    import time
-                    box = {}
-                    root.after(0, lambda: box.update(dev=choose(devices)))
-                    while "dev" not in box:
-                        time.sleep(0.1)
-                    dev = box["dev"]
-                if dev is None:
-                    say("no device chosen - force feedback left unset")
-                    return
-                if run_rig.set_ffb_device_guid(dev[1]):
-                    say(f"force feedback wheel set: {dev[0]} ({dev[1]})")
-                else:
-                    say("could not write FFBPlugin.ini")
-            except Exception as e:
-                say(f"wheel detection failed: {e}")
-            root.after(0, refresh)
-
-        threading.Thread(target=work, daemon=True).start()
-
     def toggle_diag():
         on = not run_rig.ffb_diag_enabled()
         try:
@@ -439,7 +372,7 @@ def run_gui():
             say(f"could not switch FFB diagnostics: {e}")
             return
         say("FFB diagnostics ON: play for a minute, then Save support "
-            "bundle - it includes the force trace and the plugin log."
+            "bundle - it includes the force trace and the motor-write log."
             if on else "FFB diagnostics off.")
         refresh()
 
@@ -521,8 +454,6 @@ def run_gui():
         check_now()
 
     tk.Button(btns, text="Updates...", command=updates,
-              **style).pack(side="left", padx=6)
-    tk.Button(btns, text="Detect wheel (FFB)", command=detect_wheel,
               **style).pack(side="left", padx=6)
     tk.Button(btns, text="FFB diagnostics", command=toggle_diag,
               **style).pack(side="left", padx=6)

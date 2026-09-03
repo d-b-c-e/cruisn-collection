@@ -75,16 +75,27 @@ cruisn-collection/
   **`python harness/gen_shaders.py`** (emits escaped C strings — genie's
   REGENIE source scanner cannot tokenize raw strings and dies with
   "unterminated character literal").
-- **FFB Arcade Plugin** files sit UNTRACKED beside vunit.exe (`dinput8.dll`,
-  `FFBPlugin.ini`, `SDL2.dll`, **`MAME64.dll`** — copied from the racing
-  build's mame286, which holds the tuned Cruis'n settings, GameId=22).
-  MAME's own .gitignore hides them; re-copy if missing. ⚠️ Without
-  MAME64.dll (the MAME output client) the plugin shows a "MAME64.dll is
-  missing!" dialog and FFB is static spring/damper only — game forces need
-  it (success = `RomName = <rom>` in FFBlog.txt beside vunit.exe).
-- Known-cosmetic: vunit exits sometimes log a post-exit ACCESS VIOLATION
-  (Event Log; also fires headless with our GL thread not running — plugin
-  teardown race). Our GL thread stops cleanly via a machine-exit notifier.
+- **Force feedback is built into vunit.exe** (2026-09-03, `mvffb` in
+  `midvunit_v.cpp`, replaces the FFB Arcade Plugin on Endprodukt's advice):
+  the drivers hand the signed motor byte to `midv_ffb_write()` (V-Unit
+  WHLCTLZ, Exotica LED-board offset 0, after gain/slew/clamp) and a worker
+  thread drives ONE signed constant force on the wheel's steering axis
+  through SDL2 haptics (Cannonball DX / Flycast model: STEERING_AXIS,
+  infinite length, update + run per write). **`SDL2.dll` (MSYS2
+  `/mingw64/bin`, 2.32) sits UNTRACKED beside vunit.exe** and is loaded at
+  run time - no import, no build-time link; without it FFB is off and
+  `midv_ffb.log` says so. Byte interpretation = the plugin's Cruis'n
+  handler (0 stop, |v|/126). Sign: a positive byte pushes RIGHT (Exotica
+  spring measurement) and a positive SDL level turns the Moza LEFT, so the
+  level is `-sign(byte)`; `MIDV_FFB_INVERT` / SETTINGS FFB DIRECTION flips
+  it. The game writes the motor every frame (~17 ms), so the 500 ms hold
+  watchdog only fires on pause/exit. The old plugin files are parked in
+  `mame-src/_plugin-backup-*` (never copy them back: its dinput8.dll hooks
+  the process).
+- Known-cosmetic: vunit exits sometimes logged a post-exit ACCESS VIOLATION
+  (Event Log; also fired headless with our GL thread not running — it was
+  attributed to the plugin's teardown; re-observe now that it is gone).
+  Our GL and FFB threads stop cleanly via machine-exit notifiers.
   WER minidumps land in `rig/crashdumps/` for future forensics.
 - After committing in mame-src, refresh the exported series (FULL series
   from the upstream tag — CI and INSTALL.md apply it onto a clean mame0286
@@ -120,6 +131,10 @@ cruisn-collection/
 | `MIDV_GL_CRACKFILL=0` | disable crack fill (default ON: unwritten hardware quad-crack pixels get filled from axis-bounded neighbours in the palette pass; 3D scenes only; shell SETTINGS has the toggle) |
 | `MIDV_SKIP_STARTUP_SCREENS=1` | boot straight past MAME warning/info screens (frontend gate) |
 | `MIDV_TELEM_UDP=host:port` | mirror MAME outputs (wheel force, lamps) as JSON UDP datagrams (SimHub/Buttkicker); also via collection.ini `[telemetry] udp=` |
+| `MIDV_FFB=1` | **built-in force feedback** (SDL2 haptics on the wheel's steering axis); `MIDV_FFB_STRENGTH` 0-100, `MIDV_FFB_DEVICE` name substring or vid:pid, `MIDV_FFB_INVERT=1`, `MIDV_FFB_HOLD_MS` (500), `MIDV_FFB_TEST=<pct>` (1.5 s level at start), `MIDV_FFB_LOG=2` (every write) → `midv_ffb.log` |
+| `MIDV_FFB_CLAMP` / `MIDV_FFB_SLEW` | cap the motor byte at ±N / limit its change per write (driver side, before the FFB output and the trace) |
+| `MIDV_FFB_TRACE=<csv>` | every output change + `wheelpos` rows (the FFB diagnostics trace) |
+| `MIDZ_FFB_GAIN` | Exotica spring gain percent (launcher passes 400) |
 | `MIDV_GL_SNAP=<dir>` | backbuffer BMP every ~150 presents (unattended verify) |
 | `MIDV_GL_LOG=1` | diagnostics to `midv_gl.log` in cwd |
 | `MIDV_LIVE=1` | shared-memory ring only (drive `gpu/live_viewer.py`) |
@@ -182,10 +197,12 @@ Semantics that everything relies on (full detail in RESULTS.md):
 - ⚠️ **Never hard-kill with FFB active** — stranded constant-force torque on
   the Moza; Esc out normally; Stream Deck "Stop FFB" key clears a stuck
   wheel. Remote/automation quit: WM_CLOSE on MAME's window is clean.
-- FFB plugin quirk: ~50% first-launch hang in device enumeration —
-  run_rig auto-detects (no responsive window in 20 s) and relaunches once.
-- If wheel steers but FFB is silent: flip `output windows` → `output network`
-  in run_rig.py's ini writer (one word) — first thing to try.
+- run_rig still relaunches once when no responsive window shows in 20 s
+  (a plugin-era safety net; harmless).
+- If the wheel steers but FFB is silent: read `midv_ffb.log` beside
+  vunit.exe (device list, which one was taken, "no constant-force device",
+  strength 0). The wizard's steering device name is what
+  `MIDV_FFB_DEVICE` gets.
 - Known: `JOYCODE_1_BUTTON33+` tokens are dropped by the token parser AND
   invalidate the whole seq (killed keyboard Start). run_rig writes a
   sanitized EmuEzRacing copy to `rig/ctrlr/` (never edits the racing

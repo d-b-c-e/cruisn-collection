@@ -25,6 +25,7 @@ jobs:
             git make
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-python
+            mingw-w64-x86_64-SDL2
 
       - name: Cache built emulator
         id: mame-cache
@@ -56,24 +57,9 @@ jobs:
       - name: Python deps
         run: python -m pip install numpy pillow moderngl glfw pyinstaller
 
-      - name: FFB Arcade Plugin (GPL-3.0)
-        run: |
-          $api = Invoke-RestMethod "https://api.github.com/repos/Endprodukt/FFBPluginRacerMAME/releases/latest"
-          $asset = $api.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
-          if (-not $asset) { throw "FFB Plugin MAME (Endprodukt): no zip asset in the latest release" }
-          Write-Host "FFB plugin: $($api.tag_name) $($asset.name)"
-          Invoke-WebRequest -UseBasicParsing -OutFile ffb.zip $asset.browser_download_url
-          Expand-Archive ffb.zip ffbx
-          # one folder ("FFB Plugin MAME x.yyy") holding the 64-bit MAME-outputs build plus its reset tool;
-          # the bundled mame.exe is theirs, not ours - only the plugin files are taken
-          $dir = Get-ChildItem ffbx -Recurse -Filter dinput8.dll | Select-Object -First 1 | ForEach-Object { $_.Directory }
-          if (-not $dir) { throw "FFB plugin archive: dinput8.dll not found" }
-          foreach ($f in "dinput8.dll","SDL2.dll","MAME64.dll") {
-            Copy-Item (Join-Path $dir.FullName $f) mame-src\ -ErrorAction Stop
-          }
-          $reset = Get-ChildItem ffbx -Recurse -Filter FFBReset.exe | Select-Object -First 1
-          if ($reset) { Copy-Item $reset.FullName mame-src\ } else { Write-Host "FFBReset.exe not in the plugin archive (optional)" }
-          Remove-Item -Recurse -Force ffb.zip, ffbx
+      - name: SDL2 runtime (zlib) - the emulator's own force feedback loads it
+        shell: msys2 {0}
+        run: cp /mingw64/bin/SDL2.dll mame-src/
 
       - name: Assemble release
         run: |

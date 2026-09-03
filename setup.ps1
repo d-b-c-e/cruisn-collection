@@ -59,42 +59,13 @@ if ($have -contains "crusnwld") {
 }
 if (-not $have) { Fail "no ROM sets in $roms - copy your own dumps there and re-run" }
 
-# --- 4. FFB Arcade Plugin (optional but recommended) -------------------------
+# --- 4. force feedback runtime ----------------------------------------------
+# The emulator drives the wheel itself (SDL2 haptics); it only needs SDL2.dll
+# beside vunit.exe (zlib license, shipped in the release zip).
 if (Test-Path $vunit) {
     $vdir = Split-Path $vunit
-    $ffb = @("dinput8.dll", "SDL2.dll", "MAME64.dll", "FFBPlugin.ini")
-    $missing = @($ffb | Where-Object { -not (Test-Path (Join-Path $vdir $_)) })
-    if (-not $missing) { Ok "FFB Arcade Plugin present" }
-    else {
-        Warn "FFB plugin files missing beside vunit.exe: $($missing -join ', ')"
-        $dl = Read-Host "Download the official FFB Arcade Plugin now? ~117 MB (y/N)"
-        if ($dl -match '^[yY]') {
-            try {
-                $api = Invoke-RestMethod "https://api.github.com/repos/Boomslangnz/FFBArcadePlugin/releases/latest"
-                $asset = $api.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
-                $tmpz = Join-Path $env:TEMP "ffbplugin.zip"
-                $tmpd = Join-Path $env:TEMP "ffbplugin_x"
-                Write-Host "  downloading $($asset.name)..."
-                Invoke-WebRequest -UseBasicParsing -OutFile $tmpz $asset.browser_download_url
-                if (Test-Path $tmpd) { Remove-Item -Recurse -Force $tmpd }
-                Expand-Archive $tmpz $tmpd
-                $m64 = Get-ChildItem -Recurse -Directory $tmpd | Where-Object { $_.Name -eq "MAME 64bit Outputs" } | Select-Object -First 1
-                if ($m64) {
-                    foreach ($f in $ffb) {
-                        $srcf = Join-Path $m64.FullName $f
-                        if ((Test-Path $srcf) -and -not (Test-Path (Join-Path $vdir $f))) {
-                            Copy-Item $srcf $vdir
-                        }
-                    }
-                    Ok "FFB plugin installed (edit FFBPlugin.ini: GameId=22; your wheel GUID appears in FFBlog.txt after one run)"
-                } else { Warn "MAME64.dll not found in the release archive - install manually" }
-                Remove-Item -Force $tmpz -ErrorAction SilentlyContinue
-                Remove-Item -Recurse -Force $tmpd -ErrorAction SilentlyContinue
-            } catch { Warn "download failed ($_): install manually from github.com/Boomslangnz/FFBArcadePlugin" }
-        } else {
-            Warn "skipped - wheel force feedback will be inactive (steering still works)"
-        }
-    }
+    if (Test-Path (Join-Path $vdir "SDL2.dll")) { Ok "force feedback runtime (SDL2.dll) present" }
+    else { Warn "SDL2.dll missing beside vunit.exe - wheel force feedback will be off (steering still works); re-copy it from the release zip" }
 }
 
 # --- 5. optional menu music --------------------------------------------------

@@ -16,8 +16,8 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 - Your own **MAME 0.286 ROM sets**: `crusnusa`, `crusnwld`, `offroadc`,
   `crusnexo` — plus **`crusnwld24`** for Cruis'n World and the two DSP boot
   ROM sets **`tms320c31`** / **`tms320c32`** (see the ROM table).
-- Optional: a wheel (any DirectInput wheel; force feedback via the bundled
-  FFB Arcade Plugin), a shifter or paddles, a gamepad.
+- Optional: a wheel (any DirectInput wheel; force feedback is driven by
+  the emulator itself), a shifter or paddles, a gamepad.
 
 ### Steps
 
@@ -25,14 +25,15 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
    installer, no admin rights, no Python. Windows SmartScreen may warn
    about the unsigned executables the first time: *More info → Run anyway*.
 2. Double-click **`CruisnSetup.exe`**. It shows one row per game plus the
-   emulator and force-feedback plugin status.
+   emulator and force-feedback status.
 3. **Add ROM file(s)…** and pick your zips (several at once is fine). Any
    filename works — each zip is identified by its contents against MAME
    0.286's ROM list and copied into `roms\` under the right name. A file or
    two with odd checksums is reported but doesn't block anything (redumps
    are common; MAME loads them).
-4. Have a force-feedback wheel? **Detect wheel (force feedback)** — see
-   below.
+4. Have a wheel? Bind it in the launcher (**SETTINGS → CONTROLS SETUP**);
+   force feedback follows the steering device by itself — see *Force
+   feedback* below.
 5. **Launch Collection** (or double-click `CruisnCollection.exe` any time).
 
 | game | ROM set(s) | notes |
@@ -117,22 +118,17 @@ automatic until that is solved.
 
 ### Force feedback
 
-The zip includes the **FFB Arcade Plugin** (GPL-3.0) pre-configured for
-these games. It needs to know *which* device is your wheel — the plugin
-does nothing until `DeviceGUID=` in `FFBPlugin.ini` names it.
+The emulator drives your wheel itself. The value the arcade board wrote to
+its wheel motor every frame becomes one signed constant force on the
+wheel's steering axis through SDL2 haptics - the way Cannonball DX and
+Flycast drive wheels. Nothing to install and no device IDs: forces go to
+the device you bound as steering in **SETTINGS → CONTROLS SETUP** (with no
+wheel bound, to the first wheel-type force-feedback device found).
+`midv_ffb.log` beside `vunit.exe` records which device was taken and why,
+and it is part of every support bundle.
 
-**Easy way:** `CruisnSetup.exe → Detect wheel (FFB)`, with the wheel base
-powered on. A game window opens for about thirty seconds while the plugin
-lists every connected device (it enumerates only once the game is
-running); the setup then picks the device you bound as steering in
-CONTROLS SETUP (or asks, if it can't tell) and writes the line for you.
-
-**By hand:** set `Logging=1` in `FFBPlugin.ini` (beside `vunit.exe`), play
-once, open `FFBlog.txt` — each device appears as `Joystick: n / Name: … /
-GUID: …`. Put your wheel base's GUID on the `DeviceGUID=` line, leave
-`GameId=22`, set `Logging=0` again.
-
-Overall strength is **SETTINGS → FFB STRENGTH**. What the games send is
+Overall strength is **SETTINGS → FFB STRENGTH** (0% = force feedback off).
+What the V-Unit games send is
 not a centering spring: every time the wheel moves, the game kicks back
 against the movement, harder for a bigger movement, and the kick fades
 within a tenth of a second (a damper - it made the weak arcade motor
@@ -147,56 +143,40 @@ their full strength, so the wheel stays lively without the slamming. It
 applies to all three V-Unit games; **Cruis'n World** is the one that
 needs it most - off-track and in crashes it holds *full* force for half
 a second at a time, which on a direct-drive base is a punch.
-**Cruis'n Exotica** has force feedback from v0.3.5 (experimental): its
-motor signal was not emulated by MAME at all until this project found
-it; it is a centering spring plus race effects, driven through the same
-plugin path as USA, so FFB STRENGTH and FFB PEAK LIMIT apply to it too. Rotation range (arcade
-Cruis'n wheels turn about 270°) is set in your wheel's own software.
+**Cruis'n Exotica** has force feedback too (since v0.3.5): its motor
+signal was not emulated by MAME at all until this project found it; it is
+a centering spring plus race effects, and FFB STRENGTH and FFB PEAK LIMIT
+apply to it as well. Rotation range (arcade Cruis'n wheels turn about
+270°) is set in your wheel's own software.
 
-The shipped `FFBPlugin.ini` is the plugin's own MAME defaults (`GameId=22`,
-which covers USA, World and Off Road by ROM name; 500 ms effect length so
-forces don't expire between the game's updates). If your wheel only pulls
-one way or feels weak, try `AlternativeFFB=1` — some bases (Moza,
-Thrustmaster) want it. Keep the four plugin files that come in the zip
-together; mixing a `dinput8.dll` from another plugin version with these
-`SDL2.dll` / `MAME64.dll` makes forces flaky. One more reason: different
-`SDL2.dll` versions write the *same* wheel's GUID differently (two bytes
-of name checksum), and the plugin only drives an exact match. The
-launcher rewrites `DeviceGUID=` in the shipped SDL's format at every
-launch, so a wheel detected under an older version keeps working after
-an update — if you edit the line by hand, copy it from *this* version's
-`FFBlog.txt`.
+**SETTINGS → FFB DIRECTION**: wheel bases do not agree on which way a
+positive force turns. The default is right for a Moza base (measured with
+the game's own spring). If the wheel runs *away* from centre in Cruis'n
+Exotica, or shakes violently in USA at any strength, flip it to INVERTED.
 
-**FFB diagnostics** (when forces are missing or intermittent):
-`CruisnSetup.exe → FFB diagnostics` turns on two logs for every drive —
-`rig\ffb_trace.csv` (every force value the game sends, timestamped) and
-the plugin's own `FFBlog.txt` (what it did with them). Drive for a minute,
-then **Save support bundle**; the two logs tell us whether the game stopped
-sending or the wheel stopped listening. Turn it off afterwards.
+Safety: when a game stops writing its motor for half a second (pause,
+menus, exit) the force is released, and everything is stopped when the
+game closes - a direct-drive base never holds a stranded force.
+
+**FFB diagnostics** (when forces are missing, wrong or intermittent):
+**SETTINGS → FFB DIAGNOSTICS** (or `CruisnSetup.exe → FFB diagnostics`)
+turns on two logs for every drive - `rig\ffb_trace.csv` (every force
+value the game sends, timestamped, plus the wheel position it read) and
+`midv_ffb.log` (the device chosen and every motor write with the level
+actually sent to the wheel). Drive for a minute, then **Save support
+bundle**; the two logs tell us whether the game stopped sending or the
+wheel stopped listening. Turn it off afterwards.
 
 ### Force feedback on a strong (direct-drive) wheel
 
-The collection ships **FFB Plugin MAME**, Endprodukt's fork of the FFB
-Arcade Plugin (GPL-3, [source](https://github.com/Endprodukt/FFBPluginRacerMAME)),
-the build MAME players with strong wheels prefer: its "ConstantInf" mode
-keeps one long-lived constant force that follows the game's value and
-**stops when the game sends zero** (the original re-triggered a 500 ms
-pulse per update and never stopped on zero), and it ships the reset
-tool we run at every launch. It still fires a rumble burst per update.
-Knobs, all optional, all in `rig\collection.ini`
-under `[collection]` (the launcher writes them into the plugin's ini at
-every launch):
+The knobs, from the SETTINGS menu unless noted:
 
-| key | try | what it does |
+| knob | try | what it does |
 |---|---|---|
-| `ffb_rumble = 0` | first | turns off the per-update rumble burst (plugin `EnableRumble`) |
-| `ffb_slew = 16` | second | the force may move at most 16 (of 127) per game update: kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |
-| FFB PEAK LIMIT | 60 | caps the biggest kicks (a SETTINGS row) |
-| FFB STRENGTH | 40% | overall level (a SETTINGS row) |
-| `ffb_hold = 200` | | how long one update keeps pushing when the game sends nothing new (plugin `FeedbackLength`, stock 500 ms) |
-| `ffb_power = 1` | | plugin `PowerMode`: square-root boost of small forces, for more road feel at low strength |
-| `ffb_alt = 1` | | plugin `AlternativeFFB` (stock 0): per-direction max keys; some bases only pull one way without it |
-| `ffb_constinf = 0` | | back to the original pulse-per-update constant force (`UseConstantInf`, default 1) |
+| FFB STRENGTH | 40% | overall level |
+| FFB PEAK LIMIT | 60 | caps the biggest kicks; small road forces keep full strength |
+| FFB DIRECTION | | flip if the wheel runs away from centre (Exotica) or shakes at any strength (USA) |
+| `ffb_slew = 16` | second | `rig\collection.ini` under `[collection]`: the force may move at most 16 (of 127) per game update - kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |
 
 Change one at a time and drive a minute of USA; the launch log's first
 line shows what was applied.
@@ -208,8 +188,8 @@ raw trace, the bundle now carries `ffb_trace_report.txt` and
 `ffb_trace.png`: the force the game sent and the **wheel position it read
 back**, on one timeline. An oscillating wheel shows as the blue position
 line swinging in step with the orange force kicks, and the report states
-the swing rate and amplitude. That is the whole force loop as the game
-sees it; only the plugin-to-driver hop is outside our view.
+the swing rate and amplitude. With `midv_ffb.log` (the level sent to the
+wheel for every motor write) that is the whole force loop on record.
 
 ### Steering feel: sensitivity and curve
 
@@ -258,12 +238,12 @@ and so on).
 - **A game returns to the launcher immediately** — the reason shows on the
   menu for a few seconds (typically a missing ROM file); the emulator's
   full output is in `rig\launch.log`.
-- **Nothing happens for ~20 s, then the game starts** — a known
-  first-launch hang in the FFB plugin's device scan; the launcher detects
-  it and relaunches automatically.
+- **Nothing happens for ~20 s, then the game starts** — a hang in the
+  wheel's device scan (rare); the launcher detects it and relaunches
+  automatically.
 - **A game runs slow / stutters** — four one-line experiments, each a
   SETTINGS row, no files to touch: INTERNAL SCALE 2X (GPU), FFB STRENGTH
-  0% (the force-feedback plugin goes idle), ASPECT 4:3 (no widescreen
+  0% (force feedback off), ASPECT 4:3 (no widescreen
   patch or margins), CRT off (F9). Whichever one fixes it names the
   culprit; then Save support bundle after the slow game — its
   `launch.log` ends with the emulator's measured speed.
@@ -276,41 +256,36 @@ and so on).
   discrete GPU.
 - **Wheel not listed in CONTROLS SETUP** — connect it before starting the
   launcher.
-- **Wheel steers but never pushes back** — force feedback isn't configured
-  yet: see *Force feedback* above.
-- **Force feedback works for the first game, then is gone** (no forces
-  in any game after you exit one, even after power-cycling the wheel;
-  another emulator brings them back) — v0.3.4 fixes the cause we found:
-  leftover forces are now stopped in a throwaway helper process, a game
-  process that hangs on exit is ended, and the wheel gets a clean
-  open/close before every launch. If it still happens: close the
-  launcher completely and reopen it (do forces return for one game?
-  tell us), turn on *FFB diagnostics* in the setup window, reproduce,
-  then *Save support bundle* — it now records whether an emulator
-  process was still running.
+- **Wheel steers but never pushes back** — force feedback needs
+  `SDL2.dll` beside `vunit.exe` (it is in the zip) and a wheel whose
+  driver offers force feedback (DirectInput). `midv_ffb.log` beside
+  `vunit.exe` - in every support bundle - says which device was taken, or
+  why none was; FFB STRENGTH 0% also means off.
+- **Force feedback works for the first game, then is gone** — this was
+  the old force-feedback plugin holding the wheel from inside the
+  launcher; the emulator now drives the wheel itself and releases it when
+  the game closes. If you still see it, turn on *FFB diagnostics*,
+  reproduce, then *Save support bundle*.
 - **USA (or World / Off Road) crawls in 2nd gear with the tyres
   squealing, even in automatic** — the game thinks the brake is pressed.
   Some load-cell pedals (Moza) come up reading fully pressed until they
   are pressed once: press the brake fully and release it. The launcher
   now refuses to start a game while a pedal reads pressed and tells you
   which one.
-- **The wheel slams left-right on its own / forces are harsh** — FFB
-  STRENGTH is too high for your base: the games' force is a kick against
-  every wheel movement, and a strong wheel turns that into a runaway
-  loop (see *Force feedback*). 30-40% on an 8 Nm direct-drive wheel is
-  the place to start, or set **FFB PEAK LIMIT** to 40; add damping in
-  the wheel software. With FFB diagnostics on, the support bundle's
+- **The wheel slams left-right on its own / forces are harsh** — first
+  check **FFB DIRECTION**: with the sign wrong for your base the games'
+  damper becomes an anti-damper and the wheel shakes at any strength
+  (Exotica then runs away from centre instead of returning). If the
+  direction is right, FFB STRENGTH is too high for your base: the games'
+  force is a kick against every wheel movement, and a strong wheel turns
+  that into a runaway loop (see *Force feedback*). 30-40% on an 8 Nm
+  direct-drive wheel is the place to start, or set **FFB PEAK LIMIT** to
+  40; add damping in the wheel software. With FFB diagnostics on, the support bundle's
   trace shows it as rapid alternating kicks
   (`python harness/ffb_trace_report.py` on it).
-- **No force feedback in any game after updating, and `FFBlog.txt` says
-  "No haptic device available" right after listing your wheel** — the
-  saved wheel GUID is in another SDL version's format (see *Force
-  feedback*). The launcher fixes this by itself at launch when the wheel
-  is connected; if it persists, blank the `DeviceGUID=` line in
-  `FFBPlugin.ini` and run `CruisnSetup.exe → Detect wheel (FFB)` again.
-- **Force feedback comes and goes** — first make sure all four plugin files
-  are the ones from the zip (no `dinput8.dll` from another version), then
-  turn on *FFB diagnostics*, drive a minute, save a support bundle.
+- **Force feedback comes and goes** — turn on *FFB diagnostics*, drive a
+  minute, save a support bundle: `midv_ffb.log` shows every level sent to
+  the wheel next to the game's trace.
 - **"needs the DSP boot ROM c31boot.bin"** — copy `tms320c31.zip` (and
   `tms320c32.zip` for Exotica) from your MAME romset into `roms\`.
 - **Cruis'n World shows CALIBRATE CONTROLS** — expected once per rig:
@@ -355,8 +330,10 @@ Advanced / scripted setup (custom paths, no GUI): `setup.ps1` in the zip.
         REGENIE=1 NOWERROR=1 TOOLS=0 -j$(nproc)
    ```
    Product: `vunit.exe` (~110 MB, statically linked). Later builds drop
-   `REGENIE=1`. Put the FFB Arcade Plugin files (`dinput8.dll`, `SDL2.dll`,
-   `MAME64.dll`, `FFBPlugin.ini`) beside it for wheel force feedback.
+   `REGENIE=1`. Put `SDL2.dll` beside it for wheel force feedback (the
+   MSYS2 package `mingw-w64-x86_64-SDL2` supplies both the headers the
+   build needs and `/mingw64/bin/SDL2.dll`; the emulator loads it at run
+   time and runs without it, force feedback off).
 4. Python 3.12+ with `pip install numpy pillow moderngl glfw` (plus
    `pyinstaller` to build a release zip; `yt-dlp` + ffmpeg for the music
    tools). Run the launcher: `python harness/collection.py`; one game:
@@ -392,5 +369,5 @@ Cruis'n USA, Cruis'n World, Off Road Challenge, Cruis'n Exotica and all
 associated art are Midway / Warner Bros. properties. This project
 distributes **no ROMs and no game assets** — original launcher code, a
 GPL-2.0+ patch series against MAME (source included, as GPL requires) and
-the GPL-3.0 FFB Arcade Plugin (license included). Supply your own legally
-obtained ROM dumps.
+SDL2 (zlib license, included) for wheel force feedback. Supply your own
+legally obtained ROM dumps.

@@ -945,5 +945,14 @@ stopped matching -> "No haptic device available" -> FFB silent
 everywhere (this was the tester's "failed swap"). run_rig
 normalize_ffb_guid() (ctypes on the shipped SDL2.dll, from
 ensure_ffb_guid at each launch) rewrites the GUID; dev folder + smoke
-install fixed. v0.3.6 not yet tagged - it must carry this fix together
-with the plugin switch.
+install fixed. THEN (same afternoon) the plugin was retired altogether on
+Endprodukt's advice: **force feedback is built into vunit.exe** (mvffb in
+midvunit_v.cpp, SDL2 haptics on the steering axis, Cannonball DX model,
+SDL2.dll loaded at run time; MIDV_FFB / _STRENGTH / _DEVICE / _INVERT /
+_HOLD_MS / _TEST / _LOG; midv_ffb.log). Sign measured on the Moza:
+positive byte = push right, positive SDL level = Moza turns left ->
+level = -sign(byte); SETTINGS -> FFB DIRECTION flips. All plugin code,
+files and docs removed (ffb/ dir gone, third_party/SDL2-LICENSE.txt
+added, CI installs mingw-w64-x86_64-SDL2). The tester's Fanatec has not
+felt the native path yet: FFB DIRECTION is the knob if it runs away.
+v0.3.6 not yet tagged.

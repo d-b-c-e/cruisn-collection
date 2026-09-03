@@ -395,7 +395,8 @@ class Shell:
                   (0.75, 0.75, 0.8, 1.0))
 
     def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans,
-                      scale, t, version="", notice="", clamp=0, diag=False):
+                      scale, t, version="", notice="", clamp=0, diag=False,
+                      invert=False):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -410,6 +411,7 @@ class Shell:
                 ("MARGIN FILL", "ON" if mfill else "OFF"),
                 ("FFB STRENGTH", f"< {ffb}% >"),
                 ("FFB PEAK LIMIT", "< OFF >" if not clamp else f"< {clamp} >"),
+                ("FFB DIRECTION", "< INVERTED >" if invert else "< NORMAL >"),
                 ("FFB DIAGNOSTICS", "ON" if diag else "OFF"),
                 ("INTERNAL SCALE", f"< {scale}X >"),
                 ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
@@ -421,7 +423,7 @@ class Shell:
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.33 + 0.043 * i)
+            y = self.h * (0.33 + 0.040 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -437,25 +439,27 @@ class Shell:
                "TRIMMED = 16:9 WITH CLEANER EDGES",
             3: "ON = STRETCH EDGE PIXELS INTO THE 16:9 SIDES (CAN SMEAR)"
                "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING",
-            4: "FORCE-FEEDBACK STRENGTH:   0% = PLUGIN OFF (A/B TEST FOR "
+            4: "FORCE-FEEDBACK STRENGTH:   0% = FFB OFF (A/B TEST FOR "
                "SPEED)      LOWER IF THE WHEEL FEELS TOO HARSH",
             5: "CAPS THE GAMES' FORCE KICKS (OF 127)      STOPS A STRONG "
                "WHEEL SLAMMING LEFT-RIGHT BY ITSELF      TRY 40 ON A "
                "DIRECT-DRIVE BASE",
-            6: "ON = RECORDS THE FORCES AND WHEEL POSITION WHILE YOU DRIVE "
+            6: "WHICH WAY THE WHEEL PUSHES - BASES DIFFER.  FLIP IT IF THE WHEEL "
+               "RUNS AWAY FROM CENTRE IN EXOTICA OR SHAKES HARD IN USA",
+            7: "ON = RECORDS THE FORCES AND WHEEL POSITION WHILE YOU DRIVE "
                "(FOR A BUG REPORT)      THEN SAVE SUPPORT BUNDLE",
-            10: "WRITES ONE ZIP WITH LOGS, SETTINGS, CONTROLLER LAYOUT AND "
+            11: "WRITES ONE ZIP WITH LOGS, SETTINGS, CONTROLLER LAYOUT AND "
                 "THE FORCE TRACE - NEVER YOUR ROMS      A GAME WINDOW "
                 "APPEARS FOR ABOUT 10 S",
-            7: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
+            8: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
                "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT "
                "THE NEXT LAUNCH",
-            8: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
+            9: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
                "SHIFT UP / DOWN PADDLES (EXOTICA: PADDLES DRIVE A VIRTUAL "
                "4-SPEED SHIFTER)",
-            9: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
+            10: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
                "SKIPPED STEPS KEEP THEIR SAVED BINDING",
-            11: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
+            12: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
                "YOUR ROMS, SETTINGS AND BINDINGS ARE KEPT",
         }
         if notice:
@@ -818,6 +822,7 @@ def load_config():
             "scale": int(sec.get("scale", 4)),
             # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
             "ffbclamp": int(sec.get("ffbclamp", 0) or 0),
+            "ffbinvert": int(sec.get("ffb_invert", 0) or 0),
             # which World ROM set the CRUIS'N WORLD card boots. Default is
             # crusnwld24 (rev 2.4): the LAST revision with transmission
             # select - 2.5's factory ROMs are labeled "automatic" and
@@ -840,6 +845,7 @@ def save_config(state):
            "transmission": state.get("transmission", "hpattern"),
            "scale": str(state["scale"]), "rom": state["rom"],
            "ffbclamp": str(state.get("ffbclamp", 0)),
+           "ffb_invert": str(state.get("ffbinvert", 0)),
            "world_rom": state.get("world_rom", "crusnwld24")}
     for rom, _, _, _ in GAMES:
         sv = state["steersens"].get(rom)
@@ -951,7 +957,7 @@ def update_step(upd):
 
 
 def toggle_diag(upd):
-    """SETTINGS -> FFB DIAGNOSTICS: flips the plugin log + force trace flag
+    """SETTINGS -> FFB DIAGNOSTICS: flips the motor-write log + force trace flag
     (rig/collection.ini ffb_diag, applied at the next launch)."""
     on = not run_rig.ffb_diag_enabled()
     try:
@@ -1038,31 +1044,14 @@ def direct_launch(card, windowed=False):
                 ctypes.c_void_p(_hwnd), 0x0010, 0, 0)
         time.sleep(0.25)
     rc = run_rig.wait_or_kill(proc)   # a hung teardown must not keep the wheel
-    run_rig.release_ffb_detached(os.path.dirname(run_rig.VUNIT))
     return rc
 
 
 def main():
-    # The FFB Arcade Plugin's dinput8.dll sits beside the frozen launcher
-    # (same folder as vunit.exe). glfw's joystick backend asks Windows for
-    # "dinput8.dll" and gets THAT copy - the plugin then runs inside the
-    # launcher, enumerates the wheel and can hold its haptic device for the
-    # whole session (a tester's FFBlog shows it: "process name:
-    # CruisnCollection.exe ... numJoysticks"). Pre-load the system DLL by
-    # full path: later loads by name resolve to the already-loaded module.
-    try:
-        ctypes.WinDLL(os.path.join(os.environ.get("SystemRoot", r"C:\Windows"),
-                                   "System32", "dinput8.dll"))
-    except OSError:
-        pass
     ap = argparse.ArgumentParser()
     ap.add_argument("--game", metavar="NAME",
                     help="launch one game directly, no launcher screen: "
                          "usa, world, offroad, exotica (or MAME names)")
-    ap.add_argument("--release-ffb", action="store_true",
-                    help="stop any force-feedback effect left on the wheel "
-                         "and exit (the launcher runs this in a throwaway "
-                         "process after every game)")
     ap.add_argument("--shot", metavar="PNG",
                     help="render one offscreen frame and exit")
     ap.add_argument("--windowed", action="store_true",
@@ -1071,9 +1060,6 @@ def main():
                     help="print connected joysticks as JSON and exit "
                          "(support-bundle diagnostics)")
     args = ap.parse_args()
-    if args.release_ffb:
-        run_rig.release_ffb(os.path.dirname(run_rig.VUNIT))
-        return 0
     if args.game:
         card = resolve_game_alias(args.game)
         if not card:
@@ -1420,7 +1406,7 @@ def main():
             armed = time.time() >= armed_at
             if game_proc is not None:
                 # the previous vunit is still tearing down in the background:
-                # when the FFB plugin finally releases DirectInput the wheel
+                # when the exiting emulator releases DirectInput the wheel
                 # re-enumerates and can fire phantom presses SECONDS after
                 # the shell is back - hold joystick input until the process
                 # is well and truly gone, then arm 2 s later
@@ -1592,10 +1578,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 13
+                    ssel = (ssel - 1) % 14
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 13
+                    ssel = (ssel + 1) % 14
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -1627,9 +1613,12 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 6:
-                    toggle_diag(upd)
+                    state["ffbinvert"] = 0 if state.get("ffbinvert", 0) else 1
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 7:
+                    toggle_diag(upd)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 8:
                     # internal render scale 2x-4x (GPU load ~ scale^2);
                     # applies at the next launch
                     step = 1 if key == glfw.KEY_RIGHT else -1
@@ -1637,7 +1626,7 @@ def main():
                                                 + step))
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 8:
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 9:
                     state["transmission"] = (
                         "sequential"
                         if state.get("transmission", "hpattern") == "hpattern"
@@ -1654,7 +1643,7 @@ def main():
                         state["marginfill"] = not state.get("marginfill", True)
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel == 8:
+                    elif ssel == 9:
                         state["transmission"] = (
                             "sequential"
                             if state.get("transmission",
@@ -1662,18 +1651,21 @@ def main():
                             else "hpattern")
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel in (2, 4, 5, 7):
+                    elif ssel in (2, 4, 5, 8):
                         audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 11:
+                    elif ssel == 12:
                         audio.blip("nav")
                         update_step(upd)
-                    elif ssel == 10:
+                    elif ssel == 11:
                         audio.blip("nav")
                         bundle_step(upd)
-                    elif ssel == 6:
+                    elif ssel == 7:
                         toggle_diag(upd)
                         audio.blip("nav")
-                    elif ssel == 9:
+                    elif ssel == 6:
+                        state["ffbinvert"] = 0 if state.get("ffbinvert", 0) else 1
+                        audio.blip("nav")
+                    elif ssel == 10:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -1832,7 +1824,8 @@ def main():
                                 version=upd_version,
                                 notice=upd["msg"] if time.time() < upd["until"]
                                 else "", clamp=int(state.get("ffbclamp", 0)),
-                                diag=run_rig.ffb_diag_enabled())
+                                diag=run_rig.ffb_diag_enabled(),
+                                invert=bool(state.get("ffbinvert", 0)))
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)
@@ -1940,7 +1933,7 @@ def main():
                 # the shell window stays alive and fullscreen BEHIND the
                 # game for the whole session - no desktop flash on launch
                 # or return. Watch the WINDOW, not the process: teardown
-                # (FFB plugin exit races, WER dumps) drags for seconds
+                # (exit races, WER dumps) drags for seconds
                 # after the player Esc-quits, and the window can outlive
                 # its message pump through that drag, so two consecutive
                 # WM_NULL timeouts also mean "exiting". Keep pumping our
@@ -1964,15 +1957,12 @@ def main():
                         if unresp >= 2:
                             break
                     time.sleep(0.25)
-                # G8: fast-exit skips the FFB plugin's teardown, which is
-                # what used to disarm the wheel - stop any stranded forces.
-                # First make sure the process is really gone: a teardown
-                # that hangs keeps the wheel's FFB device (and MAME's
-                # output window) - the next game steers but has no FFB.
-                def _reap(p=proc):
-                    run_rig.wait_or_kill(p)
-                    run_rig.release_ffb_detached(os.path.dirname(run_rig.VUNIT))
-                threading.Thread(target=_reap, daemon=True).start()
+                # make sure the process is really gone: a teardown that
+                # hangs keeps the wheel's FFB device - the next game steers
+                # but has no FFB. The emulator's own FFB releases the force
+                # in its exit notifier; the OS drops it if the process dies.
+                threading.Thread(target=run_rig.wait_or_kill, args=(proc,),
+                                 daemon=True).start()
                 keeper.game_active.clear()   # game gone: zero the dash again
                 # joystick states changed while we were blocked (buttons
                 # pressed in-game) - rebaseline or the first poll back

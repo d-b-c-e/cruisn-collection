@@ -1,9 +1,9 @@
 """Rig launcher - play the V-Unit games through the in-process GPU renderer.
 
 One process, one window: vunit.exe with the GL overlay (MIDV_GL=1), sound on,
-wheel mappings from a sanitized copy of the racing build's ctrlr, FFB Arcade
-Plugin loaded from vunit.exe's directory (dinput8.dll proxy), MAME outputs on
-(the plugin reads Windows outputs - no outputs, no forces).
+wheel mappings from a sanitized copy of the racing build's ctrlr, and the
+emulator's own force feedback (MIDV_FFB=1: the games' wheel-motor byte goes
+straight to the wheel through SDL2 haptics - no plugin, no output hooks).
 
 After launch the MAME window is made borderless-fullscreen on its monitor and
 forced to the foreground, so keyboard (Coin=5, Start=1, Esc quits, F9 toggles
@@ -11,10 +11,9 @@ the CRT pass) and the wheel's foreground-mode DirectInput work no matter how
 we were started - terminal, Stream Deck, or LaunchBox all leave focus on
 their own console otherwise. --windowed keeps the normal maximized window.
 
-A launch that never shows a responsive MAME window within ~20 s (the FFB
-plugin's known ~50% first-launch device-enumeration hang) is killed and
-relaunched once automatically - safe because the hang happens before any
-force effect is created.
+A launch that never shows a responsive MAME window within ~20 s (a hang in
+device enumeration was a known plugin failure; kept as a safety net) is
+killed and relaunched once automatically.
 
 Importable: the collection shell calls launch_game(rom=..., crt=...), which
 blocks until the game exits and returns vunit's exit code.
@@ -137,7 +136,7 @@ def find_mame_hwnd(proc, timeout):
 
 
 def responsive(hwnd, tries=3):
-    """Distinguish a live MAME from the FFB plugin's enumeration hang."""
+    """Distinguish a live MAME from a window whose message pump is stuck."""
     res = wt.DWORD()
     for i in range(tries):
         if u32.SendMessageTimeoutW(hwnd, WM_NULL, None, None,
@@ -152,39 +151,11 @@ def window_responding(hwnd, timeout_ms=1000):
     WM_NULL within a frame during play; once teardown starts the pump stops
     and this times out - the collection shell uses that as its exit signal,
     because the window object can outlive the pump by seconds while the FFB
-    plugin exit race and WER dump writes drag teardown out."""
+    exit races and WER dump writes drag teardown out."""
     res = wt.DWORD()
     return bool(u32.SendMessageTimeoutW(hwnd, WM_NULL, None, None,
                                         SMTO_ABORTIFHUNG, timeout_ms,
                                         ctypes.byref(res)))
-
-
-def release_ffb(mame_dir):
-    """Stop any force-feedback effects left running on the wheel.
-
-    MIDV_FAST_EXIT ends vunit before the FFB plugin's DLL teardown runs
-    (that teardown both crashed AND disarmed the wheel), so a constant-force
-    effect can stay live on the base after quit (rig bug G8). The plugin
-    ships SDL2 beside the exe - borrow it: open every haptic device, stop
-    all effects, close. The game has exited, so nothing holds the device.
-    Best-effort: any failure is swallowed (worst case = old behavior)."""
-    try:
-        sdl = ctypes.CDLL(os.path.join(mame_dir, "SDL2.dll"))
-        SDL_INIT_JOYSTICK, SDL_INIT_HAPTIC = 0x200, 0x1000
-        if sdl.SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_HAPTIC) != 0:
-            return False
-        n = sdl.SDL_NumHaptics()
-        stopped = 0
-        for i in range(max(0, n)):
-            h = ctypes.c_void_p(sdl.SDL_HapticOpen(i))
-            if h:
-                sdl.SDL_HapticStopAll(h)
-                sdl.SDL_HapticClose(h)
-                stopped += 1
-        sdl.SDL_Quit()
-        return stopped > 0
-    except Exception:
-        return False
 
 
 def vunit_processes(exe=None):
@@ -214,47 +185,10 @@ def vunit_processes(exe=None):
     return out
 
 
-def release_ffb_detached(mame_dir, timeout=20.0):
-    """release_ffb() in a throwaway process. Loading the plugin's SDL2 into
-    the long-lived launcher and opening the wheel's haptic device there
-    (exclusive DirectInput acquire) is the one thing we do at exit that no
-    other emulator does - and a tester's Fanatec CSL DD lost force
-    feedback after the first exit of every launcher session, coming back
-    only after another emulator's plugin had opened and closed the wheel
-    in its own process. A short-lived process cannot keep anything.
-    Falls back to the in-process release if the helper cannot start."""
-    # The plugin ships its own reset tool (FFBReset.exe: opens every wheel,
-    # clears its status, exits) - a tester proved it restores FFB on a
-    # Fanatec where our exit path lost it; prefer the author's tool when
-    # the release put it beside vunit.exe.
-    tool = os.path.join(mame_dir, "FFBReset.exe")
-    if os.path.isfile(tool):
-        try:
-            r = subprocess.run([tool], capture_output=True, text=True,
-                               timeout=timeout, cwd=mame_dir,
-                               creationflags=0x08000000)   # no console window
-            print("FFBReset:", (r.stdout or "").strip().replace(chr(10), " | "))
-            return True
-        except (OSError, subprocess.TimeoutExpired) as e:
-            print(f"FFBReset.exe failed ({e}) - using the built-in release")
-    if getattr(sys, "frozen", False):
-        cmd = [sys.executable, "--release-ffb"]
-    else:
-        cmd = [sys.executable, os.path.abspath(__file__), "--release-ffb"]
-    try:
-        r = subprocess.run(cmd, capture_output=True, text=True,
-                           timeout=timeout, cwd=mame_dir,
-                           env=dict(os.environ, MIDV_MAME=os.path.join(
-                               mame_dir, os.path.basename(VUNIT))))
-        return r.returncode == 0
-    except (OSError, subprocess.TimeoutExpired):
-        return release_ffb(mame_dir)
-
-
 def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
     """Wait for a game process that has already closed its window; a
-    teardown that hangs past `timeout` (plugin DLL / crash-at-exit race)
-    is terminated so it cannot hold the wheel for the next launch."""
+    teardown that hangs past `timeout` (crash-at-exit race) is terminated
+    so it cannot hold the wheel for the next launch."""
     try:
         return proc.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
@@ -266,10 +200,9 @@ def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
 
 def kill_stale_vunit(exe=None, why="stale"):
     """End any copy of our emulator still running from an earlier launch
-    (a crash-at-exit or a hung plugin teardown leaves a zombie that keeps
-    the wheel's force-feedback device and MAME's output window - the next
-    game then steers but has no FFB until reboot). Returns the pids ended.
-    Follow with release_ffb(): a killed process never stops its effects."""
+    (a crash-at-exit leaves a zombie that keeps the wheel's force-feedback
+    device - the next game then steers but has no FFB). Returns the pids
+    ended. The OS releases a killed process's DirectInput effects."""
     k32 = ctypes.windll.kernel32
     ended = []
     for pid, _path in vunit_processes(exe):
@@ -338,7 +271,7 @@ def enforce_foreground(hwnd, seconds=45, stop=None):
     Keyboard and the wheel's foreground-mode DirectInput both die unless
     MAME's own window holds foreground AND focus - a Stream Deck launch
     (cmd -> start /min python) has no foreground rights of its own, boot +
-    FFB-plugin init contest early claims, and Windows sometimes activates
+    device-init contests early claims, and Windows sometimes activates
     the owner's last-active owned popup (the GL overlay, whose DefWindowProc
     eats keys) instead of the owner. The ALT tap releases the foreground
     lock; never use SwitchToThisWindow here (it activates the overlay).
@@ -526,8 +459,6 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
     ini = os.path.join(rig, "ini")
     for d in (ini, os.path.join(rig, "cfg"), os.path.join(rig, "nvram")):
         os.makedirs(d, exist_ok=True)
-    # output windows: the FFB Arcade Plugin reads MAME's Windows outputs -
-    # without it the wheel steers but never gets a force (racing build matches).
     # priority 1: raise MAME's thread priority - ambient load (Defender,
     # Pit House, Spotify) showed up as 94-97% average speed = audio crackle.
     # video gdi is REQUIRED under the GL overlay (V-Unit games only).
@@ -545,128 +476,13 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
         # cheapest (Zeus)
         vid = "video gdi\n"
     open(os.path.join(ini, "mame.ini"), "w").write(
-        f"skip_gameinfo 1\n{vid}output windows\npriority 1\n")
+        f"skip_gameinfo 1\n{vid}priority 1\n")
     open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
     seed = os.path.join(POC, "fixtures", f"nvram-{rom}")
     dst = os.path.join(rig, "nvram", rom)
     if os.path.isdir(seed) and not os.path.isdir(dst):
         shutil.copytree(seed, dst)   # persistent from then on - scores survive
     return rig, ini
-
-
-def apply_ffb_strength(mame_dir, pct):
-    """Scale the FFB Arcade Plugin's overall force ceiling to pct (0-100) by
-    patching the [Settings] block of FFBPlugin.ini beside vunit.exe.
-
-    The plugin runs AlternativeFFB=1, so the active knobs are the alternative
-    max forces (left -100..0, right 0..100); MaxForce (the AlternativeFFB=0
-    path) is scaled too for completeness. Only the bare [Settings] keys are
-    touched - per-game keys carry a game suffix (MaxForceVirtuaRacing etc.)
-    so a ^KEY= match can never hit them. No-op if the ini isn't there (FFB
-    not installed) or pct is None."""
-    if pct is None:
-        return
-    pct = max(0, min(100, int(pct)))
-    path = os.path.join(mame_dir, "FFBPlugin.ini")
-    try:
-        with open(path, "r", encoding="utf-8", errors="replace") as f:
-            text = f.read()
-    except OSError:
-        return   # FFB plugin not installed beside the exe - nothing to tune
-    repl = {
-        "MaxForce": str(pct),
-        "AlternativeMaxForceRight": str(pct),
-        "AlternativeMaxForceLeft": str(-pct),
-        # the plugin's hook-installed chime = the launch "ding" (G1); the
-        # racing build's tuned ini shipped BeepWhenHook=1 - keep it dead
-        "BeepWhenHook": "0",
-        # 0% = force feedback OFF: an unknown GameId leaves the plugin loaded
-        # but idle (no game handler, no per-frame effect updates) - a clean
-        # A/B lever for "does the plugin cost me speed?" without touching
-        # files. GameId 22 = MAME outputs, covers USA/World/Off Road by ROM.
-        "GameId": "22" if pct > 0 else "0",
-    }
-    # optional plugin knobs from rig/collection.ini [collection]:
-    #   ffb_rumble = 0/1  -> EnableRumble (stock 1: a rumble burst per force
-    #                        update on top of the constant force - on a
-    #                        direct-drive base that is a buzz nine times a
-    #                        second; 0 is the first thing to try)
-    #   ffb_alt    = 0/1  -> AlternativeFFB (stock 0; left/right max keys)
-    #   ffb_power  = 0/1  -> PowerMode<game> (sqrt boost of small forces)
-    #   ffb_hold   = ms   -> FeedbackLength (stock 500: how long one update
-    #                        keeps pushing when the game sends nothing new)
-    #   ffb_constinf = 0/1 -> UseConstantInf (Endprodukt fork, default 1:
-    #                        one long-lived constant effect that STOPS on a
-    #                        zero instead of a 500 ms pulse per update)
-    knobs = {"ffb_rumble": ["EnableRumble"], "ffb_alt": ["AlternativeFFB"], "ffb_constinf": ["UseConstantInf"],
-             "ffb_power": [f"PowerMode{g}" for g in ("CrusnUSA", "CrusnWld", "OffRoadC")],
-             "ffb_hold": ["FeedbackLength"] + [f"FeedbackLength{g}" for g in ("CrusnUSA", "CrusnWld", "OffRoadC")]}
-    for cfgkey, inikeys in knobs.items():
-        v = _collection_ini_get("collection", cfgkey, "")
-        if v != "" and v.lstrip("-").isdigit():
-            for k in inikeys:
-                repl[k] = v
-    # The plugin's Cruis'n handlers read PER-GAME keys (MaxForceCrusnUSA,
-    # AlternativeMaxForceLeftCrusnWld, ...) - the bare keys above never
-    # reached them, so every game ran at 100% whatever the setting said
-    # (tester: "0% still full force"; the rig's "70%" was 100% too).
-    for game in ("CrusnUSA", "CrusnWld", "OffRoadC"):
-        repl[f"MaxForce{game}"] = str(pct)
-        repl[f"AlternativeMaxForceRight{game}"] = str(pct)
-        repl[f"AlternativeMaxForceLeft{game}"] = str(-pct)
-    out = text
-    for key, val in repl.items():
-        out, n = re.subn(rf"(?m)^{key}=.*$", f"{key}={val}", out)
-        if n == 0 and (key.endswith(("CrusnUSA", "CrusnWld", "OffRoadC"))
-                       or key in ("EnableRumble", "AlternativeFFB", "FeedbackLength", "UseConstantInf")):
-            # older ini without the per-game line: add it under [Settings]
-            out = out.replace("[Settings]", "[Settings]" + chr(10) + f"{key}={val}", 1)
-    if out != text:
-        try:
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(out)
-        except OSError:
-            pass
-
-
-# ---- FFB wheel selection --------------------------------------------------
-# The FFB Arcade Plugin only drives the device named by DeviceGUID= in
-# FFBPlugin.ini (an SDL joystick GUID); with the line blank it matches
-# nothing and stays silent (its DllMain: no GUID match -> no haptic). It
-# does, however, log every joystick it sees as "Joystick: n / Name: ... /
-# GUID: ..." when Logging=1 - so the setup GUI can run the emulator for a
-# few seconds, harvest that list, and write the wheel's GUID itself.
-FFB_LOG_ROW = re.compile(r"Joystick:\s*(\d+)\s*/\s*Name:\s*(.*?)\s*/\s*GUID:\s*([0-9a-fA-F]+)")
-
-
-def _ffb_ini_get(mame_dir, key):
-    try:
-        with open(os.path.join(mame_dir, "FFBPlugin.ini"), encoding="utf-8",
-                  errors="replace") as f:
-            m = re.search(rf"(?m)^{key}=(.*)$", f.read())
-        return m.group(1).strip() if m else None
-    except OSError:
-        return None
-
-
-def _ffb_ini_set(mame_dir, key, value):
-    path = os.path.join(mame_dir, "FFBPlugin.ini")
-    try:
-        with open(path, encoding="utf-8", errors="replace") as f:
-            text = f.read()
-    except OSError:
-        return False
-    out, n = re.subn(rf"(?m)^{key}=.*$", f"{key}={value}", text)
-    if n == 0:
-        out = text.replace("[Settings]", "[Settings]" + chr(10) + f"{key}={value}", 1)
-    with open(path, "w", encoding="utf-8") as f:
-        f.write(out)
-    return True
-
-
-def ffb_device_guid(mame_dir=None):
-    """The wheel GUID the plugin is configured for ('' = none)."""
-    return _ffb_ini_get(mame_dir or os.path.dirname(VUNIT), "DeviceGUID") or ""
 
 
 def _collection_ini_set(section, key, value):
@@ -687,108 +503,6 @@ def _collection_ini_get(section, key, default=""):
     cp = configparser.ConfigParser(interpolation=None)
     cp.read(os.path.join(POC, "rig", "collection.ini"))
     return cp.get(section, key, fallback=default).strip()
-
-
-def set_ffb_device_guid(guid, mame_dir=None):
-    """Write DeviceGUID= into the plugin ini AND remember it in
-    rig/collection.ini [ffb] - the ini beside vunit.exe is replaced by every
-    update (unzip-over-the-top), the rig folder is not."""
-    _collection_ini_set("ffb", "device_guid", guid)
-    return _ffb_ini_set(mame_dir or os.path.dirname(VUNIT), "DeviceGUID", guid)
-
-
-def ensure_ffb_guid(mame_dir=None):
-    """Update-proofing, run at every launch: a freshly unzipped
-    FFBPlugin.ini has a blank DeviceGUID; if the rig remembers one, put it
-    back so force feedback survives version updates untouched."""
-    mame_dir = mame_dir or os.path.dirname(VUNIT)
-    saved = _collection_ini_get("ffb", "device_guid")
-    if saved and not (_ffb_ini_get(mame_dir, "DeviceGUID") or ""):
-        _ffb_ini_set(mame_dir, "DeviceGUID", saved)
-        print(f"FFB: restored wheel GUID {saved[:8]}... into FFBPlugin.ini")
-    normalize_ffb_guid(mame_dir)
-
-
-def sdl_joystick_guids(mame_dir=None):
-    """The joysticks as the FFB plugin's OWN SDL2.dll sees them:
-    [(name, guid_hex)]. The plugin picks its wheel by memcmp of DeviceGUID=
-    against SDL's 16-byte joystick GUID, and SDL changed that GUID's layout
-    in 2.26: bytes 2-3 became a CRC16 of the device name (older SDL leaves
-    them zero). The stock FFB Arcade Plugin shipped SDL 2.28 (Moza base =
-    030093e16e34...), FFB Plugin MAME ships SDL 2.24 (030000006e34...) -
-    the same wheel, two strings, and a GUID harvested under one plugin is
-    silent under the other. Asking the DLL beside vunit.exe is the only
-    format-proof answer. [] on any failure (no DLL, no devices, ctypes)."""
-    mame_dir = mame_dir or os.path.dirname(VUNIT)
-    dll_path = os.path.join(mame_dir, "SDL2.dll")
-    if not os.path.isfile(dll_path):
-        return []
-    try:
-        sdl = ctypes.CDLL(dll_path)
-
-        class GUID(ctypes.Structure):
-            _fields_ = [("data", ctypes.c_uint8 * 16)]
-
-        sdl.SDL_SetHint.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
-        sdl.SDL_Init.argtypes = [ctypes.c_uint32]
-        sdl.SDL_Init.restype = ctypes.c_int
-        sdl.SDL_JoystickUpdate.restype = None
-        sdl.SDL_NumJoysticks.restype = ctypes.c_int
-        sdl.SDL_JoystickNameForIndex.argtypes = [ctypes.c_int]
-        sdl.SDL_JoystickNameForIndex.restype = ctypes.c_char_p
-        sdl.SDL_JoystickGetDeviceGUID.argtypes = [ctypes.c_int]
-        sdl.SDL_JoystickGetDeviceGUID.restype = GUID
-        sdl.SDL_JoystickGetGUIDString.argtypes = [GUID, ctypes.c_char_p,
-                                                 ctypes.c_int]
-        sdl.SDL_JoystickGetGUIDString.restype = None
-        sdl.SDL_Quit.restype = None
-        sdl.SDL_SetHint(b"SDL_JOYSTICK_RAWINPUT", b"0")   # as the plugin's DllMain
-        if sdl.SDL_Init(0x200) < 0:                       # SDL_INIT_JOYSTICK
-            return []
-        out = []
-        try:
-            sdl.SDL_JoystickUpdate()
-            for i in range(sdl.SDL_NumJoysticks()):
-                g = sdl.SDL_JoystickGetDeviceGUID(i)
-                buf = ctypes.create_string_buffer(64)
-                sdl.SDL_JoystickGetGUIDString(g, buf, 64)
-                name = sdl.SDL_JoystickNameForIndex(i) or b""
-                out.append((name.decode("utf-8", "replace"),
-                            buf.value.decode("ascii", "replace").lower()))
-        finally:
-            sdl.SDL_Quit()
-        return out
-    except Exception as e:
-        print(f"FFB: could not enumerate joysticks through {dll_path}: {e}")
-        return []
-
-
-def normalize_ffb_guid(mame_dir=None, progress=print):
-    """Rewrite DeviceGUID= as the exact string the plugin's shipped SDL2.dll
-    produces for that wheel (see sdl_joystick_guids). Matches on bus, vendor,
-    product and version - everything but the SDL-version-dependent bytes 2-3
-    - and only when exactly one connected device fits. Also updates the
-    remembered [ffb] device_guid when this is the launcher's own vunit
-    folder. Returns the GUID now in force ('' when none)."""
-    mame_dir = mame_dir or os.path.dirname(VUNIT)
-    cur = (_ffb_ini_get(mame_dir, "DeviceGUID") or "").strip().lower()
-    if len(cur) != 32:
-        return cur
-    devs = sdl_joystick_guids(mame_dir)
-    if not devs or any(g == cur for _, g in devs):
-        return cur                      # unknown, or already in this SDL's format
-    same = {g for _, g in devs if g[:4] == cur[:4] and g[8:] == cur[8:]}
-    if len(same) != 1:
-        return cur
-    new = same.pop()
-    _ffb_ini_set(mame_dir, "DeviceGUID", new)
-    if os.path.normcase(os.path.abspath(mame_dir)) == os.path.normcase(
-            os.path.abspath(os.path.dirname(VUNIT))):
-        _collection_ini_set("ffb", "device_guid", new)
-    name = next(n for n, g in devs if g == new)
-    progress(f"FFB: wheel GUID {cur[:8]}... rewritten as {new[:8]}... - the "
-             f"format of this plugin's SDL2.dll ({name})")
-    return new
 
 
 def import_previous_install(src, progress=print):
@@ -820,17 +534,13 @@ def import_previous_install(src, progress=print):
         os.makedirs(rig_dst, exist_ok=True)
         shutil.copy2(cfg, os.path.join(rig_dst, "collection.ini"))
         done.append("settings + wheel bindings")
-    old_guid = _ffb_ini_get(src, "DeviceGUID") or         _collection_ini_get("ffb", "device_guid")
-    if old_guid:
-        set_ffb_device_guid(old_guid)
-        done.append("force-feedback wheel")
     progress("imported: " + (", ".join(done) if done else "nothing found"))
     return done
 
 
 def steer_device_name():
-    """Device the wizard bound as steering ('' if none) - the best hint for
-    which of the plugin's joysticks is the wheel base."""
+    """Device the wizard bound as steering ('' if none) - handed to the
+    emulator as MIDV_FFB_DEVICE so force feedback goes to that wheel base."""
     import configparser
     cp = configparser.ConfigParser(interpolation=None)
     cp.read(os.path.join(POC, "rig", "collection.ini"))
@@ -840,8 +550,8 @@ def steer_device_name():
 
 def ffb_diag_enabled():
     """[collection] ffb_diag=1 in rig/collection.ini: launches trace every
-    output the game makes (rig/ffb_trace.csv) and keep the plugin's own
-    Logging=1 (FFBlog.txt) - both land in the support bundle."""
+    output the game makes (rig/ffb_trace.csv) and log every motor write the
+    built-in FFB sends (midv_ffb.log) - both land in the support bundle."""
     import configparser
     cp = configparser.ConfigParser(interpolation=None)
     cp.read(os.path.join(POC, "rig", "collection.ini"))
@@ -859,76 +569,6 @@ def set_ffb_diag(on, mame_dir=None):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         cp.write(f)
-    _ffb_ini_set(mame_dir or os.path.dirname(VUNIT), "Logging",
-                 "1" if on else "0")
-
-
-def detect_ffb_devices(rom="crusnusa", seconds=30, progress=print):
-    """Run the emulator briefly with plugin logging on and return
-    [(name, guid)] for every joystick the FFB plugin enumerated. Restores
-    the previous Logging= value. Needs a ROM set installed for `rom`."""
-    mame_dir = os.path.dirname(VUNIT)
-    prev = _ffb_ini_get(mame_dir, "Logging")
-    if prev is None:
-        raise RuntimeError("FFBPlugin.ini not found beside the emulator")
-    logpath = os.path.join(mame_dir, "FFBlog.txt")
-    try:
-        os.remove(logpath)
-    except OSError:
-        pass
-    _ffb_ini_set(mame_dir, "Logging", "1")
-    try:
-        rig, ini = prepare_rig(rom)
-        ctrlr = sanitized_ctrlrpath(rig)
-        progress(f"starting the emulator for {seconds} s so the force-"
-                 "feedback plugin can list your devices...")
-        env = dict(os.environ, MIDV_SKIP_STARTUP_SCREENS="1")
-        subprocess.run(
-            [VUNIT, rom, "-rompath", ROMPATH, "-inipath", ini,
-             "-ctrlrpath", ctrlr, "-ctrlr", "EmuEzRacing",
-             "-nvram_directory", os.path.join(rig, "nvram"),
-             "-cfg_directory", os.path.join(rig, "cfg"),
-             "-window", "-sound", "none",
-             "-seconds_to_run", str(seconds), "-skip_gameinfo"],
-            capture_output=True, text=True, timeout=seconds + 90,
-            cwd=mame_dir, env=env)
-    finally:
-        _ffb_ini_set(mame_dir, "Logging", prev)
-    try:
-        with open(logpath, encoding="utf-8", errors="replace") as f:
-            text = f.read()
-    except OSError:
-        return []
-    # "numJoysticks = " + count on the next line: proves the plugin got as
-    # far as enumerating (a 10 s run never did - it initializes only once
-    # the game is up, ~20 s in)
-    if "numJoysticks" not in text:
-        progress("the plugin never reached device enumeration - try again "
-                 "(a longer run) or check FFBlog.txt beside vunit.exe")
-    seen, out = set(), []
-    for m in FFB_LOG_ROW.finditer(text):
-        name, guid = m.group(2).strip(), m.group(3).lower()
-        if guid not in seen:
-            seen.add(guid)
-            out.append((name, guid))
-    return out
-
-
-def pick_ffb_device(devices):
-    """Choose the wheel base among detected devices: the wizard's steering
-    device by name (either direction substring, case-insensitive), else
-    the only device. Returns (name, guid) or None when ambiguous."""
-    if not devices:
-        return None
-    hint = steer_device_name().lower()
-    if hint:
-        for name, guid in devices:
-            n = name.lower()
-            if n == hint or hint in n or n in hint:
-                return name, guid
-    if len(devices) == 1:
-        return devices[0]
-    return None
 
 
 # Shifter-type wiring (rig bug G7, 2026-08-25). MAME's CONF port "Shifter
@@ -1359,7 +999,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
-    reappear instantly while vunit's teardown (FFB plugin exit races, WER
+    reappear instantly while vunit's teardown (exit races, WER
     dump writes) drags on for seconds in the background."""
     # the live Zeus GL overlay is the default for Zeus games; MIDZ_GL=0
     # in the environment falls back to MAME's own d3d/bgfx presentation
@@ -1369,12 +1009,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
-    # FFB overall strength: patch the plugin ini beside the exe before launch
-    # (the plugin reads it at load). None = leave whatever's there untouched.
-    apply_ffb_strength(os.path.dirname(mame), ffb)
-    ensure_ffb_guid(os.path.dirname(mame))
     kill_stale_vunit(mame, why="left-over")
-    release_ffb_detached(os.path.dirname(mame))
     # Game-code widescreen: when the presentation is full 16:9 and a per-game
     # widescreen patch exists (patch/game/<rom>-widescreen.txt), apply it via
     # MIDV_PATCH (memory-only at reset; ROM files untouched). The game then
@@ -1435,16 +1070,25 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 env["MIDZ_SEQ_SHIFT"] = "1"
         except Exception:
             pass
-        # Exotica FFB: MAME (our patch) now emits its wheel motor as output
-        # "wheel"; the FFB plugin has no crusnexo handler, so the output
-        # module reports "crusnusa" to it - the Cruis'n handler (and the
-        # CrusnUSA force keys / FFB STRENGTH) then drive Exotica's wheel.
-        env["MIDV_OUTPUT_NAME"] = "crusnusa"
         # Exotica's spring byte peaks ~46/127 at full lock and ~11 at a
         # normal steering angle (V-Unit kicks reach 100+): x4 makes it
         # felt at normal angles and clamps at the stops; FFB STRENGTH
         # still scales on top (MIDZ_FFB_GAIN env overrides; 250 felt faint)
         env.setdefault("MIDZ_FFB_GAIN", "400")
+    # Built-in force feedback (midvunit_v.cpp mvffb: SDL2 haptics on the
+    # wheel's steering axis, Cannonball DX style). FFB STRENGTH scales the
+    # level (0 = off entirely); the wizard's steering device names the wheel
+    # base; [collection] ffb_invert = 1 flips the direction for a base whose
+    # axis sign runs the other way.
+    if ffb is None or int(ffb) > 0:
+        env.setdefault("MIDV_FFB", "1")
+        if ffb is not None:
+            env["MIDV_FFB_STRENGTH"] = str(max(0, min(100, int(ffb))))
+        dev = steer_device_name()
+        if dev:
+            env.setdefault("MIDV_FFB_DEVICE", dev)
+        if _collection_ini_get("collection", "ffb_invert", "") == "1":
+            env["MIDV_FFB_INVERT"] = "1"
     slew = _collection_ini_get("collection", "ffb_slew", "")
     if slew.isdigit() and int(slew) > 0:
         # [collection] ffb_slew = N: the force may move at most N (of 127)
@@ -1487,8 +1131,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
 
     if ffb_diag_enabled():
         env["MIDV_FFB_TRACE"] = os.path.join(rig, "ffb_trace.csv")
+        env["MIDV_FFB_LOG"] = "2"   # every motor write into midv_ffb.log
         print("FFB diagnostics on: tracing outputs to rig/ffb_trace.csv "
-              "(plugin Logging=1 -> FFBlog.txt)")
+              "and motor writes to midv_ffb.log")
 
     def start():
         cmd = [mame, rom,
@@ -1520,7 +1165,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE", "MIDV_FFB_CLAMP",
-                "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDV_OUTPUT_NAME",
+                "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDV_FFB",
+                "MIDV_FFB_STRENGTH", "MIDV_FFB_DEVICE", "MIDV_FFB_INVERT",
                 "MIDV_FFB_TRACE")
         log.write("launch " + rom + ": " + " ".join(
             f"{k}={env[k]}" for k in keys if k in env) + chr(10))
@@ -1542,7 +1188,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 return ln[:160]
         return ""
 
-    # the known-cosmetic FFB-plugin teardown AV must not raise the WER UI:
+    # the known-cosmetic teardown AV must not raise the WER UI:
     # its "app crashed" notification ding fired on every (re)launch. Error
     # mode is inherited by child processes. Trade-off: WER LocalDumps stop
     # collecting new vunit minidumps in rig/crashdumps.
@@ -1562,11 +1208,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         proc.wait()
         hwnd = None
         if attempt == 1:
-            print("no responsive MAME window in 20s (FFB plugin first-launch "
-                  "enumeration hang) - relaunching")
+            print("no responsive MAME window in 20s (device enumeration "
+                  "hang) - relaunching")
     else:
         sys.exit("no responsive MAME window after 2 attempts - "
-                 "check FFBPlugin.ini / midv_gl.log beside vunit.exe")
+                 "check midv_ffb.log / midv_gl.log beside vunit.exe")
 
     if not windowed and not zeus_gl:
         make_fullscreen(hwnd)
@@ -1609,7 +1255,6 @@ def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
     proc, _ = launch_game_async(rom=rom, scale=scale, windowed=windowed,
                                 crt=crt, crackfill=crackfill, ffb=ffb, mame=mame)
     rc = wait_or_kill(proc, mame)
-    release_ffb_detached(os.path.dirname(mame))   # G8: never strand forces
     return rc
 
 
@@ -1622,17 +1267,9 @@ def main():
                     help="keep MAME's maximized window (skip borderless fullscreen)")
     ap.add_argument("--crt", action="store_true",
                     help="start with the CRT pass on (F9 toggles live)")
-    ap.add_argument("--release-ffb", action="store_true",
-                    help="stop any force-feedback effect left on the wheel "
-                         "and exit (run in a throwaway process by the "
-                         "launcher after every game)")
     ap.add_argument("--ffb", type=int, default=None,
-                    help="FFB overall strength 0-100%% (patches FFBPlugin.ini)")
+                    help="FFB overall strength 0-100%% (0 = off)")
     args = ap.parse_args()
-    if args.release_ffb:
-        ok = release_ffb(os.path.dirname(args.mame))
-        print("FFB release:", "effects stopped" if ok else "no haptic device")
-        return 0
     return launch_game(rom=args.rom, scale=args.scale, windowed=args.windowed,
                        crt=args.crt, ffb=args.ffb, mame=args.mame)
 

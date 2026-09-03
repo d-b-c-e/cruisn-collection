@@ -108,15 +108,13 @@ commits as it goes.
 ### Needs you (not overnight)
 - **C1** service-menu pass (if not baked via hunt), **D2** pad validation, and all **testing**.
 
-## Exotica force feedback (2026-09-03: found and wired, experimental)
+## Exotica force feedback (2026-09-03: found and wired; native since the evening)
 
 Done the same night: MIDZ_IOLOG + wheel sweep located the motor byte at
 crusnexo_leds_w offset 0 (a held centering spring); exposed as output
-"wheel"; the output module reports "crusnusa" to the plugin for Exotica
-so its Cruis'n handler drives it. Remaining: wheel test on the rig; then
-upstream both halves - a MAME PR for the driver output (drop the "unknown
-purpose") and an FFB Arcade Plugin PR adding a crusnexo handler (after
-which the name spoof goes away).
+"wheel". Since the evening the emulator drives the wheel itself (mvffb,
+SDL2 haptics), so the "crusnusa" name spoof and any plugin PR are gone.
+Remaining: a MAME PR for the driver output (drop the "unknown purpose").
 
 ## Open after the 2026-09-03 rig session
 

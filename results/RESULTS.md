@@ -2532,3 +2532,76 @@ scratch ini: FFBlog **"Haptic joystick found: 1 / Name: MOZA R12 Base"**,
 Average speed 99.99% over 121 s (exit-time ACCESS VIOLATION afterwards =
 the known plugin teardown race; FFBReset.exe released the base). Exotica
 FFB through FFB Plugin MAME: proven end to end on the rig's hardware.
+
+
+## 2026-09-03 - force feedback moves into the emulator; the FFB Arcade Plugin is retired
+
+Trigger: Endprodukt (maintainer of the plugin fork we had just adopted),
+asked by the user, said (1) he thought wanszai's ports were closed source
+(we derive from MAME, not from wanszai - only the architecture is the
+same), and (2) working at MAME driver level, we should avoid "the
+clusterfuck that is ffb plugin" and drive the wheel ourselves the way his
+Cannonball DX fork does, keeping only the plugin's interpretation of the
+Cruis'n wheel byte. The user agreed ("get rid of ffb blaster").
+
+Cannonball DX (Endprodukt/cannonball-dx, src/main/directx/ffeedback.cpp,
+Windows backend): SDL2 haptics, select the bound steering device (else a
+wheel-type device, else any with SDL_HAPTIC_CONSTANT), autocenter 0, gain
+100, ONE constant effect with direction SDL_HAPTIC_STEERING_AXIS, infinite
+length, level signed; per update SDL_HapticUpdateEffect + RunEffect(1);
+zero = StopEffect; spring via a condition effect (not needed here - the
+games ARE the spring/damper). "Modelled after Flycast's wheel path."
+
+Implementation (mame-src midvunit_v.cpp, namespace mvffb; ~330 lines):
+- SDL2.dll loaded at run time (LoadLibrary + 22 GetProcAddress) with
+  SDL's headers for types only, so vunit.exe has no SDL import and runs
+  without the DLL (FFB off, logged). Headers from MSYS2
+  mingw-w64-x86_64-SDL2 (2.32.10); the same package's /mingw64/bin/SDL2.dll
+  ships beside vunit.exe (zlib licence vendored as
+  third_party/SDL2-LICENSE.txt). CI installs the package and copies the
+  DLL; the plugin download step is gone.
+- Drivers call midv_ffb_write(f) with the signed byte after gain/slew/
+  clamp (midvunit WHLCTLZ case 4, midzeus leds offset 0). A worker thread
+  owns SDL: condvar wake per write, apply = UpdateEffect + RunEffect,
+  0 -> StopEffect. Interpretation = the plugin's RacingFullValueActive2:
+  0 and 0x80 stop, |v|/126 clamped to 1, times MIDV_FFB_STRENGTH.
+- Device: MIDV_FFB_DEVICE (name substring or vid:pid; the launcher passes
+  the wizard's steering device name, "MOZA R12 Base" on the rig) ->
+  wheel-type haptic -> any constant-force device; the named device not
+  doing haptics = FFB off, never another wheel (Cannonball rule).
+- Hold watchdog: MIDV_FFB_HOLD_MS (500) releases the force when the game
+  stops writing. Measured: the V-Unit games AND Exotica write the motor
+  byte every frame (~17 ms) even when it is 0, so the watchdog only fires
+  on pause/menus/exit. Exit notifier stops and destroys the effect, closes
+  haptic + joystick, SDL_Quit ("closed" in the log).
+- Log midv_ffb.log in the cwd (device list, choice, errors; every write
+  with MIDV_FFB_LOG=2, which FFB diagnostics sets). Support bundle ships it.
+
+Measurements on the rig (Moza R12, headless, wheelprobe.py reading the
+physical axis via glfw):
+- MIDV_FFB_TEST=20 (raw +20% level, 1.5 s): axis went +0.98 -> -1.00,
+  i.e. a POSITIVE SDL steering-axis level turns the Moza LEFT. (~1 s
+  latency before the wheel started moving from the stop; then 0.6 s to
+  the other stop.)
+- Exotica's own spring (MIDZ_FFB_GAIN 400, wheel field parked by coinup):
+  parked 96 (left of centre) -> byte +58; parked 160 -> byte -70. So a
+  POSITIVE byte pushes RIGHT (toward centre from the left), consistent
+  with the plugin mapping 1..0x7F = DIRECTION_FROM_LEFT.
+- Therefore level = -sign(byte) * magnitude on this base; MIDV_FFB_INVERT
+  and SETTINGS -> FFB DIRECTION flip it for bases with the other axis sign
+  (symptom: Exotica runs away from centre, USA's damper becomes an
+  anti-damper and shakes).
+- Exotica run through the module at strength 30: 5588 motor writes in
+  122 s, 1858 non-zero, levels up to +-9830 (30% of 32767), device
+  "MOZA R12 Base" (pass 0, caps 0xd7fb, steering axis), clean "closed".
+
+Launcher side (-660 lines): apply_ffb_strength, the FFBPlugin.ini /
+DeviceGUID / SDL-GUID machinery (this morning's normalizer included),
+release_ffb(+detached, FFBReset), detect_ffb_devices / pick, the
+dinput8 System32 preload, --release-ffb, MIDV_OUTPUT_NAME spoof, "output
+windows" in mame.ini, the setup window's "Detect wheel (FFB)" and wheel
+row, setup.ps1's plugin download, make_release's plugin block, ffb/ dir.
+New: MIDV_FFB / MIDV_FFB_STRENGTH (FFB STRENGTH %, 0 = not started) /
+MIDV_FFB_DEVICE (steer device) / MIDV_FFB_INVERT ([collection] ffb_invert
+<- SETTINGS FFB DIRECTION row, 14 rows now, spacing 0.040) / MIDV_FFB_LOG=2
+with diagnostics; launch.log header lists them.

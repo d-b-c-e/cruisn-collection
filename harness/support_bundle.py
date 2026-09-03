@@ -5,7 +5,7 @@ Collects everything needed to debug "my wheel / stick isn't working":
     (lua/input_dump.lua run against the emulator; a game window appears
     for ~10 seconds) plus -verbose device/format lines
   - the launcher's view: connected joysticks per glfw (--joydump)
-  - the FFB plugin log (FFBlog.txt), collection.ini, the generated ctrlr,
+  - the built-in force-feedback log (midv_ffb.log), collection.ini, the generated ctrlr,
     the GL renderer log, basic system info
 Output: CruisnSupport-<date>.zip beside the launcher (or --out DIR).
 
@@ -104,9 +104,8 @@ def collect(rom="crusnusa", progress=print):
 
     progress("logs + config...")
     vdir = os.path.dirname(run_rig.VUNIT)
-    add_file("FFBlog.txt", os.path.join(vdir, "FFBlog.txt"))
+    add_file("midv_ffb.log", os.path.join(vdir, "midv_ffb.log"))   # device chosen, every motor write when diagnostics are on
     add_file("version.txt", os.path.join(vdir, "version.txt"))   # which build (folder names lie)
-    add_file("FFBPlugin.ini", os.path.join(vdir, "FFBPlugin.ini"))
     add_file("midv_gl.log", os.path.join(vdir, "midv_gl.log"))
     add_file("collection.ini",
              os.path.join(run_rig.POC, "rig", "collection.ini"))
@@ -128,7 +127,7 @@ def collect(rom="crusnusa", progress=print):
             add_text("ffb_trace_report.txt", f"(report failed: {e})" + chr(10))
     add_file("launch.log", os.path.join(run_rig.POC, "rig", "launch.log"))
     # a left-over emulator process is the "FFB worked once, then never
-    # again" signature (it keeps the wheel + MAME's output window)
+    # again" signature (it keeps the wheel's haptic device)
     try:
         procs = run_rig.vunit_processes()
         add_text("processes.txt",

@@ -29,8 +29,8 @@ look. **No ROMs are included** — you supply your own.
    Cruis'n World asks you to calibrate once on first boot (press **F2**,
    follow the prompts).
 4. Have a wheel? **SETTINGS → CONTROLS SETUP** binds it in about a minute
-   (press-to-bind; any wheel, pedals, shifter or paddles). For force
-   feedback press **Detect wheel (FFB)** in the setup window once.
+   (press-to-bind; any wheel, pedals, shifter or paddles). Force feedback
+   then goes to that wheel by itself; **SETTINGS → FFB STRENGTH** sets it.
 
 **Steering feel**: each game has a **STEERING SENSITIVITY** (how far you
 turn for full lock; 100% = the game's calibration) and a **STEERING
@@ -118,5 +118,5 @@ results/   RESULTS.md engineering log + proof images
 Cruis'n USA, Cruis'n World, Off Road Challenge, Cruis'n Exotica and their
 art are Midway / Warner Bros. properties. This project distributes no ROMs
 and no game assets: original launcher code, a GPL-2.0+ patch series against
-MAME (source included, as GPL requires) and the GPL-3.0 FFB Plugin MAME (Endprodukt's fork of the FFB Arcade
-Plugin; license included). Supply your own legally obtained ROM dumps.
+MAME (source included, as GPL requires) and SDL2 (zlib license, included) for
+wheel force feedback. Supply your own legally obtained ROM dumps.

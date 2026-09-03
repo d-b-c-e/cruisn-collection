@@ -5,14 +5,25 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
-- **Force feedback would have gone silent after this update for anyone
-  whose wheel was detected under the previous plugin** — fixed before it
-  shipped. The two plugins ship different SDL versions, which write the
-  wheel's GUID differently (two bytes of name checksum), and the plugin
-  compares the whole string. The launcher now rewrites `DeviceGUID=` in
-  the format of the `SDL2.dll` that actually sits beside `vunit.exe`, at
-  every launch, so no re-detection is needed. Cruis'n Exotica's force
-  feedback verified working through the new plugin.
+- **Force feedback is now built into the emulator; the FFB Arcade Plugin
+  is gone.** On Endprodukt's advice (the plugin's own maintainer: "when
+  you work at MAME driver level, avoid the plugin"), `vunit.exe` takes the
+  byte each game writes to its wheel motor and drives the wheel directly
+  through SDL2 haptics - one signed constant force on the steering axis,
+  modelled on Cannonball DX's wheel code, interpreting the byte exactly as
+  the plugin's Cruis'n handler did. What that removes: `dinput8.dll`,
+  `MAME64.dll`, `FFBPlugin.ini`, `FFBReset.exe`, the wheel GUID (and the
+  SDL-version GUID trap found this morning), "Detect wheel", the
+  plugin-in-the-launcher problem, the first-launch enumeration hang, the
+  post-exit crash attributed to its teardown, the Cruis'n USA name spoof
+  Exotica needed, and the `ffb_rumble` / `ffb_alt` / `ffb_power` /
+  `ffb_hold` / `ffb_constinf` knobs. What stays: **FFB STRENGTH** (0% =
+  off), **FFB PEAK LIMIT**, `ffb_slew`, and the diagnostics. New:
+  **SETTINGS → FFB DIRECTION** (bases differ in axis sign; the default is
+  measured right for a Moza - flip it if the wheel runs away from centre
+  in Exotica), and forces are released half a second after a game stops
+  writing its motor (pause, menus) and at exit. The zip now ships
+  `SDL2.dll` (zlib license) instead of the plugin.
 
 - **SETTINGS → FFB DIAGNOSTICS** (on/off) and **SETTINGS → SAVE SUPPORT
   BUNDLE** in the launcher, so a tester never has to leave it; the bundle
@@ -22,30 +33,13 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   steering input the game reads (`wheelpos` rows) next to the force it
   sends; the support bundle adds `ffb_trace_report.txt` (peaks, kicks,
   and now wheel swing rate/amplitude with a verdict) and `ffb_trace.png`
-  (force and wheel position on one timeline, last 20 s).
+  (force and wheel position on one timeline, last 20 s); `midv_ffb.log`
+  adds the level actually sent to the wheel for every motor write.
 
-- **Force-feedback plugin switched to FFB Plugin MAME** (Endprodukt's
-  GPL-3 fork of the FFB Arcade Plugin, the build the tester prefers):
-  its ConstantInf mode keeps one long-lived constant force that follows
-  the game and stops on zero, instead of a 500 ms pulse per update that
-  never stopped; it also ships FFBReset.exe. Verified against our
-  emulator headless (hooks crusnusa, receives the force updates); same
-  ini keys, so FFB STRENGTH and every `ffb_*` knob still apply. New knob
-  `ffb_constinf` (default 1). The release pipeline downloads the fork's
-  latest release; the template ini is now derived from its shipped ini.
-
-- **FFB tuning knobs for strong wheels** (tester: "clipping" and constant
-  back-and-forth on a Fanatec CSL DD). From the plugin's source: each
-  game update re-levels one constant force AND fires a rumble burst, holds
-  500 ms, ignores zero, no smoothing. New `[collection]` keys the launcher
-  writes into the plugin ini: `ffb_rumble` (EnableRumble), `ffb_alt`
-  (AlternativeFFB), `ffb_power` (PowerMode per game), `ffb_hold`
-  (FeedbackLength), and `ffb_slew` = a per-update force slew cap in the
-  emulator (`MIDV_FFB_SLEW`, V-Unit and Exotica) that turns slams into
-  swells. INSTALL has the recipe (rumble off first, then slew 16).
-- The shipped plugin template is back to the stock `AlternativeFFB=0`
-  (v0.3.5 shipped 1); it was the only difference from the plugin's own
-  MAME ini.
+- **`ffb_slew`** (tester: "clipping" and constant back-and-forth on a
+  Fanatec CSL DD): a per-update force slew cap in the emulator
+  (`MIDV_FFB_SLEW`, V-Unit and Exotica) that turns slams into swells;
+  `rig\collection.ini` `[collection] ffb_slew = 16` to try it.
 - Exotica live overlay: the record ring no longer drops texture-memory
   spans, palette loads or display ticks when full (bounded wait, then a
   full texture-memory resync); drop counters in `midz_gl.log`. Dense
