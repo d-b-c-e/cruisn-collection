@@ -1280,6 +1280,17 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     full_wide = (margin is None or margin >= 80)
     gamepatch = (gw if full_wide and os.path.isfile(gw)
                  and "MIDV_PATCH" not in os.environ else None)
+    # [collection] gamepatch_<rom> = patch/game/<file>.txt: a chosen
+    # in-memory game patch for that game (e.g. the crusnusa draw-distance
+    # experiment) - wins over the widescreen default; env still wins over all
+    cfg_patch = _collection_ini_get("collection", f"gamepatch_{base_rom(rom)}", "")
+    if cfg_patch and "MIDV_PATCH" not in os.environ:
+        cfg_path = cfg_patch if os.path.isabs(cfg_patch) else os.path.join(POC, cfg_patch)
+        if os.path.isfile(cfg_path):
+            gamepatch = cfg_path
+            print(f"game patch ({base_rom(rom)}): {cfg_patch}")
+        else:
+            print(f"game patch {cfg_patch!r} not found - ignored")
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
