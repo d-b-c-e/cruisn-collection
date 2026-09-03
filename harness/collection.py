@@ -839,7 +839,13 @@ def save_config(state):
         cv = state["steercurve"].get(rom)
         sec[f"steersens_{rom}"] = "" if sv is None else str(sv)
         sec[f"steercurve_{rom}"] = "" if cv is None else str(cv)
-    cp["collection"] = sec
+    # MERGE into the section: keys the shell does not own (ffb_diag,
+    # exotica_gl, gamepatch_<rom>, anything a user or tool adds) must
+    # survive a save - replacing the section wiped them at every launch
+    if not cp.has_section("collection"):
+        cp.add_section("collection")
+    for k, v in sec.items():
+        cp.set("collection", k, v)
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
     with open(CFG, "w") as f:
         cp.write(f)

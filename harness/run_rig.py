@@ -1407,6 +1407,15 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # (missing ROM files, bad ini) is explained by its last lines,
         # which the launcher surfaces on screen and the support bundle ships
         log = open(os.path.join(rig, "launch.log"), "w")
+        # first line: what this launch actually applied (the support bundle
+        # ships this file; "did the setting take?" is answered here)
+        keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
+                "MIDV_STEER_GAIN", "MIDV_STEER_CURVE", "MIDV_FFB_CLAMP",
+                "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDV_OUTPUT_NAME",
+                "MIDV_FFB_TRACE")
+        log.write("launch " + rom + ": " + " ".join(
+            f"{k}={env[k]}" for k in keys if k in env) + chr(10))
+        log.flush()
         return subprocess.Popen(cmd, env=env, cwd=os.path.dirname(mame),
                                 stdout=log, stderr=subprocess.STDOUT)
 
