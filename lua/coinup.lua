@@ -35,6 +35,17 @@ end
 
 local HOLD = 10
 local gas_frame = tonumber(os.getenv("GAS_FRAME") or "")
+-- GEAR_FRAME=N: hold the 1st-gear button (IPT_BUTTON2 on V-Unit/Exotica)
+-- from frame N on - does a shifter position pick MANUAL on Exotica's
+-- TRANS SELECT screen?
+local gear_frame = tonumber(os.getenv("GEAR_FRAME") or "")
+local gear_f = nil
+-- PRESS_FRAMES="3210:P1_BUTTON5,3300:START1": press any input type token
+-- at a frame (held 30 frames) - brute-forcing which control a screen wants
+local presses = {}
+for fr, tok in (os.getenv("PRESS_FRAMES") or ""):gmatch("(%d+):([%w_]+)") do
+    presses[#presses + 1] = {frame = tonumber(fr), token = tok, field = nil}
+end
 local coin_f, start_f, gas_f, wheel_f = nil, nil, nil, nil
 local sweep = {}
 for fr, v in (os.getenv("WHEEL_SWEEP") or ""):gmatch("(%d+):(%d+)") do
@@ -51,6 +62,13 @@ local function find_fields()
                 start_f = f
             elseif tag == ":ACCEL" or (tag == ":ANALOG2" and not gas_f) then
                 gas_f = f            -- V-Unit :ACCEL; Exotica gas on :ANALOG2
+            elseif f.type == ioport:token_to_input_type("P1_BUTTON2") and not gear_f then
+                gear_f = f
+            end
+            for _, pr in ipairs(presses) do
+                if f.type == ioport:token_to_input_type(pr.token) then
+                    pr.field = f
+                end
             elseif tag == ":WHEEL" or (tag == ":ANALOG3" and not wheel_f) then
                 wheel_f = f          -- V-Unit :WHEEL; Exotica steers on :ANALOG3
             end
@@ -87,6 +105,18 @@ emu.register_frame_done(function()
     if gas_frame and count == gas_frame and gas_f then
         gas_f:set_value(0xff)
         emu.print_info("coinup.lua: GAS floored @" .. count)
+    end
+    for _, pr in ipairs(presses) do
+        if pr.field and count == pr.frame then
+            pr.field:set_value(1)
+            emu.print_info("coinup.lua: " .. pr.token .. " down @" .. count)
+        elseif pr.field and count == pr.frame + 30 then
+            pr.field:clear_value()
+        end
+    end
+    if gear_frame and count == gear_frame and gear_f then
+        gear_f:set_value(1)
+        emu.print_info("coinup.lua: GEAR1 held @" .. count)
     end
     if sweep[count] and wheel_f then
         wheel_f:set_value(sweep[count])

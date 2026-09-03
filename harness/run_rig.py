@@ -1307,6 +1307,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # module reports "crusnusa" to it - the Cruis'n handler (and the
         # CrusnUSA force keys / FFB STRENGTH) then drive Exotica's wheel.
         env["MIDV_OUTPUT_NAME"] = "crusnusa"
+        # Exotica's spring byte peaks ~46/127 at full lock and ~11 at a
+        # normal steering angle (V-Unit kicks reach 100+): x4 makes it
+        # felt at normal angles and clamps at the stops; FFB STRENGTH
+        # still scales on top (MIDZ_FFB_GAIN env overrides; 250 felt faint)
+        env.setdefault("MIDZ_FFB_GAIN", "400")
     if ffbclamp:
         # FFB PEAK LIMIT: cap the games' force kicks at +-N of 127 (midvunit
         # WHLCTLZ write) - tames the damper loop on strong direct-drive

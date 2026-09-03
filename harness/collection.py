@@ -1242,7 +1242,7 @@ def main():
         cp.read(CFG)
         out = {}
         if "wheelmap" in cp:
-            for k in ("steer", "gas"):
+            for k in ("steer", "gas", "brake"):
                 v = cp["wheelmap"].get(k, "")
                 if "|" in v and "axis:" in v.split("|", 1)[1]:
                     dev, spec = v.split("|", 1)
@@ -1781,6 +1781,29 @@ def main():
         glfw.swap_buffers(win)
 
         if launch and launching is None:
+            # a pedal that reads pressed with nobody's foot on it (a Moza
+            # load-cell brake comes up latched at full until pressed once)
+            # makes the game burn out in 2nd gear with the tyres squealing
+            # - refuse to launch until it has been pressed and released
+            stuck = None
+            for pedal in ("brake", "gas"):
+                try:
+                    v, sgn = nav_axis(pedal)
+                except Exception:
+                    v, sgn = None, None
+                if v is None:
+                    continue
+                if sgn == "neg":
+                    v = -v
+                if (v > 0.55) if sgn in ("pos", "neg") else (abs(v) > 0.6):
+                    stuck = pedal
+            if stuck:
+                notice = (f"{stuck.upper()} PEDAL READS PRESSED - PRESS IT "
+                          "FULLY AND RELEASE, THEN LAUNCH AGAIN")
+                notice_until = time.time() + 8
+                audio.blip("nav")
+                launch = None
+                continue
             state["rom"] = launch
             save_config(state)
             fg_stop.set()   # the game owns the foreground now, stop fighting
