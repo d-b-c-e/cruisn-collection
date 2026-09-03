@@ -64,16 +64,16 @@ $Version | Set-Content (Join-Path $rel "version.txt")   # the in-app updater com
 
 # 3. emulator + FFB plugin
 Copy-Item $vunit (Join-Path $rel "vunit.exe")
-foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll", "FFBReset.exe") {
+foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll") {
     if (Test-Path (Join-Path $vdir $f)) { Copy-Item (Join-Path $vdir $f) $rel }
-# the plugin's reset tool (GPL-3, from the FFB Arcade Plugin package): the
-# launcher runs it at every exit/launch; vendored in ffb\ in case the
-# plugin archive beside vunit.exe did not carry it
-if (-not (Test-Path (Join-Path $rel "FFBReset.exe")) -and (Test-Path (Join-Path $root "ffb\FFBReset.exe"))) {
-    Copy-Item (Join-Path $root "ffb\FFBReset.exe") $rel
-}
     else { throw "$f not found beside vunit.exe - the release would ship without force feedback (v0.3.0 did)" }
 }
+# the plugin's reset tool (GPL-3, from the FFB Arcade Plugin package): the
+# launcher runs it at every exit/launch. Optional: beside vunit.exe if the
+# plugin archive carried it, else the copy vendored in ffb\.
+if (Test-Path (Join-Path $vdir "FFBReset.exe")) { Copy-Item (Join-Path $vdir "FFBReset.exe") $rel }
+elseif (Test-Path (Join-Path $root "ffb\FFBReset.exe")) { Copy-Item (Join-Path $root "ffb\FFBReset.exe") $rel }
+else { Write-Host "  [!] FFBReset.exe not found (optional; the built-in release is the fallback)" -ForegroundColor Yellow }
 # MAME's bgfx shader/chain files: used by the Exotica fallback path (MIDZ_GL=0
 # -> video bgfx + crt-geom-deluxe). Beside vunit.exe in dev; in the CI clone.
 if (Test-Path (Join-Path $vdir "bgfx")) {
