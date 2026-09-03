@@ -168,6 +168,31 @@ the plugin's own `FFBlog.txt` (what it did with them). Drive for a minute,
 then **Save support bundle**; the two logs tell us whether the game stopped
 sending or the wheel stopped listening. Turn it off afterwards.
 
+### Force feedback on a strong (direct-drive) wheel
+
+What the plugin does with each force value the game sends, read from its
+source: it re-levels one constant-force effect to the new value and
+fires a **rumble burst** at the same strength, every update (about nine
+times a second in USA), holds the last level for 500 ms, and ignores a
+zero rather than stopping. Nothing is smoothed. That is faithful to how
+the arcade motor was driven, and on a 5-10 Nm direct-drive base it is
+a slam plus a buzz. Knobs, all optional, all in `rig\collection.ini`
+under `[collection]` (the launcher writes them into the plugin's ini at
+every launch):
+
+| key | try | what it does |
+|---|---|---|
+| `ffb_rumble = 0` | first | turns off the per-update rumble burst (plugin `EnableRumble`) |
+| `ffb_slew = 16` | second | the force may move at most 16 (of 127) per game update: kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |
+| FFB PEAK LIMIT | 60 | caps the biggest kicks (a SETTINGS row) |
+| FFB STRENGTH | 40% | overall level (a SETTINGS row) |
+| `ffb_hold = 200` | | how long one update keeps pushing when the game sends nothing new (plugin `FeedbackLength`, stock 500 ms) |
+| `ffb_power = 1` | | plugin `PowerMode`: square-root boost of small forces, for more road feel at low strength |
+| `ffb_alt = 1` | | plugin `AlternativeFFB` (stock 0): per-direction max keys; some bases only pull one way without it |
+
+Change one at a time and drive a minute of USA; the launch log's first
+line shows what was applied.
+
 ### Steering feel: sensitivity and curve
 
 Each game card has two steering rows (press Enter on a game, they sit

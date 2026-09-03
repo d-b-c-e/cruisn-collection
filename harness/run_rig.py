@@ -586,6 +586,23 @@ def apply_ffb_strength(mame_dir, pct):
         # files. GameId 22 = MAME outputs, covers USA/World/Off Road by ROM.
         "GameId": "22" if pct > 0 else "0",
     }
+    # optional plugin knobs from rig/collection.ini [collection]:
+    #   ffb_rumble = 0/1  -> EnableRumble (stock 1: a rumble burst per force
+    #                        update on top of the constant force - on a
+    #                        direct-drive base that is a buzz nine times a
+    #                        second; 0 is the first thing to try)
+    #   ffb_alt    = 0/1  -> AlternativeFFB (stock 0; left/right max keys)
+    #   ffb_power  = 0/1  -> PowerMode<game> (sqrt boost of small forces)
+    #   ffb_hold   = ms   -> FeedbackLength (stock 500: how long one update
+    #                        keeps pushing when the game sends nothing new)
+    knobs = {"ffb_rumble": ["EnableRumble"], "ffb_alt": ["AlternativeFFB"],
+             "ffb_power": [f"PowerMode{g}" for g in ("CrusnUSA", "CrusnWld", "OffRoadC")],
+             "ffb_hold": ["FeedbackLength"] + [f"FeedbackLength{g}" for g in ("CrusnUSA", "CrusnWld", "OffRoadC")]}
+    for cfgkey, inikeys in knobs.items():
+        v = _collection_ini_get("collection", cfgkey, "")
+        if v != "" and v.lstrip("-").isdigit():
+            for k in inikeys:
+                repl[k] = v
     # The plugin's Cruis'n handlers read PER-GAME keys (MaxForceCrusnUSA,
     # AlternativeMaxForceLeftCrusnWld, ...) - the bare keys above never
     # reached them, so every game ran at 100% whatever the setting said
@@ -597,7 +614,8 @@ def apply_ffb_strength(mame_dir, pct):
     out = text
     for key, val in repl.items():
         out, n = re.subn(rf"(?m)^{key}=.*$", f"{key}={val}", out)
-        if n == 0 and key.endswith(("CrusnUSA", "CrusnWld", "OffRoadC")):
+        if n == 0 and (key.endswith(("CrusnUSA", "CrusnWld", "OffRoadC"))
+                       or key in ("EnableRumble", "AlternativeFFB", "FeedbackLength")):
             # older ini without the per-game line: add it under [Settings]
             out = out.replace("[Settings]", "[Settings]" + chr(10) + f"{key}={val}", 1)
     if out != text:
@@ -1341,6 +1359,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # felt at normal angles and clamps at the stops; FFB STRENGTH
         # still scales on top (MIDZ_FFB_GAIN env overrides; 250 felt faint)
         env.setdefault("MIDZ_FFB_GAIN", "400")
+    slew = _collection_ini_get("collection", "ffb_slew", "")
+    if slew.isdigit() and int(slew) > 0:
+        # [collection] ffb_slew = N: the force may move at most N (of 127)
+        # per game update - swells instead of slams (midvunit/midzeus patch)
+        env["MIDV_FFB_SLEW"] = slew
     if ffbclamp:
         # FFB PEAK LIMIT: cap the games' force kicks at +-N of 127 (midvunit
         # WHLCTLZ write) - tames the damper loop on strong direct-drive
