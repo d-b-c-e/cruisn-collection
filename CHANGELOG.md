@@ -47,8 +47,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   gas or brake reads pressed and says which pedal to press and release
   (a Moza load-cell brake came up latched at full on the rig - the game
   burned out in 2nd gear with the tyres squealing until it was pressed).
-- Exotica force feedback runs at 4x gain by default (its spring byte is
-  small); the chain was verified on the rig's plugin log.
+- Exotica force feedback: the game's own STEERING WHEEL POWER operator
+  adjustment (1-10, default 5, clock-chip byte 0xC7) is set to 10 - in
+  the fixture and at every launch - and the emulator adds a 4x gain on
+  top (its spring byte is small even at 10); FFB STRENGTH scales all of
+  it. The chain was verified on the rig's plugin log.
 - **SETTINGS → FFB PEAK LIMIT** (OFF / 100 / 80 / 60 / 40 / 30): caps
   the games' force kicks at that value of 127 while small road forces
   keep full strength (`MIDV_FFB_CLAMP` in the emulator, verified headless:

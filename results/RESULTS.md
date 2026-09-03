@@ -2288,3 +2288,40 @@ brute force (gears 2-4, radio, views, START during the screen) running.
 Virtual sequential shifter added to the driver meanwhile (gears_r():
 GEARS/SEQ ports, MIDZ_SEQ_SHIFT=1) with the launcher binding paddles to
 the new Shift Up/Down inputs in sequential mode.
+
+
+## 2026-09-03 - Exotica operator menu mapped; TRANS SELECT resists everything; wheel power byte
+
+Diagnostics menu: SERVICE (the "Test" input, IPT_SERVICE) during attract
+opens it; VOLUME UP/DOWN moves, TEST activates, SERVICE1 exits (exit
+reboots into the CPU board test). Adjustments list (rev 2.4): STANDARD
+PRICING, CUSTOM PRICING, FREE PLAY, FIRST PLACE GETS FREE RACE, START
+TIME BONUS SECS 75, CHECKPOINT BONUS TIME SECS 20, ATTRACT MODE SOUND,
+INITIAL ENTRY 6, MIN VOLUME LEVEL 12, STEERING WHEEL POWER 5 (1-10),
+SPEED IN MPH OR KMH, KEYPAD ACTIVE, MANUAL TRANS DISABLE OFF, SHOW
+ROADKILL/ENDING/GIRLS, HIGHSCORE RESET 5000, GAME DIFFICULTY 5, MAX
+CREDITS 30, MULTI PLAYER FREE RACE. Scripted edits + m48t35 diffs:
+0x97 = KEYPAD ACTIVE (1=on), 0x9B = MANUAL TRANS DISABLE (1=on), 0xC7 =
+STEERING WHEEL POWER (value 1-10). 0xCF increments per menu visit
+(audit), 0xB7/0xDB flip on any edit, 0xDF moves with edits (checksum or
+audit; the existing 0x27 volume poke ignores it without complaint).
+Bytes are poked directly (cmos_write) - no checksum guard needed so far.
+
+STEERING WHEEL POWER 10 vs 5 (sweep + trace, gain 100): held force at
++-32 counts 15-16 vs 11-13, peak 48 vs 46 - ~1.4x at small angles, not
+2x; the spring saturates. Fixture m48t35 0xC7 set to 10; the shell pokes
+10 into an existing rig NVRAM at every Exotica launch; MIDZ_FFB_GAIN 400
+stays on top (FFB STRENGTH tapers).
+
+TRANS SELECT (A / AUTO / M, ~80 frames, auto-advances): AUTO in every
+one of these - Stand Up/Sit Down x Dedicated/Kit; wheel parked right +
+gas, moving right, moving left; 1st gear before/during/late/from boot;
+gears 2-4, radio, views 1-4, START during; MANUAL TRANS DISABLE ON/OFF;
+Sit Down + wheel-right + gas, + gear1 during, + gear1 from boot. Lua
+set_value demonstrably drives the track-select highlight, so the method
+reaches the game. Lua cannot see IPT_UNKNOWN/UNUSED fields (port.fields
+omits them) - the first "unused bit" sweep never applied; replaced by an
+env-forceable IPT_CUSTOM over IN1's 0xF00D lines (MIDZ_FORCE_IN1=<hex>)
+to test whether the real shifter lives on a line MAME calls unused
+(the driver credits the gear mapping to the manual's pinout sheet,
+unverified; crusnexo is NOT_WORKING upstream).

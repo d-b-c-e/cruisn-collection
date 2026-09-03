@@ -1818,6 +1818,14 @@ def main():
             # and art stay keyed to the crusnwld card identity)
             real_rom = (state.get("world_rom", "crusnwld24")
                         if launch == "crusnwld" else launch)
+            if launch == "crusnexo":
+                # STEERING WHEEL POWER (operator adjustment, 1-10, default 5)
+                # at 10: the game's own motor level; FFB STRENGTH scales it
+                try:
+                    if cmos_read("crusnexo", "m48t35", 0xC7) not in (None, 10):
+                        cmos_write("crusnexo", "m48t35", [0xC7], 10)
+                except Exception:
+                    pass
             if launch == "crusnwld":
                 real_rom, note = run_rig.resolve_world_rom(real_rom)
                 if note:

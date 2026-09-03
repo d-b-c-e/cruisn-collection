@@ -42,6 +42,14 @@ local gear_frame = tonumber(os.getenv("GEAR_FRAME") or "")
 local gear_f = nil
 -- PRESS_FRAMES="3210:P1_BUTTON5,3300:START1": press any input type token
 -- at a frame (held 30 frames) - brute-forcing which control a screen wants
+local PRESS_HOLD = tonumber(os.getenv("PRESS_HOLD") or "30")   -- frames held (menus auto-repeat: use ~3)
+-- FORCE_FRAMES="3225:IN1:4096,...": press the field with that mask in that
+-- port tag (":IN1") at a frame, held PRESS_HOLD frames - reaches bits with
+-- no bindable input type (IPT_UNKNOWN), for hunting mis-mapped lines
+local forces = {}
+for fr, tag, mask in (os.getenv("FORCE_FRAMES") or ""):gmatch("(%d+):(%w+):(%d+)") do
+    forces[#forces + 1] = {frame = tonumber(fr), tag = ":" .. tag, mask = tonumber(mask), field = nil}
+end
 local presses = {}
 for fr, tok in (os.getenv("PRESS_FRAMES") or ""):gmatch("(%d+):([%w_]+)") do
     presses[#presses + 1] = {frame = tonumber(fr), token = tok, field = nil}
@@ -70,6 +78,11 @@ local function find_fields()
             for _, pr in ipairs(presses) do
                 if f.type == ioport:token_to_input_type(pr.token) then
                     pr.field = f
+                end
+            end
+            for _, fo in ipairs(forces) do
+                if tag == fo.tag and f.mask == fo.mask then
+                    fo.field = f
                 end
             end
         end
@@ -106,11 +119,21 @@ emu.register_frame_done(function()
         gas_f:set_value(0xff)
         emu.print_info("coinup.lua: GAS floored @" .. count)
     end
+    for _, fo in ipairs(forces) do
+        if fo.field and count == fo.frame then
+            fo.field:set_value(1)
+            emu.print_info("coinup.lua: force " .. fo.tag .. " mask " .. fo.mask .. " @" .. count)
+        elseif fo.field and count == fo.frame + PRESS_HOLD then
+            fo.field:clear_value()
+        elseif count == fo.frame and not fo.field then
+            emu.print_info("coinup.lua: force " .. fo.tag .. " mask " .. fo.mask .. " NOT FOUND")
+        end
+    end
     for _, pr in ipairs(presses) do
         if pr.field and count == pr.frame then
             pr.field:set_value(1)
             emu.print_info("coinup.lua: " .. pr.token .. " down @" .. count)
-        elseif pr.field and count == pr.frame + 30 then
+        elseif pr.field and count == pr.frame + PRESS_HOLD then
             pr.field:clear_value()
         end
     end
