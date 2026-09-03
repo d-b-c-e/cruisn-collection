@@ -3,6 +3,28 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## Unreleased
+
+- **FFB tuning knobs for strong wheels** (tester: "clipping" and constant
+  back-and-forth on a Fanatec CSL DD). From the plugin's source: each
+  game update re-levels one constant force AND fires a rumble burst, holds
+  500 ms, ignores zero, no smoothing. New `[collection]` keys the launcher
+  writes into the plugin ini: `ffb_rumble` (EnableRumble), `ffb_alt`
+  (AlternativeFFB), `ffb_power` (PowerMode per game), `ffb_hold`
+  (FeedbackLength), and `ffb_slew` = a per-update force slew cap in the
+  emulator (`MIDV_FFB_SLEW`, V-Unit and Exotica) that turns slams into
+  swells. INSTALL has the recipe (rumble off first, then slew 16).
+- The shipped plugin template is back to the stock `AlternativeFFB=0`
+  (v0.3.5 shipped 1); it was the only difference from the plugin's own
+  MAME ini.
+- Exotica live overlay: the record ring no longer drops texture-memory
+  spans, palette loads or display ticks when full (bounded wait, then a
+  full texture-memory resync); drop counters in `midz_gl.log`. Dense
+  snapshot controls (`MIDZ_GL_SNAP_EVERY/FROM/FROM_SEC/MAX`). Overnight
+  investigation: Exotica's Amazon "glitches" and World's New York "black
+  texture" both reproduce identically on MAME's own renderer (hardware
+  behaviour) - details in RESULTS.md.
+
 ## v0.3.5 — 2026-09-03
 
 - **The FFB plugin was loading itself into the launcher.** Its

@@ -2408,3 +2408,38 @@ Tools added: coinup.lua WHEEL_SWEEP/GEAR_FRAME/PRESS_FRAMES/PRESS_HOLD/
 FORCE_FRAMES; lua/inputprobe.lua; MIDZ_GL_SNAP_EVERY/FROM/FROM_SEC/MAX;
 the overlay's launch hang (FFB plugin enumeration, ~50%) needs a retry
 loop in scripted windowed runs.
+
+
+## 2026-09-03 (morning) - tester round 4: "FFB still sucks / clipping"; the plugin's mechanics read from source
+
+Tester (Fanatec CSL DD): clipping and constant back-and-forth persist at
+40%; "MAME doesn't clip" - his MAME uses an "endprodukt" fork of the
+plugin (a "ConstantF mode"; not on GitHub, Discord-shared); swapping its
+files into our folder gave no FFB. He wants at least stock-MAME parity.
+
+Facts established:
+- Our shipped plugin ini vs the plugin's own "MAME 64bit Outputs" ini
+  (fetched from the Boomslangnz 2.0.0.53 release): the ONLY difference
+  was AlternativeFFB=1 (my 2026-09-03 flip to match the rig). Reverted
+  to 0. FFBReset.exe is NOT in the plugin archive (the vendored copy in
+  ffb/ is our source of truth).
+- Plugin source (DllMain.cpp TriggerConstantEffect, MAMESupermodel.cpp
+  RacingFullValueActive2): per 'wheel' update it sets ONE persistent SDL
+  constant effect to level = strength*(Max-Min)+Min with
+  length=FeedbackLength (500 ms stock) AND calls Rumble(strength) (stock
+  EnableRumble=1); values 0x00/0x80 are ignored (no stop); PowerMode =
+  sqrt(strength); AlternativeFFB only swaps in per-direction min/max
+  keys; no filtering anywhere; reversals are instantaneous.
+- Therefore our FFB == stock MAME + stock plugin, byte for byte (the
+  trace shows the game's bytes; the plugin is the same binary). What he
+  prefers is the fork's behaviour, which we cannot see. Ask for the files
+  (dll+ini+readme); his swap probably failed on ini keys/GameId, which
+  our launcher rewrites at launch.
+
+Shipped as opt-in knobs (no default changes): [collection] ffb_rumble,
+ffb_alt, ffb_power, ffb_hold -> plugin ini keys at launch; ffb_slew ->
+MIDV_FFB_SLEW (midvunit + midzeus): the force byte may move at most N per
+update before the clamp - verified headless (slew 12: a 63-kick becomes
+12,24,36,48,60 then decays; max step 12). This is the one thing the
+plugin cannot do and we can, upstream of it. Recipe in INSTALL:
+ffb_rumble=0 first, then ffb_slew=16, PEAK LIMIT 60, STRENGTH 40.
