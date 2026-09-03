@@ -595,7 +595,10 @@ def apply_ffb_strength(mame_dir, pct):
     #   ffb_power  = 0/1  -> PowerMode<game> (sqrt boost of small forces)
     #   ffb_hold   = ms   -> FeedbackLength (stock 500: how long one update
     #                        keeps pushing when the game sends nothing new)
-    knobs = {"ffb_rumble": ["EnableRumble"], "ffb_alt": ["AlternativeFFB"],
+    #   ffb_constinf = 0/1 -> UseConstantInf (Endprodukt fork, default 1:
+    #                        one long-lived constant effect that STOPS on a
+    #                        zero instead of a 500 ms pulse per update)
+    knobs = {"ffb_rumble": ["EnableRumble"], "ffb_alt": ["AlternativeFFB"], "ffb_constinf": ["UseConstantInf"],
              "ffb_power": [f"PowerMode{g}" for g in ("CrusnUSA", "CrusnWld", "OffRoadC")],
              "ffb_hold": ["FeedbackLength"] + [f"FeedbackLength{g}" for g in ("CrusnUSA", "CrusnWld", "OffRoadC")]}
     for cfgkey, inikeys in knobs.items():
@@ -615,7 +618,7 @@ def apply_ffb_strength(mame_dir, pct):
     for key, val in repl.items():
         out, n = re.subn(rf"(?m)^{key}=.*$", f"{key}={val}", out)
         if n == 0 and (key.endswith(("CrusnUSA", "CrusnWld", "OffRoadC"))
-                       or key in ("EnableRumble", "AlternativeFFB", "FeedbackLength")):
+                       or key in ("EnableRumble", "AlternativeFFB", "FeedbackLength", "UseConstantInf")):
             # older ini without the per-game line: add it under [Settings]
             out = out.replace("[Settings]", "[Settings]" + chr(10) + f"{key}={val}", 1)
     if out != text:

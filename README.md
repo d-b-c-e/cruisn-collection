@@ -116,5 +116,5 @@ results/   RESULTS.md engineering log + proof images
 Cruis'n USA, Cruis'n World, Off Road Challenge, Cruis'n Exotica and their
 art are Midway / Warner Bros. properties. This project distributes no ROMs
 and no game assets: original launcher code, a GPL-2.0+ patch series against
-MAME (source included, as GPL requires) and the GPL-3.0 FFB Arcade Plugin
-(license included). Supply your own legally obtained ROM dumps.
+MAME (source included, as GPL requires) and the GPL-3.0 FFB Plugin MAME (Endprodukt's fork of the FFB Arcade
+Plugin; license included). Supply your own legally obtained ROM dumps.

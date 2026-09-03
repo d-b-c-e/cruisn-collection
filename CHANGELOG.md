@@ -5,6 +5,16 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Force-feedback plugin switched to FFB Plugin MAME** (Endprodukt's
+  GPL-3 fork of the FFB Arcade Plugin, the build the tester prefers):
+  its ConstantInf mode keeps one long-lived constant force that follows
+  the game and stops on zero, instead of a 500 ms pulse per update that
+  never stopped; it also ships FFBReset.exe. Verified against our
+  emulator headless (hooks crusnusa, receives the force updates); same
+  ini keys, so FFB STRENGTH and every `ffb_*` knob still apply. New knob
+  `ffb_constinf` (default 1). The release pipeline downloads the fork's
+  latest release; the template ini is now derived from its shipped ini.
+
 - **FFB tuning knobs for strong wheels** (tester: "clipping" and constant
   back-and-forth on a Fanatec CSL DD). From the plugin's source: each
   game update re-levels one constant force AND fires a rumble burst, holds

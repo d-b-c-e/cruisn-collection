@@ -92,9 +92,9 @@ if (Test-Path $initpl) {
 }
 try {
     Invoke-WebRequest -UseBasicParsing -OutFile (Join-Path $rel "FFBPLUGIN-LICENSE.txt") `
-        "https://raw.githubusercontent.com/Boomslangnz/FFBArcadePlugin/master/LICENSE"
+        "https://raw.githubusercontent.com/Endprodukt/FFBPluginRacerMAME/master/LICENSE"
 } catch {
-    "FFB Arcade Plugin by Boomslangnz - GPL-3.0 - https://github.com/Boomslangnz/FFBArcadePlugin" |
+    "FFB Plugin MAME by Endprodukt (fork of Boomslangnz FFB Arcade Plugin) - GPL-3.0 - https://github.com/Endprodukt/FFBPluginRacerMAME" |
         Set-Content (Join-Path $rel "FFBPLUGIN-LICENSE.txt")
 }
 
@@ -153,8 +153,8 @@ Full guide (wheel, force feedback, steering feel, troubleshooting):
 docs\INSTALL.md.
 
 This package contains no ROMs. Emulator: MAME (GPL-2.0+), patch series
-in patch\, launcher source in source\. FFB Arcade Plugin (c)
-Boomslangnz, GPL-3.0 (FFBPLUGIN-LICENSE.txt).
+in patch\, launcher source in source\. FFB Plugin MAME (Endprodukt's fork of Boomslangnz's FFB Arcade Plugin),
+GPL-3.0 (FFBPLUGIN-LICENSE.txt).
 "@ | Set-Content (Join-Path $rel "README.txt")
 
 # 5. zip

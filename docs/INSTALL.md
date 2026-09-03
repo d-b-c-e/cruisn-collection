@@ -170,13 +170,14 @@ sending or the wheel stopped listening. Turn it off afterwards.
 
 ### Force feedback on a strong (direct-drive) wheel
 
-What the plugin does with each force value the game sends, read from its
-source: it re-levels one constant-force effect to the new value and
-fires a **rumble burst** at the same strength, every update (about nine
-times a second in USA), holds the last level for 500 ms, and ignores a
-zero rather than stopping. Nothing is smoothed. That is faithful to how
-the arcade motor was driven, and on a 5-10 Nm direct-drive base it is
-a slam plus a buzz. Knobs, all optional, all in `rig\collection.ini`
+The collection ships **FFB Plugin MAME**, Endprodukt's fork of the FFB
+Arcade Plugin (GPL-3, [source](https://github.com/Endprodukt/FFBPluginRacerMAME)),
+the build MAME players with strong wheels prefer: its "ConstantInf" mode
+keeps one long-lived constant force that follows the game's value and
+**stops when the game sends zero** (the original re-triggered a 500 ms
+pulse per update and never stopped on zero), and it ships the reset
+tool we run at every launch. It still fires a rumble burst per update.
+Knobs, all optional, all in `rig\collection.ini`
 under `[collection]` (the launcher writes them into the plugin's ini at
 every launch):
 
@@ -189,6 +190,7 @@ every launch):
 | `ffb_hold = 200` | | how long one update keeps pushing when the game sends nothing new (plugin `FeedbackLength`, stock 500 ms) |
 | `ffb_power = 1` | | plugin `PowerMode`: square-root boost of small forces, for more road feel at low strength |
 | `ffb_alt = 1` | | plugin `AlternativeFFB` (stock 0): per-direction max keys; some bases only pull one way without it |
+| `ffb_constinf = 0` | | back to the original pulse-per-update constant force (`UseConstantInf`, default 1) |
 
 Change one at a time and drive a minute of USA; the launch log's first
 line shows what was applied.

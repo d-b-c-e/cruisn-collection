@@ -58,16 +58,16 @@ jobs:
 
       - name: FFB Arcade Plugin (GPL-3.0)
         run: |
-          $api = Invoke-RestMethod "https://api.github.com/repos/Boomslangnz/FFBArcadePlugin/releases/latest"
+          $api = Invoke-RestMethod "https://api.github.com/repos/Endprodukt/FFBPluginRacerMAME/releases/latest"
           $asset = $api.assets | Where-Object { $_.name -like "*.zip" } | Select-Object -First 1
+          if (-not $asset) { throw "FFB Plugin MAME (Endprodukt): no zip asset in the latest release" }
+          Write-Host "FFB plugin: $($api.tag_name) $($asset.name)"
           Invoke-WebRequest -UseBasicParsing -OutFile ffb.zip $asset.browser_download_url
           Expand-Archive ffb.zip ffbx
-          # the archive is one folder per game/emulator; only "MAME 64bit
-          # Outputs" carries the 64-bit dinput8.dll hook + SDL2 + MAME64.dll
-          # together (the alphabetically-first MAME64.dll lives in Flycast/,
-          # which shipped v0.3.0 without dinput8.dll and with a Flycast ini)
-          $dir = Get-ChildItem -Recurse -Directory ffbx | Where-Object { $_.Name -eq "MAME 64bit Outputs" } | Select-Object -First 1
-          if (-not $dir) { throw "FFB plugin archive: 'MAME 64bit Outputs' folder not found" }
+          # one folder ("FFB Plugin MAME x.yyy") holding the 64-bit MAME-outputs build plus its reset tool;
+          # the bundled mame.exe is theirs, not ours - only the plugin files are taken
+          $dir = Get-ChildItem ffbx -Recurse -Filter dinput8.dll | Select-Object -First 1 | ForEach-Object { $_.Directory }
+          if (-not $dir) { throw "FFB plugin archive: dinput8.dll not found" }
           foreach ($f in "dinput8.dll","SDL2.dll","MAME64.dll") {
             Copy-Item (Join-Path $dir.FullName $f) mame-src\ -ErrorAction Stop
           }

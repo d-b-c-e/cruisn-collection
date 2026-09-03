@@ -2443,3 +2443,34 @@ update before the clamp - verified headless (slew 12: a 63-kick becomes
 12,24,36,48,60 then decays; max step 12). This is the one thing the
 plugin cannot do and we can, upstream of it. Recipe in INSTALL:
 ffb_rumble=0 first, then ffb_slew=16, PEAK LIMIT 60, STRENGTH 40.
+
+
+## 2026-09-03 - the "endprodukt" plugin found: Endprodukt/FFBPluginRacerMAME; adopted
+
+GitHub: Endprodukt/FFBPluginRacerMAME, "FFB Plugin MAME", releases 1.99x
+(1.995 = 2026-08-31, 105 MB zip: dinput8.dll 768,512, SDL2.dll,
+MAME64.dll, FFBReset.exe (this is where the tester's reset tool comes
+from), FFBPluginGUI, plus their own mame.exe). GPL-3 fork of Boomslangnz's
+plugin, MAME-focused. Diff vs stock in the Cruis'n handler
+(RacingFullValueActive2): (1) value 0 now STOPS the force in both
+directions (stock ignored 0); (2) `UseConstantInf` (default 1) routes
+constant forces to TriggerConstantInfEffect - one persistent constant
+effect, stopped via SDL_HapticStopEffect when strength < 0.001, no
+re-trigger pulse; (3) percentForce clamped to 1.0; rumble per update
+unchanged. Same single [Settings] ini layout and key names (our launcher
+rewrites are compatible).
+
+Verified headless with OUR vunit.exe (scratch copy) + the fork's files +
+our template after apply_ffb_strength(70): FFBlog "RomName = crusnusa /
+RunningFFB = RacingFullValueActive2", 29 force updates received. The
+tester's failed swap was therefore not an incompatibility (likely a
+partial copy).
+
+Adopted: release.yml downloads the fork's latest release and takes
+dinput8/SDL2/MAME64/FFBReset from its folder; ffb/FFBPlugin.ini is now
+the fork's shipped ini with our pins (GameId=22, DeviceGUID blank,
+Logging=0, BeepWhenHook=0, AlternativeFFB=0, StartDelay=0,
+UseConstantInf=1, FeedbackLength<game>=500); make_release fetches the
+fork's LICENSE and credits it; [collection] ffb_constinf knob. The dev
+folder and the smoke install got the fork's files (stock 2.0.0.53
+backed up in mame-src/_plugin-backup-boomslangnz-2.0.0.53/).
