@@ -2110,3 +2110,20 @@ path was removed before it ever shipped - anonymous `releases/latest` +
 header is involved). `CRUISN_GH_TOKEN` env stays as a developer-only
 escape from the 60/hour anonymous rate limit. Setup "Updates..." now
 checks on open; no token row, no [update] section in collection.ini.
+
+
+## 2026-09-03 - tester round 3: FFBReset.exe confirms the diagnosis; Exotica; clipping
+
+Tester: the plugin's own `FFBReset.exe` run after exiting a game restores
+FFB for the next launch - the out-of-process open/stop/close exactly as
+v0.3.4's detached release does. The tool is in the plugin package (14 KB,
+"FFB Reset Tool - Cleaning wheel status... Done. N device(s) reset.",
+exit 0, ~0.3 s with the Moza base off); it now ships beside vunit.exe
+(CI copies it from the plugin archive wherever it sits; make_release's
+optional list) and `release_ffb_detached` prefers it, falling back to the
+built-in helper. Exotica "no FFB at all": expected - midzeus.cpp has no
+wheel-motor output (grep: only the "Wheel Invert" DIP) and the plugin has
+no crusnexo handler; documented, ROADMAP item added. "Clipping all over"
+on an 8 Nm Fanatec: FFB STRENGTH 100% saturates a direct-drive base -
+docs now say start at 40% (rig runs 70% on the Moza). MAME 0.288 romset:
+fine, sets are identified by content.

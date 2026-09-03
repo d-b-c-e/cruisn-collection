@@ -122,7 +122,14 @@ once, open `FFBlog.txt` — each device appears as `Joystick: n / Name: … /
 GUID: …`. Put your wheel base's GUID on the `DeviceGUID=` line, leave
 `GameId=22`, set `Logging=0` again.
 
-Overall strength is **SETTINGS → FFB STRENGTH**. Rotation range (arcade
+Overall strength is **SETTINGS → FFB STRENGTH**. The arcade motor was
+weak and the games' force signal saturates easily, so on a direct-drive
+base (Fanatec DD, Moza, Simucube) 100% clips: start at **40%** on an
+8 Nm base (this project's Moza rig runs 70%) and raise until it stops
+feeling harsh. **Cruis'n Exotica has no force feedback**: MAME's Exotica
+driver does not emulate the wheel-motor output yet, so there is nothing
+to send to the wheel (Exotica steers fine; the wheel just won't push
+back). Rotation range (arcade
 Cruis'n wheels turn about 270°) is set in your wheel's own software.
 
 The shipped `FFBPlugin.ini` is the plugin's own MAME defaults (`GameId=22`,
@@ -213,6 +220,10 @@ and so on).
   tell us), turn on *FFB diagnostics* in the setup window, reproduce,
   then *Save support bundle* — it now records whether an emulator
   process was still running.
+- **Forces are harsh or "clip" (slam to full lock)** — FFB STRENGTH is
+  too high for your base; see *Force feedback* (40% on an 8 Nm
+  direct-drive wheel is a good start). Also check the wheel software's
+  own gain.
 - **Force feedback comes and goes** — first make sure all four plugin files
   are the ones from the zip (no `dinput8.dll` from another version), then
   turn on *FFB diagnostics*, drive a minute, save a support bundle.

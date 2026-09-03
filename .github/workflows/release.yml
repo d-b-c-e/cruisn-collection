@@ -71,6 +71,8 @@ jobs:
           foreach ($f in "dinput8.dll","SDL2.dll","MAME64.dll") {
             Copy-Item (Join-Path $dir.FullName $f) mame-src\ -ErrorAction Stop
           }
+          $reset = Get-ChildItem ffbx -Recurse -Filter FFBReset.exe | Select-Object -First 1
+          if ($reset) { Copy-Item $reset.FullName mame-src\ } else { Write-Host "FFBReset.exe not in the plugin archive (optional)" }
           Remove-Item -Recurse -Force ffb.zip, ffbx
 
       - name: Assemble release

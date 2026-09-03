@@ -64,8 +64,14 @@ $Version | Set-Content (Join-Path $rel "version.txt")   # the in-app updater com
 
 # 3. emulator + FFB plugin
 Copy-Item $vunit (Join-Path $rel "vunit.exe")
-foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll") {
+foreach ($f in "dinput8.dll", "SDL2.dll", "MAME64.dll", "FFBReset.exe") {
     if (Test-Path (Join-Path $vdir $f)) { Copy-Item (Join-Path $vdir $f) $rel }
+# the plugin's reset tool (GPL-3, from the FFB Arcade Plugin package): the
+# launcher runs it at every exit/launch; vendored in ffb\ in case the
+# plugin archive beside vunit.exe did not carry it
+if (-not (Test-Path (Join-Path $rel "FFBReset.exe")) -and (Test-Path (Join-Path $root "ffb\FFBReset.exe"))) {
+    Copy-Item (Join-Path $root "ffb\FFBReset.exe") $rel
+}
     else { throw "$f not found beside vunit.exe - the release would ship without force feedback (v0.3.0 did)" }
 }
 # MAME's bgfx shader/chain files: used by the Exotica fallback path (MIDZ_GL=0

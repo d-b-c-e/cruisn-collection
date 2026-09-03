@@ -11,6 +11,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   process, loading the plugin's SDL2 and opening the wheel's haptic device
   there. It now runs in a throwaway process, and the same clean
   open/stop/close runs before every launch.
+- The plugin's own **FFBReset.exe** ships in the zip and runs at every
+  exit and before every launch when present (a tester confirmed it
+  restores FFB on a Fanatec CSL DD); the built-in release is the
+  fallback.
 - A game process that hangs after closing its window (the known
   exit-time plugin race) is ended after 15 s, and any left-over emulator
   process is ended before a launch - either would keep the wheel and

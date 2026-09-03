@@ -223,6 +223,20 @@ def release_ffb_detached(mame_dir, timeout=20.0):
     only after another emulator's plugin had opened and closed the wheel
     in its own process. A short-lived process cannot keep anything.
     Falls back to the in-process release if the helper cannot start."""
+    # The plugin ships its own reset tool (FFBReset.exe: opens every wheel,
+    # clears its status, exits) - a tester proved it restores FFB on a
+    # Fanatec where our exit path lost it; prefer the author's tool when
+    # the release put it beside vunit.exe.
+    tool = os.path.join(mame_dir, "FFBReset.exe")
+    if os.path.isfile(tool):
+        try:
+            r = subprocess.run([tool], capture_output=True, text=True,
+                               timeout=timeout, cwd=mame_dir,
+                               creationflags=0x08000000)   # no console window
+            print("FFBReset:", (r.stdout or "").strip().replace(chr(10), " | "))
+            return True
+        except (OSError, subprocess.TimeoutExpired) as e:
+            print(f"FFBReset.exe failed ({e}) - using the built-in release")
     if getattr(sys, "frozen", False):
         cmd = [sys.executable, "--release-ffb"]
     else:
