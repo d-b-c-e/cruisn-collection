@@ -395,7 +395,7 @@ class Shell:
                   (0.75, 0.75, 0.8, 1.0))
 
     def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans,
-                      scale, t, version="", notice="", clamp=0):
+                      scale, t, version="", notice="", clamp=0, diag=False):
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -410,16 +410,18 @@ class Shell:
                 ("MARGIN FILL", "ON" if mfill else "OFF"),
                 ("FFB STRENGTH", f"< {ffb}% >"),
                 ("FFB PEAK LIMIT", "< OFF >" if not clamp else f"< {clamp} >"),
+                ("FFB DIAGNOSTICS", "ON" if diag else "OFF"),
                 ("INTERNAL SCALE", f"< {scale}X >"),
                 ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
                  else "< SEQUENTIAL >"),
                 ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
+                ("SAVE SUPPORT BUNDLE", "FOR BUG REPORTS"),
                 ("CHECK FOR UPDATES", version),
                 ("BACK", "")]
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.335 + 0.048 * i)
+            y = self.h * (0.33 + 0.043 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -440,22 +442,27 @@ class Shell:
             5: "CAPS THE GAMES' FORCE KICKS (OF 127)      STOPS A STRONG "
                "WHEEL SLAMMING LEFT-RIGHT BY ITSELF      TRY 40 ON A "
                "DIRECT-DRIVE BASE",
-            6: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
+            6: "ON = RECORDS THE FORCES AND WHEEL POSITION WHILE YOU DRIVE "
+               "(FOR A BUG REPORT)      THEN SAVE SUPPORT BUNDLE",
+            10: "WRITES ONE ZIP WITH LOGS, SETTINGS, CONTROLLER LAYOUT AND "
+                "THE FORCE TRACE - NEVER YOUR ROMS      A GAME WINDOW "
+                "APPEARS FOR ABOUT 10 S",
+            7: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
                "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT "
                "THE NEXT LAUNCH",
-            7: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
+            8: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
                "SHIFT UP / DOWN PADDLES (EXOTICA: PADDLES DRIVE A VIRTUAL "
                "4-SPEED SHIFTER)",
-            8: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
+            9: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
                "SKIPPED STEPS KEEP THEIR SAVED BINDING",
-            9: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
+            11: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
                "YOUR ROMS, SETTINGS AND BINDINGS ARE KEPT",
         }
         if notice:
-            self.center_text(notice, self.h // 40, self.h * 0.86,
+            self.center_text(notice, self.h // 40, self.h * 0.895,
                              (1.0, 0.85, 0.4, 1.0))
         elif ssel in hints:
-            self.center_text(hints[ssel], self.h // 48, self.h * 0.86,
+            self.center_text(hints[ssel], self.h // 48, self.h * 0.895,
                              (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
         fh = self.h / 36 * 1.9
@@ -941,6 +948,47 @@ def update_step(upd):
             upd["stage"] = "idle"
             say(str(e), 30)
     threading.Thread(target=chk, daemon=True).start()
+
+
+def toggle_diag(upd):
+    """SETTINGS -> FFB DIAGNOSTICS: flips the plugin log + force trace flag
+    (rig/collection.ini ffb_diag, applied at the next launch)."""
+    on = not run_rig.ffb_diag_enabled()
+    try:
+        run_rig.set_ffb_diag(on)
+        upd["msg"] = ("FFB DIAGNOSTICS ON - DRIVE A MINUTE, THEN SAVE SUPPORT BUNDLE"
+                      if on else "FFB DIAGNOSTICS OFF")
+    except Exception as e:
+        upd["msg"] = f"COULD NOT SWITCH FFB DIAGNOSTICS: {e}".upper()[:120]
+    upd["until"] = time.time() + 8
+
+
+def bundle_step(upd):
+    """SETTINGS -> SAVE SUPPORT BUNDLE: build the zip in the background
+    (a game window appears for ~10 s for the emulator's input dump) and
+    show where it landed."""
+    import threading
+    if upd.get("bundling"):
+        return
+    upd["bundling"] = True
+    upd["msg"] = "BUILDING SUPPORT BUNDLE - A GAME WINDOW APPEARS FOR ABOUT 10 S..."
+    upd["until"] = time.time() + 60
+
+    def work():
+        try:
+            import support_bundle
+            out = support_bundle.bundle(progress=lambda m: None)
+            upd["msg"] = f"SUPPORT BUNDLE SAVED: {out}".upper()[:120]
+            upd["until"] = time.time() + 30
+            try:
+                os.startfile(os.path.dirname(out))   # show the folder
+            except Exception:
+                pass
+        except Exception as e:
+            upd["msg"] = f"SUPPORT BUNDLE FAILED: {e}".upper()[:120]
+            upd["until"] = time.time() + 20
+        upd["bundling"] = False
+    threading.Thread(target=work, daemon=True).start()
 
 
 GAME_ALIASES = {
@@ -1544,10 +1592,10 @@ def main():
         elif mode == "settings":
             for key in actions:
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 11
+                    ssel = (ssel - 1) % 13
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 11
+                    ssel = (ssel + 1) % 13
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
                     k = "crt" if ssel == 0 else "crackfill"
@@ -1579,6 +1627,9 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 6:
+                    toggle_diag(upd)
+                    audio.blip("nav")
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 7:
                     # internal render scale 2x-4x (GPU load ~ scale^2);
                     # applies at the next launch
                     step = 1 if key == glfw.KEY_RIGHT else -1
@@ -1586,7 +1637,7 @@ def main():
                                                 + step))
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 7:
+                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 8:
                     state["transmission"] = (
                         "sequential"
                         if state.get("transmission", "hpattern") == "hpattern"
@@ -1603,7 +1654,7 @@ def main():
                         state["marginfill"] = not state.get("marginfill", True)
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel == 7:
+                    elif ssel == 8:
                         state["transmission"] = (
                             "sequential"
                             if state.get("transmission",
@@ -1611,12 +1662,18 @@ def main():
                             else "hpattern")
                         save_config(state)
                         audio.blip("nav")
-                    elif ssel in (2, 4, 5, 6):
+                    elif ssel in (2, 4, 5, 7):
                         audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 9:
+                    elif ssel == 11:
                         audio.blip("nav")
                         update_step(upd)
-                    elif ssel == 8:
+                    elif ssel == 10:
+                        audio.blip("nav")
+                        bundle_step(upd)
+                    elif ssel == 6:
+                        toggle_diag(upd)
+                        audio.blip("nav")
+                    elif ssel == 9:
                         mode = "wizard"
                         wiz_idx = 0
                         wiz_bind = {}
@@ -1774,7 +1831,8 @@ def main():
                                 int(state.get("scale", 4)), t,
                                 version=upd_version,
                                 notice=upd["msg"] if time.time() < upd["until"]
-                                else "", clamp=int(state.get("ffbclamp", 0)))
+                                else "", clamp=int(state.get("ffbclamp", 0)),
+                                diag=run_rig.ffb_diag_enabled())
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)

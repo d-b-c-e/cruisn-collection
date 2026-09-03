@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **SETTINGS → FFB DIAGNOSTICS** (on/off) and **SETTINGS → SAVE SUPPORT
+  BUNDLE** in the launcher, so a tester never has to leave it; the bundle
+  folder opens when done. The setup window keeps its buttons.
+
 - **FFB diagnostics now capture the whole loop**: the trace records the
   steering input the game reads (`wheelpos` rows) next to the force it
   sends; the support bundle adds `ffb_trace_report.txt` (peaks, kicks,

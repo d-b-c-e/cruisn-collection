@@ -74,8 +74,10 @@ troubleshooting, and how to report a bug with a support bundle — is in
 
 **Alpha testers:** when something looks or feels wrong, the most useful
 report is *what you expected vs what you saw*, plus a **support bundle**
-(button in `CruisnSetup.exe` — it captures logs and your controller layout,
-never your ROMs).
+(SETTINGS → SAVE SUPPORT BUNDLE in the launcher, or the button in
+`CruisnSetup.exe` — it captures logs, your controller layout and the
+force-feedback trace, never your ROMs). For force-feedback complaints turn
+on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
 
 ## What it is, technically
 

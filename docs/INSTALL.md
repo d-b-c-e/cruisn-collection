@@ -195,8 +195,9 @@ every launch):
 Change one at a time and drive a minute of USA; the launch log's first
 line shows what was applied.
 
-**Show us what the wheel is doing**: turn on *FFB diagnostics* in the
-setup window, drive the minute, then *Save support bundle*. Besides the
+**Show us what the wheel is doing**: in the launcher, **SETTINGS → FFB
+DIAGNOSTICS ON**, drive the minute, then **SETTINGS → SAVE SUPPORT
+BUNDLE** (both also exist as buttons in the setup window). Besides the
 raw trace, the bundle now carries `ffb_trace_report.txt` and
 `ffb_trace.png`: the force the game sent and the **wheel position it read
 back**, on one timeline. An oscillating wheel shows as the blue position
@@ -313,7 +314,8 @@ and so on).
 - **Which version am I on?** The setup window's *version / updates* row
   says (folder names can lie after unzipping over an old folder), and
   the support bundle includes `version.txt`.
-- **Reporting a bug**: `CruisnSetup.exe → Save support bundle` writes one
+- **Reporting a bug**: **SETTINGS → SAVE SUPPORT BUNDLE** in the launcher
+  (or `CruisnSetup.exe → Save support bundle`) writes one
   zip (logs, your controller layout as MAME sees it, settings — never ROMs).
   Attach it with a note on *what you expected vs what you saw*. For visual
   glitches a photo or screenshot beats any description.
