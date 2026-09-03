@@ -21,7 +21,7 @@ look. **No ROMs are included** — you supply your own.
    | Cruis'n World | `crusnwld` **plus** `crusnwld24` (rev 2.4 keeps the manual transmission; a merged `crusnwld` set already contains it) |
    | Off Road Challenge | `offroadc` |
    | Cruis'n Exotica | `crusnexo` |
-   | all three V-Unit games / Exotica | `tms320c31` / `tms320c32` | tiny DSP boot-ROM *device* sets from the same MAME romset — easy to miss, required |
+   | all three V-Unit games / Exotica | `tms320c31` / `tms320c32` (older romsets: `tms32031` / `tms32032` — same files) | tiny DSP boot-ROM *device* sets from the same MAME romset — easy to miss, required |
 
    Any subset works — missing games just don't appear as playable.
 3. **Launch Collection**. Pick a game, drive. Keyboard out of the box:
@@ -31,6 +31,16 @@ look. **No ROMs are included** — you supply your own.
 4. Have a wheel? **SETTINGS → CONTROLS SETUP** binds it in about a minute
    (press-to-bind; any wheel, pedals, shifter or paddles). Force feedback
    needs one extra line in `FFBPlugin.ini` — see the guide.
+
+**Steering feel**: each game has a **STEERING SENSITIVITY** (how far you
+turn for full lock; 100% = the game's calibration) and a **STEERING
+CURVE** (response shape; below 100 = more bite near center, the cure for
+the games' lazy-center feel). Calibrate in-game first, then tune. Details
+in [docs/INSTALL.md](docs/INSTALL.md#steering-feel-sensitivity-and-curve).
+
+**Frontends / shortcuts**: `CruisnCollection.exe --game usa` (or `world`,
+`offroad`, `exotica`) skips the launcher screen; **Shift+F12** in a game
+quits straight to the desktop.
 
 **Updating**: unzip the new version over the old folder (everything you
 set up is kept), or into a new folder and use *Import previous version* in

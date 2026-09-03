@@ -362,12 +362,29 @@ BOOT_ROM = {"crusnusa": ("tms320c31", "c31boot.bin"),
             "crusnexo": ("tms320c32", "c32boot.bin")}
 
 
+# MAME renamed the DSP device sets (tms32031/tms32032 -> tms320c31/
+# tms320c32); romsets built for other versions carry the OLD names with the
+# same file inside. MAME 0.286 only looks under the new name.
+BOOT_ROM_OLD_NAMES = {"tms320c31": "tms32031", "tms320c32": "tms32032"}
+
+
 def boot_rom_available(rom, rompath=None):
     """True when the game's DSP boot ROM exists by name in its device zip
-    or inside the game's own zips (MAME searches both)."""
+    or inside the game's own zips (MAME searches both). An old-name device
+    zip (tms32032.zip) is copied to the name MAME 0.286 expects."""
+    import shutil
     import zipfile
     rompath = rompath or ROMPATH
     dev, fname = BOOT_ROM[base_rom(rom)]
+    new_zip = os.path.join(rompath, dev + ".zip")
+    old_zip = os.path.join(rompath, BOOT_ROM_OLD_NAMES[dev] + ".zip")
+    if not os.path.isfile(new_zip) and os.path.isfile(old_zip):
+        try:
+            shutil.copy2(old_zip, new_zip)
+            print(f"ROMs: copied {os.path.basename(old_zip)} -> "
+                  f"{dev}.zip (MAME 0.286 device set name)")
+        except OSError:
+            pass
     for z in (dev + ".zip", base_rom(rom) + ".zip", rom + ".zip"):
         path = os.path.join(rompath, z)
         if not os.path.isfile(path):
@@ -904,48 +921,10 @@ def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False):
 
 
 # steering analog port per game (tag/type; all use mask 255, defvalue 128).
-# The shell's STEERING SENS setting is asserted into the per-game MAME cfg
-# before each launch; MAME's own default is sensitivity 25.
-STEER_PORT = {
-    "crusnusa": (":WHEEL", "P1_PADDLE"),
-    "crusnwld": (":WHEEL", "P1_PADDLE"),
-    "offroadc": (":WHEEL", "P1_PADDLE"),
-    "crusnexo": (":ANALOG3", "P1_PADDLE"),
-}
-
-
-def write_steer_cfg(rig, rom, sens):
-    """Assert steering sensitivity in rig/cfg/<rom>.cfg (merged, preserving
-    everything MAME saved there). sens None = leave MAME's value alone."""
-    if sens is None or base_rom(rom) not in STEER_PORT:
-        return
-    tag, ptype = STEER_PORT[base_rom(rom)]
-    path = os.path.join(rig, "cfg", f"{rom}.cfg")
-    if os.path.isfile(path):
-        tree = ET.parse(path)
-    else:
-        tree = ET.ElementTree(ET.fromstring(
-            f'<mameconfig version="10"><system name="{rom}"/></mameconfig>'))
-    system = None
-    for s in tree.getroot().iter("system"):
-        if s.get("name") == rom:
-            system = s
-            break
-    if system is None:
-        system = ET.SubElement(tree.getroot(), "system", {"name": rom})
-    inp = system.find("input")
-    if inp is None:
-        inp = ET.SubElement(system, "input")
-    port = None
-    for p in inp.findall("port"):
-        if p.get("tag") == tag and p.get("type") == ptype:
-            port = p
-            break
-    if port is None:
-        port = ET.SubElement(inp, "port", {
-            "tag": tag, "type": ptype, "mask": "255", "defvalue": "128"})
-    port.set("sensitivity", str(int(sens)))
-    tree.write(path, encoding="utf-8", xml_declaration=True)
+# NOTE: the shell's STEERING SENSITIVITY used to write MAME's per-port
+# "sensitivity" into rig/cfg/<rom>.cfg. For absolute devices MAME applies
+# that value and then exactly un-applies it (ioport.cpp), so it never
+# changed a wheel's response; it is now MIDV_STEER_GAIN (see launch env).
 
 
 # collection.ini [wheelmap] key -> ([MAME port types], keyboard alternative
@@ -1169,7 +1148,6 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
-    write_steer_cfg(rig, rom, steersens)
     # FFB overall strength: patch the plugin ini beside the exe before launch
     # (the plugin reads it at load). None = leave whatever's there untouched.
     apply_ffb_strength(os.path.dirname(mame), ffb)
@@ -1209,6 +1187,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_SKIP_STARTUP_SCREENS="1")
     if gamepatch:
         env["MIDV_PATCH"] = gamepatch
+    if steersens is not None:
+        # gain percent on the wheel deflection (ioport.cpp patch; MAME's
+        # own cfg "sensitivity" is a no-op for absolute wheels): 200 =
+        # full lock at half the travel, 50 = full travel gives half lock
+        env["MIDV_STEER_GAIN"] = str(int(steersens))
     if steercurve is not None:
         # response-curve exponent percent for PADDLE fields (ioport.cpp
         # patch): <100 = more bite near center, 100 = linear

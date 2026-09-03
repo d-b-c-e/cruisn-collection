@@ -387,7 +387,8 @@ class Shell:
         # in-game hotkey legend (keys that live outside the wheel bindings)
         leg = self.footer_tex(
             "IN-GAME:   5 COIN    1 START    ESC MENU / QUIT    F9 CRT    "
-            "= / - VOLUME    F2 TEST    9 SERVICE    F12 FORCE QUIT", div=46)
+            "= / - VOLUME    F2 TEST    9 SERVICE    F12 QUIT GAME    "
+            "SHIFT+F12 QUIT ALL", div=46)
         lh = self.h / 46 * 1.9
         lw = leg.width * lh / leg.height
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
@@ -765,6 +766,11 @@ def load_config():
     for rom, _, _, _ in GAMES:
         sens[rom] = _num(f"steersens_{rom}")
         curve[rom] = _num(f"steercurve_{rom}")
+    for rom in list(sens):
+        # pre-v0.3.3 values were MAME "sensitivity" units (default 25)
+        # and never affected a wheel; the key is a percent gain now
+        if sens[rom] is not None and not 50 <= sens[rom] <= 300:
+            sens[rom] = None
     legacy_s, legacy_c = _num("steersens"), _num("steercurve")
     for rom in ("crusnusa", "crusnwld", "offroadc"):
         if sens[rom] is None and legacy_s is not None:
@@ -859,8 +865,60 @@ def render_shot(path):
     print("wrote", path)
 
 
+GAME_ALIASES = {
+    "usa": "crusnusa", "crusnusa": "crusnusa",
+    "world": "crusnwld", "crusnwld": "crusnwld", "crusnwld24": "crusnwld",
+    "offroad": "offroadc", "offroadc": "offroadc", "orc": "offroadc",
+    "exotica": "crusnexo", "crusnexo": "crusnexo",
+}
+
+
+def resolve_game_alias(name):
+    """Card rom for a --game argument (usa/world/offroad/exotica or the
+    MAME names); None when unknown."""
+    return GAME_ALIASES.get((name or "").strip().lower())
+
+
+def direct_launch(card, windowed=False):
+    """--game: run one game with the launcher's saved settings and no shell
+    window at all (frontends: LaunchBox, Stream Deck, shortcuts). Returns
+    the process exit code; Esc-menu Exit / F12 end the game and this
+    process alike."""
+    state = load_config()
+    real_rom = (state.get("world_rom", "crusnwld24")
+                if card == "crusnwld" else card)
+    if card == "crusnwld":
+        real_rom, note = run_rig.resolve_world_rom(real_rom)
+        if note:
+            print(note, file=sys.stderr)
+    boot_note = run_rig.boot_rom_note(real_rom)
+    if boot_note:
+        print(f"{card}: {boot_note}", file=sys.stderr)
+        return 2
+    proc, _hwnd = run_rig.launch_game_async(
+        rom=real_rom, scale=int(state.get("scale", 4)), windowed=windowed,
+        crt=state["crt"], crackfill=state["crackfill"],
+        steersens=state["steersens"].get(card),
+        steercurve=state["steercurve"].get(card),
+        margin=state["margin"], ffb=state.get("ffb", 100),
+        marginfill=state.get("marginfill", True))
+    gaks = ctypes.windll.user32.GetAsyncKeyState
+    while proc.poll() is None:
+        # Shift+F12 = quit (same key as in the launcher); WM_CLOSE is the
+        # clean path (forces released, NVRAM written)
+        if (gaks(0x7B) & 0x8000) and (gaks(0x10) & 0x8000):
+            ctypes.windll.user32.PostMessageW(
+                ctypes.c_void_p(_hwnd), 0x0010, 0, 0)
+        time.sleep(0.25)
+    run_rig.release_ffb(os.path.dirname(run_rig.VUNIT))   # never strand forces
+    return proc.returncode
+
+
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--game", metavar="NAME",
+                    help="launch one game directly, no launcher screen: "
+                         "usa, world, offroad, exotica (or MAME names)")
     ap.add_argument("--shot", metavar="PNG",
                     help="render one offscreen frame and exit")
     ap.add_argument("--windowed", action="store_true",
@@ -869,6 +927,12 @@ def main():
                     help="print connected joysticks as JSON and exit "
                          "(support-bundle diagnostics)")
     args = ap.parse_args()
+    if args.game:
+        card = resolve_game_alias(args.game)
+        if not card:
+            sys.exit(f"unknown game {args.game!r} - use usa, world, "
+                     f"offroad or exotica")
+        return direct_launch(card, windowed=args.windowed)
     if args.shot:
         render_shot(args.shot)
         return 0
@@ -1032,8 +1096,8 @@ def main():
         return (state.get("world_rom", "crusnwld24")
                 if card == "crusnwld" else card)
 
-    SENS_HINT = ("OVERALL GAIN:   HIGHER = SHARPER RESPONSE      "
-                 "LOWER = CALMER      GAME DEFAULT IS 25")
+    SENS_HINT = ("HOW FAR YOU TURN FOR FULL LOCK:   ABOVE 100% = FULL LOCK "
+                 "WITH LESS TURNING      BELOW 100% = MORE TURNING NEEDED")
     CURVE_HINT = ("RESPONSE SHAPE:   BELOW 100 = MORE BITE NEAR CENTER "
                   "(FIXES LAZY-CENTER STEERING)      "
                   "ABOVE 100 = SOFTER CENTER")
@@ -1049,7 +1113,7 @@ def main():
         rows = [("play", "PLAY", "", "")]
         sv = state["steersens"].get(card)
         rows.append(("sens", "STEERING SENSITIVITY",
-                     "GAME DEFAULT" if sv is None else f"< {sv} >",
+                     "GAME DEFAULT (100%)" if sv is None else f"< {sv}% >",
                      SENS_HINT))
         cv = state["steercurve"].get(card)
         rows.append(("curve", "STEERING CURVE",
@@ -1494,11 +1558,11 @@ def main():
                         mode = "menu"
                         audio.blip("select")
                     elif lr and rid == "sens":
-                        step = 5 if key == glfw.KEY_RIGHT else -5
+                        step = 10 if key == glfw.KEY_RIGHT else -10
                         cur = state["steersens"].get(card)
-                        nxt = (25 if cur is None else cur) + step
-                        state["steersens"][card] = (None if nxt < 5
-                                                    else min(nxt, 200))
+                        nxt = (100 if cur is None else cur) + step
+                        state["steersens"][card] = (None if nxt == 100
+                                                    else max(50, min(nxt, 300)))
                         save_config(state)
                         audio.blip("nav")
                     elif lr and rid == "curve":
@@ -1670,8 +1734,17 @@ def main():
                 # WM_NULL timeouts also mean "exiting". Keep pumping our
                 # own queue so Windows never ghosts the hidden shell.
                 unresp = 0
+                quit_all = False
+                gaks = ctypes.windll.user32.GetAsyncKeyState
                 while run_rig.u32.IsWindow(game_hwnd) and proc.poll() is None:
                     glfw.poll_events()
+                    # Shift+F12 = quit the game AND the launcher (plain F12
+                    # is the overlay's quit-to-launcher). WM_CLOSE is the
+                    # clean path (forces released, NVRAM written).
+                    if (gaks(0x7B) & 0x8000) and (gaks(0x10) & 0x8000):
+                        quit_all = True
+                        ctypes.windll.user32.PostMessageW(
+                            ctypes.c_void_p(game_hwnd), 0x0010, 0, 0)
                     if run_rig.window_responding(game_hwnd):
                         unresp = 0
                     else:
@@ -1695,6 +1768,8 @@ def main():
                 hat_prev = 0
                 actions.clear()
                 armed_at = time.time() + 1.0
+                if quit_all:
+                    glfw.set_window_should_close(win, True)
                 # in-game CRT toggles (F9 / Esc menu) persist back: the GL
                 # overlay writes its final state at teardown - without this
                 # the SETTINGS row and the next launch drift from reality

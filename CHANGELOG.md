@@ -3,6 +3,24 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## v0.3.3 — 2026-09-02
+
+- **Direct launch**: `CruisnCollection.exe --game usa|world|offroad|exotica`
+  runs one game with the saved settings and no launcher screen (for
+  LaunchBox, Stream Deck keys, shortcuts); the process ends with the game.
+- **Shift+F12** in a game quits the game and the launcher together
+  (plain F12 still returns to the launcher).
+- **STEERING SENSITIVITY now actually does something.** It used to write
+  MAME's per-port `sensitivity`, which MAME applies and then exactly
+  un-applies for absolute controls - a wheel never felt it. It is now a
+  gain on the wheel deflection (50-300%, 100% = the game's calibration,
+  applied before the curve) inside the same emulator patch as the curve;
+  stored values from earlier versions are discarded. INSTALL.md has a
+  "Steering feel" section explaining both rows.
+- Older romsets' `tms32031.zip` / `tms32032.zip` DSP boot-ROM names are
+  accepted: the setup window identifies them by content, and the launcher
+  copies an old-name zip to the name MAME 0.286 expects.
+
 ## v0.3.2 — 2026-09-02
 
 - **INTERNAL SCALE setting** (SETTINGS, 2X-4X): the render resolution

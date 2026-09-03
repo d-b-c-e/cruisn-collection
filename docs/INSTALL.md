@@ -41,7 +41,7 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 | Cruis'n World | `crusnwld` + `crusnwld24` | The collection boots **rev 2.4** (`crusnwld24`), the last revision with a manual transmission. It is a MAME *clone*: a **merged** `crusnwld.zip` already contains its files; with **split** sets add `crusnwld24.zip` beside `crusnwld.zip`. Without it the launcher falls back to rev 2.5 (automatic only) and says so on screen. |
 | Off Road Challenge | `offroadc` | v1.63 |
 | Cruis'n Exotica | `crusnexo` | v2.4. Upstream MAME emulation is imperfect here: car-select stats text is illegible; occasional sprite glitches. |
-| **DSP boot ROMs** | `tms320c31` (USA / World / Off Road) and `tms320c32` (Exotica) | MAME *device* sets — two tiny zips (one 16 KB file each) that every full MAME 0.286 romset includes. Easy to overlook when you copy only the game zips; without them the game aborts with "c31boot.bin NOT FOUND". The setup window has a row for them. |
+| **DSP boot ROMs** | `tms320c31` (USA / World / Off Road) and `tms320c32` (Exotica) | MAME *device* sets — two tiny zips (one 16 KB file each) that every full MAME romset includes. Easy to overlook when you copy only the game zips; without them the game aborts with "c31boot.bin NOT FOUND". Romsets from other MAME versions name them **`tms32031.zip` / `tms32032.zip`** — same file inside; add them through the setup window (identified by content) or just copy them, the launcher accepts either name. |
 
 ### Updating to a new version
 
@@ -101,7 +101,8 @@ automatic-select with paddles.)
 | **F9** | toggle the CRT look instantly |
 | **=** / **-** | game volume in Cruis'n USA (the other games have a VOLUME setting on their page) |
 | **F2** / **9** | operator test menu / service credit |
-| **F12** | instant quit (emergency; prefer Esc so the wheel releases cleanly) |
+| **F12** | quit the game, back to the launcher (instant; prefer Esc so the wheel releases cleanly) |
+| **Shift+F12** | quit the game **and** the launcher - straight to the desktop |
 
 ### Force feedback
 
@@ -137,6 +138,42 @@ together; mixing a `dinput8.dll` from another plugin version with these
 the plugin's own `FFBlog.txt` (what it did with them). Drive for a minute,
 then **Save support bundle**; the two logs tell us whether the game stopped
 sending or the wheel stopped listening. Turn it off afterwards.
+
+### Steering feel: sensitivity and curve
+
+Each game card has two steering rows (press Enter on a game, they sit
+under PLAY). Both are per game, both default to *off*, and neither
+touches the game's own calibration - run the in-game control calibration
+first (F2 service menu) so the wheel's full travel maps to full lock, then
+tune feel here.
+
+- **STEERING SENSITIVITY** is a gain on how far you have to turn. At
+  **100%** (the default) full lock is wherever the calibration put it.
+  **150%** reaches full lock at two thirds of that travel (and anything
+  past it is just full lock); **70%** means turning all the way gives
+  70% lock. Use it when a 900° wheel feels like too much arm work for an
+  arcade game, or a short-rotation wheel feels twitchy - or set your
+  wheel's rotation to 270-360° in its own software and leave this alone.
+- **STEERING CURVE** shapes the response *between* center and lock
+  without changing where lock is. **100** is linear. **Below 100** (70 is
+  a good first try for the three V-Unit games) gives more response near
+  center: these games ignore small wheel movements and then turn sharply,
+  and this counteracts that lazy-center feel. **Above 100** softens the
+  center instead, for a wheel that feels nervous in a straight line.
+
+Sensitivity is applied first, then the curve. Cruis'n Exotica centers
+differently from the other three, so it has its own values. If you have
+used MAME's own *Analog Input Adjustments* menu: its *sensitivity* has no
+effect on a wheel (MAME applies and un-applies it for absolute controls),
+which is why the collection provides its own.
+
+### Launching a game directly (frontends, shortcuts)
+
+`CruisnCollection.exe --game usa` (also `world`, `offroad`, `exotica`, or
+the MAME names) starts that game with your saved settings and no launcher
+screen; the process ends when the game does. Add `--windowed` to skip
+fullscreen. Point LaunchBox / a Stream Deck key / a desktop shortcut at
+that line and the launcher never appears.
 
 ### Menu music (optional)
 

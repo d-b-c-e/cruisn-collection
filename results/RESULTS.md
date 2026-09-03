@@ -2008,3 +2008,44 @@ INTERNAL SCALE 2X-4X (GPU), FFB STRENGTH 0% now idles the plugin
 off; the support bundle's launch.log ends with MAME's measured speed and
 midv_gl.log carries a periodic speed readout. Ask: CPU model + a bundle
 after an Off Road session.
+
+
+## 2026-09-02 (evening) - v0.3.3: steering sensitivity was a no-op, direct launch, quit-all key
+
+**Finding (tester confusion about STEERING SENSITIVITY / CURVE).** MAME's
+per-port `sensitivity` cannot affect an absolute analog device: ioport.cpp
+stores `m_accum = apply_inverse_sensitivity(raw)` at capture, and read()
+runs `apply_min_max` (whose bounds are pre-scaled by the same inverse) and
+then `apply_sensitivity` - an exact identity for wheels/pedals; the value
+only governs keyboard/relative increments. Our STEERING SENSITIVITY row
+wrote that value into `rig/cfg/<rom>.cfg` since the G5 menu redesign, so
+it never changed a wheel's feel (the curve, our own patch, did). Fixed by
+making it real: `MIDV_STEER_GAIN` (percent, 25..400, 100 = off) joins
+`MIDV_STEER_CURVE` in the env-gated IPT_PADDLE block - the normalized
+deflection is multiplied by the gain, clamped to +-1 (full lock), then
+curved. Shell row is now 50..300% in steps of 10, "GAME DEFAULT (100%)";
+stored pre-v0.3.3 values (MAME units, default 25) are discarded on load.
+`write_steer_cfg`/`STEER_PORT` retired. Headless boot with GAIN=200
+CURVE=70: clean, 695% unthrottled. Wheel feel of the gain: **needs the
+user's rig test** (math reviewed only). INSTALL.md gained a "Steering
+feel" section written for a player.
+
+**Direct launch.** `CruisnCollection.exe --game usa|world|offroad|exotica`
+(or MAME names, `crusnwld24` -> World card) runs `launch_game_async` with
+the saved settings, no glfw window; polls Shift+F12 -> WM_CLOSE; releases
+FFB on exit; returns vunit's exit code (2 + stderr note when the DSP boot
+ROM is missing). Live-tested: Off Road up in ~40 s, WM_CLOSE -> exit 0,
+launch.log "Average speed: 100.00% (102 seconds)"; injected Shift+F12 ->
+exit 0 within 15 s.
+
+**Shift+F12 = quit game AND launcher.** Shell's game-watch loop polls
+GetAsyncKeyState(F12)+SHIFT, posts WM_CLOSE (clean: forces released,
+NVRAM written) and sets `window_should_close` after the usual teardown.
+Plain F12 unchanged (MAME UI_CANCEL -> back to the launcher). Legend and
+INSTALL keys table updated.
+
+**Old-name DSP boot ROM sets.** A tester's romset has `tms32032.zip`
+(pre-rename device set name; identical `c32boot.bin` inside). The setup
+identifier already maps it to `tms320c32` by content (verified on the
+rig's own 2022 zip); `boot_rom_available` now also copies an old-name zip
+to the 0.286 name at launch (`BOOT_ROM_OLD_NAMES`), tested on a temp dir.
