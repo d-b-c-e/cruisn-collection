@@ -1301,6 +1301,12 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_SKIP_STARTUP_SCREENS="1")
     if gamepatch:
         env["MIDV_PATCH"] = gamepatch
+    if base_rom(rom) == "crusnexo":
+        # Exotica FFB: MAME (our patch) now emits its wheel motor as output
+        # "wheel"; the FFB plugin has no crusnexo handler, so the output
+        # module reports "crusnusa" to it - the Cruis'n handler (and the
+        # CrusnUSA force keys / FFB STRENGTH) then drive Exotica's wheel.
+        env["MIDV_OUTPUT_NAME"] = "crusnusa"
     if ffbclamp:
         # FFB PEAK LIMIT: cap the games' force kicks at +-N of 127 (midvunit
         # WHLCTLZ write) - tames the damper loop on strong direct-drive

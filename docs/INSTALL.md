@@ -136,10 +136,11 @@ other tool: it caps the kicks (try **40**) while small road forces keep
 their full strength, so the wheel stays lively without the slamming. It
 applies to all three V-Unit games; **Cruis'n World** is the one that
 needs it most - off-track and in crashes it holds *full* force for half
-a second at a time, which on a direct-drive base is a punch. **Cruis'n Exotica has no force feedback**: MAME's Exotica
-driver does not emulate the wheel-motor output yet, so there is nothing
-to send to the wheel (Exotica steers fine; the wheel just won't push
-back). Rotation range (arcade
+a second at a time, which on a direct-drive base is a punch.
+**Cruis'n Exotica** has force feedback from v0.3.5 (experimental): its
+motor signal was not emulated by MAME at all until this project found
+it; it is a centering spring plus race effects, driven through the same
+plugin path as USA, so FFB STRENGTH and FFB PEAK LIMIT apply to it too. Rotation range (arcade
 Cruis'n wheels turn about 270°) is set in your wheel's own software.
 
 The shipped `FFBPlugin.ini` is the plugin's own MAME defaults (`GameId=22`,

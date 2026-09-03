@@ -108,12 +108,12 @@ commits as it goes.
 ### Needs you (not overnight)
 - **C1** service-menu pass (if not baked via hunt), **D2** pad validation, and all **testing**.
 
-## Exotica force feedback (new, 2026-09-03)
+## Exotica force feedback (2026-09-03: found and wired, experimental)
 
-MAME's midzeus driver emulates no wheel-motor output for crusnexo (only a
-"Wheel Invert" DIP), so the FFB plugin gets nothing - and the plugin has
-no crusnexo handler either. Path: find the game's motor write in the
-Zeus I/O space (the V-Unit games latch a force byte the driver exposes as
-the "wheel" output), add an output in midzeus.cpp, then drive the wheel
-ourselves from MAME outputs (the telemetry mirror already sees them) -
-which would also end the dependency on the plugin for all four games.
+Done the same night: MIDZ_IOLOG + wheel sweep located the motor byte at
+crusnexo_leds_w offset 0 (a held centering spring); exposed as output
+"wheel"; the output module reports "crusnusa" to the plugin for Exotica
+so its Cruis'n handler drives it. Remaining: wheel test on the rig; then
+upstream both halves - a MAME PR for the driver output (drop the "unknown
+purpose") and an FFB Arcade Plugin PR adding a crusnexo handler (after
+which the name spoof goes away).

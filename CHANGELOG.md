@@ -30,6 +30,15 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   and says to start at 30-40%.
 - `harness/ffb_trace_report.py` summarizes a support bundle's force trace
   (peaks, kicks per second, direction flips) and states the verdict.
+- **Cruis'n Exotica force feedback** (experimental). MAME never emulated
+  Exotica's wheel motor; a headless wheel sweep with a write log found it
+  on the LED/lamp board (offset 0, "unknown purpose" upstream): a signed
+  byte the game holds proportional to wheel displacement - a centering
+  spring - plus race effects. The emulator now exposes it as the `wheel`
+  output like the V-Unit games, and since the FFB plugin has no Exotica
+  handler, the emulator reports "crusnusa" to it for Exotica launches so
+  the Cruis'n handler drives the wheel. FFB STRENGTH and FFB PEAK LIMIT
+  apply. Needs a wheel test; the signal path is the same as USA's.
 - **SETTINGS → FFB PEAK LIMIT** (OFF / 100 / 80 / 60 / 40 / 30): caps
   the games' force kicks at that value of 127 while small road forces
   keep full strength (`MIDV_FFB_CLAMP` in the emulator, verified headless:
