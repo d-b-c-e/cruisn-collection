@@ -449,37 +449,22 @@ def run_gui():
         top = tk.Toplevel(root)
         top.title("Updates")
         top.configure(bg=BG)
-        top.geometry("620x300")
+        top.geometry("560x230")
         tk.Label(top, text=f"Installed: {updater.current_version()}", bg=BG,
                  fg=ACC, font=("Bahnschrift", 13, "bold")).pack(pady=(14, 4))
-        tk.Label(top, bg=BG, fg=FG, justify="left", wraplength=580,
+        tk.Label(top, bg=BG, fg=FG, justify="left", wraplength=520,
                  font=("Bahnschrift", 10), text=(
-                     "The project is private on GitHub, so updates need a "
-                     "personal access token (one minute, once): GitHub -> "
-                     "Settings -> Developer settings -> Personal access "
-                     "tokens -> Fine-grained -> Generate. Repository access: "
-                     "only d-b-c-e/cruisn-collection. Permissions: Contents "
-                     "= Read-only. Paste it here.")).pack(padx=16, pady=4)
-        row = tk.Frame(top, bg=BG)
-        row.pack(fill="x", padx=16, pady=6)
-        tok_var = tk.StringVar(value=updater.token())
-        ent = tk.Entry(row, textvariable=tok_var, show="*", width=52,
-                       font=("Consolas", 10))
-        ent.pack(side="left", padx=(0, 8))
-        result = tk.Label(top, text="", bg=BG, fg=FG, wraplength=580,
+                     "Checks GitHub for a newer release. Download and "
+                     "install closes the launcher and this window, installs "
+                     "over this folder and reopens the launcher. Your ROMs, "
+                     "settings, bindings, calibration and wheel are kept.")
+                 ).pack(padx=16, pady=4)
+        result = tk.Label(top, text="", bg=BG, fg=FG, wraplength=520,
                           font=("Bahnschrift", 10))
         result.pack(padx=16, pady=6)
         found = {}
 
-        def save():
-            updater.set_token(tok_var.get())
-            result.configure(text="token saved" if tok_var.get().strip()
-                             else "token cleared")
-            refresh()
-
         def check_now():
-            updater.set_token(tok_var.get())
-
             def work():
                 try:
                     info = updater.check()
@@ -487,18 +472,15 @@ def run_gui():
                     found.update(info)
                     mb = info["size"] / 1e6
                     if info["newer"]:
-                        msg = (f"{info['tag']} is available ({mb:.0f} MB). "
-                               "Download and install closes the launcher "
-                               "and this window, installs, and reopens the "
-                               "launcher. Your ROMs and settings are kept.")
-                        install_btn.configure(state="normal")
+                        msg = f"{info['tag']} is available ({mb:.0f} MB)."
+                        top.after(0, lambda: install_btn.configure(
+                            state="normal"))
                     else:
                         msg = (f"up to date ({updater.current_version()}; "
                                f"latest is {info['tag']})")
                     top.after(0, lambda: result.configure(text=msg))
                 except Exception as e:
                     top.after(0, lambda: result.configure(text=str(e)))
-                top.after(0, refresh)
 
             result.configure(text="checking GitHub...")
             threading.Thread(target=work, daemon=True).start()
@@ -531,13 +513,12 @@ def run_gui():
 
         brow = tk.Frame(top, bg=BG)
         brow.pack(pady=8)
-        tk.Button(brow, text="Save token", command=save, **style).pack(
-            side="left", padx=6)
         tk.Button(brow, text="Check for updates", command=check_now,
                   **style).pack(side="left", padx=6)
         install_btn = tk.Button(brow, text="Download and install",
                                 command=install_now, state="disabled", **style)
         install_btn.pack(side="left", padx=6)
+        check_now()
 
     tk.Button(btns, text="Updates...", command=updates,
               **style).pack(side="left", padx=6)

@@ -18,8 +18,8 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - **In-app updates**: `CruisnSetup.exe -> Updates...` (and SETTINGS ->
   CHECK FOR UPDATES in the launcher) checks GitHub Releases, downloads the
   newer zip, closes the launcher, installs over the folder (rig/ and
-  roms/ untouched) and reopens it. Needs a one-time fine-grained GitHub
-  token (private repository); the zip now carries `version.txt`.
+  roms/ untouched) and reopens it. No account or token needed; the zip
+  now carries `version.txt`.
 - Support bundle records running emulator processes (`processes.txt`).
 - INSTALL: troubleshooting entry for "FFB works once, then gone".
 

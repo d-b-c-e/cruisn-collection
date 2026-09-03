@@ -1,9 +1,4 @@
-"""In-app updates from GitHub Releases.
-
-The repository is private, so every request needs a token the tester
-creates once (fine-grained personal access token, read-only Contents on
-this one repository - they are collaborators already). It lives in
-rig/collection.ini [update] token=, entered through the setup window.
+"""In-app updates from GitHub Releases (public repository: no credentials).
 
 Flow: check() -> newer tag? -> download() the zip -> apply() writes a
 PowerShell script that waits for the launcher/setup processes to exit,
@@ -50,14 +45,6 @@ def current_version():
     return "dev"
 
 
-def token():
-    return run_rig._collection_ini_get("update", "token")
-
-
-def set_token(tok):
-    run_rig._collection_ini_set("update", "token", (tok or "").strip())
-
-
 def version_tuple(tag):
     m = re.search(r"v?(\d+)\.(\d+)\.(\d+)", tag or "")
     return tuple(int(x) for x in m.groups()) if m else None
@@ -68,30 +55,28 @@ def is_newer(tag, current=None):
     return bool(a and b and a > b)
 
 
-def _request(url, tok, accept="application/vnd.github+json"):
-    req = urllib.request.Request(url, headers={
-        "Accept": accept, "User-Agent": UA,
-        "X-GitHub-Api-Version": "2022-11-28",
-        "Authorization": f"Bearer {tok}"})
-    return req
+def _request(url, accept="application/vnd.github+json"):
+    h = {"Accept": accept, "User-Agent": UA,
+         "X-GitHub-Api-Version": "2022-11-28"}
+    tok = os.environ.get("CRUISN_GH_TOKEN")   # developers only (rate limit)
+    if tok:
+        h["Authorization"] = f"Bearer {tok}"
+    return urllib.request.Request(url, headers=h)
 
 
-def check(tok=None):
+def check():
     """{'tag', 'name', 'url', 'size', 'notes', 'newer'} for the latest
     release. Raises RuntimeError with a message fit for the screen."""
-    tok = tok or token()
-    if not tok:
-        raise RuntimeError("no GitHub token - enter one in the setup window "
-                           "(Updates...)")
     try:
-        with urllib.request.urlopen(_request(API, tok), timeout=20) as r:
+        with urllib.request.urlopen(_request(API), timeout=20) as r:
             rel = json.load(r)
     except urllib.error.HTTPError as e:
-        if e.code == 401:
-            raise RuntimeError("GitHub rejected the token (expired?)")
-        if e.code in (403, 404):
-            raise RuntimeError("no access to the releases - the token needs "
-                               "read access to this repository")
+        if e.code == 404:
+            raise RuntimeError("no release found on GitHub (private "
+                               "repository or no release yet)")
+        if e.code == 403:
+            raise RuntimeError("GitHub is rate-limiting this address - "
+                               "try again in an hour")
         raise RuntimeError(f"GitHub error {e.code}")
     except (urllib.error.URLError, OSError) as e:
         raise RuntimeError(f"no connection to GitHub ({getattr(e, 'reason', e)})")
@@ -101,41 +86,24 @@ def check(tok=None):
         raise RuntimeError("the latest release has no zip attached")
     a = assets[0]
     tag = rel.get("tag_name", "")
-    return {"tag": tag, "name": a["name"], "url": a["url"],
+    return {"tag": tag, "name": a["name"],
+            "url": a["browser_download_url"],
             "size": int(a.get("size", 0)), "notes": rel.get("body", ""),
             "newer": is_newer(tag)}
 
 
-class _NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, req, fp, code, msg, headers, newurl):
-        return None
-
-
-def download(info, dest_dir=None, progress=None, tok=None):
-    """Fetch the release zip to rig/update/<name>. GitHub answers the
-    asset URL with a redirect to its CDN, which must NOT see the
-    Authorization header (it rejects two credentials) - so take the
-    redirect by hand and fetch the CDN URL bare. progress(done, total)."""
-    tok = tok or token()
+def download(info, dest_dir=None, progress=None):
+    """Fetch the release zip to rig/update/<name>. progress(done, total)."""
     dest_dir = dest_dir or os.path.join(run_rig.POC, "rig", "update")
     os.makedirs(dest_dir, exist_ok=True)
     dest = os.path.join(dest_dir, info["name"])
-    opener = urllib.request.build_opener(_NoRedirect())
-    url = info["url"]
     try:
-        with opener.open(_request(url, tok, "application/octet-stream"),
-                         timeout=30) as r:
-            location = None
-            body = r
-    except urllib.error.HTTPError as e:
-        if e.code in (301, 302, 303, 307, 308):
-            location = e.headers.get("Location")
-            body = None
-        else:
-            raise RuntimeError(f"download refused ({e.code})")
-    if location:
         body = urllib.request.urlopen(urllib.request.Request(
-            location, headers={"User-Agent": UA}), timeout=60)
+            info["url"], headers={"User-Agent": UA}), timeout=60)
+    except urllib.error.HTTPError as e:
+        raise RuntimeError(f"download refused ({e.code})")
+    except (urllib.error.URLError, OSError) as e:
+        raise RuntimeError(f"download failed ({getattr(e, 'reason', e)})")
     total = info.get("size") or 0
     done = 0
     tmp = dest + ".part"
@@ -222,9 +190,7 @@ def status_row():
     v = current_version()
     if not frozen():
         return True, f"{v} (running from source)"
-    return (bool(token()),
-            f"{v} - GitHub token saved" if token()
-            else f"{v} - no GitHub token yet (Updates...)")
+    return True, f"{v} - Updates... checks GitHub for a newer release"
 
 
 def main():
@@ -232,18 +198,22 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--download", action="store_true")
-    ap.add_argument("--token", default=None,
-                    help="use this token instead of the saved one (not saved)")
     args = ap.parse_args()
-    tok = args.token or os.environ.get("CRUISN_GH_TOKEN") or token()
     print("current:", current_version())
-    info = check(tok)
+    info = check()
     print("latest: ", info["tag"], info["name"], f"{info['size'] / 1e6:.1f} MB",
           "NEWER" if info["newer"] else "not newer")
     if args.download:
-        dest = download(info, tok=tok, progress=lambda d, t: print(
-            f"\r  {d / 1e6:.0f}/{t / 1e6:.0f} MB", end=""))
-        print("\n->", dest, os.path.getsize(dest))
+        marks = set()
+
+        def prog(d, t):
+            pct = int(d * 10 / t) * 10 if t else 0
+            if pct not in marks:
+                marks.add(pct)
+                print(f"  {pct}%", end="", flush=True)
+        dest = download(info, progress=prog)
+        print()
+        print("->", dest, os.path.getsize(dest))
     return 0
 
 

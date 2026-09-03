@@ -445,7 +445,7 @@ class Shell:
             7: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
                "SKIPPED STEPS KEEP THEIR SAVED BINDING",
             8: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
-               "NEEDS THE GITHUB TOKEN FROM THE SETUP WINDOW (UPDATES...)",
+               "YOUR ROMS, SETTINGS AND BINDINGS ARE KEPT",
         }
         if notice:
             self.center_text(notice, self.h // 40, self.h * 0.86,

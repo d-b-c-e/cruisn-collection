@@ -2103,3 +2103,10 @@ roms/ untouched, extract dir and zip removed. Surfaces: setup window
 itself, the script waits for the launcher too) and SETTINGS -> CHECK FOR
 UPDATES (Enter per stage, notice line; the shell quits once the script is
 launched). Token never leaves the machine except to api.github.com.
+
+Addendum (same evening): the repository goes public tonight, so the token
+path was removed before it ever shipped - anonymous `releases/latest` +
+`browser_download_url` (plain urlopen, redirects allowed since no auth
+header is involved). `CRUISN_GH_TOKEN` env stays as a developer-only
+escape from the 60/hour anonymous rate limit. Setup "Updates..." now
+checks on open; no token row, no [update] section in collection.ini.

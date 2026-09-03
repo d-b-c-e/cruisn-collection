@@ -39,9 +39,9 @@ the games' lazy-center feel). Calibrate in-game first, then tune. Details
 in [docs/INSTALL.md](docs/INSTALL.md#steering-feel-sensitivity-and-curve).
 
 **Updating**: `CruisnSetup.exe -> Updates...` checks GitHub and installs
-the newer version in place (needs a one-time GitHub token, see the guide;
-the launcher's SETTINGS has the same *Check for updates*). By hand: unzip
-the new version over the old folder, everything you set up is kept.
+the newer version in place (the launcher's SETTINGS has the same *Check
+for updates*). By hand: unzip the new version over the old folder;
+everything you set up is kept.
 
 ## Skip the launcher (frontends, shortcuts, Stream Deck)
 

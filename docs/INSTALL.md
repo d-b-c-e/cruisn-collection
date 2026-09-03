@@ -45,25 +45,16 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 
 ### Updating to a new version
 
-**In the app** (v0.3.4+): `CruisnSetup.exe` -> **Updates...** -> *Check
-for updates* -> *Download and install*. It downloads the new zip, closes
-the launcher, installs over this folder and reopens the launcher; ROMs,
+**In the app** (v0.3.4+): `CruisnSetup.exe` -> **Updates...** checks
+GitHub for a newer release; **Download and install** downloads it, closes
+the launcher, installs over this folder and reopens the launcher. ROMs,
 settings, bindings, calibration and the wheel stay. The launcher's
 SETTINGS -> CHECK FOR UPDATES does the same from the menu.
-
-One-time: the project is private on GitHub, so updates need a personal
-access token (you are a collaborator, so yours works). GitHub -> your
-profile -> *Settings* -> *Developer settings* -> *Personal access tokens*
--> *Fine-grained tokens* -> *Generate new token*: any name, *Repository
-access* = *Only select repositories* -> `d-b-c-e/cruisn-collection`,
-*Permissions* -> *Contents* = *Read-only*. Copy it into
-**Updates... -> Save token**. It is stored in `rig\collection.ini` and
-sent only to GitHub.
 
 **By hand**: close the launcher and unzip the new version over your
 existing folder (say yes to overwriting). Or unzip into a new folder and
 use *Import previous version...* in the setup window to bring everything
-across. Your `rig\` folder and `roms\` are never inside the zip.
+across. Your `rig` folder and `roms` are never inside the zip.
 
 ### In the launcher
 
