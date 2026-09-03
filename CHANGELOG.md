@@ -11,7 +11,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   trace): a kick opposite to and proportional to each wheel movement,
   gone within ~100 ms - a damper, not a spring. A strong direct-drive
   base at 100% turns it into a runaway left-right oscillation (a tester's
-  video). INSTALL explains it and says to start at 30-40%.
+  video). World additionally holds full-strength force for ~0.5 s
+  off-track and in crashes; Off Road peaks around 80. INSTALL explains it
+  and says to start at 30-40%.
 - `harness/ffb_trace_report.py` summarizes a support bundle's force trace
   (peaks, kicks per second, direction flips) and states the verdict.
 - **SETTINGS → FFB PEAK LIMIT** (OFF / 100 / 80 / 60 / 40 / 30): caps

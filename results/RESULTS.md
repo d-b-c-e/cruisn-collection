@@ -2159,3 +2159,19 @@ folder (fresh CMOS -> CALIBRATE CONTROLS on every such run) and `git add
 -A` swept it into dd8c456. Removed; captures must seed a scratch copy
 (`<dir>/crusnusa/nvram` from the fixture's flat `nvram`), as run_capture
 and prepare_rig do.
+
+Same sweep on the other two V-Unit games (both reach a race with the
+scripted coin-up; Off Road needs the coins after frame 1500 - at 600 the
+game still shows CREDITS 0):
+- **World** (Humvee, driving into walls/off-track with no steering):
+  399 updates in 34 s, peak 126/127, 119 updates >= 64, 83 direction
+  flips - and unlike USA it HOLDS force: +126 sustained ~500 ms, -126
+  runs, +37/+112 plateaus (crash / rough-surface effects), plus USA-style
+  kicks around them. The worst offender for a strong wheel by far.
+  MIDV_FFB_CLAMP=40: peak 40, 264 updates, same 83 flips (the clamp only
+  caps, never reshapes).
+- **Off Road** (race): 121 updates, peak 82, mostly tiny -3 -2 -1 idle
+  ticks and short kicks of 15-60; a 17-update burst to 75 once. The
+  attract mode also drives the motor (small ticks) - Off Road sends
+  forces without a coin.
+The clamp lives in midvunit_state::wheel_board_w, shared by all three.

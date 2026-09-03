@@ -133,7 +133,10 @@ on an 8 Nm base (this project's Moza rig runs 70%) and raise until it
 starts to feel nervous, then back off. Adding some damping/friction in
 the wheel's own software helps too. **SETTINGS → FFB PEAK LIMIT** is the
 other tool: it caps the kicks (try **40**) while small road forces keep
-their full strength, so the wheel stays lively without the slamming. **Cruis'n Exotica has no force feedback**: MAME's Exotica
+their full strength, so the wheel stays lively without the slamming. It
+applies to all three V-Unit games; **Cruis'n World** is the one that
+needs it most - off-track and in crashes it holds *full* force for half
+a second at a time, which on a direct-drive base is a punch. **Cruis'n Exotica has no force feedback**: MAME's Exotica
 driver does not emulate the wheel-motor output yet, so there is nothing
 to send to the wheel (Exotica steers fine; the wheel just won't push
 back). Rotation range (arcade
