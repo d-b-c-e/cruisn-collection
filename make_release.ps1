@@ -38,7 +38,7 @@ if (-not (Test-Path (Join-Path $root "build\dist\CruisnSetup.exe"))) {
     & python -m PyInstaller --noconfirm --onefile --noconsole --name CruisnSetup `
         --add-data "$(Join-Path $root 'harness\roms_manifest.json');." `
         --add-data "$(Join-Path $root 'lua\input_dump.lua');." `
-        --hidden-import support_bundle `
+        --hidden-import support_bundle --hidden-import dinput_axes `
         --distpath (Join-Path $root "build\dist") --workpath (Join-Path $root "build\work") `
         --specpath (Join-Path $root "build") (Join-Path $root "harness\cruisn_setup.py") | Out-Null
 }

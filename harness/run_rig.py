@@ -24,6 +24,7 @@ Usage: python harness/run_rig.py [--scale 4] [--rom crusnusa] [--windowed]
 import argparse
 import ctypes
 import ctypes.wintypes as wt
+import json
 import os
 import re
 import shutil
@@ -32,6 +33,9 @@ import sys
 import threading
 import time
 import xml.etree.ElementTree as ET
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import dinput_axes  # noqa: E402  (DirectInput axis slots per device)
 
 # Frozen (PyInstaller release folder): everything lives beside the exe.
 # Dev checkout: this repo + the racing build's assets. All overridable via
@@ -856,8 +860,15 @@ WHEELMAP_PORTS_CRUSNEXO = {
 }
 
 
-def _wheelmap_token(joyidx, val, pedal=False):
+def _wheelmap_token(joyidx, val, pedal=False, axes=None):
     """Translate one wizard value string to a MAME token, or None.
+
+    axes: the device's PRESENT DirectInput axis slots in order (from
+    dinput_axes.layout()). glfw compacts a device's axes (index 0, 1, 2 =
+    whatever exists, sliders last) while MAME names them by fixed slot and
+    skips missing ones - so on a pedal set exposing Y/RZ/slider, wizard
+    axis 0 is YAXIS, not XAXIS. Without a layout the dense positional table
+    is used (correct for wheels with all eight axes, this rig's Moza).
 
     pedal=True + a recorded press direction emits a HALF-axis token
     (_POS/_NEG_ABSOLUTE): pedals that rest at CENTER (Moza reports 0.0 at
@@ -877,7 +888,7 @@ def _wheelmap_token(joyidx, val, pedal=False):
         idx = int(parts[1])
         gp = len(parts) > 2 and parts[2] == "1"
         sgn = parts[3] if len(parts) > 3 else None
-        table = AXIS_TOKENS_XINPUT if gp else AXIS_TOKENS_DINPUT
+        table = AXIS_TOKENS_XINPUT if gp else (axes or AXIS_TOKENS_DINPUT)
         if idx < len(table):
             tok = f"JOYCODE_{joyidx}_{table[idx]}"
             if pedal and sgn in ("pos", "neg"):
@@ -894,6 +905,33 @@ def _wheelmap_token(joyidx, val, pedal=False):
     if n <= 48:
         return f"JOYCODE_{joyidx}_ADDSW{n - 32}"
     return None
+
+
+def axis_layout():
+    """Present DirectInput axis slots per attached device (see
+    dinput_axes.py), merged over rig/axis_layout.json so a device that is
+    unplugged at this launch keeps its last known layout. Prints the devices
+    whose layout is sparse - the ones the old positional mapping got wrong."""
+    path = os.path.join(POC, "rig", "axis_layout.json")
+    cached = {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            cached = json.load(f)
+    except (OSError, ValueError):
+        cached = {}
+    live = dinput_axes.layout()
+    if live:
+        cached.update(live)
+        try:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(cached, f, indent=1)
+        except OSError:
+            pass
+    for name, axes in dinput_axes.sparse(live).items():
+        print(f"axes: {name} -> {' '.join(axes)} (sparse DirectInput layout; "
+              "wizard axis indices translated)")
+    return cached
 
 
 def apply_wheelmap(tree, rig):
@@ -927,6 +965,7 @@ def apply_wheelmap(tree, rig):
         m = re.match(r"JOYCODE_(\d+)", md.get("controller", ""))
         if m:
             joycode[md.get("device")] = int(m.group(1))
+    layout = axis_layout()
 
     def resolve(val, pedal=False):
         dev, spec = val.split("|", 1)
@@ -937,7 +976,7 @@ def apply_wheelmap(tree, rig):
             ET.SubElement(default_inp, "mapdevice",
                           {"device": dev, "controller": f"JOYCODE_{idx}"})
             joycode[dev] = idx
-        return _wheelmap_token(joycode[dev], spec, pedal)
+        return _wheelmap_token(joycode[dev], spec, pedal, layout.get(dev))
 
     def write_ports(inp, table):
         for key, val in cp["wheelmap"].items():

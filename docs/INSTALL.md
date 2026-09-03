@@ -266,6 +266,15 @@ and so on).
   launcher; the emulator now drives the wheel itself and releases it when
   the game closes. If you still see it, turn on *FFB diagnostics*,
   reproduce, then *Save support bundle*.
+- **Pedals (or a shifter axis) bind fine in CONTROLS SETUP but do nothing
+  in game** — seen with pedals on their own USB device. The wizard numbers
+  a device's axes 0, 1, 2 in the order they exist; MAME names them by fixed
+  slot (X, Y, Z, RX, RY, RZ, two sliders) and skips slots the device lacks,
+  so a pedal set exposing Y, RZ and a slider used to be written as X, Y, Z.
+  Since this version the launcher reads each device's real slot layout
+  from DirectInput at every launch and translates; `dinput_axes.txt` in
+  the support bundle shows what it saw. Wheels with all eight axes were
+  never affected.
 - **USA (or World / Off Road) crawls in 2nd gear with the tyres
   squealing, even in automatic** — the game thinks the brake is pressed.
   Some load-cell pedals (Moza) come up reading fully pressed until they

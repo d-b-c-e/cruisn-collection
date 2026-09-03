@@ -126,6 +126,13 @@ def collect(rom="crusnusa", progress=print):
         except Exception as e:   # diagnostics never break the bundle
             add_text("ffb_trace_report.txt", f"(report failed: {e})" + chr(10))
     add_file("launch.log", os.path.join(run_rig.POC, "rig", "launch.log"))
+    # DirectInput axis slots per device (the wizard->MAME axis translation)
+    try:
+        import json as _json
+        import dinput_axes
+        add_text("dinput_axes.txt", _json.dumps(dinput_axes.layout(), indent=1) + chr(10))
+    except Exception as e:
+        add_text("dinput_axes.txt", f"(failed: {e})" + chr(10))
     # a left-over emulator process is the "FFB worked once, then never
     # again" signature (it keeps the wheel's haptic device)
     try:

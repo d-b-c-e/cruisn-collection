@@ -2605,3 +2605,43 @@ New: MIDV_FFB / MIDV_FFB_STRENGTH (FFB STRENGTH %, 0 = not started) /
 MIDV_FFB_DEVICE (steer device) / MIDV_FFB_INVERT ([collection] ffb_invert
 <- SETTINGS FFB DIRECTION row, 14 rows now, spacing 0.040) / MIDV_FFB_LOG=2
 with diagnostics; launch.log header lists them.
+
+
+## 2026-09-03 - wizard axis numbering vs MAME's DirectInput slots (Endprodukt's inert pedals)
+
+Report: Endprodukt (Fanatec CSW 2.5 base, pedals as a separate "HID
+joystick") binds the pedals in CONTROLS SETUP without trouble; in game they
+do nothing. The user confirmed wheel and pedals are separate devices.
+
+Ruled out first: device identity. MAME's `<mapdevice device=... >` is
+matched by `input_device::match_device_id()` and the first tester's
+-verbose log shows it working on our name strings ("Remapped joystick #2:
+Generic   USB  Joystick"), so a second device does get its JOYCODE index.
+
+Cause: axis NUMBERING. glfw (the wizard) returns a compacted axis list -
+the axes the device has, sorted X<Y<Z<RX<RY<RZ then sliders, indexed 0..n.
+MAME's DirectInput module (input_dinput.cpp, `for axisnum 0..7`) names axes
+by fixed slot XAXIS..RZAXIS, SLIDER1, SLIDER2 and SKIPS a slot the device
+lacks ("Unable to get properties for joystick ... axis 3" - visible in the
+first tester's log for his button box, which has X/Y/Z/RZ only). Our
+`_wheelmap_token` translated glfw index i to the i-th slot token, which is
+only right for dense devices. Pedal sets are the classic sparse device
+(e.g. Y/RZ/slider): wizard axis 0 -> written XAXIS -> MAME reads an axis
+that never moves. The rig's Moza has all eight slots, so it never showed.
+
+Fix: harness/dinput_axes.py enumerates DirectInput 8 through ctypes COM
+(DirectInput8Create, EnumDevices(DI8DEVCLASS_GAMECTRL, ...), CreateDevice,
+EnumObjects(DIDFT_AXIS) -> object type GUIDs) and returns, per instance
+name, the present slots in slot order - exactly the list glfw indexes.
+run_rig.axis_layout() calls it at every ctrlr generation, caches to
+rig/axis_layout.json (a device unplugged at launch keeps its last layout),
+prints sparse devices to the launch console, and `_wheelmap_token(...,
+axes=layout[dev])` indexes that list. Fallback = the old positional table.
+The support bundle ships dinput_axes.txt. Two ctypes traps on the way:
+GetModuleHandleW's HMODULE truncated to int without a restype (DirectInput8Create
+E_INVALIDARG), and EnumDevices takes dwDevType FIRST, then the callback.
+
+Rig check: Moza -> all eight slots (ctrlr unchanged), shifter and stalk ->
+no axes; simulated sparse device ["YAXIS","RZAXIS","SLIDER1"]: wizard axis
+0/1 -> JOYCODE_2_YAXIS_NEG_ABSOLUTE / JOYCODE_2_RZAXIS_NEG_ABSOLUTE. The
+tester's own layout is unverified until his support bundle or a run.

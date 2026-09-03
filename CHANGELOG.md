@@ -25,6 +25,14 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   writing its motor (pause, menus) and at exit. The zip now ships
   `SDL2.dll` (zlib license) instead of the plugin.
 
+- **Pedals on a separate device could bind in the wizard and do nothing
+  in game** (tester with a Fanatec CSW 2.5 and HID pedals). The wizard's
+  axis numbers are glfw's compacted list; MAME names DirectInput axes by
+  fixed slot and skips missing ones, so a sparse device's axes landed on
+  the wrong MAME tokens. The launcher now asks DirectInput for each
+  device's real slot layout at launch (`harness/dinput_axes.py`) and
+  translates; the support bundle carries `dinput_axes.txt`.
+
 - **SETTINGS → FFB DIAGNOSTICS** (on/off) and **SETTINGS → SAVE SUPPORT
   BUNDLE** in the launcher, so a tester never has to leave it; the bundle
   folder opens when done. The setup window keeps its buttons.
