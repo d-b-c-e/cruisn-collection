@@ -39,10 +39,15 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   handler, the emulator reports "crusnusa" to it for Exotica launches so
   the Cruis'n handler drives the wheel. FFB STRENGTH and FFB PEAK LIMIT
   apply. Needs a wheel test; the signal path is the same as USA's.
-- **Exotica sequential shifting**: the game only has an H-pattern
-  shifter; in SEQUENTIAL mode the emulator now runs a virtual 4-speed
-  driven by the shift-up / shift-down paddles (new "Shift Up / Shift
-  Down" inputs on the Exotica driver, bound by the launcher).
+- **Exotica sequential shifting** (prepared): the game only has an
+  H-pattern shifter; in SEQUENTIAL mode the emulator now runs a virtual
+  4-speed driven by the shift-up / shift-down paddles (new "Shift Up /
+  Shift Down" inputs on the Exotica driver, bound by the launcher).
+  Caveat: **manual transmission cannot currently be selected in MAME** -
+  Exotica's TRANS SELECT screen ignores the wheel, every button, the
+  gear switches, both cabinet DIPs and the operator adjustment (fully
+  mapped tonight, see RESULTS.md). This looks like an emulation gap in
+  the upstream driver, so the virtual shifter waits for it.
 - **Pedal-stuck guard**: the launcher refuses to start a game while the
   gas or brake reads pressed and says which pedal to press and release
   (a Moza load-cell brake came up latched at full on the rig - the game

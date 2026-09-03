@@ -97,7 +97,11 @@ automatic-select with paddles.)
 H-pattern shifter. With TRANSMISSION set to SEQUENTIAL, the collection
 gives it a virtual one: your shift-up / shift-down paddles move a gear
 1-4 and the game sees that gear engaged (v0.3.5+). With H-PATTERN the
-real shifter is used as-is.
+real shifter is used as-is. **Known gap**: in MAME today the TRANS
+SELECT screen always picks AUTO whatever you do (it ignores the wheel,
+the shifter and every button); the upstream Exotica emulation is still
+marked not-working and this is one of the reasons. Exotica drives as an
+automatic until that is solved.
 
 ### In-game keys
 
