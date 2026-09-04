@@ -132,6 +132,7 @@ cruisn-collection/
 | `MIDV_SKIP_STARTUP_SCREENS=1` | boot straight past MAME warning/info screens (frontend gate) |
 | `MIDV_TELEM_UDP=host:port` | mirror MAME outputs (wheel force, lamps) as JSON UDP datagrams (SimHub/Buttkicker); also via collection.ini `[telemetry] udp=` |
 | `MIDV_FFB=1` | **built-in force feedback** (SDL2 haptics on the wheel's steering axis); `MIDV_FFB_STRENGTH` 0-100, `MIDV_FFB_DEVICE` name substring or vid:pid, `MIDV_FFB_INVERT=1`, `MIDV_FFB_HOLD_MS` (500), `MIDV_FFB_TEST=<pct>` (1.5 s level at start), `MIDV_FFB_LOG=2` (every write) → `midv_ffb.log` |
+| `MIDV_FFB_SMOOTH` / `MIDV_FFB_DAMPER` / `MIDV_FFB_FRICTION` | low-pass time constant (ms) on the level; DirectInput damper / friction condition effects in % for the session (launcher: `[collection] ffb_smooth / ffb_damper / ffb_friction`) |
 | `MIDV_FFB_CLAMP` / `MIDV_FFB_SLEW` | cap the motor byte at ±N / limit its change per write (driver side, before the FFB output and the trace) |
 | `MIDV_FFB_TRACE=<csv>` | every output change + `wheelpos` rows (the FFB diagnostics trace) |
 | `MIDZ_FFB_GAIN` | Exotica spring gain percent (launcher passes 400) |

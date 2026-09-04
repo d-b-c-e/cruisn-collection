@@ -2645,3 +2645,39 @@ Rig check: Moza -> all eight slots (ctrlr unchanged), shifter and stalk ->
 no axes; simulated sparse device ["YAXIS","RZAXIS","SLIDER1"]: wizard axis
 0/1 -> JOYCODE_2_YAXIS_NEG_ABSOLUTE / JOYCODE_2_RZAXIS_NEG_ABSOLUTE. The
 tester's own layout is unverified until his support bundle or a run.
+
+
+## 2026-09-04 (00:15) - first rig drive on the native FFB: sign right, damper loop felt; smoothing / damper / friction knobs
+
+User at the wheel, USA, 70% then 50%: "driving steady in a straight line
+at constant speed it's constantly doing pulls to both left and right
+alternatively"; FFB DIRECTION inverted = "significantly worse"; turning
+right pulls back left "which is correct". Exotica not yet driven.
+
+His support bundle trace (rig/ffb_trace.csv, 00:17 launch, strength 50):
+1491 motor updates in 62 s, peak 126, 346 updates >= 64, 85 kick bursts.
+Raw sequence 8.0-8.7 s: wheel 86 -> 128 (turning right) while the force is
+-3..-14 the whole way, then decays -14 -> 0 over ~150 ms AFTER the wheel
+stops; 10.7 s: wheel 120 -> 95 (left), force +7..+20, tail to 0 in 150 ms.
+So the sign is right (force opposes velocity: a damper) and the kicks are
+the game's real response to his own steering corrections (25-50 counts ->
+20-80). What the arcade wheel's friction absorbed, a Moza R12 at 50-70%
+turns into a pull after each correction; correcting the pull earns the
+next kick the other way. The last 20 s show +-127 held 1-2 s at a time
+with the wheel at 40..170: a crash/off-road stretch (game content).
+Conclusion: not a bug in the path - the faithful signal on a frictionless
+base. The stock plugin had blurred it (500 ms holds, zeros ignored).
+
+Remedies added to mvffb (all env, launcher keys under [collection]):
+- MIDV_FFB_SMOOTH=ms (ffb_smooth): first-order low-pass on the level in
+  the worker (4 ms ticks, re-level on >= 0.1 % change, snap to stop when
+  the target is 0 and |level| < 160).
+- MIDV_FFB_DAMPER=% / MIDV_FFB_FRICTION=% (ffb_damper / ffb_friction):
+  SDL condition effects (SDL_HAPTIC_DAMPER / _FRICTION, steering axis,
+  infinite, coeff = pct of 0x7fff, saturation 0xffff) started once and
+  stopped at exit - the arcade mechanism's resistance rendered by the
+  base. Moza R12 caps 0xd7fb include both.
+- Esc menu open -> midv_ffb_write(0) immediately (was: watchdog 500 ms).
+Rig config set to ffb_smooth = 50 for the next drive; FFB DIRECTION
+restored to NORMAL (it had been left INVERTED). Defaults to be picked from
+the user's verdict.

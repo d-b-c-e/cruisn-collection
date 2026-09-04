@@ -22,8 +22,13 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   **SETTINGS → FFB DIRECTION** (bases differ in axis sign; the default is
   measured right for a Moza - flip it if the wheel runs away from centre
   in Exotica), and forces are released half a second after a game stops
-  writing its motor (pause, menus) and at exit. The zip now ships
-  `SDL2.dll` (zlib license) instead of the plugin.
+  writing its motor (pause, menus) and at exit, and the moment the Esc
+  menu opens. The zip now ships `SDL2.dll` (zlib license) instead of the
+  plugin. Three `[collection]` knobs for direct-drive bases, from the
+  first rig session with the native path (USA driven straight pulled left
+  and right in turn - the games' 150 ms after-kick on a wheel with no
+  friction): `ffb_smooth` (low-pass, ms), `ffb_damper` and `ffb_friction`
+  (condition effects the base renders for the whole session).
 
 - **Pedals on a separate device could bind in the wizard and do nothing
   in game** (tester with a Fanatec CSW 2.5 and HID pedals). The wizard's

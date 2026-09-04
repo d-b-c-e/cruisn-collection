@@ -169,14 +169,22 @@ wheel stopped listening. Turn it off afterwards.
 
 ### Force feedback on a strong (direct-drive) wheel
 
-The knobs, from the SETTINGS menu unless noted:
+Why a direct-drive base needs these: the games' force is a kick against
+every wheel movement that keeps pushing for about 150 ms after the wheel
+has stopped. On the arcade cabinet the wheel's own friction and inertia
+absorbed that tail; a direct-drive base has almost none, so the tail moves
+the wheel, the game kicks back the other way, and driving straight turns
+into alternating pulls. The knobs, from the SETTINGS menu unless noted:
 
 | knob | try | what it does |
 |---|---|---|
 | FFB STRENGTH | 40% | overall level |
 | FFB PEAK LIMIT | 60 | caps the biggest kicks; small road forces keep full strength |
 | FFB DIRECTION | | flip if the wheel runs away from centre (Exotica) or shakes at any strength (USA) |
-| `ffb_slew = 16` | second | `rig\collection.ini` under `[collection]`: the force may move at most 16 (of 127) per game update - kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |
+| `ffb_smooth = 50` | first | `rig\collection.ini` under `[collection]`: a low-pass on the force with that time constant in ms - the inertia the arcade motor had. Rounds the kicks off; 30 = lighter touch, 80 = softer |
+| `ffb_damper = 30` | second | a damper the wheel base renders itself for the whole session (resistance proportional to how fast the wheel turns) - the arcade wheel's mechanical drag. The games' kicks then move a wheel that resists moving |
+| `ffb_friction = 10` | | constant drag, same idea, smaller doses |
+| `ffb_slew = 16` | | the force may move at most 16 (of 127) per game update - kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |
 
 Change one at a time and drive a minute of USA; the launch log's first
 line shows what was applied.

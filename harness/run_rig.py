@@ -1128,6 +1128,20 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             env.setdefault("MIDV_FFB_DEVICE", dev)
         if _collection_ini_get("collection", "ffb_invert", "") == "1":
             env["MIDV_FFB_INVERT"] = "1"
+        smooth = _collection_ini_get("collection", "ffb_smooth", "")
+        if smooth.isdigit() and int(smooth) > 0:
+            # [collection] ffb_smooth = N ms: first-order low-pass on the
+            # force level (the arcade motor's inertia); kills the V-Unit
+            # damper's left-right limit cycle on a direct-drive base
+            env["MIDV_FFB_SMOOTH"] = smooth
+        for key, var in (("ffb_damper", "MIDV_FFB_DAMPER"),
+                         ("ffb_friction", "MIDV_FFB_FRICTION")):
+            # [collection] ffb_damper / ffb_friction = N %: condition effects
+            # the base renders itself for the whole session - the arcade
+            # wheel's mechanical resistance a direct-drive base lacks
+            v = _collection_ini_get("collection", key, "")
+            if v.isdigit() and int(v) > 0:
+                env[var] = v
     slew = _collection_ini_get("collection", "ffb_slew", "")
     if slew.isdigit() and int(slew) > 0:
         # [collection] ffb_slew = N: the force may move at most N (of 127)
@@ -1206,7 +1220,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE", "MIDV_FFB_CLAMP",
                 "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDV_FFB",
                 "MIDV_FFB_STRENGTH", "MIDV_FFB_DEVICE", "MIDV_FFB_INVERT",
-                "MIDV_FFB_TRACE")
+                "MIDV_FFB_SMOOTH", "MIDV_FFB_DAMPER", "MIDV_FFB_FRICTION",
+                "MIDV_FFB_SLEW", "MIDV_FFB_TRACE")
         log.write("launch " + rom + ": " + " ".join(
             f"{k}={env[k]}" for k in keys if k in env) + chr(10))
         log.flush()

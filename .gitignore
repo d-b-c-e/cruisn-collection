@@ -24,3 +24,6 @@ results/crusnwld-prog.asm
 /version.txt
 /snap/
 results/night-*/
+
+# support bundles saved beside the launcher (SETTINGS -> SAVE SUPPORT BUNDLE)
+CruisnSupport-*.zip
