@@ -955,7 +955,9 @@ level = -sign(byte); SETTINGS -> FFB DIRECTION flips. All plugin code,
 files and docs removed (ffb/ dir gone, third_party/SDL2-LICENSE.txt
 added, CI installs mingw-w64-x86_64-SDL2). The tester's Fanatec has not
 felt the native path yet: FFB DIRECTION is the knob if it runs away.
-v0.3.6 not yet tagged.
+v0.3.6 TAGGED 2026-09-04 after the rig verdict: strength 50 + ffb_smooth 50
+("much better"; damper/friction opt-in). Open minor: launcher LEFT right
+after opening acts as ENTER; distant red/blue road specks.
 Also fixed: wizard axis index -> MAME slot translation (dinput_axes.py;
 sparse pedal devices were mapped to the wrong axes - Endprodukt's inert
 pedals, unconfirmed on his hardware yet).

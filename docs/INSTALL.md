@@ -135,8 +135,9 @@ within a tenth of a second (a damper - it made the weak arcade motor
 feel heavy). On a strong direct-drive base (Fanatec DD, Moza, Simucube)
 at 100% the kick itself moves the wheel, the game kicks back again, and
 the wheel starts slamming left-right on its own. So: start at **30-40%**
-on an 8 Nm base (this project's Moza rig runs 70%) and raise until it
-starts to feel nervous, then back off. Adding some damping/friction in
+on an 8 Nm base (this project's Moza rig runs 50%) and raise until it
+starts to feel nervous, then back off (a fresh install starts at 50).
+Adding some damping/friction in
 the wheel's own software helps too. **SETTINGS → FFB PEAK LIMIT** is the
 other tool: it caps the kicks (try **40**) while small road forces keep
 their full strength, so the wheel stays lively without the slamming. It
@@ -181,7 +182,7 @@ into alternating pulls. The knobs, from the SETTINGS menu unless noted:
 | FFB STRENGTH | 40% | overall level |
 | FFB PEAK LIMIT | 60 | caps the biggest kicks; small road forces keep full strength |
 | FFB DIRECTION | | flip if the wheel runs away from centre (Exotica) or shakes at any strength (USA) |
-| `ffb_smooth = 50` | first | `rig\collection.ini` under `[collection]`: a low-pass on the force with that time constant in ms - the inertia the arcade motor had. Rounds the kicks off; 30 = lighter touch, 80 = softer |
+| `ffb_smooth = 50` | default | `rig\collection.ini` under `[collection]`: a low-pass on the force with that time constant in ms - the inertia the arcade motor had. **50 is the default** (it fixed the pulls on the project rig); 30 = lighter touch, 80 = softer, 0 = off |
 | `ffb_damper = 30` | second | a damper the wheel base renders itself for the whole session (resistance proportional to how fast the wheel turns) - the arcade wheel's mechanical drag. The games' kicks then move a wheel that resists moving |
 | `ffb_friction = 10` | | constant drag, same idea, smaller doses |
 | `ffb_slew = 16` | | the force may move at most 16 (of 127) per game update - kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |

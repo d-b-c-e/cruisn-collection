@@ -818,7 +818,7 @@ def load_config():
             "steersens": sens,
             "steercurve": curve,
             "margin": int(mg) if mg.isdigit() else None,
-            "ffb": 100 if ffb is None else max(0, min(100, ffb)),
+            "ffb": 50 if ffb is None else max(0, min(100, ffb)),   # 50: a direct-drive base at 100 fights itself
             "scale": int(sec.get("scale", 4)),
             # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
             "ffbclamp": int(sec.get("ffbclamp", 0) or 0),

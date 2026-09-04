@@ -3,7 +3,7 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased
+## v0.3.6 — 2026-09-04
 
 - **Force feedback is now built into the emulator; the FFB Arcade Plugin
   is gone.** On Endprodukt's advice (the plugin's own maintainer: "when
@@ -27,8 +27,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   plugin. Three `[collection]` knobs for direct-drive bases, from the
   first rig session with the native path (USA driven straight pulled left
   and right in turn - the games' 150 ms after-kick on a wheel with no
-  friction): `ffb_smooth` (low-pass, ms), `ffb_damper` and `ffb_friction`
-  (condition effects the base renders for the whole session).
+  friction): `ffb_smooth` (low-pass, ms; **default 50** now, the setting
+  that fixed it on the rig), `ffb_damper` and `ffb_friction` (condition
+  effects the base renders for the whole session, opt-in). A fresh
+  install now starts at **FFB STRENGTH 50** instead of 100.
 
 - **Pedals on a separate device could bind in the wizard and do nothing
   in game** (tester with a Fanatec CSW 2.5 and HID pedals). The wizard's

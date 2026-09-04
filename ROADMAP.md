@@ -137,3 +137,11 @@ Remaining: a MAME PR for the driver output (drop the "unknown purpose").
    is the game's translucent HUD widget (checkerboard on hardware,
    smoked glass at 4x) - faithful. Margin slivers (C3) not seen in three
    NY captures. Nothing to fix unless a screenshot shows otherwise.
+
+## Open after v0.3.6 (2026-09-04: built-in FFB shipped)
+
+- Fanatec verdict on the native path (direction, strength 50 + smooth 50).
+- Launcher: LEFT pressed right after opening can act as ENTER (input arming).
+- Distant red/blue road specks in the V-Unit games (cosmetic).
+- `ffb_damper` / `ffb_friction` untried on the rig; decide whether either
+  earns a SETTINGS row.
