@@ -1134,6 +1134,12 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             # force level (the arcade motor's inertia); kills the V-Unit
             # damper's left-right limit cycle on a direct-drive base
             env["MIDV_FFB_SMOOTH"] = smooth
+        rumble = _collection_ini_get("collection", "ffb_rumble", "100")   # plugin parity
+        if rumble.isdigit() and int(rumble) > 0:
+            # [collection] ffb_rumble = N %: a 100 ms vibration burst per
+            # force update at |force| x N % - what the plugin did, and what
+            # made crashes (single-frame full-force spikes) shake
+            env["MIDV_FFB_RUMBLE"] = rumble
         for key, var in (("ffb_damper", "MIDV_FFB_DAMPER"),
                          ("ffb_friction", "MIDV_FFB_FRICTION")):
             # [collection] ffb_damper / ffb_friction = N %: condition effects
@@ -1220,8 +1226,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE", "MIDV_FFB_CLAMP",
                 "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDV_FFB",
                 "MIDV_FFB_STRENGTH", "MIDV_FFB_DEVICE", "MIDV_FFB_INVERT",
-                "MIDV_FFB_SMOOTH", "MIDV_FFB_DAMPER", "MIDV_FFB_FRICTION",
-                "MIDV_FFB_SLEW", "MIDV_FFB_TRACE")
+                "MIDV_FFB_SMOOTH", "MIDV_FFB_RUMBLE", "MIDV_FFB_DAMPER",
+                "MIDV_FFB_FRICTION", "MIDV_FFB_SLEW", "MIDV_FFB_TRACE")
         log.write("launch " + rom + ": " + " ".join(
             f"{k}={env[k]}" for k in keys if k in env) + chr(10))
         log.flush()

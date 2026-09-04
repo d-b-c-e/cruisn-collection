@@ -127,7 +127,10 @@ wheel bound, to the first wheel-type force-feedback device found).
 `midv_ffb.log` beside `vunit.exe` records which device was taken and why,
 and it is part of every support bundle.
 
-Overall strength is **SETTINGS → FFB STRENGTH** (0% = force feedback off).
+Overall strength is **SETTINGS → FFB STRENGTH** (0% = force feedback off);
+each game card also has its own **FFB STRENGTH** row (blank = the SETTINGS
+value) - Cruis'n Exotica's spring is much softer than the V-Unit kicks, so
+100 there with 50 globally is a sensible pairing.
 What the V-Unit games send is
 not a centering spring: every time the wheel moves, the game kicks back
 against the movement, harder for a bigger movement, and the kick fades
@@ -183,6 +186,7 @@ into alternating pulls. The knobs, from the SETTINGS menu unless noted:
 | FFB PEAK LIMIT | 60 | caps the biggest kicks; small road forces keep full strength |
 | FFB DIRECTION | | flip if the wheel runs away from centre (Exotica) or shakes at any strength (USA) |
 | `ffb_smooth = 50` | default | `rig\collection.ini` under `[collection]`: a low-pass on the force with that time constant in ms - the inertia the arcade motor had. **50 is the default** (it fixed the pulls on the project rig); 30 = lighter touch, 80 = softer, 0 = off |
+| `ffb_rumble = 100` | default | a 100 ms vibration burst on every force update at force x N% - the buzz the old plugin had, and what makes crashes and jumps shake (Exotica's are single-frame spikes). 0 turns it off, 50 halves it |
 | `ffb_damper = 30` | second | a damper the wheel base renders itself for the whole session (resistance proportional to how fast the wheel turns) - the arcade wheel's mechanical drag. The games' kicks then move a wheel that resists moving |
 | `ffb_friction = 10` | | constant drag, same idea, smaller doses |
 | `ffb_slew = 16` | | the force may move at most 16 (of 127) per game update - kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |

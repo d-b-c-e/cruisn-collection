@@ -3,6 +3,18 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## Unreleased
+
+- **Exotica felt like a bare centering spring and too weak** (rig, first
+  evening on the built-in path). Its crash and jump effects are single
+  17 ms full-force spikes, which a direct-drive base renders as a tick
+  and the new smoothing shrank further; the old plugin's per-update
+  rumble burst was what made them shake. Back by default: `ffb_rumble`
+  (a 100 ms vibration burst per force update, `0` to switch off), and a
+  jump of 60% of full force or more now passes the smoothing unfiltered.
+  Each game card gets its own **FFB STRENGTH** row (blank = the SETTINGS
+  value), so Exotica can run at 100 while USA stays at 50.
+
 ## v0.3.6 — 2026-09-04
 
 - **Force feedback is now built into the emulator; the FFB Arcade Plugin

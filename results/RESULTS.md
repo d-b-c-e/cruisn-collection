@@ -2681,3 +2681,30 @@ Remedies added to mvffb (all env, launcher keys under [collection]):
 Rig config set to ffb_smooth = 50 for the next drive; FFB DIRECTION
 restored to NORMAL (it had been left INVERTED). Defaults to be picked from
 the user's verdict.
+
+
+## 2026-09-04 (00:45) - Exotica "only a weak spring": crash effects are 17 ms spikes; rumble channel, impulse bypass, per-game FFB STRENGTH
+
+User (after v0.3.6 was tagged): Exotica far too weak (raised the base's
+own gain in Pit House to feel it) and nothing but the centering spring -
+no bumps or jerks on crashes or jumps.
+
+Exotica's motor stream (headless race, traceC.csv, 227 updates): only 4
+bursts >= 90/127, each ONE or TWO updates long (17-34 ms): -127 -116,
++127, -100, -100. The spring itself: |v| median 12, p90 72 at gain 400.
+So the game's crash/jump "effects" are single-frame full-force spikes.
+The arcade motor plus wheel inertia made a thump of that; a direct-drive
+base renders 17 ms of torque as a tick, and the 50 ms low-pass (v0.3.6)
+cuts it to ~30 %. The plugin path had two things this path lost: 70 %
+strength (now 50) and a Rumble(|force|, 100 ms) burst per update - the
+burst is what made crashes shake, and it also put a texture on the held
+spring.
+
+Changes (v0.3.7): (1) mvffb rumble channel: MIDV_FFB_RUMBLE=N -> on every
+new force value SDL_HapticRumblePlay(|level|/full x N %, 100 ms), stop on
+zero (Moza: rumble = sine on the steering axis); launcher default
+ffb_rumble = 100 (plugin parity), 0 = off. (2) Smoothing bypass: a jump
+of >= 60 % of full between consecutive values sets the filter state to
+the new value, so spikes hit the constant channel at full size and then
+decay with tau. (3) Per-game FFB STRENGTH row on each game card
+([collection] ffb_<rom>, blank = SETTINGS); rig set to ffb_crusnexo = 100.
