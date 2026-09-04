@@ -2708,3 +2708,53 @@ of >= 60 % of full between consecutive values sets the filter state to
 the new value, so spikes hit the constant channel at full size and then
 decay with tau. (3) Per-game FFB STRENGTH row on each game card
 ([collection] ffb_<rom>, blank = SETTINGS); rig set to ffb_crusnexo = 100.
+
+
+## 2026-09-04 - upstream sweep: #16046 backported (Exotica speed + fill decode); lamp-output regression fixed
+
+Upstream check (standing task, before every tag). Findings:
+
+1. **mamedev/mame#16046** (mourix, merged 2026-09-03, "Assisted by Claude
+   Opus 5") - two Exotica fixes, both absent from our 0.286 base:
+   - `tms320c32_control_r` hardcoded both fake C32 timers at 10 MHz. The
+     games set CLKSRC, selecting the internal H1/2 = CLKIN/4 = 15 MHz, so
+     **Exotica ran in slow motion**. Now
+     `BIT(m_tms320c32_control[offset - 4], 9) ? unscaled_clock()/4 : 10000000`
+     with `elapsed().as_ticks(rate)`.
+   - Zeus register 5E bit 5 selects 24-bit colour + 24-bit depth vs 32-bit
+     colour + 16-bit depth; the driver had one wrong combined layout, so the
+     SGRAM fill read colour bytes as depth and the clear landed near enough
+     to reject the terrain drawn against it (**the dark band over the
+     background**). This supersedes the depth-clear workaround we took from
+     #15723 - removed here too, including from our `midz_cap_clear` hook.
+     `device_reset` now seeds `m_fill_depth = 0xffffff`.
+   Applied by hand: upstream sits in `williams/`, we are still `midway/`,
+   and the fast-clear hunk is where our capture/live hook lives.
+2. **mamedev/mame#16055** (Endprodukt, OPEN, filed 2026-09-04) - upstreams
+   the Exotica wheel-motor output at `crusnexo_leds_w` offset 0, the exact
+   location this project found on 2026-09-03, plus the same for gaelco3d /
+   itech32 / hornet / model2. His name is `wheel_motor`; ours was `wheel`,
+   so both our drivers were renamed to converge. (His PR also carries an
+   unconditional `show_warnings = false` in `ui.cpp` - a global behaviour
+   change likely to draw review pushback; ours stays env-gated.)
+3. Our #15723 backport matches what upstream actually merged (2778d32e):
+   solid fills, translucency clamp, the `zeus2_write_pixel` refactor.
+   Nothing new on midvunit since our base.
+
+Verification after the build:
+- **V-Unit oracle 100.0000% bit-exact** on `results/capture` and
+  `results/capture-8000` (0 differing pixels of 204800 each) - the
+  protected invariant is intact.
+- Exotica headless, same coinup script and 122 s as the pre-backport run:
+  digit outputs 742 -> 806, LED outputs 635 -> 757 in the same wall time,
+  i.e. the game clock now advances faster. Average speed 99.62%.
+- Wheel verdict on the new game speed still pending.
+
+Separately, a **regression report from a user: lamp outputs stopped working
+between v0.3.5 and v0.3.6**. Cause found in our own code: `prepare_rig`
+wrote `output windows` into mame.ini only because the FFB plugin needed
+it, and the v0.3.6 plugin removal deleted the line. MAME's `-output`
+default is `auto`, which resolves to the `none` module, so every external
+output consumer (lamps, LED boards, SimHub/Buttkicker) went silent while
+our own FFB kept working (it calls `midv_ffb_write` from the driver, not
+through outputs). Line restored with a comment saying why it must stay.

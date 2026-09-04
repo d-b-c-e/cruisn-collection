@@ -958,6 +958,14 @@ felt the native path yet: FFB DIRECTION is the knob if it runs away.
 v0.3.6 TAGGED 2026-09-04 after the rig verdict: strength 50 + ffb_smooth 50
 ("much better"; damper/friction opt-in). Open minor: launcher LEFT right
 after opening acts as ENTER; distant red/blue road specks.
+2026-09-04 (v0.3.8 prep): upstream #16046 backported - Exotica was running
+in SLOW MOTION (C32 timer CLKSRC) and had a dark band from a wrong SGRAM
+fill decode; that also supersedes the #15723 depth-clear workaround.
+Wheel output renamed "wheel" -> "wheel_motor" per Endprodukt's open #16055
+(he is upstreaming the Exotica motor byte we found). Lamp outputs were
+broken in v0.3.6 by our own plugin removal (mame.ini lost `output windows`,
+MAME defaults to the "none" output module) - restored. V-Unit oracle
+re-verified 100.0000%.
 Also fixed: wizard axis index -> MAME slot translation (dinput_axes.py;
 sparse pedal devices were mapped to the wrong axes - Endprodukt's inert
 pedals, unconfirmed on his hardware yet).

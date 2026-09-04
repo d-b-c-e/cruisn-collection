@@ -463,6 +463,12 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
     ini = os.path.join(rig, "ini")
     for d in (ini, os.path.join(rig, "cfg"), os.path.join(rig, "nvram")):
         os.makedirs(d, exist_ok=True)
+    # output windows: MAME's Windows output module - the notifications every
+    # external consumer reads (lamps, LED boards, SimHub / Buttkicker feeds).
+    # MAME's default is "auto", which resolves to the "none" module, so
+    # leaving the line out silences ALL of them. Dropping it along with the
+    # FFB plugin in v0.3.6 is what killed the lamp outputs; our own force
+    # feedback never used them (the driver calls midv_ffb_write directly).
     # priority 1: raise MAME's thread priority - ambient load (Defender,
     # Pit House, Spotify) showed up as 94-97% average speed = audio crackle.
     # video gdi is REQUIRED under the GL overlay (V-Unit games only).
@@ -480,7 +486,7 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
         # cheapest (Zeus)
         vid = "video gdi\n"
     open(os.path.join(ini, "mame.ini"), "w").write(
-        f"skip_gameinfo 1\n{vid}priority 1\n")
+        f"skip_gameinfo 1\n{vid}output windows\npriority 1\n")
     open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
     seed = os.path.join(POC, "fixtures", f"nvram-{rom}")
     dst = os.path.join(rig, "nvram", rom)

@@ -3,6 +3,27 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## Unreleased
+
+- **Lamp and LED outputs came back.** Retiring the force-feedback plugin in
+  v0.3.6 removed one line from the emulator's config - the Windows output
+  module the plugin needed - and that module is what *every* external
+  consumer reads (cabinet lamps, LED boards, SimHub and Buttkicker feeds).
+  MAME's default silently resolves to "no output module", so they all went
+  quiet. Restored; our own force feedback never used it.
+- **Cruis'n Exotica was running in slow motion** — fixed upstream and
+  backported (mamedev/mame#16046 by mourix). The driver clocked the
+  TMS320C32 timers at 10 MHz, but the games select the chip's internal
+  clock at 15 MHz, so the whole game ran about a third too slow. Expect
+  Exotica to feel quicker; its force effects arrive at the right rate too.
+- **The dark band across Exotica's background during races is gone** (same
+  backport): a Zeus register bit picks between two colour/depth buffer
+  layouts and the driver decoded only one of them, so a screen clear wrote
+  colour bytes into the depth buffer.
+- The wheel-motor output is now named `wheel_motor` (was `wheel`), matching
+  the naming in mamedev/mame#16055, which upstreams the Exotica wheel motor
+  this project located. Support-bundle force traces read either name.
+
 ## v0.3.7 — 2026-09-04
 
 - **Exotica felt like a bare centering spring and too weak** (rig, first

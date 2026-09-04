@@ -19,6 +19,15 @@ import csv
 import sys
 
 
+# the driver's motor output: "wheel_motor" since 2026-09-04 (matching
+# mamedev/mame#16055), plain "wheel" in traces recorded before that
+WHEEL_NAMES = ("wheel_motor", "wheel")
+
+
+def is_wheel(name):
+    return name in WHEEL_NAMES
+
+
 def signed(v):
     return v - 256 if v > 127 else v
 
@@ -57,7 +66,7 @@ def plot(path, rows, pos, out_png):
     from PIL import Image, ImageDraw
     W, H = 1400, 420
     im = Image.new("RGB", (W, H), (18, 18, 24)); d = ImageDraw.Draw(im)
-    w = [(ms, signed(v)) for ms, n, v in rows if n == "wheel"]
+    w = [(ms, signed(v)) for ms, n, v in rows if is_wheel(n)]
     if not w and not pos:
         return None
     t1 = max([ms for ms, _ in w] + [ms for ms, _ in pos]); t0 = max(0, t1 - 20000)
@@ -105,10 +114,10 @@ def report(path, png=None):
             print(f"  plot: {out}")
     names = sorted(set(n for _, n, _ in rows))
     for n in names:
-        if n != "wheel":
+        if not is_wheel(n):
             vals = [v for _, m, v in rows if m == n]
             print(f"  {n:12s} {len(vals):6d} updates, values {sorted(set(vals))[:8]}")
-    w = [(ms, signed(v)) for ms, n, v in rows if n == "wheel"]
+    w = [(ms, signed(v)) for ms, n, v in rows if is_wheel(n)]
     if not w:
         print("  wheel: no force output at all - the game never drove the "
               "motor (Exotica has none; V-Unit games: was a race running?)")
