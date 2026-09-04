@@ -3,7 +3,7 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased
+## v0.3.7 — 2026-09-04
 
 - **Exotica felt like a bare centering spring and too weak** (rig, first
   evening on the built-in path). Its crash and jump effects are single
