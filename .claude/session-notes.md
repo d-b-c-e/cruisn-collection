@@ -958,6 +958,14 @@ felt the native path yet: FFB DIRECTION is the knob if it runs away.
 v0.3.6 TAGGED 2026-09-04 after the rig verdict: strength 50 + ffb_smooth 50
 ("much better"; damper/friction opt-in). Open minor: launcher LEFT right
 after opening acts as ENTER; distant red/blue road specks.
+2026-09-04: **Exotica manual transmission SOLVED** - the TRANS SELECT
+screen is gated on the DS1 "Wheel Invert" DIP (Endprodukt's tip, proven
+headless: DIP off = the game confirms AUTO instantly whatever the wheel
+does). That DIP also mirrors the wheel for driving, so the driver cancels
+it (MIDZ_WHEEL_INVERT in analog_r) and the launcher seeds the DIP into
+rig/cfg/crusnexo.cfg. Spring measured -16.4 at parked-right = correct,
+vs +16.8 with the DIP alone. Menu quirk: turn the wheel LEFT for MANUAL.
+MIDZ_SEQ_SHIFT is finally live; needs a rig drive.
 2026-09-04 (v0.3.8 prep): upstream #16046 backported - Exotica was running
 in SLOW MOTION (C32 timer CLKSRC) and had a dark band from a wrong SGRAM
 fill decode; that also supersedes the #15723 depth-clear workaround.

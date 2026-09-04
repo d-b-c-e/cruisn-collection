@@ -614,6 +614,54 @@ def transmission_mode(cp):
     return "sequential" if (seq and not hpat) else "hpattern"
 
 
+# Cruis'n Exotica's TRANS SELECT screen ("A / AUTO / M") looked broken for
+# months: it always confirmed AUTO, whatever the wheel, shifter or buttons
+# did. It is gated on a DIP the manual barely documents - DS1 "Wheel Invert".
+# With it OFF the game confirms immediately; with it ON the screen actually
+# reads the wheel. (Found by Endprodukt, confirmed here headless 2026-09-04.)
+# The same DIP mirrors the wheel for driving, which the driver patch cancels
+# (MIDZ_WHEEL_INVERT) - so only the menu changes, and on that menu you turn
+# the wheel LEFT for MANUAL.
+EXOTICA_DIP_WHEEL_INVERT = 0x0800
+
+
+def apply_exotica_dips(rig, rom):
+    """Seed MAME's own cfg for crusnexo with Wheel Invert = On, merging into
+    whatever is already there (MAME rewrites this file at exit, and a player
+    can still change the DIP in MAME's own menu). [collection]
+    exotica_manual = 0 opts out. No-op for the other games."""
+    if rom != "crusnexo" or _collection_ini_get(
+            "collection", "exotica_manual", "1") == "0":
+        return False
+    path = os.path.join(rig, "cfg", "crusnexo.cfg")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    try:
+        tree = ET.parse(path)
+        root = tree.getroot()
+    except (OSError, ET.ParseError):
+        root = ET.Element("mameconfig", {"version": "10"})
+        tree = ET.ElementTree(root)
+    system = next((s for s in root.iter("system")
+                   if s.get("name") == "crusnexo"), None)
+    if system is None:
+        system = ET.SubElement(root, "system", {"name": "crusnexo"})
+    inp = system.find("input")
+    if inp is None:
+        inp = ET.SubElement(system, "input")
+    mask = str(EXOTICA_DIP_WHEEL_INVERT)
+    port = next((p for p in inp.findall("port")
+                 if p.get("tag") == ":DIPS" and p.get("mask") == mask), None)
+    if port is None:
+        port = ET.SubElement(inp, "port")
+    port.set("tag", ":DIPS")
+    port.set("type", "DIPSWITCH")
+    port.set("mask", mask)
+    port.set("defvalue", mask)
+    port.set("value", "0")          # 0 = On
+    tree.write(path, encoding="utf-8", xml_declaration=True)
+    return True
+
+
 def apply_shifter_config(rig, rom):
     """Inject shifter CONF/DIP port values into rig/cfg/<rom>.cfg. The
     TRANSMISSION setting picks the style (CONF H-Pattern=0 or
@@ -1054,6 +1102,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
+    exotica_manual = apply_exotica_dips(rig, rom)
     kill_stale_vunit(mame, why="left-over")
     # Game-code widescreen: when the presentation is full 16:9 and a per-game
     # widescreen patch exists (patch/game/<rom>-widescreen.txt), apply it via
@@ -1120,6 +1169,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # felt at normal angles and clamps at the stops; FFB STRENGTH
         # still scales on top (MIDZ_FFB_GAIN env overrides; 250 felt faint)
         env.setdefault("MIDZ_FFB_GAIN", "400")
+        if exotica_manual:
+            # cancels the Wheel Invert DIP for driving (see apply_exotica_dips)
+            env["MIDZ_WHEEL_INVERT"] = "1"
     # Built-in force feedback (midvunit_v.cpp mvffb: SDL2 haptics on the
     # wheel's steering axis, Cannonball DX style). FFB STRENGTH scales the
     # level (0 = off entirely); the wizard's steering device names the wheel
@@ -1230,7 +1282,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE", "MIDV_FFB_CLAMP",
-                "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDV_FFB",
+                "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",
+                "MIDV_FFB",
                 "MIDV_FFB_STRENGTH", "MIDV_FFB_DEVICE", "MIDV_FFB_INVERT",
                 "MIDV_FFB_SMOOTH", "MIDV_FFB_RUMBLE", "MIDV_FFB_DAMPER",
                 "MIDV_FFB_FRICTION", "MIDV_FFB_SLEW", "MIDV_FFB_TRACE")

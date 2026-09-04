@@ -129,9 +129,11 @@ Remaining: a MAME PR for the driver output (drop the "unknown purpose").
    instead: scripted race with and without gamepatch_crusnusa, MIDV_QUADLOG
    per-frame quad counts and A/B snapshots at the same frames; if the
    counts match, the section streamer really is the wall (C2 round 3).
-3. **Exotica manual transmission**: TRANS SELECT ignores every input in
-   MAME (RESULTS 2026-09-03). Raise upstream; the virtual sequential
-   shifter (MIDZ_SEQ_SHIFT) is ready behind it.
+3. ~~**Exotica manual transmission**~~ **SOLVED 2026-09-04**: not an
+   upstream gap - the TRANS SELECT screen is gated on the DS1 "Wheel
+   Invert" DIP (Endprodukt's find, confirmed headless here). Launcher sets
+   it and cancels the driving-side mirror; the virtual sequential shifter
+   is live. Remaining: a rig drive to confirm the shifter in a race.
 4. Distant road specks in USA (cosmetic; screenshot 2026-09-03).
 5. World NY "black textures": the persistent dark rectangle at the right
    is the game's translucent HUD widget (checkerboard on hardware,

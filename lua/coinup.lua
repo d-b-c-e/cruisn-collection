@@ -8,6 +8,8 @@
 --   GAS_FRAME    "3800"           frame to floor the gas pedal (held to
 --                                 exit; drives the car so world streaming
 --                                 and distance culling actually exercise)
+--   DIP_SET      "Wheel Invert=0"  set DIP/config fields by MAME name to a
+--                                 raw value at boot (comma-separated)
 --   WHEEL_SWEEP  "4000:128,4300:64,..."  frame:value pairs - park the
 --                                 steering field (:WHEEL, 0-255, 128 =
 --                                 center) at a value from that frame on;
@@ -60,6 +62,30 @@ for fr, v in (os.getenv("WHEEL_SWEEP") or ""):gmatch("(%d+):(%d+)") do
     sweep[tonumber(fr)] = tonumber(v)
 end
 
+-- DIP_SET="Wheel Invert=0,Cabinet=1024": set DIP switch / configuration
+-- fields by their MAME name to a raw value at boot (ioport_field.user_value).
+-- Lets an undocumented DIP be tested without a cfg file or the UI.
+local dipset = {}
+for name, val in (os.getenv("DIP_SET") or ""):gmatch("([^=,]+)=(%d+)") do
+    dipset[name:gsub("^%s+", ""):gsub("%s+$", "")] = tonumber(val)
+end
+
+local function apply_dips()
+    local ioport = manager.machine.ioport
+    for tag, port in pairs(ioport.ports) do
+        for name, f in pairs(port.fields) do
+            local want = dipset[name]
+            if want ~= nil then
+                local before = f.user_value
+                f.user_value = want
+                emu.print_info(string.format(
+                    "coinup.lua: DIP %s%s %q: %d -> %d (mask %d)",
+                    tag, "", name, before, f.user_value, f.mask))
+            end
+        end
+    end
+end
+
 local function find_fields()
     local ioport = manager.machine.ioport
     for tag, port in pairs(ioport.ports) do
@@ -96,7 +122,7 @@ local count = 0
 
 emu.register_frame_done(function()
     count = count + 1
-    if count == 1 then find_fields() end
+    if count == 1 then find_fields(); apply_dips() end
     for _, cf in ipairs(coins) do
         if count == cf and coin_f then
             coin_f:set_value(1)

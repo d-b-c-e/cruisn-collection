@@ -5,6 +5,19 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Cruis'n Exotica can be driven with a manual transmission at last.** The
+  TRANS SELECT screen ("A / AUTO / M") always confirmed AUTO no matter what
+  the wheel, shifter or buttons did, and we had it logged as a gap in the
+  upstream emulation. It is not: the screen is gated on a barely documented
+  DIP switch, DS1 **"Wheel Invert"**. With it off the game confirms
+  instantly; with it on the screen reads the wheel properly. Credit to
+  Endprodukt for spotting it. The launcher now sets that DIP for Exotica
+  (and cancels the wheel mirroring it would otherwise apply to driving, so
+  steering is unchanged). **On that screen, turn the wheel LEFT for
+  MANUAL.** `[collection] exotica_manual = 0` opts out.
+  This also brings the virtual sequential shifter for Exotica to life - it
+  has been shipped but inert since v0.3.5, waiting for exactly this.
+
 - **Lamp and LED outputs came back.** Retiring the force-feedback plugin in
   v0.3.6 removed one line from the emulator's config - the Windows output
   module the plugin needed - and that module is what *every* external

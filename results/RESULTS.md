@@ -2758,3 +2758,55 @@ default is `auto`, which resolves to the `none` module, so every external
 output consumer (lamps, LED boards, SimHub/Buttkicker) went silent while
 our own FFB kept working (it calls `midv_ffb_write` from the driver, not
 through outputs). Line restored with a comment saying why it must stay.
+
+
+## 2026-09-04 - Exotica TRANS SELECT SOLVED: the "Wheel Invert" DIP (Endprodukt's find, proven here)
+
+The user relayed from Endprodukt that the Exotica auto-transmission problem
+is "a dip switch that isn't well documented - invert wheel". It is
+`PORT_DIPNAME( 0x0800, 0x0800, "Wheel Invert" )` in crusnexo's DS1 block
+(default Off), sitting immediately after Cabinet - the one DIP our
+2026-09-03 sweep never tried (that sweep covered Cabinet x Game Type, every
+wheel position and direction, gears, buttons, MANUAL TRANS DISABLE).
+
+Added `DIP_SET="Name=value"` to lua/coinup.lua (sets DIP/config fields by
+MAME name via `ioport_field.user_value` at boot) and tested headless,
+identical runs apart from the DIP:
+
+| DIP | wheel parked | TRANS SELECT at frame ~3240 |
+|---|---|---|
+| Off | 200 (right) | already past it, on CAR SELECT |
+| Off | 56 (left) | already past it, on CAR SELECT |
+| On | 200 (right) | up, **MANUAL** lit, "PRESS GAS TO CHOOSE" |
+| On | 56 (left) | up, AUTO lit |
+
+So the DIP does not merely mirror the selection: with it OFF the game
+confirms AUTO immediately whatever the wheel does (which is why nothing we
+tried ever worked), and with it ON the screen becomes interactive.
+
+It also mirrors the wheel for DRIVING. Measured on the game's own centering
+spring (parked position -> mean motor byte, gain 100; correct = spring
+toward centre):
+
+| configuration | parked 160 (right) | verdict |
+|---|---|---|
+| DIP Off (baseline, gain 400 scaled) | ~-17.5 | toward centre, correct |
+| DIP On alone | **+16.8** | away from centre, steering mirrored |
+| DIP On + our mirror | **-16.4** | toward centre, correct again |
+
+Fix, both halves:
+- Driver (`crusnexo_state::analog_r`, env-gated `MIDZ_WHEEL_INVERT=1`):
+  mirror the ANALOG3 byte (`0xff - v`), cancelling the DIP's inversion so
+  driving is exactly as before.
+- Launcher (`apply_exotica_dips`): seed `rig/cfg/crusnexo.cfg` with
+  `<port tag=":DIPS" type="DIPSWITCH" mask="2048" defvalue="2048"
+  value="0"/>`, merging into the existing cfg (the Cabinet DIP we already
+  set survives) - MAME's own format, so a player can still flip it in
+  MAME's menu. `[collection] exotica_manual = 0` opts out. Verified
+  idempotent.
+
+Consequence to document: with the driving mirror in place the menu reads
+backwards against its own layout - **turn the wheel LEFT to select MANUAL**
+(M is drawn on the right). The alternative, an intuitive menu with reversed
+steering, is worse. The virtual sequential shifter (MIDZ_SEQ_SHIFT, shipped
+inert since v0.3.5) should now be live; a rig drive is the remaining check.
