@@ -153,6 +153,22 @@ a centering spring plus race effects, and FFB STRENGTH and FFB PEAK LIMIT
 apply to it as well. Rotation range (arcade Cruis'n wheels turn about
 270°) is set in your wheel's own software.
 
+**SETTINGS → FORCE FEEDBACK → FEEL** offers four tunes of the same forces,
+differing in one thing only - how fast the wheel follows the game. **RAW**
+does no filtering at all (most detail, and the most likely to make a strong
+direct-drive base hunt), **CRISP** is lightly filtered, **STANDARD** is the
+default, **CALM** is heavily filtered for a base that will not settle. Drive
+two and tell us which you liked; that is far easier to act on than a
+description. Custom tunes live in `force-profiles.user.ini` beside the
+emulator and survive updates.
+
+**Centring spring**: Cruis'n USA runs a 72% centring spring on the wheel by
+default - the setting this project's own cabinet has always used, and what
+the earliest releases shipped. World and Off Road run none, matching the
+same source. Cruis'n Exotica is excluded because that game makes its own
+centring force. Change it per game with `[collection] ffb_spring_<rom>` in
+`rig\collection.ini`; `0` turns it off.
+
 **SETTINGS → FFB DIRECTION**: wheel bases do not agree on which way a
 positive force turns. The default is right for a Moza base (measured with
 the game's own spring). If the wheel runs *away* from centre in Cruis'n

@@ -5,6 +5,29 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **The centring spring is back on for Cruis'n USA.** Releases up to v0.3.0
+  packaged the force-feedback config from this project's own rig, which runs
+  a 72% centring spring on USA and none on World or Off Road. From v0.3.1 the
+  packaging switched to a clean template where the spring is off everywhere,
+  and it has been missing since - the "centre feels looser than normal"
+  report. USA now ships with it again by default; World and Off Road stay
+  off, which is what both the rig's tune and the plugin's own defaults do.
+  Cruis'n Exotica is deliberately excluded: that game generates its own
+  centring force, so a second one on the wheel would fight it.
+  Override per game with `[collection] ffb_spring_<rom>` (0 turns it off).
+
+- **SETTINGS > FORCE FEEDBACK > FEEL** steps through alternative tunes of the
+  same forces, so trying one is a menu row rather than a config edit. Four
+  ship, and they differ in exactly one parameter - how quickly the wheel
+  follows the game - so an A/B can only be that: **RAW** (no filtering, most
+  detail, liveliest), **CRISP**, **STANDARD** (the default, unchanged from
+  v0.3.7) and **CALM** (for a strong base that hunts). Drive two and say
+  which you preferred. Your own tunes go in `force-profiles.user.ini` beside
+  the emulator, which updates never overwrite.
+
+- FFB DIAGNOSTICS moved from the FORCE FEEDBACK page to SUPPORT, next to the
+  bundle it feeds.
+
 - **The launcher menu no longer jumps into a submenu by itself.** It looked
   like the left arrow key was acting as ENTER; in fact a wheel base can
   report far more buttons than it has (this project's Moza R12 exposes 132)

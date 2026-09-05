@@ -788,6 +788,8 @@ def load_config():
             # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
             "ffbclamp": int(sec.get("ffbclamp", 0) or 0),
             "ffbinvert": int(sec.get("ffb_invert", 0) or 0),
+            "ffbprofile": str(sec.get("ffb_profile", "")).strip()
+                          or "cruisn-vunit@1",
             # which World ROM set the CRUIS'N WORLD card boots. Default is
             # crusnwld24 (rev 2.4): the LAST revision with transmission
             # select - 2.5's factory ROMs are labeled "automatic" and
@@ -811,6 +813,7 @@ def save_config(state):
            "scale": str(state["scale"]), "rom": state["rom"],
            "ffbclamp": str(state.get("ffbclamp", 0)),
            "ffb_invert": str(state.get("ffbinvert", 0)),
+           "ffb_profile": state.get("ffbprofile", "cruisn-vunit@1"),
            "world_rom": state.get("world_rom", "crusnwld24")}
     for rom, _, _, _ in GAMES:
         sv = state["steersens"].get(rom)
@@ -964,6 +967,19 @@ def bundle_step(upd):
     threading.Thread(target=work, daemon=True).start()
 
 
+# Profile ids are cruisn-vunit@N; testers should not have to read that.
+PROFILE_LABELS = {1: "STANDARD", 2: "CRISP", 3: "RAW", 4: "CALM"}
+
+
+def profile_label(state):
+    p = state.get("ffbprofile", "cruisn-vunit@1")
+    try:
+        n = int(p.rsplit("@", 1)[1])
+    except (ValueError, IndexError):
+        return p.upper()
+    return f"{PROFILE_LABELS.get(n, 'TUNE ' + str(n))} ({n})"
+
+
 SETTINGS_TITLE = {"root": "SETTINGS", "display": "DISPLAY",
                   "ffb": "FORCE FEEDBACK", "controls": "CONTROLS",
                   "support": "SUPPORT"}
@@ -1014,9 +1030,9 @@ def settings_rows(page, state, diag, version):
              "< INVERTED >" if state.get("ffbinvert", 0) else "< NORMAL >",
              "WHICH WAY THE WHEEL PUSHES - BASES DIFFER.  FLIP IT IF THE WHEEL "
              "RUNS AWAY FROM CENTRE IN EXOTICA OR SHAKES HARD IN USA"),
-            ("diag", "DIAGNOSTICS", onoff(diag),
-             "ON = RECORDS THE FORCES AND WHEEL POSITION WHILE YOU DRIVE "
-             "(FOR A BUG REPORT)      THEN SUPPORT > SAVE SUPPORT BUNDLE"),
+            ("feel", "FEEL", f"< {profile_label(state)} >",
+             "ALTERNATIVE TUNES OF THE SAME FORCES - CRISP REACTS FASTEST, "
+             "CALM SMOOTHS MOST      DRIVE TWO AND TELL US WHICH YOU LIKED"),
             ("back", "BACK", "", ""),
         ]
     if page == "controls":
@@ -1041,6 +1057,9 @@ def settings_rows(page, state, diag, version):
             ("updates", "CHECK FOR UPDATES", version,
              "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      YOUR "
              "ROMS, SETTINGS AND BINDINGS ARE KEPT"),
+            ("diag", "FFB DIAGNOSTICS", onoff(diag),
+             "ON = RECORDS THE FORCES AND WHEEL POSITION WHILE YOU DRIVE      "
+             "THEN SAVE A SUPPORT BUNDLE AND SEND IT"),
             ("back", "BACK", "", ""),
         ]
     return [
@@ -1779,6 +1798,14 @@ def main():
                     audio.blip("nav")
                 elif rid == "invert" and (lr or enter):
                     state["ffbinvert"] = 0 if state.get("ffbinvert", 0) else 1
+                    save_config(state)
+                    audio.blip("nav")
+                elif rid == "feel" and (lr or enter):
+                    names = run_rig.cruisn_profiles()
+                    cur = state.get("ffbprofile", names[0])
+                    i = names.index(cur) if cur in names else 0
+                    state["ffbprofile"] = names[
+                        (i + (1 if (right or enter) else -1)) % len(names)]
                     save_config(state)
                     audio.blip("nav")
                 elif rid == "diag" and (lr or enter):

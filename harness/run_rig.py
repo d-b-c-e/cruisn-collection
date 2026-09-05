@@ -202,6 +202,57 @@ def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
         return proc.wait()
 
 
+# Centring-spring strength per game, as a percentage of the wheel's full
+# condition-effect force. This is a DEVICE effect (the base renders it), not
+# something the game sends.
+#
+# Where 72 comes from, and why USA only. Releases v0.1.0, v0.2.0 and v0.3.0
+# packaged the FFB plugin ini from beside vunit.exe - the rig's own copy,
+# carried over from the LaunchBox racing build, which runs
+# EnableForceSpringEffectCrusnUSA=1 / ForceSpringStrengthCrusnUSA=72 and
+# leaves World and Off Road at 0. From v0.3.1 packaging switched to the repo
+# template, where the spring is off for every game, and it has been missing
+# ever since - the "centre feels looser than normal" report. Restoring 72 for
+# USA gives testers back the wheel the early builds were praised for.
+#
+# Not the plugin's stock defaults, which disable it everywhere: this is a
+# tune, and the two are worth keeping straight.
+#
+# Exotica is deliberately absent: the game generates its own centring force
+# (that is the whole Exotica FFB find), so a device spring would double it.
+FFB_SPRING_DEFAULT = {"crusnusa": "72"}
+
+# The Cruis'n tunes shipped in the toolkit's profile file, newest last. A
+# tester can step through these from SETTINGS > FORCE FEEDBACK > FEEL and say
+# which one they liked, which is far easier to act on than "it feels off".
+CRUISN_PROFILE_FAMILY = "cruisn-vunit"
+
+
+def cruisn_profiles(vunit_exe=None):
+    """['cruisn-vunit@1', ...] - the Cruis'n tunes actually present, shipped
+    ones plus anything the player added in force-profiles.user.ini."""
+    import re as _re
+    names, seen = [], set()
+    roots = [os.path.join(POC, "lib", "toolkit", "profiles",
+                          "force-profiles.ini")]
+    vdir = os.path.dirname(vunit_exe or VUNIT)
+    roots += [os.path.join(vdir, "force-profiles.ini"),
+              os.path.join(vdir, "force-profiles.user.ini")]
+    for path in roots:
+        try:
+            with open(path, encoding="utf-8", errors="replace") as f:
+                text = f.read()
+        except OSError:
+            continue
+        for m in _re.finditer(r"(?m)^\[(" + CRUISN_PROFILE_FAMILY +
+                              r"@[0-9]+)\]", text):
+            if m.group(1) not in seen:
+                seen.add(m.group(1))
+                names.append(m.group(1))
+    names.sort(key=lambda n: int(n.rsplit("@", 1)[1]))
+    return names or [CRUISN_PROFILE_FAMILY + "@1"]
+
+
 def deploy_force_profiles(vunit_exe):
     """Put force-profiles.ini beside vunit.exe, without stepping on a tune.
 
@@ -1244,14 +1295,12 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             # force update at |force| x N % - what the plugin did, and what
             # made crashes (single-frame full-force spikes) shake
             env["MIDV_FFB_RUMBLE"] = rumble
-        # [collection] ffb_spring_<rom> = N %, falling back to ffb_spring.
-        # PER GAME on purpose: the FFB Arcade Plugin's stock config enables a
-        # spring for Cruis'n USA (ForceSpringStrengthCrusnUSA=72) and disables
-        # it for World and Off Road Challenge. A spring is what centres the
-        # wheel, so getting this wrong game-by-game is exactly the difference
-        # being chased.
+        # [collection] ffb_spring_<rom> = N %, falling back to ffb_spring and
+        # then to FFB_SPRING_DEFAULT. PER GAME on purpose, and ON by default
+        # for Cruis'n USA - see that table for the evidence.
         spring = (_collection_ini_get("collection", "ffb_spring_" + rom, "")
-                  or _collection_ini_get("collection", "ffb_spring", ""))
+                  or _collection_ini_get("collection", "ffb_spring", "")
+                  or FFB_SPRING_DEFAULT.get(rom, ""))
         if spring.isdigit() and int(spring) > 0:
             env["MIDV_FFB_SPRING"] = spring
 
