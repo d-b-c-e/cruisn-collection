@@ -147,3 +147,30 @@ Remaining: a MAME PR for the driver output (drop the "unknown purpose").
 - Distant red/blue road specks in the V-Unit games (cosmetic).
 - `ffb_damper` / `ffb_friction` untried on the rig; decide whether either
   earns a SETTINGS row.
+
+## Speedometer telemetry drops to zero mid-race (2026-09-05, USA)
+
+Reported at the rig: the SimHub needle climbs then falls back, "rarely gets
+above 20". Partially diagnosed, not fixed.
+
+**Proven**
+- The drop is a real code path: `midvunit_v.cpp`, HUD-OCR branch - 60
+  consecutive unreadable frames force `s_hud_last = 0` ("box absent (menus):
+  decay to 0 rather than freeze"). That is the needle collapsing.
+- NOT widescreen: reproduced headless with no GL overlay and no widescreen,
+  gas floored - same climb-then-zero pattern.
+- Units are correct: mph -> m/s (x0.44704) into Forza `Speed` and `VelocityZ`.
+- Not the gear: gear/RPM are a separate HUD panel bottom-right, clear of the
+  MPH box bottom-left.
+
+**The open lead.** No capture has ever produced a reading above 99 (headless
+max 98) while the user's screenshot shows 95 on a three-digit readout. The
+box is `{crusnusa, 30, 72, 347, 370}` - 42 px wide - and the segmenter allows
+up to 4 cells, so three digits *should* fit. Suspicion: at 100+ the leftmost
+digit falls outside x0=30, the read fails, and 60 frames later speed zeroes -
+which would fail exactly when you break 100, matching the report.
+
+**Cheapest decisive test**: dump the videoram box region during a >100 mph run
+(MIDV_STATEDUMP_FRAME/DIR) and see where the third digit lands. If it spills,
+widening x0 is the fix; the 60-frame decay is worth lengthening regardless,
+since one unreadable second should not mean "stopped".
