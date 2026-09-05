@@ -5,6 +5,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **CRISP is the default feel**, with no centring spring. Driven at the rig
+  against original MAME plus the FFB Arcade Plugin at matched strength, that
+  pairing read closest to the arcade signal; the 50 ms STANDARD tune remains
+  as the reference point to compare against.
+
 - **The centring spring was drowning everything, and is now adjustable.**
   It was created at its full percentage of the *wheel's* maximum force with
   no ceiling, while the game's own feedback was scaled down by FFB STRENGTH

@@ -1355,7 +1355,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # cruisn-vunit@1 reproduces what mvffb did by hand; @2 is the crisper
         # centre being tested. If the file is missing, vunit falls back to
         # built-in values identical to @1 and says so in midv_ffb.log.
-        profile = _collection_ini_get("collection", "ffb_profile", "cruisn-vunit@1")
+        # @2 (CRISP) by default: at the rig, against the original MAME +
+        # plugin baseline, 20 ms with no spring was the closest match to how
+        # the arcade signal actually reads. @1 stays as the 50 ms reference.
+        profile = _collection_ini_get("collection", "ffb_profile", "cruisn-vunit@2")
         if profile:
             env["MIDV_FFB_PROFILE"] = profile
         rumble = _collection_ini_get("collection", "ffb_rumble", "100")   # plugin parity

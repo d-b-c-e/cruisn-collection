@@ -783,7 +783,7 @@ def load_config():
             # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
             "ffbinvert": int(sec.get("ffb_invert", 0) or 0),
             "ffbprofile": str(sec.get("ffb_profile", "")).strip()
-                          or "cruisn-vunit@1",
+                          or "cruisn-vunit@2",
             "ffbspring": int(sec.get("ffb_spring", 0) or 0),
             # which World ROM set the CRUIS'N WORLD card boots. Default is
             # crusnwld24 (rev 2.4): the LAST revision with transmission
@@ -807,7 +807,7 @@ def save_config(state):
            "transmission": state.get("transmission", "hpattern"),
            "scale": str(state["scale"]), "rom": state["rom"],
            "ffb_invert": str(state.get("ffbinvert", 0)),
-           "ffb_profile": state.get("ffbprofile", "cruisn-vunit@1"),
+           "ffb_profile": state.get("ffbprofile", "cruisn-vunit@2"),
            "ffb_spring": str(state.get("ffbspring", 0)),
            "world_rom": state.get("world_rom", "crusnwld24")}
     for rom, _, _, _ in GAMES:
@@ -965,7 +965,7 @@ PROFILE_LABELS = {1: "STANDARD", 2: "CRISP", 3: "RAW", 4: "CALM"}
 
 
 def profile_label(state):
-    p = state.get("ffbprofile", "cruisn-vunit@1")
+    p = state.get("ffbprofile", "cruisn-vunit@2")
     try:
         n = int(p.rsplit("@", 1)[1])
     except (ValueError, IndexError):
