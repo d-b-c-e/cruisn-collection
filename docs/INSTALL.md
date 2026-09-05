@@ -211,6 +211,7 @@ overrides anything else:
 |---|---|---|
 | **SETTINGS > FORCE FEEDBACK > STRENGTH** | how strong, overall (per game on each game card) | 40% on an 8 Nm base |
 | **SETTINGS > FORCE FEEDBACK > FEEL** | how the force is shaped - smoothing, ceilings, rate limits, all of it | CALM if the wheel hunts, RAW if it feels dull |
+| **SETTINGS > FORCE FEEDBACK > SPRING** | how hard the wheel pulls back to straight | lower it if the centring buries the road feel |
 | `rig\collection.ini` `[collection]` | effects your **wheel** adds that the game never sent: `ffb_spring_<rom>`, `ffb_rumble`, `ffb_damper`, `ffb_friction` | `ffb_rumble = 0` if the wheel buzzes constantly |
 
 If a shaping value needs changing beyond what FEEL offers, that belongs in

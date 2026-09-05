@@ -5,6 +5,18 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **The centring spring was drowning everything, and is now adjustable.**
+  It was created at its full percentage of the *wheel's* maximum force with
+  no ceiling, while the game's own feedback was scaled down by FFB STRENGTH
+  - so the spring was stronger than the road it was meant to sit under and
+  reached maximum at a modest angle. Spring, damper and friction now scale
+  with FFB STRENGTH and cap their saturation to the same level, so the
+  balance between them holds wherever STRENGTH is set (72 at strength 50 is
+  36% of the wheel, and `midv_ffb.log` states it per effect).
+- **SETTINGS > FORCE FEEDBACK > SPRING** sets it directly - OFF, then 10 to
+  100 - instead of a config-file edit. Cruis'n Exotica never gets one
+  whatever the setting says, because that game generates its own.
+
 - **Force feedback got simpler on purpose.** Three settings were removed
   because each had a twin that did the same job - `ffb_smooth`, `ffb_slew`
   and the FFB PEAK LIMIT row all duplicated something in the FEEL profile,

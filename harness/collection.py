@@ -789,6 +789,7 @@ def load_config():
             "ffbinvert": int(sec.get("ffb_invert", 0) or 0),
             "ffbprofile": str(sec.get("ffb_profile", "")).strip()
                           or "cruisn-vunit@1",
+            "ffbspring": int(sec.get("ffb_spring", 72) or 0),
             # which World ROM set the CRUIS'N WORLD card boots. Default is
             # crusnwld24 (rev 2.4): the LAST revision with transmission
             # select - 2.5's factory ROMs are labeled "automatic" and
@@ -812,6 +813,7 @@ def save_config(state):
            "scale": str(state["scale"]), "rom": state["rom"],
            "ffb_invert": str(state.get("ffbinvert", 0)),
            "ffb_profile": state.get("ffbprofile", "cruisn-vunit@1"),
+           "ffb_spring": str(state.get("ffbspring", 72)),
            "world_rom": state.get("world_rom", "crusnwld24")}
     for rom, _, _, _ in GAMES:
         sv = state["steersens"].get(rom)
@@ -991,6 +993,7 @@ def settings_rows(page, state, diag, version):
     reporting a problem. Keyed by id so adding a row cannot renumber the
     handlers - the old flat list needed a dozen index edits every time."""
     ffb = state.get("ffb", 50)
+    spring = int(state.get("ffbspring", 72))
     scale = int(state.get("scale", 4))
     trans = state.get("transmission", "hpattern")
 
@@ -1020,6 +1023,9 @@ def settings_rows(page, state, diag, version):
             ("ffb", "STRENGTH", f"< {ffb}% >",
              "0% = FORCE FEEDBACK OFF      LOWER IF THE WHEEL FEELS HARSH      "
              "30-40 SUITS A DIRECT-DRIVE BASE"),
+            ("spring", "SPRING", "< OFF >" if not spring else f"< {spring}% >",
+             "HOW HARD THE WHEEL PULLS BACK TO STRAIGHT      TOO MUCH BURIES "
+             "THE ROAD FEEL      SCALES WITH STRENGTH; NOT USED BY EXOTICA"),
             ("invert", "DIRECTION",
              "< INVERTED >" if state.get("ffbinvert", 0) else "< NORMAL >",
              "WHICH WAY THE WHEEL PUSHES - BASES DIFFER.  FLIP IT IF THE WHEEL "
@@ -1778,6 +1784,18 @@ def main():
                 elif rid == "ffb" and (lr or enter):
                     step = 10 if (right or enter) else -10
                     state["ffb"] = max(0, min(100, state.get("ffb", 50) + step))
+                    save_config(state)
+                    audio.blip("nav")
+                elif rid == "spring" and (lr or enter):
+                    # OFF then 10..100 in tens; it is scaled by STRENGTH in
+                    # the emulator, so this stays a share of the total feel
+                    steps = [0, 10, 20, 30, 40, 50, 60, 72, 85, 100]
+                    cur = int(state.get("ffbspring", 72))
+                    i = min(range(len(steps)),
+                            key=lambda k: abs(steps[k] - cur))
+                    i = max(0, min(len(steps) - 1,
+                                   i + (1 if (right or enter) else -1)))
+                    state["ffbspring"] = steps[i]
                     save_config(state)
                     audio.blip("nav")
                 elif rid == "invert" and (lr or enter):

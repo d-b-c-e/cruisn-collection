@@ -231,6 +231,9 @@ def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
 # (that is the whole Exotica FFB find), so a device spring would double it.
 FFB_SPRING_DEFAULT = {"crusnusa": "72", "crusnwld": "72", "offroadc": "72"}
 
+# Games that must never get a device spring, whatever the setting says.
+FFB_SPRING_NEVER = {"crusnexo"}
+
 # The Cruis'n tunes shipped in the toolkit's profile file, newest last. A
 # tester can step through these from SETTINGS > FORCE FEEDBACK > FEEL and say
 # which one they liked, which is far easier to act on than "it feels off".
@@ -1318,9 +1321,13 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # [collection] ffb_spring_<rom> = N %, falling back to ffb_spring and
         # then to FFB_SPRING_DEFAULT. PER GAME on purpose, and ON by default
         # for Cruis'n USA - see that table for the evidence.
-        spring = (_collection_ini_get("collection", "ffb_spring_" + rom, "")
-                  or _collection_ini_get("collection", "ffb_spring", "")
-                  or FFB_SPRING_DEFAULT.get(rom, ""))
+        # Exotica is excluded here rather than by omission from the table:
+        # the SPRING row writes one value for all games, and this game makes
+        # its own centring force - a second one would fight it.
+        spring = "" if rom in FFB_SPRING_NEVER else (
+            _collection_ini_get("collection", "ffb_spring_" + rom, "")
+            or _collection_ini_get("collection", "ffb_spring", "")
+            or FFB_SPRING_DEFAULT.get(rom, ""))
         if spring.isdigit() and int(spring) > 0:
             env["MIDV_FFB_SPRING"] = spring
 
