@@ -1,0 +1,32 @@
+name: diagnostic checks
+
+on:
+  push:
+    branches: [master, 'codex/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  harness:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-test.txt
+      - run: python -m unittest discover -s tests -v
+  native-helpers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/hud_speed_test.cpp -o /tmp/hud-test
+      - run: /tmp/hud-test
+      - run: g++ -std=c++11 -O2 -Wall -Wextra -Ilib/toolkit/include native/analyze_ffb.cpp -o /tmp/ffb-analyzer
+      - run: /tmp/ffb-analyzer fixtures/signals/idle-hit.csv lib/toolkit/profiles cruisn-vunit@2 50 /tmp/stages.csv

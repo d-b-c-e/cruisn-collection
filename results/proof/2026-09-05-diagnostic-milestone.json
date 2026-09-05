@@ -1,0 +1,273 @@
+{
+  "injected_pixel_error": {
+    "capture": "E:\\Source\\cruisn-collection\\results\\diagnostics\\negative-native-pixel",
+    "comparison": {
+      "differing_pixels": 1,
+      "exact_percent": 99.99951171875,
+      "max_error": 1,
+      "max_mismatches": 0,
+      "outside_tolerance": 1,
+      "passed": false,
+      "pixels": 204800,
+      "tolerance": 0
+    },
+    "passed": false,
+    "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+    "scale": 1,
+    "schema": 1,
+    "scope": "native-index-buffer"
+  },
+  "mame_commit": "1c420f32",
+  "native_gpu": {
+    "capture": "E:\\Source\\cruisn-collection\\results\\capture-8000",
+    "comparison": {
+      "differing_pixels": 0,
+      "exact_percent": 100.0,
+      "max_error": 0,
+      "max_mismatches": 0,
+      "outside_tolerance": 0,
+      "passed": true,
+      "pixels": 204800,
+      "tolerance": 0
+    },
+    "passed": true,
+    "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+    "scale": 1,
+    "schema": 1,
+    "scope": "native-index-buffer"
+  },
+  "offline_force_strength_sweep": [
+    {
+      "events_ms": [
+        46468,
+        48056,
+        56416,
+        57244,
+        58588,
+        60288,
+        61456,
+        65288,
+        67712,
+        69432,
+        72332,
+        73860,
+        77692
+      ],
+      "full_strength_fraction": 0.001322819,
+      "motor_samples": 1491,
+      "peak_abs": 0.239999995,
+      "rms": 0.08029885,
+      "strength": 25,
+      "tick_ms": 4,
+      "ticks": 19655
+    },
+    {
+      "events_ms": [
+        46468,
+        48056,
+        56416,
+        57244,
+        58588,
+        60288,
+        61456,
+        65288,
+        67712,
+        69432,
+        72332,
+        73860,
+        77692
+      ],
+      "full_strength_fraction": 0.001322819,
+      "motor_samples": 1491,
+      "peak_abs": 0.5,
+      "rms": 0.167489938,
+      "strength": 50,
+      "tick_ms": 4,
+      "ticks": 19655
+    },
+    {
+      "events_ms": [
+        46468,
+        48056,
+        56416,
+        57244,
+        58588,
+        60288,
+        61456,
+        65288,
+        67712,
+        69432,
+        72332,
+        73860,
+        77692
+      ],
+      "full_strength_fraction": 0.001322819,
+      "motor_samples": 1491,
+      "peak_abs": 1.0,
+      "rms": 0.334980646,
+      "strength": 100,
+      "tick_ms": 4,
+      "ticks": 19655
+    }
+  ],
+  "schema": 1,
+  "scope": "recorded checks, not general gameplay or physical wheel acceptance",
+  "strict_zeus_known_failure": {
+    "capture": "E:\\Source\\cruisn-collection\\results\\capture-zeus-3d",
+    "color": {
+      "differing_pixels": 13043,
+      "exact_percent": 93.63134765625,
+      "max_error": 206,
+      "max_mismatches": 0,
+      "outside_tolerance": 13043,
+      "passed": false,
+      "pixels": 204800,
+      "tolerance": 0
+    },
+    "depth": {
+      "differing_pixels": 49841,
+      "exact_percent": 75.66357421875,
+      "max_error": 16733543,
+      "max_mismatches": 0,
+      "outside_tolerance": 49841,
+      "passed": false,
+      "pixels": 204800,
+      "tolerance": 0
+    },
+    "passed": false,
+    "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+    "scale": 1,
+    "schema": 1,
+    "scope": "display-window-sampled-at-native"
+  },
+  "toolkit_commit": "47b06f08cd6b3044e5167821f48f024882ef035f",
+  "usa_live_gl_recording": {
+    "archive_dependencies": {
+      "SDL2.dll": "47a3b27654832d9f7e5719c88078210a3dbfd6407b559c5a3c4eb8ab7d0ebdb6",
+      "force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52",
+      "vunit.exe": "0e846d5f73f9773bcb833bec1e87c9e96da92002a4e02175aca888e05f1ef0e1"
+    },
+    "drops_during_capture": 0,
+    "frames": 6000,
+    "gl_count": 32,
+    "identity_native_comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "input_coverage": {
+      ":ACCEL": {
+        "distinct": 4,
+        "max": 255,
+        "min": 0
+      },
+      ":BRAKE": {
+        "distinct": 2,
+        "max": 178,
+        "min": 0
+      },
+      ":CONF": {
+        "distinct": 1,
+        "max": 1,
+        "min": 1
+      },
+      ":DSW": {
+        "distinct": 1,
+        "max": 63998,
+        "min": 63998
+      },
+      ":FAKE": {
+        "distinct": 1,
+        "max": 1,
+        "min": 1
+      },
+      ":IN0": {
+        "distinct": 4,
+        "max": 65535,
+        "min": 57343
+      },
+      ":IN1": {
+        "distinct": 1,
+        "max": 127,
+        "min": 127
+      },
+      ":MOTION": {
+        "distinct": 1,
+        "max": 0,
+        "min": 0
+      },
+      ":WHEEL": {
+        "distinct": 5,
+        "max": 145,
+        "min": 106
+      }
+    },
+    "native_snapshots": 100,
+    "origin": "synthetic-inp",
+    "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenario-20260905T231026Z-s1l7_egt\\case"
+  },
+  "usa_live_selection_timing": {
+    "emulated_seconds": 17.262720172627,
+    "emulation_ratio": 0.9999104377019461,
+    "first_frame": 2600,
+    "host_frame_ms": {
+      "p50": 17.19849999999923,
+      "p95": 25.314145000001883,
+      "p99": 77.64452699999815,
+      "worst": 124.4070999999991
+    },
+    "host_seconds": 17.264266399999997,
+    "inputs": {
+      ":ACCEL": {
+        "distinct": 1,
+        "maximum": 0,
+        "minimum": 0
+      },
+      ":BRAKE": {
+        "distinct": 1,
+        "maximum": 0,
+        "minimum": 0
+      },
+      ":CONF": {
+        "distinct": 1,
+        "maximum": 1,
+        "minimum": 1
+      },
+      ":DSW": {
+        "distinct": 1,
+        "maximum": 63998,
+        "minimum": 63998
+      },
+      ":FAKE": {
+        "distinct": 1,
+        "maximum": 1,
+        "minimum": 1
+      },
+      ":IN0": {
+        "distinct": 3,
+        "maximum": 65535,
+        "minimum": 57343
+      },
+      ":IN1": {
+        "distinct": 1,
+        "maximum": 127,
+        "minimum": 127
+      },
+      ":MOTION": {
+        "distinct": 1,
+        "maximum": 0,
+        "minimum": 0
+      },
+      ":WHEEL": {
+        "distinct": 1,
+        "maximum": 128,
+        "minimum": 128
+      }
+    },
+    "last_frame": 3600,
+    "schema": 1,
+    "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+  }
+}

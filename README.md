@@ -11,6 +11,13 @@ collision feedback, car-selection slowdown, and telemetry coverage remain
 open work. The [September 2026 assessment](docs/reviews/2026-09-05-assessment.md)
 records verified findings and the plan for recorded gameplay regression tests.
 
+Developer testing now supports [recorded input and playback](docs/DIAGNOSTIC-REPLAY.md),
+including analog wheel inputs, isolated starting state, retained diagnostic logs,
+and strict native screenshot comparisons. See the
+[first implementation results](docs/reviews/2026-09-05-implementation.md) for
+verified coverage and remaining rendering/FFB work. The shared toolkit has its
+own [independent review](https://github.com/d-b-c-e/dbce-wheel-mod-toolkit/blob/master/docs/REVIEW-2026-09-05.md).
+
 ## Play it (players / testers)
 
 1. Download the latest zip from

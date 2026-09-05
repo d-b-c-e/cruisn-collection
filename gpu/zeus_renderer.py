@@ -347,7 +347,16 @@ def main():
     ap.add_argument("capture_dir")
     ap.add_argument("--scale", type=int, default=1)
     ap.add_argument("--png", action="store_true")
+    ap.add_argument("--report", help="write machine-readable color and depth checks")
+    ap.add_argument("--color-tolerance", type=int, default=0)
+    ap.add_argument("--max-color-mismatches", type=int, default=0)
+    ap.add_argument("--depth-tolerance", type=int, default=0)
+    ap.add_argument("--max-depth-mismatches", type=int, default=0)
     args = ap.parse_args()
+    if args.scale < 1 or min(args.color_tolerance, args.max_color_mismatches,
+                             args.depth_tolerance, args.max_depth_mismatches) < 0:
+        ap.error("scale must be positive and comparison budgets must be non-negative")
+    from verification import compare_arrays, write_json
     cap = args.capture_dir
     S = args.scale
 
@@ -503,6 +512,21 @@ def main():
     print(f"  within +-1: {100.0 * (maxd <= 1).sum() / maxd.size:.4f}%")
     print(f"  within +-4: {100.0 * (maxd <= 4).sum() / maxd.size:.4f}%")
     print(f"  max channel delta: {maxd.max()}")
+    color_check = compare_arrays(np.stack([chan(gl_c, s) for s in (16, 8, 0)], axis=2),
+                                 np.stack([chan(cpu_c, s) for s in (16, 8, 0)], axis=2),
+                                 tolerance=args.color_tolerance,
+                                 max_mismatches=args.max_color_mismatches)
+    depth_check = compare_arrays(depth_np[rows], truth.depth[rows],
+                                 tolerance=args.depth_tolerance,
+                                 max_mismatches=args.max_depth_mismatches)
+    passed = color_check["passed"] and depth_check["passed"]
+    print(f"  depth exact: {depth_check['exact_percent']:.4f}%, "
+          f"max delta {depth_check['max_error']}; {'PASS' if passed else 'FAIL'}")
+    if args.report:
+        write_json(args.report, {"schema": 1, "capture": os.path.abspath(cap),
+                   "scope": "display-window-sampled-at-native", "scale": S,
+                   "renderer": ctx.info["GL_RENDERER"], "color": color_check,
+                   "depth": depth_check, "passed": passed})
 
     if args.png:
         from PIL import Image
@@ -512,7 +536,7 @@ def main():
         out = os.path.join(cap, f"gl-s{S}.png")
         Image.fromarray(crop).save(out)
         print("wrote", out)
-    return 0
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":

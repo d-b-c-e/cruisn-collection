@@ -1,93 +1,56 @@
-"""Run the patched vunit build with quad logging + state dump enabled.
+"""Capture V-Unit quads, RAM and a native snapshot without overwriting evidence.
 
-Same cleanroom setup as run_oracle.py (seeded NVRAM, explicit inis,
-unthrottled, headless), plus:
-    MIDV_QUADLOG          -> results/capture/quads.bin
-    MIDV_STATEDUMP_FRAME  -> dump videoram/texram/palram at that frame
-    MIDV_STATEDUMP_DIR    -> results/capture/
-
-A snapshot is also taken at the dump frame so the state dump can be
-cross-checked against what MAME itself displayed.
+The RAM dump precedes the named snapshot by two frames, as in the original
+harness. Renderer acceptance compares to the RAM dump, not that later PNG.
 """
-import io
-import os
+import argparse
 import shutil
-import subprocess
 import sys
-import time
 
-sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+from diagnostic_runtime import new_run
+from run_oracle import DEFAULT_MAME, DEFAULT_ROMPATH, capture_run
+from verification import required_files, sha256_file, write_json
 
-POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VUNIT = sys.argv[1] if len(sys.argv) > 1 else r"E:\Source\mame-src\vunit.exe"
-ROM = sys.argv[3] if len(sys.argv) > 3 else "crusnusa"
-ROMPATH = r"E:\Source\launchbox\Launchbox-Racing\Emulators\mame286\roms"
-DUMP_FRAME = int(sys.argv[2]) if len(sys.argv) > 2 else 2400
-SUFFIX = (f"-{ROM}" if ROM != "crusnusa" else "") + \
-         (f"-{DUMP_FRAME}" if len(sys.argv) > 2 else "")
+ARTIFACTS = ("quads.bin", "videoram.bin", "textureram.bin", "paletteram.bin", "meta.txt")
 
-cap = os.path.join(POC, "results", "capture" + SUFFIX)
-if os.path.isdir(cap):
-    shutil.rmtree(cap)
-run = os.path.join(cap, "run")
-ini = os.path.join(run, "ini")
-for d in (ini, os.path.join(run, "snap"), os.path.join(run, "cfg")):
-    os.makedirs(d, exist_ok=True)
 
-seed = os.path.join(POC, "fixtures", f"nvram-{ROM}")
-os.makedirs(os.path.join(run, "nvram"), exist_ok=True)
-shutil.copytree(seed, os.path.join(run, "nvram", ROM))
+def main(argv=None):
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("mame", nargs="?", default=DEFAULT_MAME)
+    ap.add_argument("frame", nargs="?", type=int, default=2400)
+    ap.add_argument("rom", nargs="?", default="crusnusa")
+    ap.add_argument("--rompath", default=DEFAULT_ROMPATH)
+    ap.add_argument("--output", help="new capture directory (must not exist)")
+    ap.add_argument("--timeout", type=float, default=900)
+    args = ap.parse_args(argv)
+    if args.frame < 3 or args.timeout <= 0:
+        ap.error("frame must be at least 3 and timeout must be positive")
+    try:
+        cap = new_run("capture", args.output)
+    except OSError as exc:
+        ap.error(str(exc))
+    args.frames = str(args.frame)
+    args.max_seconds = args.frame // 57 + 30
+    report = {"schema": 1, "rom": args.rom, "snapshot_frame": args.frame,
+              "requested_dump_frame": args.frame - 2, "passed": False}
+    print(f"capture evidence: {cap}")
+    try:
+        report["snapshots"] = capture_run(cap / "run", args, {
+            "MIDV_QUADLOG": str(cap / "quads.bin"),
+            "MIDV_STATEDUMP_FRAME": str(args.frame - 2),
+            "MIDV_STATEDUMP_DIR": str(cap)})
+        required_files(cap, ARTIFACTS)
+        report["artifacts"] = {n: {"bytes": (cap / n).stat().st_size,
+                                     "sha256": sha256_file(cap / n)} for n in ARTIFACTS}
+        for shot in (cap / "run" / "snap").glob("*.png"):
+            shutil.copy2(shot, cap / f"mame-snapshot-{shot.name}")
+        report["passed"] = True
+    except (ValueError, OSError) as exc:
+        report["error"] = str(exc)
+    write_json(cap / "capture-report.json", report)
+    print(("PASS" if report["passed"] else "FAIL") + f": {cap / 'capture-report.json'}")
+    return 0 if report["passed"] else 1
 
-with io.open(os.path.join(ini, "mame.ini"), "w") as f:
-    f.write("skip_gameinfo 1\n")
-with io.open(os.path.join(ini, "ui.ini"), "w") as f:
-    f.write("skip_warnings 1\n")
 
-cmd = [
-    VUNIT, ROM,
-    "-inipath", ini,
-    "-rompath", ROMPATH,
-    "-nvram_directory", os.path.join(run, "nvram"),
-    "-cfg_directory", os.path.join(run, "cfg"),
-    "-snapshot_directory", os.path.join(run, "snap"),
-    "-autoboot_script", os.path.join(POC, "lua", "snap.lua"),
-    "-autoboot_delay", "0",
-    "-seconds_to_run", str(DUMP_FRAME // 57 + 30),   # backstop past the Lua exit
-    "-nothrottle", "-video", "none", "-sound", "none",
-    "-skip_gameinfo", "-snapview", "native",
-]
-env = dict(
-    os.environ,
-    SNAP_FRAMES=str(DUMP_FRAME),
-    MIDV_QUADLOG=os.path.join(cap, "quads.bin"),
-    # Lua exits right after its snapshot at DUMP_FRAME, and that snapshot's
-    # screen_update still sees frame_number() == DUMP_FRAME-1 - so a gate at
-    # DUMP_FRAME never fires before exit. Dump two frames early instead; the
-    # comparison target is the dump itself, so alignment with the snapshot
-    # PNG is cosmetic.
-    MIDV_STATEDUMP_FRAME=str(DUMP_FRAME - 2),
-    MIDV_STATEDUMP_DIR=cap,
-)
-print(f"capture: {os.path.basename(VUNIT)} {ROM} -> {cap}")
-t0 = time.time()
-p = subprocess.run(cmd, capture_output=True, text=True, timeout=900,
-                   cwd=os.path.dirname(VUNIT), env=env)
-print(f"exit={p.returncode}  {time.time()-t0:.1f}s")
-if p.returncode != 0:
-    sys.stdout.write(p.stdout[-3000:] + "\n" + p.stderr[-3000:] + "\n")
-    sys.exit(1)
-
-for name in ("quads.bin", "videoram.bin", "textureram.bin",
-             "paletteram.bin", "meta.txt"):
-    path = os.path.join(cap, name)
-    ok = os.path.isfile(path)
-    print(f"  {name:<16} {'%.1f MB' % (os.path.getsize(path)/1e6) if ok else 'MISSING'}")
-
-snapdir = os.path.join(run, "snap", ROM)
-if os.path.isdir(snapdir):
-    for s in sorted(os.listdir(snapdir)):
-        shutil.copy2(os.path.join(snapdir, s),
-                     os.path.join(cap, f"mame-snapshot-{s}"))
-        print(f"  mame snapshot    {s}")
-print(io.open(os.path.join(cap, "meta.txt")).read().strip()
-      if os.path.isfile(os.path.join(cap, "meta.txt")) else "no meta!")
+if __name__ == "__main__":
+    sys.exit(main())

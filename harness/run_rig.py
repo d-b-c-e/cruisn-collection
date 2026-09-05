@@ -201,19 +201,8 @@ def release_ffb(mame_dir=None):
     has exited, so nothing holds the device. Best effort throughout."""
     mame_dir = mame_dir or os.path.dirname(VUNIT)
     try:
-        sdl = ctypes.CDLL(os.path.join(mame_dir, "SDL2.dll"))
-        if sdl.SDL_Init(0x200 | 0x1000) != 0:      # JOYSTICK | HAPTIC
-            return False
-        stopped = 0
-        try:
-            for i in range(max(0, sdl.SDL_NumHaptics())):
-                h = ctypes.c_void_p(sdl.SDL_HapticOpen(i))
-                if h:
-                    sdl.SDL_HapticStopAll(h)
-                    sdl.SDL_HapticClose(h)
-                    stopped += 1
-        finally:
-            sdl.SDL_Quit()
+        from haptics import stop_all
+        stopped = stop_all(os.path.join(mame_dir, "SDL2.dll"))
         if stopped:
             print(f"wheel: cleared force effects on {stopped} device(s)")
         return stopped > 0
@@ -1242,7 +1231,7 @@ def apply_wheelmap(tree, rig):
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
                       margin=None, ffb=None, marginfill=False,
-                      mame=VUNIT):
+                      mame=VUNIT, record_case=None, record_every=60, record_frames=0):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -1304,6 +1293,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                    "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
+    if ffb is not None and int(ffb) <= 0:
+        env["MIDV_FFB"] = "0"
+        env.pop("MIDV_FFB_TEST", None)
     if gamepatch:
         env["MIDV_PATCH"] = gamepatch
     if base_rom(rom) == "crusnexo":
@@ -1424,6 +1416,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         print("FFB diagnostics on: tracing outputs to rig/ffb_trace.csv "
               "and motor writes to midv_ffb.log")
 
+    recording = None
+    if record_case:
+        from session_case import Recording
+        recording = Recording(record_case, every=record_every, stop_frame=record_frames)
+
     def start():
         cmd = [mame, rom,
                "-rompath", ROMPATH,
@@ -1449,7 +1446,14 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # vunit's console output goes to rig/launch.log: a startup exit
         # (missing ROM files, bad ini) is explained by its last lines,
         # which the launcher surfaces on screen and the support bundle ships
-        log = open(os.path.join(rig, "launch.log"), "w")
+        launch_env, launch_dir = env, os.path.dirname(mame)
+        log_path = os.path.join(rig, "launch.log")
+        if recording:
+            cmd, launch_env, launch_dir = recording.prepare(cmd, env, rig)
+            log_path = os.path.join(launch_dir, "launch.log")
+            print(f"Recording effective wheel/pedal/button inputs: {recording.path}")
+            print("Recording uses a private copy of the rig state; physical FFB is disabled.")
+        log = open(log_path, "w")
         # first line: what this launch actually applied (the support bundle
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
@@ -1460,15 +1464,21 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 "MIDV_FFB_PROFILE", "MIDV_FFB_RUMBLE", "MIDV_FFB_DAMPER",
                 "MIDV_FFB_FRICTION", "MIDV_FFB_SPRING", "MIDV_FFB_TRACE")
         log.write("launch " + rom + ": " + " ".join(
-            f"{k}={env[k]}" for k in keys if k in env) + chr(10))
+            f"{k}={launch_env[k]}" for k in keys if k in launch_env) + chr(10))
         log.flush()
-        return subprocess.Popen(cmd, env=env, cwd=os.path.dirname(mame),
-                                stdout=log, stderr=subprocess.STDOUT)
+        try:
+            proc = subprocess.Popen(cmd, env=launch_env, cwd=launch_dir,
+                                    stdout=log, stderr=subprocess.STDOUT)
+            proc.recording = recording
+            return proc
+        finally:
+            log.close()
 
     def launch_log_reason():
         try:
             lines = [ln.strip() for ln in
-                     open(os.path.join(rig, "launch.log"), errors="replace")
+                     open(os.path.join(recording.path, "record", "launch.log") if recording
+                          else os.path.join(rig, "launch.log"), errors="replace")
                      if ln.strip()]
         except OSError:
             return ""
@@ -1486,19 +1496,23 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     ctypes.windll.kernel32.SetErrorMode(0x8003)
 
     proc = hwnd = None
-    for attempt in (1, 2):
+    for attempt in ((1,) if recording else (1, 2)):
         proc = start()
         hwnd = find_mame_hwnd(proc, timeout=20)
         if hwnd and responsive(hwnd):
             break
         if proc.poll() is not None:
+            if recording:
+                recording.finish(proc.returncode)
             why = launch_log_reason()
             sys.exit(f"the emulator exited during startup"
                      f"{': ' + why if why else f' (code {proc.returncode})'}")
         proc.kill()   # pre-FFB hang: no force effects exist yet, kill is safe
         proc.wait()
+        if recording:
+            recording.finish(proc.returncode)
         hwnd = None
-        if attempt == 1:
+        if attempt == 1 and not recording:
             print("no responsive MAME window in 20s (device enumeration "
                   "hang) - relaunching")
     else:
@@ -1541,7 +1555,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
 
 
 def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
-                crackfill=True, ffb=None, mame=VUNIT):
+                crackfill=True, ffb=None, mame=VUNIT,
+                record_case=None, record_every=60, record_frames=0):
     """Blocking wrapper: launch, wait for the player to quit, then return.
 
     Watch the WINDOW, not the process: wait_or_kill's timeout is for a
@@ -1551,10 +1566,16 @@ def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
     this way; only this CLI path did not."""
     proc, hwnd = launch_game_async(rom=rom, scale=scale, windowed=windowed,
                                    crt=crt, crackfill=crackfill, ffb=ffb,
-                                   mame=mame)
+                                   mame=mame, record_case=record_case,
+                                   record_every=record_every, record_frames=record_frames)
     while proc.poll() is None and (not hwnd or u32.IsWindow(hwnd)):
         time.sleep(0.5)
-    return wait_or_kill(proc, mame)
+    result = wait_or_kill(proc, mame)
+    if getattr(proc, "recording", None):
+        proc.recording.finish(result)
+        if proc.recording.manifest["status"] != "recorded":
+            return 1
+    return result
 
 
 def main():
@@ -1568,9 +1589,14 @@ def main():
                     help="start with the CRT pass on (F9 toggles live)")
     ap.add_argument("--ffb", type=int, default=None,
                     help="FFB overall strength 0-100%% (0 = off)")
+    ap.add_argument("--record-case", help="new directory for a reproducible input recording")
+    ap.add_argument("--record-every", type=int, default=60, help="native snapshot interval in frames")
+    ap.add_argument("--record-frames", type=int, default=0, help="stop recording after N frames; 0 = exit manually")
     args = ap.parse_args()
     return launch_game(rom=args.rom, scale=args.scale, windowed=args.windowed,
-                       crt=args.crt, ffb=args.ffb, mame=args.mame)
+                       crt=args.crt, ffb=args.ffb, mame=args.mame,
+                       record_case=args.record_case, record_every=args.record_every,
+                       record_frames=args.record_frames)
 
 
 if __name__ == "__main__":

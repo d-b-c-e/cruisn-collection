@@ -2869,3 +2869,44 @@ The user authorized committing/pushing the assessment baseline, then improving
 implementation with emphasis on automated testing and diagnostic evidence.
 The next work prioritizes tests that fail reliably and isolated recorded-drive
 replay. Physical wheel output stays disabled during autonomous graphics tests.
+
+## 2026-09-05 - Recorded gameplay and diagnostic foundation
+
+After pushing the assessment baseline (collection d099c2f/tag
+assessment-2026-09-05, MAME fork/poc/quadlog 58203bb1), implemented the first
+diagnostic milestone authorized by the user. See
+docs/reviews/2026-09-05-implementation.md for complete changes, measurements,
+retained evidence and remaining findings; docs/DIAGNOSTIC-REPLAY.md for commands.
+
+True MAME INP recording now retains effective analog/digital inputs, initial
+NVRAM/config, executable/dependency fingerprints and native screenshot/time
+evidence. A scripted USA drive reaches Golden Gate Park gameplay. All 6,000
+input frames and 100 native snapshots match on identity replay and on the rebuilt
+MAME candidate. Live GL recording also matches native playback; a bounded race
+interval produced 32 backbuffer BMPs with stream/present/queue metadata and zero
+reported drops in that interval. These labels are asynchronous, not scene fences.
+
+Oracle/capture/renderer tools now fail on incomplete or mismatched evidence.
+21 hardware-free Python tests pass. An actual one-pixel reference corruption
+in a separate capture copy is rejected (99.9995%, exit 1); original capture-8000
+remains 100.0000%. Strict Zeus comparison correctly fails at 93.6313% color /
+75.6636% depth. Native equality does not clear live gameplay defects.
+
+Toolkit v0.10.0 (47b06f08) provides shared source-force rise detection; its native
+and managed tests/CI pass. MAME 1c420f32 uses pre-gain event detection including
+idle, scales supplemental cues with strength and logs results. Offline replay
+of 1,491 motor rows yields the same 13 candidate times at strength 25/50/100.
+No actual collision labels or physical wheel acceptance are claimed.
+
+OCR hold now counts consecutive missing frames; raw/fresh/held/age diagnostics
+are visible. File-only telemetry initializes sources without UDP and logs
+nonzero fresh USA speed during replay. Off Road speed remains unresolved.
+Typed SDL emergency cleanup is checked with mocks. Source ownership and pin
+checks cover collection and MAME together; the full patch series is refreshed.
+
+USA selection interval 2600..3600: native headless 336.60% speed; live GL 99.99%
+average but p99 host interval 77.64 ms and worst 124.41 ms. This instrumented
+run identifies pacing to investigate, not a general explanation of the user's
+unspecified car-selection slowdown. No speculative geometry, sky, seam or
+draw-distance patches were added; ordered live resources and guest visibility
+remain the highest rendering priorities.

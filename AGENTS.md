@@ -21,6 +21,16 @@ baseline. Prioritize diagnostic evidence and real gameplay input replay;
 automated graphics runs must disable physical wheel output. Preserve the
 review reports as a dated baseline and record fixes separately.
 
+Implemented workflow: `docs/DIAGNOSTIC-REPLAY.md`; results and remaining work:
+`docs/reviews/2026-09-05-implementation.md`. Record with `run_rig.py --record-case`;
+replay with `harness/replay.py`. Both disable wheel force. Real USA synthetic
+gameplay has matched 6,000 input frames and 100 native snapshots on replay;
+this does not establish human-wheel replay, other games or GL pixel equality.
+Run `python -m unittest discover -s tests -v` for hardware-free harness checks.
+Toolkit source is pinned to v0.10.0: `harness/sync_toolkit.py --ref v0.10.0`
+checks both consumers; `--write` updates. The OCR filter's canonical source is
+`native/hud_speed_filter.h`; `harness/sync_native.py` checks its MAME copy.
+
 **Read these two documents before doing anything:**
 
 1. `results/RESULTS.md` — the complete chronological engineering log. Every

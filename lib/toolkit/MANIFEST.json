@@ -1,0 +1,10 @@
+{
+  "commit": "47b06f08cd6b3044e5167821f48f024882ef035f",
+  "files": {
+    "include/force_model.h": "eae373e5bdaac97ad8c83b1f0a0ae4a1ccd55b0db5caa835581264b370f42842",
+    "include/force_profile.h": "f8fabb2fbc7b3a81194a8d7804270b4fda71ae606998de53c5cac0a85d1afc36",
+    "profiles/force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52"
+  },
+  "ref": "v0.10.0",
+  "schema": 1
+}

@@ -1,4 +1,5 @@
 results/oracle-runs/
+results/diagnostics/
 *.pyc
 __pycache__/
 results/build.log

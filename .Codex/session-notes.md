@@ -1,36 +1,48 @@
 # Session Notes
-<!-- Written during the assessment baseline; subsequent implementation updates follow. -->
 
 - **Date:** 2026-09-05
-- **Branch:** master (assessment baseline)
+- **Work:** independent assessment, then authorized diagnostic improvements
+- **Baseline:** collection d099c2f / tag assessment-2026-09-05; MAME 58203bb1
+  on fork/poc/quadlog; toolkit 4e99136 / same assessment tag. All pushed first.
 
 ## What Was Done
-- Wrote five independent assessment/proposal documents in `docs/reviews/`.
-- Reviewed collection, modified MAME and `dbce-wheel-mod-toolkit` sources.
-- Rechecked six archived V-Unit captures: 100.0000% native pixel equality.
-- Checked generated shaders and vendored force headers without changing them.
-- Updated README/AGENTS to distinguish archived proof from gameplay quality.
+- Five assessment documents plus separate toolkit review; implementation results
+  in docs/reviews/2026-09-05-implementation.md; commands in docs/DIAGNOSTIC-REPLAY.md.
+- MAME 1c420f32 on codex/diagnostic-signals, pushed to fork; full exported series
+  refreshed from mame0286. Two incremental builds succeeded; deployed mame untouched.
+- Toolkit v0.10.0 / 47b06f08 on codex/diagnostic-contracts pushed, tag pushed,
+  Windows/Linux CI passed; 105 managed tests and native semantic/conformance tests.
+- Shared pre-gain force rise detector, centered impact fix, UDP address family,
+  OCR consecutive-miss policy/file-only source initialization, typed SDL stop ABI.
+- True MAME INP recording, archived executable/config, strict replay validation,
+  synthetic USA gameplay, live GL capture metadata, offline native FFB analyzer.
+- 21 collection tests pass; negative real GPU pixel test exits 1; capture-8000
+  stays 100.0000%. Strict Zeus comparison fails as expected (93.6313% color).
+- USA 6,000-frame driving case and 100 native images match across replay and
+  candidate binary. Live GL record also matches native replay; 32 GL BMPs retained.
 
 ## Decisions Made
-- Preserve this assessment in a committed/pushed baseline before implementation.
-- User explicitly authorized subsequent improvements and fixes while away.
-- Prioritize reliable test failures, immutable diagnostics and recorded gameplay.
-- Attract-mode proof does not clear moving-gameplay rendering reports.
-- Automated graphics/algorithm tests must not actuate a wheel.
-- Keep the current renderer approach; investigate cause-specific visibility,
-  resource ordering, precision and streaming improvements using repeatable cases.
+- Automated recording/replay disables FFB and external telemetry, including live
+  user recording in this first version. Physical feel is still an attended test.
+- Preserve dated assessment; no speculative renderer/distance patch or retuning.
+- Native screenshot equality is distinct from async GL and subjective wheel quality.
+- Toolkit math is canonical there; collection native/hud_speed_filter.h is canonical
+  here. sync_toolkit.py checks both consumers; sync_native.py checks OCR helper.
 
-## Open Items
-- [ ] Implement reliable renderer/oracle pass/fail and failure-injection tests.
-- [ ] Build isolated real-driving input recording/replay with run manifests.
-- [ ] Repair typed emergency FFB cleanup and output acknowledgment.
-- [ ] Address live resource ordering and patch-group validation.
-- [ ] Repair collision detector integration and telemetry absence handling.
-- [ ] Investigate car-selection slowdown with a dedicated recorded case.
+## Open Items / Next Steps
+- [ ] Record human-driven defect routes; verify World/Off Road/Exotica separately.
+- [ ] Fix ordered texture/palette/clear replay and synchronization before geometry tuning.
+- [ ] Add scene fences and deterministic live GL comparisons; current labels are approximate.
+- [ ] Label collisions; explicit steering-axis effect and combined budget; physical wheel tests.
+- [ ] Investigate selection pacing: USA live test averaged real time but p99 77.64 ms.
+- [ ] Validate guest visibility/distance patch groups; native speed/Off Road OCR still open.
+- [ ] Toolkit validity/provenance, VID/PID selection and backend lifecycle contracts.
 
 ## Context for Next Session
-The other session finished at collection `8035c12` / MAME `58203bb1`.
-It incidentally committed two draft review documents; this session completes
-the assessment without undoing that commit. World OCR's three-digit range was
-verified there; Off Road OCR is explicitly still broken. Full review evidence
-and acceptance criteria are in `docs/reviews/2026-09-05-assessment.md`.
+Full cases are gitignored under results/diagnostics. Use
+scenario-20260905T231026Z-s1l7_egt/case for live-GL USA driving, or
+scenario-20260905T224940Z-knuxy44n/case for native driving; both have passing
+replays. Neutral archived seed: replay-smoke-20260905T224001Z-vop1s2s_/case.
+Compact evidence is tracked in results/proof/2026-09-05-diagnostic-milestone.json.
+Use run_rig --record-case for an actual wheel drive; early prototype cases are
+not supported references. No physical FFB quality or general rendering fix claimed.

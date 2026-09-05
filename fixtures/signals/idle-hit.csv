@@ -1,0 +1,5 @@
+# Synthetic source-force waveform. Not a labeled physical collision recording.
+ms,output,value
+0,wheel,0
+100,wheel,126
+800,wheel,0

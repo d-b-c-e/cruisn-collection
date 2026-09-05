@@ -732,8 +732,17 @@ def main():
                          "quad cracks showing the stale page) from bounded "
                          "neighbours - quality mode only")
     ap.add_argument("--bench", type=int, default=0, help="timed re-renders")
+    ap.add_argument("--report", help="write machine-readable verification JSON")
+    ap.add_argument("--output-dir", help="write previews here instead of the capture directory")
+    ap.add_argument("--no-png", action="store_true", help="verification only; do not write previews")
     args = ap.parse_args()
+    if args.scale < 1 or args.bench < 0:
+        ap.error("scale must be positive and bench must be non-negative")
+    from verification import compare_arrays, write_json
     cap = args.capture_dir
+    output_dir = args.output_dir or cap
+    if not args.no_png:
+        os.makedirs(output_dir, exist_ok=True)
     S = args.scale
     exact = (S == 1 and not args.wide)
 
@@ -814,11 +823,11 @@ def main():
         print(f"bench: {dt*1000:.3f} ms/scene at {fw}x{fh} "
               f"({1.0/dt:,.0f} fps equivalent)")
 
-    if os.environ.get("MIDV_DBG_MASK"):
+    if os.environ.get("MIDV_DBG_MASK") and not args.no_png:
         m = np.frombuffer(mask_tex.read(alignment=1), np.uint8)
         m = np.flipud(m.reshape(fh, fw)) * 255
         from PIL import Image as _I
-        _I.fromarray(m).save(os.path.join(cap, "mask.png"))
+        _I.fromarray(m).save(os.path.join(output_dir, "mask.png"))
         print("wrote mask.png")
 
     # ---- read back the index buffer ----
@@ -827,14 +836,25 @@ def main():
 
     tag = (f"gpu-{'wide-' if args.wide else ''}{'crt-' if args.crt else ''}"
            f"{'fill-' if args.crackfill else ''}s{S}")
+    report = {"schema": 1, "capture": os.path.abspath(cap), "scale": S,
+              "renderer": ctx.info["GL_RENDERER"],
+              "scope": "native-index-buffer" if exact else "quality-preview",
+              "passed": None}
     if exact:
         ref_vram = np.fromfile(os.path.join(cap, "videoram.bin"), dtype="<u2")
         off = 0x40000 if pc & 4 else 0
         ref = ref_vram[off:off + 0x40000].reshape(512, 512)[:height]
-        match = 100.0 * (gpu == ref).sum() / ref.size
-        diff = int((gpu != ref).sum())
+        report["comparison"] = compare_arrays(gpu, ref)
+        report["passed"] = report["comparison"]["passed"]
+        match = report["comparison"]["exact_percent"]
+        diff = report["comparison"]["differing_pixels"]
         print(f"GPU vs MAME videoram: {match:.4f}% bit-exact "
               f"({diff} differing pixels of {ref.size})")
+    if args.report:
+        write_json(args.report, report)
+    exit_code = 1 if report["passed"] is False else 0
+    if args.no_png:
+        return exit_code
 
     # ---- palette pass -> PNG ----
     pprog = ctx.program(vertex_shader=PAL_VS, fragment_shader=PAL_FS)
@@ -860,14 +880,14 @@ def main():
     img = np.flipud(img.reshape(fh, fw, 4)).copy()
 
     from PIL import Image
-    out = os.path.join(cap, f"{tag}.png")
+    out = os.path.join(output_dir, f"{tag}.png")
     Image.fromarray(img).save(out)
     # display-corrected copy (PAR 1.0417) for viewing
     disp = Image.fromarray(img).resize(
         (int(fw * 1.0417), fh), Image.LANCZOS if S > 1 else Image.NEAREST)
-    disp.save(os.path.join(cap, f"{tag}-view.png"))
+    disp.save(os.path.join(output_dir, f"{tag}-view.png"))
     print(f"wrote {out} (+ -view.png)")
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":

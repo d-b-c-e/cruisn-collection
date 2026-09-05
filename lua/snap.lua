@@ -25,7 +25,17 @@ local count = 0
 emu.register_frame_done(function()
     count = count + 1
     if frames[count] then
-        manager.machine.video:snapshot()
+        if os.getenv("SNAP_NAMED") == "1" then
+            local screen = manager.machine.screens[":screen"]
+            local err = screen:snapshot(string.format("frame_%08d.png", count))
+            if err then
+                emu.print_error("snap.lua: snapshot failed: " .. tostring(err))
+                manager.machine:exit()
+                return
+            end
+        else
+            manager.machine.video:snapshot()
+        end
         emu.print_info(string.format("snap.lua: snapshot at frame %d", count))
     end
     if count >= last then
