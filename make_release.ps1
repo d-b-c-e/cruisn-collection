@@ -62,12 +62,14 @@ foreach ($d in "fixtures", "patch", "docs") { Copy-Item -Recurse (Join-Path $roo
 # emulator falls back to values equal to cruisn-vunit@1 and FEEL has one entry.
 New-Item -ItemType Directory -Force (Join-Path $rel "lib\toolkit\profiles") | Out-Null
 Copy-Item (Join-Path $root "lib\toolkit\profiles\force-profiles.ini") (Join-Path $rel "lib\toolkit\profiles")
+# ...and beside vunit.exe, where the emulator reads it and where anyone
+# looking for the tunes will look. Without this the four shipped tunes are
+# invisible until the first launch deploys them.
+Copy-Item (Join-Path $root "lib\toolkit\profiles\force-profiles.ini") $rel
 Copy-Item (Join-Path $root "lib\toolkit\VERSION") (Join-Path $rel "lib\toolkit") -ErrorAction SilentlyContinue
-# The starter file for a player's own tune. Shipped BESIDE vunit.exe so it is
-# found without hunting, and in profiles\ so the launcher can put it back if
-# it is deleted. Inert until renamed to force-profiles.user.ini.
-New-Item -ItemType Directory -Force (Join-Path $rel "profiles") | Out-Null
-Copy-Item (Join-Path $root "profiles\force-profiles.user.ini.example") (Join-Path $rel "profiles")
+# The starter file for a player's own tune, beside vunit.exe next to the tunes
+# it extends. One copy only: a second buried one just raises the question of
+# which is real. Inert until renamed to force-profiles.user.ini.
 Copy-Item (Join-Path $root "profiles\force-profiles.user.ini.example") $rel
 New-Item -ItemType Directory -Force (Join-Path $rel "roms") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $rel "source") | Out-Null
