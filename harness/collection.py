@@ -786,7 +786,6 @@ def load_config():
             "ffb": 50 if ffb is None else max(0, min(100, ffb)),   # 50: a direct-drive base at 100 fights itself
             "scale": int(sec.get("scale", 4)),
             # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
-            "ffbclamp": int(sec.get("ffbclamp", 0) or 0),
             "ffbinvert": int(sec.get("ffb_invert", 0) or 0),
             "ffbprofile": str(sec.get("ffb_profile", "")).strip()
                           or "cruisn-vunit@1",
@@ -811,7 +810,6 @@ def save_config(state):
            "ffb": str(state.get("ffb", 100)),
            "transmission": state.get("transmission", "hpattern"),
            "scale": str(state["scale"]), "rom": state["rom"],
-           "ffbclamp": str(state.get("ffbclamp", 0)),
            "ffb_invert": str(state.get("ffbinvert", 0)),
            "ffb_profile": state.get("ffbprofile", "cruisn-vunit@1"),
            "world_rom": state.get("world_rom", "crusnwld24")}
@@ -993,7 +991,6 @@ def settings_rows(page, state, diag, version):
     reporting a problem. Keyed by id so adding a row cannot renumber the
     handlers - the old flat list needed a dozen index edits every time."""
     ffb = state.get("ffb", 50)
-    clamp = int(state.get("ffbclamp", 0))
     scale = int(state.get("scale", 4))
     trans = state.get("transmission", "hpattern")
 
@@ -1023,9 +1020,6 @@ def settings_rows(page, state, diag, version):
             ("ffb", "STRENGTH", f"< {ffb}% >",
              "0% = FORCE FEEDBACK OFF      LOWER IF THE WHEEL FEELS HARSH      "
              "30-40 SUITS A DIRECT-DRIVE BASE"),
-            ("clamp", "PEAK LIMIT", "< OFF >" if not clamp else f"< {clamp} >",
-             "CAPS THE GAMES' FORCE KICKS (OF 127)      STOPS A STRONG WHEEL "
-             "SLAMMING LEFT-RIGHT BY ITSELF      TRY 40 ON A DIRECT-DRIVE BASE"),
             ("invert", "DIRECTION",
              "< INVERTED >" if state.get("ffbinvert", 0) else "< NORMAL >",
              "WHICH WAY THE WHEEL PUSHES - BASES DIFFER.  FLIP IT IF THE WHEEL "
@@ -1119,7 +1113,7 @@ def direct_launch(card, windowed=False):
         steercurve=state["steercurve"].get(card),
         margin=state["margin"], ffb=game_ffb(state, card),
         marginfill=state.get("marginfill", True),
-        ffbclamp=state.get("ffbclamp", 0))
+        )
     gaks = ctypes.windll.user32.GetAsyncKeyState
     while proc.poll() is None and run_rig.u32.IsWindow(_hwnd):
         # Shift+F12 = quit (same key as in the launcher); WM_CLOSE is the
@@ -1786,16 +1780,6 @@ def main():
                     state["ffb"] = max(0, min(100, state.get("ffb", 50) + step))
                     save_config(state)
                     audio.blip("nav")
-                elif rid == "clamp" and (lr or enter):
-                    # OFF, 100, 80, 60, 40, 30 (the games' own cap is 127)
-                    steps = [0, 100, 80, 60, 40, 30]
-                    cur = int(state.get("ffbclamp", 0))
-                    i = steps.index(cur) if cur in steps else 0
-                    i = max(0, min(len(steps) - 1,
-                                   i + (1 if (right or enter) else -1)))
-                    state["ffbclamp"] = steps[i]
-                    save_config(state)
-                    audio.blip("nav")
                 elif rid == "invert" and (lr or enter):
                     state["ffbinvert"] = 0 if state.get("ffbinvert", 0) else 1
                     save_config(state)
@@ -2066,7 +2050,6 @@ def main():
                         steersens=state["steersens"].get(card),
                         steercurve=state["steercurve"].get(card),
                         margin=state["margin"], ffb=game_ffb(state, card),
-                        ffbclamp=state.get("ffbclamp", 0),
                         marginfill=state.get("marginfill", True))
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)

@@ -5,6 +5,21 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **Force feedback got simpler on purpose.** Three settings were removed
+  because each had a twin that did the same job - `ffb_smooth`, `ffb_slew`
+  and the FFB PEAK LIMIT row all duplicated something in the FEEL profile,
+  and where two settings do one job one of them silently wins. That was not
+  hypothetical: `ffb_smooth` was overriding every FEEL tune with the same
+  number, which made all four tunes identical and the whole feature inert
+  from the moment it shipped. Fixed, and the duplicates are gone.
+
+  There are now three places, each owning one thing: **STRENGTH** decides how
+  strong, **FEEL** decides how the force is shaped (smoothing, ceilings, rate
+  limits), and `rig\collection.ini` holds only the effects your wheel adds
+  that the game never sent - spring, rumble, damper, friction. Anything the
+  old knobs did is still available, in the profile, where it can be changed
+  coherently instead of fighting a menu row.
+
 - **The centring spring is back on for Cruis'n USA.** Releases up to v0.3.0
   packaged the force-feedback config from this project's own rig, which runs
   a 72% centring spring on USA and none on World or Off Road. From v0.3.1 the

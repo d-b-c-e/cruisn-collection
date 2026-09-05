@@ -204,18 +204,17 @@ every wheel movement that keeps pushing for about 150 ms after the wheel
 has stopped. On the arcade cabinet the wheel's own friction and inertia
 absorbed that tail; a direct-drive base has almost none, so the tail moves
 the wheel, the game kicks back the other way, and driving straight turns
-into alternating pulls. The knobs, from the SETTINGS menu unless noted:
+into alternating pulls. Three places, each owning one thing - nothing overlaps, so nothing silently
+overrides anything else:
 
-| knob | try | what it does |
+| where | what it decides | try |
 |---|---|---|
-| FFB STRENGTH | 40% | overall level |
-| FFB PEAK LIMIT | 60 | caps the biggest kicks; small road forces keep full strength |
-| FFB DIRECTION | | flip if the wheel runs away from centre (Exotica) or shakes at any strength (USA) |
-| `ffb_smooth = 50` | default | `rig\collection.ini` under `[collection]`: a low-pass on the force with that time constant in ms - the inertia the arcade motor had. **50 is the default** (it fixed the pulls on the project rig); 30 = lighter touch, 80 = softer, 0 = off |
-| `ffb_rumble = 100` | default | a 100 ms vibration burst on every force update at force x N% - the buzz the old plugin had, and what makes crashes and jumps shake (Exotica's are single-frame spikes). 0 turns it off, 50 halves it |
-| `ffb_damper = 30` | second | a damper the wheel base renders itself for the whole session (resistance proportional to how fast the wheel turns) - the arcade wheel's mechanical drag. The games' kicks then move a wheel that resists moving |
-| `ffb_friction = 10` | | constant drag, same idea, smaller doses |
-| `ffb_slew = 16` | | the force may move at most 16 (of 127) per game update - kicks become swells, small road detail is untouched (`MIDV_FFB_SLEW`); 8 = softer, 32 = subtle |
+| **SETTINGS > FORCE FEEDBACK > STRENGTH** | how strong, overall (per game on each game card) | 40% on an 8 Nm base |
+| **SETTINGS > FORCE FEEDBACK > FEEL** | how the force is shaped - smoothing, ceilings, rate limits, all of it | CALM if the wheel hunts, RAW if it feels dull |
+| `rig\collection.ini` `[collection]` | effects your **wheel** adds that the game never sent: `ffb_spring_<rom>`, `ffb_rumble`, `ffb_damper`, `ffb_friction` | `ffb_rumble = 0` if the wheel buzzes constantly |
+
+If a shaping value needs changing beyond what FEEL offers, that belongs in
+your own tune (see below) rather than a second setting somewhere else.
 
 Change one at a time and drive a minute of USA; the launch log's first
 line shows what was applied.

@@ -1197,7 +1197,7 @@ def apply_wheelmap(tree, rig):
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
-                      margin=None, ffb=None, marginfill=False, ffbclamp=None,
+                      margin=None, ffb=None, marginfill=False,
                       mame=VUNIT):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
@@ -1298,15 +1298,6 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             env.setdefault("MIDV_FFB_DEVICE", dev)
         if _collection_ini_get("collection", "ffb_invert", "") == "1":
             env["MIDV_FFB_INVERT"] = "1"
-        # No default: the FEEL profile owns smoothing, and passing one here
-        # overrode every tune with the same number, which made the four
-        # shipped tunes - they differ only in smoothing - identical.
-        smooth = _collection_ini_get("collection", "ffb_smooth", "")
-        if smooth.isdigit() and int(smooth) > 0:
-            # [collection] ffb_smooth = N ms: first-order low-pass on the
-            # force level (the arcade motor's inertia); kills the V-Unit
-            # damper's left-right limit cycle on a direct-drive base
-            env["MIDV_FFB_SMOOTH"] = smooth
         # [collection] ffb_profile = <name@version>: which tune in
         # force-profiles.ini the shaper runs. The conditioning chain moved into
         # the shared toolkit (dbce::force::Shaper) and is described by that file,
@@ -1341,16 +1332,6 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             v = _collection_ini_get("collection", key, "")
             if v.isdigit() and int(v) > 0:
                 env[var] = v
-    slew = _collection_ini_get("collection", "ffb_slew", "")
-    if slew.isdigit() and int(slew) > 0:
-        # [collection] ffb_slew = N: the force may move at most N (of 127)
-        # per game update - swells instead of slams (midvunit/midzeus patch)
-        env["MIDV_FFB_SLEW"] = slew
-    if ffbclamp:
-        # FFB PEAK LIMIT: cap the games' force kicks at +-N of 127 (midvunit
-        # WHLCTLZ write) - tames the damper loop on strong direct-drive
-        # wheels while small road forces keep full strength
-        env["MIDV_FFB_CLAMP"] = str(int(ffbclamp))
     if steersens is not None:
         # gain percent on the wheel deflection (ioport.cpp patch; MAME's
         # own cfg "sensitivity" is a no-op for absolute wheels): 200 =
@@ -1416,12 +1397,12 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # first line: what this launch actually applied (the support bundle
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
-                "MIDV_STEER_GAIN", "MIDV_STEER_CURVE", "MIDV_FFB_CLAMP",
+                "MIDV_STEER_GAIN", "MIDV_STEER_CURVE",
                 "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",
                 "MIDV_FFB",
                 "MIDV_FFB_STRENGTH", "MIDV_FFB_DEVICE", "MIDV_FFB_INVERT",
-                "MIDV_FFB_SMOOTH", "MIDV_FFB_RUMBLE", "MIDV_FFB_DAMPER",
-                "MIDV_FFB_FRICTION", "MIDV_FFB_SLEW", "MIDV_FFB_TRACE")
+                "MIDV_FFB_PROFILE", "MIDV_FFB_RUMBLE", "MIDV_FFB_DAMPER",
+                "MIDV_FFB_FRICTION", "MIDV_FFB_SPRING", "MIDV_FFB_TRACE")
         log.write("launch " + rom + ": " + " ".join(
             f"{k}={env[k]}" for k in keys if k in env) + chr(10))
         log.flush()
