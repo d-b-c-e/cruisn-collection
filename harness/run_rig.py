@@ -1244,16 +1244,22 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             # force update at |force| x N % - what the plugin did, and what
             # made crashes (single-frame full-force spikes) shake
             env["MIDV_FFB_RUMBLE"] = rumble
+        # [collection] ffb_spring_<rom> = N %, falling back to ffb_spring.
+        # PER GAME on purpose: the FFB Arcade Plugin's stock config enables a
+        # spring for Cruis'n USA (ForceSpringStrengthCrusnUSA=72) and disables
+        # it for World and Off Road Challenge. A spring is what centres the
+        # wheel, so getting this wrong game-by-game is exactly the difference
+        # being chased.
+        spring = (_collection_ini_get("collection", "ffb_spring_" + rom, "")
+                  or _collection_ini_get("collection", "ffb_spring", ""))
+        if spring.isdigit() and int(spring) > 0:
+            env["MIDV_FFB_SPRING"] = spring
+
         for key, var in (("ffb_damper", "MIDV_FFB_DAMPER"),
-                         ("ffb_friction", "MIDV_FFB_FRICTION"),
-                         ("ffb_spring", "MIDV_FFB_SPRING")):
-            # [collection] ffb_damper / ffb_friction / ffb_spring = N %:
-            # condition effects the base renders itself for the whole session -
-            # the arcade wheel's mechanical resistance a direct-drive base
-            # lacks. ffb_spring is CENTRING, and the FFB Arcade Plugin runs one
-            # for these games (EnableForceSpringEffectCrusnUSA=1 in its stock
-            # config) while this build never did. It is the first thing to try
-            # for a centre that feels looser than the plugin's.
+                         ("ffb_friction", "MIDV_FFB_FRICTION")):
+            # [collection] ffb_damper / ffb_friction = N %: condition effects
+            # the base renders itself for the whole session - the arcade
+            # wheel's mechanical resistance a direct-drive base lacks
             v = _collection_ini_get("collection", key, "")
             if v.isdigit() and int(v) > 0:
                 env[var] = v
