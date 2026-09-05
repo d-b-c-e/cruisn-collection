@@ -170,13 +170,12 @@ FEEL row. That file is never overwritten by an update, and its tunes win
 over the shipped ones; the `force-profiles.ini` next to it is replaced on
 every update, so edit the `.user.ini`, not that one.
 
-**Centring spring**: USA, World and Off Road Challenge each run a 72%
-centring spring on the wheel by default - this is what pulls the wheel back
-to straight and stops it feeling floppy. USA's 72 is the setting this
-project's own cabinet has always used and what the earliest releases
-shipped; World and Off Road are set to match, which is new rather than
-restored, so say if either feels over-sprung. Cruis'n Exotica is excluded
-because that game makes its own centring force. Change it per game with `[collection] ffb_spring_<rom>` in
+**Centring spring** (SETTINGS > FORCE FEEDBACK > SPRING) pulls the wheel
+back to straight so it does not feel floppy. It is **off by default**: the
+games' own forces are small, and a constant spring easily drowns the road
+detail underneath it. If you want centring, start around 20-30 and stop as
+soon as you can still feel the road. Cruis'n Exotica never uses it - that
+game makes its own centring force. Change it per game with `[collection] ffb_spring_<rom>` in
 `rig\collection.ini`; `0` turns it off.
 
 **SETTINGS → FFB DIRECTION**: wheel bases do not agree on which way a

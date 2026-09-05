@@ -229,7 +229,12 @@ def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
 #
 # Exotica is deliberately absent: the game generates its own centring force
 # (that is the whole Exotica FFB find), so a device spring would double it.
-FFB_SPRING_DEFAULT = {"crusnusa": "72", "crusnwld": "72", "offroadc": "72"}
+# Empty: no centring spring unless the player asks for one. 72 shipped briefly
+# (2026-09-05) on the strength of the config the early releases carried, and at
+# the wheel it buried the road detail it was meant to sit under - the games'
+# own forces are small next to a constant device effect. SETTINGS > FORCE
+# FEEDBACK > SPRING turns it on for anyone who wants it.
+FFB_SPRING_DEFAULT = {}
 
 # Games that must never get a device spring, whatever the setting says.
 FFB_SPRING_NEVER = {"crusnexo"}

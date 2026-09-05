@@ -37,10 +37,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   a 72% centring spring on USA and none on World or Off Road. From v0.3.1 the
   packaging switched to a clean template where the spring is off everywhere,
   and it has been missing since - the "centre feels looser than normal"
-  report. All three V-Unit games now ship with a 72% spring by default -
-  USA restoring what it had, World and Off Road gaining one they never had
-  (neither the rig's tune nor the plugin's defaults enabled it there, so
-  that pair is new ground; `ffb_spring_crusnwld = 0` backs it out).
+  report. It is available again as **SETTINGS > FORCE FEEDBACK > SPRING**,
+  but **off by default**: shipped at 72 for a few hours on the strength of
+  the config the early releases carried, it buried the road detail it was
+  meant to sit under, because the games' own forces are small next to a
+  constant device effect. Turn it on if you want centring; start low.
   Cruis'n Exotica is deliberately excluded: that game generates its own
   centring force, so a second one on the wheel would fight it.
   Override per game with `[collection] ffb_spring_<rom>` (0 turns it off).
