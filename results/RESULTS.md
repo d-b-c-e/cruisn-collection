@@ -2810,3 +2810,46 @@ backwards against its own layout - **turn the wheel LEFT to select MANUAL**
 (M is drawn on the right). The alternative, an intuitive menu with reversed
 steering, is worse. The virtual sequential shifter (MIDZ_SEQ_SHIFT, shipped
 inert since v0.3.5) should now be live; a rig drive is the remaining check.
+
+
+## 2026-09-04 - "the left arrow acts like ENTER": phantom wheel buttons, not the keyboard
+
+User report: opening the launcher and pressing LEFT as the very first key
+jumps into a submenu, as though ENTER had been pressed.
+
+The menu key handler is clean (LEFT moves the selection, ENTER opens the
+card), so the ENTER had to be synthesised elsewhere. Added
+`CRUISN_INPUT_DEBUG=1`, which tags every action with its origin (keyboard /
+hat / wheel button / steering / gas), and reproduced it by driving the shell
+with SendInput (glfw takes normal Windows keyboard messages, unlike MAME's
+rawinput, so a synthetic key does reach it):
+
+```
+[input]  209.40  keyboard: 263      <- KEY_LEFT
+[input]  209.42 button j1b80: 257   <- KEY_ENTER, 20 ms later
+```
+
+Isolating the device with a bare polling probe (no launcher) showed the
+cause has nothing to do with the keyboard: the **MOZA R12 Base reports 132
+DirectInput buttons and pulses unused ones continuously** - 400 edges in
+6 s, button 42 in one run, 43/44 in the next, i.e. a moving index. The
+existing 0.6 s re-enumeration debounce swallows the fast stream, but an
+isolated pulse after a quiet period passes it, and the menu's rule was "any
+wheel button press+release = OK". So the phantom ENTER fires at random and
+merely *appears* to be caused by whatever key was pressed at the time.
+
+Fix: menu OK is restricted to buttons bound in `[wheelmap]`
+(CONTROLS SETUP), gears excluded (an H-pattern shifter holds one closed);
+an empty map still accepts any button so a fresh install works out of the
+box. The allow-list is rebuilt when the wizard rebinds. On this rig the
+allowed set is Moza {8,9,10,19,21,22,34,35,40,48} + shifter {9,10}, which
+excludes the observed phantoms.
+
+Verified by re-running the same reproduction: **0 ENTER events** (was 1 per
+keypress), 3 phantom buttons logged as ignored, the keyboard LEFT arriving
+alone.
+
+Noted in passing: with the wheel parked at full lock (left there by the FFB
+sign probe) the steering axis auto-repeats LEFT into the menu ~3.5x/s, which
+is correct behaviour for a wheel held off centre but worth a troubleshooting
+line.

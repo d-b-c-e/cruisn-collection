@@ -5,6 +5,19 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- **The launcher menu no longer jumps into a submenu by itself.** It looked
+  like the left arrow key was acting as ENTER; in fact a wheel base can
+  report far more buttons than it has (this project's Moza R12 exposes 132)
+  and pulse the unused ones on its own - measured at ~30 edges a second,
+  on a different button from one run to the next. The menu accepted *any*
+  wheel button as OK, so an isolated phantom pulse became ENTER, landing in
+  whatever frame you happened to be pressing a key. Only buttons you bound
+  in CONTROLS SETUP can confirm a menu row now (gears excluded - an
+  H-pattern shifter holds one closed). With nothing bound yet, any button
+  still works, so a fresh install is unaffected.
+- `CRUISN_INPUT_DEBUG=1` traces where each menu action came from (keyboard,
+  hat, wheel button, steering, gas) - what pinned the above down.
+
 - **Cruis'n Exotica can be driven with a manual transmission at last.** The
   TRANS SELECT screen ("A / AUTO / M") always confirmed AUTO no matter what
   the wheel, shifter or buttons did, and we had it logged as a gap in the

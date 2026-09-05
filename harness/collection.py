@@ -1141,9 +1141,19 @@ def main():
                      args=(shell_hwnd, 10), kwargs={"stop": fg_stop},
                      daemon=True).start()
 
+    indbg = os.environ.get("CRUISN_INPUT_DEBUG")
+
+    def dbg(src, key):
+        """Trace the ORIGIN of a menu action (CRUISN_INPUT_DEBUG=1). The
+        menu sees one flat list, so a phantom OK is otherwise unattributable."""
+        if indbg:
+            print(f"[input] {time.time() % 1000:7.2f} {src:>9}: {key}",
+                  flush=True)
+        return key
+
     def on_key(_, key, sc, action, mods):
         if action == glfw.PRESS:
-            actions.append(key)
+            actions.append(dbg("keyboard", key))
 
     glfw.set_key_callback(win, on_key)
     hat_prev = 0
@@ -1316,6 +1326,45 @@ def main():
     nav_spec = parse_navspec()
     nav_state = {"dir": 0, "next": 0.0, "gas": False}
 
+    def parse_okbuttons():
+        """{device name: {button index}} the player bound in CONTROLS SETUP,
+        which are the only buttons allowed to act as menu OK.
+
+        Why: a wheel base can expose far more DirectInput buttons than it has
+        (the project's Moza R12 reports 132) and pulse the unused ones by
+        itself - measured at ~30 edges/second, on a different index from one
+        run to the next. "Any button = OK" turned an isolated phantom pulse
+        into ENTER, so the menu would jump into a submenu on its own (it
+        looked like whichever key you happened to press did it). Gears are
+        left out: an H-pattern shifter holds one closed.
+        Empty map (nothing bound yet) = accept any button, so a fresh install
+        still works with a pad or wheel out of the box."""
+        import configparser
+        cp = configparser.ConfigParser()
+        cp.read(os.path.join(run_rig.POC, "rig", "collection.ini"))
+        out = {}
+        if "wheelmap" not in cp:
+            return out
+        for key, val in cp["wheelmap"].items():
+            if key in ("gear1", "gear2", "gear3", "gear4") or "|" not in val:
+                continue
+            dev, spec = val.split("|", 1)
+            if not spec.startswith("btn:"):
+                continue
+            try:
+                out.setdefault(dev, set()).add(int(spec[4:]))
+            except ValueError:
+                pass
+        return out
+
+    ok_buttons = parse_okbuttons()
+
+    def ok_button(jid, name, btn):
+        """May this button confirm a menu row?"""
+        if not ok_buttons:
+            return True                      # nothing bound yet: accept any
+        return btn in ok_buttons.get(name, ())
+
     def nav_jid(dev):
         for jid in range(16):
             if glfw.joystick_present(jid):
@@ -1362,10 +1411,11 @@ def main():
                     fire = True
                 if fire:
                     if vertical:
-                        evs.append(glfw.KEY_DOWN if d > 0 else glfw.KEY_UP)
+                        evs.append(dbg("steer", glfw.KEY_DOWN if d > 0
+                                       else glfw.KEY_UP))
                     else:
-                        evs.append(glfw.KEY_RIGHT if d > 0
-                                   else glfw.KEY_LEFT)
+                        evs.append(dbg("steer", glfw.KEY_RIGHT if d > 0
+                                       else glfw.KEY_LEFT))
                 nav_state["dir"] = d
             v, sgn = nav_axis("gas")
             if v is not None:
@@ -1374,7 +1424,7 @@ def main():
                 pressed = (v > 0.55 if sgn in ("pos", "neg")
                            else abs(v) > 0.6)
                 if pressed and not nav_state["gas"]:
-                    evs.append(glfw.KEY_ENTER)
+                    evs.append(dbg(f"gas v={v:.2f}", glfw.KEY_ENTER))
                     nav_state["gas"] = True
                 elif nav_state["gas"] and (
                         v < 0.3 if sgn in ("pos", "neg") else abs(v) < 0.3):
@@ -1448,7 +1498,7 @@ def main():
                                            (glfw.HAT_UP, glfw.KEY_UP),
                                            (glfw.HAT_DOWN, glfw.KEY_DOWN)):
                                 if hat & h and not (hat_prev & h):
-                                    actions.append(key)
+                                    actions.append(dbg("hat", key))
                         hat_prev = hat
                     break
             except Exception:
@@ -1460,11 +1510,14 @@ def main():
             # never releases, so it can never fire
             if armed:
                 for jid, name, btn in presses:
-                    ok_pending[(jid, btn)] = hat_changes
+                    if ok_button(jid, name, btn):
+                        ok_pending[(jid, btn)] = hat_changes
+                    elif indbg:
+                        dbg("ignored", f"unbound button j{jid}b{btn} ({name})")
                 for jid, btn in releases:
                     hc = ok_pending.pop((jid, btn), None)
                     if hc is not None and hc == hat_changes:
-                        actions.append(glfw.KEY_ENTER)
+                        actions.append(dbg(f"button j{jid}b{btn}", glfw.KEY_ENTER))
                         break
             else:
                 ok_pending.clear()
@@ -1588,6 +1641,7 @@ def main():
             if mode == "wizard" and wiz_idx >= len(wiz_steps):
                 save_wheelmap(wiz_bind)
                 nav_spec = parse_navspec()   # steering/gas nav follows
+                ok_buttons = parse_okbuttons()   # ... and so does menu OK
                 audio.blip("select")
                 mode = "settings"
         if rawlis is not None and mode != "wizard":

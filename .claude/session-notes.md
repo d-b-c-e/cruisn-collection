@@ -958,6 +958,10 @@ felt the native path yet: FFB DIRECTION is the knob if it runs away.
 v0.3.6 TAGGED 2026-09-04 after the rig verdict: strength 50 + ffb_smooth 50
 ("much better"; damper/friction opt-in). Open minor: launcher LEFT right
 after opening acts as ENTER; distant red/blue road specks.
+2026-09-04: launcher menu "LEFT acts like ENTER" = the Moza R12 exposing 132
+buttons and pulsing unused ones (~30/s, index moves between runs); menu OK
+now only accepts [wheelmap]-bound buttons. CRUISN_INPUT_DEBUG=1 tags action
+origins; SendInput drives the shell for repro (glfw takes normal key msgs).
 2026-09-04: **Exotica manual transmission SOLVED** - the TRANS SELECT
 screen is gated on the DS1 "Wheel Invert" DIP (Endprodukt's tip, proven
 headless: DIP off = the game confirms AUTO instantly whatever the wheel

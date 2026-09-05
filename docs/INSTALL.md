@@ -260,6 +260,14 @@ and so on).
   patch or margins), CRT off (F9). Whichever one fixes it names the
   culprit; then Save support bundle after the slow game — its
   `launch.log` ends with the emulator's measured speed.
+- **The menu opens a game or a settings row by itself** — fixed in this
+  version. Some wheel bases report dozens of buttons they do not have and
+  pulse them by themselves; the menu used to accept any of them as OK.
+  It now only accepts the buttons you bound in CONTROLS SETUP, so bind at
+  least a start button there if you want to confirm with the wheel.
+- **The menu selection scrolls on its own** — the steering axis moves the
+  highlight, so a wheel resting away from centre scrolls continuously.
+  Centre the wheel, or re-run CONTROLS SETUP if its centre looks wrong.
 - **Cruis'n Exotica: choosing MANUAL on the TRANS SELECT screen** — turn
   the wheel **left** to move the highlight to M, then press the gas. (It
   reads backwards against the on-screen layout: the cabinet DIP that makes
