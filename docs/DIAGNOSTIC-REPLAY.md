@@ -143,7 +143,7 @@ telemetry validity contract or a repair of Off Road's missing OCR implementation
 python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -v
 python harness/sync_native.py
-python harness/sync_toolkit.py --ref v0.10.0
+python harness/sync_toolkit.py --ref v0.10.1
 python gpu/renderer.py results/capture-8000 --no-png --report results/diagnostics/native.json
 ```
 

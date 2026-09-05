@@ -221,7 +221,7 @@ inline const char* user_profile_file()    { return "force-profiles.user.ini"; }
 inline bool load_profile_dir(const std::string& directory, const std::string& id,
                              Profile& out, std::string* why = 0) {
     std::string sep = (!directory.empty() && directory[directory.size() - 1] != '\\' &&
-                       directory[directory.size() - 1] != '/') ? "\\" : "";
+                       directory[directory.size() - 1] != '/') ? "/" : "";
     std::string text, chunk;
     if (detail::read_file(directory + sep + shipped_profile_file(), chunk)) text += chunk + "\n";
     if (detail::read_file(directory + sep + user_profile_file(), chunk))    text += chunk + "\n";

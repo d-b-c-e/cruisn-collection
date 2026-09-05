@@ -11,7 +11,8 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   6,000 frames; physical FFB is disabled in diagnostic recordings and replays.
 - Oracle and renderer checks now fail on incomplete evidence or pixel mismatch;
   added Windows/Linux harness CI and native helper checks.
-- Updated shared toolkit to v0.10.0. Impact candidates now include idle-to-hit
+- Updated shared toolkit to v0.10.1, including portable native profile loading.
+  Impact candidates now include idle-to-hit
   arrivals and are independent of global strength; supplemental cue amplitude
   scales with strength. Physical collision feel remains to be evaluated.
 - Fixed consecutive-miss OCR expiry and source initialization for file-only

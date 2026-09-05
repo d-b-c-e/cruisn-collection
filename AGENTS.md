@@ -27,7 +27,7 @@ replay with `harness/replay.py`. Both disable wheel force. Real USA synthetic
 gameplay has matched 6,000 input frames and 100 native snapshots on replay;
 this does not establish human-wheel replay, other games or GL pixel equality.
 Run `python -m unittest discover -s tests -v` for hardware-free harness checks.
-Toolkit source is pinned to v0.10.0: `harness/sync_toolkit.py --ref v0.10.0`
+Toolkit source is pinned to v0.10.1: `harness/sync_toolkit.py --ref v0.10.1`
 checks both consumers; `--write` updates. The OCR filter's canonical source is
 `native/hud_speed_filter.h`; `harness/sync_native.py` checks its MAME copy.
 

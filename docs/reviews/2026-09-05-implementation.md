@@ -80,6 +80,12 @@ tool reads a committed ref, checks old copies, updates both native consumers,
 and verifies version markers and a source-content manifest. Existing feel
 profiles and runtime user overrides were not retuned.
 
+The first collection CI run then exposed a native profile-loader portability
+defect: it joined directory/file names with a Windows-only separator. Fixed
+canonically in toolkit **v0.10.1** (`c9b76b72087579ffd3b58734f22704e0fc078ecb`),
+with actual file-loading checks on Windows and Linux. Both Cruis'n consumers
+now pin v0.10.1. This follow-up changes no force math or feel profile.
+
 The project-owned OCR filter now expires speed after **180 consecutive** missed
 reads, rather than an accumulation of unrelated misses. Valid reads reset that
 counter; an invalid frame cannot help confirm a large outlier. Fresh, held and
@@ -117,6 +123,10 @@ copies and are intentionally not part of a public release.
 | Toolkit managed tests | 105 pass | 41 telemetry, 64 FFB |
 | Toolkit native tests | Semantic tests at 30/60/250/1000 Hz; 10 profiles x 200 ticks match | MSVC and MinGW local; CI also passed |
 | MAME incremental build | Successful with GCC 16.2 | Known device_t compiler warning remains |
+
+The full exported MAME patch was also applied to the upstream `mame0286` files
+in an isolated repository; all 23 changed paths reproduced the committed MAME
+source exactly. Format-patch context whitespace is preserved deliberately.
 
 Useful retained cases:
 

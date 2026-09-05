@@ -2910,3 +2910,10 @@ run identifies pacing to investigate, not a general explanation of the user's
 unspecified car-selection slowdown. No speculative geometry, sky, seam or
 draw-distance patches were added; ordered live resources and guest visibility
 remain the highest rendering priorities.
+
+Follow-up during final CI: Windows and Linux Python checks passed; the Linux
+native analyzer exposed the toolkit profile loader's Windows-only separator.
+Fixed in the canonical toolkit as v0.10.1 (c9b76b7), added actual file-loading
+checks to its MSVC/Linux native tests, and updated both consumer pins. No force
+math or profiles changed. The complete MAME export was also applied from
+upstream files in an isolated repository and reproduced all 23 changed paths.

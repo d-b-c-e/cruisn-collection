@@ -10,8 +10,9 @@
   in docs/reviews/2026-09-05-implementation.md; commands in docs/DIAGNOSTIC-REPLAY.md.
 - MAME 1c420f32 on codex/diagnostic-signals, pushed to fork; full exported series
   refreshed from mame0286. Two incremental builds succeeded; deployed mame untouched.
-- Toolkit v0.10.0 / 47b06f08 on codex/diagnostic-contracts pushed, tag pushed,
-  Windows/Linux CI passed; 105 managed tests and native semantic/conformance tests.
+- Toolkit force fixes v0.10.0 / 47b06f08 passed CI; follow-up v0.10.1 / c9b76b7
+  fixes native file loading on Linux, exposed by collection CI. Both consumers
+  now pin v0.10.1. 105 managed tests and native semantic/conformance tests.
 - Shared pre-gain force rise detector, centered impact fix, UDP address family,
   OCR consecutive-miss policy/file-only source initialization, typed SDL stop ABI.
 - True MAME INP recording, archived executable/config, strict replay validation,
