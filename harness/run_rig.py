@@ -1298,7 +1298,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             env.setdefault("MIDV_FFB_DEVICE", dev)
         if _collection_ini_get("collection", "ffb_invert", "") == "1":
             env["MIDV_FFB_INVERT"] = "1"
-        smooth = _collection_ini_get("collection", "ffb_smooth", "50")   # default 50 ms (rig verdict 2026-09-04)
+        # No default: the FEEL profile owns smoothing, and passing one here
+        # overrode every tune with the same number, which made the four
+        # shipped tunes - they differ only in smoothing - identical.
+        smooth = _collection_ini_get("collection", "ffb_smooth", "")
         if smooth.isdigit() and int(smooth) > 0:
             # [collection] ffb_smooth = N ms: first-order low-pass on the
             # force level (the arcade motor's inertia); kills the V-Unit
