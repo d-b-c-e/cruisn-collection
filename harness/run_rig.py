@@ -218,9 +218,18 @@ def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
 # Not the plugin's stock defaults, which disable it everywhere: this is a
 # tune, and the two are worth keeping straight.
 #
+# World and Off Road run it too, by the owner's decision (2026-09-05), which
+# goes further than the evidence: only USA was ever shipped with a spring, so
+# only USA's 72 has actually been driven and liked. They get 72 rather than
+# the 80 sitting beside their disabled flags, because that 80 was never
+# exercised - the flag was off - and 72 is the one number with a verdict
+# attached. Cruis'n World is the one to watch: it already holds FULL force for
+# half a second at a time off-track and in crashes, so it has the least
+# headroom for another constant effect. Set ffb_spring_crusnwld = 0 to undo.
+#
 # Exotica is deliberately absent: the game generates its own centring force
 # (that is the whole Exotica FFB find), so a device spring would double it.
-FFB_SPRING_DEFAULT = {"crusnusa": "72"}
+FFB_SPRING_DEFAULT = {"crusnusa": "72", "crusnwld": "72", "offroadc": "72"}
 
 # The Cruis'n tunes shipped in the toolkit's profile file, newest last. A
 # tester can step through these from SETTINGS > FORCE FEEDBACK > FEEL and say

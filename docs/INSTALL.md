@@ -162,11 +162,13 @@ two and tell us which you liked; that is far easier to act on than a
 description. Custom tunes live in `force-profiles.user.ini` beside the
 emulator and survive updates.
 
-**Centring spring**: Cruis'n USA runs a 72% centring spring on the wheel by
-default - the setting this project's own cabinet has always used, and what
-the earliest releases shipped. World and Off Road run none, matching the
-same source. Cruis'n Exotica is excluded because that game makes its own
-centring force. Change it per game with `[collection] ffb_spring_<rom>` in
+**Centring spring**: USA, World and Off Road Challenge each run a 72%
+centring spring on the wheel by default - this is what pulls the wheel back
+to straight and stops it feeling floppy. USA's 72 is the setting this
+project's own cabinet has always used and what the earliest releases
+shipped; World and Off Road are set to match, which is new rather than
+restored, so say if either feels over-sprung. Cruis'n Exotica is excluded
+because that game makes its own centring force. Change it per game with `[collection] ffb_spring_<rom>` in
 `rig\collection.ini`; `0` turns it off.
 
 **SETTINGS → FFB DIRECTION**: wheel bases do not agree on which way a
