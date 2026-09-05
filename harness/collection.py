@@ -743,14 +743,10 @@ def load_config():
     def _num(key):
         v = str(sec.get(key, "")).strip()
         return int(v) if v.lstrip("-").isdigit() else None
-    sens, curve, ffbgame = {}, {}, {}
+    sens, curve = {}, {}
     for rom, _, _, _ in GAMES:
         sens[rom] = _num(f"steersens_{rom}")
         curve[rom] = _num(f"steercurve_{rom}")
-        # per-game FFB STRENGTH override (blank = the SETTINGS value):
-        # Exotica's spring peaks at a third of what the V-Unit kicks reach
-        fv = _num(f"ffb_{rom}")
-        ffbgame[rom] = None if fv is None else max(0, min(100, fv))
     for rom in list(sens):
         # pre-v0.3.3 values were MAME "sensitivity" units (default 25)
         # and never affected a wheel; the key is a percent gain now
@@ -781,7 +777,6 @@ def load_config():
             "marginfill": str(sec.get("marginfill", "0")) == "1",
             "steersens": sens,
             "steercurve": curve,
-            "ffbgame": ffbgame,
             "margin": int(mg) if mg.isdigit() else None,
             "ffb": 50 if ffb is None else max(0, min(100, ffb)),   # 50: a direct-drive base at 100 fights itself
             "scale": int(sec.get("scale", 4)),
@@ -820,8 +815,6 @@ def save_config(state):
         cv = state["steercurve"].get(rom)
         sec[f"steersens_{rom}"] = "" if sv is None else str(sv)
         sec[f"steercurve_{rom}"] = "" if cv is None else str(cv)
-        fv = state.get("ffbgame", {}).get(rom)
-        sec[f"ffb_{rom}"] = "" if fv is None else str(fv)
     # MERGE into the section: keys the shell does not own (ffb_diag,
     # exotica_gl, gamepatch_<rom>, anything a user or tool adds) must
     # survive a save - replacing the section wiped them at every launch
@@ -1076,12 +1069,6 @@ def settings_rows(page, state, diag, version):
     ]
 
 
-def game_ffb(state, card):
-    """FFB STRENGTH for one launch: the game card's override, else SETTINGS."""
-    v = state.get("ffbgame", {}).get(card)
-    return int(state.get("ffb", 50)) if v is None else int(v)
-
-
 GAME_ALIASES = {
     "usa": "crusnusa", "crusnusa": "crusnusa",
     "world": "crusnwld", "crusnwld": "crusnwld", "crusnwld24": "crusnwld",
@@ -1117,7 +1104,7 @@ def direct_launch(card, windowed=False):
         crt=state["crt"], crackfill=state["crackfill"],
         steersens=state["steersens"].get(card),
         steercurve=state["steercurve"].get(card),
-        margin=state["margin"], ffb=game_ffb(state, card),
+        margin=state["margin"], ffb=int(state.get("ffb", 50)),
         marginfill=state.get("marginfill", True),
         )
     gaks = ctypes.windll.user32.GetAsyncKeyState
@@ -1335,8 +1322,6 @@ def main():
                "(KEY 5 / BOUND COIN BUTTON)")
     VER_HINT = ("2.4 = LAST REVISION WITH MANUAL TRANSMISSION      "
                 "2.5 = FINAL REVISION, AUTOMATIC ONLY")
-    FFBG_HINT = ("FORCE FEEDBACK FOR THIS GAME ONLY - BLANK = THE SETTINGS "
-                 "VALUE.      EXOTICA'S SPRING IS SOFT: TRY 100 THERE")
 
     def game_rows(card):
         """(id, label, value, hint) rows for the per-game submenu."""
@@ -1349,10 +1334,6 @@ def main():
         rows.append(("curve", "STEERING CURVE",
                      "LINEAR (OFF)" if cv is None else f"< {cv} >",
                      CURVE_HINT))
-        fv = state.get("ffbgame", {}).get(card)
-        rows.append(("ffbg", "FFB STRENGTH",
-                     f"SETTINGS ({state.get('ffb', 50)}%)" if fv is None
-                     else f"< {fv}% >", FFBG_HINT))
         rom = cmos_rom(card)
         # no VOLUME row for games whose master byte isn't pinned (USA):
         # a row that can only point at the in-game = / - keys isn't a
@@ -1894,14 +1875,6 @@ def main():
                                                      else max(50, min(nxt, 200)))
                         save_config(state)
                         audio.blip("nav")
-                    elif lr and rid == "ffbg":
-                        step = 10 if key == glfw.KEY_RIGHT else -10
-                        glob = int(state.get("ffb", 50))
-                        cur = state.setdefault("ffbgame", {}).get(card)
-                        nxt = max(0, min(100, (glob if cur is None else cur) + step))
-                        state["ffbgame"][card] = None if nxt == glob else nxt
-                        save_config(state)
-                        audio.blip("nav")
                     elif lr and rid == "volume" and card in VOLUME_CMOS:
                         fname, addrs, vmax = VOLUME_CMOS[card]
                         rom = cmos_rom(card)
@@ -2067,7 +2040,7 @@ def main():
                         crackfill=state["crackfill"],
                         steersens=state["steersens"].get(card),
                         steercurve=state["steercurve"].get(card),
-                        margin=state["margin"], ffb=game_ffb(state, card),
+                        margin=state["margin"], ffb=int(state.get("ffb", 50)),
                         marginfill=state.get("marginfill", True))
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)

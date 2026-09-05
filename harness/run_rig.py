@@ -1323,8 +1323,13 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # Exotica's spring byte peaks ~46/127 at full lock and ~11 at a
         # normal steering angle (V-Unit kicks reach 100+): x4 makes it
         # felt at normal angles and clamps at the stops; FFB STRENGTH
-        # still scales on top (MIDZ_FFB_GAIN env overrides; 250 felt faint)
-        env.setdefault("MIDZ_FFB_GAIN", "400")
+        # still scales on top. 800 rather than 400 since the per-game
+        # STRENGTH row was dropped (2026-09-05): the rig ran Exotica at
+        # STRENGTH 100 against a global 50, so doubling the gain keeps the
+        # level it was tuned to while one global number now serves every
+        # game. Small angles are unchanged (4x50% == 8x50%/2); only the
+        # +-127 byte clamp arrives sooner, and it already clamped at lock.
+        env.setdefault("MIDZ_FFB_GAIN", "800")
         if exotica_manual:
             # cancels the Wheel Invert DIP for driving (see apply_exotica_dips)
             env["MIDZ_WHEEL_INVERT"] = "1"
