@@ -202,6 +202,39 @@ def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
         return proc.wait()
 
 
+def deploy_force_profiles(vunit_exe):
+    """Put force-profiles.ini beside vunit.exe, without stepping on a tune.
+
+    The emulator reads this file at startup, so a feel can be swapped by editing
+    text rather than rebuilding. The repo's copy is the shipped one; anything the
+    player writes goes in force-profiles.user.ini, which is never touched and
+    whose sections win.
+
+    A tune arrived at by driving must survive a routine update, so the shipped
+    file is only rewritten when it differs, and an edited shipped file is copied
+    aside first rather than silently replaced.
+    """
+    try:
+        src = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                           "lib", "toolkit", "profiles", "force-profiles.ini")
+        if not os.path.isfile(src):
+            return
+        dst = os.path.join(os.path.dirname(vunit_exe), "force-profiles.ini")
+        if os.path.isfile(dst):
+            with open(src, "rb") as a, open(dst, "rb") as b:
+                if a.read() == b.read():
+                    return
+            stamp = time.strftime("%Y%m%d-%H%M%S")
+            shutil.copy2(dst, dst + ".replaced-" + stamp)
+            print(f"ffb: force-profiles.ini differed; previous kept as "
+                  f"force-profiles.ini.replaced-{stamp}")
+        shutil.copy2(src, dst)
+        print(f"ffb: deployed force-profiles.ini beside {os.path.basename(vunit_exe)}")
+    except Exception as e:                     # never block a launch over this
+        print(f"ffb: could not deploy force-profiles.ini ({e}); "
+              f"vunit will fall back to its built-in values")
+
+
 def kill_stale_vunit(exe=None, why="stale"):
     """End any copy of our emulator still running from an earlier launch
     (a crash-at-exit leaves a zombie that keeps the wheel's force-feedback
@@ -1104,6 +1137,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
     exotica_manual = apply_exotica_dips(rig, rom)
     kill_stale_vunit(mame, why="left-over")
+    # the shaper reads this at startup; keep it in step with the repo
+    deploy_force_profiles(mame)
     # Game-code widescreen: when the presentation is full 16:9 and a per-game
     # widescreen patch exists (patch/game/<rom>-widescreen.txt), apply it via
     # MIDV_PATCH (memory-only at reset; ROM files untouched). The game then
@@ -1192,6 +1227,17 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             # force level (the arcade motor's inertia); kills the V-Unit
             # damper's left-right limit cycle on a direct-drive base
             env["MIDV_FFB_SMOOTH"] = smooth
+        # [collection] ffb_profile = <name@version>: which tune in
+        # force-profiles.ini the shaper runs. The conditioning chain moved into
+        # the shared toolkit (dbce::force::Shaper) and is described by that file,
+        # which lives beside vunit.exe in mame-src and is read at startup - so a
+        # tune can be swapped or edited without rebuilding the emulator.
+        # cruisn-vunit@1 reproduces what mvffb did by hand; @2 is the crisper
+        # centre being tested. If the file is missing, vunit falls back to
+        # built-in values identical to @1 and says so in midv_ffb.log.
+        profile = _collection_ini_get("collection", "ffb_profile", "cruisn-vunit@1")
+        if profile:
+            env["MIDV_FFB_PROFILE"] = profile
         rumble = _collection_ini_get("collection", "ffb_rumble", "100")   # plugin parity
         if rumble.isdigit() and int(rumble) > 0:
             # [collection] ffb_rumble = N %: a 100 ms vibration burst per
