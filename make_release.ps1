@@ -56,6 +56,13 @@ New-Item -ItemType Directory -Force $rel | Out-Null
 Copy-Item -Recurse (Join-Path $dist "*") $rel
 Copy-Item (Join-Path $root "build\dist\CruisnSetup.exe") $rel -ErrorAction SilentlyContinue
 foreach ($d in "fixtures", "patch", "docs") { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $rel $d) }
+# The toolkit's force profiles. run_rig.deploy_force_profiles() copies this
+# beside vunit.exe at every launch (backing up an edited one first), so the
+# SETTINGS > FORCE FEEDBACK > FEEL row has real tunes to offer. Without it the
+# emulator falls back to values equal to cruisn-vunit@1 and FEEL has one entry.
+New-Item -ItemType Directory -Force (Join-Path $rel "lib	oolkit\profiles") | Out-Null
+Copy-Item (Join-Path $root "lib	oolkit\profilesorce-profiles.ini") (Join-Path $rel "lib	oolkit\profiles")
+Copy-Item (Join-Path $root "lib	oolkit\VERSION") (Join-Path $rel "lib	oolkit") -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force (Join-Path $rel "roms") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $rel "source") | Out-Null
 foreach ($d in "harness", "gpu", "lua") { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $rel "source\$d") }
