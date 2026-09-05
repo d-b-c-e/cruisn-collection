@@ -1,7 +1,7 @@
 From 6f55ed93ce5df76f01007096657cfd2491000ad0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 28 Mar 2026 20:27:47 -0500
-Subject: [PATCH 01/81] dinput joystick: use DIJOYSTATE2 for 128-button support
+Subject: [PATCH 01/82] dinput joystick: use DIJOYSTATE2 for 128-button support
  Use c_dfDIJoystick2 as the primary data format for DirectInput joystick
  devices, with c_dfDIJoystick as a fallback. This raises the button limit from
  32 (DIJOYSTATE) to 128 (DIJOYSTATE2). The existing code already handles up to
@@ -63,7 +63,7 @@ index 98fdfb01..c01403ee 100644
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 02/81] POC: env-gated DMA quad logging + one-shot state dump
+Subject: [PATCH 02/82] POC: env-gated DMA quad logging + one-shot state dump
  for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -184,7 +184,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 03/81] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 03/82] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -443,7 +443,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 04/81] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 04/82] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1383,7 +1383,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 05/81] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 05/82] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1421,7 +1421,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 06/81] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 06/82] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1456,7 +1456,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 07/81] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 07/82] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1548,7 +1548,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 08/81] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 08/82] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1610,7 +1610,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 09/81] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 09/82] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1673,7 +1673,7 @@ index 7936ea9f..3d5b3200 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 10/81] POC: 2px overscan inset - CRT-hidden edge pixels showed
+Subject: [PATCH 10/82] POC: 2px overscan inset - CRT-hidden edge pixels showed
  as a thin border
 
 ---
@@ -1711,7 +1711,7 @@ index 3d5b3200..af795ef7 100644
 From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 21:22:25 -0500
-Subject: [PATCH 11/81] POC-NOTES: point sessions opened here at the cruisn-poc
+Subject: [PATCH 11/82] POC-NOTES: point sessions opened here at the cruisn-poc
  project home
 
 ---
@@ -1746,7 +1746,7 @@ index 00000000..1b4841d0
 From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:08:42 -0500
-Subject: [PATCH 12/81] CRT pass: mask + scanlines + curvature in the palette
+Subject: [PATCH 12/82] CRT pass: mask + scanlines + curvature in the palette
  stage, F9 live toggle
 
 PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
@@ -1921,7 +1921,7 @@ index af795ef7..e302e1f4 100644
 From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:32:30 -0500
-Subject: [PATCH 13/81] MIDV_SKIP_STARTUP_SCREENS: env-gated
+Subject: [PATCH 13/82] MIDV_SKIP_STARTUP_SCREENS: env-gated
  boot-straight-to-game (frontend)
 
 BAD_DUMP sets (crusnwld c31boot) force the warning screen past
@@ -1968,7 +1968,7 @@ index f2c9b7d1..0cc79ff2 100644
 From 1bc48fcea8b586a0a60b4359ccdb7aeedaca39ed Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:17:53 -0500
-Subject: [PATCH 14/81] GL thread teardown handshake: stop before machine
+Subject: [PATCH 14/82] GL thread teardown handshake: stop before machine
  destruction
 
 Exit-time msvcrt!memcpy AVs logged at roughly every second close. A
@@ -2083,7 +2083,7 @@ index e302e1f4..28e33519 100644
 From 3cac3d671118aa443ce4701e8cd9364f6d4f578d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:42:26 -0500
-Subject: [PATCH 15/81] winhybrid: DIJoystick2 primary format - 128-button
+Subject: [PATCH 15/82] winhybrid: DIJoystick2 primary format - 128-button
  support in the default provider
 
 The DIJOYSTATE2 base patch updated only the pure dinput module's enum
@@ -2150,7 +2150,7 @@ index d6f33d2d..856fb333 100644
 From cc0aff8c51463d6d006c837ba4fcccdabc8db7fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:53:03 -0500
-Subject: [PATCH 16/81] Overlay wndproc: hide cursor over the game, clicks
+Subject: [PATCH 16/82] Overlay wndproc: hide cursor over the game, clicks
  refocus MAME's window
 
 The DISABLED+TRANSPARENT overlay made every click a Windows error beep
@@ -2221,7 +2221,7 @@ index 28e33519..6a3395fd 100644
 From ad4d2d8bb312ffc1c05d1513d7b162e3306dfa14 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 01:24:00 -0500
-Subject: [PATCH 17/81] Zeus scoping counters + scanner-safe shader header
+Subject: [PATCH 17/82] Zeus scoping counters + scanner-safe shader header
  (midzeus joins the subtarget)
 
 - zeus2.cpp: env-gated MIDZ_STATS=1 quads/frame profiler at the
@@ -2827,7 +2827,7 @@ index 233e8a13..e27ff2e3 100644
 From a97419f068281bab1cc1c8e20f8b036b22a5d3cb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:23:43 -0500
-Subject: [PATCH 18/81] In-game Esc options menu + UDP telemetry (Phase A)
+Subject: [PATCH 18/82] In-game Esc options menu + UDP telemetry (Phase A)
 
 - Esc menu drawn by the GL overlay itself: MENU_VS/FS shaders (generated),
   pre-rendered A8 label bitmaps (midvunit_menu_assets.h, generated),
@@ -6266,7 +6266,7 @@ index 6a3395fd..0f0e0efd 100644
 From 366f811988600fc2abc62f534d0107cbde4a173c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:46:12 -0500
-Subject: [PATCH 19/81] Overlay: runtime coarse height - offroadc's 401st
+Subject: [PATCH 19/82] Overlay: runtime coarse height - offroadc's 401st
  scanline restored
 
 offroadc runs a 512x401 mode (visarea bottom 400); HEIGHT=400 was compiled
@@ -6388,7 +6388,7 @@ index 0f0e0efd..f363dcb7 100644
 From 71e566039517000202fd4c3848d438227d9de430 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 21:52:44 -0500
-Subject: [PATCH 20/81] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
+Subject: [PATCH 20/82] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
  on)
 
 Scene pass gains an R8UI "written this scene" mask on attachment 1
@@ -6563,7 +6563,7 @@ index f363dcb7..95d0e3ea 100644
 From d5f9f613a339fe6bb7154b9862f21944ef1b1461 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:38 -0500
-Subject: [PATCH 21/81] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
+Subject: [PATCH 21/82] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
  road rendering
 
 Upstream fix by Jos van Mourik (merged 2026-07-18, post-0.286): drop the
@@ -6757,7 +6757,7 @@ index ff15fbc0..5383fa5b 100644
 From 40c0fd8efb3997e126c3d4ab9fe1daff4fbcc919 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:50 -0500
-Subject: [PATCH 22/81] zeus2: backport mamedev/mame#15723 - solid fills, depth
+Subject: [PATCH 22/82] zeus2: backport mamedev/mame#15723 - solid fills, depth
  clear, translucency
 
 Open upstream PR by Jos van Mourik: guard fast-clear depth 0 (stuck black
@@ -6926,7 +6926,7 @@ index 5383fa5b..ff1959b8 100644
 From 93acdd2bb8c8a7953702e213c6a930763ad1659f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:35 -0500
-Subject: [PATCH 23/81] GL overlay: persist live CRT toggle state for the
+Subject: [PATCH 23/82] GL overlay: persist live CRT toggle state for the
  launcher
 
 F9 and the Esc-menu CRT toggle flip the pass live, but the collection
@@ -6970,7 +6970,7 @@ index 95d0e3ea..39290867 100644
 From 3c2dab3df51c1cb22f5bc7102dee557589600773 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:53 -0500
-Subject: [PATCH 24/81] zeus2: include zeus2.h hunk missed from the
+Subject: [PATCH 24/82] zeus2: include zeus2.h hunk missed from the
  #15719/#15723 backports
 
 Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
@@ -7024,7 +7024,7 @@ index cd2c30b2..874bece3 100644
 From c2003def0707ff71f91cfc35cdaa1e4fb516619b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:11:29 -0500
-Subject: [PATCH 25/81] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
+Subject: [PATCH 25/82] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
  the GL-renderer oracle
 
 Env-gated, zero cost unset. Records quads (post-transform clipped verts +
@@ -7312,7 +7312,7 @@ index 874bece3..4ba8ac06 100644
 From d3269e559855935bae803b9f71dfcde329625aad Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:59:58 -0500
-Subject: [PATCH 26/81] GL overlay: Esc-menu pause + margin extend
+Subject: [PATCH 26/82] GL overlay: Esc-menu pause + margin extend
  (MIDV_GL_MARGINFILL)
 
 The Esc options menu now pauses the machine while open (request from the
@@ -7442,7 +7442,7 @@ index 39290867..37c704ad 100644
 From 795ef54adc64bbccb019fd853457209a1618dd93 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 15:52:57 -0500
-Subject: [PATCH 27/81] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
+Subject: [PATCH 27/82] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
  at 4x for real
 
 The mzgl overlay (inside zeus2.cpp, mirroring midvunit_v.cpp): monitor-
@@ -8918,7 +8918,7 @@ index 37c704ad..de3d4830 100644
 From 4a0d50c01d436d3ba8bca454379230164bb71001 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:13:22 -0500
-Subject: [PATCH 28/81] ioport: env-gated steering response curve for PADDLE
+Subject: [PATCH 28/82] ioport: env-gated steering response curve for PADDLE
  fields
 
 MIDV_STEER_CURVE (percent exponent on normalized wheel deflection,
@@ -8984,7 +8984,7 @@ index 8c4cd18e..5197e95e 100644
 From 152fb87ddd321f3100d7cedfe28cf9d6f66867b3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:36:45 -0500
-Subject: [PATCH 29/81] GL overlay: margin extend actually works now
+Subject: [PATCH 29/82] GL overlay: margin extend actually works now
  (off-by-half-pixel probe)
 
 The clamp-extend sampled exactly the nominal margin-edge column - the
@@ -9043,7 +9043,7 @@ index 6c11a6b9..d4380e46 100644
 From ed208255c50c8ad457f1c3efb11671fe1c394e35 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:56:16 -0500
-Subject: [PATCH 30/81] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
+Subject: [PATCH 30/82] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
  16:9 margin
 
 Code patcher: the TMS320C31 program is copied maindata ROM -> program RAM
@@ -9171,7 +9171,7 @@ index de3d4830..02e4fb5a 100644
 From a75813dddec3f7d54b056f8103bada857270a2ea Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 23:47:03 -0500
-Subject: [PATCH 31/81] Telemetry Phase B: live speed over UDP (crusnusa) +
+Subject: [PATCH 31/82] Telemetry Phase B: live speed over UDP (crusnusa) +
  RAM-dump hunt tooling
 
 MIDV_RAMDUMP_DIR/_EVERY dumps DSP work RAM periodically for offline
@@ -9279,7 +9279,7 @@ index 02e4fb5a..baf3c9d1 100644
 From dce4734c36c510e7a739e0d2d37dc06a2e57f137 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 00:47:30 -0500
-Subject: [PATCH 32/81] GL overlay: backdrop-margin suppress fixes the "water
+Subject: [PATCH 32/82] GL overlay: backdrop-margin suppress fixes the "water
  through the ground"
 
 The Off Road bottom-corner "lake" reveal was the sky/horizon BACKDROP band
@@ -9427,7 +9427,7 @@ index baf3c9d1..b45aeed9 100644
 From d49c8acdaae51d904b21c64644ce8003545b156b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 11:57:13 -0500
-Subject: [PATCH 33/81] GL overlay: extend backdrop-margin suppress to crusnusa
+Subject: [PATCH 33/82] GL overlay: extend backdrop-margin suppress to crusnusa
  + crusnwld
 
 Generalize the backdrop signature to the per-game sky texbase low bytes
@@ -9476,7 +9476,7 @@ index b45aeed9..9bd977d9 100644
 From 6b28ed89c5788932d556c277794dcc30a693d70a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:22:32 -0500
-Subject: [PATCH 34/81] Fix Esc-menu resume: block the emu thread instead of
+Subject: [PATCH 34/82] Fix Esc-menu resume: block the emu thread instead of
  machine().pause()
 
 Resume could hang the game paused: machine().pause() paused fine, but the
@@ -9576,7 +9576,7 @@ index 9bd977d9..a92c28a9 100644
 From ffba178f038af29c4efe04deda9fbcd6b2f8576b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:55:30 -0500
-Subject: [PATCH 35/81] A1b: Exotica 16:9 widescreen (Zeus overlay)
+Subject: [PATCH 35/82] A1b: Exotica 16:9 widescreen (Zeus overlay)
 
 Render all Zeus geometry into a wider canvas (CW+2*MARGIN, shifted via a
 VS uMargin uniform); present 3D driving scenes at 16:9 (full wide canvas)
@@ -9768,7 +9768,7 @@ index 18c23b15..9c7d95bf 100644
 From 50e811d75d515932295a7b6fbf0e4319a3db9db1 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 13:04:39 -0500
-Subject: [PATCH 36/81] zeus2: silence the stock resolution-setup debug
+Subject: [PATCH 36/82] zeus2: silence the stock resolution-setup debug
  popmessage
 
 Exotica flashed "reg[30]: ... Screen: 512H X 400V yScale: 0" at the bottom
@@ -9805,7 +9805,7 @@ index 7bffa4b2..e35aceec 100644
 From 5f9bdcc56cc6a74270fed65199df72e491cf9570 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:25:04 -0500
-Subject: [PATCH 37/81] zeus2: skip per-quad frame_number call when live
+Subject: [PATCH 37/82] zeus2: skip per-quad frame_number call when live
  (emu-thread micro-opt)
 
 screen().frame_number() ran ~6.5k times/frame in the live emit path; the
@@ -9844,7 +9844,7 @@ index e35aceec..201bef85 100644
 From 5d0e2f95acee02701803a331d7f78691d51ce0eb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:37:41 -0500
-Subject: [PATCH 38/81] zeus2: skip MAME's CPU rasterization when the live
+Subject: [PATCH 38/82] zeus2: skip MAME's CPU rasterization when the live
  overlay renders
 
 With MIDZ_GL the game was rendered TWICE: our GL renderer draws every quad,
@@ -9907,7 +9907,7 @@ index 201bef85..80d0c937 100644
 From 5d11d1fe3e033e35d664ccec2391b50f851ba817 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:40:11 -0500
-Subject: [PATCH 39/81] zeus2 overlay: aspect-mode hysteresis fixes the width
+Subject: [PATCH 39/82] zeus2 overlay: aspect-mode hysteresis fixes the width
  wobble
 
 An iteration catching only HUD frame writes (no quads, pure timing)
@@ -9955,7 +9955,7 @@ index 80d0c937..f991981e 100644
 From 383046dd1e72d4a461ce5d3a4340ea9e4b958952 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:04:56 -0500
-Subject: [PATCH 40/81] zeus2: true full 16:9 for crusnexo - page-scoped margin
+Subject: [PATCH 40/82] zeus2: true full 16:9 for crusnexo - page-scoped margin
  clear + diag hooks
 
 The game renders a full 16:9 field of view already; the black margins were
@@ -10194,7 +10194,7 @@ index c06d6525..13f9f93b 100644
 From 9bcb20be675f5fe7d4a600ed2d57579958ed0dba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:24:08 -0500
-Subject: [PATCH 41/81] telem: wire crusnwld speed (0x0DDDC), tighten
+Subject: [PATCH 41/82] telem: wire crusnwld speed (0x0DDDC), tighten
  s_speed_addr to hunted parents
 
 Differential RAM-hunt of the crusnwld attract demo (results/ramhunt-wld)
@@ -10259,7 +10259,7 @@ index a92c28a9..25277823 100644
 From e028a2f8a9217603413ae43f8da44e7b04337b2a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:42:55 -0500
-Subject: [PATCH 42/81] midvunit shaders: regen for B5 sky-margin vertical
+Subject: [PATCH 42/82] midvunit shaders: regen for B5 sky-margin vertical
  smoothing
 
 Generated from gpu/renderer.py (never hand-edited). Present-pass margin
@@ -10340,7 +10340,7 @@ index 54113399..06c5cbf1 100644
 From 43ee457e55f05a8b0fdde8462931bf6bf3c1c43c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:45:26 -0500
-Subject: [PATCH 43/81] D1: menu-assets header comment cruisn-poc ->
+Subject: [PATCH 43/82] D1: menu-assets header comment cruisn-poc ->
  cruisn-collection
 
 Matches what gen_menu_assets.py already emits (the header just predated
@@ -10369,7 +10369,7 @@ index 97598357..4ae0a6e4 100644
 From 5f155d26df43bfc80266b780c1737ceb80373df3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:38:55 -0500
-Subject: [PATCH 44/81] Revert B5 sky-margin vertical smoothing - regressed 2D
+Subject: [PATCH 44/82] Revert B5 sky-margin vertical smoothing - regressed 2D
  screens
 
 The vertical gaussian blur smears any structured margin content (e.g. the
@@ -10450,7 +10450,7 @@ index 06c5cbf1..54113399 100644
 From 23adde255511f37970dacd7ec39db84a0525ec79 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:44:42 -0500
-Subject: [PATCH 45/81] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
+Subject: [PATCH 45/82] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
  real drive
 
 A real driving capture (results/drive-capture-crusnusa-*) debunked the
@@ -10523,7 +10523,7 @@ index 25277823..27b2d187 100644
 From ccc6b321980e972870c23538acb4f76029fbda62 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:54:30 -0500
-Subject: [PATCH 46/81] telem Phase C: Forza Horizon "Data Out" packet emitter
+Subject: [PATCH 46/82] telem Phase C: Forza Horizon "Data Out" packet emitter
  (SimHub-native)
 
 MIDV_TELEM_FORZA=host:port (default 127.0.0.1:5300) emits the FH4/5
@@ -10697,7 +10697,7 @@ index 27b2d187..3e2ce518 100644
 From 795d4f1fbc8deb6ccdef5ad842a21f6be7c60e5b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:07:31 -0500
-Subject: [PATCH 47/81] telem: Forza gear byte mirrors the real latched shifter
+Subject: [PATCH 47/82] telem: Forza gear byte mirrors the real latched shifter
 
 Read the driver-maintained m_shifter_state (fed by both the 4-position
 shifter and the sequential shift buttons) via a small accessor and map
@@ -10760,7 +10760,7 @@ index 3e2ce518..6905fd7e 100644
 From def66dab2025f9cf2f4e338ebcbfee5255324cc8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:24:59 -0500
-Subject: [PATCH 48/81] telem: gate speed/rpm - menu garbage pegged SimHub
+Subject: [PATCH 48/82] telem: gate speed/rpm - menu garbage pegged SimHub
  gauges
 
 Live rig finding (forza_probe): outside races the DSP words hold unrelated
@@ -10854,7 +10854,7 @@ index 6905fd7e..6865bc9f 100644
 From f7251ce9e2b65cac39ff992f9a09b734800cc47f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:42:23 -0500
-Subject: [PATCH 49/81] telem: MIDV_TELEM_FORZA accepts comma-separated targets
+Subject: [PATCH 49/82] telem: MIDV_TELEM_FORZA accepts comma-separated targets
 
 So SimHub (8000) and the forza_probe diagnostic (8001) can watch the same
 stream simultaneously - needed to catch the reported stuck-dash in the act.
@@ -10928,7 +10928,7 @@ index 6865bc9f..914472fb 100644
 From 5c3b5787fee2d8111ed84ea1d23902a98fb300d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:51:50 -0500
-Subject: [PATCH 50/81] telem: tighten speed plausibility gate 400 -> 320
+Subject: [PATCH 50/82] telem: tighten speed plausibility gate 400 -> 320
 
 Menu junk observed at 373 slipped under the 400 bound (and at 990 before);
 real max is ~301, so the bound must sit under 373.
@@ -10969,7 +10969,7 @@ index 914472fb..ae7d8706 100644
 From 0f3759db6a29c8f840d6fd0f28cf74564478426a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:13:25 -0500
-Subject: [PATCH 51/81] telem: dump the second work-RAM bank (0x400000) -
+Subject: [PATCH 51/82] telem: dump the second work-RAM bank (0x400000) -
  player physics lives there
 
 Detective chain from the user's 5x accelerate-to-full-stop drive: NO word
@@ -11056,7 +11056,7 @@ index ae7d8706..0368443e 100644
 From 70552419d62a694e61bb409901e73918003c9084 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:25:02 -0500
-Subject: [PATCH 52/81] telem: dump HUD rows (300-399, visible page) alongside
+Subject: [PATCH 52/82] telem: dump HUD rows (300-399, visible page) alongside
  RAM dumps
 
 The on-screen MPH + gear digits are the incorruptible ground truth: OCR
@@ -11102,7 +11102,7 @@ index 0368443e..ff611a5d 100644
 From e22e161bc23a108e1d25595f6691a3e249f85b82 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:40:45 -0500
-Subject: [PATCH 53/81] telem: dump C31 on-chip internal RAM (0x809800, 2K
+Subject: [PATCH 53/82] telem: dump C31 on-chip internal RAM (0x809800, 2K
  words) as ram3
 
 By elimination: the HUD-OCR ground truth from a real drive correlates with
@@ -11151,7 +11151,7 @@ index ff611a5d..b4d3c40e 100644
 From 8bb8d18801c7f71bb2a1c71024305295201f1978 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:56:25 -0500
-Subject: [PATCH 54/81] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
+Subject: [PATCH 54/82] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
  retire drone speed
 
 The HUD ground-truth investigation concluded: the on-screen RPM gauge's
@@ -11300,7 +11300,7 @@ index b4d3c40e..31e52393 100644
 From f91ec0dca3dba674c669f04083336318a9fa4d7f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 22:04:19 -0500
-Subject: [PATCH 55/81] telem: runtime HUD OCR - crusnusa speed read straight
+Subject: [PATCH 55/82] telem: runtime HUD OCR - crusnusa speed read straight
  off the frame
 
 The displayed MPH exists in no memory and the HUD is CPU-blitted (no
@@ -11717,7 +11717,7 @@ index 31e52393..7e74f9bb 100644
 From 381216fdc3df855a5f5e91dfda900bb1fc12c075 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 21:11:55 -0500
-Subject: [PATCH 56/81] Fix sky-through-ground on the left: backdrop cover is
+Subject: [PATCH 56/82] Fix sky-through-ground on the left: backdrop cover is
  now independent
 
 The user's driving screenshots showed the sky/horizon backdrop through
@@ -11780,7 +11780,7 @@ index 7e74f9bb..7fed9666 100644
 From d7770521dabf9aad82b5882d0df263bb788dffba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 21:27:44 -0500
-Subject: [PATCH 57/81] Revert "Fix sky-through-ground on the left: backdrop
+Subject: [PATCH 57/82] Revert "Fix sky-through-ground on the left: backdrop
  cover is now independent"
 
 This reverts commit 381216fdc3df855a5f5e91dfda900bb1fc12c075.
@@ -11824,7 +11824,7 @@ index 7fed9666..7e74f9bb 100644
 From b4dbf50514f08ac3dfab80186e3198e1eeb55cf2 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 22:49:14 -0500
-Subject: [PATCH 58/81] MIDV_FAST_EXIT + parked-UI suppression (crusnwld radio
+Subject: [PATCH 58/82] MIDV_FAST_EXIT + parked-UI suppression (crusnwld radio
  panel)
 
 - winmain: env-gated TerminateProcess after a clean frontend exit. The FFB
@@ -11923,7 +11923,7 @@ index 4c656623..efd02e7b 100644
 From 2ff12aaa474f2030acc1a15105bf8d20d3c52a22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 23:14:04 -0500
-Subject: [PATCH 59/81] Fine-space dither translucency (regenerated from
+Subject: [PATCH 59/82] Fine-space dither translucency (regenerated from
  gpu/renderer.py)
 
 The hardware fakes 50% alpha with a per-pixel checkerboard the CRT blends;
@@ -11986,7 +11986,7 @@ index 998ed76e..0f5fdfef 100644
 From f41dd7c8e6563166432ab3f5494114b605c1e54c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 25 Aug 2026 21:39:17 -0500
-Subject: [PATCH 60/81] HUD-OCR speed for World + provisional Off Road; 2D seam
+Subject: [PATCH 60/82] HUD-OCR speed for World + provisional Off Road; 2D seam
  fill; per-game hud dump
 
 - s_hud_box: crusnwld (14,76,342,368) calibrated offline from drive
@@ -12069,7 +12069,7 @@ index 904679ef..de471e33 100644
 From 4b801483f56124439fdcb16f4265f488d0e91045 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 26 Aug 2026 01:00:21 -0500
-Subject: [PATCH 61/81] MIDV_DMA_PCLOG: native unique-PC logger on the quad DMA
+Subject: [PATCH 61/82] MIDV_DMA_PCLOG: native unique-PC logger on the quad DMA
  port
 
 One full-speed headless run maps every poly-emit site in a game's DSP
@@ -12127,7 +12127,7 @@ index de471e33..50daacfe 100644
 From 80cb7a0e718e4428b099627aba96fa3fe45e4a26 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 29 Aug 2026 18:03:00 -0500
-Subject: [PATCH 62/81] Fix G10 perf regression: hoist MIDV_DMA_PCLOG getenv
+Subject: [PATCH 62/82] Fix G10 perf regression: hoist MIDV_DMA_PCLOG getenv
  out of the DMA hot path
 
 std::getenv ran once per DMA word (>1M environment scans/sec) since the
@@ -12161,7 +12161,7 @@ index 50daacfe..ff93ee70 100644
 From 97a330a72b19e90adf8dc14b1c6996ce198ce732 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 29 Aug 2026 19:08:18 -0500
-Subject: [PATCH 63/81] telem_init: clone-tolerant game matching (crusnwld24
+Subject: [PATCH 63/82] telem_init: clone-tolerant game matching (crusnwld24
  support)
 
 The World card now boots rev 2.4 (crusnwld24), the last revision with
@@ -12212,7 +12212,7 @@ index ff93ee70..709843ff 100644
 From 200e986e5327d97507335ff63d52b88c30fbd150 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 30 Aug 2026 21:37:20 -0500
-Subject: [PATCH 64/81] Quality mode: DDA-inclusive coverage for axis-aligned
+Subject: [PATCH 64/82] Quality mode: DDA-inclusive coverage for axis-aligned
  quads; merge split runs
 
 Two fixes for the crusnusa continue-screen vertical line (user report;
@@ -12343,7 +12343,7 @@ index 709843ff..16ae6eff 100644
 From 784bdfc6da392ec301b98d2840f270c519615136 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 30 Aug 2026 22:38:38 -0500
-Subject: [PATCH 65/81] MIDV_PATCH: self-healing re-assert (games revert low
+Subject: [PATCH 65/82] MIDV_PATCH: self-healing re-assert (games revert low
  words at startup)
 
 The V-Unit games' own startup code re-copies the low program words from
@@ -12472,7 +12472,7 @@ index 16ae6eff..4d91cf28 100644
 From 019efb24a06c4b0f8de8fbc4e9c8f610241424fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 01:55:12 -0500
-Subject: [PATCH 66/81] Review fixes: UV-extrapolated dilation, snapshot
+Subject: [PATCH 66/82] Review fixes: UV-extrapolated dilation, snapshot
  overrun, merge cap
 
 Second-set-of-eyes pass over today's overlay changes:
@@ -12603,7 +12603,7 @@ index 4d91cf28..9a0dbe23 100644
 From bcffabf54bcb22386f86c2472a26cffaba524c6c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 16:57:44 -0500
-Subject: [PATCH 67/81] MIDV_FFB_TRACE: timestamped log of every game output
+Subject: [PATCH 67/82] MIDV_FFB_TRACE: timestamped log of every game output
  (FFB diagnostics)
 
 MIDV_FFB_TRACE=<file> appends "ms,output,value" for every output change
@@ -12690,7 +12690,7 @@ index 9a0dbe23..13c65b29 100644
 From 8f3f785ffa833b2bab88f5a8645b489c66c19a9e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 18:17:24 -0500
-Subject: [PATCH 68/81] Overlay stats: MAME speed readout (support-bundle
+Subject: [PATCH 68/82] Overlay stats: MAME speed readout (support-bundle
  diagnostics)
 
 screen_update publishes machine().video().speed_percent()*100 into the
@@ -12755,7 +12755,7 @@ index 13c65b29..d246641e 100644
 From 5027dab8cc439f917bd7de8fb0583a9ef5df1243 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 19:09:21 -0500
-Subject: [PATCH 69/81] ioport: MIDV_STEER_GAIN - a steering sensitivity that
+Subject: [PATCH 69/82] ioport: MIDV_STEER_GAIN - a steering sensitivity that
  reaches the wheel
 
 MAME's per-port "sensitivity" is an exact identity for absolute analog
@@ -12830,7 +12830,7 @@ index 5197e95e..1e7679a9 100644
 From 93bac9db22eda14bef465c25366eef212274f1b0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 20:38:11 -0500
-Subject: [PATCH 70/81] midvunit: MIDV_FFB_CLAMP - cap the wheel-motor force
+Subject: [PATCH 70/82] midvunit: MIDV_FFB_CLAMP - cap the wheel-motor force
  byte (env-gated)
 
 Measured headless (wheel sweep under the force trace): the V-Unit games'
@@ -12898,7 +12898,7 @@ index c6841984..a5d5e018 100644
 From a3bc6cc97382aa308340b0073b13243f1c76e70d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 21:09:27 -0500
-Subject: [PATCH 71/81] Cruis'n Exotica wheel-motor output; telemetry shared
+Subject: [PATCH 71/82] Cruis'n Exotica wheel-motor output; telemetry shared
  with midzeus; output name override
 
 Exotica's force byte lives on the LED/lamp board write at offset 0
@@ -13165,7 +13165,7 @@ index 0d2d355b..491f3d71 100644
 From 566429c683c5488cbcc7d7544e9c5739facc2225 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 22:17:01 -0500
-Subject: [PATCH 72/81] midzeus: Cruis'n Exotica virtual sequential shifter
+Subject: [PATCH 72/82] midzeus: Cruis'n Exotica virtual sequential shifter
  (MIDZ_SEQ_SHIFT), FFB gain
 
 The game only knows a 4-position H-pattern shifter (IN1 bits 8-11). The
@@ -13311,7 +13311,7 @@ index 9e3a46cc..e7478c13 100644
 From 35d152752af50e5f6352b50f2d17cf511487b881 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 22:44:59 -0500
-Subject: [PATCH 73/81] midzeus: MIDZ_FORCE_IN1 - env-forceable "Not Used" IN1
+Subject: [PATCH 73/82] midzeus: MIDZ_FORCE_IN1 - env-forceable "Not Used" IN1
  lines on Exotica (shifter-line hunt)
 
 The seven lines the driver marks unused (0xF00D) become one IPT_CUSTOM
@@ -13390,7 +13390,7 @@ index e7478c13..eb5c2c45 100644
 From 4f5767929e5e97d519c3b260adb631f7c7691768 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 01:17:48 -0500
-Subject: [PATCH 74/81] zeus2 live overlay: never lose texture/palette state to
+Subject: [PATCH 74/82] zeus2 live overlay: never lose texture/palette state to
  a full ring; dense snapshot controls
 
 ring_push2 dropped any record when the 64 MB ring was full. A dropped
@@ -13539,7 +13539,7 @@ index 93b0482f..08a2ad13 100644
 From 72c9e6feedefa416ee117ed6891eb2a6bd703e87 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 10:52:16 -0500
-Subject: [PATCH 75/81] MIDV_FFB_SLEW - cap the wheel-motor force change per
+Subject: [PATCH 75/82] MIDV_FFB_SLEW - cap the wheel-motor force change per
  game update (V-Unit + Exotica)
 
 The FFB Arcade Plugin applies every game update instantly (one constant
@@ -13628,7 +13628,7 @@ index eb5c2c45..da63df49 100644
 From 958ca346f5b8d5ff5af3cef834a18e66f73318c8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 12:01:47 -0500
-Subject: [PATCH 76/81] FFB trace: log the steering input ("wheelpos" rows)
+Subject: [PATCH 76/82] FFB trace: log the steering input ("wheelpos" rows)
  next to the force output
 
 midv_trace_wheelpos(machine, tag) writes the steering port value into the
@@ -13710,7 +13710,7 @@ index 19fc9bea..d2fb9365 100644
 From daf47365925490105aa8798a3d24dbefbc6a29c5 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 13:33:57 -0500
-Subject: [PATCH 77/81] Built-in force feedback (mvffb): SDL2 haptics on the
+Subject: [PATCH 77/82] Built-in force feedback (mvffb): SDL2 haptics on the
  steering axis, replaces the FFB Arcade Plugin
 
 The drivers hand the signed wheel-motor byte (V-Unit WHLCTLZ, Exotica LED-board
@@ -14225,7 +14225,7 @@ index da63df49..59993cde 100644
 From 1c919566c1fd435ac45044d2230b39e104c16129 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 00:28:45 -0500
-Subject: [PATCH 78/81] mvffb: force low-pass (MIDV_FFB_SMOOTH),
+Subject: [PATCH 78/82] mvffb: force low-pass (MIDV_FFB_SMOOTH),
  damper/friction condition effects (MIDV_FFB_DAMPER/_FRICTION), instant
  release when the Esc menu opens
 
@@ -14397,7 +14397,7 @@ index 7ade3edb..2a185c04 100644
 From 95d0121ff6db841c9edc303fbfa1780f0573476b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 00:41:11 -0500
-Subject: [PATCH 79/81] mvffb: rumble channel (MIDV_FFB_RUMBLE, 100 ms burst
+Subject: [PATCH 79/82] mvffb: rumble channel (MIDV_FFB_RUMBLE, 100 ms burst
  per force update like the plugin), impulses bypass the smoothing
 
 Exotica's crash/jump effects are single 17 ms full-force spikes; the plugin's
@@ -14527,7 +14527,7 @@ index 2a185c04..d633d3bc 100644
 From 9f8397cf6eaaad68db02283cc0b3ce205aa25ae0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 10:27:00 -0500
-Subject: [PATCH 80/81] Backport mamedev/mame#16046 (Exotica game speed + SGRAM
+Subject: [PATCH 80/82] Backport mamedev/mame#16046 (Exotica game speed + SGRAM
  fill decode); wheel output renamed wheel_motor per #16055
 
 #16046 (mourix, merged 2026-09-03): the TMS320C32 timers were hardcoded at 10 MHz
@@ -14652,7 +14652,7 @@ index 59993cde..bf7a57f7 100644
 From 35b0a2507c87e3f6359700adb11a0bd2a5075585 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 10:50:24 -0500
-Subject: [PATCH 81/81] crusnexo: MIDZ_WHEEL_INVERT mirrors the steering read,
+Subject: [PATCH 81/82] crusnexo: MIDZ_WHEEL_INVERT mirrors the steering read,
  cancelling the Wheel Invert DIP for driving
 
 Exotica s TRANS SELECT screen is gated on the DS1 Wheel Invert DIP - with it off
@@ -14696,6 +14696,866 @@ index bf7a57f7..d55e7ea9 100644
  }
  
  
+-- 
+2.55.0.windows.3
+
+
+From 9a32a191911d56b66b8bedc80ff165079665e10b Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Fri, 4 Sep 2026 21:20:00 -0500
+Subject: [PATCH 82/82] FFB conditioning moves to the shared toolkit shaper
+
+mvffb's hand-written chain (impulse bypass, dt-aware low-pass, settle-to-zero,
+re-level threshold) is now dbce::force::Shaper driven by a named profile, so a
+feel can be swapped by editing text instead of rebuilding the emulator.
+MIDV_FFB_PROFILE selects it; cruisn-vunit@1 is the default and reproduces
+exactly what this code was doing.
+
+Cruis'n is the toolkit's first SHAPER-ONLY consumer. The arcade board hands
+over a finished motor byte, so there is no physics and Model is never built.
+
+The feel is measured, not assumed: the toolkit's CruisnVectorTests transcribes
+this file's previous algorithm verbatim and drives both it and cruisn-vunit@1
+with 62 s of real motor bytes captured on the rig, at the worker's 4 ms
+cadence. Worst difference 33 of 32767, mean 1.8 - one re-level step, which is
+as close as two implementations get when they differ only in where rounding
+happens.
+
+midv_ffb_write now stores the UN-GAINED normalised level. The shaper owns the
+gain (shaper.strength), and applying it in both places would square it - the
+launcher's FFB STRENGTH is a plain percent while shaper.strength is
+50-is-unity, so it is halved on the way in.
+
+If force-profiles.ini is missing, built-in values identical to cruisn-vunit@1
+are used and the log says so. Force feedback does not depend on a data file
+being present.
+
+Headers under src/mame/midway/dbce/ are VENDORED copies pinned at v0.9.0, not
+sources. See dbce/README.md, including the note that compiling them in makes
+the combined binary GPL-3.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ src/mame/midway/dbce/README.md       |  20 ++
+ src/mame/midway/dbce/VERSION         |   2 +
+ src/mame/midway/dbce/force_model.h   | 370 +++++++++++++++++++++++++++
+ src/mame/midway/dbce/force_profile.h | 235 +++++++++++++++++
+ src/mame/midway/midvunit_v.cpp       | 100 ++++++--
+ 5 files changed, 701 insertions(+), 26 deletions(-)
+ create mode 100644 src/mame/midway/dbce/README.md
+ create mode 100644 src/mame/midway/dbce/VERSION
+ create mode 100644 src/mame/midway/dbce/force_model.h
+ create mode 100644 src/mame/midway/dbce/force_profile.h
+
+diff --git a/src/mame/midway/dbce/README.md b/src/mame/midway/dbce/README.md
+new file mode 100644
+index 00000000..f41e213b
+--- /dev/null
++++ b/src/mame/midway/dbce/README.md
+@@ -0,0 +1,20 @@
++# Vendored from dbce-wheel-mod-toolkit
++
++`force_model.h` and `force_profile.h` are **copies**, not sources. They come from
++`E:\Source\dbce-wheel-mod-toolkit` (`native/forcemodel/`) and are pinned by the
++VERSION file beside them.
++
++Do not edit them here. Fix a shaping bug in the toolkit, cut a release, then
++re-vendor. The toolkit's conformance test pins these headers against a C#
++implementation of the same maths, and editing this copy silently breaks that.
++
++Cruis'n uses the **shaper only**. There is no force model to run: the arcade
++board hands over a finished signed motor byte, so `Model` is never constructed.
++
++## Licensing note
++
++MAME is GPL-3 and this file is compiled into `vunit.exe`, which makes the
++combined binary GPL-3. Both repositories have the same owner, so this is a
++choice rather than a conflict - but it is a real one, and it is why
++`docs/adr/0001-ffb-output-backends.md` in cruisn-collection originally kept
++Cruis'n off the toolkit.
+diff --git a/src/mame/midway/dbce/VERSION b/src/mame/midway/dbce/VERSION
+new file mode 100644
+index 00000000..9d145fb3
+--- /dev/null
++++ b/src/mame/midway/dbce/VERSION
+@@ -0,0 +1,2 @@
++v0.9.0
++dbce-wheel-mod-toolkit
+diff --git a/src/mame/midway/dbce/force_model.h b/src/mame/midway/dbce/force_model.h
+new file mode 100644
+index 00000000..567ed51d
+--- /dev/null
++++ b/src/mame/midway/dbce/force_model.h
+@@ -0,0 +1,370 @@
++// force_model.h - header-only force model and output conditioning (C++11).
++//
++// The C++ counterpart of Dbce.Wheel.Ffb's ForceModel and ForceShaper, for
++// native mods (dinput8 proxies, emulator forks). Same terms, same order, same
++// constants; a conformance test drives both with one profile and the same input
++// sequence and requires identical output, so the two cannot drift.
++//
++// The split that matters: this file decides how a force FEELS. Working out what
++// the car is doing - reading the car struct, a surface lookup table, collision
++// flags - stays in the game's own mod, because that part really is per game.
++// Fill a ForceInputs from whatever the game exposes, leave the has* flags false
++// for what it does not, and the model uses what it has.
++//
++//   dbce::force::Profile p;
++//   dbce::force::load_profile_dir(gameDir, "arcade-outrun@1", p);   // force_profile.h
++//   dbce::force::Model  model(p.model);
++//   dbce::force::Shaper shaper(p.shaper);
++//   ...
++//   dbce::force::Inputs in;
++//   in.steer = steer; in.has_steer = true;
++//   in.speed_mps = speed; in.lateral_g = lat; in.has_lateral_g = true;
++//   float f = shaper.shape(model.compute(in, dt), speed * 3.6f, dt, model.last_was_event);
++//   ffb.SetDeviceForcesXY((int)(f * 10000.f), 0);
++//
++// Sign convention: a positive output pushes the wheel toward positive steer,
++// so the model returns a NEGATIVE force for a positive steer, which is
++// centring. Which DirectInput sign that maps to is a per-wheel fact - measure
++// it and set shaper.invert.
++//
++// Lineage: OutRun2006Tweaks-FFB (the centre-out structure, the conditioning
++// chain and its order), art-of-sim-rally (lateral force x trail, low-speed
++// fade), cruisn-collection (slew and peak clamp as the instability ladder).
++#pragma once
++#include <cmath>
++#include <cstring>
++
++namespace dbce { namespace force {
++
++// ---------------------------------------------------------------- inputs
++struct Inputs {
++    float steer;              // -1..1, left negative
++    float steer_rate;         // full travel per second
++    bool  has_steer, has_steer_rate;
++
++    float speed_mps;          // absolute
++
++    float front_lateral_force;// newtons on the steered axle
++    bool  has_front_lateral_force;
++    float lateral_g;          // when tyre forces are not available
++    bool  has_lateral_g;
++    float longitudinal_g;     // positive accelerating
++    bool  has_longitudinal_g;
++
++    float front_slip_angle_deg, ideal_slip_angle_deg;
++    bool  has_slip;
++    float drift_amount;       // 0..1
++    bool  has_drift;
++
++    float texture;            // 0..1 surface texture this tick
++    float impact;             // >0 for one tick on a collision
++    float impact_direction;   // -1 left, +1 right, 0 unknown
++    bool  gear_shift;         // true for one tick
++
++    Inputs() { std::memset(this, 0, sizeof(*this)); }
++};
++
++// ---------------------------------------------------------------- settings
++// Defaults match Dbce.Wheel.Ffb.ForceModelSettings exactly.
++struct ModelSettings {
++    float spring_strength;
++    float spring_full_speed_mps;
++    float damper_strength;
++    float damper_static_fraction;
++    float lateral_weight;            // ForceModelSettings.SteeringWeight
++    float lateral_force_reference;
++    float lateral_g_reference;
++    float trail_floor;
++    float trail_slip_span;
++    float grip_loss;
++    float weight_transfer;
++    float weight_transfer_min, weight_transfer_max;
++    float texture_strength;
++    float texture_hz;
++    float impact_strength;
++    float impact_seconds;
++    float shift_strength;
++    float shift_seconds;
++
++    ModelSettings()
++        : spring_strength(0.f), spring_full_speed_mps(30.f),
++          damper_strength(0.f), damper_static_fraction(0.4f),
++          lateral_weight(1.f), lateral_force_reference(11500.f), lateral_g_reference(1.2f),
++          trail_floor(0.6f), trail_slip_span(2.f), grip_loss(0.f),
++          weight_transfer(0.f), weight_transfer_min(-0.20f), weight_transfer_max(0.30f),
++          texture_strength(0.f), texture_hz(12.f),
++          impact_strength(0.f), impact_seconds(0.12f),
++          shift_strength(0.f), shift_seconds(0.04f) {}
++};
++
++// Defaults match Dbce.Wheel.Ffb.ForceShaper exactly.
++struct ShaperSettings {
++    int   strength;            // 0..100, 50 = unity
++    bool  invert;
++    float deadzone;
++    float attack_smoothing, decay_smoothing;
++    float soft_saturation;
++    float slew_per_second;
++    float output_deadband;
++    float fade_start_kmh, fade_full_kmh;
++    float ramp_seconds;
++    float peak_limit;
++
++    // ---- from Cruis'n (mvffb). All default to off, so existing profiles
++    // behave exactly as before. See ForceShaper.cs for why each exists.
++    float smoothing_ms;       // frame-rate independent low-pass time constant, ms
++    float impulse_bypass;     // an input jump this big is an event by itself
++    float settle_below;       // input 0 and |out| under this -> snap to 0
++    float releveling;         // hold the last value until it moves this far
++
++    ShaperSettings()
++        : strength(50), invert(false), deadzone(0.0015f),
++          attack_smoothing(0.2f), decay_smoothing(0.2f), soft_saturation(0.f),
++          slew_per_second(0.f), output_deadband(0.0015f),
++          fade_start_kmh(3.f), fade_full_kmh(12.f), ramp_seconds(0.25f), peak_limit(1.f),
++          smoothing_ms(0.f), impulse_bypass(0.f), settle_below(0.f), releveling(0.f) {}
++};
++
++// ---------------------------------------------------------------- helpers
++inline float clampf(float v, float lo, float hi) { return v < lo ? lo : (v > hi ? hi : v); }
++inline float signf(float v) { return v > 0.f ? 1.f : (v < 0.f ? -1.f : 0.f); }
++
++// ---------------------------------------------------------------- model
++class Model {
++public:
++    explicit Model(const ModelSettings& s) : settings(s) { reset(); }
++
++    ModelSettings settings;
++
++    // True when the last compute() carried an impulse that must bypass
++    // smoothing and slew. Pass it to Shaper::shape.
++    bool  last_was_event;
++    // Last structural (non-event) force, for traces.
++    float last_structural;
++
++    void reset() {
++        shift_t_ = -1.f; shift_emitted_ = 0.f;
++        impact_t_ = -1.f; impact_sign_ = 0.f; impact_mag_ = 0.f;
++        texture_phase_ = 0.f;
++        last_was_event = false; last_structural = 0.f;
++    }
++
++    // One tick. Normalised against the profile's references, but NOT bounded:
++    // a force past full scale is real information. Shaper::shape bounds the
++    // output at the device edge.
++    float compute(const Inputs& i, float dt) {
++        const ModelSettings& s = settings;
++        dt = clampf(dt, 0.f, 0.1f);
++        const float pi = 3.14159265358979323846f;
++        float speed_norm = std::fabs(i.speed_mps) / (s.spring_full_speed_mps > 0.1f ? s.spring_full_speed_mps : 0.1f);
++        if (speed_norm > 1.f) speed_norm = 1.f;
++
++        // --- lateral load: tyre force if we have it, lateral g otherwise ---
++        float lateral = 0.f;
++        if (i.has_front_lateral_force)
++            lateral = i.front_lateral_force / (s.lateral_force_reference > 1.f ? s.lateral_force_reference : 1.f);
++        else if (i.has_lateral_g)
++            lateral = i.lateral_g / (s.lateral_g_reference > 0.05f ? s.lateral_g_reference : 0.05f);
++        // Trail: lightens toward the limit instead of reversing like a Pacejka Mz.
++        if (i.has_slip && s.trail_floor < 1.f) {
++            float ideal = i.ideal_slip_angle_deg > 0.5f ? i.ideal_slip_angle_deg : 0.5f;
++            float span = s.trail_slip_span * ideal;
++            if (span < 0.1f) span = 0.1f;
++            float t = std::fabs(i.front_slip_angle_deg) / span;
++            if (t > 1.f) t = 1.f;
++            lateral *= 1.f - (1.f - s.trail_floor) * t;
++        }
++        if (i.has_drift && s.grip_loss > 0.f)
++            lateral *= 1.f - s.grip_loss * clampf(i.drift_amount, 0.f, 1.f);
++        // The road pushes back against the direction the tyre is loaded.
++        float f_lat = -lateral * s.lateral_weight;
++
++        // --- spring and damper (arcade) ---
++        float f_spring = i.has_steer ? -i.steer * s.spring_strength * speed_norm : 0.f;
++        float k = clampf(s.damper_static_fraction, 0.f, 1.f);
++        float f_damper = i.has_steer_rate ? -i.steer_rate * s.damper_strength * (k + (1.f - k) * speed_norm) : 0.f;
++
++        float load_mod = 1.f;
++        if (i.has_longitudinal_g && s.weight_transfer != 0.f)
++            load_mod = 1.f + clampf(-i.longitudinal_g * s.weight_transfer, s.weight_transfer_min, s.weight_transfer_max);
++
++        float structural = (f_spring + f_lat) * load_mod + f_damper;
++        last_structural = structural;
++
++        // --- texture ---
++        float texture = 0.f;
++        if (s.texture_strength > 0.f && i.texture > 0.f && dt > 0.f) {
++            float hz = s.texture_hz > 0.1f ? s.texture_hz : 0.1f;
++            texture_phase_ += dt * hz * pi * 2.f;
++            float lvl = i.texture > 1.f ? 1.f : i.texture;
++            texture = std::sin(texture_phase_) * s.texture_strength * lvl;
++        }
++
++        // --- events ---
++        bool is_event = false;
++        float ev = 0.f;
++        if (i.impact > 0.f) {
++            impact_t_ = 0.f;
++            impact_mag_ = i.impact > 1.f ? 1.f : i.impact;
++            impact_sign_ = i.impact_direction != 0.f ? signf(i.impact_direction)
++                                                     : (i.has_steer ? -signf(i.steer) : 1.f);
++        }
++        if (impact_t_ >= 0.f) {
++            float span = s.impact_seconds > 0.001f ? s.impact_seconds : 0.001f;
++            float decay = 1.f - impact_t_ / span;
++            if (decay < 0.f) decay = 0.f;
++            ev += impact_sign_ * impact_mag_ * s.impact_strength * decay;
++            impact_t_ += dt;
++            if (impact_t_ > span) impact_t_ = -1.f;
++            is_event = true;
++        }
++        if (i.gear_shift && s.shift_strength > 0.f) { shift_t_ = 0.f; shift_emitted_ = 0.f; }
++        if (shift_t_ >= 0.f) {
++            // Symmetric double pulse: what went out positive comes back negative,
++            // so it nets to zero at any tick rate and reads as a jolt rather than
++            // the game yanking the wheel sideways.
++            float half = s.shift_seconds > 0.001f ? s.shift_seconds : 0.001f;
++            if (shift_t_ < half) { ev += s.shift_strength; shift_emitted_ += s.shift_strength; }
++            else if (shift_emitted_ > 0.f) {
++                float back = s.shift_strength < shift_emitted_ ? s.shift_strength : shift_emitted_;
++                ev -= back; shift_emitted_ -= back;
++            }
++            shift_t_ += dt;
++            if (shift_t_ >= half && shift_emitted_ <= 0.f) shift_t_ = -1.f;
++            is_event = true;
++        }
++
++        last_was_event = is_event;
++        // Deliberately NOT clamped; see the note on the C# ForceModel.Compute.
++        // The clamp is a device limit and belongs at the edge, in Shaper::shape.
++        // Applied here it also defeated the soft saturation, which received an
++        // already-clamped value and so had nothing left to compress.
++        return structural + texture + ev;
++    }
++
++private:
++    float shift_t_, shift_emitted_;
++    float impact_t_, impact_sign_, impact_mag_;
++    float texture_phase_;
++};
++
++// ---------------------------------------------------------------- shaper
++// Deadzone -> EMA -> GAIN/INVERT -> soft saturation -> slew -> fade -> ramp ->
++// clamp -> deadband. The order is fixed; see knowledge/FFB-SIGNAL-DESIGN.md.
++// Gain and invert are the boundary between model units and true output units
++// and sign; every stage after them is a device-side limit. They moved there in
++// 0.8.0, because the slew limiter compares against last_ and could not be
++// correct while last_ and the value being limited disagreed on scale or sign.
++// An event bypasses the EMA and the slew so it arrives as a pulse, not a shove.
++class Shaper {
++public:
++    explicit Shaper(const ShaperSettings& s) : settings(s) { reset(); }
++
++    ShaperSettings settings;
++
++    void reset() { smoothed_ = 0.f; last_ = 0.f; ramp_t_ = 0.f; started_ = false;
++                   prev_in_ = 0.f; have_prev_in_ = false; }
++    // Start the ramp again, e.g. after the native layer recreated the effect.
++    void restart_ramp() { ramp_t_ = 0.f; started_ = false; }
++
++    float last() const { return last_; }
++    bool started() const { return started_; }
++    float gain() const { return (settings.strength > 0 ? settings.strength : 0) / 50.f; }
++
++    float shape(float normalised, float speed_kmh, float dt, bool is_event = false) {
++        const ShaperSettings& s = settings;
++        if (!(normalised == normalised)) normalised = 0.f;               // NaN
++        if (normalised > 1e30f || normalised < -1e30f) normalised = 0.f; // inf
++        dt = clampf(dt, 0.f, 0.1f);
++        float v = normalised;
++
++        // 1. subtractive deadzone
++        if (std::fabs(v) <= s.deadzone) v = 0.f; else v -= signf(v) * s.deadzone;
++
++        // 1b. automatic impulse detection: a big enough jump IS an event even
++        //     when the caller had no way to tell us so.
++        if (s.impulse_bypass > 0.f && have_prev_in_ && std::fabs(v - prev_in_) >= s.impulse_bypass)
++            is_event = true;
++        prev_in_ = v; have_prev_in_ = true;
++        float const target = v;
++
++        // 2. smoothing (structural only). smoothing_ms, when set, is a
++        //    frame-rate independent time constant and wins over the coefficients.
++        if (!is_event) {
++            if (s.smoothing_ms > 0.f) {
++                float const a = 1.f - std::exp(-(dt * 1000.f) / s.smoothing_ms);
++                smoothed_ = smoothed_ + (v - smoothed_) * a;
++            } else {
++                float a = std::fabs(v) > std::fabs(smoothed_) ? s.attack_smoothing : s.decay_smoothing;
++                a = clampf(a, 0.f, 0.95f);
++                smoothed_ = smoothed_ + (v - smoothed_) * (1.f - a);
++            }
++            v = smoothed_;
++        } else {
++            smoothed_ = v;
++        }
++
++        // 3. gain. The line between the two halves of the chain: above it the
++        //    value is in model units, below it in output units, and everything
++        //    below is a device-side limit. Applied last (as it was before 0.8.0)
++        //    Strength re-inflated an already-saturated value into the hard clamp.
++        //    Invert moves with it: the slew limiter below compares against last_,
++        //    the value actually sent, and with invert applied at the end those two
++        //    had opposite signs - a steady input then oscillated near zero and no
++        //    force ever arrived.
++        v *= gain();
++        if (s.invert) v = -v;
++
++        // 4. soft saturation
++        if (s.soft_saturation > 0.f) {
++            float k = s.soft_saturation;
++            v = (1.f - k) * v + k * std::tanh(v);
++        }
++
++        // 5. slew (structural only). Now in output units.
++        if (!is_event && s.slew_per_second > 0.f && dt > 0.f) {
++            float step = s.slew_per_second * dt;
++            v = clampf(v, last_ - step, last_ + step);
++        }
++
++        // 6. low-speed fade
++        if (s.fade_full_kmh > s.fade_start_kmh) {
++            float t = (speed_kmh - s.fade_start_kmh) / (s.fade_full_kmh - s.fade_start_kmh);
++            t = clampf(t, 0.f, 1.f);
++            v *= t * t * (3.f - 2.f * t);   // smoothstep
++        }
++
++        // 7. warm-up / restart ramp
++        if (s.ramp_seconds > 0.f && ramp_t_ < s.ramp_seconds) {
++            ramp_t_ += dt; started_ = true;
++            float r = ramp_t_ / s.ramp_seconds;
++            v *= r > 1.f ? 1.f : r;
++        }
++
++        // 8. clamp, peak limit, deadband
++        float limit = clampf(s.peak_limit, 0.f, 1.f);
++        v = clampf(v, -limit, limit);
++        if (std::fabs(v) < s.output_deadband) v = 0.f;
++
++        // 9. settle: the game asked for nothing and what is left is a dying tail.
++        if (s.settle_below > 0.f && target == 0.f && std::fabs(v) < s.settle_below) {
++            smoothed_ = 0.f;
++            v = 0.f;
++        }
++
++        // 10. re-level hysteresis: hold until it has moved far enough to send.
++        if (s.releveling > 0.f && ((v != 0.f) == (last_ != 0.f)) &&
++                std::fabs(v - last_) < s.releveling)
++            v = last_;
++
++        last_ = v;
++        return v;
++    }
++
++private:
++    float smoothed_, last_, ramp_t_, prev_in_;
++    bool  have_prev_in_;
++    bool  started_;
++};
++
++}} // namespace dbce::force
+diff --git a/src/mame/midway/dbce/force_profile.h b/src/mame/midway/dbce/force_profile.h
+new file mode 100644
+index 00000000..2d468dc2
+--- /dev/null
++++ b/src/mame/midway/dbce/force_profile.h
+@@ -0,0 +1,235 @@
++// force_profile.h - reads the versioned force-feedback profiles (C++11).
++//
++// The C++ counterpart of Dbce.Wheel.Ffb.ForceProfile, parsing the same
++// profiles/force-profiles.ini. A conformance test loads every shipped profile
++// through both readers and requires identical settings, so the two cannot
++// drift; if you add a key here you must add it there.
++//
++//   dbce::force::Profile p;
++//   std::string why;
++//   if (!dbce::force::load_profile_dir(gameFolder, "arcade-outrun@1", p, &why))
++//       log("force profile: %s - using built-in defaults", why.c_str());
++//
++// load_profile_dir reads force-profiles.ini and then force-profiles.user.ini
++// from the same folder, so a player's own tunes survive an update of the mod
++// and a profile of the same id in the user file wins outright.
++//
++// A profile that fails to load must NOT disable force feedback: fall back to
++// the built-in defaults and say so in the log. A tuning file is the last thing
++// that should be able to break a game.
++#pragma once
++#include "force_model.h"
++
++#include <string>
++#include <vector>
++#include <fstream>
++#include <sstream>
++#include <cstdlib>
++#include <cctype>
++
++namespace dbce { namespace force {
++
++struct Profile {
++    std::string name;          // "arcade-outrun"
++    int         version;       // 1
++    std::string description;
++    ModelSettings  model;
++    ShaperSettings shaper;
++    std::vector<std::string> unknown_keys;   // reported, never silently dropped
++
++    Profile() : version(0) {}
++    std::string id() const {
++        std::ostringstream o; o << name << '@' << version; return o.str();
++    }
++};
++
++namespace detail {
++
++inline std::string trim(const std::string& s) {
++    size_t a = 0, b = s.size();
++    while (a < b && std::isspace((unsigned char)s[a])) ++a;
++    while (b > a && std::isspace((unsigned char)s[b - 1])) --b;
++    return s.substr(a, b - a);
++}
++
++// Strips a trailing # or ; comment, then whitespace.
++inline std::string strip(const std::string& line) {
++    size_t cut = line.find_first_of("#;");
++    return trim(cut == std::string::npos ? line : line.substr(0, cut));
++}
++
++inline bool is_section(const std::string& t, std::string& id) {
++    if (t.size() > 2 && t[0] == '[' && t[t.size() - 1] == ']') {
++        id = trim(t.substr(1, t.size() - 2));
++        return true;
++    }
++    return false;
++}
++
++inline bool iequals(const std::string& a, const std::string& b) {
++    if (a.size() != b.size()) return false;
++    for (size_t i = 0; i < a.size(); ++i)
++        if (std::tolower((unsigned char)a[i]) != std::tolower((unsigned char)b[i])) return false;
++    return true;
++}
++
++inline float to_f(const std::string& v) { return (float)std::atof(v.c_str()); }
++inline bool to_b(const std::string& v) {
++    std::string t = trim(v);
++    return iequals(t, "true") || t == "1" || iequals(t, "yes");
++}
++
++// The vocabulary. Keep in step with ForceProfile.KeyNames.
++inline bool set_key(Profile& p, const std::string& key, const std::string& value) {
++    ModelSettings&  m = p.model;
++    ShaperSettings& s = p.shaper;
++    if (key == "model.spring.strength")        { m.spring_strength = to_f(value); return true; }
++    if (key == "model.spring.fullSpeedMps")    { m.spring_full_speed_mps = to_f(value); return true; }
++    if (key == "model.damper.strength")        { m.damper_strength = to_f(value); return true; }
++    if (key == "model.damper.staticFraction")  { m.damper_static_fraction = to_f(value); return true; }
++    if (key == "model.lateral.weight")         { m.lateral_weight = to_f(value); return true; }
++    if (key == "model.lateral.forceReference") { m.lateral_force_reference = to_f(value); return true; }
++    if (key == "model.lateral.gReference")     { m.lateral_g_reference = to_f(value); return true; }
++    if (key == "model.lateral.trailFloor")     { m.trail_floor = to_f(value); return true; }
++    if (key == "model.lateral.trailSlipSpan")  { m.trail_slip_span = to_f(value); return true; }
++    if (key == "model.lateral.gripLoss")       { m.grip_loss = to_f(value); return true; }
++    if (key == "model.load.weightTransfer")    { m.weight_transfer = to_f(value); return true; }
++    if (key == "model.load.transferMin")       { m.weight_transfer_min = to_f(value); return true; }
++    if (key == "model.load.transferMax")       { m.weight_transfer_max = to_f(value); return true; }
++    if (key == "model.texture.strength")       { m.texture_strength = to_f(value); return true; }
++    if (key == "model.texture.hz")             { m.texture_hz = to_f(value); return true; }
++    if (key == "model.impact.strength")        { m.impact_strength = to_f(value); return true; }
++    if (key == "model.impact.seconds")         { m.impact_seconds = to_f(value); return true; }
++    if (key == "model.shift.strength")         { m.shift_strength = to_f(value); return true; }
++    if (key == "model.shift.seconds")          { m.shift_seconds = to_f(value); return true; }
++    if (key == "shaper.strength")              { s.strength = (int)(to_f(value) + 0.5f); return true; }
++    if (key == "shaper.invert")                { s.invert = to_b(value); return true; }
++    if (key == "shaper.deadzone")              { s.deadzone = to_f(value); return true; }
++    if (key == "shaper.attackSmoothing")       { s.attack_smoothing = to_f(value); return true; }
++    if (key == "shaper.decaySmoothing")        { s.decay_smoothing = to_f(value); return true; }
++    if (key == "shaper.softSaturation")        { s.soft_saturation = to_f(value); return true; }
++    if (key == "shaper.slewPerSecond")         { s.slew_per_second = to_f(value); return true; }
++    if (key == "shaper.outputDeadband")        { s.output_deadband = to_f(value); return true; }
++    if (key == "shaper.fadeStartKmh")          { s.fade_start_kmh = to_f(value); return true; }
++    if (key == "shaper.fadeFullKmh")           { s.fade_full_kmh = to_f(value); return true; }
++    if (key == "shaper.rampSeconds")           { s.ramp_seconds = to_f(value); return true; }
++    if (key == "shaper.peakLimit")             { s.peak_limit = to_f(value); return true; }
++    if (key == "shaper.smoothingMs")           { s.smoothing_ms = to_f(value); return true; }
++    if (key == "shaper.impulseBypass")         { s.impulse_bypass = to_f(value); return true; }
++    if (key == "shaper.settleBelow")           { s.settle_below = to_f(value); return true; }
++    if (key == "shaper.releveling")            { s.releveling = to_f(value); return true; }
++    return false;
++}
++
++// Body of the LAST section with this id, so a user file appended to the shipped
++// one overrides it. Returns false when the id is absent.
++inline bool section_body(const std::string& text, const std::string& id, std::vector<std::string>& out) {
++    std::istringstream in(text);
++    std::string line, here;
++    std::vector<std::string> found, body;
++    bool collecting = false, any = false;
++    while (std::getline(in, line)) {
++        std::string t = strip(line);
++        if (is_section(t, here)) {
++            if (collecting) { found = body; any = true; }
++            body.clear();
++            collecting = iequals(here, id);
++            continue;
++        }
++        if (collecting) body.push_back(line);
++    }
++    if (collecting) { out = body; return true; }
++    if (any) { out = found; return true; }
++    return false;
++}
++
++inline bool apply_section(const std::string& text, const std::string& id,
++                          Profile& into, std::vector<std::string>& seen, std::string* why) {
++    for (size_t i = 0; i < seen.size(); ++i)
++        if (iequals(seen[i], id)) { if (why) *why = "profile inherits itself: " + id; return false; }
++    seen.push_back(id);
++
++    std::vector<std::string> body;
++    if (!section_body(text, id, body)) { if (why) *why = "no such profile: " + id; return false; }
++
++    // Resolve the parent before our own keys, so ours win.
++    std::string parent, description;
++    std::vector<std::pair<std::string, std::string> > pairs;
++    for (size_t i = 0; i < body.size(); ++i) {
++        std::string t = strip(body[i]);
++        if (t.empty()) continue;
++        size_t eq = t.find('=');
++        if (eq == std::string::npos || eq == 0) continue;
++        std::string key = trim(t.substr(0, eq)), val = trim(t.substr(eq + 1));
++        if (iequals(key, "inherits")) { parent = val; continue; }
++        if (iequals(key, "description")) { description = val; continue; }
++        pairs.push_back(std::make_pair(key, val));
++    }
++
++    if (!parent.empty() && !apply_section(text, parent, into, seen, why)) return false;
++    if (!description.empty()) into.description = description;
++    for (size_t i = 0; i < pairs.size(); ++i) {
++        if (!set_key(into, pairs[i].first, pairs[i].second)) {
++            bool known = false;
++            for (size_t j = 0; j < into.unknown_keys.size(); ++j)
++                if (into.unknown_keys[j] == pairs[i].first) { known = true; break; }
++            if (!known) into.unknown_keys.push_back(pairs[i].first);
++        }
++    }
++    return true;
++}
++
++inline bool read_file(const std::string& path, std::string& out) {
++    std::ifstream f(path.c_str(), std::ios::binary);
++    if (!f) return false;
++    std::ostringstream ss; ss << f.rdbuf(); out = ss.str();
++    return true;
++}
++
++} // namespace detail
++
++// Every profile id defined in the text, in file order.
++inline std::vector<std::string> list_profile_ids(const std::string& text) {
++    std::vector<std::string> ids;
++    std::istringstream in(text);
++    std::string line, id;
++    while (std::getline(in, line))
++        if (detail::is_section(detail::strip(line), id)) ids.push_back(id);
++    return ids;
++}
++
++// Parses one profile out of `text`. Returns false with a reason in `why`.
++inline bool parse_profile(const std::string& text, const std::string& id, Profile& out, std::string* why = 0) {
++    Profile p;
++    std::vector<std::string> seen;
++    if (!detail::apply_section(text, id, p, seen, why)) return false;
++
++    size_t at = id.rfind('@');
++    if (at == std::string::npos || at == 0) { if (why) *why = "profile id must be name@version: " + id; return false; }
++    p.name = id.substr(0, at);
++    p.version = std::atoi(id.c_str() + at + 1);
++    if (p.version <= 0) { if (why) *why = "profile version must be a positive integer: " + id; return false; }
++    out = p;
++    return true;
++}
++
++inline const char* shipped_profile_file() { return "force-profiles.ini"; }
++inline const char* user_profile_file()    { return "force-profiles.user.ini"; }
++
++// Reads `id` from force-profiles.ini in `directory`, with
++// force-profiles.user.ini layered on top when present.
++inline bool load_profile_dir(const std::string& directory, const std::string& id,
++                             Profile& out, std::string* why = 0) {
++    std::string sep = (!directory.empty() && directory[directory.size() - 1] != '\\' &&
++                       directory[directory.size() - 1] != '/') ? "\\" : "";
++    std::string text, chunk;
++    if (detail::read_file(directory + sep + shipped_profile_file(), chunk)) text += chunk + "\n";
++    if (detail::read_file(directory + sep + user_profile_file(), chunk))    text += chunk + "\n";
++    if (text.empty()) {
++        if (why) *why = std::string("no ") + shipped_profile_file() + " in " + directory;
++        return false;
++    }
++    return parse_profile(text, id, out, why);
++}
++
++}} // namespace dbce::force
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index d633d3bc..3ca37046 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -37,6 +37,11 @@
+ #ifdef _WIN32
+ #include <winsock2.h>
+ #include <windows.h>
++// Shared conditioning chain, vendored from dbce-wheel-mod-toolkit.
++// Cruis'n uses the SHAPER ONLY - the arcade board hands over a finished
++// motor byte, so there is no force model to run. See dbce/README.md.
++#include "dbce/force_model.h"
++#include "dbce/force_profile.h"
+ #include <mutex>
+ #include <condition_variable>
+ #include <cmath>
+@@ -1726,6 +1731,7 @@ static int s_strength = 100;
+ static bool s_invert = false;
+ static int s_hold_ms = 500;
+ static int s_smooth_ms = 0;   // MIDV_FFB_SMOOTH: first-order low-pass time constant
++static std::string s_profile_id = "cruisn-vunit@1";  // MIDV_FFB_PROFILE
+ static int s_damper = 0;      // MIDV_FFB_DAMPER: velocity-proportional resistance, % of full
+ static int s_friction = 0;    // MIDV_FFB_FRICTION: constant drag, % of full
+ static int s_rumble = 0;      // MIDV_FFB_RUMBLE: vibration burst per force update, % scale
+@@ -1734,6 +1740,17 @@ static FILE *s_log = nullptr;
+ static std::mutex s_logmtx;
+ static std::chrono::steady_clock::time_point s_t0;
+ 
++// Directory holding vunit.exe. force-profiles.ini is deployed beside it by the
++// launcher, and the working directory is not reliably that folder.
++static std::string exe_dir()
++{
++	char buf[MAX_PATH] = { 0 };
++	DWORD n = GetModuleFileNameA(nullptr, buf, MAX_PATH);
++	std::string p(buf, buf + (n ? n : 0));
++	size_t cut = p.find_last_of("\\/");
++	return cut == std::string::npos ? std::string(".") : p.substr(0, cut);
++}
++
+ static long long now_ms()
+ {
+ 	return std::chrono::duration_cast<std::chrono::milliseconds>(
+@@ -2002,10 +2019,48 @@ static void worker()
+ 		apply(d, 0, running, applied);
+ 		flog("TEST: released");
+ 	}
+-	double filt = 0.0;
++	// ---- conditioning: the toolkit's shaper, driven by a named profile ----
++	// Everything this used to do by hand (impulse bypass, dt-aware low-pass,
++	// settle-to-zero, re-level threshold) now lives in dbce::force::Shaper and is
++	// described by cruisn-vunit@1. A conformance test in the toolkit holds that
++	// profile to this code's previous output over 62 s of real captured driving.
++	dbce::force::Profile prof;
++	{
++		std::string why, dir = exe_dir();
++		if (!dbce::force::load_profile_dir(dir, s_profile_id, prof, &why))
++		{
++			flog("profile '%s' not loaded from %s (%s) - using built-in values",
++					s_profile_id.c_str(), dir.c_str(), why.c_str());
++			// Built-in fallback, identical to cruisn-vunit@1. Force feedback must
++			// not depend on a data file being present.
++			prof.shaper = dbce::force::ShaperSettings();
++			prof.shaper.deadzone = 0.f;
++			prof.shaper.attack_smoothing = 0.f;
++			prof.shaper.decay_smoothing = 0.f;
++			prof.shaper.output_deadband = 0.f;
++			prof.shaper.fade_start_kmh = 0.f;
++			prof.shaper.fade_full_kmh = 0.f;
++			prof.shaper.ramp_seconds = 0.f;
++			prof.shaper.impulse_bypass = 0.6f;
++			prof.shaper.settle_below = 160.f / 32767.f;
++			prof.shaper.releveling = 33.f / 32767.f;
++		}
++		else
++			flog("profile '%s' loaded from %s", s_profile_id.c_str(), dir.c_str());
++		// MIDV_FFB_SMOOTH stays the live knob the launcher exposes.
++		prof.shaper.smoothing_ms = float(s_smooth_ms);
++		// Their FFB STRENGTH is a plain percent; shaper.strength is 50-is-unity.
++		prof.shaper.strength = std::clamp(s_strength / 2, 0, 100);
++		prof.shaper.invert = false;   // sign is applied in midv_ffb_write
++		flog("shaper: strength %d (from %d%%), smoothing %.0f ms, impulse %.2f, "
++				"settle %.5f, releveling %.5f",
++				prof.shaper.strength, s_strength, prof.shaper.smoothing_ms,
++				prof.shaper.impulse_bypass, prof.shaper.settle_below, prof.shaper.releveling);
++	}
++	dbce::force::Shaper shaper(prof.shaper);
++
+ 	auto last_tick = std::chrono::steady_clock::now();
+ 	int prev_want = 0;
+-	double const full = 32767.0 * s_strength / 100.0;   // level of a full-scale byte
+ 	while (!s_stop.load())
+ 	{
+ 		{
+@@ -2032,32 +2087,20 @@ static void worker()
+ 				if (want == 0)
+ 					p_SDL_HapticRumbleStop(d.hp);
+ 				else
+-					p_SDL_HapticRumblePlay(d.hp, float(std::min(1.0, std::abs(want) / full) * s_rumble / 100.0), 100);
++					p_SDL_HapticRumblePlay(d.hp,
++							float(std::min(1.0, std::abs(want) / 32767.0) * s_rumble / 100.0), 100);
+ 			}
+-			// an impulse (a jump of >= 60 % of full in one update - crashes, jumps,
+-			// World off-track) goes through the smoothing unfiltered
+-			if (s_smooth_ms > 0 && std::abs(want - prev_want) >= full * 0.6)
+-				filt = double(want);
+ 			prev_want = want;
+ 		}
+-		int out = want;
+-		if (s_smooth_ms > 0)
+-		{
+-			// first-order low-pass toward the requested level (see MIDV_FFB_SMOOTH)
+-			auto const now = std::chrono::steady_clock::now();
+-			double const dt = std::chrono::duration<double, std::milli>(now - last_tick).count();
+-			last_tick = now;
+-			double const a = 1.0 - std::exp(-dt / double(s_smooth_ms));
+-			filt += (double(want) - filt) * a;
+-			out = int(std::lround(filt));
+-			if (want == 0 && std::abs(out) < 160)   // settled: let the effect stop
+-			{
+-				filt = 0.0;
+-				out = 0;
+-			}
+-		}
+-		// re-level on any real change (>= 0.1 %) and always on stop/start
+-		if (std::abs(out - applied) >= 33 || (out == 0) != (applied == 0))
++
++		// One tick of the shared chain. The impulse bypass, the low-pass, the
++		// settle and the re-level threshold are all inside it now.
++		auto const now = std::chrono::steady_clock::now();
++		double const dt_ms = std::chrono::duration<double, std::milli>(now - last_tick).count();
++		last_tick = now;
++		float const shaped = shaper.shape(float(want) / 32767.f, 0.f, float(dt_ms / 1000.0), false);
++		int const out = int(std::lround(double(shaped) * 32767.0));
++		if (out != applied)
+ 			apply(d, out, running, applied);
+ 	}
+ 	apply(d, 0, running, applied);
+@@ -2101,6 +2144,9 @@ static void start(running_machine &machine)
+ 		s_hold_ms = std::clamp(atoi(s), 0, 60000);
+ 	if (const char *s = std::getenv("MIDV_FFB_SMOOTH"))
+ 		s_smooth_ms = std::clamp(atoi(s), 0, 2000);
++	if (const char *s = std::getenv("MIDV_FFB_PROFILE"))
++		if (*s)
++			s_profile_id = s;
+ 	if (const char *s = std::getenv("MIDV_FFB_DAMPER"))
+ 		s_damper = std::clamp(atoi(s), 0, 100);
+ 	if (const char *s = std::getenv("MIDV_FFB_FRICTION"))
+@@ -2131,7 +2177,9 @@ void midv_ffb_write(int f)
+ 	if (f != 0 && f != -128)
+ 	{
+ 		double p = std::min(1.0, double(f < 0 ? -f : f) / 126.0);
+-		level = int(p * 32767.0 * mvffb::s_strength / 100.0 + 0.5);
++		// Un-gained on purpose since the toolkit conversion: the shaper owns the
++		// gain now (shaper.strength), so applying it here as well would square it.
++		level = int(p * 32767.0 + 0.5);
+ 		// Sign. Measured 2026-09-03 with the game's own spring (Exotica parked
+ 		// left of centre writes +58, right of centre -70: a positive byte
+ 		// pushes the wheel RIGHT) and with a raw level on the Moza R12 (a
 -- 
 2.55.0.windows.3
 
