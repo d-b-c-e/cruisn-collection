@@ -8,11 +8,12 @@
 ## What Was Done
 - Five assessment documents plus separate toolkit review; implementation results
   in docs/reviews/2026-09-05-implementation.md; commands in docs/DIAGNOSTIC-REPLAY.md.
-- MAME 1c420f32 on codex/diagnostic-signals, pushed to fork; full exported series
-  refreshed from mame0286. Two incremental builds succeeded; deployed mame untouched.
+- MAME changes 1c420f32 plus pin follow-up 1a2bb35f, pushed to fork; full series
+  refreshed from mame0286. Three incremental builds succeeded; deployed mame untouched.
 - Toolkit force fixes v0.10.0 / 47b06f08 passed CI; follow-up v0.10.1 / c9b76b7
   fixes native file loading on Linux, exposed by collection CI. Both consumers
-  now pin v0.10.1. 105 managed tests and native semantic/conformance tests.
+  now pin v0.10.1; its final Windows/Linux CI passed. 105 managed tests and
+  native semantic/conformance tests. Toolkit changes landed on master.
 - Shared pre-gain force rise detector, centered impact fix, UDP address family,
   OCR consecutive-miss policy/file-only source initialization, typed SDL stop ABI.
 - True MAME INP recording, archived executable/config, strict replay validation,
@@ -45,5 +46,8 @@ scenario-20260905T231026Z-s1l7_egt/case for live-GL USA driving, or
 scenario-20260905T224940Z-knuxy44n/case for native driving; both have passing
 replays. Neutral archived seed: replay-smoke-20260905T224001Z-vop1s2s_/case.
 Compact evidence is tracked in results/proof/2026-09-05-diagnostic-milestone.json.
+The complete exported series (including final pin) applied to upstream files
+and reproduced all 23 changed paths. Collection Windows/Linux harness and native
+CI passed at 1131dc2 (run 33998673255); remaining edits are handoff documentation.
 Use run_rig --record-case for an actual wheel drive; early prototype cases are
 not supported references. No physical FFB quality or general rendering fix claimed.

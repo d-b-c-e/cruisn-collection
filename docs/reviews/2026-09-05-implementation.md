@@ -127,6 +127,11 @@ copies and are intentionally not part of a public release.
 The full exported MAME patch was also applied to the upstream `mame0286` files
 in an isolated repository; all 23 changed paths reproduced the committed MAME
 source exactly. Format-patch context whitespace is preserved deliberately.
+The final MAME source is `1a2bb35f8ad58e2f0960c1d8b15bd361725a7a51`.
+Toolkit CI for v0.10.1 passed on Windows and Linux
+([run](https://github.com/d-b-c-e/dbce-wheel-mod-toolkit/actions/runs/33998611172)).
+The final collection implementation `1131dc2` passed Windows/Linux harness and
+native helper CI ([run](https://github.com/d-b-c-e/cruisn-collection/actions/runs/33998673255)).
 
 Useful retained cases:
 
