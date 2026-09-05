@@ -321,8 +321,15 @@ def run_gui():
                                 "beside this setup (dev checkout? use "
                                 "python harness/collection.py)")
 
+    # Two rows: seven buttons on one line needed a window far wider than the
+    # 760 this opens at, so the last of them sat off-screen until the user
+    # dragged it wider. Row 1 is getting set up, row 2 is running and
+    # reporting. The window is sized from the packed content at the end, so
+    # adding a button here can never push one off the edge again.
     btns = tk.Frame(root, bg=BG)
-    btns.pack(pady=(0, 16))
+    btns.pack(pady=(0, 4))
+    btns2 = tk.Frame(root, bg=BG)
+    btns2.pack(pady=(0, 14))
     style = dict(bg="#2a2344", fg=FG, activebackground="#3a3060",
                  activeforeground=FG, font=("Bahnschrift", 11), bd=0,
                  padx=14, pady=6)
@@ -453,14 +460,15 @@ def run_gui():
         install_btn.pack(side="left", padx=6)
         check_now()
 
-    tk.Button(btns, text="Updates...", command=updates,
+    tk.Button(btns2, text="Updates...", command=updates,
               **style).pack(side="left", padx=6)
-    tk.Button(btns, text="FFB diagnostics", command=toggle_diag,
+    tk.Button(btns2, text="FFB diagnostics", command=toggle_diag,
               **style).pack(side="left", padx=6)
-    tk.Button(btns, text="Save support bundle", command=support,
+    tk.Button(btns2, text="Save support bundle", command=support,
               **style).pack(side="left", padx=6)
-    tk.Button(btns, text="Launch Collection", command=launch,
-              **style).pack(side="left", padx=6)
+    launch_style = dict(style, bg="#3c2f6b", activebackground="#4d3d86")
+    tk.Button(btns2, text="Launch Collection", command=launch,
+              **launch_style).pack(side="left", padx=6)
 
     say("Add your own ROM zips - any filename works, they are identified "
         "by their contents. Include the tiny tms320c31.zip / tms320c32.zip "
@@ -468,6 +476,14 @@ def run_gui():
         "version in another folder? 'Import previous version' brings your "
         "ROMs, bindings, settings and wheel over.")
     refresh()
+    # Grow to fit the packed widgets rather than trusting the opening size:
+    # the button rows are the widest thing here and their width depends on the
+    # font the system actually resolved.
+    root.update_idletasks()
+    w = max(760, root.winfo_reqwidth() + 24)
+    h = max(560, root.winfo_reqheight() + 12)
+    root.geometry(f"{w}x{h}")
+    root.minsize(w, h)
     root.mainloop()
 
 
