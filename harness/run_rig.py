@@ -189,17 +189,53 @@ def vunit_processes(exe=None):
     return out
 
 
+def release_ffb(mame_dir=None):
+    """Stop every force-feedback effect on every haptic device.
+
+    A killed process does NOT release its DirectInput effects: a Moza R12 was
+    left holding a hard constant force to the left after a hung teardown was
+    terminated (2026-09-05). The emulator releases forces in its own exit
+    notifier, so this only matters when that never runs - but that is exactly
+    the case that strands torque on a direct-drive base, which is a hazard
+    rather than an annoyance. Borrow the SDL2 beside the emulator; the game
+    has exited, so nothing holds the device. Best effort throughout."""
+    mame_dir = mame_dir or os.path.dirname(VUNIT)
+    try:
+        sdl = ctypes.CDLL(os.path.join(mame_dir, "SDL2.dll"))
+        if sdl.SDL_Init(0x200 | 0x1000) != 0:      # JOYSTICK | HAPTIC
+            return False
+        stopped = 0
+        try:
+            for i in range(max(0, sdl.SDL_NumHaptics())):
+                h = ctypes.c_void_p(sdl.SDL_HapticOpen(i))
+                if h:
+                    sdl.SDL_HapticStopAll(h)
+                    sdl.SDL_HapticClose(h)
+                    stopped += 1
+        finally:
+            sdl.SDL_Quit()
+        if stopped:
+            print(f"wheel: cleared force effects on {stopped} device(s)")
+        return stopped > 0
+    except Exception as e:
+        print(f"wheel: could not clear force effects ({e})")
+        return False
+
+
 def wait_or_kill(proc, mame=VUNIT, timeout=15.0):
     """Wait for a game process that has already closed its window; a
     teardown that hangs past `timeout` (crash-at-exit race) is terminated
-    so it cannot hold the wheel for the next launch."""
+    so it cannot hold the wheel for the next launch. A killed process leaves
+    its forces running, so the wheel is cleared explicitly after."""
     try:
         return proc.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
         print(f"emulator: still running {timeout:.0f} s after its window "
               "closed - terminating (would hold the wheel's FFB)")
         proc.kill()
-        return proc.wait()
+        rc = proc.wait()
+        release_ffb(os.path.dirname(mame))
+        return rc
 
 
 # Centring-spring strength per game, as a percentage of the wheel's full
@@ -1498,11 +1534,19 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
 
 def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
                 crackfill=True, ffb=None, mame=VUNIT):
-    """Blocking wrapper: launch and wait for full process exit."""
-    proc, _ = launch_game_async(rom=rom, scale=scale, windowed=windowed,
-                                crt=crt, crackfill=crackfill, ffb=ffb, mame=mame)
-    rc = wait_or_kill(proc, mame)
-    return rc
+    """Blocking wrapper: launch, wait for the player to quit, then return.
+
+    Watch the WINDOW, not the process: wait_or_kill's timeout is for a
+    teardown that hangs AFTER the window has gone, and calling it directly on
+    a freshly launched game killed that game 15 s in, every time, mid-drive
+    and with force still on the wheel. The shell already watches the window
+    this way; only this CLI path did not."""
+    proc, hwnd = launch_game_async(rom=rom, scale=scale, windowed=windowed,
+                                   crt=crt, crackfill=crackfill, ffb=ffb,
+                                   mame=mame)
+    while proc.poll() is None and (not hwnd or u32.IsWindow(hwnd)):
+        time.sleep(0.5)
+    return wait_or_kill(proc, mame)
 
 
 def main():
