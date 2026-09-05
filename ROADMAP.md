@@ -170,7 +170,22 @@ up to 4 cells, so three digits *should* fit. Suspicion: at 100+ the leftmost
 digit falls outside x0=30, the read fails, and 60 frames later speed zeroes -
 which would fail exactly when you break 100, matching the report.
 
-**Cheapest decisive test**: dump the videoram box region during a >100 mph run
+**Measured 2026-09-05, after the marked-collision drive**
+- The three-digit theory is WRONG. A videoram dump at speed shows the digits
+  at columns 45-66 inside the 30..72 window, with room for a third. Widening
+  x0 to 14 pulls in the road drawn behind the HUD and makes EVERY read fail
+  (telemetry went all-zero) - do not try that again.
+- No capture has exceeded 99 mph because the car never did in these runs, not
+  because the reader could not.
+- Headless, in a 60 s driving window: only 5% zero readings, 9 dropout runs,
+  longest 1.1 s. The decay threshold went 60 -> 180 frames so a gap that size
+  no longer zeroes the speed.
+- STILL UNEXPLAINED: that is far milder than the rig's "rarely gets above 20".
+  The untested difference is the GL overlay / widescreen presentation, which
+  headless runs do not use. Next step is to reproduce WITH `MIDV_GL=1` and see
+  whether the dropout rate jumps.
+
+**Older note**: dump the videoram box region during a >100 mph run
 (MIDV_STATEDUMP_FRAME/DIR) and see where the third digit lands. If it spills,
 widening x0 is the fix; the 60-frame decay is worth lengthening regardless,
 since one unreadable second should not mean "stopped".
