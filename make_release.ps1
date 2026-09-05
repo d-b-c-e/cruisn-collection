@@ -60,15 +60,15 @@ foreach ($d in "fixtures", "patch", "docs") { Copy-Item -Recurse (Join-Path $roo
 # beside vunit.exe at every launch (backing up an edited one first), so the
 # SETTINGS > FORCE FEEDBACK > FEEL row has real tunes to offer. Without it the
 # emulator falls back to values equal to cruisn-vunit@1 and FEEL has one entry.
-New-Item -ItemType Directory -Force (Join-Path $rel "lib	oolkit\profiles") | Out-Null
-Copy-Item (Join-Path $root "lib	oolkit\profilesorce-profiles.ini") (Join-Path $rel "lib	oolkit\profiles")
-Copy-Item (Join-Path $root "lib	oolkit\VERSION") (Join-Path $rel "lib	oolkit") -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Force (Join-Path $rel "lib\toolkit\profiles") | Out-Null
+Copy-Item (Join-Path $root "lib\toolkit\profiles\force-profiles.ini") (Join-Path $rel "lib\toolkit\profiles")
+Copy-Item (Join-Path $root "lib\toolkit\VERSION") (Join-Path $rel "lib\toolkit") -ErrorAction SilentlyContinue
 # The starter file for a player's own tune. Shipped BESIDE vunit.exe so it is
 # found without hunting, and in profiles\ so the launcher can put it back if
 # it is deleted. Inert until renamed to force-profiles.user.ini.
 New-Item -ItemType Directory -Force (Join-Path $rel "profiles") | Out-Null
-Copy-Item (Join-Path $root "profilesorce-profiles.user.ini.example") (Join-Path $rel "profiles")
-Copy-Item (Join-Path $root "profilesorce-profiles.user.ini.example") $rel
+Copy-Item (Join-Path $root "profiles\force-profiles.user.ini.example") (Join-Path $rel "profiles")
+Copy-Item (Join-Path $root "profiles\force-profiles.user.ini.example") $rel
 New-Item -ItemType Directory -Force (Join-Path $rel "roms") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $rel "source") | Out-Null
 foreach ($d in "harness", "gpu", "lua") { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $rel "source\$d") }
