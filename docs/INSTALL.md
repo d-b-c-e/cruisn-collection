@@ -159,8 +159,16 @@ does no filtering at all (most detail, and the most likely to make a strong
 direct-drive base hunt), **CRISP** is lightly filtered, **STANDARD** is the
 default, **CALM** is heavily filtered for a base that will not settle. Drive
 two and tell us which you liked; that is far easier to act on than a
-description. Custom tunes live in `force-profiles.user.ini` beside the
-emulator and survive updates.
+description.
+
+**Making your own tune**: beside `vunit.exe` there is a
+`force-profiles.user.ini.example`. Rename it to `force-profiles.user.ini`
+(drop the `.example`) and it becomes yours - every value is already set to
+what STANDARD uses, with a comment saying what it changes, so your first
+edit is the only difference between them. Then pick **MY TUNE (50)** in the
+FEEL row. That file is never overwritten by an update, and its tunes win
+over the shipped ones; the `force-profiles.ini` next to it is replaced on
+every update, so edit the `.user.ini`, not that one.
 
 **Centring spring**: USA, World and Off Road Challenge each run a 72%
 centring spring on the wheel by default - this is what pulls the wheel back

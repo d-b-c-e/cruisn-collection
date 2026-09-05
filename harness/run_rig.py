@@ -293,6 +293,23 @@ def deploy_force_profiles(vunit_exe):
     except Exception as e:                     # never block a launch over this
         print(f"ffb: could not deploy force-profiles.ini ({e}); "
               f"vunit will fall back to its built-in values")
+    try:
+        # The starter file for a player's own tune: every value spelled out at
+        # the shipped default with a note on what it does. Inert until renamed
+        # to force-profiles.user.ini, so it can sit there untouched forever.
+        # Only ever placed when absent - it must never overwrite a tune, and a
+        # player who deleted it meant to.
+        eg_src = os.path.join(POC, "profiles",
+                              "force-profiles.user.ini.example")
+        eg_dst = os.path.join(os.path.dirname(vunit_exe),
+                              "force-profiles.user.ini.example")
+        if os.path.isfile(eg_src) and not os.path.isfile(eg_dst) and                 not os.path.isfile(eg_dst[:-len(".example")]):
+            shutil.copy2(eg_src, eg_dst)
+            print("ffb: placed force-profiles.user.ini.example (rename it to "
+                  "force-profiles.user.ini to use your own tune)")
+    except Exception as e:                     # never block a launch over this
+        print(f"ffb: could not deploy force-profiles.ini ({e}); "
+              f"vunit will fall back to its built-in values")
 
 
 def kill_stale_vunit(exe=None, why="stale"):

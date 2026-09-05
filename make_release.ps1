@@ -63,6 +63,12 @@ foreach ($d in "fixtures", "patch", "docs") { Copy-Item -Recurse (Join-Path $roo
 New-Item -ItemType Directory -Force (Join-Path $rel "lib	oolkit\profiles") | Out-Null
 Copy-Item (Join-Path $root "lib	oolkit\profilesorce-profiles.ini") (Join-Path $rel "lib	oolkit\profiles")
 Copy-Item (Join-Path $root "lib	oolkit\VERSION") (Join-Path $rel "lib	oolkit") -ErrorAction SilentlyContinue
+# The starter file for a player's own tune. Shipped BESIDE vunit.exe so it is
+# found without hunting, and in profiles\ so the launcher can put it back if
+# it is deleted. Inert until renamed to force-profiles.user.ini.
+New-Item -ItemType Directory -Force (Join-Path $rel "profiles") | Out-Null
+Copy-Item (Join-Path $root "profilesorce-profiles.user.ini.example") (Join-Path $rel "profiles")
+Copy-Item (Join-Path $root "profilesorce-profiles.user.ini.example") $rel
 New-Item -ItemType Directory -Force (Join-Path $rel "roms") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $rel "source") | Out-Null
 foreach ($d in "harness", "gpu", "lua") { Copy-Item -Recurse (Join-Path $root $d) (Join-Path $rel "source\$d") }

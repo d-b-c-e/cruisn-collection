@@ -25,7 +25,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   detail, liveliest), **CRISP**, **STANDARD** (the default, unchanged from
   v0.3.7) and **CALM** (for a strong base that hunts). Drive two and say
   which you preferred. Your own tunes go in `force-profiles.user.ini` beside
-  the emulator, which updates never overwrite.
+  the emulator, which updates never overwrite. A ready-made
+  **`force-profiles.user.ini.example`** ships beside the emulator for that:
+  every value already at the shipped default with a comment on what it
+  changes, inert until you drop the `.example` from its name.
 
 - FFB DIAGNOSTICS moved from the FORCE FEEDBACK page to SUPPORT, next to the
   bundle it feeds.
