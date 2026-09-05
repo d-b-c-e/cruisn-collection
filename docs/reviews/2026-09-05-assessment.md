@@ -4,9 +4,11 @@ The project has a sound core and valuable reverse-engineering work worth preserv
 
 The highest-value next investment is a reproducible recorded-drive harness, accompanied by repairs to the existing tests' pass/fail behavior and the force-feedback integration. This would turn a report such as “the left margin flashes on this turn” into an independently repeatable engineering case.
 
-This is an assessment, not an implementation. Only review documents were added. No game was launched, no wheel force was issued, and no product source, runtime configuration, NVRAM, generated shader, or deployment was changed.
+The user emphasizes that most rendering defects need moving, player-controlled gameplay, sometimes deep into a level. That is the primary acceptance workload proposed here. Attract-mode equality and isolated screenshots remain supporting controls, not substitutes for reproducing those gameplay intervals.
 
-Companion documents: [recording and test-harness proposal](E:/Source/cruisn-collection/docs/reviews/2026-09-05-replay-and-testing.md) and [FFB quality and collision proposal](E:/Source/cruisn-collection/docs/reviews/2026-09-05-ffb-quality.md).
+This is an assessment, not an implementation. This review only added or revised review documents. It launched no game, issued no wheel force, and changed no product source, runtime configuration, NVRAM, generated shader, or deployment. A separate session advanced the repositories during the review, as recorded below.
+
+Companion documents: [fresh widescreen and draw-distance assessment](E:/Source/cruisn-collection/docs/reviews/2026-09-05-widescreen-and-distance.md), [recording and test-harness proposal](E:/Source/cruisn-collection/docs/reviews/2026-09-05-replay-and-testing.md), [FFB quality and collision proposal](E:/Source/cruisn-collection/docs/reviews/2026-09-05-ffb-quality.md), and [speed telemetry reassessment](E:/Source/cruisn-collection/docs/reviews/2026-09-05-speed-telemetry.md).
 
 **Scope and evidence**
 
@@ -19,7 +21,9 @@ Reviewed the project instructions, engineering chronology, session notes, roadma
 | Wheel toolkit checkout | `d170e0403aee67e4dd82685b87156377553e8ee1` |
 | Vendored toolkit marker | `v0.9.0`; inspected force headers match toolkit source |
 | SDL beside local emulator | File/product version `2.32.10.0` |
-| Existing user changes | Untracked root `AGENTS.md`; left untouched |
+| Initial user changes | Untracked root `AGENTS.md`; untouched by this review |
+
+The other session subsequently committed Collection `8035c120c519537e705009d6c74f1b60a4c888e4` and MAME `58203bb13f7b4a5997b4f6dceed1e36a8fd631d8`. I inspected the intervening changes: MAME's executable logic was unchanged; comments added World's three-digit OCR verification and clarified that Off Road's OCR box has never worked. The collection commit also picked up `AGENTS.md` and two draft review documents already written by this review. I made no commits and did not undo that work. The completed documents incorporate the final telemetry clarification. Original line references below are based on the initial reviewed revisions; the added MAME comments shift later lines by eleven.
 
 “Confirmed” below means established from source or a specifically described check. It does not mean the corresponding visual or physical symptom was reproduced. “Hypothesis” identifies an experiment still needed. Source line references refer to these revisions and will move as implementation changes.
 
@@ -52,6 +56,7 @@ These are meaningful positive results. They cover archived native V-Unit scenes 
 | G02 | P1 | Renderer queue overflow can lose persistent state | Confirmed failure path; overflow not reproduced here |
 | F04 | P2 | Worker timing, event signaling, and output verification lag the shared shaper integration | Confirmed integration gaps |
 | G03 | P2 | Widescreen repairs and distance experiments lack broad gameplay validation | Confirmed coverage gap |
+| G04 | P1 | Multiword game patches can be partially applied; experimental patches replace widescreen defaults | Confirmed source behavior |
 | P01 | P2 | Car-selection slowdown needs a dedicated timing case | User observation; cause unresolved |
 | W01 | P2 | Wizard can save a binding that the game mapping silently drops | Confirmed current configuration example |
 | D01 | P2 | Speed's missing-read counter is cumulative instead of consecutive | Confirmed source defect |
@@ -116,7 +121,11 @@ The renderer contains useful but game-specific rules for backdrops, offscreen UI
 
 Crack filling operates on unwritten coverage. A sky pixel already written behind absent terrain is a different problem. A local repair can also hide evidence or fill intended gaps. Retain diagnostic views both before and after repair, and measure the number and location of repaired pixels. Do not equate “all holes filled” with correct geometry.
 
-At scale 4 the V-Unit image has 1,600 internal vertical samples before presentation to a 2,160-line display. Describe this accurately as 4K output with selectable internal scale. Native exactness and the scaled quality path are separate contracts. Preserve the exact path as a reference while testing quality at the actual output settings.
+At scale 4 a 400-line V-Unit image has 1,600 internal vertical samples before presentation to a 2,160-line display; Off Road's 401-line mode has 1,604. Describe this accurately as 4K output with selectable internal scale. Native exactness and the scaled quality path are separate contracts. Preserve the exact path as a reference while testing quality at the actual output settings.
+
+**G04 — game patches need coherent validation and composition.**
+
+The [patcher](E:/Source/mame-src/src/mame/midway/midvunit.cpp:122) applies each word as soon as its individual old-value guard passes. A later mismatch leaves earlier words changed. For trampolines and relocated sky tables, that does not guarantee an unsupported ROM remains untouched. Verify ROM identity and all expected words before applying a whole patch group. The launcher also lets a configured experiment replace the default widescreen patch; future distance patches for World or Off Road need explicit composition so they do not disable the existing geometry fixes. The [dedicated widescreen review](E:/Source/cruisn-collection/docs/reviews/2026-09-05-widescreen-and-distance.md) reassesses these mechanisms and proposes a staged alternative for extending distance and precision.
 
 **P01 — car-selection slowdown is an explicit unresolved issue.**
 
@@ -138,7 +147,9 @@ Device display names are also insufficient identities when multiple logical devi
 
 The [HUD OCR fallback](E:/Source/mame-src/src/mame/midway/midvunit_v.cpp:2996) increments `s_absent` on failed reads but never clears it on successful reads. “180 absent frames” therefore means 180 cumulative failures, not three consecutive seconds without a HUD. It can insert a false zero into an otherwise valid long drive. The speedometer's corrected hundreds-digit window does not fix this separate counter defect.
 
-Other limits remain: supported values vary by game; some speed regions are provisional; RPM is not equally established across all titles; the Forza adapter advances time by a fixed 17 ms and reports race-on unconditionally. A zero can mean stationary, menu, unsupported, or unreadable. These are materially different states for SimHub and for automated tests.
+Other limits remain: the other session's final notes verify World's three-digit OCR reads and identify Off Road's speed box as wrong and never working; RPM is not equally established across all titles; the Forza adapter advances time by a fixed 17 ms and reports race-on unconditionally. A zero can mean stationary, menu, unsupported, or unreadable. These are materially different states for SimHub and for automated tests.
+
+I would reopen the source investigation by tracing backward from CPU writes to the HUD digits, through glyph selection to the numeric formatter or player structure. A transient register value is still observable inside the emulator; failure to find a stable RAM address does not close that route. The [speed telemetry proposal](E:/Source/cruisn-collection/docs/reviews/2026-09-05-speed-telemetry.md) separates displayed speed, physical velocity and OCR fallback, with acceptance criteria for each.
 
 Introduce a versioned internal telemetry contract with units, source, validity, age, emulated timestamp/frame, and measured versus estimated status. Emit protocol-specific packets as adapters from that contract. Avoid deriving collision or acceleration truth from noisy OCR differences. Preserve pre-gain motor commands as well as post-processing outputs.
 

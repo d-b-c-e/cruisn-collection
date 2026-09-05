@@ -5,6 +5,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Added an independent assessment of widescreen/rendering, force feedback,
+  telemetry and reliability, plus a design for recording and replaying actual
+  driving as the primary gameplay regression suite. No behavior changes are
+  included in the assessment baseline.
+
 - **CRISP is the default feel**, with no centring spring. Driven at the rig
   against original MAME plus the FFB Arcade Plugin at matched strength, that
   pairing read closest to the arcade signal; the 50 ms STANDARD tune remains

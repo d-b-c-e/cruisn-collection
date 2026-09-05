@@ -2853,3 +2853,19 @@ Noted in passing: with the wheel parked at full lock (left there by the FFB
 sign probe) the steering axis auto-repeats LEFT into the menu ~3.5x/s, which
 is correct behaviour for a wheel held off centre but worth a troubleshooting
 line.
+
+## 2026-09-05 - Independent assessment baseline
+
+Completed an independent source and evidence review of the collection,
+modified MAME and wheel toolkit. Five dated reports in docs/reviews/ cover
+product/reliability, widescreen and draw distance, recorded gameplay testing,
+FFB collision quality, and speed telemetry beyond OCR. Six existing V-Unit
+captures rechecked at 100.0000% native equality; both generated shader headers
+and vendored force headers checked. No new live gameplay or wheel actuation
+was performed. Native equality is explicitly a bounded reference result,
+not acceptance of the user's moving-gameplay visual reports.
+
+The user authorized committing/pushing the assessment baseline, then improving
+implementation with emphasis on automated testing and diagnostic evidence.
+The next work prioritizes tests that fail reliably and isolated recorded-drive
+replay. Physical wheel output stays disabled during autonomous graphics tests.

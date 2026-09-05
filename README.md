@@ -6,6 +6,11 @@ as a renderer replacement over MAME. One fullscreen launcher, all four games,
 wheel + force feedback, true 16:9 at 4× internal resolution, optional CRT
 look. **No ROMs are included** — you supply your own.
 
+This is an actively tested alpha. Widescreen artifacts during gameplay,
+collision feedback, car-selection slowdown, and telemetry coverage remain
+open work. The [September 2026 assessment](docs/reviews/2026-09-05-assessment.md)
+records verified findings and the plan for recorded gameplay regression tests.
+
 ## Play it (players / testers)
 
 1. Download the latest zip from
@@ -91,8 +96,14 @@ on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
   full 16:9 view.
 - Cruis'n Exotica renders through the same GPU path at 4× via MAME's Zeus2
   emulation (upstream emulation gaps remain: car-select text is illegible).
-- Telemetry (speed, RPM, wheel force, lamps) streams to SimHub / motion
-  rigs as JSON or Forza-format UDP.
+- Telemetry streams to SimHub as JSON or Forza-format UDP. Speed currently
+  uses HUD OCR for USA and World; Off Road's speed reader is not working,
+  and Exotica speed is not implemented. RPM is verified for USA only.
+  Wheel force and lamps are separate available output channels.
+
+Native V-Unit comparisons cover specific archived captures. They do not
+establish that scaled/widescreen gameplay is artifact-free. Player-driven,
+consecutive-frame replay is the planned primary visual regression workload.
 
 Full engineering log with every finding and number:
 [results/RESULTS.md](results/RESULTS.md).
@@ -102,7 +113,8 @@ Full engineering log with every finding and number:
 The emulator half is MAME 0.286 plus the patch series in `patch/`; the
 launcher and tooling are Python. Setup, build commands, path overrides and
 the verification workflow are in [docs/INSTALL.md](docs/INSTALL.md)
-(developer section). Agent/maintainer notes: `CLAUDE.md`.
+(developer section). Current agent/maintainer notes: `AGENTS.md` and
+`.Codex/session-notes.md`; older session history remains under `.claude/`.
 
 ```
 harness/   launcher (collection.py), run_rig.py, setup GUI, capture/oracle tools
@@ -111,6 +123,8 @@ patch/     full MAME patch series + in-memory game-code patches (patch/game)
 fixtures/  NVRAM so each game boots straight to attract, calibrated
 lua/       headless drivers (frame snapshots, scripted coin-up/driving)
 results/   RESULTS.md engineering log + proof images
+docs/reviews/ independent assessment, replay/testing and rendering/FFB proposals
+lib/toolkit/ pinned wheel-toolkit profiles and version marker
 ```
 
 ## Legal

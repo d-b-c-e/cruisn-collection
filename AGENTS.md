@@ -5,14 +5,21 @@
 Working proof-of-concept for a **native PC port of the Midway Cruis'n
 games** (Cruis'n USA, Cruis'n World, Off Road Challenge — V-Unit hardware,
 renderer-replaced and verified bit-exact — plus **Cruis'n Exotica**, Zeus2
-hardware, running through MAME's own renderer in the same exe; flagged
-NOT_WORKING/IMPERFECT upstream but play-tested on this rig, GL-replacement
-scoped viable at ≤6.3k quads/frame via zeus2_draw_quad). Built as a
+hardware, with a live Zeus GL replacement and a MAME-renderer fallback;
+upstream emulation limitations remain). Built as a
 renderer-replacement over MAME, the same architecture as wanszai's arcade
-ports. As of 2026-08-18 the whole chain is
-**working and rig-verified**: the game runs in one window with an in-process
-GPU renderer at 16:9 / 3-4× internal resolution, artifact-free, with FFB
-staged for wheel testing.
+ports. As of 2026-09-05 the collection launches all four games with scaled
+widescreen rendering and built-in SDL force feedback, conditioned by the
+vendored wheel-toolkit shaper. Gameplay rendering artifacts, collision feel,
+car-selection slowdown and telemetry coverage remain open. Native exactness
+on archived captures must not be described as proof of artifact-free gameplay.
+
+Current assessment: `docs/reviews/2026-09-05-assessment.md`, with dedicated
+widescreen/distance, replay/testing, FFB and telemetry companion reports.
+The user authorized implementation after committing/pushing this assessment
+baseline. Prioritize diagnostic evidence and real gameplay input replay;
+automated graphics runs must disable physical wheel output. Preserve the
+review reports as a dated baseline and record fixes separately.
 
 **Read these two documents before doing anything:**
 
@@ -29,7 +36,7 @@ self-sufficient handoff (written for context-loss resilience).
 
 **GitHub:** `d-b-c-e/cruisn-collection` (private; renamed from cruisn-poc
 2026-08-20 — old URL redirects). Releases publish via tag push
-(`.github/workflows/release.yml`); v0.1.0 is live. Local folder renamed
+(`.github/workflows/release.yml`); see CHANGELOG.md for releases. Local folder renamed
 to `E:\Source\cruisn-collection` 2026-08-20 (matches the repo name).
 
 ## Repo map
