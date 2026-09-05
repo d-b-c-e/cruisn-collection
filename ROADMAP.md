@@ -148,44 +148,26 @@ Remaining: a MAME PR for the driver output (drop the "unknown purpose").
 - `ffb_damper` / `ffb_friction` untried on the rig; decide whether either
   earns a SETTINGS row.
 
-## Speedometer telemetry drops to zero mid-race (2026-09-05, USA)
+## ~~Speedometer telemetry~~ SOLVED 2026-09-05
 
-Reported at the rig: the SimHub needle climbs then falls back, "rarely gets
-above 20". Partially diagnosed, not fixed.
+The reader's window clipped the hundreds digit: `crusnusa` x0 was 30, and the
+leftmost lit column sat exactly on 30 in 2758 samples with only 112 reads ever
+segmenting three cells. Speed could never exceed 99, so every three-digit
+moment failed and decayed toward zero - median 13 mph on a real drive.
 
-**Proven**
-- The drop is a real code path: `midvunit_v.cpp`, HUD-OCR branch - 60
-  consecutive unreadable frames force `s_hud_last = 0` ("box absent (menus):
-  decay to 0 rather than freeze"). That is the needle collapsing.
-- NOT widescreen: reproduced headless with no GL overlay and no widescreen,
-  gas floored - same climb-then-zero pattern.
-- Units are correct: mph -> m/s (x0.44704) into Forza `Speed` and `VelocityZ`.
-- Not the gear: gear/RPM are a separate HUD panel bottom-right, clear of the
-  MPH box bottom-left.
+Fixed by sweeping x0 with the new `MIDV_HUD_X0` / `MIDV_HUD_THR` knobs:
+30 -> max 88, **18 -> max 141** with 15x the three-digit reads and no extra
+failures, 12 pulls in the road behind the HUD and breaks every read. Now
+median 74 while moving, 6% zeros.
 
-**The open lead.** No capture has ever produced a reading above 99 (headless
-max 98) while the user's screenshot shows 95 on a three-digit readout. The
-box is `{crusnusa, 30, 72, 347, 370}` - 42 px wide - and the segmenter allows
-up to 4 cells, so three digits *should* fit. Suspicion: at 100+ the leftmost
-digit falls outside x0=30, the read fails, and 60 frames later speed zeroes -
-which would fail exactly when you break 100, matching the report.
+Two things that made this take four attempts, worth remembering:
+- Speed was never written to the trace (gated on a RAM path disabled for
+  every game), so support bundles could not answer "what did the reader
+  see?". It is traced now, with the cell count and leftmost lit column.
+- A videoram dump taken at a two-digit moment "proved" there was room, and
+  sent the search in the wrong direction twice. Instrument the reader, not
+  the picture.
 
-**Measured 2026-09-05, after the marked-collision drive**
-- The three-digit theory is WRONG. A videoram dump at speed shows the digits
-  at columns 45-66 inside the 30..72 window, with room for a third. Widening
-  x0 to 14 pulls in the road drawn behind the HUD and makes EVERY read fail
-  (telemetry went all-zero) - do not try that again.
-- No capture has exceeded 99 mph because the car never did in these runs, not
-  because the reader could not.
-- Headless, in a 60 s driving window: only 5% zero readings, 9 dropout runs,
-  longest 1.1 s. The decay threshold went 60 -> 180 frames so a gap that size
-  no longer zeroes the speed.
-- STILL UNEXPLAINED: that is far milder than the rig's "rarely gets above 20".
-  The untested difference is the GL overlay / widescreen presentation, which
-  headless runs do not use. Next step is to reproduce WITH `MIDV_GL=1` and see
-  whether the dropout rate jumps.
-
-**Older note**: dump the videoram box region during a >100 mph run
-(MIDV_STATEDUMP_FRAME/DIR) and see where the third digit lands. If it spills,
-widening x0 is the fix; the 60-frame decay is worth lengthening regardless,
-since one unreadable second should not mean "stopped".
+**Still open**: `crusnwld` and `offroadc` boxes were calibrated the same way
+and validated only below 100 mph (World's note literally says "0->97"). They
+are very likely clipped too - sweep them the same way.
