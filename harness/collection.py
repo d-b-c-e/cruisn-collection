@@ -382,7 +382,7 @@ class Shell:
         if notice:
             # transient status line (a failed launch's reason, a ROM
             # fallback) - the console print alone left players guessing
-            self.center_text(notice, self.h // 40, self.h * 0.865,
+            self.center_text(notice, self.h // 40, self.h * 0.895,
                              (1.0, 0.55, 0.45, 1.0))
         # in-game hotkey legend (keys that live outside the wheel bindings)
         leg = self.footer_tex(
@@ -394,36 +394,23 @@ class Shell:
         self.rect(leg, (self.w - lw) / 2, self.h * 0.955, lw, lh,
                   (0.75, 0.75, 0.8, 1.0))
 
-    def draw_settings(self, ssel, crt, fill, margin, ffb, mfill, trans,
-                      scale, t, version="", notice="", clamp=0, diag=False,
-                      invert=False):
+    def draw_settings(self, ssel, title, rows, hint, t, notice=""):
+        """One settings page: prepared (label, value) rows, one hint line.
+
+        Pages hold at most six rows, so each row gets more space than the
+        old flat list of fourteen (squeezed to 0.040) without growing the
+        text - the rig is a 43-inch screen at desk distance."""
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
         self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
                   tw, self.h / 14 * 1.9)
-        self.center_text("SETTINGS", self.h // 20, self.h * 0.26,
+        self.center_text(title, self.h // 20, self.h * 0.26,
                          (1.0, 0.85, 0.4, 1.0))
-        # global items only - per-game tuning lives in each game's submenu
-        rows = [("CRT EFFECTS", "ON" if crt else "OFF"),
-                ("CRACK FILL", "ON" if fill else "OFF"),
-                ("ASPECT / WIDESCREEN", ASPECT_LABEL(margin)),
-                ("MARGIN FILL", "ON" if mfill else "OFF"),
-                ("FFB STRENGTH", f"< {ffb}% >"),
-                ("FFB PEAK LIMIT", "< OFF >" if not clamp else f"< {clamp} >"),
-                ("FFB DIRECTION", "< INVERTED >" if invert else "< NORMAL >"),
-                ("FFB DIAGNOSTICS", "ON" if diag else "OFF"),
-                ("INTERNAL SCALE", f"< {scale}X >"),
-                ("TRANSMISSION", "< H-PATTERN SHIFTER >" if trans == "hpattern"
-                 else "< SEQUENTIAL >"),
-                ("CONTROLS SETUP", "WHEEL / PAD / KEYBOARD"),
-                ("SAVE SUPPORT BUNDLE", "FOR BUG REPORTS"),
-                ("CHECK FOR UPDATES", version),
-                ("BACK", "")]
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.33 + 0.040 * i)
+            y = self.h * (0.34 + 0.055 * i)
             if i == ssel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -434,41 +421,14 @@ class Shell:
             self.text_at(name, px, x0, y, col)
             if value:
                 self.text_at(value, px, x1, y, vcol, align="r")
-        hints = {
-            2: "4:3 = ORIGINAL ARCADE      16:9 = FILLS A WIDE SCREEN      "
-               "TRIMMED = 16:9 WITH CLEANER EDGES",
-            3: "ON = STRETCH EDGE PIXELS INTO THE 16:9 SIDES (CAN SMEAR)"
-               "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING",
-            4: "FORCE-FEEDBACK STRENGTH:   0% = FFB OFF (A/B TEST FOR "
-               "SPEED)      LOWER IF THE WHEEL FEELS TOO HARSH",
-            5: "CAPS THE GAMES' FORCE KICKS (OF 127)      STOPS A STRONG "
-               "WHEEL SLAMMING LEFT-RIGHT BY ITSELF      TRY 40 ON A "
-               "DIRECT-DRIVE BASE",
-            6: "WHICH WAY THE WHEEL PUSHES - BASES DIFFER.  FLIP IT IF THE WHEEL "
-               "RUNS AWAY FROM CENTRE IN EXOTICA OR SHAKES HARD IN USA",
-            7: "ON = RECORDS THE FORCES AND WHEEL POSITION WHILE YOU DRIVE "
-               "(FOR A BUG REPORT)      THEN SAVE SUPPORT BUNDLE",
-            11: "WRITES ONE ZIP WITH LOGS, SETTINGS, CONTROLLER LAYOUT AND "
-                "THE FORCE TRACE - NEVER YOUR ROMS      A GAME WINDOW "
-                "APPEARS FOR ABOUT 10 S",
-            8: "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
-               "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT "
-               "THE NEXT LAUNCH",
-            9: "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = "
-               "SHIFT UP / DOWN PADDLES (EXOTICA: PADDLES DRIVE A VIRTUAL "
-               "4-SPEED SHIFTER)",
-            10: "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
-               "SKIPPED STEPS KEEP THEIR SAVED BINDING",
-            12: "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      "
-               "YOUR ROMS, SETTINGS AND BINDINGS ARE KEPT",
-        }
         if notice:
             self.center_text(notice, self.h // 40, self.h * 0.895,
                              (1.0, 0.85, 0.4, 1.0))
-        elif ssel in hints:
-            self.center_text(hints[ssel], self.h // 48, self.h * 0.895,
+        elif hint:
+            self.center_text(hint, self.h // 48, self.h * 0.895,
                              (0.65, 0.65, 0.72, 1.0))
-        foot = self.footer_tex("^  v  NAVIGATE      ENTER  OK      ESC  BACK")
+        foot = self.footer_tex(
+            "^  v  NAVIGATE      <  >  ADJUST      ENTER  OK      ESC  BACK")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
         self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
@@ -487,7 +447,7 @@ class Shell:
         x0, x1 = self.w * 0.30, self.w * 0.70
         px = self.h // 33
         for i, (name, value) in enumerate(rows):
-            y = self.h * (0.34 + 0.072 * i)
+            y = self.h * (0.34 + 0.055 * i)
             if i == gsel:
                 pulse = 0.65 + 0.35 * math.sin(t * 4.0)
                 col = (GOLD[0], GOLD[1], GOLD[2], pulse)
@@ -499,7 +459,7 @@ class Shell:
             if value:
                 self.text_at(value, px, x1, y, vcol, align="r")
         if hint:
-            self.center_text(hint, self.h // 48, self.h * 0.86,
+            self.center_text(hint, self.h // 48, self.h * 0.895,
                              (0.65, 0.65, 0.72, 1.0))
         foot = self.footer_tex(
             "^  v  NAVIGATE      <  >  ADJUST      ENTER  OK      ESC  BACK")
@@ -1004,6 +964,99 @@ def bundle_step(upd):
     threading.Thread(target=work, daemon=True).start()
 
 
+SETTINGS_TITLE = {"root": "SETTINGS", "display": "DISPLAY",
+                  "ffb": "FORCE FEEDBACK", "controls": "CONTROLS",
+                  "support": "SUPPORT"}
+
+
+def settings_rows(page, state, diag, version):
+    """(id, label, value, hint) for one settings page.
+
+    Grouped by when a setting is actually touched: DISPLAY and CONTROLS get
+    set up once, FORCE FEEDBACK is the one tuned by feel, SUPPORT is for
+    reporting a problem. Keyed by id so adding a row cannot renumber the
+    handlers - the old flat list needed a dozen index edits every time."""
+    ffb = state.get("ffb", 50)
+    clamp = int(state.get("ffbclamp", 0))
+    scale = int(state.get("scale", 4))
+    trans = state.get("transmission", "hpattern")
+
+    def onoff(v):
+        return "ON" if v else "OFF"
+
+    if page == "display":
+        return [
+            ("crt", "CRT EFFECTS", onoff(state["crt"]),
+             "SCANLINES, MASK AND CURVATURE      F9 TOGGLES IT IN GAME"),
+            ("crackfill", "CRACK FILL", onoff(state["crackfill"]),
+             "FILLS THE 3PX SEAMS THE ARCADE HARDWARE LEFT BETWEEN POLYGONS"),
+            ("aspect", "ASPECT / WIDESCREEN", ASPECT_LABEL(state["margin"]),
+             "4:3 = ORIGINAL ARCADE      16:9 = FILLS A WIDE SCREEN      "
+             "TRIMMED = 16:9 WITH CLEANER EDGES"),
+            ("marginfill", "MARGIN FILL", onoff(state.get("marginfill", True)),
+             "ON = STRETCH EDGE PIXELS INTO THE 16:9 SIDES (CAN SMEAR)"
+             "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING"),
+            ("scale", "INTERNAL SCALE", f"< {scale}X >",
+             "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
+             "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT THE "
+             "NEXT LAUNCH"),
+            ("back", "BACK", "", ""),
+        ]
+    if page == "ffb":
+        return [
+            ("ffb", "STRENGTH", f"< {ffb}% >",
+             "0% = FORCE FEEDBACK OFF      LOWER IF THE WHEEL FEELS HARSH      "
+             "30-40 SUITS A DIRECT-DRIVE BASE"),
+            ("clamp", "PEAK LIMIT", "< OFF >" if not clamp else f"< {clamp} >",
+             "CAPS THE GAMES' FORCE KICKS (OF 127)      STOPS A STRONG WHEEL "
+             "SLAMMING LEFT-RIGHT BY ITSELF      TRY 40 ON A DIRECT-DRIVE BASE"),
+            ("invert", "DIRECTION",
+             "< INVERTED >" if state.get("ffbinvert", 0) else "< NORMAL >",
+             "WHICH WAY THE WHEEL PUSHES - BASES DIFFER.  FLIP IT IF THE WHEEL "
+             "RUNS AWAY FROM CENTRE IN EXOTICA OR SHAKES HARD IN USA"),
+            ("diag", "DIAGNOSTICS", onoff(diag),
+             "ON = RECORDS THE FORCES AND WHEEL POSITION WHILE YOU DRIVE "
+             "(FOR A BUG REPORT)      THEN SUPPORT > SAVE SUPPORT BUNDLE"),
+            ("back", "BACK", "", ""),
+        ]
+    if page == "controls":
+        return [
+            ("trans", "TRANSMISSION",
+             "< H-PATTERN SHIFTER >" if trans == "hpattern"
+             else "< SEQUENTIAL >",
+             "H-PATTERN = GEAR SHIFTER (GEARS 1-4)      SEQUENTIAL = SHIFT UP "
+             "/ DOWN PADDLES (EXOTICA: PADDLES DRIVE A VIRTUAL 4-SPEED "
+             "SHIFTER)"),
+            ("wizard", "CONTROLS SETUP", "WHEEL / PAD / KEYBOARD",
+             "BINDS THE CONTROLS FOR THE CURRENT TRANSMISSION MODE      "
+             "SKIPPED STEPS KEEP THEIR SAVED BINDING"),
+            ("back", "BACK", "", ""),
+        ]
+    if page == "support":
+        return [
+            ("bundle", "SAVE SUPPORT BUNDLE", "FOR BUG REPORTS",
+             "WRITES ONE ZIP WITH LOGS, SETTINGS, CONTROLLER LAYOUT AND THE "
+             "FORCE TRACE - NEVER YOUR ROMS      A GAME WINDOW APPEARS FOR "
+             "ABOUT 10 S"),
+            ("updates", "CHECK FOR UPDATES", version,
+             "LOOKS FOR A NEWER RELEASE ON GITHUB AND INSTALLS IT      YOUR "
+             "ROMS, SETTINGS AND BINDINGS ARE KEPT"),
+            ("back", "BACK", "", ""),
+        ]
+    return [
+        ("display", "DISPLAY", "CRT, ASPECT, RESOLUTION",
+         "HOW THE PICTURE LOOKS"),
+        ("ffb", "FORCE FEEDBACK",
+         f"{ffb}%" + ("  (DIAGNOSTICS ON)" if diag else ""),
+         "HOW THE WHEEL FEELS      PER-GAME STRENGTH LIVES ON EACH GAME CARD"),
+        ("controls", "CONTROLS",
+         "SEQUENTIAL" if trans == "sequential" else "H-PATTERN",
+         "TRANSMISSION MODE AND THE BINDING WIZARD"),
+        ("support", "SUPPORT", version, "BUG REPORTS AND UPDATES"),
+        ("back", "BACK", "", ""),
+    ]
+
+
 def game_ffb(state, card):
     """FFB STRENGTH for one launch: the game card's override, else SETTINGS."""
     v = state.get("ffbgame", {}).get(card)
@@ -1447,7 +1500,8 @@ def main():
     game_proc = None     # last vunit process, until teardown completes
     mode = "menu"        # menu | game | settings | wizard
     row = 0              # menu: 0 = game cards, 1 = SETTINGS
-    ssel = 0             # settings: item index
+    ssel = 0             # settings: row index within the current page
+    spage = "root"       # settings page: root/display/ffb/controls/support
     gsel = 0             # game submenu: item index
     cmos_cache = {}      # (rom, fname, addr) -> byte (invalidated on write)
     wiz_idx = 0
@@ -1649,129 +1703,128 @@ def main():
             rawlis = None
 
         elif mode == "settings":
+            srows = settings_rows(spage, state, run_rig.ffb_diag_enabled(),
+                                  upd_version)
             for key in actions:
+                ssel = min(ssel, len(srows) - 1)
+                rid = srows[ssel][0]
+                lr = key in (glfw.KEY_LEFT, glfw.KEY_RIGHT)
+                right = key == glfw.KEY_RIGHT
+                enter = key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER,
+                                glfw.KEY_SPACE)
                 if key in (glfw.KEY_UP, glfw.KEY_W):
-                    ssel = (ssel - 1) % 14
+                    ssel = (ssel - 1) % len(srows)
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
-                    ssel = (ssel + 1) % 14
+                    ssel = (ssel + 1) % len(srows)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel in (0, 1):
-                    k = "crt" if ssel == 0 else "crackfill"
-                    state[k] = not state[k]
+                elif key == glfw.KEY_ESCAPE or (enter and rid == "back"):
+                    if spage == "root":
+                        mode = "menu"
+                    else:
+                        # back to the root page, landing on the branch just
+                        # left rather than at the top of the list
+                        leaving = spage
+                        dbg("settings", f"page {leaving} -> root")
+                        spage = "root"
+                        root = settings_rows(spage, state, False, "")
+                        ssel = next((i for i, r in enumerate(root)
+                                     if r[0] == leaving), 0)
+                        srows = root
+                    audio.blip("nav")
+                elif enter and rid in ("display", "ffb", "controls", "support"):
+                    dbg("settings", f"page -> {rid}")
+                    spage, ssel = rid, 0
+                    srows = settings_rows(spage, state,
+                                          run_rig.ffb_diag_enabled(),
+                                          upd_version)
+                    audio.blip("select")
+                # ---- display
+                elif rid in ("crt", "crackfill") and (lr or enter):
+                    state[rid] = not state[rid]
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 2:
-                    state["margin"] = aspect_cycle(
-                        state["margin"], key == glfw.KEY_RIGHT)
+                elif rid == "aspect" and (lr or enter):
+                    state["margin"] = aspect_cycle(state["margin"],
+                                                   right or enter)
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 3:
+                elif rid == "marginfill" and (lr or enter):
                     state["marginfill"] = not state.get("marginfill", True)
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 4:
-                    # FFB overall strength, 0..100% in 10% steps
-                    step = 10 if key == glfw.KEY_RIGHT else -10
-                    state["ffb"] = max(0, min(100, state.get("ffb", 100) + step))
+                elif rid == "scale" and (lr or enter):
+                    # internal render scale 2x-4x (GPU load ~ scale^2)
+                    cur = int(state.get("scale", 4))
+                    state["scale"] = max(2, min(4,
+                                                cur + (1 if (right or enter)
+                                                       else -1)))
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 5:
-                    # FFB PEAK LIMIT: OFF, 100, 80, 60, 40, 30 (cap of 127)
+                # ---- force feedback
+                elif rid == "ffb" and (lr or enter):
+                    step = 10 if (right or enter) else -10
+                    state["ffb"] = max(0, min(100, state.get("ffb", 50) + step))
+                    save_config(state)
+                    audio.blip("nav")
+                elif rid == "clamp" and (lr or enter):
+                    # OFF, 100, 80, 60, 40, 30 (the games' own cap is 127)
                     steps = [0, 100, 80, 60, 40, 30]
                     cur = int(state.get("ffbclamp", 0))
                     i = steps.index(cur) if cur in steps else 0
-                    i = (i + (1 if key == glfw.KEY_RIGHT else -1)) % len(steps)
+                    i = max(0, min(len(steps) - 1,
+                                   i + (1 if (right or enter) else -1)))
                     state["ffbclamp"] = steps[i]
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 6:
+                elif rid == "invert" and (lr or enter):
                     state["ffbinvert"] = 0 if state.get("ffbinvert", 0) else 1
-                    audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 7:
-                    toggle_diag(upd)
-                    audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 8:
-                    # internal render scale 2x-4x (GPU load ~ scale^2);
-                    # applies at the next launch
-                    step = 1 if key == glfw.KEY_RIGHT else -1
-                    state["scale"] = max(2, min(4, int(state.get("scale", 4))
-                                                + step))
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and ssel == 9:
+                elif rid == "diag" and (lr or enter):
+                    toggle_diag(upd)
+                    audio.blip("nav")
+                # ---- controls
+                elif rid == "trans" and (lr or enter):
                     state["transmission"] = (
                         "sequential"
                         if state.get("transmission", "hpattern") == "hpattern"
                         else "hpattern")
                     save_config(state)
                     audio.blip("nav")
-                elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
-                    if ssel in (0, 1):
-                        k = "crt" if ssel == 0 else "crackfill"
-                        state[k] = not state[k]
-                        save_config(state)
-                        audio.blip("nav")
-                    elif ssel == 3:
-                        state["marginfill"] = not state.get("marginfill", True)
-                        save_config(state)
-                        audio.blip("nav")
-                    elif ssel == 9:
-                        state["transmission"] = (
-                            "sequential"
-                            if state.get("transmission",
-                                         "hpattern") == "hpattern"
-                            else "hpattern")
-                        save_config(state)
-                        audio.blip("nav")
-                    elif ssel in (2, 4, 5, 8):
-                        audio.blip("nav")   # adjust with < > arrows
-                    elif ssel == 12:
-                        audio.blip("nav")
-                        update_step(upd)
-                    elif ssel == 11:
-                        audio.blip("nav")
-                        bundle_step(upd)
-                    elif ssel == 7:
-                        toggle_diag(upd)
-                        audio.blip("nav")
-                    elif ssel == 6:
-                        state["ffbinvert"] = 0 if state.get("ffbinvert", 0) else 1
-                        audio.blip("nav")
-                    elif ssel == 10:
-                        mode = "wizard"
-                        wiz_idx = 0
-                        wiz_bind = {}
-                        wiz_last = ""
-                        wiz_ready = False
-                        wiz_base = wiz_settle = None
-                        wiz_cool = 0.0
-                        # the wizard only asks for the ACTIVE transmission
-                        # mode's shift steps; the other mode's saved binds
-                        # survive (save_wheelmap merges)
-                        skipk = ({"shiftup", "shiftdn"}
-                                 if state.get("transmission",
-                                              "hpattern") == "hpattern"
-                                 else {"gear1", "gear2", "gear3", "gear4"})
-                        wiz_steps = [s for s in WIZARD_STEPS
-                                     if s[1] not in skipk]
-                        if rawjoy is not None and rawlis is None:
-                            try:
-                                rawlis = rawjoy.RawButtonListener()
-                            except Exception:
-                                rawlis = None
-                        audio.blip("select")
-                    else:
-                        mode = "menu"
-                        audio.blip("select")
-                elif key == glfw.KEY_ESCAPE:
-                    mode = "menu"
+                elif rid == "wizard" and enter:
+                    mode = "wizard"
+                    wiz_idx = 0
+                    wiz_bind = {}
+                    wiz_last = ""
+                    wiz_ready = False
+                    wiz_base = wiz_settle = None
+                    wiz_cool = 0.0
+                    # the wizard only asks for the ACTIVE transmission mode's
+                    # shift steps; the other mode's saved binds survive
+                    skipk = ({"shiftup", "shiftdn"}
+                             if state.get("transmission",
+                                          "hpattern") == "hpattern"
+                             else {"gear1", "gear2", "gear3", "gear4"})
+                    wiz_steps = [s for s in WIZARD_STEPS if s[1] not in skipk]
+                    if rawjoy is not None and rawlis is None:
+                        try:
+                            rawlis = rawjoy.RawButtonListener()
+                        except Exception:
+                            rawlis = None
+                    audio.blip("select")
+                # ---- support
+                elif rid == "bundle" and enter:
                     audio.blip("nav")
+                    bundle_step(upd)
+                elif rid == "updates" and enter:
+                    audio.blip("nav")
+                    update_step(upd)
+                if mode == "settings":
+                    srows = settings_rows(spage, state,
+                                          run_rig.ffb_diag_enabled(),
+                                          upd_version)
             actions.clear()
-            if mode != "settings":
-                # G6 forensics: settings closed - by which key?
-                print(f"settings closed (keys={actions!r} mode={mode})",
-                      flush=True)
 
         elif mode == "game":
             card = GAMES[sel][0]
@@ -1897,16 +1950,13 @@ def main():
         elif mode == "settings":
             if upd["stage"] == "applied":
                 glfw.set_window_should_close(win, True)   # updater takes over
-            shell.draw_settings(ssel, state["crt"], state["crackfill"],
-                                state["margin"], state.get("ffb", 100),
-                                state.get("marginfill", True),
-                                state.get("transmission", "hpattern"),
-                                int(state.get("scale", 4)), t,
-                                version=upd_version,
-                                notice=upd["msg"] if time.time() < upd["until"]
-                                else "", clamp=int(state.get("ffbclamp", 0)),
-                                diag=run_rig.ffb_diag_enabled(),
-                                invert=bool(state.get("ffbinvert", 0)))
+            srows = settings_rows(spage, state,
+                                  run_rig.ffb_diag_enabled(), upd_version)
+            ssel = min(ssel, len(srows) - 1)
+            shell.draw_settings(
+                ssel, SETTINGS_TITLE.get(spage, "SETTINGS"),
+                [(r[1], r[2]) for r in srows], srows[ssel][3], t,
+                notice=upd["msg"] if time.time() < upd["until"] else "")
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)
