@@ -13,6 +13,24 @@ import graphics_options as G
 from game_patch import read_patch
 
 
+class SceneryOptionTests(unittest.TestCase):
+    def test_revision_scale_and_widescreen_gates_preserve_saved_preference(self):
+        section = {'scenery_distance_crusnwld': '1'}
+        state = G.load(section)
+        self.assertEqual(G.serialize(state)['scenery_distance_crusnwld'], '1')
+        self.assertFalse(G.toggle(state, 'crusnwld', 'scenery_distance', 'crusnwld'))
+        for rom, margin, scale in [('crusnwld',86,4), ('crusnwld24',0,4),
+                                  ('crusnwld24',86,1), ('crusnusa',86,4),
+                                  ('offroadc',86,4), ('crusnexo',86,4), ('crusnwld24',86,4)]:
+            with tempfile.TemporaryDirectory() as directory:
+                env=G.launch_overrides(ROOT,directory,rom,margin,scale,section,{})
+            expected='all' if (rom,margin,scale)==('crusnwld24',86,4) else 'off'
+            self.assertEqual(env['MIDV_SCENERY'], expected)
+        values={r[0]:r[2] for r in G.rows('crusnwld',state,'crusnwld')}
+        self.assertEqual(values['scenery_distance'],'UNAVAILABLE')
+        self.assertTrue(state['crusnwld']['scenery_distance'])
+
+
 class GraphicsOptionsTests(unittest.TestCase):
     def test_settings_stay_per_game_and_world_revisions_share_seams(self):
         settings = G.load({})

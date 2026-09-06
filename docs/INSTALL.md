@@ -77,6 +77,7 @@ Changes are saved per game and take effect on its next launch. All start off.
 |---|---|---|
 | **Seam Alignment** | USA, World, Off Road | Aligns certain mismatched terrain edges at enhanced resolutions. Closed a measured blue seam in Off Road, but can shift nearby texture interpolation. |
 | **Widescreen Terrain** | World 2.4/2.5 | Repairs some missing edge terrain, including a measured Germany road hole. Does **not** extend draw distance. Adds drawing work; old recordings can take a different route. |
+| **Distant Scenery** | World 2.4, widescreen, scale2×+ | Draws three verified Germany mountain models and one conifer model earlier. Preserves the mountains' later shape. Experimental and limited to identified scenery; remaining tree variants/pop-in are still being investigated. |
 | **Detail Distance** | USA v4.5 | Keeps higher-detail models farther away. The recorded route required about 5.25% more polygon submissions. |
 | **Draw Limit** | USA v4.5 | Raises a distant-object rejection limit. It added submissions but **no visible improvement** in the tested scene; it cannot load missing scenery. |
 

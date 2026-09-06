@@ -1030,7 +1030,8 @@ def settings_rows(page, state, diag, version):
         title = next((g[1] for g in GAMES if g[0] == game), game)
         return [("graphics_game", "GAME", f"< {title} >",
                  "SELECT THE GAME TO ADJUST. EACH GAME KEEPS ITS OWN EXPERIMENTS.")] + \
-            graphics_options.rows(game, state.get("graphics", {})) + [("back", "BACK", "", "")]
+            graphics_options.rows(game, state.get("graphics", {}),
+                state.get("world_rom", "crusnwld24") if game == "crusnwld" else game) + [("back", "BACK", "", "")]
     if page == "ffb":
         return [
             ("ffb", "STRENGTH", f"< {ffb}% >",
@@ -1788,7 +1789,8 @@ def main():
                     audio.blip("nav")
                 elif rid in graphics_options.OPTIONS and (lr or enter):
                     game = state.get("graphics_rom", state.get("rom", "crusnusa"))
-                    if graphics_options.toggle(state.setdefault("graphics", {}), game, rid):
+                    if graphics_options.toggle(state.setdefault("graphics", {}), game, rid,
+                            state.get("world_rom", "crusnwld24") if game == "crusnwld" else game):
                         save_config(state)
                         audio.blip("nav")
                 elif rid == "scale" and (lr or enter):
