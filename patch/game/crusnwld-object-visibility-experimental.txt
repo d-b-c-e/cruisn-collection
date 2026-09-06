@@ -1,0 +1,14 @@
+# World 2.4/2.5 object visibility experiment. NOT a launcher default.
+# Matched-state tests restore real margin road geometry. A full-run Germany
+# candidate diverges from the human route despite identical effective inputs.
+# Investigate guest timing/state before enabling for normal use or rebaselining.
+# Compose explicitly with the revision-specific widescreen patch; see review.
+# Conditional left helper uses dead R3 scratch and unreachable $108-$10D padding.
+B9 05E00200 05E00256
+C0 6A270289 72070048
+108 0C800000 062C0000
+109 0C800000 07030002
+10A 0C800000 01A30108
+10B 0C800000 788A0000
+10C 0C800000 0E230000
+10D 0C800000 6000034C
