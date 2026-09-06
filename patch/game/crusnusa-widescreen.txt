@@ -1,0 +1,19 @@
+# Cruis'n USA v4.5: object visibility for the 16:9 canvas (86px per side).
+# Automatic at FULL widescreen. Program RAM only; ROM files remain unchanged.
+#
+# The object walker tests projected x +/- radius against +/-256 before it
+# submits any polygons. Terrain objects needed in the added margins can be
+# rejected there, even though the quad rasterizer has a wider canvas.
+# Redirect only these two visibility operands to 342.0 = 256 + 86.
+# Do not change $53 itself: other paths use that value for projection.
+#
+# $203 is alignment padding after BU $220; no fallthrough into the constant.
+# Guards identify the supported code. Reset-time installation checks all words
+# before any write; boot recopy is handled by the existing guarded self-healer.
+# Matched captures at frames 3440/3800/4880 on the user's LA Freeway recording add
+# 50/5/5 exclusively off-screen polygons, preserve every original draw in order,
+# and leave both native pages, texture RAM and palette RAM byte-identical.
+# See docs/reviews/2026-09-05-recorded-drive-findings.md for scope and evidence.
+00203 0C800000 082B0000 # C31 float 342.0, not IEEE float
+000E1 01A20053 01A20203 # ADDF ($0203),R2 : x + radius + horizontal halfwidth
+000E5 04230053 04230203 # CMPF ($0203),R3 : x - radius vs horizontal halfwidth

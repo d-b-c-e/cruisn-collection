@@ -1259,7 +1259,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # DRAWS the margins instead of us approximating them. An explicit
     # MIDV_PATCH in the environment always wins (developer override).
     gw = os.path.join(POC, "patch", "game", f"{rom}-widescreen.txt")
-    full_wide = (margin is None or margin >= 80)
+    effective_margin = max(0, min(86, int(os.environ.get("MIDV_GL_MARGIN",
+        margin if margin is not None else GAME_MARGIN.get(base_rom(rom), 86)))))
+    full_wide = effective_margin >= 80
     gamepatch = (gw if full_wide and os.path.isfile(gw)
                  and "MIDV_PATCH" not in os.environ else None)
     # [collection] gamepatch_<rom> = patch/game/<file>.txt: a chosen
@@ -1295,10 +1297,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                MIDV_GL_CRT="1" if crt else "0",
                MIDV_GL_CRACKFILL="1" if crackfill else "0",
                MIDV_GL_HEIGHT=str(GAME_HEIGHT.get(base_rom(rom), 400)),
-               MIDV_GL_MARGIN=os.environ.get(
-                   "MIDV_GL_MARGIN",
-                   str(margin if margin is not None
-                       else GAME_MARGIN.get(base_rom(rom), 86))),
+               MIDV_GL_MARGIN=str(effective_margin),
                MIDV_GL_MARGINFILL=os.environ.get(
                    "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,

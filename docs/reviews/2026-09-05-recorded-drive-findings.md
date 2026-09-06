@@ -89,23 +89,74 @@ margin extension, unlike the live rig's settings. Those are now separate options
 (`--marginfill` is explicit), so crack-filler experiments no longer silently
 change the margin policy. The runtime crack-filler default is unchanged.
 
-## Blue ground holes and visibility: still under investigation
+## Blue ground holes: recover objects rejected against the 4:3 view
 
 At frame 3440, internal pixel (30,1075) belongs to backdrop polygon 17, texture
 base `0x25f9`, with index `0x4676`. Adjacent pixels above/below belong to grass
 and road polygons. This is submitted backdrop visible between terrain surfaces,
 not a missing texture upload or a pixel the scene left unwritten.
 
-An experimental removal of USA's two left whole-polygon rejection branches,
-combined with wider right bounds, recovered terrain in the corresponding route
-section, but native frames diverged from frame 2940. It remains a diagnostic,
-not an enabled product patch. A bounded replacement is being investigated with
-effective program-word checks. The original assumption that USA needs no
-game-side widescreen work is not established by simply seeing some margin quads.
+The successful fix is earlier in the game: USA's object walker tests projected
+x plus/minus its projected radius against a horizontal halfwidth of 256. It can
+reject a whole grass object needed in the new margins before submitting quads.
+The patch redirects just the two visibility operands at words `0xe1`/`0xe5` to
+a new 342.0 constant in unused alignment padding at `0x203`. It deliberately
+leaves the shared `0x53` value unchanged because other paths use it in projection.
+The new file `patch/game/crusnusa-widescreen.txt` enables this for full widescreen.
 
-Draw distance remains a separate investigation. The known far gate, reciprocal
-lookup cap, LOD selection and section/node lifetime must be tested independently.
-No new distance extension is enabled by these texture and display fixes.
+For a stronger test than unrelated screenshots, the harness applies the patch
+four frames before the target capture. Original execution history is preserved
+up to that point. Three matched-state tests pass:
+
+| Frame | Original current-scene quads | Added quads | Changed/removed originals | Native pages, textures, palette |
+|---|---:|---:|---:|---|
+| 3440 | 2,518 | 50 | 0 | Byte-identical |
+| 3800 | 2,197 | 5 | 0 | Byte-identical |
+| 4880 | 2,032 | 5 | 0 | Byte-identical |
+
+Every added quad lies wholly outside the native x range; every original draw
+remains in its original order. The hole at (30,1075) changes from backdrop to a
+grass quad with corners `(-203,273), (-111,260), (-44,268), (-119,282)`.
+The right hole beneath the overpass is also replaced by actual terrain.
+
+![Original above, recovered terrain below](../../results/proof/2026-09-05-usa-ground-recovery.png)
+
+**Full-run determinism has a different scope.** Applying this game-code change
+from boot makes 32 of the original recording's later native snapshots differ
+(first at frame 3120), despite identical effective inputs and emulated timestamps.
+Later car/traffic positions diverge. The extra guest rendering changes execution
+history; the precise coupling through timing/state still needs investigation.
+The full replay correctly fails its original identity comparison. This is not a
+claim of unchanged physics or an automatic reference update. A separate candidate
+recording retains the original human INP provenance to check repeatability of the
+new build. Late, matched-state comparisons remain the basis for the visibility
+fix's isolated visual correctness. One full live experiment held 99.98% during
+selection and 99.73% racing, including 26 diagnostic BMP captures.
+
+The earlier broad polygon-cull experiment is rejected: native frames diverged
+from 2940, so apparently improved terrain at that later, different game state
+was not sufficient proof. A bounded polygon-only replacement was verified active
+in RAM but changed neither the geometry nor the hole at 3440. Read taps confirmed
+no relevant near-left candidates in that sampled path. The object-level test
+above is the cause-directed fix; those experimental trampolines are not shipped.
+
+This also exposes a weakness in backdrop tagging: the actual backdrop here uses
+low texture-base byte `0xf9`, not the hardcoded USA `0x56` heuristic. Track-specific
+texture addresses are not durable layer identities. Masking or stretching the
+backdrop would be a poor substitute for recovering this grass object.
+
+## Distance: a working gate that still does not extend this scene
+
+Separate, effective-RAM-verified experiments at frame 3440 leave the visibility
+and LOD patches out. The stock 80,000 far gate yields 2,518 current-scene quads;
+20,000 yields 784; 160,000 still yields 2,518 and identical native images. This
+confirms that the gate is active but is not withholding additional geometry here.
+It does not prove that every track is streamer-limited. The next useful probe
+must identify a specific popping object and trace its residency, node lifetime,
+depth/radius rejection, reciprocal lookup and LOD independently. No new distance
+extension is enabled. Configured experiments now compose with the widescreen
+default and reject conflicting words; an explicit `MIDV_PATCH` remains a complete
+developer override.
 
 ## Reproduce the evidence
 
