@@ -38,6 +38,8 @@ def main(argv=None):
     ap.add_argument('--patch', type=Path, required=True)
     ap.add_argument('--output', required=True)
     ap.add_argument('--title', required=True)
+    ap.add_argument('--scenery', choices=('off', 'mountains', 'trees', 'all'),
+                    help='archive an explicit native scenery setting in the derived case')
     ap.add_argument('--clock', action='store_true', help='show the external emulation clock in both runs')
     ap.add_argument('--timeout', type=float, default=300)
     args = ap.parse_args(argv)
@@ -54,6 +56,8 @@ def main(argv=None):
         command = [str(args.candidate.resolve()), *manifest['command'][1:]]
         settings = dict(manifest['settings'])
         settings['MIDV_PATCH'] = str(args.patch.resolve())
+        if args.scenery is not None:
+            settings.update(MIDV_SCENERY=args.scenery, MIDV_SCENERY_LOG='1')
         env = diagnostic_env(settings)
         recording = Recording(work / 'case', every=manifest['every'],
                               stop_frame=manifest['evidence']['frames'], snapshot_mode='raw', clock=args.clock)

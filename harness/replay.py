@@ -52,6 +52,8 @@ def main(argv=None):
     ap.add_argument("--patch", type=Path, help="explicit game-code patch experiment; replaces the recorded patch")
     ap.add_argument("--probe-script", type=Path, help="explicit Lua frame callback for a bounded diagnostic experiment")
     ap.add_argument("--numeric-speed", action="store_true", help="explicit USA numeric HUD telemetry experiment")
+    ap.add_argument("--scenery", choices=("off", "mountains", "trees", "all"),
+                    help="explicit native World 2.4 scenery-distance candidate; logs admissions/projection")
     ap.add_argument("--patch-at-frame", type=int, help="apply the checked patch late, preserving earlier game history")
     args = ap.parse_args(argv)
     if args.timeout <= 0:
@@ -155,6 +157,9 @@ def main(argv=None):
             report["presentation"] = "explicit-gl-experiment"
         if args.candidate:
             manifest["command"][0] = str(args.candidate.resolve())
+        if args.scenery is not None:
+            manifest["settings"].update(MIDV_SCENERY=args.scenery, MIDV_SCENERY_LOG="1")
+            report["scenery_override"] = args.scenery
         if args.snapshot_mode:
             manifest["snapshot_mode"] = args.snapshot_mode
             report["snapshot_mode_override"] = args.snapshot_mode
