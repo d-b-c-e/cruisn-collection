@@ -39,6 +39,7 @@ def main(argv=None):
     ap.add_argument("--gl-scale", type=int, help="explicit internal-scale experiment, 1..6")
     ap.add_argument("--no-crackfill", action="store_true", help="explicit experiment with crack filling disabled")
     ap.add_argument("--no-marginfill", action="store_true", help="disable backdrop suppression and boundary-column extension")
+    ap.add_argument("--no-ui-assets", action="store_true", help="control experiment without enhanced World transmission atlas retention")
     ap.add_argument("--align-tjunctions", action="store_true", help="explicit quality-only geometry join experiment")
     ap.add_argument("--compare-gl", action="store_true", help="require identical completed GL pixels against the recorded case")
     ap.add_argument("--zeus-native", action="store_true", help="explicit Zeus diagnostic: also rasterize native CPU frames")
@@ -59,7 +60,7 @@ def main(argv=None):
         ap.error("--small-window requires visible replay")
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
-    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
+    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
     if args.headless and args.compare_gl:
         ap.error("GL pixel comparison requires live presentation")
     if args.headless and (gl_experiment or args.video or args.native_renderer):
@@ -82,7 +83,7 @@ def main(argv=None):
         case = args.case.resolve()
         manifest = json.loads((case / "case.json").read_text(encoding="utf-8"))
         gl_key = "MIDZ" if manifest.get('rom') == 'crusnexo' else 'MIDV'
-        if gl_key == 'MIDZ' and (args.gl_queue_mb or args.gl_stall or args.no_crackfill or args.no_marginfill or args.align_tjunctions):
+        if gl_key == 'MIDZ' and (args.gl_queue_mb or args.gl_stall or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions):
             raise ValueError('requested renderer experiment is V-Unit-only')
         if (args.zeus_native or args.zeus_stop_frame is not None) and gl_key != 'MIDZ':
             raise ValueError('Zeus diagnostics require Exotica')
@@ -144,6 +145,8 @@ def main(argv=None):
                 overrides["MIDV_GL_CRACKFILL"] = "0"
             if args.no_marginfill:
                 overrides["MIDV_GL_MARGINFILL"] = "0"
+            if args.no_ui_assets:
+                overrides["MIDV_GL_UI_ASSETS"] = "0"
             if args.align_tjunctions:
                 overrides["MIDV_GL_TJUNCTIONS"] = "1"
                 overrides["MIDV_GL_LOG"] = "1"
