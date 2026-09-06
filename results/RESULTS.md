@@ -3252,3 +3252,63 @@ inputs/21 completed GL images), including configured timing gates. Combined with
 final Germany and Off Road runs above, all seven local cases pass at hash4553e2a.
 See proof final-regressions.json; earlier world-renderer-final-suite used the
 previous executable and is not the final-build evidence.
+
+## 2026-09-06 — World outgoing UI assets and conservative road visibility
+
+Follow-up: `docs/reviews/2026-09-06-world-assets-and-road.md`; compact evidence
+in `results/proof/2026-09-06-world-assets-road/`. Native commit 2bf1048a1cf adds
+display-only retention of World 2.4's outgoing transmission atlas. The actual
+UI model list controls lifetime. Texture writes and native rendering remain
+unchanged; the new atlas is uploaded after those models unlink. Scale 1, other
+games and World 2.5 are gated out. Reset and state load discard retained assets.
+Build SHA256: 7eaf9ce8888190a5a6b8c30dd698fb57175c644779d4c65bf52cc083c74263fb.
+
+- Loader/model probes identify CD828E->BCA280 loading, D/A and header model
+  owners, and byte span 393000..3C0FFF. A texture-only semantic write hold
+  releases 30,080 words at frame 1379 and fixes both panels and header. Product
+  retention begins at native frame 1276 and releases at 1378; Lua receipts use
+  their own callback count.
+- All 21 completed GL images at 1200..1400 match that semantic control exactly.
+  On/off differs only at sampled frames 1280..1370. Full original Germany:
+  9,269 input/time samples and 154 native images pass; 7,401 camera samples and
+  22,203 ADC reads, including exact read times, match.
+- The failed incomplete first GL capture and intentional native frame 1320
+  difference in the guest-memory semantic control are retained.
+- A Lua probe failure formerly skipped scheduled exit until timeout. Load and
+  callback errors now request clean exit; evidence rejects Lua/snapshot errors
+  even on exit code zero. Both real error controls exited cleanly and failed
+  validation without reaching timeout.
+
+Completed GL 7340 (HUD 1:36.78) matches offline dump 7338. Native (-82,355)
+has no owning polygon and palette index zero. The previous +86 object extension
+adds 50 draws but leaves the hole. Big-polygon bypass adds zero, slow face bypass
+zero, clip-flag bypass eight, and all-face bypass 300; none fixes it. Bypassing
+horizontal object checks C0/C4 adds 145 and restores road object 117A4, model
+CA06A9, radius 2461, depth 2827.
+
+The projected radius is too narrow for this nearby off-axis model. A 1.25 radius
+factor (wide side-plane factor approximately 1.203), plus bounded X -86..598,
+restores the hole with 77 new quads. All 966 original draws/order and native video,
+texture and palette RAM remain unchanged in this matched scene. The recovered
+pixel uses palette index 17982. Near/far, vertical, face and vertex clipping remain.
+This is a separate checked game patch and optional World Terrain Visibility
+control, not a far-plane increase or a crack filler.
+
+The user accepts extra drawing work and a new recording when it improves play.
+Old-route equivalence is diagnostic, not an absolute veto. Original Germany stays
+immutable; candidate repeatability, performance and fresh attended evaluation
+are required. The drawing-work/route dependency remains open, and derived cases
+do not establish human acceptance.
+
+The full derived Germany candidate and identity replay match 9,269 inputs and
+154 native images, retaining 117 sampled differences from the parent. Driving
+frames 1800..9200 run at 100.01%/100.00%, callback p99 26.14/25.56 ms, worst
+68.63/69.86 ms. These are not GPU latency or a guarantee of stutter-free play.
+World 2.5 headless candidate runs match 6,000 inputs and 100 native images; both
+retain 29 differences from the parent. The launcher option is reversible and
+restricted to verified World revisions in widescreen.
+
+61 Python tests, 20 GPU quality fixtures and the retained-atlas native unit test
+pass. USA/World exact captures remain 100.0000%. The full native export has 109
+patches and reconstructs tree 1dc9cd3cb86a8599321a71286c8924906d6890bd.
+Toolkit v0.11.1 is unchanged.

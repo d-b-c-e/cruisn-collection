@@ -1,0 +1,20 @@
+[
+  {
+    "elapsed": 12.184465900063515,
+    "emulator_exit": 0,
+    "error": "Lua diagnostic or snapshot failed; see launch.log/stderr.log",
+    "expected_failure": true,
+    "name": "further-probe-error-check",
+    "passed": false,
+    "timeout_error": null
+  },
+  {
+    "elapsed": 11.70276640006341,
+    "emulator_exit": 0,
+    "error": "Lua diagnostic or snapshot failed; see launch.log/stderr.log",
+    "expected_failure": true,
+    "name": "further-probe-load-error-check",
+    "passed": false,
+    "timeout_error": null
+  }
+]

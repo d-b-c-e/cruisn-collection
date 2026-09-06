@@ -1,53 +1,51 @@
 # Session Notes
-<!-- Written by /wrapup. Overwritten each session; history preserved in git. -->
+<!-- Overwritten each session; history preserved in git. -->
 
 - **Date:** 2026-09-06
-- **Branch:** codex/world-geometry-and-textures; fast-forward master after final CI.
-- **Primary handoff:** docs/reviews/2026-09-06-world-rendering-and-replay.md, RESULTS.md tail.
+- **Branch:** codex/world-rendering-followup; fast-forward master after final CI.
+- **Primary handoff:** docs/reviews/2026-09-06-world-assets-and-road.md, RESULTS.md tail.
 
 ## What Was Done
-- Native dd12bed67f0 exact endpoint reciprocals; f40c28f8e0a tagged enhanced dither resolve.
-  Root vunit.exe SHA256 4553e2afb939e4fea88238b62c1180b9c2e3dcc9bee58c102fed49c878237893.
-- Off Road sky patch 0b48f3d extends one flat backdrop, no extra instructions/draws.
-  Full 6000 inputs/100 native/9 GL captures pass. World/USA exact 100.0000%; GPU 20 checks.
-- World route tools: lua/world_motion_trace.lua, harness/compare_world_motion.py,
-  derive_case.py (repeatability ONLY). 59 Python tests. Original Germany unchanged.
-- Final Germany world-final-faithful-germany: 9269 inputs/154 native pass;
-  faithful-motion.json: 7401 camera samples/22203 ADC reads including exact times match.
-- World visibility works geometrically but DEMOTED by 3d9d8a9. Normal 2.4/2.5
-  defaults restored. Proof in results/proof/2026-09-06-world-visibility/.
-- Bounded World lifecycle, DMA, transmission and projection probes committed.
-  Native export 108 patches reconstructs tree 79f28f8dc867012d19be9807d4a3df7980c12372.
-  Native helpers/generated shaders match; toolkit v0.11.1 unchanged.
+- Native 2bf1048a1cf retains World 2.4 outgoing D/A and header atlas in GL uploads
+  while actual UI models remain linked. No guest-memory change or frame gate.
+  Helper native/retained_texture.h; scale >1; revision/model guards; reset/load releases.
+- Root E:/Source/mame-src/vunit.exe SHA256:
+  7eaf9ce8888190a5a6b8c30dd698fb57175c644779d4c65bf52cc083c74263fb.
+- Full original Germany passes 9269 inputs/154 native images; 7401 camera samples
+  and 22203 ADC reads including exact times match. All 21 completed GL transition
+  frames equal semantic texture-hold control. On/off differs only at 1280..1370.
+- Probe load/callback errors stop cleanly; evidence rejects Lua/snapshot errors
+  even on exit0. Two actual failure controls exit cleanly and fail without timeout.
+- Black road: dump7338 matches completedGL7340/HUD1:36.78. Native(-82,355) has
+  no owner. Object117A4/modelCA06A9/radius2461/depth2827 is wrongly rejected.
+- Conservative projected radius1.25 plus X-86..598 restores the wedge with77
+  added quads, all966 originals/order/resources/native pixels preserved in matched scene.
+  Full X bypass adds145 and remains diagnostic; old +86 helper alone leaves the hole.
+- World Terrain Visibility is an optional reversible launcher setting, verified
+  World2.4/2.5 in widescreen only. No far-distance increase.
+- Full derived Germany + identity replay match9269/154, around100% emulation.
+  World2.5 headless candidate pairs match6000/100. Parent differences retained.
+- Native export109 patches reconstructs tree1dc9cd3cb86a8599321a71286c8924906d6890bd.
+  Toolkitv0.11.1 unchanged. 61 Python tests,20 GPU fixtures,atlas native unit pass;
+  exact USA/World captures100.0000%. Final cross-game evidence is appended below.
 
 ## Decisions Made
-- Extra admitted World guest geometry changes route. Both left-only/right-only
-  first camera diff 2732; 4503 actual ADC values/PCs equal. Read time diff 1802/40ns.
-  Original-bounds helper passes; original/derived INP yield same divergent route.
-  Exact timing/state cause OPEN. Do not alter inputs or silently bless a new baseline.
-- Do not re-enable experimental World B9/C0/108..10D in defaults. No fresh drive needed.
-- D/A atlas reused early: BCC100..BD08FF, loader B25/B27 at 1282..1286, panels
-  drawn through 1358. Hold-control restores D/A; header still corrupt. No frame hacks.
-- Far 80k->100k needs reciprocal LUT extension. world_projection_distance.lua adds
-  guarded reads 5000..6250/five clamp pairs; 2651 hits, earlier mountain visible.
-  MUTATING diagnostic only. Guest-work/route and mountain-base appearance remain open.
+- User accepts extra drawing and a NEW attended recording for a better experience.
+  Old-route equality is diagnostic, not an absolute veto. Preserve original Germany.
+  Require repeatability/performance plus human handling evaluation.
+- Derived cases do not establish attended acceptance. Candidate changes117 sampled
+  Germany images and29 World2.5 images versus parents; those failures are retained.
+- Keep UI fix display-only, Margin Fill retired, and avoid filling a road hole
+  with crack filler. MIDV_GL_UI_ASSETS=0 / replay --no-ui-assets is the UI control.
 
-## Open Items
-- [ ] World route producer dependency, then safe margin geometry and draw distance.
-- [ ] Black left wedge at GAME ELAPSED ~1:37 (external frames 7320..7360). Final GL
-  7340 shows 1:36.78; offline 7340 differs slightly in scene time. Align exact scene.
-- [ ] Semantic transmission asset lifetime fix, including title header atlas.
-- [ ] No-pop-in goal all games: safe projection, residency, background/LOD transitions.
-- [ ] Physical crash feel/labels and per-wheel tests; other games' numeric telemetry.
-- [ ] Prior Exotica unexplained abrupt exit (next-exotica-fenced-gameplay) if recurring.
+## Open Items / Next Steps
+1. Fresh attended Germany drive with Terrain Visibility Extended: inspect handling,
+   collisions, road margins and moving scenery. Use a new recording name.
+2. Understand why extra drawing changes route; internal timer/state dependency open.
+3. Distance: valid reciprocal projection beyond80k, residency and stable mountains.
+4. More real World/Off Road/Exotica routes; physical crash feel and telemetry.
 
-## Next Steps / Context
-1. Read full new review; retain failed experiments and immutable original cases.
-2. Prioritize guest drawing work versus simulation timing before more World admissions.
-3. Current normal build preserves original Germany route. Extra real routes useful later.
-4. Final suite world-final-remaining-suite: USA original/wide, World 2.4/2.5, Exotica.
-   Off Road/Germany have separate full final runs; see final verification proof.
-Native branch poc/quadlog: push ONLY fork. Never touch deployed racing mame.exe.
-Never force-enable automated replay; use clean WM_CLOSE, not hard kill with live FFB.
-Stream Deck uses this checkout and E:/Source/mame-src/vunit.exe. MSYS2 E:/msys64;
-build with OS=Windows_NT exported INSIDE shell and both midvunit/midzeus sources.
+## Context
+Stream Deck uses this checkout and root native exe. Native poc/quadlog pushes ONLY
+fork, never origin mamedev. Never touch racing mame.exe. All replays have FFB off.
+Proof: results/proof/2026-09-06-world-assets-road/. Full/failed diagnostics retained.

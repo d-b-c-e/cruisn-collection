@@ -1,0 +1,21 @@
+{
+  "buffers_sha256": "882b0f203c7df659c4ef1056b2dc4e92bbecc4f1383352346bc59dc260aca320",
+  "covered": false,
+  "index": 0,
+  "margin": 86,
+  "neighbors": [
+    {
+      "owner": 65535,
+      "pixels": 81
+    }
+  ],
+  "owner": 65535,
+  "pixel": [
+    16,
+    1420
+  ],
+  "radius": 4,
+  "scale": 4,
+  "schema": 1,
+  "scope": "offline current-scene ownership; 65535 means no current owner"
+}

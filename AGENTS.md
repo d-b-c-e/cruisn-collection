@@ -2,7 +2,27 @@
 
 ## Current verified handoff (2026-09-06)
 
-Latest: `docs/reviews/2026-09-06-world-rendering-and-replay.md`. Native executable
+Latest: `docs/reviews/2026-09-06-world-assets-and-road.md`. Enhanced World 2.4
+retains the outgoing transmission atlas in the GL upload only while its actual
+UI models remain linked. CPU memory/native rendering stay unchanged. The helper
+`native/retained_texture.h` is synced by `harness/sync_native.py`; gate is GL
+scale >1, verified World 2.4 instructions/models. `MIDV_GL_UI_ASSETS=0` or replay
+`--no-ui-assets` provides a control. Reset/post-load discards the retained atlas.
+Do not replace this with a timed freeze or deferred writes into guest RAM.
+`world_asset_jobs.lua` and `world_ui_models.lua` are bounded read-only probes.
+Session probe errors stop playback; evidence rejects Lua errors even on exit 0.
+Germany's black wedge: dump 7338 matches completed GL 7340 (HUD 1:36.78).
+No current polygon owns native (-82,355); bypassing C0/C4 restores a real road
+quad. The bounded +86 extension does not. Full X bypass is DIAGNOSTIC ONLY.
+`crusnwld-terrain-visibility-experimental.txt` adds a conservative 1.25 projected
+radius factor plus wide bounds and DOES restore that wedge (+77 draws, originals
+and native/resources unchanged in the matched scene). Exposed as World Terrain
+Visibility, widescreen only. User explicitly accepts a new recording for improved
+rendering: old-route mismatch is diagnostic, not an absolute veto. Preserve the
+original, require candidate repeatability/performance, and obtain a fresh attended
+drive for handling/route acceptance. Derived replay is not attended acceptance.
+
+Previous: `docs/reviews/2026-09-06-world-rendering-and-replay.md`. Native executable
 f40c28f8e0a fixes two exact endpoint samples and resolves enhanced tagged dither
 before display scaling. Exact USA/World captures are 100.0000%; real opaque
 checkerboard art is preserved. Off Road's flat sky rectangle now spans the wide
@@ -18,7 +38,7 @@ traces; `derive_case.py` proves repeatability only, never original route fidelit
 `lua/world_object_lifecycle.lua`, `world_texture_transition.lua`, `dma_window.lua`
 are bounded read-only probes. `world_projection_distance.lua` is a guarded,
 bounded MUTATING World2.4 diagnostic, never a product patch. Do not ship its
-frame-number window or the transmission atlas-hold experiment. World distance
+frame-number window or a guest-memory transmission atlas-hold experiment. World distance
 needs a safe reciprocal-table extension and route validation; D/A corruption
 is premature atlas reuse, also reproduced by official MAME controls.
 

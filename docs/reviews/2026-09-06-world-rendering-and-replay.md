@@ -1,5 +1,10 @@
 # World rendering, replay fidelity and Off Road sky — September 6, 2026
 
+Follow-up: [World assets and road visibility](2026-09-06-world-assets-and-road.md)
+implements the transmission display fix and a conservative terrain candidate.
+The user accepts a new baseline for a better experience; preserve the evidence
+below while evaluating candidate repeatability, performance and live handling.
+
 The Germany recording is intact. The rejected World visibility experiment
 changed the route even with identical inputs; a fresh recording is not needed
 to diagnose that. With the original World patch and the new executable, the

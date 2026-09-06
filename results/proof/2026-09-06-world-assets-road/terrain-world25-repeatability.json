@@ -1,0 +1,66 @@
+{
+  "first_input_mismatches": [],
+  "first_pixel_mismatches": [],
+  "input_or_time_mismatches": 0,
+  "parent_comparisons": [
+    {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        4020,
+        4260,
+        4440,
+        4500,
+        4560,
+        4620,
+        4680,
+        4740,
+        4800,
+        4860,
+        4920,
+        4980,
+        5040,
+        5100,
+        5160,
+        5220,
+        5280,
+        5340,
+        5400,
+        5460
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 29
+    },
+    {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        4020,
+        4260,
+        4440,
+        4500,
+        4560,
+        4620,
+        4680,
+        4740,
+        4800,
+        4860,
+        4920,
+        4980,
+        5040,
+        5100,
+        5160,
+        5220,
+        5280,
+        5340,
+        5400,
+        5460
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 29
+    }
+  ],
+  "passed": true,
+  "pixel_mismatches": 0,
+  "scope": "World 2.5 candidate repeatability, not equivalence to original drive"
+}

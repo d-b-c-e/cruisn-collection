@@ -1,0 +1,46 @@
+{
+  "candidate": {
+    "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\further-world-wedge-conservative\\run\\capture",
+    "sha256": {
+      "meta.txt": "842fe09fc60eef36d8caa6e3ba28f54eb39de4472fc55c92f7806f47294f2350",
+      "paletteram.bin": "f0fc8bffbfd7cd9f36e8bdaf827de90e507c4412eb3bd485133478e82aa44f66",
+      "quads.bin": "cfd70d3db0fd15429fa4002204959e401df1989f262e72ad66e3e620ec31f38d",
+      "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+      "videoram.bin": "fb1d51f79ef80bbc21503183502bbdd22624b4537e8153c142e52d3f857ee332"
+    }
+  },
+  "geometry": {
+    "added_quads": 77,
+    "added_quads_intersecting_native_x": 0,
+    "candidate_quads": 1043,
+    "original_draw_order_preserved": true,
+    "original_quads": 966,
+    "removed_or_changed_quads": 0
+  },
+  "native_attribution": {
+    "changed_words": 0,
+    "first_unexplained_addresses": [],
+    "limitation": "spatial attribution, not a visual-quality or physics-equivalence claim",
+    "outside_added_coverage": 0
+  },
+  "passed": true,
+  "reference": {
+    "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\further-world-wedge-7338\\run\\capture",
+    "sha256": {
+      "meta.txt": "842fe09fc60eef36d8caa6e3ba28f54eb39de4472fc55c92f7806f47294f2350",
+      "paletteram.bin": "f0fc8bffbfd7cd9f36e8bdaf827de90e507c4412eb3bd485133478e82aa44f66",
+      "quads.bin": "184dc9f64e167fc83b260e5934376e0cbccef535e60645853badd2bb318f5e13",
+      "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+      "videoram.bin": "fb1d51f79ef80bbc21503183502bbdd22624b4537e8153c142e52d3f857ee332"
+    }
+  },
+  "same_frame_and_page": true,
+  "same_previous_page_scene": true,
+  "schema": 1,
+  "scope": "matched-state object visibility extension; new native geometry explicitly allowed",
+  "unchanged_resources": {
+    "paletteram.bin": true,
+    "textureram.bin": true,
+    "videoram.bin": true
+  }
+}

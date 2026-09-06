@@ -1,0 +1,62 @@
+{
+  "emulated_seconds": 127.744129277441,
+  "emulation_ratio": 1.0000574492077756,
+  "first_frame": 1800,
+  "host_frame_ms": {
+    "p50": 17.226149999999052,
+    "p95": 24.302419999983016,
+    "p99": 26.138620999979526,
+    "worst": 68.63309999999956
+  },
+  "host_seconds": 127.73679089999999,
+  "inputs": {
+    ":ACCEL": {
+      "distinct": 232,
+      "maximum": 255,
+      "minimum": 0
+    },
+    ":BRAKE": {
+      "distinct": 1,
+      "maximum": 0,
+      "minimum": 0
+    },
+    ":CONF": {
+      "distinct": 1,
+      "maximum": 5,
+      "minimum": 5
+    },
+    ":DSW": {
+      "distinct": 1,
+      "maximum": 63820,
+      "minimum": 63820
+    },
+    ":FAKE": {
+      "distinct": 1,
+      "maximum": 6,
+      "minimum": 6
+    },
+    ":IN0": {
+      "distinct": 1,
+      "maximum": 50175,
+      "minimum": 50175
+    },
+    ":IN1": {
+      "distinct": 1,
+      "maximum": 65535,
+      "minimum": 65535
+    },
+    ":WHEEL": {
+      "distinct": 190,
+      "maximum": 227,
+      "minimum": 29
+    },
+    ":serial_pic2:SERIAL_DIGIT": {
+      "distinct": 1,
+      "maximum": 6,
+      "minimum": 6
+    }
+  },
+  "last_frame": 9200,
+  "schema": 1,
+  "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+}

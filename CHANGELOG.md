@@ -5,6 +5,16 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Preserve World 2.4's D/A panels and transmission header during level loading
+  in enhanced GL output, using the actual UI model lifetime without changing
+  game memory or recorded driving inputs.
+- Stop diagnostic playback on Lua probe callback errors and reject Lua errors
+  even when the emulator reports a successful exit.
+- Add optional World Terrain Visibility, using conservative projected object
+  bounds to restore a measured missing Germany road section. Preserve original
+  recordings and validate a separate candidate baseline when drawing work changes
+  their route.
+
 - Fix checkerboard/moire shadows and translucent panels in enhanced V-Unit
   rendering by resolving tagged dither before display scaling; preserve real
   checkerboard artwork and exact native output.

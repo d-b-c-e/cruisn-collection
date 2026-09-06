@@ -1,0 +1,36 @@
+{
+  "identity_replay_passed": true,
+  "original_route_equivalence": "not established by derivation or identity replay",
+  "parent_comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [
+      2220,
+      2280,
+      2400,
+      2460,
+      2520,
+      2580,
+      2640,
+      2700,
+      2760,
+      2820,
+      2880,
+      2940,
+      3000,
+      3060,
+      3120,
+      3180,
+      3240,
+      3300,
+      3360,
+      3420
+    ],
+    "input_or_time_mismatches": 0,
+    "passed": false,
+    "pixel_mismatches": 117
+  },
+  "passed": true,
+  "physical_force": false,
+  "schema": 1,
+  "scope": "new candidate repeatability; parent visual differences retained"
+}

@@ -13,8 +13,10 @@ documents fixes for checkerboard shadows, Off Road's black sky corners and two
 native coverage errors. The wider World object-visibility experiment is disabled
 after it changed the recorded route despite matching inputs. The original Germany
 recording still replays correctly; camera/ADC traces now provide a separate route
-check. Transmission atlas reuse and the distance projection limit have been
-isolated, but their production fixes remain open. The
+check. A [follow-up rendering investigation](docs/reviews/2026-09-06-world-assets-and-road.md)
+adds a display-only fix for World 2.4's disappearing transmission artwork and
+identifies a missing road polygon at the reported Germany timestamp. Safe road
+visibility and distance expansion remain open. The
 [Germany Level investigation](docs/reviews/2026-09-06-germany-level.md) adds a
 complete human race replay, fixes the invisible Esc menu, and separates native
 transmission-screen corruption from the remaining widescreen defects. An external

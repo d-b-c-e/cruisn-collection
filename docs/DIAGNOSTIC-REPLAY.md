@@ -407,3 +407,21 @@ force is disabled. It requires visible menu text and selection changes, stable
 paused frames, a working CRT toggle, resumed frames and clean Exit. Menu images
 are recorded separately from completed gameplay captures. It tests the overlay
 path; it does not exercise OS keyboard routing or the collection's shell itself.
+
+## Transmission assets and diagnostic failures
+
+Enhanced World 2.4 keeps the outgoing transmission atlas in GL uploads until
+its UI models leave the actual render list. `replay.py --no-ui-assets` explicitly
+disables that display fix for a control. Capture through the transition with
+`--gl-capture 1200:1400 --gl-every 10 --gl-max 30 --until-frame 1442` on the
+Germany recording; allow frames after the final requested GL image for shutdown.
+Native snapshots retain the game's original atlas reuse, so use completed GL
+images to judge the display fix. No production behavior depends on these frames.
+
+`lua/world_asset_jobs.lua` and `lua/world_ui_models.lua` trace the loader and
+outgoing models through bounded, revision-guarded `--probe-script` experiments.
+Probe load/callback errors now request clean exit instead of bypassing the stop
+frame until timeout. The evidence validator rejects `[LUA ERROR]`, explicit probe
+failures and snapshot errors even when MAME exits with code zero. Errors in a
+memory tap are also rejected; the callback wrapper alone cannot guarantee an
+immediate stop for errors raised inside MAME's separate tap dispatcher.

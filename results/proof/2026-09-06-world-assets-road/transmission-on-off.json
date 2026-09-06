@@ -1,0 +1,17 @@
+{
+  "different_frames": [
+    1280,
+    1290,
+    1300,
+    1310,
+    1320,
+    1330,
+    1340,
+    1350,
+    1360,
+    1370
+  ],
+  "frames": 21,
+  "passed": false,
+  "scope": "completed GL frame pixels"
+}
