@@ -23,16 +23,16 @@ def rectangle(x0=2, y0=2, x1=14, y1=3, mode=0x100):
     return q
 
 
-def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS):
-    size = (20 * scale, 12 * scale)
+def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS, positions=None, canvas=(20,12)):
+    size = (canvas[0] * scale, canvas[1] * scale)
     prog = ctx.program(vertex_shader=R.VS, fragment_shader=fragment_shader)
-    for name, value in {"uCanvas": (20., 12.), "uScale": scale, "uClipRight": 19,
+    for name, value in {"uCanvas": tuple(map(float,canvas)), "uScale": scale, "uClipRight": canvas[0]-1,
                         "texram": 0, "texMask": texture.size - 1, "uDbgQuadId": int(debug),
-                        "uBgMargin": 0, "uClipW": 20}.items():
+                        "uBgMargin": 0, "uClipW": canvas[0]}.items():
         prog[name].value = value
     tex = ctx.texture((4096, texture.size // 4096), 1, texture.tobytes(), dtype="u1")
     tex.use(0)
-    f, u = R.build_vertices(quads, 0, dilate2d=scale > 1)
+    f, u = R.build_vertices(quads, 0, dilate2d=scale > 1, positions=positions)
     vf, vu = ctx.buffer(f.tobytes()), ctx.buffer(u.tobytes())
     vao = ctx.vertex_array(prog, [(vf, "2f 2f 2f 2f 2f 4f 4f 4f", "in_corner",
         "in_v0", "in_v1", "in_v2", "in_v3", "in_uv01", "in_uv23", "in_uvBounds"),
@@ -84,6 +84,29 @@ def checks(ctx):
     b = R.build_vertices_fast(varied, 86, True)
     outcomes.append({"check": "vertex-builder-equivalence",
                      "passed": all(np.array_equal(x, y) for x, y in zip(a, b))})
+    sliver=np.zeros((1,16),np.uint16)
+    sliver[0,1]=37
+    sliver[0,2:10]=[2,2,3,6,2,6,2,6]
+    idx,mask=render(ctx,sliver,atlas,4)
+    outcomes.append({'check':'fine-sample-in-native-empty-span',
+                     'passed':bool(mask[12,10] and idx[12,10]==37)})
+    # A closed three-polygon T join, rounded left of its long edge, exposes
+    # background through a thin wedge. Geometry alignment must restore coverage.
+    from tjunctions import align
+    verts=[(2,2,0,0),(12,22,20,40),(20,2,36,0),(0,22,0,40),(6,11,9,18)]
+    terrain=np.zeros((3,16),np.uint16)
+    for q,ids in zip(terrain,((0,1,2,2),(1,4,3,3),(4,0,3,3))):
+        q[0]=0x100
+        q[2:10]=[c for i in ids for c in verts[i][:2]]
+        q[10:14]=[verts[i][2]+256*verts[i][3] for i in ids]
+    positions, joins=align(terrain)
+    for scale in (2,4):
+        _,before=render(ctx,terrain,atlas,scale,canvas=(24,28))
+        _,after=render(ctx,terrain,atlas,scale,positions=positions,canvas=(24,28))
+        gained=int(np.count_nonzero((before==0)&(after!=0)))
+        lost=int(np.count_nonzero((before!=0)&(after==0)))
+        outcomes.append({'check':'closed-tjunction-coverage','scale':scale,'gained_pixels':gained,
+                         'lost_pixels':lost,'passed':len(joins)==1 and gained>0 and lost==0})
     return outcomes
 
 

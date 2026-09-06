@@ -113,7 +113,7 @@ void main() {
         if (vx[i].y < vx[minv].y) minv = i;
         else if (vx[i].y > vx[maxv].y) maxv = i;
     }
-    if (round_coord(vx[maxv].y) - round_coord(vx[minv].y) <= 0) discard;
+    if (uScale == 1 && round_coord(vx[maxv].y) - round_coord(vx[minv].y) <= 0) discard;
     float maxvy = vx[maxv].y;
 
     // poly.h renders scanlines [round(miny), round(maxy)) only - the expanded
@@ -200,7 +200,9 @@ void main() {
         istartx = 0;
     }
     if (istopx > uClipRight) istopx = uClipRight + 1;
-    if (istartx >= istopx) discard;
+    // A native-empty span may still cover fine samples. Reject by rounded
+    // integer extent only in exact mode; quality coverage is continuous below.
+    if (uScale == 1 && istartx >= istopx) discard;
 
     // ---- coverage ----
     if (uScale == 1) {
