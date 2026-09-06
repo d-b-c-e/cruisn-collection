@@ -31,6 +31,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
 import graphics_options
+import force_options
 try:
     import rawjoy  # noqa: E402  (Raw Input HID: >32-button wizard capture)
 except Exception:
@@ -786,6 +787,7 @@ def load_config():
             "ffbprofile": str(sec.get("ffb_profile", "")).strip()
                           or "cruisn-vunit@2",
             "ffbspring": int(sec.get("ffb_spring", 0) or 0),
+            "ffbimpacts": force_options.load(sec, (sec.get("world_rom") or "crusnwld24").strip()),
             # which World ROM set the CRUIS'N WORLD card boots. Default is
             # crusnwld24 (rev 2.4): the LAST revision with transmission
             # select - 2.5's factory ROMs are labeled "automatic" and
@@ -817,6 +819,7 @@ def save_config(state):
         sec[f"steersens_{rom}"] = "" if sv is None else str(sv)
         sec[f"steercurve_{rom}"] = "" if cv is None else str(cv)
     sec.update(graphics_options.serialize(state.get("graphics", {})))
+    sec.update(force_options.serialize(state.get("ffbimpacts", {}), state.get("world_rom", "crusnwld24")))
     # MERGE into the section: keys the shell does not own (ffb_diag,
     # exotica_gl, gamepatch_<rom>, anything a user or tool adds) must
     # survive a save - replacing the section wiped them at every launch
@@ -985,7 +988,8 @@ def profile_label(state):
 
 SETTINGS_TITLE = {"root": "SETTINGS", "display": "DISPLAY",
                   "ffb": "FORCE FEEDBACK", "controls": "CONTROLS",
-                  "support": "SUPPORT", "graphics": "EXPERIMENTAL GRAPHICS"}
+                  "support": "SUPPORT", "graphics": "EXPERIMENTAL GRAPHICS",
+                  "impacts": "EXPERIMENTAL IMPACT CUES"}
 
 
 def settings_rows(page, state, diag, version):
@@ -1042,8 +1046,14 @@ def settings_rows(page, state, diag, version):
             ("feel", "FEEL", f"< {profile_label(state)} >",
              "ALTERNATIVE TUNES OF THE SAME FORCES - CRISP REACTS FASTEST, "
              "CALM SMOOTHS MOST      DRIVE TWO AND TELL US WHICH YOU LIKED"),
+            ("impacts", "IMPACT CUES", "PER GAME",
+             "OPTIONAL WHEEL PULSES WITH LIGHTER STEERING BETWEEN HITS; NEXT LAUNCH"),
             ("back", "BACK", "", ""),
         ]
+    if page == "impacts":
+        return [("impact_" + card, title, onoff(state.get("ffbimpacts", {}).get(card, False)),
+                 "EXPERIMENTAL: USES FORCE SPIKES TO GUESS HITS. LIGHTER STEERING; NEXT LAUNCH.")
+                for card, title, _, _ in GAMES] + [("back", "BACK", "", "")]
     if page == "controls":
         return [
             ("trans", "TRANSMISSION",
@@ -1744,14 +1754,14 @@ def main():
                         # back to the root page, landing on the branch just
                         # left rather than at the top of the list
                         leaving = spage
-                        spage = "display" if leaving == "graphics" else "root"
+                        spage = {"graphics": "display", "impacts": "ffb"}.get(leaving, "root")
                         dbg("settings", f"page {leaving} -> {spage}")
                         root = settings_rows(spage, state, False, "")
                         ssel = next((i for i, r in enumerate(root)
                                      if r[0] == leaving), 0)
                         srows = root
                     audio.blip("nav")
-                elif enter and rid in ("display", "ffb", "controls", "support", "graphics"):
+                elif enter and rid in ("display", "ffb", "controls", "support", "graphics", "impacts"):
                     dbg("settings", f"page -> {rid}")
                     spage, ssel = rid, 0
                     if rid == "graphics":
@@ -1790,6 +1800,12 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 # ---- force feedback
+                elif rid.startswith("impact_") and (lr or enter):
+                    card = rid.removeprefix("impact_")
+                    values = state.setdefault("ffbimpacts", {})
+                    values[card] = not values.get(card, False)
+                    save_config(state)
+                    audio.blip("nav")
                 elif rid == "ffb" and (lr or enter):
                     step = 10 if (right or enter) else -10
                     state["ffb"] = max(0, min(100, state.get("ffb", 50) + step))

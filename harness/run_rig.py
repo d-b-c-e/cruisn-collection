@@ -1346,10 +1346,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         profile = _collection_ini_get("collection", "ffb_profile", "cruisn-vunit@2")
         if profile:
             env["MIDV_FFB_PROFILE"] = profile
-        impact = (_collection_ini_get("collection", "ffb_impact_" + rom, "")
-                  or _collection_ini_get("collection", "ffb_impact", "0"))
+        from force_options import impact_enabled
+        impact = impact_enabled(lambda key, default: _collection_ini_get("collection", key, default), rom)
         if "MIDV_FFB_IMPACT" not in env:
-            env["MIDV_FFB_IMPACT"] = "1" if impact == "1" else "0"
+            env["MIDV_FFB_IMPACT"] = "1" if impact else "0"
         rumble = _collection_ini_get("collection", "ffb_rumble", "100")   # plugin parity
         if rumble.isdigit() and int(rumble) > 0:
             # [collection] ffb_rumble = N %: a 100 ms vibration burst per
