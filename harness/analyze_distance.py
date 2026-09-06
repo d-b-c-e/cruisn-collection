@@ -1,4 +1,4 @@
-"""Summarize the USA object far-gate probe without treating sentinels as scenery.
+"""Summarize V-Unit object far-gate probes without treating sentinels as scenery.
 
 This measures objects reaching the far test. It does not enumerate unloaded
 models or prove that earlier culling, linked-list selection or streaming is correct.

@@ -1,0 +1,25 @@
+{
+  "far_limits": [
+    80000
+  ],
+  "frames": 900,
+  "maximum_depth_within_doubled_limit": 122528,
+  "objects": 701,
+  "samples": 349365,
+  "samples_newly_admitted_by_doubling_far_limit": 15914,
+  "samples_still_beyond_doubled_far_limit": 0,
+  "schema": 1,
+  "scope": "Summarize the USA object far-gate probe without treating sentinels as scenery.\n\nThis measures objects reaching the far test. It does not enumerate unloaded\nmodels or prove that earlier culling, linked-list selection or streaming is correct.",
+  "trace_sha256": "5d525d0a2df7aff9b6a19bce7176749e770c2f2dea69af0d5757725e9406cfe4",
+  "model_transitions": 28,
+  "objects_newly_admitted_by_doubling_far_limit": 106,
+  "projection_experiment": {
+    "original_limit": 80000,
+    "tested_limit": 100000,
+    "original_lut_entries": 5000,
+    "extended_max_index": 6250,
+    "read_tap_hits": 2651,
+    "case": "world-projection-extended",
+    "status": "diagnostic only; short matched window, no full-route equivalence claim"
+  }
+}

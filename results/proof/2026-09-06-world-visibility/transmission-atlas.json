@@ -1,0 +1,39 @@
+{
+  "scope": "World 2.4 outgoing transmission atlas reuse",
+  "texture_base_bytes": "0x398200",
+  "mapped_word_region": [
+    "0xbcc100",
+    "0xbd08ff"
+  ],
+  "draw_frames": [
+    1280,
+    1358
+  ],
+  "overlapping_write_frames": [
+    1282,
+    1283,
+    1284,
+    1285,
+    1286
+  ],
+  "overlapping_write_words": 18432,
+  "write_pcs": [
+    "b25",
+    "b27"
+  ],
+  "dense_dma_records": 11482,
+  "source_sha256": {
+    "transition-quads.csv": "aa3ec045fe5093a0b0e0297776ab119326635d26c9c1bbf61a54beb8ba1fa483",
+    "transition-writes.csv": "f6dca9a17234c3c05d3b0968f54655dc7c04f14627d5a9f5d541a3d477b54e12"
+  },
+  "limitation": "write blocks conservatively overlap sampled UV range; origin of the premature reuse remains under investigation",
+  "causal_hold_control": {
+    "case": "world-transmission-hold-control",
+    "inputs_and_times_equal": true,
+    "native_images_changed": [
+      1320
+    ],
+    "visual_result": "D/A art restored; title header remains corrupted; incoming garage looks normal at1380",
+    "status": "diagnostic only, uses recording frame numbers, never deployed"
+  }
+}
