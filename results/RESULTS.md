@@ -2917,3 +2917,76 @@ Fixed in the canonical toolkit as v0.10.1 (c9b76b7), added actual file-loading
 checks to its MSVC/Linux native tests, and updated both consumer pins. No force
 math or profiles changed. The complete MAME export was also applied from
 upstream files in an isolated repository and reproduced all 23 changed paths.
+
+## 2026-09-05 - Recorded LA Freeway defects: measured fixes and reassessment
+
+The user's human-driven `results/diagnostics/my-drive` (5,012 effective input
+frames, 83 native snapshots) supplied the missing gameplay workload. It is
+preserved unchanged. Findings and proof crops are in
+`docs/reviews/2026-09-05-recorded-drive-findings.md`; compact machine-readable
+evidence is `results/proof/2026-09-05-recorded-drive-milestone.json`. Experiments
+continued into 6 September UTC, still 5 September on this rig.
+
+Separate commits address the measured problems:
+
+- `9451bb3`: raw snapshots with PNG encoding after exit. The original
+  capture-adjacent callback median was 79.52 ms; raw capture on the same GDI/GL
+  path reduced it to 18.25 ms. All 83 decoded native images match. Synchronous
+  raw disk writes and optional GL BMP captures can still affect pacing.
+- `18200e5`: D3D underneath the unchanged true-widescreen V-Unit GL overlay.
+  Selection frames 1680..2280 improved from 77.59% to 100.00% emulation speed;
+  race frames 2700..4800 improved from 83.73% to 99.99%, using raw capture in
+  both runs. A launcher-created 600-frame recording also replays exactly.
+- `e1bef95` / MAME `45a05364e11`: bounded quality-mode UV sampling fixes distant
+  atlas bleed. At frame 3440, current road quad 782 maps 160 texture rows into
+  one native pixel of height. Half-pixel rectangle expansion sampled unrelated
+  red/blue atlas texels. Clamping to the quad's original UV domain changes the
+  observed red index 0x1d36 to road index 0x1d19 without changing coverage.
+  Six archived native captures remain 100.0000%; the rebuilt live executable
+  passes all 5,012 original input frames and 83 native images.
+- `fae3722` / MAME `eb4db8fc706`: whole-file patch validation before initial
+  writes, backed by a shared native helper and negative integration evidence.
+  The per-frame legacy self-healer remains per-word. The full exported series
+  applies to upstream mame0286 files and reproduces all 24 historical paths.
+- `0804eb8`, `9dc2723`: late patch application, effective program-RAM checks,
+  matched-state scene-extension verification, and safe composition of configured
+  experiments with widescreen defaults. Conflicting patch words fail.
+- `28738f9`: USA full-widescreen object visibility, changing only the two
+  horizontal culling operands and a guarded constant in unused padding. Three
+  late-patched captures at 3440/3800/4880 add 50/5/5 entirely off-screen quads,
+  preserve all original draws in order, and leave both native framebuffer
+  pages, texture RAM and palette RAM byte-identical. Actual grass geometry now
+  replaces blue backdrop through the missing left and right margin ground.
+
+Applying the USA visibility patch from boot changes later guest execution:
+32 original native snapshots differ, starting at frame 3120, with unchanged
+effective inputs/time. Later car/traffic positions diverge. This is not proof
+of unchanged physics, and that original comparison correctly fails. A separate
+`usa-widescreen-candidate-case`, explicitly derived from the human INP with
+archived candidate executable/patch provenance, passes all 5,012 frames and
+83 images on identity replay. Do not overwrite the original case or conflate
+candidate repeatability with equivalence to the older game execution.
+
+The crack-filler reassessment is deliberately bounded: it changes zero pixels
+in the investigated frame with production margin settings. Six other captures
+show 0..594 changed pixels, including useful stale-gap removal and undesirable
+copier streaks. Keep the reversible default unchanged, do not widen its radius,
+and do not use it to mask missing geometry or wrong texture samples. Offline
+`--crackfill` and `--marginfill` are now independent, matching the live controls.
+The actual USA backdrop at 3440 has texture base 0x25f9, disproving the generality
+of the old fixed low-byte 0x56 backdrop heuristic.
+
+Distance remains open. Effective-RAM-verified stock/near/far gates of
+80,000/20,000/160,000 produce 2,518/784/2,518 quads in the same sampled route.
+The gate works but doubling it reveals no extra geometry here. Neither this
+ineffective distance change nor the rejected polygon-only cull experiments
+are enabled. Trace object residency, node creation, LOD and reciprocal lookup
+around a specifically identified pop before proposing the next distance fix.
+
+Validation includes 30 hardware-free Python tests, native patch helper tests,
+nine ROM-free GPU quality checks on NVIDIA and Mesa CI, six 100.0000% native
+GPU fixtures, actual rebuilt replay, and 240-frame launcher smokes for World
+v2.4 and Off Road. Physical FFB stayed disabled. Remaining work includes thin
+source-geometry seams, ordered live texture/palette/clear events and scene
+fences, black-sky reproductions, new gameplay cases for the other games, and
+attended collision-feel/wheel testing. The toolkit remains v0.10.1 / c9b76b7.

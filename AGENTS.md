@@ -11,7 +11,8 @@ renderer-replacement over MAME, the same architecture as wanszai's arcade
 ports. As of 2026-09-05 the collection launches all four games with scaled
 widescreen rendering and built-in SDL force feedback, conditioned by the
 vendored wheel-toolkit shaper. Gameplay rendering artifacts, collision feel,
-car-selection slowdown and telemetry coverage remain open. Native exactness
+and telemetry coverage remain open. USA's measured GDI selection slowdown is fixed
+with an underlying D3D window; native exactness
 on archived captures must not be described as proof of artifact-free gameplay.
 
 Current assessment: `docs/reviews/2026-09-05-assessment.md`, with dedicated
@@ -24,12 +25,26 @@ review reports as a dated baseline and record fixes separately.
 Implemented workflow: `docs/DIAGNOSTIC-REPLAY.md`; results and remaining work:
 `docs/reviews/2026-09-05-implementation.md`. Record with `run_rig.py --record-case`;
 replay with `harness/replay.py`. Both disable wheel force. Real USA synthetic
-gameplay has matched 6,000 input frames and 100 native snapshots on replay;
-this does not establish human-wheel replay, other games or GL pixel equality.
+gameplay has matched 6,000 input frames and 100 native snapshots on replay.
+The user's LA Freeway recording and a separate improved-build candidate each
+replay 5,012 frames / 83 native images exactly. This does not establish other
+games or GL pixel equality. Preserve `results/diagnostics/my-drive` unchanged.
+See `docs/reviews/2026-09-05-recorded-drive-findings.md` for the UV atlas-bleed
+fix, USA object-visibility patch and crack-filler reassessment. A full-run game
+patch changes later native frames; use late matched-state tests for causal
+graphics comparisons and a separate candidate case for new-build determinism.
+New recordings defer PNG encoding until exit (`raw-snap/` retained and hashed).
+`replay.py --patch --patch-at-frame --capture-state` checks effective program
+words; `verify_scene_extension.py` checks preserved draw order and native RAM.
+`verify_quality.py` runs ROM-free GPU fixtures locally and under Mesa in CI.
 Run `python -m unittest discover -s tests -v` for hardware-free harness checks.
 Toolkit source is pinned to v0.10.1: `harness/sync_toolkit.py --ref v0.10.1`
 checks both consumers; `--write` updates. The OCR filter's canonical source is
-`native/hud_speed_filter.h`; `harness/sync_native.py` checks its MAME copy.
+`native/hud_speed_filter.h`; reset-time patch preflight is in `native/checked_patch.h`.
+`harness/sync_native.py` checks both MAME copies. Patch installation validates
+the entire file before writing; the legacy per-frame self-healer remains per-word.
+Configured game experiments compose with widescreen defaults; conflicts fail.
+An explicit `MIDV_PATCH` environment setting replaces all defaults.
 
 **Read these two documents before doing anything:**
 
@@ -180,13 +195,13 @@ Semantics that everything relies on (full detail in RESULTS.md):
   crop to 4:3 (quad counts overlap between 2D ~160 and sparse 3D ~260).
 - The in-process overlay is an **owned top-level popup**, NOT a child window
   — MAME's gdi caches its window DC so child-clipping can never work.
-  Runs with `video gdi` underneath; NOACTIVATE/TRANSPARENT/DISABLED keep all
-  input on MAME's window.
+  V-Unit now runs with `video d3d` underneath; `CRUISN_VUNIT_VIDEO=gdi` is the
+  compatibility fallback. NOACTIVATE/TRANSPARENT/DISABLED keep input on MAME.
 
 ## Rig facts
 
 - Product entry: `python harness/collection.py` — fullscreen shell, all
-  three games, menu music + blips (`rig/assets/`, regenerable via ffmpeg
+  four games, menu music + blips (`rig/assets/`, regenerable via ffmpeg
   from LaunchBox video snaps); C toggles CRT per launch; **S = wheel-setup
   wizard** (press-to-bind → `[wheelmap]` in `rig/collection.ini`, applied
   by the ctrlr generator each launch; wins over EmuEz per-game sections).
@@ -201,8 +216,8 @@ Semantics that everything relies on (full detail in RESULTS.md):
   re-demand it — no input devices — so captures must run in rig config).
 - All three games verified **100.0000% bit-exact** vs MAME videoram
   (offroadc runs 512×**401** with visarea right edge 510 — renderer.py
-  honors meta visarea in exact mode; C++ overlay HEIGHT=400 misses
-  offroadc's last line: open cosmetic item).
+  honors meta visarea in exact mode; the launcher passes MIDV_GL_HEIGHT=401
+  to the C++ overlay for Off Road).
 - Wheel buttons 33-48 = MAME tokens `ADDSW1-16` (not BUTTON33+; 49+ are
   unaddressable OTHER_SWITCH). winhybrid (default provider) needed the
   DIJoystick2 fix (mame-src 3cac3d67) — without it every wheel caps at 32

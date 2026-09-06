@@ -5,6 +5,22 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Fixed distant red/blue road strips caused by rectangle dilation sampling past
+  texture atlas bounds. Original UV domains now bound enhanced sampling; native
+  DDA remains exact. Added ROM-free GPU regression tests on NVIDIA and Mesa CI.
+- Recovered USA's missing margin terrain by widening only whole-object horizontal
+  visibility. Three matched-state captures preserve all original draws and native
+  RAM while adding only off-screen geometry. Full game-code replay has a separate
+  candidate reference; the original user's recording remains unchanged.
+- Removed measured PNG-encoding recording hitches by saving raw snapshots and
+  encoding after exit. V-Unit now uses D3D under its GL overlay, restoring full
+  USA emulation speed through the tested selection countdown and race.
+- Added late patch experiments, effective-RAM checks and scene-extension checks.
+  Reset-time patch installation rejects whole invalid groups before any write;
+  configured experiments compose with widescreen fixes and reject conflicts.
+- Reassessed crack filling, backdrop heuristics and distance using recorded
+  gameplay. Crack-fill radius/default is unchanged; distance extension is not enabled.
+
 - Added developer input recording/playback with retained initial state, archived
   executable, dependency fingerprints, native screenshot comparisons, input and
   timing logs, and bounded live GL captures. USA gameplay replay verified across

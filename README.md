@@ -6,9 +6,12 @@ as a renderer replacement over MAME. One fullscreen launcher, all four games,
 wheel + force feedback, true 16:9 at 4× internal resolution, optional CRT
 look. **No ROMs are included** — you supply your own.
 
-This is an actively tested alpha. Widescreen artifacts during gameplay,
-collision feedback, car-selection slowdown, and telemetry coverage remain
-open work. The [September 2026 assessment](docs/reviews/2026-09-05-assessment.md)
+This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
+collision feedback and telemetry coverage remain open work. The
+[recorded-drive findings](docs/reviews/2026-09-05-recorded-drive-findings.md) document
+fixes for USA's colored road strips, missing margin terrain, selection slowdown
+and diagnostic recording hitches, with their measured limits.
+The [September 2026 assessment](docs/reviews/2026-09-05-assessment.md)
 records verified findings and the plan for recorded gameplay regression tests.
 
 Developer testing now supports [recorded input and playback](docs/DIAGNOSTIC-REPLAY.md),
@@ -93,15 +96,15 @@ on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
 
 ## What it is, technically
 
-- The games' polygon stream is intercepted from the emulated hardware and
+- The V-Unit games' polygon stream is intercepted from the emulated hardware and
   re-rendered on the GPU: pixel-exact at native resolution (verified
   **100.0000 %** against MAME's own framebuffer), then scaled up 4× with
-  sub-pixel-accurate edges, 16:9 margins filled with the geometry the
+  higher-resolution edges, 16:9 margins filled with the geometry the
   arcade hardware culled at its 4:3 raster, and an optional CRT pass.
-- Off Road Challenge and Cruis'n World get in-memory patches to their own
+- USA, Off Road Challenge and Cruis'n World get in-memory patches to their own
   game code (ROM files are never touched) so the game itself draws the
   full 16:9 view.
-- Cruis'n Exotica renders through the same GPU path at 4× via MAME's Zeus2
+- Cruis'n Exotica has a separate GPU path at 4× via MAME's Zeus2
   emulation (upstream emulation gaps remain: car-select text is illegible).
 - Telemetry streams to SimHub as JSON or Forza-format UDP. Speed currently
   uses HUD OCR for USA and World; Off Road's speed reader is not working,
@@ -110,7 +113,9 @@ on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
 
 Native V-Unit comparisons cover specific archived captures. They do not
 establish that scaled/widescreen gameplay is artifact-free. Player-driven,
-consecutive-frame replay is the planned primary visual regression workload.
+consecutive-frame replay is the primary visual regression workload. Game-code
+changes can alter later execution history; matched-state comparisons isolate
+visibility fixes, and separate candidate cases check the new build's repeatability.
 
 Full engineering log with every finding and number:
 [results/RESULTS.md](results/RESULTS.md).

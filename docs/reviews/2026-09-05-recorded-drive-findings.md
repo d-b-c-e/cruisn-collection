@@ -128,9 +128,9 @@ Later car/traffic positions diverge. The extra guest rendering changes execution
 history; the precise coupling through timing/state still needs investigation.
 The full replay correctly fails its original identity comparison. This is not a
 claim of unchanged physics or an automatic reference update. A separate candidate
-recording retains the original human INP provenance to check repeatability of the
-new build. Late, matched-state comparisons remain the basis for the visibility
-fix's isolated visual correctness. One full live experiment held 99.98% during
+recording retains the original human INP provenance: all 5,012 frames and 83 native
+images match on its identity replay. Late, matched-state comparisons remain the
+basis for the visibility fix's isolated visual correctness. One full live experiment held 99.98% during
 selection and 99.73% racing, including 26 diagnostic BMP captures.
 
 The earlier broad polygon-cull experiment is rejected: native frames diverged
@@ -168,6 +168,9 @@ old debug path returned before the transparency discard.
 
 Full local evidence is gitignored. Key runs:
 
+Compact results and provenance are tracked in
+[`2026-09-05-recorded-drive-milestone.json`](../../results/proof/2026-09-05-recorded-drive-milestone.json).
+
 | Run under results/diagnostics | Scope |
 |---|---|
 | replay-20260906T015718Z-29qhi1t8 | Original live GL defects, GDI, PNG capture |
@@ -177,6 +180,8 @@ Full local evidence is gitignored. Key runs:
 | replay-20260906T021721Z-oug1q689 | Native-verified frozen frame 3800 |
 | replay-20260906T022330Z-wih4t_lq | Rebuilt bounded-UV executable, full native replay PASS |
 | crackfill-audit | Six raw/fill comparisons and changed-pixel counts |
+| usa-widescreen-candidate-case | Explicit improved-build recording from the original human INP |
+| replay-20260906T030510Z-yydopnlr | Candidate identity replay, 5,012 frames and 83 native images PASS |
 
 Failed experiments remain retained too. In particular, `screen:pixels()` read
 the wrong double buffer and failed native comparison; the implemented recorder

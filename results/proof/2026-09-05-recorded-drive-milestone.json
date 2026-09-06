@@ -1,0 +1,516 @@
+{
+  "crackfill": {
+    "archived_capture_changes": [
+      {
+        "bounds": [
+          0,
+          1032,
+          2735,
+          1588
+        ],
+        "capture": "capture-8000",
+        "changed_pixels": 162,
+        "total_pixels": 4377600
+      },
+      {
+        "capture": "capture-continue",
+        "changed_pixels": 0,
+        "total_pixels": 4377600
+      },
+      {
+        "bounds": [
+          0,
+          486,
+          2735,
+          1228
+        ],
+        "capture": "capture-crusnwld-rig",
+        "changed_pixels": 594,
+        "total_pixels": 4377600
+      },
+      {
+        "bounds": [
+          0,
+          1412,
+          1,
+          1413
+        ],
+        "capture": "capture-offroadc-rig",
+        "changed_pixels": 3,
+        "total_pixels": 4388544
+      },
+      {
+        "bounds": [
+          217,
+          862,
+          2735,
+          1564
+        ],
+        "capture": "capture-ny-6000",
+        "changed_pixels": 281,
+        "total_pixels": 4377600
+      },
+      {
+        "bounds": [
+          0,
+          807,
+          1827,
+          1599
+        ],
+        "capture": "capture-ny-7600",
+        "changed_pixels": 503,
+        "total_pixels": 4377600
+      }
+    ],
+    "decision": "Keep reversible option/default unchanged; no broader radius. It cannot correct covered atlas bleed or backdrop through missing terrain.",
+    "frame_3440_changed_pixels": 0
+  },
+  "date": "2026-09-05",
+  "distance": {
+    "default_extension_enabled": false,
+    "effective_ram_verified": true,
+    "far_160000_quads": 2518,
+    "far_run": "replay-20260906T024119Z-c8owsiva",
+    "frame": 3440,
+    "limit": "Gate is active but does not add geometry in this sampled scene; other tracks and object residency/LOD require separate tracing.",
+    "near_20000_quads": 784,
+    "near_run": "replay-20260906T024144Z-fdqx36op",
+    "stock_80000_quads": 2518
+  },
+  "export_reconstruction": {
+    "historical_paths": 24,
+    "mame_commit": "eb4db8fc7069ec927e1e7562c529ae832def26db",
+    "mismatches": [],
+    "passed": true,
+    "retained_directory": "E:\\Source\\cruisn-collection\\results\\diagnostics\\patch-check-vuow250j"
+  },
+  "full_boot_patch_against_original": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        3120,
+        3180,
+        3240,
+        3300,
+        3360,
+        3420,
+        3480,
+        3540,
+        3600,
+        3660,
+        3720,
+        3780,
+        3840,
+        3900,
+        3960,
+        4020,
+        4080,
+        4140,
+        4200,
+        4260
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 32
+    },
+    "frames": 5012,
+    "native_snapshots": 83,
+    "passed": false,
+    "report_sha256": "23da1abd1beb0ff5c6e848a8982216c533dfb2743cdc51acb3252b64a7a5b221",
+    "run": "replay-20260906T025701Z-3lydr6_c"
+  },
+  "full_boot_patch_limit": "Extra guest rendering changes later execution history (32 sampled native frames differ, first 3120); physics/state equivalence is not established. The separate candidate case tests repeatability without overwriting the original.",
+  "limitations": [
+    "Physical wheel force disabled throughout automation; collision feel not accepted.",
+    "Live GL images remain asynchronously labeled; no ordered scene fences yet.",
+    "Thin source geometry seams, black sky cases and other game routes remain open.",
+    "Game patch whole-file validation is at initial installation; legacy self-healing is per-word."
+  ],
+  "matched_state_visibility": [
+    {
+      "candidate": {
+        "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\replay-20260906T024419Z-z6wevsld\\run\\capture",
+        "sha256": {
+          "meta.txt": "21c9a671489d2632cdd7e52b40694ff53576a21b2595ff7811ec84ce4127f192",
+          "paletteram.bin": "bc7bb4193ed8d92f0c135d4a341720b9961346722a0c67d99666f65aaa19aa08",
+          "quads.bin": "4bfa017a287b54f145d5b9e336139128ecb3dd0f46b2d7c84c960d08521e5692",
+          "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+          "videoram.bin": "b4ca7a5c9e9a8ed6cbf4ed3a40d5210a5fc6d11ae29d0fc1da062f8d6a1e60f5"
+        }
+      },
+      "frame": 3440,
+      "geometry": {
+        "added_quads": 50,
+        "added_quads_intersecting_native_x": 0,
+        "candidate_quads": 2568,
+        "original_draw_order_preserved": true,
+        "original_quads": 2518,
+        "removed_or_changed_quads": 0
+      },
+      "passed": true,
+      "reference": {
+        "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\replay-20260906T021337Z-d71ect3r\\run\\capture",
+        "sha256": {
+          "meta.txt": "21c9a671489d2632cdd7e52b40694ff53576a21b2595ff7811ec84ce4127f192",
+          "paletteram.bin": "bc7bb4193ed8d92f0c135d4a341720b9961346722a0c67d99666f65aaa19aa08",
+          "quads.bin": "aa35d2c7a4bfb89ac2b06b39963b56a9e7c4e5c7a460cd7aee59dd17cf548add",
+          "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+          "videoram.bin": "b4ca7a5c9e9a8ed6cbf4ed3a40d5210a5fc6d11ae29d0fc1da062f8d6a1e60f5"
+        }
+      },
+      "same_frame_and_page": true,
+      "schema": 1,
+      "scope": "matched-state off-screen geometry extension",
+      "unchanged_resources": {
+        "paletteram.bin": true,
+        "textureram.bin": true,
+        "videoram.bin": true
+      }
+    },
+    {
+      "candidate": {
+        "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\replay-20260906T024935Z-g1e9efn6\\run\\capture",
+        "sha256": {
+          "meta.txt": "d112f7fab66f3b7837997c76ccfffb61d714382a76b56fce1b870473c25607db",
+          "paletteram.bin": "55f6d8accf5d61f479fc408fb8bb487c310b155432fd9c80824e4e1a4f1dc008",
+          "quads.bin": "40befa962a422ce3e109b6eabe24fbd300506b8e6f81a5f185f48017d7b08883",
+          "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+          "videoram.bin": "4bdb4107bbf7b03e05b5ba1861e2d201f7dacece530bbfe1a27dffa903447b9b"
+        }
+      },
+      "frame": 3800,
+      "geometry": {
+        "added_quads": 5,
+        "added_quads_intersecting_native_x": 0,
+        "candidate_quads": 2202,
+        "original_draw_order_preserved": true,
+        "original_quads": 2197,
+        "removed_or_changed_quads": 0
+      },
+      "passed": true,
+      "reference": {
+        "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\replay-20260906T021721Z-oug1q689\\run\\capture",
+        "sha256": {
+          "meta.txt": "d112f7fab66f3b7837997c76ccfffb61d714382a76b56fce1b870473c25607db",
+          "paletteram.bin": "55f6d8accf5d61f479fc408fb8bb487c310b155432fd9c80824e4e1a4f1dc008",
+          "quads.bin": "7ee93824999b6453af9ae4d613daad3023caba851bb11f7d562b2d324505234a",
+          "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+          "videoram.bin": "4bdb4107bbf7b03e05b5ba1861e2d201f7dacece530bbfe1a27dffa903447b9b"
+        }
+      },
+      "same_frame_and_page": true,
+      "schema": 1,
+      "scope": "matched-state off-screen geometry extension",
+      "unchanged_resources": {
+        "paletteram.bin": true,
+        "textureram.bin": true,
+        "videoram.bin": true
+      }
+    },
+    {
+      "candidate": {
+        "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\replay-20260906T025422Z-wwslo6hw\\run\\capture",
+        "sha256": {
+          "meta.txt": "cfc4382e7d24488b5c320dbc7f7a6875c7ef7e3e1e8d2f093dc657b621c2ef4e",
+          "paletteram.bin": "9ebb9863efc0394cc33ee9c6b579fc42012be1d9a6573180cd5f2a02ed284e58",
+          "quads.bin": "7b38b1a5fe70c526de3020268f0af57a02cec8003375f506a258fc9e0ef7777c",
+          "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+          "videoram.bin": "5aadfd8d17a272e84bb4f9333faa762b2ed69801a2bff4561e2421ed575b17a5"
+        }
+      },
+      "frame": 4880,
+      "geometry": {
+        "added_quads": 5,
+        "added_quads_intersecting_native_x": 0,
+        "candidate_quads": 2037,
+        "original_draw_order_preserved": true,
+        "original_quads": 2032,
+        "removed_or_changed_quads": 0
+      },
+      "passed": true,
+      "reference": {
+        "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\replay-20260906T025346Z-1rmld5ds\\run\\capture",
+        "sha256": {
+          "meta.txt": "cfc4382e7d24488b5c320dbc7f7a6875c7ef7e3e1e8d2f093dc657b621c2ef4e",
+          "paletteram.bin": "9ebb9863efc0394cc33ee9c6b579fc42012be1d9a6573180cd5f2a02ed284e58",
+          "quads.bin": "c7a7521443207cb366264d2e85edaf52d8bae35ea2ada49b2620353b4a8e74cb",
+          "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+          "videoram.bin": "5aadfd8d17a272e84bb4f9333faa762b2ed69801a2bff4561e2421ed575b17a5"
+        }
+      },
+      "same_frame_and_page": true,
+      "schema": 1,
+      "scope": "matched-state off-screen geometry extension",
+      "unchanged_resources": {
+        "paletteram.bin": true,
+        "textureram.bin": true,
+        "videoram.bin": true
+      }
+    }
+  ],
+  "native_fixtures": [
+    {
+      "capture": "E:\\Source\\cruisn-collection\\results\\capture-8000",
+      "comparison": {
+        "differing_pixels": 0,
+        "exact_percent": 100.0,
+        "max_error": 0,
+        "max_mismatches": 0,
+        "outside_tolerance": 0,
+        "passed": true,
+        "pixels": 204800,
+        "tolerance": 0
+      },
+      "passed": true,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "scale": 1,
+      "schema": 1,
+      "scope": "native-index-buffer"
+    },
+    {
+      "capture": "E:\\Source\\cruisn-collection\\results\\capture-continue",
+      "comparison": {
+        "differing_pixels": 0,
+        "exact_percent": 100.0,
+        "max_error": 0,
+        "max_mismatches": 0,
+        "outside_tolerance": 0,
+        "passed": true,
+        "pixels": 204800,
+        "tolerance": 0
+      },
+      "passed": true,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "scale": 1,
+      "schema": 1,
+      "scope": "native-index-buffer"
+    },
+    {
+      "capture": "E:\\Source\\cruisn-collection\\results\\capture-crusnwld-rig",
+      "comparison": {
+        "differing_pixels": 0,
+        "exact_percent": 100.0,
+        "max_error": 0,
+        "max_mismatches": 0,
+        "outside_tolerance": 0,
+        "passed": true,
+        "pixels": 204800,
+        "tolerance": 0
+      },
+      "passed": true,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "scale": 1,
+      "schema": 1,
+      "scope": "native-index-buffer"
+    },
+    {
+      "capture": "E:\\Source\\cruisn-collection\\results\\capture-ny-6000",
+      "comparison": {
+        "differing_pixels": 0,
+        "exact_percent": 100.0,
+        "max_error": 0,
+        "max_mismatches": 0,
+        "outside_tolerance": 0,
+        "passed": true,
+        "pixels": 204800,
+        "tolerance": 0
+      },
+      "passed": true,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "scale": 1,
+      "schema": 1,
+      "scope": "native-index-buffer"
+    },
+    {
+      "capture": "E:\\Source\\cruisn-collection\\results\\capture-offroadc-rig",
+      "comparison": {
+        "differing_pixels": 0,
+        "exact_percent": 100.0,
+        "max_error": 0,
+        "max_mismatches": 0,
+        "outside_tolerance": 0,
+        "passed": true,
+        "pixels": 205312,
+        "tolerance": 0
+      },
+      "passed": true,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "scale": 1,
+      "schema": 1,
+      "scope": "native-index-buffer"
+    },
+    {
+      "capture": "E:\\Source\\cruisn-collection\\results\\capture",
+      "comparison": {
+        "differing_pixels": 0,
+        "exact_percent": 100.0,
+        "max_error": 0,
+        "max_mismatches": 0,
+        "outside_tolerance": 0,
+        "passed": true,
+        "pixels": 204800,
+        "tolerance": 0
+      },
+      "passed": true,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "scale": 1,
+      "schema": 1,
+      "scope": "native-index-buffer"
+    }
+  ],
+  "new_candidate_identity_replay": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 5012,
+    "native_snapshots": 83,
+    "passed": true,
+    "report_sha256": "0ce5cb063176544db9f95f42d9b671c5bc34b7500a2c78da6e031284e80559e0",
+    "run": "replay-20260906T030510Z-yydopnlr"
+  },
+  "new_candidate_provenance": {
+    "binary_sha256": "4a0b0ad62c150ad09941fc4aae3f2aeb521c9f9f0a29a3b06a436c9769734631",
+    "collection_source": {
+      "commit": "0804eb87727e5cfdeed6b2a7cc3b1f228361d600",
+      "dirty": true
+    },
+    "emulator_source": {
+      "commit": "eb4db8fc7069ec927e1e7562c529ae832def26db",
+      "dirty": false
+    },
+    "inp_sha256": "c4d627e28c6ed813549989bcc46ba935a8e715f4814f0468216558175dbf0c46",
+    "stimulus_provenance": {
+      "case": "E:\\Source\\cruisn-collection\\results\\diagnostics\\my-drive",
+      "inp_sha256": "7a93d09587e1ad26698ee0fd666c42166a1c92caeece9901d598ae2ef99e7d79",
+      "kind": "human-recorded-input",
+      "purpose": "separate reviewed candidate; original reference unchanged"
+    }
+  },
+  "original_case": {
+    "binary_sha256": "aca4f7152a4aff805c17bd29a1b4973ba4f455c47bb9322337e5a037ac41cf2f",
+    "collection_source": {
+      "commit": "34d54cf2936751ef48e0d7d3c5a49da761363ea2",
+      "dirty": false
+    },
+    "emulator_source": {
+      "commit": "1a2bb35f8ad58e2f0960c1d8b15bd361725a7a51",
+      "dirty": false
+    },
+    "frames": 5012,
+    "inp_sha256": "7a93d09587e1ad26698ee0fd666c42166a1c92caeece9901d598ae2ef99e7d79",
+    "native_snapshots": 83,
+    "origin": "live-input",
+    "path": "results/diagnostics/my-drive",
+    "rom": "crusnusa",
+    "unchanged_reference": true
+  },
+  "pacing": {
+    "original_png": {
+      "capture_adjacent_median_ms": 79.51989999999753,
+      "method": "speed = delta emulated / delta host; callback intervals after each 60-frame capture, frames 1681..4800",
+      "other_interval_median_ms": 22.012799999998833,
+      "racing_speed_percent": 79.88580858121557,
+      "selection_speed_percent": 75.47664691660202,
+      "trace": "my-drive/record/frames.csv"
+    },
+    "raw_gl_d3d": {
+      "capture_adjacent_median_ms": 10.335750000002975,
+      "method": "speed = delta emulated / delta host; callback intervals after each 60-frame capture, frames 1681..4800",
+      "other_interval_median_ms": 17.18684999999809,
+      "racing_speed_percent": 99.9917780645238,
+      "selection_speed_percent": 99.99997589774017,
+      "trace": "replay-20260906T020825Z-5xlvd_7z/run/frames.csv"
+    },
+    "raw_gl_gdi": {
+      "capture_adjacent_median_ms": 18.24544999999489,
+      "method": "speed = delta emulated / delta host; callback intervals after each 60-frame capture, frames 1681..4800",
+      "other_interval_median_ms": 22.083550000004948,
+      "racing_speed_percent": 83.73464284491108,
+      "selection_speed_percent": 77.58868298507463,
+      "trace": "replay-20260906T020535Z-cyvi_o9s/run/frames.csv"
+    }
+  },
+  "quality_gpu": {
+    "checks": [
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 26,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 1
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 104,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 2
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 234,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 3
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 416,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 4
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 936,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 6
+      },
+      {
+        "check": "adjacent-tile-coverage",
+        "holes": 0,
+        "passed": true,
+        "scale": 2
+      },
+      {
+        "check": "adjacent-tile-coverage",
+        "holes": 0,
+        "passed": true,
+        "scale": 4
+      },
+      {
+        "check": "transparent-polygon-ownership",
+        "passed": true
+      },
+      {
+        "check": "vertex-builder-equivalence",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+    "schema": 1,
+    "scope": "synthetic GPU quality regression"
+  },
+  "schema": 1,
+  "scope": "Recorded LA Freeway graphics and pacing milestone; bounded measurements, including deliberately failed comparisons",
+  "uv_only_full_replay": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 5012,
+    "native_snapshots": 83,
+    "passed": true,
+    "report_sha256": "168736b1b4fef29a9c6388b5414a140a8822d2503541fb2e59d4563b4cb8df30",
+    "run": "replay-20260906T022330Z-wih4t_lq"
+  }
+}

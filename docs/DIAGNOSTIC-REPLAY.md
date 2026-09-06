@@ -111,6 +111,28 @@ file and logs an error. This prevents a partially installed trampoline on an
 unsupported ROM. The existing per-frame self-healing mechanism is still per-word;
 it is not yet a general atomic runtime patch-group/lifecycle manager.
 
+The same-state USA visibility check used:
+
+```powershell
+python harness/replay.py results/diagnostics/my-drive --headless --snapshot-mode raw --until-frame 3442 --capture-state --patch patch/game/crusnusa-widescreen.txt --patch-at-frame 3436
+python harness/verify_scene_extension.py BASELINE_CAPTURE CANDIDATE_CAPTURE --report results/diagnostics/extension.json
+python harness/verify_quality.py --report results/diagnostics/quality.json
+```
+
+The extension verifier requires unchanged native pages/texture/palette RAM,
+preserved original draw order, and additional quads entirely outside the native
+x range. It is deliberately stricter than a comparison of unrelated screenshots.
+It does not accept an unchanged scene as evidence of an extension. Run the native
+GPU verifier on the captures separately. `gpu/renderer.py --buffers output.npz`
+exports indices, coverage and transparent-texel-aware polygon ownership.
+`--crackfill` and `--marginfill` are independent preview options.
+
+The local `usa-widescreen-candidate-case` was deliberately re-recorded from the
+original human INP with the improved executable/patch, retaining that provenance
+in its manifest. Its 5,012 frames and 83 native snapshots pass identity replay.
+This is a new candidate case: the original `my-drive` reference still fails a
+full-run game-patch comparison, as additional guest work changes later history.
+
 `report.json` passes only when the process exits cleanly, every expected frame
 and screenshot is present, effective inputs and emulated time match, and all
 sampled native images match. Changed references, missing files, truncated traces,
