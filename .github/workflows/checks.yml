@@ -28,10 +28,13 @@ jobs:
       - uses: actions/checkout@v4
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/hud_speed_test.cpp -o /tmp/hud-test
       - run: /tmp/hud-test
+      - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/hud_numeric_test.cpp -o /tmp/hud-numeric-test
+      - run: /tmp/hud-numeric-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/checked_patch_test.cpp -o /tmp/patch-test
       - run: /tmp/patch-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Ilib/toolkit/include native/analyze_ffb.cpp -o /tmp/ffb-analyzer
       - run: /tmp/ffb-analyzer fixtures/signals/idle-hit.csv lib/toolkit/profiles cruisn-vunit@2 50 /tmp/stages.csv
+      - run: /tmp/ffb-analyzer fixtures/signals/idle-hit.csv lib/toolkit/profiles cruisn-vunit@2 50 /tmp/impacts.csv --impacts
   gpu-quality:
     runs-on: ubuntu-latest
     env:
