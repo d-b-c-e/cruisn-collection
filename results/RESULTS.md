@@ -3141,3 +3141,47 @@ proof retained under results/proof/2026-09-06-fanatec-review. No emulator or
 physical force launched by that check. Also flagged Exotica gain-before-stop-code
 normalization, gain/clipping portability, and native MAME-menu visibility.
 No FFB sign/gain/DIP runtime changes, no plugin install and no Fanatec cure claimed.
+
+
+## 2026-09-06: Germany Level evidence, responsive Esc and external session clock
+
+- User recorded a complete World2.4 Germany race with real wheel/FFB. Named
+  Germany Level at results/diagnostics/world-germany-20260906: 9,269frames,
+  160.00815328emulated seconds,154native snapshots. Preserve all original inputs,
+  executable, initial state and trace data. Added as seventh local regression case.
+- Fixed invisible paused V-Unit menu: completed-frame gate prevented UI rendering
+  after Esc paused the producer. MAME daed6ea2a19 committed/pushed fork/built;
+  SHA256923206d92188abe773f49a8abb7a5829a366966ea3898109081833307c23ca6c.
+  Export106patches recreates d026555b2c855ed9bf489b07fd8bdc568d1c7e85. Normal
+  Stream Deck executable path unchanged; racing mame.exe never touched.
+- check_menu.py reproduces failure before fix; USA/World/Offroad now pass8visible
+  states, paused-frame stability, CRT toggle, resumed frames and clean menu Exit.
+  These are explicit no-force emulator key-handler tests, not OS input injection.
+- record_drive.py preserves saved shell graphics and steering settings; force
+  retained only with --with-ffb. External clock defaultsON and follows emulated
+  seconds/frame, including boot/selection, stopping on pause. --no-clock disables;
+  replay --clock opts in and fingerprints current Lua override. Flush every6frames,
+  50ms external poll; passive Windows panel visually verified. 54Python tests pass.
+- Germany archived identity and new full live candidate pass9269inputs/times and
+  154native images. Candidate135GL captures document current defects without an
+  original GL reference. Clocked dense prefix8240passes1141GL captures7080..8220,
+  drop0. Earlier exact-end8220attempt correctly fails missing final GLframe8219+1.
+- D/A transition1320/22.79s is corrupt natively and in GL; original-program-word
+  control matches1380inputs/23native including that badframe. Not proven upstream
+  or hardware-original. Black road at7280/125.67s isolated during off-road driving:
+  state point(-61,275) has no current covering polygon, not a black texture fetch.
+- New World state's exact check exposes2differing native pixels:99.9990%, at7,250
+  and77,297. Recorded as a failure; no threshold relaxation. Existing capture8000
+  remains100.0000%. No shader or distance patch changed in this batch.
+- Live FFB trace:7358constantAPIacceptances/0rejections, peak0.800012;27impact/rumble
+  candidates. Steering impact enhancement0.7468rawrace samples unchanged bydriver,
+  range-126..126;8.9181%samples atlimits. Offline4msshaper29candidates differs in
+  scheduling. No collision labels or physical torque measurement. Trace includes
+  7.43shostgap near Escpause9201; don't call whole-run average a performance fault.
+- Full report and compact proof: docs/reviews/2026-09-06-germany-level.md and
+  results/proof/2026-09-06-germany-level/. World clipping, transmission texture
+  lifetime, pop-in and perceptual crash differentiation remain open investigations.
+- Follow-up matched-state control: bypass both existing World big-poly left reject
+  calls0x387/0x3C9 at7276, verify2effectiveRAMwords at7280. Replay passes; geometry
+  unchanged756quads, qualitypixelschanged0; geometry-extension check correctly
+  fails for no additions. Do not loosen these bounds blindly or ship this bypass.

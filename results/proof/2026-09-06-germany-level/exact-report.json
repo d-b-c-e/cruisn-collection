@@ -1,0 +1,18 @@
+{
+  "capture": "E:\\Source\\cruisn-collection\\results\\diagnostics\\germany-black-7280-state\\run\\capture",
+  "comparison": {
+    "differing_pixels": 2,
+    "exact_percent": 99.9990234375,
+    "max_error": 268,
+    "max_mismatches": 0,
+    "outside_tolerance": 2,
+    "passed": false,
+    "pixels": 204800,
+    "tolerance": 0
+  },
+  "passed": false,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "scale": 1,
+  "schema": 1,
+  "scope": "native-index-buffer"
+}

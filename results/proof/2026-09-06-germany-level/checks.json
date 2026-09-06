@@ -1,0 +1,328 @@
+{
+  "menu-world-before": {
+    "passed": false,
+    "error": "missing menu redraws while emulation is paused",
+    "comparison": null,
+    "frames": null,
+    "native_images": 0,
+    "gl_frames": null
+  },
+  "menu-world-after": {
+    "passed": true,
+    "error": null,
+    "comparison": null,
+    "frames": null,
+    "native_images": 0,
+    "gl_frames": null,
+    "states": [
+      {
+        "crt": 0,
+        "frame": 1800,
+        "image_sha256": "e85b7fee95b6523595bdb7051998da9138772db12f1878e0485e3233fcbafd35",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 0
+      },
+      {
+        "crt": 0,
+        "frame": 1800,
+        "image_sha256": "6a075693fea9412b5a959df88666705e31c13c2364e86dbf0797f1ef8a309ee7",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 1
+      },
+      {
+        "crt": 1,
+        "frame": 1800,
+        "image_sha256": "f04b9f2041c7ff16e15f2ae3cfba4bc9c2452008537b188eb32dc2383830e8e6",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 2
+      },
+      {
+        "crt": 1,
+        "frame": 1800,
+        "image_sha256": "e387d9bfcdcae33d33f7306da8964c6246465146d8374aaa2664e531ed9594ad",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 3
+      },
+      {
+        "crt": 1,
+        "frame": 1800,
+        "image_sha256": "c8069b254f40c7461ef2f60a7f9622af91fc2dae36f1f2ce1268c232fd0176d7",
+        "new_frame": 0,
+        "open": 0,
+        "selected": 0,
+        "step": 4
+      },
+      {
+        "crt": 1,
+        "frame": 1820,
+        "image_sha256": "8ed90868d2eef740f4359419a39fb2a91d28f9c997821106fcde5564a3dc5888",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 5
+      },
+      {
+        "crt": 1,
+        "frame": 1820,
+        "image_sha256": "2a474458c9524b19aefac2864a3c287708178689608acacaa5c178e0ea63d73e",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 6
+      },
+      {
+        "crt": 1,
+        "frame": 1820,
+        "image_sha256": "219a4f46df9d592ee5b694889696ef6a1b63820c308db3372bfa356dd2fe06e7",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 2,
+        "step": 7
+      }
+    ]
+  },
+  "menu-usa-after": {
+    "passed": true,
+    "error": null,
+    "comparison": null,
+    "frames": null,
+    "native_images": 0,
+    "gl_frames": null,
+    "states": [
+      {
+        "crt": 0,
+        "frame": 3000,
+        "image_sha256": "dc78d5f07510b0346d8dfc588ae8e16ffa4c0f1ccad9ccfad4d17a759051319b",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 0
+      },
+      {
+        "crt": 0,
+        "frame": 3000,
+        "image_sha256": "83ee06ec7c2974076400aada5ff1d02c62ecc32cf391a9b4b52b8301e95ae7ee",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 1
+      },
+      {
+        "crt": 1,
+        "frame": 3000,
+        "image_sha256": "dda9569c97a24376662de78f32081addf6c1acd9cbd072d6f8f1b4175b86129f",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 2
+      },
+      {
+        "crt": 1,
+        "frame": 3000,
+        "image_sha256": "e1b330ec12111c6ad7260ea83163d0ed153a316c7cb5ad9d75bf78792f6c5d25",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 3
+      },
+      {
+        "crt": 1,
+        "frame": 3000,
+        "image_sha256": "5556f91a96e13e2672233c88648c435b0e9120240728567945aaf894db0dc7de",
+        "new_frame": 0,
+        "open": 0,
+        "selected": 0,
+        "step": 4
+      },
+      {
+        "crt": 1,
+        "frame": 3020,
+        "image_sha256": "7503e3311698e8d16cf5b4d30eeb95f7955abd37cc27b931f6d2663b19936b29",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 5
+      },
+      {
+        "crt": 1,
+        "frame": 3020,
+        "image_sha256": "faac90344966c9806241de5de2154750ef96f5672fde5ea1d3072be0a3f07703",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 6
+      },
+      {
+        "crt": 1,
+        "frame": 3020,
+        "image_sha256": "04ed89ce23f19d19d121a63474a8620db45355a10a9130c315d7fd580af62b8c",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 2,
+        "step": 7
+      }
+    ]
+  },
+  "menu-offroad-after": {
+    "passed": true,
+    "error": null,
+    "comparison": null,
+    "frames": null,
+    "native_images": 0,
+    "gl_frames": null,
+    "states": [
+      {
+        "crt": 0,
+        "frame": 3000,
+        "image_sha256": "ec033d41d283ecb7498690a71c1a2bc323a893749cd31c1ecea595b54b90723a",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 0
+      },
+      {
+        "crt": 0,
+        "frame": 3000,
+        "image_sha256": "0d74aff4a58ffcbd46b3fe02637f7ab29098bb7a36deac0b2c1a99ce1bad653e",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 1
+      },
+      {
+        "crt": 1,
+        "frame": 3000,
+        "image_sha256": "3280728c3b7ea221fc5dad5f71632952c339b0ab827839cacbcf3aad19374f63",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 2
+      },
+      {
+        "crt": 1,
+        "frame": 3000,
+        "image_sha256": "cb3d29be90882ecd4883919f671b2a08fcaba4e3958a3179042aa9a030419790",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 0,
+        "step": 3
+      },
+      {
+        "crt": 1,
+        "frame": 3000,
+        "image_sha256": "f05ff405a7bc868f8ec6c95acee35e3675c01e2972cb3e5f1f0046c486ffa116",
+        "new_frame": 0,
+        "open": 0,
+        "selected": 0,
+        "step": 4
+      },
+      {
+        "crt": 1,
+        "frame": 3021,
+        "image_sha256": "e948114b8d1b3c954087ed16754e3b5b0f24e04d70a99349a8cc1e32282e4e57",
+        "new_frame": 1,
+        "open": 1,
+        "selected": 0,
+        "step": 5
+      },
+      {
+        "crt": 1,
+        "frame": 3021,
+        "image_sha256": "263701f89a2b45d17ac608562bac377f642d3fdac4e880edfdfcbda097533c7b",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 1,
+        "step": 6
+      },
+      {
+        "crt": 1,
+        "frame": 3021,
+        "image_sha256": "eea8305872a4a4aa2e8824fd18f3132626f462591b6e8b62b5611b57c8d5574c",
+        "new_frame": 0,
+        "open": 1,
+        "selected": 2,
+        "step": 7
+      }
+    ]
+  },
+  "germany-identity": {
+    "passed": true,
+    "error": null,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 9269,
+    "native_images": 154,
+    "gl_frames": null
+  },
+  "germany-enhanced-replay": {
+    "passed": true,
+    "error": null,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 9269,
+    "native_images": 154,
+    "gl_frames": 135
+  },
+  "germany-stock-selection": {
+    "passed": true,
+    "error": null,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 1380,
+    "native_images": 23,
+    "gl_frames": null
+  },
+  "germany-dense-late": {
+    "passed": false,
+    "error": "completed GL capture interval is incomplete",
+    "comparison": null,
+    "frames": 8220,
+    "native_images": 137,
+    "gl_frames": 1140
+  },
+  "germany-dense-late-clock": {
+    "passed": true,
+    "error": null,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 8240,
+    "native_images": 137,
+    "gl_frames": 1141,
+    "external_clock": {
+      "flush_frames": 6,
+      "position": [
+        550,
+        80
+      ],
+      "time_source": "frames.csv emulated_seconds"
+    }
+  }
+}

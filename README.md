@@ -8,6 +8,11 @@ look. **No ROMs are included** — you supply your own.
 
 This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
 collision feedback and telemetry coverage remain open work. The
+[Germany Level investigation](docs/reviews/2026-09-06-germany-level.md) adds a
+complete human race replay, fixes the invisible Esc menu, and separates native
+transmission-screen corruption from the remaining widescreen defects. An external
+recording/replay clock now lets testers report defects by seconds or frame number.
+The
 [launcher now exposes per-game graphics experiments](docs/INSTALL.md#optional-graphics-experiments)
 under **Settings → Display**; Margin Fill is retired from the normal UI.
 The [Fanatec/Exotica review](docs/reviews/2026-09-06-exotica-polarity.md) identifies

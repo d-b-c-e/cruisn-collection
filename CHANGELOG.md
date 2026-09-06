@@ -5,6 +5,14 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Fix the invisible V-Unit Esc menu: it now redraws while emulation is paused.
+  Recorded-input menu checks cover USA, World and Off Road, including CRT,
+  resume and exit.
+- Add an attended recorder using saved collection settings, an external
+  recording/playback timer, and the complete Germany Level regression case.
+  Timestamps use emulated time so pauses and replay speed do not shift them.
+  FFB remains opt-in for recording and disabled during playback.
+
 - Add per-game launcher controls for experimental seam alignment, USA detail
   distance and USA draw limit. All are off by default; unsupported games stay gated.
 - Retire Margin Fill from the launcher and ignore legacy saved values. Its sky

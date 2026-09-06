@@ -1,0 +1,3 @@
+# Diagnostic only: bypass both already-widened World big-poly left rejects late.
+387 7207FEBF 0C800000
+3C9 7207FF20 0C800000

@@ -1,0 +1,50 @@
+{
+  "replay_passed": true,
+  "effective_patch": {
+    "checked_words": 2,
+    "mismatches": [],
+    "passed": true
+  },
+  "experiment": "Bypass existing big-poly left reject calls at 0x387 and 0x3C9 at frame 7276; diagnostic only",
+  "scene": {
+    "candidate": {
+      "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\germany-black-left-reject-control\\run\\capture",
+      "sha256": {
+        "meta.txt": "1abe9d19ae39132b7bfcd36bd676ef1cc747f126226daeccae659b8bc4f7a6df",
+        "paletteram.bin": "d6b0c58794fd721c13c4d4c9413b4f11e0d92375b7a98de58e7366d5b425a203",
+        "quads.bin": "5bee925d636a3fb146d9a4292946463cc1e2b415205dc629e8fea345f56dea4a",
+        "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+        "videoram.bin": "d9443eff3cc01fa112d0eb8e5a6ed16ed50fbf3ccdfea0ebe0d0e3e479d9ced4"
+      }
+    },
+    "geometry": {
+      "added_quads": 0,
+      "added_quads_intersecting_native_x": 0,
+      "candidate_quads": 756,
+      "original_draw_order_preserved": true,
+      "original_quads": 756,
+      "removed_or_changed_quads": 0
+    },
+    "passed": false,
+    "reference": {
+      "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\germany-black-7280-state\\run\\capture",
+      "sha256": {
+        "meta.txt": "1abe9d19ae39132b7bfcd36bd676ef1cc747f126226daeccae659b8bc4f7a6df",
+        "paletteram.bin": "d6b0c58794fd721c13c4d4c9413b4f11e0d92375b7a98de58e7366d5b425a203",
+        "quads.bin": "5bee925d636a3fb146d9a4292946463cc1e2b415205dc629e8fea345f56dea4a",
+        "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+        "videoram.bin": "d9443eff3cc01fa112d0eb8e5a6ed16ed50fbf3ccdfea0ebe0d0e3e479d9ced4"
+      }
+    },
+    "same_frame_and_page": true,
+    "schema": 1,
+    "scope": "matched-state off-screen geometry extension",
+    "unchanged_resources": {
+      "paletteram.bin": true,
+      "textureram.bin": true,
+      "videoram.bin": true
+    }
+  },
+  "changed_quality_index_pixels": 0,
+  "hole_current_owner": 65535
+}

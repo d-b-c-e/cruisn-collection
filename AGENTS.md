@@ -2,6 +2,16 @@
 
 ## Current verified handoff (2026-09-06)
 
+Latest: `docs/reviews/2026-09-06-germany-level.md`. V-Unit pause UI must present
+without a new emulation fence; pausing blocks that fence. `check_menu.py` tests
+the real key-handler menu states with physical force disabled; its menu BMPs
+are separate from completed gameplay captures. Germany Level is a complete human
+World 2.4 race (9,269 frames / 154 native images), now the seventh local case.
+`record_drive.py` preserves shell settings and shows a passive external clock by
+default. Physical FFB needs explicit `--with-ffb`; replay always disables it.
+`replay.py --clock` opts into the current Lua script and six-frame log flushes,
+hashing that override. Never rewrite an original recording to add clock support.
+
 Read `docs/reviews/2026-09-06-seams-distance.md` and `.Codex/session-notes.md` for
 current limits; older artifact-free/general speed claims below are historical.
 Broad `MIDV_GL_MARGINFILL` is OFF by default after gameplay proved it destroyed
@@ -18,7 +28,7 @@ Zeus now has completed-frame captures and a 6,000-frame driving case with 21
 actual GL reference images. Its live path skips CPU polygons: old matching black
 native images were NOT a gameplay oracle, and headless/live differences did not
 establish nondeterminism. Use `replay.py --compare-gl`; `--zeus-native` is a slow
-double-rasterization diagnostic. `run_regressions.py` runs six local cases with
+double-rasterization diagnostic. `run_regressions.py` runs seven local cases with
 explicit coverage and timing gates. RPM is unavailable; never restore the old
 E632 mapping, which interpreted packed speed text as engine RPM.
 
@@ -59,7 +69,8 @@ review reports as a dated baseline and record fixes separately.
 
 Implemented workflow: `docs/DIAGNOSTIC-REPLAY.md`; results and remaining work:
 `docs/reviews/2026-09-05-implementation.md`. Record with `run_rig.py --record-case`;
-replay with `harness/replay.py`. Both disable wheel force. Real USA synthetic
+replay with `harness/replay.py`. Force defaults off; only explicitly attended
+recording may retain it. Real USA synthetic
 gameplay has matched 6,000 input frames and 100 native snapshots on replay.
 The user's LA Freeway recording and a separate improved-build candidate each
 replay 5,012 frames / 83 native images exactly. This does not establish other

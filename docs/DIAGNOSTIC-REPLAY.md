@@ -352,3 +352,15 @@ For pixel attribution, render with `gpu/renderer.py CAPTURE --wide --scale 4
 live replay. It matches closed three-polygon joins with consistent material/UVs;
 it never applies to native exact rendering. See the
 [latest rendering review](reviews/2026-09-06-seams-distance.md) for its limits.
+
+For V-Unit pause/menu regression checks:
+
+```powershell
+python harness/check_menu.py results/diagnostics/world-germany-20260906 --candidate E:/Source/mame-src/vunit.exe --frame 1800
+```
+
+This explicitly drives menu key-handler edges inside the emulator while physical
+force is disabled. It requires visible menu text and selection changes, stable
+paused frames, a working CRT toggle, resumed frames and clean Exit. Menu images
+are recorded separately from completed gameplay captures. It tests the overlay
+path; it does not exercise OS keyboard routing or the collection's shell itself.

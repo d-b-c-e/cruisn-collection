@@ -1,0 +1,13 @@
+{
+  "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\germany-dense-late-clock\\run\\frames.csv",
+  "last_sample": [
+    8240,
+    142.244814222448
+  ],
+  "display_updates": 1370,
+  "clock": "recorded-emulation-time",
+  "position": [
+    550,
+    80
+  ]
+}

@@ -1,5 +1,52 @@
 # Session Notes
 
+## Latest: Germany Level, Esc menu, external clock (2026-09-06)
+
+- Branch codex/menu-pause-and-world-diagnostics from cb11133. Menu commit94b5eeb;
+  recorder/clock commit ec9de49. Authorized separate commits, push and ff-master.
+- MAME poc/quadlog daed6ea2a19 committed/pushed fork and built at normal vunit.exe.
+  SHA256923206d92188abe773f49a8abb7a5829a366966ea3898109081833307c23ca6c.
+  Full106-commit export reconstructs d026555b2c855ed9bf489b07fd8bdc568d1c7e85.
+- Esc invisible-menu root: pause blocks producer before next completed-frame fence.
+  UI now presents without that fence. Ordinary GL game captures exclude menu frames.
+  check_menu.py: before fails; USA/World/Offroad pass8 UI states + clean Exit.
+  Exotica menu code unchanged. Physical Esc from shell still needs user retest.
+- User's complete attended World2.4 recording named Germany Level, local case
+  results/diagnostics/world-germany-20260906:9269frames/160.00815328s/154native.
+  FFB80 retained, scale4/full86/seamsON/steering90+120 from saved shell settings.
+  Keep original evidence intact. Added as seventh regression fixture.
+- Identity and full candidate replay pass all inputs/times/native images. Candidate
+  full GL captures135frames, no recorded GL oracle. Dense clocked prefix8240 passes
+  1141GL frames7080..8220/drop0. Earlier dense-late stops8220 and FAILS finalframe;
+  retain failed result, never call it a pass. All automatic wheel outputs OFF.
+- record_drive.py now uses actual saved settings; clock defaultON, force opt-in
+  --with-ffb. --title, --no-clock, --clock-position X:Y. replay --clock optional.
+  session_clock.py passive no-activate Windows panel tails emulated time/frame.
+  Lua flush every6frames only for clock; never wall-time interpolation. Old replay
+  scripts preserved unless override explicitly fingerprinted. 54 Python tests pass.
+- Germany1320/22.79s transmission corruption appears in native and GL. Original
+  program-word control matches all1380prefixinputs/23native including badimage.
+  Not yet proof upstream MAME or original game bug. Needs dense DMA/texture trace.
+- Black left road at7280/125.67s isolated. germany-black-7280-state passes7282prefix
+  with6GL captures + RAM/quads. Offline point native(-61,275) has no covering quad,
+  owner65535/index0. Geometry gap, no T joins; don't increase fill radius.
+- Late bypass of World left rejects0x387/0x3C9 at7276: guards+effectiveRAM pass,
+  replay passes; unchanged756quads/0qualitypixels. Existing big-poly leftclip
+  isn't enough to explain this hole. Diagnostic retained, NOT shipped as gamepatch.
+- New state's exact check FAILS99.9990% (2/204800pixels at7,250 and77,297), owners
+  488/562. Existing capture8000 remains100.0000%. Preserve failure for rounding
+  investigation; no shader change in this batch, don't call all new exact checks pass.
+- FFB:7358constantAPI requests accepted/0rejects, peak0.800012. 27liveimpact+rumble
+  candidates, optional steering impact enhancement0. Raw race7468samples [-126,126],
+  driverchanged0,8.9181%atrawlimits(sample-based). Offline4ms shaper29candidates;
+  not physical torque or collision labels. No profile/polarity change.
+- Findings/proof: docs/reviews/2026-09-06-germany-level.md and corresponding
+  results/proof directory. Large diagnostics ignored/local. World pop-in unresolved;
+  USA oldfarplane +97quads/0visiblepixels not a reason to raise World constants.
+- Next: trace World clipping at this actual hole; isolate D/A texture lifetime;
+  visually label collisions then assess smoothing/steering impact mix. User can
+  now supply seconds/frame from clock for precise future defect reports.
+
 ## Latest: launcher graphics controls and Exotica polarity review (2026-09-06)
 
 - Branch codex/launcher-graphics-options from 0183bf3; separate implementation and

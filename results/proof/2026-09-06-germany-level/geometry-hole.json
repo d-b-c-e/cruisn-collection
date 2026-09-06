@@ -1,0 +1,13 @@
+{
+  "point_native_xy": [
+    -61.0,
+    275.0
+  ],
+  "point_buffer_xy": [
+    100,
+    1100
+  ],
+  "submitted_quad_bounding_boxes_containing_point": [],
+  "scene_quads": 756,
+  "finding": "No current-scene quad even bounds this black margin point"
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "x": 7,
+    "y": 250,
+    "gpu": 17988,
+    "native": 17720,
+    "current_owner": 488,
+    "covered_in_draw": true
+  },
+  {
+    "x": 77,
+    "y": 297,
+    "gpu": 17822,
+    "native": 17746,
+    "current_owner": 562,
+    "covered_in_draw": true
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "case": "Germany Level",
+  "physical_force_during_recording": true,
+  "raw_race_samples": 7468,
+  "raw_range": [
+    -126,
+    126
+  ],
+  "driver_changed_raw_samples": 0,
+  "raw_samples_at_126_limit_fraction": 0.08918050348152115,
+  "constant_requests": 7358,
+  "constant_api_rejections": 0,
+  "shaped_peak_fraction": 0.8000122074037904,
+  "rumble_requests": 27,
+  "scope": "API acceptance is not measured physical torque. Raw sample fractions are not time weighted. No collision labels yet."
+}
