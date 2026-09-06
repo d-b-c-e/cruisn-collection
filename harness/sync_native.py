@@ -11,20 +11,22 @@ def main():
     ap.add_argument("--mame", type=Path, default=Path(r"E:\Source\mame-src"))
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
-    source = ROOT / "native" / "hud_speed_filter.h"
-    target = args.mame / "src" / "mame" / "midway" / "cruisn" / source.name
-    expected = source.read_bytes().replace(b"\r\n", b"\n")
-    actual = target.read_bytes().replace(b"\r\n", b"\n") if target.exists() else None
-    if actual == expected:
-        print("project native helpers match")
-        return 0
-    if args.write:
-        target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(expected)
-        print(f"updated {target}")
-        return 0
-    print(f"native helper differs or is missing: {target}")
-    return 1
+    failed = False
+    for name in ("hud_speed_filter.h", "checked_patch.h"):
+        source = ROOT / "native" / name
+        target = args.mame / "src" / "mame" / "midway" / "cruisn" / name
+        expected = source.read_bytes().replace(b"\r\n", b"\n")
+        actual = target.read_bytes().replace(b"\r\n", b"\n") if target.exists() else None
+        if actual == expected:
+            continue
+        if args.write:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(expected)
+            print(f"updated {target}")
+        else:
+            print(f"native helper differs or is missing: {target}")
+            failed = True
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":

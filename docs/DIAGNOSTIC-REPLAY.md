@@ -96,6 +96,21 @@ the offline renderer's completed-scene convention. Missing dump files fail.
 `--native-renderer` is an aspect-preserving windowed control with the replacement
 GL disabled. `--gl-scale` and `--no-crackfill` are explicit presentation experiments.
 
+`--patch FILE` explicitly replaces the recorded game patch for an experiment.
+With `--capture-state`, the report verifies every patched word against actual
+program RAM at the dump frame; a reverted, skipped or missing patch cannot pass.
+`--patch-at-frame N` instead applies the complete, old-value-checked group at a
+late frame, preserving earlier game history. Its application receipt is required.
+This helps isolate visibility changes before additional work shifts guest frame
+timing. `--probe-script FILE` is an explicit developer Lua frame callback, copied
+and hashed into the run; it cannot combine with `--patch-at-frame`.
+
+The product patch loader now validates an entire file before its first reset-time
+write, including duplicate addresses and guards. A mismatch rejects the whole
+file and logs an error. This prevents a partially installed trampoline on an
+unsupported ROM. The existing per-frame self-healing mechanism is still per-word;
+it is not yet a general atomic runtime patch-group/lifecycle manager.
+
 `report.json` passes only when the process exits cleanly, every expected frame
 and screenshot is present, effective inputs and emulated time match, and all
 sampled native images match. Changed references, missing files, truncated traces,
