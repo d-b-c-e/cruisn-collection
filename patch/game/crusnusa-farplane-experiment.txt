@@ -1,0 +1,4 @@
+# DIAGNOSTIC ONLY, USA v4.5. Not installed by the launcher.
+# The far gate can only admit objects already supplied to the renderer.
+# Doubling it does not create or load distant road/scenery. Keep separate from LOD.
+00055 00013880 00027100
