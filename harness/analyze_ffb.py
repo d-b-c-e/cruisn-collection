@@ -19,10 +19,16 @@ def main(argv=None):
     ap.add_argument("--output")
     ap.add_argument("--impacts", action="store_true", help="evaluate the explicit steering-axis impact mix")
     ap.add_argument("--labels", type=Path, help="labelled emulated-time coverage and contact intervals (JSON)")
+    ap.add_argument("--frames", type=Path, help="frames.csv for emulated-time video anchors; requires force-source.csv format")
     ap.add_argument("--compiler", default=shutil.which("g++") or r"E:\msys64\mingw64\bin\g++.exe")
     args = ap.parse_args(argv)
     if not 0 <= args.strength <= 100:
         ap.error("strength must be 0..100")
+    if args.frames or args.labels:
+        with args.trace.open(encoding="utf-8") as source:
+            header = next((line.strip() for line in source if line.strip() and not line.startswith("#")), "")
+        if header != "seconds,frame,raw,adapted":
+            ap.error("emulated-time labels/frame anchors require force-source.csv, not a host-time motor trace")
     work = new_run("ffb-analysis", args.output)
     compiler = Path(args.compiler).resolve()
     env = dict(os.environ, PATH=str(compiler.parent) + os.pathsep + os.environ.get("PATH", ""))
@@ -44,6 +50,10 @@ def main(argv=None):
             args.profile, str(args.strength), str(work / "stages.csv")] + (["--impacts"] if args.impacts else []), env=env,
             capture_output=True, text=True, check=True, timeout=120)
         report["metrics"] = json.loads(run.stdout)
+        if args.frames:
+            from force_timeline import event_frames
+            report["frames_sha256"] = sha256_file(args.frames)
+            report["event_frames"] = event_frames(report["metrics"]["events_ms"], args.frames)
         if args.labels:
             from collision_labels import evaluate
             report["labels_sha256"] = sha256_file(args.labels)
