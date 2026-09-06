@@ -8,6 +8,9 @@ look. **No ROMs are included** — you supply your own.
 
 This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
 collision feedback and telemetry coverage remain open work. The
+[selective scenery investigation](docs/reviews/2026-09-06-selective-scenery.md)
+now demonstrates an earlier Germany mountain with unchanged later frames, using
+a small diagnostic admission rule. A product distance fix remains in development. The
 [fresh Germany recording review](docs/reviews/2026-09-06-world-distance-and-impacts.md)
 confirms repeatable playback and weak impact feel despite working 80% FFB output.
 **Settings → Force Feedback → Impact Cues** now exposes an optional per-game

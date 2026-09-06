@@ -2,44 +2,45 @@
 <!-- Overwritten each session; history preserved in git. -->
 
 - **Date:** 2026-09-06
-- **Branch:** codex/world-distance-impact-analysis; fast-forward master after CI.
-- **Review:** docs/reviews/2026-09-06-world-distance-and-impacts.md.
+- **Branch:** codex/world-scenery-provenance; fast-forward master after CI.
+- **Latest:** docs/reviews/2026-09-06-selective-scenery.md.
 
 ## What Was Done
-- New attended World2.4 case results/diagnostics/world-germany-extended-20260906:
- 8783 frames,146 native snapshots, terrain ON, FFB80. Full identity/lifecycle pass.
-- User still reports heavy pop-in and weak crashes at80%. No claim those are fixed.
-- Per-game Impact Cues submenu exposes existing optional torque mix, defaultOFF.
- force_options.py resolves exactROM (includingOFF), family, global; World writes24.
-- Widescreen Terrain is renamed Terrain Visibility; same INI key, no distance claim.
-- analyze_ffb --frames anchors force-source candidates to frame CSV. Reject host
- clock labels/anchors.65 Python tests and actual offscreen menu previews pass.
-- Archived force profile matches toolkit.8317 raw/adapted writes identical;
- 6621 accepted updates,26 rumble successes. Standard peak.7998/RMS.3286; optional
- mix peak.7076/RMS.2464. Firstcandidate45.076s/GL2612 coincides hill crest/jump.
- No collision labels inferred. Dense first-candidate replay prefix2704 passes.
-- Lifecycle94 resident objects beyond80k within160k. Probe far parameter added.
- Control/100k/160k GL2000..2200 each101 images; candidate inputs/time match but
- 4 native image differences retained as expected FAIL.160k~80% emulation inclLua.
-- No native/shader/toolkit/profile changes. Native2bf1048a/root vunit SHA256:
- 7eaf9ce8888190a5a6b8c30dd698fb57175c644779d4c65bf52cc083c74263fb.
+- User asked how to keep pushing mountains/trees. Concrete selective mountain
+ prototype plus future implementation order documented; no product distance fix.
+- lua/world_scenery_provenance.lua joins same-frame admission to DMA. World2.4
+ only, bounded240frame interval; slow-path333 savedAR0 supported, unknowns explicit.
+ Control2042frames/34nativeimages pass.1998..2040 has36395matched/1158unmatched.
+- Mountain object13E40/modelCB1A8B: first15quads2027, bounds167..274/95..198,
+ far test80019->79839; no LOD change. Isolated atlas render confirms mountain.
+- Global100k projection shrinks mountain87x82 vs107x103. Selective earlier
+ admission preserves original size and original far-clamped projection.
+- lua/world_scenery_admission.lua: bounded PCA1 far-read override for selected
+ model(s), defaultCB1A8B/160k/frames1800..2200. A8/A9 and projection unchanged.
+ Late1998 trace adds15mountain quads1999..2025,zero originals removed/changed;
+ no differences2027..2039. Archive scripts in diagnostics bake combined probes.
+- Live GL2000..2200 every2:15earlier images differ in mountain region; all86
+ images2030..2200 identical. Timing100.03%; inputs/time equal. Native strict FAIL
+ on3earlier screenshots expected/retained. This is NOT full-route acceptance.
+- TreeCA57F3 texture11066/palette18176/U3..83/V0..88 identified. Object14118
+ resident atdepth99830, draws5x11 in100k projection. Tree fix still open.
 
-## Decisions / Open Items
-- [ ] Physical World Impact Cues OFF/ON, same strength/profile, deliberate car and
- wall hits plus clean steering/bumps. Existing detector only infers force spikes.
- Optional user question asked for a weak collision timestamp; no reply yet.
-- [ ] Actual distance: identify first visible mountain geometry, then projection,
- LOD, per-face culling/residency. Do not promote bounded Lua tap to product.
- Largeobject13E40/modelCB1A8B/radius26031 crossesfar80k atframe2027.
-- [ ] Cheats submenu: archive C:/Users/antho/Downloads/cheat0279/cheat/ has arcade
- XMLs inclcrusnwld24. Native cheat manager API in frontend/mame/cheat.h.
- World24 TimeEBE4/placeEBC0;World25 TimeEBDE/placeEBBA. Not installed or enabled.
-- User accepts useful extra drawing and new attended baselines; preserve parents.
- New recording is trustworthy. Old Germany still preserved; no new recording needed
- merely to continue analysis of this case.
+## Next Steps
+1. Catalogue Germany mountains/tree groups and precise pop events from provenance.
+2. Native guarded selective scenery candidate: mountains continuity; trees valid
+ far perspective limited to distant instances. Preserve normal-range geometry.
+3. Full-route repeatability/timing, old54s divergence window and earliest admission
+ boundary. User accepts extra drawing/new baseline if useful; preserve parents.
+4. Only then expose validated per-game distance controls. Consider deliberate
+ distant transitions/background models if admission still abrupt; no pixel smear.
 
-## Context
-Proof results/proof/2026-09-06-world-distance-impacts/; large diagnostics gitignored.
-Stream Deck uses checkout/root vunit. Reopen launcher for Python menu changes.
-All automated replays FFB OFF. Native poc/quadlog pushes fork ONLY, never origin.
-Toolkit remainsv0.11.1. Previous native/UI-road review remains important context.
+## Other Open Work / Context
+- CASE results/diagnostics/world-germany-extended-20260906 remains valid8783/146.
+ FFB80 weak impacts; per-game Impact Cues menu is available/defaultOFF. Need
+ controlled car/wall hits vsbumps and physical OFF/ON comparison atsameprofile.
+- Cheats XMLs C:/Users/antho/Downloads/cheat0279/cheat/ includeWorld24/allfour.
+ MAME cheat manager integration/recording provenance pending, none enabled.
+- Native2bf1048a, rootvunit SHA2567eaf9ce8888190a5a6b8c30dd698fb57175c644779d4c65bf52cc083c74263fb;
+ toolkitv0.11.1 unchanged. Native pushes fork ONLY. Replays physicalFFB OFF.
+- Proof results/proof/2026-09-06-selective-scenery/. LargeCSV/captures ignored.
+ Prior review2026-09-06-world-distance-and-impacts.md retains FFB/distance context.

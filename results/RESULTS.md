@@ -3354,3 +3354,31 @@ Proof: `results/proof/2026-09-06-world-distance-impacts/`.
 - Downloaded cheat0279 includes all four games and World2.4/2.5 XML. Revision
   addresses differ; reuse MAME XML engine with recording provenance next. Files
   are not installed/enabled/redistributed in this batch; Cheats submenu remains open.
+
+## 2026-09-06 — Selective mountain admission and scenery provenance
+
+- Review/next steps: `docs/reviews/2026-09-06-selective-scenery.md`.
+  Proof: `results/proof/2026-09-06-selective-scenery/`.
+- Read-only World2.4 object->DMA provenance1998..2040 passes2042 input/time rows
+  and34 native images.36,395 matched submissions/1,158 explicitly unmatched.
+- CB1A8B/object13E40 is the mountain above Germany's first bridge. It crosses
+  the far gate at2027 (80019->79839), then15 polygons span107x103 native pixels.
+  Isolated captured texture rendering confirms its identity; no LOD swap here.
+- The global100k projection experiment shrinks this mountain to87x82 and changes
+  already-visible mountains. More admissions do not automatically improve appearance.
+- Selective PCA1 read override to160k for CB1A8B, with A8/A9 and projection clamps
+  left original, admits it earlier at the existing size. This deliberately keeps
+  far-clamped perspective. It is not a correct-perspective fix for all objects.
+- Late matched trace1998..2040 adds exactly15 CB1A8B polygons per draw1999..2025,
+  removes/changes zero originals; no submission differences2027..2039.
+- Live1800..2200 experiment:15 earlier completed images differ only in mountain
+  region; all86 completed images2030..2200 match. Timing1952..2200=100.03%.
+  Native candidate comparison correctly fails on1860/1920/1980; inputs/time match.
+  Full-route/earlier admission boundary/handling acceptance remains open.
+- CA57F3 is a tree billboard, texture11066/palette18176/U3..83/V0..88; texture
+  extraction confirms artwork. Resident object14118 at99830 depth-minus-radius
+  draws5x11 under100k projection. Tree perspective/transitions need a separate test.
+- Added two bounded diagnostic Lua probes; no native/shader/toolkit/product
+  defaults changed. Prioritize scenery catalogue, guarded native candidate,
+  pop-event clips, full-route repeatability, then cross-game adapters. Same Germany
+  recording remains sufficient. Keep other FFB/Cheats stretch work in the queue.

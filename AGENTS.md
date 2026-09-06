@@ -2,6 +2,16 @@
 
 ## Current verified handoff (2026-09-06)
 
+Newest distance evidence: `docs/reviews/2026-09-06-selective-scenery.md`.
+`world_scenery_provenance.lua` joins same-frame admitted object IDs to DMA polygons;
+unmatched draws stay explicit. `world_scenery_admission.lua` is a bounded MUTATING
+diagnostic (read-result override, not RAM writes), World2.4 only. PCA1/modelCB1A8B
+admission160k adds15 mountain polygons earlier, preserves original projection and
+all later86 completed GL images2030..2200. It preserves far-clamped perspective
+deliberately; do not generalize this to accurate-perspective trees. TreeCA57F3 is
+identified but not fixed. No native product distance change. First trace2042/34
+passes; the live candidate correctly differs on three earlier native screenshots.
+
 Latest: `docs/reviews/2026-09-06-world-assets-and-road.md`. Enhanced World 2.4
 retains the outgoing transmission atlas in the GL upload only while its actual
 UI models remain linked. CPU memory/native rendering stay unchanged. The helper

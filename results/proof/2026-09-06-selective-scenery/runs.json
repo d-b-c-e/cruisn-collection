@@ -1,0 +1,108 @@
+{
+  "scenery-provenance-start": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "probe_script": {
+      "sha256": "5ad765410188458e6c8c810f92330ea7fdebb86eb0eef398d6a3d6e57021fb1e",
+      "source": "E:\\Source\\cruisn-collection\\lua\\world_scenery_provenance.lua"
+    },
+    "comparison_scope": {
+      "first_frame": 1,
+      "kind": "explicit-prefix",
+      "last_frame": 2042
+    },
+    "frames": 2042,
+    "capture": {
+      "directory": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-provenance-start\\run\\capture",
+      "requested_dump_frame": 2040,
+      "sha256": {
+        "meta.txt": "5d7d454bb1cd4e9b165c54117286698527cb30a61c28a29b131c06198b90c9bb",
+        "paletteram.bin": "257a7994ac48bfe6a4a3cde333f7901471594969fd4acb74ebaa4f37e8755331",
+        "quads.bin": "ac07c50ad97da688c2aa77d5f6d83b5852f8636caca0ee7ec17ddff7c9d46271",
+        "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+        "videoram.bin": "733a6931a6e85fdee44b07e8928dd31a4a5a88069a31320388ec5827a3ab64f3"
+      }
+    }
+  },
+  "scenery-provenance-100k": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        2040
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 1
+    },
+    "probe_script": {
+      "sha256": "bdda7757870974393783413f1c56f2441312751c2515ac814d474e511ace66cb",
+      "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-distance-probe.lua"
+    },
+    "comparison_scope": {
+      "first_frame": 1,
+      "kind": "explicit-prefix",
+      "last_frame": 2042
+    },
+    "frames": 2042,
+    "capture": {
+      "directory": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-provenance-100k\\run\\capture",
+      "requested_dump_frame": 2040,
+      "sha256": {
+        "meta.txt": "5d7d454bb1cd4e9b165c54117286698527cb30a61c28a29b131c06198b90c9bb",
+        "paletteram.bin": "257a7994ac48bfe6a4a3cde333f7901471594969fd4acb74ebaa4f37e8755331",
+        "quads.bin": "f1d005138ff48a8ce7a4ceb8835bce98049607866cc5d6b14088ed534dc89574",
+        "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+        "videoram.bin": "13893bf568617dd456438db6403e7445f79bfaf5693566a3bbdf2f300d50ff91"
+      }
+    }
+  },
+  "scenery-provenance-selective": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "probe_script": {
+      "sha256": "8bad5ff0a764ac46907bbf21070cefb71bed1452ec801b2aab6ea5763881f6f9",
+      "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-selective-probe.lua"
+    },
+    "comparison_scope": {
+      "first_frame": 1,
+      "kind": "explicit-prefix",
+      "last_frame": 2042
+    },
+    "frames": 2042,
+    "capture": null
+  },
+  "scenery-mountain-admission": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        1860,
+        1920,
+        1980
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 3
+    },
+    "probe_script": {
+      "sha256": "4ee349b1e791517dbd6e133247f5f010dadb0201429b67383bb713d6746f90b1",
+      "source": "E:\\Source\\cruisn-collection\\lua\\world_scenery_admission.lua"
+    },
+    "comparison_scope": {
+      "first_frame": 1,
+      "kind": "explicit-prefix",
+      "last_frame": 2204
+    },
+    "frames": 2204,
+    "capture": null
+  }
+}

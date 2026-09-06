@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Add World scenery provenance and a bounded selective mountain experiment;
+  document an earlier mountain with unchanged later frames and the path toward
+  separate mountain/tree distance improvements. Product distance is unchanged.
+
 - Expose optional per-game steering impact cues in Force Feedback settings,
   with correct World revision resolution and unchanged defaults.
 - Rename World Terrain Visibility to Widescreen Terrain and clarify that it
