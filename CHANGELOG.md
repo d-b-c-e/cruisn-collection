@@ -5,6 +5,13 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Add per-game launcher controls for experimental seam alignment, USA detail
+  distance and USA draw limit. All are off by default; unsupported games stay gated.
+- Retire Margin Fill from the launcher and ignore legacy saved values. Its sky
+  stretching remains available only as an explicit developer override.
+- Document Endprodukt's Exotica plugin, cabinet/DIP setup gaps and polarity
+  evidence. No FFB gains, steering inversion or cabinet defaults changed.
+
 - Preserve valid thin geometry at high internal resolutions instead of rejecting
   spans that contain no native-resolution sample. Native rendering stays exact.
 - Add opt-in, topology/UV-constrained terrain T-junction alignment and polygon

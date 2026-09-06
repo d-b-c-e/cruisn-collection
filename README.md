@@ -8,6 +8,11 @@ look. **No ROMs are included** — you supply your own.
 
 This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
 collision feedback and telemetry coverage remain open work. The
+[launcher now exposes per-game graphics experiments](docs/INSTALL.md#optional-graphics-experiments)
+under **Settings → Display**; Margin Fill is retired from the normal UI.
+The [Fanatec/Exotica review](docs/reviews/2026-09-06-exotica-polarity.md) identifies
+cabinet setup differences and an unproven steering-inversion assumption requiring
+replay validation before changing force direction. The
 [latest rendering review](docs/reviews/2026-09-06-seams-distance.md) covers a
 thin-geometry fix, an experimental terrain seam correction, Exotica gameplay
 replay, and the reopened distance investigation. The

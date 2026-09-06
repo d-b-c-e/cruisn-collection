@@ -1,5 +1,46 @@
 # Session Notes
 
+## Latest: launcher graphics controls and Exotica polarity review (2026-09-06)
+
+- Branch codex/launcher-graphics-options from 0183bf3; separate implementation and
+  review commits. Authorized push and fast-forward master after exact-head CI.
+- Added Settings -> Display -> Graphics Experiments, per-game seam alignment,
+  USA v4.5 detail distance and draw limit; all OFF by default. Other games/clones
+  cannot receive USA instruction addresses through these settings.
+- harness/graphics_options.py is the shared config-to-environment/patch resolver.
+  Explicit MIDV_PATCH wins; full-wide + selected patches combine with guards.
+  Launch logs include seam, margin and legacy fill flags. CLI/direct launches read
+  the same saved graphics configuration. Margin Fill is removed from the normal
+  shell, legacy INI ignored/reset on save; explicit developer env/API remains.
+- 51 local Python tests pass (8 new). Offscreen Display/USA/OffRoad/Exotica pages
+  visually checked; proof in results/proof/2026-09-06-launcher-graphics. No native
+  code/shader change, emulator rebuild or new physical FFB test in this batch.
+- IMPORTANT: docs/reviews/2026-09-06-exotica-polarity.md identifies Endprodukt's
+  FFBPluginRacerMAME and custom MameRacer289.2. His open PR16057 says Wheel Invert
+  is force/shifter polarity, not steering direction. His plugin negates Exotica
+  force after enabling it. Old local log used motor sign alone to infer mirrored
+  driving. Our MIDZ_WHEEL_INVERT input workaround is UNREVALIDATED, unchanged.
+- Actual launcher functions tested with six temporary configs: no complete shift
+  bindings -> Stand Up, complete bindings -> Sit Down. Wheel Invert On by default
+  independently. Imported Kit survives. Local rig already Sit Down/On/Dedicated.
+  Evidence results/proof/2026-09-06-fanatec-review/launcher-dips.json.
+- Next FFB step: no-force 8-case Cabinet x polarity DIP x input-mirror matrix with
+  actual race left/right behavior, raw motor and menu/shifter logs. Then separate
+  game motor polarity from device polarity; do not flip global direction blindly.
+- Also inspect Exotica raw -128 stop BEFORE gain: current driver may clamp it to
+  -127 before motor_level can reject it. Endprodukt normalizes before gain. No
+  occurrence established in tester trace. Current 800% Exotica gain vs plugin's
+  400% is not a portable feel baseline; assess clipping before strength shaping.
+- Tab likely hidden beneath custom overlay; no native-menu visibility integration.
+  Exotica MIDZ_GL=0 provides native display for an attended service session. Direct
+  vunit.exe lacks launch env, so silent FFB is expected without MIDV_FFB=1.
+- Stream Deck still calls Launch-Cruisn.bat -> this source collection.py ->
+  E:/Source/mame-src/vunit.exe. Python UI changes take effect on launcher restart.
+  MAME remains 377ddc06db1, SHA256 4b37437b6096d47cb1ba3105eb902d36cc1466540db768698d90467959427b6a.
+  Toolkit b726d56/v0.11.1 unchanged. No new public release/tag created.
+
+## Previous rendering batch: retained context
+
 - Date: 2026-09-06. User authorized autonomous improvements, separate commits,
   push and fast-forward master after CI. Collection branch for this batch:
   codex/seam-diagnostics-and-distance. Start a880a85; earlier assessment tags intact.

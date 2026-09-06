@@ -1,0 +1,67 @@
+{
+  "method": "Actual launcher functions with temporary configuration; no emulator or physical FFB launched",
+  "cases": [
+    {
+      "case": "fresh_keyboard",
+      "cabinet": "Stand Up",
+      "wheel_invert": "On",
+      "game_type": "Dedicated",
+      "driver_input_mirror": true,
+      "ports": {
+        "2048": 0
+      }
+    },
+    {
+      "case": "sequential_no_bindings",
+      "cabinet": "Stand Up",
+      "wheel_invert": "On",
+      "game_type": "Dedicated",
+      "driver_input_mirror": true,
+      "ports": {
+        "2048": 0
+      }
+    },
+    {
+      "case": "sequential_bound",
+      "cabinet": "Sit Down",
+      "wheel_invert": "On",
+      "game_type": "Dedicated",
+      "driver_input_mirror": true,
+      "ports": {
+        "1024": 0,
+        "2048": 0
+      }
+    },
+    {
+      "case": "hpattern_bound",
+      "cabinet": "Sit Down",
+      "wheel_invert": "On",
+      "game_type": "Dedicated",
+      "driver_input_mirror": true,
+      "ports": {
+        "1024": 0,
+        "2048": 0
+      }
+    },
+    {
+      "case": "existing_kit",
+      "cabinet": "Sit Down",
+      "wheel_invert": "On",
+      "game_type": "Kit",
+      "driver_input_mirror": true,
+      "ports": {
+        "256": 0,
+        "1024": 0,
+        "2048": 0
+      }
+    },
+    {
+      "case": "manual_optout",
+      "cabinet": "Stand Up",
+      "wheel_invert": "Off",
+      "game_type": "Dedicated",
+      "driver_input_mirror": false,
+      "ports": {}
+    }
+  ]
+}

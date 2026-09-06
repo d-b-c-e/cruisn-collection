@@ -5,7 +5,8 @@
 Read `docs/reviews/2026-09-06-seams-distance.md` and `.Codex/session-notes.md` for
 current limits; older artifact-free/general speed claims below are historical.
 Broad `MIDV_GL_MARGINFILL` is OFF by default after gameplay proved it destroyed
-World/Off Road sky detail. `=1` restores that explicit experiment. Local crack
+World/Off Road sky detail. It is retired from the launcher; legacy INI values
+are ignored/reset on save. `=1` restores that explicit developer experiment. Local crack
 fill is separate. V-Unit GL captures have completed-frame fences; legacy external
 viewer captures are not an oracle. USA numeric displayed speed is guarded to
 v4.5 and actual HUD submissions, with OCR fallback; other games need their own
@@ -20,6 +21,19 @@ establish nondeterminism. Use `replay.py --compare-gl`; `--zeus-native` is a slo
 double-rasterization diagnostic. `run_regressions.py` runs six local cases with
 explicit coverage and timing gates. RPM is unavailable; never restore the old
 E632 mapping, which interpreted packed speed text as engine RPM.
+
+Launcher Settings -> Display -> Graphics Experiments now exposes per-game seam
+alignment and USA v4.5-only detail/draw limits, all off by default. Shared resolution
+and patch composition live in `harness/graphics_options.py`. Full widescreen and
+selected distance patches compose with expected-word guards; explicit MIDV_PATCH
+still wins. Do not apply USA addresses to clones or other games.
+
+Read `docs/reviews/2026-09-06-exotica-polarity.md` before any Exotica FFB change.
+Endprodukt's open PR16057 identifies Wheel Invert as force/shifter polarity.
+The old log inferred steering inversion from motor polarity alone; this does not
+prove vehicle steering direction. Current input compensation remains unchanged
+pending a no-force replay matrix. Sit Down is currently conditional on complete
+shifter/paddle bindings; existing Kit DIP survives. No physical Fanatec retest yet.
 
 ## What this is
 

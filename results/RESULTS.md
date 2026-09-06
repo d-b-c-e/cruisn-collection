@@ -3094,3 +3094,50 @@ Detailed assessment: `docs/reviews/2026-09-06-seams-distance.md`. Compact proof:
   coverage),377ddc06db1 (Zeus fences/fallback). Full105-commit mame0286 export
   reconstructs tree f3af6c85edc8c9df8b03e085662b6d472826f4c6 exactly.
   Toolkit stays at v0.11.1/b726d56, unchanged. No unattended physical force.
+
+
+## 2026-09-06 - launcher graphics experiments and retirement of Margin Fill
+
+Added Settings -> Display -> Graphics Experiments with a per-game selector.
+Seam Alignment works for the three V-Unit families at enhanced scale; Detail
+Distance and Draw Limit are gated to the verified USA v4.5 set. All default OFF.
+The latter is labelled experimental with no visible gain in the tested scene.
+The detail patch's prior measured DMA increase remains 5.2528%; no new distance
+benefit is claimed by adding the controls.
+
+Shared harness/graphics_options.py resolves every launch path and combines
+selected USA words with the automatic widescreen patch, rejecting conflicting
+custom patches. Explicit MIDV_PATCH remains a developer override. Turning flags
+off stops using stale combined words. The launch log reports the effective seam
+and margin settings. Missing selected/custom patch files now fail visibly.
+
+Margin Fill was the broad edge-column stretching/background-suppression
+experiment that harmed World/Off Road skies. It is now absent from the normal
+shell; old INI values cannot re-enable it and are reset to zero on save. The
+explicit developer environment/API path is retained for comparison. Crack Fill
+is unchanged, with a corrected hint distinguishing small gaps from missing terrain.
+
+Verification: 51 local Python tests pass, including eight new settings/patch/UI
+persistence cases. Four actual offscreen shell renders inspected at 1920x1080;
+proof in results/proof/2026-09-06-launcher-graphics. No C++ or shader change and
+no new rendering-performance or physical-wheel claim. Stream Deck executes this
+source tree; vunit.exe remains the prior verified hash and needs no rebuild.
+
+## 2026-09-06 - Endprodukt/Fanatec cabinet and force-polarity review
+
+See docs/reviews/2026-09-06-exotica-polarity.md for primary-source links and the
+next test matrix. Identified FFBPluginRacerMAME, its GUI, and MameRacer289.2.
+README requires Wheel Invert On, Sit Down AND Dedicated. Upstream PR16057 is
+open and says the old Wheel Invert label means FFB/shifter polarity, not steering.
+His plugin's c3f2ea6 explicitly negates Exotica force for that DIP setup.
+
+Correction to interpretation in the September 4 chronology: reversed measured
+motor force did not prove reversed vehicle steering. The input-mirror workaround
+needs independent gameplay validation; it is not removed or declared broken here.
+Actual current launcher functions against six temporary configs show Sit Down is
+conditional on complete shift bindings, while Wheel Invert is set independently;
+existing Kit survives. Local rig already has Sit Down/On/Dedicated. Small JSON
+proof retained under results/proof/2026-09-06-fanatec-review. No emulator or
+physical force launched by that check. Also flagged Exotica gain-before-stop-code
+normalization, gain/clipping portability, and native MAME-menu visibility.
+No FFB sign/gain/DIP runtime changes, no plugin install and no Fanatec cure claimed.
