@@ -17,7 +17,9 @@ inline kind classify(uint32_t model, uint32_t flags, uint32_t radius)
     if (flags == 0x1000 && ((model == 0xcb15f8 && radius == 33292)
         || (model == 0xcb171e && radius == 31514)
         || (model == 0xcb1a8b && radius == 26031))) return mountain;
-    if (model == 0xca57f3 && flags == 0x1008 && radius == 1950) return tree;
+    if (flags == 0x1008 && (((model == 0xca57f3 || model == 0xca5833) && radius == 1950)
+        || (model == 0xca5863 && radius == 818)
+        || (model == 0xca5896 && radius == 1252))) return tree;
     return other;
 }
 

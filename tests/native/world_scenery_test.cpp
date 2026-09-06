@@ -5,6 +5,10 @@ using namespace cruisn::world_scenery;
 int main()
 {
     assert(classify(0xca57f3,0x80001008,1950)==tree);
+    assert(classify(0xca5833,0x1008,1950)==tree);
+    assert(classify(0xca5863,0x80001008,818)==tree);
+    assert(classify(0xca5896,0x1008,1252)==tree);
+    assert(classify(0xca5896,0x1008,818)==other);
     assert(classify(0xca57f3,0x900,1950)==other); // DMA flags aren't object flags
     assert(classify(0xca57f3,0x1008,3000)==other);
     assert(classify(0xcb1a8b,0x1000,26031)==mountain);

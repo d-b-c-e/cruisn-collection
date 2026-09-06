@@ -1,4 +1,4 @@
--- MUTATING, bounded World 2.4 diagnostic for verified tree billboard CA57F3.
+-- MUTATING, bounded World 2.4 diagnostic for verified tree billboards.
 -- Preserve all original-range objects and all general projection clamps.
 -- Only originally rejected instances use the safe fast vertex path and a
 -- virtual reciprocal extension. Object radius bounds every vertex below far.
@@ -10,7 +10,16 @@ local far=tonumber(os.getenv('CRUISN_TREE_FAR') or '160000')
 assert(first and last and first%1==0 and last%1==0 and first>=1
     and last>=first and last-first<=1800, 'invalid bounded tree interval')
 assert(far and far%16==0 and far>80000 and far<=160000, 'invalid tree distance')
-local base,model=0xb66f,0xca57f3
+local base=0xb66f
+local known={[0xca57f3]=1950,[0xca5833]=1950,[0xca5863]=818,[0xca5896]=1252}
+local models={}
+for token in (os.getenv('CRUISN_TREE_MODELS') or 'ca57f3'):gmatch('[^,]+') do
+    assert(token:match('^%x+$'), 'expected hexadecimal tree model IDs')
+    local id=tonumber(token,16)
+    assert(known[id], 'tree model has not been identified')
+    models[id]=known[id]
+end
+assert(next(models), 'no tree models selected')
 local taps,out,frame,active={},nil,0,nil
 local gates,reads,max_read=0,0,0
 local total_reads=0
@@ -47,8 +56,8 @@ return function(n)
                 local id=cpu.state.AR0.value
                 local radius=cpu.state.R4.value
                 local depth=cpu.state.R3.value
-                if s:read_u32(selected)==model and s:read_u32(id+14)&0x7fffffff==0x1008
-                    and radius>0 and radius<=2000 and depth>80000 and depth<0x80000000 then
+                if models[s:read_u32(selected)]==radius and s:read_u32(id+14)&0x7fffffff==0x1008
+                    and depth>80000 and depth<0x80000000 then
                     assert(d==80000,'tree far limit changed during experiment')
                     if depth<=far-2*radius-16 then active=id end
                     gates=gates+1
