@@ -1,0 +1,137 @@
+{
+  "description": "Off Road H-pattern controls: hold first gear throughout the race; throttle, brake and steering sweep.",
+  "frames": 6000,
+  "snapshot_every": 60,
+  "buttons": [
+    {
+      "port": ":IN0",
+      "mask": 1,
+      "start": 2400,
+      "end": 2410
+    },
+    {
+      "port": ":IN0",
+      "mask": 1,
+      "start": 2450,
+      "end": 2460
+    },
+    {
+      "port": ":IN0",
+      "mask": 1,
+      "start": 2500,
+      "end": 2510
+    },
+    {
+      "port": ":IN0",
+      "mask": 4,
+      "start": 2600,
+      "end": 2610
+    },
+    {
+      "port": ":IN0",
+      "mask": 4,
+      "start": 3000,
+      "end": 3010
+    },
+    {
+      "port": ":IN0",
+      "mask": 4,
+      "start": 3400,
+      "end": 3410
+    },
+    {
+      "port": ":IN0",
+      "mask": 8192,
+      "start": 3500,
+      "end": 6000
+    }
+  ],
+  "analog": {
+    ":ACCEL": [
+      [
+        0,
+        0
+      ],
+      [
+        3600,
+        0.5
+      ],
+      [
+        3900,
+        1
+      ],
+      [
+        4800,
+        0
+      ],
+      [
+        4920,
+        1
+      ],
+      [
+        5700,
+        0.6
+      ]
+    ],
+    ":BRAKE": [
+      [
+        0,
+        0
+      ],
+      [
+        4800,
+        0.7
+      ],
+      [
+        4920,
+        0
+      ]
+    ],
+    ":WHEEL": [
+      [
+        0,
+        0
+      ],
+      [
+        3900,
+        -0.1
+      ],
+      [
+        4050,
+        0
+      ],
+      [
+        4200,
+        0.15
+      ],
+      [
+        4350,
+        0
+      ],
+      [
+        4500,
+        -0.2
+      ],
+      [
+        4650,
+        0
+      ],
+      [
+        5100,
+        0.1
+      ],
+      [
+        5250,
+        0
+      ],
+      [
+        5400,
+        -0.1
+      ],
+      [
+        5550,
+        0
+      ]
+    ]
+  }
+}

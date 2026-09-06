@@ -5,24 +5,33 @@ import unittest
 import zlib
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
-from synthesize_input import ANALOG, PORTS, STRIDE, generate
+from synthesize_input import ANALOG, PORTS, STRIDE, LAYOUTS, generate
 
 
 class SyntheticInputTests(unittest.TestCase):
-    def seed(self):
+    def seed(self, rom="crusnusa"):
         header = bytearray(64)
         header[:8] = b"MAMEINP\0"
         header[16] = 3
-        header[20:28] = b"crusnusa"
+        header[20:20 + len(rom)] = rom.encode("ascii")
         payload = bytearray()
         for n in range(3):
             payload.extend(struct.pack("<iqI", 0, n * 17000000000000000, 1 << 20))
-            for tag in PORTS:
+            for tag in LAYOUTS[rom]:
                 payload.extend(struct.pack("<II", 128 if tag == ":WHEEL" else 0, 0))
                 if tag in ANALOG:
                     value = 0 if tag == ":WHEEL" else -262144
                     payload.extend(struct.pack("<iiiB", value, value, 25, 0))
         return bytes(header) + zlib.compress(payload)
+
+    def test_world_and_offroad_keep_serial_port_separate_from_wheel(self):
+        for rom in ("crusnwld", "crusnwld24", "offroadc"):
+            with self.subTest(rom=rom):
+                data = zlib.decompress(generate(self.seed(rom), {"frames": 2,
+                    "analog": {":WHEEL": [[0, .5]]}})[64:])
+                # Their final eight bytes are the separate serial-PIC port.
+                self.assertEqual(data[STRIDE - 8:STRIDE], bytes(8))
+                self.assertEqual(struct.unpack_from("<i", data, STRIDE - 21)[0], 131072)
 
     def test_analog_current_and_previous_survive_a_direction_change(self):
         data = zlib.decompress(generate(self.seed(), {"frames": 4, "analog": {

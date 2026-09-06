@@ -1,7 +1,7 @@
-"""Create a labeled Cruis'n USA INP stimulus and record/replay it through MAME.
+"""Create a labeled V-Unit INP stimulus and record/replay it through MAME.
 
 This is a scenario generator, not a human-input recorder. It uses the documented
-MAME INP v3 port layout from this driver's source, refusing a different layout or
+MAME INP v3 port layouts from the supported drivers' source, refusing a different layout or
 non-neutral seed. The recorded case still goes through MAME's actual INP writer.
 """
 import argparse
@@ -18,32 +18,39 @@ from verification import sha256_file, write_json
 import replay
 
 PORTS = (":ACCEL", ":BRAKE", ":CONF", ":DSW", ":FAKE", ":IN0", ":IN1", ":MOTION", ":WHEEL")
+LAYOUTS = {"crusnusa": PORTS}
+for _rom in ("crusnwld", "crusnwld24", "offroadc"):
+    LAYOUTS[_rom] = tuple(sorted(set(PORTS) - {":MOTION"} | {":serial_pic2:SERIAL_DIGIT"}))
 ANALOG = (":ACCEL", ":BRAKE", ":WHEEL")
 STRIDE = 16 + len(PORTS) * 8 + len(ANALOG) * 13
 SECOND = 10**18
 
 
 def generate(seed_bytes, scenario):
-    if (seed_bytes[:8] != b"MAMEINP\0" or seed_bytes[16:18] != b"\x03\x00" or
-            seed_bytes[20:32].split(b"\0")[0] != b"crusnusa"):
-        raise ValueError("requires a Cruis'n USA MAME INP v3.0 seed")
+    rom = seed_bytes[20:32].split(b"\0")[0].decode("ascii")
+    if rom not in LAYOUTS:
+        raise ValueError("unsupported V-Unit INP layout")
+    ports = LAYOUTS[rom]
+    stride = 16 + len(ports) * 8 + len(ANALOG) * 13
+    if (seed_bytes[:8] != b"MAMEINP\0" or seed_bytes[16:18] != b"\x03\x00"):
+        raise ValueError("requires a supported V-Unit MAME INP v3.0 seed")
     payload = zlib.decompress(seed_bytes[64:])
-    if len(payload) < STRIDE * 2 or len(payload) % STRIDE:
-        raise ValueError("INP does not have the expected USA port layout")
+    if len(payload) < stride * 2 or len(payload) % stride:
+        raise ValueError("INP does not have the expected V-Unit port layout")
     times = [s * SECOND + a for s, a, _ in
-             (struct.unpack_from("<iqI", payload, n) for n in range(0, len(payload), STRIDE))]
+             (struct.unpack_from("<iqI", payload, n) for n in range(0, len(payload), stride))]
     step = times[1] - times[0]
     if times[0] != 0 or step <= 0 or any(t != n * step for n, t in enumerate(times)):
         raise ValueError("seed has nonuniform or unexpected emulated input timing")
-    template = payload[16:STRIDE]
-    if any(payload[n + 16:n + STRIDE] != template for n in range(0, len(payload), STRIDE)):
+    template = payload[16:stride]
+    if any(payload[n + 16:n + stride] != template for n in range(0, len(payload), stride)):
         raise ValueError("seed must be neutral and have constant effective port state")
     frames = int(scenario["frames"])
     if not 1 <= frames <= 36000:
         raise ValueError("scenario must contain 1..36000 frames")
     offsets, analog_offsets = {}, {}
     at = 16
-    for tag in PORTS:
+    for tag in ports:
         offsets[tag] = at
         at += 8
         if tag in ANALOG:
@@ -55,7 +62,7 @@ def generate(seed_bytes, scenario):
     keys = scenario.get("analog", {})
     for tag, points in keys.items():
         if tag not in ANALOG or not points or points[0][0] != 0:
-            raise ValueError("analog keyframes must name a USA axis and start at frame 0")
+            raise ValueError("analog keyframes must name a V-Unit axis and start at frame 0")
         previous = -1
         for frame, value in points:
             low = -1 if tag == ":WHEEL" else 0
@@ -64,7 +71,7 @@ def generate(seed_bytes, scenario):
             previous = frame
     pulses = scenario.get("buttons", [])
     for p in pulses:
-        if p["port"] not in PORTS or not 0 <= p["start"] < p["end"] <= frames:
+        if p["port"] not in ports or not 0 <= p["start"] < p["end"] <= frames:
             raise ValueError("invalid button pulse")
         if not 0 < p["mask"] <= 0xffffffff:
             raise ValueError("invalid button mask")
@@ -112,8 +119,8 @@ def main(argv=None):
     seed = args.seed.resolve()
     manifest = json.loads((seed / "case.json").read_text(encoding="utf-8"))
     scenario = json.loads(args.scenario.read_text(encoding="utf-8"))
-    if manifest["rom"] != "crusnusa" or manifest["evidence"]["columns"][4:] != list(PORTS):
-        ap.error("requires a completed neutral USA case with the expected ports")
+    if manifest["rom"] not in LAYOUTS or set(manifest["evidence"]["columns"][4:]) != set(LAYOUTS[manifest["rom"]]):
+        ap.error("requires a completed neutral V-Unit case with the expected ports")
     stimulus = work / "stimulus.inp"
     stimulus.write_bytes(generate((seed / "record" / "input" / "session.inp").read_bytes(), scenario))
     shutil.copy2(args.scenario, work / "scenario.json")
@@ -128,9 +135,9 @@ def main(argv=None):
     if args.patch:
         settings["MIDV_PATCH"] = str(args.patch.resolve())
     if args.gl:
-        command = set_option(command, "-video", "gdi")
+        command = set_option(command, "-video", "d3d")
         command = set_option(command, "-resolution", "1280x720")
-        command += ["-window", "-throttle"]
+        command += ["-window", "-throttle", "-nokeepaspect"]
         settings.update(MIDV_GL="1", MIDV_GL_SCALE="4", MIDV_GL_LOG="1")
     if args.gl_capture:
         first, last = [int(v) for v in args.gl_capture.split(":")]
