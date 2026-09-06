@@ -1235,7 +1235,7 @@ def apply_wheelmap(tree, rig):
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
                       margin=None, ffb=None, marginfill=False,
-                      mame=VUNIT, record_case=None, record_every=60, record_frames=0):
+                      mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -1362,6 +1362,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         profile = _collection_ini_get("collection", "ffb_profile", "cruisn-vunit@2")
         if profile:
             env["MIDV_FFB_PROFILE"] = profile
+        impact = (_collection_ini_get("collection", "ffb_impact_" + rom, "")
+                  or _collection_ini_get("collection", "ffb_impact", "0"))
+        if "MIDV_FFB_IMPACT" not in env:
+            env["MIDV_FFB_IMPACT"] = "1" if impact == "1" else "0"
         rumble = _collection_ini_get("collection", "ffb_rumble", "100")   # plugin parity
         if rumble.isdigit() and int(rumble) > 0:
             # [collection] ffb_rumble = N %: a 100 ms vibration burst per
@@ -1428,7 +1432,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     recording = None
     if record_case:
         from session_case import Recording
-        recording = Recording(record_case, every=record_every, stop_frame=record_frames)
+        recording = Recording(record_case, every=record_every, stop_frame=record_frames, with_ffb=record_with_ffb)
 
     def start():
         cmd = [mame, rom,
@@ -1565,7 +1569,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
 
 def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
                 crackfill=True, ffb=None, mame=VUNIT,
-                record_case=None, record_every=60, record_frames=0):
+                record_case=None, record_every=60, record_frames=0, record_with_ffb=False):
     """Blocking wrapper: launch, wait for the player to quit, then return.
 
     Watch the WINDOW, not the process: wait_or_kill's timeout is for a
@@ -1576,7 +1580,7 @@ def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
     proc, hwnd = launch_game_async(rom=rom, scale=scale, windowed=windowed,
                                    crt=crt, crackfill=crackfill, ffb=ffb,
                                    mame=mame, record_case=record_case,
-                                   record_every=record_every, record_frames=record_frames)
+                                   record_every=record_every, record_frames=record_frames, record_with_ffb=record_with_ffb)
     while proc.poll() is None and (not hwnd or u32.IsWindow(hwnd)):
         time.sleep(0.5)
     result = wait_or_kill(proc, mame)
@@ -1601,11 +1605,14 @@ def main():
     ap.add_argument("--record-case", help="new directory for a reproducible input recording")
     ap.add_argument("--record-every", type=int, default=60, help="native snapshot interval in frames")
     ap.add_argument("--record-frames", type=int, default=0, help="stop recording after N frames; 0 = exit manually")
+    ap.add_argument("--record-with-ffb", action="store_true", help="attended recording: retain configured FFB; replay always disables physical output")
     args = ap.parse_args()
+    if args.record_with_ffb and not args.record_case:
+        ap.error("--record-with-ffb requires --record-case")
     return launch_game(rom=args.rom, scale=args.scale, windowed=args.windowed,
                        crt=args.crt, ffb=args.ffb, mame=args.mame,
                        record_case=args.record_case, record_every=args.record_every,
-                       record_frames=args.record_frames)
+                       record_frames=args.record_frames, record_with_ffb=args.record_with_ffb)
 
 
 if __name__ == "__main__":

@@ -30,6 +30,8 @@ def main(argv=None):
     ap.add_argument("--gl-every", type=int, default=150, help="present interval between GL captures")
     ap.add_argument("--gl-max", type=int, default=120, help="maximum GL BMPs retained")
     ap.add_argument("--gl-log", action="store_true", help="enable live renderer diagnostic log")
+    ap.add_argument("--gl-stall", help="explicit consumer stall FRAME:MILLISECONDS, for recovery tests")
+    ap.add_argument("--gl-queue-mb", type=int, help="explicit stream capacity experiment, 16..128 MiB")
     ap.add_argument("--gl-scale", type=int, help="explicit internal-scale experiment, 1..6")
     ap.add_argument("--no-crackfill", action="store_true", help="explicit experiment with crack filling disabled")
     ap.add_argument("--video", choices=("gdi", "d3d", "bgfx"), help="explicit underlying MAME video-backend experiment")
@@ -39,13 +41,14 @@ def main(argv=None):
     ap.add_argument("--capture-state", action="store_true", help="capture quads/RAM two frames before --until-frame")
     ap.add_argument("--patch", type=Path, help="explicit game-code patch experiment; replaces the recorded patch")
     ap.add_argument("--probe-script", type=Path, help="explicit Lua frame callback for a bounded diagnostic experiment")
+    ap.add_argument("--numeric-speed", action="store_true", help="explicit USA numeric HUD telemetry experiment")
     ap.add_argument("--patch-at-frame", type=int, help="apply the checked patch late, preserving earlier game history")
     args = ap.parse_args(argv)
     if args.timeout <= 0:
         ap.error("timeout must be positive")
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
-    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill
+    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.gl_stall or args.gl_queue_mb
     if args.headless and (gl_experiment or args.video or args.native_renderer):
         ap.error("live GL diagnostics cannot be combined with --headless")
     if args.native_renderer and gl_experiment:
@@ -94,6 +97,15 @@ def main(argv=None):
             if manifest["settings"].get("MIDV_GL") != "1":
                 raise ValueError("live V-Unit GL diagnostics require a recording made with MIDV_GL=1")
             overrides = {}
+            if args.gl_queue_mb is not None:
+                if not 16 <= args.gl_queue_mb <= 128:
+                    raise ValueError("GL stream capacity must be 16..128 MiB")
+                overrides["MIDV_GL_QUEUE_MB"] = str(args.gl_queue_mb)
+            if args.gl_stall:
+                stall_frame, stall_ms = map(int, args.gl_stall.split(":"))
+                if not 0 <= stall_frame < reference["frames"] or not 0 < stall_ms <= 5000:
+                    raise ValueError("GL stall must lie within the recording and last 1..5000 ms")
+                overrides.update(MIDV_GL_STALL_FRAME=str(stall_frame), MIDV_GL_STALL_MS=str(stall_ms), MIDV_GL_LOG="1")
             if args.gl_capture:
                 first, last = map(int, args.gl_capture.split(":"))
                 if not 0 <= first < last <= reference["frames"]:
@@ -117,6 +129,9 @@ def main(argv=None):
             report["snapshot_mode_override"] = args.snapshot_mode
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
+        if args.numeric_speed:
+            env["MIDV_SPEED_NUMERIC"] = "1"
+            report["numeric_speed_experiment"] = True
         if args.snapshot_mode or args.probe_script or args.patch_at_frame is not None:
             shutil.copy2(ROOT / "lua" / "session.lua", runtime / "session.lua")
             report["diagnostic_script_sha256"] = sha256_file(runtime / "session.lua")
@@ -171,6 +186,12 @@ def main(argv=None):
         convert_raw_snapshots(runtime)
         report["evidence"] = session_evidence(runtime, manifest["every"], invocation["returncode"],
             require_gl=not (args.headless or args.native_renderer) and bool(manifest["settings"].get("MIDV_GL_SNAP")))
+        if args.gl_capture and report["evidence"].get("gl_captures", {}).get("completed_frames"):
+            from gl_frames import read_completed_frames
+            expected = [n for n in range(first, last + 1) if n % args.gl_every == 0]
+            if len(expected) > args.gl_max:
+                raise ValueError("GL capture budget cannot cover the requested interval")
+            read_completed_frames(runtime / "gl-snap", expected)
         report["comparison"] = compare_evidence(case / "record", runtime, reference, report["evidence"])
         report["passed"] = report["comparison"]["passed"]
         if args.capture_state:

@@ -92,6 +92,10 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
         raise ValueError(f"emulator exit code {returncode}")
     fields, rows = read_trace(directory / "frames.csv")
     stdout = (directory / "launch.log").read_text(encoding="utf-8", errors="replace")
+    stderr_path = directory / "stderr.log"
+    stderr = stderr_path.read_text(encoding="utf-8", errors="replace") if stderr_path.exists() else ""
+    if "render stream failed" in stdout + stderr:
+        raise ValueError("renderer fell back after losing its stream")
     receipts = [int(n) for n in re.findall(r"session.lua: snapshot at frame (\d+)", stdout)]
     stops = [int(n) for n in re.findall(r"session.lua: stopped at frame (\d+)", stdout)]
     frames = list(range(every, len(rows) + 1, every))
@@ -130,6 +134,13 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
             "count": len(captures), "dropped_messages": max(int(r["dropped_messages"]) for r in captures),
             "index_sha256": sha256_file(index),
             "files": {r["file"]: image_signature(directory / "gl-snap" / r["file"]) for r in captures}}
+        if evidence["gl_captures"]["dropped_messages"]:
+            raise ValueError("GL stream lost persistent rendering state")
+        if "completed_frame" in captures[0]:
+            from gl_frames import read_completed_frames
+            completed = read_completed_frames(directory / "gl-snap")
+            evidence["gl_captures"].update(scope="completed GL frame pixels",
+                completed_frames=list(completed))
     return evidence
 
 
@@ -151,7 +162,7 @@ def compare_evidence(reference_dir, replay_dir, reference, replay):
 
 
 class Recording:
-    def __init__(self, output, every=60, stop_frame=0, snapshot_mode="raw"):
+    def __init__(self, output, every=60, stop_frame=0, snapshot_mode="raw", with_ffb=False):
         if every < 1 or stop_frame < 0:
             raise ValueError("snapshot interval must be positive and stop frame nonnegative")
         self.path = new_run("recording", output)
@@ -159,11 +170,14 @@ class Recording:
         if snapshot_mode not in ("png", "raw"):
             raise ValueError("snapshot mode must be png or raw")
         self.snapshot_mode = snapshot_mode
+        self.with_ffb = with_ffb
         self.manifest = None
 
     def prepare(self, command, env, rig, *, stimulus=None):
         """Freeze the already-prepared launch configuration, then run a copy."""
         rig = Path(rig)
+        if self.with_ffb and stimulus:
+            raise ValueError("physical FFB is only allowed during an attended live recording")
         initial = self.path / "initial"
         initial.mkdir()
         for name in STATE_DIRS:
@@ -179,6 +193,8 @@ class Recording:
             shutil.copy2(stimulus, initial / "stimulus.inp")
         settings = {k: v for k, v in diagnostic_env(env).items()
                     if k.startswith(("MIDV_", "MIDZ_"))}
+        if self.with_ffb:
+            settings["MIDV_FFB"] = env.get("MIDV_FFB", "0")
         # External paths whose contents affect emulation are retained and re-bound.
         if settings.get("MIDV_PATCH"):
             shutil.copy2(settings["MIDV_PATCH"], initial / "game-patch.txt")
@@ -214,6 +230,7 @@ class Recording:
         self.manifest = {"schema": 1, "status": "recording", "rom": rom,
             "snapshot_mode": self.snapshot_mode,
             "origin": "synthetic-inp" if stimulus else "live-input",
+            "attended_ffb": self.with_ffb,
             "created_utc": datetime.now(timezone.utc).isoformat(),
             "every": self.every, "stop_frame": self.stop_frame,
             "command": list(command), "settings": settings,
@@ -266,6 +283,8 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
                     SNAP_STOP=str(manifest["evidence"]["frames"] if playback else manifest["stop_frame"]),
                     SNAP_SESSION_LOG=str(runtime / "frames.csv"),
                     MIDV_GL_STATEFILE=str(runtime / "gl_state.txt"),
+                    MIDV_FFB_SOURCE_TRACE=str(runtime / "force-source.csv"),
+                    MIDV_SIGNAL_TRACE=str(runtime / "signals.csv"),
                     MIDV_FFB_TRACE=str(runtime / "ffb_trace.csv"))
     # Remove path-based one-off diagnostics that could overwrite unrelated evidence.
     for k in list(settings):
@@ -276,11 +295,13 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
         elif k.endswith(("_SNAP", "_STATEDUMP_DIR", "_QUADLOG", "_CAPTURE", "_RAMDUMP_DIR")):
             del settings[k]
     env = diagnostic_env(settings)
+    if not playback and not headless and manifest.get("attended_ffb") and manifest.get("origin") == "live-input":
+        env["MIDV_FFB"] = settings.get("MIDV_FFB", "0")
     if manifest.get("snapshot_mode") == "raw":
         (runtime / "raw-snap").mkdir()
         env["SNAP_RAW_DIR"] = str(runtime / "raw-snap")
-    # Recording is intentionally output-free too. Captures are for input/render
-    # regression; physically assessing FFB remains a separate attended drive.
+    # Only an explicitly attended live recording retains the selected wheel force.
+    # Replay and synthetic recording remain output-free regardless of the manifest.
     if playback:
         shutil.copy2(case / "record" / "input" / "session.inp", runtime / "input" / "session.inp")
         command = set_option(command, "-playback", "session.inp")

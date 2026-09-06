@@ -1,4 +1,10 @@
-"""Live GPU renderer for midvunit - Phase 1 step 1 (out-of-process).
+"""Legacy out-of-process reference viewer (not a rendering equivalence oracle).
+
+The product's MIDV_GL stream is private to its process. This viewer supports
+MIDV_LIVE-only experiments and retains the earlier asynchronous resource and
+underlay handling. Use replay.py + gl_frames.py for ordered product captures.
+
+Live GPU renderer for midvunit - Phase 1 step 1 (out-of-process).
 
 Attaches to the shared-memory ring that a MIDV_LIVE=1 vunit.exe publishes
 ("Local\\MIDV_LIVE") and renders the stream in its own window, in real time:

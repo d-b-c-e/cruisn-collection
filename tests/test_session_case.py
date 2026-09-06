@@ -6,10 +6,28 @@ import unittest
 
 from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
-from session_case import compare_evidence, read_trace, session_evidence
+from session_case import compare_evidence, read_trace, session_evidence, prepare_run
 
 
 class SessionTests(unittest.TestCase):
+    def test_attended_recording_cannot_enable_replay_actuators(self):
+        from diagnostic_runtime import execute
+        with tempfile.TemporaryDirectory() as td:
+            case = Path(td) / "case"
+            (case / "initial").mkdir(parents=True)
+            (case / "record" / "input").mkdir(parents=True)
+            (case / "record" / "input" / "session.inp").write_bytes(b"fixture")
+            manifest = dict(command=["vunit.exe", "crusnusa"], settings={"MIDV_FFB": "1", "MIDV_FFB_TEST": "50"},
+                            every=60, stop_frame=120, evidence={"frames":120}, attended_ffb=True, origin="live-input")
+            _, replay_env = prepare_run(case, manifest, Path(td) / "replay", playback=True)
+            self.assertEqual(replay_env["MIDV_FFB"], "0")
+            self.assertNotIn("MIDV_FFB_TEST", replay_env)
+            _, record_env = prepare_run(case, manifest, Path(td) / "record", playback=False)
+            self.assertEqual(record_env["MIDV_FFB"], "1")
+            self.assertNotIn("MIDV_FFB_TEST", record_env)
+            with self.assertRaisesRegex(ValueError, "force disabled"):
+                execute(["never-launched"], Path(td), record_env, 1)
+
     def case(self, directory, wheel=128, color="black", count=3):
         directory.mkdir()
         (directory / "snap").mkdir()
