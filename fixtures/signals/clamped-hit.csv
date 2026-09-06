@@ -1,0 +1,6 @@
+# Artificial source/adapter contrast, not a physical contact label.
+seconds,frame,raw,adapted
+0.000,0,0,0
+0.100,6,126,20
+0.200,12,0,0
+0.400,24,0,0
