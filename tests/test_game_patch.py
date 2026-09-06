@@ -5,10 +5,23 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
-from game_patch import read_patch, verify_patch_ram, late_patch_lua
+from game_patch import read_patch, verify_patch_ram, late_patch_lua, combine_patches
 
 
 class PatchTests(unittest.TestCase):
+    def test_configured_experiment_keeps_default_and_rejects_conflicts(self):
+        with tempfile.TemporaryDirectory() as td:
+            a, b, out = (Path(td) / name for name in ("wide.txt", "distance.txt", "combined.txt"))
+            a.write_text("E1 01A20053 01A20203\n")
+            b.write_text("55 13880 27100\n")
+            combine_patches([a, b], out)
+            self.assertEqual(set(read_patch(out)), {0xe1, 0x55})
+            original = out.read_bytes()
+            b.write_text("E1 01A20053 00000000\n")
+            with self.assertRaisesRegex(ValueError, "conflicting"):
+                combine_patches([a, b], out)
+            self.assertEqual(out.read_bytes(), original)
+
     def test_late_patch_cannot_bypass_old_value_guards(self):
         with self.assertRaises(ValueError):
             late_patch_lua({1: (None, 3)}, 60)

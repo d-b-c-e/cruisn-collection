@@ -1264,12 +1264,18 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                  and "MIDV_PATCH" not in os.environ else None)
     # [collection] gamepatch_<rom> = patch/game/<file>.txt: a chosen
     # in-memory game patch for that game (e.g. the crusnusa draw-distance
-    # experiment) - wins over the widescreen default; env still wins over all
+    # experiment). Compose with the widescreen fix; reject conflicting words.
+    # The explicit developer environment override still replaces all defaults.
     cfg_patch = _collection_ini_get("collection", f"gamepatch_{base_rom(rom)}", "")
     if cfg_patch and "MIDV_PATCH" not in os.environ:
         cfg_path = cfg_patch if os.path.isabs(cfg_patch) else os.path.join(POC, cfg_patch)
         if os.path.isfile(cfg_path):
-            gamepatch = cfg_path
+            if gamepatch and os.path.abspath(gamepatch) != os.path.abspath(cfg_path):
+                from game_patch import combine_patches
+                gamepatch = combine_patches([gamepatch, cfg_path],
+                    os.path.join(rig, f"gamepatch-{rom}.txt"))
+            else:
+                gamepatch = cfg_path
             print(f"game patch ({base_rom(rom)}): {cfg_patch}")
         else:
             print(f"game patch {cfg_patch!r} not found - ignored")

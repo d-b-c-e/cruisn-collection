@@ -1,8 +1,8 @@
 # crusnusa v4.5 RENDER DISTANCE EXPERIMENT (C2) - NOT auto-applied.
 # Try with:  MIDV_PATCH=<this file> python harness/run_rig.py --rom crusnusa
-# (note: MIDV_PATCH env overrides the auto widescreen patch - to combine,
-# concatenate this file onto crusnusa-widescreen.txt... which does not
-# exist: crusnusa needs no widescreen patch, so no conflict in practice.)
+# MIDV_PATCH env is a complete developer override. The collection.ini
+# gamepatch_crusnusa option composes this with crusnusa-widescreen.txt and
+# rejects conflicting words. This experiment is still NOT enabled by default.
 #
 # Requires the self-healing patcher (mame-src, 2026-08-30): the game's
 # own startup re-copies ROM over words < 0x10040, and these all sit in
