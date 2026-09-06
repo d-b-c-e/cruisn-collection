@@ -49,3 +49,7 @@
 Stream Deck uses this checkout and root native exe. Native poc/quadlog pushes ONLY
 fork, never origin mamedev. Never touch racing mame.exe. All replays have FFB off.
 Proof: results/proof/2026-09-06-world-assets-road/. Full/failed diagnostics retained.
+
+Final: all seven default cases pass on hash7eaf9ce, including timing gates and
+Exotica21 completedGL images. Proof final-verification.json. Native/fork pushed.
+Initial CI34062918005 passed four jobs; final evidence commit is checked separately.

@@ -142,3 +142,12 @@ using crack filling to cover a whole missing road polygon.
 
 Compact evidence is in `results/proof/2026-09-06-world-assets-road/`; full original,
 failed and successful controls remain under ignored `results/diagnostics/`.
+
+Final default-build regression coverage passes all seven local cases: USA
+original/widescreen, World 2.4 synthetic/Germany, World 2.5, Off Road and Exotica.
+All configured timing gates pass. Exotica compares 21 actual completed GL images;
+its unused native framebuffer is not treated as the visible-game oracle. These
+default-case checks are separate from the terrain candidate's repeatability
+checks above. The final executable is SHA256
+`7eaf9ce8888190a5a6b8c30dd698fb57175c644779d4c65bf52cc083c74263fb`, native commit
+`2bf1048a1cf`. `final-verification.json` records the cases and their limits.

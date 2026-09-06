@@ -3312,3 +3312,10 @@ restricted to verified World revisions in widescreen.
 pass. USA/World exact captures remain 100.0000%. The full native export has 109
 patches and reconstructs tree 1dc9cd3cb86a8599321a71286c8924906d6890bd.
 Toolkit v0.11.1 is unchanged.
+
+Final default-build checks pass all seven original local cases at hash7eaf9ce:
+USA original/widescreen, World2.4 synthetic/Germany, World2.5, Off Road and Exotica,
+including configured timing gates and Exotica's21 completed GL images. See
+proof final-verification.json. These are separate from the new terrain candidate's
+repeatability checks. Native atlas unit was rerun successfully. Initial branch
+CI34062918005 passed all four jobs; final evidence commit receives its own CI run.
