@@ -90,12 +90,15 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
     directory = Path(directory)
     if returncode != 0:
         raise ValueError(f"emulator exit code {returncode}")
-    fields, rows = read_trace(directory / "frames.csv")
     stdout = (directory / "launch.log").read_text(encoding="utf-8", errors="replace")
     stderr_path = directory / "stderr.log"
     stderr = stderr_path.read_text(encoding="utf-8", errors="replace") if stderr_path.exists() else ""
     if "render stream failed" in stdout + stderr:
         raise ValueError("renderer fell back after losing its stream")
+    if any(marker in stdout + stderr for marker in
+           ("session.lua: probe failed:", "[LUA ERROR]", "session.lua: snapshot failed:")):
+        raise ValueError("Lua diagnostic or snapshot failed; see launch.log/stderr.log")
+    fields, rows = read_trace(directory / "frames.csv")
     receipts = [int(n) for n in re.findall(r"session.lua: snapshot at frame (\d+)", stdout)]
     stops = [int(n) for n in re.findall(r"session.lua: stopped at frame (\d+)", stdout)]
     frames = list(range(every, len(rows) + 1, every))

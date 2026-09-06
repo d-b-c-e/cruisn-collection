@@ -53,6 +53,17 @@ class SessionTests(unittest.TestCase):
             self.assertEqual(report["pixel_mismatches"], 3)
             self.assertEqual(eb["input_coverage"][":WHEEL"]["distinct"], 2)
 
+    def test_lua_errors_cannot_pass_with_clean_exit_and_valid_images(self):
+        with tempfile.TemporaryDirectory() as td:
+            a = Path(td) / "a"
+            self.case(a)
+            for marker in ("session.lua: probe failed: bad pointer", "[LUA ERROR] tap failed",
+                           "session.lua: snapshot failed: write failed"):
+                with self.subTest(marker=marker):
+                    (a / "stderr.log").write_text(marker)
+                    with self.assertRaisesRegex(ValueError, "Lua diagnostic"):
+                        session_evidence(a, 1, 0)
+
     def test_truncated_replay_does_not_pass_against_longer_recording(self):
         with tempfile.TemporaryDirectory() as td:
             a, b = Path(td) / "a", Path(td) / "b"

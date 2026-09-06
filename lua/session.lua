@@ -17,13 +17,34 @@ for _, tag in ipairs(tags) do log:write("," .. tag) end
 log:write("\n")
 local started = emu.osd_ticks()
 local probe_path = os.getenv("SNAP_PROBE_SCRIPT")
-local probe = probe_path and assert(loadfile(probe_path))() or nil
+local probe, probe_error
+if probe_path then
+    local ok, result = pcall(function()
+        local callback = assert(loadfile(probe_path))()
+        assert(type(callback) == "function", "probe must return a frame callback")
+        return callback
+    end)
+    if ok then probe = result else probe_error = tostring(result) end
+end
+local failed = false
+local function fail_probe(reason)
+    failed = true
+    probe = nil
+    emu.print_error("session.lua: probe failed: " .. tostring(reason))
+    log:flush()
+    manager.machine:exit()
+end
 
 emu.register_frame_done(function()
+    if failed then return end
+    if probe_error then fail_probe(probe_error); return end
     if emu.time() == last_emulated then return end -- host redraw while paused
     last_emulated = emu.time()
     count = count + 1
-    if probe then probe(count) end
+    if probe then
+        local ok, reason = pcall(probe, count)
+        if not ok then fail_probe(reason); return end
+    end
     local host = (emu.osd_ticks() - started) / emu.osd_ticks_per_second()
     log:write(string.format("%d,%.12f,%.9f,%.6f", count, emu.time(), host,
                             manager.machine.video.speed_percent))
