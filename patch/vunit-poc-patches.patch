@@ -1,7 +1,7 @@
 From 6f55ed93ce5df76f01007096657cfd2491000ad0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 28 Mar 2026 20:27:47 -0500
-Subject: [PATCH 01/92] dinput joystick: use DIJOYSTATE2 for 128-button support
+Subject: [PATCH 01/93] dinput joystick: use DIJOYSTATE2 for 128-button support
  Use c_dfDIJoystick2 as the primary data format for DirectInput joystick
  devices, with c_dfDIJoystick as a fallback. This raises the button limit from
  32 (DIJOYSTATE) to 128 (DIJOYSTATE2). The existing code already handles up to
@@ -21,7 +21,7 @@ Subject: [PATCH 01/92] dinput joystick: use DIJOYSTATE2 for 128-button support
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/osd/modules/input/input_dinput.cpp b/src/osd/modules/input/input_dinput.cpp
-index 900aa4b8..d7aa31ca 100644
+index 900aa4b8eec..d7aa31ca418 100644
 --- a/src/osd/modules/input/input_dinput.cpp
 +++ b/src/osd/modules/input/input_dinput.cpp
 @@ -452,8 +452,8 @@ protected:
@@ -44,7 +44,7 @@ index 900aa4b8..d7aa31ca 100644
  
  void dinput_joystick_device::reset()
 diff --git a/src/osd/modules/input/input_dinput.h b/src/osd/modules/input/input_dinput.h
-index 98fdfb01..c01403ee 100644
+index 98fdfb011bb..c01403ee4bc 100644
 --- a/src/osd/modules/input/input_dinput.h
 +++ b/src/osd/modules/input/input_dinput.h
 @@ -174,7 +174,7 @@ private:
@@ -63,7 +63,7 @@ index 98fdfb01..c01403ee 100644
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 02/92] POC: env-gated DMA quad logging + one-shot state dump
+Subject: [PATCH 02/93] POC: env-gated DMA quad logging + one-shot state dump
  for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -77,7 +77,7 @@ E:/Source/cruisn-poc.
  1 file changed, 76 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 385c7287..2e3cabdc 100644
+index 385c7287166..2e3cabdc2fa 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -14,6 +14,36 @@
@@ -184,7 +184,7 @@ index 385c7287..2e3cabdc 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 03/92] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 03/93] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -204,7 +204,7 @@ snapshot it; everything else was already public.
  2 files changed, 175 insertions(+)
 
 diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
-index 35d9129c..ff5f72a1 100644
+index 35d9129c8f4..ff5f72a117f 100644
 --- a/src/mame/midway/midvunit.h
 +++ b/src/mame/midway/midvunit.h
 @@ -115,7 +115,10 @@ protected:
@@ -219,7 +219,7 @@ index 35d9129c..ff5f72a1 100644
  	required_shared_ptr<uint32_t> m_tms320c31_control;
  
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 2e3cabdc..f00e97a8 100644
+index 2e3cabdc2fa..f00e97a880d 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -42,6 +42,151 @@ FILE *quadlog_open()
@@ -443,7 +443,7 @@ index 2e3cabdc..f00e97a8 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 04/92] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 04/93] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -471,7 +471,7 @@ flashing).
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
 new file mode 100644
-index 00000000..856c18bc
+index 00000000000..856c18bc7a4
 --- /dev/null
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -0,0 +1,217 @@
@@ -693,7 +693,7 @@ index 00000000..856c18bc
 +}
 +)GLSL";
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index f00e97a8..f0e71a36 100644
+index f00e97a880d..f0e71a36da0 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -25,6 +25,15 @@
@@ -1383,7 +1383,7 @@ index f00e97a8..f0e71a36 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 05/92] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 05/93] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1395,7 +1395,7 @@ boot and test screens displayed upside down, reported from the rig as
  1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index f0e71a36..cf52d88f 100644
+index f0e71a36da0..cf52d88f1a7 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -731,8 +731,14 @@ void thread_main()
@@ -1421,7 +1421,7 @@ index f0e71a36..cf52d88f 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 06/92] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 06/93] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1434,7 +1434,7 @@ SWP_FRAMECHANGED is required.
  1 file changed, 5 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index cf52d88f..d9cac7bb 100644
+index cf52d88f1a7..d9cac7bb251 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -475,6 +475,11 @@ void thread_main()
@@ -1456,7 +1456,7 @@ index cf52d88f..d9cac7bb 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 07/92] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 07/93] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1473,7 +1473,7 @@ client rect in screen coords and hides on minimize.
  1 file changed, 28 insertions(+), 17 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index d9cac7bb..296b263a 100644
+index d9cac7bb251..296b263a95e 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -466,26 +466,26 @@ void thread_main()
@@ -1548,7 +1548,7 @@ index d9cac7bb..296b263a 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 08/92] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 08/93] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1561,7 +1561,7 @@ entirely from axis-aligned rectangles and 3D almost never is; crop to
  1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 296b263a..7936ea9f 100644
+index 296b263a95e..7936ea9fb3a 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -594,6 +594,7 @@ void thread_main()
@@ -1610,7 +1610,7 @@ index 296b263a..7936ea9f 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 09/92] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 09/93] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1624,7 +1624,7 @@ thin stale border at crop edges. The hardware region stays persistent
  1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 7936ea9f..3d5b3200 100644
+index 7936ea9fb3a..3d5b3200070 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -219,6 +219,9 @@ struct GL
@@ -1673,7 +1673,7 @@ index 7936ea9f..3d5b3200 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 10/92] POC: 2px overscan inset - CRT-hidden edge pixels showed
+Subject: [PATCH 10/93] POC: 2px overscan inset - CRT-hidden edge pixels showed
  as a thin border
 
 ---
@@ -1681,7 +1681,7 @@ Subject: [PATCH 10/92] POC: 2px overscan inset - CRT-hidden edge pixels showed
  1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 3d5b3200..af795ef7 100644
+index 3d5b3200070..af795ef769a 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -749,9 +749,17 @@ void thread_main()
@@ -1711,7 +1711,7 @@ index 3d5b3200..af795ef7 100644
 From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 21:22:25 -0500
-Subject: [PATCH 11/92] POC-NOTES: point sessions opened here at the cruisn-poc
+Subject: [PATCH 11/93] POC-NOTES: point sessions opened here at the cruisn-poc
  project home
 
 ---
@@ -1721,7 +1721,7 @@ Subject: [PATCH 11/92] POC-NOTES: point sessions opened here at the cruisn-poc
 
 diff --git a/POC-NOTES.md b/POC-NOTES.md
 new file mode 100644
-index 00000000..1b4841d0
+index 00000000000..1b4841d03ea
 --- /dev/null
 +++ b/POC-NOTES.md
 @@ -0,0 +1,14 @@
@@ -1746,7 +1746,7 @@ index 00000000..1b4841d0
 From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:08:42 -0500
-Subject: [PATCH 12/92] CRT pass: mask + scanlines + curvature in the palette
+Subject: [PATCH 12/93] CRT pass: mask + scanlines + curvature in the palette
  stage, F9 live toggle
 
 PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
@@ -1771,7 +1771,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  2 files changed, 81 insertions(+), 12 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 856c18bc..233e8a13 100644
+index 856c18bc7a4..233e8a13e96 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -1,6 +1,4 @@
@@ -1858,7 +1858,7 @@ index 856c18bc..233e8a13 100644
  )GLSL";
 +
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index af795ef7..e302e1f4 100644
+index af795ef769a..e302e1f4b21 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -238,6 +238,7 @@ struct GL
@@ -1921,7 +1921,7 @@ index af795ef7..e302e1f4 100644
 From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:32:30 -0500
-Subject: [PATCH 13/92] MIDV_SKIP_STARTUP_SCREENS: env-gated
+Subject: [PATCH 13/93] MIDV_SKIP_STARTUP_SCREENS: env-gated
  boot-straight-to-game (frontend)
 
 BAD_DUMP sets (crusnwld c31boot) force the warning screen past
@@ -1937,7 +1937,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  1 file changed, 7 insertions(+)
 
 diff --git a/src/frontend/mame/ui/ui.cpp b/src/frontend/mame/ui/ui.cpp
-index f2c9b7d1..0cc79ff2 100644
+index f2c9b7d1608..0cc79ff205f 100644
 --- a/src/frontend/mame/ui/ui.cpp
 +++ b/src/frontend/mame/ui/ui.cpp
 @@ -48,6 +48,7 @@
@@ -1968,7 +1968,7 @@ index f2c9b7d1..0cc79ff2 100644
 From 1bc48fcea8b586a0a60b4359ccdb7aeedaca39ed Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:17:53 -0500
-Subject: [PATCH 14/92] GL thread teardown handshake: stop before machine
+Subject: [PATCH 14/93] GL thread teardown handshake: stop before machine
  destruction
 
 Exit-time msvcrt!memcpy AVs logged at roughly every second close. A
@@ -1988,7 +1988,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  2 files changed, 28 insertions(+), 2 deletions(-)
 
 diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
-index ff5f72a1..3de6ee73 100644
+index ff5f72a117f..3de6ee73a79 100644
 --- a/src/mame/midway/midvunit.h
 +++ b/src/mame/midway/midvunit.h
 @@ -83,6 +83,7 @@ protected:
@@ -2000,7 +2000,7 @@ index ff5f72a1..3de6ee73 100644
  	void cmos_protect_w(uint32_t data);
  	void dma_queue_w(uint32_t data);
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index e302e1f4..28e33519 100644
+index e302e1f4b21..28e3351963a 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -23,6 +23,7 @@
@@ -2083,7 +2083,7 @@ index e302e1f4..28e33519 100644
 From 3cac3d671118aa443ce4701e8cd9364f6d4f578d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:42:26 -0500
-Subject: [PATCH 15/92] winhybrid: DIJoystick2 primary format - 128-button
+Subject: [PATCH 15/93] winhybrid: DIJoystick2 primary format - 128-button
  support in the default provider
 
 The DIJOYSTATE2 base patch updated only the pure dinput module's enum
@@ -2106,7 +2106,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  2 files changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/src/osd/modules/input/input_dinput.cpp b/src/osd/modules/input/input_dinput.cpp
-index d7aa31ca..8c6ce2b0 100644
+index d7aa31ca418..8c6ce2b02e9 100644
 --- a/src/osd/modules/input/input_dinput.cpp
 +++ b/src/osd/modules/input/input_dinput.cpp
 @@ -557,6 +557,11 @@ dinput_joystick_device::dinput_joystick_device(
@@ -2122,7 +2122,7 @@ index d7aa31ca..8c6ce2b0 100644
  	m_caps.dwAxes = std::min(m_caps.dwAxes, DWORD(8));
  	m_caps.dwPOVs = std::min(m_caps.dwPOVs, DWORD(4));
 diff --git a/src/osd/modules/input/input_winhybrid.cpp b/src/osd/modules/input/input_winhybrid.cpp
-index d6f33d2d..856fb333 100644
+index d6f33d2df02..856fb3333e8 100644
 --- a/src/osd/modules/input/input_winhybrid.cpp
 +++ b/src/osd/modules/input/input_winhybrid.cpp
 @@ -197,11 +197,16 @@ public:
@@ -2150,7 +2150,7 @@ index d6f33d2d..856fb333 100644
 From cc0aff8c51463d6d006c837ba4fcccdabc8db7fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:53:03 -0500
-Subject: [PATCH 16/92] Overlay wndproc: hide cursor over the game, clicks
+Subject: [PATCH 16/93] Overlay wndproc: hide cursor over the game, clicks
  refocus MAME's window
 
 The DISABLED+TRANSPARENT overlay made every click a Windows error beep
@@ -2168,7 +2168,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  1 file changed, 23 insertions(+), 5 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 28e33519..6a3395fd 100644
+index 28e3351963a..6a3395fdef6 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -485,10 +485,28 @@ void thread_main()
@@ -2221,7 +2221,7 @@ index 28e33519..6a3395fd 100644
 From ad4d2d8bb312ffc1c05d1513d7b162e3306dfa14 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 01:24:00 -0500
-Subject: [PATCH 17/92] Zeus scoping counters + scanner-safe shader header
+Subject: [PATCH 17/93] Zeus scoping counters + scanner-safe shader header
  (midzeus joins the subtarget)
 
 - zeus2.cpp: env-gated MIDZ_STATS=1 quads/frame profiler at the
@@ -2241,7 +2241,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  2 files changed, 285 insertions(+), 260 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 0197e41f..ff15fbc0 100644
+index 0197e41f6da..ff15fbc0fde 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -160,6 +160,12 @@ void zeus2_device::device_reset()
@@ -2287,7 +2287,7 @@ index 0197e41f..ff15fbc0 100644
  		m_state->logerror("quad %d", m_state->zeus_quad_size);
  #if PRINT_TEX_INFO
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 233e8a13..e27ff2e3 100644
+index 233e8a13e96..e27ff2e3a4c 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -1,265 +1,269 @@
@@ -2827,7 +2827,7 @@ index 233e8a13..e27ff2e3 100644
 From a97419f068281bab1cc1c8e20f8b036b22a5d3cb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:23:43 -0500
-Subject: [PATCH 18/92] In-game Esc options menu + UDP telemetry (Phase A)
+Subject: [PATCH 18/93] In-game Esc options menu + UDP telemetry (Phase A)
 
 - Esc menu drawn by the GL overlay itself: MENU_VS/FS shaders (generated),
   pre-rendered A8 label bitmaps (midvunit_menu_assets.h, generated),
@@ -2850,7 +2850,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  create mode 100644 src/mame/midway/midvunit_menu_assets.h
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index e27ff2e3..c1808d5b 100644
+index e27ff2e3a4c..c1808d5baf1 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -267,3 +267,32 @@ static const char *MVGL_PAL_FS =
@@ -2888,7 +2888,7 @@ index e27ff2e3..c1808d5b 100644
 +
 diff --git a/src/mame/midway/midvunit_menu_assets.h b/src/mame/midway/midvunit_menu_assets.h
 new file mode 100644
-index 00000000..97598357
+index 00000000000..97598357243
 --- /dev/null
 +++ b/src/mame/midway/midvunit_menu_assets.h
 @@ -0,0 +1,3122 @@
@@ -6015,7 +6015,7 @@ index 00000000..97598357
 +	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 +	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 6a3395fd..0f0e0efd 100644
+index 6a3395fdef6..0f0e0efd953 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -32,8 +32,10 @@
@@ -6266,7 +6266,7 @@ index 6a3395fd..0f0e0efd 100644
 From 366f811988600fc2abc62f534d0107cbde4a173c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:46:12 -0500
-Subject: [PATCH 19/92] Overlay: runtime coarse height - offroadc's 401st
+Subject: [PATCH 19/93] Overlay: runtime coarse height - offroadc's 401st
  scanline restored
 
 offroadc runs a 512x401 mode (visarea bottom 400); HEIGHT=400 was compiled
@@ -6282,7 +6282,7 @@ Claude-Session: https://claude.ai/code/session_01M8n8qHsRWCKsJjXgqH6e98
  1 file changed, 18 insertions(+), 13 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 0f0e0efd..f363dcb7 100644
+index 0f0e0efd953..f363dcb7b6a 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -451,7 +451,9 @@ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
@@ -6388,7 +6388,7 @@ index 0f0e0efd..f363dcb7 100644
 From 71e566039517000202fd4c3848d438227d9de430 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 21:52:44 -0500
-Subject: [PATCH 20/92] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
+Subject: [PATCH 20/93] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL, default
  on)
 
 Scene pass gains an R8UI "written this scene" mask on attachment 1
@@ -6409,7 +6409,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 62 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index c1808d5b..88ae831a 100644
+index c1808d5baf1..88ae831a4f5 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -32,7 +32,8 @@ static const char *MVGL_FS =
@@ -6472,7 +6472,7 @@ index c1808d5b..88ae831a 100644
  	"    uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;\n"
  	"    uint r = (w >> 10) & 31u, g = (w >> 5) & 31u, b = w & 31u;\n"
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index f363dcb7..95d0e3ea 100644
+index f363dcb7b6a..95d0e3eab82 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -316,6 +316,8 @@ struct GL
@@ -6563,7 +6563,7 @@ index f363dcb7..95d0e3ea 100644
 From d5f9f613a339fe6bb7154b9862f21944ef1b1461 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:38 -0500
-Subject: [PATCH 21/92] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
+Subject: [PATCH 21/93] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
  road rendering
 
 Upstream fix by Jos van Mourik (merged 2026-07-18, post-0.286): drop the
@@ -6578,7 +6578,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 42 insertions(+), 55 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index ff15fbc0..5383fa5b 100644
+index ff15fbc0fde..5383fa5b567 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -1601,23 +1601,6 @@ void zeus2_renderer::zeus2_draw_quad(const uint32_t *databuffer, uint32_t texdat
@@ -6757,7 +6757,7 @@ index ff15fbc0..5383fa5b 100644
 From 40c0fd8efb3997e126c3d4ab9fe1daff4fbcc919 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:50 -0500
-Subject: [PATCH 22/92] zeus2: backport mamedev/mame#15723 - solid fills, depth
+Subject: [PATCH 22/93] zeus2: backport mamedev/mame#15723 - solid fills, depth
  clear, translucency
 
 Open upstream PR by Jos van Mourik: guard fast-clear depth 0 (stuck black
@@ -6773,7 +6773,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 42 insertions(+), 32 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 5383fa5b..ff1959b8 100644
+index 5383fa5b567..ff1959b8f84 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -28,6 +28,8 @@ zeus2_renderer::zeus2_renderer(zeus2_device *state)
@@ -6926,7 +6926,7 @@ index 5383fa5b..ff1959b8 100644
 From 93acdd2bb8c8a7953702e213c6a930763ad1659f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:35 -0500
-Subject: [PATCH 23/92] GL overlay: persist live CRT toggle state for the
+Subject: [PATCH 23/93] GL overlay: persist live CRT toggle state for the
  launcher
 
 F9 and the Esc-menu CRT toggle flip the pass live, but the collection
@@ -6941,7 +6941,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 12 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 95d0e3ea..39290867 100644
+index 95d0e3eab82..39290867808 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1099,6 +1099,18 @@ void thread_main()
@@ -6970,7 +6970,7 @@ index 95d0e3ea..39290867 100644
 From 3c2dab3df51c1cb22f5bc7102dee557589600773 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:53 -0500
-Subject: [PATCH 24/92] zeus2: include zeus2.h hunk missed from the
+Subject: [PATCH 24/93] zeus2: include zeus2.h hunk missed from the
  #15719/#15723 backports
 
 Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
@@ -6980,7 +6980,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/src/devices/video/zeus2.h b/src/devices/video/zeus2.h
-index cd2c30b2..874bece3 100644
+index cd2c30b2047..874bece3d96 100644
 --- a/src/devices/video/zeus2.h
 +++ b/src/devices/video/zeus2.h
 @@ -50,6 +50,7 @@ struct zeus2_poly_extra_data
@@ -7024,7 +7024,7 @@ index cd2c30b2..874bece3 100644
 From c2003def0707ff71f91cfc35cdaa1e4fb516619b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:11:29 -0500
-Subject: [PATCH 25/92] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
+Subject: [PATCH 25/93] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
  the GL-renderer oracle
 
 Env-gated, zero cost unset. Records quads (post-transform clipped verts +
@@ -7043,7 +7043,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 206 insertions(+)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index ff1959b8..36a3c3c5 100644
+index ff1959b8f84..36a3c3c59b2 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -169,6 +169,191 @@ void zeus2_device::device_reset()
@@ -7274,7 +7274,7 @@ index ff1959b8..36a3c3c5 100644
  }
  
 diff --git a/src/devices/video/zeus2.h b/src/devices/video/zeus2.h
-index 874bece3..4ba8ac06 100644
+index 874bece3d96..4ba8ac06e85 100644
 --- a/src/devices/video/zeus2.h
 +++ b/src/devices/video/zeus2.h
 @@ -128,6 +128,18 @@ public:
@@ -7312,7 +7312,7 @@ index 874bece3..4ba8ac06 100644
 From d3269e559855935bae803b9f71dfcde329625aad Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:59:58 -0500
-Subject: [PATCH 26/92] GL overlay: Esc-menu pause + margin extend
+Subject: [PATCH 26/93] GL overlay: Esc-menu pause + margin extend
  (MIDV_GL_MARGINFILL)
 
 The Esc options menu now pauses the machine while open (request from the
@@ -7331,7 +7331,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 44 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 88ae831a..2076066f 100644
+index 88ae831a4f5..2076066f4d7 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -209,6 +209,7 @@ static const char *MVGL_PAL_FS =
@@ -7366,7 +7366,7 @@ index 88ae831a..2076066f 100644
  	"    return p + ((du <= dd) ? ivec2(0, -du) : ivec2(0, dd));\n"
  	"}\n"
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 39290867..37c704ad 100644
+index 39290867808..37c704ad67c 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -243,6 +243,9 @@ namespace mvgl {
@@ -7442,7 +7442,7 @@ index 39290867..37c704ad 100644
 From 795ef54adc64bbccb019fd853457209a1618dd93 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 15:52:57 -0500
-Subject: [PATCH 27/92] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
+Subject: [PATCH 27/93] zeus2: LIVE in-process GL renderer (MIDZ_GL) - Exotica
  at 4x for real
 
 The mzgl overlay (inside zeus2.cpp, mirroring midvunit_v.cpp): monitor-
@@ -7470,7 +7470,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  create mode 100644 src/devices/video/zeus2_gl_shaders.h
 
 diff --git a/POC-NOTES.md b/POC-NOTES.md
-index 1b4841d0..c6f53eec 100644
+index 1b4841d03ea..c6f53eec6e0 100644
 --- a/POC-NOTES.md
 +++ b/POC-NOTES.md
 @@ -4,11 +4,11 @@ This branch carries the Cruis'n POC: the DIJOYSTATE2 base patch plus the
@@ -7490,7 +7490,7 @@ index 1b4841d0..c6f53eec 100644
  via `git format-patch --stdout 6f55ed93..HEAD`. The FFB Arcade Plugin files
  beside vunit.exe are untracked on purpose.
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 36a3c3c5..b72956df 100644
+index 36a3c3c59b2..b72956df517 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -12,6 +12,19 @@
@@ -8586,7 +8586,7 @@ index 36a3c3c5..b72956df 100644
  	m_palSize = (count + 1) * 4;
  	uint32_t addr = (ctrl >> 24) << 1;
 diff --git a/src/devices/video/zeus2.h b/src/devices/video/zeus2.h
-index 4ba8ac06..c679870e 100644
+index 4ba8ac06e85..c679870ea98 100644
 --- a/src/devices/video/zeus2.h
 +++ b/src/devices/video/zeus2.h
 @@ -134,11 +134,13 @@ public:
@@ -8614,7 +8614,7 @@ index 4ba8ac06..c679870e 100644
  		if (m_zeusbase[0x57] & 0x1)
 diff --git a/src/devices/video/zeus2_gl_shaders.h b/src/devices/video/zeus2_gl_shaders.h
 new file mode 100644
-index 00000000..18c23b15
+index 00000000000..18c23b15129
 --- /dev/null
 +++ b/src/devices/video/zeus2_gl_shaders.h
 @@ -0,0 +1,270 @@
@@ -8889,7 +8889,7 @@ index 00000000..18c23b15
 +	"\n";
 +
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 2076066f..6c11a6b9 100644
+index 2076066f4d7..6c11a6b959a 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -1,4 +1,4 @@
@@ -8899,7 +8899,7 @@ index 2076066f..6c11a6b9 100644
  static const char *MVGL_VS =
  	"\n"
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 37c704ad..de3d4830 100644
+index 37c704ad67c..de3d4830052 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -59,7 +59,7 @@ FILE *quadlog_open()
@@ -8918,7 +8918,7 @@ index 37c704ad..de3d4830 100644
 From 4a0d50c01d436d3ba8bca454379230164bb71001 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:13:22 -0500
-Subject: [PATCH 28/92] ioport: env-gated steering response curve for PADDLE
+Subject: [PATCH 28/93] ioport: env-gated steering response curve for PADDLE
  fields
 
 MIDV_STEER_CURVE (percent exponent on normalized wheel deflection,
@@ -8934,7 +8934,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 26 insertions(+), 1 deletion(-)
 
 diff --git a/src/emu/ioport.cpp b/src/emu/ioport.cpp
-index 8c4cd18e..5197e95e 100644
+index 8c4cd18e8c2..5197e95ef04 100644
 --- a/src/emu/ioport.cpp
 +++ b/src/emu/ioport.cpp
 @@ -3879,13 +3879,38 @@ void analog_field::frame_update(running_machine &machine)
@@ -8984,7 +8984,7 @@ index 8c4cd18e..5197e95e 100644
 From 152fb87ddd321f3100d7cedfe28cf9d6f66867b3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:36:45 -0500
-Subject: [PATCH 29/92] GL overlay: margin extend actually works now
+Subject: [PATCH 29/93] GL overlay: margin extend actually works now
  (off-by-half-pixel probe)
 
 The clamp-extend sampled exactly the nominal margin-edge column - the
@@ -9002,7 +9002,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 6c11a6b9..d4380e46 100644
+index 6c11a6b959a..d4380e4617f 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -238,14 +238,23 @@ static const char *MVGL_PAL_FS =
@@ -9043,7 +9043,7 @@ index 6c11a6b9..d4380e46 100644
 From ed208255c50c8ad457f1c3efb11671fe1c394e35 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:56:16 -0500
-Subject: [PATCH 30/92] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
+Subject: [PATCH 30/93] midvunit: in-memory code patcher (MIDV_PATCH) + runtime
  16:9 margin
 
 Code patcher: the TMS320C31 program is copied maindata ROM -> program RAM
@@ -9066,7 +9066,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 63 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
-index a04d7879..8e66c38b 100644
+index a04d7879145..8e66c38ba27 100644
 --- a/src/mame/midway/midvunit.cpp
 +++ b/src/mame/midway/midvunit.cpp
 @@ -106,12 +106,66 @@ void midvplus_state::machine_start()
@@ -9137,7 +9137,7 @@ index a04d7879..8e66c38b 100644
  }
  
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index de3d4830..02e4fb5a 100644
+index de3d4830052..02e4fb5a9a8 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -459,7 +459,7 @@ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
@@ -9171,7 +9171,7 @@ index de3d4830..02e4fb5a 100644
 From a75813dddec3f7d54b056f8103bada857270a2ea Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 23:47:03 -0500
-Subject: [PATCH 31/92] Telemetry Phase B: live speed over UDP (crusnusa) +
+Subject: [PATCH 31/93] Telemetry Phase B: live speed over UDP (crusnusa) +
  RAM-dump hunt tooling
 
 MIDV_RAMDUMP_DIR/_EVERY dumps DSP work RAM periodically for offline
@@ -9188,7 +9188,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 58 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 02e4fb5a..baf3c9d1 100644
+index 02e4fb5a9a8..baf3c9d1328 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -206,8 +206,36 @@ static void telem_notify(const char *outname, s32 value, void *)
@@ -9279,7 +9279,7 @@ index 02e4fb5a..baf3c9d1 100644
 From dce4734c36c510e7a739e0d2d37dc06a2e57f137 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 00:47:30 -0500
-Subject: [PATCH 32/92] GL overlay: backdrop-margin suppress fixes the "water
+Subject: [PATCH 32/93] GL overlay: backdrop-margin suppress fixes the "water
  through the ground"
 
 The Off Road bottom-corner "lake" reveal was the sky/horizon BACKDROP band
@@ -9302,7 +9302,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 60 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index d4380e46..54113399 100644
+index d4380e4617f..54113399836 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -29,6 +29,11 @@ static const char *MVGL_FS =
@@ -9338,7 +9338,7 @@ index d4380e46..54113399 100644
  	"\n"
  	"    int ui, vi;\n"
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index baf3c9d1..b45aeed9 100644
+index baf3c9d1328..b45aeed94ea 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -442,7 +442,16 @@ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
@@ -9427,7 +9427,7 @@ index baf3c9d1..b45aeed9 100644
 From d49c8acdaae51d904b21c64644ce8003545b156b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 11:57:13 -0500
-Subject: [PATCH 33/92] GL overlay: extend backdrop-margin suppress to crusnusa
+Subject: [PATCH 33/93] GL overlay: extend backdrop-margin suppress to crusnusa
  + crusnwld
 
 Generalize the backdrop signature to the per-game sky texbase low bytes
@@ -9444,7 +9444,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index b45aeed9..9bd977d9 100644
+index b45aeed94ea..9bd977d9974 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -442,14 +442,17 @@ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
@@ -9476,7 +9476,7 @@ index b45aeed9..9bd977d9 100644
 From 6b28ed89c5788932d556c277794dcc30a693d70a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:22:32 -0500
-Subject: [PATCH 34/92] Fix Esc-menu resume: block the emu thread instead of
+Subject: [PATCH 34/93] Fix Esc-menu resume: block the emu thread instead of
  machine().pause()
 
 Resume could hang the game paused: machine().pause() paused fine, but the
@@ -9495,7 +9495,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 28 insertions(+), 21 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index b72956df..90a7e55c 100644
+index b72956df517..90a7e55c18d 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -1142,17 +1142,23 @@ void zeus2_device::midz_screen_hook()
@@ -9533,7 +9533,7 @@ index b72956df..90a7e55c 100644
  		// flush the waveram dirty span, then the per-frame display tick
  		if (s_wave_hi > s_wave_lo)
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 9bd977d9..a92c28a9 100644
+index 9bd977d9974..a92c28a93f4 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1827,20 +1827,21 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -9576,7 +9576,7 @@ index 9bd977d9..a92c28a9 100644
 From ffba178f038af29c4efe04deda9fbcd6b2f8576b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:55:30 -0500
-Subject: [PATCH 35/92] A1b: Exotica 16:9 widescreen (Zeus overlay)
+Subject: [PATCH 35/93] A1b: Exotica 16:9 widescreen (Zeus overlay)
 
 Render all Zeus geometry into a wider canvas (CW+2*MARGIN, shifted via a
 VS uMargin uniform); present 3D driving scenes at 16:9 (full wide canvas)
@@ -9596,7 +9596,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 57 insertions(+), 9 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 90a7e55c..7bffa4b2 100644
+index 90a7e55c18d..7bffa4b22fc 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -529,7 +529,13 @@ void thread_main()
@@ -9721,7 +9721,7 @@ index 90a7e55c..7bffa4b2 100644
  		gl.BindTexture(0x0DE1, fbTex);
  		gl.Viewport((cw - vw) / 2, (ch - vh) / 2, vw, vh);
 diff --git a/src/devices/video/zeus2_gl_shaders.h b/src/devices/video/zeus2_gl_shaders.h
-index 18c23b15..9c7d95bf 100644
+index 18c23b15129..9c7d95bf58c 100644
 --- a/src/devices/video/zeus2_gl_shaders.h
 +++ b/src/devices/video/zeus2_gl_shaders.h
 @@ -3,7 +3,8 @@
@@ -9768,7 +9768,7 @@ index 18c23b15..9c7d95bf 100644
 From 50e811d75d515932295a7b6fbf0e4319a3db9db1 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 13:04:39 -0500
-Subject: [PATCH 36/92] zeus2: silence the stock resolution-setup debug
+Subject: [PATCH 36/93] zeus2: silence the stock resolution-setup debug
  popmessage
 
 Exotica flashed "reg[30]: ... Screen: 512H X 400V yScale: 0" at the bottom
@@ -9783,7 +9783,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 7bffa4b2..e35aceec 100644
+index 7bffa4b22fc..e35aceec835 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -1665,7 +1665,10 @@ void zeus2_device::zeus2_register_update(offs_t offset, uint32_t oldval, int log
@@ -9805,7 +9805,7 @@ index 7bffa4b2..e35aceec 100644
 From 5f9bdcc56cc6a74270fed65199df72e491cf9570 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:25:04 -0500
-Subject: [PATCH 37/92] zeus2: skip per-quad frame_number call when live
+Subject: [PATCH 37/93] zeus2: skip per-quad frame_number call when live
  (emu-thread micro-opt)
 
 screen().frame_number() ran ~6.5k times/frame in the live emit path; the
@@ -9822,7 +9822,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index e35aceec..201bef85 100644
+index e35aceec835..201bef85988 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -1301,7 +1301,10 @@ void zeus2_device::midz_cap_quad(int numverts, const void *verts,
@@ -9844,7 +9844,7 @@ index e35aceec..201bef85 100644
 From 5d0e2f95acee02701803a331d7f78691d51ce0eb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:37:41 -0500
-Subject: [PATCH 38/92] zeus2: skip MAME's CPU rasterization when the live
+Subject: [PATCH 38/93] zeus2: skip MAME's CPU rasterization when the live
  overlay renders
 
 With MIDZ_GL the game was rendered TWICE: our GL renderer draws every quad,
@@ -9869,7 +9869,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 13 insertions(+), 1 deletion(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 201bef85..80d0c937 100644
+index 201bef85988..80d0c937b84 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -2993,7 +2993,17 @@ void zeus2_renderer::zeus2_draw_quad(const uint32_t *databuffer, uint32_t texdat
@@ -9907,7 +9907,7 @@ index 201bef85..80d0c937 100644
 From 5d11d1fe3e033e35d664ccec2391b50f851ba817 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:40:11 -0500
-Subject: [PATCH 39/92] zeus2 overlay: aspect-mode hysteresis fixes the width
+Subject: [PATCH 39/93] zeus2 overlay: aspect-mode hysteresis fixes the width
  wobble
 
 An iteration catching only HUD frame writes (no quads, pure timing)
@@ -9922,7 +9922,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 12 insertions(+), 4 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 80d0c937..f991981e 100644
+index 80d0c937b84..f991981ed71 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -1032,10 +1032,18 @@ void thread_main()
@@ -9955,7 +9955,7 @@ index 80d0c937..f991981e 100644
 From 383046dd1e72d4a461ce5d3a4340ea9e4b958952 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:04:56 -0500
-Subject: [PATCH 40/92] zeus2: true full 16:9 for crusnexo - page-scoped margin
+Subject: [PATCH 40/93] zeus2: true full 16:9 for crusnexo - page-scoped margin
  clear + diag hooks
 
 The game renders a full 16:9 field of view already; the black margins were
@@ -9982,7 +9982,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 134 insertions(+), 2 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index f991981e..93b0482f 100644
+index f991981ed71..93b0482fbb1 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -11,6 +11,8 @@
@@ -10063,7 +10063,7 @@ index f991981e..93b0482f 100644
  			break;
  
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index c06d6525..13f9f93b 100644
+index c06d6525c0f..13f9f93b855 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -42,6 +42,9 @@ The Grid         v1.2   10/18/2000
@@ -10194,7 +10194,7 @@ index c06d6525..13f9f93b 100644
 From 9bcb20be675f5fe7d4a600ed2d57579958ed0dba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:24:08 -0500
-Subject: [PATCH 41/92] telem: wire crusnwld speed (0x0DDDC), tighten
+Subject: [PATCH 41/93] telem: wire crusnwld speed (0x0DDDC), tighten
  s_speed_addr to hunted parents
 
 Differential RAM-hunt of the crusnwld attract demo (results/ramhunt-wld)
@@ -10223,7 +10223,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index a92c28a9..25277823 100644
+index a92c28a93f4..25277823298 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -211,9 +211,23 @@ static void telem_notify(const char *outname, s32 value, void *)
@@ -10259,7 +10259,7 @@ index a92c28a9..25277823 100644
 From e028a2f8a9217603413ae43f8da44e7b04337b2a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:42:55 -0500
-Subject: [PATCH 42/92] midvunit shaders: regen for B5 sky-margin vertical
+Subject: [PATCH 42/93] midvunit shaders: regen for B5 sky-margin vertical
  smoothing
 
 Generated from gpu/renderer.py (never hand-edited). Present-pass margin
@@ -10275,7 +10275,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 37 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 54113399..06c5cbf1 100644
+index 54113399836..06c5cbf196a 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -292,7 +292,40 @@ static const char *MVGL_PAL_FS =
@@ -10340,7 +10340,7 @@ index 54113399..06c5cbf1 100644
 From 43ee457e55f05a8b0fdde8462931bf6bf3c1c43c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:45:26 -0500
-Subject: [PATCH 43/92] D1: menu-assets header comment cruisn-poc ->
+Subject: [PATCH 43/93] D1: menu-assets header comment cruisn-poc ->
  cruisn-collection
 
 Matches what gen_menu_assets.py already emits (the header just predated
@@ -10353,7 +10353,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_menu_assets.h b/src/mame/midway/midvunit_menu_assets.h
-index 97598357..4ae0a6e4 100644
+index 97598357243..4ae0a6e49cf 100644
 --- a/src/mame/midway/midvunit_menu_assets.h
 +++ b/src/mame/midway/midvunit_menu_assets.h
 @@ -1,4 +1,4 @@
@@ -10369,7 +10369,7 @@ index 97598357..4ae0a6e4 100644
 From 5f155d26df43bfc80266b780c1737ceb80373df3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:38:55 -0500
-Subject: [PATCH 44/92] Revert B5 sky-margin vertical smoothing - regressed 2D
+Subject: [PATCH 44/93] Revert B5 sky-margin vertical smoothing - regressed 2D
  screens
 
 The vertical gaussian blur smears any structured margin content (e.g. the
@@ -10385,7 +10385,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 4 insertions(+), 37 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 06c5cbf1..54113399 100644
+index 06c5cbf196a..54113399836 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -292,40 +292,7 @@ static const char *MVGL_PAL_FS =
@@ -10450,7 +10450,7 @@ index 06c5cbf1..54113399 100644
 From 23adde255511f37970dacd7ec39db84a0525ec79 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:44:42 -0500
-Subject: [PATCH 45/92] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
+Subject: [PATCH 45/93] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
  real drive
 
 A real driving capture (results/drive-capture-crusnusa-*) debunked the
@@ -10468,7 +10468,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 24 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 25277823..27b2d187 100644
+index 25277823298..27b2d187112 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -232,6 +232,21 @@ static const SpeedAddr s_speed_addr[] = {
@@ -10523,7 +10523,7 @@ index 25277823..27b2d187 100644
 From ccc6b321980e972870c23538acb4f76029fbda62 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:54:30 -0500
-Subject: [PATCH 46/92] telem Phase C: Forza Horizon "Data Out" packet emitter
+Subject: [PATCH 46/93] telem Phase C: Forza Horizon "Data Out" packet emitter
  (SimHub-native)
 
 MIDV_TELEM_FORZA=host:port (default 127.0.0.1:5300) emits the FH4/5
@@ -10542,7 +10542,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 84 insertions(+), 23 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 27b2d187..3e2ce518 100644
+index 27b2d187112..3e2ce518ab9 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -193,10 +193,47 @@ midv_live &live();
@@ -10697,7 +10697,7 @@ index 27b2d187..3e2ce518 100644
 From 795d4f1fbc8deb6ccdef5ad842a21f6be7c60e5b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:07:31 -0500
-Subject: [PATCH 47/92] telem: Forza gear byte mirrors the real latched shifter
+Subject: [PATCH 47/93] telem: Forza gear byte mirrors the real latched shifter
 
 Read the driver-maintained m_shifter_state (fed by both the 4-position
 shifter and the sequential shift buttons) via a small accessor and map
@@ -10713,7 +10713,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  2 files changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
-index 3de6ee73..ab2f682f 100644
+index 3de6ee73a79..ab2f682fded 100644
 --- a/src/mame/midway/midvunit.h
 +++ b/src/mame/midway/midvunit.h
 @@ -142,6 +142,10 @@ public:
@@ -10728,7 +10728,7 @@ index 3de6ee73..ab2f682f 100644
  	midvunit_state(const machine_config &mconfig, device_type type, const char *tag)
  		: midvunit_base_state(mconfig, type, tag)
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 3e2ce518..6905fd7e 100644
+index 3e2ce518ab9..6905fd7e27a 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1948,7 +1948,20 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -10760,7 +10760,7 @@ index 3e2ce518..6905fd7e 100644
 From def66dab2025f9cf2f4e338ebcbfee5255324cc8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:24:59 -0500
-Subject: [PATCH 48/92] telem: gate speed/rpm - menu garbage pegged SimHub
+Subject: [PATCH 48/93] telem: gate speed/rpm - menu garbage pegged SimHub
  gauges
 
 Live rig finding (forza_probe): outside races the DSP words hold unrelated
@@ -10778,7 +10778,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 36 insertions(+), 12 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 6905fd7e..6865bc9f 100644
+index 6905fd7e27a..6865bc9fe3d 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1907,18 +1907,44 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -10854,7 +10854,7 @@ index 6905fd7e..6865bc9f 100644
 From f7251ce9e2b65cac39ff992f9a09b734800cc47f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:42:23 -0500
-Subject: [PATCH 49/92] telem: MIDV_TELEM_FORZA accepts comma-separated targets
+Subject: [PATCH 49/93] telem: MIDV_TELEM_FORZA accepts comma-separated targets
 
 So SimHub (8000) and the forza_probe diagnostic (8001) can watch the same
 stream simultaneously - needed to catch the reported stuck-dash in the act.
@@ -10867,7 +10867,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 6865bc9f..914472fb 100644
+index 6865bc9fe3d..914472fb88e 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -200,8 +200,10 @@ static bool s_telem_json = false;   // JSON stream requested (MIDV_TELEM_UDP)
@@ -10928,7 +10928,7 @@ index 6865bc9f..914472fb 100644
 From 5c3b5787fee2d8111ed84ea1d23902a98fb300d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:51:50 -0500
-Subject: [PATCH 50/92] telem: tighten speed plausibility gate 400 -> 320
+Subject: [PATCH 50/93] telem: tighten speed plausibility gate 400 -> 320
 
 Menu junk observed at 373 slipped under the 400 bound (and at 990 before);
 real max is ~301, so the bound must sit under 373.
@@ -10940,7 +10940,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 914472fb..ae7d8706 100644
+index 914472fb88e..ae7d8706365 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1920,7 +1920,8 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -10969,7 +10969,7 @@ index 914472fb..ae7d8706 100644
 From 0f3759db6a29c8f840d6fd0f28cf74564478426a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:13:25 -0500
-Subject: [PATCH 51/92] telem: dump the second work-RAM bank (0x400000) -
+Subject: [PATCH 51/93] telem: dump the second work-RAM bank (0x400000) -
  player physics lives there
 
 Detective chain from the user's 5x accelerate-to-full-stop drive: NO word
@@ -10991,7 +10991,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  3 files changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
-index 8e66c38b..78cfebb1 100644
+index 8e66c38ba27..78cfebb1c09 100644
 --- a/src/mame/midway/midvunit.cpp
 +++ b/src/mame/midway/midvunit.cpp
 @@ -723,7 +723,7 @@ void midvplus_state::midvplus_xf1_w(uint8_t data)
@@ -11004,7 +11004,7 @@ index 8e66c38b..78cfebb1 100644
  	map(0x808000, 0x80807f).rw(FUNC(midvunit_state::tms320c31_control_r), FUNC(midvunit_state::tms320c31_control_w)).share(m_tms320c31_control);
  	map(0x900000, 0x97ffff).rw(FUNC(midvunit_state::videoram_r), FUNC(midvunit_state::videoram_w));
 diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
-index ab2f682f..fea5e9b0 100644
+index ab2f682fded..fea5e9b098d 100644
 --- a/src/mame/midway/midvunit.h
 +++ b/src/mame/midway/midvunit.h
 @@ -76,6 +76,7 @@ protected:
@@ -11026,7 +11026,7 @@ index ab2f682f..fea5e9b0 100644
  
  	uint8_t m_cmos_protected = 0;
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index ae7d8706..0368443e 100644
+index ae7d8706365..0368443e51a 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -2025,6 +2025,19 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -11056,7 +11056,7 @@ index ae7d8706..0368443e 100644
 From 70552419d62a694e61bb409901e73918003c9084 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:25:02 -0500
-Subject: [PATCH 52/92] telem: dump HUD rows (300-399, visible page) alongside
+Subject: [PATCH 52/93] telem: dump HUD rows (300-399, visible page) alongside
  RAM dumps
 
 The on-screen MPH + gear digits are the incorruptible ground truth: OCR
@@ -11071,7 +11071,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 14 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 0368443e..ff611a5d 100644
+index 0368443e51a..ff611a5de56 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -2038,6 +2038,20 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -11102,7 +11102,7 @@ index 0368443e..ff611a5d 100644
 From e22e161bc23a108e1d25595f6691a3e249f85b82 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:40:45 -0500
-Subject: [PATCH 53/92] telem: dump C31 on-chip internal RAM (0x809800, 2K
+Subject: [PATCH 53/93] telem: dump C31 on-chip internal RAM (0x809800, 2K
  words) as ram3
 
 By elimination: the HUD-OCR ground truth from a real drive correlates with
@@ -11117,7 +11117,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 17 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index ff611a5d..b4d3c40e 100644
+index ff611a5de56..b4d3c40eb9b 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -2038,6 +2038,23 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -11151,7 +11151,7 @@ index ff611a5d..b4d3c40e 100644
 From 8bb8d18801c7f71bb2a1c71024305295201f1978 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:56:25 -0500
-Subject: [PATCH 54/92] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
+Subject: [PATCH 54/93] telem: crusnusa RPM = 0x0E632.lo16 (screen-confirmed);
  retire drone speed
 
 The HUD ground-truth investigation concluded: the on-screen RPM gauge's
@@ -11170,7 +11170,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 50 insertions(+), 32 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index b4d3c40e..31e52393 100644
+index b4d3c40eb9b..31e523934f7 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -250,41 +250,41 @@ static void telem_notify(const char *outname, s32 value, void *)
@@ -11300,7 +11300,7 @@ index b4d3c40e..31e52393 100644
 From f91ec0dca3dba674c669f04083336318a9fa4d7f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 22:04:19 -0500
-Subject: [PATCH 55/92] telem: runtime HUD OCR - crusnusa speed read straight
+Subject: [PATCH 55/93] telem: runtime HUD OCR - crusnusa speed read straight
  off the frame
 
 The displayed MPH exists in no memory and the HUD is CPU-blitted (no
@@ -11323,7 +11323,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
 
 diff --git a/src/mame/midway/midvunit_hud_ocr.h b/src/mame/midway/midvunit_hud_ocr.h
 new file mode 100644
-index 00000000..017a9c31
+index 00000000000..017a9c31ba6
 --- /dev/null
 +++ b/src/mame/midway/midvunit_hud_ocr.h
 @@ -0,0 +1,206 @@
@@ -11534,7 +11534,7 @@ index 00000000..017a9c31
 +	},
 +};
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 31e52393..7e74f9bb 100644
+index 31e523934f7..7e74f9bbf1d 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -8,6 +8,7 @@
@@ -11717,7 +11717,7 @@ index 31e52393..7e74f9bb 100644
 From 381216fdc3df855a5f5e91dfda900bb1fc12c075 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 21:11:55 -0500
-Subject: [PATCH 56/92] Fix sky-through-ground on the left: backdrop cover is
+Subject: [PATCH 56/93] Fix sky-through-ground on the left: backdrop cover is
  now independent
 
 The user's driving screenshots showed the sky/horizon backdrop through
@@ -11745,7 +11745,7 @@ Claude-Session: https://claude.ai/code/session_01QABHMhAzD8GxaNT8zBVLho
  1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 7e74f9bb..7fed9666 100644
+index 7e74f9bbf1d..7fed9666ed0 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -923,14 +923,18 @@ void thread_main()
@@ -11780,7 +11780,7 @@ index 7e74f9bb..7fed9666 100644
 From d7770521dabf9aad82b5882d0df263bb788dffba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 21:27:44 -0500
-Subject: [PATCH 57/92] Revert "Fix sky-through-ground on the left: backdrop
+Subject: [PATCH 57/93] Revert "Fix sky-through-ground on the left: backdrop
  cover is now independent"
 
 This reverts commit 381216fdc3df855a5f5e91dfda900bb1fc12c075.
@@ -11789,7 +11789,7 @@ This reverts commit 381216fdc3df855a5f5e91dfda900bb1fc12c075.
  1 file changed, 6 insertions(+), 10 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 7fed9666..7e74f9bb 100644
+index 7fed9666ed0..7e74f9bbf1d 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -923,18 +923,14 @@ void thread_main()
@@ -11824,7 +11824,7 @@ index 7fed9666..7e74f9bb 100644
 From b4dbf50514f08ac3dfab80186e3198e1eeb55cf2 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 22:49:14 -0500
-Subject: [PATCH 58/92] MIDV_FAST_EXIT + parked-UI suppression (crusnwld radio
+Subject: [PATCH 58/93] MIDV_FAST_EXIT + parked-UI suppression (crusnwld radio
  panel)
 
 - winmain: env-gated TerminateProcess after a clean frontend exit. The FFB
@@ -11846,7 +11846,7 @@ Claude-Session: https://claude.ai/code/session_01AaotsA4vefWaQtnV6KtjwB
  3 files changed, 36 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 54113399..998ed76e 100644
+index 54113399836..998ed76e347 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -171,6 +171,11 @@ static const char *MVGL_FS =
@@ -11862,7 +11862,7 @@ index 54113399..998ed76e 100644
  	"    // suppress backdrop (sky/horizon band) in the 16:9 margins: leaves the\n"
  	"    // pixel unwritten so the margin-extend fills it from the 4:3 boundary\n"
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 7e74f9bb..904679ef 100644
+index 7e74f9bbf1d..904679ef464 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -639,8 +639,26 @@ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
@@ -11894,7 +11894,7 @@ index 7e74f9bb..904679ef 100644
  		if (!textured)
  			pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff;
 diff --git a/src/osd/windows/winmain.cpp b/src/osd/windows/winmain.cpp
-index 4c656623..efd02e7b 100644
+index 4c656623a9c..efd02e7b1d2 100644
 --- a/src/osd/windows/winmain.cpp
 +++ b/src/osd/windows/winmain.cpp
 @@ -245,6 +245,18 @@ int main(int argc, char *argv[])
@@ -11923,7 +11923,7 @@ index 4c656623..efd02e7b 100644
 From 2ff12aaa474f2030acc1a15105bf8d20d3c52a22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 23:14:04 -0500
-Subject: [PATCH 59/92] Fine-space dither translucency (regenerated from
+Subject: [PATCH 59/93] Fine-space dither translucency (regenerated from
  gpu/renderer.py)
 
 The hardware fakes 50% alpha with a per-pixel checkerboard the CRT blends;
@@ -11939,7 +11939,7 @@ Claude-Session: https://claude.ai/code/session_01AaotsA4vefWaQtnV6KtjwB
  1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
-index 998ed76e..0f5fdfef 100644
+index 998ed76e347..0f5fdfef477 100644
 --- a/src/mame/midway/midvunit_gl_shaders.h
 +++ b/src/mame/midway/midvunit_gl_shaders.h
 @@ -183,7 +183,19 @@ static const char *MVGL_FS =
@@ -11986,7 +11986,7 @@ index 998ed76e..0f5fdfef 100644
 From f41dd7c8e6563166432ab3f5494114b605c1e54c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 25 Aug 2026 21:39:17 -0500
-Subject: [PATCH 60/92] HUD-OCR speed for World + provisional Off Road; 2D seam
+Subject: [PATCH 60/93] HUD-OCR speed for World + provisional Off Road; 2D seam
  fill; per-game hud dump
 
 - s_hud_box: crusnwld (14,76,342,368) calibrated offline from drive
@@ -12005,7 +12005,7 @@ Claude-Session: https://claude.ai/code/session_01AaotsA4vefWaQtnV6KtjwB
  1 file changed, 24 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 904679ef..de471e33 100644
+index 904679ef464..de471e3388e 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -257,6 +257,16 @@ static void telem_notify(const char *outname, s32 value, void *)
@@ -12069,7 +12069,7 @@ index 904679ef..de471e33 100644
 From 4b801483f56124439fdcb16f4265f488d0e91045 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 26 Aug 2026 01:00:21 -0500
-Subject: [PATCH 61/92] MIDV_DMA_PCLOG: native unique-PC logger on the quad DMA
+Subject: [PATCH 61/93] MIDV_DMA_PCLOG: native unique-PC logger on the quad DMA
  port
 
 One full-speed headless run maps every poly-emit site in a game's DSP
@@ -12084,7 +12084,7 @@ Claude-Session: https://claude.ai/code/session_01AaotsA4vefWaQtnV6KtjwB
  1 file changed, 18 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index de471e33..50daacfe 100644
+index de471e3388e..50daacfe638 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -30,6 +30,7 @@
@@ -12127,7 +12127,7 @@ index de471e33..50daacfe 100644
 From 80cb7a0e718e4428b099627aba96fa3fe45e4a26 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 29 Aug 2026 18:03:00 -0500
-Subject: [PATCH 62/92] Fix G10 perf regression: hoist MIDV_DMA_PCLOG getenv
+Subject: [PATCH 62/93] Fix G10 perf regression: hoist MIDV_DMA_PCLOG getenv
  out of the DMA hot path
 
 std::getenv ran once per DMA word (>1M environment scans/sec) since the
@@ -12141,7 +12141,7 @@ Claude-Session: https://claude.ai/code/session_01AaotsA4vefWaQtnV6KtjwB
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 50daacfe..ff93ee70 100644
+index 50daacfe638..ff93ee70d42 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1866,7 +1866,8 @@ void midvunit_base_state::dma_queue_w(uint32_t data)
@@ -12161,7 +12161,7 @@ index 50daacfe..ff93ee70 100644
 From 97a330a72b19e90adf8dc14b1c6996ce198ce732 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 29 Aug 2026 19:08:18 -0500
-Subject: [PATCH 63/92] telem_init: clone-tolerant game matching (crusnwld24
+Subject: [PATCH 63/93] telem_init: clone-tolerant game matching (crusnwld24
  support)
 
 The World card now boots rev 2.4 (crusnwld24), the last revision with
@@ -12177,7 +12177,7 @@ Claude-Session: https://claude.ai/code/session_01AaotsA4vefWaQtnV6KtjwB
  1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index ff93ee70..709843ff 100644
+index ff93ee70d42..709843ffdda 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -423,15 +423,21 @@ static float c3x_to_float(uint32_t w)
@@ -12212,7 +12212,7 @@ index ff93ee70..709843ff 100644
 From 200e986e5327d97507335ff63d52b88c30fbd150 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 30 Aug 2026 21:37:20 -0500
-Subject: [PATCH 64/92] Quality mode: DDA-inclusive coverage for axis-aligned
+Subject: [PATCH 64/93] Quality mode: DDA-inclusive coverage for axis-aligned
  quads; merge split runs
 
 Two fixes for the crusnusa continue-screen vertical line (user report;
@@ -12248,7 +12248,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
  1 file changed, 61 insertions(+), 3 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 709843ff..16ae6eff 100644
+index 709843ffdda..16ae6eff87f 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -629,6 +629,39 @@ static void make_inclusive(float *vx, float *vy)
@@ -12343,7 +12343,7 @@ index 709843ff..16ae6eff 100644
 From 784bdfc6da392ec301b98d2840f270c519615136 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 30 Aug 2026 22:38:38 -0500
-Subject: [PATCH 65/92] MIDV_PATCH: self-healing re-assert (games revert low
+Subject: [PATCH 65/93] MIDV_PATCH: self-healing re-assert (games revert low
  words at startup)
 
 The V-Unit games' own startup code re-copies the low program words from
@@ -12370,7 +12370,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
  3 files changed, 34 insertions(+), 2 deletions(-)
 
 diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
-index 78cfebb1..c6841984 100644
+index 78cfebb1c09..c6841984880 100644
 --- a/src/mame/midway/midvunit.cpp
 +++ b/src/mame/midway/midvunit.cpp
 @@ -114,11 +114,15 @@ void midvplus_state::machine_start()
@@ -12435,7 +12435,7 @@ index 78cfebb1..c6841984 100644
  {
  	m_dcs->reset_w(0);
 diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
-index fea5e9b0..04b0a0ea 100644
+index fea5e9b098d..04b0a0ea6ef 100644
 --- a/src/mame/midway/midvunit.h
 +++ b/src/mame/midway/midvunit.h
 @@ -32,6 +32,10 @@ struct midvunit_object_data
@@ -12450,7 +12450,7 @@ index fea5e9b0..04b0a0ea 100644
  
  class midvunit_renderer : public poly_manager<float, midvunit_object_data, 2>
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 16ae6eff..4d91cf28 100644
+index 16ae6eff87f..4d91cf28bb2 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -2131,6 +2131,11 @@ uint32_t midvunit_base_state::screen_update(screen_device &screen, bitmap_ind16
@@ -12472,7 +12472,7 @@ index 16ae6eff..4d91cf28 100644
 From 019efb24a06c4b0f8de8fbc4e9c8f610241424fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 01:55:12 -0500
-Subject: [PATCH 66/92] Review fixes: UV-extrapolated dilation, snapshot
+Subject: [PATCH 66/93] Review fixes: UV-extrapolated dilation, snapshot
  overrun, merge cap
 
 Second-set-of-eyes pass over today's overlay changes:
@@ -12504,7 +12504,7 @@ Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
  1 file changed, 39 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 4d91cf28..9a0dbe23 100644
+index 4d91cf28bb2..9a0dbe23602 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -638,26 +638,49 @@ static void make_inclusive(float *vx, float *vy)
@@ -12603,7 +12603,7 @@ index 4d91cf28..9a0dbe23 100644
 From bcffabf54bcb22386f86c2472a26cffaba524c6c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 16:57:44 -0500
-Subject: [PATCH 67/92] MIDV_FFB_TRACE: timestamped log of every game output
+Subject: [PATCH 67/93] MIDV_FFB_TRACE: timestamped log of every game output
  (FFB diagnostics)
 
 MIDV_FFB_TRACE=<file> appends "ms,output,value" for every output change
@@ -12621,7 +12621,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 31 insertions(+), 3 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 9a0dbe23..13c65b29 100644
+index 9a0dbe23602..13c65b293ec 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -7,6 +7,7 @@
@@ -12690,7 +12690,7 @@ index 9a0dbe23..13c65b29 100644
 From 8f3f785ffa833b2bab88f5a8645b489c66c19a9e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 18:17:24 -0500
-Subject: [PATCH 68/92] Overlay stats: MAME speed readout (support-bundle
+Subject: [PATCH 68/93] Overlay stats: MAME speed readout (support-bundle
  diagnostics)
 
 screen_update publishes machine().video().speed_percent()*100 into the
@@ -12704,7 +12704,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 13c65b29..d246641e 100644
+index 13c65b293ec..d246641efc3 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -78,6 +78,7 @@ FILE *quadlog_open()
@@ -12755,7 +12755,7 @@ index 13c65b29..d246641e 100644
 From 5027dab8cc439f917bd7de8fb0583a9ef5df1243 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 19:09:21 -0500
-Subject: [PATCH 69/92] ioport: MIDV_STEER_GAIN - a steering sensitivity that
+Subject: [PATCH 69/93] ioport: MIDV_STEER_GAIN - a steering sensitivity that
  reaches the wheel
 
 MAME's per-port "sensitivity" is an exact identity for absolute analog
@@ -12771,7 +12771,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 22 insertions(+), 9 deletions(-)
 
 diff --git a/src/emu/ioport.cpp b/src/emu/ioport.cpp
-index 5197e95e..1e7679a9 100644
+index 5197e95ef04..1e7679a97b0 100644
 --- a/src/emu/ioport.cpp
 +++ b/src/emu/ioport.cpp
 @@ -3879,26 +3879,39 @@ void analog_field::frame_update(running_machine &machine)
@@ -12830,7 +12830,7 @@ index 5197e95e..1e7679a9 100644
 From 93bac9db22eda14bef465c25366eef212274f1b0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 20:38:11 -0500
-Subject: [PATCH 70/92] midvunit: MIDV_FFB_CLAMP - cap the wheel-motor force
+Subject: [PATCH 70/93] midvunit: MIDV_FFB_CLAMP - cap the wheel-motor force
  byte (env-gated)
 
 Measured headless (wheel sweep under the force trace): the V-Unit games'
@@ -12847,7 +12847,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 26 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
-index c6841984..a5d5e018 100644
+index c6841984880..a5d5e0186ac 100644
 --- a/src/mame/midway/midvunit.cpp
 +++ b/src/mame/midway/midvunit.cpp
 @@ -23,6 +23,8 @@
@@ -12898,7 +12898,7 @@ index c6841984..a5d5e018 100644
 From a3bc6cc97382aa308340b0073b13243f1c76e70d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 21:09:27 -0500
-Subject: [PATCH 71/92] Cruis'n Exotica wheel-motor output; telemetry shared
+Subject: [PATCH 71/93] Cruis'n Exotica wheel-motor output; telemetry shared
  with midzeus; output name override
 
 Exotica's force byte lives on the LED/lamp board write at offset 0
@@ -12926,7 +12926,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  3 files changed, 93 insertions(+), 22 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index d246641e..19fc9bea 100644
+index d246641efc3..19fc9bea778 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1597,6 +1597,37 @@ TIMER_CALLBACK_MEMBER(midvunit_base_state::eoi_timer_cb)
@@ -12996,7 +12996,7 @@ index d246641e..19fc9bea 100644
  	m_scanline_timer = timer_alloc(FUNC(midvunit_base_state::scanline_timer_cb), this);
  	m_eoi_timer = timer_alloc(FUNC(midvunit_base_state::eoi_timer_cb), this);
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index 13f9f93b..9e3a46cc 100644
+index 13f9f93b855..9e3a46ccab0 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -28,6 +28,8 @@ The Grid         v1.2   10/18/2000
@@ -13132,7 +13132,7 @@ index 13f9f93b..9e3a46cc 100644
  
  
 diff --git a/src/osd/modules/output/win32_output.cpp b/src/osd/modules/output/win32_output.cpp
-index 0d2d355b..491f3d71 100644
+index 0d2d355b577..491f3d711c5 100644
 --- a/src/osd/modules/output/win32_output.cpp
 +++ b/src/osd/modules/output/win32_output.cpp
 @@ -19,6 +19,7 @@
@@ -13165,7 +13165,7 @@ index 0d2d355b..491f3d71 100644
 From 566429c683c5488cbcc7d7544e9c5739facc2225 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 22:17:01 -0500
-Subject: [PATCH 72/92] midzeus: Cruis'n Exotica virtual sequential shifter
+Subject: [PATCH 72/93] midzeus: Cruis'n Exotica virtual sequential shifter
  (MIDZ_SEQ_SHIFT), FFB gain
 
 The game only knows a 4-position H-pattern shifter (IN1 bits 8-11). The
@@ -13183,7 +13183,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 62 insertions(+), 7 deletions(-)
 
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index 9e3a46cc..e7478c13 100644
+index 9e3a46ccab0..e7478c1379f 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -142,12 +142,15 @@ public:
@@ -13311,7 +13311,7 @@ index 9e3a46cc..e7478c13 100644
 From 35d152752af50e5f6352b50f2d17cf511487b881 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 22:44:59 -0500
-Subject: [PATCH 73/92] midzeus: MIDZ_FORCE_IN1 - env-forceable "Not Used" IN1
+Subject: [PATCH 73/93] midzeus: MIDZ_FORCE_IN1 - env-forceable "Not Used" IN1
  lines on Exotica (shifter-line hunt)
 
 The seven lines the driver marks unused (0xF00D) become one IPT_CUSTOM
@@ -13326,7 +13326,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index e7478c13..eb5c2c45 100644
+index e7478c1379f..eb5c2c458b2 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -150,7 +150,8 @@ public:
@@ -13390,7 +13390,7 @@ index e7478c13..eb5c2c45 100644
 From 4f5767929e5e97d519c3b260adb631f7c7691768 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 01:17:48 -0500
-Subject: [PATCH 74/92] zeus2 live overlay: never lose texture/palette state to
+Subject: [PATCH 74/93] zeus2 live overlay: never lose texture/palette state to
  a full ring; dense snapshot controls
 
 ring_push2 dropped any record when the 64 MB ring was full. A dropped
@@ -13411,7 +13411,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 69 insertions(+), 3 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 93b0482f..08a2ad13 100644
+index 93b0482fbb1..08a2ad130aa 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -396,8 +396,12 @@ static uint8_t *s_ringbuf = nullptr;
@@ -13539,7 +13539,7 @@ index 93b0482f..08a2ad13 100644
 From 72c9e6feedefa416ee117ed6891eb2a6bd703e87 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 10:52:16 -0500
-Subject: [PATCH 75/92] MIDV_FFB_SLEW - cap the wheel-motor force change per
+Subject: [PATCH 75/93] MIDV_FFB_SLEW - cap the wheel-motor force change per
  game update (V-Unit + Exotica)
 
 The FFB Arcade Plugin applies every game update instantly (one constant
@@ -13557,7 +13557,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  2 files changed, 31 insertions(+), 5 deletions(-)
 
 diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
-index a5d5e018..d619a2ae 100644
+index a5d5e0186ac..d619a2aee1a 100644
 --- a/src/mame/midway/midvunit.cpp
 +++ b/src/mame/midway/midvunit.cpp
 @@ -589,13 +589,27 @@ void midvunit_state::wheel_board_w(uint32_t data)
@@ -13594,7 +13594,7 @@ index a5d5e018..d619a2ae 100644
  					//LOGINPUT("Wheel board (U4 74HC574; Motor) = %02X\n", arg);
  					break;
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index eb5c2c45..da63df49 100644
+index eb5c2c458b2..da63df49133 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -726,11 +726,23 @@ void crusnexo_state::crusnexo_leds_w(offs_t offset, uint32_t data)
@@ -13628,7 +13628,7 @@ index eb5c2c45..da63df49 100644
 From 958ca346f5b8d5ff5af3cef834a18e66f73318c8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 12:01:47 -0500
-Subject: [PATCH 76/92] FFB trace: log the steering input ("wheelpos" rows)
+Subject: [PATCH 76/93] FFB trace: log the steering input ("wheelpos" rows)
  next to the force output
 
 midv_trace_wheelpos(machine, tag) writes the steering port value into the
@@ -13645,7 +13645,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  2 files changed, 23 insertions(+)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 08a2ad13..9c8b2bb9 100644
+index 08a2ad130aa..9c8b2bb9471 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -25,6 +25,7 @@
@@ -13665,7 +13665,7 @@ index 08a2ad13..9c8b2bb9 100644
  	if (!(m_zeusbase[0x10] & 0x20))
  		return 0;
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 19fc9bea..d2fb9365 100644
+index 19fc9bea778..d2fb9365f89 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1603,6 +1603,26 @@ TIMER_CALLBACK_MEMBER(midvunit_base_state::eoi_timer_cb)
@@ -13710,7 +13710,7 @@ index 19fc9bea..d2fb9365 100644
 From daf47365925490105aa8798a3d24dbefbc6a29c5 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 13:33:57 -0500
-Subject: [PATCH 77/92] Built-in force feedback (mvffb): SDL2 haptics on the
+Subject: [PATCH 77/93] Built-in force feedback (mvffb): SDL2 haptics on the
  steering axis, replaces the FFB Arcade Plugin
 
 The drivers hand the signed wheel-motor byte (V-Unit WHLCTLZ, Exotica LED-board
@@ -13732,7 +13732,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  4 files changed, 415 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
-index d619a2ae..78140da3 100644
+index d619a2aee1a..78140da368f 100644
 --- a/src/mame/midway/midvunit.cpp
 +++ b/src/mame/midway/midvunit.cpp
 @@ -610,6 +610,7 @@ void midvunit_state::wheel_board_w(uint32_t data)
@@ -13744,7 +13744,7 @@ index d619a2ae..78140da3 100644
  					//LOGINPUT("Wheel board (U4 74HC574; Motor) = %02X\n", arg);
  					break;
 diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
-index 04b0a0ea..5858374e 100644
+index 04b0a0ea6ef..5858374ebd1 100644
 --- a/src/mame/midway/midvunit.h
 +++ b/src/mame/midway/midvunit.h
 @@ -35,6 +35,9 @@ struct midvunit_object_data
@@ -13758,7 +13758,7 @@ index 04b0a0ea..5858374e 100644
  class midvunit_base_state;
  
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index d2fb9365..7ade3edb 100644
+index d2fb9365f89..7ade3edba98 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -37,6 +37,12 @@
@@ -14199,7 +14199,7 @@ index d2fb9365..7ade3edb 100644
  	// Esc options menu pause: block the emu thread here while the menu is
  	// open (freezes emulation + sound). The GL thread clears s_menu_pause
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index da63df49..59993cde 100644
+index da63df49133..59993cde186 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -227,6 +227,7 @@ private:
@@ -14225,7 +14225,7 @@ index da63df49..59993cde 100644
 From 1c919566c1fd435ac45044d2230b39e104c16129 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 00:28:45 -0500
-Subject: [PATCH 78/92] mvffb: force low-pass (MIDV_FFB_SMOOTH),
+Subject: [PATCH 78/93] mvffb: force low-pass (MIDV_FFB_SMOOTH),
  damper/friction condition effects (MIDV_FFB_DAMPER/_FRICTION), instant
  release when the Esc menu opens
 
@@ -14241,7 +14241,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 79 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 7ade3edb..2a185c04 100644
+index 7ade3edba98..2a185c04833 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -39,6 +39,7 @@
@@ -14397,7 +14397,7 @@ index 7ade3edb..2a185c04 100644
 From 95d0121ff6db841c9edc303fbfa1780f0573476b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 00:41:11 -0500
-Subject: [PATCH 79/92] mvffb: rumble channel (MIDV_FFB_RUMBLE, 100 ms burst
+Subject: [PATCH 79/93] mvffb: rumble channel (MIDV_FFB_RUMBLE, 100 ms burst
  per force update like the plugin), impulses bypass the smoothing
 
 Exotica's crash/jump effects are single 17 ms full-force spikes; the plugin's
@@ -14410,7 +14410,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
  1 file changed, 48 insertions(+), 3 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 2a185c04..d633d3bc 100644
+index 2a185c04833..d633d3bc6bf 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1664,6 +1664,13 @@ void midv_trace_wheelpos(running_machine &machine, const char *tag)
@@ -14527,7 +14527,7 @@ index 2a185c04..d633d3bc 100644
 From 9f8397cf6eaaad68db02283cc0b3ce205aa25ae0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 10:27:00 -0500
-Subject: [PATCH 80/92] Backport mamedev/mame#16046 (Exotica game speed + SGRAM
+Subject: [PATCH 80/93] Backport mamedev/mame#16046 (Exotica game speed + SGRAM
  fill decode); wheel output renamed wheel_motor per #16055
 
 #16046 (mourix, merged 2026-09-03): the TMS320C32 timers were hardcoded at 10 MHz
@@ -14551,7 +14551,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  3 files changed, 21 insertions(+), 15 deletions(-)
 
 diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
-index 9c8b2bb9..dd2950ee 100644
+index 9c8b2bb9471..dd2950ee310 100644
 --- a/src/devices/video/zeus2.cpp
 +++ b/src/devices/video/zeus2.cpp
 @@ -179,7 +179,7 @@ void zeus2_device::device_reset()
@@ -14605,7 +14605,7 @@ index 9c8b2bb9..dd2950ee 100644
  			}
  			break;
 diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
-index 5858374e..65c2bc19 100644
+index 5858374ebd1..65c2bc194bf 100644
 --- a/src/mame/midway/midvunit.h
 +++ b/src/mame/midway/midvunit.h
 @@ -163,7 +163,7 @@ protected:
@@ -14618,7 +14618,7 @@ index 5858374e..65c2bc19 100644
  		, m_in1(*this, "IN1")
  		, m_dsw(*this, "DSW")
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index 59993cde..bf7a57f7 100644
+index 59993cde186..bf7a57f70c5 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -141,7 +141,7 @@ public:
@@ -14652,7 +14652,7 @@ index 59993cde..bf7a57f7 100644
 From 35b0a2507c87e3f6359700adb11a0bd2a5075585 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 10:50:24 -0500
-Subject: [PATCH 81/92] crusnexo: MIDZ_WHEEL_INVERT mirrors the steering read,
+Subject: [PATCH 81/93] crusnexo: MIDZ_WHEEL_INVERT mirrors the steering read,
  cancelling the Wheel Invert DIP for driving
 
 Exotica s TRANS SELECT screen is gated on the DS1 Wheel Invert DIP - with it off
@@ -14668,7 +14668,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
-index bf7a57f7..d55e7ea9 100644
+index bf7a57f70c5..d55e7ea934f 100644
 --- a/src/mame/midway/midzeus.cpp
 +++ b/src/mame/midway/midzeus.cpp
 @@ -945,7 +945,23 @@ uint32_t crusnexo_state::analog_r(offs_t offset)
@@ -14703,7 +14703,7 @@ index bf7a57f7..d55e7ea9 100644
 From 9a32a191911d56b66b8bedc80ff165079665e10b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 21:20:00 -0500
-Subject: [PATCH 82/92] FFB conditioning moves to the shared toolkit shaper
+Subject: [PATCH 82/93] FFB conditioning moves to the shared toolkit shaper
 
 mvffb's hand-written chain (impulse bypass, dt-aware low-pass, settle-to-zero,
 re-level threshold) is now dbce::force::Shaper driven by a named profile, so a
@@ -14749,7 +14749,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 
 diff --git a/src/mame/midway/dbce/README.md b/src/mame/midway/dbce/README.md
 new file mode 100644
-index 00000000..f41e213b
+index 00000000000..f41e213bf62
 --- /dev/null
 +++ b/src/mame/midway/dbce/README.md
 @@ -0,0 +1,20 @@
@@ -14775,7 +14775,7 @@ index 00000000..f41e213b
 +Cruis'n off the toolkit.
 diff --git a/src/mame/midway/dbce/VERSION b/src/mame/midway/dbce/VERSION
 new file mode 100644
-index 00000000..9d145fb3
+index 00000000000..9d145fb3d29
 --- /dev/null
 +++ b/src/mame/midway/dbce/VERSION
 @@ -0,0 +1,2 @@
@@ -14783,7 +14783,7 @@ index 00000000..9d145fb3
 +dbce-wheel-mod-toolkit
 diff --git a/src/mame/midway/dbce/force_model.h b/src/mame/midway/dbce/force_model.h
 new file mode 100644
-index 00000000..567ed51d
+index 00000000000..567ed51d23d
 --- /dev/null
 +++ b/src/mame/midway/dbce/force_model.h
 @@ -0,0 +1,370 @@
@@ -15159,7 +15159,7 @@ index 00000000..567ed51d
 +}} // namespace dbce::force
 diff --git a/src/mame/midway/dbce/force_profile.h b/src/mame/midway/dbce/force_profile.h
 new file mode 100644
-index 00000000..2d468dc2
+index 00000000000..2d468dc288b
 --- /dev/null
 +++ b/src/mame/midway/dbce/force_profile.h
 @@ -0,0 +1,235 @@
@@ -15399,7 +15399,7 @@ index 00000000..2d468dc2
 +
 +}} // namespace dbce::force
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index d633d3bc..3ca37046 100644
+index d633d3bc6bf..3ca37046d12 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -37,6 +37,11 @@
@@ -15563,7 +15563,7 @@ index d633d3bc..3ca37046 100644
 From 4da28a04e7de9ae60ac93edbea65c63f0549280e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 21:23:27 -0500
-Subject: [PATCH 83/92] Add the centring spring the FFB Arcade Plugin has and
+Subject: [PATCH 83/93] Add the centring spring the FFB Arcade Plugin has and
  this did not
 
 MIDV_FFB_SPRING creates an SDL_HAPTIC_SPRING condition effect alongside the
@@ -15587,7 +15587,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 17 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 3ca37046..0bd5031e 100644
+index 3ca37046d12..0bd5031e2b1 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1734,6 +1734,7 @@ static int s_smooth_ms = 0;   // MIDV_FFB_SMOOTH: first-order low-pass time cons
@@ -15647,7 +15647,7 @@ index 3ca37046..0bd5031e 100644
 From aed633273eaa355a635058bf44ec34321ee6cfa6 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 23:33:26 -0500
-Subject: [PATCH 84/92] Trace our shaped FFB output beside the game's motor
+Subject: [PATCH 84/93] Trace our shaped FFB output beside the game's motor
  byte
 
 ffb_trace.csv carried the input (the wheel_motor output) but not what we
@@ -15668,7 +15668,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 14 insertions(+)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 0bd5031e..ab58bbd9 100644
+index 0bd5031e2b1..ab58bbd933c 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -2112,7 +2112,21 @@ static void worker()
@@ -15700,7 +15700,7 @@ index 0bd5031e..ab58bbd9 100644
 From c562491a611c312d028350dfc6c9ed4b3816902a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 13:15:17 -0500
-Subject: [PATCH 85/92] The FEEL profile owns smoothing; MIDV_FFB_SMOOTH
+Subject: [PATCH 85/93] The FEEL profile owns smoothing; MIDV_FFB_SMOOTH
  becomes an explicit override
 
 The profile s smoothing was overwritten unconditionally from MIDV_FFB_SMOOTH, whose
@@ -15717,7 +15717,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index ab58bbd9..172d94e1 100644
+index ab58bbd933c..172d94e1db5 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -1731,6 +1731,7 @@ static int s_strength = 100;
@@ -15763,7 +15763,7 @@ index ab58bbd9..172d94e1 100644
 From 18bf1b72e69ed0ba47a9180fd5ce10c02c944484 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 13:42:17 -0500
-Subject: [PATCH 86/92] Condition effects scale with FFB STRENGTH and cap their
+Subject: [PATCH 86/93] Condition effects scale with FFB STRENGTH and cap their
  saturation
 
 The spring, damper and friction were absolute: a 72% spring ran at 72% of the
@@ -15781,7 +15781,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 172d94e1..11fa1e59 100644
+index 172d94e1db5..11fa1e59e32 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -2007,14 +2007,28 @@ static void worker()
@@ -15823,7 +15823,7 @@ index 172d94e1..11fa1e59 100644
 From 4d96ca9c6ced9b9cfb27ddca0aac2df349371490 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 15:18:52 -0500
-Subject: [PATCH 87/92] Rumble fires on force onset; speed no longer zeroes
+Subject: [PATCH 87/93] Rumble fires on force onset; speed no longer zeroes
  after one unreadable second
 
 Rumble: a Cruis n USA collision holds near-full force for 1.2-4.7 SECONDS (measured
@@ -15843,7 +15843,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 34 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 11fa1e59..8feb10f5 100644
+index 11fa1e59e32..8feb10f579c 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -288,6 +288,12 @@ static void telem_notify(const char *outname, s32 value, void *)
@@ -15925,7 +15925,7 @@ index 11fa1e59..8feb10f5 100644
 From cac686346f106cf97cb53f0eee90ff32b3dc6861 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 15:40:53 -0500
-Subject: [PATCH 88/92] Rumble fires on a real hit (ramp-aware); trace the OCR
+Subject: [PATCH 88/93] Rumble fires on a real hit (ramp-aware); trace the OCR
  speed
 
 The collision force RAMPS - byte -25 -40 -67 -80 -103 -113 -126 over about six
@@ -15945,7 +15945,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 33 insertions(+), 18 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 8feb10f5..e531e7ea 100644
+index 8feb10f579c..e531e7eaf83 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -2100,6 +2100,10 @@ static void worker()
@@ -16036,7 +16036,7 @@ index 8feb10f5..e531e7ea 100644
 From e309c3c777b72d17d43e238d578f1762786ef37a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 16:13:03 -0500
-Subject: [PATCH 89/92] HUD OCR was clipping the hundreds digit - speed could
+Subject: [PATCH 89/93] HUD OCR was clipping the hundreds digit - speed could
  never exceed 99
 
 The crusnusa window started at x0=30 and cut the leading digit off. Its own new
@@ -16058,7 +16058,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 47 insertions(+), 9 deletions(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index e531e7ea..3d3f2ab4 100644
+index e531e7eaf83..3d3f2ab43fa 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -288,13 +288,14 @@ static void telem_notify(const char *outname, s32 value, void *)
@@ -16171,7 +16171,7 @@ index e531e7ea..3d3f2ab4 100644
 From 58203bb13f7b4a5997b4f6dceed1e36a8fd631d8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 16:41:51 -0500
-Subject: [PATCH 90/92] Verify the World OCR box (not clipped) and record that
+Subject: [PATCH 90/93] Verify the World OCR box (not clipped) and record that
  Off Road s has never worked
 
 crusnwld: re-checked after USA turned out to be clipping - it reads to 142 mph with
@@ -16189,7 +16189,7 @@ Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
  1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index 3d3f2ab4..da6cb87c 100644
+index 3d3f2ab43fa..da6cb87c5b8 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -298,8 +298,19 @@ static const HudBox s_hud_box[] = {
@@ -16220,7 +16220,7 @@ index 3d3f2ab4..da6cb87c 100644
 From 1c420f324c79e7e4c5b77a808b366cbdababa256 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 18:14:37 -0500
-Subject: [PATCH 91/92] Improve force event detection and preserve
+Subject: [PATCH 91/93] Improve force event detection and preserve
  frame-indexed diagnostics
 
 ---
@@ -16234,7 +16234,7 @@ Subject: [PATCH 91/92] Improve force event detection and preserve
 
 diff --git a/src/mame/midway/cruisn/hud_speed_filter.h b/src/mame/midway/cruisn/hud_speed_filter.h
 new file mode 100644
-index 00000000..9f956428
+index 00000000000..9f95642869f
 --- /dev/null
 +++ b/src/mame/midway/cruisn/hud_speed_filter.h
 @@ -0,0 +1,37 @@
@@ -16276,7 +16276,7 @@ index 00000000..9f956428
 +};
 +}
 diff --git a/src/mame/midway/dbce/README.md b/src/mame/midway/dbce/README.md
-index f41e213b..35f0a146 100644
+index f41e213bf62..35f0a1465bb 100644
 --- a/src/mame/midway/dbce/README.md
 +++ b/src/mame/midway/dbce/README.md
 @@ -8,8 +8,15 @@ Do not edit them here. Fix a shaping bug in the toolkit, cut a release, then
@@ -16297,7 +16297,7 @@ index f41e213b..35f0a146 100644
  ## Licensing note
  
 diff --git a/src/mame/midway/dbce/VERSION b/src/mame/midway/dbce/VERSION
-index 9d145fb3..ce61a5d4 100644
+index 9d145fb3d29..ce61a5d4db8 100644
 --- a/src/mame/midway/dbce/VERSION
 +++ b/src/mame/midway/dbce/VERSION
 @@ -1,2 +1,2 @@
@@ -16306,7 +16306,7 @@ index 9d145fb3..ce61a5d4 100644
 +v0.10.0
 +47b06f08cd6b3044e5167821f48f024882ef035f
 diff --git a/src/mame/midway/dbce/force_model.h b/src/mame/midway/dbce/force_model.h
-index 567ed51d..6cdb0032 100644
+index 567ed51d23d..6cdb0032a48 100644
 --- a/src/mame/midway/dbce/force_model.h
 +++ b/src/mame/midway/dbce/force_model.h
 @@ -33,9 +33,53 @@
@@ -16373,7 +16373,7 @@ index 567ed51d..6cdb0032 100644
          if (impact_t_ >= 0.f) {
              float span = s.impact_seconds > 0.001f ? s.impact_seconds : 0.001f;
 diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
-index da6cb87c..a5e16e6f 100644
+index da6cb87c5b8..a5e16e6fa05 100644
 --- a/src/mame/midway/midvunit_v.cpp
 +++ b/src/mame/midway/midvunit_v.cpp
 @@ -10,6 +10,7 @@
@@ -16637,7 +16637,7 @@ index da6cb87c..a5e16e6f 100644
 From 1a2bb35f8ad58e2f0960c1d8b15bd361725a7a51 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 18:26:11 -0500
-Subject: [PATCH 92/92] Pin toolkit profile loader portability fix
+Subject: [PATCH 92/93] Pin toolkit profile loader portability fix
 
 ---
  src/mame/midway/dbce/README.md       | 2 +-
@@ -16646,7 +16646,7 @@ Subject: [PATCH 92/92] Pin toolkit profile loader portability fix
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/src/mame/midway/dbce/README.md b/src/mame/midway/dbce/README.md
-index 35f0a146..40a66a5b 100644
+index 35f0a1465bb..40a66a5bc7e 100644
 --- a/src/mame/midway/dbce/README.md
 +++ b/src/mame/midway/dbce/README.md
 @@ -14,7 +14,7 @@ The rise detector consumes pre-gain magnitude on every worker tick, including
@@ -16659,7 +16659,7 @@ index 35f0a146..40a66a5b 100644
  records the resolved commit in VERSION and the collection's MANIFEST.json.
  
 diff --git a/src/mame/midway/dbce/VERSION b/src/mame/midway/dbce/VERSION
-index ce61a5d4..97588bdd 100644
+index ce61a5d4db8..97588bdd0fb 100644
 --- a/src/mame/midway/dbce/VERSION
 +++ b/src/mame/midway/dbce/VERSION
 @@ -1,2 +1,2 @@
@@ -16668,7 +16668,7 @@ index ce61a5d4..97588bdd 100644
 +v0.10.1
 +c9b76b72087579ffd3b58734f22704e0fc078ecb
 diff --git a/src/mame/midway/dbce/force_profile.h b/src/mame/midway/dbce/force_profile.h
-index 2d468dc2..207b229f 100644
+index 2d468dc288b..207b229f633 100644
 --- a/src/mame/midway/dbce/force_profile.h
 +++ b/src/mame/midway/dbce/force_profile.h
 @@ -221,7 +221,7 @@ inline const char* user_profile_file()    { return "force-profiles.user.ini"; }
@@ -16680,6 +16680,144 @@ index 2d468dc2..207b229f 100644
      std::string text, chunk;
      if (detail::read_file(directory + sep + shipped_profile_file(), chunk)) text += chunk + "\n";
      if (detail::read_file(directory + sep + user_profile_file(), chunk))    text += chunk + "\n";
+-- 
+2.55.0.windows.3
+
+
+From 45a05364e115280f5d816a90d1aa5c826f6f2f37 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Sat, 5 Sep 2026 21:34:04 -0500
+Subject: [PATCH 93/93] Bound enhanced V-Unit texture sampling to original quad
+ UVs
+
+---
+ src/mame/midway/midvunit_gl_shaders.h | 21 ++++++++++++++++-----
+ src/mame/midway/midvunit_v.cpp        | 16 ++++++++++------
+ 2 files changed, 26 insertions(+), 11 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
+index 0f5fdfef477..82e596080b5 100644
+--- a/src/mame/midway/midvunit_gl_shaders.h
++++ b/src/mame/midway/midvunit_gl_shaders.h
+@@ -8,13 +8,15 @@ static const char *MVGL_VS =
+ 	"in vec2 in_v0; in vec2 in_v1; in vec2 in_v2; in vec2 in_v3;\n"
+ 	"in vec4 in_uv01;           // u0,v0,u1,v1\n"
+ 	"in vec4 in_uv23;           // u2,v2,u3,v3\n"
++	"in vec4 in_uvBounds;       // original u min/max, v min/max before dilation\n"
+ 	"in uvec4 in_meta;          // pixdata, mode, dither, texbase\n"
+ 	"flat out vec2 v0; flat out vec2 v1; flat out vec2 v2; flat out vec2 v3;\n"
+ 	"flat out vec4 uv01; flat out vec4 uv23;\n"
++	"flat out vec4 uvBounds;\n"
+ 	"flat out uvec4 meta;\n"
+ 	"void main() {\n"
+ 	"    v0 = in_v0; v1 = in_v1; v2 = in_v2; v3 = in_v3;\n"
+-	"    uv01 = in_uv01; uv23 = in_uv23; meta = in_meta;\n"
++	"    uv01 = in_uv01; uv23 = in_uv23; uvBounds = in_uvBounds; meta = in_meta;\n"
+ 	"    // y-down pixel space -> NDC (y flipped)\n"
+ 	"    gl_Position = vec4(in_corner.x / uCanvas.x * 2.0 - 1.0,\n"
+ 	"                       1.0 - in_corner.y / uCanvas.y * 2.0, 0.0, 1.0);\n"
+@@ -36,6 +38,7 @@ static const char *MVGL_FS =
+ 	"uniform int  uClipW;       // coarse canvas width (for the right margin)\n"
+ 	"flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;\n"
+ 	"flat in vec4 uv01; flat in vec4 uv23;\n"
++	"flat in vec4 uvBounds;\n"
+ 	"flat in uvec4 meta;\n"
+ 	"layout(location = 0) out uint outIndex;\n"
+ 	"layout(location = 1) out uint outMask;   // 1 = this scene wrote the pixel\n"
+@@ -198,16 +201,22 @@ static const char *MVGL_FS =
+ 	"    }\n"
+ 	"\n"
+ 	"    outMask = 1u;   // every non-discarded fragment marks its pixel written\n"
+-	"    if (uDbgQuadId == 1) { outIndex = uint(gl_PrimitiveID / 2); return; }\n"
+-	"    if (mode == 0u) { outIndex = pixdata & 0xffffu; return; }\n"
++	"    if (mode == 0u) {\n"
++	"        outIndex = (uDbgQuadId == 1) ? uint(gl_PrimitiveID / 2) : pixdata & 0xffffu;\n"
++	"        return;\n"
++	"    }\n"
+ 	"\n"
+ 	"    int ui, vi;\n"
+ 	"    if (uScale == 1) {   // MAME's integer DDA, analytically\n"
+ 	"        ui = c_int32(su) + (px - istartx) * c_int32(dudx);\n"
+ 	"        vi = c_int32(sv) + (px - istartx) * c_int32(dvdx);\n"
+ 	"    } else {             // sub-pixel float interpolation\n"
+-	"        ui = c_int32(lu + (cx - startx) * dudx);\n"
+-	"        vi = c_int32(lv + (cx - startx) * dvdx);\n"
++	"        // Coverage dilation must not read another tile in texture RAM.\n"
++	"        // A one-pixel-tall distant road quad can extrapolate by 80 texels;\n"
++	"        // clamping to its original UV domain retains the interior gradient\n"
++	"        // and extends only its edge texel. Native DDA remains unchanged.\n"
++	"        ui = c_int32(clamp(lu + (cx - startx) * dudx, uvBounds.x, uvBounds.y));\n"
++	"        vi = c_int32(clamp(lv + (cx - startx) * dvdx, uvBounds.z, uvBounds.w));\n"
+ 	"    }\n"
+ 	"    uint texel = fetch_texel(int(meta.w) + ((vi >> 8) & 0xff00) + (ui >> 16));\n"
+ 	"    if (mode == 1u)      outIndex = (pixdata + texel) & 0xffffu;\n"
+@@ -215,6 +224,8 @@ static const char *MVGL_FS =
+ 	"                           outIndex = (pixdata + texel) & 0xffffu; }\n"
+ 	"    else                 { if (texel == 0u) discard;\n"
+ 	"                           outIndex = pixdata & 0xffffu; }\n"
++	"    // Ownership must respect transparent texels, just like the real draw.\n"
++	"    if (uDbgQuadId == 1) outIndex = uint(gl_PrimitiveID / 2);\n"
+ 	"}\n"
+ 	"\n";
+ 
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index a5e16e6fa05..4bebbb22fa6 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -775,7 +775,7 @@ static void dilate_rect(float *vx, float *vy, const int16_t *ix, const int16_t *
+ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
+ 	std::vector<float> &fdata, std::vector<uint32_t> &udata)
+ {
+-	fdata.resize(quads.size() * 6 * 18);
++	fdata.resize(quads.size() * 6 * 22);
+ 	udata.resize(quads.size() * 6 * 4);
+ 	for (size_t q = 0; q < quads.size(); q++)
+ 	{
+@@ -837,6 +837,9 @@ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
+ 			default: mode = 0; pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff; break;
+ 			}
+ 		}
++		float const bounds[4] = {
++			*std::min_element(us, us + 4), *std::max_element(us, us + 4),
++			*std::min_element(vs, vs + 4), *std::max_element(vs, vs + 4) };
+ 		make_inclusive(vx, vy);
+ 		{
+ 			// the live overlay is always quality mode; exact/DDA replay
+@@ -858,11 +861,12 @@ static void build_vertices(const std::vector<QuadMsg> &quads, float xoff,
+ 		const float cy[6] = { y0, y0, y1, y0, y1, y1 };
+ 		for (int k = 0; k < 6; k++)
+ 		{
+-			float *f = &fdata[(q * 6 + k) * 18];
++			float *f = &fdata[(q * 6 + k) * 22];
+ 			f[0] = cx[k]; f[1] = cy[k];
+ 			for (int i = 0; i < 4; i++) { f[2 + i * 2] = vx[i]; f[3 + i * 2] = vy[i]; }
+ 			f[10] = us[0]; f[11] = vs[0]; f[12] = us[1]; f[13] = vs[1];
+ 			f[14] = us[2]; f[15] = vs[2]; f[16] = us[3]; f[17] = vs[3];
++			for (int i = 0; i < 4; i++) f[18 + i] = bounds[i];
+ 			uint32_t *u = &udata[(q * 6 + k) * 4];
+ 			u[0] = pixdata; u[1] = mode; u[2] = dither; u[3] = uint32_t(dma[14]) * 256;
+ 		}
+@@ -1089,16 +1093,16 @@ void thread_main()
+ 	gl.GenBuffers(1, &vbo_u);
+ 	gl.BindVertexArray(vao);
+ 	gl.BindBuffer(ARRAY_BUFFER, vbo_f);
+-	const char *fattr[] = { "in_corner", "in_v0", "in_v1", "in_v2", "in_v3", "in_uv01", "in_uv23" };
+-	int const fsize[] = { 2, 2, 2, 2, 2, 4, 4 };
++	const char *fattr[] = { "in_corner", "in_v0", "in_v1", "in_v2", "in_v3", "in_uv01", "in_uv23", "in_uvBounds" };
++	int const fsize[] = { 2, 2, 2, 2, 2, 4, 4, 4 };
+ 	int off = 0;
+-	for (int i = 0; i < 7; i++)
++	for (int i = 0; i < 8; i++)
+ 	{
+ 		int loc = gl.GetAttribLocation(prog, fattr[i]);
+ 		if (loc >= 0)
+ 		{
+ 			gl.EnableVertexAttribArray(loc);
+-			gl.VertexAttribPointer(loc, fsize[i], 0x1406 /*FLOAT*/, 0, 18 * 4,
++			gl.VertexAttribPointer(loc, fsize[i], 0x1406 /*FLOAT*/, 0, 22 * 4,
+ 				(const void *)(uintptr_t)(off * 4));
+ 		}
+ 		off += fsize[i];
 -- 
 2.55.0.windows.3
 

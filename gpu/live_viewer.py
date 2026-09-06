@@ -219,9 +219,9 @@ def main():
             vbo_f = ctx.buffer(fdata.tobytes())
             vbo_u = ctx.buffer(udata.tobytes())
             vao = ctx.vertex_array(prog, [
-                (vbo_f, "2f 2f 2f 2f 2f 4f 4f",
+                (vbo_f, "2f 2f 2f 2f 2f 4f 4f 4f",
                  "in_corner", "in_v0", "in_v1", "in_v2", "in_v3",
-                 "in_uv01", "in_uv23"),
+                 "in_uv01", "in_uv23", "in_uvBounds"),
                 (vbo_u, "4u", "in_meta")])
             p["fbo"].use()
             ctx.viewport = (0, 0, fw, fh)

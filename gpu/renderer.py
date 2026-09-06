@@ -48,13 +48,15 @@ in vec2 in_corner;         // bbox corner, coarse pixel space
 in vec2 in_v0; in vec2 in_v1; in vec2 in_v2; in vec2 in_v3;
 in vec4 in_uv01;           // u0,v0,u1,v1
 in vec4 in_uv23;           // u2,v2,u3,v3
+in vec4 in_uvBounds;       // original u min/max, v min/max before dilation
 in uvec4 in_meta;          // pixdata, mode, dither, texbase
 flat out vec2 v0; flat out vec2 v1; flat out vec2 v2; flat out vec2 v3;
 flat out vec4 uv01; flat out vec4 uv23;
+flat out vec4 uvBounds;
 flat out uvec4 meta;
 void main() {
     v0 = in_v0; v1 = in_v1; v2 = in_v2; v3 = in_v3;
-    uv01 = in_uv01; uv23 = in_uv23; meta = in_meta;
+    uv01 = in_uv01; uv23 = in_uv23; uvBounds = in_uvBounds; meta = in_meta;
     // y-down pixel space -> NDC (y flipped)
     gl_Position = vec4(in_corner.x / uCanvas.x * 2.0 - 1.0,
                        1.0 - in_corner.y / uCanvas.y * 2.0, 0.0, 1.0);
@@ -75,6 +77,7 @@ uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded
 uniform int  uClipW;       // coarse canvas width (for the right margin)
 flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;
 flat in vec4 uv01; flat in vec4 uv23;
+flat in vec4 uvBounds;
 flat in uvec4 meta;
 layout(location = 0) out uint outIndex;
 layout(location = 1) out uint outMask;   // 1 = this scene wrote the pixel
@@ -237,16 +240,22 @@ void main() {
     }
 
     outMask = 1u;   // every non-discarded fragment marks its pixel written
-    if (uDbgQuadId == 1) { outIndex = uint(gl_PrimitiveID / 2); return; }
-    if (mode == 0u) { outIndex = pixdata & 0xffffu; return; }
+    if (mode == 0u) {
+        outIndex = (uDbgQuadId == 1) ? uint(gl_PrimitiveID / 2) : pixdata & 0xffffu;
+        return;
+    }
 
     int ui, vi;
     if (uScale == 1) {   // MAME's integer DDA, analytically
         ui = c_int32(su) + (px - istartx) * c_int32(dudx);
         vi = c_int32(sv) + (px - istartx) * c_int32(dvdx);
     } else {             // sub-pixel float interpolation
-        ui = c_int32(lu + (cx - startx) * dudx);
-        vi = c_int32(lv + (cx - startx) * dvdx);
+        // Coverage dilation must not read another tile in texture RAM.
+        // A one-pixel-tall distant road quad can extrapolate by 80 texels;
+        // clamping to its original UV domain retains the interior gradient
+        // and extends only its edge texel. Native DDA remains unchanged.
+        ui = c_int32(clamp(lu + (cx - startx) * dudx, uvBounds.x, uvBounds.y));
+        vi = c_int32(clamp(lv + (cx - startx) * dvdx, uvBounds.z, uvBounds.w));
     }
     uint texel = fetch_texel(int(meta.w) + ((vi >> 8) & 0xff00) + (ui >> 16));
     if (mode == 1u)      outIndex = (pixdata + texel) & 0xffffu;
@@ -254,6 +263,8 @@ void main() {
                            outIndex = (pixdata + texel) & 0xffffu; }
     else                 { if (texel == 0u) discard;
                            outIndex = pixdata & 0xffffu; }
+    // Ownership must respect transparent texels, just like the real draw.
+    if (uDbgQuadId == 1) outIndex = uint(gl_PrimitiveID / 2);
 }
 """
 
@@ -522,7 +533,7 @@ def build_vertices(quads, xoff, dilate2d=False):
     dilate2d: half-pixel dilation of axis-aligned rects (quality mode
     only - see _dilate_rect). Exact mode MUST leave it False."""
     n = len(quads)
-    fdata = np.zeros((n * 6, 18), dtype=np.float32)
+    fdata = np.zeros((n * 6, 22), dtype=np.float32)
     udata = np.zeros((n * 6, 4), dtype=np.uint32)
     for q in range(n):
         dma = quads[q].astype(np.uint32)
@@ -569,6 +580,7 @@ def build_vertices(quads, xoff, dilate2d=False):
             else:
                 mode = 0
                 pixdata = (pixdata + (dma[0] & 0xff)) & 0xffff
+        bounds = [min(us), max(us), min(vs), max(vs)]
         make_vertices_inclusive(vx, vy)
         if dilate2d:
             _iy = [int(np.int16(dma[3 + i * 2])) for i in range(4)]
@@ -587,6 +599,7 @@ def build_vertices(quads, xoff, dilate2d=False):
         for k in range(6):
             fdata[base + k, 0:2] = corners[k]
             fdata[base + k, 2:18] = row
+            fdata[base + k, 18:22] = bounds
         udata[base:base + 6] = (pixdata, mode, dither, int(dma[14]) * 256)
     return fdata, udata
 
@@ -635,6 +648,7 @@ def build_vertices_fast(quads, xoff, dilate2d=False):
           + np.float32(32768.0))
     us[~textured] = 0.0
     vs[~textured] = 0.0
+    bounds = np.stack((us.min(axis=1), us.max(axis=1), vs.min(axis=1), vs.max(axis=1)), axis=1)
 
     # ---- make_vertices_inclusive, vectorized ----
     nx = [1, 2, 3, 0]
@@ -708,15 +722,16 @@ def build_vertices_fast(quads, xoff, dilate2d=False):
     row[:, 8:16:2] = us
     row[:, 9:16:2] = vs
 
-    fdata = np.empty((n, 6, 18), dtype=np.float32)
+    fdata = np.empty((n, 6, 22), dtype=np.float32)
     fdata[:, :, 0:2] = corners
     fdata[:, :, 2:18] = row[:, None, :]
+    fdata[:, :, 18:22] = bounds[:, None, :]
     udata = np.empty((n, 6, 4), dtype=np.uint32)
     udata[:, :, 0] = pixdata[:, None]
     udata[:, :, 1] = mode[:, None]
     udata[:, :, 2] = dither[:, None]
     udata[:, :, 3] = (dma[:, 14] * 256)[:, None]
-    return fdata.reshape(-1, 18), udata.reshape(-1, 4)
+    return fdata.reshape(-1, 22), udata.reshape(-1, 4)
 
 
 def main():
@@ -731,10 +746,13 @@ def main():
                     help="fill pixels the scene left unwritten (hardware "
                          "quad cracks showing the stale page) from bounded "
                          "neighbours - quality mode only")
+    ap.add_argument("--marginfill", action="store_true",
+                    help="explicit backdrop suppression and boundary-column extension experiment")
     ap.add_argument("--bench", type=int, default=0, help="timed re-renders")
     ap.add_argument("--report", help="write machine-readable verification JSON")
     ap.add_argument("--output-dir", help="write previews here instead of the capture directory")
     ap.add_argument("--no-png", action="store_true", help="verification only; do not write previews")
+    ap.add_argument("--buffers", help="save indices, coverage and current-scene polygon ownership as NPZ")
     args = ap.parse_args()
     if args.scale < 1 or args.bench < 0:
         ap.error("scale must be positive and bench must be non-negative")
@@ -776,16 +794,16 @@ def main():
     prog["texMask"].value = texsize - 1
     prog["uDbgQuadId"].value = 1 if os.environ.get("MIDV_DBG_QUADID") else 0
     prog["uClipW"].value = W
-    prog["uBgMargin"].value = (margin if (args.crackfill and args.wide) else 0)
+    prog["uBgMargin"].value = (margin if (args.marginfill and args.wide) else 0)
     tex2d.use(0)
 
     fdata, udata = build_vertices(quads, margin, dilate2d=not exact)
     vbo_f = ctx.buffer(fdata.tobytes())
     vbo_u = ctx.buffer(udata.tobytes())
     vao = ctx.vertex_array(prog, [
-        (vbo_f, "2f 2f 2f 2f 2f 4f 4f",
+        (vbo_f, "2f 2f 2f 2f 2f 4f 4f 4f",
          "in_corner", "in_v0", "in_v1", "in_v2", "in_v3",
-         "in_uv01", "in_uv23"),
+         "in_uv01", "in_uv23", "in_uvBounds"),
         (vbo_u, "4u", "in_meta"),
     ])
 
@@ -833,6 +851,24 @@ def main():
     # ---- read back the index buffer ----
     data = np.frombuffer(fbo.read(components=1, dtype="u2"), dtype="<u2")
     gpu = np.flipud(data.reshape(fh, fw)).copy()
+    if args.buffers:
+        mask = np.flipud(np.frombuffer(mask_tex.read(alignment=1), np.uint8).reshape(fh, fw)).copy()
+        prog["uDbgQuadId"].value = 1
+        # A single draw gives IDs relative to the final scene. Sentinel 65535
+        # is unambiguous; captured scenes must fit the 16-bit index target.
+        current = len(quads) - nhist
+        if current >= 65535:
+            raise ValueError("too many quads for the ownership buffer")
+        fbo.use()
+        fbo.clear()
+        vao.render(moderngl.TRIANGLES, first=nhist * 6, vertices=current * 6)
+        owners = np.flipud(np.frombuffer(fbo.read(components=1, dtype="u2"), "<u2").reshape(fh, fw)).copy()
+        owned = np.flipud(np.frombuffer(mask_tex.read(alignment=1), np.uint8).reshape(fh, fw)) != 0
+        owners[~owned] = 65535
+        np.savez_compressed(args.buffers, indices=gpu, coverage=mask,
+                            owners=owners, quads=quads[nhist:], margin=margin, scale=S)
+        prog["uDbgQuadId"].value = 0
+        draw()
 
     tag = (f"gpu-{'wide-' if args.wide else ''}{'crt-' if args.crt else ''}"
            f"{'fill-' if args.crackfill else ''}s{S}")
@@ -863,8 +899,8 @@ def main():
     pprog["uCrt"].value = 1 if args.crt else 0
     pprog["uSrcH"].value = float(height)
     pprog["maskTex"].value = 3
-    pprog["uFillR"].value = (4 * S) if (args.crackfill and not exact) else 0
-    pprog["uMargin"].value = (margin * S) if (args.crackfill and not exact
+    pprog["uFillR"].value = (4 * S) if ((args.crackfill or args.marginfill) and not exact) else 0
+    pprog["uMargin"].value = (margin * S) if (args.marginfill and not exact
                                               and args.wide) else 0
     idx_tex.use(1)
     paltex.use(2)
