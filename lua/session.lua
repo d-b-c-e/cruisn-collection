@@ -14,11 +14,14 @@ log:write("frame,emulated_seconds,host_seconds,speed_percent")
 for _, tag in ipairs(tags) do log:write("," .. tag) end
 log:write("\n")
 local started = emu.osd_ticks()
+local probe_path = os.getenv("SNAP_PROBE_SCRIPT")
+local probe = probe_path and assert(loadfile(probe_path))() or nil
 
 emu.register_frame_done(function()
     if emu.time() == last_emulated then return end -- host redraw while paused
     last_emulated = emu.time()
     count = count + 1
+    if probe then probe(count) end
     local host = (emu.osd_ticks() - started) / emu.osd_ticks_per_second()
     log:write(string.format("%d,%.12f,%.9f,%.6f", count, emu.time(), host,
                             manager.machine.video.speed_percent))

@@ -13,6 +13,7 @@ import shutil
 
 from diagnostic_runtime import execute, new_run, ROOT
 from raw_snapshots import convert_raw_snapshots
+from game_patch import read_patch, verify_patch_ram, late_patch_lua
 from run_capture import ARTIFACTS
 from session_case import compare_evidence, prepare_run, session_evidence, tree_hashes, set_option
 from verification import sha256_file, write_json, required_files
@@ -36,6 +37,9 @@ def main(argv=None):
     ap.add_argument("--snapshot-mode", choices=("png", "raw"), help="explicit capture experiment; raw defers PNG encoding until exit")
     ap.add_argument("--until-frame", type=int, help="explicit prefix replay ending at this frame")
     ap.add_argument("--capture-state", action="store_true", help="capture quads/RAM two frames before --until-frame")
+    ap.add_argument("--patch", type=Path, help="explicit game-code patch experiment; replaces the recorded patch")
+    ap.add_argument("--probe-script", type=Path, help="explicit Lua frame callback for a bounded diagnostic experiment")
+    ap.add_argument("--patch-at-frame", type=int, help="apply the checked patch late, preserving earlier game history")
     args = ap.parse_args(argv)
     if args.timeout <= 0:
         ap.error("timeout must be positive")
@@ -48,6 +52,8 @@ def main(argv=None):
         ap.error("native renderer control cannot enable GL diagnostics")
     if args.capture_state and (args.until_frame is None or args.until_frame < 3):
         ap.error("state capture requires --until-frame of at least 3")
+    if args.patch_at_frame is not None and (not args.patch or args.probe_script):
+        ap.error("--patch-at-frame requires --patch and cannot combine with --probe-script")
     try:
         work = new_run("replay", args.output)
     except OSError as exc:
@@ -82,6 +88,8 @@ def main(argv=None):
             manifest["evidence"] = dict(manifest["evidence"], frames=args.until_frame)
             report["comparison_scope"] = {"first_frame": 1, "last_frame": args.until_frame,
                                           "kind": "explicit-prefix"}
+        if args.patch_at_frame is not None and not 1 <= args.patch_at_frame < reference["frames"] - 2:
+            raise ValueError("late patch must precede the final capture/stop frames")
         if gl_experiment:
             if manifest["settings"].get("MIDV_GL") != "1":
                 raise ValueError("live V-Unit GL diagnostics require a recording made with MIDV_GL=1")
@@ -109,9 +117,15 @@ def main(argv=None):
             report["snapshot_mode_override"] = args.snapshot_mode
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
-        if args.snapshot_mode:
+        if args.snapshot_mode or args.probe_script or args.patch_at_frame is not None:
             shutil.copy2(ROOT / "lua" / "session.lua", runtime / "session.lua")
             report["diagnostic_script_sha256"] = sha256_file(runtime / "session.lua")
+        if args.probe_script:
+            probe_file = runtime / "probe.lua"
+            shutil.copy2(args.probe_script, probe_file)
+            env["SNAP_PROBE_SCRIPT"] = str(probe_file)
+            report["probe_script"] = {"source": str(args.probe_script.resolve()),
+                                      "sha256": sha256_file(probe_file)}
         if args.video:
             command = set_option(command, "-video", args.video)
             report["video_override"] = args.video
@@ -125,6 +139,24 @@ def main(argv=None):
             capture.mkdir()
             env.update(MIDV_QUADLOG=str(capture / "quads.bin"),
                        MIDV_STATEDUMP_FRAME=str(args.until_frame - 2), MIDV_STATEDUMP_DIR=str(capture))
+        if args.patch:
+            patch_entries = read_patch(args.patch)
+            patch_file = runtime / "experiment-patch.txt"
+            shutil.copy2(args.patch, patch_file)
+            if args.patch_at_frame is None:
+                env["MIDV_PATCH"] = str(patch_file)
+            else:
+                probe_file = runtime / "late-patch.lua"
+                probe_file.write_text(late_patch_lua(patch_entries, args.patch_at_frame), encoding="utf-8")
+                env["SNAP_PROBE_SCRIPT"] = str(probe_file)
+                report["late_patch"] = {"frame": args.patch_at_frame, "script_sha256": sha256_file(probe_file)}
+            env["MIDV_GL_LOG"] = "1"
+            if args.capture_state:
+                env["MIDV_RAMDUMP_DIR"] = str(capture)
+                env["MIDV_RAMDUMP_EVERY"] = str(args.until_frame - 2)
+            report["game_patch_override"] = {"source": str(args.patch.resolve()),
+                                              "sha256": sha256_file(patch_file)}
+            report["kind"] = "game-patch-regression"
         invocation = execute(command, runtime, env, args.timeout)
         # Recording uses the product launch log; normalize the replay's stdout
         # path so the same strict evidence validator serves both paths.
@@ -132,6 +164,10 @@ def main(argv=None):
             (runtime / "launch.log").write_bytes((runtime / "stdout.log").read_bytes())
         if invocation["error"]:
             raise ValueError(invocation["error"])
+        if args.patch_at_frame is not None:
+            receipt = f"session.lua: game patch {len(patch_entries)} words at frame {args.patch_at_frame}"
+            if receipt not in (runtime / "launch.log").read_text(encoding="utf-8", errors="replace"):
+                raise ValueError("late game patch application receipt missing")
         convert_raw_snapshots(runtime)
         report["evidence"] = session_evidence(runtime, manifest["every"], invocation["returncode"],
             require_gl=not (args.headless or args.native_renderer) and bool(manifest["settings"].get("MIDV_GL_SNAP")))
@@ -141,6 +177,11 @@ def main(argv=None):
             required_files(capture, ARTIFACTS)
             report["capture"] = {"directory": str(capture), "requested_dump_frame": args.until_frame - 2,
                                  "sha256": {n: sha256_file(capture / n) for n in ARTIFACTS}}
+            if args.patch:
+                program_ram = capture / f"ram_{args.until_frame - 2:06d}.bin"
+                report["effective_patch"] = verify_patch_ram(program_ram, patch_entries)
+                report["capture"]["sha256"][program_ram.name] = sha256_file(program_ram)
+                report["passed"] = report["passed"] and report["effective_patch"]["passed"]
     except (ValueError, OSError, KeyError, subprocess.SubprocessError) as exc:
         report["passed"] = False
         report["error"] = str(exc)
