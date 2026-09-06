@@ -527,7 +527,7 @@ def _dilate_rect(vx, vy, ix, iy, us=None, vs=None):
         v[d] += e
 
 
-def build_vertices(quads, xoff, dilate2d=False):
+def build_vertices(quads, xoff, dilate2d=False, positions=None):
     """Quad records -> interleaved GPU vertex data (6 verts per quad).
 
     dilate2d: half-pixel dilation of axis-aligned rects (quality mode
@@ -539,6 +539,9 @@ def build_vertices(quads, xoff, dilate2d=False):
         dma = quads[q].astype(np.uint32)
         vx = [F(np.int16(dma[2 + i * 2]) + F(0.5) + F(xoff)) for i in range(4)]
         vy = [F(np.int16(dma[3 + i * 2]) + F(0.5)) for i in range(4)]
+        if positions is not None:
+            vx = [F(positions[q, i, 0] + F(.5) + F(xoff)) for i in range(4)]
+            vy = [F(positions[q, i, 1] + F(.5)) for i in range(4)]
         pixdata = int(dma[1])
         textured = (dma[0] & 0x300) == 0x100
         dither = 1 if (dma[0] & 0x2000) else 0
@@ -753,6 +756,7 @@ def main():
     ap.add_argument("--output-dir", help="write previews here instead of the capture directory")
     ap.add_argument("--no-png", action="store_true", help="verification only; do not write previews")
     ap.add_argument("--buffers", help="save indices, coverage and current-scene polygon ownership as NPZ")
+    ap.add_argument("--align-tjunctions", action="store_true", help="offline quality-only experiment aligning closed, opaque textured T joins")
     args = ap.parse_args()
     if args.scale < 1 or args.bench < 0:
         ap.error("scale must be positive and bench must be non-negative")
@@ -763,6 +767,8 @@ def main():
         os.makedirs(output_dir, exist_ok=True)
     S = args.scale
     exact = (S == 1 and not args.wide)
+    if args.align_tjunctions and S == 1:
+        ap.error("T-junction experiment requires quality scale > 1")
 
     quads, pc, meta, nhist = load_scene(cap)
     height = meta["visarea"][1] + 1
@@ -797,7 +803,15 @@ def main():
     prog["uBgMargin"].value = (margin if (args.marginfill and args.wide) else 0)
     tex2d.use(0)
 
-    fdata, udata = build_vertices(quads, margin, dilate2d=not exact)
+    positions, joins = None, []
+    if args.align_tjunctions:
+        from tjunctions import align
+        positions, joins = align(quads[nhist:])
+        if nhist:
+            previous, _ = align(quads[:nhist])
+            positions = np.concatenate([previous, positions])
+        print(f"T-junction experiment: {len(joins)} vertices aligned")
+    fdata, udata = build_vertices(quads, margin, dilate2d=not exact, positions=positions)
     vbo_f = ctx.buffer(fdata.tobytes())
     vbo_u = ctx.buffer(udata.tobytes())
     vao = ctx.vertex_array(prog, [
@@ -866,7 +880,8 @@ def main():
         owned = np.flipud(np.frombuffer(mask_tex.read(alignment=1), np.uint8).reshape(fh, fw)) != 0
         owners[~owned] = 65535
         np.savez_compressed(args.buffers, indices=gpu, coverage=mask,
-                            owners=owners, quads=quads[nhist:], margin=margin, scale=S)
+                            owners=owners, quads=quads[nhist:], margin=margin, scale=S,
+                            positions=positions[nhist:] if positions is not None else quads[nhist:, 2:10].copy().view(np.int16).reshape(-1,4,2))
         prog["uDbgQuadId"].value = 0
         draw()
 
@@ -876,6 +891,8 @@ def main():
               "renderer": ctx.info["GL_RENDERER"],
               "scope": "native-index-buffer" if exact else "quality-preview",
               "passed": None}
+    if args.align_tjunctions:
+        report["tjunction_experiment"] = joins
     if exact:
         ref_vram = np.fromfile(os.path.join(cap, "videoram.bin"), dtype="<u2")
         off = 0x40000 if pc & 4 else 0

@@ -35,6 +35,7 @@ def main(argv=None):
     ap.add_argument("--gl-scale", type=int, help="explicit internal-scale experiment, 1..6")
     ap.add_argument("--no-crackfill", action="store_true", help="explicit experiment with crack filling disabled")
     ap.add_argument("--no-marginfill", action="store_true", help="disable backdrop suppression and boundary-column extension")
+    ap.add_argument("--align-tjunctions", action="store_true", help="explicit quality-only geometry join experiment")
     ap.add_argument("--video", choices=("gdi", "d3d", "bgfx"), help="explicit underlying MAME video-backend experiment")
     ap.add_argument("--native-renderer", action="store_true", help="windowed control with replacement GL disabled")
     ap.add_argument("--snapshot-mode", choices=("png", "raw"), help="explicit capture experiment; raw defers PNG encoding until exit")
@@ -49,7 +50,7 @@ def main(argv=None):
         ap.error("timeout must be positive")
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
-    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.gl_stall or args.gl_queue_mb
+    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.align_tjunctions or args.gl_stall or args.gl_queue_mb
     if args.headless and (gl_experiment or args.video or args.native_renderer):
         ap.error("live GL diagnostics cannot be combined with --headless")
     if args.native_renderer and gl_experiment:
@@ -122,6 +123,9 @@ def main(argv=None):
                 overrides["MIDV_GL_CRACKFILL"] = "0"
             if args.no_marginfill:
                 overrides["MIDV_GL_MARGINFILL"] = "0"
+            if args.align_tjunctions:
+                overrides["MIDV_GL_TJUNCTIONS"] = "1"
+                overrides["MIDV_GL_LOG"] = "1"
             manifest["settings"].update(overrides)
             report["presentation_overrides"] = overrides
             report["presentation"] = "explicit-gl-experiment"

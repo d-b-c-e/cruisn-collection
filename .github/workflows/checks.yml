@@ -26,6 +26,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/hud_speed_test.cpp -o /tmp/hud-test
       - run: /tmp/hud-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/hud_numeric_test.cpp -o /tmp/hud-numeric-test
@@ -38,6 +42,8 @@ jobs:
       - run: /tmp/ffb-analyzer fixtures/signals/idle-hit.csv lib/toolkit/profiles cruisn-vunit@2 50 /tmp/stages.csv
       - run: /tmp/ffb-analyzer fixtures/signals/idle-hit.csv lib/toolkit/profiles cruisn-vunit@2 50 /tmp/impacts.csv --impacts
       - run: python tests/native/check_motor_adapter.py /tmp/ffb-analyzer
+      - run: g++ -std=c++11 -O2 -Wall -Wextra native/analyze_tjunctions.cpp -o /tmp/tjunctions
+      - run: python tests/native/check_tjunctions.py /tmp/tjunctions
   gpu-quality:
     runs-on: ubuntu-latest
     env:
