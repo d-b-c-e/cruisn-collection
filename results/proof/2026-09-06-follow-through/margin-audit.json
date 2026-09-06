@@ -1,0 +1,134 @@
+[
+  {
+    "game": "offroad",
+    "frame": 5480,
+    "changed_pixels": 69891,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5481,
+    "changed_pixels": 69891,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5482,
+    "changed_pixels": 69797,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5483,
+    "changed_pixels": 69797,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5484,
+    "changed_pixels": 69786,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5485,
+    "changed_pixels": 69786,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5486,
+    "changed_pixels": 69831,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5487,
+    "changed_pixels": 69831,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5488,
+    "changed_pixels": 69840,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5489,
+    "changed_pixels": 69840,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "offroad",
+    "frame": 5490,
+    "changed_pixels": 69826,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5480,
+    "changed_pixels": 43521,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5481,
+    "changed_pixels": 44966,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5482,
+    "changed_pixels": 44966,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5483,
+    "changed_pixels": 47659,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5484,
+    "changed_pixels": 47659,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5485,
+    "changed_pixels": 51936,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5486,
+    "changed_pixels": 51936,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5487,
+    "changed_pixels": 54763,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5488,
+    "changed_pixels": 54763,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5489,
+    "changed_pixels": 55502,
+    "core_changed_pixels": 0
+  },
+  {
+    "game": "world25",
+    "frame": 5490,
+    "changed_pixels": 55502,
+    "core_changed_pixels": 0
+  }
+]
