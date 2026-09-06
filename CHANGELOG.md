@@ -5,6 +5,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Removed invalid USA RPM derived from speed text. RPM now reports unavailable;
+  5,012 actual loopback packets and original replay confirm the correction.
+
 - Fixed distant red/blue road strips caused by rectangle dilation sampling past
   texture atlas bounds. Original UV domains now bound enhanced sampling; native
   DDA remains exact. Added ROM-free GPU regression tests on NVIDIA and Mesa CI.

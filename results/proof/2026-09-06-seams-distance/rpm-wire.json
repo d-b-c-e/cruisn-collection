@@ -1,0 +1,17 @@
+{
+  "comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "errors": [],
+  "forza_packets": 5012,
+  "legacy_rpm_values": 0,
+  "max_speed_ms": 59.903358459472656,
+  "nonzero_rpm_triplets": 0,
+  "passed": true,
+  "physical_force": false,
+  "rpm_status_samples": 5012
+}
