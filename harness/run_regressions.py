@@ -73,7 +73,9 @@ def main(argv=None):
                 stats['passed']=stats['emulation_ratio']>=stats['minimum_ratio']
                 item['timings'].append(stats)
                 item['passed'] &= stats['passed']
-        except (OSError,ValueError,KeyError) as error:item['error']=str(error)
+        except (OSError,ValueError,KeyError) as error:
+            item['passed']=False
+            item['error']=str(error)
         report['cases'].append(item)
         write_json(work/'report.json',report)
         print(case['id'], 'PASS' if item['passed'] else 'FAIL',flush=True)
