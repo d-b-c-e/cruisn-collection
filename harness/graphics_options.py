@@ -53,8 +53,8 @@ def rows(game, options):
     descriptions = (
         ("seam_alignment", "SEAM ALIGNMENT",
          "EXPERIMENTAL: CLOSES SOME TERRAIN SEAMS; MAY SHIFT TEXTURES. NEXT LAUNCH."),
-        ("terrain_visibility", "TERRAIN VISIBILITY",
-         "EXPERIMENTAL: RESTORES SOME MISSING WORLD TERRAIN IN WIDESCREEN. NEXT LAUNCH."),
+        ("terrain_visibility", "WIDESCREEN TERRAIN",
+         "RESTORES SOME MISSING EDGE TERRAIN; DOES NOT EXTEND DRAW DISTANCE. NEXT LAUNCH."),
         ("detail_distance", "DETAIL DISTANCE",
          "EXPERIMENTAL: KEEPS DETAILED MODELS FARTHER AWAY; MORE RENDERING WORK. NEXT LAUNCH."),
         ("far_distance", "DRAW LIMIT",
@@ -68,7 +68,7 @@ def rows(game, options):
                     else "AVAILABLE FOR CRUIS'N WORLD ONLY." if option == "terrain_visibility"
                     else "AVAILABLE FOR CRUIS'N USA ONLY.")
         else:
-            value = (("ON" if selected.get(option) else "OFF") if option == "seam_alignment"
+            value = (("ON" if selected.get(option) else "OFF") if option in ("seam_alignment", "terrain_visibility")
                      else ("EXTENDED" if selected.get(option) else "STANDARD"))
         result.append((option, label, value, hint))
     return result
