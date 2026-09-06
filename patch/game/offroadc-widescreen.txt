@@ -39,3 +39,18 @@
 26C0 6A270037 7207FB63   # disp -1181
 2871 6A270038 7207F9B2   # disp -1614
 294F 6A270052 7207F8D4   # disp -1836
+#
+# SKY (2026-09-06): the flat blue backdrop drawn through E2A8/F280 kept
+# [0,512] bounds, leaving black upper corners in attract/gameplay camera views.
+# Extend only its X coordinates to [-86,598]. Y, color and draw order stay intact.
+# No added instructions or DMA submissions. E28D has already loaded floating
+# zero into R2: its integer/mantissa word is also zero, so Y stores can reuse it.
+# R0 is dead until overwritten on entry to F280; use it for -86 instead of
+# redundantly loading integer zero into R2. Guard the prerequisite instruction.
+# Matched frame1560: only this backdrop's four X words change, all native RAM
+# identical. Full6000-frame recorded replay: all100 native images/inputs match.
+E28D 07628000 07628000   # prerequisite: LDF 0.0,R2 (zero integer mantissa)
+E29A 08620000 0860FFAA   # LDI -86,R0 (was redundant LDI 0,R2)
+E29B 15420202 15400202   # STI R0,*+AR2(2) (left X)
+E29D 08630200 08630256   # LDI 598,R3 (right X)
+E2A4 15420208 15400208   # STI R0,*+AR2(8) (left X)

@@ -1,0 +1,125 @@
+{
+  "after_x": [
+    -86,
+    598,
+    598,
+    -86
+  ],
+  "all_other_quads_and_fields_equal": true,
+  "before_x": [
+    0,
+    512,
+    512,
+    0
+  ],
+  "candidate_sha256": "4553e2afb939e4fea88238b62c1180b9c2e3dcc9bee58c102fed49c878237893",
+  "changed_current_quads": [
+    0
+  ],
+  "full_replay": {
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 6000,
+    "gl_captures": {
+      "completed_frames": [
+        1440,
+        1500,
+        1560,
+        1620,
+        1680,
+        1740,
+        1800,
+        1860,
+        1920
+      ],
+      "count": 9,
+      "dropped_messages": 0,
+      "files": {
+        "mvgl_000.bmp": {
+          "sha256": "d396e445d8188c9d01de6686ec3e0144f8369d6c38003e7b2290508c3c235686",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_001.bmp": {
+          "sha256": "66ee0b60a20be35df4caa46d8ab84c9abcd026eedc282e656b89c72f4a01bcdd",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_002.bmp": {
+          "sha256": "61ae1589bb2d887a5405017e99bf23e6d827c57733d47b32ef9d1ee04b81d7e5",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_003.bmp": {
+          "sha256": "1317d0b044c3a3a6d361a275a3551eac6f201ac9ae2fe08a53eed235e0ea349a",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_004.bmp": {
+          "sha256": "f9c2b8f33bc0894ca869c7e9ad6bbd509e3d1366608089eccdf4ac37c80cba43",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_005.bmp": {
+          "sha256": "5276545a0ae90a9c6d18b95ea155432aca9abfc7dd688a6add1b893e6267980e",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_006.bmp": {
+          "sha256": "dac877fe2f7dbe0921f9e93c12cde094b8dada12b8a2d9ed8f0dcf2d1bd00dde",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_007.bmp": {
+          "sha256": "d639ed03d0a7d81494cebc7070933e173757a3953a71549cecad41d5a35bf07a",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "mvgl_008.bmp": {
+          "sha256": "f7beac5cb147304f889b425c2b87dbd8bd282aa66fa8f0e744ef27530d5e3eb9",
+          "size": [
+            1280,
+            720
+          ]
+        }
+      },
+      "index_sha256": "a21691d8c187453b713746f027085fceb1bc077a58be6d15505742c21d1053aa",
+      "scope": "completed GL frame pixels"
+    },
+    "passed": true
+  },
+  "native_capture_equal": {
+    "paletteram.bin": true,
+    "textureram.bin": true,
+    "videoram.bin": true
+  },
+  "quad_count": 375,
+  "schema": 1,
+  "scope": "Off Road flat sky bounds; matched frame1560 and complete recorded route",
+  "source_reports": [
+    "world-offroad-sky-1560",
+    "world-offroad-sky-bounded-1560",
+    "world-offroad-sky-full"
+  ]
+}
