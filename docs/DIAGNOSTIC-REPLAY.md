@@ -14,9 +14,10 @@ was scripted. The user's LA Freeway wheel drive also passed: all 5,012 frames
 and 83 native screenshots match, including selection and driving.
 World v2.4/v2.5 and Off Road also have 6,000-frame scripted cases with 100
 matching native images. Off Road's validated driving case uses H-pattern first
-gear; a race entered in neutral is not counted as driving. Exotica has a
-3,600-frame boot/attract case that matches with its recorded throttled settings;
-its headless control diverges and is not an equivalent visual oracle.
+gear; a race entered in neutral is not counted as driving. Exotica now has a
+6,000-frame driving case with 21 completed GL reference images. Its live GL path
+skips CPU polygons, so matching black native images cannot validate gameplay;
+headless/live differences alone do not establish nondeterminism.
 
 V-Unit launches now use D3D for MAME's underlying window while retaining the
 owned GL widescreen overlay. On this rig, the same LA Freeway recording with raw
