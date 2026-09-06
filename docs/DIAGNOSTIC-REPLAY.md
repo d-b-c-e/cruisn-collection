@@ -283,7 +283,7 @@ the separate local coverage-based cosmetic pass.
 
 ```powershell
 python harness/analyze_session.py results/diagnostics/my-drive/record --first 2600 --last 3600 --report results/diagnostics/selection-timing.json
-python harness/analyze_ffb.py results/diagnostics/my-drive/record/ffb_trace.csv --profile cruisn-vunit@2 --strength 50
+python harness/analyze_ffb.py results/diagnostics/my-drive/record/force-source.csv --profile cruisn-vunit@2 --strength 50 --frames results/diagnostics/my-drive/record/frames.csv
 ```
 
 The timing report provides emulation speed and host callback p50/p95/p99/worst
@@ -298,6 +298,11 @@ It also accepts toolkit motor traces and `fixtures/signals/idle-hit.csv`.
 New recordings also have `force-source.csv` with emulated seconds/frame and raw
 versus driver-adapted bytes. Prefer this clock for contacts and video alignment.
 `ffb_trace.csv` uses host milliseconds and must not be treated as emulated time.
+`--frames` adds each candidate's first completed game frame to the JSON report,
+using the emulated clock even when host playback stalls. Out-of-range events
+remain unanchored. Both `--frames` and `--labels` reject host-time input traces
+instead of silently comparing incompatible clocks. Candidate anchors are review
+targets, not automatic collision labels.
 
 ```powershell
 python harness/analyze_ffb.py CASE/record/force-source.csv --impacts --labels contacts.json
@@ -305,8 +310,10 @@ python harness/run_rig.py --rom crusnusa --record-case results/diagnostics/atten
 ```
 
 `--impacts` evaluates the optional explicit steering torque envelope. Enable it
-for attended product testing with `[collection] ffb_impact=1` or the per-game
-`ffb_impact_<rom>=1`. It reserves 25% of the constant-force budget; independent
+for attended product testing through **Settings → Force Feedback → Impact Cues**,
+or with `[collection] ffb_impact=1` / `ffb_impact_<rom>=1`. A revision override
+(including `0`) wins over its family and global settings. The World menu writes
+the selected revision, normally `ffb_impact_crusnwld24`. It reserves 25% of the constant-force budget; independent
 condition effects are outside that budget. Defaults and existing profiles remain
 unchanged until this option is selected.
 The enhanced detector reads raw force before driver gain/clamp/slew; the

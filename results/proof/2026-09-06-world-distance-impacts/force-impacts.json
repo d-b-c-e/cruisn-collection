@@ -1,0 +1,52 @@
+{
+  "kind": "offline-force-algorithm",
+  "metrics": {
+    "events_ms": [
+      45076,
+      65600,
+      67516,
+      70520,
+      74196,
+      75544,
+      77132,
+      79428,
+      80464,
+      84624,
+      91116,
+      94740,
+      103352,
+      105028,
+      105476,
+      106116,
+      107032,
+      109068,
+      119960,
+      120944,
+      125156,
+      128004,
+      129040,
+      133544,
+      136860,
+      137532
+    ],
+    "full_strength_fraction": 0.0,
+    "motor_samples": 8317,
+    "peak_abs": 0.707636356,
+    "rms": 0.246431708,
+    "strength": 80,
+    "tick_ms": 4,
+    "ticks": 37901
+  },
+  "passed": true,
+  "profile": "cruisn-vunit@2",
+  "profiles_sha256": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52",
+  "schema": 1,
+  "scope": "zero-order-held motor trace at 4ms; no device output or collision labels",
+  "steering_impacts": true,
+  "toolkit": [
+    "v0.11.1",
+    "b726d56eccb4c0a74b9ec36ae30fdb41e5d520ea"
+  ],
+  "trace": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-germany-extended-20260906\\record\\force-source.csv",
+  "trace_sha256": "96b7902942f96fa7fc8a2ce6c97d40cb0f652827a8e00e1fe48faaaec4e4c2ec"
+}

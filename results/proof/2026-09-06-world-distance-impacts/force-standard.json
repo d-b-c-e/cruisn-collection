@@ -1,0 +1,185 @@
+{
+  "event_frames": [
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 45076,
+      "first_completed_frame": 2612
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 65600,
+      "first_completed_frame": 3801
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 67516,
+      "first_completed_frame": 3912
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 70520,
+      "first_completed_frame": 4086
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 74196,
+      "first_completed_frame": 4299
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 75544,
+      "first_completed_frame": 4377
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 77132,
+      "first_completed_frame": 4469
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 79428,
+      "first_completed_frame": 4602
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 80464,
+      "first_completed_frame": 4662
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 84624,
+      "first_completed_frame": 4903
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 91116,
+      "first_completed_frame": 5279
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 94740,
+      "first_completed_frame": 5489
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 103352,
+      "first_completed_frame": 5988
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 105028,
+      "first_completed_frame": 6085
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 105476,
+      "first_completed_frame": 6111
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 106116,
+      "first_completed_frame": 6148
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 107032,
+      "first_completed_frame": 6201
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 109068,
+      "first_completed_frame": 6319
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 119960,
+      "first_completed_frame": 6950
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 120944,
+      "first_completed_frame": 7007
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 125156,
+      "first_completed_frame": 7251
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 128004,
+      "first_completed_frame": 7416
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 129040,
+      "first_completed_frame": 7476
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 133544,
+      "first_completed_frame": 7736
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 136860,
+      "first_completed_frame": 7929
+    },
+    {
+      "classification": "unlabelled force-rise candidate",
+      "emulated_ms": 137532,
+      "first_completed_frame": 7967
+    }
+  ],
+  "frames_sha256": "63c01dd35337426e89b463f176d3d48ecb49dc5d65f5b3c5499e3ea64c1aecd6",
+  "kind": "offline-force-algorithm",
+  "metrics": {
+    "events_ms": [
+      45076,
+      65600,
+      67516,
+      70520,
+      74196,
+      75544,
+      77132,
+      79428,
+      80464,
+      84624,
+      91116,
+      94740,
+      103352,
+      105028,
+      105476,
+      106116,
+      107032,
+      109068,
+      119960,
+      120944,
+      125156,
+      128004,
+      129040,
+      133544,
+      136860,
+      137532
+    ],
+    "full_strength_fraction": 0.0,
+    "motor_samples": 8317,
+    "peak_abs": 0.799796164,
+    "rms": 0.328623032,
+    "strength": 80,
+    "tick_ms": 4,
+    "ticks": 37901
+  },
+  "passed": true,
+  "profile": "cruisn-vunit@2",
+  "profiles_sha256": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52",
+  "schema": 1,
+  "scope": "zero-order-held motor trace at 4ms; no device output or collision labels",
+  "steering_impacts": false,
+  "toolkit": [
+    "v0.11.1",
+    "b726d56eccb4c0a74b9ec36ae30fdb41e5d520ea"
+  ],
+  "trace": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-germany-extended-20260906\\record\\force-source.csv",
+  "trace_sha256": "96b7902942f96fa7fc8a2ce6c97d40cb0f652827a8e00e1fe48faaaec4e4c2ec"
+}

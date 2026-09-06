@@ -8,6 +8,11 @@ look. **No ROMs are included** — you supply your own.
 
 This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
 collision feedback and telemetry coverage remain open work. The
+[fresh Germany recording review](docs/reviews/2026-09-06-world-distance-and-impacts.md)
+confirms repeatable playback and weak impact feel despite working 80% FFB output.
+**Settings → Force Feedback → Impact Cues** now exposes an optional per-game
+comparison. **Widescreen Terrain** repairs missing edge geometry; it does not
+increase draw distance. Real distance experiments remain diagnostic. The
 [World rendering and replay review](docs/reviews/2026-09-06-world-rendering-and-replay.md)
 documents fixes for checkerboard shadows, Off Road's black sky corners and two
 native coverage errors. The wider World object-visibility experiment is disabled
@@ -15,8 +20,8 @@ after it changed the recorded route despite matching inputs. The original German
 recording still replays correctly; camera/ADC traces now provide a separate route
 check. A [follow-up rendering investigation](docs/reviews/2026-09-06-world-assets-and-road.md)
 adds a display-only fix for World 2.4's disappearing transmission artwork and
-identifies a missing road polygon at the reported Germany timestamp. Safe road
-visibility and distance expansion remain open. The
+identifies a missing road polygon at the reported Germany timestamp. A conservative
+road-visibility option is available; distance expansion remains open. The
 [Germany Level investigation](docs/reviews/2026-09-06-germany-level.md) adds a
 complete human race replay, fixes the invisible Esc menu, and separates native
 transmission-screen corruption from the remaining widescreen defects. An external

@@ -3319,3 +3319,38 @@ including configured timing gates and Exotica's21 completed GL images. See
 proof final-verification.json. These are separate from the new terrain candidate's
 repeatability checks. Native atlas unit was rerun successfully. Initial branch
 CI34062918005 passed all four jobs; final evidence commit receives its own CI run.
+
+## 2026-09-06 — Fresh Germany baseline, impact controls and distance limits
+
+Review: `docs/reviews/2026-09-06-world-distance-and-impacts.md`.
+Proof: `results/proof/2026-09-06-world-distance-impacts/`.
+
+- Attended `world-germany-extended-20260906`: World2.4, scale4/margin86,
+  conservative terrain visibility ON, FFB80. Full read-only lifecycle identity
+  matches8783 input/time rows and146 native screenshots. Original case preserved.
+- User still reports distant pop-in and weak impact feel. Terrain visibility is
+  side-edge repair, not distance. Renamed menu to Widescreen Terrain: ON/OFF.
+- FFB trace:8317 raw/adapted writes, all equal, -126..126;6621 accepted constant
+  updates,26 successful rumble receipts; Crisp2/20ms, steering impact mix OFF.
+  No physical torque or confirmed collision detection is implied by API success.
+- Offline80% standard peak0.799796164/RMS0.328623032 versus optional mix
+  peak0.707636356/RMS0.246431708. Both26 candidates. Optional25% pulse budget
+  also lightens sustained steering, so no claim of stronger crash feel.
+- First candidate45.076s anchors to completed frame2612. DenseGL2520..2700
+  shows hill crest/jump and no obvious nearby car contact; no labels invented.
+- Added per-game launcher Impact Cues, defaults OFF, exact World revision saved.
+  Shared resolver preserves explicitOFF precedence over family/global settings.
+- Force analyzer --frames maps emulated candidates to completed frames; labels
+  and anchors reject host-time input traces.65 Python tests pass, actual menu
+  offscreen previews inspected. Native executable/shaders/toolkit unchanged.
+- Lifecycle1750 frames/525032 visits/697 objects:13601 visits from94 objects
+  beyond80k within160k; max depth-minus-radius117424,44 model transitions.
+- Bounded Lua projection diagnostic parameterized to80,016..160,000. Matched
+  control/100k/160k each101 completedGL frames; inputs/time equal, candidates
+  correctly fail strict identity on4 changed images.100k uses143145 extended
+  reads,160k182338; interval1952..2200 speed100.01%/100.09%/79.95% respectively.
+  Mountain silhouettes change; clean pop-in removal not established. No distance
+  candidate promoted. Next isolate a mountain model's first submitted geometry.
+- Downloaded cheat0279 includes all four games and World2.4/2.5 XML. Revision
+  addresses differ; reuse MAME XML engine with recording provenance next. Files
+  are not installed/enabled/redistributed in this batch; Cheats submenu remains open.

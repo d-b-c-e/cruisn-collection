@@ -337,6 +337,20 @@ Semantics that everything relies on (full detail in RESULTS.md):
 
 ## Working style
 
+- Latest attended case: `results/diagnostics/world-germany-extended-20260906`
+  (8783 frames, terrain option ON, FFB80); full identity matches 8783/146.
+  `docs/reviews/2026-09-06-world-distance-and-impacts.md` records distance/FFB evidence.
+  Widescreen Terrain is the renamed Terrain Visibility option, not far distance.
+- `harness/force_options.py` resolves impact cues consistently in shell/launcher:
+  explicit ROM revision (including OFF), then family, then global. Shell World
+  saves the selected revision. No physical-feel acceptance yet; defaults stay OFF.
+- `analyze_ffb.py --frames CASE/record/frames.csv` anchors candidates to completed
+  frames; emulated-time labels/anchors require `force-source.csv`, not wall time.
+- `lua/world_projection_distance.lua` accepts bounded `CRUISN_DISTANCE_FAR`
+  (80016..160000, multiple of16) plus FIRST/LAST; diagnostic World2.4 only.
+  160k used ~80% emulation in the instrumented window and changed silhouettes.
+  Do not deploy this read-tap experiment as a product distance fix.
+
 - RESULTS.md is append-only chronology: add dated sections, never rewrite
   history. Keep proof images in `results/proof/` (capture dirs are regenerated
   and gitignored).

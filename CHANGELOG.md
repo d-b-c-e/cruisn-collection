@@ -5,6 +5,13 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Expose optional per-game steering impact cues in Force Feedback settings,
+  with correct World revision resolution and unchanged defaults.
+- Rename World Terrain Visibility to Widescreen Terrain and clarify that it
+  repairs edge geometry without increasing draw distance.
+- Anchor offline force candidates to recorded frames and reject accidental
+  comparisons between host-time force traces and emulated-time collision labels.
+
 - Preserve World 2.4's D/A panels and transmission header during level loading
   in enhanced GL output, using the actual UI model lifetime without changing
   game memory or recorded driving inputs.

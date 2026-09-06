@@ -76,7 +76,7 @@ Changes are saved per game and take effect on its next launch. All start off.
 | Setting | Games | What to expect |
 |---|---|---|
 | **Seam Alignment** | USA, World, Off Road | Aligns certain mismatched terrain edges at enhanced resolutions. Closed a measured blue seam in Off Road, but can shift nearby texture interpolation. |
-| **Terrain Visibility** | World 2.4/2.5 | Conservatively enlarges object bounds in widescreen, restoring a measured missing Germany road section. Adds drawing work; old driving recordings can take a different route. |
+| **Widescreen Terrain** | World 2.4/2.5 | Repairs some missing edge terrain, including a measured Germany road hole. Does **not** extend draw distance. Adds drawing work; old recordings can take a different route. |
 | **Detail Distance** | USA v4.5 | Keeps higher-detail models farther away. The recorded route required about 5.25% more polygon submissions. |
 | **Draw Limit** | USA v4.5 | Raises a distant-object rejection limit. It added submissions but **no visible improvement** in the tested scene; it cannot load missing scenery. |
 
@@ -84,7 +84,8 @@ Unavailable options cannot be enabled for other games. These experiments do not
 replace the graphics fixes already applied automatically. Return a setting to
 Off/Standard to remove its effect on the next launch.
 
-World's Terrain Visibility candidate needs a fresh attended driving evaluation.
+World's Widescreen Terrain option was previously labelled Terrain Visibility / Extended.
+The fresh attended Germany recording confirms that distant pop-in remains.
 Keep old recordings as controls and record a separate case after choosing the
 graphics settings. Its bounded visibility change is separate from draw distance;
 it does not bring in more distant scenery. The transmission artwork fix applies
@@ -204,6 +205,15 @@ detail underneath it. If you want centring, start around 20-30 and stop as
 soon as you can still feel the road. Cruis'n Exotica never uses it - that
 game makes its own centring force. Change it per game with `[collection] ffb_spring_<rom>` in
 `rig\collection.ini`; `0` turns it off.
+
+**Impact cues** (**SETTINGS → FORCE FEEDBACK → IMPACT CUES**) are an optional
+experiment saved per game, off by default. World targets the configured ROM revision.
+They replace the generic rumble cue with a short steering-axis pulse and reserve
+25% of the constant-force budget, so sustained steering becomes lighter.
+They infer hits from force spikes; they do not read actual collision flags.
+Enable World alone for a comparison on the next launch, keeping Strength and Feel
+the same. Better crash feel has not yet been confirmed on a physical wheel.
+Increasing Strength alone also increases ordinary steering weight.
 
 **SETTINGS → FFB DIRECTION**: wheel bases do not agree on which way a
 positive force turns. The default is right for a Moza base (measured with

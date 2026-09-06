@@ -1,0 +1,46 @@
+{
+  "case": "world-germany-extended-20260906",
+  "status": "recorded",
+  "rom": "crusnwld24",
+  "inp_sha256": "6b82f37f93283f8fd0445c31c4ed4085d2ea99873dab90c273e970456a91b222",
+  "dependencies": {
+    "SDL2.dll": "47a3b27654832d9f7e5719c88078210a3dbfd6407b559c5a3c4eb8ab7d0ebdb6",
+    "force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52",
+    "vunit.exe": "7eaf9ce8888190a5a6b8c30dd698fb57175c644779d4c65bf52cc083c74263fb"
+  },
+  "initial_hashes": {
+    "SDL2.dll": "47a3b27654832d9f7e5719c88078210a3dbfd6407b559c5a3c4eb8ab7d0ebdb6",
+    "cfg/crusnexo.cfg": "c9fe09c6e047e2d7aa5ae811252b6627a89f328e2c4fb1b32888e6220faf0714",
+    "cfg/crusnusa.cfg": "a47caa6fd9a301ca3a3d5e4e46542694562c97389e52f5c4bf714357be58b187",
+    "cfg/crusnwld.cfg": "9513799bb76614454a6e20d84dd1dbd960ff795fe094f0ba46a2095e98e1e4c3",
+    "cfg/crusnwld24.cfg": "04539b7f4629114e19918684bf4d16fd88deb764f903dfd6c45b7bd82c156773",
+    "cfg/default.cfg": "ce6f92d4260cfa730a9cda509e6b19e58813b279f1d85a3408cccb2abb49f236",
+    "cfg/offroadc.cfg": "8c319e613fa9ad268a932f6155f4fde78ecafa6c796779a7f4e40ed42ba7df1f",
+    "collection.ini": "3300b5125adbb720111e8c6862c1f1ef4c0c70b0cc7ef9f04b8b7e377ba0ccbb",
+    "ctrlr/EmuEzRacing.cfg": "41e0a4a972c57c1db98f548e154f31872b918fff4aca51f4a8184e06d7d918d6",
+    "force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52",
+    "game-patch.txt": "20f118db240dda744db8796fc7c4a1609d897adc989bc14a1ad31e4e8789b11e",
+    "ini/mame.ini": "fa63c99cf06920506dfcfc19eaff9771bc20f90750e49eeff0c66cf78cc43a3c",
+    "ini/ui.ini": "dc612a63232c566aa2a3f250bf3e86a19ffe7c537f57b617e5b101915ddec872",
+    "nvram/crusnexo/ioasic": "3d6876a0146de8576eb2395a858de1213d1b92c65b779df3a331cfd5a4584546",
+    "nvram/crusnexo/m48t35": "a2047b740c07fb212baf95b70f97048070fa9cdea7a46019645667fb0d335510",
+    "nvram/crusnexo/nvram": "749afa4a84c1a3977abbaf5bdf06d3bdd4b0b30db8cb122ba600451da9c37ec5",
+    "nvram/crusnusa/nvram": "6e52dbde0b3d2ef49245243efcc354f5094a1d15a35afb948d4ecd73e4f11a31",
+    "nvram/crusnwld/nvram": "3e4c6067dbe503e5c4608a5b41dc2bbad83348d26b94c51351116158a611da67",
+    "nvram/crusnwld/serial_pic2": "3d6876a0146de8576eb2395a858de1213d1b92c65b779df3a331cfd5a4584546",
+    "nvram/crusnwld24/nvram": "a04e1c39162db4d55a882d5b8a07187b71dec2eb50256a816fd7204ef19cbdb0",
+    "nvram/crusnwld24/serial_pic2": "3d6876a0146de8576eb2395a858de1213d1b92c65b779df3a331cfd5a4584546",
+    "nvram/offroadc/nvram": "d42ae84b755df12211825432bcf51e4125c61ae5f7e5f96da77c265e1b3501ed",
+    "nvram/offroadc/serial_pic2": "3d6876a0146de8576eb2395a858de1213d1b92c65b779df3a331cfd5a4584546",
+    "session.lua": "2acec1260190b23c5caf134f59f98105db6ea8d37a73edea064c302b7c55a8c2"
+  },
+  "comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "frames": 8783,
+  "native_snapshots": 146
+}
