@@ -9,7 +9,8 @@ An attended FFB evaluation remains a separate drive.
 The first verified gameplay case is Cruis'n USA: 6,000 emulated frames with
 steering, accelerator, brake, coin, start and gear changes. All recorded inputs,
 emulated timestamps and 100 native screenshots matched on playback. The route
-was scripted; a real human wheel recording still needs its own identity replay.
+was scripted. The user's LA Freeway wheel drive also passed: all 5,012 frames
+and 83 native screenshots match, including selection and driving.
 World, Off Road and Exotica require independent calibrated cases before claiming
 the same coverage.
 
@@ -27,6 +28,16 @@ The directory must be new. `--record-frames 6000` instead requests a fixed stop
 after 6,000 emulated frames, including boot and selection. `--windowed` is
 available. Recording currently requires this developer launcher; the packaged
 collection's settings screen does not yet expose it.
+
+New recordings save raw native snapshot pixels during play and encode the PNGs
+after exit. This removes the measured PNG-compression hitch: on the user's route,
+capture-adjacent callback intervals fell from a 79.5 ms median to 18.2 ms, while
+all 83 images remained identical. Raw files remain in `record/raw-snap/` with
+their own hashes. This uses MAME's `video:snapshot_pixels()`, the same render
+target as its PNG snapshots; `screen:pixels()` reads a different buffer.
+The raw header is `CRSNRAW1`, little-endian width/height, then BGRX pixels.
+Raw disk writes still have a cost; this is not a claim of zero instrumentation.
+Older cases retain their frozen PNG capture script unless explicitly overridden.
 
 Record the route leading to a defect, rather than starting a test from attract
 mode. Note the location and approximate time of the defect. The saved
@@ -62,6 +73,21 @@ The first command validates identity against the archived executable. The second
 explicitly tests a changed executable. The third uses the recorded presentation
 settings, including GL when it was enabled. All create new evidence directories.
 `--timeout` bounds the run; partial evidence survives a timeout, which is a failure.
+
+For an older case, explicitly test deferred encoding and capture a defect range:
+
+```powershell
+python harness/replay.py results/diagnostics/my-drive --snapshot-mode raw --video d3d --gl-log --gl-capture 3300:3900 --gl-every 60 --gl-max 20
+python harness/replay.py results/diagnostics/my-drive --headless --snapshot-mode raw --until-frame 3442 --capture-state
+```
+
+Overrides and the replacement diagnostic script hash are retained in the report;
+the original case is never edited. `--until-frame` explicitly compares only the
+requested prefix, still checking every input/time and sampled image in that
+prefix. `--capture-state` retains quads and native RAM at stop-minus-two, matching
+the offline renderer's completed-scene convention. Missing dump files fail.
+`--native-renderer` is an aspect-preserving windowed control with the replacement
+GL disabled. `--gl-scale` and `--no-crackfill` are explicit presentation experiments.
 
 `report.json` passes only when the process exits cleanly, every expected frame
 and screenshot is present, effective inputs and emulated time match, and all

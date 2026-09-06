@@ -17,6 +17,7 @@ import subprocess
 
 from diagnostic_runtime import ROOT, diagnostic_env, new_run
 from verification import image_signature, required_files, sha256_file, write_json
+from raw_snapshots import convert_raw_snapshots
 
 STATE_DIRS = ("ini", "cfg", "nvram", "ctrlr")
 WRITABLE_DIRS = {"-inipath": "ini", "-cfg_directory": "cfg",
@@ -109,6 +110,12 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
     evidence = {"frames": len(rows), "columns": fields, "snapshots": shots,
             "input_coverage": coverage,
             "trace_sha256": sha256_file(directory / "frames.csv")}
+    raw = directory / "raw-snap"
+    if raw.exists():
+        expected_raw = [f"frame_{n:08d}.raw" for n in frames]
+        if sorted(p.name for p in raw.iterdir()) != expected_raw:
+            raise ValueError("raw snapshot manifest differs")
+        evidence["raw_sha256"] = {name: sha256_file(raw / name) for name in expected_raw}
     index = directory / "gl-snap" / "captures.csv"
     if require_gl or index.exists():
         with open(index, newline="", encoding="utf-8") as stream:
@@ -144,11 +151,14 @@ def compare_evidence(reference_dir, replay_dir, reference, replay):
 
 
 class Recording:
-    def __init__(self, output, every=60, stop_frame=0):
+    def __init__(self, output, every=60, stop_frame=0, snapshot_mode="raw"):
         if every < 1 or stop_frame < 0:
             raise ValueError("snapshot interval must be positive and stop frame nonnegative")
         self.path = new_run("recording", output)
         self.every, self.stop_frame = every, stop_frame
+        if snapshot_mode not in ("png", "raw"):
+            raise ValueError("snapshot mode must be png or raw")
+        self.snapshot_mode = snapshot_mode
         self.manifest = None
 
     def prepare(self, command, env, rig, *, stimulus=None):
@@ -202,6 +212,7 @@ class Recording:
         if not roms:
             raise ValueError("no ROM zip/7z containers found to fingerprint")
         self.manifest = {"schema": 1, "status": "recording", "rom": rom,
+            "snapshot_mode": self.snapshot_mode,
             "origin": "synthetic-inp" if stimulus else "live-input",
             "created_utc": datetime.now(timezone.utc).isoformat(),
             "every": self.every, "stop_frame": self.stop_frame,
@@ -220,6 +231,7 @@ class Recording:
             return
         try:
             required_files(self.path / "record" / "input", ["session.inp"])
+            convert_raw_snapshots(self.path / "record")
             self.manifest["evidence"] = session_evidence(self.path / "record", self.every, returncode,
                 require_gl=bool(self.manifest["settings"].get("MIDV_GL_SNAP")))
             self.manifest["inp_sha256"] = sha256_file(self.path / "record" / "input" / "session.inp")
@@ -264,6 +276,9 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
         elif k.endswith(("_SNAP", "_STATEDUMP_DIR", "_QUADLOG", "_CAPTURE", "_RAMDUMP_DIR")):
             del settings[k]
     env = diagnostic_env(settings)
+    if manifest.get("snapshot_mode") == "raw":
+        (runtime / "raw-snap").mkdir()
+        env["SNAP_RAW_DIR"] = str(runtime / "raw-snap")
     # Recording is intentionally output-free too. Captures are for input/render
     # regression; physically assessing FFB remains a separate attended drive.
     if playback:

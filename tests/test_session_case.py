@@ -42,6 +42,21 @@ class SessionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "frame count"):
                 compare_evidence(a, b, ea, eb)
 
+    def test_explicit_prefix_still_checks_inputs_and_pixels(self):
+        with tempfile.TemporaryDirectory() as td:
+            a, b = Path(td) / "a", Path(td) / "b"
+            ea, eb = self.case(a), self.case(b, wheel=150, count=2)
+            prefix = dict(ea, frames=2, snapshots={n: v for n, v in ea["snapshots"].items() if int(n) <= 2})
+            self.assertFalse(compare_evidence(a, b, prefix, eb)["passed"])
+
+    def test_raw_snapshot_manifest_cannot_be_truncated(self):
+        with tempfile.TemporaryDirectory() as td:
+            a = Path(td) / "a"
+            self.case(a)
+            (a / "raw-snap").mkdir()
+            with self.assertRaisesRegex(ValueError, "raw snapshot manifest"):
+                session_evidence(a, 1, 0)
+
     def test_stop_receipt_and_extra_images_are_required_checks(self):
         with tempfile.TemporaryDirectory() as td:
             a = Path(td) / "a"

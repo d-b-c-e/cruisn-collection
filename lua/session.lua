@@ -5,6 +5,7 @@ local last_emulated = -1
 local every = tonumber(os.getenv("SNAP_EVERY")) or 60
 local stop_frame = tonumber(os.getenv("SNAP_STOP")) or 0
 local log_path = assert(os.getenv("SNAP_SESSION_LOG"), "SNAP_SESSION_LOG required")
+local raw_dir = os.getenv("SNAP_RAW_DIR")
 local log = assert(io.open(log_path, "w"))
 local tags = {}
 for tag, _ in pairs(manager.machine.ioport.ports) do table.insert(tags, tag) end
@@ -26,8 +27,28 @@ emu.register_frame_done(function()
     end
     log:write("\n")
     if count % every == 0 then
-        local err = manager.machine.screens[":screen"]:snapshot(
-            string.format("frame_%08d.png", count))
+        local err
+        if raw_dir then
+            -- Avoid PNG encoding on the emulation thread. The harness converts
+            -- these immutable RGB32 frames after the process has exited.
+            -- Use the snapshot render target, just like screen:snapshot().
+            -- screen:pixels() can expose the other buffer of a double-buffered
+            -- screen and therefore differs by a frame during motion.
+            local width, height = manager.machine.video:snapshot_size()
+            local pixels = manager.machine.video:snapshot_pixels()
+            local out
+            out, err = io.open(raw_dir .. string.format("/frame_%08d.raw", count), "wb")
+            if out then
+                local ok
+                ok, err = out:write(string.pack("<c8I4I4", "CRSNRAW1", width, height), pixels)
+                local closed, close_err = out:close()
+                if not closed then err = close_err end
+                if ok and closed then err = nil end
+            end
+        else
+            err = manager.machine.screens[":screen"]:snapshot(
+                string.format("frame_%08d.png", count))
+        end
         if err then
             emu.print_error("session.lua: snapshot failed: " .. tostring(err))
             manager.machine:exit()
