@@ -1,10 +1,12 @@
 {
-  "commit": "c9b76b72087579ffd3b58734f22704e0fc078ecb",
+  "commit": "0e8cc0b1d39b4dbdf76513d132ff8d0f8adf3ee2",
   "files": {
     "include/force_model.h": "eae373e5bdaac97ad8c83b1f0a0ae4a1ccd55b0db5caa835581264b370f42842",
     "include/force_profile.h": "fec9bdc952a27b4353e1b98ae87395c424f0b076c8cbb148e3619ce5977865e4",
+    "include/impact_mixer.h": "c8b8d9dbc8160144d21ad4b2b6755023f9f964c84ccb800defcfa3630796f784",
+    "include/signal_sample.h": "44205c930c74cdef2ba4fe268b5afc98c746566da8c83ae95b327abf263ad35c",
     "profiles/force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52"
   },
-  "ref": "v0.10.1",
+  "ref": "v0.11.0",
   "schema": 1
 }

@@ -15,6 +15,8 @@ from verification import write_json
 ROOT = Path(__file__).resolve().parents[1]
 FILES = {"include/force_model.h": "native/forcemodel/force_model.h",
          "include/force_profile.h": "native/forcemodel/force_profile.h",
+         "include/impact_mixer.h": "native/forcemodel/impact_mixer.h",
+         "include/signal_sample.h": "native/telemetry/signal_sample.h",
          "profiles/force-profiles.ini": "profiles/force-profiles.ini"}
 
 
@@ -39,7 +41,12 @@ def main(argv=None):
     for relative, original in FILES.items():
         expected = blob(args.source, args.ref, original)
         hashes[relative] = hashlib.sha256(expected).hexdigest()
-        old = blob(args.source, previous, original)
+        exists = subprocess.run(["git", "-C", str(args.source), "cat-file", "-e",
+                                 f"{previous}:{original}"], capture_output=True)
+        if exists.returncode and subprocess.run(["git", "-C", str(args.source),
+                "rev-parse", "--verify", previous + "^{commit}"], capture_output=True).returncode:
+            raise ValueError(f"previous toolkit ref does not resolve: {previous}")
+        old = blob(args.source, previous, original) if exists.returncode == 0 else None
         targets = [library / relative]
         if relative.startswith("include/"):
             targets.append(args.mame / "src" / "mame" / "midway" / "dbce" / Path(relative).name)
