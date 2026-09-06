@@ -14,6 +14,13 @@ and 83 native screenshots match, including selection and driving.
 World, Off Road and Exotica require independent calibrated cases before claiming
 the same coverage.
 
+V-Unit launches now use D3D for MAME's underlying window while retaining the
+owned GL widescreen overlay. On this rig, the same LA Freeway recording with raw
+capture ran at 78% during car selection and 84% while racing with GDI; D3D held
+100% in both intervals. All 83 native images matched. `CRUISN_VUNIT_VIDEO=gdi`
+provides a compatibility fallback. This measurement covers USA on this rig;
+World/Off Road and physical wheel/menu behavior need their own acceptance.
+
 ## Record a drive
 
 From the repository root, using the existing rig configuration:

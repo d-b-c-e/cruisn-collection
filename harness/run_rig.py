@@ -614,10 +614,11 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
     # feedback never used them (the driver calls midv_ffb_write directly).
     # priority 1: raise MAME's thread priority - ambient load (Defender,
     # Pit House, Spotify) showed up as 94-97% average speed = audio crackle.
-    # video gdi is REQUIRED under the GL overlay (V-Unit games only).
-    # Zeus games have no overlay, so their CRT look comes from MAME's bgfx
-    # crt-geom-deluxe chain instead (boot-time only - the shell setting is
-    # the toggle there; F9 does nothing on Zeus).
+    # V-Unit uses D3D for the underlying MAME window. Full-window GDI software
+    # rendering held a recorded USA selection screen near 78% speed at 4K;
+    # D3D held 100% with the same GL overlay and identical native snapshots.
+    # The old GDI requirement concerned the retired CHILD overlay. The current
+    # owned top-level popup is independently composed by Windows.
     if rom in ZEUS_ROMS and not zeus_gl:
         # fallback path: MAME's own renderer presents (MIDZ_GL=0)
         if crt:
@@ -625,9 +626,12 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
         else:
             vid = "video d3d\n"
     else:
-        # our GL overlay presents; gdi underneath is REQUIRED (V-Unit) /
-        # cheapest (Zeus)
-        vid = "video gdi\n"
+        # Zeus already keeps its GDI owner small under a monitor-sized overlay.
+        # Keep a developer fallback for diagnosing machine-specific D3D issues.
+        backend = "gdi" if rom in ZEUS_ROMS else os.environ.get("CRUISN_VUNIT_VIDEO", "d3d").lower()
+        if backend not in ("gdi", "d3d"):
+            raise ValueError("CRUISN_VUNIT_VIDEO must be gdi or d3d")
+        vid = f"video {backend}\n"
     open(os.path.join(ini, "mame.ini"), "w").write(
         f"skip_gameinfo 1\n{vid}output windows\npriority 1\n")
     open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
