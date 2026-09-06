@@ -30,6 +30,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
+import graphics_options
 try:
     import rawjoy  # noqa: E402  (Raw Input HID: >32-button wizard capture)
 except Exception:
@@ -774,7 +775,7 @@ def load_config():
     return {"crt": str(sec.get("crt", "1")) == "1",
             "transmission": tr,
             "crackfill": str(sec.get("crackfill", "1")) == "1",
-            "marginfill": str(sec.get("marginfill", "0")) == "1",
+            "graphics": graphics_options.load(sec),
             "steersens": sens,
             "steercurve": curve,
             "margin": int(mg) if mg.isdigit() else None,
@@ -800,7 +801,7 @@ def save_config(state):
     cp.read(CFG)   # preserve other sections (wheelmap)
     sec = {"crt": "1" if state["crt"] else "0",
            "crackfill": "1" if state["crackfill"] else "0",
-           "marginfill": "1" if state.get("marginfill", True) else "0",
+           "marginfill": "0",  # retired: old sky stretching must not return on save
            "margin": ("" if state["margin"] is None
                       else str(state["margin"])),
            "ffb": str(state.get("ffb", 100)),
@@ -815,6 +816,7 @@ def save_config(state):
         cv = state["steercurve"].get(rom)
         sec[f"steersens_{rom}"] = "" if sv is None else str(sv)
         sec[f"steercurve_{rom}"] = "" if cv is None else str(cv)
+    sec.update(graphics_options.serialize(state.get("graphics", {})))
     # MERGE into the section: keys the shell does not own (ffb_diag,
     # exotica_gl, gamepatch_<rom>, anything a user or tool adds) must
     # survive a save - replacing the section wiped them at every launch
@@ -844,8 +846,10 @@ def save_wheelmap(bindings):
         cp.write(f)
 
 
-def render_shot(path):
+def render_shot(path, page=None, game=None, selected_row=0):
     state = load_config()
+    if game:
+        state["graphics_rom"] = game
     sel = next((i for i, g in enumerate(GAMES) if g[0] == state["rom"]), 0)
     w, h = 1920, 1080
     ctx = moderngl.create_context(standalone=True, require=430)
@@ -854,7 +858,13 @@ def render_shot(path):
     ctx.viewport = (0, 0, w, h)
     shell = Shell(ctx, w, h)
     fbo.clear()
-    shell.draw(sel, state["crt"], 0.4)
+    if page:
+        rows = settings_rows(page, state, False, "PREVIEW")
+        selected_row = max(0, min(selected_row, len(rows) - 1))
+        shell.draw_settings(selected_row, SETTINGS_TITLE[page],
+                            [(r[1], r[2]) for r in rows], rows[selected_row][3], 0.4)
+    else:
+        shell.draw(sel, state["crt"], 0.4)
     img = np.frombuffer(fbo.read(components=4), dtype=np.uint8)
     Image.fromarray(np.flipud(img.reshape(h, w, 4))[:, :, :3].copy()).save(path)
     print("wrote", path)
@@ -975,7 +985,7 @@ def profile_label(state):
 
 SETTINGS_TITLE = {"root": "SETTINGS", "display": "DISPLAY",
                   "ffb": "FORCE FEEDBACK", "controls": "CONTROLS",
-                  "support": "SUPPORT"}
+                  "support": "SUPPORT", "graphics": "EXPERIMENTAL GRAPHICS"}
 
 
 def settings_rows(page, state, diag, version):
@@ -998,19 +1008,25 @@ def settings_rows(page, state, diag, version):
             ("crt", "CRT EFFECTS", onoff(state["crt"]),
              "SCANLINES, MASK AND CURVATURE      F9 TOGGLES IT IN GAME"),
             ("crackfill", "CRACK FILL", onoff(state["crackfill"]),
-             "FILLS THE 3PX SEAMS THE ARCADE HARDWARE LEFT BETWEEN POLYGONS"),
+             "SOFTENS SMALL UNWRITTEN GAPS; DOES NOT REPAIR MISSING TERRAIN OR TEXTURES"),
             ("aspect", "ASPECT / WIDESCREEN", ASPECT_LABEL(state["margin"]),
              "4:3 = ORIGINAL ARCADE      16:9 = FILLS A WIDE SCREEN      "
              "TRIMMED = 16:9 WITH CLEANER EDGES"),
-            ("marginfill", "MARGIN FILL", onoff(state.get("marginfill", True)),
-             "ON = STRETCH EDGE PIXELS INTO THE 16:9 SIDES (CAN SMEAR)"
-             "      OFF = CLEAN EDGES, BLACK WHERE THE GAME DRAWS NOTHING"),
             ("scale", "INTERNAL SCALE", f"< {scale}X >",
              "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
              "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT THE "
              "NEXT LAUNCH"),
+            ("graphics", "GRAPHICS EXPERIMENTS", "PER GAME",
+             "OPTIONAL SEAM ALIGNMENT AND DISTANCE SETTINGS; OFF UNTIL YOU ENABLE THEM"),
             ("back", "BACK", "", ""),
         ]
+    if page == "graphics":
+        game = state.get("graphics_rom", state.get("rom", "crusnusa"))
+        game = graphics_options.family(game)
+        title = next((g[1] for g in GAMES if g[0] == game), game)
+        return [("graphics_game", "GAME", f"< {title} >",
+                 "SELECT THE GAME TO ADJUST. EACH GAME KEEPS ITS OWN EXPERIMENTS.")] + \
+            graphics_options.rows(game, state.get("graphics", {})) + [("back", "BACK", "", "")]
     if page == "ffb":
         return [
             ("ffb", "STRENGTH", f"< {ffb}% >",
@@ -1105,7 +1121,6 @@ def direct_launch(card, windowed=False):
         steersens=state["steersens"].get(card),
         steercurve=state["steercurve"].get(card),
         margin=state["margin"], ffb=int(state.get("ffb", 50)),
-        marginfill=state.get("marginfill", True),
         )
     gaks = ctypes.windll.user32.GetAsyncKeyState
     while proc.poll() is None and run_rig.u32.IsWindow(_hwnd):
@@ -1126,12 +1141,16 @@ def main():
                          "usa, world, offroad, exotica (or MAME names)")
     ap.add_argument("--shot", metavar="PNG",
                     help="render one offscreen frame and exit")
+    ap.add_argument("--shot-page", choices=tuple(SETTINGS_TITLE),
+                    help="settings page to preview with --shot; no window or input")
     ap.add_argument("--windowed", action="store_true",
                     help="pass through to the game launch")
     ap.add_argument("--joydump", action="store_true",
                     help="print connected joysticks as JSON and exit "
                          "(support-bundle diagnostics)")
     args = ap.parse_args()
+    if args.shot_page and not args.shot:
+        ap.error("--shot-page requires --shot")
     if args.game:
         card = resolve_game_alias(args.game)
         if not card:
@@ -1139,7 +1158,7 @@ def main():
                      f"offroad or exotica")
         return direct_launch(card, windowed=args.windowed)
     if args.shot:
-        render_shot(args.shot)
+        render_shot(args.shot, page=args.shot_page)
         return 0
     if args.joydump:
         import glfw
@@ -1725,16 +1744,18 @@ def main():
                         # back to the root page, landing on the branch just
                         # left rather than at the top of the list
                         leaving = spage
-                        dbg("settings", f"page {leaving} -> root")
-                        spage = "root"
+                        spage = "display" if leaving == "graphics" else "root"
+                        dbg("settings", f"page {leaving} -> {spage}")
                         root = settings_rows(spage, state, False, "")
                         ssel = next((i for i, r in enumerate(root)
                                      if r[0] == leaving), 0)
                         srows = root
                     audio.blip("nav")
-                elif enter and rid in ("display", "ffb", "controls", "support"):
+                elif enter and rid in ("display", "ffb", "controls", "support", "graphics"):
                     dbg("settings", f"page -> {rid}")
                     spage, ssel = rid, 0
+                    if rid == "graphics":
+                        state["graphics_rom"] = GAMES[sel][0]
                     srows = settings_rows(spage, state,
                                           run_rig.ffb_diag_enabled(),
                                           upd_version)
@@ -1749,10 +1770,17 @@ def main():
                                                    right or enter)
                     save_config(state)
                     audio.blip("nav")
-                elif rid == "marginfill" and (lr or enter):
-                    state["marginfill"] = not state.get("marginfill", True)
-                    save_config(state)
+                elif rid == "graphics_game" and (lr or enter):
+                    game = state.get("graphics_rom", state.get("rom", "crusnusa"))
+                    index = graphics_options.GAMES.index(game)
+                    state["graphics_rom"] = graphics_options.GAMES[
+                        (index + (1 if right or enter else -1)) % len(graphics_options.GAMES)]
                     audio.blip("nav")
+                elif rid in graphics_options.OPTIONS and (lr or enter):
+                    game = state.get("graphics_rom", state.get("rom", "crusnusa"))
+                    if graphics_options.toggle(state.setdefault("graphics", {}), game, rid):
+                        save_config(state)
+                        audio.blip("nav")
                 elif rid == "scale" and (lr or enter):
                     # internal render scale 2x-4x (GPU load ~ scale^2)
                     cur = int(state.get("scale", 4))
@@ -2041,7 +2069,7 @@ def main():
                         steersens=state["steersens"].get(card),
                         steercurve=state["steercurve"].get(card),
                         margin=state["margin"], ffb=int(state.get("ffb", 50)),
-                        marginfill=state.get("marginfill", True))
+                        )
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)
                 box["done"] = True

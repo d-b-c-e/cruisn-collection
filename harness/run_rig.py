@@ -1258,29 +1258,14 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # MIDV_PATCH (memory-only at reset; ROM files untouched). The game then
     # DRAWS the margins instead of us approximating them. An explicit
     # MIDV_PATCH in the environment always wins (developer override).
-    gw = os.path.join(POC, "patch", "game", f"{rom}-widescreen.txt")
     effective_margin = max(0, min(86, int(os.environ.get("MIDV_GL_MARGIN",
         margin if margin is not None else GAME_MARGIN.get(base_rom(rom), 86)))))
-    full_wide = effective_margin >= 80
-    gamepatch = (gw if full_wide and os.path.isfile(gw)
-                 and "MIDV_PATCH" not in os.environ else None)
-    # [collection] gamepatch_<rom> = patch/game/<file>.txt: a chosen
-    # in-memory game patch for that game (e.g. the crusnusa draw-distance
-    # experiment). Compose with the widescreen fix; reject conflicting words.
-    # The explicit developer environment override still replaces all defaults.
-    cfg_patch = _collection_ini_get("collection", f"gamepatch_{base_rom(rom)}", "")
-    if cfg_patch and "MIDV_PATCH" not in os.environ:
-        cfg_path = cfg_patch if os.path.isabs(cfg_patch) else os.path.join(POC, cfg_patch)
-        if os.path.isfile(cfg_path):
-            if gamepatch and os.path.abspath(gamepatch) != os.path.abspath(cfg_path):
-                from game_patch import combine_patches
-                gamepatch = combine_patches([gamepatch, cfg_path],
-                    os.path.join(rig, f"gamepatch-{rom}.txt"))
-            else:
-                gamepatch = cfg_path
-            print(f"game patch ({base_rom(rom)}): {cfg_patch}")
-        else:
-            print(f"game patch {cfg_patch!r} not found - ignored")
+    import configparser
+    from graphics_options import launch_overrides
+    graphics_config = configparser.ConfigParser(interpolation=None)
+    graphics_config.read(os.path.join(POC, "rig", "collection.ini"))
+    graphics = launch_overrides(POC, rig, rom, effective_margin, scale,
+        graphics_config["collection"] if "collection" in graphics_config else {}, os.environ)
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
@@ -1305,8 +1290,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     if ffb is not None and int(ffb) <= 0:
         env["MIDV_FFB"] = "0"
         env.pop("MIDV_FFB_TEST", None)
-    if gamepatch:
-        env["MIDV_PATCH"] = gamepatch
+    env.update(graphics)
     if base_rom(rom) == "crusnexo":
         # sequential paddles on Exotica: the driver's virtual gear
         # (midzeus patch) - only when the shell is in sequential mode with
@@ -1470,6 +1454,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # first line: what this launch actually applied (the support bundle
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
+                "MIDV_GL_TJUNCTIONS", "MIDV_GL_MARGIN", "MIDV_GL_MARGINFILL",
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE",
                 "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",
                 "MIDV_FFB",

@@ -1,0 +1,121 @@
+import configparser
+import importlib.util
+from pathlib import Path
+import sys
+import tempfile
+import types
+import unittest
+from unittest import mock
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "harness"))
+import graphics_options as G
+from game_patch import read_patch
+
+
+class GraphicsOptionsTests(unittest.TestCase):
+    def test_settings_stay_per_game_and_world_revisions_share_seams(self):
+        settings = G.load({})
+        self.assertTrue(G.toggle(settings, "offroadc", "seam_alignment"))
+        self.assertTrue(G.toggle(settings, "crusnwld", "seam_alignment"))
+        self.assertTrue(G.toggle(settings, "crusnusa", "detail_distance"))
+        cp = configparser.ConfigParser()
+        cp["collection"] = G.serialize(settings)
+        restored = G.load(cp["collection"])
+        self.assertEqual(restored, settings)
+        self.assertFalse(restored["crusnusa"]["seam_alignment"])
+        self.assertTrue(G.for_game(cp["collection"], "crusnwld24")["seam_alignment"])
+
+    def test_unsupported_options_cannot_be_activated_even_from_edited_ini(self):
+        section = {f"{option}_{game}": "1" for game in G.GAMES for option in G.OPTIONS}
+        for rom in ("crusnwld", "crusnwld24", "offroadc", "crusnexo", "crusnusa40"):
+            with self.subTest(rom=rom), tempfile.TemporaryDirectory() as directory:
+                selected = G.for_game(section, rom)
+                self.assertFalse(selected["detail_distance"])
+                self.assertFalse(selected["far_distance"])
+                overrides = G.launch_overrides(ROOT, directory, rom, 0, 4, section, {})
+                self.assertNotIn("MIDV_PATCH", overrides)
+        self.assertFalse(G.toggle({}, "crusnexo", "seam_alignment"))
+        self.assertTrue(all(r[2] == "UNAVAILABLE" for r in G.rows("crusnexo", G.load(section))))
+
+    def test_every_distance_combination_preserves_widescreen_and_off_removes_stale_words(self):
+        widescreen = read_patch(ROOT / "patch/game/crusnusa-widescreen.txt")
+        with tempfile.TemporaryDirectory() as directory:
+            for detail, far in ((1, 1), (1, 0), (0, 1), (0, 0)):
+                with self.subTest(detail=detail, far=far):
+                    section = {"detail_distance_crusnusa": str(detail), "far_distance_crusnusa": str(far)}
+                    env = G.launch_overrides(ROOT, directory, "crusnusa", 86, 4, section, {})
+                    actual = read_patch(env["MIDV_PATCH"])
+                    expected = dict(widescreen)
+                    if detail:
+                        expected.update(read_patch(ROOT / "patch/game/crusnusa-lod-experiment.txt"))
+                    if far:
+                        expected.update(read_patch(ROOT / "patch/game/crusnusa-farplane-experiment.txt"))
+                    self.assertEqual(actual, expected)
+
+    def test_classic_aspect_does_not_gain_the_widescreen_patch(self):
+        with tempfile.TemporaryDirectory() as directory:
+            env = G.launch_overrides(ROOT, directory, "crusnusa", 0, 4,
+                                     {"detail_distance_crusnusa": "1"}, {})
+            self.assertEqual(set(read_patch(env["MIDV_PATCH"])), {0xbf, 0xc3})
+
+    def test_seam_alignment_is_off_at_native_scale_and_marginfill_is_ignored(self):
+        with tempfile.TemporaryDirectory() as directory:
+            for scale in (1, 2, 4):
+                env = G.launch_overrides(ROOT, directory, "offroadc", 0, scale,
+                    {"seam_alignment_offroadc": "1", "marginfill": "1"}, {})
+                self.assertEqual(env["MIDV_GL_TJUNCTIONS"], "0" if scale == 1 else "1")
+                self.assertNotIn("MIDV_GL_MARGINFILL", env)
+
+    def test_explicit_developer_patch_override_still_wins(self):
+        with tempfile.TemporaryDirectory() as directory:
+            env = G.launch_overrides(ROOT, directory, "crusnusa", 86, 4,
+                {"detail_distance_crusnusa": "1"}, {"MIDV_PATCH": "developer.txt"})
+            self.assertNotIn("MIDV_PATCH", env)  # existing process environment is preserved
+
+    def test_missing_selected_patch_fails_and_custom_conflicts_leave_old_file_intact(self):
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(FileNotFoundError, "Selected graphics experiment"):
+                G.launch_overrides(directory, directory, "crusnusa", 86, 4,
+                                   {"detail_distance_crusnusa": "1"}, {})
+            env = G.launch_overrides(ROOT, directory, "crusnusa", 86, 4,
+                                     {"detail_distance_crusnusa": "1"}, {})
+            original = Path(env["MIDV_PATCH"]).read_bytes()
+            conflict = Path(directory) / "custom.txt"
+            conflict.write_text("000BF 04E21F40 00000000\n")
+            with self.assertRaisesRegex(ValueError, "conflicting"):
+                G.launch_overrides(ROOT, directory, "crusnusa", 86, 4,
+                    {"detail_distance_crusnusa": "1", "gamepatch_crusnusa": str(conflict)}, {})
+            self.assertEqual(Path(env["MIDV_PATCH"]).read_bytes(), original)
+
+
+@unittest.skipUnless(sys.platform == "win32", "launcher uses Windows APIs")
+class LauncherGraphicsTests(unittest.TestCase):
+    def test_real_shell_save_preserves_bindings_and_retires_marginfill(self):
+        # Configuration/UI data needs no OpenGL context in hardware-free CI.
+        missing_gl = importlib.util.find_spec("moderngl") is None
+        modules = {"moderngl": types.ModuleType("moderngl")} if missing_gl else {}
+        with mock.patch.dict(sys.modules, modules):
+            import collection
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "collection.ini"
+            path.write_text("[collection]\nmarginfill=1\ncustom_note=keep\n"
+                            "[wheelmap]\nsteer=wheel|axis:0:0:pos\n")
+            with mock.patch.object(collection, "CFG", str(path)):
+                state = collection.load_config()
+                G.toggle(state["graphics"], "offroadc", "seam_alignment")
+                G.toggle(state["graphics"], "crusnusa", "far_distance")
+                collection.save_config(state)
+                restored = collection.load_config()
+            self.assertEqual(restored["graphics"], state["graphics"])
+            cp = configparser.ConfigParser(); cp.read(path)
+            self.assertEqual(cp["collection"]["marginfill"], "0")
+            self.assertEqual(cp["collection"]["custom_note"], "keep")
+            self.assertEqual(cp["wheelmap"]["steer"], "wheel|axis:0:0:pos")
+            rows = collection.settings_rows("display", restored, False, "")
+            self.assertNotIn("marginfill", [r[0] for r in rows])
+            self.assertIn("graphics", [r[0] for r in rows])
+            restored["graphics_rom"] = "offroadc"
+            rows = {r[0]: r[2] for r in collection.settings_rows("graphics", restored, False, "")}
+            self.assertEqual(rows["seam_alignment"], "ON")
+            self.assertEqual(rows["detail_distance"], "UNAVAILABLE")

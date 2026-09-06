@@ -1,4 +1,4 @@
-# DIAGNOSTIC ONLY, USA v4.5. Not installed by the launcher.
+# EXPERIMENTAL, USA v4.5. Off by default; launcher DETAIL DISTANCE enables it.
 # Keep detailed models to 12,000 instead of 8,000 units; medium to 22,500
 # instead of 15,000. This does not create objects or extend the far plane.
 # More emulated render work can change later gameplay scheduling.

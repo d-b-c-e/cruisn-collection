@@ -64,9 +64,29 @@ across. Your `rig` folder and `roms` are never inside the zip.
   that game's own settings: steering sensitivity and curve, volume, free
   play, and for World the 2.4 / 2.5 revision switch.
 - **SETTINGS** (below the cards): CRT effects, crack fill, aspect (4:3 /
-  16:9 trimmed / 16:9 full), margin fill, FFB strength, **TRANSMISSION**
+  16:9 trimmed / 16:9 full), graphics experiments, FFB strength, **TRANSMISSION**
   (H-pattern shifter or sequential paddles), **CONTROLS SETUP**.
 - **Esc** backs out; from the cards row it quits.
+
+### Optional graphics experiments
+
+Open **SETTINGS → DISPLAY → GRAPHICS EXPERIMENTS**, then select a game.
+Changes are saved per game and take effect on its next launch. All start off.
+
+| Setting | Games | What to expect |
+|---|---|---|
+| **Seam Alignment** | USA, World, Off Road | Aligns certain mismatched terrain edges at enhanced resolutions. Closed a measured blue seam in Off Road, but can shift nearby texture interpolation. |
+| **Detail Distance** | USA v4.5 | Keeps higher-detail models farther away. The recorded route required about 5.25% more polygon submissions. |
+| **Draw Limit** | USA v4.5 | Raises a distant-object rejection limit. It added submissions but **no visible improvement** in the tested scene; it cannot load missing scenery. |
+
+Unavailable options cannot be enabled for other games. These experiments do not
+replace the graphics fixes already applied automatically. Return a setting to
+Off/Standard to remove its effect on the next launch.
+
+**Margin Fill has been retired from the launcher.** It stretched edge pixels
+into the widescreen margins and could suppress useful sky detail. The newer
+geometry/texture fixes work with it off. **Crack Fill** remains a separate,
+local treatment for small unwritten gaps; neither setting creates missing terrain.
 
 ### Controls
 

@@ -1,0 +1,104 @@
+"""Per-game graphics experiments shared by the shell and every launch path."""
+from pathlib import Path
+
+from game_patch import combine_patches
+
+GAMES = ("crusnusa", "crusnwld", "offroadc", "crusnexo")
+OPTIONS = ("seam_alignment", "detail_distance", "far_distance")
+PATCHES = {
+    "detail_distance": "crusnusa-lod-experiment.txt",
+    "far_distance": "crusnusa-farplane-experiment.txt",
+}
+
+
+def family(rom):
+    return next((game for game in GAMES if rom.startswith(game)), rom)
+
+
+def supported(rom, option):
+    if option == "seam_alignment":
+        return family(rom) in GAMES[:3]
+    # These instruction addresses are verified only for USA v4.5, not its clones.
+    return option in PATCHES and rom == "crusnusa"
+
+
+def for_game(section, rom):
+    return {option: supported(rom, option) and
+            str(section.get(f"{option}_{family(rom)}", "0")).strip() == "1"
+            for option in OPTIONS}
+
+
+def load(section):
+    return {game: for_game(section, game) for game in GAMES}
+
+
+def serialize(options):
+    return {f"{option}_{game}": "1" if options.get(game, {}).get(option, False) else "0"
+            for game in GAMES for option in OPTIONS if supported(game, option)}
+
+
+def toggle(options, game, option):
+    if not supported(game, option):
+        return False
+    settings = options.setdefault(game, {})
+    settings[option] = not settings.get(option, False)
+    return True
+
+
+def rows(game, options):
+    selected = options.get(game, {})
+    descriptions = (
+        ("seam_alignment", "SEAM ALIGNMENT",
+         "EXPERIMENTAL: CLOSES SOME TERRAIN SEAMS; MAY SHIFT TEXTURES. NEXT LAUNCH."),
+        ("detail_distance", "DETAIL DISTANCE",
+         "EXPERIMENTAL: KEEPS DETAILED MODELS FARTHER AWAY; MORE RENDERING WORK. NEXT LAUNCH."),
+        ("far_distance", "DRAW LIMIT",
+         "EXPERIMENTAL: HIGHER DRAW LIMIT; NO VISIBLE GAIN IN THE TESTED SCENE. NEXT LAUNCH."),
+    )
+    result = []
+    for option, label, hint in descriptions:
+        if not supported(game, option):
+            value = "UNAVAILABLE"
+            hint = ("AVAILABLE FOR USA, WORLD AND OFF ROAD."
+                    if option == "seam_alignment" else "AVAILABLE FOR CRUIS'N USA ONLY.")
+        else:
+            value = (("ON" if selected.get(option) else "OFF") if option == "seam_alignment"
+                     else ("EXTENDED" if selected.get(option) else "STANDARD"))
+        result.append((option, label, value, hint))
+    return result
+
+
+def launch_overrides(root, rig, rom, margin, scale, section, environment):
+    """Resolve settings without launching hardware; compose guarded patches atomically.
+
+    An explicit MIDV_PATCH replaces the configured patch group, as before.
+    Old marginfill INI values are deliberately not read. The legacy shader
+    experiment remains available only through an explicit developer environment.
+    """
+    root, rig = Path(root), Path(rig)
+    selected = for_game(section, rom)
+    env = {"MIDV_GL_TJUNCTIONS": environment.get("MIDV_GL_TJUNCTIONS",
+           "1" if selected["seam_alignment"] and scale > 1 else "0")}
+    if "MIDV_PATCH" in environment:
+        return env
+    paths = []
+    widescreen = root / "patch" / "game" / f"{rom}-widescreen.txt"
+    if margin >= 80 and widescreen.is_file():
+        paths.append(widescreen)
+    for option, filename in PATCHES.items():
+        if selected[option]:
+            path = root / "patch" / "game" / filename
+            if not path.is_file():
+                raise FileNotFoundError(f"Selected graphics experiment is missing: {path}")
+            paths.append(path)
+    custom = str(section.get(f"gamepatch_{family(rom)}", "")).strip()
+    if custom:
+        path = root / custom
+        if not path.is_file():
+            raise FileNotFoundError(f"Configured game patch is missing: {path}")
+        if path not in paths:
+            paths.append(path)
+    if paths:
+        env["MIDV_PATCH"] = (str(paths[0]) if len(paths) == 1 else
+                             combine_patches(paths, rig / f"gamepatch-{rom}.txt"))
+    return env
