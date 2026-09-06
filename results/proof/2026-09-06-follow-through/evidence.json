@@ -1,0 +1,251 @@
+{
+  "six-ordered-gl-identity": {
+    "different_frames": [],
+    "frames": 31,
+    "passed": true,
+    "scope": "completed GL frame pixels"
+  },
+  "six-ordered-stall-identity": {
+    "different_frames": [],
+    "frames": 31,
+    "passed": true,
+    "scope": "completed GL frame pixels"
+  },
+  "six-world-gl-identity": {
+    "different_frames": [],
+    "frames": 11,
+    "passed": true,
+    "scope": "completed GL frame pixels"
+  },
+  "six-final-gpu-quality": {
+    "checks": [
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 26,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 1
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 104,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 2
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 234,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 3
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 416,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 4
+      },
+      {
+        "check": "thin-rectangle-atlas",
+        "covered_pixels": 936,
+        "foreign_texels": 0,
+        "passed": true,
+        "scale": 6
+      },
+      {
+        "check": "adjacent-tile-coverage",
+        "holes": 0,
+        "passed": true,
+        "scale": 2
+      },
+      {
+        "check": "adjacent-tile-coverage",
+        "holes": 0,
+        "passed": true,
+        "scale": 4
+      },
+      {
+        "check": "transparent-polygon-ownership",
+        "passed": true
+      },
+      {
+        "check": "vertex-builder-equivalence",
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+    "schema": 1,
+    "scope": "synthetic GPU quality regression"
+  },
+  "six-stream-overflow-load": {
+    "passed": false,
+    "error": "renderer fell back after losing its stream"
+  },
+  "six-final-usa": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-numeric-speed-validation": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "numeric_speed_experiment": true
+  },
+  "six-exotica-throttled-identity": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-exotica-renderer/replay": {
+    "passed": false,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        1440,
+        1500,
+        1560,
+        1620,
+        1680,
+        1740,
+        1800,
+        1860,
+        1920,
+        1980,
+        2040,
+        2100,
+        2160,
+        2220,
+        2280,
+        2340,
+        2400,
+        2460,
+        2520,
+        2580
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 37
+    }
+  },
+  "six-final-usa-impact-analysis": {
+    "passed": true,
+    "metrics": {
+      "events_ms": [
+        52964,
+        57228,
+        70484,
+        84728
+      ],
+      "full_strength_fraction": 0.0,
+      "motor_samples": 4569,
+      "peak_abs": 0.381231576,
+      "rms": 0.108351275,
+      "strength": 50,
+      "tick_ms": 4,
+      "ticks": 21627
+    }
+  },
+  "distance": {
+    "gate_trace_rows": 120193,
+    "object_slots": 468,
+    "finite_depth_rejections_between_80000_and_1000000": 0,
+    "lod_transitions": 7,
+    "example": [
+      {
+        "frame": "3057",
+        "object": "133bd",
+        "model": "c28c38",
+        "flags": "8801e04",
+        "depth_minus_radius": "7444",
+        "radius": "584",
+        "far_limit": "80000",
+        "x": "15e63b35",
+        "y": "d33a911",
+        "z": "15fbb184",
+        "base_model": "c2857a",
+        "mid_model": "c28c38",
+        "far_model": "c28d11"
+      },
+      {
+        "frame": "3059",
+        "object": "133bd",
+        "model": "c2857a",
+        "flags": "8801e04",
+        "depth_minus_radius": "7395",
+        "radius": "602",
+        "far_limit": "80000",
+        "x": "15e6317d",
+        "y": "d339170",
+        "z": "15fbae70",
+        "base_model": "c2857a",
+        "mid_model": "c28c38",
+        "far_model": "c28d11"
+      }
+    ],
+    "stock_quads": 2417,
+    "extended_quads": 2465,
+    "removed_quads": 12,
+    "added_quads": 60,
+    "quality_changed_pixels": 13386,
+    "quality_changed_bounds": [
+      1604,
+      858,
+      1791,
+      945
+    ],
+    "texture_and_palette_identical": true,
+    "enabled_by_default": false
+  },
+  "usa_speed": {
+    "emulated_frames": 5012,
+    "numeric_available": 2483,
+    "ocr_available": 2336,
+    "numeric_with_ocr_unreadable": 147,
+    "readable_agreements": 1732,
+    "readable_disagreements": 604,
+    "hud_word": "e632",
+    "formatter_store_pc": "a7c2",
+    "consumer_load_pc": "7a91",
+    "scope": "numeric displayed MPH, not physical velocity",
+    "rom": "crusnusa v4.5"
+  },
+  "usa_execution": {
+    "input_hardware_reads_compared": 20001,
+    "input_hardware_reads_equal": true,
+    "timestep_writes_compared": 1921,
+    "timestep_writes_equal": true,
+    "timer_reads_compared": 19154,
+    "first_timer_difference_frame": 750,
+    "timer_override_restores_native_images": false,
+    "first_player_velocity_difference": {
+      "stock_frame": 3063,
+      "widescreen_frame": 3064,
+      "writer_pc": "9680",
+      "object_word": "10b0a"
+    },
+    "first_position_difference": {
+      "writer_pc": "90ab",
+      "object_word": "10af8"
+    },
+    "exact_upstream_cause": "not established; do not claim gameplay equivalence"
+  }
+}

@@ -1,0 +1,6 @@
+# DIAGNOSTIC ONLY, USA v4.5. Not installed by the launcher.
+# Keep detailed models to 12,000 instead of 8,000 units; medium to 22,500
+# instead of 15,000. This does not create objects or extend the far plane.
+# More emulated render work can change later gameplay scheduling.
+000BF 04E21F40 04E22EE0
+000C3 04E23A98 04E257E4
