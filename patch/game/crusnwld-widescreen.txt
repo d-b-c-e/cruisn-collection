@@ -37,15 +37,9 @@
 9689 08640000 0864FFAA   # x0: 0 -> -86
 968B 086601FF 08660255   # x1: 511 -> 597
 #
-# TERRAIN (2026-08-26): World never screen-culls its ordinary polys (why
-# the margins are ~92-99% covered natively) - only the BIG-poly clip path
-# ($379: near ground/walls, quartered into sub-quads) rejects against the
-# screen: sign-bit on the left, immediate 511 on the right, at two sites
-# (parent + per-sub-quad). Those dropped sub-quads are the crash-cam and
-# corner terrain holes. Same treatment as offroadc: right immediates
-# 511->597, left sign-tests -> CALLLT routines (in unreachable padding)
-# that re-test x+86 and jump to the site's own reject exit only when the
-# poly is beyond our canvas too.
+# TERRAIN: extend the existing big-poly parent/sub-quad clipping to our
+# margins. Ordinary polygon submission also has an OBJECT-level sphere X
+# test; see the additional guarded fix below (2026-09-06).
 # left-test routine T1 (parent site; reject exit $49C) at $247 (padding after an unconditional BU)
 247 0C800000 08620056
 248 0C800000 214002C0
@@ -84,3 +78,21 @@
 38C 086301FF 08630255
 3CA 086101FF 08610255
 3CE 086301FF 08630255
+
+# OBJECT VISIBILITY (2026-09-06): projected sphere bounds still used [0,512]
+# before polygon generation. That rejected real road geometry in the wide
+# margins (Germany 7280), even with the big-poly clip fixes above.
+# Retain bounded sphere rejection at [-86,598]; never bypass all X culling.
+# $108-$10D is unreachable NOP padding after BU $120 at $106.
+# CALLLT is at $C0, OUTSIDE the preceding $BC delayed branch's three slots.
+# R2 (projected right extent) and R0 (right limit) survive; R3 is dead scratch.
+# Accepted left-margin spheres return. Rejected spheres discard the CALL
+# return and use the original object exit. Same instructions in 2.4 and 2.5.
+B9 05E00200 05E00256   # FLOAT 598,R0 (right limit)
+C0 6A270289 72070048   # old BLTD left reject -> CALLLT $109
+108 0C800000 062C0000  # C3x float 86.0
+109 0C800000 07030002  # LDF R2,R3
+10A 0C800000 01A30108  # ADDF ($108),R3
+10B 0C800000 788A0000  # RETSGE: sphere reaches x=-86
+10C 0C800000 0E230000  # POP R3: discard return on rejection
+10D 0C800000 6000034C  # branch to original object exit

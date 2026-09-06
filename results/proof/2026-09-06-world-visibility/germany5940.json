@@ -1,0 +1,46 @@
+{
+  "candidate": {
+    "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-x-wide-5940\\run\\capture",
+    "sha256": {
+      "meta.txt": "b970fcf79cdf358f172fe7fc6085c1e0ec06eda4277c34ed89ca20bf79163c2b",
+      "paletteram.bin": "a6751b9166cead9b29dfe3d0710bf267119531503c5fcab3f8ef8ec36f28275a",
+      "quads.bin": "7c3075caf3919ee73ce71cea44af613f446028474a95860a5ac83365276e4f36",
+      "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+      "videoram.bin": "495c8ee06c14a58e113c7903034d87c53be9770846d275a297d1cd636d391b01"
+    }
+  },
+  "geometry": {
+    "added_quads": 9,
+    "added_quads_intersecting_native_x": 0,
+    "candidate_quads": 1068,
+    "original_draw_order_preserved": true,
+    "original_quads": 1059,
+    "removed_or_changed_quads": 0
+  },
+  "native_attribution": {
+    "changed_words": 0,
+    "first_unexplained_addresses": [],
+    "limitation": "spatial attribution, not a visual-quality or physics-equivalence claim",
+    "outside_added_coverage": 0
+  },
+  "passed": true,
+  "reference": {
+    "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-x-ref-5940\\run\\capture",
+    "sha256": {
+      "meta.txt": "b970fcf79cdf358f172fe7fc6085c1e0ec06eda4277c34ed89ca20bf79163c2b",
+      "paletteram.bin": "a6751b9166cead9b29dfe3d0710bf267119531503c5fcab3f8ef8ec36f28275a",
+      "quads.bin": "52d9e6e791cd7c260a9be99993e146300533f3572e4d198e6d5d13ffe65527a7",
+      "textureram.bin": "499ed89236302ca8ce0cd3b5f211d0b59f588ce78f1325fefb1e0b732dd1d859",
+      "videoram.bin": "495c8ee06c14a58e113c7903034d87c53be9770846d275a297d1cd636d391b01"
+    }
+  },
+  "same_frame_and_page": true,
+  "same_previous_page_scene": true,
+  "schema": 1,
+  "scope": "matched-state object visibility extension; new native geometry explicitly allowed",
+  "unchanged_resources": {
+    "paletteram.bin": true,
+    "textureram.bin": true,
+    "videoram.bin": true
+  }
+}
