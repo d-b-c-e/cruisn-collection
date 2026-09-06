@@ -2990,3 +2990,55 @@ v2.4 and Off Road. Physical FFB stayed disabled. Remaining work includes thin
 source-geometry seams, ordered live texture/palette/clear events and scene
 fences, black-sky reproductions, new gameplay cases for the other games, and
 attended collision-feel/wheel testing. The toolkit remains v0.10.1 / c9b76b7.
+
+
+## 2026-09-06 — follow-through across graphics, replay, force and telemetry
+
+Full evidence and limits: docs/reviews/2026-09-06-follow-through.md;
+compact reports/images: results/proof/2026-09-06-follow-through/.
+
+- V-Unit now applies quads/resource updates/CPU writes in order to persistent
+  pages and presents only at a completed visible-frame fence. Atomic ring
+  publication and process-private mappings replace volatile-only/shared names.
+  USA 31 consecutive GL frames match across runs and a 100 ms/16 MiB stall;
+  World v2.4 11 frames match. Five-second loading stall fails the stream and
+  the harness rejects fallback. Zeus gains the same bounded lossless queue policy.
+- Broad margin filling was suppressing valid skies and copying a boundary
+  column across them. Gameplay A/B restores actual clouds in World and Off Road;
+  22 GL frames preserve the core image exactly. MARGINFILL now defaults OFF,
+  =1 is an explicit legacy experiment. Small crack-fill radius/default retained;
+  thin source-geometry/near-tree seams remain. No universal artifact-free claim.
+- USA's widened object culler changes a later player velocity/position write
+  (3063 vs 3064; writer 9680 then 90AB). 20,001 hardware input reads and 1,921
+  timestep-word writes agree; replaying all baseline timer values does not fix
+  image divergence. Exact upstream cause remains open; no timer/physics hack.
+- The object trace locates a traffic-car LOD switch at 8,000 units, distinct
+  from the 80,000 far gate. Checked optional 12,000/22,500 LOD thresholds replace
+  12 coarse quads with 60 detailed ones at frame 3058 (+48 total, same textures
+  and palette). One car's image changes. No default far-distance extension.
+- Optional bounded steering-axis impact mixer, explicit attended FFB recording,
+  emulated-time raw/adapted motor traces, device API acceptance trace and labelled
+  collision evaluation. No physical force tested. Candidates remain heuristics.
+- USA numeric HUD text found at E632 (formatter A7C2, renderer 7A91). Guarded
+  visible-page digit submissions now select numeric MPH with OCR fallback.
+  Original 5,012-frame/83-image replay passes; 147 OCR misses recovered and 604
+  readable OCR disagreements exposed. This is displayed speed, not physics/RPM.
+  signals.csv adopts source/quality/time/units from shared telemetry contracts.
+- Toolkit v0.11.1 released/pinned: native/managed impact and scalar contracts,
+  strict managed instance selection (no missing/ambiguous/negative-index fallback),
+  109 managed tests, MSVC/GCC checks and unchanged ten-profile conformance vectors.
+- 35 Python tests and nine GPU quality fixtures pass. World v2.4/v2.5 and Off Road
+  have 6,000-frame/100-image scenarios. Off Road's neutral first attempt is not
+  driving coverage; the corrected H-pattern run moves onto the terrain. Exotica
+  3,600-frame boot/attract replay matches recorded throttled settings; headless
+  control diverges. Exotica gameplay/GL equivalence still needs its own cases.
+
+MAME and collection changes are separate commits; patch export includes the full
+mame0286 series. Original user recordings and rejected controls remain immutable.
+
+Final force correction: the optional steering-impact detector consumes raw game
+motor bytes before driver gain/clamp/slew. Structural force still uses adapted
+bytes. A shared signed-byte adapter and compiled CI contrast verify a raw 126 /
+adapted 20 pulse: enhanced detection at 100 ms, no legacy detection, both bounded
+below 50% output. Both CSV formats pass. Menu cancellation also resets the shaper
+tail. This is algorithm verification, not physical collision-feel acceptance.

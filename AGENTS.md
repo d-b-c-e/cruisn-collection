@@ -1,5 +1,17 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Current verified handoff (2026-09-06)
+
+Read `docs/reviews/2026-09-06-follow-through.md` and `.Codex/session-notes.md` for
+current limits; older artifact-free/general speed claims below are historical.
+Broad `MIDV_GL_MARGINFILL` is OFF by default after gameplay proved it destroyed
+World/Off Road sky detail. `=1` restores that explicit experiment. Local crack
+fill is separate. V-Unit GL captures have completed-frame fences; legacy external
+viewer captures are not an oracle. USA numeric displayed speed is guarded to
+v4.5 and actual HUD submissions, with OCR fallback; other games need their own
+producers. Force impacts and attended recording are opt-in, never run unattended.
+Toolkit pin is v0.11.1. Keep the new LOD patch experimental, not a default.
+
 ## What this is
 
 Working proof-of-concept for a **native PC port of the Midway Cruis'n

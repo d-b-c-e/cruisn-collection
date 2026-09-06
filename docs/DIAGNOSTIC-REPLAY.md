@@ -2,17 +2,21 @@
 
 The recorder saves MAME's effective game inputs, including analog wheel and
 pedal interpolation, into an INP file. Playback runs the emulator with those
-inputs. It does not physically turn the wheel. **Recording and playback both
-disable physical FFB and external telemetry output in this first version.**
-An attended FFB evaluation remains a separate drive.
+inputs. Playback never physically turns the wheel. Recording defaults to FFB
+and external telemetry off; `--record-with-ffb` explicitly retains the configured
+force during an attended live recording. Synthetic runs and all playback still
+force physical output off, even when the original recording used FFB.
 
 The first verified gameplay case is Cruis'n USA: 6,000 emulated frames with
 steering, accelerator, brake, coin, start and gear changes. All recorded inputs,
 emulated timestamps and 100 native screenshots matched on playback. The route
 was scripted. The user's LA Freeway wheel drive also passed: all 5,012 frames
 and 83 native screenshots match, including selection and driving.
-World, Off Road and Exotica require independent calibrated cases before claiming
-the same coverage.
+World v2.4/v2.5 and Off Road also have 6,000-frame scripted cases with 100
+matching native images. Off Road's validated driving case uses H-pattern first
+gear; a race entered in neutral is not counted as driving. Exotica has a
+3,600-frame boot/attract case that matches with its recorded throttled settings;
+its headless control diverges and is not an equivalent visual oracle.
 
 V-Unit launches now use D3D for MAME's underlying window while retaining the
 owned GL widescreen overlay. On this rig, the same LA Freeway recording with raw
@@ -178,11 +182,26 @@ and dropped-message count. Captures use the GL backbuffer, avoiding black GDI
 screenshots. The bounded interval is limited to 240 stream frames and 180 BMPs.
 Capturing can itself stall rendering; compare timing outside the capture interval.
 
-**The stream-frame label is approximate.** A backbuffer is not fenced to that
-native frame, and consecutive presents may have the same label. GL images are
-retained and fingerprinted, but are not included in the native pass/fail pixel
-comparison. Ordered resource replay and explicit scene fences are the next
-renderer-harness work. These capture controls currently cover V-Unit, not Zeus.
+New V-Unit builds fence GL captures after a completed visible frame and include
+`completed_frame` in `captures.csv`. Legacy asynchronous captures remain labelled
+as such and cannot be used by the strict GL comparator. Capture short consecutive
+intervals with `--gl-every 1`, then compare actual pixels:
+
+```powershell
+python harness/gl_frames.py FIRST_RUN/run/gl-snap SECOND_RUN/run/gl-snap --frames 3000:3030 --report results/diagnostics/gl-identity.json
+```
+
+The validator rejects missing/duplicate frames, dimension changes and dropped
+render commands. `--gl-stall 2995:100 --gl-queue-mb 16` exercises bounded consumer
+stalls; a persistent stream failure makes the replay fail even if native video
+continues. GL pixel comparison is separate from the native-image pass/fail.
+These controls currently cover V-Unit, not Zeus. Full-size GL BMP capture can
+stall presentation and should not be used as a clean timing benchmark.
+
+`--no-marginfill` reproduces the new default: render submitted backdrop polygons
+without suppressing them or copying native-boundary columns. Set
+`MIDV_GL_MARGINFILL=1` only for the legacy experiment. `--no-crackfill` controls
+the separate local coverage-based cosmetic pass.
 
 ## Analyze timing, telemetry and force without a wheel
 
@@ -200,12 +219,44 @@ toolkit headers as MAME. It samples a held motor trace at 4 ms and writes the
 shaper stages, impact candidates, peak, RMS and fraction at configured maximum.
 It also accepts toolkit motor traces and `fixtures/signals/idle-hit.csv`.
 `--compiler` selects a C++11 compiler. It never loads SDL or opens a haptic device.
+New recordings also have `force-source.csv` with emulated seconds/frame and raw
+versus driver-adapted bytes. Prefer this clock for contacts and video alignment.
+`ffb_trace.csv` uses host milliseconds and must not be treated as emulated time.
+
+```powershell
+python harness/analyze_ffb.py CASE/record/force-source.csv --impacts --labels contacts.json
+python harness/run_rig.py --rom crusnusa --record-case results/diagnostics/attended-drive --record-with-ffb
+```
+
+`--impacts` evaluates the optional explicit steering torque envelope. Enable it
+for attended product testing with `[collection] ffb_impact=1` or the per-game
+`ffb_impact_<rom>=1`. It reserves 25% of the constant-force budget; independent
+condition effects are outside that budget. Defaults and existing profiles remain
+unchanged until this option is selected.
+The enhanced detector reads raw force before driver gain/clamp/slew; the
+structural component retains those adaptations. `raw_byte` and `detector_input`
+in the offline stage CSV make that distinction inspectable. The clamped-hit
+fixture verifies that reducing wheel output does not conceal the raw pulse.
+
+Labels use this structure, with manually reviewed intervals and non-overlapping
+contact windows. Times below are an illustrative schema, not labels for a drive:
+
+```json
+{"schema":1,"clock":"emulated_ms","coverage":[[1000,5000]],"events":[{"kind":"car_contact","start_ms":2000,"end_ms":2100}]}
+```
+
+The score ignores candidates outside reviewed coverage, reports missed contacts,
+and counts duplicate candidates separately rather than inflating recall.
 PASS means the analysis completed; it does not rate subjective force quality.
 
 The new OCR trace fields distinguish unavailable (`speed_status=0`), fresh (1),
 and temporarily held (2), alongside `speed_ocr_reading` and `speed_age_frames`.
-This metadata currently describes OCR sources. It is not yet a universal
-telemetry validity contract or a repair of Off Road's missing OCR implementation.
+Those fields describe the OCR fallback. USA v4.5 now decodes the actual guarded
+numeric HUD text first; `MIDV_SPEED_NUMERIC=0` restores OCR-only comparison.
+`speed_numeric_hud` and `speed_source` expose selection. `signals.csv` uses the
+shared schema for sample time/frame, source, quality and speed in metres/second.
+A held sample retains its original timestamp. Other games need their own numeric
+producer research; this does not repair all telemetry readers.
 
 ## Automated checks and source ownership
 
@@ -213,7 +264,7 @@ telemetry validity contract or a repair of Off Road's missing OCR implementation
 python -m pip install -r requirements-test.txt
 python -m unittest discover -s tests -v
 python harness/sync_native.py
-python harness/sync_toolkit.py --ref v0.10.1
+python harness/sync_toolkit.py --ref v0.11.1
 python gpu/renderer.py results/capture-8000 --no-png --report results/diagnostics/native.json
 ```
 
@@ -228,3 +279,17 @@ FFB analyzer on Linux without ROMs or hardware. Local GPU checks still require
 OpenGL, moderngl and captured reference data. Exact native V-Unit mismatches now
 return exit code 1. Zeus requires explicit tolerances and pixel budgets; its
 known approximate rendering must not be described as native bit exact.
+
+## Object and detail-distance investigation
+
+```powershell
+python harness/replay.py CASE --headless --until-frame 3840 --probe-script lua/usa_object_lifecycle.lua
+python harness/replay.py CASE --headless --until-frame 3060 --capture-state --patch patch/game/crusnusa-lod-experiment.txt --patch-at-frame 3054
+```
+
+The USA v4.5 probe verifies instruction signatures and traces an explicit bounded
+interval. The experimental LOD patch changes detailed/medium model thresholds,
+not the far plane or scene-object creation. Its native screenshot differences
+are expected and retained; they must not be silently blessed as identity passes.
+See [the follow-through review](reviews/2026-09-06-follow-through.md) for the
+specific model transition and cross-game coverage.

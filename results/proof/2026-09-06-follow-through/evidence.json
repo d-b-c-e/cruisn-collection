@@ -247,5 +247,197 @@
       "object_word": "10af8"
     },
     "exact_upstream_cause": "not established; do not claim gameplay equivalence"
+  },
+  "six-final-offroad/replay": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-final-world25/replay": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-final-exotica": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-offroad-no-marginfill": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-world25-no-marginfill": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-usa-no-marginfill": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "six-shipped-probe-check": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    }
+  },
+  "toolkit": {
+    "ref": "v0.11.1",
+    "managed_tests": 109,
+    "native_profiles": 10,
+    "hardware_force_applied": false
+  },
+  "harness_tests": 35,
+  "six-final-raw-usa": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "presentation": "native-headless",
+    "frames": 5012,
+    "report_sha256": "37af58f0553409fb6edf43c04c8b91c717d9581a28741dbb0c81c1dc45c65f2b"
+  },
+  "six-final-raw-world25": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "presentation": "native-headless",
+    "frames": 6000,
+    "report_sha256": "969ffaf3af5a56333ee063c7c884fea860aa3073e4d6738193bdbd1e4d4dff4e"
+  },
+  "six-final-raw-offroad": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "presentation": "native-headless",
+    "frames": 6000,
+    "report_sha256": "5b533abcddd49cb6668d2d88b252609135c5cafa1cb46003e04253fe9be7176f"
+  },
+  "six-final-raw-exotica": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "presentation": "recorded-settings",
+    "frames": 3600,
+    "report_sha256": "f2e5dc5c3d39c69dd95a4fa1e92d18691818519d6c7519caebda16f5839fa79d"
+  },
+  "six-default-sky-identity": {
+    "different_frames": [],
+    "frames": 11,
+    "passed": true,
+    "scope": "completed GL frame pixels"
+  },
+  "six-clamped-impact": {
+    "passed": true,
+    "metrics": {
+      "events_ms": [
+        100
+      ],
+      "full_strength_fraction": 0.0,
+      "motor_samples": 4,
+      "peak_abs": 0.12685588,
+      "rms": 0.028864492,
+      "strength": 50,
+      "tick_ms": 4,
+      "ticks": 101
+    },
+    "trace_sha256": "31527102198e189219293f59d80231b7f8141d7765f1f3c9a80461f35b96c71a"
+  },
+  "six-clamped-legacy": {
+    "passed": true,
+    "metrics": {
+      "events_ms": [],
+      "full_strength_fraction": 0.0,
+      "motor_samples": 4,
+      "peak_abs": 0.078389011,
+      "rms": 0.0352683,
+      "strength": 50,
+      "tick_ms": 4,
+      "ticks": 101
+    },
+    "trace_sha256": "31527102198e189219293f59d80231b7f8141d7765f1f3c9a80461f35b96c71a"
+  },
+  "six-final-raw-impact-analysis": {
+    "passed": true,
+    "metrics": {
+      "events_ms": [
+        52964,
+        57228,
+        70484,
+        84728
+      ],
+      "full_strength_fraction": 0.0,
+      "motor_samples": 4569,
+      "peak_abs": 0.381231576,
+      "rms": 0.108351275,
+      "strength": 50,
+      "tick_ms": 4,
+      "ticks": 21627
+    },
+    "trace_sha256": "677b00dfc3f2e06e2bcc2d754f4c02e38eb9f3db78589c083a68aa33e2e06bdf"
+  },
+  "final_executable_sha256": "c8389b3c095a0efc7bb905cf4a85f1ef2d92ee925c3d80328c1a04ef71c3b6ae",
+  "mame_commit": "368fab713acdfc53cb29188da2c59540000aaa88",
+  "motor_adapter_contrast": {
+    "passed": true,
+    "compiled_test": "tests/native/check_motor_adapter.py",
+    "source_formats": 2,
+    "physical_force_applied": false
   }
 }

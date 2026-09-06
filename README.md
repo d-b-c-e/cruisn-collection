@@ -8,6 +8,9 @@ look. **No ROMs are included** — you supply your own.
 
 This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
 collision feedback and telemetry coverage remain open work. The
+[latest follow-through](docs/reviews/2026-09-06-follow-through.md) covers restored
+World/Off Road skies, ordered GL replay, USA numeric HUD speed, optional steering
+impact cues, toolkit 0.11.1 and a measured detail-distance experiment. The
 [recorded-drive findings](docs/reviews/2026-09-05-recorded-drive-findings.md) document
 fixes for USA's colored road strips, missing margin terrain, selection slowdown
 and diagnostic recording hitches, with their measured limits.

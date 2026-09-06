@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "commits": 101,
+  "reconstructed_tree": "525325db1308874a60650ec54de3896eb6459b21",
+  "expected_tree": "525325db1308874a60650ec54de3896eb6459b21",
+  "mame_commit": "368fab713acdfc53cb29188da2c59540000aaa88"
+}
