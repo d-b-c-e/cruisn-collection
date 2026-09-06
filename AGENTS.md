@@ -2,7 +2,27 @@
 
 ## Current verified handoff (2026-09-06)
 
-Latest: `docs/reviews/2026-09-06-germany-level.md`. V-Unit pause UI must present
+Latest: `docs/reviews/2026-09-06-world-rendering-and-replay.md`. Native executable
+f40c28f8e0a fixes two exact endpoint samples and resolves enhanced tagged dither
+before display scaling. Exact USA/World captures are 100.0000%; real opaque
+checkerboard art is preserved. Off Road's flat sky rectangle now spans the wide
+canvas without extra guest instructions/draw calls; 6000-frame replay passes.
+World object visibility is EXPERIMENTAL ONLY: do not put the B9/C0/108..10D group
+back into normal 2.4/2.5 patches. It adds correct margin geometry but changes the
+route at frame2732 with identical actual ADC values. Original-bounds helper
+control passes; extra admitted geometry is the trigger, exact dependency open.
+Final original Germany replay matches 9269 inputs/154 native images plus 7401
+camera samples/22203 ADC reads and exact times. No fresh recording is needed.
+`lua/world_motion_trace.lua` + `harness/compare_world_motion.py` validate route
+traces; `derive_case.py` proves repeatability only, never original route fidelity.
+`lua/world_object_lifecycle.lua`, `world_texture_transition.lua`, `dma_window.lua`
+are bounded read-only probes. `world_projection_distance.lua` is a guarded,
+bounded MUTATING World2.4 diagnostic, never a product patch. Do not ship its
+frame-number window or the transmission atlas-hold experiment. World distance
+needs a safe reciprocal-table extension and route validation; D/A corruption
+is premature atlas reuse, also reproduced by official MAME controls.
+
+Previous: `docs/reviews/2026-09-06-germany-level.md`. V-Unit pause UI must present
 without a new emulation fence; pausing blocks that fence. `check_menu.py` tests
 the real key-handler menu states with physical force disabled; its menu BMPs
 are separate from completed gameplay captures. Germany Level is a complete human

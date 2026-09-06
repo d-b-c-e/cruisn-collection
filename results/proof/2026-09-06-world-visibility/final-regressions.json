@@ -1,0 +1,156 @@
+{
+  "schema": 1,
+  "passed": true,
+  "candidate_sha256": "4553e2afb939e4fea88238b62c1180b9c2e3dcc9bee58c102fed49c878237893",
+  "physical_force": false,
+  "cases": [
+    {
+      "id": "usa-original",
+      "passed": true,
+      "frames": 5012,
+      "native_images": 83,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "gl_comparison": null,
+      "timings": []
+    },
+    {
+      "id": "usa-widescreen",
+      "passed": true,
+      "frames": 5012,
+      "native_images": 83,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "gl_comparison": null,
+      "timings": [
+        {
+          "emulation_ratio": 1.0000219073765693,
+          "first_frame": 1680,
+          "last_frame": 2280,
+          "minimum_ratio": 0.95,
+          "passed": true
+        },
+        {
+          "emulation_ratio": 0.9998665610096077,
+          "first_frame": 2700,
+          "last_frame": 3300,
+          "minimum_ratio": 0.95,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "world24",
+      "passed": true,
+      "frames": 6000,
+      "native_images": 100,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "gl_comparison": null,
+      "timings": [
+        {
+          "emulation_ratio": 0.9997187699876297,
+          "first_frame": 3600,
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "world25",
+      "passed": true,
+      "frames": 6000,
+      "native_images": 100,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "gl_comparison": null,
+      "timings": [
+        {
+          "emulation_ratio": 0.9997550236724879,
+          "first_frame": 3600,
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "exotica",
+      "passed": true,
+      "frames": 6000,
+      "native_images": 100,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "gl_comparison": {
+        "different_frames": [],
+        "frames": 21,
+        "passed": true,
+        "scope": "completed GL frame pixels"
+      },
+      "timings": [
+        {
+          "emulation_ratio": 1.0000407148853472,
+          "first_frame": 3600,
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "id": "world24-germany",
+      "passed": true,
+      "frames": 9269,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "completed_gl_captures": 13,
+      "dropped_messages": 0
+    },
+    {
+      "id": "offroad",
+      "passed": true,
+      "frames": 6000,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "completed_gl_captures": 9,
+      "dropped_messages": 0
+    }
+  ],
+  "limitations": "Listed routes and sampled evidence only; native images are not the Zeus visible oracle. World experimental visibility is disabled. Off Road uses the new flat sky patch. No physical FFB claim."
+}

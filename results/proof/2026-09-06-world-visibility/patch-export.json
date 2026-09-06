@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "patches": 108,
+  "tree": "79f28f8dc867012d19be9807d4a3df7980c12372",
+  "expected_tree": "79f28f8dc867012d19be9807d4a3df7980c12372",
+  "native_head": "f40c28f8e0a3b13a8d8aece8d11db9dfa006147b",
+  "patch_sha256": "4cdf90d9b274bca3e4f71c402fc805de8f0b887462b79767caf9690524bfd48d"
+}

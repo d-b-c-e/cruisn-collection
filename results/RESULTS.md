@@ -3185,3 +3185,70 @@ No FFB sign/gain/DIP runtime changes, no plugin install and no Fanatec cure clai
   calls0x387/0x3C9 at7276, verify2effectiveRAMwords at7280. Replay passes; geometry
   unchanged756quads, qualitypixelschanged0; geometry-extension check correctly
   fails for no additions. Do not loosen these bounds blindly or ship this bypass.
+
+## 2026-09-06 — World route controls, shadow resolve and Off Road sky bounds
+
+Full report: docs/reviews/2026-09-06-world-rendering-and-replay.md. Compact proof:
+results/proof/2026-09-06-world-visibility/. Original Germany and failed controls
+are intact. Automated runs disable physical FFB; toolkit remains v0.11.1.
+
+- Native dd12bed67f0 fixes World7280 exact pixels (7,250)/(77,297): approximate
+  reciprocal arithmetic shifted half-pixel edges by an ULP. Scale1 now rounds
+  double reciprocals to float; quality mode retains fast math. World plus both
+  USA captures verify 100.0000%. CPU oracle handles signed coordinates and wide
+  palette arithmetic under NumPy2. Sloped-quad GPU fixtures match independent CPU.
+- Native f40c28f8e0a also resolves tagged enhanced dither before output scaling.
+  Alternating tag3 pairs blend; opaque checkerboard art stays intact. Exact masks
+  remain1; Zeus shaders unchanged. 20 GPU checks and 59 Python tests pass.
+- Built root vunit.exe SHA256 4553e2afb939e4fea88238b62c1180b9c2e3dcc9bee58c102fed49c878237893.
+  The108-patch export reconstructs tree79f28f8dc867012d19be9807d4a3df7980c12372
+  from mame0286. Regeneration has no shader diff; native helpers/toolkit match.
+  Stream Deck uses this source/executable; racing mame.exe untouched.
+- Off Road black corners reproduced at1560/1800: flat blue quad stopped at0..512.
+  Existing instructions use dead R0 for-86, R3 for598, already-zero R2 mantissa
+  for Y. No extra instructions/submissions. Matched1560 changes only four X words;
+  all other draws/nativeVRAM/texture/palette identical. Full6000-frame final-exe
+  replay passes100native images/all inputs,9completed sky captures, drop0.
+- World object sphere-X tests B9/C0/C4 reject some terrain before DMA. Bounded
+  helper108..10D adds173quads at7280, preserving originals/order. Two native-edge
+  words change inside added coverage.5940 adds9, World2.5/4800 adds1, resources
+  identical. Explicit --object-visibility attributes possible native writes but
+  cannot certify appearance or physics equivalence.
+- CRITICAL: full World extension changes route. User saw veering~54external sec.
+  First camera diff2732 (~47.16s); all4503actual ADC values/PCs match1800..3300,
+  read times differ40ns starting1802. Original and re-recorded INPs produce the
+  same divergent camera. Original-bounds helper passes; wider left-only and
+  right-only each diverge2732. Extra admitted guest geometry triggers it; exact
+  timer/state dependency OPEN. Normal2.4/2.5 patches restored, experimental file
+  isolated. Failed derived identity replay remains failed; do not bless it.
+- Final original Germany live replay passes9269inputs/154native images. Driving
+  comparison1800..9200 matches7401camera samples/22203ADC reads including exact
+  times. compare_world_motion.py checks camera/ADC independently and rejects
+  malformed or incomplete traces. derive_case.py promises repeatability only.
+  No fresh recording needed.
+- User1:37 means GAME ELAPSED TIME, around7340+ external frames. Final dense GL
+ 7200..7440 still reproduces a small left wedge near1:36.78. Neighboring offline
+ 7340 adds50offscreen quads with identical originals/resources (including a rival).
+  Live/offline scenes differ slightly in time: not proof the transient is fixed.
+- Clean official MAME0286/0289 reproduce D/A corruption1320:1380inputs/23native
+  images match. Atlas byte398200/mappedBCC100..BD08FF is used through1358 while
+  loaderB25/B27 overwrites18432words in overlapping blocks1282..1286. Fixed empty
+  diagnostic: World submits15used words, not16.11482actual DMA records captured.
+  Causal hold restores D/A, title still corrupt, garage normal1380; all1382inputs
+  equal, only sampled1320changes. Frame-number hold NOT shipped; fix asset lifetime.
+- World distance trace349365samples/900renderframes/701objects:15914samples from
+ 106objects beyond80k within160k, max122528,28model transitions. Global100k alone
+  reads beyond5000-entry reciprocal table and makes stray giant polygons. Safe
+  old-clamp control2060 adds163quads/all1750originals unchanged but mountain is
+  oversized. Bounded read extension5000..6250 plus five clamp pairs makes2651hits
+  and visibly corrects perspective without overwriting adjacent RAM. Diagnostic
+  only; route behavior and mountain-base appearance remain open. Goal remains
+  no noticeable pop-in over validated routes in every game, requiring projection,
+  residency and guest-work dependency analysis.
+
+Final executable cross-game checks also pass USA original/wide (5012 inputs and
+83 native images each), World2.4/2.5 synthetic (6000/100 each), and Exotica (6000
+inputs/21 completed GL images), including configured timing gates. Combined with
+final Germany and Off Road runs above, all seven local cases pass at hash4553e2a.
+See proof final-regressions.json; earlier world-renderer-final-suite used the
+previous executable and is not the final-build evidence.

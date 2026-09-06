@@ -12,8 +12,19 @@ GPL/legal bright line stays intact.
 WORDADDR OLD NEW      # hex; WORDADDR = program-RAM word index 0..0x1ffff
 WORDADDR *   NEW      # * skips the old-value guard
 ```
-OLD is verified before writing (mismatch = skipped, logged). This makes a
-patch safe to ship for one game version and inert on others.
+Reset-time installation validates the whole group before writing; a mismatched
+OLD rejects the group and logs an error. This guards one game revision. The
+legacy per-frame self-healer still checks words individually; it is not a general
+atomic runtime patch manager. Guarded installation does not establish behavioral
+equivalence: run the original input/route comparison as well as geometry checks.
+
+`crusnwld-object-visibility-experimental.txt` is diagnostic only. It recovers
+real margin geometry but changes the Germany route despite identical recorded
+inputs. Do not merge it into the normal World patches or adopt a derived case as
+proof that the original route is preserved. Off Road's flat sky extension in its
+normal patch changes existing coordinates without extra instructions or draws;
+its full recorded native replay passes. See
+`docs/reviews/2026-09-06-world-rendering-and-replay.md` for evidence and limits.
 
 ## Disassembling a game (for finding patch targets)
 ```

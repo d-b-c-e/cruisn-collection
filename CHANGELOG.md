@@ -5,6 +5,18 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Fix checkerboard/moire shadows and translucent panels in enhanced V-Unit
+  rendering by resolving tagged dither before display scaling; preserve real
+  checkerboard artwork and exact native output.
+- Fill Off Road's black upper sky corners by widening only its flat backdrop,
+  with no additional guest instructions or polygons.
+- Fix two native endpoint coverage errors found in Germany and strengthen the
+  CPU/GPU oracle for signed coordinates and palette arithmetic.
+- Add World camera/ADC comparisons and bounded visibility, distance and texture
+  diagnostics. Keep the World visibility extension experimental after detecting
+  route divergence despite matching inputs. The original Germany drive remains
+  unchanged and passes with the final normal build.
+
 - Fix the invisible V-Unit Esc menu: it now redraws while emulation is paused.
   Recorded-input menu checks cover USA, World and Off Road, including CRT,
   resume and exit.

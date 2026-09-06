@@ -164,6 +164,48 @@ GPU verifier on the captures separately. `gpu/renderer.py --buffers output.npz`
 exports indices, coverage and transparent-texel-aware polygon ownership.
 `--crackfill` and `--marginfill` are independent preview options.
 
+`--object-visibility` on the extension verifier is a separate explicit mode for
+new objects that slightly intersect the native edge. It preserves original draws,
+order, previous page scene, textures and palette, and attributes each changed VRAM
+word to added-quad coverage using the CPU rasterizer. It does not establish route
+equivalence. World's wider object bounds pass isolated geometry checks yet change
+the subsequent route, so that patch remains experimental and disabled by default.
+
+For World2.4/2.5, compare the actual camera and ADC-read timelines as well:
+
+```powershell
+$env:CRUISN_MOTION_FIRST = '1800'
+$env:CRUISN_MOTION_LAST = '9200'
+python harness/replay.py results/diagnostics/world-germany-20260906 --probe-script lua/world_motion_trace.lua --output results/diagnostics/motion-reference
+python harness/replay.py results/diagnostics/world-germany-20260906 --candidate E:/Source/mame-src/vunit.exe --probe-script lua/world_motion_trace.lua --clock --output results/diagnostics/motion-candidate
+python harness/compare_world_motion.py results/diagnostics/motion-reference/run results/diagnostics/motion-candidate/run --report results/diagnostics/motion-comparison.json
+Remove-Item Env:CRUISN_MOTION_FIRST, Env:CRUISN_MOTION_LAST
+```
+
+These environment settings apply only to that bounded probe. A different interval
+can be selected, but both traces must have the same contiguous camera samples.
+The comparator reports camera state, ADC values/reader PCs and exact read timing
+independently and fails if any differ. Camera equality is not a complete physics
+checksum. In the rejected visibility case, the input values agree while read
+timing changes first and camera position later diverges at frame2732.
+
+`harness/derive_case.py PARENT --candidate EXE --patch FILE --output NEW_DIRECTORY
+--title TITLE --clock` creates a separate case by replaying the parent's INP,
+checks the parent's initial state/input/ROM/evidence hashes, retains parent pixel
+differences, and requires candidate identity replay. Its PASS means repeatability
+only. Never use it to turn a failed original-route comparison into a passing
+claim. The original Germany case is sufficient; the current normal executable
+matches its full route without deriving a replacement recording.
+
+Additional developer probes are bounded and version gated:
+`lua/world_object_lifecycle.lua` logs far-gate admission/model selection;
+`lua/world_texture_transition.lua` logs the Germany D/A transition and dense
+native snapshots; `lua/dma_window.lua` records actual submitted quad provenance.
+World often submits15 used DMA words, not16; a no-draw capture fails.
+`lua/world_projection_distance.lua` is explicitly **mutating**, restores its
+guarded changes, and exists only for short World2.4 distance experiments.
+None of these are automatically enabled in a normal launch or replay.
+
 The local `usa-widescreen-candidate-case` was deliberately re-recorded from the
 original human INP with the improved executable/patch, retaining that provenance
 in its manifest. Its 5,012 frames and 83 native snapshots pass identity replay.
