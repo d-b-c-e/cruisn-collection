@@ -17,6 +17,7 @@ from game_patch import read_patch, verify_patch_ram, late_patch_lua
 from run_capture import ARTIFACTS
 from session_case import compare_evidence, prepare_run, session_evidence, tree_hashes, set_option
 from verification import sha256_file, write_json, required_files
+from session_clock import SessionClock, position
 
 
 def main(argv=None):
@@ -24,6 +25,9 @@ def main(argv=None):
     ap.add_argument("case", type=Path)
     ap.add_argument("--output", help="new evidence directory (must not exist)")
     ap.add_argument("--headless", action="store_true", help="native snapshots, no GL presentation")
+    ap.add_argument("--small-window", action="store_true", help="disable window maximization for cheaper dense GL captures")
+    ap.add_argument("--clock", action="store_true", help="show external emulation time and frame; uses current diagnostic script")
+    ap.add_argument("--clock-position", type=position, default=(12, 12), help="X:Y in screen pixels")
     ap.add_argument("--candidate", type=Path, help="explicit candidate executable for regression experiments")
     ap.add_argument("--timeout", type=float, default=900)
     ap.add_argument("--gl-capture", help="capture live V-Unit GL backbuffers over FIRST:LAST stream frames")
@@ -51,6 +55,8 @@ def main(argv=None):
     args = ap.parse_args(argv)
     if args.timeout <= 0:
         ap.error("timeout must be positive")
+    if args.headless and args.small_window:
+        ap.error("--small-window requires visible replay")
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
     gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
@@ -151,12 +157,19 @@ def main(argv=None):
             report["snapshot_mode_override"] = args.snapshot_mode
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
+        if args.small_window:
+            command += ["-window", "-nomaximize"]
+            report["window_override"] = "unmaximized; actual dimensions are recorded in captures.csv"
         if args.numeric_speed:
             env["MIDV_SPEED_NUMERIC"] = "1"
             report["numeric_speed_experiment"] = True
-        if args.snapshot_mode or args.probe_script or args.patch_at_frame is not None:
+        if args.snapshot_mode or args.probe_script or args.patch_at_frame is not None or args.clock:
             shutil.copy2(ROOT / "lua" / "session.lua", runtime / "session.lua")
             report["diagnostic_script_sha256"] = sha256_file(runtime / "session.lua")
+        if args.clock:
+            env["SNAP_CLOCK_EVERY"] = "6"
+            report["external_clock"] = {"flush_frames": 6, "position": args.clock_position,
+                                        "time_source": "frames.csv emulated_seconds"}
         if args.probe_script:
             probe_file = runtime / "probe.lua"
             shutil.copy2(args.probe_script, probe_file)
@@ -194,7 +207,13 @@ def main(argv=None):
             report["game_patch_override"] = {"source": str(args.patch.resolve()),
                                               "sha256": sha256_file(patch_file)}
             report["kind"] = "game-patch-regression"
-        invocation = execute(command, runtime, env, args.timeout)
+        clock = SessionClock(runtime, "Replay: " + manifest.get("title", manifest["rom"]), args.clock_position)
+        if args.clock:
+            clock.start()
+        try:
+            invocation = execute(command, runtime, env, args.timeout)
+        finally:
+            clock.close()
         # Recording uses the product launch log; normalize the replay's stdout
         # path so the same strict evidence validator serves both paths.
         if (runtime / "stdout.log").exists():

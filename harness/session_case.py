@@ -162,7 +162,7 @@ def compare_evidence(reference_dir, replay_dir, reference, replay):
 
 
 class Recording:
-    def __init__(self, output, every=60, stop_frame=0, snapshot_mode="raw", with_ffb=False):
+    def __init__(self, output, every=60, stop_frame=0, snapshot_mode="raw", with_ffb=False, clock=False):
         if every < 1 or stop_frame < 0:
             raise ValueError("snapshot interval must be positive and stop frame nonnegative")
         self.path = new_run("recording", output)
@@ -171,6 +171,7 @@ class Recording:
             raise ValueError("snapshot mode must be png or raw")
         self.snapshot_mode = snapshot_mode
         self.with_ffb = with_ffb
+        self.clock = clock
         self.manifest = None
 
     def prepare(self, command, env, rig, *, stimulus=None):
@@ -231,6 +232,7 @@ class Recording:
             "snapshot_mode": self.snapshot_mode,
             "origin": "synthetic-inp" if stimulus else "live-input",
             "attended_ffb": self.with_ffb,
+            "clock_flush_frames": 6 if self.clock else 0,
             "created_utc": datetime.now(timezone.utc).isoformat(),
             "every": self.every, "stop_frame": self.stop_frame,
             "command": list(command), "settings": settings,
@@ -300,6 +302,8 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
     if manifest.get("snapshot_mode") == "raw":
         (runtime / "raw-snap").mkdir()
         env["SNAP_RAW_DIR"] = str(runtime / "raw-snap")
+    if not playback and manifest.get("clock_flush_frames"):
+        env["SNAP_CLOCK_EVERY"] = str(manifest["clock_flush_frames"])
     # Only an explicitly attended live recording retains the selected wheel force.
     # Replay and synthetic recording remain output-free regardless of the manifest.
     if playback:

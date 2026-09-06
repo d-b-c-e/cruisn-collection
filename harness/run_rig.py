@@ -1235,7 +1235,7 @@ def apply_wheelmap(tree, rig):
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
                       margin=None, ffb=None, marginfill=False,
-                      mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False):
+                      mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False, record_clock=False):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -1416,7 +1416,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     recording = None
     if record_case:
         from session_case import Recording
-        recording = Recording(record_case, every=record_every, stop_frame=record_frames, with_ffb=record_with_ffb)
+        recording = Recording(record_case, every=record_every, stop_frame=record_frames, with_ffb=record_with_ffb, clock=record_clock)
 
     def start():
         cmd = [mame, rom,
@@ -1449,7 +1449,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             cmd, launch_env, launch_dir = recording.prepare(cmd, env, rig)
             log_path = os.path.join(launch_dir, "launch.log")
             print(f"Recording effective wheel/pedal/button inputs: {recording.path}")
-            print("Recording uses a private copy of the rig state; physical FFB is disabled.")
+            print("Recording uses a private copy of the rig state; physical FFB is "
+                  + ("retained for attended driving." if record_with_ffb else "disabled."))
         log = open(log_path, "w")
         # first line: what this launch actually applied (the support bundle
         # ships this file; "did the setting take?" is answered here)

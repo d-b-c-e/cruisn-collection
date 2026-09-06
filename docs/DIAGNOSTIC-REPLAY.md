@@ -30,13 +30,34 @@ World/Off Road and physical wheel/menu behavior need their own acceptance.
 From the repository root, using the existing rig configuration:
 
 ```powershell
-python harness/run_rig.py --rom crusnusa --record-case results/diagnostics/my-drive --record-every 60
+python harness/record_drive.py --game world --title "Germany Level" --output results/diagnostics/germany-next --with-ffb
 ```
+
+This helper preserves the collection's saved resolution, widescreen mode,
+steering sensitivity/curve, per-game graphics experiments and wheel bindings.
+`--with-ffb` retains the saved force strength for attended driving; omit it for
+no physical force. The lower-level `run_rig.py --record-case` remains available,
+but its command-line defaults can differ from your saved collection settings.
+
+An external clock opens by default, showing **emulated seconds and frame number**.
+It starts at emulator boot, including selection screens. Report, for example,
+"125.68 seconds, black road on the left" or the displayed frame number. Pausing
+does not advance this clock. It samples the log approximately ten times per
+second (a flush every six emulated frames plus a 50 ms UI poll), so a brief defect
+should be inspected over neighboring frames too. It does not extrapolate time
+while the game stalls. The passive Windows panel does not take focus or intercept
+inputs and is excluded from native/GL diagnostic screenshots.
+
+Use `--clock-position 550:80` to position the panel in screen pixels, including on
+a second monitor; `--no-clock` disables it and its extra log flushes. The clock
+uses Python's Tkinter. It closes when the recording finishes. The original
+Germany Level case is `results/diagnostics/world-germany-20260906` (9,269 frames,
+160.00815328 emulated seconds, 154 native snapshots); keep it unchanged.
 
 Insert coins, start, choose a car and drive normally. Quit through the game's
 menu so MAME can close the INP and the recorder can validate the final evidence.
-The directory must be new. `--record-frames 6000` instead requests a fixed stop
-after 6,000 emulated frames, including boot and selection. `--windowed` is
+The directory must be new. With `run_rig.py`, `--record-frames 6000` requests a fixed stop
+after 6,000 emulated frames, including boot and selection. Its `--windowed` is
 available. Recording currently requires this developer launcher; the packaged
 collection's settings screen does not yet expose it.
 
@@ -78,12 +99,20 @@ containers visible in MAME's `device_ref` list are fingerprinted when present.
 python harness/replay.py results/diagnostics/my-drive --headless
 python harness/replay.py results/diagnostics/my-drive --headless --candidate E:/Source/mame-src/vunit.exe
 python harness/replay.py results/diagnostics/my-drive
+python harness/replay.py results/diagnostics/world-germany-20260906 --clock --candidate E:/Source/mame-src/vunit.exe
 ```
 
 The first command validates identity against the archived executable. The second
 explicitly tests a changed executable. The third uses the recorded presentation
 settings, including GL when it was enabled. All create new evidence directories.
 `--timeout` bounds the run; partial evidence survives a timeout, which is a failure.
+`--clock` uses the same emulated timestamps during playback. For old cases it
+explicitly copies the current diagnostic Lua script into the new replay directory
+and records its hash; the archived script and original evidence stay intact.
+Without `--clock`, replay does not request the extra clock flushes. Physical
+wheel force stays off in either mode. `--small-window` reduces output image size
+for dense GL capture while retaining recorded internal resolution; actual capture
+dimensions are written to `captures.csv`.
 
 For an older case, explicitly test deferred encoding and capture a defect range:
 
@@ -97,6 +126,9 @@ the original case is never edited. `--until-frame` explicitly compares only the
 requested prefix, still checking every input/time and sampled image in that
 prefix. `--capture-state` retains quads and native RAM at stop-minus-two, matching
 the offline renderer's completed-scene convention. Missing dump files fail.
+For live GL capture, stop at least two frames beyond the last requested capture
+so the consumer can present that completed frame before emulator exit. An interval
+missing its final capture fails, even when every earlier image is present.
 `--native-renderer` is an aspect-preserving windowed control with the replacement
 GL disabled. `--gl-scale` and `--no-crackfill` are explicit presentation experiments.
 

@@ -3,6 +3,8 @@
 local count = 0
 local last_emulated = -1
 local every = tonumber(os.getenv("SNAP_EVERY")) or 60
+-- Opt-in external clock: bounded 10 Hz-ish log visibility, no extra screenshots.
+local flush_every = tonumber(os.getenv("SNAP_CLOCK_EVERY")) or 0
 local stop_frame = tonumber(os.getenv("SNAP_STOP")) or 0
 local log_path = assert(os.getenv("SNAP_SESSION_LOG"), "SNAP_SESSION_LOG required")
 local raw_dir = os.getenv("SNAP_RAW_DIR")
@@ -58,6 +60,9 @@ emu.register_frame_done(function()
         else
             emu.print_info(string.format("session.lua: snapshot at frame %d", count))
         end
+        log:flush()
+    end
+    if flush_every > 0 and count % flush_every == 0 and count % every ~= 0 then
         log:flush()
     end
     if stop_frame > 0 and count >= stop_frame then manager.machine:exit() end

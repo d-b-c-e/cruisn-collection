@@ -91,6 +91,34 @@ class GraphicsOptionsTests(unittest.TestCase):
 
 @unittest.skipUnless(sys.platform == "win32", "launcher uses Windows APIs")
 class LauncherGraphicsTests(unittest.TestCase):
+    def test_attended_recorder_preserves_shell_settings_and_requires_ffb_opt_in(self):
+        missing_gl = importlib.util.find_spec("moderngl") is None
+        modules = {"moderngl": types.ModuleType("moderngl")} if missing_gl else {}
+        with mock.patch.dict(sys.modules, modules):
+            import record_drive
+        state = {"world_rom": "crusnwld24", "scale": 4, "crt": False,
+                 "crackfill": True, "margin": 86, "ffb": 80,
+                 "steersens": {"crusnwld": 90}, "steercurve": {"crusnwld": 120}}
+        recording = types.SimpleNamespace(finish=mock.Mock(), manifest={"status": "recorded"})
+        proc = types.SimpleNamespace(poll=lambda: 0, recording=recording)
+        with tempfile.TemporaryDirectory() as directory:
+            for attended in (False, True):
+                args = ["--game", "world", "--no-clock", "--output", str(Path(directory) / "drive")]
+                if attended:
+                    args += ["--with-ffb"]
+                with mock.patch.object(record_drive.collection, "load_config", return_value=state), \
+                        mock.patch.object(record_drive.run_rig, "resolve_world_rom", return_value=("crusnwld24", None)), \
+                        mock.patch.object(record_drive.run_rig, "launch_game_async", return_value=(proc, 0)) as launch, \
+                        mock.patch.object(record_drive.run_rig, "wait_or_kill", return_value=0):
+                    self.assertEqual(record_drive.main(args), 0)
+                applied = launch.call_args.kwargs
+                self.assertEqual(applied["rom"], "crusnwld24")
+                self.assertEqual(applied["steersens"], 90)
+                self.assertEqual(applied["steercurve"], 120)
+                self.assertEqual(applied["margin"], 86)
+                self.assertEqual(applied["ffb"], 80 if attended else 0)
+                self.assertEqual(applied["record_with_ffb"], attended)
+
     def test_real_shell_save_preserves_bindings_and_retires_marginfill(self):
         # Configuration/UI data needs no OpenGL context in hardware-free CI.
         missing_gl = importlib.util.find_spec("moderngl") is None
