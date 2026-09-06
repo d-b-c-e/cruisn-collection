@@ -1,4 +1,4 @@
-"""Create a labeled V-Unit INP stimulus and record/replay it through MAME.
+"""Create a labeled racing INP stimulus and record/replay it through MAME.
 
 This is a scenario generator, not a human-input recorder. It uses the documented
 MAME INP v3 port layouts from the supported drivers' source, refusing a different layout or
@@ -21,7 +21,12 @@ PORTS = (":ACCEL", ":BRAKE", ":CONF", ":DSW", ":FAKE", ":IN0", ":IN1", ":MOTION"
 LAYOUTS = {"crusnusa": PORTS}
 for _rom in ("crusnwld", "crusnwld24", "offroadc"):
     LAYOUTS[_rom] = tuple(sorted(set(PORTS) - {":MOTION"} | {":serial_pic2:SERIAL_DIGIT"}))
+LAYOUTS['crusnexo'] = tuple(sorted((':ANALOG0', ':ANALOG1', ':ANALOG2', ':ANALOG3',
+    ':DIPS', ':GEARS', ':IN1', ':IN2', ':KEYPAD', ':SEQ', ':SYSTEM', ':ioasic:SERIAL_DIGIT')))
 ANALOG = (":ACCEL", ":BRAKE", ":WHEEL")
+ANALOG_LAYOUTS = {rom: ANALOG for rom in LAYOUTS}
+ANALOG_LAYOUTS['crusnexo'] = (':ANALOG1', ':ANALOG2', ':ANALOG3')
+STEERING = {rom: (':ANALOG3' if rom == 'crusnexo' else ':WHEEL') for rom in LAYOUTS}
 STRIDE = 16 + len(PORTS) * 8 + len(ANALOG) * 13
 SECOND = 10**18
 
@@ -29,9 +34,10 @@ SECOND = 10**18
 def generate(seed_bytes, scenario):
     rom = seed_bytes[20:32].split(b"\0")[0].decode("ascii")
     if rom not in LAYOUTS:
-        raise ValueError("unsupported V-Unit INP layout")
+        raise ValueError("unsupported racing INP layout")
     ports = LAYOUTS[rom]
-    stride = 16 + len(ports) * 8 + len(ANALOG) * 13
+    analog, steering = ANALOG_LAYOUTS[rom], STEERING[rom]
+    stride = 16 + len(ports) * 8 + len(analog) * 13
     if (seed_bytes[:8] != b"MAMEINP\0" or seed_bytes[16:18] != b"\x03\x00"):
         raise ValueError("requires a supported V-Unit MAME INP v3.0 seed")
     payload = zlib.decompress(seed_bytes[64:])
@@ -40,7 +46,14 @@ def generate(seed_bytes, scenario):
     times = [s * SECOND + a for s, a, _ in
              (struct.unpack_from("<iqI", payload, n) for n in range(0, len(payload), stride))]
     step = times[1] - times[0]
-    if times[0] != 0 or step <= 0 or any(t != n * step for n, t in enumerate(times)):
+    first_step = step
+    if rom == 'crusnexo' and len(times) >= 3:
+        # Zeus's first refresh has attosecond rounding different from the
+        # configured steady period. Preserve that initial interval exactly.
+        step = times[2]-times[1]
+    def frame_time(n):
+        return 0 if n == 0 else first_step + (n-1)*step
+    if times[0] != 0 or first_step <= 0 or step <= 0 or any(t != frame_time(n) for n, t in enumerate(times)):
         raise ValueError("seed has nonuniform or unexpected emulated input timing")
     template = payload[16:stride]
     if any(payload[n + 16:n + stride] != template for n in range(0, len(payload), stride)):
@@ -53,7 +66,7 @@ def generate(seed_bytes, scenario):
     for tag in ports:
         offsets[tag] = at
         at += 8
-        if tag in ANALOG:
+        if tag in analog:
             analog_offsets[tag] = at
             at += 13
     for tag, offset in offsets.items():
@@ -61,11 +74,11 @@ def generate(seed_bytes, scenario):
             raise ValueError(f"seed holds a digital input on {tag}")
     keys = scenario.get("analog", {})
     for tag, points in keys.items():
-        if tag not in ANALOG or not points or points[0][0] != 0:
+        if tag not in analog or not points or points[0][0] != 0:
             raise ValueError("analog keyframes must name a V-Unit axis and start at frame 0")
         previous = -1
         for frame, value in points:
-            low = -1 if tag == ":WHEEL" else 0
+            low = -1 if tag == steering else 0
             if not previous < frame <= frames or not low <= value <= 1:
                 raise ValueError("invalid analog keyframe order or normalized value")
             previous = frame
@@ -80,7 +93,7 @@ def generate(seed_bytes, scenario):
     result = bytearray()
     cursors = {tag: 0 for tag in keys}
     for n in range(frames + 1):
-        row = bytearray(struct.pack("<iqI", *divmod(n * step, SECOND), 1 << 20) + template)
+        row = bytearray(struct.pack("<iqI", *divmod(frame_time(n), SECOND), 1 << 20) + template)
         for p in pulses:
             if p["start"] <= n < p["end"]:
                 offset = offsets[p["port"]] + 4
@@ -92,7 +105,7 @@ def generate(seed_bytes, scenario):
                 index += 1
             cursors[tag] = index
             value = points[index][1]  # step/hold; MAME retains analog interpolation
-            raw = value * 65536 if tag == ":WHEEL" else (value * 2 - 1) * 65536
+            raw = value * 65536 if tag == steering else (value * 2 - 1) * 65536
             offset = analog_offsets[tag]
             sensitivity = struct.unpack_from("<i", row, offset + 8)[0]
             if not 1 <= sensitivity <= 255:
@@ -138,13 +151,14 @@ def main(argv=None):
         command = set_option(command, "-video", "d3d")
         command = set_option(command, "-resolution", "1280x720")
         command += ["-window", "-throttle", "-nokeepaspect"]
-        settings.update(MIDV_GL="1", MIDV_GL_SCALE="4", MIDV_GL_LOG="1")
+        key = 'MIDZ' if manifest['rom'] == 'crusnexo' else 'MIDV'
+        settings.update({key+'_GL':'1', key+'_GL_SCALE':'4', key+'_GL_LOG':'1'})
     if args.gl_capture:
         first, last = [int(v) for v in args.gl_capture.split(":")]
         if not args.gl or not 0 <= first < last <= scenario["frames"] or last - first > 240:
             ap.error("GL capture requires --gl and an interval of 1..240 frames within the scenario")
-        settings.update(MIDV_GL_SNAP="redirect-at-launch", MIDV_GL_SNAP_EVERY="1",
-                        MIDV_GL_SNAP_FIRST=str(first), MIDV_GL_SNAP_LAST=str(last), MIDV_GL_SNAP_MAX="180")
+        settings.update({key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',SNAP_EVERY='1',
+            SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_MAX='241').items()})
     recording = Recording(str(work / "case"), every=scenario.get("snapshot_every", 60),
                            stop_frame=scenario["frames"])
     command, env, runtime = recording.prepare(command, diagnostic_env(settings),
@@ -155,7 +169,10 @@ def main(argv=None):
     recording.finish(result["returncode"])
     if recording.manifest["status"] != "recorded":
         return 1
-    return replay.main([str(recording.path), "--headless", "--timeout", str(args.timeout),
+    presentation = [] if manifest['rom'] == 'crusnexo' and args.gl else ['--headless']
+    if args.gl_capture:
+        presentation = ['--compare-gl']
+    return replay.main([str(recording.path), *presentation, "--timeout", str(args.timeout),
                         "--output", str(work / "replay")])
 
 

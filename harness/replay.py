@@ -36,6 +36,9 @@ def main(argv=None):
     ap.add_argument("--no-crackfill", action="store_true", help="explicit experiment with crack filling disabled")
     ap.add_argument("--no-marginfill", action="store_true", help="disable backdrop suppression and boundary-column extension")
     ap.add_argument("--align-tjunctions", action="store_true", help="explicit quality-only geometry join experiment")
+    ap.add_argument("--compare-gl", action="store_true", help="require identical completed GL pixels against the recorded case")
+    ap.add_argument("--zeus-native", action="store_true", help="explicit Zeus diagnostic: also rasterize native CPU frames")
+    ap.add_argument("--zeus-stop-frame", type=int, help="diagnostic Zeus consumer failure at this completed frame")
     ap.add_argument("--video", choices=("gdi", "d3d", "bgfx"), help="explicit underlying MAME video-backend experiment")
     ap.add_argument("--native-renderer", action="store_true", help="windowed control with replacement GL disabled")
     ap.add_argument("--snapshot-mode", choices=("png", "raw"), help="explicit capture experiment; raw defers PNG encoding until exit")
@@ -50,7 +53,9 @@ def main(argv=None):
         ap.error("timeout must be positive")
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
-    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.align_tjunctions or args.gl_stall or args.gl_queue_mb
+    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
+    if args.headless and args.compare_gl:
+        ap.error("GL pixel comparison requires live presentation")
     if args.headless and (gl_experiment or args.video or args.native_renderer):
         ap.error("live GL diagnostics cannot be combined with --headless")
     if args.native_renderer and gl_experiment:
@@ -70,6 +75,11 @@ def main(argv=None):
     try:
         case = args.case.resolve()
         manifest = json.loads((case / "case.json").read_text(encoding="utf-8"))
+        gl_key = "MIDZ" if manifest.get('rom') == 'crusnexo' else 'MIDV'
+        if gl_key == 'MIDZ' and (args.gl_queue_mb or args.gl_stall or args.no_crackfill or args.no_marginfill or args.align_tjunctions):
+            raise ValueError('requested renderer experiment is V-Unit-only')
+        if (args.zeus_native or args.zeus_stop_frame is not None) and gl_key != 'MIDZ':
+            raise ValueError('Zeus diagnostics require Exotica')
         if manifest.get("schema") != 1 or manifest.get("status") != "recorded":
             raise ValueError("case is not a completed schema-1 recording")
         if tree_hashes(case / "initial") != manifest["initial_hashes"]:
@@ -96,8 +106,8 @@ def main(argv=None):
         if args.patch_at_frame is not None and not 1 <= args.patch_at_frame < reference["frames"] - 2:
             raise ValueError("late patch must precede the final capture/stop frames")
         if gl_experiment:
-            if manifest["settings"].get("MIDV_GL") != "1":
-                raise ValueError("live V-Unit GL diagnostics require a recording made with MIDV_GL=1")
+            if manifest["settings"].get(gl_key+"_GL") != "1":
+                raise ValueError("GL diagnostics require a recording made with this game's GL renderer")
             overrides = {}
             if args.gl_queue_mb is not None:
                 if not 16 <= args.gl_queue_mb <= 128:
@@ -112,13 +122,18 @@ def main(argv=None):
                 first, last = map(int, args.gl_capture.split(":"))
                 if not 0 <= first < last <= reference["frames"]:
                     raise ValueError("GL interval must be within the recorded frames")
-                overrides.update(MIDV_GL_SNAP="redirect-at-launch", MIDV_GL_SNAP_FIRST=str(first),
-                    MIDV_GL_SNAP_LAST=str(last), MIDV_GL_SNAP_EVERY=str(args.gl_every),
-                    MIDV_GL_SNAP_MAX=str(args.gl_max))
+                overrides.update({gl_key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',
+                    SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_EVERY=str(args.gl_every),SNAP_MAX=str(args.gl_max)).items()})
             if args.gl_log:
-                overrides["MIDV_GL_LOG"] = "1"
+                overrides[gl_key+"_GL_LOG"] = "1"
             if args.gl_scale is not None:
-                overrides["MIDV_GL_SCALE"] = str(args.gl_scale)
+                overrides[gl_key+"_GL_SCALE"] = str(args.gl_scale)
+            if args.zeus_native:
+                overrides['MIDZ_GL_NATIVE'] = '1'
+            if args.zeus_stop_frame is not None:
+                if not 0 <= args.zeus_stop_frame < reference['frames']:
+                    raise ValueError('consumer stop must lie within the recording')
+                overrides.update(MIDZ_GL_STOP_FRAME=str(args.zeus_stop_frame), MIDZ_GL_LOG='1')
             if args.no_crackfill:
                 overrides["MIDV_GL_CRACKFILL"] = "0"
             if args.no_marginfill:
@@ -192,7 +207,7 @@ def main(argv=None):
                 raise ValueError("late game patch application receipt missing")
         convert_raw_snapshots(runtime)
         report["evidence"] = session_evidence(runtime, manifest["every"], invocation["returncode"],
-            require_gl=not (args.headless or args.native_renderer) and bool(manifest["settings"].get("MIDV_GL_SNAP")))
+            require_gl=not (args.headless or args.native_renderer) and bool(manifest["settings"].get(gl_key+"_GL_SNAP")))
         if args.gl_capture and report["evidence"].get("gl_captures", {}).get("completed_frames"):
             from gl_frames import read_completed_frames
             expected = [n for n in range(first, last + 1) if n % args.gl_every == 0]
@@ -201,6 +216,12 @@ def main(argv=None):
             read_completed_frames(runtime / "gl-snap", expected)
         report["comparison"] = compare_evidence(case / "record", runtime, reference, report["evidence"])
         report["passed"] = report["comparison"]["passed"]
+        if gl_key == 'MIDZ' and not (args.headless or args.native_renderer or args.zeus_native or manifest['settings'].get('MIDZ_GL_NATIVE') == '1'):
+            report['native_image_scope'] = 'CPU polygon rasterization disabled by Zeus GL; native images cannot validate visible gameplay'
+        if args.compare_gl:
+            from gl_frames import compare_completed_frames
+            report['gl_comparison'] = compare_completed_frames(case/'record'/'gl-snap',runtime/'gl-snap')
+            report['passed'] = report['passed'] and report['gl_comparison']['passed']
         if args.capture_state:
             required_files(capture, ARTIFACTS)
             report["capture"] = {"directory": str(capture), "requested_dump_frame": args.until_frame - 2,

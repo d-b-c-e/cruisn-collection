@@ -1,0 +1,109 @@
+{
+  "description": "Exotica synthetic controls: coin/start, accelerator, first gear, restrained steering. Verify actual race entry before counting gameplay.",
+  "frames": 6000,
+  "snapshot_every": 60,
+  "buttons": [
+    {
+      "port": ":SYSTEM",
+      "mask": 1,
+      "start": 2400,
+      "end": 2410
+    },
+    {
+      "port": ":SYSTEM",
+      "mask": 1,
+      "start": 2450,
+      "end": 2460
+    },
+    {
+      "port": ":SYSTEM",
+      "mask": 1,
+      "start": 2500,
+      "end": 2510
+    },
+    {
+      "port": ":SYSTEM",
+      "mask": 4,
+      "start": 2600,
+      "end": 2610
+    },
+    {
+      "port": ":SYSTEM",
+      "mask": 4,
+      "start": 3000,
+      "end": 3010
+    },
+    {
+      "port": ":SYSTEM",
+      "mask": 4,
+      "start": 3200,
+      "end": 3210
+    },
+    {
+      "port": ":SYSTEM",
+      "mask": 4,
+      "start": 3400,
+      "end": 3410
+    },
+    {
+      "port": ":SYSTEM",
+      "mask": 4,
+      "start": 3600,
+      "end": 3610
+    },
+    {
+      "port": ":GEARS",
+      "mask": 1,
+      "start": 3700,
+      "end": 6000
+    }
+  ],
+  "analog": {
+    ":ANALOG2": [
+      [
+        0,
+        0
+      ],
+      [
+        3300,
+        1
+      ]
+    ],
+    ":ANALOG1": [
+      [
+        0,
+        0
+      ],
+      [
+        5400,
+        1
+      ],
+      [
+        5520,
+        0
+      ]
+    ],
+    ":ANALOG3": [
+      [
+        0,
+        0
+      ],
+      [
+        4300,
+        0.12
+      ],
+      [
+        4440,
+        0
+      ],
+      [
+        4700,
+        -0.12
+      ],
+      [
+        4840,
+        0
+      ]
+    ]
+  }
+}

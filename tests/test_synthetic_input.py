@@ -5,7 +5,7 @@ import unittest
 import zlib
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
-from synthesize_input import ANALOG, PORTS, STRIDE, LAYOUTS, generate
+from synthesize_input import ANALOG, ANALOG_LAYOUTS, STEERING, PORTS, STRIDE, LAYOUTS, generate
 
 
 class SyntheticInputTests(unittest.TestCase):
@@ -19,8 +19,8 @@ class SyntheticInputTests(unittest.TestCase):
             payload.extend(struct.pack("<iqI", 0, n * 17000000000000000, 1 << 20))
             for tag in LAYOUTS[rom]:
                 payload.extend(struct.pack("<II", 128 if tag == ":WHEEL" else 0, 0))
-                if tag in ANALOG:
-                    value = 0 if tag == ":WHEEL" else -262144
+                if tag in ANALOG_LAYOUTS[rom]:
+                    value = 0 if tag == STEERING[rom] else -262144
                     payload.extend(struct.pack("<iiiB", value, value, 25, 0))
         return bytes(header) + zlib.compress(payload)
 
@@ -39,6 +39,24 @@ class SyntheticInputTests(unittest.TestCase):
         offset = STRIDE - 13
         self.assertEqual(struct.unpack_from("<ii", data, STRIDE + offset), (131072, 0))
         self.assertEqual(struct.unpack_from("<ii", data, STRIDE * 3 + offset), (-131072, 131072))
+
+    def test_exotica_keeps_pedals_steering_and_serial_distinct(self):
+        data = zlib.decompress(generate(self.seed('crusnexo'), {'frames':2,'analog':{
+            ':ANALOG1':[[0,0]], ':ANALOG2':[[0,1]], ':ANALOG3':[[0,-.5]]}})[64:])
+        self.assertEqual(len(data),151*3)
+        self.assertEqual(struct.unpack_from('<i',data,32)[0],-262144) # brake
+        self.assertEqual(struct.unpack_from('<i',data,53)[0],262144)  # accelerator
+        self.assertEqual(struct.unpack_from('<i',data,74)[0],-131072) # steering
+        self.assertEqual(data[143:151],bytes(8)) # serial IOASIC
+
+    def test_exotica_preserves_first_refresh_rounding(self):
+        seed=self.seed('crusnexo');payload=bytearray(zlib.decompress(seed[64:]))
+        first=17502471248760000;step=17502471248764376
+        struct.pack_into('<q',payload,151+4,first)
+        struct.pack_into('<q',payload,302+4,first+step)
+        data=zlib.decompress(generate(seed[:64]+zlib.compress(payload),{'frames':4})[64:])
+        self.assertEqual(struct.unpack_from('<q',data,151+4)[0],first)
+        self.assertEqual(struct.unpack_from('<q',data,604+4)[0],first+3*step)
 
     def test_wrong_rom_and_out_of_range_pedals_are_rejected(self):
         bad = bytearray(self.seed()); bad[20] = ord("x")

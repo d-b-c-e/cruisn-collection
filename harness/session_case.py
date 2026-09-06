@@ -250,7 +250,7 @@ class Recording:
             required_files(self.path / "record" / "input", ["session.inp"])
             convert_raw_snapshots(self.path / "record")
             self.manifest["evidence"] = session_evidence(self.path / "record", self.every, returncode,
-                require_gl=bool(self.manifest["settings"].get("MIDV_GL_SNAP")))
+                require_gl=bool(self.manifest["settings"].get("MIDV_GL_SNAP") or self.manifest["settings"].get("MIDZ_GL_SNAP")))
             self.manifest["inp_sha256"] = sha256_file(self.path / "record" / "input" / "session.inp")
             self.manifest["status"] = "recorded"
         except (ValueError, OSError) as exc:
@@ -289,7 +289,7 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
     # Remove path-based one-off diagnostics that could overwrite unrelated evidence.
     for k in list(settings):
         if k in ("MIDV_GL_SNAP", "MIDZ_GL_SNAP"):
-            destination = runtime / ("gl-snap" if k == "MIDV_GL_SNAP" else "zeus-snap")
+            destination = runtime / "gl-snap"
             destination.mkdir(exist_ok=True)
             settings[k] = str(destination)
         elif k.endswith(("_SNAP", "_STATEDUMP_DIR", "_QUADLOG", "_CAPTURE", "_RAMDUMP_DIR")):
