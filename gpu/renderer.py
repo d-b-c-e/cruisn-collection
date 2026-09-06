@@ -90,6 +90,15 @@ int c_int32(float f) {               // C float->int32: trunc, OOR -> INT_MIN
     if (!(abs(f) < 2147483648.0)) return -2147483648;
     return int(f);
 }
+
+float edge_reciprocal(float denominator) {
+    // GLSL 'precise' prevents contraction/reassociation, but does not require
+    // correctly rounded float division. An approximate reciprocal can move a
+    // shared vertex from x.5 to x.500001 and incorrectly discard a native pixel.
+    // Round a double reciprocal to float for the native CPU's float32 semantics.
+    // Enhanced rendering retains its existing fast subpixel arithmetic.
+    return uScale == 1 ? float(1.0LF / double(denominator)) : 1.0 / denominator;
+}
 uint fetch_texel(int idx) {
     idx &= texMask;
     return texelFetch(texram, ivec2(idx & 4095, idx >> 12), 0).r;
@@ -135,7 +144,7 @@ void main() {
     for (int curv = minv; curv != maxv; curv = (curv + 1) & 3) {
         int nxt = (curv + 1) & 3;
         if (vx[nxt].y != vx[curv].y) {
-            precise float ooy = 1.0 / (vx[nxt].y - vx[curv].y);
+            precise float ooy = edge_reciprocal(vx[nxt].y - vx[curv].y);
             fe[fn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,
                           (vx[nxt].x - vx[curv].x) * ooy);
             fp[fn] = vec4(uvs[curv].xy,
@@ -147,7 +156,7 @@ void main() {
     for (int curv = minv; curv != maxv; curv = (curv - 1) & 3) {
         int nxt = (curv - 1) & 3;
         if (vx[nxt].y != vx[curv].y) {
-            precise float ooy = 1.0 / (vx[nxt].y - vx[curv].y);
+            precise float ooy = edge_reciprocal(vx[nxt].y - vx[curv].y);
             be[bn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,
                           (vx[nxt].x - vx[curv].x) * ooy);
             bp[bn] = vec4(uvs[curv].xy,
@@ -185,7 +194,7 @@ void main() {
     // ---- params at this scanline (poly.h:1250) ----
     precise float ldy = fully - le.y;
     precise float rdy = fully - re.y;
-    precise float oox = 1.0 / (stopx - startx);
+    precise float oox = edge_reciprocal(stopx - startx);
     precise float lu = lp.x + ldy * lp.z;
     precise float lv = lp.y + ldy * lp.w;
     precise float dudx = (rp.x + rdy * rp.z - lu) * oox;

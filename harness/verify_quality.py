@@ -54,6 +54,23 @@ def checks(ctx):
     tile[2:163, 3:164] = 37
     q = rectangle()[None, :]
     outcomes = []
+    # Sloped endpoint cases exposed by World: approximate GPU reciprocals can
+    # turn an exact half-pixel tie into a different integer coverage decision.
+    # Compare against the independent float32 CPU rasterizer, using flat colors
+    # so this fixture needs no game texture/ROM data.
+    from rasterize import render_quad
+    endpoints = np.zeros((2, 16), np.uint16)
+    endpoints[:, 1] = [37, 53]
+    endpoints[0, 2:10] = [14, 249, 10, 253, 3, 254, 7, 250]
+    endpoints[1, 2:10] = [198, 260, 231, 274, 82, 323, 77, 297]
+    native = np.zeros(0x80000, np.uint16)
+    for primitive in endpoints:
+        render_quad(primitive, 0, native, atlas, 255, 399)
+    actual, _ = render(ctx, endpoints, atlas, 1, canvas=(256, 400))
+    expected = native[:0x40000].reshape(512, 512)[:400, :256]
+    different = int(np.count_nonzero(actual != expected))
+    outcomes.append({'check': 'native-sloped-endpoint-coverage', 'different_pixels': different,
+                     'passed': bool(different == 0 and actual[250, 7] == 37 and actual[297, 77] == 53)})
     for scale in (1, 2, 3, 4, 6):
         idx, mask = render(ctx, q, atlas, scale)
         selected = idx[mask != 0]

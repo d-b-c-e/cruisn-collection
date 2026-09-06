@@ -79,14 +79,19 @@ def render_quad(dma, page_control, vram, texram, clip_right, clip_bottom,
     framebuffer with the original screen occupying columns [xoff, xoff+512).
     Defaults reproduce MAME's real 512-stride pages exactly.
     """
+    # DMA words are unsigned on disk. Avoid NumPy scalar overflow in address
+    # arithmetic and explicitly sign-extend coordinates (NumPy 2 rejects an
+    # out-of-range Python integer passed to int16).
+    dma = [int(word) for word in dma]
     page_words = 512 * stride
     destbase = page_words if (page_control & 4) else 0
     dest = vram[destbase:destbase + page_words].reshape(512, stride)
     cov = (cover[destbase:destbase + page_words].reshape(512, stride)
            if cover is not None else None)
 
-    vx = [F(np.int16(dma[2 + i * 2]) + F(0.5) + F(xoff)) for i in range(4)]
-    vy = [F(np.int16(dma[3 + i * 2]) + F(0.5)) for i in range(4)]
+    signed = lambda word: word - 0x10000 if word & 0x8000 else word
+    vx = [F(signed(dma[2 + i * 2]) + F(0.5) + F(xoff)) for i in range(4)]
+    vy = [F(signed(dma[3 + i * 2]) + F(0.5)) for i in range(4)]
 
     pixdata = dma[1]
     textured = (dma[0] & 0x300) == 0x100
@@ -248,7 +253,7 @@ def render_quad(dma, page_control, vram, texram, clip_right, clip_bottom,
         toff = (texbase
                 + ((vv >> np.int32(8)) & np.int32(0xff00)).astype(np.int64)
                 + (uu >> np.int32(16)).astype(np.int64))
-        texels = texram[toff & (len(texram) - 1)]
+        texels = texram[toff & (len(texram) - 1)].astype(np.uint32)
         xs = np.arange(sx, istopx, xstep, dtype=np.int64)[:n]
 
         if mode == "tex":
