@@ -1,7 +1,7 @@
 # Cruis'n Collection — Roadmap
 
 Stable IDs for easy reference. Detail lives in `results/RESULTS.md`
-(chronology) and `.claude/session-notes.md` (handoff). Update status here
+(chronology) and `.Codex/session-notes.md` (handoff). Update status here
 as items move.
 
 **Status:** ☐ open · ◐ partial · ☑ done
@@ -10,6 +10,23 @@ as items move.
 capture) · 🙋 needs the user at the wheel
 
 ---
+
+## Current priorities (2026-09-06 reassessment)
+
+The older completion labels below describe milestones, not general visual
+acceptance. Read [the current evidence](docs/reviews/2026-09-06-seams-distance.md).
+
+1. Expand human driving routes and polygon-owner evidence for residual World and
+   Off Road terrain/near-tree seams. Thin-span rejection is fixed; conservative
+   T-junction alignment remains opt-in. Broad sky fill stays off.
+2. Run the six-case local regression suite, including actual completed Exotica GL
+   frames. Its old black native screenshots were not a visible-gameplay oracle.
+3. Investigate earlier object visibility/residency and measure the LOD experiment.
+   A larger far-plane number alone admitted no candidates in the measured trace.
+4. Trace the USA orientation-matrix dependency before declaring widened guest code
+   physics-equivalent. Keep separate stock/widescreen recordings.
+5. Label actual wall/car contacts and evaluate the optional impact mixer on real
+   wheels. Find per-game numeric telemetry producers; RPM remains unavailable.
 
 ## A. Big arcs
 

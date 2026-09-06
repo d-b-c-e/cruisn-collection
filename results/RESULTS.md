@@ -3042,3 +3042,55 @@ bytes. A shared signed-byte adapter and compiled CI contrast verify a raw 126 /
 adapted 20 pulse: enhanced detection at 100 ms, no legacy detection, both bounded
 below 50% output. Both CSV formats pass. Menu cancellation also resets the shaper
 tail. This is algorithm verification, not physical collision-feel acceptance.
+
+
+## 2026-09-06 — Thin geometry, terrain ownership, Zeus gameplay oracle and distance follow-up
+
+Detailed assessment: `docs/reviews/2026-09-06-seams-distance.md`. Compact proof:
+`results/proof/2026-09-06-seams-distance/`; full immutable runs `next-*`.
+
+- Fixed quality shader rejection of fine samples in native-empty integer spans.
+  The new sliver fixture failed before the fix. Twelve GPU quality checks pass;
+  both archived native captures stay **100.0000%** exact. Gameplay owner changes:
+  Off Road 1,141 fine samples; World v2.5 181. These replace background pixels.
+- Traced the Off Road diagonal sky seam to a 0.678435-pixel quantized T junction,
+  matching material and UVs across polygons 125–127. Opt-in geometry alignment
+  closes the tested seam using real terrain; final restricted blue count 634→0.
+  It also alters interpolation inside adjacent triangles. Default OFF, native
+  exact mode excluded. Python/C++ 12-case conformance passes. Local crack filling
+  was not broadened; remaining large margins and World near-tree seams are open.
+- IMPORTANT CORRECTION to prior Exotica conclusions: live Zeus skips CPU polygon
+  rasterization, leaving black native race screenshots. Their equality was not a
+  gameplay image oracle. Headless/live mismatch after 1440 did not establish
+  emulation nondeterminism. Historical reports remain intact with this correction.
+- Added completed-frame Zeus fences/receipts and explicit `--compare-gl`. A new
+  6,000-frame first-gear Exotica drive has 21 real GL race images at 5400–5420.
+  Complete repeats match all 21. One first replay exited at 4125 with 0x6E76003B,
+  no retained stack/corresponding application-fault event found; cause OPEN.
+- Double-rasterized Exotica control: 6,000 inputs and 21 GL images match; 77
+  native images differ as expected because CPU polygons now exist. Injected
+  consumer stop at 5500 restores CPU rasterization and exits cleanly at 6000;
+  the diagnostic correctly fails the replay on fallback. Not an overflow stress test.
+- Removed the old fabricated RPM mapping from packed speed text E632. Real
+  loopback receives 5,012 JSON rpm_status=0 samples/Forza packets with RPM fields
+  zero and speed still working; original human replay remains identical.
+- Reopened distance over 293,609 samples / 500 object addresses. Nine objects
+  reach 80,003–81,035 units in 15 samples; earlier short-window zero-candidate
+  observation was incomplete. Late far-plane patch adds 97 quads at 4346 with
+  every original draw preserved, but contributes ZERO final 4× owner pixels and
+  changes no visible pixels. More quads alone does not prove better distance.
+- Full remaining-drive LOD experiment (12k/22.5k after frame 2800) adds 5.2528%
+  DMA workload at 99.9975% callback emulation speed. All inputs match; 37 native
+  snapshots intentionally differ. Keep both distance experiments outside defaults.
+- USA guest-state dependency narrowed to the player's orientation matrix near
+  10AFB, copied into matrix multiplication at96D8, then the velocity transform.
+  First difference remains stock3063/wide3064 despite identical hardware reads
+  and timestep writes. Earlier causal producer remains open; no physics hack.
+- Six-case serial local suite passes original USA, widescreen USA, World2.4,
+  World2.5, Off Road and actual Exotica GL frames. Named callback ratios are
+  ~100%, including USA's selection countdown. Missing/uniform reference cases
+  fail explicitly. Forty-three harness tests and native conformance pass locally.
+- MAME commits: 921bd047cc6 (RPM),53ad0796148 (optional joins),fd158fa8511 (thin
+  coverage),377ddc06db1 (Zeus fences/fallback). Full105-commit mame0286 export
+  reconstructs tree f3af6c85edc8c9df8b03e085662b6d472826f4c6 exactly.
+  Toolkit stays at v0.11.1/b726d56, unchanged. No unattended physical force.

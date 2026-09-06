@@ -5,6 +5,14 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Preserve valid thin geometry at high internal resolutions instead of rejecting
+  spans that contain no native-resolution sample. Native rendering stays exact.
+- Add opt-in, topology/UV-constrained terrain T-junction alignment and polygon
+  ownership reports. The remaining graphical issues are not declared resolved.
+- Add completed-frame Zeus captures, visible Exotica driving replay, diagnostic
+  CPU rasterization/fallback controls, and a serial six-case local regression suite.
+- Reopen distance analysis with object-admission statistics and model transitions.
+
 - Removed invalid USA RPM derived from speed text. RPM now reports unavailable;
   5,012 actual loopback packets and original replay confirm the correction.
 
@@ -27,10 +35,12 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - Added developer input recording/playback with retained initial state, archived
   executable, dependency fingerprints, native screenshot comparisons, input and
   timing logs, and bounded live GL captures. USA gameplay replay verified across
-  6,000 frames; physical FFB is disabled in diagnostic recordings and replays.
+  6,000 frames; unattended recordings and all replays disable physical FFB.
+  An attended real recording can explicitly retain force with `--record-with-ffb`.
 - Oracle and renderer checks now fail on incomplete evidence or pixel mismatch;
   added Windows/Linux harness CI and native helper checks.
-- Updated shared toolkit to v0.10.1, including portable native profile loading.
+- Updated shared toolkit to v0.11.1, including portable native profile loading,
+  bounded impact envelopes, and scalar telemetry provenance contracts.
   Impact candidates now include idle-to-hit
   arrivals and are independent of global strength; supplemental cue amplitude
   scales with strength. Physical collision feel remains to be evaluated.

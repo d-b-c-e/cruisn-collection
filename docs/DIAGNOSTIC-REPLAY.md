@@ -195,7 +195,8 @@ The validator rejects missing/duplicate frames, dimension changes and dropped
 render commands. `--gl-stall 2995:100 --gl-queue-mb 16` exercises bounded consumer
 stalls; a persistent stream failure makes the replay fail even if native video
 continues. GL pixel comparison is separate from the native-image pass/fail.
-These controls currently cover V-Unit, not Zeus. Full-size GL BMP capture can
+Completed-frame captures and `--compare-gl` cover V-Unit and Zeus. Queue capacity,
+stall, margin-fill and geometry-join controls are V-Unit-specific. Full-size GL BMP capture can
 stall presentation and should not be used as a clean timing benchmark.
 
 `--no-marginfill` reproduces the new default: render submitted backdrop polygons
@@ -293,3 +294,29 @@ not the far plane or scene-object creation. Its native screenshot differences
 are expected and retained; they must not be silently blessed as identity passes.
 See [the follow-through review](reviews/2026-09-06-follow-through.md) for the
 specific model transition and cross-game coverage.
+
+```powershell
+python harness/analyze_distance.py RUN/run/lifecycle.csv --report distance.json
+python harness/run_regressions.py --candidate E:/Source/mame-src/vunit.exe
+```
+
+The suite manifest is `fixtures/regressions/collection.json`. Local recordings
+and ROMs are required; missing cases fail explicitly. Use `--only usa-widescreen`
+for a recorded subset. Each case preserves its own input/native/GL coverage and
+timing windows. The candidate's displayed Exotica frames are compared with
+`--compare-gl`: its default live path skips CPU polygons, so native screenshot
+equality alone cannot certify the displayed race. A uniform final visual reference
+is rejected. This basic guard does not judge the correctness of nonblank images.
+
+`--zeus-native` enables CPU and GL rasterization together for diagnostic comparison;
+it is slower and expected to differ from a case whose native race images were
+black. `--zeus-stop-frame 5500` deliberately stops the GL consumer to exercise
+CPU fallback. Fallback makes the replay fail even if CPU presentation recovers.
+
+For pixel attribution, render with `gpu/renderer.py CAPTURE --wide --scale 4
+--buffers buffers.npz --output-dir PREVIEW` and inspect with
+`python harness/inspect_pixel.py buffers.npz 291 1108 --report pixel.json`.
+`--align-tjunctions` is an opt-in geometry experiment in both offline renderer and
+live replay. It matches closed three-polygon joins with consistent material/UVs;
+it never applies to native exact rendering. See the
+[latest rendering review](reviews/2026-09-06-seams-distance.md) for its limits.

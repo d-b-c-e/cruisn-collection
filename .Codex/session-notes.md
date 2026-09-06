@@ -1,84 +1,99 @@
 # Session Notes
 
-- Date: 2026-09-06. Authorized all six improvements, separate commits, commit/push
-  and fast-forward master after CI. Branch: codex/graphics-and-wheel-contracts.
-- Primary new handoff: docs/reviews/2026-09-06-follow-through.md.
-- Starting milestone: collection 5d61756, MAME eb4db8fc706, toolkit v0.10.1.
-  Original assessment tags remain: collection d099c2f, MAME 58203bb1, toolkit
-  4e99136 (assessment-2026-09-05). Original recordings were not modified.
+- Date: 2026-09-06. User authorized autonomous improvements, separate commits,
+  push and fast-forward master after CI. Collection branch for this batch:
+  codex/seam-diagnostics-and-distance. Start a880a85; earlier assessment tags intact.
+- Primary handoff: docs/reviews/2026-09-06-seams-distance.md; previous batch review:
+  docs/reviews/2026-09-06-follow-through.md. RESULTS.md is append-only chronology.
+- MAME E:/Source/mame-src branch poc/quadlog HEAD377ddc06db1; push ONLY remote fork.
+  Full105-commit export reconstructs tree f3af6c85edc8c9df8b03e085662b6d472826f4c6.
+  Never touch the racing deployment's mame.exe. vunit.exe is the local candidate.
+- Toolkit E:/Source/dbce-wheel-mod-toolkit master b726d56/v0.11.1, unchanged this
+  batch. Prior CI109 managed tests/native vectors passed; both consumers synced.
 
-## Implemented and verified
+## Implemented this batch
 
-- MAME 368fab713ac on poc/quadlog; push only remote fork, never mamedev origin.
-  Built E:/Source/mame-src/vunit.exe; racing deployed executable untouched.
-- Ordered V-Unit quads/resource changes/CPU writes, persistent pages, completed
-  visible-frame fences and process-private rings. Lossless queue backpressure
-  in V-Unit and Zeus; 500 ms timeout abandons GL and diagnostics reject fallback.
-- Retired default broad margin suppression/column stretching: it destroyed real
-  World/Off Road skies. MIDV_GL_MARGINFILL=1 restores the legacy experiment.
-  Local crack fill/default/radius unchanged. Thin terrain/near-tree seams remain.
-- Toolkit v0.11.1 at b726d56, already pushed and CI green: native/managed bounded
-  100 ms impact mixer, scalar source/quality/time contracts, strict managed wheel
-  identity selection including negative-index rejection. Native device ABI and
-  other consumer projects were not silently upgraded. 109 managed tests pass.
-- Opt-in ffb_impact=1 / ffb_impact_<rom>=1 uses raw motor input for detection
-  before driver adaptation, adapted input for structural force, common final
-  strength. Compiled raw126/adapted20 test detects at 100 ms; legacy misses it.
-  Host API acceptance logs are not physical force measurements. No wheel force
-  was used unattended; physical subjective acceptance is still open.
-- Explicit attended --record-with-ffb is permitted only for a real recording.
-  Playback/synthetic/timeout diagnostics cannot enable physical force. Every new
-  case has emulated-time force-source.csv and source-provenance signals.csv.
-- USA v4.5 numeric displayed speed found at E632, formatter A7C2, renderer 7A91.
-  Guarded foreground HUD submissions select numeric speed on the visible page,
-  max age three frames; OCR fallback, MIDV_SPEED_NUMERIC=0 opt-out. This is HUD
-  numeric MPH, not the game's physical velocity vector. Other games unchanged.
-- Actual USA LOD transition traced at 8,000 units; explicit checked experiment
-  raises 8,000/15,000 to 12,000/22,500 and adds 48 quads to one traffic car. File
-  patch/game/crusnusa-lod-experiment.txt is NOT the default. Far plane unchanged.
+- Canonical gpu/renderer.py quality shader now keeps fine samples in spans that
+  round empty at native resolution. Generated MAME header updated, not hand-edited.
+  Native captures results/capture and capture-8000 remain100.0000% exact; GPU12
+  fixtures pass. Off Road/World gameplay has1,141/181 changed owner samples.
+- Added topology/material/UV-constrained T-junction alignment (gpu/tjunctions.py,
+  native/tjunctions.h), C++/Python12-case conformance, harness/inspect_pixel.py.
+  Opt-in MIDV_GL_TJUNCTIONS=1 / replay --align-tjunctions. Never scale1; defaultOFF.
+  Off Road5518 q125–127 share a vertex displaced0.678435px; correction closes
+  tested blue seam (634→0 restricted samples), also changes adjacent interpolation.
+- Zeus completed visible-frame fences and captures.csv; replay --compare-gl.
+  New fixtures/scenarios/exotica-input-sweep.json supplies6000 driving frames,
+  correct port ordering/analog mapping and first-refresh attosecond rounding.
+  Local case next-exotica-fenced-gameplay/case captures21 real race images5400–5420.
+- CRITICAL: previous Zeus GL native race screenshots were BLACK because CPU
+  polygons are skipped. Old matching black images were not a visible oracle;
+  headless/live differences did not establish emulation nondeterminism.
+- --zeus-native diagnostic double-rasterization produces real CPU race images
+  while all21 GL images match. --zeus-stop-frame5500 verifies native rendering
+  resumes when GL stops; clean6000-frame exit, replay correctly fails on fallback.
+- Removed bogus RPM from packed speed text E632 (MAME921bd); status0/unavailable,
+  Forza RPMfields0. Actual loopback5012packets/statuses and human replay pass.
+- Added harness/run_regressions.py, fixtures/regressions/collection.json. Runs
+  six local cases serially with explicit visual coverage/timing gates and missing/
+  uniform-reference rejection.43 Python tests pass. CI also runs GPU/native tests.
 
-## Evidence and limitations
+## Evidence and distance findings
 
-- Tracked compact reports/images: results/proof/2026-09-06-follow-through/.
-  Full runs remain gitignored in results/diagnostics/six-*; see review for paths.
-- Final rebuilt candidate: six-final-raw-usa passes original human 5,012 frames /
-  83 native images. six-final-raw-world25 and six-final-raw-offroad pass 6,000 /
-  100 synthetic driving cases. six-final-raw-exotica passes 3,600 / 60 boot/attract
-  case using recorded throttled settings. Exotica HEADLESS diverges after 1440;
-  do not call this gameplay or exact GL coverage. World v2.4 also has driving
-  coverage and 11 repeated GL frames. First Off Road neutral case is not driving.
-- six-ordered-gl-identity and six-ordered-stall-identity: 31 consecutive USA GL
-  frames equal, including 100 ms stall/16 MiB ring. six-stream-overflow-load is
-  an EXPECTED FAIL from actual lost-stream fallback after 5-second loading stall.
-- World2.5/Off Road sky A/B: 22 GL frames preserve core columns167..1112 at1280px;
-  real margin sky returns. six-default-sky-identity checks rebuilt default equals
-  explicit disabling. This does not certify all tracks or eliminate thin seams.
-- USA visibility patch still changes guest history: first player velocity write
-  at9680 and position addition90AB occur frame3063 vs3064. 20,001 input reads and
-  1,921 timestep writes agree. Replacing baseline timer sequence does not fix it.
-  Exact upstream state dependency remains open. No timer/physics hack shipped.
-- Preserve my-drive original human INP and usa-widescreen-candidate-case
-  separately. Patched/unpatched full runs are not gameplay-equivalent. Renderer
-  changes must compare the same patched configuration and actual completed frames.
-- Final offline USA force trace produces four candidates at52964,57228,70484,
-  84728 ms; these are waveform events, not four labelled real contacts. Label
-  emulated_ms coverage/windows via harness/collision_labels.py before claiming
-  crash-detection recall. Candidate times alone cannot rate subjective FFB.
-- 35 Python tests, nine GPU quality fixtures, native helper/adapter checks pass.
-  Full101-commit MAME export reconstructs tree525325db1308874a60650ec54de3896eb6459b21.
-  Export regenerated after all MAME commits; never hand-edit generated shaders.
+- Tracked proof: results/proof/2026-09-06-seams-distance/. Full runs are gitignored
+  results/diagnostics/next-*. Keep originals and failed controls immutable.
+- next-six-regression passes original/wide USA5012inputs/83native images each,
+  World2.4/2.5 and Off Road6000/100 each; Exotica6000inputs/21 GL images. Callback
+  ratios ~100%, USA selection included. Not proof of all tracks or physical FFB.
+- next-exotica-fenced-gameplay/replay first automatic run stopped abruptly at4125
+  (0x6E76003B), no useful stack/fault event found. Later visible repeats and dual
+  control pass. Retain unexplained exit as OPEN, not quietly a pass.
+- Distance trace next-full-distance-trace:293609samples/500objects,15 admissions
+  among9objects just past80k, max81035. Earlier120193-sample window had none.
+  Matched late far patch4340 adds97quads at4346, preserves2121originals/order/
+  texture/palette/nativeVRAM, but final4ximage hasZERO extra owner pixels/changes.
+- next-lod-full-drive: late2800 LOD12k/22.5k adds5.2528%DMA work over remainder;
+  99.9975% emulation speed2800–4980, inputs equal,37expected native image changes.
+  Both LOD and new farplane patch files are diagnostic-only, no launcher defaults.
+- New analyze_distance.py keeps far-gate admissions separate from model changes;
+  it does not enumerate unloaded objects or prove section-streamer causality.
+- USA wide-vs-stock history still differs: original ADC/digital20001reads and
+  timestep1921writes agree. First velocity9680/position90AB shifts3063→3064.
+  New next-vector/matrix/producers/origin/rotation probes trace this into player
+  orientation10AFB..03 (copy9645/9646) and multiplication96D8; velocity inputvector
+  differs later. Prior state dependency remains open. No physics compensation.
+
+## Prior behavior to preserve
+
+- USA guarded numeric displayed MPH from E632/formatterA7C2/HUDrenderer7A91,
+  visible-page glyph checks, expiry3frames, OCR fallback; NOT physics/RPM.
+- V-Unit ordered persistent render stream; lossless backpressure/failure rejection.
+  Broad MIDV_GL_MARGINFILL defaultOFF restores real World/Off Road sky. Local
+  crack-fill default/radius unchanged; do not expand it to conceal missing geometry.
+- Toolkit optional steering impact mixer detects RAW force before driver gain/
+  slew/clamp; structural force retains adaptation; common final strength. Optional
+  ffb_impact=1, physical acceptance OPEN. Actual contact labels still needed.
+- Default recordings/replays are forceOFF. --record-with-ffb only for an explicitly
+  attended real recording; no physical force in timeout-capable diagnostics.
+- Original my-drive and usa-widescreen-candidate-case remain distinct. Guest code
+  changes need matched prehistory; renderer changes compare the same game patch.
 
 ## Next priorities
 
-1. Human routes and labelled wall/car collisions, then attended wheel tuning.
-2. Identify adjoining polygons and clipping/coverage for remaining thin terrain
-   and World near-tree seams; do not broaden crack fill to conceal them.
-3. Exotica gameplay case and completed-frame Zeus GL capture oracle.
-4. Resolve USA visibility/guest-state dependency and measure optional LOD cost
-   across routes. Decode model/residency behavior separately for each game.
-5. Find guarded numeric/physics telemetry producers for the other games and
-   adopt toolkit contracts per consumer with its own regression tests.
+1. More real routes and matched owner/texture evidence for residual World tree
+   seams and Off Road margins; expand opt-in join coverage before default use.
+2. Find object-list/section residency producer and test LOD across other routes;
+   follow player-orientation producer dependency before claiming physics equivalence.
+3. Label wall/car impacts, then attended wheel testing; numeric producers for
+   World/Off Road/Exotica, validated RPM if a real producer exists.
+4. Investigate any recurring Exotica abrupt exit and broaden actual GL gameplay
+   windows. Do not return to native-black screenshots as a passing visual oracle.
 
-Commands and clock semantics are in docs/DIAGNOSTIC-REPLAY.md. Physical FFB must
-remain disabled in any unattended run or timeout-capable test. Never hard-kill
-an active-force session. Keep RESULTS.md append-only.
+MSYS2 E:/msys64, OS=Windows_NT exported INSIDE MINGW64 shell; build with both
+midvunit.cpp and midzeus.cpp sources. Avoid concurrent live games and timing runs.
+Archived-exe headless probes can run alongside builds; candidate replays lock the
+root vunit.exe. Append mingw PATH for helper DLLs; prepending selects MSYS Python
+without numpy. Full command documentation: docs/DIAGNOSTIC-REPLAY.md.
+
+The final executable, including the diagnostic stop control, also passes
+`next-final-exotica`: 6,000 inputs, all 21 completed GL frames and the timing gate.

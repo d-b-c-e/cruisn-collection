@@ -2,7 +2,7 @@
 
 ## Current verified handoff (2026-09-06)
 
-Read `docs/reviews/2026-09-06-follow-through.md` and `.Codex/session-notes.md` for
+Read `docs/reviews/2026-09-06-seams-distance.md` and `.Codex/session-notes.md` for
 current limits; older artifact-free/general speed claims below are historical.
 Broad `MIDV_GL_MARGINFILL` is OFF by default after gameplay proved it destroyed
 World/Off Road sky detail. `=1` restores that explicit experiment. Local crack
@@ -11,6 +11,15 @@ viewer captures are not an oracle. USA numeric displayed speed is guarded to
 v4.5 and actual HUD submissions, with OCR fallback; other games need their own
 producers. Force impacts and attended recording are opt-in, never run unattended.
 Toolkit pin is v0.11.1. Keep the new LOD patch experimental, not a default.
+Quality rendering now retains fine samples in native-empty spans. Geometry
+T-junction alignment is opt-in (`MIDV_GL_TJUNCTIONS=1`), never native-exact mode.
+Zeus now has completed-frame captures and a 6,000-frame driving case with 21
+actual GL reference images. Its live path skips CPU polygons: old matching black
+native images were NOT a gameplay oracle, and headless/live differences did not
+establish nondeterminism. Use `replay.py --compare-gl`; `--zeus-native` is a slow
+double-rasterization diagnostic. `run_regressions.py` runs six local cases with
+explicit coverage and timing gates. RPM is unavailable; never restore the old
+E632 mapping, which interpreted packed speed text as engine RPM.
 
 ## What this is
 
@@ -50,7 +59,7 @@ New recordings defer PNG encoding until exit (`raw-snap/` retained and hashed).
 words; `verify_scene_extension.py` checks preserved draw order and native RAM.
 `verify_quality.py` runs ROM-free GPU fixtures locally and under Mesa in CI.
 Run `python -m unittest discover -s tests -v` for hardware-free harness checks.
-Toolkit source is pinned to v0.10.1: `harness/sync_toolkit.py --ref v0.10.1`
+Toolkit source is pinned to v0.11.1: `harness/sync_toolkit.py --ref v0.11.1`
 checks both consumers; `--write` updates. The OCR filter's canonical source is
 `native/hud_speed_filter.h`; reset-time patch preflight is in `native/checked_patch.h`.
 `harness/sync_native.py` checks both MAME copies. Patch installation validates

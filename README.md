@@ -8,7 +8,10 @@ look. **No ROMs are included** — you supply your own.
 
 This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
 collision feedback and telemetry coverage remain open work. The
-[latest follow-through](docs/reviews/2026-09-06-follow-through.md) covers restored
+[latest rendering review](docs/reviews/2026-09-06-seams-distance.md) covers a
+thin-geometry fix, an experimental terrain seam correction, Exotica gameplay
+replay, and the reopened distance investigation. The
+[previous follow-through](docs/reviews/2026-09-06-follow-through.md) covers restored
 World/Off Road skies, ordered GL replay, USA numeric HUD speed, optional steering
 impact cues, toolkit 0.11.1 and a measured detail-distance experiment. The
 [recorded-drive findings](docs/reviews/2026-09-05-recorded-drive-findings.md) document
