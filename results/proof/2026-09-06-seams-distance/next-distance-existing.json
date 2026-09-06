@@ -1,0 +1,258 @@
+{
+  "beyond_doubled_objects": [
+    "10673"
+  ],
+  "far_limits": [
+    80000
+  ],
+  "frames": 450,
+  "maximum_depth_within_doubled_limit": 78979,
+  "model_transitions": [
+    {
+      "after": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7395",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3059",
+        "mid_model": "c28c38",
+        "model": "c2857a",
+        "object": "133bd",
+        "radius": "602",
+        "x": "15e6317d",
+        "y": "d339170",
+        "z": "15fbae70"
+      },
+      "base_model": "c2857a",
+      "before": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7444",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3057",
+        "mid_model": "c28c38",
+        "model": "c28c38",
+        "object": "133bd",
+        "radius": "584",
+        "x": "15e63b35",
+        "y": "d33a911",
+        "z": "15fbb184"
+      },
+      "object": "133bd"
+    },
+    {
+      "after": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7433",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3109",
+        "mid_model": "c28c38",
+        "model": "c28c38",
+        "object": "133bd",
+        "radius": "584",
+        "x": "15e54342",
+        "y": "d34ed09",
+        "z": "15fb4721"
+      },
+      "base_model": "c2857a",
+      "before": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7386",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3107",
+        "mid_model": "c28c38",
+        "model": "c2857a",
+        "object": "133bd",
+        "radius": "602",
+        "x": "15e54c85",
+        "y": "d34d09e",
+        "z": "15fb4c4d"
+      },
+      "object": "133bd"
+    },
+    {
+      "after": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7389",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3179",
+        "mid_model": "c28c38",
+        "model": "c2857a",
+        "object": "133bd",
+        "radius": "602",
+        "x": "15e40b00",
+        "y": "d3344b2",
+        "z": "15fa71a7"
+      },
+      "base_model": "c2857a",
+      "before": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7446",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3177",
+        "mid_model": "c28c38",
+        "model": "c28c38",
+        "object": "133bd",
+        "radius": "584",
+        "x": "15e41328",
+        "y": "d33467f",
+        "z": "15fa78f4"
+      },
+      "object": "133bd"
+    },
+    {
+      "after": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7467",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3271",
+        "mid_model": "c28c38",
+        "model": "c28c38",
+        "object": "133bd",
+        "radius": "584",
+        "x": "15e25fc7",
+        "y": "d3439a1",
+        "z": "15f95244"
+      },
+      "base_model": "c2857a",
+      "before": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7384",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3269",
+        "mid_model": "c28c38",
+        "model": "c2857a",
+        "object": "133bd",
+        "radius": "602",
+        "x": "15e269eb",
+        "y": "d345d19",
+        "z": "15f95787"
+      },
+      "object": "133bd"
+    },
+    {
+      "after": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7348",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3441",
+        "mid_model": "c28c38",
+        "model": "c2857a",
+        "object": "133bd",
+        "radius": "602",
+        "x": "15de935c",
+        "y": "d357400",
+        "z": "15f90926"
+      },
+      "base_model": "c2857a",
+      "before": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7440",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3439",
+        "mid_model": "c28c38",
+        "model": "c28c38",
+        "object": "133bd",
+        "radius": "584",
+        "x": "15de9eb9",
+        "y": "d357400",
+        "z": "15f905b4"
+      },
+      "object": "133bd"
+    },
+    {
+      "after": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7450",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3521",
+        "mid_model": "c28c38",
+        "model": "c28c38",
+        "object": "133bd",
+        "radius": "584",
+        "x": "15dccd17",
+        "y": "d3512c1",
+        "z": "15f999e2"
+      },
+      "base_model": "c2857a",
+      "before": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "7340",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3519",
+        "mid_model": "c28c38",
+        "model": "c2857a",
+        "object": "133bd",
+        "radius": "602",
+        "x": "15dcd8a2",
+        "y": "d34f30a",
+        "z": "15f9963b"
+      },
+      "object": "133bd"
+    },
+    {
+      "after": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "14606",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3603",
+        "mid_model": "c28c38",
+        "model": "c28d11",
+        "object": "133bd",
+        "radius": "603",
+        "x": "15daec4e",
+        "y": "d346587",
+        "z": "15fa32f5"
+      },
+      "base_model": "c2857a",
+      "before": {
+        "base_model": "c2857a",
+        "depth_minus_radius": "14362",
+        "far_limit": "80000",
+        "far_model": "c28d11",
+        "flags": "8801e04",
+        "frame": "3601",
+        "mid_model": "c28c38",
+        "model": "c28c38",
+        "object": "133bd",
+        "radius": "584",
+        "x": "15daf833",
+        "y": "d343d9a",
+        "z": "15fa2f31"
+      },
+      "object": "133bd"
+    }
+  ],
+  "objects": 468,
+  "objects_newly_admitted_by_doubling_far_limit": [],
+  "samples": 120193,
+  "samples_newly_admitted_by_doubling_far_limit": 0,
+  "samples_still_beyond_doubled_far_limit": 450,
+  "schema": 1,
+  "scope": "Summarize the USA object far-gate probe without treating sentinels as scenery.\n\nThis measures objects reaching the far test. It does not enumerate unloaded\nmodels or prove that earlier culling, linked-list selection or streaming is correct.",
+  "trace_sha256": "582187f29610f976d15da930070ef1e81697cac20c7a732f2d009b4891c4056f"
+}

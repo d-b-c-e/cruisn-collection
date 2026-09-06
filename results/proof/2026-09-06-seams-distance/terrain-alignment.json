@@ -1,0 +1,44 @@
+{
+  "capture": "E:\\Source\\cruisn-collection\\results\\diagnostics\\six-offroad-no-marginfill\\run\\capture",
+  "passed": null,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "scale": 4,
+  "schema": 1,
+  "scope": "quality-preview",
+  "tjunction_experiment": [
+    {
+      "distance": 0.6784348545362839,
+      "edge_quad": 125,
+      "material": [
+        256,
+        27136,
+        13990,
+        0
+      ],
+      "neighbor_quads": [
+        126,
+        127
+      ],
+      "occurrences": [
+        [
+          126,
+          0
+        ],
+        [
+          127,
+          3
+        ]
+      ],
+      "target": [
+        -40.40450445156172,
+        326.32505215526106
+      ],
+      "vertex": [
+        -41,
+        326,
+        204,
+        46
+      ]
+    }
+  ]
+}

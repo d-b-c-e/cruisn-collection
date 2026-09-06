@@ -1,0 +1,6 @@
+{
+  "scope": "whole-run DMA workload after frame 2800; later guest histories are not asserted equal",
+  "stock_quads": 2448551,
+  "lod_quads": 2577168,
+  "increase_percent": 5.252780113626376
+}

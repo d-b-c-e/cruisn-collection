@@ -1,0 +1,39 @@
+{
+  "candidate": {
+    "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-far-matched-extended\\run\\capture",
+    "sha256": {
+      "meta.txt": "392d49507803d568d5a363af8ab180d7b055ad931ce1a0441ac3b1be3f492d61",
+      "paletteram.bin": "caca30ff2fbe96922bac1d2986c32b52d0409edb325f7545a87e803339209a9b",
+      "quads.bin": "ff366684539750e184143deae30891c87f80347caf864fef0b7d3d3c37b98d06",
+      "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+      "videoram.bin": "2a38c9fd766eddaeb411aa2643dea006c66e92d2667e19170d066fc87922b551"
+    }
+  },
+  "geometry": {
+    "added_quads": 97,
+    "added_quads_intersecting_native_x": 89,
+    "candidate_quads": 2218,
+    "original_draw_order_preserved": true,
+    "original_quads": 2121,
+    "removed_or_changed_quads": 0
+  },
+  "passed": false,
+  "reference": {
+    "path": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-far-matched-stock\\run\\capture",
+    "sha256": {
+      "meta.txt": "392d49507803d568d5a363af8ab180d7b055ad931ce1a0441ac3b1be3f492d61",
+      "paletteram.bin": "caca30ff2fbe96922bac1d2986c32b52d0409edb325f7545a87e803339209a9b",
+      "quads.bin": "c6902093215f192daa77163eb24bba6624435c478b4cbc7dbb5b35c9debc593a",
+      "textureram.bin": "f13982f5c4d967f66a58ef287c12a0477f6cb1e575b3ce17c89ccef7b0ed9fcf",
+      "videoram.bin": "2a38c9fd766eddaeb411aa2643dea006c66e92d2667e19170d066fc87922b551"
+    }
+  },
+  "same_frame_and_page": true,
+  "schema": 1,
+  "scope": "matched-state off-screen geometry extension",
+  "unchanged_resources": {
+    "paletteram.bin": true,
+    "textureram.bin": true,
+    "videoram.bin": true
+  }
+}

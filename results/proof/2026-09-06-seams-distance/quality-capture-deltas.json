@@ -1,0 +1,22 @@
+{
+  "offroad": {
+    "owner_changes": 1141,
+    "index_changes": 1140,
+    "coverage_gained": 0,
+    "coverage_lost": 0
+  },
+  "world": {
+    "owner_changes": 181,
+    "index_changes": 181,
+    "coverage_gained": 0,
+    "coverage_lost": 0
+  },
+  "before": {
+    "blue_pixels_in_seam_region": 634,
+    "owner_at_291_1108": 1
+  },
+  "aligned": {
+    "blue_pixels_in_seam_region": 0,
+    "owner_at_291_1108": 126
+  }
+}

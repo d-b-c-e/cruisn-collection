@@ -1,0 +1,117 @@
+{
+  "candidate_sha256": "4b37437b6096d47cb1ba3105eb902d36cc1466540db768698d90467959427b6a",
+  "cases": [
+    {
+      "coverage": "synthetic first-gear race, 21 completed GL frames, CPU rasterization disabled",
+      "id": "exotica",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-final-exotica\\exotica\\report.json",
+      "timings": [
+        {
+          "emulated_seconds": 21.002965498516993,
+          "emulation_ratio": 1.0000352152443515,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.502300000003856,
+            "p95": 18.21058500000916,
+            "p99": 18.923950000010166,
+            "worst": 20.294199999995044
+          },
+          "host_seconds": 21.0022259,
+          "inputs": {
+            ":ANALOG0": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":ANALOG1": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":ANALOG2": {
+              "distinct": 1,
+              "maximum": 255,
+              "minimum": 255
+            },
+            ":ANALOG3": {
+              "distinct": 3,
+              "maximum": 141,
+              "minimum": 115
+            },
+            ":DIPS": {
+              "distinct": 1,
+              "maximum": 62463,
+              "minimum": 62463
+            },
+            ":GEARS": {
+              "distinct": 2,
+              "maximum": 15,
+              "minimum": 14
+            },
+            ":IN1": {
+              "distinct": 2,
+              "maximum": 65535,
+              "minimum": 65279
+            },
+            ":IN2": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":KEYPAD": {
+              "distinct": 1,
+              "maximum": 30583,
+              "minimum": 30583
+            },
+            ":SEQ": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":SYSTEM": {
+              "distinct": 2,
+              "maximum": 65535,
+              "minimum": 65531
+            },
+            ":ioasic:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 21,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mzgl_020.bmp"
+      }
+    }
+  ],
+  "passed": true,
+  "physical_force": false,
+  "schema": 1,
+  "subset": [
+    "exotica"
+  ],
+  "suite_sha256": "69d9baa51c5cc90305813571ad0ad222aa2b9365d258cddc02f66c1b8d7ac703"
+}

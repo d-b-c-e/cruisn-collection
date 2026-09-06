@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "process_returncode": 0,
+  "replay_expected_failure": "renderer fell back after losing its stream",
+  "last_native_extrema": [
+    [
+      0,
+      255
+    ],
+    [
+      0,
+      255
+    ],
+    [
+      0,
+      255
+    ]
+  ],
+  "stop_frame": 5500,
+  "last_native_frame": 6000,
+  "scope": "injected consumer exit restores native rasterization; does not simulate every ring-overflow condition"
+}

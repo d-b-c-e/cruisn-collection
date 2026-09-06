@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "base": "mame0286",
+  "head": "377ddc06db10a2787a136ee76ceb7f421a0674ce",
+  "commits": 105,
+  "expected_tree": "f3af6c85edc8c9df8b03e085662b6d472826f4c6",
+  "reconstructed_tree": "f3af6c85edc8c9df8b03e085662b6d472826f4c6",
+  "patch_sha256": "fc1d869664e1421870ee9d52d652f186caa7b97dbc8b861e4919a8042e011652"
+}

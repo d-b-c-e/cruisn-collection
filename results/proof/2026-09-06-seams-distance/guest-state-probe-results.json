@@ -1,0 +1,64 @@
+{
+  "next-origin-baseline": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "probe_script": {
+      "sha256": "86feb50cdf974f158216982f02b7736ad57e82cdb5791b32250313bc3969429e",
+      "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-matrix-origin.lua"
+    }
+  },
+  "next-origin-wide": {
+    "passed": false,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        3120,
+        3180
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 2
+    },
+    "probe_script": {
+      "sha256": "86feb50cdf974f158216982f02b7736ad57e82cdb5791b32250313bc3969429e",
+      "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-matrix-origin.lua"
+    }
+  },
+  "next-rotation-baseline": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "probe_script": {
+      "sha256": "a702f7a4ad1f3495a0247d53dde9c9ef2664653e2f9f28dbbb4ededf6584ffd7",
+      "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-rotation-inputs.lua"
+    }
+  },
+  "next-rotation-wide": {
+    "passed": false,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [
+        3120,
+        3180
+      ],
+      "input_or_time_mismatches": 0,
+      "passed": false,
+      "pixel_mismatches": 2
+    },
+    "probe_script": {
+      "sha256": "a702f7a4ad1f3495a0247d53dde9c9ef2664653e2f9f28dbbb4ededf6584ffd7",
+      "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-rotation-inputs.lua"
+    }
+  }
+}
