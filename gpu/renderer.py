@@ -250,7 +250,10 @@ void main() {
         if (((fdx ^ fdy) & 1) != 0) discard;
     }
 
-    outMask = 1u;   // every non-discarded fragment marks its pixel written
+    // Keep a material tag for the final color resolve. A fine checkerboard
+    // sampled with nearest-neighbor at a noninteger display ratio makes moire.
+    // Native-exact masks remain 1; opaque geometry overwrites the dither tag.
+    outMask = (uScale > 1 && dither == 1u) ? 3u : 1u;
     if (mode == 0u) {
         outIndex = (uDbgQuadId == 1) ? uint(gl_PrimitiveID / 2) : pixdata & 0xffffu;
         return;
@@ -361,7 +364,7 @@ ivec2 fill_px(ivec2 p) {
     return p + ((du <= dd) ? ivec2(0, -du) : ivec2(0, dd));
 }
 
-vec3 fetch_at(ivec2 p) {
+vec3 fetch_raw(ivec2 p) {
     p = fill_px(p);
     uint pen = texelFetch(idxTex, p, 0).r & 0x7fffu;
     uint w = texelFetch(palTex, ivec2(pen & 255u, pen >> 8), 0).r;
@@ -369,6 +372,24 @@ vec3 fetch_at(ivec2 p) {
     return vec3(float((r << 3) | (r >> 2)) / 255.0,
                 float((g << 3) | (g >> 2)) / 255.0,
                 float((b << 3) | (b >> 2)) / 255.0);
+}
+
+vec3 fetch_at(ivec2 p) {
+    ivec2 sz = textureSize(idxTex, 0);
+    p = clamp(p, ivec2(0), sz - 1);
+    ivec2 b = (p / 2) * 2;
+    if (b.x + 1 < sz.x && b.y + 1 < sz.y) {
+        bool a = texelFetch(maskTex, b, 0).r == 3u;
+        bool c = texelFetch(maskTex, b + ivec2(1, 0), 0).r == 3u;
+        bool d = texelFetch(maskTex, b + ivec2(0, 1), 0).r == 3u;
+        bool e = texelFetch(maskTex, b + ivec2(1, 1), 0).r == 3u;
+        // Only a complete, explicitly tagged hardware-dither pair qualifies.
+        // Real checkerboard artwork and ordinary polygon edges stay untouched.
+        if (a == e && c == d && a != c)
+            return 0.25 * (fetch_raw(b) + fetch_raw(b + ivec2(1, 0))
+                         + fetch_raw(b + ivec2(0, 1)) + fetch_raw(b + ivec2(1, 1)));
+    }
+    return fetch_raw(p);
 }
 
 ivec2 src_px(vec2 tuv) {

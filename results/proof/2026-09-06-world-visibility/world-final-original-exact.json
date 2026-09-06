@@ -1,0 +1,18 @@
+{
+  "capture": "E:\\Source\\cruisn-collection\\results\\capture",
+  "comparison": {
+    "differing_pixels": 0,
+    "exact_percent": 100.0,
+    "max_error": 0,
+    "max_mismatches": 0,
+    "outside_tolerance": 0,
+    "passed": true,
+    "pixels": 204800,
+    "tolerance": 0
+  },
+  "passed": true,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "scale": 1,
+  "schema": 1,
+  "scope": "native-index-buffer"
+}

@@ -54,6 +54,35 @@ def checks(ctx):
     tile[2:163, 3:164] = 37
     q = rectangle()[None, :]
     outcomes = []
+    # Dither translucency must resolve before arbitrary display scaling, and
+    # actual checkerboard artwork must not be mistaken for transparency.
+    pattern = (np.indices((4, 4)).sum(axis=0) % 2).astype(np.uint16)
+    palette = np.zeros((128, 256), np.uint32); palette[0, 1] = 0x7fff
+    prog = ctx.program(vertex_shader=R.PAL_VS, fragment_shader=R.PAL_FS)
+    for name, value in dict(idxTex=0, palTex=1, maskTex=2, uCrop=0, uCrt=0,
+                            uSrcH=1., uFillR=0, uMargin=0).items():
+        if name in prog: prog[name].value = value
+    idx = ctx.texture((4, 4), 1, pattern.tobytes(), dtype='u2'); idx.use(0)
+    pal = ctx.texture((256, 128), 1, palette.tobytes(), dtype='u4'); pal.use(1)
+    vao = ctx.vertex_array(prog, [])
+    for tagged in (True, False):
+        mask = np.where(pattern == 1, 3, 1).astype(np.uint8) if tagged else np.ones((4,4),np.uint8)
+        tex = ctx.texture((4,4), 1, mask.tobytes(), dtype='u1'); tex.use(2)
+        for size in (4, 7, 10):
+            target = ctx.simple_framebuffer((size,size), components=3)
+            target.use(); ctx.viewport=(0,0,size,size); vao.render(moderngl.TRIANGLES,vertices=3)
+            rgb=np.frombuffer(target.read(alignment=1),np.uint8)
+            ok=bool(np.all((rgb>=127)&(rgb<=128))) if tagged else bool(set(rgb.tolist())=={0,255})
+            outcomes.append({'check':'tagged-dither-resolve' if tagged else 'checkerboard-art-preserved',
+                             'display_size':size,'passed':ok})
+            target.release()
+        tex.release()
+    for obj in (vao,prog,idx,pal): obj.release()
+    shadow=rectangle(2,2,14,8,mode=0x2000)
+    _,tag=render(ctx,shadow[None,:],atlas,4)
+    _,exact_tag=render(ctx,shadow[None,:],atlas,1)
+    outcomes.append({'check':'dither-tag-quality-only','passed':bool(
+        np.any(tag==3) and set(np.unique(tag))=={0,3} and set(np.unique(exact_tag))=={0,1})})
     # Sloped endpoint cases exposed by World: approximate GPU reciprocals can
     # turn an exact half-pixel tie into a different integer coverage decision.
     # Compare against the independent float32 CPU rasterizer, using flat colors
