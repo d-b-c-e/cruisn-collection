@@ -6,53 +6,30 @@ as a renderer replacement over MAME. One fullscreen launcher, all four games,
 wheel + force feedback, true 16:9 at 4× internal resolution, optional CRT
 look. **No ROMs are included** — you supply your own.
 
-This is an actively tested alpha. Widescreen artifacts beyond the tested routes,
-collision feedback and telemetry coverage remain open work. The
-[selective scenery investigation](docs/reviews/2026-09-06-selective-scenery.md)
-now demonstrates an earlier Germany mountain with unchanged later frames, using
-a small diagnostic admission rule. A product distance fix remains in development. The
-[fresh Germany recording review](docs/reviews/2026-09-06-world-distance-and-impacts.md)
-confirms repeatable playback and weak impact feel despite working 80% FFB output.
-**Settings → Force Feedback → Impact Cues** now exposes an optional per-game
-comparison. **Widescreen Terrain** repairs missing edge geometry; it does not
-increase draw distance. Real distance experiments remain diagnostic. The
-[World rendering and replay review](docs/reviews/2026-09-06-world-rendering-and-replay.md)
-documents fixes for checkerboard shadows, Off Road's black sky corners and two
-native coverage errors. The wider World object-visibility experiment is disabled
-after it changed the recorded route despite matching inputs. The original Germany
-recording still replays correctly; camera/ADC traces now provide a separate route
-check. A [follow-up rendering investigation](docs/reviews/2026-09-06-world-assets-and-road.md)
-adds a display-only fix for World 2.4's disappearing transmission artwork and
-identifies a missing road polygon at the reported Germany timestamp. A conservative
-road-visibility option is available; distance expansion remains open. The
-[Germany Level investigation](docs/reviews/2026-09-06-germany-level.md) adds a
-complete human race replay, fixes the invisible Esc menu, and separates native
-transmission-screen corruption from the remaining widescreen defects. An external
-recording/replay clock now lets testers report defects by seconds or frame number.
-The
-[launcher now exposes per-game graphics experiments](docs/INSTALL.md#optional-graphics-experiments)
-under **Settings → Display**; Margin Fill is retired from the normal UI.
-The [Fanatec/Exotica review](docs/reviews/2026-09-06-exotica-polarity.md) identifies
-cabinet setup differences and an unproven steering-inversion assumption requiring
-replay validation before changing force direction. The
-[latest rendering review](docs/reviews/2026-09-06-seams-distance.md) covers a
-thin-geometry fix, an experimental terrain seam correction, Exotica gameplay
-replay, and the reopened distance investigation. The
-[previous follow-through](docs/reviews/2026-09-06-follow-through.md) covers restored
-World/Off Road skies, ordered GL replay, USA numeric HUD speed, optional steering
-impact cues, toolkit 0.11.1 and a measured detail-distance experiment. The
-[recorded-drive findings](docs/reviews/2026-09-05-recorded-drive-findings.md) document
-fixes for USA's colored road strips, missing margin terrain, selection slowdown
-and diagnostic recording hitches, with their measured limits.
-The [September 2026 assessment](docs/reviews/2026-09-05-assessment.md)
-records verified findings and the plan for recorded gameplay regression tests.
+This is an actively tested alpha. Rendering defects beyond the tested routes,
+collision feedback and telemetry coverage remain open work.
 
-Developer testing now supports [recorded input and playback](docs/DIAGNOSTIC-REPLAY.md),
-including analog wheel inputs, isolated starting state, retained diagnostic logs,
-and strict native screenshot comparisons. See the
-[first implementation results](docs/reviews/2026-09-05-implementation.md) for
-verified coverage and remaining rendering/FFB work. The shared toolkit has its
-own [independent review](https://github.com/d-b-c-e/dbce-wheel-mod-toolkit/blob/master/docs/REVIEW-2026-09-05.md).
+**Settings → Display → Graphics Experiments** now includes optional **Distant
+Scenery** for World 2.4: a measured Germany mountain appears during the starting
+sequence instead of popping in after driving begins. This limited extension
+preserves its later appearance and passes a full recorded-drive repeat. More tree
+variants and other games need separate investigation. **Widescreen Terrain**
+repairs missing edge geometry; **Margin Fill** is retired. Optional per-game
+**Impact Cues** are available under Force Feedback, with physical feel still
+awaiting validation.
+
+- [Native scenery changes and evidence](docs/reviews/2026-09-06-native-scenery.md)
+- [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
+- [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
+- [Independent project assessment](docs/reviews/2026-09-05-assessment.md)
+- [Shared wheel toolkit review](https://github.com/d-b-c-e/dbce-wheel-mod-toolkit/blob/master/docs/REVIEW-2026-09-05.md)
+
+The harness records effective analog wheel inputs, initial configuration and
+binary/settings provenance. Candidate changes are compared with their parent
+recordings and then replayed against themselves. Native snapshots, completed GL
+captures, geometry traces, camera/ADC traces and timings cover different failure
+modes; no single passing screenshot certifies a complete driving experience.
+The full engineering history is in [results/RESULTS.md](results/RESULTS.md).
 
 ## Play it (players / testers)
 

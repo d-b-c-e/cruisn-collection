@@ -1,0 +1,589 @@
+{
+  "candidate_sha256": "075d16a7cc7648b3dd61b19fd2fda264cc476ebf48584c76256847371ddc5ffb",
+  "cases": [
+    {
+      "coverage": "original human drive, native inputs and pixels",
+      "id": "usa-original",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-default-regressions\\usa-original\\report.json",
+      "timings": [],
+      "visual_reference": {
+        "files": 83,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00004980.png"
+      }
+    },
+    {
+      "coverage": "derived widescreen human inputs, native pixels and live timing",
+      "id": "usa-widescreen",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-default-regressions\\usa-widescreen\\report.json",
+      "timings": [
+        {
+          "emulated_seconds": 10.357632103575998,
+          "emulation_ratio": 0.9999975963266594,
+          "first_frame": 1680,
+          "host_frame_ms": {
+            "p50": 17.2337500000026,
+            "p95": 18.408029999999798,
+            "p99": 26.19771899999982,
+            "worst": 28.087399999996876
+          },
+          "host_seconds": 10.357657,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 7,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 5,
+              "minimum": 5
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63870,
+              "minimum": 63870
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 50175,
+              "minimum": 50175
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 127,
+              "minimum": 127
+            },
+            ":MOTION": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":WHEEL": {
+              "distinct": 1,
+              "maximum": 128,
+              "minimum": 128
+            }
+          },
+          "last_frame": 2280,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        },
+        {
+          "emulated_seconds": 10.357632103577004,
+          "emulation_ratio": 0.999915827959038,
+          "first_frame": 2700,
+          "host_frame_ms": {
+            "p50": 17.204449999997706,
+            "p95": 25.0234700000032,
+            "p99": 26.623124000004733,
+            "worst": 30.28770000000236
+          },
+          "host_seconds": 10.358503999999996,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 91,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 5,
+              "minimum": 5
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63870,
+              "minimum": 63870
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 50175,
+              "minimum": 50175
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 127,
+              "minimum": 127
+            },
+            ":MOTION": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":WHEEL": {
+              "distinct": 73,
+              "maximum": 161,
+              "minimum": 85
+            }
+          },
+          "last_frame": 3300,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 83,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00004980.png"
+      }
+    },
+    {
+      "coverage": "synthetic race, native pixels and live timing",
+      "id": "world24",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-default-regressions\\world24\\report.json",
+      "timings": [
+        {
+          "emulated_seconds": 20.715264207152998,
+          "emulation_ratio": 0.9997101580734185,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.649600000005705,
+            "p95": 24.90153499999863,
+            "p99": 26.59407000000897,
+            "worst": 39.81890000000021
+          },
+          "host_seconds": 20.721270099999998,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 3,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 5,
+              "minimum": 5
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63820,
+              "minimum": 63820
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 50175,
+              "minimum": 50175
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":WHEEL": {
+              "distinct": 4,
+              "maximum": 145,
+              "minimum": 106
+            },
+            ":serial_pic2:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 100,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00006000.png"
+      }
+    },
+    {
+      "coverage": "Germany Level: complete human race, 9269 input frames, 154 native images; FFB source trace retained, physical outputs disabled on replay",
+      "id": "world24-germany",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-default-regressions\\world24-germany\\report.json",
+      "timings": [],
+      "visual_reference": {
+        "files": 154,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00009240.png"
+      }
+    },
+    {
+      "coverage": "synthetic race, native pixels and live timing",
+      "id": "world25",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-default-regressions\\world25\\report.json",
+      "timings": [
+        {
+          "emulated_seconds": 20.715264207152998,
+          "emulation_ratio": 1.0000069276522732,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.204549999995322,
+            "p95": 24.94002500000221,
+            "p99": 26.597823000000034,
+            "worst": 30.400000000000205
+          },
+          "host_seconds": 20.715120699999993,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 3,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63948,
+              "minimum": 63948
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":WHEEL": {
+              "distinct": 4,
+              "maximum": 145,
+              "minimum": 106
+            },
+            ":serial_pic2:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 100,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00006000.png"
+      }
+    },
+    {
+      "coverage": "synthetic H-pattern driving onto terrain, native pixels and live timing",
+      "id": "offroad",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-default-regressions\\offroad\\report.json",
+      "timings": [
+        {
+          "emulated_seconds": 20.715264207152998,
+          "emulation_ratio": 0.9999909056852078,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.258400000002894,
+            "p95": 24.483894999997347,
+            "p99": 26.354793000004975,
+            "worst": 29.040299999991248
+          },
+          "host_seconds": 20.715452600000006,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 3,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 65533,
+              "minimum": 65533
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 57343,
+              "minimum": 57343
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":WHEEL": {
+              "distinct": 4,
+              "maximum": 145,
+              "minimum": 106
+            },
+            ":serial_pic2:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 100,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00006000.png"
+      }
+    },
+    {
+      "coverage": "synthetic first-gear race, 21 completed GL frames, CPU rasterization disabled",
+      "id": "exotica",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\scenery-default-regressions\\exotica\\report.json",
+      "timings": [
+        {
+          "emulated_seconds": 21.002965498516993,
+          "emulation_ratio": 1.0000429242819653,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.49479999999437,
+            "p95": 18.12974000000267,
+            "p99": 18.888208999997428,
+            "worst": 23.660599999999476
+          },
+          "host_seconds": 21.002064000000004,
+          "inputs": {
+            ":ANALOG0": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":ANALOG1": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":ANALOG2": {
+              "distinct": 1,
+              "maximum": 255,
+              "minimum": 255
+            },
+            ":ANALOG3": {
+              "distinct": 3,
+              "maximum": 141,
+              "minimum": 115
+            },
+            ":DIPS": {
+              "distinct": 1,
+              "maximum": 62463,
+              "minimum": 62463
+            },
+            ":GEARS": {
+              "distinct": 2,
+              "maximum": 15,
+              "minimum": 14
+            },
+            ":IN1": {
+              "distinct": 2,
+              "maximum": 65535,
+              "minimum": 65279
+            },
+            ":IN2": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":KEYPAD": {
+              "distinct": 1,
+              "maximum": 30583,
+              "minimum": 30583
+            },
+            ":SEQ": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":SYSTEM": {
+              "distinct": 2,
+              "maximum": 65535,
+              "minimum": 65531
+            },
+            ":ioasic:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 21,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mzgl_020.bmp"
+      }
+    }
+  ],
+  "passed": true,
+  "physical_force": false,
+  "schema": 1,
+  "subset": null,
+  "suite_sha256": "d886c353c8daec47eb37180bcec0827989843ce08bb0c3e92241a6cf99690b8e"
+}

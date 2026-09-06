@@ -2,15 +2,24 @@
 
 ## Current verified handoff (2026-09-06)
 
-Newest distance evidence: `docs/reviews/2026-09-06-selective-scenery.md`.
-`world_scenery_provenance.lua` joins same-frame admitted object IDs to DMA polygons;
-unmatched draws stay explicit. `world_scenery_admission.lua` is a bounded MUTATING
-diagnostic (read-result override, not RAM writes), World2.4 only. PCA1/modelCB1A8B
-admission160k adds15 mountain polygons earlier, preserves original projection and
-all later86 completed GL images2030..2200. It preserves far-clamped perspective
-deliberately; do not generalize this to accurate-perspective trees. TreeCA57F3 is
-identified but not fixed. No native product distance change. First trace2042/34
-passes; the live candidate correctly differs on three earlier native screenshots.
+Newest distance evidence: `docs/reviews/2026-09-06-native-scenery.md`.
+Native3dc426ec75d / SHA256075d16a7 adds opt-in `MIDV_SCENERY=mountains|trees|all|off`,
+World2.4 only. Canonical `native/world_scenery.h` syncs to MAME. Three identified
+mountains use earlier admission with ORIGINAL far-clamped perspective; CA57F3
+conifers use valid virtual reciprocals only for originally rejected instances.
+No guest RAM writes. Exact model/radius/flags and projection instructions guard
+it; don't copy addresses into other revisions/games. Reset clears active tree;
+state saves preserve it. MIDV_SCENERY_LOG=1 -> per-frame scenery.csv.
+Shell Distant Scenery is defaultOFF, World2.4/widescreen/scale>1 only. Terrain
+visibility remains separate. Full candidate8783/146 repeats, ~100.005% driving
+speed; only6 early parent native images differ. Dense GL1600..2400 has201 frames,
+103 changed early images, all93 images2032..2400 identical. Tree admissions don't
+prove visible improvement. More tree variants and attended coverage remain open.
+`compare_scenery.py` requires explicit allowed additions, keeps duplicate quads
+and original order, and can bound added quad extent. Pair it with completed GL.
+Avoid nested address-space reads inside reciprocal taps: selected-model RAM
+lies in the observed range. A failed Lua prototype caused giant trees this way;
+its negative-control evidence is retained. Native reads backing RAM directly.
 
 Latest: `docs/reviews/2026-09-06-world-assets-and-road.md`. Enhanced World 2.4
 retains the outgoing transmission atlas in the GL upload only while its actual

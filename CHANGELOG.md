@@ -5,9 +5,14 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Add optional World2.4 Distant Scenery for verified Germany mountains and a
+  conifer model, with full-drive repeatability and completed-frame comparisons.
+- Add a scenery geometry comparator that checks duplicate polygons, ordering,
+  unknown additions and optional projection-size limits.
+
 - Add World scenery provenance and a bounded selective mountain experiment;
   document an earlier mountain with unchanged later frames and the path toward
-  separate mountain/tree distance improvements. Product distance is unchanged.
+  separate mountain/tree distance improvements.
 
 - Expose optional per-game steering impact cues in Force Feedback settings,
   with correct World revision resolution and unchanged defaults.

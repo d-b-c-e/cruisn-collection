@@ -1,0 +1,801 @@
+{
+  "schema": 1,
+  "scope": "matched-frame submitted geometry; not visible-pixel or route acceptance",
+  "passed": false,
+  "maximum_added_quad_extent": 32,
+  "allowed_added_models": [
+    "ca57f3"
+  ],
+  "frames": [
+    {
+      "frame": 1998,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 1999,
+      "control_quads": 1755,
+      "candidate_quads": 1757,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22714,
+            -392,
+            24466,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2000,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2001,
+      "control_quads": 1754,
+      "candidate_quads": 1756,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -392,
+            24619,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2002,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2003,
+      "control_quads": 1760,
+      "candidate_quads": 1762,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -388,
+            24466,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2004,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2005,
+      "control_quads": 1742,
+      "candidate_quads": 1744,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -388,
+            24466,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2006,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2007,
+      "control_quads": 1741,
+      "candidate_quads": 1743,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -388,
+            24466,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2008,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2009,
+      "control_quads": 1738,
+      "candidate_quads": 1740,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -388,
+            24466,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2010,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2011,
+      "control_quads": 1739,
+      "candidate_quads": 1741,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -388,
+            24466,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2012,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2013,
+      "control_quads": 1731,
+      "candidate_quads": 1733,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -392,
+            24619,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2014,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2015,
+      "control_quads": 1736,
+      "candidate_quads": 1738,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22714,
+            -392,
+            24466,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2016,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2017,
+      "control_quads": 1727,
+      "candidate_quads": 1729,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22573,
+            -388,
+            24466,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2018,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2019,
+      "control_quads": 1745,
+      "candidate_quads": 1747,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22714,
+            -392,
+            24466,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2020,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2021,
+      "control_quads": 1749,
+      "candidate_quads": 1751,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            23492,
+            -2229,
+            26434,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2022,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2023,
+      "control_quads": 1742,
+      "candidate_quads": 1744,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 1,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            256,
+            -388,
+            24466,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2024,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2025,
+      "control_quads": 1744,
+      "candidate_quads": 1746,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            22714,
+            -392,
+            24466,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2026,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2027,
+      "control_quads": 1755,
+      "candidate_quads": 1757,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            -32702,
+            -1749,
+            24619,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2028,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2029,
+      "control_quads": 1751,
+      "candidate_quads": 1753,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            23492,
+            -2229,
+            26441,
+            1577
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2030,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2031,
+      "control_quads": 1743,
+      "candidate_quads": 1745,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            24696,
+            -2230,
+            32662,
+            1236
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2032,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2033,
+      "control_quads": 1729,
+      "candidate_quads": 1731,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            24698,
+            -2230,
+            32761,
+            1236
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2034,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2035,
+      "control_quads": 1724,
+      "candidate_quads": 1726,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            -31739,
+            -1775,
+            32401,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2036,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2037,
+      "control_quads": 1721,
+      "candidate_quads": 1723,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 2,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            -31738,
+            -1775,
+            32401,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2038,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2039,
+      "control_quads": 1737,
+      "candidate_quads": 1739,
+      "removed_or_changed": 0,
+      "added": 2,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 1,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            256,
+            -392,
+            23694,
+            1585
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2040,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    }
+  ],
+  "total_added": 42,
+  "total_removed_or_changed": 0
+}

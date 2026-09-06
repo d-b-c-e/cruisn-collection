@@ -432,3 +432,17 @@ frame until timeout. The evidence validator rejects `[LUA ERROR]`, explicit prob
 failures and snapshot errors even when MAME exits with code zero. Errors in a
 memory tap are also rejected; the callback wrapper alone cannot guarantee an
 immediate stop for errors raised inside MAME's separate tap dispatcher.
+
+## Selective scenery distance
+
+`replay.py --scenery off|mountains|trees|all` selects the native World2.4 candidate
+and records its setting plus per-frame `scenery.csv` counts. `derive_case.py`
+accepts the same option and archives it for identity replay. Parent pictures can
+legitimately differ; derivation retains those differences rather than replacing
+the parent recording. See the [native scenery evidence](reviews/2026-09-06-native-scenery.md).
+
+`compare_scenery.py CONTROL.csv CANDIDATE.csv --allow-added-model ca57f3
+--max-added-extent 32 --report geometry.json` checks matched-frame provenance,
+including duplicate quads and ordering. The extent limit is optional and intended
+for small distant-tree additions. It does not judge visible pixels, whether a
+tree is occluded, or driving-route equivalence. Unknown models remain explicit.

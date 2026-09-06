@@ -1,0 +1,164 @@
+{
+  "identity_replay_passed": true,
+  "original_route_equivalence": "not established by derivation or identity replay",
+  "parent_comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [
+      1680,
+      1740,
+      1800,
+      1860,
+      1920,
+      1980
+    ],
+    "input_or_time_mismatches": 0,
+    "passed": false,
+    "pixel_mismatches": 6
+  },
+  "passed": true,
+  "physical_force": false,
+  "schema": 1,
+  "scope": "new candidate repeatability; parent visual differences retained",
+  "candidate_sha256": "075d16a7cc7648b3dd61b19fd2fda264cc476ebf48584c76256847371ddc5ffb",
+  "native_commit": "3dc426ec75d",
+  "timings": {
+    "case/record": {
+      "schema": 1,
+      "first_frame": 1800,
+      "last_frame": 8780,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 120.493786804938,
+      "host_seconds": 120.4877591,
+      "emulation_ratio": 1.0000500275296265,
+      "host_frame_ms": {
+        "p50": 16.823349999995685,
+        "p95": 24.569730000000334,
+        "p99": 26.146156000004197,
+        "worst": 84.16429999999764
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 205
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 196
+        }
+      }
+    },
+    "replay/run": {
+      "schema": 1,
+      "first_frame": 1800,
+      "last_frame": 8780,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 120.493786804938,
+      "host_seconds": 120.48748839999999,
+      "emulation_ratio": 1.0000522743483298,
+      "host_frame_ms": {
+        "p50": 17.277899999996293,
+        "p95": 24.56931000000182,
+        "p99": 26.099033000004823,
+        "worst": 35.03599999999096
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 205
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 196
+        }
+      }
+    }
+  },
+  "scenery": {
+    "case/record": {
+      "mountain_admissions": 371,
+      "tree_admissions": 660,
+      "extended_reads": 5280,
+      "maximum_index": 7361
+    },
+    "replay/run": {
+      "mountain_admissions": 371,
+      "tree_admissions": 660,
+      "extended_reads": 5280,
+      "maximum_index": 7361
+    }
+  }
+}

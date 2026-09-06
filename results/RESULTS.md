@@ -3382,3 +3382,42 @@ Proof: `results/proof/2026-09-06-world-distance-impacts/`.
   defaults changed. Prioritize scenery catalogue, guarded native candidate,
   pop-event clips, full-route repeatability, then cross-game adapters. Same Germany
   recording remains sufficient. Keep other FFB/Cheats stretch work in the queue.
+
+## 2026-09-06 — Native selective scenery and full Germany repeat
+
+Review: `docs/reviews/2026-09-06-native-scenery.md`; proof native-scenery directory.
+Native3dc426ec75d, binary075d16a7cc7648b3dd61b19fd2fda264cc476ebf48584c76256847371ddc5ffb.
+110 exported patches reconstruct b2b9bab9399b97521bfb2343435deaf76f5ef97a exactly.
+
+- Identified mountainCB15F8/CB171E alongsideCB1A8B. Native World2.4-only policy
+  admits these up to160k, preserves original far-clamped perspective. CA57F3 tree
+  extension instead admits only originally rejected trees fitting wholly inside
+  extended projection range, supplies valid reciprocal reads at six verifiedPCs.
+  Original entries/clamps unchanged; no guest RAM writes. Context is save-state
+  registered/reset; optional scenery.csv counts admissions/reads per frame.
+- Tree provenance1998..2040 adds42quads across21drawing frames, zero originals
+  changed/removed/reordered. Native path matches final Lua geometry exactly.
+  Object14118 has5x9native extent at1999. First probe used DMA flags instead of
+  object flags and changed nothing. Next nested-read probe generated giant quads;
+  evidence retained, extent negative control fails. Final tap avoids nested reads.
+- Full derived8783-frame Germany case and repeat match all inputs/time/146native
+  images. Six earlier parent snapshots1680..1980 differ; all later sampled native
+  images match. Driving1800..8780 speed100.005% both runs. Per run371extra mountain
+  admissions/660tree admissions/5280virtual reads, maximumindex7361 of10000.
+  Repeatability is not physical acceptance or proof of exact original route.
+- Dense completedGL1600..2400 every4 gives201images per candidate/control.
+  103images1620..2028 differ; all93images2032..2400 identical. Mountain appears
+  through garage exit and during starting sequence, preserving its later shape.
+  Conifer extension alone has not established a visible forest improvement.
+- Added revision/scale/widescreen-gated Distant Scenery menu, defaultOFF. Added
+  compare_scenery.py with duplicate/order/unknown-model and optional extent checks;
+  replay/derive_case archive explicit native scenery settings.67Python tests pass.
+- Identified next treesCA5833(mirrored conifer),CA5863/CA5896(broadleaf), radii
+  1950/818/1252. They cross original far gate2031..2193 and need their own bounded
+  geometry/GL validation before extending the native allowlist.
+
+The default075d16a7 build passes all seven original multi-game cases, including
+configured timing gates and Exotica21completed GL images.67Python tests and all
+four branch CI jobs34067459020 at96ea041 pass (including20GPU fixtures and native
+scenery unit). Full export reconstructs the native tree. No physical force was
+used; the new option remains defaultOFF. See native-scenery/default-regressions.json.

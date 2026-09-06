@@ -1,0 +1,15 @@
+{
+  "native_commit": "3dc426ec75d",
+  "candidate_sha256": "075d16a7cc7648b3dd61b19fd2fda264cc476ebf48584c76256847371ddc5ffb",
+  "default_cases": 7,
+  "default_passed": true,
+  "python_tests": 67,
+  "native_scenery_unit": "passed locally and Linux CI",
+  "gpu_quality_fixtures": 20,
+  "ci": {
+    "run": 34067459020,
+    "head": "96ea041703b0812dc4b304f3e3da2cac55ad3589",
+    "jobs": 4,
+    "passed": true
+  }
+}
