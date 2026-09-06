@@ -76,12 +76,19 @@ Changes are saved per game and take effect on its next launch. All start off.
 | Setting | Games | What to expect |
 |---|---|---|
 | **Seam Alignment** | USA, World, Off Road | Aligns certain mismatched terrain edges at enhanced resolutions. Closed a measured blue seam in Off Road, but can shift nearby texture interpolation. |
+| **Terrain Visibility** | World 2.4/2.5 | Conservatively enlarges object bounds in widescreen, restoring a measured missing Germany road section. Adds drawing work; old driving recordings can take a different route. |
 | **Detail Distance** | USA v4.5 | Keeps higher-detail models farther away. The recorded route required about 5.25% more polygon submissions. |
 | **Draw Limit** | USA v4.5 | Raises a distant-object rejection limit. It added submissions but **no visible improvement** in the tested scene; it cannot load missing scenery. |
 
 Unavailable options cannot be enabled for other games. These experiments do not
 replace the graphics fixes already applied automatically. Return a setting to
 Off/Standard to remove its effect on the next launch.
+
+World's Terrain Visibility candidate needs a fresh attended driving evaluation.
+Keep old recordings as controls and record a separate case after choosing the
+graphics settings. Its bounded visibility change is separate from draw distance;
+it does not bring in more distant scenery. The transmission artwork fix applies
+automatically to enhanced World 2.4 rendering.
 
 **Margin Fill has been retired from the launcher.** It stretched edge pixels
 into the widescreen margins and could suppress useful sky detail. The newer

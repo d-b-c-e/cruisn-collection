@@ -59,6 +59,20 @@ class GraphicsOptionsTests(unittest.TestCase):
                                      {"detail_distance_crusnusa": "1"}, {})
             self.assertEqual(set(read_patch(env["MIDV_PATCH"])), {0xbf, 0xc3})
 
+    def test_world_terrain_composes_only_for_verified_widescreen_revisions(self):
+        section = {"terrain_visibility_crusnwld": "1", "terrain_visibility_crusnusa": "1"}
+        with tempfile.TemporaryDirectory() as directory:
+            for rom in ("crusnwld", "crusnwld24"):
+                env = G.launch_overrides(ROOT, directory, rom, 86, 4, section, {})
+                expected = read_patch(ROOT / f"patch/game/{rom}-widescreen.txt")
+                expected.update(read_patch(ROOT / "patch/game/crusnwld-terrain-visibility-experimental.txt"))
+                self.assertEqual(read_patch(env["MIDV_PATCH"]), expected)
+                standard = G.launch_overrides(ROOT, directory, rom, 86, 4, {}, {})
+                self.assertNotIn(0xb4, read_patch(standard["MIDV_PATCH"]))
+                self.assertNotIn("MIDV_PATCH", G.launch_overrides(ROOT, directory, rom, 0, 4, section, {}))
+            for rom in ("crusnusa", "crusnwld23", "offroadc", "crusnexo"):
+                self.assertFalse(G.for_game(section, rom)["terrain_visibility"])
+
     def test_seam_alignment_is_off_at_native_scale_and_marginfill_is_ignored(self):
         with tempfile.TemporaryDirectory() as directory:
             for scale in (1, 2, 4):

@@ -4,8 +4,9 @@ from pathlib import Path
 from game_patch import combine_patches
 
 GAMES = ("crusnusa", "crusnwld", "offroadc", "crusnexo")
-OPTIONS = ("seam_alignment", "detail_distance", "far_distance")
+OPTIONS = ("seam_alignment", "terrain_visibility", "detail_distance", "far_distance")
 PATCHES = {
+    "terrain_visibility": "crusnwld-terrain-visibility-experimental.txt",
     "detail_distance": "crusnusa-lod-experiment.txt",
     "far_distance": "crusnusa-farplane-experiment.txt",
 }
@@ -16,10 +17,12 @@ def family(rom):
 
 
 def supported(rom, option):
+    if option == "terrain_visibility":
+        return rom in ("crusnwld", "crusnwld24")
     if option == "seam_alignment":
         return family(rom) in GAMES[:3]
     # These instruction addresses are verified only for USA v4.5, not its clones.
-    return option in PATCHES and rom == "crusnusa"
+    return option in ("detail_distance", "far_distance") and rom == "crusnusa"
 
 
 def for_game(section, rom):
@@ -50,6 +53,8 @@ def rows(game, options):
     descriptions = (
         ("seam_alignment", "SEAM ALIGNMENT",
          "EXPERIMENTAL: CLOSES SOME TERRAIN SEAMS; MAY SHIFT TEXTURES. NEXT LAUNCH."),
+        ("terrain_visibility", "TERRAIN VISIBILITY",
+         "EXPERIMENTAL: RESTORES SOME MISSING WORLD TERRAIN IN WIDESCREEN. NEXT LAUNCH."),
         ("detail_distance", "DETAIL DISTANCE",
          "EXPERIMENTAL: KEEPS DETAILED MODELS FARTHER AWAY; MORE RENDERING WORK. NEXT LAUNCH."),
         ("far_distance", "DRAW LIMIT",
@@ -59,8 +64,9 @@ def rows(game, options):
     for option, label, hint in descriptions:
         if not supported(game, option):
             value = "UNAVAILABLE"
-            hint = ("AVAILABLE FOR USA, WORLD AND OFF ROAD."
-                    if option == "seam_alignment" else "AVAILABLE FOR CRUIS'N USA ONLY.")
+            hint = ("AVAILABLE FOR USA, WORLD AND OFF ROAD." if option == "seam_alignment"
+                    else "AVAILABLE FOR CRUIS'N WORLD ONLY." if option == "terrain_visibility"
+                    else "AVAILABLE FOR CRUIS'N USA ONLY.")
         else:
             value = (("ON" if selected.get(option) else "OFF") if option == "seam_alignment"
                      else ("EXTENDED" if selected.get(option) else "STANDARD"))
@@ -86,7 +92,7 @@ def launch_overrides(root, rig, rom, margin, scale, section, environment):
     if margin >= 80 and widescreen.is_file():
         paths.append(widescreen)
     for option, filename in PATCHES.items():
-        if selected[option]:
+        if selected[option] and (option != "terrain_visibility" or margin >= 80):
             path = root / "patch" / "game" / filename
             if not path.is_file():
                 raise FileNotFoundError(f"Selected graphics experiment is missing: {path}")

@@ -1,0 +1,19 @@
+# World 2.4/2.5 conservative 16:9 whole-object visibility candidate.
+# Adds guest drawing work: old input recordings can follow a different route.
+# Keep the original recording; establish repeatability and a new attended drive.
+# Bound projected radius by 1.25 (wide side-plane factor is about 1.203),
+# retaining both horizontal and vertical rejection, near/far checks and face culls.
+# B4 calls dead padding: original multiply, radius factor, return. R4 is radius.
+# Left helper and right bound admit native X -86..598, not unbounded objects.
+B4 0A040001 6200010E
+B9 05E00200 05E00256
+C0 6A270289 72070048
+108 0C800000 062C0000
+109 0C800000 07030002
+10A 0C800000 01A30108
+10B 0C800000 788A0000
+10C 0C800000 0E230000
+10D 0C800000 6000034C
+10E 0C800000 0A040001
+10F 0C800000 0A640200
+110 0C800000 78800000
