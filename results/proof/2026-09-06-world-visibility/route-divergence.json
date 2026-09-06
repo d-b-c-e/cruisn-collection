@@ -1,0 +1,13 @@
+{
+  "scope": "World geometry changes and route divergence",
+  "camera_samples": 1501,
+  "first_camera_difference_frame": 2732,
+  "actual_adc_reads": 4503,
+  "adc_value_or_pc_differences": 0,
+  "rerecorded_camera_matches_direct_patched_replay": true,
+  "original_bounds_helper_camera_matches": true,
+  "right_only_first_camera_difference": 2732,
+  "left_only_first_camera_difference": 2732,
+  "default_disabled": true,
+  "conclusion": "Extra admitted guest geometry, not input re-recording or the left helper alone, causes route divergence. Exact timing/state mechanism remains open."
+}
