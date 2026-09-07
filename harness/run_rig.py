@@ -782,9 +782,8 @@ def transmission_mode(cp):
 # did. It is gated on a DIP the manual barely documents - DS1 "Wheel Invert".
 # With it OFF the game confirms immediately; with it ON the screen actually
 # reads the wheel. (Found by Endprodukt, confirmed here headless 2026-09-04.)
-# The same DIP mirrors the wheel for driving, which the driver patch cancels
-# (MIDZ_WHEEL_INVERT) - so only the menu changes, and on that menu you turn
-# the wheel LEFT for MANUAL.
+# The DIP controls force/shifter polarity. It does not establish vehicle
+# steering polarity; ADC mirroring is now a separate diagnostic override.
 EXOTICA_DIP_WHEEL_INVERT = 0x0800
 
 
@@ -1268,7 +1267,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
-    exotica_manual = apply_exotica_dips(rig, rom)
+    apply_exotica_dips(rig, rom)
     kill_stale_vunit(mame, why="left-over")
     # Old updater versions/manual extraction can leave the plugin's automatic
     # dinput8 hook beside the new emulator. Retire only known historical bytes
@@ -1346,9 +1345,6 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # game. Small angles are unchanged (4x50% == 8x50%/2); only the
         # +-127 byte clamp arrives sooner, and it already clamped at lock.
         env.setdefault("MIDZ_FFB_GAIN", "800")
-        if exotica_manual:
-            # cancels the Wheel Invert DIP for driving (see apply_exotica_dips)
-            env["MIDZ_WHEEL_INVERT"] = "1"
     # Built-in force feedback (midvunit_v.cpp mvffb: SDL2 haptics on the
     # wheel's steering axis, Cannonball DX style). FFB STRENGTH scales the
     # level (0 = off entirely); the wizard's steering device names the wheel
@@ -1408,6 +1404,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             v = _collection_ini_get("collection", key, "")
             if v.isdigit() and int(v) > 0:
                 env[var] = v
+    from force_options import apply_game_defaults
+    apply_game_defaults(env, rom)
     if steersens is not None:
         # gain percent on the wheel deflection (ioport.cpp patch; MAME's
         # own cfg "sensitivity" is a no-op for absolute wheels): 200 =

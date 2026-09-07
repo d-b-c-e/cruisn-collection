@@ -8,6 +8,20 @@ import force_options as F
 
 
 class ForceOptionsTests(unittest.TestCase):
+    def test_exotica_trim_preserves_other_games_and_independent_input_override(self):
+        for rom in ('crusnusa','crusnwld24','crusnwld','offroadc'):
+            env={'MIDV_FFB':'1','MIDV_FFB_STRENGTH':'80'}
+            F.apply_game_defaults(env,rom)
+            self.assertEqual(env,{'MIDV_FFB':'1','MIDV_FFB_STRENGTH':'80'})
+        env={'MIDV_FFB':'1','MIDV_FFB_STRENGTH':'80'}
+        F.apply_game_defaults(env,'crusnexo')
+        self.assertEqual(env['MIDV_FFB_STRENGTH'],'64')
+        self.assertEqual(env['MIDV_FFB_REQUESTED_STRENGTH'],'80')
+        self.assertEqual(env['MIDZ_WHEEL_INVERT'],'0')
+        env={'MIDV_FFB':'0','MIDZ_WHEEL_INVERT':'1'}
+        F.apply_game_defaults(env,'crusnexo')
+        self.assertEqual(env,{'MIDV_FFB':'0','MIDZ_WHEEL_INVERT':'1'})
+
     def test_default_off_and_explicit_revision_off_beats_family_and_global_on(self):
         self.assertFalse(any(F.load({}).values()))
         section = {"ffb_impact": "1", "ffb_impact_crusnwld": "1", "ffb_impact_crusnwld24": "0"}
