@@ -1,0 +1,79 @@
+{
+  "configuration": {
+    "saved_config_present": false,
+    "schema": 1,
+    "settings": {
+      "crackfill": true,
+      "crt": true,
+      "ffb": 50,
+      "ffbimpacts": {
+        "crusnexo": false,
+        "crusnusa": false,
+        "crusnwld": false,
+        "offroadc": false
+      },
+      "ffbinvert": 0,
+      "ffbprofile": "cruisn-vunit@2",
+      "ffbspring": 0,
+      "graphics": {
+        "crusnexo": {
+          "detail_distance": false,
+          "far_distance": false,
+          "scenery_distance": false,
+          "seam_alignment": false,
+          "terrain_visibility": false,
+          "world_distance": 0,
+          "world_lookahead": 0
+        },
+        "crusnusa": {
+          "detail_distance": false,
+          "far_distance": false,
+          "scenery_distance": false,
+          "seam_alignment": false,
+          "terrain_visibility": false,
+          "world_distance": 0,
+          "world_lookahead": 0
+        },
+        "crusnwld": {
+          "detail_distance": false,
+          "far_distance": false,
+          "scenery_distance": false,
+          "seam_alignment": false,
+          "terrain_visibility": false,
+          "world_distance": 0,
+          "world_lookahead": 8
+        },
+        "offroadc": {
+          "detail_distance": false,
+          "far_distance": false,
+          "scenery_distance": false,
+          "seam_alignment": false,
+          "terrain_visibility": false,
+          "world_distance": 0,
+          "world_lookahead": 0
+        }
+      },
+      "margin": null,
+      "rom": "crusnusa",
+      "scale": 4,
+      "steercurve": {
+        "crusnexo": null,
+        "crusnusa": null,
+        "crusnwld": null,
+        "offroadc": null
+      },
+      "steersens": {
+        "crusnexo": null,
+        "crusnusa": null,
+        "crusnwld": null,
+        "offroadc": null
+      },
+      "transmission": "hpattern",
+      "world_rom": "crusnwld24"
+    }
+  },
+  "launcher_sha256": "71e5c06b98381701ca519442db49a4200a9cfabec6d5d3a2c54b41bde89532b7",
+  "passed": true,
+  "physical_force": false,
+  "scope": "Check settings inside an extracted frozen release, without starting a game."
+}

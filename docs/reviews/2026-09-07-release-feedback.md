@@ -1,6 +1,7 @@
 # Release feedback investigation — 2026-09-07
 
-Status: implementation and validation in progress; no new public release.
+Status: implemented, built and automatically validated; attended acceptance
+remains pending. No new public release.
 
 ## Preserved incident evidence
 
@@ -77,9 +78,8 @@ checks with physical output disabled, not measurements of wheel torque or comfor
 
 CRT-on is already the fresh launcher default. Packaging now runs the actual
 frozen launcher's settings reader with no personal rig and rejects CRT-off,
-non-widescreen, wrong-scale or enabled per-game experimental defaults. A new ZIP
-still needs to be built and checked after the fixes; the old overnight ZIP is
-not current.
+non-widescreen, wrong-scale or enabled per-game experimental defaults. This check
+passes on the new ZIP; the old overnight ZIP remains a separate rollback baseline.
 
 ## Repeatable regression coverage
 
@@ -115,16 +115,35 @@ CI34164817060 atba6cee5 passes all four jobs. Windows, Linux and local checkouts
 agree on every217 source-input hash, identity
 `9eeaefe1defee4ac06ea198a1ea192499ab6785abe0c684774a9b504f642d7cd`.
 All five fresh seeds also pass1800-frame boot/replay and free-play persistence
-checks, including Off Road's checksum. The replacement package is next. The
-individual discovery and candidate results above retain their original build
-IDs; they are not relabeled as final-build results.
+checks, including Off Road's checksum. The individual discovery and candidate
+results above retain their original build IDs; they are not relabeled as
+final-build results.
+
+## Candidate and preserved proof
+
+Clean packaged commit bb62a22 produces
+`build/CruisnCollection-v0.4.0-rc2-20260907-170505.zip`, SHA256
+`e8847b70fc9436a23aa38ffdb2f2756009c040c6acbaf7bff577a42a947224f8`.
+All1632 packaged file hashes and fresh defaults pass. The extracted frozen ZIP
+passes four game boots with12 completed GL captures, eight launcher pages, setup
+health and support diagnostics, with development paths and physical force disabled.
+Later documentation/evidence changes preserve the same product source identity.
+
+[The proof directory](../../results/proof/2026-09-07-release-feedback/README.md)
+contains160 archived derived files, exact hashes, reports and a ROM-free verifier.
+All seven telemetry and four force-gate verdicts recompute exactly from that archive.
+The release gate passes configuration, the complete suite and fresh-save checks;
+all43 human/shared requirements remain pending. Current Windows/neutral boots do
+not replace a clean-profile install, an attended upgrade or a full physical drive.
+Saved user INI SHA256 remains
+`b5c521b42433078a22e87b80753e8a44944ce8056949bee3c45c568b58780752`.
+Stream Deck continues to launch this checkout and the tested mame-src/vunit.exe.
 
 ## Release versus later work
 
-Before publication: complete telemetry integration and automated packet checks
-for all games; verify startup/end-of-race force release; attended Exotica steering,
-four-game RPM/gears, SimHub/Buttkicker and comparable force feel; regenerate the
-exact candidate package and run the release checklist. Keep distance experiments
+Before publication: attended Exotica steering/startup, World race-end force release,
+four-game RPM/gears, SimHub/Buttkicker and comparable force feel; complete the
+release checklist against this exact candidate package. Keep distance experiments
 off for the baseline. Treat the New York3x/+12 crash as an unresolved experiment
 defect; do not infer that2x is safe from a single successful run.
 

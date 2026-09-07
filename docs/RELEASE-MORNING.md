@@ -1,10 +1,15 @@
 # Release morning: what still needs a person
 
-The next local candidate is **v0.4.0-rc2**, incorporating the September7 player
+The current local candidate is **v0.4.0-rc2**, incorporating the September7 player
 feedback. The earlier `CruisnCollection-v0.4.0-rc1-20260907-050908.zip` remains a
 rollback baseline; it lacks the newer menus, drivetrain telemetry and force fixes.
 Use the new candidate's own manifest and pending ledger for acceptance. No public
 release has been created.
+
+Exact ZIP: `build/CruisnCollection-v0.4.0-rc2-20260907-170505.zip`.
+Its [manifest](../results/proof/2026-09-07-release-feedback/package.manifest.json)
+and [43-check pending ledger](../results/proof/2026-09-07-release-feedback/attended-pending.json)
+are preserved with the [automated evidence](../results/proof/2026-09-07-release-feedback/README.md).
 
 The new work adds game-derived gears/revs for World, Off Road and Exotica,
 restores Off Road speed and Exotica UDP packets, and gates World/Exotica force

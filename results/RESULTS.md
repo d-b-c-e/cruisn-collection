@@ -3829,3 +3829,57 @@ Experiments show Shared/USA/World/OffRoad/Exotica and only applicable settings;
 Native full118-patch export reconstructs tree895aabd69d1efcbab19d63039157c076c4396b2e.
 See docs/reviews/2026-09-07-usa-drivetrain-and-startup.md and its50-entry proof ZIP.
 StreamDeck uses this source and mame-src/vunit.exe; older release ZIPs preserved.
+
+## 2026-09-07 — All-game drivetrain telemetry, force-state gates and candidate rc2
+
+Preserved the user's INI, launch history and surviving logs before tests. World2.4
+New York3x/+12 launch20:40:21UTC confirms a guest fatal:
+Unimplemented op @3EF9C170:15A3ED45. Following2x/+8 race exits normally; this is not
+proof of cause or2x safety. No contemporary Windows dump; original race-end force
+trace had been overwritten. Bounded launch archives now keep force logs/CSV tails.
+
+Found World2.4/2.5 actual gear+51/rev+52 with separate guarded code/global layouts.
+Exotica gear+62/rev+63 and internal speed1074; its Zeus screen path never previously
+called the VUnit UDP emitter, so Forza was entirely absent. Off Road uses DP=1 globals:
+player19D25 + BC*1C86C, gear+B/rev+36, HUD formatter speed19D11*19D77. Its previous OCR
+reader failed. New guarded producers feed the same explicitly estimated900..8000RPM
+scale as USA. No E632 RPM fallback. Off Road's initial6001-packet failure identified
+duplicate partial-screen emission; final-visible-clip gating restores6000/6000.
+World's real countdown/rapid shifts sometimes retain revs; the strict every-upshift
+drop diagnostic fails honestly, while all emitted values match independent memory.
+
+World driving state4/flags bit4 and Exotica HUD/control flags now gate constant force,
+impact state, rumble and condition effects. Independent default-distance Germany
+probe confirms1468 nonzero inactive motor commands, including the finish; all host
+requests are gatedzero. Exotica suppresses2072 nonzero pre-drive commands. Actual
+rim behavior remains untested. Exotica ADC mirror no longer follows the force/shifter
+DIP; its default is0. Effective output is trimmed20% after driver byte conditioning
+(saved80 becomes effective64), preserving preferences. Physical outputs never enabled.
+
+Native f2e5b63dd72 / SHA80688f753070bffe5e55654fed1fd7ffdbd1158acd978e44c9a2a660b40fba57
+is built/deployed at mame-src/vunit.exe and pushedfork. Full121patch export reconstructs
+tree26264b1217f62b08aaab544658cda7a8e9128746 exactly. Final7 full cases PASS original
+inputs/images plus live UDP and independent memory; Exotica21 completedGL. Timed
+intervals99.9735..100.0070% emulation, not GPU presentation timing. All5fresh1800frame
+boot/replay freeplay/checksum persistence checks pass. 113Python/native tests PASS.
+CI34164817060 atba6cee5 all4jobs PASS; every217 Windows/Linux/local input hash agrees,
+sourceidentity9eeaefe1defee4ac06ea198a1ea192499ab6785abe0c684774a9b504f642d7cd.
+
+Clean bb62a22 ZIP build/CruisnCollection-v0.4.0-rc2-20260907-170505.zip,
+SHAe8847b70fc9436a23aa38ffdb2f2756009c040c6acbaf7bff577a42a947224f8. All1632file hashes,
+actual frozen CRT-on/full-wide/scale4/default-experiments-off check pass. Extracted
+ZIP4neutralboots/12completedGL/eightpages/setup/support pass without development paths.
+Source/ZIP remain bound to their exact identities; later docs/proof-only changes
+do not relabel old code. Proof/release-feedback contains160derived entries, ZIP
+SHA2e5e18d189982e99ded1ba1a3a8fe42d5e9b96900455610e195d6708c99821d9. Exact archived
+bytes verified; all7telemetry and4forcegate verdicts recomputed from archived data.
+No ROM/RAM/NVRAM dumps included. Original recordings, earlier ZIPs and userINI
+b5c521b42433078a22e87b80753e8a44944ce8056949bee3c45c568b58780752 remain unchanged.
+
+Gate automatedPASS,43attended/shared checks pending. OffRoad/Exo firstgear synthetic
+coverage is not allgear acceptance. Need physicalExotica startup/steering/weight,
+World finish/impact feel, allgame auto/manual gauges/tactile output and package/
+secondwheel/soak acceptance. Public distribution decision remains open; no public
+tag/release/visibility change. User requested NewYork blackflashes/crash recording,
+cheats and othergame/consistent distance experiments afterrelease. See feedback
+review, RELEASE-MORNING and RELEASE-CHECKLIST for next attended work.

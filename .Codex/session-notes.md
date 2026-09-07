@@ -1,3 +1,43 @@
+# Latest completed release-feedback work — 2026-09-07
+
+Read docs/reviews/2026-09-07-release-feedback.md and AGENTS.md's new first section.
+Native f2e5b63dd72/80688f753070bffe5e55654fed1fd7ffdbd1158acd978e44c9a2a660b40fba57
+is built at E:/Source/mame-src/vunit.exe and pushed to fork/poc/quadlog. Collection
+code commits ca6d8e1 (log history),6db178e (frozen CRT defaults),702b6d2 (Exotica input
+and20%trim),80f6fee (all-game telemetry),0ee5e76 (force gate),70a8d79 (stronger suite),
+ba6cee5 (release tracking) are pushed to master; packaged docs commit bb62a22.
+
+World/Off Road/Exotica actual gear/rev producers are independently traced, guarded
+and mapped to the same arcade RPM scale as USA. Off Road speed fixed from formatter;
+Exotica internal MPH plus its own frame callback restores previously absent UDP.
+World/Exotica active-driving flags gate force including condition effects/rumble.
+Exotica ADC mirror defaults0; force output trimmed20% with saved settings preserved.
+All automation physical output0/private UDP ports; no wheel comfort/direction claim.
+
+Final7 full replays PASS, actual packet/memory/gate probes included;5fresh-save
+boot/replay checks PASS. 113Python/native tests and4CI jobs PASS34164817060;217 hashes
+match Windows/Linux/local, source9eeaefe1defee4ac06ea198a1ea192499ab6785abe0c684774a9b504f642d7cd.
+121patches apply to exact tree26264b1217f62b08aaab544658cda7a8e9128746.
+ZIP build/CruisnCollection-v0.4.0-rc2-20260907-170505.zip,
+SHAe8847b70fc9436a23aa38ffdb2f2756009c040c6acbaf7bff577a42a947224f8, clean bb62a22.
+Actual frozen defaultsCRT1/full-wide/scale4 pass;1632files;4frozen boots12GL/eightpages/
+setup/support pass. Older ZIPs/recordings immutable. No emulator/build/helper remains.
+
+Proof results/proof/2026-09-07-release-feedback:160 derived files, exact hashes and
+ROM-free verify_archive.py recomputing7telemetry+4force verdicts. Raw RAM/ROM/NVRAM
+dumps stay local. UserINI hashb5c521b42433078a22e87b80753e8a44944ce8056949bee3c45c568b58780752 unchanged.
+StreamDeck source launcher uses tested root binary; restart launcher to load Python.
+
+Release is NOTREADY solely from automated evidence:43attended/shared checks pending,
+plus unresolved public hosting destination. Need attended allgame auto/manual gauges,
+SimHub/Buttkicker, Exotica direction/startup/weight, World racefinish/impact feel,
+secondwheel/cleanprofile/upgrade/soak. OffRoad/Exo syntheticcases onlyfirstgear.
+Original World3x/+12 NewYork launch confirms guestfatal PC3EF9C170; no contemporaryWER
+dump, no retained original oscillation trace. Default-distance Germany sends nonzero
+motor commands after finish; gatedzero now, physicalacceptancepending. User requested
+NewYorkrecording/blackflashes/crash investigation afterrelease, thencheats andconsistent
+experiments forothergames. Do notclaim3xcausedoscillationor2xisprovensafe.
+
 # Latest source update — USA internal drivetrain, 2026-09-07
 
 Nativebf8821358d4 / SHA4d63433b45f492ae7dd6f982c0aca92afdf7d12283d19ee194bf5ec95e55fee4

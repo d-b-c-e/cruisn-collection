@@ -135,11 +135,12 @@ on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
   emulation (upstream emulation gaps remain: car-select text is illegible).
 - Telemetry streams to SimHub as JSON or Forza-format UDP. USA v4.5 reads the
   game's numeric speed-display buffer, with OCR fallback; World still uses OCR.
-  Off Road's speed reader is not working, and Exotica speed is not implemented.
-  USA v4.5 also reads the player-car gear and internal rev signal used by its
-  colored tachometer, including automatic shifts. Revs map to an estimated
-  900–8,000 RPM arcade scale; the old speed-text mapping remains retired.
-  Other games still need their own validated drivetrain producers.
+  Off Road and Exotica now read guarded internal speed producers. All four games
+  read actual player-car gears and the rev signals used by their colored tachs,
+  including automatic shifts. Revs map to an explicitly estimated 900–8,000 RPM
+  arcade scale; the old speed-text RPM mapping remains retired. Live packet and
+  independent-memory tests cover every game; Off Road/Exotica still need attended
+  all-gear and SimHub/Buttkicker acceptance.
   Wheel force and lamps are separate available output channels.
 
 Native V-Unit comparisons cover specific archived captures. They do not

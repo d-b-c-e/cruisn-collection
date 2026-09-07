@@ -497,8 +497,9 @@ divergence](reviews/2026-09-06-global-distance-and-native-port.md).
 
 ## Drivetrain and actual telemetry packets
 
-USA v4.5's rev and gear producer reads the player structure used by the HUD,
-with ROM-instruction, pointer, value-range and fresh-HUD guards. `drivetrain.csv`
+USA v4.5, World2.4/2.5, Off Road and Exotica have separate verified rev and gear
+producers reading the player structures used by their HUDs, with ROM-instruction,
+pointer, value-range and HUD-lifetime guards. `drivetrain.csv`
 records native frames, emulated seconds, source, raw rev units, normalized tach
 fill and estimated RPM. The 900–8,000 RPM scale is a presentation choice.
 `gear_source=3` means game state; `=1` means the legacy shifter-input fallback.
@@ -513,8 +514,11 @@ python harness/analyze_drivetrain.py results/diagnostics/usa-wire-new/run --requ
 
 Loopback uses fresh private localhost ports and captures Forza and JSON packets;
 it never sends to the user's SimHub ports or enables physical force. The analyzer
-requires packet/sample agreement, a complete Forza sequence, valid values, all
-four gears and RPM drops within eight frames of each upshift. A control replay
+requires packet/sample agreement, a complete Forza sequence and valid values.
+`--require-drive` additionally requires all four gears and RPM drops within eight
+frames of every upshift. That strict diagnostic passes the accepted USA drive;
+World has real countdown/rapid shifts that do not drop revs, so the normal suite
+compares its actual memory values without imposing artificial drops. A control replay
 can add `--no-arcade-rpm` (analyze without `--require-drive`).
 
 `lua/usa_drivetrain_memory.lua` independently reads the guarded player structure
@@ -524,3 +528,17 @@ counter. `lua/usa_tach_probe.lua` traces the palette/texture writers; tap errors
 are retained and rethrown from the next frame callback because MAME can otherwise
 swallow a tap-callback exception. A replay PASS alone doesn't validate arbitrary
 probe contents. See [the provenance and verification report](reviews/2026-09-07-usa-drivetrain-and-startup.md).
+
+The regular seven-case suite captures UDP and runs independent probes for every
+game, requiring at least500 active samples and10MPH. World2.4 uses
+`lua/world_drivetrain_memory.lua`; World2.5, Off Road and Exotica use
+`lua/drivetrain_memory.lua`. Off Road/Exotica's existing synthetic cases cover
+first gear only. A passing suite cannot certify their all-gear behavior or tactile output.
+
+`force-gate.csv` retains enabled state, raw motor command and requested host level
+separately from the unchanged four-column `force-source.csv`. World and Exotica
+release constant force, impact history, rumble and condition effects outside
+verified active driving. `analyze_force_gate.py DIRECTORY --memory CSV --game ROM
+--output JSON` checks those decisions against the independent Lua samples.
+Physical output stays disabled; requested levels are not wheel torque measurements.
+See [the all-game findings and final validation](reviews/2026-09-07-release-feedback.md).

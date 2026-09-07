@@ -1,5 +1,54 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Latest release-feedback fixes (2026-09-07)
+
+Read `docs/reviews/2026-09-07-release-feedback.md` first; older telemetry/force
+descriptions below are historical. Native f2e5b63dd72 on poc/quadlog, pushed fork;
+source vunit.exe SHA25680688f753070bffe5e55654fed1fd7ffdbd1158acd978e44c9a2a660b40fba57.
+All four games now have guarded actual player gear/rev producers in canonical
+`native/hud_drivetrain.h`, mapped to the user-approved estimated900..8000RPM scale.
+World2.4/2.5 have separately checked layouts. Off Road uses DP=1 globals and player
+strideBC; speed comes from its HUD formatter. Exotica uses its own speed producer
+and screen callback to emit UDP; previously it emitted no Forza packets at all.
+World speed remains OCR, cleared outside its verified HUD states. E632 is never RPM.
+
+World and Exotica now gate force on verified driving flags, independently of draw
+distance/speed. Inactive transitions release constant force, impact state, rumble
+and condition effects. `MIDV_FFB_GAME_GATE=0` is a developer control. Raw source
+telemetry remains unchanged; separate force-gate.csv records requested host levels.
+Exotica defaults MIDZ_WHEEL_INVERT=0: force/shifter DIP does not prove ADC inversion.
+`force_options.apply_game_defaults` trims effective Exotica force20% after byte
+conditioning; saved global strength is unchanged (80 becomes64). No physical-force
+acceptance yet. Never test a wheel unattended.
+
+All7 final-build replays pass actual UDP/independent memory checks plus original
+inputs/images, including Exotica21 completed GL images; timing99.9735..100.0070%.
+World/Exotica gate decisions match independent game-state probes. All5 fresh-save
+boot/replay persistence checks pass. 113 Python tests/native helpers/all4 CI jobs
+pass; CI34164817060 Windows/Linux/local agree on all217 source hashes, identity
+9eeaefe1defee4ac06ea198a1ea192499ab6785abe0c684774a9b504f642d7cd.
+The121-patch export exactly reconstructs native tree26264b1217f62b08aaab544658cda7a8e9128746.
+
+Clean bb62a22 package: build/CruisnCollection-v0.4.0-rc2-20260907-170505.zip,
+SHAe8847b70fc9436a23aa38ffdb2f2756009c040c6acbaf7bff577a42a947224f8.
+1632 file hashes, actual frozen CRT-on/full-wide/scale4 defaults, four frozen boots,
+12 completed GL images, eight menu pages/setup/support pass. Proof directory
+results/proof/2026-09-07-release-feedback contains160 archived derived files and
+verify_archive.py; seven telemetry/four force verdicts recompute exactly without ROMs.
+No personal settings changed; old recordings/ZIPs preserved. Stream Deck still uses
+source checkout/root mame-src binary. Later docs-only commits keep product identity.
+
+All43 attended/shared release checks remain pending. Next: four-game automatic/manual
+gear/tach and tactile acceptance (Off Road/Exotica synthetic cases cover first gear
+only), Exotica startup/steering/20%trim, World finish/impact feel, package/second-wheel
+acceptance. World legitimately has some countdown/rapid upshifts without rev drops;
+do not fake drops to satisfy the strict optional analyzer. User's New York3x/+12
+launch has a confirmed guest-fatal Unimplemented op at3EF9C170; cause unresolved.
+Default-distance Germany also sends nonzero motor commands after finish, now gated;
+this does not prove the lost original oscillation trace's sole cause. Distance stays
+off for release. New York graphics/crash recording, cheats and other-game distance
+work are postrelease priorities. No public tag/release/visibility change authorized.
+
 ## Latest source launcher update (2026-09-07)
 
 Read `docs/reviews/2026-09-07-graphics-menu.md`. Crack Fill moved to Graphics
