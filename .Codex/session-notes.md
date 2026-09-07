@@ -1,3 +1,61 @@
+# Verified overnight completion — 2026-09-07
+
+The authorized release-preparation work is complete. No local emulator/build/helper
+remains active. All older ACTIVE/checkpoint descriptions below are historical.
+Native5bb965763b1 /9D8 pushedfork,117patch treea611778155bbaef209f5523bb711ba8b1f127cb6.
+Sourcecode7cb6751, packagedbe87237; current sourceidentitye728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921.
+FinalZIP build/CruisnCollection-v0.4.0-rc1-20260907-050908.zip
+SHAeaa8520998e8fc76d5fecdbbda86311455d96ee129ac783892a54962a765a139.
+Native9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86.
+
+All100Python tests/all4CI jobsPASS; Windows/Linux/local201file identities equal.
+Finalfull7replays/fresh5persistence/menus3/quality24/exact100.0000%/frozen4boots8UI
+/setup/support/actualZIPupgrade1617files PASS. Source,binary,ZIPunchangedthroughout.
+Earlier same9D8 fullGL174pairedframes exact acrossUSA/Germany/OffRoad401; no native
+or renderer changes since. Proofs in results/proof/2026-09-07-release-hardening/
+release-final (221runtimeentries) and release-3720 (288entries). Original recordings,
+all earlier ZIPs and C925/aa920/9D8 rollback binaries remain preserved locally.
+CIold942artifact verified1614files, neverexecuted/deployed; only buildworkflow proof.
+
+The verified source and proof form the release baseline. See git for the final
+commit/branch details; docs/proof-only commits do not invalidate packagedsource. Release checks remain
+NOTREADY with39human/shared requirements pending. Preparedledgerpre-attaches receipts
+but allstatuses remainpending (explicit humanacceptancecontract). No publictag.
+Publicdistributiondecision also needed: repositoryPRIVATE, anonymousAPI404. Do not
+changevisibility/exposehistoryor distributetokens without explicitauthorization.
+Nextuserwork: docs/RELEASE-MORNING.md's4manualrecordings, collisionfeel/Exoticapolarity,
+cleanprofile/upgrade/secondwheel/soak acceptance, then chosenpublichosting. No claim
+thatpop-in or weakFFBfeel is solved. KeepWorlddistanceexperimental; pursuehoststatic
+transform/drawing independentofguestsimulation afterreleasebaselineaccepted.
+
+# ACTIVE final validation — 2026-09-07 about05:13 local
+
+Windows CI and Linux CI BOTH match all201 local source input hashes exactly at
+portable sourcee728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921.
+CI34109534667/7cb and34109710043/be87237 all4jobsPASS. Comparison evidence in
+results/diagnostics/source-identity-portable/report.json and per-OSsourceidentity.
+100Python testsPASS. Currentbranch codex/release-startup-hardeningbe87237 pushed.
+Native5bb/9D8 remains unchanged, no new nativebuildneeded.
+
+ACTIVE exec80215 runs startup-work/run_release_portable.py with finalcleanZIP:
+build/CruisnCollection-v0.4.0-rc1-20260907-050908.zip
+SHAeaa8520998e8fc76d5fecdbbda86311455d96ee129ac783892a54962a765a139.
+Manifestcommitbe87237, sourcee728, native9D8. Outputrelease-portable-final;
+log startup-work/release-portable.log. Serialfrozen/full7/fresh5/menus3/quality/
+exact/gate; then automatically exactZIPupgrade under release-portable-final/upgrade.
+NoGPU/build/heavyI/O overlap. It checks finalsource/binary/package unchanged too.
+The174fullGL comparisonneednotrepeat: same9D8/shaders/settings; binary-boundproof
+in release-full-gl-final andcommittedrelease-3720. No source/binaryclaimsrelabeled.
+
+NEXT: finish80215, archive newestreports/traces/portableCIidentity/newZIPmanifest
+under proof/release-hardening/release-final (old archive_final.py currentlytargets
+release-3720 andhardcodesolderpaths: adapt a newscript, do notoverwriteoldproof).
+Include earlier174GLcomparison withexplicitunchangednative scope, andCIsourcehash
+agreement, actualnewZIPupgrade, test100log andbothCIreports. Verifyarchive andGit
+blobbytes, appendRESULTS, updateconcisehandoff/review/checklist, commit/push, fast-
+forwardmaster57e9bdf andpush. No new productchangesunlessdefectfound. No publictag;
+privateGitHub/anonymous404 remainsrealpublicdeliverydecision plus39humanchecks.
+
 # Current checkpoint — 2026-09-07 final source-identity correction
 
 No emulator/build is running. Prior full runtime85263 and upgrade94879 completed.

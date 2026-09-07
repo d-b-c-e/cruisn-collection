@@ -1,70 +1,56 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## Latest release identity correction (2026-09-07)
+## Current verified release baseline (2026-09-07)
 
-The full 9D8 runtime baseline and exact-ZIP upgrade PASS and are preserved in
-`results/proof/2026-09-07-release-hardening/release-3720`: 288 runtime entries,
-33 proof files verified from Git blobs; 174 paired GL frames unchanged. Native
-5bb965763b1 / 9D8 remains deployed and unchanged. Collection 7cb6751 fixes a
-newly observed source-hash mismatch between text checkout line endings. Known
-text inputs normalize to LF, including licences/profile examples/CSV; binary
-NVRAM bytes remain exact. 100 tests pass. Windows/Linux CI now export identities;
-verify both against local e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921.
-Repackage/revalidate against the new identity; do not relabel older gate reports.
-See immediate session notes for pending steps; no local emulator/build is active.
-Repository is PRIVATE; anonymous updater endpoint returns404. Public hosting
-needs a maintainer decision; do not expose repository history or distribute tokens.
-
-## Current release preparation (2026-09-07 overnight)
-
-Read `docs/reviews/2026-09-07-release-hardening.md`, the immediate
-`.Codex/session-notes.md`, and `docs/RELEASE-CHECKLIST.md`. Native `5bb965763b1`
-is pushed to fork/poc/quadlog; root executable SHA256
+Read `docs/reviews/2026-09-07-release-hardening.md`, `docs/RELEASE-MORNING.md`
+and `docs/RELEASE-CHECKLIST.md`. Automated preparation is complete; public delivery
+and human acceptance remain pending. No local emulator, build or helper is running.
+Native `5bb965763b1` on poc/quadlog is pushed to fork. Root vunit.exe SHA256:
 `9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86`.
-The 117-patch export reconstructs tree `a611778155bbaef209f5523bb711ba8b1f127cb6`.
+The117-patch export reconstructs tree `a611778155bbaef209f5523bb711ba8b1f127cb6`.
 
-Startup CPU framebuffer writes now use masked GPU copies, preserving untouched
-pixels, geometry and message order. Canonical helper `native/cpu_upload_spans.h`
-and generated shaders are synced. `MIDV_GL_BATCH_VRAM=0` is an explicit control.
-The previous C925 binary passes 12 full-window repeated starts, complete release
-regressions/fresh boots/menu/quality/exact/frozen-package checks. Long artificial
-consumer stalls still correctly fail; no watchdog relaxation. C925 and its ZIP
-are preserved under release-c925-baseline / build timestamp034453, with committed
-proof in results/proof/2026-09-07-release-hardening/release-942.
+Final clean ZIP: build/CruisnCollection-v0.4.0-rc1-20260907-050908.zip
+SHA256 `eaa8520998e8fc76d5fecdbbda86311455d96ee129ac783892a54962a765a139`.
+Packaged commit be87237; code correction7cb6751; later docs/proof commits preserve
+source identity `e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921`.
+100 Python tests and all4 CI jobs pass. CI34109534667/34109710043 verifies Windows,
+Linux and local agreement for every201 source input hash. Known text line endings
+normalize; binary NVRAM bytes remain exact. Raw package/file hashes stay exact.
 
-The newest native fix normalizes reserved motor byte -128 before gain/slew/clamp
-in both driver families and clears driver slew history. Normal-command vectors
-are unchanged. This is not evidence of physical feel, instant downstream torque
-release, or an explanation of historical Fanatec oscillation. New source at
-24cc1a2 has 98 passing Python tests and all four CI jobs pass (34105656916). The launcher/updater backs up only two exact
-known legacy dinput8.dll hashes before launch/copy. Unknown input DLLs are preserved
-and block launch/update. Never execute historical proxies in automated tests.
+Final source-bound checks PASS: all7 driving regressions (original Germany9269/154,
+Exotica21 completed GL), all5 fresh boot/replay free-play persistence checks,
+3 VUnit pause menus,24 GPU fixtures, both exact captures100.0000%, four frozen
+launches/eight UI pages/setup/support, and actual-ZIP upgrade with1617 matching files.
+Configured timing intervals99.9290..100.0040% emulation; worst callback44.7ms is not
+presentation latency. Source/native/ZIP unchanged throughout. Evidence:
+`results/proof/2026-09-07-release-hardening/release-final` (221 runtime entries).
+The earlier native9D8 vs aa920 full-drive comparison preserves174 completed GL
+frames across USA/Germany/Off Road (401 rows). It remains binary-bound component
+proof; no renderer/shader/profile/options changed with the identity correction.
+Traces remain in release-3720 (288 entries,33 proof files checked from Git blobs).
 
-Current clean candidate ZIP: build/CruisnCollection-v0.4.0-rc1-20260907-042637.zip,
-SHA256 `279118be3c2c2d504bed09a44053eff60eedc01a468e0217bbd9e7b9f1dc043c`.
-Full new validation is IN PROGRESS in results/diagnostics/release-3720-final;
-check session notes before overlapping an emulator/build. Source identity
-`5ae2eda86b09aaa4cd024248f5ca14087567bfe2720517c70542ab4910719d81`.
-The e438 run was superseded after CI exposed an 8.3 path bug in proxy retirement.
-24cc canonicalizes paths before script generation; the full suite restarts on it.
+Startup CPU framebuffer writes use masked GPU copies preserving holes and order;
+MIDV_GL_BATCH_VRAM=0 is an explicit control. Twelve C925 full-window starts pass;
+long injected stalls still fail as intended, watchdog unchanged. Both driver
+families normalize reserved motor-128 before gain/slew/clamp and reset driver slew
+history. Ordinary command vectors unchanged; no physical-feel/polarity acceptance.
+Known historical dinput8 proxies move to backups on upgrade/first launch; unknown
+DLLs remain intact and block the operation. Never execute old proxies in automation.
 
-Packaging restores tracked menu media, runtime dependencies, MAME/toolkit licence
-texts and source. Frozen support output works without stdout. Imports preserve
-newer NVRAM/cfg/ctrlr; real Windows updater tests cover quoted/8.3 paths, unchanged
-rig/ROM files, altered ZIP refusal and legacy-plugin migration. Workflow builds
-candidates only; tag pushes no longer publish. Promotion checks and uploads the
-exact accepted ZIP. No public tag/release was made. Attended driving/manual/wheel/
-visual/soak/clean-profile acceptance remains pending; do not fill it from replays.
+Stream Deck still opens this checkout and E:/Source/mame-src/vunit.exe. Saved user
+preferences/NVRAM are preserved. Fresh defaults are widescreen/CRT/scale4/World2.4,
+force50 and default profile; experiments/impact cues off. Off Road DOES checksum
+operator settings: use cmos_settings.py, never restore lone-byte free-play edits.
+World3x/lead12 stays diagnostic; no extra mountain visibility proven over2x at equal
+lookahead. Next engine milestone is host drawing of future/static scenery independent
+of guest simulation, not more model allowlists. Margin Fill remains retired.
 
-World 2.4 3x far/lead12 remain diagnostic and OFF in normal launcher. At equal
-lookahead 2x and 3x show no demonstrated extra mountain pixels; delayed activation
-is separate from far clipping. Next engine milestone remains drawing pending/future
-static scenery independently of guest simulation, not model allowlists. See
-`docs/reviews/2026-09-07-world-3x-and-release.md` for all positive/negative controls.
-Fresh seeds enable free play. Off Road DOES checksum operator settings: maintain
-its verified 1.63 sum through `harness/cmos_settings.py`; never restore lone-byte
-free-play edits. Existing player NVRAM/preferences remain preserved. All automated
-physical FFB OFF; original attended recordings are never rewritten.
+The repository is PRIVATE and the anonymous update endpoint returns404. Public
+hosting needs a maintainer decision; no visibility change, token distribution or
+public tag/release was performed. All39 human/shared checks remain pending; the
+prepared ledger attaches automated receipts without fabricating human approval.
+Use new attended manual drives, wheel/FFB checks and the clean-profile/soak protocol
+next. All automated physical FFB remains OFF; original recordings are immutable.
 
 ## Current verified handoff (2026-09-06)
 

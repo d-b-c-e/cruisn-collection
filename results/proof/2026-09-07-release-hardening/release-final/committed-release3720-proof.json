@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "committed_files": 33,
+  "runtime_entries": 288,
+  "scope": "All proof files and each ZIP entry verified from committed Git blobs"
+}

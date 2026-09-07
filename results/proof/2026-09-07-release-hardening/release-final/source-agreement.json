@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "local_sha256": "e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921",
+  "files": 201,
+  "ci_run": 34109534667,
+  "comparisons": {
+    "windows": {
+      "sha256": "e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921",
+      "different_files": [],
+      "passed": true
+    },
+    "linux": {
+      "sha256": "e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921",
+      "different_files": [],
+      "passed": true
+    }
+  }
+}

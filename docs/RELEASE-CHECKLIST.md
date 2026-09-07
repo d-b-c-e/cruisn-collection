@@ -99,6 +99,9 @@ Use a new output path each run. The gate exits 1 while anything is missing. Its
 configuration checks run in a temporary rig and do not launch games. It requires
 the full suite, all five fresh-seed boot/persistence checks, matching binary/source/suite
 hashes and no physical output. A matching replay alone cannot clear failed persistence.
+Source identity normalizes known text line endings while preserving binary bytes.
+CI exports the complete identity on both Windows and Linux; compare both with the
+local checkout before freezing a candidate. Raw ZIP/file hashes remain exact.
 Configuration tests that are skipped on non-Windows cannot clear the gate.
 The candidate workflow runs the harness tests and `check_release_package.py`:
 required runtime/source files, menu media, fallback shaders, candidate emulator hash,

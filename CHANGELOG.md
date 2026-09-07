@@ -5,6 +5,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Make release source hashes consistent across Windows/Linux text line endings,
+  with CI comparisons of every source input and exact binary-fixture preservation.
+
 - Reduce V-Unit startup framebuffer upload work with masked GPU copies, keeping
   untouched pixels and render order. Add repeated full-window startup checks and
   retained consumer-stall controls; keep the existing timeout protection.

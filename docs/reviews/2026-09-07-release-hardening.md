@@ -1,5 +1,26 @@
 # Overnight release hardening
 
+
+**Final outcome:** the automated release baseline passes. The built candidate is
+`CruisnCollection-v0.4.0-rc1-20260907-050908.zip`, packaged from be87237 with native
+5bb965763b1. All 100 Python tests, four CI jobs, seven driving cases, five fresh-seed
+persistence checks, three menus, 24 GPU quality fixtures and both native-exact
+captures pass (100.0000%). Frozen launch/setup/support checks pass for all four
+games; the exact ZIP upgrade preserves the fixture's user data and matches all 1,617
+packaged files. Windows/Linux/local source hashes agree for all 201 inputs.
+
+The unchanged native renderer also preserves 174 sampled completed GL frames over
+three full old/new drives. The final source, native binary and ZIP stayed unchanged
+during validation. Configured intervals hold 99.9290..100.0040% emulation; the largest
+callback gap is 44.7 ms. This does not certify stutter-free presentation or every
+unsampled frame. New proof: [final evidence](../../results/proof/2026-09-07-release-hardening/release-final/README.md).
+
+Public release still needs the [morning checks](../RELEASE-MORNING.md) and a public
+hosting decision: the repository is private and anonymous update requests return404.
+All 39 human/shared checklist entries remain pending. Physical FFB was never enabled
+by automation; scenery pop-in, World collision feel and Exotica polarity remain
+open acceptance items. The sections below retain the investigation checkpoints.
+
 2026-09-07. User requested continued autonomous fixes and end-to-end validation
 while away, with separate commits and a release candidate ready for attended
 checks tomorrow. No public release or unattended physical force output.

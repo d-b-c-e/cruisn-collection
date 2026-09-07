@@ -3744,3 +3744,46 @@ Keepthisfailure; isolatedfix24cc1a2 canonicalizes allinputpaths inPython beforeP
 scriptgeneration. CI34105656916 running; activee438fullruntimebaseline remains
 unchanged during investigation. New ZIP041815/09cb7a7d is a runtime candidate,
 not releaseaccepted. Finalsource/ZIP must include the CIpathcorrection.
+
+
+## 2026-09-07 — Final portable release baseline and remaining public-access decision
+
+Native5bb965763b1 / SHA9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86
+is unchanged through final validation. All174 sampled completed GL frames match
+oldaa920 across fullUSA43/Germany78/OffRoad53 comparisons atscale4/CRT; OffRoad401rows.
+The source3720 actualZIP upgrade matched1616files and preserved its existing-state
+fixture plus knowninputproxy backup. That fullbaseline is preserved in proof/
+release-hardening/release-3720,288runtimeentries and33files verified fromGitblobs.
+
+CI34102127057 built older942fromMAME0286 plus exportedpatches. DownloadedZIP SHA
+c92da687b83c9871fee0b3590a33b0993d8808032754462911bc975c7bd7dc96 and all1614files
+matchmanifest. Its80df9ae3 nativebinary was neverexecuted/deployed or certified by
+local9D8 tests. Inspection revealed different sourceidentities for identical
+committedtext because extensionlessLICENSE and ini.example had differentcheckout
+lineendings. Source7cb6751 canonicalizes remainingknowntexttypes, retaining every
+binaryfixturebyte. Newtests distinguishLF/CRLF fromactualtext andbinarychanges.
+100Python testsPASS. CI34109534667 and34109710043 allfourjobsPASS; Windows/Linux/
+local agree on every201sourceinputhash, identity
+ e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921.
+
+Final clean packagebe87237: build/CruisnCollection-v0.4.0-rc1-20260907-050908.zip,
+SHAeaa8520998e8fc76d5fecdbbda86311455d96ee129ac783892a54962a765a139.
+Renewed source-bound testsPASS:7drivingcases,5freshboot/replay/persistencechecks,
+3VUnitmenus,24GPUfixtures,2exactcaptures100.0000%, frozen4boots/8UIpages/setuphealth/
+support, actualZIPupgrade1617matchingfiles withrig/ROMmarker andknownproxybackup
+preserved. Source,native,ZIPunchangedthroughout. Measuredregressionintervals
+99.9290..100.0040% emulation, worstcallback44.7ms; no presentationlatency/stutter-free
+claim. Finalproof/release-hardening/release-final retains221runtimeentries plus
+sourceagreement, manifests, receipts andreproduction scripts. Earlier174GL proof
+remains explicitly bound to the unchangednativebinary, not relabelledsource.
+
+All automatedphysicalFFB OFF. No game/build/helper left running. GateautomatedPASS,
+ready_for_releaseFALSE with39human/sharedcheckspending. Preparedledgerattaches
+receipts while retainingpendingstatus. Morningmanualdrives, actualwheel/FFB/Exotica
+polarity, cleanprofile/realupgrade/secondwheel/soak remainrequiredacceptance.
+RepositoryisPRIVATE; directanonymouslatestreleaseAPIreturns404 whileauthenticated
+latestv0.3.7exists. Updateralreadyreportsprivate/missingreleaseerrorcorrectly.
+Publichostingneedsmaintainerdecision; no visibilitychange, token distribution,
+publictag orrelease performed. StreamDeckstillpointstosourcecheckout/root9D8.
+AllolderZIPs,originaldrives androllbackbinariesremainpreserved. See
+ docs/RELEASE-MORNING.md and docs/reviews/2026-09-07-release-hardening.md.

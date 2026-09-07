@@ -1,5 +1,10 @@
 # Release morning: what still needs a person
 
+Local candidate: `build/CruisnCollection-v0.4.0-rc1-20260907-050908.zip`.
+Its [manifest and hashes](../results/proof/2026-09-07-release-hardening/release-final/package.manifest.json)
+and [prepared pending ledger](../results/proof/2026-09-07-release-hardening/release-final/attended-prepared.json)
+are preserved in the repo. No public release has been created.
+
 The candidate includes renderer startup batching, restored package media/runtime
 files, free-play fixes, repaired support diagnostics, safer upgrades and neutral
 force-command handling. The automated evidence and exact ZIP identity are in
