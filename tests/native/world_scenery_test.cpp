@@ -26,6 +26,16 @@ int main()
     assert(admission(forest,80001,10935)==160000);
     assert(!enabled(other,3) && !enabled(mountain,2) && !enabled(tree,1));
     assert(enabled(forest,2) && enabled(forest,3) && !enabled(forest,1));
+    assert(activation_section(mountain,1,0x103c00ee,231,8)==0x103c00e6);
+    assert(activation_section(mountain,1,0x103c00ee,234,4)==0x103c00ea);
+    assert(activation_section(mountain,1,0x103c00ee,231,4)==0x103c00ee);
+    assert(activation_section(mountain,1,0x103c00ee,238,8)==0x103c00ee);
+    assert(activation_section(mountain,1,3,0,8)==3); // no unsigned underflow
+    assert(activation_section(mountain,1,238,231,0)==238);
+    assert(activation_section(mountain,1,238,231,9)==238);
+    assert(activation_section(tree,3,238,231,8)==238); // small tree activation not verified
+    assert(activation_section(mountain,2,238,231,8)==238);
+    assert(activation_section(forest,2,238,231,8)==230);
     assert(admission(other,80001,1950)==80000);
     for (unsigned r=1;r<=2000;++r) assert(admission(tree,80001,r)+2*r<extended_far);
     assert(reciprocal(4999)==0 && reciprocal(10001)==0);
@@ -34,5 +44,6 @@ int main()
     std::vector<uint32_t> ram(0x20000);
     assert(!code_matches(ram.data(),ram.size()));
     assert(!code_matches(ram.data(),0x100));
+    assert(!activation_code_matches(ram.data(),0x100));
     assert(!projection_pc(0xb4) && !projection_pc(0x50e) && projection_pc(0x21c));
 }

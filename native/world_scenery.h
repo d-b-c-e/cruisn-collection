@@ -46,6 +46,28 @@ inline bool code_matches(const uint32_t *ram, size_t words)
         && ram[0x21b] == 0x24c00182 && ram[0x21d] == 0xde180b82;
 }
 
+inline bool activation_code_matches(const uint32_t *ram, size_t words)
+{
+    return code_matches(ram, words) && ram[0xd58c] == 11
+        && ram[0x7b50] == 0x0224d58c && ram[0x7b58] == 0x04800004
+        && ram[0x7b59] == 0x6a290008 && ram[0x7b5c] == 0x1ae03000
+        && ram[0x7b5d] == 0x1540000e && ram[0x7b61] == 0x1541c000
+        && ram[0x7b62] == 0x1528d50b && ram[0x7b68] == 0x0840001b
+        && ram[0x7b69] == 0x02e0ffff;
+}
+
+// Only change a comparison that actually activates an identified background
+// earlier. The guest retains its own list transfer and original section tag.
+inline uint32_t activation_section(kind type, unsigned mode, uint32_t packed,
+                                   uint32_t threshold, unsigned lead)
+{
+    if ((type != mountain && type != forest) || !enabled(type, mode)
+        || !lead || lead > 8 || threshold > 0xffff) return packed;
+    uint32_t const section = packed & 0xffff;
+    if (section <= threshold || section < lead || section-lead > threshold) return packed;
+    return (packed & 0xffff0000) | (section-lead);
+}
+
 // Keep every originally admitted object on its original path. For new trees,
 // depth-radius <= far-2*radius-16 guarantees depth+radius <= far-16.
 inline uint32_t admission(kind type, int32_t depth_minus_radius, uint32_t radius)

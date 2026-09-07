@@ -55,6 +55,8 @@ def main(argv=None):
     ap.add_argument("--numeric-speed", action="store_true", help="explicit USA numeric HUD telemetry experiment")
     ap.add_argument("--scenery", choices=("off", "mountains", "trees", "all"),
                     help="explicit native World 2.4 scenery-distance candidate; logs admissions/projection")
+    ap.add_argument('--scenery-lead', type=int, choices=range(9),
+                    help='native background activation lead in track sections; 0 disables earlier activation')
     ap.add_argument("--patch-at-frame", type=int, help="apply the checked patch late, preserving earlier game history")
     args = ap.parse_args(argv)
     if args.timeout <= 0:
@@ -161,6 +163,9 @@ def main(argv=None):
         if args.scenery is not None:
             manifest["settings"].update(MIDV_SCENERY=args.scenery, MIDV_SCENERY_LOG="1")
             report["scenery_override"] = args.scenery
+        if args.scenery_lead is not None:
+            manifest['settings'].update(MIDV_SCENERY_LEAD=str(args.scenery_lead), MIDV_SCENERY_LOG='1')
+            report['scenery_activation_lead'] = args.scenery_lead
         if args.snapshot_mode:
             manifest["snapshot_mode"] = args.snapshot_mode
             report["snapshot_mode_override"] = args.snapshot_mode
