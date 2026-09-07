@@ -1,0 +1,291 @@
+{
+  "scope": "single-mountain causal diagnostic; not whole-policy acceptance",
+  "model": "cb1a8b",
+  "object": "11a7c",
+  "physical_force": false,
+  "runs": {
+    "mountain-return-activation": {
+      "passed": false,
+      "error": "Lua diagnostic or snapshot failed; see launch.log/stderr.log",
+      "probe_script": {
+        "environment": {
+          "CRUISN_ACTIVATION_FIRST": null,
+          "CRUISN_ACTIVATION_LAST": null,
+          "CRUISN_ACTIVATION_MODEL": null,
+          "CRUISN_ACTIVATION_OBJECT": null,
+          "CRUISN_SCENERY_FIRST": null,
+          "CRUISN_SCENERY_LAST": null
+        },
+        "sha256": "ef400b16b69df63dd1e5b0db8792d0b00a5badb3954de59788fc8a6b68f23904",
+        "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\mountain-return-activation.lua"
+      }
+    },
+    "mountain-return-assignment": {
+      "passed": true,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "probe_script": {
+        "environment": {
+          "CRUISN_ACTIVATION_FIRST": null,
+          "CRUISN_ACTIVATION_LAST": null,
+          "CRUISN_ACTIVATION_MODEL": null,
+          "CRUISN_ACTIVATION_OBJECT": null
+        },
+        "sha256": "0f27d00e835b6e150a9c8754dde423f845cb36101593b497a955f42d45cc8985",
+        "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\mountain-return-assignment.lua"
+      }
+    },
+    "mountain-return-control": {
+      "passed": false,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          5580
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 10
+      },
+      "probe_script": {
+        "environment": {
+          "CRUISN_SCENERY_FIRST": null,
+          "CRUISN_SCENERY_LAST": null
+        },
+        "sha256": "78a1ebc014dd66f2116084023f29603f45aaa685912881f5a56a9e2342025369",
+        "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\mountain-return-control.lua"
+      }
+    },
+    "mountain-return-lead4": {
+      "passed": false,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          5580,
+          6060
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 11
+      },
+      "probe_script": {
+        "environment": {
+          "CRUISN_ACTIVATION_FIRST": null,
+          "CRUISN_ACTIVATION_LAST": null,
+          "CRUISN_ACTIVATION_LEAD": null,
+          "CRUISN_ACTIVATION_MODEL": null,
+          "CRUISN_ACTIVATION_OBJECT": null,
+          "CRUISN_SCENERY_FIRST": null,
+          "CRUISN_SCENERY_LAST": null
+        },
+        "sha256": "60f880d70ab1d7c99e385b479f2ec7a9afbcd4766ad4a0ae61a36cf26f0ec29e",
+        "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\mountain-return-lead4.lua"
+      },
+      "first_far_gate": {
+        "frame": "6037",
+        "object": "11a7c",
+        "model": "cb1a8b",
+        "object_flags": "1000",
+        "depth_minus_radius": "62774",
+        "radius": "26031",
+        "far_limit": "80000"
+      },
+      "activation_reads": [
+        {
+          "frame": "5991",
+          "object": "11a7c",
+          "model": "cb1a8b",
+          "section": "238",
+          "effective_section": "234",
+          "threshold": "231",
+          "earlier": "0"
+        },
+        {
+          "frame": "6003",
+          "object": "11a7c",
+          "model": "cb1a8b",
+          "section": "238",
+          "effective_section": "234",
+          "threshold": "232",
+          "earlier": "0"
+        },
+        {
+          "frame": "6019",
+          "object": "11a7c",
+          "model": "cb1a8b",
+          "section": "238",
+          "effective_section": "234",
+          "threshold": "233",
+          "earlier": "0"
+        },
+        {
+          "frame": "6035",
+          "object": "11a7c",
+          "model": "cb1a8b",
+          "section": "238",
+          "effective_section": "234",
+          "threshold": "234",
+          "earlier": "1"
+        }
+      ]
+    },
+    "mountain-return-lead8": {
+      "passed": false,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          5580,
+          6060
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 11
+      },
+      "probe_script": {
+        "environment": {
+          "CRUISN_ACTIVATION_FIRST": null,
+          "CRUISN_ACTIVATION_LAST": null,
+          "CRUISN_ACTIVATION_LEAD": null,
+          "CRUISN_ACTIVATION_MODEL": null,
+          "CRUISN_ACTIVATION_OBJECT": null,
+          "CRUISN_SCENERY_FIRST": null,
+          "CRUISN_SCENERY_LAST": null
+        },
+        "sha256": "c49643312dc67a35048b173dcfc0afbae0b5bb681af48debd721928c7e6bad7f",
+        "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\mountain-return-lead8.lua"
+      },
+      "first_far_gate": {
+        "frame": "5993",
+        "object": "11a7c",
+        "model": "cb1a8b",
+        "object_flags": "1000",
+        "depth_minus_radius": "62712",
+        "radius": "26031",
+        "far_limit": "80000"
+      },
+      "activation_reads": [
+        {
+          "frame": "5991",
+          "object": "11a7c",
+          "model": "cb1a8b",
+          "section": "238",
+          "effective_section": "230",
+          "threshold": "231",
+          "earlier": "1"
+        }
+      ]
+    },
+    "mountain-return-gl-control": {
+      "passed": false,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          5580
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 10
+      }
+    },
+    "mountain-return-gl-lead8": {
+      "passed": false,
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          5580,
+          6060
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 11
+      },
+      "probe_script": {
+        "environment": {
+          "CRUISN_ACTIVATION_FIRST": null,
+          "CRUISN_ACTIVATION_LAST": null,
+          "CRUISN_ACTIVATION_LEAD": null,
+          "CRUISN_ACTIVATION_MODEL": null,
+          "CRUISN_ACTIVATION_OBJECT": null
+        },
+        "sha256": "c4d48ef843eebcf28eb32adb5b1716a3601b7a682c10270268761df3acf7b496",
+        "source": "E:\\Source\\cruisn-collection\\results\\diagnostics\\mountain-return-lead8-live.lua"
+      }
+    }
+  },
+  "model_assignment": [
+    {
+      "frame": "5985",
+      "word_address": "11a89",
+      "pc": "6261",
+      "value": "cb1a8b",
+      "r0": "0",
+      "r1": "0",
+      "r2": "4",
+      "r3": "0",
+      "ar0": "11a7c",
+      "ar1": "14c5c",
+      "ar2": "cb1a8b",
+      "ar3": "809a28",
+      "ar4": "110a4",
+      "ar5": "cb27c9",
+      "ar6": "15164",
+      "ar7": "ce0af9",
+      "sp": "809c07",
+      "stack0": "0",
+      "stack1": "0",
+      "stack2": "7b9c",
+      "stack3": "7ca3"
+    }
+  ],
+  "short_probe_limitation": "The6000..6140 field probe fails its assignment requirement because allocation occurred earlier at5985; it is not treated as a successful complete run.",
+  "comparison_video_local": "results/diagnostics/mountain-return-comparison.mp4"
+}

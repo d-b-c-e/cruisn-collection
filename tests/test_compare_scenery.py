@@ -38,3 +38,15 @@ class SceneryComparisonTests(unittest.TestCase):
             compare_scenes(control, {1: [edge], 2: [a, hud, end, a, end]}, set())
         with self.assertRaisesRegex(ValueError, 'completed page-control'):
             compare_scenes({1: [a]}, {1: [a]}, set())
+
+    def test_disjoint_reordering_is_explained_but_still_fails_order_gate(self):
+        def row(x):
+            return (0x289, 4, 123, 1, 1, 0, 0,
+                    x, 0, x+1, 0, x+1, 1, x, 1, 0, 0, 0, 0, 0, 0)
+        a, b = row(1), row(40)
+        for nearby, overlaps in [(b, 0), (row(3), 1)]:
+            result = compare({1: [a, nearby]}, {1: [nearby, a]}, set(), order_details=True)
+            self.assertFalse(result['passed'])
+            detail = result['frames'][0]['reordering_bounds']
+            self.assertEqual(detail['inverted_pairs'], 1)
+            self.assertEqual(detail['possibly_overlapping_pairs'], overlaps)

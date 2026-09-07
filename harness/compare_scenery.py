@@ -4,7 +4,8 @@ This checks submitted geometry, not visible pixels or route equivalence. Use on
 matched-state intervals and pair with completed GL captures and motion traces.
 """
 import argparse
-from collections import Counter, defaultdict
+from collections import Counter, defaultdict, deque
+from bisect import bisect_left, insort
 import csv
 import json
 from pathlib import Path
@@ -72,12 +73,12 @@ def completed_scenes(frames):
     return runs[1:-1]
 
 
-def compare_scenes(control, candidate, allowed, max_added_extent=None):
+def compare_scenes(control, candidate, allowed, max_added_extent=None, order_details=False):
     a, b = completed_scenes(control), completed_scenes(candidate)
     if len(a) != len(b) or [r['page'] for r in a] != [r['page'] for r in b]:
         raise ValueError('completed page-control run sequences differ; cannot align scenes')
     report = compare({i: r['rows'] for i, r in enumerate(a)},
-                     {i: r['rows'] for i, r in enumerate(b)}, allowed, max_added_extent)
+                     {i: r['rows'] for i, r in enumerate(b)}, allowed, max_added_extent, order_details)
     report['scope'] = ('completed page-control run geometry; frame timing differences retained; '
                        'not visible-pixel, presentation-timing or route acceptance')
     report['alignment'] = 'scene'
@@ -91,7 +92,43 @@ def compare_scenes(control, candidate, allowed, max_added_extent=None):
     return report
 
 
-def compare(control, candidate, allowed, max_added_extent=None):
+def reordering_bounds(original, candidate, padding=2):
+    """Describe inversions without relaxing the strict order acceptance gate.
+
+    Bounds cannot establish texture/palette write ordering or visible correctness.
+    Duplicate draws use a stable occurrence matching, not inferred object lifetime.
+    """
+    occurrences = defaultdict(deque)
+    for i, row in enumerate(original):
+        occurrences[row].append(i)
+    indices = []
+    for row in candidate:
+        if occurrences[row]:
+            indices.append(occurrences[row].popleft())
+    if len(indices) != len(original):
+        return {'checked': False, 'reason': 'original geometry is missing or changed'}
+    bounds = [additions(Counter({row: 1}))[0]['bounds'] for row in original]
+    seen, count, overlapping, examples = [], 0, 0, []
+    for i in indices:
+        for j in seen[bisect_left(seen, i):]:
+            count += 1
+            a, b = bounds[i], bounds[j]
+            same_page = (original[i][1] & 4) == (original[j][1] & 4)
+            overlaps = same_page and not (a[2]+padding < b[0]-padding
+                or b[2]+padding < a[0]-padding or a[3]+padding < b[1]-padding
+                or b[3]+padding < a[1]-padding)
+            overlapping += int(overlaps)
+            if len(examples) < 12:
+                examples.append({'original_indices': [i, j], 'bounds': [a, b],
+                    'models': [f'{original[k][3]:x}' for k in (i, j)],
+                    'possibly_overlapping': bool(overlaps)})
+        insort(seen, i)
+    return {'checked': True, 'inverted_pairs': count, 'possibly_overlapping_pairs': overlapping,
+            'padding_native_pixels': padding, 'examples': examples,
+            'scope': 'stable occurrence matching and padded bounds only; strict order failure remains'}
+
+
+def compare(control, candidate, allowed, max_added_extent=None, order_details=False):
     if set(control) != set(candidate):
         raise ValueError('trace frame sets differ; use matched intervals')
     rows = []
@@ -112,6 +149,8 @@ def compare(control, candidate, allowed, max_added_extent=None):
                      'originals_in_order': ordered, 'unexpected_additions': unexpected,
                      'oversized_additions': oversized,
                      'added_models': additions(added)})
+        if order_details and not ordered:
+            rows[-1]['reordering_bounds'] = reordering_bounds(a, b)
     return {'schema': 1, 'scope': 'matched-frame submitted geometry; not visible-pixel or route acceptance',
             'passed': all(not r['removed_or_changed'] and r['originals_in_order']
                           and not r['unexpected_additions'] and not r['oversized_additions'] for r in rows),
@@ -130,12 +169,15 @@ def main():
     ap.add_argument('--max-added-extent', type=int, help='optional native-pixel width/height bound for each new quad')
     ap.add_argument('--alignment', choices=('frame', 'scene'), default='frame',
                     help='scene compares complete nonempty page-control runs and reports their frame ranges')
+    ap.add_argument('--order-details', action='store_true',
+                    help='locate reordered polygon pairs; does not relax the strict order gate')
     args = ap.parse_args()
     try:
         if args.max_added_extent is not None and args.max_added_extent < 1:
             raise ValueError('added extent must be positive')
         comparer = compare_scenes if args.alignment == 'scene' else compare
-        report = comparer(load(args.control), load(args.candidate), set(args.allow_added_model), args.max_added_extent)
+        report = comparer(load(args.control), load(args.candidate), set(args.allow_added_model),
+                          args.max_added_extent, args.order_details)
     except (OSError, ValueError) as error:
         report = {'schema': 1, 'passed': False, 'error': str(error)}
     args.report.parent.mkdir(parents=True, exist_ok=True)

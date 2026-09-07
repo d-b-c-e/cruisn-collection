@@ -1,0 +1,3384 @@
+{
+  "schema": 1,
+  "scope": "completed page-control run geometry; frame timing differences retained; not visible-pixel, presentation-timing or route acceptance",
+  "passed": false,
+  "maximum_added_quad_extent": null,
+  "allowed_added_models": [
+    "cb1a8b"
+  ],
+  "total_added": 723,
+  "total_removed_or_changed": 0,
+  "alignment": "scene",
+  "discarded_edge_runs_per_trace": 2,
+  "scenes": [
+    {
+      "control_quads": 1304,
+      "candidate_quads": 1304,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 0,
+      "page": 516,
+      "control_frames": [
+        5903,
+        5903
+      ],
+      "candidate_frames": [
+        5903,
+        5903
+      ]
+    },
+    {
+      "control_quads": 1310,
+      "candidate_quads": 1310,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 1,
+      "page": 513,
+      "control_frames": [
+        5905,
+        5905
+      ],
+      "candidate_frames": [
+        5905,
+        5905
+      ]
+    },
+    {
+      "control_quads": 1348,
+      "candidate_quads": 1348,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 2,
+      "page": 516,
+      "control_frames": [
+        5907,
+        5907
+      ],
+      "candidate_frames": [
+        5907,
+        5907
+      ]
+    },
+    {
+      "control_quads": 1361,
+      "candidate_quads": 1361,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 3,
+      "page": 513,
+      "control_frames": [
+        5909,
+        5909
+      ],
+      "candidate_frames": [
+        5909,
+        5909
+      ]
+    },
+    {
+      "control_quads": 1337,
+      "candidate_quads": 1337,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 4,
+      "page": 516,
+      "control_frames": [
+        5911,
+        5911
+      ],
+      "candidate_frames": [
+        5911,
+        5911
+      ]
+    },
+    {
+      "control_quads": 1339,
+      "candidate_quads": 1339,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 5,
+      "page": 513,
+      "control_frames": [
+        5913,
+        5913
+      ],
+      "candidate_frames": [
+        5913,
+        5913
+      ]
+    },
+    {
+      "control_quads": 1318,
+      "candidate_quads": 1318,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 6,
+      "page": 516,
+      "control_frames": [
+        5915,
+        5915
+      ],
+      "candidate_frames": [
+        5915,
+        5915
+      ]
+    },
+    {
+      "control_quads": 1316,
+      "candidate_quads": 1316,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 7,
+      "page": 513,
+      "control_frames": [
+        5917,
+        5917
+      ],
+      "candidate_frames": [
+        5917,
+        5917
+      ]
+    },
+    {
+      "control_quads": 1293,
+      "candidate_quads": 1293,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 8,
+      "page": 516,
+      "control_frames": [
+        5919,
+        5919
+      ],
+      "candidate_frames": [
+        5919,
+        5919
+      ]
+    },
+    {
+      "control_quads": 1306,
+      "candidate_quads": 1306,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 9,
+      "page": 513,
+      "control_frames": [
+        5921,
+        5921
+      ],
+      "candidate_frames": [
+        5921,
+        5921
+      ]
+    },
+    {
+      "control_quads": 1380,
+      "candidate_quads": 1380,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 10,
+      "page": 516,
+      "control_frames": [
+        5923,
+        5923
+      ],
+      "candidate_frames": [
+        5923,
+        5923
+      ]
+    },
+    {
+      "control_quads": 1393,
+      "candidate_quads": 1393,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 11,
+      "page": 513,
+      "control_frames": [
+        5925,
+        5925
+      ],
+      "candidate_frames": [
+        5925,
+        5925
+      ]
+    },
+    {
+      "control_quads": 1370,
+      "candidate_quads": 1370,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 12,
+      "page": 516,
+      "control_frames": [
+        5927,
+        5927
+      ],
+      "candidate_frames": [
+        5927,
+        5927
+      ]
+    },
+    {
+      "control_quads": 1365,
+      "candidate_quads": 1365,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 13,
+      "page": 513,
+      "control_frames": [
+        5929,
+        5929
+      ],
+      "candidate_frames": [
+        5929,
+        5929
+      ]
+    },
+    {
+      "control_quads": 1360,
+      "candidate_quads": 1360,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 14,
+      "page": 516,
+      "control_frames": [
+        5931,
+        5931
+      ],
+      "candidate_frames": [
+        5931,
+        5931
+      ]
+    },
+    {
+      "control_quads": 1351,
+      "candidate_quads": 1351,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 15,
+      "page": 513,
+      "control_frames": [
+        5933,
+        5933
+      ],
+      "candidate_frames": [
+        5933,
+        5933
+      ]
+    },
+    {
+      "control_quads": 1339,
+      "candidate_quads": 1339,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 16,
+      "page": 516,
+      "control_frames": [
+        5935,
+        5935
+      ],
+      "candidate_frames": [
+        5935,
+        5935
+      ]
+    },
+    {
+      "control_quads": 1309,
+      "candidate_quads": 1309,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 17,
+      "page": 513,
+      "control_frames": [
+        5937,
+        5937
+      ],
+      "candidate_frames": [
+        5937,
+        5937
+      ]
+    },
+    {
+      "control_quads": 1380,
+      "candidate_quads": 1380,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 18,
+      "page": 516,
+      "control_frames": [
+        5939,
+        5939
+      ],
+      "candidate_frames": [
+        5939,
+        5939
+      ]
+    },
+    {
+      "control_quads": 1351,
+      "candidate_quads": 1351,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 19,
+      "page": 513,
+      "control_frames": [
+        5941,
+        5941
+      ],
+      "candidate_frames": [
+        5941,
+        5941
+      ]
+    },
+    {
+      "control_quads": 1357,
+      "candidate_quads": 1357,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 20,
+      "page": 516,
+      "control_frames": [
+        5943,
+        5943
+      ],
+      "candidate_frames": [
+        5943,
+        5943
+      ]
+    },
+    {
+      "control_quads": 1336,
+      "candidate_quads": 1336,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 21,
+      "page": 513,
+      "control_frames": [
+        5945,
+        5945
+      ],
+      "candidate_frames": [
+        5945,
+        5945
+      ]
+    },
+    {
+      "control_quads": 1401,
+      "candidate_quads": 1401,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 22,
+      "page": 516,
+      "control_frames": [
+        5947,
+        5947
+      ],
+      "candidate_frames": [
+        5947,
+        5947
+      ]
+    },
+    {
+      "control_quads": 1381,
+      "candidate_quads": 1381,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 23,
+      "page": 513,
+      "control_frames": [
+        5949,
+        5949
+      ],
+      "candidate_frames": [
+        5949,
+        5949
+      ]
+    },
+    {
+      "control_quads": 1389,
+      "candidate_quads": 1389,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 24,
+      "page": 516,
+      "control_frames": [
+        5951,
+        5951
+      ],
+      "candidate_frames": [
+        5951,
+        5951
+      ]
+    },
+    {
+      "control_quads": 1365,
+      "candidate_quads": 1365,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 25,
+      "page": 513,
+      "control_frames": [
+        5953,
+        5953
+      ],
+      "candidate_frames": [
+        5953,
+        5953
+      ]
+    },
+    {
+      "control_quads": 1371,
+      "candidate_quads": 1371,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 26,
+      "page": 516,
+      "control_frames": [
+        5955,
+        5955
+      ],
+      "candidate_frames": [
+        5955,
+        5955
+      ]
+    },
+    {
+      "control_quads": 1335,
+      "candidate_quads": 1335,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 27,
+      "page": 513,
+      "control_frames": [
+        5957,
+        5957
+      ],
+      "candidate_frames": [
+        5957,
+        5957
+      ]
+    },
+    {
+      "control_quads": 1314,
+      "candidate_quads": 1314,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 28,
+      "page": 516,
+      "control_frames": [
+        5959,
+        5959
+      ],
+      "candidate_frames": [
+        5959,
+        5959
+      ]
+    },
+    {
+      "control_quads": 1285,
+      "candidate_quads": 1285,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 29,
+      "page": 513,
+      "control_frames": [
+        5961,
+        5961
+      ],
+      "candidate_frames": [
+        5961,
+        5961
+      ]
+    },
+    {
+      "control_quads": 1272,
+      "candidate_quads": 1272,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 30,
+      "page": 516,
+      "control_frames": [
+        5963,
+        5963
+      ],
+      "candidate_frames": [
+        5963,
+        5963
+      ]
+    },
+    {
+      "control_quads": 1311,
+      "candidate_quads": 1311,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 31,
+      "page": 513,
+      "control_frames": [
+        5965,
+        5965
+      ],
+      "candidate_frames": [
+        5965,
+        5965
+      ]
+    },
+    {
+      "control_quads": 1303,
+      "candidate_quads": 1303,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 32,
+      "page": 516,
+      "control_frames": [
+        5967,
+        5967
+      ],
+      "candidate_frames": [
+        5967,
+        5967
+      ]
+    },
+    {
+      "control_quads": 1267,
+      "candidate_quads": 1267,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 33,
+      "page": 513,
+      "control_frames": [
+        5969,
+        5969
+      ],
+      "candidate_frames": [
+        5969,
+        5969
+      ]
+    },
+    {
+      "control_quads": 1252,
+      "candidate_quads": 1252,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 34,
+      "page": 516,
+      "control_frames": [
+        5971,
+        5971
+      ],
+      "candidate_frames": [
+        5971,
+        5971
+      ]
+    },
+    {
+      "control_quads": 1231,
+      "candidate_quads": 1231,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 35,
+      "page": 513,
+      "control_frames": [
+        5973,
+        5973
+      ],
+      "candidate_frames": [
+        5973,
+        5973
+      ]
+    },
+    {
+      "control_quads": 1207,
+      "candidate_quads": 1207,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 36,
+      "page": 516,
+      "control_frames": [
+        5975,
+        5975
+      ],
+      "candidate_frames": [
+        5975,
+        5975
+      ]
+    },
+    {
+      "control_quads": 1179,
+      "candidate_quads": 1179,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 37,
+      "page": 513,
+      "control_frames": [
+        5977,
+        5977
+      ],
+      "candidate_frames": [
+        5977,
+        5977
+      ]
+    },
+    {
+      "control_quads": 1156,
+      "candidate_quads": 1156,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 38,
+      "page": 516,
+      "control_frames": [
+        5979,
+        5979
+      ],
+      "candidate_frames": [
+        5979,
+        5979
+      ]
+    },
+    {
+      "control_quads": 1147,
+      "candidate_quads": 1147,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 39,
+      "page": 513,
+      "control_frames": [
+        5981,
+        5981
+      ],
+      "candidate_frames": [
+        5981,
+        5981
+      ]
+    },
+    {
+      "control_quads": 1135,
+      "candidate_quads": 1135,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 40,
+      "page": 516,
+      "control_frames": [
+        5983,
+        5983
+      ],
+      "candidate_frames": [
+        5983,
+        5983
+      ]
+    },
+    {
+      "control_quads": 1093,
+      "candidate_quads": 1093,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 41,
+      "page": 513,
+      "control_frames": [
+        5985,
+        5985
+      ],
+      "candidate_frames": [
+        5985,
+        5985
+      ]
+    },
+    {
+      "control_quads": 1115,
+      "candidate_quads": 1115,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 42,
+      "page": 516,
+      "control_frames": [
+        5987,
+        5987
+      ],
+      "candidate_frames": [
+        5987,
+        5987
+      ]
+    },
+    {
+      "control_quads": 1079,
+      "candidate_quads": 1079,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 43,
+      "page": 513,
+      "control_frames": [
+        5989,
+        5989
+      ],
+      "candidate_frames": [
+        5989,
+        5989
+      ]
+    },
+    {
+      "control_quads": 1056,
+      "candidate_quads": 1056,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 44,
+      "page": 516,
+      "control_frames": [
+        5991,
+        5991
+      ],
+      "candidate_frames": [
+        5991,
+        5991
+      ]
+    },
+    {
+      "control_quads": 1063,
+      "candidate_quads": 1077,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -392,
+            95,
+            -260,
+            198
+          ]
+        }
+      ],
+      "scene": 45,
+      "page": 513,
+      "control_frames": [
+        5993,
+        5993
+      ],
+      "candidate_frames": [
+        5993,
+        5993
+      ]
+    },
+    {
+      "control_quads": 1033,
+      "candidate_quads": 1047,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -384,
+            96,
+            -252,
+            198
+          ]
+        }
+      ],
+      "scene": 46,
+      "page": 516,
+      "control_frames": [
+        5995,
+        5995
+      ],
+      "candidate_frames": [
+        5995,
+        5995
+      ]
+    },
+    {
+      "control_quads": 1007,
+      "candidate_quads": 1021,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -380,
+            96,
+            -248,
+            199
+          ]
+        }
+      ],
+      "scene": 47,
+      "page": 513,
+      "control_frames": [
+        5997,
+        5997
+      ],
+      "candidate_frames": [
+        5997,
+        5997
+      ]
+    },
+    {
+      "control_quads": 996,
+      "candidate_quads": 1010,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -372,
+            96,
+            -240,
+            199
+          ]
+        }
+      ],
+      "scene": 48,
+      "page": 516,
+      "control_frames": [
+        5999,
+        5999
+      ],
+      "candidate_frames": [
+        5999,
+        5999
+      ]
+    },
+    {
+      "control_quads": 970,
+      "candidate_quads": 984,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -364,
+            96,
+            -232,
+            199
+          ]
+        }
+      ],
+      "scene": 49,
+      "page": 513,
+      "control_frames": [
+        6001,
+        6001
+      ],
+      "candidate_frames": [
+        6001,
+        6001
+      ]
+    },
+    {
+      "control_quads": 974,
+      "candidate_quads": 988,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -357,
+            97,
+            -224,
+            200
+          ]
+        }
+      ],
+      "scene": 50,
+      "page": 516,
+      "control_frames": [
+        6003,
+        6003
+      ],
+      "candidate_frames": [
+        6003,
+        6003
+      ]
+    },
+    {
+      "control_quads": 992,
+      "candidate_quads": 1006,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -349,
+            97,
+            -216,
+            200
+          ]
+        }
+      ],
+      "scene": 51,
+      "page": 513,
+      "control_frames": [
+        6005,
+        6005
+      ],
+      "candidate_frames": [
+        6005,
+        6005
+      ]
+    },
+    {
+      "control_quads": 996,
+      "candidate_quads": 1010,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -341,
+            98,
+            -208,
+            200
+          ]
+        }
+      ],
+      "scene": 52,
+      "page": 516,
+      "control_frames": [
+        6007,
+        6007
+      ],
+      "candidate_frames": [
+        6007,
+        6007
+      ]
+    },
+    {
+      "control_quads": 1019,
+      "candidate_quads": 1033,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -333,
+            98,
+            -200,
+            201
+          ]
+        }
+      ],
+      "scene": 53,
+      "page": 513,
+      "control_frames": [
+        6009,
+        6009
+      ],
+      "candidate_frames": [
+        6009,
+        6009
+      ]
+    },
+    {
+      "control_quads": 1045,
+      "candidate_quads": 1059,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -325,
+            98,
+            -192,
+            201
+          ]
+        }
+      ],
+      "scene": 54,
+      "page": 516,
+      "control_frames": [
+        6011,
+        6011
+      ],
+      "candidate_frames": [
+        6011,
+        6011
+      ]
+    },
+    {
+      "control_quads": 1054,
+      "candidate_quads": 1068,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -317,
+            99,
+            -184,
+            201
+          ]
+        }
+      ],
+      "scene": 55,
+      "page": 513,
+      "control_frames": [
+        6013,
+        6013
+      ],
+      "candidate_frames": [
+        6013,
+        6013
+      ]
+    },
+    {
+      "control_quads": 1064,
+      "candidate_quads": 1078,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -309,
+            99,
+            -176,
+            202
+          ]
+        }
+      ],
+      "scene": 56,
+      "page": 516,
+      "control_frames": [
+        6015,
+        6015
+      ],
+      "candidate_frames": [
+        6015,
+        6015
+      ]
+    },
+    {
+      "control_quads": 1082,
+      "candidate_quads": 1096,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -297,
+            99,
+            -164,
+            202
+          ]
+        }
+      ],
+      "scene": 57,
+      "page": 513,
+      "control_frames": [
+        6017,
+        6017
+      ],
+      "candidate_frames": [
+        6017,
+        6017
+      ]
+    },
+    {
+      "control_quads": 1077,
+      "candidate_quads": 1091,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -289,
+            99,
+            -156,
+            202
+          ]
+        }
+      ],
+      "scene": 58,
+      "page": 516,
+      "control_frames": [
+        6019,
+        6019
+      ],
+      "candidate_frames": [
+        6019,
+        6019
+      ]
+    },
+    {
+      "control_quads": 1119,
+      "candidate_quads": 1133,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -281,
+            100,
+            -148,
+            202
+          ]
+        }
+      ],
+      "scene": 59,
+      "page": 513,
+      "control_frames": [
+        6021,
+        6021
+      ],
+      "candidate_frames": [
+        6021,
+        6021
+      ]
+    },
+    {
+      "control_quads": 1123,
+      "candidate_quads": 1137,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -269,
+            100,
+            -136,
+            203
+          ]
+        }
+      ],
+      "scene": 60,
+      "page": 516,
+      "control_frames": [
+        6023,
+        6023
+      ],
+      "candidate_frames": [
+        6023,
+        6023
+      ]
+    },
+    {
+      "control_quads": 1108,
+      "candidate_quads": 1122,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -261,
+            100,
+            -128,
+            203
+          ]
+        }
+      ],
+      "scene": 61,
+      "page": 513,
+      "control_frames": [
+        6025,
+        6025
+      ],
+      "candidate_frames": [
+        6025,
+        6025
+      ]
+    },
+    {
+      "control_quads": 1106,
+      "candidate_quads": 1120,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -249,
+            100,
+            -116,
+            203
+          ]
+        }
+      ],
+      "scene": 62,
+      "page": 516,
+      "control_frames": [
+        6027,
+        6027
+      ],
+      "candidate_frames": [
+        6027,
+        6027
+      ]
+    },
+    {
+      "control_quads": 1102,
+      "candidate_quads": 1116,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -241,
+            100,
+            -108,
+            203
+          ]
+        }
+      ],
+      "scene": 63,
+      "page": 513,
+      "control_frames": [
+        6029,
+        6029
+      ],
+      "candidate_frames": [
+        6029,
+        6029
+      ]
+    },
+    {
+      "control_quads": 1089,
+      "candidate_quads": 1103,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -233,
+            100,
+            -100,
+            203
+          ]
+        }
+      ],
+      "scene": 64,
+      "page": 516,
+      "control_frames": [
+        6031,
+        6031
+      ],
+      "candidate_frames": [
+        6031,
+        6031
+      ]
+    },
+    {
+      "control_quads": 1088,
+      "candidate_quads": 1102,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -220,
+            100,
+            -88,
+            203
+          ]
+        }
+      ],
+      "scene": 65,
+      "page": 513,
+      "control_frames": [
+        6033,
+        6033
+      ],
+      "candidate_frames": [
+        6033,
+        6033
+      ]
+    },
+    {
+      "control_quads": 1079,
+      "candidate_quads": 1093,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -212,
+            100,
+            -80,
+            203
+          ]
+        }
+      ],
+      "scene": 66,
+      "page": 516,
+      "control_frames": [
+        6035,
+        6035
+      ],
+      "candidate_frames": [
+        6035,
+        6035
+      ]
+    },
+    {
+      "control_quads": 1104,
+      "candidate_quads": 1118,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -200,
+            100,
+            -68,
+            203
+          ]
+        }
+      ],
+      "scene": 67,
+      "page": 513,
+      "control_frames": [
+        6037,
+        6037
+      ],
+      "candidate_frames": [
+        6037,
+        6037
+      ]
+    },
+    {
+      "control_quads": 1087,
+      "candidate_quads": 1101,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -183,
+            100,
+            -52,
+            203
+          ]
+        }
+      ],
+      "scene": 68,
+      "page": 516,
+      "control_frames": [
+        6039,
+        6039
+      ],
+      "candidate_frames": [
+        6039,
+        6039
+      ]
+    },
+    {
+      "control_quads": 1093,
+      "candidate_quads": 1107,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -170,
+            100,
+            -39,
+            202
+          ]
+        }
+      ],
+      "scene": 69,
+      "page": 513,
+      "control_frames": [
+        6041,
+        6041
+      ],
+      "candidate_frames": [
+        6041,
+        6041
+      ]
+    },
+    {
+      "control_quads": 1076,
+      "candidate_quads": 1090,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -154,
+            99,
+            -23,
+            202
+          ]
+        }
+      ],
+      "scene": 70,
+      "page": 516,
+      "control_frames": [
+        6043,
+        6043
+      ],
+      "candidate_frames": [
+        6043,
+        6043
+      ]
+    },
+    {
+      "control_quads": 1051,
+      "candidate_quads": 1065,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -137,
+            99,
+            -7,
+            202
+          ]
+        }
+      ],
+      "scene": 71,
+      "page": 513,
+      "control_frames": [
+        6045,
+        6045
+      ],
+      "candidate_frames": [
+        6045,
+        6045
+      ]
+    },
+    {
+      "control_quads": 1058,
+      "candidate_quads": 1073,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -115,
+            99,
+            13,
+            202
+          ]
+        }
+      ],
+      "scene": 72,
+      "page": 516,
+      "control_frames": [
+        6047,
+        6047
+      ],
+      "candidate_frames": [
+        6047,
+        6047
+      ]
+    },
+    {
+      "control_quads": 1056,
+      "candidate_quads": 1071,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -98,
+            98,
+            30,
+            201
+          ]
+        }
+      ],
+      "scene": 73,
+      "page": 513,
+      "control_frames": [
+        6049,
+        6049
+      ],
+      "candidate_frames": [
+        6049,
+        6049
+      ]
+    },
+    {
+      "control_quads": 1071,
+      "candidate_quads": 1086,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -76,
+            98,
+            50,
+            201
+          ]
+        }
+      ],
+      "scene": 74,
+      "page": 516,
+      "control_frames": [
+        6051,
+        6051
+      ],
+      "candidate_frames": [
+        6051,
+        6051
+      ]
+    },
+    {
+      "control_quads": 1071,
+      "candidate_quads": 1086,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -55,
+            98,
+            70,
+            200
+          ]
+        }
+      ],
+      "scene": 75,
+      "page": 513,
+      "control_frames": [
+        6053,
+        6053
+      ],
+      "candidate_frames": [
+        6053,
+        6053
+      ]
+    },
+    {
+      "control_quads": 1073,
+      "candidate_quads": 1088,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -33,
+            97,
+            91,
+            200
+          ]
+        }
+      ],
+      "scene": 76,
+      "page": 516,
+      "control_frames": [
+        6055,
+        6055
+      ],
+      "candidate_frames": [
+        6055,
+        6055
+      ]
+    },
+    {
+      "control_quads": 1070,
+      "candidate_quads": 1085,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -6,
+            97,
+            115,
+            200
+          ]
+        }
+      ],
+      "scene": 77,
+      "page": 513,
+      "control_frames": [
+        6057,
+        6057
+      ],
+      "candidate_frames": [
+        6057,
+        6057
+      ]
+    },
+    {
+      "control_quads": 1070,
+      "candidate_quads": 1085,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            16,
+            97,
+            136,
+            199
+          ]
+        }
+      ],
+      "scene": 78,
+      "page": 516,
+      "control_frames": [
+        6059,
+        6059
+      ],
+      "candidate_frames": [
+        6059,
+        6059
+      ]
+    },
+    {
+      "control_quads": 1078,
+      "candidate_quads": 1093,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            43,
+            96,
+            160,
+            199
+          ]
+        }
+      ],
+      "scene": 79,
+      "page": 513,
+      "control_frames": [
+        6061,
+        6061
+      ],
+      "candidate_frames": [
+        6061,
+        6061
+      ]
+    },
+    {
+      "control_quads": 1064,
+      "candidate_quads": 1079,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            65,
+            96,
+            181,
+            199
+          ]
+        }
+      ],
+      "scene": 80,
+      "page": 516,
+      "control_frames": [
+        6063,
+        6063
+      ],
+      "candidate_frames": [
+        6063,
+        6063
+      ]
+    },
+    {
+      "control_quads": 1068,
+      "candidate_quads": 1083,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            87,
+            96,
+            201,
+            198
+          ]
+        }
+      ],
+      "scene": 81,
+      "page": 513,
+      "control_frames": [
+        6065,
+        6065
+      ],
+      "candidate_frames": [
+        6065,
+        6065
+      ]
+    },
+    {
+      "control_quads": 1066,
+      "candidate_quads": 1081,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            110,
+            95,
+            221,
+            198
+          ]
+        }
+      ],
+      "scene": 82,
+      "page": 516,
+      "control_frames": [
+        6067,
+        6067
+      ],
+      "candidate_frames": [
+        6067,
+        6067
+      ]
+    },
+    {
+      "control_quads": 1059,
+      "candidate_quads": 1074,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            127,
+            95,
+            237,
+            198
+          ]
+        }
+      ],
+      "scene": 83,
+      "page": 513,
+      "control_frames": [
+        6069,
+        6069
+      ],
+      "candidate_frames": [
+        6069,
+        6069
+      ]
+    },
+    {
+      "control_quads": 1113,
+      "candidate_quads": 1128,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            141,
+            95,
+            249,
+            198
+          ]
+        }
+      ],
+      "scene": 84,
+      "page": 516,
+      "control_frames": [
+        6071,
+        6071
+      ],
+      "candidate_frames": [
+        6071,
+        6071
+      ]
+    },
+    {
+      "control_quads": 1077,
+      "candidate_quads": 1092,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            158,
+            95,
+            265,
+            198
+          ]
+        }
+      ],
+      "scene": 85,
+      "page": 513,
+      "control_frames": [
+        6073,
+        6073
+      ],
+      "candidate_frames": [
+        6073,
+        6073
+      ]
+    },
+    {
+      "control_quads": 1091,
+      "candidate_quads": 1106,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            169,
+            95,
+            276,
+            198
+          ]
+        }
+      ],
+      "scene": 86,
+      "page": 516,
+      "control_frames": [
+        6075,
+        6075
+      ],
+      "candidate_frames": [
+        6075,
+        6075
+      ]
+    },
+    {
+      "control_quads": 1141,
+      "candidate_quads": 1156,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            176,
+            95,
+            284,
+            198
+          ]
+        }
+      ],
+      "scene": 87,
+      "page": 513,
+      "control_frames": [
+        6077,
+        6077
+      ],
+      "candidate_frames": [
+        6077,
+        6077
+      ]
+    },
+    {
+      "control_quads": 1143,
+      "candidate_quads": 1158,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            184,
+            95,
+            292,
+            198
+          ]
+        }
+      ],
+      "scene": 88,
+      "page": 516,
+      "control_frames": [
+        6079,
+        6079
+      ],
+      "candidate_frames": [
+        6079,
+        6079
+      ]
+    },
+    {
+      "control_quads": 1124,
+      "candidate_quads": 1139,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            191,
+            95,
+            300,
+            198
+          ]
+        }
+      ],
+      "scene": 89,
+      "page": 513,
+      "control_frames": [
+        6081,
+        6081
+      ],
+      "candidate_frames": [
+        6081,
+        6081
+      ]
+    },
+    {
+      "control_quads": 1137,
+      "candidate_quads": 1152,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            195,
+            95,
+            303,
+            198
+          ]
+        }
+      ],
+      "scene": 90,
+      "page": 516,
+      "control_frames": [
+        6083,
+        6083
+      ],
+      "candidate_frames": [
+        6083,
+        6083
+      ]
+    },
+    {
+      "control_quads": 1102,
+      "candidate_quads": 1117,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        }
+      ],
+      "scene": 91,
+      "page": 513,
+      "control_frames": [
+        6085,
+        6085
+      ],
+      "candidate_frames": [
+        6085,
+        6085
+      ]
+    },
+    {
+      "control_quads": 1109,
+      "candidate_quads": 1124,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        }
+      ],
+      "scene": 92,
+      "page": 516,
+      "control_frames": [
+        6087,
+        6087
+      ],
+      "candidate_frames": [
+        6087,
+        6087
+      ]
+    },
+    {
+      "control_quads": 1083,
+      "candidate_quads": 1098,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        }
+      ],
+      "scene": 93,
+      "page": 513,
+      "control_frames": [
+        6089,
+        6089
+      ],
+      "candidate_frames": [
+        6089,
+        6089
+      ]
+    },
+    {
+      "control_quads": 1079,
+      "candidate_quads": 1094,
+      "removed_or_changed": 0,
+      "added": 15,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        }
+      ],
+      "scene": 94,
+      "page": 516,
+      "control_frames": [
+        6091,
+        6091
+      ],
+      "candidate_frames": [
+        6091,
+        6091
+      ]
+    },
+    {
+      "control_quads": 1147,
+      "candidate_quads": 1147,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": false,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "reordering_bounds": {
+        "checked": true,
+        "inverted_pairs": 165,
+        "possibly_overlapping_pairs": 0,
+        "padding_native_pixels": 2,
+        "examples": [
+          {
+            "original_indices": [
+              23,
+              34
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                228,
+                95,
+                250,
+                133
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              35
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                203,
+                95,
+                232,
+                133
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              36
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                201,
+                120,
+                232,
+                138
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              37
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                200,
+                133,
+                240,
+                160
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              38
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                195,
+                160,
+                246,
+                198
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              39
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                240,
+                152,
+                255,
+                198
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              40
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                255,
+                161,
+                304,
+                198
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              41
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                232,
+                120,
+                268,
+                142
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              42
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                232,
+                133,
+                268,
+                167
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              43
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                255,
+                142,
+                300,
+                167
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              44
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                250,
+                113,
+                268,
+                142
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              45
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                268,
+                102,
+                298,
+                142
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          }
+        ],
+        "scope": "stable occurrence matching and padded bounds only; strict order failure remains"
+      },
+      "scene": 95,
+      "page": 513,
+      "control_frames": [
+        6093,
+        6093
+      ],
+      "candidate_frames": [
+        6093,
+        6093
+      ]
+    },
+    {
+      "control_quads": 1149,
+      "candidate_quads": 1149,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 96,
+      "page": 516,
+      "control_frames": [
+        6095,
+        6095
+      ],
+      "candidate_frames": [
+        6095,
+        6095
+      ]
+    },
+    {
+      "control_quads": 1139,
+      "candidate_quads": 1139,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 97,
+      "page": 513,
+      "control_frames": [
+        6097,
+        6097
+      ],
+      "candidate_frames": [
+        6097,
+        6097
+      ]
+    },
+    {
+      "control_quads": 1131,
+      "candidate_quads": 1131,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 98,
+      "page": 516,
+      "control_frames": [
+        6099,
+        6099
+      ],
+      "candidate_frames": [
+        6099,
+        6099
+      ]
+    },
+    {
+      "control_quads": 1110,
+      "candidate_quads": 1110,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 99,
+      "page": 513,
+      "control_frames": [
+        6101,
+        6101
+      ],
+      "candidate_frames": [
+        6101,
+        6101
+      ]
+    },
+    {
+      "control_quads": 1105,
+      "candidate_quads": 1105,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 100,
+      "page": 516,
+      "control_frames": [
+        6103,
+        6103
+      ],
+      "candidate_frames": [
+        6103,
+        6103
+      ]
+    },
+    {
+      "control_quads": 1087,
+      "candidate_quads": 1087,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 101,
+      "page": 513,
+      "control_frames": [
+        6105,
+        6105
+      ],
+      "candidate_frames": [
+        6105,
+        6105
+      ]
+    },
+    {
+      "control_quads": 1071,
+      "candidate_quads": 1071,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 102,
+      "page": 516,
+      "control_frames": [
+        6107,
+        6107
+      ],
+      "candidate_frames": [
+        6107,
+        6107
+      ]
+    },
+    {
+      "control_quads": 1068,
+      "candidate_quads": 1068,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 103,
+      "page": 513,
+      "control_frames": [
+        6109,
+        6109
+      ],
+      "candidate_frames": [
+        6109,
+        6109
+      ]
+    },
+    {
+      "control_quads": 1131,
+      "candidate_quads": 1131,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 104,
+      "page": 516,
+      "control_frames": [
+        6111,
+        6111
+      ],
+      "candidate_frames": [
+        6111,
+        6111
+      ]
+    },
+    {
+      "control_quads": 1146,
+      "candidate_quads": 1146,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 105,
+      "page": 513,
+      "control_frames": [
+        6113,
+        6113
+      ],
+      "candidate_frames": [
+        6113,
+        6113
+      ]
+    },
+    {
+      "control_quads": 1122,
+      "candidate_quads": 1122,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 106,
+      "page": 516,
+      "control_frames": [
+        6115,
+        6115
+      ],
+      "candidate_frames": [
+        6115,
+        6115
+      ]
+    },
+    {
+      "control_quads": 1127,
+      "candidate_quads": 1127,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 107,
+      "page": 513,
+      "control_frames": [
+        6117,
+        6117
+      ],
+      "candidate_frames": [
+        6117,
+        6117
+      ]
+    },
+    {
+      "control_quads": 1195,
+      "candidate_quads": 1195,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 108,
+      "page": 516,
+      "control_frames": [
+        6119,
+        6119
+      ],
+      "candidate_frames": [
+        6119,
+        6119
+      ]
+    },
+    {
+      "control_quads": 1276,
+      "candidate_quads": 1276,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 109,
+      "page": 513,
+      "control_frames": [
+        6121,
+        6121
+      ],
+      "candidate_frames": [
+        6121,
+        6121
+      ]
+    },
+    {
+      "control_quads": 1259,
+      "candidate_quads": 1259,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 110,
+      "page": 516,
+      "control_frames": [
+        6123,
+        6123
+      ],
+      "candidate_frames": [
+        6123,
+        6123
+      ]
+    },
+    {
+      "control_quads": 1265,
+      "candidate_quads": 1265,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 111,
+      "page": 513,
+      "control_frames": [
+        6125,
+        6125
+      ],
+      "candidate_frames": [
+        6125,
+        6125
+      ]
+    },
+    {
+      "control_quads": 1249,
+      "candidate_quads": 1249,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 112,
+      "page": 516,
+      "control_frames": [
+        6127,
+        6127
+      ],
+      "candidate_frames": [
+        6127,
+        6127
+      ]
+    },
+    {
+      "control_quads": 1257,
+      "candidate_quads": 1257,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 113,
+      "page": 513,
+      "control_frames": [
+        6129,
+        6129
+      ],
+      "candidate_frames": [
+        6129,
+        6129
+      ]
+    },
+    {
+      "control_quads": 1241,
+      "candidate_quads": 1241,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 114,
+      "page": 516,
+      "control_frames": [
+        6131,
+        6131
+      ],
+      "candidate_frames": [
+        6131,
+        6131
+      ]
+    },
+    {
+      "control_quads": 1234,
+      "candidate_quads": 1234,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 115,
+      "page": 513,
+      "control_frames": [
+        6133,
+        6133
+      ],
+      "candidate_frames": [
+        6133,
+        6133
+      ]
+    },
+    {
+      "control_quads": 1289,
+      "candidate_quads": 1289,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 116,
+      "page": 516,
+      "control_frames": [
+        6135,
+        6135
+      ],
+      "candidate_frames": [
+        6135,
+        6135
+      ]
+    },
+    {
+      "control_quads": 1275,
+      "candidate_quads": 1275,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 117,
+      "page": 513,
+      "control_frames": [
+        6137,
+        6137
+      ],
+      "candidate_frames": [
+        6137,
+        6137
+      ]
+    }
+  ]
+}

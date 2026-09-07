@@ -9,9 +9,11 @@ local last=tonumber(os.getenv('CRUISN_ACTIVATION_LAST') or '3040')
 local object=tonumber(os.getenv('CRUISN_ACTIVATION_OBJECT') or '12668',16)
 local model=tonumber(os.getenv('CRUISN_ACTIVATION_MODEL') or 'ccf288',16)
 local lead=tonumber(os.getenv('CRUISN_ACTIVATION_LEAD') or '1')
+local radii={ [0xccf288]=13906, [0xcb15f8]=33292, [0xcb171e]=31514,
+    [0xcb1a8b]=26031, [0xcb2314]=19772, [0xcb21a2]=12790, [0xcb2375]=10935 }
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
     and last-first<=240 and object and object>=0x10800 and object<0x17ff0
-    and model==0xccf288 and lead and lead%1==0 and lead>=1 and lead<=4,
+    and radii[model] and lead and lead%1==0 and lead>=1 and lead<=8,
     'unverified activation target or interval')
 local frame,tap,out,count=0,nil,nil,0
 local function close()
@@ -31,7 +33,7 @@ return function(n)
         tap=s:install_read_tap(object+27,object+27,'earlier_scenery_section',function(o,d,m)
             if cpu.state.PC.value~=0x7b69 or cpu.state.AR0.value~=object
                 or s:read_u32(object+13)~=model or s:read_u32(object+14)~=0x2000
-                or s:read_u32(object+19)~=13906 then return end
+                or s:read_u32(object+19)~=radii[model] then return end
             local section=d&0xffff
             if section<lead then return end
             local threshold=cpu.state.R4.value

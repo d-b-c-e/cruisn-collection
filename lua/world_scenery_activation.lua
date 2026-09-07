@@ -7,8 +7,10 @@ local first=tonumber(os.getenv('CRUISN_ACTIVATION_FIRST') or '2970')
 local last=tonumber(os.getenv('CRUISN_ACTIVATION_LAST') or '3040')
 local object=tonumber(os.getenv('CRUISN_ACTIVATION_OBJECT') or '12668',16)
 local model=tonumber(os.getenv('CRUISN_ACTIVATION_MODEL') or 'ccf288',16)
+local assignments_only=os.getenv('CRUISN_ACTIVATION_ASSIGNMENTS_ONLY')=='1'
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
-    and last-first<=240 and object and object>=0x10000 and object<0x1ff00
+    and last-first<=(assignments_only and 9000 or 240)
+    and object and object>=0x10000 and object<0x1ff00
     and model and model>=0xc00000 and model<=0xffffff,'invalid activation target')
 local frame,tap,out,frames=0,nil,nil,nil
 local captured=false
@@ -23,12 +25,15 @@ return function(n)
     if n==first then
         assert(s:read_u32(0x9c)>>16==0x1529,'World object signature mismatch')
         out=assert(io.open('scenery-activation.csv','w'))
-        frames=assert(io.open('scenery-activation-frames.csv','w'))
-        frames:write('frame')
-        for i=0,27 do frames:write(string.format(',word_%02x',i)) end
-        frames:write('\n')
+        if not assignments_only then
+            frames=assert(io.open('scenery-activation-frames.csv','w'))
+            frames:write('frame')
+            for i=0,27 do frames:write(string.format(',word_%02x',i)) end
+            frames:write('\n')
+        end
         out:write('frame,word_address,pc,value,r0,r1,r2,r3,ar0,ar1,ar2,ar3,ar4,ar5,ar6,ar7,sp,stack0,stack1,stack2,stack3\n')
-        tap=s:install_write_tap(object,object+27,'scenery_object_assignment',function(o,d,m)
+        tap=s:install_write_tap(assignments_only and object+13 or object,
+            assignments_only and object+13 or object+27,'scenery_object_assignment',function(o,d,m)
             out:write(string.format('%d,%x,%x,%x',frame,o,cpu.state.PC.value,d))
             for _,name in ipairs({'R0','R1','R2','R3','AR0','AR1','AR2','AR3','AR4','AR5','AR6','AR7','SP'}) do
                 out:write(string.format(',%x',cpu.state[name].value))
