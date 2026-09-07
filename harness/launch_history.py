@@ -13,14 +13,21 @@ def archive_previous(rig, binary_dir, *, keep=8, limit=2 * 1024 * 1024):
     destination = history / datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
     destination.mkdir(parents=True)
     metadata = {}
-    for path in (rig/'launch.log', rig/'launch.json', binary_dir/'midv_gl.log',
+    for path in (rig/'launch.log', rig/'launch.json', rig/'ffb_trace.csv',
+                 binary_dir/'midv_ffb.log', binary_dir/'midv_gl.log',
                  binary_dir/'midz_gl.log'):
         if not path.is_file():
             continue
         stat = path.stat()
         with path.open('rb') as stream:
-            stream.seek(max(0, stat.st_size - limit))
-            (destination/path.name).write_bytes(stream.read(limit))
+            # A CSV tail still needs its schema, and must start at a complete
+            # record. Keep the bounded tail useful for end-of-race incidents.
+            header = stream.readline() if path.suffix == '.csv' else b''
+            offset = max(len(header), stat.st_size - limit + len(header))
+            stream.seek(offset if header else max(0, stat.st_size-limit))
+            if header and offset > len(header):
+                stream.readline()
+            (destination/path.name).write_bytes(header + stream.read(max(0, limit-len(header))))
         metadata[path.name] = {'bytes': stat.st_size, 'tail_only': stat.st_size > limit,
                                'modified_utc': datetime.fromtimestamp(stat.st_mtime, timezone.utc).isoformat()}
     (destination/'archive.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
