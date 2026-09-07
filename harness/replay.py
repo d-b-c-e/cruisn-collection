@@ -58,6 +58,8 @@ def main(argv=None):
     ap.add_argument("--patch", type=Path, help="explicit game-code patch experiment; replaces the recorded patch")
     ap.add_argument("--probe-script", type=Path, help="explicit Lua frame callback for a bounded diagnostic experiment")
     ap.add_argument("--numeric-speed", action="store_true", help="explicit USA numeric HUD telemetry experiment")
+    ap.add_argument("--telemetry-loopback", action="store_true", help="capture actual Forza/JSON packets on private localhost ports; no external outputs")
+    ap.add_argument("--no-arcade-rpm", action="store_true", help="control: disable the estimated RPM scale while retaining game gear")
     ap.add_argument("--scenery", choices=("off", "mountains", "trees", "all"),
                     help="explicit native World 2.4 scenery-distance candidate; logs admissions/projection")
     ap.add_argument('--scenery-lead', type=int, choices=range(9),
@@ -196,6 +198,9 @@ def main(argv=None):
         if args.numeric_speed:
             env["MIDV_SPEED_NUMERIC"] = "1"
             report["numeric_speed_experiment"] = True
+        if args.no_arcade_rpm:
+            env['MIDV_TELEM_ARCADE_RPM']='0'
+            report['arcade_rpm_disabled']=True
         if args.snapshot_mode or args.probe_script or args.patch_at_frame is not None or args.clock:
             shutil.copy2(ROOT / "lua" / "session.lua", runtime / "session.lua")
             report["diagnostic_script_sha256"] = sha256_file(runtime / "session.lua")
@@ -255,10 +260,19 @@ def main(argv=None):
         clock = SessionClock(runtime, "Replay: " + manifest.get("title", manifest["rom"]), args.clock_position)
         if args.clock:
             clock.start()
+        telemetry = None
+        if args.telemetry_loopback:
+            from telemetry_loopback import TelemetryLoopback
+            telemetry = TelemetryLoopback(runtime)
+            telemetry.start(env)
         try:
             invocation = execute(command, runtime, env, args.timeout)
         finally:
             clock.close()
+            if telemetry:
+                report['telemetry_loopback']=telemetry.close()
+        if telemetry and not report['telemetry_loopback']['passed']:
+            raise ValueError('telemetry loopback capture failed')
         # Recording uses the product launch log; normalize the replay's stdout
         # path so the same strict evidence validator serves both paths.
         if (runtime / "stdout.log").exists():
