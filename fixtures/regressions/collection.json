@@ -1,12 +1,128 @@
 {
   "schema": 1,
   "cases": [
-    {"id":"usa-original","path":"results/diagnostics/my-drive","presentation":"headless","coverage":"original human drive, native inputs and pixels"},
-    {"id":"usa-widescreen","path":"results/diagnostics/usa-widescreen-candidate-case","coverage":"derived widescreen human inputs, native pixels and live timing","timings":[{"first":1680,"last":2280,"minimum_ratio":0.95},{"first":2700,"last":3300,"minimum_ratio":0.95}]},
-    {"id":"world24","path":"results/diagnostics/six-world-gameplay/case","coverage":"synthetic race, native pixels and live timing","timings":[{"first":3600,"last":4800,"minimum_ratio":0.95}]},
-    {"id":"world24-germany","path":"results/diagnostics/world-germany-20260906","coverage":"Germany Level: complete human race, 9269 input frames, 154 native images; FFB source trace retained, physical outputs disabled on replay"},
-    {"id":"world25","path":"results/diagnostics/six-final-world25/case","coverage":"synthetic race, native pixels and live timing","timings":[{"first":3600,"last":4800,"minimum_ratio":0.95}]},
-    {"id":"offroad","path":"results/diagnostics/six-final-offroad/case","coverage":"synthetic H-pattern driving onto terrain, native pixels and live timing","timings":[{"first":3600,"last":4800,"minimum_ratio":0.95}]},
-    {"id":"exotica","path":"results/diagnostics/next-exotica-fenced-gameplay/case","compare_gl":true,"coverage":"synthetic first-gear race, 21 completed GL frames, CPU rasterization disabled","timings":[{"first":3600,"last":4800,"minimum_ratio":0.95}]}
+    {
+      "id": "usa-original",
+      "path": "results/diagnostics/my-drive",
+      "presentation": "headless",
+      "telemetry": {
+        "minimum_active_frames": 500,
+        "minimum_speed_mph": 10,
+        "probe": "lua/usa_drivetrain_memory.lua",
+        "memory": "drivetrain-memory.csv"
+      },
+      "coverage": "original human drive, native inputs and pixels"
+    },
+    {
+      "id": "usa-widescreen",
+      "path": "results/diagnostics/usa-widescreen-candidate-case",
+      "telemetry": {
+        "minimum_active_frames": 500,
+        "minimum_speed_mph": 10,
+        "probe": "lua/usa_drivetrain_memory.lua",
+        "memory": "drivetrain-memory.csv"
+      },
+      "coverage": "derived widescreen human inputs, native pixels and live timing",
+      "timings": [
+        {
+          "first": 1680,
+          "last": 2280,
+          "minimum_ratio": 0.95
+        },
+        {
+          "first": 2700,
+          "last": 3300,
+          "minimum_ratio": 0.95
+        }
+      ]
+    },
+    {
+      "id": "world24",
+      "path": "results/diagnostics/six-world-gameplay/case",
+      "telemetry": {
+        "minimum_active_frames": 500,
+        "minimum_speed_mph": 10,
+        "probe": "lua/world_drivetrain_memory.lua",
+        "memory": "world-drivetrain-memory.csv",
+        "force_gate_game": "crusnwld24"
+      },
+      "coverage": "synthetic race, native pixels and live timing",
+      "timings": [
+        {
+          "first": 3600,
+          "last": 4800,
+          "minimum_ratio": 0.95
+        }
+      ]
+    },
+    {
+      "id": "world24-germany",
+      "path": "results/diagnostics/world-germany-20260906",
+      "telemetry": {
+        "minimum_active_frames": 500,
+        "minimum_speed_mph": 10,
+        "probe": "lua/world_drivetrain_memory.lua",
+        "memory": "world-drivetrain-memory.csv",
+        "force_gate_game": "crusnwld24"
+      },
+      "coverage": "Germany Level: complete human race, 9269 input frames, 154 native images; FFB source trace retained, physical outputs disabled on replay"
+    },
+    {
+      "id": "world25",
+      "path": "results/diagnostics/six-final-world25/case",
+      "telemetry": {
+        "minimum_active_frames": 500,
+        "minimum_speed_mph": 10,
+        "probe": "lua/drivetrain_memory.lua",
+        "memory": "drivetrain-memory.csv",
+        "force_gate_game": "crusnwld"
+      },
+      "coverage": "synthetic race, native pixels and live timing",
+      "timings": [
+        {
+          "first": 3600,
+          "last": 4800,
+          "minimum_ratio": 0.95
+        }
+      ]
+    },
+    {
+      "id": "offroad",
+      "path": "results/diagnostics/six-final-offroad/case",
+      "telemetry": {
+        "minimum_active_frames": 500,
+        "minimum_speed_mph": 10,
+        "probe": "lua/drivetrain_memory.lua",
+        "memory": "drivetrain-memory.csv"
+      },
+      "coverage": "synthetic H-pattern driving onto terrain, native pixels and live timing",
+      "timings": [
+        {
+          "first": 3600,
+          "last": 4800,
+          "minimum_ratio": 0.95
+        }
+      ]
+    },
+    {
+      "id": "exotica",
+      "path": "results/diagnostics/next-exotica-fenced-gameplay/case",
+      "compare_gl": true,
+      "telemetry": {
+        "minimum_active_frames": 500,
+        "minimum_speed_mph": 10,
+        "probe": "lua/drivetrain_memory.lua",
+        "memory": "drivetrain-memory.csv",
+        "force_gate_game": "crusnexo"
+      },
+      "coverage": "synthetic first-gear race, 21 completed GL frames, CPU rasterization disabled",
+      "timings": [
+        {
+          "first": 3600,
+          "last": 4800,
+          "minimum_ratio": 0.95
+        }
+      ]
+    }
   ]
 }

@@ -21,6 +21,10 @@ class DrivetrainTests(unittest.TestCase):
             events=[{'out':name,'value':value} for name,value in [('gear',2),('gear_source',3),('rpm_estimated',1),('rpm',5675)]]
             (p/'telemetry.jsonl').write_text('\n'.join(json.dumps(e) for e in events))
             self.assertTrue(analyze(p)['passed'])
+            (p/'signals.csv').write_text('seconds,frame,source,quality,sample_seconds,sample_frame,value\n0,0,2,1,0,0,9\n')
+            with self.assertRaisesRegex(ValueError,'Forza speed'): analyze(p)
+            (p/'signals.csv').write_text('seconds,frame,source,quality,sample_seconds,sample_frame,value\n0,0,2,1,0,0,10\n')
+            self.assertTrue(analyze(p)['passed'])
 
     def test_wire_capture_uses_private_ports_and_reports_invalid_packets(self):
         with tempfile.TemporaryDirectory() as tmp:

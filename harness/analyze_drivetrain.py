@@ -1,4 +1,4 @@
-"""Check USA drivetrain traces against independent RAM probes and real UDP packets."""
+"""Check game drivetrain traces against independent RAM probes and real UDP packets."""
 import argparse
 import csv
 import json
@@ -19,7 +19,7 @@ def c31(word):
 def analyze(directory, memory=None, require_drive=False):
     directory=Path(directory)
     path=directory/'drivetrain.csv'
-    rows=list(csv.DictReader(path.open()))
+    with path.open(encoding='utf-8') as stream: rows=list(csv.DictReader(stream))
     if not rows:raise ValueError('empty drivetrain trace')
     report={'passed':False,'trace_sha256':sha256_file(path),'samples':len(rows)}
     frames=[int(r['frame']) for r in rows]
@@ -44,7 +44,8 @@ def analyze(directory, memory=None, require_drive=False):
         raise ValueError('drive must exercise all four gears and RPM drops on each upshift')
     if memory:
         memory=Path(memory)
-        reference={int(r['frame']):r for r in csv.DictReader(memory.open())}
+        with memory.open(encoding='utf-8') as stream:
+            reference={int(r['frame']):r for r in csv.DictReader(stream)}
         # session.lua is one-based; native screen.frame_number() is zero-based.
         pairs=[(r,reference[int(r['frame'])+1]) for r in active if int(r['frame'])+1 in reference]
         bad=sum(a['gear']!=b['gear'] or int(a['player'])!=int(b['player'],16) or
@@ -53,13 +54,13 @@ def analyze(directory, memory=None, require_drive=False):
         if not pairs or bad:raise ValueError('independent memory-probe mismatch')
     wire=directory/'forza.csv'
     if wire.exists():
-        packets=list(csv.DictReader(wire.open()))
+        with wire.open(encoding='utf-8') as stream: packets=list(csv.DictReader(stream))
         if len(packets)!=len(rows):raise ValueError('missing/extra Forza packets')
         for i,(r,p) in enumerate(zip(rows,packets)):
             if int(p['timestamp_ms'])!=17*(i+1) or int(p['gear'])!=(int(r['gear']) or 1) or abs(float(p['rpm'])-float(r['rpm']))>.001:
                 raise ValueError('Forza packet disagrees with emitted sample')
             if float(r['rpm'])>0 and (float(p['max_rpm'])!=8000 or float(p['idle_rpm'])!=900):raise ValueError('Forza gauge limits')
-        events=[json.loads(line) for line in (directory/'telemetry.jsonl').read_text().splitlines()]
+        events=[json.loads(line) for line in (directory/'telemetry.jsonl').read_text(encoding='utf-8').splitlines()]
         for output,column in [('gear','gear'),('gear_source','gear_source'),('rpm_estimated','rpm_estimated'),('rpm','rpm')]:
             values=[e['value'] for e in events if e['out']==output]
             # CSV formats RPM to three decimals. A real 5675.49951171875 is
@@ -68,7 +69,15 @@ def analyze(directory, memory=None, require_drive=False):
             source=packets if output=='rpm' else rows
             expected=[int(float(r[column])+.5) for r in source]
             if values!=expected:raise ValueError(f'JSON {output} disagrees with emitted samples')
-        report['wire']={'forza_packets':len(packets),'json_packets':len(events),'passed':True}
+        signal_path=directory/'signals.csv'
+        if signal_path.exists():
+            with signal_path.open() as stream:
+                signals=list(csv.DictReader(line for line in stream if not line.startswith('#')))
+            if len(signals)!=len(packets): raise ValueError('missing/extra speed samples')
+            if any(abs(float(s['value'])-float(p['speed_ms']))>0.00003 for s,p in zip(signals,packets)):
+                raise ValueError('Forza speed disagrees with emitted sample')
+        report['wire']={'forza_packets':len(packets),'json_packets':len(events),'passed':True,
+                        'maximum_speed_mph':max(float(p['speed_ms'])/.44704 for p in packets)}
     report['passed']=True
     return report
 

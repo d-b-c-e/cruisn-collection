@@ -271,8 +271,6 @@ def main(argv=None):
             clock.close()
             if telemetry:
                 report['telemetry_loopback']=telemetry.close()
-        if telemetry and not report['telemetry_loopback']['passed']:
-            raise ValueError('telemetry loopback capture failed')
         # Recording uses the product launch log; normalize the replay's stdout
         # path so the same strict evidence validator serves both paths.
         if (runtime / "stdout.log").exists():
@@ -292,6 +290,11 @@ def main(argv=None):
             # Preserve the independent input/native comparison even if GL is incomplete.
             read_completed_frames(runtime / "gl-snap", expected_gl)
         report["passed"] = report["comparison"]["passed"]
+        if telemetry and not report['telemetry_loopback']['passed']:
+            # Keep independent input/image evidence when a telemetry producer
+            # fails; a silent UDP stream must not prevent snapshot validation.
+            report['passed']=False
+            report['error']='telemetry loopback capture failed'
         if gl_key == 'MIDZ' and not (args.headless or args.native_renderer or args.zeus_native or manifest['settings'].get('MIDZ_GL_NATIVE') == '1'):
             report['native_image_scope'] = 'CPU polygon rasterization disabled by Zeus GL; native images cannot validate visible gameplay'
         if args.compare_gl:

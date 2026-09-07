@@ -12,6 +12,8 @@ from analyze_session import summarize
 from diagnostic_runtime import ROOT, new_run
 from verification import write_json, sha256_file
 import replay
+from analyze_drivetrain import analyze as analyze_drivetrain
+from analyze_force_gate import analyze as analyze_force_gate
 from release_identity import source_identity
 
 
@@ -64,9 +66,23 @@ def main(argv=None):
             item['visual_reference']=visual_content(visual)
             options=['--headless'] if case.get('presentation')=='headless' else []
             if case.get('compare_gl'):options+=['--compare-gl']
+            if case.get('telemetry'):options+=['--telemetry-loopback']
+            telemetry=case.get('telemetry',{})
+            if telemetry.get('probe'): options+=['--probe-script',str(ROOT/telemetry['probe'])]
             result=replay.main([str(path),'--candidate',str(args.candidate),*options,
                                '--output',str(run),'--timeout',str(args.timeout)])
             item['passed']=result==0
+            if case.get('telemetry') and result==0:
+                memory=run/'run'/telemetry['memory'] if telemetry.get('memory') else None
+                item['telemetry']=analyze_drivetrain(run/'run',memory)
+                minimum=case['telemetry'].get('minimum_active_frames',500)
+                speed=case['telemetry'].get('minimum_speed_mph',10)
+                item['telemetry']['coverage_passed']=(item['telemetry']['game_state_samples']>=minimum and
+                    item['telemetry']['wire']['maximum_speed_mph']>=speed)
+                item['passed'] &= item['telemetry']['coverage_passed']
+                if telemetry.get('force_gate_game'):
+                    item['force_gate']=analyze_force_gate(run/'run',memory,telemetry['force_gate_game'])
+                    item['passed'] &= item['force_gate']['passed']
             item['report']=str(run/'report.json')
             item['timings']=[]
             for timing in case.get('timings',[]):
