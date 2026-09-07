@@ -1,5 +1,6 @@
 # Preserve diagnostic source hashes across Windows and Linux checkouts.
 results/proof/2026-09-06-global-distance/** -text whitespace=cr-at-eol
+results/proof/2026-09-06-global-distance-trial/** -text whitespace=cr-at-eol
 
 # Unified patch context includes a space before original indentation and blank lines.
 # These are archived text artifacts, not active source-code whitespace exceptions.

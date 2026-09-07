@@ -1,0 +1,164 @@
+{
+  "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\global-distance-trial\\fullsize-far2-lead8\\run\\gl-snap",
+  "contact_sheet": "E:\\Source\\cruisn-collection\\results\\diagnostics\\global-distance-trial\\fullsize-comparison.png",
+  "different_frames": [
+    6000,
+    6020,
+    6040,
+    6060,
+    6080,
+    6100,
+    6120,
+    6140
+  ],
+  "frames": 8,
+  "passed": false,
+  "pixel_changes": [
+    {
+      "bounds_xyxy_exclusive": [
+        297,
+        171,
+        1196,
+        1052
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 15825,
+      "frame": 6000,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        171,
+        3126,
+        1206
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 115570,
+      "frame": 6020,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        171,
+        3121,
+        1980
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 242967,
+      "frame": 6040,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        478,
+        171,
+        3110,
+        2073
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 358128,
+      "frame": 6060,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        698,
+        171,
+        3375,
+        2073
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 376596,
+      "frame": 6080,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        795,
+        171,
+        3169,
+        2073
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 382440,
+      "frame": 6100,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        787,
+        171,
+        3468,
+        1176
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 444394,
+      "frame": 6120,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        171,
+        3329,
+        2073
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 454824,
+      "frame": 6140,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    }
+  ],
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\global-distance-trial\\fullsize-original\\run\\gl-snap",
+  "scope": "completed GL frame pixels"
+}

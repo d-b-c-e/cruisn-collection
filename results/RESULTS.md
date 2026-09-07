@@ -3574,3 +3574,69 @@ Scoped attributes now preserve these evidence files verbatim. Extracting the raw
 camera/ADC blobs from the Git index reproduces the complete failed comparison,
 including source hashes; all archived proof bytes match their staged blobs.
 Patch-artifact whitespace checks exclude only their required unified-diff context.
+
+
+## 2026-09-06 — Global World distance trial, native counters and replay decision
+
+User approved finishing the global native prototype, controlled Germany comparisons,
+and a bounded decision before investing in a partial native scene path. Native
+9ea71f601b3 adds explicit MIDV_WORLD_FAR80000/100000/160000, shared pending lead0..8,
+and diagnostic CPU percent100/125/150/200. No model or level allowlist. Checked
+far/clamp RAM patch plus virtual reciprocals in host memory; guards/log failures
+fail the experiment. Canonical native/world_distance.h, synchronized to MAME.
+Cold-start replay tested; no interactive reset/save-state certification yet.
+
+Six full 8783-frame Germany runs completed with146 native images,321 completed GL
+images each,7281 camera samples and21843 actual ADC reads. Zero-extension control
+matches all native images; all frame inputs/times match. All candidates change the
+original route. Normal CPU emulation speeds99.9996..100.0001%; 2x/lead8 records
+7425141 extra reciprocal reads and347915 gate tests in the extra range, not unique
+objects. The prior ~80% heavy-Lua result did not predict native performance.
+Far-only1.25 camera matches again1702..3099 after selection divergence; actual ADC
+values remain identical throughout. Lead4 has a real wheel-value difference at2299:
+105->104, read delayed5.8us; camera diverges2300. Motion diagnostics now expose
+matching intervals and actual ADC differences, without equating camera and scene.
+
+Bounded Lua controls keep original history to5900, intervene5900..6140, and capture
+201 GL images5900..6300 every2. Original prefix6304 PASS. Both candidates match
+camera words through6183 and1263 ADC frame/value/PC sequences; timestamps differ,
+then camera diverges6184. Projection restore does not undo earlier activation.
+MountainCB1A8B first attributed submission6093 ->6037 ->5981 for original/1.25x4/2x8;
+112 frames ~=1.93s, not first visible pixel. Corresponding model uses different
+object slots between runs. Fullsize control/candidate each complete8/8 images at
+3824x2073; frame6040 inspected, mountain/buildings visible earlier in2x candidate.
+Traffic/render phase still differ despite matching camera words. Overview video
+and PNG retained; no all-texture-correctness or pop-in-elimination claim.
+
+125% CPU experiment also completes at full speed but clock alone changes138/146
+native images and route. Camera cadence3500..5800 remains1150 updates/2300 intervals
+at both100/125. Normal CPU retained. A separate full derived2x/lead8 case plus
+identity replay matches8783/146; parent120 images differ. Full-size record99.7576%,
+replay100.0003%, p99 callbacks26.588/26.423ms, worst312/126ms; frame pacing is not
+certified by average speed. Original attended case untouched.
+
+All seven default regression cases PASS: USA original/widescreen, World2.4
+synthetic/Germany, World2.5, Off-Road, Exotica (21 completed GL images). These are
+feature-OFF checks, not approval of applying World-specific addresses elsewhere.
+79 Python tests PASS, native helper arithmetic/profile test with captured World
+program PASS, CI34080307060 at42f1635 all four jobs PASS. No shader changes.
+
+Native built/root deployed vunit.exe SHA256
+050cf6ea393f1d44a1662ad191a5fc6d38be3084f49603ce8d7de2b379f736ce.
+114 exported patches reconstruct tree cb136368d9bcdbebc482fab6e27d1e702b95715b
+from mame0286. Native pushed to fork/poc/quadlog. Collection code commits cc9687e,
+deb5c82,42f1635 separate experiment, motion diagnostics and attended recording.
+Replay/derive_case/record_drive accept explicit global flags; the new matrix tool
+separates completed experiments from visual acceptance. Attended recording keeps
+saved display/wheel preferences and archives the combined temporary patch.
+All automated physical FFB OFF; no new attended game left running.
+
+Decision: 2x/lead8 at normal CPU is a useful attended-trial candidate. Keep normal
+launcher settings unchanged pending a fresh Germany drive and second World level.
+Continue toward a host static-transform oracle, then pending/future section drawing
+independent of guest simulation; do not return to per-object allowlists as the main
+strategy or jump straight to a whole-game port. See
+ docs/reviews/2026-09-06-global-distance-trial.md
+and results/proof/2026-09-06-global-distance-trial (reports, lossless proof frames,
+video overview and compressed raw traces;184 archive entries verified and all six
+full-trial camera/native-counter reports recomputed exactly).

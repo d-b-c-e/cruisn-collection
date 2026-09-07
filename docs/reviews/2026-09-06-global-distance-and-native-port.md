@@ -1,5 +1,10 @@
 # Global draw distance and native-port reassessment
 
+Follow-up: the [global native trial](2026-09-06-global-distance-trial.md) is now
+implemented and measured. The text below records the research before that trial;
+its final unbuilt-draft status is historical. Normal launcher preferences remain
+unchanged.
+
 Assessment: September 6, 2026 (America/Chicago). Sources inspected September 6–7.
 Product baseline: collection `37f698f`, native `e8b8fc3be9c`, deployed executable
 SHA256 `d520c414c8bae335abe316695f78ff4794513e97313b000b10b28ff24dfcec47`.

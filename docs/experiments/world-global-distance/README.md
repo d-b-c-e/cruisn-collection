@@ -1,4 +1,9 @@
-# Unbuilt global World distance draft
+# Archived global World distance draft
+
+Follow-up: an improved implementation was built and tested in native commit
+`9ea71f601b3`. Read the [trial assessment](../../reviews/2026-09-06-global-distance-trial.md).
+These two patch files preserve the earlier draft; do not apply them over the
+current source. The known missing work below describes that archived draft.
 
 This is an archived implementation sketch, **not an accepted patch or a product
 feature**. Research into whole-section drawing and native translation superseded
@@ -7,9 +12,9 @@ its immediate integration. See the [assessment](../../reviews/2026-09-06-global-
 `native-draft.patch` applies to mame-src `e8b8fc3be9c`.
 `collection-draft.patch` applies to collection `37f698f`.
 Both were checked with `git apply --check` against those source states. They have
-not been compiled or exercised. Neither belongs in the exported production MAME
-patch series. Their active source edits were removed after archiving; the deployed
-executable remains the tested baseline.
+not themselves been compiled or exercised. Neither belongs in the exported MAME
+patch series. Their active source edits were removed at the time of archiving;
+the later tested implementation was integrated separately.
 
 The sketch accepts a World 2.4 global far value and optional pending lookahead,
 supplies additional reciprocals from host memory, and contains no model allowlist.

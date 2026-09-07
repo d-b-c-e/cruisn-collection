@@ -2,18 +2,34 @@
 
 ## Current verified handoff (2026-09-06)
 
-Latest research: `docs/reviews/2026-09-06-global-distance-and-native-port.md`.
-User returned and explicitly prioritizes global/whole-section solutions over
-growing per-model allowlists. Jeff Harris's USA C/SDL2 port exists but is incomplete;
-its source/ROM mapping and original USA assembly are relevant research inputs.
-No equivalent source/port established here for the other three arcade games.
-Read the assessment before further distance work. Native static scenery separate
-from simulation is the recommended next prototype; no new feature was deployed.
-Global pending lead8 completed201 GL images, but camera diverges at6184 despite
-matching1263 ADC frame/value/PC sequences. ADC timestamps differ; route check FAIL.
-Do not classify later screenshot differences as pure drawing improvements.
-Unbuilt native draft is parked in docs/experiments/world-global-distance; it is
-excluded from active sources/export. It is not validated by the Lua experiment.
+Latest: `docs/reviews/2026-09-06-global-distance-trial.md`. Native `9ea71f601b3`,
+root vunit.exe SHA256 `050cf6ea393f1d44a1662ad191a5fc6d38be3084f49603ce8d7de2b379f736ce`.
+The shared World 2.4 distance experiment is built: `MIDV_WORLD_FAR`80000/100000/160000,
+`MIDV_WORLD_LEAD`0..8, optional diagnostic CPU percent100/125/150/200. Canonical
+`native/world_distance.h`; matching checked far/clamp patch is mandatory. Host
+reciprocals preserve adjacent guest RAM. No per-model/level allowlist. All native
+hooks remain disabled when FAR is unset; never combine with selective scenery.
+Replay, derive_case and record_drive accept `--world-far/--world-lead/--world-cpu`.
+`run_world_distance_trials.py` serializes an explicit controlled matrix; its
+completion verdict is not visual acceptance. `analyze_world_distance.py` validates
+the buffered native CSV. Normal launcher preferences remain unchanged.
+Six full Germany trials hold ~100% emulation speed; zero extension matches all
+8783 frames/146 native images. Full2x/lead8 repeats against itself but changes the
+old route. Bounded camera equality through6183 is not traffic/render-phase identity.
+Actual ADC interpolation can change a wheel sample despite equal frame inputs;
+motion reports now retain that distinction and matching camera intervals.
+2x/lead8 at normal CPU is the attended-trial candidate: the mountain is visibly
+present earlier in completed GL, also verified at3824x2073. No pop-in-elimination
+claim; fresh Germany/second-level drives still needed before launcher promotion.
+The next engine milestone is a host static-transform oracle and pending/future
+scenery draw path independent of guest simulation. Research/context:
+`docs/reviews/2026-09-06-global-distance-and-native-port.md`. Stop growing model
+allowlists as the main strategy. The archived draft patches are historical inputs,
+superseded by this built implementation, not instructions to reapply them.
+All seven default regression cases PASS with the experiment disabled, including
+21 completed GL images for Exotica. 79 Python tests and native helper tests PASS;
+CI34080307060 at42f1635 passes all four jobs. Proof ZIP hashes were verified and
+all six full-trial camera/native-counter summaries recomputed exactly.
 
 Newest distance evidence: `docs/reviews/2026-09-06-background-activation.md`.
 Native e8b8fc3be9c / SHA256 d520c414 adds opt-in `MIDV_SCENERY=mountains|trees|all|off`,

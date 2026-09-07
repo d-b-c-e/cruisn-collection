@@ -1,0 +1,1874 @@
+{
+  "schema": 1,
+  "scope": "Observed diagnostics; extra gate admissions are not evidence of visible quality.",
+  "trials": [
+    {
+      "motion": {
+        "actual_adc_reads": [
+          21843,
+          21843
+        ],
+        "adc_frame_value_pc_equal": true,
+        "adc_times_equal": true,
+        "camera_equal": true,
+        "camera_equal_frame_intervals": [
+          [
+            1500,
+            8780
+          ]
+        ],
+        "camera_equal_frames": 7281,
+        "camera_intervals": [
+          [
+            1500,
+            8780
+          ],
+          [
+            1500,
+            8780
+          ]
+        ],
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "camera_samples": [
+          7281,
+          7281
+        ],
+        "first_adc_frame_value_pc_difference": null,
+        "first_adc_time_difference_index": null,
+        "first_camera_difference_frame": null,
+        "passed": true,
+        "same_camera_interval": true,
+        "schema": 1,
+        "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "sources": [
+          {
+            "world-adc.csv": "a096ef42fe47ce66455869c47a17f8172ff603d7628aa770677a5e1bb88c0e61",
+            "world-camera.csv": "5a1faaf39f72562b1778e22b4af3055c1c4b7590cd105907938a3abc19072df2"
+          },
+          {
+            "world-adc.csv": "a096ef42fe47ce66455869c47a17f8172ff603d7628aa770677a5e1bb88c0e61",
+            "world-camera.csv": "5a1faaf39f72562b1778e22b4af3055c1c4b7590cd105907938a3abc19072df2"
+          }
+        ]
+      },
+      "name": "original",
+      "native": {
+        "cpu_percent": 100,
+        "far": 80000,
+        "first_profile_frame": 0,
+        "frames": [
+          0,
+          8782
+        ],
+        "lead": 0,
+        "maximum_index": 0,
+        "peak_extended_reads": 0,
+        "peak_far_tests": 560,
+        "rows": 8783,
+        "schema": 1,
+        "scope": "Validate and summarize native global-distance counters, not visual quality.",
+        "sha256": "607e5ba5cc43a98e293f0411b2e1e5b12d60b3ba9554f72c8b9465c8efb51ef3",
+        "totals": {
+          "extended_reads": 0,
+          "extra_far_tests": 0,
+          "far_tests": 1201284,
+          "pending_comparisons": 0
+        }
+      },
+      "native_pixels": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "timings": {
+        "drive": {
+          "emulation_ratio": 0.9999970940121425,
+          "host_frame_ms": {
+            "p50": 16.66355000000408,
+            "p95": 25.390160000002727,
+            "p99": 27.626972000000354,
+            "worst": 50.30510000000277
+          }
+        },
+        "early": {
+          "emulation_ratio": 0.9999785962972365,
+          "host_frame_ms": {
+            "p50": 16.4768500000001,
+            "p95": 25.663450000001827,
+            "p99": 27.207514999996008,
+            "worst": 34.41720000000004
+          }
+        },
+        "late": {
+          "emulation_ratio": 0.9999296175897973,
+          "host_frame_ms": {
+            "p50": 14.32410000000317,
+            "p95": 24.624249999998682,
+            "p99": 25.542022000006877,
+            "worst": 50.30510000000277
+          }
+        },
+        "selection": {
+          "emulation_ratio": 1.0001672769735088,
+          "host_frame_ms": {
+            "p50": 17.287050000000193,
+            "p95": 20.449524999998125,
+            "p99": 21.006259000001037,
+            "worst": 24.54399999999879
+          }
+        }
+      }
+    },
+    {
+      "motion": {
+        "actual_adc_reads": [
+          21843,
+          21843
+        ],
+        "adc_frame_value_pc_equal": true,
+        "adc_times_equal": false,
+        "camera_equal": false,
+        "camera_equal_frame_intervals": [
+          [
+            1500,
+            1618
+          ],
+          [
+            1620,
+            1620
+          ],
+          [
+            1622,
+            1622
+          ],
+          [
+            1624,
+            1624
+          ],
+          [
+            1626,
+            1626
+          ],
+          [
+            1628,
+            1628
+          ],
+          [
+            1630,
+            1630
+          ],
+          [
+            1632,
+            1632
+          ],
+          [
+            1634,
+            1634
+          ],
+          [
+            1636,
+            1636
+          ],
+          [
+            1638,
+            1638
+          ],
+          [
+            1640,
+            1640
+          ],
+          [
+            1642,
+            1642
+          ],
+          [
+            1644,
+            1644
+          ],
+          [
+            1646,
+            1646
+          ],
+          [
+            1648,
+            1648
+          ],
+          [
+            1650,
+            1650
+          ],
+          [
+            1652,
+            1652
+          ],
+          [
+            1654,
+            1654
+          ],
+          [
+            1656,
+            1656
+          ],
+          [
+            1658,
+            1658
+          ],
+          [
+            1660,
+            1660
+          ],
+          [
+            1662,
+            1662
+          ],
+          [
+            1664,
+            1664
+          ],
+          [
+            1666,
+            1666
+          ],
+          [
+            1668,
+            1668
+          ],
+          [
+            1670,
+            1670
+          ],
+          [
+            1672,
+            1672
+          ],
+          [
+            1674,
+            1674
+          ],
+          [
+            1676,
+            1676
+          ],
+          [
+            1678,
+            1678
+          ],
+          [
+            1680,
+            1680
+          ],
+          [
+            1682,
+            1682
+          ],
+          [
+            1684,
+            1684
+          ],
+          [
+            1686,
+            1686
+          ],
+          [
+            1688,
+            1688
+          ],
+          [
+            1690,
+            1690
+          ],
+          [
+            1692,
+            1692
+          ],
+          [
+            1694,
+            1694
+          ],
+          [
+            1696,
+            1696
+          ],
+          [
+            1698,
+            1698
+          ],
+          [
+            1700,
+            1700
+          ],
+          [
+            1702,
+            3099
+          ]
+        ],
+        "camera_equal_frames": 1558,
+        "camera_intervals": [
+          [
+            1500,
+            8780
+          ],
+          [
+            1500,
+            8780
+          ]
+        ],
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "camera_samples": [
+          7281,
+          7281
+        ],
+        "first_adc_frame_value_pc_difference": null,
+        "first_adc_time_difference_index": 345,
+        "first_camera_difference_frame": 1619,
+        "passed": false,
+        "same_camera_interval": true,
+        "schema": 1,
+        "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "sources": [
+          {
+            "world-adc.csv": "a096ef42fe47ce66455869c47a17f8172ff603d7628aa770677a5e1bb88c0e61",
+            "world-camera.csv": "5a1faaf39f72562b1778e22b4af3055c1c4b7590cd105907938a3abc19072df2"
+          },
+          {
+            "world-adc.csv": "83c1f9bd54294e9c6d4ee6aaff988107d6d2e745cd07ba0af01e59bd72e9992c",
+            "world-camera.csv": "8bdd4aa5f81133da5a44b561825a8f192cc5e6763d47f32fa87cd4e074232617"
+          }
+        ]
+      },
+      "name": "far125",
+      "native": {
+        "cpu_percent": 100,
+        "far": 100000,
+        "first_profile_frame": 0,
+        "frames": [
+          0,
+          8782
+        ],
+        "lead": 0,
+        "maximum_index": 6250,
+        "peak_extended_reads": 1444,
+        "peak_far_tests": 562,
+        "rows": 8783,
+        "schema": 1,
+        "scope": "Validate and summarize native global-distance counters, not visual quality.",
+        "sha256": "879ada11af49e19bc59755497537bc6a256459eb8342adb340a341f5f9561b43",
+        "totals": {
+          "extended_reads": 560149,
+          "extra_far_tests": 15032,
+          "far_tests": 1165887,
+          "pending_comparisons": 0
+        }
+      },
+      "native_pixels": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1620,
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          2220,
+          2880,
+          2940,
+          3000,
+          3060,
+          3120,
+          3180,
+          3240,
+          3300,
+          3360
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 110
+      },
+      "timings": {
+        "drive": {
+          "emulation_ratio": 1.0000002441609253,
+          "host_frame_ms": {
+            "p50": 15.912799999995286,
+            "p95": 24.512339999997934,
+            "p99": 26.480673999997045,
+            "worst": 82.42889999999647
+          }
+        },
+        "early": {
+          "emulation_ratio": 1.0001062907593397,
+          "host_frame_ms": {
+            "p50": 16.803550000000556,
+            "p95": 25.2876650000033,
+            "p99": 27.434814000000994,
+            "worst": 32.71699999999811
+          }
+        },
+        "late": {
+          "emulation_ratio": 0.999480489412793,
+          "host_frame_ms": {
+            "p50": 17.390849999991076,
+            "p95": 23.182670000007732,
+            "p99": 26.20704699999706,
+            "worst": 29.778399999997873
+          }
+        },
+        "selection": {
+          "emulation_ratio": 0.9999825304412597,
+          "host_frame_ms": {
+            "p50": 17.28605000000094,
+            "p95": 20.20447499999971,
+            "p99": 21.29075400000154,
+            "worst": 22.841499999998405
+          }
+        }
+      }
+    },
+    {
+      "motion": {
+        "actual_adc_reads": [
+          21843,
+          21843
+        ],
+        "adc_frame_value_pc_equal": false,
+        "adc_times_equal": false,
+        "camera_equal": false,
+        "camera_equal_frame_intervals": [
+          [
+            1500,
+            2299
+          ]
+        ],
+        "camera_equal_frames": 800,
+        "camera_intervals": [
+          [
+            1500,
+            8780
+          ],
+          [
+            1500,
+            8780
+          ]
+        ],
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "camera_samples": [
+          7281,
+          7281
+        ],
+        "first_adc_frame_value_pc_difference": {
+          "candidate": [
+            2299,
+            22283,
+            6815744
+          ],
+          "index": 2398,
+          "reference": [
+            2299,
+            22283,
+            6881280
+          ]
+        },
+        "first_adc_time_difference_index": 368,
+        "first_camera_difference_frame": 2300,
+        "passed": false,
+        "same_camera_interval": true,
+        "schema": 1,
+        "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "sources": [
+          {
+            "world-adc.csv": "a096ef42fe47ce66455869c47a17f8172ff603d7628aa770677a5e1bb88c0e61",
+            "world-camera.csv": "5a1faaf39f72562b1778e22b4af3055c1c4b7590cd105907938a3abc19072df2"
+          },
+          {
+            "world-adc.csv": "1c1ad9e5e5bfcb6b6072d5ef504a17eb77b63d1779adc8febb34944118b3a55c",
+            "world-camera.csv": "74fcb51d6150f9a4224bc90fea053e2d1b4d26a068d0fcf776ad02878d87726c"
+          }
+        ]
+      },
+      "name": "lead4",
+      "native": {
+        "cpu_percent": 100,
+        "far": 80000,
+        "first_profile_frame": 0,
+        "frames": [
+          0,
+          8782
+        ],
+        "lead": 4,
+        "maximum_index": 0,
+        "peak_extended_reads": 0,
+        "peak_far_tests": 593,
+        "rows": 8783,
+        "schema": 1,
+        "scope": "Validate and summarize native global-distance counters, not visual quality.",
+        "sha256": "e06f4eef5e678b398a8e28d8e16f52f1df9da677397b58103b376398ccdbefba",
+        "totals": {
+          "extended_reads": 0,
+          "extra_far_tests": 0,
+          "far_tests": 1158617,
+          "pending_comparisons": 2771
+        }
+      },
+      "native_pixels": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          2220,
+          2280,
+          2340,
+          2400,
+          2460,
+          2520,
+          2580,
+          2640,
+          2700,
+          2760,
+          2820,
+          2880,
+          2940,
+          3000,
+          3060,
+          3120,
+          3180,
+          3240,
+          3300,
+          3360
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 110
+      },
+      "timings": {
+        "drive": {
+          "emulation_ratio": 1.0000011489858842,
+          "host_frame_ms": {
+            "p50": 17.22924999998554,
+            "p95": 24.56440000000039,
+            "p99": 26.377238000002457,
+            "worst": 97.19540000000393
+          }
+        },
+        "early": {
+          "emulation_ratio": 0.9999474814466612,
+          "host_frame_ms": {
+            "p50": 17.28770000000246,
+            "p95": 24.945244999998017,
+            "p99": 26.2708159999957,
+            "worst": 29.658799999999985
+          }
+        },
+        "late": {
+          "emulation_ratio": 0.9997311935986699,
+          "host_frame_ms": {
+            "p50": 17.369450000011,
+            "p95": 22.757885000004304,
+            "p99": 24.023791999998565,
+            "worst": 29.323500000003833
+          }
+        },
+        "selection": {
+          "emulation_ratio": 0.9999912773851649,
+          "host_frame_ms": {
+            "p50": 17.28995000000033,
+            "p95": 20.693605000000126,
+            "p99": 22.07061400000075,
+            "worst": 22.91980000000038
+          }
+        }
+      }
+    },
+    {
+      "motion": {
+        "actual_adc_reads": [
+          21843,
+          21843
+        ],
+        "adc_frame_value_pc_equal": false,
+        "adc_times_equal": false,
+        "camera_equal": false,
+        "camera_equal_frame_intervals": [
+          [
+            1500,
+            1618
+          ],
+          [
+            1620,
+            1620
+          ],
+          [
+            1622,
+            1622
+          ],
+          [
+            1624,
+            1624
+          ],
+          [
+            1626,
+            1626
+          ],
+          [
+            1628,
+            1628
+          ],
+          [
+            1630,
+            1630
+          ],
+          [
+            1632,
+            1632
+          ],
+          [
+            1634,
+            1634
+          ],
+          [
+            1636,
+            1636
+          ],
+          [
+            1638,
+            1638
+          ],
+          [
+            1640,
+            1640
+          ],
+          [
+            1642,
+            1642
+          ],
+          [
+            1644,
+            1644
+          ],
+          [
+            1646,
+            1646
+          ],
+          [
+            1648,
+            1648
+          ],
+          [
+            1650,
+            1650
+          ],
+          [
+            1652,
+            1652
+          ],
+          [
+            1654,
+            1654
+          ],
+          [
+            1656,
+            1656
+          ],
+          [
+            1658,
+            1658
+          ],
+          [
+            1660,
+            1660
+          ],
+          [
+            1662,
+            1662
+          ],
+          [
+            1664,
+            1664
+          ],
+          [
+            1666,
+            1666
+          ],
+          [
+            1668,
+            1668
+          ],
+          [
+            1670,
+            1670
+          ],
+          [
+            1672,
+            1672
+          ],
+          [
+            1674,
+            1674
+          ],
+          [
+            1676,
+            1676
+          ],
+          [
+            1678,
+            1678
+          ],
+          [
+            1680,
+            1680
+          ],
+          [
+            1682,
+            1682
+          ],
+          [
+            1684,
+            1684
+          ],
+          [
+            1686,
+            1686
+          ],
+          [
+            1688,
+            1688
+          ],
+          [
+            1690,
+            1690
+          ],
+          [
+            1692,
+            1692
+          ],
+          [
+            1694,
+            1694
+          ],
+          [
+            1696,
+            1696
+          ],
+          [
+            1698,
+            1698
+          ],
+          [
+            1700,
+            1700
+          ],
+          [
+            1702,
+            2299
+          ]
+        ],
+        "camera_equal_frames": 758,
+        "camera_intervals": [
+          [
+            1500,
+            8780
+          ],
+          [
+            1500,
+            8780
+          ]
+        ],
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "camera_samples": [
+          7281,
+          7281
+        ],
+        "first_adc_frame_value_pc_difference": {
+          "candidate": [
+            2299,
+            22283,
+            6815744
+          ],
+          "index": 2398,
+          "reference": [
+            2299,
+            22283,
+            6881280
+          ]
+        },
+        "first_adc_time_difference_index": 345,
+        "first_camera_difference_frame": 1619,
+        "passed": false,
+        "same_camera_interval": true,
+        "schema": 1,
+        "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "sources": [
+          {
+            "world-adc.csv": "a096ef42fe47ce66455869c47a17f8172ff603d7628aa770677a5e1bb88c0e61",
+            "world-camera.csv": "5a1faaf39f72562b1778e22b4af3055c1c4b7590cd105907938a3abc19072df2"
+          },
+          {
+            "world-adc.csv": "80e22590466bdfa2a09b3032902e84eea5fda67851e09a0d2478a0ab1da5e993",
+            "world-camera.csv": "d9f61a00286f33d7d52fa38e253dd6026379d3b0c4b499f5ccb73e58ee46d156"
+          }
+        ]
+      },
+      "name": "far125-lead4",
+      "native": {
+        "cpu_percent": 100,
+        "far": 100000,
+        "first_profile_frame": 0,
+        "frames": [
+          0,
+          8782
+        ],
+        "lead": 4,
+        "maximum_index": 6250,
+        "peak_extended_reads": 1873,
+        "peak_far_tests": 569,
+        "rows": 8783,
+        "schema": 1,
+        "scope": "Validate and summarize native global-distance counters, not visual quality.",
+        "sha256": "4e27099d627e6f21400528da1b95dda72fc22a40bc0575221670a56b9076b33d",
+        "totals": {
+          "extended_reads": 2480984,
+          "extra_far_tests": 100206,
+          "far_tests": 1188051,
+          "pending_comparisons": 2763
+        }
+      },
+      "native_pixels": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1620,
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          2220,
+          2280,
+          2340,
+          2400,
+          2460,
+          2520,
+          2580,
+          2640,
+          2700,
+          2760
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 120
+      },
+      "timings": {
+        "drive": {
+          "emulation_ratio": 0.9999961035265722,
+          "host_frame_ms": {
+            "p50": 17.266949999992676,
+            "p95": 24.436149999999124,
+            "p99": 25.85355899999905,
+            "worst": 36.8569999999977
+          }
+        },
+        "early": {
+          "emulation_ratio": 1.0000296798241737,
+          "host_frame_ms": {
+            "p50": 17.15034999999787,
+            "p95": 24.72161999999969,
+            "p99": 26.169837000001763,
+            "worst": 29.23990000000032
+          }
+        },
+        "late": {
+          "emulation_ratio": 0.9997189629734021,
+          "host_frame_ms": {
+            "p50": 18.04094999999961,
+            "p95": 22.961649999999167,
+            "p99": 26.041876999992578,
+            "worst": 30.900399999993056
+          }
+        },
+        "selection": {
+          "emulation_ratio": 1.0000434870787773,
+          "host_frame_ms": {
+            "p50": 17.252650000001424,
+            "p95": 20.027814999997773,
+            "p99": 20.614404000001905,
+            "worst": 21.67639999999693
+          }
+        }
+      }
+    },
+    {
+      "motion": {
+        "actual_adc_reads": [
+          21843,
+          21843
+        ],
+        "adc_frame_value_pc_equal": false,
+        "adc_times_equal": false,
+        "camera_equal": false,
+        "camera_equal_frame_intervals": [
+          [
+            1500,
+            1618
+          ],
+          [
+            1620,
+            1620
+          ],
+          [
+            1622,
+            1622
+          ],
+          [
+            1624,
+            1624
+          ],
+          [
+            1626,
+            1626
+          ],
+          [
+            1628,
+            1628
+          ],
+          [
+            1630,
+            1630
+          ],
+          [
+            1632,
+            1632
+          ],
+          [
+            1634,
+            1634
+          ],
+          [
+            1636,
+            1636
+          ],
+          [
+            1638,
+            1638
+          ],
+          [
+            1640,
+            1640
+          ],
+          [
+            1642,
+            1642
+          ],
+          [
+            1644,
+            1644
+          ],
+          [
+            1646,
+            1646
+          ],
+          [
+            1648,
+            1648
+          ],
+          [
+            1650,
+            1650
+          ],
+          [
+            1652,
+            1652
+          ],
+          [
+            1654,
+            1654
+          ],
+          [
+            1656,
+            1656
+          ],
+          [
+            1658,
+            1658
+          ],
+          [
+            1660,
+            1660
+          ],
+          [
+            1662,
+            1662
+          ],
+          [
+            1664,
+            1664
+          ],
+          [
+            1666,
+            1666
+          ],
+          [
+            1668,
+            1668
+          ],
+          [
+            1670,
+            1670
+          ],
+          [
+            1672,
+            1672
+          ],
+          [
+            1674,
+            1674
+          ],
+          [
+            1676,
+            1676
+          ],
+          [
+            1678,
+            1678
+          ],
+          [
+            1680,
+            1680
+          ],
+          [
+            1682,
+            1682
+          ],
+          [
+            1684,
+            1684
+          ],
+          [
+            1686,
+            1686
+          ],
+          [
+            1688,
+            1688
+          ],
+          [
+            1690,
+            1690
+          ],
+          [
+            1692,
+            1692
+          ],
+          [
+            1694,
+            1694
+          ],
+          [
+            1696,
+            1696
+          ],
+          [
+            1698,
+            1698
+          ],
+          [
+            1700,
+            1700
+          ],
+          [
+            1702,
+            1827
+          ],
+          [
+            1829,
+            1991
+          ],
+          [
+            1993,
+            2003
+          ],
+          [
+            2005,
+            2299
+          ]
+        ],
+        "camera_equal_frames": 755,
+        "camera_intervals": [
+          [
+            1500,
+            8780
+          ],
+          [
+            1500,
+            8780
+          ]
+        ],
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "camera_samples": [
+          7281,
+          7281
+        ],
+        "first_adc_frame_value_pc_difference": {
+          "candidate": [
+            2299,
+            22283,
+            6815744
+          ],
+          "index": 2398,
+          "reference": [
+            2299,
+            22283,
+            6881280
+          ]
+        },
+        "first_adc_time_difference_index": 345,
+        "first_camera_difference_frame": 1619,
+        "passed": false,
+        "same_camera_interval": true,
+        "schema": 1,
+        "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "sources": [
+          {
+            "world-adc.csv": "a096ef42fe47ce66455869c47a17f8172ff603d7628aa770677a5e1bb88c0e61",
+            "world-camera.csv": "5a1faaf39f72562b1778e22b4af3055c1c4b7590cd105907938a3abc19072df2"
+          },
+          {
+            "world-adc.csv": "b7b06f8d98d8725248ec9ffd55feb48651a89aa14a66444685cc6126f2ea7fa6",
+            "world-camera.csv": "fa6590fd8f7b26e4fe9c7b05eac9e8f9bebab20c560ecf7b843fb31121eadaf4"
+          }
+        ]
+      },
+      "name": "far2-lead4",
+      "native": {
+        "cpu_percent": 100,
+        "far": 160000,
+        "first_profile_frame": 0,
+        "frames": [
+          0,
+          8782
+        ],
+        "lead": 4,
+        "maximum_index": 10000,
+        "peak_extended_reads": 2632,
+        "peak_far_tests": 623,
+        "rows": 8783,
+        "schema": 1,
+        "scope": "Validate and summarize native global-distance counters, not visual quality.",
+        "sha256": "65a683e0b23446d00ca5ef013a0b27302318dfcd56f4619daec61745e58118ac",
+        "totals": {
+          "extended_reads": 3053967,
+          "extra_far_tests": 107209,
+          "far_tests": 1250793,
+          "pending_comparisons": 2784
+        }
+      },
+      "native_pixels": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1620,
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          2220,
+          2280,
+          2340,
+          2400,
+          2460,
+          2520,
+          2580,
+          2640,
+          2700,
+          2760
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 120
+      },
+      "timings": {
+        "drive": {
+          "emulation_ratio": 0.9999991068088812,
+          "host_frame_ms": {
+            "p50": 17.238600000013093,
+            "p95": 24.461309999998804,
+            "p99": 26.365101999998476,
+            "worst": 35.27740000000179
+          }
+        },
+        "early": {
+          "emulation_ratio": 1.0000969237812658,
+          "host_frame_ms": {
+            "p50": 17.320799999996694,
+            "p95": 25.012655000002226,
+            "p99": 26.342982999998693,
+            "worst": 28.364599999996187
+          }
+        },
+        "late": {
+          "emulation_ratio": 1.0005340753870275,
+          "host_frame_ms": {
+            "p50": 17.2750999999991,
+            "p95": 23.385770000006538,
+            "p99": 28.303387000003397,
+            "worst": 31.7729000000071
+          }
+        },
+        "selection": {
+          "emulation_ratio": 0.999999170040384,
+          "host_frame_ms": {
+            "p50": 17.243450000000493,
+            "p95": 20.21832499999885,
+            "p99": 21.09804399999973,
+            "worst": 22.018699999996727
+          }
+        }
+      }
+    },
+    {
+      "motion": {
+        "actual_adc_reads": [
+          21843,
+          21843
+        ],
+        "adc_frame_value_pc_equal": false,
+        "adc_times_equal": false,
+        "camera_equal": false,
+        "camera_equal_frame_intervals": [
+          [
+            1500,
+            1618
+          ],
+          [
+            1620,
+            1620
+          ],
+          [
+            1622,
+            1622
+          ],
+          [
+            1624,
+            1624
+          ],
+          [
+            1626,
+            1626
+          ],
+          [
+            1628,
+            1628
+          ],
+          [
+            1630,
+            1630
+          ],
+          [
+            1632,
+            1632
+          ],
+          [
+            1634,
+            1634
+          ],
+          [
+            1636,
+            1636
+          ],
+          [
+            1638,
+            1638
+          ],
+          [
+            1640,
+            1640
+          ],
+          [
+            1642,
+            1642
+          ],
+          [
+            1644,
+            1644
+          ],
+          [
+            1646,
+            1646
+          ],
+          [
+            1648,
+            1648
+          ],
+          [
+            1650,
+            1650
+          ],
+          [
+            1652,
+            1652
+          ],
+          [
+            1654,
+            1654
+          ],
+          [
+            1656,
+            1656
+          ],
+          [
+            1658,
+            1658
+          ],
+          [
+            1660,
+            1660
+          ],
+          [
+            1662,
+            1662
+          ],
+          [
+            1664,
+            1664
+          ],
+          [
+            1666,
+            1666
+          ],
+          [
+            1668,
+            1668
+          ],
+          [
+            1670,
+            1670
+          ],
+          [
+            1672,
+            1672
+          ],
+          [
+            1674,
+            1674
+          ],
+          [
+            1676,
+            1676
+          ],
+          [
+            1678,
+            1678
+          ],
+          [
+            1680,
+            1680
+          ],
+          [
+            1682,
+            1682
+          ],
+          [
+            1684,
+            1684
+          ],
+          [
+            1686,
+            1686
+          ],
+          [
+            1688,
+            1688
+          ],
+          [
+            1690,
+            1690
+          ],
+          [
+            1692,
+            1692
+          ],
+          [
+            1694,
+            1694
+          ],
+          [
+            1696,
+            1696
+          ],
+          [
+            1698,
+            1698
+          ],
+          [
+            1700,
+            1700
+          ],
+          [
+            1702,
+            1777
+          ],
+          [
+            1779,
+            1779
+          ],
+          [
+            1781,
+            1789
+          ],
+          [
+            1791,
+            1791
+          ],
+          [
+            1793,
+            1795
+          ],
+          [
+            1797,
+            1797
+          ],
+          [
+            1799,
+            1799
+          ],
+          [
+            1801,
+            1811
+          ],
+          [
+            1813,
+            1813
+          ],
+          [
+            1815,
+            1815
+          ],
+          [
+            1817,
+            1817
+          ],
+          [
+            1819,
+            1819
+          ],
+          [
+            1821,
+            1821
+          ],
+          [
+            1823,
+            1823
+          ],
+          [
+            1825,
+            1825
+          ],
+          [
+            1827,
+            1827
+          ],
+          [
+            1829,
+            1959
+          ],
+          [
+            1961,
+            1961
+          ],
+          [
+            1963,
+            1963
+          ],
+          [
+            1965,
+            1965
+          ],
+          [
+            1967,
+            1967
+          ],
+          [
+            1969,
+            1969
+          ],
+          [
+            1971,
+            1971
+          ],
+          [
+            1973,
+            1973
+          ],
+          [
+            1975,
+            1975
+          ],
+          [
+            1977,
+            1977
+          ],
+          [
+            1979,
+            1979
+          ],
+          [
+            1981,
+            1981
+          ],
+          [
+            1983,
+            1983
+          ],
+          [
+            1985,
+            1985
+          ],
+          [
+            1987,
+            1987
+          ],
+          [
+            1989,
+            1989
+          ],
+          [
+            1991,
+            1991
+          ],
+          [
+            1993,
+            1993
+          ],
+          [
+            1995,
+            1995
+          ],
+          [
+            1997,
+            1997
+          ],
+          [
+            1999,
+            1999
+          ],
+          [
+            2001,
+            2001
+          ],
+          [
+            2003,
+            2003
+          ],
+          [
+            2005,
+            2005
+          ],
+          [
+            2007,
+            2007
+          ],
+          [
+            2009,
+            2009
+          ],
+          [
+            2011,
+            2011
+          ],
+          [
+            2013,
+            2013
+          ],
+          [
+            2015,
+            2015
+          ],
+          [
+            2017,
+            2017
+          ],
+          [
+            2019,
+            2019
+          ],
+          [
+            2021,
+            2021
+          ],
+          [
+            2023,
+            2023
+          ],
+          [
+            2025,
+            2025
+          ],
+          [
+            2027,
+            2027
+          ],
+          [
+            2029,
+            2029
+          ],
+          [
+            2031,
+            2031
+          ],
+          [
+            2033,
+            2033
+          ],
+          [
+            2035,
+            2035
+          ],
+          [
+            2037,
+            2037
+          ],
+          [
+            2039,
+            2039
+          ],
+          [
+            2041,
+            2041
+          ],
+          [
+            2043,
+            2043
+          ],
+          [
+            2045,
+            2045
+          ],
+          [
+            2047,
+            2047
+          ],
+          [
+            2049,
+            2049
+          ],
+          [
+            2051,
+            2051
+          ],
+          [
+            2053,
+            2053
+          ],
+          [
+            2055,
+            2055
+          ],
+          [
+            2057,
+            2057
+          ],
+          [
+            2059,
+            2059
+          ],
+          [
+            2061,
+            2061
+          ],
+          [
+            2063,
+            2063
+          ],
+          [
+            2065,
+            2065
+          ],
+          [
+            2067,
+            2067
+          ],
+          [
+            2069,
+            2069
+          ],
+          [
+            2071,
+            2071
+          ],
+          [
+            2073,
+            2073
+          ],
+          [
+            2075,
+            2075
+          ],
+          [
+            2077,
+            2077
+          ],
+          [
+            2079,
+            2079
+          ],
+          [
+            2081,
+            2081
+          ],
+          [
+            2083,
+            2083
+          ],
+          [
+            2085,
+            2299
+          ]
+        ],
+        "camera_equal_frames": 679,
+        "camera_intervals": [
+          [
+            1500,
+            8780
+          ],
+          [
+            1500,
+            8780
+          ]
+        ],
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "camera_samples": [
+          7281,
+          7281
+        ],
+        "first_adc_frame_value_pc_difference": {
+          "candidate": [
+            2299,
+            22283,
+            6815744
+          ],
+          "index": 2398,
+          "reference": [
+            2299,
+            22283,
+            6881280
+          ]
+        },
+        "first_adc_time_difference_index": 345,
+        "first_camera_difference_frame": 1619,
+        "passed": false,
+        "same_camera_interval": true,
+        "schema": 1,
+        "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "sources": [
+          {
+            "world-adc.csv": "a096ef42fe47ce66455869c47a17f8172ff603d7628aa770677a5e1bb88c0e61",
+            "world-camera.csv": "5a1faaf39f72562b1778e22b4af3055c1c4b7590cd105907938a3abc19072df2"
+          },
+          {
+            "world-adc.csv": "f4b803a0a2601ce70b8a4adaacc66d3d149802875d5f346ecf82124a12c1391a",
+            "world-camera.csv": "6452aba93b113b7a80c8ec3af488b0cc27deb2caf0a091e0827f7278368ffad6"
+          }
+        ]
+      },
+      "name": "far2-lead8",
+      "native": {
+        "cpu_percent": 100,
+        "far": 160000,
+        "first_profile_frame": 0,
+        "frames": [
+          0,
+          8782
+        ],
+        "lead": 8,
+        "maximum_index": 10000,
+        "peak_extended_reads": 3666,
+        "peak_far_tests": 744,
+        "rows": 8783,
+        "schema": 1,
+        "scope": "Validate and summarize native global-distance counters, not visual quality.",
+        "sha256": "ce90bff3dd1506956b7894f1ad7ec961014a9e567bebce193fc2ab58922e80a2",
+        "totals": {
+          "extended_reads": 7425141,
+          "extra_far_tests": 347915,
+          "far_tests": 1668225,
+          "pending_comparisons": 3302
+        }
+      },
+      "native_pixels": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [
+          1620,
+          1680,
+          1740,
+          1800,
+          1860,
+          1920,
+          1980,
+          2040,
+          2100,
+          2160,
+          2220,
+          2280,
+          2340,
+          2400,
+          2460,
+          2520,
+          2580,
+          2640,
+          2700,
+          2760
+        ],
+        "input_or_time_mismatches": 0,
+        "passed": false,
+        "pixel_mismatches": 120
+      },
+      "timings": {
+        "drive": {
+          "emulation_ratio": 1.0000000614011684,
+          "host_frame_ms": {
+            "p50": 15.847749999998939,
+            "p95": 25.193235000003966,
+            "p99": 26.592227999999714,
+            "worst": 73.2706999999948
+          }
+        },
+        "early": {
+          "emulation_ratio": 1.0000976093994824,
+          "host_frame_ms": {
+            "p50": 17.222699999997815,
+            "p95": 25.314414999994916,
+            "p99": 26.532925999998007,
+            "worst": 30.08090000000152
+          }
+        },
+        "late": {
+          "emulation_ratio": 1.0002847507167196,
+          "host_frame_ms": {
+            "p50": 16.993749999997476,
+            "p95": 24.22110499999519,
+            "p99": 25.98162000000613,
+            "worst": 26.747999999997774
+          }
+        },
+        "selection": {
+          "emulation_ratio": 0.9999711335767142,
+          "host_frame_ms": {
+            "p50": 17.279450000000196,
+            "p95": 20.078199999999136,
+            "p99": 20.913773999996792,
+            "worst": 22.794400000002213
+          }
+        }
+      }
+    }
+  ],
+  "visual_acceptance": false
+}

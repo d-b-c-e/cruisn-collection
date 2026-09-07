@@ -24,6 +24,7 @@ awaiting validation.
 - [Expanded mountains/forest and object activation](docs/reviews/2026-09-06-expanded-scenery.md)
 - [Earlier mountain activation and its remaining limits](docs/reviews/2026-09-06-background-activation.md)
 - [Global draw distance and native-port reassessment](docs/reviews/2026-09-06-global-distance-and-native-port.md)
+- [Global World distance trial: 2× candidate, playback and visual evidence](docs/reviews/2026-09-06-global-distance-trial.md)
 - [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
 - [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
 - [Independent project assessment](docs/reviews/2026-09-05-assessment.md)

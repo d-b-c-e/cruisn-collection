@@ -1,0 +1,219 @@
+{
+  "case_sha256": "435bbb5b3311845dde7a633005a874f8c74d0e8107061926655578b4769474b5",
+  "identity_comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "identity_replay_passed": true,
+  "original_route_equivalence": "not established by derivation or identity replay",
+  "parent_comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [
+      1620,
+      1680,
+      1740,
+      1800,
+      1860,
+      1920,
+      1980,
+      2040,
+      2100,
+      2160,
+      2220,
+      2280,
+      2340,
+      2400,
+      2460,
+      2520,
+      2580,
+      2640,
+      2700,
+      2760
+    ],
+    "input_or_time_mismatches": 0,
+    "passed": false,
+    "pixel_mismatches": 120
+  },
+  "passed": true,
+  "physical_force": false,
+  "record_counters": {
+    "cpu_percent": 100,
+    "far": 160000,
+    "first_profile_frame": 0,
+    "frames": [
+      0,
+      8782
+    ],
+    "lead": 8,
+    "maximum_index": 10000,
+    "peak_extended_reads": 3666,
+    "peak_far_tests": 744,
+    "rows": 8783,
+    "schema": 1,
+    "scope": "Validate and summarize native global-distance counters, not visual quality.",
+    "sha256": "1ffcee30cb0801c20ac82ae36b141e2bfebbe568324c2e0fe7f50d6c6c3a17f5",
+    "totals": {
+      "extended_reads": 7425138,
+      "extra_far_tests": 347915,
+      "far_tests": 1668225,
+      "pending_comparisons": 3302
+    }
+  },
+  "record_timing": {
+    "emulated_seconds": 122.56531322565299,
+    "emulation_ratio": 0.9975758502875669,
+    "first_frame": 1600,
+    "host_frame_ms": {
+      "p50": 17.35494999999254,
+      "p95": 25.104009999999022,
+      "p99": 26.587583999998014,
+      "worst": 312.37840000000006
+    },
+    "host_seconds": 122.86315189999999,
+    "inputs": {
+      ":ACCEL": {
+        "distinct": 205,
+        "maximum": 255,
+        "minimum": 0
+      },
+      ":BRAKE": {
+        "distinct": 1,
+        "maximum": 0,
+        "minimum": 0
+      },
+      ":CONF": {
+        "distinct": 1,
+        "maximum": 5,
+        "minimum": 5
+      },
+      ":DSW": {
+        "distinct": 1,
+        "maximum": 63820,
+        "minimum": 63820
+      },
+      ":FAKE": {
+        "distinct": 1,
+        "maximum": 6,
+        "minimum": 6
+      },
+      ":IN0": {
+        "distinct": 1,
+        "maximum": 50175,
+        "minimum": 50175
+      },
+      ":IN1": {
+        "distinct": 1,
+        "maximum": 65535,
+        "minimum": 65535
+      },
+      ":WHEEL": {
+        "distinct": 196,
+        "maximum": 227,
+        "minimum": 29
+      },
+      ":serial_pic2:SERIAL_DIGIT": {
+        "distinct": 1,
+        "maximum": 6,
+        "minimum": 6
+      }
+    },
+    "last_frame": 8700,
+    "schema": 1,
+    "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+  },
+  "replay_counters": {
+    "cpu_percent": 100,
+    "far": 160000,
+    "first_profile_frame": 0,
+    "frames": [
+      0,
+      8782
+    ],
+    "lead": 8,
+    "maximum_index": 10000,
+    "peak_extended_reads": 3666,
+    "peak_far_tests": 744,
+    "rows": 8783,
+    "schema": 1,
+    "scope": "Validate and summarize native global-distance counters, not visual quality.",
+    "sha256": "1ffcee30cb0801c20ac82ae36b141e2bfebbe568324c2e0fe7f50d6c6c3a17f5",
+    "totals": {
+      "extended_reads": 7425138,
+      "extra_far_tests": 347915,
+      "far_tests": 1668225,
+      "pending_comparisons": 3302
+    }
+  },
+  "replay_timing": {
+    "emulated_seconds": 122.56531322565299,
+    "emulation_ratio": 1.0000028599172657,
+    "first_frame": 1600,
+    "host_frame_ms": {
+      "p50": 15.732749999983753,
+      "p95": 24.982425000002447,
+      "p99": 26.423230000010562,
+      "worst": 125.65750000000264
+    },
+    "host_seconds": 122.5649627,
+    "inputs": {
+      ":ACCEL": {
+        "distinct": 205,
+        "maximum": 255,
+        "minimum": 0
+      },
+      ":BRAKE": {
+        "distinct": 1,
+        "maximum": 0,
+        "minimum": 0
+      },
+      ":CONF": {
+        "distinct": 1,
+        "maximum": 5,
+        "minimum": 5
+      },
+      ":DSW": {
+        "distinct": 1,
+        "maximum": 63820,
+        "minimum": 63820
+      },
+      ":FAKE": {
+        "distinct": 1,
+        "maximum": 6,
+        "minimum": 6
+      },
+      ":IN0": {
+        "distinct": 1,
+        "maximum": 50175,
+        "minimum": 50175
+      },
+      ":IN1": {
+        "distinct": 1,
+        "maximum": 65535,
+        "minimum": 65535
+      },
+      ":WHEEL": {
+        "distinct": 196,
+        "maximum": 227,
+        "minimum": 29
+      },
+      ":serial_pic2:SERIAL_DIGIT": {
+        "distinct": 1,
+        "maximum": 6,
+        "minimum": 6
+      }
+    },
+    "last_frame": 8700,
+    "schema": 1,
+    "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+  },
+  "schema": 1,
+  "scope": "new candidate repeatability; parent visual differences retained",
+  "world_distance": {
+    "cpu": 100,
+    "far": 160000,
+    "lead": 8
+  }
+}

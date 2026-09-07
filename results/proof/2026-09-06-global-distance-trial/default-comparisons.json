@@ -1,0 +1,125 @@
+{
+  "candidate_sha256": "050cf6ea393f1d44a1662ad191a5fc6d38be3084f49603ce8d7de2b379f736ce",
+  "cases": [
+    {
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "error": null,
+      "frames": 5012,
+      "gl_comparison": null,
+      "id": "usa-original",
+      "native_image_scope": null,
+      "native_images": 83,
+      "passed": true
+    },
+    {
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "error": null,
+      "frames": 5012,
+      "gl_comparison": null,
+      "id": "usa-widescreen",
+      "native_image_scope": null,
+      "native_images": 83,
+      "passed": true
+    },
+    {
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "error": null,
+      "frames": 6000,
+      "gl_comparison": null,
+      "id": "world24",
+      "native_image_scope": null,
+      "native_images": 100,
+      "passed": true
+    },
+    {
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "error": null,
+      "frames": 9269,
+      "gl_comparison": null,
+      "id": "world24-germany",
+      "native_image_scope": null,
+      "native_images": 154,
+      "passed": true
+    },
+    {
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "error": null,
+      "frames": 6000,
+      "gl_comparison": null,
+      "id": "world25",
+      "native_image_scope": null,
+      "native_images": 100,
+      "passed": true
+    },
+    {
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "error": null,
+      "frames": 6000,
+      "gl_comparison": null,
+      "id": "offroad",
+      "native_image_scope": null,
+      "native_images": 100,
+      "passed": true
+    },
+    {
+      "comparison": {
+        "first_input_mismatches": [],
+        "first_pixel_mismatches": [],
+        "input_or_time_mismatches": 0,
+        "passed": true,
+        "pixel_mismatches": 0
+      },
+      "error": null,
+      "frames": 6000,
+      "gl_comparison": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\global-distance-default-regressions\\exotica\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 21,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-exotica-fenced-gameplay\\case\\record\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "id": "exotica",
+      "native_image_scope": "CPU polygon rasterization disabled by Zeus GL; native images cannot validate visible gameplay",
+      "native_images": 100,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
