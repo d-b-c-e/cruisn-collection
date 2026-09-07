@@ -1,0 +1,20 @@
+{
+  "before_sha256": "f75ca18dbb2b3ed8f7210aaa5626089dc0888eec5d50f51e3d1cad245a168a3a",
+  "after_sha256": "45f93ab017286180f613b143e133282852db43a55c289460661284109ead3f34",
+  "changes": [
+    {
+      "offset": "0x35c",
+      "before": 119,
+      "after": 120
+    }
+  ],
+  "checksum_before": [
+    12758392,
+    12758391
+  ],
+  "checksum_after": [
+    12758392,
+    12758392
+  ],
+  "reason": "DB9B..DBA0 checks ECD5 sum; stale sum caused factory reset at frame 761"
+}

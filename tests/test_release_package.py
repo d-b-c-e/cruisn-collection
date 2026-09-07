@@ -14,7 +14,12 @@ class PackageTests(unittest.TestCase):
             files={n:b'fixture' for n in REQUIRED};files['vunit.exe']=b'candidate'
             for rom,(filename,addresses) in FREEPLAY.items():
                 data=bytearray(max(addresses)+1)
+                if rom=='offroadc':
+                    data=bytearray(0x8000);data[0x37c]=0x12
                 for a in addresses:data[a]=1
+                if rom=='offroadc':
+                    from cmos_settings import set_bytes
+                    data=set_bytes(data,rom,filename,addresses,1)
                 files[f'fixtures/nvram-{rom}/{filename}']=data
             def check(changes):
                 payload=dict(files);payload.update(changes)
@@ -23,7 +28,12 @@ class PackageTests(unittest.TestCase):
                         if data is not None:z.writestr('CruisnCollection/'+name,data)
                 return inspect(root/'package.zip',exe)
             self.assertTrue(check({})['passed'])
+            invalid_sum = bytearray(files['fixtures/nvram-offroadc/nvram'])
+            invalid_sum[0x35c] ^= 1
+            with self.assertRaisesRegex(ValueError, 'checksum'):
+                check({'fixtures/nvram-offroadc/nvram':invalid_sum})
             for bad in ({'SDL2.dll':None},{'vunit.exe':b'wrong'},{'rig/collection.ini':b'personal'},
                         {'roms/game.zip':b'rom'},{'../outside':b'bad'}, {'dinput8.dll':b'old plugin'},
-                        {'fixtures/nvram-crusnexo/m48t35':bytes(0x74)}):
+                        {'fixtures/nvram-crusnexo/m48t35':bytes(0x74)},
+                        {'fixtures/nvram-offroadc/nvram':bytes(0x8000)}):
                 with self.assertRaises(ValueError):check(bad)

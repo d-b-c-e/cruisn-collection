@@ -24,11 +24,29 @@ FREEPLAY = {'crusnusa': ('nvram', (0x190,0x195,0x19a,0x19f)),
 
 
 class ReleaseFixturesTests(unittest.TestCase):
+    def test_offroad_edits_keep_the_boot_checksum_and_unrelated_bytes(self):
+        from cmos_settings import offroad_checksum, set_bytes
+        source = (ROOT/'fixtures/nvram-offroadc/nvram').read_bytes()
+        self.assertEqual(offroad_checksum(source), (0xc2ad78, 0xc2ad78))
+        off = set_bytes(source, 'offroadc', 'nvram', [0x1cc], 0)
+        self.assertEqual(offroad_checksum(off), (0xc2ad77, 0xc2ad77))
+        self.assertEqual([i for i,(a,b) in enumerate(zip(source,off)) if a!=b], [0x1cc,0x35c])
+        self.assertEqual(set_bytes(off, 'offroadc', 'nvram', [0x1cc], 1), source)
+        # A settings layout from another revision is not guessed or modified.
+        bad = bytearray(source); bad[0x37c] = 0
+        with self.assertRaises(ValueError): set_bytes(bad, 'offroadc', 'nvram', [0x1cc], 1)
+        volume = set_bytes(source, 'offroadc', 'nvram', [0x2fc], 42)
+        self.assertEqual([i for i,(a,b) in enumerate(zip(source,volume)) if a!=b], [0x2fc])
+
     def test_every_fresh_seed_has_free_play_enabled(self):
         for rom, (filename, addresses) in FREEPLAY.items():
             with self.subTest(rom=rom):
                 data = (ROOT/'fixtures'/f'nvram-{rom}'/filename).read_bytes()
                 self.assertEqual([data[a] for a in addresses], [1]*len(addresses))
+                if rom == 'offroadc':
+                    from cmos_settings import offroad_checksum
+                    expected, stored = offroad_checksum(data)
+                    self.assertEqual(expected, stored)
 
 
 @unittest.skipUnless(sys.platform == 'win32', 'actual launcher configuration uses Windows APIs')
@@ -102,6 +120,19 @@ class ReleaseLauncherTests(unittest.TestCase):
                 if rom!='crusnexo': self.assertEqual(values[(':CONF',7)],0 if mode=='hpattern' else 5)
                 if rom.startswith('crusnwld'): self.assertEqual(values[(':DSW',0x20)],0)
                 if rom=='crusnexo': self.assertEqual(values[(':DIPS',0x400)],0)
+
+    def test_offroad_freeplay_toggle_updates_checksum_and_preserves_other_settings(self):
+        from cmos_settings import offroad_checksum
+        self.rig.prepare_rig('offroadc')
+        path = self.root/'rig/nvram/offroadc/nvram'
+        before = path.read_bytes()
+        for enabled in (0,1):
+            self.assertTrue(self.shell.cmos_write('offroadc','nvram',[0x1cc],enabled))
+            data = path.read_bytes()
+            self.assertEqual(data[0x1cc], enabled)
+            expected,stored = offroad_checksum(data)
+            self.assertEqual(expected,stored)
+        self.assertEqual(path.read_bytes(),before)
 
     def test_rebinding_replaces_old_button_and_keeps_other_mode_and_keyboard(self):
         self.write_config({'transmission':'sequential'}, {'gear1':'Wheel|btn:1','shiftup':'Wheel|btn:32',

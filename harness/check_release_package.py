@@ -4,6 +4,7 @@ import hashlib
 from pathlib import Path, PurePosixPath
 import zipfile
 from verification import sha256_file, write_json
+from cmos_settings import offroad_checksum
 
 REQUIRED = ('CruisnCollection.exe','CruisnSetup.exe','vunit.exe','SDL2.dll','SDL2-LICENSE.txt',
             'version.txt','setup.ps1','README.txt','force-profiles.ini','lib/toolkit/VERSION',
@@ -39,6 +40,10 @@ def inspect(package, candidate):
             data=archive.read(entries[f'fixtures/nvram-{rom}/{filename}'])
             if any(a>=len(data) or data[a]!=1 for a in addresses):
                 raise ValueError(f'{rom}: free-play seed is not enabled')
+            if rom == 'offroadc':
+                expected, stored = offroad_checksum(data)
+                if expected != stored:
+                    raise ValueError('offroadc: operator-settings checksum is invalid')
         return {'passed':True,'scope':__doc__,'package_sha256':sha256_file(package),
                 'candidate_sha256':binary_hash,'files':len(entries),'root':next(iter(roots))}
 

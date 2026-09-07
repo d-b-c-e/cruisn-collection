@@ -33,7 +33,8 @@ SNAP_ROOT = os.path.join(POC, "rig", "nvram-snapshots")
 
 # CMOS byte map, established 2026-08-26 by single-byte persistence
 # experiments (change one byte, boot headless, verify it survives):
-# NO GAME GUARDS ITS SETTINGS WITH A CHECKSUM - byte pokes are safe.
+# Correction 2026-09-07: Off Road checks its operator-settings sum at boot.
+# cmos_settings.py maintains it; a lone free-play poke causes a factory reset.
 #   crusnwld  nvram   0x9C = MASTER volume, 0-255 (user's menu-max wrote
 #                     0xFF there + companion 0x77C=0xFF; calibrated
 #                     2026-08-29). 0x93C is a separate small-scale field
@@ -71,7 +72,8 @@ def poke(rom, fname, addr, val):
     with open(path, "rb") as f:
         data = bytearray(f.read())
     old = data[addr]
-    data[addr] = val & 0xFF
+    from cmos_settings import set_bytes
+    data = set_bytes(data, rom, fname, [addr], val)
     with open(path, "wb") as f:
         f.write(data)
     print(f"{rom}/{fname} 0x{addr:X}: 0x{old:02X} -> 0x{val & 0xFF:02X}")

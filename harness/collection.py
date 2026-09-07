@@ -108,7 +108,7 @@ void main() { color = texture(tex, t) * uTint; }
 
 
 # Per-game CMOS settings bytes (see harness/nvram_tool.py for the full
-# map and how each was pinned; NO game checksums its settings). VOLUME is
+# map and how each was pinned; Off Road requires a settings checksum). VOLUME is
 # (file, [addresses], max_value); crusnusa's master volume byte isn't
 # pinned yet so its row defers to the in-game = / - keys. crusnwld24
 # shares crusnwld's layout (verified 2026-08-29).
@@ -137,16 +137,16 @@ def cmos_read(rom, fname, addr):
 
 
 def cmos_write(rom, fname, addrs, val):
+    from cmos_settings import set_bytes
     path = os.path.join(POC, "rig", "nvram", rom, fname)
     try:
         with open(path, "rb") as f:
             data = bytearray(f.read())
-        for a in addrs:
-            data[a] = val & 0xFF
+        data = set_bytes(data, rom, fname, addrs, val)
         with open(path, "wb") as f:
             f.write(data)
         return True
-    except OSError:
+    except (OSError, ValueError):
         return False
 
 
