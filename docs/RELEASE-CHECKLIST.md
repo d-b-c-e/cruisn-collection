@@ -24,10 +24,10 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
    upgrade away from development paths, run the wheel/soak checks below, close release
    blockers, then tag/publish that exact reviewed candidate. Retain the prior ZIP and
    configuration backup for rollback. This checklist does not publish a release.
-   **Release-process gap:** the current tag workflow rebuilds and immediately
-   publishes. Before the next public tag, change this to promotion of an already
-   tested candidate artifact; a locally tested executable is not acceptance of a
-   newly compiled CI ZIP. Tagging now still triggers publication.
+   The release workflow now builds a candidate only. Tag pushes do not publish.
+   `promote_release.py` rechecks current evidence and uploads the exact accepted ZIP;
+   it performs a dry run unless `--publish` is explicitly requested. A locally
+   tested executable does not certify a newly compiled CI candidate.
 
 ## Required acceptance
 
@@ -86,9 +86,10 @@ configuration checks run in a temporary rig and do not launch games. It requires
 the full suite, all five fresh-seed boot/persistence checks, matching binary/source/suite
 hashes and no physical output. A matching replay alone cannot clear failed persistence.
 Configuration tests that are skipped on non-Windows cannot clear the gate.
-The release workflow now runs the harness tests and `check_release_package.py`
-before publishing: required runtime/source files, candidate emulator hash, free-play
-seeds and absence of files in the ROM/personal-rig directories. This is not a complete
+The candidate workflow runs the harness tests and `check_release_package.py`:
+required runtime/source files, menu media, fallback shaders, candidate emulator hash,
+free-play seeds and absence of files in the ROM/personal-rig directories. The ZIP
+manifest records every packaged file hash and source identity. This is not a complete
 asset/licence audit or proof that the frozen application starts on a clean machine.
 `ready_for_release` additionally requires the attended ledger: reviewer, date,
 observations and existing evidence files with SHA256 hashes for every check.
@@ -109,3 +110,25 @@ an intermittent GL stream timeout observed before the distance patch activates,
 and fresh-package/upgrade/second-wheel/soak acceptance. Add repeated cold starts
 with physical force off; one successful retry does not clear the timeout. The existing synthetic
 Off Road and Exotica drives are useful regressions but insufficient release coverage.
+
+## Candidate packaging and promotion
+
+Build from a clean committed checkout with `./make_release.ps1 -Version v0.4.0-rc1`
+(or manually dispatch the **release candidate** workflow with that version). The
+version is a candidate label, not a published tag. ZIP names include a timestamp;
+previous packages remain available. `-NoMedia` deliberately omits artwork/music.
+Normal packages restore the repository artwork and music, with custom music in
+`rig/assets` taking precedence. Personal rig directories are never bundled.
+
+Keep the `.zip`, `.zip.check.json` and `.zip.manifest.json` together. Test the
+extracted ZIP away from development paths. For a CI build, download its artifact
+using the [GitHub CLI artifact workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts?tool=cli);
+replay evidence must reference that extracted emulator. A different compile is a
+different candidate. Source, media or runtime changes require renewed acceptance.
+
+After all acceptance is recorded, attach the exact ZIP and its SHA256 in the
+`shared/package-review` ledger entry. Run `harness/promote_release.py ZIP` with
+`--manifest MANIFEST --candidate EXE --regressions REPORT --fresh-boots REPORT
+--attended LEDGER --notes NOTES.md`. Its dry run rechecks the complete gate.
+Only a subsequent explicit `--publish` creates a release, targeting the recorded
+commit and uploading the same ZIP without rebuilding. Existing tags are refused.

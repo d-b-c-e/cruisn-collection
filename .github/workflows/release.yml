@@ -1,12 +1,17 @@
-name: release
+name: release candidate
 
+# Tagging no longer rebuilds and publishes an untested executable. Test the
+# downloaded candidate, then promote those exact bytes with promote_release.py.
 on:
-  push:
-    tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Candidate version (vMAJOR.MINOR.PATCH or prerelease)'
+        required: true
+        type: string
 
 permissions:
-  contents: write   # publish releases with the default GITHUB_TOKEN
+  contents: read
 
 jobs:
   build:
@@ -16,7 +21,11 @@ jobs:
         shell: pwsh
     steps:
       - uses: actions/checkout@v4
-
+      - name: Validate candidate version
+        env:
+          CANDIDATE_VERSION: ${{ inputs.version }}
+        run: |
+          if ($env:CANDIDATE_VERSION -notmatch '^v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?$') { throw 'Invalid release version' }
       - uses: msys2/setup-msys2@v2
         with:
           msystem: MINGW64
@@ -26,21 +35,20 @@ jobs:
             mingw-w64-x86_64-toolchain
             mingw-w64-x86_64-python
             mingw-w64-x86_64-SDL2
-
-      - name: Cache built emulator
+      - name: Cache emulator and fallback shaders
         id: mame-cache
         uses: actions/cache@v4
         with:
-          path: mame-src/vunit.exe
-          key: vunit-${{ hashFiles('patch/vunit-poc-patches.patch') }}
-
+          path: |
+            mame-src/vunit.exe
+            mame-src/bgfx
+          key: vunit-runtime-v2-${{ hashFiles('patch/vunit-poc-patches.patch') }}
       - name: Build vunit.exe (MAME 0.286 + patch series)
         if: steps.mame-cache.outputs.cache-hit != 'true'
         shell: msys2 {0}
         run: |
           set -e
           export OS=Windows_NT
-          rm -rf mame-src
           git clone --depth 1 --branch mame0286 https://github.com/mamedev/mame mame-src
           cd mame-src
           git config user.email ci@local
@@ -49,54 +57,33 @@ jobs:
           make SUBTARGET=vunit \
                SOURCES=src/mame/midway/midvunit.cpp,src/mame/midway/midzeus.cpp \
                REGENIE=1 NOWERROR=1 TOOLS=0 -j4
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-
-      - name: Python deps
-        run: python -m pip install numpy pillow moderngl glfw pyinstaller
-
-      - name: Harness and fresh-install configuration checks
-        run: python -m unittest discover -s tests -v
-
-      - name: SDL2 runtime (zlib) - the emulator's own force feedback loads it
+          python-version: '3.12'
+      - name: Python dependencies
+        run: |
+          python -m pip install numpy pillow moderngl glfw pyinstaller
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency installation failed' }
+      - name: Harness and configuration checks
+        run: |
+          python -m unittest discover -s tests -v
+          if ($LASTEXITCODE -ne 0) { throw 'Harness tests failed' }
+      - name: SDL2 runtime
         shell: msys2 {0}
         run: cp /mingw64/bin/SDL2.dll mame-src/
-
-      - name: Assemble release
+      - name: Assemble and verify candidate
+        env:
+          CANDIDATE_VERSION: ${{ inputs.version }}
         run: |
           $env:CRUISN_VUNIT = "$PWD\mame-src\vunit.exe"
-          $v = if ("${{ github.ref }}".StartsWith("refs/tags/")) { "${{ github.ref_name }}" } else { "dev-" + "${{ github.sha }}".Substring(0, 7) }
-          .\make_release.ps1 -Version $v
-
-      - name: Rename zip with version
-        run: |
-          $tag = "${{ github.ref_name }}"
-          $zip = Get-ChildItem build\CruisnCollection-*.zip | Select-Object -First 1
-          Move-Item $zip.FullName "build\CruisnCollection-$tag.zip"
-
-      - name: Verify packaged runtime, default free play and candidate identity
-        run: |
-          $zip = Get-ChildItem build\CruisnCollection-*.zip | Select-Object -First 1
-          python harness/check_release_package.py $zip.FullName --candidate "$PWD\mame-src\vunit.exe" --report build/package-check.json
-
-      - name: Release notes (docs/release-notes/<tag>.md if present)
-        run: |
-          $f = "docs/release-notes/${{ github.ref_name }}.md"
-          if (Test-Path $f) { Copy-Item $f build/RELEASE_BODY.md } else { "" | Set-Content build/RELEASE_BODY.md }
-
-      - name: Publish GitHub release
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: build/CruisnCollection-*.zip
-          body_path: build/RELEASE_BODY.md
-          generate_release_notes: true
-
-      - name: Upload artifact (manual runs)
-        if: "!startsWith(github.ref, 'refs/tags/')"
+          .\make_release.ps1 -Version $env:CANDIDATE_VERSION
+      - name: Upload exact candidate and manifest
         uses: actions/upload-artifact@v4
         with:
-          name: CruisnCollection
-          path: build/CruisnCollection-*.zip
+          name: CruisnCollection-${{ inputs.version }}
+          path: |
+            build/CruisnCollection-*.zip
+            build/CruisnCollection-*.zip.check.json
+            build/CruisnCollection-*.zip.manifest.json
+          if-no-files-found: error
+          retention-days: 30
