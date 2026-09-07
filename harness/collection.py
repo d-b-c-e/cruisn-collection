@@ -1014,8 +1014,6 @@ def settings_rows(page, state, diag, version):
         return [
             ("crt", "CRT EFFECTS", onoff(state["crt"]),
              "SCANLINES, MASK AND CURVATURE      F9 TOGGLES IT IN GAME"),
-            ("crackfill", "CRACK FILL", onoff(state["crackfill"]),
-             "SOFTENS SMALL UNWRITTEN GAPS; DOES NOT REPAIR MISSING TERRAIN OR TEXTURES"),
             ("aspect", "ASPECT / WIDESCREEN", ASPECT_LABEL(state["margin"]),
              "4:3 = ORIGINAL ARCADE      16:9 = FILLS A WIDE SCREEN      "
              "TRIMMED = 16:9 WITH CLEANER EDGES"),
@@ -1023,8 +1021,8 @@ def settings_rows(page, state, diag, version):
              "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
              "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT THE "
              "NEXT LAUNCH"),
-            ("graphics", "GRAPHICS EXPERIMENTS", "PER GAME",
-             "OPTIONAL SEAM ALIGNMENT AND DISTANCE SETTINGS; OFF UNTIL YOU ENABLE THEM"),
+            ("graphics", "GRAPHICS EXPERIMENTS", "OPEN",
+             "CRACK FILL, SEAM ALIGNMENT AND DISTANCE TRIALS. CHANGES APPLY NEXT LAUNCH."),
             ("back", "BACK", "", ""),
         ]
     if page == "graphics":
@@ -1034,7 +1032,10 @@ def settings_rows(page, state, diag, version):
         return [("graphics_game", "GAME", f"< {title} >",
                  "SELECT THE GAME TO ADJUST. EACH GAME KEEPS ITS OWN EXPERIMENTS.")] + \
             graphics_options.rows(game, state.get("graphics", {}),
-                state.get("world_rom", "crusnwld24") if game == "crusnwld" else game) + [("back", "BACK", "", "")]
+                state.get("world_rom", "crusnwld24") if game == "crusnwld" else game) + [
+                    ("crackfill", "CRACK FILL (SHARED)", onoff(state["crackfill"]),
+                     "USA / WORLD / OFF ROAD: BORROWS NEARBY PIXELS TO HIDE SMALL GAPS; MAY SMEAR."),
+                    ("back", "BACK", "", "")]
     if page == "ffb":
         return [
             ("ffb", "STRENGTH", f"< {ffb}% >",
