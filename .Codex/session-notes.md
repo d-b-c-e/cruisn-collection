@@ -1,67 +1,67 @@
 # Session Notes
 
-Date: 2026-09-06. Branch: codex/world-scenery-distance. User authorized ongoing
-fixes until they return, with separate commits and pushes. Physical automated FFB
-stays OFF. Native pushes go to fork/poc/quadlog, never mamedev/origin.
+Date: 2026-09-06. Branch: codex/world-scenery-activation. User authorized ongoing
+fixes until they return, with separate commits/pushes. No return yet. Automated
+physical FFB OFF. Native pushes fork/poc/quadlog only, never mamedev/origin.
 
 ## Built and deployed
 
-Native abe4b98aa38, root vunit.exe SHA256
-55578f8a06a81a78391119e4bad29b673b90e7e67ea2d6d29907adec1fe8ee90.
-Distant Scenery remains OFF by default, World 2.4 / widescreen / scale>1 only.
-It now covers five mountains, four tree cards and one grouped forest strip.
-Canonical native/world_scenery.h syncs to MAME. Forest CB2375 uses original
-clamped projection and its own counter, never the small-tree reciprocal path.
-No guest RAM writes. Strict model/radius/flags/code guards; direct backing RAM
-inside taps avoids nested-read corruption. See expanded-scenery review.
+Native e8b8fc3be9c, root vunit.exe SHA256
+ d520c414c8bae335abe316695f78ff4794513e97313b000b10b28ff24dfcec47.
+Distant Scenery remains OFF by default, World2.4/widescreen/scale>1 only.
+Five mountains, four small tree cards, forest strip CB2375. Mountains/forest now
+activate up to8 track sections earlier via PC7B69 pending section comparison.
+MIDV_SCENERY_LEAD=0 reproduces prior expanded-scenery case (8783/146 PASS).
+No hook writes guest RAM; guest transfers lists/flags. Small-tree activation
+unchanged. Exact model/radius/flags/program guards; direct backing RAM in taps.
+Native/world_scenery.h is canonical. Full113patches reconstruct native tree
+0c8391ca7c8749bef3da2d2d8458d422fad11474. Prior checkpoint master/origin14702,
+native abe4b98aa38, archived55578f8a at germany-expanded-scenery-native/case/binary.
 
-Full derived Germany candidate/repeat: 8,783 input/time rows and 146 native images
-match. Parent has ten changed images; no original-route claim. Driving ratios
-100.0041%/100.0048%; counts 912 mountain,3964 tree,277 forest admissions,
-31712 reciprocal reads,max8120. Native GL201 completed frames vs first native
-build:143 changed,max1234pixels,last2192; all2196..2400 match. Two new mountains
-show earlier through bridge. New three-model native geometry matches boundedLua;
-complete scenes preserve all original geometry/order. Strict frame comparison
-retains two HUD quads spilling2171->2172.112patches reconstruct ae27265e06a1da7ae7646c9ea888857a538ad12f.
+## Evidence
+
+Review docs/reviews/2026-09-06-background-activation.md and proof same suffix.
+Full derived germany-background-activation-native/case and replay8783/146 PASS;
+parent12images differ, no original route equivalence claim. Driving~100.005%,
+callbackp99~25.6ms; GPU latency/physical feel unmeasured. Both1049mountain/3964tree/
+355forest admissions,31712reciprocal reads,max8120;12earlier activations at
+5991/6003/7585/7599,3each. All7background-activation-default-regressions PASS.
+72Python tests/native unit PASS; CI34073144803 atb06c26b all4jobs PASS.
+DenseGL5940..6280 every1:341completed,100changed6023..6122,max6839pixels6093;
+all158images6123..6280match. Geometry adds2578, original coords/texture preserved,
+but orderFAIL3scenes6077/6093/6119; last has49possiblyoverlapping pairs. Never
+mark that strict check PASS. New object sortkey seeds80000 vs earlier object's
+updated depth is a hypothesis, not fully established cause. Read-only assignment
+probe finds CB1A8B/11A7C allocated5985,pending->active6091,firstdraw6093 inside80k.
+Single-model lead8 activates5991/draw5993; visible6041..6094,max4289px.
+Video results/diagnostics/mountain-return-comparison.mp4 shows that probe.
 
 ## Running / next
 
-- All seven scenery-expanded-default-regressions cases PASS at55578f8a, including
-  timing gates and Exotica21completed GL images.71Python tests pass.
-- CI34070790847 at e81bc4a all four jobs PASS. New docs/harness cadence changes need
-  final CI; ff master after checkpoint. User's Stream Deck uses this checkout.
-- Strong next candidate: CB1A8B returns at6093 already inside original far (53744),
-  plainly visible above road around game elapsed1:15. Native snapshots6060/6120
-  show huge mountain arrival. Prepared read-only probe
-  results/diagnostics/mountain-return-activation.lua, first6000,last6140,
-  slot11A7C/modelCB1A8B. Read-only run started (one emulator at a time), --until-frame6142
-  --capture-state, then inspect field assignment and pending->active timing.
-- Earlier diagnostic CCF288/slot12668: allocated2991, pending2000->active1000 at3017,
-  firstdraw3019 inside80k. lua/world_scenery_early_activation.lua intercepts one
-  object's section atPC7B69, lead1, guest performs list transfer. Activates2999,
-  draws3001,adds54quads but original order changes3019. Only22visiblepixels;
-  most occluded by trees. NOT PROMOTED.41GL every2 captures omit odd3019 concern.
-- Pending comparison: object+0x1B low16 vs player section+wordD58C, program7B58.
-  List61EC -> activeD50B. Factory625C/626D through7B9A/7CA2. Read-only field probe
-  captures internal CPU stack809800..809FFF. RuntimeWorld24asm under
-  results/diagnostics/scenery-activation/run/program.asm. No game code dumps committed.
+LateGL121images3824x2073 complete;11change7694..7714,max107075px7712;
+all7716..7780sampledmatch. Initial100/102of121 attempts failed; explicit stop8000
+let captures finish. Harness e7e82b6/CI34074373829 PASS,74Python tests.
+Bounded global pending lookahead experiment:
+lua/world_pending_distance.lua intercepts D58C atPC7B51, returns11+lead0..8,
+all pending models, NOT production. Prepared pending-global-control/lead8.lua
+provenance wrappers5900..6140 completed, noerror/inputtimemismatch;global8
+adds unverified geometry and changes native images. Individualtreecards pending
+2008 appear here; selective native currently only2000. Require --scenery-lead0.
+Compare geometry/models/completedGL before promoting anything. One emulator at a time.
+New explicit WATCH_EXISTING mode in world_scenery_activation.lua needs actual
+control/candidate verification: mountain-sort-key-existing.lua targets11C04/
+CB2314,5990..6230. Default still requires assignment. Prior narrower traces
+missed allocation and correctly failed; don't call those complete probes.
 
-## Evidence and harness
+## Context
 
-Latest docs/reviews/2026-09-06-expanded-scenery.md. Proof expanded-scenery/activation.
-Previous scenery-coverage review documents four-tree build and failed Lua capture
-(timeout2252/164images, explicitly not accepted; native full runs completed).
-scenery-events full read-only8783/146PASS:3584complete runs,16323events. Ranking
-bounds is not visibility; slot reuse is notLOD and first gate isn't creation.
-compare_scenery --alignment scene preserves stricter frame differences separately.
-gl_frames --frames FIRST:LAST --every N --details --contact-sheet PNG validates
-global frame multiples, missing/duplicate receipts and reused filenames; reports
-changed pixels/bounds. Latest suite71 Python tests (run final complete set).
-
-Original attended world-germany-extended-20260906 is immutable. No fresh recording
-needed for current probes. Continue graphics/activation, then cross-game adapters,
-weakWorldimpacts (ImpactCues OFF pending attended acceptance), Cheats submenu.
-Toolkit v0.11.1 unchanged. MAME XMLcheatmanager is the right engine; downloaded
-cheat0279 has all games, not installed/enabled here. No frontend Lua cheat API yet.
-README corrected: USA numeric HUD with OCR fallback,World OCR; RPM unavailable.
-Never racing mame.exe; never rebuild root executable while it is in use.
+Original attended world-germany-extended-20260906 immutable. No fresh recording
+needed now. compare_scenery --alignment scene/--order-details retains failures;
+gl_frames --frames/--every/--details/--contact-sheet validates completed frames.
+Earlier CCF288 activation has only22visiblepixels and orderfailure, not promoted.
+World24 runtime disassembly: scenery-activation/run/program.asm. Pendinglist61EC,
+activeD50B, playerEE0E+50->+1B; threshold D58C=11, cachedD584; transfer7B5E.
+Object+12 is depth sortkey, drawing writes atPC93; factory625C..626D seeds80000.
+Continue graphics, then cross-game adapters, weakWorldimpacts (ImpactCues OFF
+pending physical acceptance), Cheats submenu. Toolkitv0.11.1 unchanged.
+No racing mame.exe; don't rebuild root binary while emulator uses it.

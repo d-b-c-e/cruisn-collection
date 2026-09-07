@@ -1,0 +1,221 @@
+{
+  "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\background-activation-late-full-gl\\run\\gl-snap",
+  "contact_sheet": "E:\\Source\\cruisn-collection\\results\\proof\\2026-09-06-background-activation\\late-comparison.png",
+  "different_frames": [
+    7694,
+    7696,
+    7698,
+    7700,
+    7702,
+    7704,
+    7706,
+    7708,
+    7710,
+    7712,
+    7714
+  ],
+  "frames": 121,
+  "passed": false,
+  "pixel_changes": [
+    {
+      "bounds_xyxy_exclusive": [
+        110,
+        920,
+        141,
+        960
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 27,
+      "frame": 7694,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        70,
+        845,
+        485,
+        1059
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 3545,
+      "frame": 7696,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        820,
+        236,
+        1049
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 6714,
+      "frame": 7698,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        803,
+        608,
+        1169
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 18852,
+      "frame": 7700,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        732,
+        645,
+        1169
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 34272,
+      "frame": 7702,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        719,
+        667,
+        1169
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 35383,
+      "frame": 7704,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        715,
+        683,
+        1169
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 44599,
+      "frame": 7706,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        65,
+        737,
+        726,
+        1169
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 59598,
+      "frame": 7708,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        66,
+        672,
+        743,
+        1169
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 85240,
+      "frame": 7710,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        70,
+        637,
+        780,
+        1163
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 107075,
+      "frame": 7712,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        404,
+        1082,
+        802,
+        1163
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 11171,
+      "frame": 7714,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    }
+  ],
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\background-activation-late-full-gl-control\\run\\gl-snap",
+  "scope": "completed GL frame pixels"
+}

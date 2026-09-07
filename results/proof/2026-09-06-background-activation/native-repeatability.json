@@ -1,0 +1,174 @@
+{
+  "identity_replay_passed": true,
+  "original_route_equivalence": "not established by derivation or identity replay",
+  "parent_comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [
+      1680,
+      1740,
+      1800,
+      1860,
+      1920,
+      1980,
+      2040,
+      2100,
+      2160,
+      5580,
+      6060,
+      6120
+    ],
+    "input_or_time_mismatches": 0,
+    "passed": false,
+    "pixel_mismatches": 12
+  },
+  "passed": true,
+  "physical_force": false,
+  "schema": 1,
+  "scope": "new candidate repeatability; parent visual differences retained",
+  "native_commit": "e8b8fc3be9c",
+  "binary_sha256": "d520c414c8bae335abe316695f78ff4794513e97313b000b10b28ff24dfcec47",
+  "timings": {
+    "case/record": {
+      "schema": 1,
+      "first_frame": 1800,
+      "last_frame": 8780,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 120.493786804938,
+      "host_seconds": 120.4877754,
+      "emulation_ratio": 1.0000498922394245,
+      "host_frame_ms": {
+        "p50": 17.307799999997542,
+        "p95": 24.014384999997773,
+        "p99": 25.5611659999974,
+        "worst": 37.013999999999214
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 205
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 196
+        }
+      }
+    },
+    "replay/run": {
+      "schema": 1,
+      "first_frame": 1800,
+      "last_frame": 8780,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 120.493786804938,
+      "host_seconds": 120.48837409999999,
+      "emulation_ratio": 1.0000449230473765,
+      "host_frame_ms": {
+        "p50": 17.09720000000914,
+        "p95": 24.196900000004714,
+        "p99": 25.65483700000918,
+        "worst": 60.862600000007205
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 205
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 196
+        }
+      }
+    }
+  },
+  "counts": {
+    "case/record": {
+      "mountain_admissions": 1049,
+      "tree_admissions": 3964,
+      "forest_admissions": 355,
+      "extended_reads": 31712,
+      "maximum_index": 8120,
+      "earlier_activations": 12
+    },
+    "replay/run": {
+      "mountain_admissions": 1049,
+      "tree_admissions": 3964,
+      "forest_admissions": 355,
+      "extended_reads": 31712,
+      "maximum_index": 8120,
+      "earlier_activations": 12
+    }
+  }
+}

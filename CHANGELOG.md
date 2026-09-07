@@ -5,10 +5,13 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
-- Add optional World2.4 Distant Scenery for verified Germany mountains and a
-  conifer model, with full-drive repeatability and completed-frame comparisons.
+- Add optional World2.4 Distant Scenery for five identified mountains, four
+  small tree variants and one forest strip, with full-drive repeatability and
+  completed-frame comparisons. Advance pending mountain/forest activation by
+  up to eight track sections; retain an explicit activation-disabled control.
 - Add a scenery geometry comparator that checks duplicate polygons, ordering,
-  unknown additions and optional projection-size limits.
+  unknown additions and optional projection-size limits. Report changed-pixel
+  bounds and original-order inversions without hiding failed strict comparisons.
 
 - Add World scenery provenance and a bounded selective mountain experiment;
   document an earlier mountain with unchanged later frames and the path toward

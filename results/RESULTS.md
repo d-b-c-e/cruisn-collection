@@ -3485,3 +3485,41 @@ Expanded-scenery final default suite: all seven cases PASS at55578f8a, including
 timing gates and Exotica21completed GL images.71Python tests and native scenery
 unit pass. CI34070790847 at e81bc4a passed all four jobs. Full proof in
 expanded-scenery/default-regressions.json; continuing later mountain activation.
+
+
+## 2026-09-06 — Earlier background activation and completed near-4K evidence
+
+Native e8b8fc3be9c, deployed SHA256
+ d520c414c8bae335abe316695f78ff4794513e97313b000b10b28ff24dfcec47.
+Review: docs/reviews/2026-09-06-background-activation.md. Five known mountains and
+forest CB2375 advance by up to8 pending track sections, World2.4 only, defaultOFF.
+Lead0 retains prior distance/projection policy and reproduces its8783/146 case.
+Guest performs list transfer; no hook writes RAM. Small-tree activation unchanged.
+CB1A8B was allocated5985 but pending until6091, firstdraw6093 alreadyinside80k.
+Single-model lead8 activates5991/draw5993; visible6041..6094 as bend uncovers it.
+
+Full native candidate/repeat8783inputs/time/146native images agree; parent12images
+change. Driving100.0050%/100.0045%,callbackp99~25.6ms. Both1049mountain/3964tree/
+355forest admissions,31712recipreads,max8120;12early activations at5991,6003,7585,
+7599 (3each).113patches reconstruct0c8391ca7c8749bef3da2d2d8458d422fad11474.
+All7defaultcases PASS, including timing and Exotica21completedGL;72Python/native
+unit pass. CI34073144803 atb06c26b passes all4jobs.
+
+Geometry5900..6140 adds2578, changes/removes no original polygon, but strict order
+FAILs scenes6077/6093/6119;6119 has49possiblyoverlappingpairs. Preserve that failure.
+Initialsortkey80000 vs earlier updateddepth is a hypothesis still being traced.
+DenseGL5940..6280:341completed at512x451 output/4xinternal;100change6023..6122,
+max6839pixels6093; all158images6123..6280match. LateGL7540..7780every2:
+121completed at3824x2073;11change7694..7714,max107075pixels7712 atleftedge;
+all sampled7716..7780match. Near-4K initial attempts saved100/102of121 and FAILED
+completion; extending stop7784->8000 let both finish. No dropped stream messages.
+Capture overhead must not be confused with normal-play timing.
+
+Harness e7e82b6 retains missing/unexpectedframes, dimensions and maxqueuedbytes
+on incomplete capture, preserves independent native/input comparisons, rejects
+insufficient budgets before launch and refuses legacy asynchronous receipts for
+explicit completed-frame requests.74Python tests PASS;CI34074373829 all4PASS.
+Narrow allocation probes that started too late correctly failed; explicit
+watch-existing mode is being verified rather than weakening default requirements.
+Broader pending-list diagnostic finds individual treecards pending2008 as well
+as many unverified models. Investigate selectively; global change not promoted.

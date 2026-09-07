@@ -1,0 +1,7335 @@
+{
+  "schema": 1,
+  "scope": "completed page-control run geometry; frame timing differences retained; not visible-pixel, presentation-timing or route acceptance",
+  "passed": false,
+  "maximum_added_quad_extent": null,
+  "allowed_added_models": [
+    "cb15f8",
+    "cb171e",
+    "cb1a8b",
+    "cb21a2",
+    "cb2314",
+    "cb2375"
+  ],
+  "total_added": 2578,
+  "total_removed_or_changed": 0,
+  "alignment": "scene",
+  "discarded_edge_runs_per_trace": 2,
+  "scenes": [
+    {
+      "control_quads": 1304,
+      "candidate_quads": 1304,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 0,
+      "page": 516,
+      "control_frames": [
+        5903,
+        5903
+      ],
+      "candidate_frames": [
+        5903,
+        5903
+      ]
+    },
+    {
+      "control_quads": 1310,
+      "candidate_quads": 1310,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 1,
+      "page": 513,
+      "control_frames": [
+        5905,
+        5905
+      ],
+      "candidate_frames": [
+        5905,
+        5905
+      ]
+    },
+    {
+      "control_quads": 1348,
+      "candidate_quads": 1348,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 2,
+      "page": 516,
+      "control_frames": [
+        5907,
+        5907
+      ],
+      "candidate_frames": [
+        5907,
+        5907
+      ]
+    },
+    {
+      "control_quads": 1361,
+      "candidate_quads": 1361,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 3,
+      "page": 513,
+      "control_frames": [
+        5909,
+        5909
+      ],
+      "candidate_frames": [
+        5909,
+        5909
+      ]
+    },
+    {
+      "control_quads": 1337,
+      "candidate_quads": 1337,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 4,
+      "page": 516,
+      "control_frames": [
+        5911,
+        5911
+      ],
+      "candidate_frames": [
+        5911,
+        5911
+      ]
+    },
+    {
+      "control_quads": 1339,
+      "candidate_quads": 1339,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 5,
+      "page": 513,
+      "control_frames": [
+        5913,
+        5913
+      ],
+      "candidate_frames": [
+        5913,
+        5913
+      ]
+    },
+    {
+      "control_quads": 1318,
+      "candidate_quads": 1318,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 6,
+      "page": 516,
+      "control_frames": [
+        5915,
+        5915
+      ],
+      "candidate_frames": [
+        5915,
+        5915
+      ]
+    },
+    {
+      "control_quads": 1316,
+      "candidate_quads": 1316,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 7,
+      "page": 513,
+      "control_frames": [
+        5917,
+        5917
+      ],
+      "candidate_frames": [
+        5917,
+        5917
+      ]
+    },
+    {
+      "control_quads": 1293,
+      "candidate_quads": 1293,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 8,
+      "page": 516,
+      "control_frames": [
+        5919,
+        5919
+      ],
+      "candidate_frames": [
+        5919,
+        5919
+      ]
+    },
+    {
+      "control_quads": 1306,
+      "candidate_quads": 1306,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 9,
+      "page": 513,
+      "control_frames": [
+        5921,
+        5921
+      ],
+      "candidate_frames": [
+        5921,
+        5921
+      ]
+    },
+    {
+      "control_quads": 1380,
+      "candidate_quads": 1380,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 10,
+      "page": 516,
+      "control_frames": [
+        5923,
+        5923
+      ],
+      "candidate_frames": [
+        5923,
+        5923
+      ]
+    },
+    {
+      "control_quads": 1393,
+      "candidate_quads": 1393,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 11,
+      "page": 513,
+      "control_frames": [
+        5925,
+        5925
+      ],
+      "candidate_frames": [
+        5925,
+        5925
+      ]
+    },
+    {
+      "control_quads": 1370,
+      "candidate_quads": 1370,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 12,
+      "page": 516,
+      "control_frames": [
+        5927,
+        5927
+      ],
+      "candidate_frames": [
+        5927,
+        5927
+      ]
+    },
+    {
+      "control_quads": 1365,
+      "candidate_quads": 1365,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 13,
+      "page": 513,
+      "control_frames": [
+        5929,
+        5929
+      ],
+      "candidate_frames": [
+        5929,
+        5929
+      ]
+    },
+    {
+      "control_quads": 1360,
+      "candidate_quads": 1360,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 14,
+      "page": 516,
+      "control_frames": [
+        5931,
+        5931
+      ],
+      "candidate_frames": [
+        5931,
+        5931
+      ]
+    },
+    {
+      "control_quads": 1351,
+      "candidate_quads": 1351,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 15,
+      "page": 513,
+      "control_frames": [
+        5933,
+        5933
+      ],
+      "candidate_frames": [
+        5933,
+        5933
+      ]
+    },
+    {
+      "control_quads": 1339,
+      "candidate_quads": 1339,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 16,
+      "page": 516,
+      "control_frames": [
+        5935,
+        5935
+      ],
+      "candidate_frames": [
+        5935,
+        5935
+      ]
+    },
+    {
+      "control_quads": 1309,
+      "candidate_quads": 1309,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 17,
+      "page": 513,
+      "control_frames": [
+        5937,
+        5937
+      ],
+      "candidate_frames": [
+        5937,
+        5937
+      ]
+    },
+    {
+      "control_quads": 1380,
+      "candidate_quads": 1380,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 18,
+      "page": 516,
+      "control_frames": [
+        5939,
+        5939
+      ],
+      "candidate_frames": [
+        5939,
+        5939
+      ]
+    },
+    {
+      "control_quads": 1351,
+      "candidate_quads": 1351,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 19,
+      "page": 513,
+      "control_frames": [
+        5941,
+        5941
+      ],
+      "candidate_frames": [
+        5941,
+        5941
+      ]
+    },
+    {
+      "control_quads": 1357,
+      "candidate_quads": 1357,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 20,
+      "page": 516,
+      "control_frames": [
+        5943,
+        5943
+      ],
+      "candidate_frames": [
+        5943,
+        5943
+      ]
+    },
+    {
+      "control_quads": 1336,
+      "candidate_quads": 1336,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 21,
+      "page": 513,
+      "control_frames": [
+        5945,
+        5945
+      ],
+      "candidate_frames": [
+        5945,
+        5945
+      ]
+    },
+    {
+      "control_quads": 1401,
+      "candidate_quads": 1401,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 22,
+      "page": 516,
+      "control_frames": [
+        5947,
+        5947
+      ],
+      "candidate_frames": [
+        5947,
+        5947
+      ]
+    },
+    {
+      "control_quads": 1381,
+      "candidate_quads": 1381,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 23,
+      "page": 513,
+      "control_frames": [
+        5949,
+        5949
+      ],
+      "candidate_frames": [
+        5949,
+        5949
+      ]
+    },
+    {
+      "control_quads": 1389,
+      "candidate_quads": 1389,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 24,
+      "page": 516,
+      "control_frames": [
+        5951,
+        5951
+      ],
+      "candidate_frames": [
+        5951,
+        5951
+      ]
+    },
+    {
+      "control_quads": 1365,
+      "candidate_quads": 1365,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 25,
+      "page": 513,
+      "control_frames": [
+        5953,
+        5953
+      ],
+      "candidate_frames": [
+        5953,
+        5953
+      ]
+    },
+    {
+      "control_quads": 1371,
+      "candidate_quads": 1371,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 26,
+      "page": 516,
+      "control_frames": [
+        5955,
+        5955
+      ],
+      "candidate_frames": [
+        5955,
+        5955
+      ]
+    },
+    {
+      "control_quads": 1335,
+      "candidate_quads": 1335,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 27,
+      "page": 513,
+      "control_frames": [
+        5957,
+        5957
+      ],
+      "candidate_frames": [
+        5957,
+        5957
+      ]
+    },
+    {
+      "control_quads": 1314,
+      "candidate_quads": 1314,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 28,
+      "page": 516,
+      "control_frames": [
+        5959,
+        5959
+      ],
+      "candidate_frames": [
+        5959,
+        5959
+      ]
+    },
+    {
+      "control_quads": 1285,
+      "candidate_quads": 1285,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 29,
+      "page": 513,
+      "control_frames": [
+        5961,
+        5961
+      ],
+      "candidate_frames": [
+        5961,
+        5961
+      ]
+    },
+    {
+      "control_quads": 1272,
+      "candidate_quads": 1272,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 30,
+      "page": 516,
+      "control_frames": [
+        5963,
+        5963
+      ],
+      "candidate_frames": [
+        5963,
+        5963
+      ]
+    },
+    {
+      "control_quads": 1311,
+      "candidate_quads": 1311,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 31,
+      "page": 513,
+      "control_frames": [
+        5965,
+        5965
+      ],
+      "candidate_frames": [
+        5965,
+        5965
+      ]
+    },
+    {
+      "control_quads": 1303,
+      "candidate_quads": 1303,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 32,
+      "page": 516,
+      "control_frames": [
+        5967,
+        5967
+      ],
+      "candidate_frames": [
+        5967,
+        5967
+      ]
+    },
+    {
+      "control_quads": 1267,
+      "candidate_quads": 1267,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 33,
+      "page": 513,
+      "control_frames": [
+        5969,
+        5969
+      ],
+      "candidate_frames": [
+        5969,
+        5969
+      ]
+    },
+    {
+      "control_quads": 1252,
+      "candidate_quads": 1252,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 34,
+      "page": 516,
+      "control_frames": [
+        5971,
+        5971
+      ],
+      "candidate_frames": [
+        5971,
+        5971
+      ]
+    },
+    {
+      "control_quads": 1231,
+      "candidate_quads": 1231,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 35,
+      "page": 513,
+      "control_frames": [
+        5973,
+        5973
+      ],
+      "candidate_frames": [
+        5973,
+        5973
+      ]
+    },
+    {
+      "control_quads": 1207,
+      "candidate_quads": 1207,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 36,
+      "page": 516,
+      "control_frames": [
+        5975,
+        5975
+      ],
+      "candidate_frames": [
+        5975,
+        5975
+      ]
+    },
+    {
+      "control_quads": 1179,
+      "candidate_quads": 1179,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 37,
+      "page": 513,
+      "control_frames": [
+        5977,
+        5977
+      ],
+      "candidate_frames": [
+        5977,
+        5977
+      ]
+    },
+    {
+      "control_quads": 1156,
+      "candidate_quads": 1156,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 38,
+      "page": 516,
+      "control_frames": [
+        5979,
+        5979
+      ],
+      "candidate_frames": [
+        5979,
+        5979
+      ]
+    },
+    {
+      "control_quads": 1147,
+      "candidate_quads": 1147,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 39,
+      "page": 513,
+      "control_frames": [
+        5981,
+        5981
+      ],
+      "candidate_frames": [
+        5981,
+        5981
+      ]
+    },
+    {
+      "control_quads": 1135,
+      "candidate_quads": 1135,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 40,
+      "page": 516,
+      "control_frames": [
+        5983,
+        5983
+      ],
+      "candidate_frames": [
+        5983,
+        5983
+      ]
+    },
+    {
+      "control_quads": 1093,
+      "candidate_quads": 1093,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 41,
+      "page": 513,
+      "control_frames": [
+        5985,
+        5985
+      ],
+      "candidate_frames": [
+        5985,
+        5985
+      ]
+    },
+    {
+      "control_quads": 1115,
+      "candidate_quads": 1115,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 42,
+      "page": 516,
+      "control_frames": [
+        5987,
+        5987
+      ],
+      "candidate_frames": [
+        5987,
+        5987
+      ]
+    },
+    {
+      "control_quads": 1079,
+      "candidate_quads": 1079,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 43,
+      "page": 513,
+      "control_frames": [
+        5989,
+        5989
+      ],
+      "candidate_frames": [
+        5989,
+        5989
+      ]
+    },
+    {
+      "control_quads": 1056,
+      "candidate_quads": 1056,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 44,
+      "page": 516,
+      "control_frames": [
+        5991,
+        5991
+      ],
+      "candidate_frames": [
+        5991,
+        5991
+      ]
+    },
+    {
+      "control_quads": 1063,
+      "candidate_quads": 1105,
+      "removed_or_changed": 0,
+      "added": 42,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -623,
+            120,
+            -407,
+            198
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -452,
+            121,
+            -315,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -392,
+            95,
+            -260,
+            198
+          ]
+        }
+      ],
+      "scene": 45,
+      "page": 513,
+      "control_frames": [
+        5993,
+        5993
+      ],
+      "candidate_frames": [
+        5993,
+        5993
+      ]
+    },
+    {
+      "control_quads": 1033,
+      "candidate_quads": 1075,
+      "removed_or_changed": 0,
+      "added": 42,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -609,
+            120,
+            -399,
+            198
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -445,
+            121,
+            -308,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -384,
+            96,
+            -252,
+            198
+          ]
+        }
+      ],
+      "scene": 46,
+      "page": 516,
+      "control_frames": [
+        5995,
+        5995
+      ],
+      "candidate_frames": [
+        5995,
+        5995
+      ]
+    },
+    {
+      "control_quads": 1007,
+      "candidate_quads": 1049,
+      "removed_or_changed": 0,
+      "added": 42,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -608,
+            121,
+            -396,
+            198
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -441,
+            121,
+            -304,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -380,
+            96,
+            -248,
+            199
+          ]
+        }
+      ],
+      "scene": 47,
+      "page": 513,
+      "control_frames": [
+        5997,
+        5997
+      ],
+      "candidate_frames": [
+        5997,
+        5997
+      ]
+    },
+    {
+      "control_quads": 996,
+      "candidate_quads": 1038,
+      "removed_or_changed": 0,
+      "added": 42,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -594,
+            121,
+            -389,
+            199
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -434,
+            122,
+            -298,
+            199
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -372,
+            96,
+            -240,
+            199
+          ]
+        }
+      ],
+      "scene": 48,
+      "page": 516,
+      "control_frames": [
+        5999,
+        5999
+      ],
+      "candidate_frames": [
+        5999,
+        5999
+      ]
+    },
+    {
+      "control_quads": 970,
+      "candidate_quads": 1012,
+      "removed_or_changed": 0,
+      "added": 42,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -581,
+            121,
+            -383,
+            199
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -427,
+            122,
+            -291,
+            199
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -364,
+            96,
+            -232,
+            199
+          ]
+        }
+      ],
+      "scene": 49,
+      "page": 513,
+      "control_frames": [
+        6001,
+        6001
+      ],
+      "candidate_frames": [
+        6001,
+        6001
+      ]
+    },
+    {
+      "control_quads": 974,
+      "candidate_quads": 1016,
+      "removed_or_changed": 0,
+      "added": 42,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -567,
+            122,
+            -376,
+            199
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -420,
+            122,
+            -284,
+            199
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -357,
+            97,
+            -224,
+            200
+          ]
+        }
+      ],
+      "scene": 50,
+      "page": 516,
+      "control_frames": [
+        6003,
+        6003
+      ],
+      "candidate_frames": [
+        6003,
+        6003
+      ]
+    },
+    {
+      "control_quads": 992,
+      "candidate_quads": 1045,
+      "removed_or_changed": 0,
+      "added": 53,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -554,
+            122,
+            -370,
+            200
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -413,
+            123,
+            -277,
+            200
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -349,
+            97,
+            -216,
+            200
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -248,
+            147,
+            -207,
+            200
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 6,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -288,
+            105,
+            -197,
+            200
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -197,
+            180,
+            -160,
+            208
+          ]
+        }
+      ],
+      "scene": 51,
+      "page": 513,
+      "control_frames": [
+        6005,
+        6005
+      ],
+      "candidate_frames": [
+        6005,
+        6005
+      ]
+    },
+    {
+      "control_quads": 996,
+      "candidate_quads": 1049,
+      "removed_or_changed": 0,
+      "added": 53,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -542,
+            122,
+            -363,
+            200
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -405,
+            123,
+            -271,
+            200
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -341,
+            98,
+            -208,
+            200
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -238,
+            148,
+            -197,
+            200
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 6,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -279,
+            105,
+            -189,
+            200
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -189,
+            181,
+            -151,
+            208
+          ]
+        }
+      ],
+      "scene": 52,
+      "page": 516,
+      "control_frames": [
+        6007,
+        6007
+      ],
+      "candidate_frames": [
+        6007,
+        6007
+      ]
+    },
+    {
+      "control_quads": 1019,
+      "candidate_quads": 1072,
+      "removed_or_changed": 0,
+      "added": 53,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -530,
+            123,
+            -357,
+            200
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -398,
+            123,
+            -264,
+            200
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -333,
+            98,
+            -200,
+            201
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -229,
+            148,
+            -187,
+            201
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 6,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -270,
+            105,
+            -180,
+            201
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -180,
+            181,
+            -141,
+            208
+          ]
+        }
+      ],
+      "scene": 53,
+      "page": 513,
+      "control_frames": [
+        6009,
+        6009
+      ],
+      "candidate_frames": [
+        6009,
+        6009
+      ]
+    },
+    {
+      "control_quads": 1045,
+      "candidate_quads": 1098,
+      "removed_or_changed": 0,
+      "added": 53,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -517,
+            123,
+            -350,
+            201
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -391,
+            124,
+            -257,
+            201
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -325,
+            98,
+            -192,
+            201
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -220,
+            148,
+            -178,
+            201
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 6,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -262,
+            106,
+            -171,
+            201
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -171,
+            181,
+            -132,
+            209
+          ]
+        }
+      ],
+      "scene": 54,
+      "page": 516,
+      "control_frames": [
+        6011,
+        6011
+      ],
+      "candidate_frames": [
+        6011,
+        6011
+      ]
+    },
+    {
+      "control_quads": 1054,
+      "candidate_quads": 1107,
+      "removed_or_changed": 0,
+      "added": 53,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -505,
+            123,
+            -343,
+            201
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -383,
+            124,
+            -250,
+            201
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -317,
+            99,
+            -184,
+            201
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -211,
+            149,
+            -168,
+            201
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 6,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -253,
+            106,
+            -163,
+            201
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -163,
+            182,
+            -122,
+            209
+          ]
+        }
+      ],
+      "scene": 55,
+      "page": 513,
+      "control_frames": [
+        6013,
+        6013
+      ],
+      "candidate_frames": [
+        6013,
+        6013
+      ]
+    },
+    {
+      "control_quads": 1064,
+      "candidate_quads": 1118,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -493,
+            124,
+            -337,
+            201
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -376,
+            124,
+            -243,
+            201
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -309,
+            99,
+            -176,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -201,
+            149,
+            -158,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -244,
+            106,
+            -154,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -154,
+            182,
+            -112,
+            209
+          ]
+        }
+      ],
+      "scene": 56,
+      "page": 516,
+      "control_frames": [
+        6015,
+        6015
+      ],
+      "candidate_frames": [
+        6015,
+        6015
+      ]
+    },
+    {
+      "control_quads": 1082,
+      "candidate_quads": 1136,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -473,
+            124,
+            -327,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -365,
+            125,
+            -233,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -297,
+            99,
+            -164,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -187,
+            149,
+            -144,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -231,
+            107,
+            -142,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -142,
+            182,
+            -98,
+            210
+          ]
+        }
+      ],
+      "scene": 57,
+      "page": 513,
+      "control_frames": [
+        6017,
+        6017
+      ],
+      "candidate_frames": [
+        6017,
+        6017
+      ]
+    },
+    {
+      "control_quads": 1077,
+      "candidate_quads": 1131,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -461,
+            124,
+            -320,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -357,
+            125,
+            -226,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -289,
+            99,
+            -156,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -178,
+            150,
+            -134,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -222,
+            107,
+            -133,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -133,
+            182,
+            -89,
+            210
+          ]
+        }
+      ],
+      "scene": 58,
+      "page": 516,
+      "control_frames": [
+        6019,
+        6019
+      ],
+      "candidate_frames": [
+        6019,
+        6019
+      ]
+    },
+    {
+      "control_quads": 1119,
+      "candidate_quads": 1173,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -450,
+            125,
+            -313,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -349,
+            125,
+            -219,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -281,
+            100,
+            -148,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -169,
+            150,
+            -125,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -213,
+            107,
+            -124,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -124,
+            183,
+            -79,
+            210
+          ]
+        }
+      ],
+      "scene": 59,
+      "page": 513,
+      "control_frames": [
+        6021,
+        6021
+      ],
+      "candidate_frames": [
+        6021,
+        6021
+      ]
+    },
+    {
+      "control_quads": 1123,
+      "candidate_quads": 1177,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -431,
+            125,
+            -303,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -338,
+            125,
+            -208,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -269,
+            100,
+            -136,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -155,
+            150,
+            -110,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -200,
+            107,
+            -112,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -112,
+            183,
+            -65,
+            210
+          ]
+        }
+      ],
+      "scene": 60,
+      "page": 516,
+      "control_frames": [
+        6023,
+        6023
+      ],
+      "candidate_frames": [
+        6023,
+        6023
+      ]
+    },
+    {
+      "control_quads": 1108,
+      "candidate_quads": 1162,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -425,
+            125,
+            -296,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -330,
+            125,
+            -201,
+            203
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -261,
+            100,
+            -128,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -145,
+            150,
+            -100,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -191,
+            108,
+            -103,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -103,
+            183,
+            -56,
+            210
+          ]
+        }
+      ],
+      "scene": 61,
+      "page": 513,
+      "control_frames": [
+        6025,
+        6025
+      ],
+      "candidate_frames": [
+        6025,
+        6025
+      ]
+    },
+    {
+      "control_quads": 1106,
+      "candidate_quads": 1160,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -415,
+            125,
+            -284,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -319,
+            126,
+            -191,
+            203
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -249,
+            100,
+            -116,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -131,
+            150,
+            -86,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -178,
+            108,
+            -90,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -90,
+            183,
+            -42,
+            211
+          ]
+        }
+      ],
+      "scene": 62,
+      "page": 516,
+      "control_frames": [
+        6027,
+        6027
+      ],
+      "candidate_frames": [
+        6027,
+        6027
+      ]
+    },
+    {
+      "control_quads": 1102,
+      "candidate_quads": 1156,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -408,
+            125,
+            -276,
+            203
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -311,
+            126,
+            -184,
+            203
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -241,
+            100,
+            -108,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -122,
+            150,
+            -76,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -169,
+            108,
+            -82,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -82,
+            183,
+            -32,
+            211
+          ]
+        }
+      ],
+      "scene": 63,
+      "page": 513,
+      "control_frames": [
+        6029,
+        6029
+      ],
+      "candidate_frames": [
+        6029,
+        6029
+      ]
+    },
+    {
+      "control_quads": 1089,
+      "candidate_quads": 1143,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -402,
+            125,
+            -268,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -303,
+            126,
+            -177,
+            203
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -233,
+            100,
+            -100,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -113,
+            150,
+            -67,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -160,
+            108,
+            -73,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -73,
+            183,
+            -23,
+            211
+          ]
+        }
+      ],
+      "scene": 64,
+      "page": 516,
+      "control_frames": [
+        6031,
+        6031
+      ],
+      "candidate_frames": [
+        6031,
+        6031
+      ]
+    },
+    {
+      "control_quads": 1088,
+      "candidate_quads": 1142,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -392,
+            125,
+            -256,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -292,
+            126,
+            -166,
+            203
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -220,
+            100,
+            -88,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -99,
+            150,
+            -52,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -147,
+            108,
+            -60,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -60,
+            183,
+            -9,
+            211
+          ]
+        }
+      ],
+      "scene": 65,
+      "page": 513,
+      "control_frames": [
+        6033,
+        6033
+      ],
+      "candidate_frames": [
+        6033,
+        6033
+      ]
+    },
+    {
+      "control_quads": 1079,
+      "candidate_quads": 1133,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -385,
+            125,
+            -248,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -284,
+            126,
+            -159,
+            203
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -212,
+            100,
+            -80,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -89,
+            150,
+            -42,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -138,
+            108,
+            -52,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -52,
+            183,
+            1,
+            211
+          ]
+        }
+      ],
+      "scene": 66,
+      "page": 516,
+      "control_frames": [
+        6035,
+        6035
+      ],
+      "candidate_frames": [
+        6035,
+        6035
+      ]
+    },
+    {
+      "control_quads": 1104,
+      "candidate_quads": 1158,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -375,
+            125,
+            -236,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -272,
+            125,
+            -148,
+            203
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -200,
+            100,
+            -68,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -75,
+            150,
+            -28,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -125,
+            107,
+            -39,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -39,
+            183,
+            15,
+            210
+          ]
+        }
+      ],
+      "scene": 67,
+      "page": 513,
+      "control_frames": [
+        6037,
+        6037
+      ],
+      "candidate_frames": [
+        6037,
+        6037
+      ]
+    },
+    {
+      "control_quads": 1087,
+      "candidate_quads": 1141,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -361,
+            125,
+            -220,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -256,
+            125,
+            -134,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -183,
+            100,
+            -52,
+            203
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -57,
+            150,
+            -9,
+            203
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -107,
+            107,
+            -22,
+            203
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -22,
+            183,
+            34,
+            210
+          ]
+        }
+      ],
+      "scene": 68,
+      "page": 516,
+      "control_frames": [
+        6039,
+        6039
+      ],
+      "candidate_frames": [
+        6039,
+        6039
+      ]
+    },
+    {
+      "control_quads": 1093,
+      "candidate_quads": 1147,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -351,
+            124,
+            -208,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -244,
+            125,
+            -123,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -170,
+            100,
+            -39,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -42,
+            150,
+            6,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -94,
+            107,
+            -9,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            -9,
+            183,
+            48,
+            210
+          ]
+        }
+      ],
+      "scene": 69,
+      "page": 513,
+      "control_frames": [
+        6041,
+        6041
+      ],
+      "candidate_frames": [
+        6041,
+        6041
+      ]
+    },
+    {
+      "control_quads": 1076,
+      "candidate_quads": 1130,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -337,
+            124,
+            -191,
+            202
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -228,
+            125,
+            -109,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -154,
+            99,
+            -23,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -24,
+            150,
+            25,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -76,
+            107,
+            8,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            8,
+            182,
+            67,
+            210
+          ]
+        }
+      ],
+      "scene": 70,
+      "page": 516,
+      "control_frames": [
+        6043,
+        6043
+      ],
+      "candidate_frames": [
+        6043,
+        6043
+      ]
+    },
+    {
+      "control_quads": 1051,
+      "candidate_quads": 1105,
+      "removed_or_changed": 0,
+      "added": 54,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -322,
+            124,
+            -174,
+            201
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -211,
+            125,
+            -94,
+            202
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 14,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -137,
+            99,
+            -7,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            -5,
+            149,
+            44,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -58,
+            107,
+            25,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            25,
+            182,
+            85,
+            209
+          ]
+        }
+      ],
+      "scene": 71,
+      "page": 513,
+      "control_frames": [
+        6045,
+        6045
+      ],
+      "candidate_frames": [
+        6045,
+        6045
+      ]
+    },
+    {
+      "control_quads": 1058,
+      "candidate_quads": 1113,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -304,
+            124,
+            -153,
+            201
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -191,
+            124,
+            -76,
+            201
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -115,
+            99,
+            13,
+            202
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            17,
+            149,
+            69,
+            202
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -35,
+            106,
+            47,
+            202
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            47,
+            182,
+            109,
+            209
+          ]
+        }
+      ],
+      "scene": 72,
+      "page": 516,
+      "control_frames": [
+        6047,
+        6047
+      ],
+      "candidate_frames": [
+        6047,
+        6047
+      ]
+    },
+    {
+      "control_quads": 1056,
+      "candidate_quads": 1111,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -289,
+            123,
+            -136,
+            201
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -174,
+            124,
+            -61,
+            201
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -98,
+            98,
+            30,
+            201
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            34,
+            149,
+            88,
+            201
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            -17,
+            106,
+            64,
+            201
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            64,
+            181,
+            128,
+            209
+          ]
+        }
+      ],
+      "scene": 73,
+      "page": 513,
+      "control_frames": [
+        6049,
+        6049
+      ],
+      "candidate_frames": [
+        6049,
+        6049
+      ]
+    },
+    {
+      "control_quads": 1071,
+      "candidate_quads": 1126,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -270,
+            123,
+            -115,
+            200
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -153,
+            123,
+            -43,
+            201
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -76,
+            98,
+            50,
+            201
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            55,
+            148,
+            112,
+            201
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            6,
+            106,
+            85,
+            201
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            85,
+            181,
+            151,
+            208
+          ]
+        }
+      ],
+      "scene": 74,
+      "page": 516,
+      "control_frames": [
+        6051,
+        6051
+      ],
+      "candidate_frames": [
+        6051,
+        6051
+      ]
+    },
+    {
+      "control_quads": 1071,
+      "candidate_quads": 1126,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -251,
+            122,
+            -94,
+            200
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -131,
+            123,
+            -24,
+            200
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -55,
+            98,
+            70,
+            200
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            77,
+            148,
+            136,
+            200
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            29,
+            105,
+            107,
+            200
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            107,
+            181,
+            174,
+            208
+          ]
+        }
+      ],
+      "scene": 75,
+      "page": 513,
+      "control_frames": [
+        6053,
+        6053
+      ],
+      "candidate_frames": [
+        6053,
+        6053
+      ]
+    },
+    {
+      "control_quads": 1073,
+      "candidate_quads": 1128,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -232,
+            122,
+            -72,
+            200
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -110,
+            123,
+            -5,
+            200
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -33,
+            97,
+            91,
+            200
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            98,
+            148,
+            160,
+            200
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            52,
+            105,
+            128,
+            200
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            128,
+            180,
+            197,
+            208
+          ]
+        }
+      ],
+      "scene": 76,
+      "page": 516,
+      "control_frames": [
+        6055,
+        6055
+      ],
+      "candidate_frames": [
+        6055,
+        6055
+      ]
+    },
+    {
+      "control_quads": 1070,
+      "candidate_quads": 1125,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -208,
+            122,
+            -46,
+            199
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -84,
+            122,
+            17,
+            199
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            -6,
+            97,
+            115,
+            200
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            124,
+            147,
+            189,
+            200
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            79,
+            104,
+            154,
+            200
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            154,
+            180,
+            225,
+            207
+          ]
+        }
+      ],
+      "scene": 77,
+      "page": 513,
+      "control_frames": [
+        6057,
+        6057
+      ],
+      "candidate_frames": [
+        6057,
+        6057
+      ]
+    },
+    {
+      "control_quads": 1070,
+      "candidate_quads": 1125,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -188,
+            121,
+            -24,
+            199
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -62,
+            122,
+            36,
+            199
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            16,
+            97,
+            136,
+            199
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            145,
+            147,
+            213,
+            199
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            102,
+            104,
+            175,
+            199
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            175,
+            180,
+            248,
+            207
+          ]
+        }
+      ],
+      "scene": 78,
+      "page": 516,
+      "control_frames": [
+        6059,
+        6059
+      ],
+      "candidate_frames": [
+        6059,
+        6059
+      ]
+    },
+    {
+      "control_quads": 1078,
+      "candidate_quads": 1133,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -163,
+            121,
+            3,
+            198
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -35,
+            122,
+            59,
+            199
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            43,
+            96,
+            160,
+            199
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            171,
+            146,
+            241,
+            199
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            130,
+            104,
+            201,
+            199
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            201,
+            179,
+            275,
+            207
+          ]
+        }
+      ],
+      "scene": 79,
+      "page": 513,
+      "control_frames": [
+        6061,
+        6061
+      ],
+      "candidate_frames": [
+        6061,
+        6061
+      ]
+    },
+    {
+      "control_quads": 1064,
+      "candidate_quads": 1119,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -142,
+            121,
+            25,
+            198
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            -14,
+            121,
+            78,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            65,
+            96,
+            181,
+            199
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            192,
+            146,
+            265,
+            199
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            153,
+            103,
+            222,
+            199
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            222,
+            179,
+            298,
+            206
+          ]
+        }
+      ],
+      "scene": 80,
+      "page": 516,
+      "control_frames": [
+        6063,
+        6063
+      ],
+      "candidate_frames": [
+        6063,
+        6063
+      ]
+    },
+    {
+      "control_quads": 1068,
+      "candidate_quads": 1123,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -121,
+            120,
+            48,
+            198
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            6,
+            121,
+            97,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            87,
+            96,
+            201,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            213,
+            146,
+            289,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            176,
+            103,
+            243,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            243,
+            179,
+            320,
+            206
+          ]
+        }
+      ],
+      "scene": 81,
+      "page": 513,
+      "control_frames": [
+        6065,
+        6065
+      ],
+      "candidate_frames": [
+        6065,
+        6065
+      ]
+    },
+    {
+      "control_quads": 1066,
+      "candidate_quads": 1121,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -100,
+            120,
+            70,
+            198
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            26,
+            121,
+            116,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            110,
+            95,
+            221,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            234,
+            146,
+            312,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            199,
+            103,
+            264,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            264,
+            178,
+            342,
+            206
+          ]
+        }
+      ],
+      "scene": 82,
+      "page": 516,
+      "control_frames": [
+        6067,
+        6067
+      ],
+      "candidate_frames": [
+        6067,
+        6067
+      ]
+    },
+    {
+      "control_quads": 1059,
+      "candidate_quads": 1114,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -83,
+            120,
+            88,
+            197
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            42,
+            121,
+            131,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            127,
+            95,
+            237,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            251,
+            145,
+            330,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            217,
+            103,
+            280,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            280,
+            178,
+            360,
+            205
+          ]
+        }
+      ],
+      "scene": 83,
+      "page": 513,
+      "control_frames": [
+        6069,
+        6069
+      ],
+      "candidate_frames": [
+        6069,
+        6069
+      ]
+    },
+    {
+      "control_quads": 1113,
+      "candidate_quads": 1168,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -70,
+            120,
+            101,
+            197
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            54,
+            120,
+            143,
+            198
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            141,
+            95,
+            249,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            263,
+            145,
+            344,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            230,
+            102,
+            293,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            293,
+            178,
+            373,
+            205
+          ]
+        }
+      ],
+      "scene": 84,
+      "page": 516,
+      "control_frames": [
+        6071,
+        6071
+      ],
+      "candidate_frames": [
+        6071,
+        6071
+      ]
+    },
+    {
+      "control_quads": 1077,
+      "candidate_quads": 1132,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -53,
+            120,
+            119,
+            197
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            70,
+            120,
+            158,
+            197
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            158,
+            95,
+            265,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            280,
+            145,
+            362,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            248,
+            102,
+            310,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            309,
+            178,
+            390,
+            205
+          ]
+        }
+      ],
+      "scene": 85,
+      "page": 513,
+      "control_frames": [
+        6073,
+        6073
+      ],
+      "candidate_frames": [
+        6073,
+        6073
+      ]
+    },
+    {
+      "control_quads": 1091,
+      "candidate_quads": 1146,
+      "removed_or_changed": 0,
+      "added": 55,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb15f8",
+          "quads": 18,
+          "objects": [
+            "12e80"
+          ],
+          "bounds": [
+            -40,
+            120,
+            132,
+            197
+          ]
+        },
+        {
+          "model": "cb171e",
+          "quads": 10,
+          "objects": [
+            "14984"
+          ],
+          "bounds": [
+            82,
+            120,
+            172,
+            197
+          ]
+        },
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            169,
+            95,
+            276,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            292,
+            145,
+            376,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            262,
+            102,
+            323,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            321,
+            178,
+            403,
+            205
+          ]
+        }
+      ],
+      "scene": 86,
+      "page": 516,
+      "control_frames": [
+        6075,
+        6075
+      ],
+      "candidate_frames": [
+        6075,
+        6075
+      ]
+    },
+    {
+      "control_quads": 1141,
+      "candidate_quads": 1168,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": false,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            176,
+            95,
+            284,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            300,
+            145,
+            385,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            271,
+            102,
+            332,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            329,
+            178,
+            411,
+            205
+          ]
+        }
+      ],
+      "reordering_bounds": {
+        "checked": true,
+        "inverted_pairs": 372,
+        "possibly_overlapping_pairs": 0,
+        "padding_native_pixels": 2,
+        "examples": [
+          {
+            "original_indices": [
+              5,
+              14
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                27,
+                175,
+                53,
+                197
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              15
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                27,
+                184,
+                90,
+                197
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              16
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                53,
+                167,
+                103,
+                197
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              17
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                58,
+                163,
+                103,
+                167
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              18
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                29,
+                165,
+                58,
+                184
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              19
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                71,
+                137,
+                122,
+                167
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              20
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                69,
+                158,
+                103,
+                167
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              21
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                94,
+                122,
+                122,
+                138
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              22
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                112,
+                120,
+                128,
+                138
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              23
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                122,
+                120,
+                141,
+                138
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              24
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                29,
+                144,
+                58,
+                175
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              5,
+              25
+            ],
+            "bounds": [
+              [
+                301,
+                203,
+                307,
+                204
+              ],
+              [
+                31,
+                144,
+                71,
+                165
+              ]
+            ],
+            "models": [
+              "cae435",
+              "cb15f8"
+            ],
+            "possibly_overlapping": false
+          }
+        ],
+        "scope": "stable occurrence matching and padded bounds only; strict order failure remains"
+      },
+      "scene": 87,
+      "page": 513,
+      "control_frames": [
+        6077,
+        6077
+      ],
+      "candidate_frames": [
+        6077,
+        6077
+      ]
+    },
+    {
+      "control_quads": 1143,
+      "candidate_quads": 1170,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            184,
+            95,
+            292,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            308,
+            145,
+            393,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            280,
+            102,
+            341,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            337,
+            178,
+            420,
+            205
+          ]
+        }
+      ],
+      "scene": 88,
+      "page": 516,
+      "control_frames": [
+        6079,
+        6079
+      ],
+      "candidate_frames": [
+        6079,
+        6079
+      ]
+    },
+    {
+      "control_quads": 1124,
+      "candidate_quads": 1151,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            191,
+            95,
+            300,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            316,
+            145,
+            402,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            288,
+            102,
+            350,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            345,
+            178,
+            428,
+            205
+          ]
+        }
+      ],
+      "scene": 89,
+      "page": 513,
+      "control_frames": [
+        6081,
+        6081
+      ],
+      "candidate_frames": [
+        6081,
+        6081
+      ]
+    },
+    {
+      "control_quads": 1137,
+      "candidate_quads": 1164,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            195,
+            95,
+            303,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            320,
+            145,
+            407,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            293,
+            102,
+            354,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            349,
+            178,
+            432,
+            205
+          ]
+        }
+      ],
+      "scene": 90,
+      "page": 516,
+      "control_frames": [
+        6083,
+        6083
+      ],
+      "candidate_frames": [
+        6083,
+        6083
+      ]
+    },
+    {
+      "control_quads": 1102,
+      "candidate_quads": 1129,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            324,
+            145,
+            411,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            297,
+            102,
+            359,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            353,
+            178,
+            436,
+            205
+          ]
+        }
+      ],
+      "scene": 91,
+      "page": 513,
+      "control_frames": [
+        6085,
+        6085
+      ],
+      "candidate_frames": [
+        6085,
+        6085
+      ]
+    },
+    {
+      "control_quads": 1109,
+      "candidate_quads": 1136,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            324,
+            145,
+            411,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            297,
+            102,
+            359,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            353,
+            178,
+            436,
+            205
+          ]
+        }
+      ],
+      "scene": 92,
+      "page": 516,
+      "control_frames": [
+        6087,
+        6087
+      ],
+      "candidate_frames": [
+        6087,
+        6087
+      ]
+    },
+    {
+      "control_quads": 1083,
+      "candidate_quads": 1110,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            324,
+            145,
+            411,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            297,
+            102,
+            359,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            353,
+            178,
+            436,
+            205
+          ]
+        }
+      ],
+      "scene": 93,
+      "page": 513,
+      "control_frames": [
+        6089,
+        6089
+      ],
+      "candidate_frames": [
+        6089,
+        6089
+      ]
+    },
+    {
+      "control_quads": 1079,
+      "candidate_quads": 1106,
+      "removed_or_changed": 0,
+      "added": 27,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb1a8b",
+          "quads": 15,
+          "objects": [
+            "11a7c"
+          ],
+          "bounds": [
+            198,
+            95,
+            307,
+            198
+          ]
+        },
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            324,
+            145,
+            411,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            297,
+            102,
+            359,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            353,
+            178,
+            436,
+            205
+          ]
+        }
+      ],
+      "scene": 94,
+      "page": 516,
+      "control_frames": [
+        6091,
+        6091
+      ],
+      "candidate_frames": [
+        6091,
+        6091
+      ]
+    },
+    {
+      "control_quads": 1147,
+      "candidate_quads": 1159,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": false,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            320,
+            145,
+            407,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            293,
+            102,
+            355,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            349,
+            178,
+            432,
+            205
+          ]
+        }
+      ],
+      "reordering_bounds": {
+        "checked": true,
+        "inverted_pairs": 165,
+        "possibly_overlapping_pairs": 0,
+        "padding_native_pixels": 2,
+        "examples": [
+          {
+            "original_indices": [
+              23,
+              34
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                228,
+                95,
+                250,
+                133
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              35
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                203,
+                95,
+                232,
+                133
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              36
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                201,
+                120,
+                232,
+                138
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              37
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                200,
+                133,
+                240,
+                160
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              38
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                195,
+                160,
+                246,
+                198
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              39
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                240,
+                152,
+                255,
+                198
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              40
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                255,
+                161,
+                304,
+                198
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              41
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                232,
+                120,
+                268,
+                142
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              42
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                232,
+                133,
+                268,
+                167
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              43
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                255,
+                142,
+                300,
+                167
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              44
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                250,
+                113,
+                268,
+                142
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              23,
+              45
+            ],
+            "bounds": [
+              [
+                344,
+                206,
+                351,
+                208
+              ],
+              [
+                268,
+                102,
+                298,
+                142
+              ]
+            ],
+            "models": [
+              "cb19a1",
+              "cb1a8b"
+            ],
+            "possibly_overlapping": false
+          }
+        ],
+        "scope": "stable occurrence matching and padded bounds only; strict order failure remains"
+      },
+      "scene": 95,
+      "page": 513,
+      "control_frames": [
+        6093,
+        6093
+      ],
+      "candidate_frames": [
+        6093,
+        6093
+      ]
+    },
+    {
+      "control_quads": 1149,
+      "candidate_quads": 1161,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            320,
+            145,
+            407,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            293,
+            102,
+            355,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            349,
+            178,
+            432,
+            205
+          ]
+        }
+      ],
+      "scene": 96,
+      "page": 516,
+      "control_frames": [
+        6095,
+        6095
+      ],
+      "candidate_frames": [
+        6095,
+        6095
+      ]
+    },
+    {
+      "control_quads": 1139,
+      "candidate_quads": 1151,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            317,
+            145,
+            403,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            289,
+            102,
+            351,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            345,
+            178,
+            428,
+            205
+          ]
+        }
+      ],
+      "scene": 97,
+      "page": 513,
+      "control_frames": [
+        6097,
+        6097
+      ],
+      "candidate_frames": [
+        6097,
+        6097
+      ]
+    },
+    {
+      "control_quads": 1131,
+      "candidate_quads": 1143,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            317,
+            145,
+            403,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            289,
+            102,
+            351,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            345,
+            178,
+            428,
+            205
+          ]
+        }
+      ],
+      "scene": 98,
+      "page": 516,
+      "control_frames": [
+        6099,
+        6099
+      ],
+      "candidate_frames": [
+        6099,
+        6099
+      ]
+    },
+    {
+      "control_quads": 1110,
+      "candidate_quads": 1122,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            313,
+            145,
+            399,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            285,
+            102,
+            347,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            342,
+            178,
+            425,
+            205
+          ]
+        }
+      ],
+      "scene": 99,
+      "page": 513,
+      "control_frames": [
+        6101,
+        6101
+      ],
+      "candidate_frames": [
+        6101,
+        6101
+      ]
+    },
+    {
+      "control_quads": 1105,
+      "candidate_quads": 1117,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            313,
+            145,
+            399,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            285,
+            102,
+            347,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            342,
+            178,
+            425,
+            205
+          ]
+        }
+      ],
+      "scene": 100,
+      "page": 516,
+      "control_frames": [
+        6103,
+        6103
+      ],
+      "candidate_frames": [
+        6103,
+        6103
+      ]
+    },
+    {
+      "control_quads": 1087,
+      "candidate_quads": 1099,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            313,
+            145,
+            399,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            285,
+            102,
+            346,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            342,
+            178,
+            425,
+            205
+          ]
+        }
+      ],
+      "scene": 101,
+      "page": 513,
+      "control_frames": [
+        6105,
+        6105
+      ],
+      "candidate_frames": [
+        6105,
+        6105
+      ]
+    },
+    {
+      "control_quads": 1071,
+      "candidate_quads": 1083,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            309,
+            145,
+            395,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            281,
+            102,
+            343,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            338,
+            178,
+            421,
+            205
+          ]
+        }
+      ],
+      "scene": 102,
+      "page": 516,
+      "control_frames": [
+        6107,
+        6107
+      ],
+      "candidate_frames": [
+        6107,
+        6107
+      ]
+    },
+    {
+      "control_quads": 1068,
+      "candidate_quads": 1080,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            309,
+            145,
+            395,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            281,
+            102,
+            343,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            338,
+            178,
+            421,
+            205
+          ]
+        }
+      ],
+      "scene": 103,
+      "page": 513,
+      "control_frames": [
+        6109,
+        6109
+      ],
+      "candidate_frames": [
+        6109,
+        6109
+      ]
+    },
+    {
+      "control_quads": 1131,
+      "candidate_quads": 1143,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            306,
+            145,
+            391,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            277,
+            102,
+            339,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            335,
+            178,
+            417,
+            205
+          ]
+        }
+      ],
+      "scene": 104,
+      "page": 516,
+      "control_frames": [
+        6111,
+        6111
+      ],
+      "candidate_frames": [
+        6111,
+        6111
+      ]
+    },
+    {
+      "control_quads": 1146,
+      "candidate_quads": 1158,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            302,
+            145,
+            387,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            273,
+            102,
+            335,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            331,
+            178,
+            414,
+            205
+          ]
+        }
+      ],
+      "scene": 105,
+      "page": 513,
+      "control_frames": [
+        6113,
+        6113
+      ],
+      "candidate_frames": [
+        6113,
+        6113
+      ]
+    },
+    {
+      "control_quads": 1122,
+      "candidate_quads": 1134,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            296,
+            145,
+            379,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            265,
+            102,
+            327,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            325,
+            178,
+            406,
+            205
+          ]
+        }
+      ],
+      "scene": 106,
+      "page": 516,
+      "control_frames": [
+        6115,
+        6115
+      ],
+      "candidate_frames": [
+        6115,
+        6115
+      ]
+    },
+    {
+      "control_quads": 1127,
+      "candidate_quads": 1139,
+      "removed_or_changed": 0,
+      "added": 12,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "cb21a2",
+          "quads": 2,
+          "objects": [
+            "13e40"
+          ],
+          "bounds": [
+            289,
+            145,
+            372,
+            198
+          ]
+        },
+        {
+          "model": "cb2314",
+          "quads": 7,
+          "objects": [
+            "11c04"
+          ],
+          "bounds": [
+            258,
+            102,
+            319,
+            198
+          ]
+        },
+        {
+          "model": "cb2375",
+          "quads": 3,
+          "objects": [
+            "13fe4"
+          ],
+          "bounds": [
+            318,
+            178,
+            399,
+            205
+          ]
+        }
+      ],
+      "scene": 107,
+      "page": 513,
+      "control_frames": [
+        6117,
+        6117
+      ],
+      "candidate_frames": [
+        6117,
+        6117
+      ]
+    },
+    {
+      "control_quads": 1195,
+      "candidate_quads": 1195,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": false,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "reordering_bounds": {
+        "checked": true,
+        "inverted_pairs": 428,
+        "possibly_overlapping_pairs": 49,
+        "padding_native_pixels": 2,
+        "examples": [
+          {
+            "original_indices": [
+              7,
+              48
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                260,
+                161,
+                311,
+                198
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              49
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                256,
+                118,
+                275,
+                161
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              50
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                260,
+                141,
+                312,
+                180
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              51
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                250,
+                102,
+                277,
+                118
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              52
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                256,
+                115,
+                277,
+                141
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              53
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                275,
+                115,
+                312,
+                145
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              54
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                260,
+                161,
+                311,
+                198
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              61
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                346,
+                178,
+                374,
+                202
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2375"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              62
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                374,
+                181,
+                392,
+                205
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2375"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              7,
+              63
+            ],
+            "bounds": [
+              [
+                352,
+                160,
+                359,
+                160
+              ],
+              [
+                311,
+                178,
+                346,
+                198
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2375"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              8,
+              48
+            ],
+            "bounds": [
+              [
+                379,
+                159,
+                383,
+                166
+              ],
+              [
+                260,
+                161,
+                311,
+                198
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          },
+          {
+            "original_indices": [
+              8,
+              49
+            ],
+            "bounds": [
+              [
+                379,
+                159,
+                383,
+                166
+              ],
+              [
+                256,
+                118,
+                275,
+                161
+              ]
+            ],
+            "models": [
+              "cb2234",
+              "cb2314"
+            ],
+            "possibly_overlapping": false
+          }
+        ],
+        "scope": "stable occurrence matching and padded bounds only; strict order failure remains"
+      },
+      "scene": 108,
+      "page": 516,
+      "control_frames": [
+        6119,
+        6119
+      ],
+      "candidate_frames": [
+        6119,
+        6119
+      ]
+    },
+    {
+      "control_quads": 1276,
+      "candidate_quads": 1276,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 109,
+      "page": 513,
+      "control_frames": [
+        6121,
+        6121
+      ],
+      "candidate_frames": [
+        6121,
+        6121
+      ]
+    },
+    {
+      "control_quads": 1259,
+      "candidate_quads": 1259,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 110,
+      "page": 516,
+      "control_frames": [
+        6123,
+        6123
+      ],
+      "candidate_frames": [
+        6123,
+        6123
+      ]
+    },
+    {
+      "control_quads": 1265,
+      "candidate_quads": 1265,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 111,
+      "page": 513,
+      "control_frames": [
+        6125,
+        6125
+      ],
+      "candidate_frames": [
+        6125,
+        6125
+      ]
+    },
+    {
+      "control_quads": 1249,
+      "candidate_quads": 1249,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 112,
+      "page": 516,
+      "control_frames": [
+        6127,
+        6127
+      ],
+      "candidate_frames": [
+        6127,
+        6127
+      ]
+    },
+    {
+      "control_quads": 1257,
+      "candidate_quads": 1257,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 113,
+      "page": 513,
+      "control_frames": [
+        6129,
+        6129
+      ],
+      "candidate_frames": [
+        6129,
+        6129
+      ]
+    },
+    {
+      "control_quads": 1241,
+      "candidate_quads": 1241,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 114,
+      "page": 516,
+      "control_frames": [
+        6131,
+        6131
+      ],
+      "candidate_frames": [
+        6131,
+        6131
+      ]
+    },
+    {
+      "control_quads": 1234,
+      "candidate_quads": 1234,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 115,
+      "page": 513,
+      "control_frames": [
+        6133,
+        6133
+      ],
+      "candidate_frames": [
+        6133,
+        6133
+      ]
+    },
+    {
+      "control_quads": 1289,
+      "candidate_quads": 1289,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 116,
+      "page": 516,
+      "control_frames": [
+        6135,
+        6135
+      ],
+      "candidate_frames": [
+        6135,
+        6135
+      ]
+    },
+    {
+      "control_quads": 1275,
+      "candidate_quads": 1275,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [],
+      "scene": 117,
+      "page": 513,
+      "control_frames": [
+        6137,
+        6137
+      ],
+      "candidate_frames": [
+        6137,
+        6137
+      ]
+    }
+  ]
+}

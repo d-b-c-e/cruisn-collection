@@ -10,10 +10,11 @@ This is an actively tested alpha. Rendering defects beyond the tested routes,
 collision feedback and telemetry coverage remain open work.
 
 **Settings → Display → Graphics Experiments** now includes optional **Distant
-Scenery** for World 2.4: a measured Germany mountain appears during the starting
-sequence instead of popping in after driving begins. This limited extension
-preserves its later appearance and passes a full recorded-drive repeat. More tree
-variants and other games need separate investigation. **Widescreen Terrain**
+Scenery** for World 2.4: five identified mountains, four small tree variants and a
+forest strip can appear earlier. Mountains also activate sooner along the track,
+improving a measured Germany bend as well as the starting sequence. The option
+remains experimental; pop-in is still visible and other games need separate
+investigation. **Widescreen Terrain**
 repairs missing edge geometry; **Margin Fill** is retired. Optional per-game
 **Impact Cues** are available under Force Feedback, with physical feel still
 awaiting validation.
@@ -21,6 +22,7 @@ awaiting validation.
 - [Native scenery changes and evidence](docs/reviews/2026-09-06-native-scenery.md)
 - [Four-tree coverage and gameplay appearance tracing](docs/reviews/2026-09-06-scenery-coverage.md)
 - [Expanded mountains/forest and object activation](docs/reviews/2026-09-06-expanded-scenery.md)
+- [Earlier mountain activation and its remaining limits](docs/reviews/2026-09-06-background-activation.md)
 - [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
 - [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
 - [Independent project assessment](docs/reviews/2026-09-05-assessment.md)
