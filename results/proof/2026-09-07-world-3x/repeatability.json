@@ -1,0 +1,88 @@
+{
+  "comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "distance": {
+    "cpu_percent": 100,
+    "far": 240000,
+    "first_profile_frame": 0,
+    "frames": [
+      0,
+      8782
+    ],
+    "lead": 8,
+    "maximum_index": 15000,
+    "peak_extended_reads": 4161,
+    "peak_far_tests": 744,
+    "rows": 8783,
+    "schema": 1,
+    "scope": "Validate and summarize native global-distance counters, not visual quality.",
+    "sha256": "2477df12608985be32ea4ed096719cff878f9b336bdbfdb35eb621d8b567008d",
+    "totals": {
+      "extended_reads": 7926248,
+      "extra_far_tests": 352802,
+      "far_tests": 1668225,
+      "pending_comparisons": 3302
+    }
+  },
+  "gl": {
+    "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-repeat\\run\\gl-snap",
+    "different_frames": [],
+    "frames": 321,
+    "passed": true,
+    "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-matrix\\far3-lead8\\run\\gl-snap",
+    "scope": "completed GL frame pixels"
+  },
+  "motion": {
+    "actual_adc_reads": [
+      21843,
+      21843
+    ],
+    "adc_frame_value_pc_equal": true,
+    "adc_times_equal": true,
+    "camera_equal": true,
+    "camera_equal_frame_intervals": [
+      [
+        1500,
+        8780
+      ]
+    ],
+    "camera_equal_frames": 7281,
+    "camera_intervals": [
+      [
+        1500,
+        8780
+      ],
+      [
+        1500,
+        8780
+      ]
+    ],
+    "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+    "camera_samples": [
+      7281,
+      7281
+    ],
+    "first_adc_frame_value_pc_difference": null,
+    "first_adc_time_difference_index": null,
+    "first_camera_difference_frame": null,
+    "passed": true,
+    "same_camera_interval": true,
+    "schema": 1,
+    "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+    "sources": [
+      {
+        "world-adc.csv": "490c15da9320f032fb444d1531ba1a8e66b5484b3719ecdde578d551e2e17baf",
+        "world-camera.csv": "6452aba93b113b7a80c8ec3af488b0cc27deb2caf0a091e0827f7278368ffad6"
+      },
+      {
+        "world-adc.csv": "490c15da9320f032fb444d1531ba1a8e66b5484b3719ecdde578d551e2e17baf",
+        "world-camera.csv": "6452aba93b113b7a80c8ec3af488b0cc27deb2caf0a091e0827f7278368ffad6"
+      }
+    ]
+  }
+}

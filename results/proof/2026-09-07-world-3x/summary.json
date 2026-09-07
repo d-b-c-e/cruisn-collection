@@ -1,0 +1,1072 @@
+[
+  {
+    "trial": "original",
+    "far": 80000,
+    "lead": 0,
+    "timing": {
+      "emulated_seconds": 125.67260285672599,
+      "emulation_ratio": 0.9990038742306038,
+      "first_frame": 1500,
+      "host_frame_ms": {
+        "p50": 17.80899999998553,
+        "p95": 25.147059999999748,
+        "p99": 27.86594100000201,
+        "worst": 138.0077999999969
+      },
+      "host_seconds": 125.7979134,
+      "inputs": {
+        ":ACCEL": {
+          "distinct": 206,
+          "maximum": 255,
+          "minimum": 0
+        },
+        ":BRAKE": {
+          "distinct": 1,
+          "maximum": 0,
+          "minimum": 0
+        },
+        ":CONF": {
+          "distinct": 1,
+          "maximum": 5,
+          "minimum": 5
+        },
+        ":DSW": {
+          "distinct": 1,
+          "maximum": 63820,
+          "minimum": 63820
+        },
+        ":FAKE": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        },
+        ":IN0": {
+          "distinct": 1,
+          "maximum": 50175,
+          "minimum": 50175
+        },
+        ":IN1": {
+          "distinct": 1,
+          "maximum": 65535,
+          "minimum": 65535
+        },
+        ":WHEEL": {
+          "distinct": 196,
+          "maximum": 227,
+          "minimum": 29
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        }
+      },
+      "last_frame": 8780,
+      "schema": 1,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+    },
+    "counters": {
+      "cpu_percent": 100,
+      "far": 80000,
+      "first_profile_frame": 0,
+      "frames": [
+        0,
+        8782
+      ],
+      "lead": 0,
+      "maximum_index": 0,
+      "peak_extended_reads": 0,
+      "peak_far_tests": 560,
+      "rows": 8783,
+      "schema": 1,
+      "scope": "Validate and summarize native global-distance counters, not visual quality.",
+      "sha256": "607e5ba5cc43a98e293f0411b2e1e5b12d60b3ba9554f72c8b9465c8efb51ef3",
+      "totals": {
+        "extended_reads": 0,
+        "extra_far_tests": 0,
+        "far_tests": 1201284,
+        "pending_comparisons": 0
+      }
+    },
+    "selection": {
+      "schema": 1,
+      "first_frame": 1500,
+      "last_frame": 2000,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 8.631360086312998,
+      "host_seconds": 8.637588099999999,
+      "emulation_ratio": 0.9992789638015964,
+      "host_frame_ms": {
+        "p50": 18.861850000000402,
+        "p95": 25.62354000000102,
+        "p99": 28.465837000001063,
+        "worst": 31.251600000004487
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 26
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 105,
+          "maximum": 128,
+          "distinct": 22
+        }
+      }
+    },
+    "driving": {
+      "schema": 1,
+      "first_frame": 2500,
+      "last_frame": 7500,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 86.313600863136,
+      "host_seconds": 86.4378457,
+      "emulation_ratio": 0.9985626106729313,
+      "host_frame_ms": {
+        "p50": 19.866650000004427,
+        "p95": 25.079415000002214,
+        "p99": 27.938393999991867,
+        "worst": 138.0077999999969
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 194
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 191
+        }
+      }
+    }
+  },
+  {
+    "trial": "far2-lead8",
+    "far": 160000,
+    "lead": 8,
+    "timing": {
+      "emulated_seconds": 125.67260285672599,
+      "emulation_ratio": 1.0000083794361387,
+      "first_frame": 1500,
+      "host_frame_ms": {
+        "p50": 16.582399999990116,
+        "p95": 25.197489999988672,
+        "p99": 27.33601499999395,
+        "worst": 69.90439999999865
+      },
+      "host_seconds": 125.67154979999998,
+      "inputs": {
+        ":ACCEL": {
+          "distinct": 206,
+          "maximum": 255,
+          "minimum": 0
+        },
+        ":BRAKE": {
+          "distinct": 1,
+          "maximum": 0,
+          "minimum": 0
+        },
+        ":CONF": {
+          "distinct": 1,
+          "maximum": 5,
+          "minimum": 5
+        },
+        ":DSW": {
+          "distinct": 1,
+          "maximum": 63820,
+          "minimum": 63820
+        },
+        ":FAKE": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        },
+        ":IN0": {
+          "distinct": 1,
+          "maximum": 50175,
+          "minimum": 50175
+        },
+        ":IN1": {
+          "distinct": 1,
+          "maximum": 65535,
+          "minimum": 65535
+        },
+        ":WHEEL": {
+          "distinct": 196,
+          "maximum": 227,
+          "minimum": 29
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        }
+      },
+      "last_frame": 8780,
+      "schema": 1,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+    },
+    "counters": {
+      "cpu_percent": 100,
+      "far": 160000,
+      "first_profile_frame": 0,
+      "frames": [
+        0,
+        8782
+      ],
+      "lead": 8,
+      "maximum_index": 10000,
+      "peak_extended_reads": 3666,
+      "peak_far_tests": 744,
+      "rows": 8783,
+      "schema": 1,
+      "scope": "Validate and summarize native global-distance counters, not visual quality.",
+      "sha256": "ce90bff3dd1506956b7894f1ad7ec961014a9e567bebce193fc2ab58922e80a2",
+      "totals": {
+        "extended_reads": 7425141,
+        "extra_far_tests": 347915,
+        "far_tests": 1668225,
+        "pending_comparisons": 3302
+      }
+    },
+    "selection": {
+      "schema": 1,
+      "first_frame": 1500,
+      "last_frame": 2000,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 8.631360086312998,
+      "host_seconds": 8.639402099999998,
+      "emulation_ratio": 0.9990691469624965,
+      "host_frame_ms": {
+        "p50": 18.097800000001385,
+        "p95": 25.230619999999067,
+        "p99": 27.359171000001187,
+        "worst": 29.62229999999977
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 26
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 105,
+          "maximum": 128,
+          "distinct": 22
+        }
+      }
+    },
+    "driving": {
+      "schema": 1,
+      "first_frame": 2500,
+      "last_frame": 7500,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 86.313600863136,
+      "host_seconds": 86.3108381,
+      "emulation_ratio": 1.0000320094578714,
+      "host_frame_ms": {
+        "p50": 15.677549999999485,
+        "p95": 25.17342499999984,
+        "p99": 26.965075000009907,
+        "worst": 69.90439999999865
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 194
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 191
+        }
+      }
+    }
+  },
+  {
+    "trial": "far3-lead8",
+    "far": 240000,
+    "lead": 8,
+    "timing": {
+      "emulated_seconds": 125.67260285672599,
+      "emulation_ratio": 1.0000057423881865,
+      "first_frame": 1500,
+      "host_frame_ms": {
+        "p50": 17.288899999989837,
+        "p95": 25.037125000005386,
+        "p99": 26.853423000001797,
+        "worst": 31.956799999989016
+      },
+      "host_seconds": 125.6718812,
+      "inputs": {
+        ":ACCEL": {
+          "distinct": 206,
+          "maximum": 255,
+          "minimum": 0
+        },
+        ":BRAKE": {
+          "distinct": 1,
+          "maximum": 0,
+          "minimum": 0
+        },
+        ":CONF": {
+          "distinct": 1,
+          "maximum": 5,
+          "minimum": 5
+        },
+        ":DSW": {
+          "distinct": 1,
+          "maximum": 63820,
+          "minimum": 63820
+        },
+        ":FAKE": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        },
+        ":IN0": {
+          "distinct": 1,
+          "maximum": 50175,
+          "minimum": 50175
+        },
+        ":IN1": {
+          "distinct": 1,
+          "maximum": 65535,
+          "minimum": 65535
+        },
+        ":WHEEL": {
+          "distinct": 196,
+          "maximum": 227,
+          "minimum": 29
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        }
+      },
+      "last_frame": 8780,
+      "schema": 1,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+    },
+    "counters": {
+      "cpu_percent": 100,
+      "far": 240000,
+      "first_profile_frame": 0,
+      "frames": [
+        0,
+        8782
+      ],
+      "lead": 8,
+      "maximum_index": 15000,
+      "peak_extended_reads": 4161,
+      "peak_far_tests": 744,
+      "rows": 8783,
+      "schema": 1,
+      "scope": "Validate and summarize native global-distance counters, not visual quality.",
+      "sha256": "2477df12608985be32ea4ed096719cff878f9b336bdbfdb35eb621d8b567008d",
+      "totals": {
+        "extended_reads": 7926248,
+        "extra_far_tests": 352802,
+        "far_tests": 1668225,
+        "pending_comparisons": 3302
+      }
+    },
+    "selection": {
+      "schema": 1,
+      "first_frame": 1500,
+      "last_frame": 2000,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 8.631360086312998,
+      "host_seconds": 8.640269800000002,
+      "emulation_ratio": 0.9989688153387289,
+      "host_frame_ms": {
+        "p50": 17.90015000000089,
+        "p95": 25.233870000000632,
+        "p99": 27.73527299999877,
+        "worst": 29.37509999999932
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 26
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 105,
+          "maximum": 128,
+          "distinct": 22
+        }
+      }
+    },
+    "driving": {
+      "schema": 1,
+      "first_frame": 2500,
+      "last_frame": 7500,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 86.313600863136,
+      "host_seconds": 86.31012709999999,
+      "emulation_ratio": 1.0000402474570798,
+      "host_frame_ms": {
+        "p50": 17.918900000005067,
+        "p95": 25.03681000000242,
+        "p99": 26.728811999997298,
+        "worst": 31.23049999999239
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 194
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 191
+        }
+      }
+    }
+  },
+  {
+    "trial": "far2-lead12",
+    "far": 160000,
+    "lead": 12,
+    "timing": {
+      "emulated_seconds": 125.67260285672599,
+      "emulation_ratio": 0.9999911489584576,
+      "first_frame": 1500,
+      "host_frame_ms": {
+        "p50": 17.251299999998082,
+        "p95": 25.147370000000357,
+        "p99": 26.511672000006783,
+        "worst": 58.35409999999541
+      },
+      "host_seconds": 125.6737152,
+      "inputs": {
+        ":ACCEL": {
+          "distinct": 206,
+          "maximum": 255,
+          "minimum": 0
+        },
+        ":BRAKE": {
+          "distinct": 1,
+          "maximum": 0,
+          "minimum": 0
+        },
+        ":CONF": {
+          "distinct": 1,
+          "maximum": 5,
+          "minimum": 5
+        },
+        ":DSW": {
+          "distinct": 1,
+          "maximum": 63820,
+          "minimum": 63820
+        },
+        ":FAKE": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        },
+        ":IN0": {
+          "distinct": 1,
+          "maximum": 50175,
+          "minimum": 50175
+        },
+        ":IN1": {
+          "distinct": 1,
+          "maximum": 65535,
+          "minimum": 65535
+        },
+        ":WHEEL": {
+          "distinct": 196,
+          "maximum": 227,
+          "minimum": 29
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        }
+      },
+      "last_frame": 8780,
+      "schema": 1,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+    },
+    "counters": {
+      "cpu_percent": 100,
+      "far": 160000,
+      "first_profile_frame": 0,
+      "frames": [
+        0,
+        8782
+      ],
+      "lead": 12,
+      "maximum_index": 10000,
+      "peak_extended_reads": 5287,
+      "peak_far_tests": 751,
+      "rows": 8783,
+      "schema": 1,
+      "scope": "Validate and summarize native global-distance counters, not visual quality.",
+      "sha256": "969852466e042f95602e17c0d139fc9844f7fae13d094f0a1d9332cf28ea586a",
+      "totals": {
+        "extended_reads": 9756045,
+        "extra_far_tests": 492687,
+        "far_tests": 1602862,
+        "pending_comparisons": 2762
+      }
+    },
+    "selection": {
+      "schema": 1,
+      "first_frame": 1500,
+      "last_frame": 2000,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 8.631360086312998,
+      "host_seconds": 8.637414800000002,
+      "emulation_ratio": 0.9992990132085583,
+      "host_frame_ms": {
+        "p50": 15.333999999999293,
+        "p95": 24.91741499999982,
+        "p99": 26.23558199999856,
+        "worst": 58.35409999999541
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 26
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 105,
+          "maximum": 128,
+          "distinct": 22
+        }
+      }
+    },
+    "driving": {
+      "schema": 1,
+      "first_frame": 2500,
+      "last_frame": 7500,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 86.313600863136,
+      "host_seconds": 86.31195379999998,
+      "emulation_ratio": 1.0000190826770048,
+      "host_frame_ms": {
+        "p50": 17.186750000000472,
+        "p95": 25.31870999999981,
+        "p99": 26.649129999999985,
+        "worst": 33.49349999999873
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 194
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 191
+        }
+      }
+    }
+  },
+  {
+    "trial": "far3-lead12",
+    "far": 240000,
+    "lead": 12,
+    "timing": {
+      "emulated_seconds": 125.67260285672599,
+      "emulation_ratio": 0.9991827968427898,
+      "first_frame": 1500,
+      "host_frame_ms": {
+        "p50": 17.253449999998338,
+        "p95": 25.19471999999965,
+        "p99": 26.861544999995743,
+        "worst": 113.16309999999419
+      },
+      "host_seconds": 125.7753869,
+      "inputs": {
+        ":ACCEL": {
+          "distinct": 206,
+          "maximum": 255,
+          "minimum": 0
+        },
+        ":BRAKE": {
+          "distinct": 1,
+          "maximum": 0,
+          "minimum": 0
+        },
+        ":CONF": {
+          "distinct": 1,
+          "maximum": 5,
+          "minimum": 5
+        },
+        ":DSW": {
+          "distinct": 1,
+          "maximum": 63820,
+          "minimum": 63820
+        },
+        ":FAKE": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        },
+        ":IN0": {
+          "distinct": 1,
+          "maximum": 50175,
+          "minimum": 50175
+        },
+        ":IN1": {
+          "distinct": 1,
+          "maximum": 65535,
+          "minimum": 65535
+        },
+        ":WHEEL": {
+          "distinct": 196,
+          "maximum": 227,
+          "minimum": 29
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "distinct": 1,
+          "maximum": 6,
+          "minimum": 6
+        }
+      },
+      "last_frame": 8780,
+      "schema": 1,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+    },
+    "counters": {
+      "cpu_percent": 100,
+      "far": 240000,
+      "first_profile_frame": 0,
+      "frames": [
+        0,
+        8782
+      ],
+      "lead": 12,
+      "maximum_index": 15000,
+      "peak_extended_reads": 5287,
+      "peak_far_tests": 751,
+      "rows": 8783,
+      "schema": 1,
+      "scope": "Validate and summarize native global-distance counters, not visual quality.",
+      "sha256": "99bd8877650d5f36f663aac405c8c4da817be10450c0046179e8aaabc10c6ea5",
+      "totals": {
+        "extended_reads": 9993440,
+        "extra_far_tests": 502463,
+        "far_tests": 1588703,
+        "pending_comparisons": 2763
+      }
+    },
+    "selection": {
+      "schema": 1,
+      "first_frame": 1500,
+      "last_frame": 2000,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 8.631360086312998,
+      "host_seconds": 8.639024300000003,
+      "emulation_ratio": 0.999112838045032,
+      "host_frame_ms": {
+        "p50": 18.159849999999977,
+        "p95": 25.46466500000068,
+        "p99": 27.487763000000662,
+        "worst": 29.2412000000013
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 26
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 105,
+          "maximum": 128,
+          "distinct": 22
+        }
+      }
+    },
+    "driving": {
+      "schema": 1,
+      "first_frame": 2500,
+      "last_frame": 7500,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 86.313600863136,
+      "host_seconds": 86.41663270000001,
+      "emulation_ratio": 0.9988077314095113,
+      "host_frame_ms": {
+        "p50": 18.05500000000393,
+        "p95": 25.381829999991368,
+        "p99": 27.175942000006764,
+        "worst": 113.16309999999419
+      },
+      "inputs": {
+        ":ACCEL": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 194
+        },
+        ":BRAKE": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":CONF": {
+          "minimum": 5,
+          "maximum": 5,
+          "distinct": 1
+        },
+        ":DSW": {
+          "minimum": 63820,
+          "maximum": 63820,
+          "distinct": 1
+        },
+        ":FAKE": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":IN0": {
+          "minimum": 50175,
+          "maximum": 50175,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":serial_pic2:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":WHEEL": {
+          "minimum": 29,
+          "maximum": 227,
+          "distinct": 191
+        }
+      }
+    }
+  }
+]

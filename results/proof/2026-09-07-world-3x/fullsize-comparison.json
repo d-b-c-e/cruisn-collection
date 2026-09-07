@@ -1,0 +1,9 @@
+{
+  "scope": "completed GL frame pixels",
+  "passed": true,
+  "frames": 8,
+  "different_frames": [],
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-fullsize\\far2-lead8\\run\\gl-snap",
+  "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-fullsize\\far3-lead8-logged\\run\\gl-snap",
+  "pixel_changes": []
+}

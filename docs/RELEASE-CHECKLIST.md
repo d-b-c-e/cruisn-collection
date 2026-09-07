@@ -7,7 +7,8 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
 
 ## Roadmap
 
-1. **Choose and freeze the candidate.** Finish the 2x/3x World distance comparison.
+1. **Choose and freeze the candidate.** The [2x/3x comparison](reviews/2026-09-07-world-3x-and-release.md)
+   is complete: 3x adds no demonstrated mountain benefit over 2x at equal lookahead.
    Keep distance experiments off for the release unless fresh Germany and another
    World level justify promotion. Freeze source, emulator, DLLs, toolkit profiles,
    default graphics settings and package hash. Do not make distance elimination a
@@ -33,7 +34,7 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
 | Area | Automated evidence | Attended acceptance still required |
 |---|---|---|
 | Launch/play | Seven isolated replay cases, all four games; complete frames and timing gates | Fresh launch, complete race, retry, audio, game switching |
-| Free play | All seed bytes/mirrors = 1; first-launch copy; existing NVRAM preserved | Start/restart without coins, then relaunch |
+| Free play | All seed bytes/mirrors = 1; Off Road checksum; real fresh boot/replay persistence; existing NVRAM preserved | Start/restart without coins, then relaunch |
 | Manual transmission | Generated H-pattern/sequential ports, World 2.4 selection, cabinet configuration | Select MANUAL; hold gears 1–4; neutral/downshift; one shift per paddle press |
 | Bind/rebind | New button replaces old; high buttons translated; keyboard fallback and inactive-mode bindings retained | Wizard, persistence after relaunch, sparse axes, wheel reconnect; no stuck inputs |
 | Force feedback | Toolkit signal fixtures and per-game source traces; automated output always off | Correct direction, comparable default weight, distinct car/wall impacts, no oscillation; pause/exit releases torque |
@@ -44,8 +45,10 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
 Fresh defaults: CRT on, full widescreen, scale 4, World 2.4, FFB 50% with
 `cruisn-vunit@2`; distance/terrain/scenery/seam-alignment experiments and added
 impact cues off. These are **fresh-install defaults**, not an instruction to reset
-saved player choices. The verified seed correction changes seven bytes across
-USA, World 2.5, Off Road and Exotica; World 2.4 already had free play on.
+saved player choices. The seed correction changes seven setting bytes across
+USA, World 2.5, Off Road and Exotica, plus Off Road's checksum byte. World 2.4
+already had free play on. Off Road discards a free-play edit with a stale checksum;
+the launcher toggle and NVRAM tool now maintain it too.
 
 ## Short attended drive protocol
 
@@ -72,14 +75,16 @@ USA, World 2.5, Off Road and Exotica; World 2.4 already had free play on.
 ```powershell
 python -m unittest discover -s tests -v
 python harness/run_regressions.py --candidate E:/Source/mame-src/vunit.exe --output results/diagnostics/release-candidate
-python harness/release_gate.py --candidate E:/Source/mame-src/vunit.exe --regressions results/diagnostics/release-candidate/report.json --init-attended results/diagnostics/release-attended.json --report results/diagnostics/release-readiness.json
+python harness/check_fresh_boots.py --candidate E:/Source/mame-src/vunit.exe --output results/diagnostics/release-fresh-boots
+python harness/release_gate.py --candidate E:/Source/mame-src/vunit.exe --regressions results/diagnostics/release-candidate/report.json --fresh-boots results/diagnostics/release-fresh-boots/report.json --init-attended results/diagnostics/release-attended.json --report results/diagnostics/release-readiness.json
 # Only with a person at the wheel; uses SAVED settings, so confirm release defaults first:
 python harness/record_drive.py --game world --title "Release World manual Germany" --with-ffb
 ```
 
 Use a new output path each run. The gate exits 1 while anything is missing. Its
 configuration checks run in a temporary rig and do not launch games. It requires
-the full suite, matching binary/source/suite hashes and no physical output.
+the full suite, all five fresh-seed boot/persistence checks, matching binary/source/suite
+hashes and no physical output. A matching replay alone cannot clear failed persistence.
 Configuration tests that are skipped on non-Windows cannot clear the gate.
 The release workflow now runs the harness tests and `check_release_package.py`
 before publishing: required runtime/source files, candidate emulator hash, free-play

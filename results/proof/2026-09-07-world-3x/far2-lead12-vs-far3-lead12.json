@@ -1,0 +1,3874 @@
+{
+  "motion": {
+    "schema": 1,
+    "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+    "passed": false,
+    "camera_equal": false,
+    "same_camera_interval": true,
+    "camera_samples": [
+      7281,
+      7281
+    ],
+    "camera_intervals": [
+      [
+        1500,
+        8780
+      ],
+      [
+        1500,
+        8780
+      ]
+    ],
+    "first_camera_difference_frame": 1992,
+    "camera_equal_frame_intervals": [
+      [
+        1500,
+        1991
+      ],
+      [
+        1993,
+        2841
+      ],
+      [
+        2843,
+        2869
+      ],
+      [
+        2871,
+        2875
+      ],
+      [
+        2877,
+        3613
+      ],
+      [
+        3615,
+        3821
+      ],
+      [
+        3823,
+        3825
+      ],
+      [
+        3827,
+        3947
+      ],
+      [
+        8561,
+        8780
+      ]
+    ],
+    "camera_equal_frames": 2661,
+    "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+    "actual_adc_reads": [
+      21843,
+      21843
+    ],
+    "adc_frame_value_pc_equal": true,
+    "first_adc_frame_value_pc_difference": null,
+    "adc_times_equal": false,
+    "first_adc_time_difference_index": 997,
+    "sources": [
+      {
+        "world-camera.csv": "f0c552f303a03d254ba02463bfcff5dc5465180147caa110a73ae6c27bcfb29e",
+        "world-adc.csv": "dc5d1e87e178086c46e73cf54a4ba8261b8c9885aa97f0d64e9d34404b4a26b5"
+      },
+      {
+        "world-camera.csv": "0fc0995fbdbfd529c66faa5752eefaec785f673b339eeb305e36cfb0aacb4655",
+        "world-adc.csv": "094c029ca1558655b131706f384a582fbf8b576e52ab65d8c7b5b6f2e373e558"
+      }
+    ]
+  },
+  "gl": {
+    "scope": "completed GL frame pixels",
+    "passed": false,
+    "frames": 321,
+    "different_frames": [
+      2840,
+      2860,
+      3680,
+      3700,
+      3760,
+      3780,
+      3820,
+      3840,
+      3860,
+      3900,
+      3920,
+      3940,
+      3960,
+      3980,
+      4000,
+      4020,
+      4040,
+      4060,
+      4080,
+      4100,
+      4120,
+      4140,
+      4160,
+      4180,
+      4200,
+      4220,
+      4240,
+      4260,
+      4280,
+      4300,
+      4320,
+      4340,
+      4360,
+      4380,
+      4400,
+      4420,
+      4440,
+      4460,
+      4480,
+      4500,
+      4520,
+      4540,
+      4560,
+      4580,
+      4600,
+      4620,
+      4640,
+      4660,
+      4680,
+      4700,
+      4720,
+      4740,
+      4760,
+      4780,
+      4800,
+      4820,
+      4840,
+      4860,
+      4880,
+      4900,
+      4920,
+      4940,
+      4960,
+      4980,
+      5000,
+      5020,
+      5040,
+      5060,
+      5080,
+      5100,
+      5120,
+      5140,
+      5160,
+      5180,
+      5200,
+      5220,
+      5240,
+      5260,
+      5280,
+      5300,
+      5320,
+      5340,
+      5360,
+      5380,
+      5400,
+      5420,
+      5440,
+      5460,
+      5480,
+      5500,
+      5520,
+      5540,
+      5560,
+      5580,
+      5600,
+      5620,
+      5640,
+      5660,
+      5680,
+      5700,
+      5720,
+      5740,
+      5760,
+      5780,
+      5800,
+      5820,
+      5840,
+      5860,
+      5880,
+      5900,
+      5920,
+      5940,
+      5960,
+      5980,
+      6000,
+      6020,
+      6040,
+      6060,
+      6080,
+      6100,
+      6120,
+      6140,
+      6160,
+      6180,
+      6200,
+      6220,
+      6240,
+      6260,
+      6280,
+      6300,
+      6320,
+      6340,
+      6360,
+      6380,
+      6400,
+      6420,
+      6440,
+      6460,
+      6480,
+      6500,
+      6520,
+      6540,
+      6560,
+      6580,
+      6600,
+      6620,
+      6640,
+      6660,
+      6680,
+      6700,
+      6720,
+      6740,
+      6760,
+      6780,
+      6800,
+      6820,
+      6840,
+      6860,
+      6880,
+      6900,
+      6920,
+      6940,
+      6960,
+      6980,
+      7000,
+      7020,
+      7040,
+      7060,
+      7080,
+      7100,
+      7120,
+      7140,
+      7160,
+      7180,
+      7200,
+      7220,
+      7240,
+      7260,
+      7280,
+      7300,
+      7320,
+      7340,
+      7360,
+      7380,
+      7400,
+      7420,
+      7440,
+      7460,
+      7480,
+      7500,
+      7520,
+      7540,
+      7560,
+      7580,
+      7600,
+      7620,
+      7640,
+      7660,
+      7680
+    ],
+    "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-matrix\\far2-lead12\\run\\gl-snap",
+    "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-matrix\\far3-lead12\\run\\gl-snap",
+    "pixel_changes": [
+      {
+        "frame": 2840,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 57,
+        "bounds_xyxy_exclusive": [
+          266,
+          201,
+          281,
+          219
+        ]
+      },
+      {
+        "frame": 2860,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 10,
+        "bounds_xyxy_exclusive": [
+          272,
+          201,
+          280,
+          207
+        ]
+      },
+      {
+        "frame": 3680,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 149,
+        "bounds_xyxy_exclusive": [
+          209,
+          329,
+          303,
+          340
+        ]
+      },
+      {
+        "frame": 3700,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 182,
+        "bounds_xyxy_exclusive": [
+          182,
+          352,
+          317,
+          369
+        ]
+      },
+      {
+        "frame": 3760,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 5,
+        "bounds_xyxy_exclusive": [
+          210,
+          225,
+          221,
+          227
+        ]
+      },
+      {
+        "frame": 3780,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 3,
+        "bounds_xyxy_exclusive": [
+          200,
+          224,
+          216,
+          227
+        ]
+      },
+      {
+        "frame": 3820,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 12,
+        "bounds_xyxy_exclusive": [
+          141,
+          225,
+          164,
+          230
+        ]
+      },
+      {
+        "frame": 3840,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 12,
+        "bounds_xyxy_exclusive": [
+          87,
+          225,
+          117,
+          232
+        ]
+      },
+      {
+        "frame": 3860,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 14,
+        "bounds_xyxy_exclusive": [
+          7,
+          225,
+          37,
+          231
+        ]
+      },
+      {
+        "frame": 3900,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 1142,
+        "bounds_xyxy_exclusive": [
+          199,
+          332,
+          318,
+          368
+        ]
+      },
+      {
+        "frame": 3920,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 2536,
+        "bounds_xyxy_exclusive": [
+          180,
+          329,
+          336,
+          369
+        ]
+      },
+      {
+        "frame": 3940,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 1961,
+        "bounds_xyxy_exclusive": [
+          181,
+          337,
+          338,
+          369
+        ]
+      },
+      {
+        "frame": 3960,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 44456,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 3980,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 60231,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4000,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 65779,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4020,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 92020,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4040,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 103912,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4060,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 91620,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4080,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 94972,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4100,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 93551,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4120,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 98055,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4140,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 116838,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4160,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 100475,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4180,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 100759,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4200,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 114990,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4220,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 106735,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4240,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 108716,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4260,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 111877,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4280,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 102863,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4300,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 119796,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4320,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 99763,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4340,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 100850,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4360,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 97202,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4380,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 103122,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4400,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 99902,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4420,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 101799,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4440,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 106002,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4460,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 106467,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4480,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 82564,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4500,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 66709,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4520,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 63195,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4540,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 77039,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4560,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 94871,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4580,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 96159,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4600,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 93737,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4620,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 91571,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4640,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 82750,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4660,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 77620,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4680,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 77158,
+        "bounds_xyxy_exclusive": [
+          0,
+          84,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4700,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 81970,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4720,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 89037,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4740,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 99684,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4760,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 81658,
+        "bounds_xyxy_exclusive": [
+          0,
+          147,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4780,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 78827,
+        "bounds_xyxy_exclusive": [
+          0,
+          105,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4800,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 81946,
+        "bounds_xyxy_exclusive": [
+          0,
+          90,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4820,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 77797,
+        "bounds_xyxy_exclusive": [
+          0,
+          132,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4840,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 108743,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4860,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 114625,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4880,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 87402,
+        "bounds_xyxy_exclusive": [
+          0,
+          110,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4900,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 108178,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4920,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 124891,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4940,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 124334,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4960,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 123819,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 4980,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 126015,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5000,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 125511,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5020,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 127080,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5040,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 129746,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5060,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 131848,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5080,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133067,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5100,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135702,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5120,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133970,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5140,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134908,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5160,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 131535,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5180,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134267,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5200,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134915,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5220,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135566,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5240,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136684,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5260,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 137275,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5280,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 137396,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5300,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135771,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5320,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134699,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5340,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135137,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5360,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136445,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5380,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132493,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5400,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134125,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5420,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135166,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5440,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135357,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5460,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134724,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5480,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135112,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5500,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134848,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5520,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133939,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5540,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134269,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5560,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135236,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5580,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133868,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5600,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135286,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5620,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134795,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5640,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132223,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5660,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133373,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5680,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134298,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5700,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134441,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5720,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134980,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5740,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133842,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5760,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135925,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5780,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133063,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5800,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135761,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5820,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136213,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5840,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136175,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5860,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135967,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5880,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135518,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5900,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134681,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5920,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132918,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5940,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135307,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5960,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134137,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 5980,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132130,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6000,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132618,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6020,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132666,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6040,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134106,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6060,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 131856,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6080,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132789,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6100,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134131,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6120,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133629,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6140,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 128914,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6160,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132279,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6180,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 131858,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6200,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 130598,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6220,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 131385,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6240,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 130204,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6260,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 131775,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6280,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 128281,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6300,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 129767,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6320,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 128254,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6340,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132938,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6360,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135880,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6380,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135974,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6400,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135600,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6420,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133636,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6440,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135697,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6460,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133998,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6480,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135536,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6500,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135115,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6520,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133762,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6540,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135380,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6560,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132934,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6580,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133101,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6600,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132474,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6620,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132757,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6640,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134771,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6660,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132989,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6680,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134181,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6700,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133177,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6720,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 132897,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6740,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135168,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6760,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136654,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6780,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135070,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6800,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135158,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6820,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135171,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6840,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 125762,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6860,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134203,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6880,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135139,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6900,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135180,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6920,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135021,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6940,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135737,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6960,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134169,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 6980,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135717,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7000,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136564,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7020,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135812,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7040,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136049,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7060,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136983,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7080,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134076,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7100,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 137267,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7120,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136720,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7140,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 137424,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7160,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 137586,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7180,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136461,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7200,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135343,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7220,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136199,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7240,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133609,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7260,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 133636,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7280,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135112,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7300,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136870,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7320,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136622,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7340,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134793,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7360,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 136145,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7380,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135778,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7400,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 135059,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7420,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134336,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7440,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134599,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7460,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 137030,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7480,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 134891,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7500,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 100399,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7520,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 63983,
+        "bounds_xyxy_exclusive": [
+          0,
+          82,
+          512,
+          369
+        ]
+      },
+      {
+        "frame": 7540,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 296,
+        "bounds_xyxy_exclusive": [
+          279,
+          53,
+          300,
+          77
+        ]
+      },
+      {
+        "frame": 7560,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 296,
+        "bounds_xyxy_exclusive": [
+          279,
+          53,
+          300,
+          77
+        ]
+      },
+      {
+        "frame": 7580,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 296,
+        "bounds_xyxy_exclusive": [
+          279,
+          53,
+          300,
+          77
+        ]
+      },
+      {
+        "frame": 7600,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 296,
+        "bounds_xyxy_exclusive": [
+          279,
+          53,
+          300,
+          77
+        ]
+      },
+      {
+        "frame": 7620,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 296,
+        "bounds_xyxy_exclusive": [
+          279,
+          53,
+          300,
+          77
+        ]
+      },
+      {
+        "frame": 7640,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 296,
+        "bounds_xyxy_exclusive": [
+          279,
+          53,
+          300,
+          77
+        ]
+      },
+      {
+        "frame": 7660,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 296,
+        "bounds_xyxy_exclusive": [
+          420,
+          53,
+          441,
+          77
+        ]
+      },
+      {
+        "frame": 7680,
+        "reference_size": [
+          512,
+          451
+        ],
+        "candidate_size": [
+          512,
+          451
+        ],
+        "changed_pixels": 99,
+        "bounds_xyxy_exclusive": [
+          505,
+          53,
+          512,
+          77
+        ]
+      }
+    ]
+  }
+}

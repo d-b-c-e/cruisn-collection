@@ -3640,3 +3640,44 @@ strategy or jump straight to a whole-game port. See
 and results/proof/2026-09-06-global-distance-trial (reports, lossless proof frames,
 video overview and compressed raw traces;184 archive entries verified and all six
 full-trial camera/native-counter reports recomputed exactly).
+
+
+## 2026-09-07 — 3x distance, earlier activation and release baseline
+
+User approved3x/independent lookahead and a release roadmap, then requested
+continued nighttime fixes and end-to-end validation. Native b0540e36189 adds
+240000 far and lead12. Built SHA256:
+aa92018876b8c07868057fdee7ccd1c7391dd1cad3d64f13134b3fbf977b8fec.
+115 exported patches reconstruct tree4a0b575c717b94d8d4d3635cd4e2b653303e135e.
+Five full Germany runs8783 frames/146native/321GL hold99.9004..100.0008% emulation.
+3x8 repeats inputs/times/native/GL/camera/ADC exactly. At lead8, cameras2x/3x match
+7281 samples; actual ADC values/PC match21843 reads but timestamps differ. Only
+five small GL images change16..628 pixels. No useful additional mountain visibility.
+Five bounded runs5900..6140 capture201 completed GL images:2x/3x identical at both
+leads. MountainCB1A8B submission6093(original),5981(lead8),5925(lead12), independent
+of2x vs3x. Background/forest6119->6005->5947. Submission is not first visible pixel;
+lead8 vs12 cameras diverge5924. No clean full-second visual gain claim. Near4K
+8 captures3824x2073 match2x8 vs logged3x8. First3x attempt lost the stream with zero
+GL captures; largest callback gap789ms at584 before intervention5900. A successful
+retry does not fix it. Keep3x/12 diagnostic; normal launcher distance unchanged.
+
+Release roadmap, source-bound gate,39-item attended ledger, configuration contracts,
+ZIP checks and workflow checks added in separate commits. Seven free-play setting
+bytes fixed in fresh seeds. Real boot checks disproved the historical no-checksum
+claim: Off Road1.63 sums47 settings words atECD5, comparing stored word35 atDB9B.
+Stale sumC2AD77 vsC2AD78 reset free play atframe761. Fixed checksum byte0x35C77->78;
+shared cmos_settings helper used by shell/tool/package checks. Failed boot and
+read-only write-tap proofs retained; corrected attract screen says FREE PLAY.
+User NVRAM preserved. New fresh-boots gate checks actual persisted settings after
+both boot and replay; replay equality cannot hide a settings reset.
+
+Final92 Python tests PASS; CI34095982029 at471ffd6 all four jobs PASS. All seven
+final default regressions PASS, including Exotica's21 completed GL images. All five
+fresh seeds boot/replay PASS; separate Off Road relaunch retains free play1 and a
+valid sum. Three V-Unit menu-handler checks PASS. Physical Esc/manual/FFB remain
+unaccepted. Gate automated_pass=true, ready_for_release=false with39 pending
+attended/package items. All automated physical FFB OFF. World proof161 ZIP entries
+verified, five summaries recomputed, two lossless PNG/BMP checks pass; release
+proof124 runtime entries verified. See docs/reviews/2026-09-07-world-3x-and-release.md.
+Old executable/SDL/profile archived locally before further renderer work. Next:
+startup CPU upload batching with strict order, package rehearsal/artifact promotion.

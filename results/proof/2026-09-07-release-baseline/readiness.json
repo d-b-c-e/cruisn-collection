@@ -1,0 +1,71 @@
+{
+  "attended": {
+    "passed": false,
+    "pending": [
+      "crusnusa/drive",
+      "crusnusa/freeplay",
+      "crusnusa/manual-hpattern",
+      "crusnusa/manual-sequential",
+      "crusnusa/rebind",
+      "crusnusa/ffb",
+      "crusnusa/graphics",
+      "crusnusa/exit",
+      "crusnwld24/drive",
+      "crusnwld24/freeplay",
+      "crusnwld24/manual-hpattern",
+      "crusnwld24/manual-sequential",
+      "crusnwld24/rebind",
+      "crusnwld24/ffb",
+      "crusnwld24/graphics",
+      "crusnwld24/exit",
+      "offroadc/drive",
+      "offroadc/freeplay",
+      "offroadc/manual-hpattern",
+      "offroadc/manual-sequential",
+      "offroadc/rebind",
+      "offroadc/ffb",
+      "offroadc/graphics",
+      "offroadc/exit",
+      "crusnexo/drive",
+      "crusnexo/freeplay",
+      "crusnexo/manual-hpattern",
+      "crusnexo/manual-sequential",
+      "crusnexo/rebind",
+      "crusnexo/ffb",
+      "crusnexo/graphics",
+      "crusnexo/exit",
+      "shared/renderer-startup",
+      "shared/fresh-package",
+      "shared/upgrade",
+      "shared/wheel-matrix",
+      "shared/soak",
+      "shared/package-review",
+      "shared/ci"
+    ]
+  },
+  "automated_configuration_and_replays_pass": true,
+  "automated_pass": true,
+  "candidate_sha256": "aa92018876b8c07868057fdee7ccd1c7391dd1cad3d64f13134b3fbf977b8fec",
+  "configuration": {
+    "details": "test_every_fresh_seed_has_free_play_enabled (test_release_contract.ReleaseFixturesTests.test_every_fresh_seed_has_free_play_enabled) ... ok\ntest_offroad_edits_keep_the_boot_checksum_and_unrelated_bytes (test_release_contract.ReleaseFixturesTests.test_offroad_edits_keep_the_boot_checksum_and_unrelated_bytes) ... ok\ntest_first_boot_seeds_but_never_overwrites_existing_nvram (test_release_contract.ReleaseLauncherTests.test_first_boot_seeds_but_never_overwrites_existing_nvram) ... ok\ntest_fresh_defaults_and_saved_choices_survive (test_release_contract.ReleaseLauncherTests.test_fresh_defaults_and_saved_choices_survive) ... ok\ntest_offroad_freeplay_toggle_updates_checksum_and_preserves_other_settings (test_release_contract.ReleaseLauncherTests.test_offroad_freeplay_toggle_updates_checksum_and_preserves_other_settings) ... ok\ntest_rebinding_replaces_old_button_and_keeps_other_mode_and_keyboard (test_release_contract.ReleaseLauncherTests.test_rebinding_replaces_old_button_and_keeps_other_mode_and_keyboard) ... ok\ntest_shifter_mode_and_cabinet_configuration_for_every_game (test_release_contract.ReleaseLauncherTests.test_shifter_mode_and_cabinet_configuration_for_every_game) ... ok\n\n----------------------------------------------------------------------\nRan 7 tests in 0.480s\n\nOK\n",
+    "passed": true,
+    "skipped": 0,
+    "tests": 7
+  },
+  "fresh_boots": {
+    "error": null,
+    "passed": true,
+    "path": "results\\diagnostics\\world-3x-final-release-checks\\fresh-boots\\report.json",
+    "sha256": "fdcca1bd52fcf6d4b1fd491da8f4de323937c7dcf4350c63aa1b36a28ffb69ab"
+  },
+  "physical_force": false,
+  "ready_for_release": false,
+  "regressions": {
+    "error": null,
+    "passed": true,
+    "path": "results\\diagnostics\\world-3x-final-release-checks\\regressions\\report.json",
+    "sha256": "9fd74415ce345393ab3662ce9136a1fdc4d5ca792a4dffadf1cb64b1988c7cf3"
+  },
+  "schema": 1,
+  "source_identity": "dea70cf8171b837936acd64eba90a4425c3fcebb6e4f3934f1bb96ae2fa8ebdb"
+}

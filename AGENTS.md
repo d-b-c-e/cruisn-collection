@@ -1,5 +1,46 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Current release preparation (2026-09-07)
+
+Read `docs/reviews/2026-09-07-world-3x-and-release.md` and
+`docs/RELEASE-CHECKLIST.md`. Native `b0540e36189` / deployed vunit SHA256
+`aa92018876b8c07868057fdee7ccd1c7391dd1cad3d64f13134b3fbf977b8fec`.
+World 2.4 global FAR accepts 240000 (3x); lead accepts 0..12. Both remain explicit
+and OFF in normal launcher. No other game receives these hooks. The 115-patch
+export reconstructs native tree `4a0b575c717b94d8d4d3635cd4e2b653303e135e`.
+Five full Germany trials hold ~100% emulation speed. Native 3x/8 repeats exactly:
+8783 inputs/times, 146 native images, 321 completed GL images, camera/ADC data.
+At either lead 8 or 12, all 201 bounded GL images match between 2x and 3x;
+eight near-4K 3824x2073 captures also match at lead 8. Lead12 moves mountain
+CB1A8B submission 5981->5925, but camera already diverges5924 and terrain can
+hide early geometry. Submission is not visible pixels. 2x/8 remains the prior
+attended candidate; 3x/12 stay diagnostic. Draw pending/future static scenery
+independently of guest activation next; do not grow model allowlists.
+One fullsize run lost the GL stream at startup before the bounded intervention;
+zero captures correctly FAIL. A logged retry succeeded, not a fix. The failed
+run is retained in proof. Repeated cold starts and diagnosis are release blockers.
+
+Fresh seeds now enable free play: seven setting bytes plus an Off Road checksum
+byte. **Correction to old notes: Off Road DOES checksum operator settings.**
+DB9B..DBA0 compares ECD5's 47-word sum with word0x35, big-endian bytes stored in
+low lanes of four CMOS words. A lone0x1CC poke reset defaults atframe761.
+`harness/cmos_settings.py` maintains the verified1.63 layout (markerword0x37=0x12);
+launcher toggle and nvram_tool share it. Corrected seed shows FREE PLAY, survives
+1800-frame boot/replay and a separate relaunch. Existing user NVRAM is preserved.
+`check_fresh_boots.py` checks all five fresh seeds after real boot and replay;
+all pass. `release_gate.py` now requires that report as well as the full regression
+suite, current binary/source/suite identities and hashed attended observations.
+No physical shifting/FFB acceptance is inferred. Normal CRT/fullwide defaults,
+rebinding and shifter/cabinet configuration have isolated tests. ZIP checker also
+rejects invalid Off Road checksums. 92 Python tests pass; CI34095982029 at471ffd6
+passes all four jobs. All seven final default regressions pass, including Exotica's 21 GL images.
+The release gate passes automated checks but retains 39 pending attended/package items.
+Tag workflow still rebuilds and publishes immediately; promote a tested artifact
+before any public tag. No release has been published during this preparation.
+User is asleep and asks for continued autonomous fixes/end-to-end validation.
+Next focus: startup VRAM-upload backlog, packaging, then remaining release gaps.
+All automated physical FFB OFF; never overwrite original attended recordings.
+
 ## Current verified handoff (2026-09-06)
 
 Latest: `docs/reviews/2026-09-06-global-distance-trial.md`. Native `9ea71f601b3`,

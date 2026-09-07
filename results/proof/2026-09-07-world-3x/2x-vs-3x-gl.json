@@ -1,0 +1,106 @@
+{
+  "scope": "completed GL frame pixels",
+  "passed": false,
+  "frames": 321,
+  "different_frames": [
+    4420,
+    4440,
+    7120,
+    7240,
+    7260
+  ],
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-matrix\\far2-lead8\\run\\gl-snap",
+  "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-matrix\\far3-lead8\\run\\gl-snap",
+  "pixel_changes": [
+    {
+      "frame": 4420,
+      "reference_size": [
+        512,
+        451
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 56,
+      "bounds_xyxy_exclusive": [
+        121,
+        106,
+        129,
+        116
+      ]
+    },
+    {
+      "frame": 4440,
+      "reference_size": [
+        512,
+        451
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 59,
+      "bounds_xyxy_exclusive": [
+        122,
+        106,
+        130,
+        116
+      ]
+    },
+    {
+      "frame": 7120,
+      "reference_size": [
+        512,
+        451
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 16,
+      "bounds_xyxy_exclusive": [
+        374,
+        196,
+        378,
+        202
+      ]
+    },
+    {
+      "frame": 7240,
+      "reference_size": [
+        512,
+        451
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 112,
+      "bounds_xyxy_exclusive": [
+        276,
+        341,
+        290,
+        353
+      ]
+    },
+    {
+      "frame": 7260,
+      "reference_size": [
+        512,
+        451
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 628,
+      "bounds_xyxy_exclusive": [
+        118,
+        106,
+        265,
+        369
+      ]
+    }
+  ]
+}

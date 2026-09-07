@@ -1,3 +1,66 @@
+# Current handoff — 2026-09-07 overnight release preparation
+
+User is going to bed and asks to continue autonomous fixes/improvements, validate
+end-to-end and prepare for a release tomorrow. Continue after this baseline.
+Do not publish/tag or actuate physical FFB unattended. Separate commits.
+
+Completed baseline: docs/reviews/2026-09-07-world-3x-and-release.md and
+ docs/RELEASE-CHECKLIST.md. Native b0540e36189, fork/poc/quadlog pushed; binary
+SHA256 aa92018876b8c07868057fdee7ccd1c7391dd1cad3d64f13134b3fbf977b8fec.
+115-patch export reconstructs tree 4a0b575c717b94d8d4d3635cd4e2b653303e135e.
+Collection code 471ffd6 includes separate distance, seed, gate, package, checksum
+commits. 92 Python tests pass; CI34095982029 at471ffd6 all four jobs pass.
+All seven final default regressions pass. All five fresh boots/replays and a
+separate Off Road relaunch retain free play; three V-Unit menu checks pass.
+release_gate automated_pass=true, ready_for_release=false, 39 attended/package
+checks pending. Evidence: results/proof/2026-09-07-release-baseline, including
+124 verified runtime ZIP entries. Final source identity:
+dea70cf8171b837936acd64eba90a4425c3fcebb6e4f3934f1bb96ae2fa8ebdb.
+
+Important correction: Off Road DOES checksum settings, contrary to old notes.
+Poking0x1CC alone reset defaults atframe761. ECD5 sums47 packed BE words;
+DB9B..DBA0 compares stored word0x35. Marker word0x37=0x12. cmos_settings.py updates
+that sum; launcher Free Play/nvram_tool/package checks/tests use it. Additional
+fixture byte0x35C changes77->78. Original failure retained with read-only CMOS
+write traces and before/after PNG. No user NVRAM or saved preferences reset.
+
+3x/lead12 remains diagnostic; defaults unchanged. Five full Germany runs ~100%.
+3x8 repeats8783/146/321GL plus strict camera/ADC exactly. All201 bounded GL images
+match2x/3x at either lead. Near4K eight images match. Lead12 submits the mountain
+56 frames earlier but changes the route; no extra3x mountain pixels demonstrated.
+World proof161ZIP entries verified, five summaries recomputed. Source drives
+immutable. Existing2x8 prior attended candidate. Next engine milestone: host
+static drawing independent of guest activation.
+
+Next overnight work: renderer startup/backlog, exact package promotion and frozen
+end-to-end checks, remaining release gaps. One near4K run timed out before the
+intervention, with no GL captures; a logged retry works but does not fix it.
+World boot sends500k+ CPU framebuffer messages with many tiny TexSubImage2D calls.
+Do not increase the500ms watchdog blindly. A draft exists ONLY under
+results/diagnostics/startup-work:
+- cpu_upload_spans.h + test_cpu_upload_spans.cpp: C++11 test passes for holes,
+  pages, row boundaries, overlaps and repeated writes.
+- midvunit_v.cpp draft, native-draft.diff, prepare_native.py (138-line diff).
+  Flushes before each non-VRAM ordered message. Batching default ON, explicit
+  MIDV_GL_BATCH_VRAM=0 control. Failure diagnostics record frame/type/progress/time.
+  Native tree and current executable are NOT changed by this draft yet.
+- Old binary/dependencies saved in results/diagnostics/release-pre-startup/binary
+  (same aa920 hash) for control runs and rollback.
+Review/apply canonical helper, sync/tests/CLI control, build native, compare old/new
+completed GL including CPU boot screens, cold-start stress and forced-stall negative
+controls. Then full seven regressions/fresh boots on the new candidate. Commit the
+native repo/export separately. All prior verification sessions have finished.
+
+Packaging: make_release deletes stale build directories; verify absolute targets
+inside the workspace before invoking. PyInstaller6.22.2 installed. release.yml
+still rebuilds and publishes on tag; implement candidate build plus exact artifact
+promotion before any public tag. Existing manual-run rename uses branch names
+containing slashes and can fail. Frozen launcher --shot PNG and --shot-page permit
+offscreen UI checks. Direct --game reads isolated INI with FFB0 for unattended
+checks; never use the production rig for package experiments. No release published.
+
+--- Earlier handoff retained below ---
+
 # Session Notes
 
 Date: 2026-09-06. User approved steps 1â€“3: global native World distance trial,

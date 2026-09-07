@@ -1,0 +1,132 @@
+{
+  "case": "E:\\Source\\cruisn-collection\\results\\diagnostics\\world-3x-final-release-checks\\offroad-relaunch\\case",
+  "comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "evidence": {
+    "columns": [
+      "frame",
+      "emulated_seconds",
+      "host_seconds",
+      "speed_percent",
+      ":ACCEL",
+      ":BRAKE",
+      ":CONF",
+      ":DSW",
+      ":FAKE",
+      ":IN0",
+      ":IN1",
+      ":serial_pic2:SERIAL_DIGIT",
+      ":WHEEL"
+    ],
+    "frames": 1800,
+    "input_coverage": {
+      ":ACCEL": {
+        "distinct": 1,
+        "max": 0,
+        "min": 0
+      },
+      ":BRAKE": {
+        "distinct": 1,
+        "max": 0,
+        "min": 0
+      },
+      ":CONF": {
+        "distinct": 1,
+        "max": 1,
+        "min": 1
+      },
+      ":DSW": {
+        "distinct": 1,
+        "max": 65533,
+        "min": 65533
+      },
+      ":FAKE": {
+        "distinct": 1,
+        "max": 1,
+        "min": 1
+      },
+      ":IN0": {
+        "distinct": 1,
+        "max": 65535,
+        "min": 65535
+      },
+      ":IN1": {
+        "distinct": 1,
+        "max": 65535,
+        "min": 65535
+      },
+      ":WHEEL": {
+        "distinct": 1,
+        "max": 128,
+        "min": 128
+      },
+      ":serial_pic2:SERIAL_DIGIT": {
+        "distinct": 1,
+        "max": 6,
+        "min": 6
+      }
+    },
+    "raw_sha256": {
+      "frame_00000300.raw": "1f18acde08e39b1928bdf58655e667e3b7adc8da08b6dc7bccd6c10bf9e9e26c",
+      "frame_00000600.raw": "90fc85c05b918ae9f15a06a7633d7f6a6bb20e6402cb4475224e258e00607858",
+      "frame_00000900.raw": "838f77ad6e760f2e1d698052f7ca0500e05c035eff933e3dfb8e31ecaaddc962",
+      "frame_00001200.raw": "43b7990cfaaf6c52063d1d3518470eda4a7be68123f7a6ee570b2def3db12e9c",
+      "frame_00001500.raw": "5af36b4b8a91e2658e77ce13660d7828a809c832b25d41b2e3a9c8c2240bc9bb",
+      "frame_00001800.raw": "b585023fa24246092b78dccdfd15f8221b64a3ce8597ac0602699010c4b4318f"
+    },
+    "snapshots": {
+      "1200": {
+        "sha256": "b092f7cef500f2bcae0434ca1df8723053005fe7d9092748decf0e98acdc2a64",
+        "size": [
+          511,
+          401
+        ]
+      },
+      "1500": {
+        "sha256": "9804437c788330c9c06de110e70d9eaedd22c1de46082e9d31638c87433f1999",
+        "size": [
+          511,
+          401
+        ]
+      },
+      "1800": {
+        "sha256": "964a80af6b72fe26aa367147a00953e2a785d599196523bf7b1e0d1e6a131242",
+        "size": [
+          511,
+          401
+        ]
+      },
+      "300": {
+        "sha256": "884bf8c082d5c6b2b5ba94b936b39dc9535b6fe02435fd0836429388042778a4",
+        "size": [
+          511,
+          401
+        ]
+      },
+      "600": {
+        "sha256": "6f7cd3984a2f02ab004651c4b25ddc2ddbbc8664e8b9adb5f950d16fdb831a6d",
+        "size": [
+          511,
+          401
+        ]
+      },
+      "900": {
+        "sha256": "f5ba58109bffb5bc1134d254195ce2d332c8414ade212117bd6374802df7d229",
+        "size": [
+          511,
+          401
+        ]
+      }
+    },
+    "trace_sha256": "d5b00c702802ffdd7b3d825b32a741ad1c10ec7fd211ad693c845d9fa353c34d"
+  },
+  "kind": "identity-replay",
+  "passed": true,
+  "presentation": "native-headless",
+  "schema": 1
+}

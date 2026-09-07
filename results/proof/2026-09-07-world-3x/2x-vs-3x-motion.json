@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "scope": "Compare World camera state and actual ADC reads from world_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+  "passed": false,
+  "camera_equal": true,
+  "same_camera_interval": true,
+  "camera_samples": [
+    7281,
+    7281
+  ],
+  "camera_intervals": [
+    [
+      1500,
+      8780
+    ],
+    [
+      1500,
+      8780
+    ]
+  ],
+  "first_camera_difference_frame": null,
+  "camera_equal_frame_intervals": [
+    [
+      1500,
+      8780
+    ]
+  ],
+  "camera_equal_frames": 7281,
+  "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+  "actual_adc_reads": [
+    21843,
+    21843
+  ],
+  "adc_frame_value_pc_equal": true,
+  "first_adc_frame_value_pc_difference": null,
+  "adc_times_equal": false,
+  "first_adc_time_difference_index": 6571,
+  "sources": [
+    {
+      "world-camera.csv": "6452aba93b113b7a80c8ec3af488b0cc27deb2caf0a091e0827f7278368ffad6",
+      "world-adc.csv": "f4b803a0a2601ce70b8a4adaacc66d3d149802875d5f346ecf82124a12c1391a"
+    },
+    {
+      "world-camera.csv": "6452aba93b113b7a80c8ec3af488b0cc27deb2caf0a091e0827f7278368ffad6",
+      "world-adc.csv": "490c15da9320f032fb444d1531ba1a8e66b5484b3719ecdde578d551e2e17baf"
+    }
+  ]
+}

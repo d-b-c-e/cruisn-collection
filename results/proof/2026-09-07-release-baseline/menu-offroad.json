@@ -1,0 +1,79 @@
+{
+  "frame": 1800,
+  "passed": true,
+  "physical_force": false,
+  "states": [
+    {
+      "crt": 0,
+      "frame": 1800,
+      "image_sha256": "dde4d8fdfadea3efabfee802b6badaf508a5f996efe3af26219aba2b8665d3e9",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 0,
+      "step": 0
+    },
+    {
+      "crt": 0,
+      "frame": 1800,
+      "image_sha256": "34e4f6d3f24800275eae861bd856d270e784a88e4820536c4e41f1dab47cd142",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 1,
+      "step": 1
+    },
+    {
+      "crt": 1,
+      "frame": 1800,
+      "image_sha256": "a18bda1c45b1b3e27aa66a1708ef7954eedc55f9f4844ddd2d56a78e25838537",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 1,
+      "step": 2
+    },
+    {
+      "crt": 1,
+      "frame": 1800,
+      "image_sha256": "97aa0351a20c866a84816fe637065cc09255647b042d75e85fefd0160cd1c63f",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 0,
+      "step": 3
+    },
+    {
+      "crt": 1,
+      "frame": 1800,
+      "image_sha256": "0d490918817befdf12c1fe906ad42c3f3a76fe2aa48ac817ad5afddcad009766",
+      "new_frame": 0,
+      "open": 0,
+      "selected": 0,
+      "step": 4
+    },
+    {
+      "crt": 1,
+      "frame": 1822,
+      "image_sha256": "fa2d006e986bee2beb2eb7c1b91feae903596730f561dada8cd455323574f344",
+      "new_frame": 1,
+      "open": 1,
+      "selected": 0,
+      "step": 5
+    },
+    {
+      "crt": 1,
+      "frame": 1822,
+      "image_sha256": "1e0410edfdc7e6de24457fc06f6d62fed75d5b9e07796f52e58fc21539ea9bd2",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 1,
+      "step": 6
+    },
+    {
+      "crt": 1,
+      "frame": 1822,
+      "image_sha256": "d868361f0546737471f1db599846fda29d81877233f28eecf05dfe70728b7d1a",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 2,
+      "step": 7
+    }
+  ]
+}

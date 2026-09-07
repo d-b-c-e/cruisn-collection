@@ -1,0 +1,28 @@
+{
+  "conclusion": "success",
+  "headSha": "471ffd66c7f0dbe7a054ea752e65a852f696120c",
+  "jobs": [
+    {
+      "name": "gpu-quality",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "harness (ubuntu-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "native-helpers",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "harness (windows-latest)",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/d-b-c-e/cruisn-collection/actions/runs/34095982029"
+}

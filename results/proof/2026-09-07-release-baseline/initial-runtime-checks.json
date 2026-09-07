@@ -1,0 +1,68 @@
+{
+  "menus": [
+    {
+      "game": "usa",
+      "passed": true
+    },
+    {
+      "game": "world",
+      "passed": true
+    },
+    {
+      "game": "offroad",
+      "passed": true
+    }
+  ],
+  "physical_force": false,
+  "regressions": 0,
+  "seed_boots": [
+    {
+      "freeplay_bytes": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "passed": true,
+      "replay_exit": 0,
+      "rom": "crusnusa",
+      "scope": "fresh seed boot and persistence only; not no-coin gameplay acceptance"
+    },
+    {
+      "freeplay_bytes": [
+        1
+      ],
+      "passed": true,
+      "replay_exit": 0,
+      "rom": "crusnwld24",
+      "scope": "fresh seed boot and persistence only; not no-coin gameplay acceptance"
+    },
+    {
+      "freeplay_bytes": [
+        1
+      ],
+      "passed": true,
+      "replay_exit": 0,
+      "rom": "crusnwld",
+      "scope": "fresh seed boot and persistence only; not no-coin gameplay acceptance"
+    },
+    {
+      "freeplay_bytes": [
+        0
+      ],
+      "passed": false,
+      "replay_exit": 0,
+      "rom": "offroadc",
+      "scope": "fresh seed boot and persistence only; not no-coin gameplay acceptance"
+    },
+    {
+      "freeplay_bytes": [
+        1
+      ],
+      "passed": true,
+      "replay_exit": 0,
+      "rom": "crusnexo",
+      "scope": "fresh seed boot and persistence only; not no-coin gameplay acceptance"
+    }
+  ]
+}
