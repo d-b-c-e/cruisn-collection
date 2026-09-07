@@ -19,6 +19,8 @@ later driving-state changes. This is not an accepted visual-only fix.
 The two named subdirectories contain the original camera and ADC CSVs.
 `compare_world_motion.compare()` on those archived traces reproduces
 `global-motion-comparison.json` exactly, including its failed status and hashes.
+Git attributes preserve the evidence bytes across Windows/Linux checkouts;
+automatic newline conversion would otherwise change those source hashes.
 
 Example reproduction into a NEW output directory:
 

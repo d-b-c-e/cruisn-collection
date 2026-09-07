@@ -3568,3 +3568,9 @@ checked game patch, harness integration and runtime validation explicitly docume
 Deployed binary remains d520c414/native e8b8fc3be9c; no new launcher option or
 preference changes. Native helper sync PASS; all 74 Python unit tests PASS.
 No physical FFB tests.
+
+Proof-byte check found Git newline conversion changed the archived source hashes.
+Scoped attributes now preserve these evidence files verbatim. Extracting the raw
+camera/ADC blobs from the Git index reproduces the complete failed comparison,
+including source hashes; all archived proof bytes match their staged blobs.
+Patch-artifact whitespace checks exclude only their required unified-diff context.
