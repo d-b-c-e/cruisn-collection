@@ -14,6 +14,7 @@ import unittest
 from diagnostic_runtime import ROOT
 from release_identity import source_identity
 from verification import sha256_file, write_json
+from check_release_package import FREEPLAY
 
 
 def requirements(plan):
@@ -50,10 +51,22 @@ def acceptance_check(ledger, expected, candidate_hash, source_hash, base):
     return {'passed':not pending and not errors,'pending':pending,'errors':errors}
 
 
+def fresh_boot_check(report, candidate_hash, source_hash):
+    rows = report.get('cases', [])
+    return (report.get('passed') is True and report.get('physical_force') is False
+        and report.get('candidate_sha256') == candidate_hash
+        and report.get('source_identity') == source_hash
+        and len(rows) == len(FREEPLAY) and {row['rom'] for row in rows} == set(FREEPLAY)
+        and all(row.get('passed') is True and row.get('replay_exit') == 0
+                and len(row.get('persisted', [])) == 2
+                and all(item.get('passed') is True for item in row['persisted']) for row in rows))
+
+
 def main(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--candidate',required=True,type=Path)
     ap.add_argument('--regressions',type=Path)
+    ap.add_argument('--fresh-boots',type=Path,help='complete current check_fresh_boots.py report')
     ap.add_argument('--attended',type=Path)
     ap.add_argument('--init-attended',type=Path,help='write a new pending ledger, never replace one')
     ap.add_argument('--report',required=True,type=Path)
@@ -84,16 +97,25 @@ def main(argv=None):
                                    'error':None if passed else 'failed, incomplete or stale regression evidence'}
         except (OSError,ValueError,KeyError,TypeError) as error: report['regressions']['error']=str(error)
     report['attended']={'passed':False,'pending':list(expected)}
+    report['fresh_boots']={'passed':False,'error':'complete current fresh-seed boot/persistence report required'}
+    if args.fresh_boots:
+        try:
+            value=json.loads(args.fresh_boots.read_text())
+            passed=fresh_boot_check(value,candidate,identity['sha256'])
+            report['fresh_boots']={'passed':passed,'path':str(args.fresh_boots),'sha256':sha256_file(args.fresh_boots),
+                                 'error':None if passed else 'failed, incomplete or stale fresh-boot evidence'}
+        except (OSError,ValueError,KeyError,TypeError) as error: report['fresh_boots']['error']=str(error)
     if args.attended:
         try:
             report['attended']=acceptance_check(json.loads(args.attended.read_text()),expected,candidate,identity['sha256'],args.attended.parent)
         except (OSError,ValueError,KeyError,TypeError) as error: report['attended']['error']=str(error)
     report['automated_configuration_and_replays_pass']=report['configuration']['passed'] and report['regressions']['passed']
-    report['ready_for_release']=report['automated_configuration_and_replays_pass'] and report['attended']['passed']
+    report['automated_pass']=report['automated_configuration_and_replays_pass'] and report['fresh_boots']['passed']
+    report['ready_for_release']=report['automated_pass'] and report['attended']['passed']
     write_json(args.report,report)
     print(f"Release {'READY' if report['ready_for_release'] else 'NOT READY'}: {args.report}")
     print(f"Configuration={report['configuration']['passed']}; full replay suite={report['regressions']['passed']}; "
-          f"attended checks pending={len(report['attended'].get('pending',[]))}")
+          f"fresh boots={report['fresh_boots']['passed']}; attended checks pending={len(report['attended'].get('pending',[]))}")
     return 0 if report['ready_for_release'] else 1
 
 

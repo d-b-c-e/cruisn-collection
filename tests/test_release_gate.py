@@ -4,11 +4,23 @@ import sys
 import tempfile
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'harness'))
-from release_gate import regression_check,acceptance_check
+from release_gate import regression_check,acceptance_check,fresh_boot_check
+from check_release_package import FREEPLAY
 from verification import sha256_file
 
 
 class ReleaseGateTests(unittest.TestCase):
+    def test_replay_success_cannot_hide_failed_setting_persistence(self):
+        report={'passed':True,'physical_force':False,'candidate_sha256':'binary','source_identity':'source',
+                'cases':[{'rom':rom,'passed':True,'replay_exit':0,
+                          'persisted':[{'passed':True},{'passed':True}]} for rom in FREEPLAY]}
+        self.assertTrue(fresh_boot_check(report,'binary','source'))
+        bad=copy.deepcopy(report);bad['cases'][3]['persisted'][0]['passed']=False
+        self.assertFalse(fresh_boot_check(bad,'binary','source'))
+        bad=copy.deepcopy(report);bad['cases'].pop()
+        self.assertFalse(fresh_boot_check(bad,'binary','source'))
+        self.assertFalse(fresh_boot_check(report,'binary','old'))
+
     def test_partial_stale_and_force_enabled_suites_cannot_clear_release(self):
         report={'passed':True,'physical_force':False,'candidate_sha256':'binary','source_identity':'source',
                 'suite_sha256':'suite','subset':None,'cases':[{'id':'a','passed':True},{'id':'b','passed':True}]}
