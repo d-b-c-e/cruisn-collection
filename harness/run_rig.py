@@ -480,7 +480,7 @@ ZEUS_ROMS = {"crusnexo"}
 
 # coarse scanline counts per game (offroadc runs a 512x401 mode; everything
 # else is 400) - fed to the overlay as MIDV_GL_HEIGHT
-GAME_HEIGHT = {"offroadc": 401}
+from graphics_options import VUNIT_HEIGHT as GAME_HEIGHT
 
 # per-game 16:9 margin width per side (overlay default 86 = full widescreen).
 # All games default to full width now; the shell WIDESCREEN setting is the

@@ -153,6 +153,9 @@ def main(argv=None):
         command += ["-window", "-throttle", "-nokeepaspect"]
         key = 'MIDZ' if manifest['rom'] == 'crusnexo' else 'MIDV'
         settings.update({key+'_GL':'1', key+'_GL_SCALE':'4', key+'_GL_LOG':'1'})
+        if key == 'MIDV':
+            from graphics_options import VUNIT_HEIGHT, family
+            settings['MIDV_GL_HEIGHT'] = str(VUNIT_HEIGHT.get(family(manifest['rom']),400))
     if args.gl_capture:
         first, last = [int(v) for v in args.gl_capture.split(":")]
         if not args.gl or not 0 <= first < last <= scenario["frames"] or last - first > 240:

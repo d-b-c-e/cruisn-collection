@@ -50,6 +50,9 @@ def main(argv=None):
         command += ["-window", "-resolution", "1280x720", "-throttle", "-nokeepaspect"]
         key = "MIDZ" if args.rom == "crusnexo" else "MIDV"
         settings.update({key + "_GL": "1", key + "_GL_SCALE": "4", key + "_GL_LOG": "1"})
+        if key == 'MIDV':
+            from graphics_options import VUNIT_HEIGHT, family
+            settings['MIDV_GL_HEIGHT'] = str(VUNIT_HEIGHT.get(family(args.rom),400))
     command, env, runtime = recording.prepare(command, diagnostic_env(settings), rig)
     result = execute(command, runtime, env, args.timeout)
     if (runtime / "stdout.log").exists():

@@ -40,9 +40,12 @@ def main(argv=None):
     ap.add_argument("--gl-stall", help="explicit consumer stall FRAME:MILLISECONDS, for recovery tests")
     ap.add_argument("--gl-queue-mb", type=int, help="explicit stream capacity experiment, 16..128 MiB")
     ap.add_argument("--gl-scale", type=int, help="explicit internal-scale experiment, 1..6")
+    ap.add_argument("--gl-crt", choices=('on','off'), help="explicit CRT override for completed-frame testing")
+    ap.add_argument("--gl-height", type=int, choices=(400,401), help="explicit V-Unit native-height override; preserve old recordings")
     ap.add_argument("--no-crackfill", action="store_true", help="explicit experiment with crack filling disabled")
     ap.add_argument("--no-marginfill", action="store_true", help="disable backdrop suppression and boundary-column extension")
     ap.add_argument("--no-ui-assets", action="store_true", help="control experiment without enhanced World transmission atlas retention")
+    ap.add_argument("--no-vram-batching", action="store_true", help="V-Unit control: upload each CPU framebuffer span immediately")
     ap.add_argument("--align-tjunctions", action="store_true", help="explicit quality-only geometry join experiment")
     ap.add_argument("--compare-gl", action="store_true", help="require identical completed GL pixels against the recorded case")
     ap.add_argument("--zeus-native", action="store_true", help="explicit Zeus diagnostic: also rasterize native CPU frames")
@@ -68,7 +71,7 @@ def main(argv=None):
         ap.error("--small-window requires visible replay")
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
-    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
+    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.gl_crt is not None or args.gl_height is not None or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.no_vram_batching or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
     if args.headless and args.compare_gl:
         ap.error("GL pixel comparison requires live presentation")
     if args.headless and (gl_experiment or args.video or args.native_renderer):
@@ -144,6 +147,11 @@ def main(argv=None):
                 overrides[gl_key+"_GL_LOG"] = "1"
             if args.gl_scale is not None:
                 overrides[gl_key+"_GL_SCALE"] = str(args.gl_scale)
+            if args.gl_crt is not None:
+                overrides[gl_key+'_GL_CRT'] = '1' if args.gl_crt == 'on' else '0'
+            if args.gl_height is not None:
+                if gl_key != 'MIDV':raise ValueError('native-height override applies to V-Unit only')
+                overrides['MIDV_GL_HEIGHT'] = str(args.gl_height)
             if args.zeus_native:
                 overrides['MIDZ_GL_NATIVE'] = '1'
             if args.zeus_stop_frame is not None:
@@ -156,6 +164,10 @@ def main(argv=None):
                 overrides["MIDV_GL_MARGINFILL"] = "0"
             if args.no_ui_assets:
                 overrides["MIDV_GL_UI_ASSETS"] = "0"
+            if args.no_vram_batching:
+                if manifest['rom'] == 'crusnexo':
+                    raise ValueError('CPU VRAM batching control applies to V-Unit, not Zeus')
+                overrides['MIDV_GL_BATCH_VRAM'] = '0'
             if args.align_tjunctions:
                 overrides["MIDV_GL_TJUNCTIONS"] = "1"
                 overrides["MIDV_GL_LOG"] = "1"

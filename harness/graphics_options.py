@@ -4,6 +4,7 @@ from pathlib import Path
 from game_patch import combine_patches
 
 GAMES = ("crusnusa", "crusnwld", "offroadc", "crusnexo")
+VUNIT_HEIGHT = {'offroadc':401}  # other V-Unit games use 400 native rows
 OPTIONS = ("seam_alignment", "terrain_visibility", "scenery_distance", "detail_distance", "far_distance")
 PATCHES = {
     "terrain_visibility": "crusnwld-terrain-visibility-experimental.txt",
