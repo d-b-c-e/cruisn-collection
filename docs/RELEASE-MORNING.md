@@ -1,6 +1,9 @@
 # Release morning: what still needs a person
 
 Local candidate: `build/CruisnCollection-v0.4.0-rc1-20260907-050908.zip`.
+The source launcher has since gained the World distance controls and moved Crack
+Fill into Experiments. This ZIP is the preserved overnight baseline and does not
+contain those menu changes; a replacement ZIP needs its own package acceptance.
 Its [manifest and hashes](../results/proof/2026-09-07-release-hardening/release-final/package.manifest.json)
 and [prepared pending ledger](../results/proof/2026-09-07-release-hardening/release-final/attended-prepared.json)
 are preserved in the repo. No public release has been created.
@@ -15,7 +18,8 @@ contract remains [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
 
 Use full widescreen, CRT on, scale 4, World 2.4, launcher force at 50%, and the
 default force profile (`cruisn-vunit@2`). Record the wheel-base settings separately.
-Leave graphics experiments and extra impact cues off for the release baseline.
+Leave per-game graphics trials and extra impact cues off for the release baseline.
+Crack Fill (Shared), now under Graphics Experiments, retains the baseline ON setting.
 Saved personal preferences were preserved, so an existing installation may differ
 from these fresh defaults. Check the settings before recording. The Stream Deck
 entry uses the source checkout and the root native executable on this machine;

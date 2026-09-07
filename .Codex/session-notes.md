@@ -1,3 +1,20 @@
+# Latest source update — graphics controls, 2026-09-07
+
+Source c753f4b/9ae9231 moves Crack Fill to Experiments (shared/default preserved),
+and exposes World2.4 Off/2x/3x plus +0/+8/+12 independent lookahead. Defaults remain
+distance OFF; lookahead8 is inactive until enabled. Global/selective scenery are
+exclusive. Widescreen/scale>1/revision guards, checked patch composition, CPU100,
+explicit MIDV_PATCH and recording CLI precedence remain enforced. Native unchanged.
+104 tests pass. Menu previews inspected; separate 2404-frame3x/+8 record/replay
+matches40 native/3 completed GPU images and input/times. Original drives untouched,
+physical FFB OFF. See docs/reviews/2026-09-07-graphics-menu.md and associated proof.
+The overnight050908 ZIP below predates these controls and remains preserved.
+New packaging/source acceptance is required to ship the newer menu. Stream Deck
+uses source and sees it after restarting the launcher. User also asked why3x
+did not help: section activation is an earlier gate for traced Germany mountains;
+same-lead2x/3x201frames match, +12 advances submission but changes gameplay history.
+Continue toward host drawing of future static scenery independent of simulation.
+
 # Verified overnight completion — 2026-09-07
 
 The authorized release-preparation work is complete. No local emulator/build/helper

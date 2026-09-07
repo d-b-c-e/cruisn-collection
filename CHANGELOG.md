@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Move Crack Fill to Graphics Experiments, preserving its shared preference.
+  Expose World 2.4's opt-in 2x/3x distance and independent +0/+8/+12 lookahead.
+  Prevent combining global distance with the older selective scenery experiment.
+
 - Make release source hashes consistent across Windows/Linux text line endings,
   with CI comparisons of every source input and exact binary-fixture preservation.
 

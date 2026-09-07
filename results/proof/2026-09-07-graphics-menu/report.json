@@ -1,0 +1,53 @@
+{
+  "native_sha256": "9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86",
+  "passed": true,
+  "physical_force": false,
+  "recording": "E:\\Source\\cruisn-collection\\results\\diagnostics\\graphics-menu-20260907\\case",
+  "replay_report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\graphics-menu-20260907\\replay\\report.json",
+  "scope": "launcher settings resolution, native activation, INP recording/replay and completed GL repeatability; short derived prefix, not original-route or attended acceptance",
+  "selection": {
+    "terrain_visibility_crusnwld": "1",
+    "world_distance_crusnwld": "3",
+    "world_lookahead_crusnwld": "8"
+  },
+  "settings": {
+    "MIDV_FAST_EXIT": "1",
+    "MIDV_FFB": "0",
+    "MIDV_FFB_DEVICE": "MOZA R12 Base",
+    "MIDV_FFB_IMPACT": "0",
+    "MIDV_FFB_LOG": "2",
+    "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+    "MIDV_FFB_RUMBLE": "100",
+    "MIDV_FFB_STRENGTH": "80",
+    "MIDV_FFB_TRACE": "E:\\Source\\cruisn-collection\\rig\\ffb_trace.csv",
+    "MIDV_GL": "1",
+    "MIDV_GL_CRACKFILL": "1",
+    "MIDV_GL_CRT": "1",
+    "MIDV_GL_HEIGHT": "400",
+    "MIDV_GL_LOG": "1",
+    "MIDV_GL_MARGIN": "86",
+    "MIDV_GL_MARGINFILL": "0",
+    "MIDV_GL_SCALE": "4",
+    "MIDV_GL_SNAP": "enabled",
+    "MIDV_GL_SNAP_EVERY": "50",
+    "MIDV_GL_SNAP_FIRST": "2300",
+    "MIDV_GL_SNAP_LAST": "2400",
+    "MIDV_GL_SNAP_MAX": "3",
+    "MIDV_GL_STATEFILE": "E:\\Source\\cruisn-collection\\rig\\gl_state.txt",
+    "MIDV_GL_TJUNCTIONS": "0",
+    "MIDV_PATCH": "@initial/game-patch.txt",
+    "MIDV_SCENERY": "off",
+    "MIDV_SCENERY_LEAD": "0",
+    "MIDV_SKIP_STARTUP_SCREENS": "1",
+    "MIDV_STEER_CURVE": "120",
+    "MIDV_STEER_GAIN": "90",
+    "MIDV_WORLD_CPU_PERCENT": "100",
+    "MIDV_WORLD_FAR": "240000",
+    "MIDV_WORLD_LEAD": "8",
+    "MIDZ_GL": "0"
+  },
+  "source_commit": {
+    "commit": "9ae9231676c227b2b424e6e81544310742391f96",
+    "dirty": false
+  }
+}

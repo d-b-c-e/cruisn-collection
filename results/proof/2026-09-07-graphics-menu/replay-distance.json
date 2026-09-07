@@ -1,0 +1,23 @@
+{
+  "cpu_percent": 100,
+  "far": 240000,
+  "first_profile_frame": 0,
+  "frames": [
+    0,
+    2403
+  ],
+  "lead": 8,
+  "maximum_index": 9427,
+  "peak_extended_reads": 3553,
+  "peak_far_tests": 618,
+  "rows": 2404,
+  "schema": 1,
+  "scope": "Validate and summarize native global-distance counters, not visual quality.",
+  "sha256": "e7b89d358d1abbee16cee1cdd99c41dc55dfee9cbab2a0fbdb383d4f1745da85",
+  "totals": {
+    "extended_reads": 1022175,
+    "extra_far_tests": 56914,
+    "far_tests": 243397,
+    "pending_comparisons": 378
+  }
+}

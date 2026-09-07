@@ -3787,3 +3787,20 @@ Publichostingneedsmaintainerdecision; no visibilitychange, token distribution,
 publictag orrelease performed. StreamDeckstillpointstosourcecheckout/root9D8.
 AllolderZIPs,originaldrives androllbackbinariesremainpreserved. See
  docs/RELEASE-MORNING.md and docs/reviews/2026-09-07-release-hardening.md.
+
+
+## 2026-09-07 — Expose controlled distance trials in Graphics Experiments
+
+User requested Crack Fill reclassification and access to tested3x. Sourcec753f4b
+moves Crack Fill to Experiments, preserving shared preference/default.9ae9231
+adds World2.4 Off/2x/3x with independent+0/+8/+12lookahead; defaultdistanceOFF,
+lookahead8inactive. Widescreen/scale>1 only, normalCPU, guardedpatchcomposition.
+Global/selectivescenery cannot combine; Terrain can. RecordingCLI and explicit
+MIDV_PATCH precedence preserved. No native/shader/forceprofile changes.
+104Python testsPASS. 1920x1080 menus inspected. Sharedlauncher resolver3x/+8
+feeds a new2404-frame Germany-prefix recording/replay: inputs/times40native/3GL
+images exact, nativeprofileOK, extendedreads1022175,pendingcomparisons378.
+ActualGPUcaptures512x451 atinternalscale4/CRT; not4K or originalrouteacceptance.
+Native5bb/9D8 unchanged, automatedphysicalFFB OFF, originalrecordings untouched.
+Overnight050908ZIP preserved; it lacks these sourceUIchanges and must not be
+relabeled with the newer source identity. See docs/reviews/2026-09-07-graphics-menu.md.

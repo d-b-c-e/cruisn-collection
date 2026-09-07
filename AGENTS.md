@@ -1,5 +1,19 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Latest source launcher update (2026-09-07)
+
+Read `docs/reviews/2026-09-07-graphics-menu.md`. Crack Fill moved to Graphics
+Experiments as a shared setting; its preference/default remain unchanged. World
+2.4 now exposes Off/2x/3x and independent +0/+8/+12 lookahead, widescreen/scale>1
+only, normal CPU. Global distance and selective Distant Scenery are exclusive;
+Widescreen Terrain may compose. Explicit MIDV_PATCH wins; recording CLI distance
+overrides saved distance. Source commits c753f4b/9ae9231, native unchanged 5bb9657.
+104 Python tests pass; a separate 3x/+8 2404-frame recording/replay matches inputs,
+40 native images and three completed GL images. This is short integration evidence,
+not a new full release gate or original-route/attended acceptance. The overnight
+050908 ZIP below is preserved and does NOT contain this menu change; package a new
+candidate before releasing it. No saved personal preferences were edited.
+
 ## Current verified release baseline (2026-09-07)
 
 Read `docs/reviews/2026-09-07-release-hardening.md`, `docs/RELEASE-MORNING.md`

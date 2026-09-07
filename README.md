@@ -9,13 +9,15 @@ look. **No ROMs are included** — you supply your own.
 This is an actively tested alpha. Rendering defects beyond the tested routes,
 collision feedback and telemetry coverage remain open work.
 
-**Settings → Display → Graphics Experiments** now includes optional **Distant
-Scenery** for World 2.4: five identified mountains, four small tree variants and a
-forest strip can appear earlier. Mountains also activate sooner along the track,
-improving a measured Germany bend as well as the starting sequence. The option
-remains experimental; pop-in is still visible and other games need separate
-investigation. **Widescreen Terrain**
-repairs missing edge geometry; **Margin Fill** is retired. Optional per-game
+**Settings → Display → Graphics Experiments** includes **World Draw Distance**
+(Off / 2x / 3x) and independent **Scenery Lookahead** (+0 / +8 / +12 track sections).
+These trials require World 2.4, widescreen and scale 2x or higher. They remain off
+by default; 3x has not shown extra mountain visibility over 2x at equal lookahead.
+Enabling either this distance trial or the older selective **Distant Scenery**
+option turns the other off. **Widescreen Terrain** addresses missing edge geometry.
+**Crack Fill (Shared)** is now on the same page: it borrows nearby pixels to hide
+small gaps and can smear them; its saved setting and existing default are preserved.
+**Margin Fill** is retired. Optional per-game
 **Impact Cues** are available under Force Feedback, with physical feel still
 awaiting validation.
 
@@ -26,6 +28,7 @@ awaiting validation.
 - [Global draw distance and native-port reassessment](docs/reviews/2026-09-06-global-distance-and-native-port.md)
 - [Global World distance trial: 2× candidate, playback and visual evidence](docs/reviews/2026-09-06-global-distance-trial.md)
 - [3× distance, activation limits and release baseline](docs/reviews/2026-09-07-world-3x-and-release.md)
+- [Launcher distance trials and Crack Fill placement](docs/reviews/2026-09-07-graphics-menu.md)
 - [Renderer startup and release-package hardening](docs/reviews/2026-09-07-release-hardening.md)
 - [Release-morning recording and acceptance guide](docs/RELEASE-MORNING.md)
 - [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
