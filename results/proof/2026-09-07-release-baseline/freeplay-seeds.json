@@ -1,0 +1,37 @@
+{
+  "crusnusa": {
+    "path": "fixtures/nvram-crusnusa/nvram",
+    "bytes": [
+      400,
+      405,
+      410,
+      415
+    ],
+    "before_sha256": "649e097d4def2800df6bb73ac2b31a4f8de80048179efb66ae4a20cd30a14b80",
+    "after_sha256": "c76aed71dcb3e104377377db0704bceb14e9d2fda6ef7477d4152a82effe4185"
+  },
+  "crusnwld": {
+    "path": "fixtures/nvram-crusnwld/nvram",
+    "bytes": [
+      428
+    ],
+    "before_sha256": "94c00c48af2d623f7afdee87a87bc97c62e80c04b9038f37be243dd50e41ce76",
+    "after_sha256": "e4b133e6e49d3c10d5c05533f6f1414dded4990371d6e8c6919169b3418d7943"
+  },
+  "offroadc": {
+    "path": "fixtures/nvram-offroadc/nvram",
+    "bytes": [
+      460
+    ],
+    "before_sha256": "eafc7bd0a34a772981b8f2550a18f5ee34264dab0dcd89f2563f1716b6695746",
+    "after_sha256": "f75ca18dbb2b3ed8f7210aaa5626089dc0888eec5d50f51e3d1cad245a168a3a"
+  },
+  "crusnexo": {
+    "path": "fixtures/nvram-crusnexo/m48t35",
+    "bytes": [
+      115
+    ],
+    "before_sha256": "6c56bbe1f6d4eaa816bfc3eb946c55f2d65ca53ac823b889113164b1d32bb0a6",
+    "after_sha256": "78d394cb9eed538bb0df229592d041342b16fa7bd6c06587a644686a7e4c084d"
+  }
+}
