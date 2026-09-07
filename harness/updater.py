@@ -6,12 +6,16 @@ unzips over the install folder (rig/ and roms/ untouched - the zip has
 neither) and relaunches. The caller exits right after apply().
 """
 import json
+import hashlib
 import os
+from pathlib import PurePosixPath
 import re
 import subprocess
 import sys
+import tempfile
 import urllib.error
 import urllib.request
+import zipfile
 
 import run_rig
 
@@ -51,8 +55,11 @@ def version_tuple(tag):
 
 
 def is_newer(tag, current=None):
-    a, b = version_tuple(tag), version_tuple(current or current_version())
-    return bool(a and b and a > b)
+    current = current or current_version()
+    a, b = version_tuple(tag), version_tuple(current)
+    # GitHub's latest endpoint returns stable releases. An installed RC of
+    # that same version must still be offered the final release.
+    return bool(a and b and (a > b or (a == b and '-' in current and '-' not in tag)))
 
 
 def _request(url, accept="application/vnd.github+json"):
@@ -95,6 +102,8 @@ def check():
 def download(info, dest_dir=None, progress=None):
     """Fetch the release zip to rig/update/<name>. progress(done, total)."""
     dest_dir = dest_dir or os.path.join(run_rig.POC, "rig", "update")
+    if not re.fullmatch(r'[A-Za-z0-9._-]+\.zip', info['name'], re.IGNORECASE):
+        raise RuntimeError('release ZIP has an invalid filename')
     os.makedirs(dest_dir, exist_ok=True)
     dest = os.path.join(dest_dir, info["name"])
     try:
@@ -123,6 +132,34 @@ def download(info, dest_dir=None, progress=None):
     return dest
 
 
+def validate_update_package(path):
+    """Reject partial/wrong archives before any installed file is changed."""
+    with zipfile.ZipFile(path) as archive:
+        roots=set(); files=set()
+        for info in archive.infolist():
+            name=info.filename.replace('\\','/')
+            parts=PurePosixPath(name).parts
+            if not parts or name.startswith('/') or ':' in name or '..' in parts:
+                raise ValueError('unsafe update ZIP path')
+            if (info.external_attr >> 16) & 0o170000 == 0o120000:
+                raise ValueError('update ZIP contains a symbolic link')
+            roots.add(parts[0])
+            if info.is_dir():continue
+            relative='/'.join(parts[1:]).lower()
+            if not relative or relative in files:raise ValueError('duplicate or unrooted update file')
+            if relative.startswith(('rig/','roms/')):raise ValueError('update ZIP contains personal runtime data')
+            files.add(relative)
+        if len(roots)!=1 or not {'cruisncollection.exe','cruisnsetup.exe','vunit.exe','sdl2.dll','version.txt'} <= files:
+            raise ValueError('update ZIP is missing required runtime files')
+        bad=archive.testzip()
+        if bad:raise ValueError(f'update ZIP failed CRC validation: {bad}')
+        return next(iter(roots))
+
+
+def ps_literal(value):
+    return "'" + str(value).replace("'", "''") + "'"
+
+
 def apply(zip_path, relaunch=True):
     """Write rig/update/apply.ps1 and start it detached; it waits for
     every process running from the install folder to exit, expands the
@@ -130,42 +167,54 @@ def apply(zip_path, relaunch=True):
     and relaunches the launcher. Caller must exit promptly."""
     if not frozen():
         raise RuntimeError("running from source - update with git pull")
+    zip_path=os.path.abspath(zip_path)
+    package_root=validate_update_package(zip_path)
+    with open(zip_path,'rb') as payload:
+        package_hash=hashlib.file_digest(payload,'sha256').hexdigest()
     app = app_dir()
     workdir = os.path.join(run_rig.POC, "rig", "update")
     os.makedirs(workdir, exist_ok=True)
     script = os.path.join(workdir, "apply.ps1")
     log = os.path.join(workdir, "apply.log")
     exe = os.path.join(app, "CruisnCollection.exe")
+    extract=tempfile.mkdtemp(prefix='extract-',dir=workdir)
     lines = [
-        "$ErrorActionPreference = 'Continue'",
-        f"$app = '{app}'",
-        f"$zip = '{zip_path}'",
-        f"$log = '{log}'",
-        f"$extract = '{os.path.join(workdir, 'extract')}'",
+        "$ErrorActionPreference = 'Stop'",
+        f"$app = {ps_literal(app)}",
+        f"$zip = {ps_literal(zip_path)}",
+        f"$log = {ps_literal(log)}",
+        f"$extract = {ps_literal(extract)}",
+        f"$work = {ps_literal(workdir)}",
+        f"$packageRoot = {ps_literal(package_root)}",
+        f"$packageHash = {ps_literal(package_hash)}",
         f"$relaunch = ${'true' if relaunch else 'false'}",
-        f"$exe = '{exe}'",
+        f"$exe = {ps_literal(exe)}",
         "function Log($m) { \"$(Get-Date -Format s)  $m\" | Add-Content $log }",
+        "try {",
+        "$appPrefix = [IO.Path]::GetFullPath($app).TrimEnd('\\') + '\\'",
         "Log \"update: waiting for the launcher to close\"",
         "$deadline = (Get-Date).AddSeconds(120)",
         "do {",
         "  $busy = Get-Process -ErrorAction SilentlyContinue | Where-Object {",
-        "    $_.Path -and $_.Path.StartsWith($app, 'OrdinalIgnoreCase') -and $_.Id -ne $PID }",
+        "    $_.Path -and $_.Path.StartsWith($appPrefix, 'OrdinalIgnoreCase') -and $_.Id -ne $PID }",
         "  if ($busy) { Start-Sleep -Milliseconds 500 }",
         "} while ($busy -and (Get-Date) -lt $deadline)",
         "if ($busy) { Log \"still running: $($busy.Name -join ', ') - giving up\"; exit 1 }",
-        "if (Test-Path $extract) { Remove-Item -Recurse -Force $extract }",
+        "if ((Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant() -ne $packageHash) { throw 'ZIP changed after validation' }",
         "Log \"expanding $zip\"",
         "Expand-Archive -LiteralPath $zip -DestinationPath $extract -Force",
-        "$src = Get-ChildItem $extract -Directory | Select-Object -First 1",
-        "if (-not $src) { $src = Get-Item $extract }",
+        "$src = Get-Item -LiteralPath (Join-Path $extract $packageRoot)",
         "if (-not (Test-Path (Join-Path $src.FullName 'CruisnCollection.exe'))) { Log 'zip has no CruisnCollection.exe - aborting'; exit 1 }",
         "Log \"copying $($src.FullName) -> $app\"",
         "robocopy $src.FullName $app /E /XD rig roms /R:5 /W:2 /NFL /NDL /NJH /NJS /NP | Out-Null",
         "if ($LASTEXITCODE -ge 8) { Log \"robocopy failed ($LASTEXITCODE)\"; exit 1 }",
-        "Remove-Item -Recurse -Force $extract -ErrorAction SilentlyContinue",
-        "Remove-Item -Force $zip -ErrorAction SilentlyContinue",
+        "$allowed = [IO.Path]::GetFullPath($work).TrimEnd('\\') + '\\'",
+        "$resolved = (Resolve-Path -LiteralPath $extract).Path",
+        "if (-not $resolved.StartsWith($allowed, 'OrdinalIgnoreCase') -or ((Get-Item -LiteralPath $resolved).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Refusing cleanup outside update workspace' }",
+        "Remove-Item -LiteralPath $resolved -Recurse -Force",
         "Log 'update applied'",
-        "if ($relaunch -and (Test-Path $exe)) { Start-Process -FilePath $exe -WorkingDirectory $app }",
+        "if ($relaunch -and (Test-Path $exe)) { Start-Process -FilePath $exe -WorkingDirectory $app -WindowStyle Hidden }",
+        "} catch { Log \"update failed: $_\"; exit 1 }",
     ]
     with open(script, "w", encoding="utf-8") as f:
         f.write(chr(10).join(lines) + chr(10))
@@ -176,10 +225,15 @@ def apply(zip_path, relaunch=True):
     # CREATE_NO_WINDOW (a DETACHED powershell never runs: no console host)
     # + NEW_PROCESS_GROUP; the child outlives our exit.
     creationflags = 0x08000000 | 0x00000200
+    # A launcher started from PowerShell 7 can inherit its module search path;
+    # Windows PowerShell then loses Get-FileHash/Expand-Archive. Let it initialize
+    # its own module path, as it does when launched from Explorer.
+    helper_env = {key: value for key, value in os.environ.items() if key.upper() != 'PSMODULEPATH'}
+    powershell = os.path.join(os.environ['SystemRoot'], 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe')
     subprocess.Popen(
-        ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass",
+        [powershell, "-NoProfile", "-ExecutionPolicy", "Bypass",
          "-WindowStyle", "Hidden", "-File", script],
-        creationflags=creationflags, close_fds=True,
+        creationflags=creationflags, close_fds=True, env=helper_env,
         stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL)
     return script
