@@ -1,0 +1,410 @@
+{
+  "candidate_sha256": "c925b24e6d23bd8288ddeaca7d79af0b072b223515e5ea4200817d03be29e93a",
+  "cases": [
+    {
+      "id": "usa-widescreen",
+      "iteration": 1,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-1\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-1\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "usa-widescreen",
+      "iteration": 2,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-2\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-2\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "usa-widescreen",
+      "iteration": 3,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-3\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\usa-widescreen-3\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "world24-germany",
+      "iteration": 1,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-1\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-1\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "world24-germany",
+      "iteration": 2,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-2\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-2\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "world24-germany",
+      "iteration": 3,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-3\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\world24-germany-3\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "offroad",
+      "iteration": 1,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-1\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-1\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "offroad",
+      "iteration": 2,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-2\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-2\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "offroad",
+      "iteration": 3,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-3\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\offroad-3\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mvgl_002.bmp"
+      }
+    },
+    {
+      "id": "exotica",
+      "iteration": 1,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-1\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-1\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mzgl_002.bmp"
+      }
+    },
+    {
+      "id": "exotica",
+      "iteration": 2,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-2\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-2\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mzgl_002.bmp"
+      }
+    },
+    {
+      "id": "exotica",
+      "iteration": 3,
+      "passed": true,
+      "repeat_gl": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-3\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 3,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-1\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "replay_exit": 0,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-renderer-startup-final\\exotica-3\\report.json",
+      "visual_content": {
+        "files": 3,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mzgl_002.bmp"
+      }
+    }
+  ],
+  "full_coverage": true,
+  "passed": true,
+  "physical_force": false,
+  "repeats": 3,
+  "scope": "Repeated full-window renderer boots with completed GL evidence and physical FFB off.\n\nUses four existing local recordings, forces scale4/CRT on, and retains their\nrecorded game patches. This is startup stress, not complete release gameplay.\nEvery repeat must preserve native replay and match the first repeat's GL pixels.\n",
+  "small_window": false,
+  "source_identity": "196797ed2d7daf307fdf09a267d18dca1e82b7ca859c50e4e7c5b819aca931ea",
+  "subset": null,
+  "suite_sha256": "d886c353c8daec47eb37180bcec0827989843ce08bb0c3e92241a6cf99690b8e"
+}

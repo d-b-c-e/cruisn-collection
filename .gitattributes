@@ -3,6 +3,7 @@ results/proof/2026-09-06-global-distance/** -text whitespace=cr-at-eol
 results/proof/2026-09-06-global-distance-trial/** -text whitespace=cr-at-eol
 results/proof/2026-09-07-world-3x/** -text whitespace=cr-at-eol
 results/proof/2026-09-07-release-baseline/** -text whitespace=cr-at-eol
+results/proof/2026-09-07-release-hardening/** -text whitespace=cr-at-eol
 
 # Unified patch context includes a space before original indentation and blank lines.
 # These are archived text artifacts, not active source-code whitespace exceptions.

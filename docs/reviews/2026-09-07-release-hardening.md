@@ -76,3 +76,68 @@ new dry-run promotion command requires complete current release gates and attend
 acceptance containing the exact ZIP hash. Publication is an explicit later action,
 using those bytes and their recorded commit. No tag or public release was created.
 Frozen-launch and clean-folder validation is still pending at this checkpoint.
+
+## Completed startup, stall and frozen checks
+
+Final renderer executable C925 (native aef6d4465cd) passes12 full-window starts,
+3 per game, scale4/CRT and correct native height. All requested completed GL
+images exist and each repeat matches its first run. The116-patch export exactly
+reconstructs tree de7f57623fc201460b2b6a3b8feed5ac6821eb5c.
+
+The100ms consumer stall recovers and matches3 completed control images. The
+1500ms stall with an1804-frame stop finishes emulation before all GL captures,
+which the harness correctly rejects. Extending that run to2404 exposes a stream
+timeout at1829:16MiB queue,750ms measured wait. A5000ms stall fails at1607, with
+zero consumer bytes during a765ms wait. No watchdog threshold was increased.
+These are successful negative controls, not successful renderer recovery.
+
+The first extracted frozen package launches all four games using its own copied
+ROM/runtime paths with PATH restricted to Windows directories and force off.
+Each gives3 completed GL captures and a clean WM_CLOSE exit. The next package
+also passes all8 menu/settings images, setup health and actual support output:
+3 joystick entries and complete MAME input/binding text. This uses the existing
+Windows installation and GPU drivers, not a clean user profile or attended race.
+The final source-bound suite follows these component checks.
+
+## Update and support corrections
+
+Importing an older installation previously overwrote existing NVRAM/cfg/ctrlr
+files despite claiming preservation. It now fills missing files only; tests retain
+newer calibration, scores and bindings. The real Windows updater test covers an
+apostrophe in the path, unchanged rig/ROM files and rejection of a ZIP changed
+after validation. Corrupt/unsafe/incomplete archives are rejected before copying.
+Windows PowerShell initializes its own module path; inherited PowerShell7 paths
+previously hid required commands. CI additionally exposed short8.3 paths expanding
+to long paths during cleanup. Resolve both compared paths consistently, including
+the running-process check. The corrected test passes locally; fresh CI follows.
+
+Frozen GUI executables have no usable standard-output stream for support JSON.
+The joystick dump now has an explicit output file. The Lua input dump searches
+the packaged source directory too. Support collection disables physical force
+and rendering experiments and uses the requested game's controller mapping.
+Setup exposes read-only health JSON and an explicit support-output CLI for
+repeatable package testing. Full runtime packaging also includes MAME's COPYING
+and licence texts, BGFX assets, and the pinned toolkit MIT licence.
+
+## Further force stop-command finding (not implemented at this checkpoint)
+
+Both driver adapters condition signed raw bytes before the output adapter checks
+the reserved-128 neutral value. Exotica gain800 can turn it into-127; V-Unit
+slew/clamp can similarly turn it into ordinary force. The pinned
+[Endprodukt handler](https://github.com/Endprodukt/FFBPluginRacerMAME/blob/7e95f65cab18109cda6b6d0da8ab4c210f3c9c12/Game%20Files/MAMESupermodel.cpp#L1313-L1324)
+normalizes neutral before gain. The retained Exotica drive has4616 raw writes,
+range-49..36, and zero-128 samples. This source bug is not an observed explanation
+for the Fanatec report.
+
+A local draft normalizes-128 before conditioning and resets driver slew history.
+ROM-free tests preserve61200 ordinary-command vectors and make240 neutral vectors
+zero;216 of those previously yielded nonzero adapted force. It will be integrated
+as a separate fix after the currently running renderer/release baseline checks.
+No FFB gain, polarity or physical-feel change is inferred from these vectors.
+
+Current CI34102126889 at942d674 passes all four jobs (Windows/Linux harness,
+native helpers and Mesa GPU fixtures). The12 startup runs hold99.9777..100.0211%
+emulation during frames900..1650 before requested GL captures. Callback p99 is
+18.3..25.6ms; worst38.8ms. This bounded interval does not establish display latency
+or every driving/selection transition. Renderer proof233 ZIP entries were hashed
+and verified on extraction. See `results/proof/2026-09-07-release-hardening/`.

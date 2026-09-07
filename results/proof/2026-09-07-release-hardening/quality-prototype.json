@@ -1,0 +1,152 @@
+{
+  "checks": [
+    {
+      "check": "cpu-write-mask-preserves-gpu-pixels",
+      "different_mask_pixels": 0,
+      "different_pixels": 0,
+      "height": 7,
+      "passed": true,
+      "scale": 1
+    },
+    {
+      "check": "cpu-write-mask-preserves-gpu-pixels",
+      "different_mask_pixels": 0,
+      "different_pixels": 0,
+      "height": 7,
+      "passed": true,
+      "scale": 4
+    },
+    {
+      "check": "cpu-write-mask-preserves-gpu-pixels",
+      "different_mask_pixels": 0,
+      "different_pixels": 0,
+      "height": 401,
+      "passed": true,
+      "scale": 1
+    },
+    {
+      "check": "cpu-write-mask-preserves-gpu-pixels",
+      "different_mask_pixels": 0,
+      "different_pixels": 0,
+      "height": 401,
+      "passed": true,
+      "scale": 4
+    },
+    {
+      "check": "tagged-dither-resolve",
+      "display_size": 4,
+      "passed": true
+    },
+    {
+      "check": "tagged-dither-resolve",
+      "display_size": 7,
+      "passed": true
+    },
+    {
+      "check": "tagged-dither-resolve",
+      "display_size": 10,
+      "passed": true
+    },
+    {
+      "check": "checkerboard-art-preserved",
+      "display_size": 4,
+      "passed": true
+    },
+    {
+      "check": "checkerboard-art-preserved",
+      "display_size": 7,
+      "passed": true
+    },
+    {
+      "check": "checkerboard-art-preserved",
+      "display_size": 10,
+      "passed": true
+    },
+    {
+      "check": "dither-tag-quality-only",
+      "passed": true
+    },
+    {
+      "check": "native-sloped-endpoint-coverage",
+      "different_pixels": 0,
+      "passed": true
+    },
+    {
+      "check": "thin-rectangle-atlas",
+      "covered_pixels": 26,
+      "foreign_texels": 0,
+      "passed": true,
+      "scale": 1
+    },
+    {
+      "check": "thin-rectangle-atlas",
+      "covered_pixels": 104,
+      "foreign_texels": 0,
+      "passed": true,
+      "scale": 2
+    },
+    {
+      "check": "thin-rectangle-atlas",
+      "covered_pixels": 234,
+      "foreign_texels": 0,
+      "passed": true,
+      "scale": 3
+    },
+    {
+      "check": "thin-rectangle-atlas",
+      "covered_pixels": 416,
+      "foreign_texels": 0,
+      "passed": true,
+      "scale": 4
+    },
+    {
+      "check": "thin-rectangle-atlas",
+      "covered_pixels": 936,
+      "foreign_texels": 0,
+      "passed": true,
+      "scale": 6
+    },
+    {
+      "check": "adjacent-tile-coverage",
+      "holes": 0,
+      "passed": true,
+      "scale": 2
+    },
+    {
+      "check": "adjacent-tile-coverage",
+      "holes": 0,
+      "passed": true,
+      "scale": 4
+    },
+    {
+      "check": "transparent-polygon-ownership",
+      "passed": true
+    },
+    {
+      "check": "vertex-builder-equivalence",
+      "passed": true
+    },
+    {
+      "check": "fine-sample-in-native-empty-span",
+      "passed": true
+    },
+    {
+      "check": "closed-tjunction-coverage",
+      "gained_pixels": 20,
+      "lost_pixels": 0,
+      "passed": true,
+      "scale": 2
+    },
+    {
+      "check": "closed-tjunction-coverage",
+      "gained_pixels": 80,
+      "lost_pixels": 0,
+      "passed": true,
+      "scale": 4
+    }
+  ],
+  "passed": true,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "schema": 1,
+  "scope": "synthetic GPU quality regression"
+}

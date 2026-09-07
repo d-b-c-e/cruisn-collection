@@ -1,0 +1,9 @@
+{
+  "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\startup-offroad-401\\new\\run\\gl-snap",
+  "different_frames": [],
+  "frames": 26,
+  "passed": true,
+  "pixel_changes": [],
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\startup-offroad-401\\old\\run\\gl-snap",
+  "scope": "completed GL frame pixels"
+}
