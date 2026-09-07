@@ -24,6 +24,8 @@ class MotionTests(unittest.TestCase):
             result = compare(*paths)
             self.assertFalse(result['passed'])
             self.assertEqual(result['first_camera_difference_frame'], 101)
+            self.assertEqual(result['camera_equal_frame_intervals'], [[100,100]])
+            self.assertEqual(result['camera_equal_frames'], 1)
             self.assertTrue(result['adc_frame_value_pc_equal'])
             (paths[1] / 'world-camera.csv').write_text(camera)
             (paths[1] / 'world-adc.csv').write_text(adc.replace('1.000000000000', '1.000000000001'))
@@ -32,6 +34,10 @@ class MotionTests(unittest.TestCase):
             self.assertTrue(result['camera_equal'])
             self.assertTrue(result['adc_frame_value_pc_equal'])
             self.assertFalse(result['adc_times_equal'])
+            (paths[1] / 'world-adc.csv').write_text(adc.replace(',81', ',82'))
+            result = compare(*paths)
+            self.assertEqual(result['first_adc_frame_value_pc_difference'], {
+                'index': 1, 'reference': [101,0x123,0x81], 'candidate': [101,0x123,0x82]})
 
     def test_missing_duplicate_and_truncated_camera_samples_fail(self):
         with tempfile.TemporaryDirectory() as directory:

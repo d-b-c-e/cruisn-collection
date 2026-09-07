@@ -60,8 +60,18 @@ def compare(reference, candidate):
     camera_equal = camera[0] == camera[1]
     same_interval = (camera[0][0][0], camera[0][-1][0]) == (camera[1][0][0], camera[1][-1][0])
     differences = [a[0] for a, b in zip(*camera) if a != b]
+    equal_intervals = []
+    if same_interval:
+        for a, b in zip(*camera):
+            if a != b:
+                continue
+            if equal_intervals and equal_intervals[-1][1] + 1 == a[0]:
+                equal_intervals[-1][1] = a[0]
+            else:
+                equal_intervals.append([a[0], a[0]])
     values = [[(r[0], r[2], r[3]) for r in rows] for rows in adc]
     times = [[r[1] for r in rows] for rows in adc]
+    first_adc_difference = next((i for i, (a, b) in enumerate(zip(*values)) if a != b), None)
     return {
         'schema': 1, 'scope': __doc__.strip(),
         'passed': camera_equal and adc[0] == adc[1],
@@ -69,8 +79,16 @@ def compare(reference, candidate):
         'camera_samples': [len(rows) for rows in camera],
         'camera_intervals': [[rows[0][0], rows[-1][0]] for rows in camera],
         'first_camera_difference_frame': differences[0] if differences and same_interval else None,
+        'camera_equal_frame_intervals': equal_intervals if same_interval else None,
+        'camera_equal_frames': sum(last-first+1 for first,last in equal_intervals) if same_interval else None,
+        'camera_match_scope': 'Camera words only; traffic, object state and rendering phase can still differ.',
         'actual_adc_reads': [len(rows) for rows in adc],
         'adc_frame_value_pc_equal': values[0] == values[1],
+        'first_adc_frame_value_pc_difference': None if first_adc_difference is None else {
+            'index': first_adc_difference,
+            'reference': list(values[0][first_adc_difference]),
+            'candidate': list(values[1][first_adc_difference]),
+        },
         'adc_times_equal': times[0] == times[1],
         'first_adc_time_difference_index': next((i for i, (a, b) in enumerate(zip(*times)) if a != b), None),
         'sources': [{name: sha256_file(path / name) for name in ('world-camera.csv', 'world-adc.csv')}
