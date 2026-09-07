@@ -591,11 +591,14 @@ class Audio:
     def _track_for(self, rom):
         """Per-game menumusic-<rom>.* if present, else the generic
         menumusic.*; None if neither exists."""
-        for stem in (f"menumusic-{rom}", "menumusic"):
-            for ext in ("mp3", "wav"):
-                m = os.path.join(self.assets, f"{stem}.{ext}")
-                if os.path.isfile(m):
-                    return m
+        # User replacements stay in rig; shipped music is immutable package
+        # content, so upgrades need not copy over the user's runtime directory.
+        for directory in (self.assets, os.path.join(POC, "audio")):
+            for stem in (f"menumusic-{rom}", "menumusic"):
+                for ext in ("mp3", "wav"):
+                    m = os.path.join(directory, f"{stem}.{ext}")
+                    if os.path.isfile(m):
+                        return m
         return None
 
     def start_music(self, rom=None):

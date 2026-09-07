@@ -13,7 +13,8 @@ import sys
 from verification import write_json
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = {"include/force_model.h": "native/forcemodel/force_model.h",
+FILES = {"LICENSE": "LICENSE",
+         "include/force_model.h": "native/forcemodel/force_model.h",
          "include/force_profile.h": "native/forcemodel/force_profile.h",
          "include/impact_mixer.h": "native/forcemodel/impact_mixer.h",
          "include/signal_sample.h": "native/telemetry/signal_sample.h",

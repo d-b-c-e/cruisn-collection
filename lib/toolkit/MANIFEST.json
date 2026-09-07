@@ -1,6 +1,7 @@
 {
   "commit": "b726d56eccb4c0a74b9ec36ae30fdb41e5d520ea",
   "files": {
+    "LICENSE": "b2212c476244c444d6b7e804ac89c038a88b5c9288a087b30a2343d2dc3021db",
     "include/force_model.h": "eae373e5bdaac97ad8c83b1f0a0ae4a1ccd55b0db5caa835581264b370f42842",
     "include/force_profile.h": "fec9bdc952a27b4353e1b98ae87395c424f0b076c8cbb148e3619ce5977865e4",
     "include/impact_mixer.h": "c8b8d9dbc8160144d21ad4b2b6755023f9f964c84ccb800defcfa3630796f784",
