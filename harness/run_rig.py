@@ -682,8 +682,15 @@ def import_previous_install(src, progress=print):
     for sub in ("nvram", "cfg", "ctrlr"):
         s_dir = os.path.join(rig_src, sub)
         if os.path.isdir(s_dir):
-            shutil.copytree(s_dir, os.path.join(rig_dst, sub),
-                            dirs_exist_ok=True)
+            # copytree(dirs_exist_ok=True) replaces existing files, including
+            # newer high scores and calibration. Import fills missing files.
+            for directory, _, files in os.walk(s_dir):
+                target = os.path.join(rig_dst, sub, os.path.relpath(directory, s_dir))
+                for name in files:
+                    dst = os.path.join(target, name)
+                    if not os.path.exists(dst):
+                        os.makedirs(target, exist_ok=True)
+                        shutil.copy2(os.path.join(directory, name), dst)
             done.append(sub)
     cfg = os.path.join(rig_src, "collection.ini")
     if os.path.isfile(cfg) and not os.path.isfile(

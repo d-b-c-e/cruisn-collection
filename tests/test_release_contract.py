@@ -79,6 +79,22 @@ class ReleaseLauncherTests(unittest.TestCase):
         self.cfg.parent.mkdir(parents=True,exist_ok=True)
         with self.cfg.open('w') as out: cp.write(out)
 
+    def test_import_previous_install_preserves_newer_calibration_and_scores(self):
+        previous=self.root/'previous'
+        for sub in ('nvram/crusnwld24','cfg','ctrlr'):
+            old=previous/'rig'/sub;old.mkdir(parents=True)
+            (old/'existing').write_bytes(b'old calibration')
+            (old/'missing').write_bytes(b'import this')
+            current=self.root/'rig'/sub;current.mkdir(parents=True)
+            (current/'existing').write_bytes(b'new scores and calibration')
+        (previous/'rig/collection.ini').write_text('[collection]\nffb=90\n')
+        self.cfg.write_text('[collection]\nffb=40\n')
+        self.rig.import_previous_install(str(previous),progress=lambda _:None)
+        for sub in ('nvram/crusnwld24','cfg','ctrlr'):
+            self.assertEqual((self.root/'rig'/sub/'existing').read_bytes(),b'new scores and calibration')
+            self.assertEqual((self.root/'rig'/sub/'missing').read_bytes(),b'import this')
+        self.assertEqual(self.cfg.read_text(),'[collection]\nffb=40\n')
+
     def test_fresh_defaults_and_saved_choices_survive(self):
         state = self.shell.load_config()
         self.assertTrue(state['crt'])
