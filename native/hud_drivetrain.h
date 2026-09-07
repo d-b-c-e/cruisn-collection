@@ -82,6 +82,8 @@ inline Drivetrain world_drivetrain(const uint32_t *ram, size_t words, bool v25)
 inline bool world_driving(const uint32_t *ram, size_t words, bool v25)
 {
     return world_drivetrain_code(ram,words,v25) && ram[v25?0xebdc:0xebe2]==4 &&
+        ram[v25?0x1ae4:0x1b13]==(v25?0x0821ebdd:0x0821ebe3) &&
+        ram[v25?0x1ae5:0x1b14]==0x1a610004 &&
         (ram[v25?0xebdd:0xebe3]&4)!=0;
 }
 
@@ -103,6 +105,11 @@ inline int exotica_hud_mph(const uint32_t *ram, size_t words)
     // Unconverted MPH buffer. The display optionally converts it to metric;
     // Forza always needs m/s, regardless of the cabinet's display units.
     return int(ram[0x1074]);
+}
+inline bool exotica_driving(const uint32_t *ram, size_t words)
+{
+    return exotica_drivetrain(ram,words).valid && ram[0x3d09]==0x08210079 &&
+        ram[0x3d0a]==0x6a050004 && ram[0x79]==1;
 }
 
 inline bool offroad_drivetrain_code(const uint32_t *ram, size_t words)

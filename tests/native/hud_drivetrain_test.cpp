@@ -36,6 +36,8 @@ int main()
         ram[c]=0x08280000|p;ram[c+1]=0x07400052;ram[c+2]=0x0a60e6aa;
         ram[c+25]=0x08400051;ram[g]=0x08200000|s;ram[g+1]=0x04e00005;
         ram[g+3]=0x04e00004;ram[g+8]=0x084a0051;
+        ram[v25?0x1ae4:0x1b13]=v25?0x0821ebdd:0x0821ebe3;
+        ram[v25?0x1ae5:0x1b14]=0x1a610004;
         ram[p]=0xe3d0;ram[0xe421]=3;ram[0xe422]=0x0504e249;
         ram[s]=4;ram[s+1]=0x26;
         auto d=world_drivetrain(ram.data(),ram.size(),v25);
@@ -56,6 +58,9 @@ int main()
     ram[0x76]=1;ram[0x10be]=0x113ff;ram[0x11461]=1;ram[0x11462]=0x053e56c7;ram[0x1074]=38;
     assert(exotica_drivetrain(ram.data(),ram.size()).rpm>7900);
     assert(exotica_hud_mph(ram.data(),ram.size())==38);
+    ram[0x3d09]=0x08210079;ram[0x3d0a]=0x6a050004;
+    assert(!exotica_driving(ram.data(),ram.size())); // HUD before GO
+    ram[0x79]=1;assert(exotica_driving(ram.data(),ram.size()));
     ram[0x76]=0;assert(!exotica_drivetrain(ram.data(),ram.size()).valid);
     assert(exotica_hud_mph(ram.data(),ram.size())==-1);
 
