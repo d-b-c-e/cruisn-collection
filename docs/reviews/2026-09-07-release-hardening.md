@@ -201,3 +201,30 @@ players. Public hosting needs a maintainer decision before release: reviewed pub
 source repository or a separate public distribution destination with corresponding
 client/workflow changes. No visibility change, token distribution or public release
 was performed. The read-only response is retained in release-access.json.
+
+
+## Completed 9D8 baseline and portable source identities
+
+The complete9D8/3720 runtime suite passes, including all174 sampled completed GL
+frames in the three full old/new driving comparisons (USA43, Germany78, Off Road53
+at401 rows). The actual107MB candidate ZIP also passes the real Windows updater:
+all1,616 installed file hashes match, sample existing rig/ROM-directory contents
+survive and the recognized historical proxy is preserved exactly in its backup.
+No legacy plugin or emulator was executed during that upgrade rehearsal.
+The288-entry runtime archive and33 proof files were verified from committed Git
+blobs under `results/proof/2026-09-07-release-hardening/release-3720`.
+
+CI34102127057 successfully built the older942 source from upstream plus exported
+patches. Its downloaded ZIP and all1,614 file hashes match its manifests. Its
+executable is different and was never run or deployed as the final candidate.
+Inspection exposed a metadata bug: Git checkout line endings in LICENSE and the
+profile example changed the source identity despite the same committed text.
+
+Commit7cb6751 normalizes the remaining known text inputs, including CSV/config/XML,
+profile examples and extensionless licence/version files. Binary fixtures preserve
+every byte; meaningful licence edits still invalidate identity.100 tests pass.
+CI now exports the whole source identity on both Windows and Linux so every input
+hash can be compared with the maintainer checkout. Final packaging and standard
+release gates will use the corrected identity; prior reports stay unchanged.
+The native executable/shaders are unchanged, so the174 binary-bound GL comparisons
+remain valid component evidence. Public access and attended acceptance remain open.

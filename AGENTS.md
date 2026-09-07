@@ -1,5 +1,20 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Latest release identity correction (2026-09-07)
+
+The full 9D8 runtime baseline and exact-ZIP upgrade PASS and are preserved in
+`results/proof/2026-09-07-release-hardening/release-3720`: 288 runtime entries,
+33 proof files verified from Git blobs; 174 paired GL frames unchanged. Native
+5bb965763b1 / 9D8 remains deployed and unchanged. Collection 7cb6751 fixes a
+newly observed source-hash mismatch between text checkout line endings. Known
+text inputs normalize to LF, including licences/profile examples/CSV; binary
+NVRAM bytes remain exact. 100 tests pass. Windows/Linux CI now export identities;
+verify both against local e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921.
+Repackage/revalidate against the new identity; do not relabel older gate reports.
+See immediate session notes for pending steps; no local emulator/build is active.
+Repository is PRIVATE; anonymous updater endpoint returns404. Public hosting
+needs a maintainer decision; do not expose repository history or distribute tokens.
+
 ## Current release preparation (2026-09-07 overnight)
 
 Read `docs/reviews/2026-09-07-release-hardening.md`, the immediate

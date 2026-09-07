@@ -1,3 +1,42 @@
+# Current checkpoint — 2026-09-07 final source-identity correction
+
+No emulator/build is running. Prior full runtime85263 and upgrade94879 completed.
+ALL native9D8 checks PASS:7drives,5freshboots,3menus,24quality,2exact100.0000%,
+frozen4boots/8pages/support. All174pairedGL frames match oldaa920 across3fulldrives.
+ActualZIP042637 upgradePASS1616files, preservesrig/ROMmarker and exactlegacybackup.
+Baseline committed/pushed3fa9141 under proof/release-hardening/release-3720:
+288runtimeentries and33proof files verified from committed Git blobs.
+
+New real defect from downloaded CI942artifact: sourceidentity differs solely for
+textcheckout endings (extensionless LICENSE and ini.example; CSV also needed
+normalization acrossLinux/Windows). CIartifact source942 was integritychecked1614
+files but NEVER executed/deployed. Archivedreportnotesoldmetadata mismatch.
+Sourcecode7cb6751 now canonicalizes known text inputs incl.csv/.cfg/.xml/.example
+and LICENSE/COPYING/VERSION; NUL-containing files and rawNVRAM remain exactbytes.
+100Python testsPASS; meaningfulnewtests compareLF/CRLF andchangedbinarybytes.
+CI workflow now emits full sourceidentity artifacts fromWindows AND Linux.
+EXPECTED current sourceidentity:
+e728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921
+Saved fullmap startup-work/local-portable-identity.json. Wait for7cb CI; download
+both sourceidentity artifacts and compareeveryfilemap againstlocal beforefreeze.
+No furthernativebuild required:5bb965763b1/9D8 unchanged, currentrootdeployed.
+
+NEXT: after CI sourceagreement, freeze new clean committed ZIP; run fullstandard
+suite again bound to newidentity (adapt run_release_final.py newoutput; omit repeated
+fullGLpairs because native/shaders/options unchanged and their independent binary
+hash-bound174comparisons remainvalid). Run exactnewZIP upgrade and archive proof
+as release-final. Preserve allolderZIPs and3730case. Finalcode/ZIPidentity changed,
+so oldgate deliberately staysstale rather than relabelingits sourcehash.
+Then updatefinal docs/RESULTSappend/handoff, commit/push/merge master57e9bdf.
+Currentbranch codex/release-startup-hardening7cb6751 pushed. No publictag/release.
+
+NEW RELEASE DECISION: GitHubrepo PRIVATE, anonymouslatestreleaseAPI returns404;
+authenticatedlatestv0.3.7. Updatercorrectlyreportserroralready. Need publicdelivery
+destination decision; no visibility changeorcredentialdistributionauthorized.
+Documentedrelease-access.json inproof andmorning/checklist/review. This blocks
+promisingpublic in-appupdates.39humanattended/shareditemsstillpending; nevermark
+humanledgerpassfromautomation. Can preattach verifiedreports whilepending.
+
 # Latest checkpoint — 2026-09-07 about04:49 local
 
 Final3720 full suite COMPLETE PASS: frozen4boots/8UI/setup/support, all7drives,
