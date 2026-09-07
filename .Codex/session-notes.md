@@ -26,16 +26,15 @@ retains two HUD quads spilling2171->2172.112patches reconstruct ae27265e06a1da7a
 
 ## Running / next
 
-- scenery-expanded-default-regressions is running serially. First five cases PASS:
-  USA original/wide,World24,oldGermany,World25. Off Road/Exotica remain; don't claim
-  full suite until report completed. Exec session97520 includes GL then this suite.
+- All seven scenery-expanded-default-regressions cases PASS at55578f8a, including
+  timing gates and Exotica21completed GL images.71Python tests pass.
 - CI34070790847 at e81bc4a all four jobs PASS. New docs/harness cadence changes need
   final CI; ff master after checkpoint. User's Stream Deck uses this checkout.
 - Strong next candidate: CB1A8B returns at6093 already inside original far (53744),
   plainly visible above road around game elapsed1:15. Native snapshots6060/6120
   show huge mountain arrival. Prepared read-only probe
   results/diagnostics/mountain-return-activation.lua, first6000,last6140,
-  slot11A7C/modelCB1A8B. Run after suite (one emulator at a time), --until-frame6142
+  slot11A7C/modelCB1A8B. Read-only run started (one emulator at a time), --until-frame6142
   --capture-state, then inspect field assignment and pending->active timing.
 - Earlier diagnostic CCF288/slot12668: allocated2991, pending2000->active1000 at3017,
   firstdraw3019 inside80k. lua/world_scenery_early_activation.lua intercepts one

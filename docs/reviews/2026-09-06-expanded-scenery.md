@@ -49,9 +49,15 @@ not measure GPU latency or certify physical steering feel.
 
 Both runs count 912 extra mountain admissions, 3,964 tree admissions, 277 forest
 admissions and 31,712 extended reciprocal reads; maximum index 8,120 remains below
-10,000. The 112-patch export reconstructs the native commit tree exactly. Full
-default-build cross-game checks and a dense native GL run are recorded separately
-when complete; candidate repeatability alone is not that coverage.
+10,000. The 112-patch export reconstructs the native commit tree exactly. All seven
+default-build cross-game checks pass, including their timing gates and Exotica's
+21 completed GL images. The 71 Python tests and native scenery unit pass.
+
+The dense native run completes 201 images from 1600 through 2400. Compared with
+the first native scenery build (three mountains/one conifer), 143 images change,
+with a maximum of 1,234 pixels at 2144. Every sampled image from 2196 through 2400
+matches. This includes the four-tree additions as well as the new mountains and
+forest strip. Candidate repeatability and default-build coverage remain separate.
 
 ## A separate pending-list limit
 

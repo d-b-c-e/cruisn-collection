@@ -3480,3 +3480,8 @@ GL comparison now reports pixel counts/bounds and first/peak/last contact sheets
 validates sparse global-frame cadence and rejects overwritten/reused filenames.
 README telemetry claims corrected: USA numeric HUD with OCRfallback, WorldOCR,
 RPM unavailable (oldUSA RPM mapping was packed speed text).
+
+Expanded-scenery final default suite: all seven cases PASS at55578f8a, including
+timing gates and Exotica21completed GL images.71Python tests and native scenery
+unit pass. CI34070790847 at e81bc4a passed all four jobs. Full proof in
+expanded-scenery/default-regressions.json; continuing later mountain activation.
