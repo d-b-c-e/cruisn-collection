@@ -210,15 +210,15 @@ def apply(zip_path, relaunch=True):
     and relaunches the launcher. Caller must exit promptly."""
     if not frozen():
         raise RuntimeError("running from source - update with git pull")
-    zip_path=os.path.abspath(zip_path)
+    zip_path=os.path.realpath(zip_path)
     package_root=validate_update_package(zip_path)
     with open(zip_path,'rb') as payload:
         package_hash=hashlib.file_digest(payload,'sha256').hexdigest()
-    app = app_dir()
+    app = os.path.realpath(app_dir())
     proxy=input_proxy_status(app)
     if proxy['present'] and not proxy['known']:
         raise RuntimeError('unrecognized dinput8.dll in this install; use a fresh folder or review that input DLL before updating')
-    workdir = os.path.join(run_rig.POC, "rig", "update")
+    workdir = os.path.realpath(os.path.join(run_rig.POC, "rig", "update"))
     os.makedirs(workdir, exist_ok=True)
     script = os.path.join(workdir, "apply.ps1")
     log = os.path.join(workdir, "apply.log")
