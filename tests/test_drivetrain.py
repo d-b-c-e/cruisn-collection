@@ -13,6 +13,15 @@ from telemetry_loopback import TelemetryLoopback
 
 
 class DrivetrainTests(unittest.TestCase):
+    def test_json_rounding_uses_full_precision_wire_rpm(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp)
+            (p/'drivetrain.csv').write_text('seconds,frame,player,gear,gear_source,rev_value,tach_fraction,rpm,rpm_estimated\n0,0,56950,2,3,32,0.672605565,5675.500,1\n')
+            (p/'forza.csv').write_text('timestamp_ms,race_on,max_rpm,idle_rpm,rpm,speed_ms,gear\n17,1,8000,900,5675.49951171875,10,2\n')
+            events=[{'out':name,'value':value} for name,value in [('gear',2),('gear_source',3),('rpm_estimated',1),('rpm',5675)]]
+            (p/'telemetry.jsonl').write_text('\n'.join(json.dumps(e) for e in events))
+            self.assertTrue(analyze(p)['passed'])
+
     def test_wire_capture_uses_private_ports_and_reports_invalid_packets(self):
         with tempfile.TemporaryDirectory() as tmp:
             env={};receiver=TelemetryLoopback(tmp);receiver.start(env)

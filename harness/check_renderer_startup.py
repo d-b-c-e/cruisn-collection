@@ -1,8 +1,9 @@
 """Repeated full-window renderer boots with completed GL evidence and physical FFB off.
 
-Uses four existing local recordings, forces scale4/CRT on, and retains their
-recorded game patches. This is startup stress, not complete release gameplay.
-Every repeat must preserve native replay and match the first repeat's GL pixels.
+Uses four existing local recordings, defaults to scale4/CRT on, and retains their
+recorded game patches. An explicit scale sequence can exercise reinitialization.
+This is startup stress, not complete release gameplay. Every launch must preserve
+native replay; repeated launches of the same scale must match completed GL pixels.
 """
 import argparse
 import json
@@ -38,7 +39,7 @@ def main(argv=None):
     out=new_run('renderer-startup',args.output)
     report={'passed':False,'physical_force':False,'scope':__doc__,
             'candidate_sha256':sha256_file(args.candidate),'source_identity':source_identity(ROOT)['sha256'],
-            'suite_sha256':sha256_file(suite_path),'repeats':args.repeats,
+            'suite_sha256':sha256_file(suite_path),'repeats':len(scales),
             'subset':args.only,'small_window':args.small_window,'cases':[]}
     report['scale_sequence']=scales
     expected=requested_frames(1700,1800,50)

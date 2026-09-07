@@ -62,7 +62,11 @@ def analyze(directory, memory=None, require_drive=False):
         events=[json.loads(line) for line in (directory/'telemetry.jsonl').read_text().splitlines()]
         for output,column in [('gear','gear'),('gear_source','gear_source'),('rpm_estimated','rpm_estimated'),('rpm','rpm')]:
             values=[e['value'] for e in events if e['out']==output]
-            expected=[int(float(r[column])+.5) for r in rows]
+            # CSV formats RPM to three decimals. A real 5675.49951171875 is
+            # printed as 5675.500, but the integer JSON value is correctly 5675.
+            # Compare JSON rounding against the full-precision Forza float.
+            source=packets if output=='rpm' else rows
+            expected=[int(float(r[column])+.5) for r in source]
             if values!=expected:raise ValueError(f'JSON {output} disagrees with emitted samples')
         report['wire']={'forza_packets':len(packets),'json_packets':len(events),'passed':True}
     report['passed']=True
