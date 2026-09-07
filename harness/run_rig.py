@@ -1457,6 +1457,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                "-ctrlr", "EmuEzRacing",
                "-nvram_directory", os.path.join(rig, "nvram"),
                "-cfg_directory", os.path.join(rig, "cfg"),
+               "-view", "Screen 0",
                "-window",
                "-skip_gameinfo"]
         if not zeus_gl:
@@ -1468,7 +1469,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             # -nokeepaspect stretched Exotica to 16:9), sharpen the upscale
             # (default prescale 1 + bilinear = fuzz), and show only the
             # screen - the internal lamp/7seg panel ate the bottom fifth
-            cmd += ["-keepaspect", "-prescale", "4", "-view", "Screen 0"]
+            cmd += ["-keepaspect", "-prescale", "4"]
         else:
             cmd += ["-nokeepaspect"]   # the GL overlay owns presentation
         # vunit's console output goes to rig/launch.log: a startup exit
@@ -1498,10 +1499,22 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             print(f"Recording effective wheel/pedal/button inputs: {recording.path}")
             print("Recording uses a private copy of the rig state; physical FFB is "
                   + ("retained for attended driving." if record_with_ffb else "disabled."))
+        if not recording:
+            from launch_history import archive_previous, write_receipt
+            # Detailed GL logs are modest (startup and periodic summaries).
+            # Keep the preceding run before the native logger truncates its file.
+            launch_env = dict(launch_env)
+            launch_env.setdefault("MIDV_GL_LOG", "1")
+            launch_env.setdefault("MIDZ_GL_LOG", "1")
+            try:
+                archive_previous(rig, launch_dir)
+                write_receipt(rig, cmd, launch_env)
+            except OSError as error:
+                print(f"Could not save launch history: {error}")
         log = open(log_path, "w")
         # first line: what this launch actually applied (the support bundle
         # ships this file; "did the setting take?" is answered here)
-        keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
+        keys = ("MIDV_PATCH", "MIDV_GL", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
                 "MIDV_GL_CRACKFILL", "MIDV_WORLD_FAR", "MIDV_WORLD_LEAD", "MIDV_WORLD_CPU_PERCENT",
                 "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
                 "MIDV_GL_TJUNCTIONS", "MIDV_GL_MARGIN", "MIDV_GL_MARGINFILL",
@@ -1555,8 +1568,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             why = launch_log_reason()
             sys.exit(f"the emulator exited during startup"
                      f"{': ' + why if why else f' (code {proc.returncode})'}")
-        proc.kill()   # pre-FFB hang: no force effects exist yet, kill is safe
+        # Device initialization can already have started haptics by this point.
+        proc.kill()
         proc.wait()
+        release_ffb(os.path.dirname(mame))
         if recording:
             recording.finish(proc.returncode)
         hwnd = None

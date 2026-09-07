@@ -134,6 +134,13 @@ def collect(rom="crusnusa", progress=print):
         except Exception as e:   # diagnostics never break the bundle
             add_text("ffb_trace_report.txt", f"(report failed: {e})" + chr(10))
     add_file("launch.log", os.path.join(run_rig.POC, "rig", "launch.log"))
+    add_file("launch.json", os.path.join(run_rig.POC, "rig", "launch.json"))
+    from pathlib import Path
+    history = Path(run_rig.POC)/'rig'/'launch-history'
+    if history.is_dir():
+        for entry in sorted(history.glob('*/*')):
+            if entry.is_file() and entry.name in ('launch.log','launch.json','midv_gl.log','midz_gl.log','archive.json'):
+                add_file('launch-history/'+entry.parent.name+'/'+entry.name, str(entry))
     # DirectInput axis slots per device (the wizard->MAME axis translation)
     try:
         import json as _json
