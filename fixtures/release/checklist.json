@@ -8,6 +8,7 @@
     "manual-sequential": "Select MANUAL; each paddle press changes one gear, hold does not run through gears",
     "rebind": "Bind, rebind, relaunch: new control works, old control stops; other bindings remain",
     "ffb": "Correct restoring direction, comparable default weight, distinct car/wall impacts, no oscillation or stuck force",
+    "telemetry": "Speed and game-derived RPM reach gauges and tactile software; actual gears update in automatic and manual modes, ordinary loaded upshifts lower revs, menus clear stale values",
     "graphics": "Default full widescreen + CRT; inspect selection and complete gameplay including margins, sky, shadows and collisions",
     "exit": "Esc menu opens/resumes; exit returns to launcher; F12 fallback and immediate relaunch work"
   },
