@@ -40,6 +40,8 @@ jobs:
       - run: /tmp/hud-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/hud_numeric_test.cpp -o /tmp/hud-numeric-test
       - run: /tmp/hud-numeric-test
+      - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/hud_drivetrain_test.cpp -o /tmp/hud-drivetrain-test
+      - run: /tmp/hud-drivetrain-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/motor_signal_test.cpp -o /tmp/motor-test
       - run: /tmp/motor-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/checked_patch_test.cpp -o /tmp/patch-test

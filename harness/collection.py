@@ -512,8 +512,8 @@ class ForzaKeeper:
         # engine constants MUST match the game's packets - an "all zero"
         # packet (EngineMaxRpm=0) is degenerate and can wedge SimHub's
         # session/normalization state so it ignores the real stream after
-        self._struct.pack_into("<f", pkt, 8, 7500.0)   # EngineMaxRpm
-        self._struct.pack_into("<f", pkt, 12, 700.0)   # EngineIdleRpm
+        self._struct.pack_into("<f", pkt, 8, 8000.0)   # EngineMaxRpm
+        self._struct.pack_into("<f", pkt, 12, 900.0)   # EngineIdleRpm
         pkt[319] = 1                              # gear 1 (0 shows reverse)
         pkt[323] = 0x4B                           # 'K' marker in the pad byte
                                                   # (diagnostics: forza_probe

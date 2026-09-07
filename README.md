@@ -136,7 +136,10 @@ on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
 - Telemetry streams to SimHub as JSON or Forza-format UDP. USA v4.5 reads the
   game's numeric speed-display buffer, with OCR fallback; World still uses OCR.
   Off Road's speed reader is not working, and Exotica speed is not implemented.
-  RPM remains unavailable; the old USA mapping was removed because it read speed text.
+  USA v4.5 also reads the player-car gear and internal rev signal used by its
+  colored tachometer, including automatic shifts. Revs map to an estimated
+  900–8,000 RPM arcade scale; the old speed-text mapping remains retired.
+  Other games still need their own validated drivetrain producers.
   Wheel force and lamps are separate available output channels.
 
 Native V-Unit comparisons cover specific archived captures. They do not
