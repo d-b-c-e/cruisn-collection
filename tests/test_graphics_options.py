@@ -13,6 +13,19 @@ import graphics_options as G
 from game_patch import read_patch
 
 
+def import_shell_module(name):
+    # Stub only the missing GL dependency. Restoring all of sys.modules after
+    # import unloads NumPy's new entries and breaks isolated Python 3.14 runs.
+    missing_gl = importlib.util.find_spec("moderngl") is None
+    if missing_gl:
+        sys.modules["moderngl"] = types.ModuleType("moderngl")
+    try:
+        return importlib.import_module(name)
+    finally:
+        if missing_gl:
+            sys.modules.pop("moderngl", None)
+
+
 class SceneryOptionTests(unittest.TestCase):
     def test_revision_scale_and_widescreen_gates_preserve_saved_preference(self):
         section = {'scenery_distance_crusnwld': '1'}
@@ -27,7 +40,7 @@ class SceneryOptionTests(unittest.TestCase):
             expected='all' if (rom,margin,scale)==('crusnwld24',86,4) else 'off'
             self.assertEqual(env['MIDV_SCENERY'], expected)
         values={r[0]:r[2] for r in G.rows('crusnwld',state,'crusnwld')}
-        self.assertEqual(values['scenery_distance'],'UNAVAILABLE')
+        self.assertNotIn('scenery_distance', values)
         self.assertTrue(state['crusnwld']['scenery_distance'])
 
 
@@ -124,7 +137,7 @@ class GraphicsOptionsTests(unittest.TestCase):
                 overrides = G.launch_overrides(ROOT, directory, rom, 0, 4, section, {})
                 self.assertNotIn("MIDV_PATCH", overrides)
         self.assertFalse(G.toggle({}, "crusnexo", "seam_alignment"))
-        self.assertTrue(all(r[2] == "UNAVAILABLE" for r in G.rows("crusnexo", G.load(section))))
+        self.assertEqual(G.rows("crusnexo", G.load(section)), [])
 
     def test_every_distance_combination_preserves_widescreen_and_off_removes_stale_words(self):
         widescreen = read_patch(ROOT / "patch/game/crusnusa-widescreen.txt")
@@ -194,10 +207,7 @@ class GraphicsOptionsTests(unittest.TestCase):
 @unittest.skipUnless(sys.platform == "win32", "launcher uses Windows APIs")
 class LauncherGraphicsTests(unittest.TestCase):
     def test_attended_recorder_preserves_shell_settings_and_requires_ffb_opt_in(self):
-        missing_gl = importlib.util.find_spec("moderngl") is None
-        modules = {"moderngl": types.ModuleType("moderngl")} if missing_gl else {}
-        with mock.patch.dict(sys.modules, modules):
-            import record_drive
+        record_drive = import_shell_module("record_drive")
         state = {"world_rom": "crusnwld24", "scale": 4, "crt": False,
                  "crackfill": True, "margin": 86, "ffb": 80,
                  "steersens": {"crusnwld": 90}, "steercurve": {"crusnwld": 120}}
@@ -227,10 +237,7 @@ class LauncherGraphicsTests(unittest.TestCase):
 
     def test_real_shell_save_preserves_bindings_and_retires_marginfill(self):
         # Configuration/UI data needs no OpenGL context in hardware-free CI.
-        missing_gl = importlib.util.find_spec("moderngl") is None
-        modules = {"moderngl": types.ModuleType("moderngl")} if missing_gl else {}
-        with mock.patch.dict(sys.modules, modules):
-            import collection
+        collection = import_shell_module("collection")
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "collection.ini"
             path.write_text("[collection]\nmarginfill=1\ncustom_note=keep\n"
@@ -257,7 +264,21 @@ class LauncherGraphicsTests(unittest.TestCase):
             restored["graphics_rom"] = "offroadc"
             rows = {r[0]: r[2] for r in collection.settings_rows("graphics", restored, False, "")}
             self.assertEqual(rows["seam_alignment"], "ON")
-            self.assertEqual(rows["detail_distance"], "UNAVAILABLE")
-            self.assertEqual(rows['world_distance'], 'UNAVAILABLE')
-            self.assertEqual(rows['crackfill'], 'ON')
+            self.assertEqual(set(rows), {'graphics_game','seam_alignment','back'})
+            restored['graphics_rom'] = 'shared'
+            shared = {r[0]:r[2] for r in collection.settings_rows('graphics',restored,False,'')}
+            self.assertEqual(set(shared), {'graphics_game','crackfill','back'})
+            self.assertEqual(shared['crackfill'], 'ON')
+            restored['graphics_rom'] = 'crusnwld'
+            restored['world_rom'] = 'crusnwld24'
+            world = {r[0] for r in collection.settings_rows('graphics',restored,False,'')}
+            self.assertIn('world_distance',world)
+            self.assertNotIn('far_distance',world)
+            restored['world_rom'] = 'crusnwld'
+            world25 = {r[0] for r in collection.settings_rows('graphics',restored,False,'')}
+            self.assertNotIn('world_distance',world25)
+            restored['graphics_rom'] = 'crusnexo'
+            exotica = collection.settings_rows('graphics',restored,False,'')
+            self.assertEqual([r[0] for r in exotica], ['graphics_game','back'])
+            self.assertIn('NO GRAPHICS EXPERIMENTS',exotica[0][3])
             self.assertTrue(restored['crackfill'])

@@ -7,6 +7,7 @@ from game_patch import combine_patches
 import world_distance
 
 GAMES = ("crusnusa", "crusnwld", "offroadc", "crusnexo")
+CONTEXTS = ("shared", *GAMES)
 VUNIT_HEIGHT = {'offroadc':401}  # other V-Unit games use 400 native rows
 CHOICES = {"world_distance": (0, 2, 3), "world_lookahead": (0, 8, 12)}
 DEFAULTS = {"world_distance": 0, "world_lookahead": 8}
@@ -101,11 +102,7 @@ def rows(game, options, rom=None):
     result = []
     for option, label, hint in descriptions:
         if not supported(rom or game, option):
-            value = "UNAVAILABLE"
-            hint = ("AVAILABLE FOR WORLD 2.4; TESTED ON GERMANY. USE WIDESCREEN AND SCALE 2X OR HIGHER."
-                    if option in ("scenery_distance", "world_distance", "world_lookahead") else "AVAILABLE FOR USA, WORLD AND OFF ROAD." if option == "seam_alignment"
-                    else "AVAILABLE FOR CRUIS'N WORLD ONLY." if option == "terrain_visibility"
-                    else "AVAILABLE FOR CRUIS'N USA ONLY.")
+            continue
         else:
             if option == "world_distance":
                 value = f"< {selected[option]}X >" if selected.get(option) else "< OFF >"

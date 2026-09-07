@@ -1025,16 +1025,20 @@ def settings_rows(page, state, diag, version):
             ("back", "BACK", "", ""),
         ]
     if page == "graphics":
-        game = state.get("graphics_rom", state.get("rom", "crusnusa"))
+        game = state.get("graphics_rom", "shared")
         game = graphics_options.family(game)
-        title = next((g[1] for g in GAMES if g[0] == game), game)
-        return [("graphics_game", "GAME", f"< {title} >",
-                 "SELECT THE GAME TO ADJUST. EACH GAME KEEPS ITS OWN EXPERIMENTS.")] + \
-            graphics_options.rows(game, state.get("graphics", {}),
-                state.get("world_rom", "crusnwld24") if game == "crusnwld" else game) + [
-                    ("crackfill", "CRACK FILL (SHARED)", onoff(state["crackfill"]),
-                     "USA / WORLD / OFF ROAD: BORROWS NEARBY PIXELS TO HIDE SMALL GAPS; MAY SMEAR."),
-                    ("back", "BACK", "", "")]
+        title = "SHARED" if game == "shared" else next((g[1] for g in GAMES if g[0] == game), game)
+        context = [("graphics_game", "CONTEXT", f"< {title} >",
+                    "CHOOSE SHARED OR A GAME. ONLY APPLICABLE EXPERIMENTS ARE SHOWN.")]
+        if game == "shared":
+            experiments = [("crackfill", "CRACK FILL", onoff(state["crackfill"]),
+                "USA / WORLD / OFF ROAD: BORROWS NEARBY PIXELS TO HIDE SMALL GAPS; MAY SMEAR.")]
+        else:
+            experiments = graphics_options.rows(game, state.get("graphics", {}),
+                state.get("world_rom", "crusnwld24") if game == "crusnwld" else game)
+            if not experiments:
+                context[0] = (*context[0][:3], "NO GRAPHICS EXPERIMENTS ARE AVAILABLE FOR THIS GAME YET.")
+        return context + experiments + [("back", "BACK", "", "")]
     if page == "ffb":
         return [
             ("ffb", "STRENGTH", f"< {ffb}% >",
@@ -1778,7 +1782,7 @@ def main():
                     dbg("settings", f"page -> {rid}")
                     spage, ssel = rid, 0
                     if rid == "graphics":
-                        state["graphics_rom"] = GAMES[sel][0]
+                        state.setdefault("graphics_rom", "shared")
                     srows = settings_rows(spage, state,
                                           run_rig.ffb_diag_enabled(),
                                           upd_version)
@@ -1794,10 +1798,11 @@ def main():
                     save_config(state)
                     audio.blip("nav")
                 elif rid == "graphics_game" and (lr or enter):
-                    game = state.get("graphics_rom", state.get("rom", "crusnusa"))
-                    index = graphics_options.GAMES.index(game)
-                    state["graphics_rom"] = graphics_options.GAMES[
-                        (index + (1 if right or enter else -1)) % len(graphics_options.GAMES)]
+                    game = state.get("graphics_rom", "shared")
+                    index = graphics_options.CONTEXTS.index(game)
+                    state["graphics_rom"] = graphics_options.CONTEXTS[
+                        (index + (1 if right or enter else -1)) % len(graphics_options.CONTEXTS)]
+                    ssel = 0
                     audio.blip("nav")
                 elif rid in graphics_options.OPTIONS and (lr or enter):
                     game = state.get("graphics_rom", state.get("rom", "crusnusa"))
