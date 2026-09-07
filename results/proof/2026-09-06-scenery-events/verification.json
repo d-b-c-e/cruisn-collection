@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "input_frames": 8783,
+  "native_images": 146,
+  "scenes": 3584,
+  "matched_quads": 4578059,
+  "unmatched_shared_path_quads": 6700,
+  "event_bytes": 1674509,
+  "scene_bytes": 95281,
+  "probe": {
+    "sha256": "883a7aaf14de85f6c0f55c2a047dfe5b3de0345b312f5b2f8e823eb94a7ea795",
+    "source": "E:\\Source\\cruisn-collection\\lua\\world_scenery_events.lua"
+  }
+}

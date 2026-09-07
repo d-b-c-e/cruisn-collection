@@ -57,6 +57,40 @@ def additions(rows):
     return result
 
 
+def completed_scenes(frames):
+    """Nonempty consecutive page-control runs; discard both partial edges."""
+    runs = []
+    for frame, rows in sorted(frames.items()):
+        for row in rows:
+            if not runs or runs[-1]['page'] != row[1]:
+                runs.append({'page': row[1], 'first_frame': frame,
+                             'last_frame': frame, 'rows': []})
+            runs[-1]['rows'].append(row)
+            runs[-1]['last_frame'] = frame
+    if len(runs) < 3:
+        raise ValueError('need at least one completed page-control run between partial edges')
+    return runs[1:-1]
+
+
+def compare_scenes(control, candidate, allowed, max_added_extent=None):
+    a, b = completed_scenes(control), completed_scenes(candidate)
+    if len(a) != len(b) or [r['page'] for r in a] != [r['page'] for r in b]:
+        raise ValueError('completed page-control run sequences differ; cannot align scenes')
+    report = compare({i: r['rows'] for i, r in enumerate(a)},
+                     {i: r['rows'] for i, r in enumerate(b)}, allowed, max_added_extent)
+    report['scope'] = ('completed page-control run geometry; frame timing differences retained; '
+                       'not visible-pixel, presentation-timing or route acceptance')
+    report['alignment'] = 'scene'
+    report['discarded_edge_runs_per_trace'] = 2
+    report['scenes'] = report.pop('frames')
+    for row, original, revised in zip(report['scenes'], a, b):
+        row['scene'] = row.pop('frame')
+        row['page'] = original['page']
+        row['control_frames'] = [original['first_frame'], original['last_frame']]
+        row['candidate_frames'] = [revised['first_frame'], revised['last_frame']]
+    return report
+
+
 def compare(control, candidate, allowed, max_added_extent=None):
     if set(control) != set(candidate):
         raise ValueError('trace frame sets differ; use matched intervals')
@@ -94,11 +128,14 @@ def main():
     ap.add_argument('--allow-added-model', action='append', default=[], type=lambda s: int(s, 16))
     ap.add_argument('--report', type=Path, required=True)
     ap.add_argument('--max-added-extent', type=int, help='optional native-pixel width/height bound for each new quad')
+    ap.add_argument('--alignment', choices=('frame', 'scene'), default='frame',
+                    help='scene compares complete nonempty page-control runs and reports their frame ranges')
     args = ap.parse_args()
     try:
         if args.max_added_extent is not None and args.max_added_extent < 1:
             raise ValueError('added extent must be positive')
-        report = compare(load(args.control), load(args.candidate), set(args.allow_added_model), args.max_added_extent)
+        comparer = compare_scenes if args.alignment == 'scene' else compare
+        report = comparer(load(args.control), load(args.candidate), set(args.allow_added_model), args.max_added_extent)
     except (OSError, ValueError) as error:
         report = {'schema': 1, 'passed': False, 'error': str(error)}
     args.report.parent.mkdir(parents=True, exist_ok=True)

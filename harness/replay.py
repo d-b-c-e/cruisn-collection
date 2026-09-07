@@ -6,6 +6,7 @@ replay. Every run keeps its input/time comparison, frame timings and snapshots.
 """
 import argparse
 import json
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -183,7 +184,12 @@ def main(argv=None):
             shutil.copy2(args.probe_script, probe_file)
             env["SNAP_PROBE_SCRIPT"] = str(probe_file)
             report["probe_script"] = {"source": str(args.probe_script.resolve()),
-                                      "sha256": sha256_file(probe_file)}
+                                      "sha256": sha256_file(probe_file),
+                # Literal CRUISN_* inputs used by our diagnostic probes. None
+                # means the archived script's default, not an inherited value.
+                "environment": {key: env.get(key) for key in sorted(set(re.findall(
+                    r"os\.getenv\(\s*['\"](CRUISN_[A-Z0-9_]+)['\"]",
+                    probe_file.read_text(encoding="utf-8"))))}}
         if args.video:
             command = set_option(command, "-video", args.video)
             report["video_override"] = args.video

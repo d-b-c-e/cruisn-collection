@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
-from compare_scenery import compare
+from compare_scenery import compare, compare_scenes
 
 
 class SceneryComparisonTests(unittest.TestCase):
@@ -19,3 +19,22 @@ class SceneryComparisonTests(unittest.TestCase):
             self.assertFalse(compare(control, {1: bad}, set())['passed'])
         with self.assertRaisesRegex(ValueError, 'frame sets'):
             compare(control, {2: [a, b, a]}, set())
+
+    def test_scene_comparison_retains_frame_spill_without_discarding_geometry(self):
+        def row(page, model):
+            return (0x289, page, 123, model, int(bool(model)), 0, 0,
+                    1, 0, 2, 0, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0)
+        edge, a, hud, end = row(1, 1), row(4, 2), row(4, 0), row(1, 3)
+        control = {1: [edge], 2: [a, hud], 3: [end]}
+        delayed = {1: [edge], 2: [a], 3: [hud, end]}
+        self.assertFalse(compare(control, delayed, set())['passed'])
+        result = compare_scenes(control, delayed, set())
+        self.assertTrue(result['passed'])
+        self.assertEqual(result['scenes'][0]['control_frames'], [2, 2])
+        self.assertEqual(result['scenes'][0]['candidate_frames'], [2, 3])
+        self.assertFalse(compare_scenes(control, {1: [edge], 2: [a], 3: [end]}, set())['passed'])
+        self.assertFalse(compare_scenes(control, {1: [edge], 2: [hud, a], 3: [end]}, set())['passed'])
+        with self.assertRaisesRegex(ValueError, 'sequences differ'):
+            compare_scenes(control, {1: [edge], 2: [a, hud, end, a, end]}, set())
+        with self.assertRaisesRegex(ValueError, 'completed page-control'):
+            compare_scenes({1: [a]}, {1: [a]}, set())
