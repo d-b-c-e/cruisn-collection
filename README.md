@@ -139,6 +139,10 @@ Full engineering log with every finding and number:
 
 ## Build it (developers)
 
+Release roadmap and required acceptance: [docs/RELEASE-CHECKLIST.md](docs/RELEASE-CHECKLIST.md).
+`harness/release_gate.py` checks fresh-install configuration and current regression
+evidence, and keeps missing attended checks visible before a public release.
+
 The emulator half is MAME 0.286 plus the patch series in `patch/`; the
 launcher and tooling are Python. Setup, build commands, path overrides and
 the verification workflow are in [docs/INSTALL.md](docs/INSTALL.md)

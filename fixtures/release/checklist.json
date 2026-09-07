@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "games": ["crusnusa", "crusnwld24", "offroadc", "crusnexo"],
+  "per_game": {
+    "drive": "Fresh launch, complete a race, retry, audio and selection performance acceptable",
+    "freeplay": "Start and restart without inserting a coin; survives exit and relaunch",
+    "manual-hpattern": "Select MANUAL; engage and hold gears 1-4, neutral and downshift correctly",
+    "manual-sequential": "Select MANUAL; each paddle press changes one gear, hold does not run through gears",
+    "rebind": "Bind, rebind, relaunch: new control works, old control stops; other bindings remain",
+    "ffb": "Correct restoring direction, comparable default weight, distinct car/wall impacts, no oscillation or stuck force",
+    "graphics": "Default full widescreen + CRT; inspect selection and complete gameplay including margins, sky, shadows and collisions",
+    "exit": "Esc menu opens/resumes; exit returns to launcher; F12 fallback and immediate relaunch work"
+  },
+  "shared": {
+    "fresh-package": "Extract exact candidate ZIP on a clean Windows profile without Python or development paths; import user ROMs, launch all four games",
+    "upgrade": "Upgrade/import preserves wheel bindings, scores, calibration and chosen display/force settings; rollback verified",
+    "wheel-matrix": "Record wheel/base firmware and driver settings; validate local wheel plus a second vendor (Fanatec oscillation report), disconnect/reconnect and no-wheel startup",
+    "soak": "At least 30 minutes mixed gameplay with repeated game switching; no accumulating slowdown, crash, stuck input/force or capture-related periodic stutter",
+    "package-review": "Exact ZIP/hash reviewed: no ROMs or personal rig data, runtime DLLs and source/licences present, installer/updater/support bundle work, release notes list remaining limitations",
+    "ci": "All required CI jobs pass on the candidate source revision; attach the run URL or exported report"
+  }
+}

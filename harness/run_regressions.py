@@ -12,6 +12,7 @@ from analyze_session import summarize
 from diagnostic_runtime import ROOT, new_run
 from verification import write_json, sha256_file
 import replay
+from release_identity import source_identity
 
 
 def visual_content(directory):
@@ -52,6 +53,7 @@ def main(argv=None):
     if args.only and set(args.only)-{c['id'] for c in plan['cases']}:ap.error('unknown --only case')
     work=new_run('regressions',args.output)
     report={'schema':1,'passed':False,'suite_sha256':sha256_file(args.suite),
+            'source_identity':source_identity(ROOT)['sha256'],
             'candidate_sha256':sha256_file(args.candidate),'subset':args.only,'physical_force':False,'cases':[]}
     for case in plan['cases']:
         if args.only and case['id'] not in args.only: continue
