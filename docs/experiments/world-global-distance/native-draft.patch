@@ -1,0 +1,193 @@
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 1e6b3663d36..967267eadcc 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -30,6 +30,7 @@
+ #include "midvunit.h"
+ #include "cruisn/checked_patch.h"
+ #include "cruisn/world_scenery.h"
++#include "cruisn/world_distance.h"
+ 
+ #include "cpu/adsp2100/adsp2100.h"
+ #include "cpu/tms320c3x/tms320c3x.h"
+@@ -72,6 +73,91 @@ void midvunit_base_state::machine_start()
+ 	save_item(NAME(m_timer_rate));
+ 	save_item(NAME(m_scenery_tree));
+ 	scenery_start();
++	world_distance_start();
++}
++
++// Developer-only global projection/residency experiment. The matching checked
++// game patch changes the far word and clamp instructions; this supplies the
++// larger reciprocal table without overwriting adjacent guest RAM.
++void midvunit_base_state::world_distance_start()
++{
++	using namespace cruisn::world_distance;
++	const char *far_text = std::getenv("MIDV_WORLD_FAR");
++	if (!far_text) return;
++	char *end = nullptr;
++	unsigned long far = strtoul(far_text, &end, 10);
++	if (!*far_text || *end || !valid_far(far) || strcmp(machine().system().name, "crusnwld24") || m_scenery_mode)
++		fatalerror("MIDV_WORLD_FAR requires World 2.4, scenery off, and 80000/100000/160000/320000\n");
++	m_distance_far = far;
++	if (const char *lead = std::getenv("MIDV_WORLD_LEAD"))
++	{
++		unsigned long value = strtoul(lead, &end, 10);
++		if (!*lead || *end || value > 32) fatalerror("MIDV_WORLD_LEAD must be 0..32\n");
++		m_distance_lead = value;
++	}
++	if (maximum_index(far) >= first_extra)
++	{
++		m_distance_reciprocal.resize(maximum_index(far)-first_extra+1);
++		for (uint32_t i=first_extra; i<=maximum_index(far); ++i)
++			m_distance_reciprocal[i-first_extra] = reciprocal(i, far);
++	}
++	m_distance_log = fopen("world-distance.csv", "w");
++	if (m_distance_log) fprintf(m_distance_log, "frame,far_tests,extra_far_tests,extended_reads,maximum_index,pending_comparisons\n");
++	machine().add_notifier(MACHINE_NOTIFY_EXIT, machine_notify_delegate(&midvunit_base_state::world_distance_exit, this));
++	address_space &s = m_maincpu->space(AS_PROGRAM);
++	m_distance_far_tap = s.install_read_tap(0x40, 0x40, "world_global_far_observe",
++		[this](offs_t offset, uint32_t &data, uint32_t mask)
++		{
++			if (machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC) != 0xa1 || data != m_distance_far) return;
++			++m_distance_far_tests;
++			int32_t depth = int32_t(m_maincpu->state_int(TMS320C3X_R3));
++			if (depth > 80000 && depth <= int32_t(data)) ++m_distance_extra_tests;
++		});
++	if (!m_distance_reciprocal.empty())
++		m_distance_reciprocal_tap = s.install_read_tap(reciprocal_base+first_extra, 0x1ffff, "world_global_projection",
++			[this](offs_t offset, uint32_t &data, uint32_t mask)
++			{
++				using namespace cruisn::world_distance;
++				uint32_t pc = m_maincpu->state_int(TMS320C3X_PC);
++				if (machine().side_effects_disabled() || !projection_pc(pc)
++					|| (pc != 0xb4 && m_maincpu->state_int(TMS320C3X_AR2) != reciprocal_base)) return;
++				uint32_t index = offset-reciprocal_base;
++				if (index > maximum_index(m_distance_far) || !code_matches(m_ram_base, m_ram_base.bytes()/4, m_distance_far))
++				{
++					osd_printf_error("World global projection guard failed: pc=%x index=%u far=%u; exiting\n", pc, index, m_distance_far);
++					midv_ffb_cancel(); machine().schedule_exit(); data = m_distance_reciprocal.back(); return;
++				}
++				data = m_distance_reciprocal[index-first_extra];
++				++m_distance_reads; m_distance_max_index = std::max(m_distance_max_index, index);
++			});
++	if (m_distance_lead)
++		m_distance_pending_tap = s.install_read_tap(0xd58c, 0xd58c, "world_global_pending",
++			[this](offs_t offset, uint32_t &data, uint32_t mask)
++			{
++				if (machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC) != 0x7b51) return;
++				if (data != 11 || !cruisn::world_distance::pending_matches(m_ram_base, m_ram_base.bytes()/4))
++				{
++					osd_printf_error("World global pending-list signature failed; exiting\n");
++					midv_ffb_cancel(); machine().schedule_exit(); return;
++				}
++				data += m_distance_lead; ++m_distance_pending;
++			});
++	osd_printf_info("MIDV_WORLD_FAR=%u lead=%u: global World 2.4 experiment, no model allowlist\n", m_distance_far, m_distance_lead);
++}
++
++void midvunit_base_state::world_distance_tick()
++{
++	if (m_distance_log) fprintf(m_distance_log, "%llu,%llu,%llu,%llu,%u,%llu\n",
++		(unsigned long long)m_screen->frame_number(), (unsigned long long)m_distance_far_tests,
++		(unsigned long long)m_distance_extra_tests, (unsigned long long)m_distance_reads,
++		m_distance_max_index, (unsigned long long)m_distance_pending);
++	m_distance_far_tests = m_distance_extra_tests = m_distance_reads = m_distance_pending = 0;
++	m_distance_max_index = 0;
++}
++
++void midvunit_base_state::world_distance_exit()
++{
++	if (m_distance_log) { fclose(m_distance_log); m_distance_log = nullptr; }
+ }
+ 
+ // Narrow, opt-in distance extension for attributed World 2.4 scenery only.
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index 71ca5e4ab81..50a4e94ddca 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -99,6 +99,9 @@ protected:
+ 	void scenery_start();
+ 	void scenery_tick();
+ 	void scenery_exit();
++	void world_distance_start();
++	void world_distance_tick();
++	void world_distance_exit();
+ 
+ 	void cmos_protect_w(uint32_t data);
+ 	void dma_queue_w(uint32_t data);
+@@ -160,6 +163,12 @@ protected:
+ 	uint64_t m_scenery_activations = 0;
+ 	uint32_t m_scenery_max_index = 0;
+ 	FILE *m_scenery_log = nullptr;
++	// Explicit global experiment; projection table in host memory, no model IDs.
++	memory_passthrough_handler m_distance_far_tap, m_distance_reciprocal_tap, m_distance_pending_tap;
++	uint32_t m_distance_far = 0, m_distance_lead = 0, m_distance_max_index = 0;
++	std::vector<uint32_t> m_distance_reciprocal;
++	uint64_t m_distance_far_tests = 0, m_distance_extra_tests = 0, m_distance_reads = 0, m_distance_pending = 0;
++	FILE *m_distance_log = nullptr;
+ };
+ 
+ class midvunit_state : public midvunit_base_state
+diff --git a/src/mame/midway/cruisn/world_distance.h b/src/mame/midway/cruisn/world_distance.h
+new file mode 100644
+--- /dev/null
++++ b/src/mame/midway/cruisn/world_distance.h
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Global World 2.4 distance experiment. No model or level allowlist.
++#pragma once
++#include <cmath>
++#include <cstddef>
++#include <cstdint>
++#include <cstring>
++
++namespace cruisn { namespace world_distance {
++constexpr uint32_t original_far=80000, reciprocal_base=0xb66f, first_extra=5000;
++struct word { uint32_t address, value; };
++// Low immediate becomes the chosen maximum reciprocal index.
++constexpr word clamps[] = {{0xae,0x04e30000},{0xaf,0x54e30000},
++    {0x13a,0x04f20000},{0x13b,0x55720000},{0x14d,0x04f20000},{0x14e,0x55720000},
++    {0x199,0x04f20000},{0x19a,0x55720000},{0x677,0x04f20000},{0x678,0x55720000}};
++constexpr word projection_sites[] = {{0xb3,0x0741c300},
++    {0x142,0x8308820b},{0x146,0x835882c3},{0x151,0xde100382},{0x153,0xde180b82},
++    {0x19f,0x24c00182},{0x1a1,0xde180b82},{0x1de,0x8308820b},{0x1e2,0x835882c3},
++    {0x1e9,0xde100382},{0x1eb,0xde180b82},{0x21b,0x24c00182},{0x21d,0xde180b82},
++    {0x50d,0x24c00182},{0x50f,0xde180b82},{0x67d,0x24c00182},{0x67f,0xde180b82}};
++
++inline bool valid_far(uint32_t far)
++{ return far==80000 || far==100000 || far==160000 || far==320000; }
++inline uint32_t maximum_index(uint32_t far)
++{ return far==original_far ? 4999 : far/16; }
++inline bool projection_pc(uint32_t pc)
++{
++    for (auto const &site:projection_sites) if (site.address+1==pc) return true;
++    return false;
++}
++inline bool code_matches(const uint32_t *ram, size_t words, uint32_t far)
++{
++    if (words<0x20000 || !valid_far(far) || ram[0x40]!=far || ram[0x4d]!=reciprocal_base
++        || (ram[0x9c]>>16)!=0x1529 || ram[0xa0]!=0x04a30040 || ram[0xa8]!=0x04a30040)
++        return false;
++    for (auto const &w:clamps) if (ram[w.address]!=(w.value|maximum_index(far))) return false;
++    for (auto const &w:projection_sites) if (ram[w.address]!=w.value) return false;
++    return true;
++}
++inline bool pending_matches(const uint32_t *ram, size_t words)
++{
++    return words>=0x20000 && ram[0xd58c]==11 && ram[0x7b50]==0x0224d58c
++        && ram[0x7b51]==0x04a4d584 && ram[0x7b58]==0x04800004
++        && ram[0x7b59]==0x6a290008 && ram[0x7b5c]==0x1ae03000
++        && ram[0x7b5d]==0x1540000e && ram[0x7b61]==0x1541c000
++        && ram[0x7b62]==0x1528d50b && ram[0x7b68]==0x0840001b && ram[0x7b69]==0x02e0ffff;
++}
++inline uint32_t reciprocal(uint32_t index, uint32_t far)
++{
++    if (!valid_far(far) || index<first_extra || index>maximum_index(far)) return 0;
++    // Existing table entries remain untouched; expand the measured six-decimal
++    // far-tail generator in host memory, never into adjacent guest object RAM.
++    float value=float(std::floor(512.0/(16*index+1)*1000000+0.5)/1000000);
++    uint32_t ieee; std::memcpy(&ieee,&value,sizeof(ieee));
++    return ((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff);
++}
++} }

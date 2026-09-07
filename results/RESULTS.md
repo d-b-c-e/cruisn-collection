@@ -3523,3 +3523,48 @@ Narrow allocation probes that started too late correctly failed; explicit
 watch-existing mode is being verified rather than weakening default requirements.
 Broader pending-list diagnostic finds individual treecards pending2008 as well
 as many unverified models. Investigate selectively; global change not promoted.
+
+
+## 2026-09-06 — Global strategy and native-port reassessment
+
+User returned and requested global distance solutions, research into other games,
+and a fresh assessment of decompilation/recompilation. Review:
+docs/reviews/2026-09-06-global-distance-and-native-port.md. This changes the next
+priority from more individual-model exceptions to shared section loading and a
+host-side static-scene draw path independent of guest simulation.
+
+New primary-source finding: Jeff Harris's jeff-1amstudios/cruisin-usa native C/SDL2
+port, inspected at 5eeeb65f0c716aa20435286f7d39ea0a99dbc17c. It is incomplete, not
+built or independently play-tested here. Available USA 4.4 assembly plus source/ROM
+walker for 4.5 gives a concrete source-assisted route. Original BACKGRND/OBJ code
+documents separate group loading, active/inactive distance gates and finite pools.
+World layouts differ; do not transplant USA addresses/fields. No comparable source
+availability established for the other three games. Exotica uses C32, V-Unit C31;
+CPU translation could share infrastructure but Zeus2 rendering remains separate.
+OutRun2006 section-node union/dedup and OpenMW distant object paging are useful
+precedents. Faithful recompilation alone preserves original distance limits.
+
+Executed global pending 0/8 comparison with selective scenery OFF: both 201 completed
+GL images 5900..6300 every 2, original-prefix control PASS through 6304. Candidate
+images differ from 5910; seven native snapshots differ. 421 camera samples cover
+5880..6300 each, first camera difference 6184. 1,263 ADC reads each with identical
+frame/value/PC sequences, different timestamps first index 81. Route comparison
+FAIL retained; later pictures include different driving state. Cause (execution
+time vs activation effects) not isolated. Proof in
+results/proof/2026-09-06-global-distance includes reports, hashes, baked scripts,
+completed GL comparison/contact sheet and raw camera/ADC traces. Reanalysis of
+archived traces reproduces the retained failed report exactly. This test does not
+prove a global strategy impossible.
+
+Explicit watch-existing activation mode verified on 11C04/CB2314: 189 control
+writes, 575 candidate writes; initial assignment still required by default.
+Wrong CB2315 negative correctly fails the model guard. These probes succeeded
+diagnostically, while parent image identity FAILs remain. New mutating Lua pending
+and four-tree probes are diagnostics only.
+
+Unbuilt global far native draft archived as applicability-checked patches under
+docs/experiments/world-global-distance, removed from active sources. Missing tick,
+checked game patch, harness integration and runtime validation explicitly documented.
+Deployed binary remains d520c414/native e8b8fc3be9c; no new launcher option or
+preference changes. Native helper sync PASS; all 74 Python unit tests PASS.
+No physical FFB tests.

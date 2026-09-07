@@ -1,6 +1,6 @@
 # Cruis'n Collection
 
-Native PC port of the Midway Cruis'n arcade games — **Cruis'n USA, Cruis'n
+Enhanced PC build of the Midway Cruis'n arcade games — **Cruis'n USA, Cruis'n
 World, Off Road Challenge** (V-Unit) and **Cruis'n Exotica** (Zeus2) — built
 as a renderer replacement over MAME. One fullscreen launcher, all four games,
 wheel + force feedback, true 16:9 at 4× internal resolution, optional CRT
@@ -23,6 +23,7 @@ awaiting validation.
 - [Four-tree coverage and gameplay appearance tracing](docs/reviews/2026-09-06-scenery-coverage.md)
 - [Expanded mountains/forest and object activation](docs/reviews/2026-09-06-expanded-scenery.md)
 - [Earlier mountain activation and its remaining limits](docs/reviews/2026-09-06-background-activation.md)
+- [Global draw distance and native-port reassessment](docs/reviews/2026-09-06-global-distance-and-native-port.md)
 - [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
 - [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
 - [Independent project assessment](docs/reviews/2026-09-05-assessment.md)

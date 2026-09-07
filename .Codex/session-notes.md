@@ -1,8 +1,29 @@
 # Session Notes
 
-Date: 2026-09-06. Branch: codex/world-scenery-activation. User authorized ongoing
-fixes until they return, with separate commits/pushes. No return yet. Automated
+Date: 2026-09-06. Branch: codex/world-global-distance. User returned, asking for
+global distance approaches, external precedents and fresh native-port feasibility.
+Continue authorized improvements with separate commits/pushes. Automated
 physical FFB OFF. Native pushes fork/poc/quadlog only, never mamedev/origin.
+
+## New direction and research
+
+Read docs/reviews/2026-09-06-global-distance-and-native-port.md first.
+Stop growing per-model allowlists as the main strategy. Recommended next:
+map shared section/activation/projection routines and prototype host-side drawing
+of pending static scenery without guest list transfer, then decode future sections.
+The USA original source documents group loading and active/inactive lists.
+Jeff Harris's actual incomplete USA native C/SDL2 port was found and inspected:
+https://github.com/jeff-1amstudios/cruisin-usa, commit5eeeb65f0c716aa20435286f7d39ea0a99dbc17c.
+Source/ROM walker aligns4.4source with4.5binary, customC3xfloat, MAME assertions.
+Not built/play-tested locally, not fully playable, don't imply source availability
+forWorld/OffRoad/Exotica. Exotica CPU isC32, V-UnitC31; Zeus2graphics differs.
+OutRun2006 shared section+culling-node union/dedup, OpenMW distant object paging,
+RT64 earlier geometry capture, N64Recomp literal translation inform the proposal.
+Clones ignored under results/diagnostics/research; no third-party code imported.
+Unbuilt native globalfar draft archived in docs/experiments/world-global-distance,
+with native/collection patches checked for applicability. No active source changes
+or new binary. Missing tick wiring, checkedpatch generation, harness integration,
+unit/runtime tests listed there. Do not treat it as a tested feature.
 
 ## Built and deployed
 
@@ -36,7 +57,7 @@ probe finds CB1A8B/11A7C allocated5985,pending->active6091,firstdraw6093 inside8
 Single-model lead8 activates5991/draw5993; visible6041..6094,max4289px.
 Video results/diagnostics/mountain-return-comparison.mp4 shows that probe.
 
-## Running / next
+## Completed probes / next
 
 LateGL121images3824x2073 complete;11change7694..7714,max107075px7712;
 all7716..7780sampledmatch. Initial100/102of121 attempts failed; explicit stop8000
@@ -48,10 +69,23 @@ provenance wrappers5900..6140 completed, noerror/inputtimemismatch;global8
 adds unverified geometry and changes native images. Individualtreecards pending
 2008 appear here; selective native currently only2000. Require --scenery-lead0.
 Compare geometry/models/completedGL before promoting anything. One emulator at a time.
-New explicit WATCH_EXISTING mode in world_scenery_activation.lua needs actual
-control/candidate verification: mountain-sort-key-existing.lua targets11C04/
-CB2314,5990..6230. Default still requires assignment. Prior narrower traces
-missed allocation and correctly failed; don't call those complete probes.
+Explicit WATCH_EXISTING mode verified: mountain-sort-key-existing.lua targets11C04/
+CB2314,5990..6230. Lead0control189writes,activation6117,depth6119=81722;
+lead8candidate575writes,activation6003,depth6005~109k. WrongmodelCB2315 fails as
+required. These runs complete without diagnostic errors but original-attended
+image identity FAILs due existing scenery changes; do not label fullreportsPASS.
+Default still requires assignment. Prior narrower probes missed allocation.
+
+global-motion-control/lead8: sceneryOFF,lead0 native, boundedglobalpending0/8,
+stop6304,smallwindowGL5900..6300every2,201completedimages each. Controlmatches
+attendedprefix.421camera samples5880..6300,firstdifference6184.1263actualADCreads
+each,frame/value/PCsame,timestampsdifferfirstindex81. Latercapturesdrivingstate
+differs. MotioncomparisonFAIL, no purevisualclaim. Proof2026-09-06-global-distance
+includes reports, hashes, baked scripts and contact sheet (viewed).
+pending-global geometry counts61615added/41264removed-or-changed,order116fails;
+firstchangedoriginaltwoHUDquadsspill5907->5908, so classify timing instead of
+assuming allunknownmodelsarebad. Selectivefourtrees probe72early,1374added,
+zerochanged/removed butorderfails; archiveonly, userwantsglobaldirection.
 
 ## Context
 

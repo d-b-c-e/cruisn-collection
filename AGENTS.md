@@ -2,6 +2,19 @@
 
 ## Current verified handoff (2026-09-06)
 
+Latest research: `docs/reviews/2026-09-06-global-distance-and-native-port.md`.
+User returned and explicitly prioritizes global/whole-section solutions over
+growing per-model allowlists. Jeff Harris's USA C/SDL2 port exists but is incomplete;
+its source/ROM mapping and original USA assembly are relevant research inputs.
+No equivalent source/port established here for the other three arcade games.
+Read the assessment before further distance work. Native static scenery separate
+from simulation is the recommended next prototype; no new feature was deployed.
+Global pending lead8 completed201 GL images, but camera diverges at6184 despite
+matching1263 ADC frame/value/PC sequences. ADC timestamps differ; route check FAIL.
+Do not classify later screenshot differences as pure drawing improvements.
+Unbuilt native draft is parked in docs/experiments/world-global-distance; it is
+excluded from active sources/export. It is not validated by the Lua experiment.
+
 Newest distance evidence: `docs/reviews/2026-09-06-background-activation.md`.
 Native e8b8fc3be9c / SHA256 d520c414 adds opt-in `MIDV_SCENERY=mountains|trees|all|off`,
 World2.4 only. Canonical `native/world_scenery.h` syncs to MAME. Five identified
