@@ -3,14 +3,14 @@
 -- the original far range. Trace the model-slot writer, not just its later cull.
 local cpu=manager.machine.devices[':maincpu'];local s=cpu.spaces.program
 assert(manager.machine.system.name=='crusnwld24','World 2.4 activation diagnostic only')
-local first=tonumber(os.getenv('CRUISN_ACTIVATION_FIRST') or '2970')
-local last=tonumber(os.getenv('CRUISN_ACTIVATION_LAST') or '3040')
-local object=tonumber(os.getenv('CRUISN_ACTIVATION_OBJECT') or '12668',16)
-local model=tonumber(os.getenv('CRUISN_ACTIVATION_MODEL') or 'ccf288',16)
+local first=tonumber(os.getenv('CRUISN_ACTIVATION_FIRST') or '5990')
+local last=tonumber(os.getenv('CRUISN_ACTIVATION_LAST') or '6230')
+local object=tonumber(os.getenv('CRUISN_ACTIVATION_OBJECT') or '11c04',16)
+local model=tonumber(os.getenv('CRUISN_ACTIVATION_MODEL') or 'cb2315',16)
 local assignments_only=os.getenv('CRUISN_ACTIVATION_ASSIGNMENTS_ONLY')=='1'
 -- Explicitly watch an already allocated object; never silently accept a missed
 -- assignment in the default allocation investigation.
-local watch_existing=os.getenv('CRUISN_ACTIVATION_WATCH_EXISTING')=='1'
+local watch_existing=true
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
     and last-first<=(assignments_only and 9000 or 240)
     and object and object>=0x10000 and object<0x1ff00

@@ -478,3 +478,19 @@ can then trace a specific object's fields, model assignment and call stack.
 Literal `CRUISN_*` probe parameters are archived beside the script hash in replay
 reports. Mutating probes are explicitly labeled and remain separate from product
 options; their effects can outlive the bounded callback interval.
+
+`world_scenery_activation.lua` also has an explicit
+`CRUISN_ACTIVATION_WATCH_EXISTING=1` mode for a slot allocated before the capture
+window. It verifies the initial model, requires observed writes, and fails if
+the slot changes to another model. The default still requires an actual model
+assignment; missing allocation evidence is not silently accepted. This mode
+cannot be combined with assignments-only capture.
+
+`world_pending_distance.lua` tests shared World 2.4 pending admission over at most
+240 frames, with `CRUISN_PENDING_FIRST`, `CRUISN_PENDING_LAST` and
+`CRUISN_PENDING_LEAD` (0..8). It requires `--scenery-lead 0`. Use `--scenery off`
+to isolate it from the selective distance feature. It changes game execution;
+objects transferred during the experiment remain transferred after it ends.
+The archived `world_tree_activation.lua` probe is a selective comparison, not
+the planned global solution. See the [global assessment and measured route
+divergence](reviews/2026-09-06-global-distance-and-native-port.md).
