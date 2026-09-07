@@ -1,18 +1,17 @@
 # Release morning: what still needs a person
 
-Local candidate: `build/CruisnCollection-v0.4.0-rc1-20260907-050908.zip`.
-The source launcher has since gained the World distance controls and moved Crack
-Fill into Experiments. This ZIP is the preserved overnight baseline and does not
-contain those menu changes; a replacement ZIP needs its own package acceptance.
-Its [manifest and hashes](../results/proof/2026-09-07-release-hardening/release-final/package.manifest.json)
-and [prepared pending ledger](../results/proof/2026-09-07-release-hardening/release-final/attended-prepared.json)
-are preserved in the repo. No public release has been created.
+The next local candidate is **v0.4.0-rc2**, incorporating the September7 player
+feedback. The earlier `CruisnCollection-v0.4.0-rc1-20260907-050908.zip` remains a
+rollback baseline; it lacks the newer menus, drivetrain telemetry and force fixes.
+Use the new candidate's own manifest and pending ledger for acceptance. No public
+release has been created.
 
-The candidate includes renderer startup batching, restored package media/runtime
-files, free-play fixes, repaired support diagnostics, safer upgrades and neutral
-force-command handling. The automated evidence and exact ZIP identity are in
-[the overnight review](reviews/2026-09-07-release-hardening.md). The full acceptance
-contract remains [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
+The new work adds game-derived gears/revs for World, Off Road and Exotica,
+restores Off Road speed and Exotica UDP packets, and gates World/Exotica force
+outside active driving. Exotica's automatic steering mirror is removed and its
+output is trimmed20%. Read [the feedback review](reviews/2026-09-07-release-feedback.md)
+alongside [the overnight baseline](reviews/2026-09-07-release-hardening.md).
+The full acceptance contract remains [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
 
 ## Start with the release configuration
 
@@ -45,6 +44,11 @@ For each drive:
 - Start without coins, complete the race, retry, and confirm audio and steering.
 - Include a gentle car contact and a wall impact. Rate steering weight, car contact
   and wall impact separately: absent / barely noticeable / clear / excessive.
+- Watch the telemetry gauges through shifts in both automatic and manual modes.
+  Confirm speed, gear and tachometer agree with the game and SimHub/Buttkicker
+  responds. RPM is an arcade scale derived from the game's actual rev signal.
+- Exotica: confirm right turns right, comfortable startup, and comparable driving
+  weight. World: finish the race and check for any continuing wheel oscillation.
 - Check physical Esc: menu, resume, exit to launcher, then relaunch. Rebind one
   button and verify the new binding persists and the old binding stops working.
 - Note the external clock time and side of each graphical defect. If using the
@@ -74,8 +78,11 @@ needed. Check disconnect/reconnect, no-wheel startup, repeated game switching an
 force release on pause/exit. Logs cannot certify comfortable rim torque or detect
 an unattended driver's subjective discomfort.
 
-Scenery pop-in is still a known limitation. 3x far distance has not shown a useful
-mountain improvement over 2x at equal lookahead, and neither is a release default.
-World collision feel and Exotica polarity remain explicit acceptance questions.
+Scenery pop-in is still a known limitation. 3x/+12 has a confirmed New York guest
+CPU crash and distant black flashing; the causal mechanism remains unresolved.
+Keep distance off for release acceptance. Record New York and investigate it
+after release as requested; a single clean2x race does not certify that experiment.
+World collision feel, race-end force release and Exotica direction remain explicit
+attended acceptance questions.
 Record any failed check as a blocker or a clearly described candidate limitation;
 do not mark an unobserved check passed. Publish only the exact accepted ZIP.

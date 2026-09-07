@@ -6,6 +6,7 @@ results/proof/2026-09-07-release-baseline/** -text whitespace=cr-at-eol
 results/proof/2026-09-07-release-hardening/** -text whitespace=cr-at-eol
 results/proof/2026-09-07-graphics-menu/** -text whitespace=cr-at-eol
 results/proof/2026-09-07-usa-drivetrain/** -text whitespace=cr-at-eol
+results/proof/2026-09-07-release-feedback/** -text whitespace=cr-at-eol
 
 # Unified patch context includes a space before original indentation and blank lines.
 # These are archived text artifacts, not active source-code whitespace exceptions.

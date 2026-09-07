@@ -49,6 +49,7 @@ A private candidate artifact and a successful local install do not clear this it
 | Manual transmission | Generated H-pattern/sequential ports, World 2.4 selection, cabinet configuration | Select MANUAL; hold gears 1–4; neutral/downshift; one shift per paddle press |
 | Bind/rebind | New button replaces old; high buttons translated; keyboard fallback and inactive-mode bindings retained | Wizard, persistence after relaunch, sparse axes, wheel reconnect; no stuck inputs |
 | Force feedback | Toolkit signal fixtures and per-game source traces; automated output always off | Correct direction, comparable default weight, distinct car/wall impacts, no oscillation; pause/exit releases torque |
+| Telemetry | Actual private-loopback UDP compared with independent game-memory probes in all seven cases; active coverage and speed thresholds; World/Exotica force-state checks | All four games: auto/manual gears, loaded upshift rev drops, speed/tach gauges, SimHub/Buttkicker response; menus/end-of-race clear appropriately |
 | Graphics | Default full widescreen + CRT; native exactness and completed GL evidence | Selection screens and a whole race: margins, sky, shadows, seams, sharp turns, collisions; no visibility defect that prevents driving |
 | Menu/exit | V-Unit real menu-handler diagnostic and controller remapping | Physical Esc opens menu/resumes/exits; F12 fallback; clean relaunch; Exotica menu separately |
 | Package/upgrade | Exact ZIP/file hashes; four frozen boots, menu pages, setup/support; real Windows updater and preservation checks | Clean Windows profile without Python, no development paths; import/upgrade retains calibration, bindings and scores |
@@ -108,6 +109,9 @@ required runtime/source files, menu media, fallback shaders, candidate emulator 
 free-play seeds and absence of files in the ROM/personal-rig directories. The ZIP
 manifest records every packaged file hash and source identity. This is not a complete
 asset/licence audit or proof that the frozen application starts on a clean machine.
+Local packaging additionally invokes the actual frozen launcher's settings reader
+before zipping and requires CRT on, full widescreen, scale4 and per-game experiments
+off in an installation without personal settings. Existing CRT preferences are preserved.
 `ready_for_release` additionally requires the attended ledger: reviewer, date,
 observations and existing evidence files with SHA256 hashes for every check.
 Paths in the ledger are relative to that JSON. One drive/report can support
@@ -122,7 +126,8 @@ recording repeated, **not** that every texture or physical control is correct.
 
 Current blockers: updated attended gameplay/FFB acceptance (especially World's
 weak collision feel), Exotica direction and
-manual behavior, default-setting visual coverage beyond existing recorded cases,
+manual behavior, all-game telemetry/tactile acceptance, race-end force release,
+default-setting visual coverage beyond existing recorded cases,
 longer startup/soak coverage after the masked-upload improvement,
 and clean-profile/attended-upgrade/second-wheel acceptance. Twelve repeated full-window
 starts pass; deliberate long consumer stalls remain correctly rejected. The existing synthetic
@@ -130,14 +135,14 @@ Off Road and Exotica drives are useful regressions but insufficient release cove
 
 ## Candidate packaging and promotion
 
-Build from a clean committed checkout with `./make_release.ps1 -Version v0.4.0-rc1`
+Build from a clean committed checkout with `./make_release.ps1 -Version v0.4.0-rc2`
 (or manually dispatch the **release candidate** workflow with that version). The
 version is a candidate label, not a published tag. ZIP names include a timestamp;
 previous packages remain available. `-NoMedia` deliberately omits artwork/music.
 Normal packages restore the repository artwork and music, with custom music in
 `rig/assets` taking precedence. Personal rig directories are never bundled.
 
-Keep the `.zip`, `.zip.check.json` and `.zip.manifest.json` together. Test the
+Keep the `.zip`, `.zip.check.json`, `.zip.defaults.json` and `.zip.manifest.json` together. Test the
 extracted ZIP away from development paths. For a CI build, download its artifact
 using the [GitHub CLI artifact workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts?tool=cli);
 replay evidence must reference that extracted emulator. A different compile is a
