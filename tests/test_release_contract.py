@@ -123,6 +123,17 @@ class ReleaseLauncherTests(unittest.TestCase):
         self.assertEqual(cp['collection']['custom'],'keep')
         self.assertEqual(cp['wheelmap']['shiftup'],'Wheel|btn:5')
 
+    def test_frozen_configuration_report_uses_real_fresh_defaults_without_devices(self):
+        import json
+        report=self.root/'defaults.json'
+        with mock.patch.object(sys,'argv',['collection','--config-report',str(report)]), \
+                mock.patch.object(self.shell,'direct_launch',side_effect=AssertionError('game launch')):
+            self.assertEqual(self.shell.main(),0)
+        data=json.loads(report.read_text(encoding='utf-8'))
+        self.assertFalse(data['saved_config_present'])
+        self.assertTrue(data['settings']['crt'])
+        self.assertFalse(self.cfg.exists())
+
     def test_first_boot_seeds_but_never_overwrites_existing_nvram(self):
         for rom in ROMS:
             self.rig.prepare_rig(rom, crt=True, zeus_gl=rom=='crusnexo')

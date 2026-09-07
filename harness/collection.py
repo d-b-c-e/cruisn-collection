@@ -1168,11 +1168,19 @@ def main():
                          "(support-bundle diagnostics)")
     ap.add_argument('--joydump-output', metavar='JSON',
                     help='write --joydump to a file, including in a frozen GUI build')
+    ap.add_argument('--config-report', metavar='JSON',
+                    help='write effective launcher settings and exit without opening devices or a game')
     args = ap.parse_args()
     if args.shot_page and not args.shot:
         ap.error("--shot-page requires --shot")
     if args.joydump_output and not args.joydump:
         ap.error('--joydump-output requires --joydump')
+    if args.config_report:
+        import json
+        with open(args.config_report, 'x', encoding='utf-8') as output:
+            json.dump({'schema': 1, 'saved_config_present': os.path.isfile(CFG),
+                       'settings': load_config()}, output, indent=2)
+        return 0
     if args.game:
         card = resolve_game_alias(args.game)
         if not card:

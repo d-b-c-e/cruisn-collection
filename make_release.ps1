@@ -154,6 +154,8 @@ for wheel force feedback.
 $stamp = Get-Date -Format "yyyyMMdd-HHmmss"
 $zip = Join-Path $root "build\CruisnCollection-$Version-$stamp.zip"
 if (Test-Path -LiteralPath $zip) { throw "Package already exists: $zip" }
+& python (Join-Path $root 'harness\check_packaged_defaults.py') $rel --report "$zip.defaults.json"
+if ($LASTEXITCODE -ne 0) { throw "Frozen release defaults validation failed" }
 Compress-Archive -Path $rel -DestinationPath $zip
 $options = if ($NoMedia) { @('--no-media') } else { @() }
 & python (Join-Path $root 'harness\check_release_package.py') $zip --candidate $vunit `
