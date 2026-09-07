@@ -54,6 +54,35 @@ def checks(ctx):
     tile[2:163, 3:164] = 37
     q = rectangle()[None, :]
     outcomes = []
+    # CPU writes must replace only the marked native pixels, including zero,
+    # while retaining GPU-owned holes, both margins and existing mask tags.
+    for height,scale in ((7,1),(7,4),(401,1),(401,4)):
+        margin=86; width=(512+2*margin)*scale; fine_height=height*scale
+        source=(np.arange(height*512,dtype=np.uint32).reshape(height,512)*17).astype(np.uint16)
+        dirty=np.zeros((height,512),np.uint8)
+        dirty[::2,::3]=1; dirty[-1,-1]=1
+        expected=(np.arange(width*fine_height,dtype=np.uint32).reshape(fine_height,width)%65536).astype(np.uint16)
+        expected_mask=np.full((fine_height,width),3,np.uint8)
+        program=ctx.program(vertex_shader=R.PAL_VS,fragment_shader=R.CPU_FS)
+        for name,value in dict(cpuIndex=0,cpuDirty=1,uScale=scale,uMargin=margin,uHeight=height).items():
+            program[name].value=value
+        index=ctx.texture((512,height),1,source.tobytes(),dtype='u2');index.use(0)
+        marks=ctx.texture((512,height),1,dirty.tobytes(),dtype='u1');marks.use(1)
+        page=ctx.texture((width,fine_height),1,expected.tobytes(),dtype='u2')
+        mask=ctx.texture((width,fine_height),1,expected_mask.tobytes(),dtype='u1')
+        target=ctx.framebuffer([page,mask]);target.use();ctx.viewport=(0,0,width,fine_height)
+        vao=ctx.vertex_array(program,[]);vao.render(moderngl.TRIANGLES,vertices=3)
+        for y,x in np.argwhere(dirty):
+            rows=slice((height-1-y)*scale,(height-y)*scale)
+            cols=slice((margin+x)*scale,(margin+x+1)*scale)
+            expected[rows,cols]=source[y,x];expected_mask[rows,cols]=1
+        actual=np.frombuffer(page.read(alignment=1),np.uint16).reshape(expected.shape)
+        actual_mask=np.frombuffer(mask.read(alignment=1),np.uint8).reshape(expected.shape)
+        outcomes.append({'check':'cpu-write-mask-preserves-gpu-pixels','height':height,'scale':scale,
+                         'different_pixels':int(np.count_nonzero(actual!=expected)),
+                         'different_mask_pixels':int(np.count_nonzero(actual_mask!=expected_mask)),
+                         'passed':bool(np.array_equal(actual,expected) and np.array_equal(actual_mask,expected_mask))})
+        for obj in (vao,target,page,mask,index,marks,program):obj.release()
     # Dither translucency must resolve before arbitrary display scaling, and
     # actual checkerboard artwork must not be mistaken for transparency.
     pattern = (np.indices((4, 4)).sum(axis=0) % 2).astype(np.uint16)

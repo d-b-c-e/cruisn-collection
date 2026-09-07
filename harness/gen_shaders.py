@@ -30,7 +30,7 @@ def cstr(prefix, name, src):
 def main():
     body = "// GENERATED from cruisn-collection/gpu/renderer.py"
     body += " - regenerate with harness/gen_shaders.py, never hand-edit\n\n"
-    for n in ("VS", "FS", "PAL_VS", "PAL_FS", "MENU_VS", "MENU_FS"):
+    for n in ("VS", "FS", "PAL_VS", "PAL_FS", "CPU_FS", "MENU_VS", "MENU_FS"):
         body += cstr("MVGL", n, getattr(R, n))
     with open(HEADER, "w", newline="\n") as f:
         f.write(body)

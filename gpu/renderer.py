@@ -292,6 +292,27 @@ void main() {  // full-screen triangle
 }
 """
 
+CPU_FS = """
+#version 430
+uniform usampler2D cpuIndex;
+uniform usampler2D cpuDirty;
+uniform int uScale;
+uniform int uMargin;
+uniform int uHeight;
+layout(location = 0) out uint outIndex;
+layout(location = 1) out uint outMask;
+void main() {
+    ivec2 native = ivec2(gl_FragCoord.xy) / uScale;
+    native.x -= uMargin;
+    native.y = uHeight - 1 - native.y;
+    if (native.x < 0 || native.x >= 512 || native.y < 0 || native.y >= uHeight)
+        discard;
+    if (texelFetch(cpuDirty, native, 0).r == 0u) discard;
+    outIndex = texelFetch(cpuIndex, native, 0).r;
+    outMask = 1u;
+}
+"""
+
 PAL_FS = """
 #version 430
 uniform usampler2D idxTex;
