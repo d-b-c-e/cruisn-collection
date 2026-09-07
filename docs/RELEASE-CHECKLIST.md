@@ -94,10 +94,13 @@ there too, including the actual ZIP hash.
 Rerun with `--attended results/diagnostics/release-attended.json` after filling
 the ledger; omit `--init-attended`, which refuses to replace an existing ledger.
 Changes to product code, tests, workflows, profiles, patches or fixtures invalidate
-old acceptance. Documentation-only updates do not. A passing replay means the
+old acceptance. Updates confined to the top-level README and `docs/` do not. A passing replay means the
 recording repeated, **not** that every texture or physical control is correct.
 
-Current blockers: updated attended gameplay/FFB acceptance, Exotica direction and
+Current blockers: updated attended gameplay/FFB acceptance (especially World's
+weak collision feel), Exotica direction and
 manual behavior, default-setting visual coverage beyond existing recorded cases,
-and fresh-package/upgrade/second-wheel/soak acceptance. The existing synthetic
+an intermittent GL stream timeout observed before the distance patch activates,
+and fresh-package/upgrade/second-wheel/soak acceptance. Add repeated cold starts
+with physical force off; one successful retry does not clear the timeout. The existing synthetic
 Off Road and Exotica drives are useful regressions but insufficient release coverage.

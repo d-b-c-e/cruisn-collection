@@ -12,6 +12,7 @@
     "exit": "Esc menu opens/resumes; exit returns to launcher; F12 fallback and immediate relaunch work"
   },
   "shared": {
+    "renderer-startup": "Resolve or explain the observed pre-race GL consumer timeout; retain failed evidence and pass a documented repeated cold-start stress test before release",
     "fresh-package": "Extract exact candidate ZIP on a clean Windows profile without Python or development paths; import user ROMs, launch all four games",
     "upgrade": "Upgrade/import preserves wheel bindings, scores, calibration and chosen display/force settings; rollback verified",
     "wheel-matrix": "Record wheel/base firmware and driver settings; validate local wheel plus a second vendor (Fanatec oscillation report), disconnect/reconnect and no-wheel startup",
