@@ -22,6 +22,12 @@ jobs:
           python-version: '3.12'
       - run: python -m pip install -r requirements-test.txt
       - run: python -m unittest discover -s tests -v
+      - name: Record checkout-independent source identity
+        run: python -c "import json,sys; from pathlib import Path; sys.path.insert(0,'harness'); from release_identity import source_identity; Path('source-identity.json').write_text(json.dumps(source_identity(Path('.')),sort_keys=True,indent=2),encoding='utf-8')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-identity-${{ matrix.os }}
+          path: source-identity.json
   native-helpers:
     runs-on: ubuntu-latest
     steps:
