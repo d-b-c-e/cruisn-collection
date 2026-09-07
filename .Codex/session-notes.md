@@ -1,3 +1,72 @@
+# In-progress overnight handoff — 2026-09-07, about03:55 local
+
+User remains asleep and authorized sustained autonomous fixes, separate commits
+and end-to-end validation. Continue this task; do not publish/tag or enable
+physical wheel force. Current branch codex/release-startup-hardening at9673513;
+all commits pushed. Master remains57e9bdf until final verification/merge.
+
+Native aef6d4465cd onpoc/quadlog, pushed fork. Root vunit.exe C925 SHA256:
+c925b24e6d23bd8288ddeaca7d79af0b072b223515e5ea4200817d03be29e93a.
+Masked GPU CPU-framebuffer copies replace scattered uploads, preserve ordering.
+116-patch export verifies tree de7f57623fc201460b2b6a3b8feed5ac6821eb5c.
+12 repeated full-window startsPASS; short stall recovers, long stalls correctly
+FAIL capture/stream gates. Proof233 ZIP entries verified and committed under
+results/proof/2026-09-07-release-hardening. Native/helpers/toolkit match.
+
+Separate committed fixes: media/runtime/source/licence packaging; exact ZIP
+promotion (tag no longer publishes); import preserves existing NVRAM/cfg/ctrlr;
+updater ZIP validation/quoted paths/PS module path/8.3 path correction; frozen
+support output and Lua search; force disabled in support diagnostics.96 tests
+PASS. CI34102126889 at942d674 all4PASS. Detailed review:
+docs/reviews/2026-09-07-release-hardening.md.
+
+Latest local candidate:
+build/CruisnCollection-v0.4.0-rc1-20260907-034453.zip
+SHA23414805df1bb51c1529257a5463b9d5a386cac209ffd313b87614d6a10fb4be.
+Manifest commit942d674, source_clean=true, source identity
+2771025d23aa1d84df97fb3bd3619e920852dbf475e23b94fed0a2635eb775c8.
+Two prior candidate ZIPs retained; isolated frozen checks PASS all4boots/8UIpages
+/setup/support. Every check uses private extracted ROMs and MIDV_FFB=0.
+
+ACTIVE local exec64281: results/diagnostics/startup-work/run_release_final.py
+using the034453ZIP. Output results/diagnostics/release-942-final. Frozen stagePASS;
+full regression suite currently running (USAoriginal/widescreen,World24,Germany
+PASS). Then5freshboots,3menus,quality/exact,readinessgate run serially. DO NOT
+overlap GPU/build work. Do not mutate relevant product source until this baseline
+finishes: its reports are bound to942sourceidentity. Docs/proof edits do not
+change identity. Gate should remain NOTREADY pending39attended/shared checks.
+
+ACTIVE remote candidate CI34102127057 at942d674 compiling MAME; may take a while.
+Earlier34101555876 was cancelled after updater CI discovered short-path failure.
+The942 build tests before compiling. Native cache includes BGFX/COPYING/licences.
+Do not treat a remotely recompiled executable as covered by local binary tests.
+
+NEXT confirmed fixes to integrate AFTER current baseline completes:
+1. Reserved motor byte-128 must normalize before gain/slew/clamp, resetting
+   driver slew history. Exotica currently gain800 makes it-127/full force; VUnit
+   optional conditioning can do likewise. Existing motor_level() stop guard is
+   too late. ROM-free draft under startup-work/motor_adapter_draft.h and
+   test_motor_adapter_draft.cpp preserves61200 normal vectors,240neutralvectors
+   zero (216 previously nonzero). Not product code yet. Add shared canonical
+   helper to motor_signal.h and use in midvunit.cpp and midzeus.cpp, preserve
+   gain/polarity/defaults. Native rebuild+separatecommit/export, then repeat full
+   relevant validation. Retained Exotica4616writes have zero-128 values; this
+   does NOT diagnose the historical Fanatec report. Primary pinned source:
+   Endprodukt FFBPluginRacerMAME commit7e95f65... Game Files/MAMESupermodel.cpp
+   lines1313..1324 normalizesneutral beforegain.
+2. Old updater leaves obsolete dinput8.dll. Known archived08-20/09-02 release
+   proxy SHA2443f1af58743212b7feeb408507b8eaf95922da24f5966b66997898e90817b7
+   (775168bytes), MAME64 SHA193397850932736512a439ea7628b153004bae4714cd20af0eb3b3911950b9d7.
+   Consider reversible exact-hash quarantine of known proxy during update AFTER
+   old processes exit, with tests; never blindly delete unknown customDLLs.
+   Setup should accurately report an existing proxy. No code change yet.
+
+Prepared but NOT RUN: startup-work/run_full_gl_pairs.py CANDIDATE OUTPUT. Full
+oldaa920 vsnew VUnitGL comparisons:USA43images,World78,OffRoad53 atcorrect401,
+scale4/CRT and small output window. Run after finalnativefix and fullgate; old
+binary retained results/diagnostics/release-pre-startup/binary/vunit.exe.
+No shader changes sinceC925. Retain real failed controls, do not fabricatePASS.
+
 # Current handoff — 2026-09-07 overnight release preparation
 
 User is going to bed and asks to continue autonomous fixes/improvements, validate

@@ -1,0 +1,130 @@
+{
+  "candidate_sha256": "c925b24e6d23bd8288ddeaca7d79af0b072b223515e5ea4200817d03be29e93a",
+  "cases": [
+    {
+      "passed": true,
+      "persisted": [
+        {
+          "freeplay_bytes": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "passed": true,
+          "path": "crusnusa\\case\\record\\nvram\\crusnusa\\nvram",
+          "sha256": "136077eb4e33acb33869d0e3569b6014c25fba968ec4c58b733b61714e2c4a8c"
+        },
+        {
+          "freeplay_bytes": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "passed": true,
+          "path": "crusnusa\\replay\\run\\nvram\\crusnusa\\nvram",
+          "sha256": "136077eb4e33acb33869d0e3569b6014c25fba968ec4c58b733b61714e2c4a8c"
+        }
+      ],
+      "replay_exit": 0,
+      "rom": "crusnusa"
+    },
+    {
+      "passed": true,
+      "persisted": [
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "crusnwld24\\case\\record\\nvram\\crusnwld24\\nvram",
+          "sha256": "40dafe0ebe0bc9e5fe96b2916953d49fc86e9c40354f6259ed996ee6da77544a"
+        },
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "crusnwld24\\replay\\run\\nvram\\crusnwld24\\nvram",
+          "sha256": "40dafe0ebe0bc9e5fe96b2916953d49fc86e9c40354f6259ed996ee6da77544a"
+        }
+      ],
+      "replay_exit": 0,
+      "rom": "crusnwld24"
+    },
+    {
+      "passed": true,
+      "persisted": [
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "crusnwld\\case\\record\\nvram\\crusnwld\\nvram",
+          "sha256": "24d7313f3a3f35d96632008957687b1749d7d3421597a036d9776c7493b494c6"
+        },
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "crusnwld\\replay\\run\\nvram\\crusnwld\\nvram",
+          "sha256": "24d7313f3a3f35d96632008957687b1749d7d3421597a036d9776c7493b494c6"
+        }
+      ],
+      "replay_exit": 0,
+      "rom": "crusnwld"
+    },
+    {
+      "passed": true,
+      "persisted": [
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "offroadc\\case\\record\\nvram\\offroadc\\nvram",
+          "sha256": "8662cdc2a29b3b951c0983ec3b04053c5d211a58373362c202e83796fc74d7bf"
+        },
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "offroadc\\replay\\run\\nvram\\offroadc\\nvram",
+          "sha256": "8662cdc2a29b3b951c0983ec3b04053c5d211a58373362c202e83796fc74d7bf"
+        }
+      ],
+      "replay_exit": 0,
+      "rom": "offroadc"
+    },
+    {
+      "passed": true,
+      "persisted": [
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "crusnexo\\case\\record\\nvram\\crusnexo\\m48t35",
+          "sha256": "e9c91f1271825ac50ad683712d160979a17f8208795060e06dc5c54b20b29706"
+        },
+        {
+          "freeplay_bytes": [
+            1
+          ],
+          "passed": true,
+          "path": "crusnexo\\replay\\run\\nvram\\crusnexo\\m48t35",
+          "sha256": "e9c91f1271825ac50ad683712d160979a17f8208795060e06dc5c54b20b29706"
+        }
+      ],
+      "replay_exit": 0,
+      "rom": "crusnexo"
+    }
+  ],
+  "passed": true,
+  "physical_force": false,
+  "scope": "Boot/replay every fresh seed and check persisted free play, with physical force off.\n\nNeutral inputs do not establish no-coin race start or physical control acceptance.\n",
+  "source_identity": "2771025d23aa1d84df97fb3bd3619e920852dbf475e23b94fed0a2635eb775c8"
+}
