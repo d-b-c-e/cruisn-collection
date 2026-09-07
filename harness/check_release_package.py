@@ -15,7 +15,8 @@ REQUIRED = ('CruisnCollection.exe','CruisnSetup.exe','vunit.exe','SDL2.dll','SDL
             'version.txt','setup.ps1','README.txt','force-profiles.ini','lib/toolkit/VERSION',
             'patch/vunit-poc-patches.patch','source/harness/collection.py','source/harness/run_rig.py',
             'source/lua/session.lua','source/gpu/renderer.py','source/native/cpu_upload_spans.h',
-            'source/lib/toolkit/LICENSE','bgfx/chains/crt-geom-deluxe.json','bgfx/LICENSE')
+            'source/lib/toolkit/LICENSE','bgfx/chains/crt-geom-deluxe.json','bgfx/LICENSE',
+            'MAME-COPYING.txt','licenses/mame/GPL-2.0')
 MEDIA = ('art/Clear Logo/Cruis_n USA-01.png','art/Clear Logo/Cruis_n World-01.png',
          'art/Clear Logo/Off Road Challenge-01.png','art/Clear Logo/North America/Cruis_n Exotica-01.png',
          'art/Screenshot - Game Title/Cruis_n USA-01.jpg','art/Screenshot - Game Title/Cruis_n World-01.png',

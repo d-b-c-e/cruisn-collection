@@ -53,7 +53,9 @@ jobs:
           path: |
             mame-src/vunit.exe
             mame-src/bgfx
-          key: vunit-runtime-v2-${{ hashFiles('patch/vunit-poc-patches.patch') }}
+            mame-src/COPYING
+            mame-src/docs/legal
+          key: vunit-runtime-v3-${{ hashFiles('patch/vunit-poc-patches.patch') }}
       - name: Build vunit.exe (MAME 0.286 + patch series)
         if: steps.mame-cache.outputs.cache-hit != 'true'
         shell: msys2 {0}
