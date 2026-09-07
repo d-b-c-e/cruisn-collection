@@ -1,3 +1,66 @@
+# Latest checkpoint — 2026-09-07 about04:49 local
+
+Final3720 full suite COMPLETE PASS: frozen4boots/8UI/setup/support, all7drives,
+5freshseedboot/replay/persistence,3VUnitmenus,24GPUquality,both exact100.0000%.
+Gate automated_pass=true;39attended/shared items remain pending. Do NOT mark the
+human ledger passed from automated evidence (release_gate docstring explicit).
+Source5ae2... and ZIP042637/279118... match current source3720/24cc and native9D8.
+
+ACTIVE exec85263 now automatically runs SIX FULL GL PAIRS (oldaa920 vs final9D8)
+into results/diagnostics/release-full-gl-final. USA43, World78, OffRoad53images at401.
+Wait for completion; no overlapping emulator/build/heavyI/O. Final timing intervals
+99.9747..100.0044% emulation; worstcallback35.5134ms (not display latency).
+Log startup-work/release-final.log; script run_release_accepted_source.py.
+
+After85263 finishes, run startup-work/check_upgrade_final.py: exact107MBZIP through
+real Windows updater, isolated existingrig/ROMmarker + actual oldproxy bytes.
+RelaunchDISABLED; no oldexe orDLL ever executed. Verifies allpackagedfilehashes and
+preservedrig/ROMmarker/backupbytes. Prepared andpy_compilePASS; NOT RUN yet.
+Then download completed CI34102127057 artifact10012703512 into newprivateoutput.
+This is OLDsource942/C925family build, not finalnative. Workflow nowPASS, artifact
+SHA83b1829c... outerarchive; metadata startup-work/ci-candidate-artifacts.json.
+InspectZIP manifest/check only; don't replace or claim acceptance ofremoteexe.
+Finalsource CI34105961533 at3720 all4PASS, report startup-work/ci-3720.json.
+
+Prepared archive script startup-work/archive_final.py writes proof/release-final:
+all final reports, actualupgrade,tests,CI,exports,rawCSV/log/JSONZIP + reproduction
+scripts; excludes copiedinstall dirs. Run onlyafteralltestscomplete. Verify each
+archiveentry, then commit and verify Gitblobbytes. AddexactupgradeandCIartifact
+inspectionreport ifappropriate. New MD editsuncommitted includeREADME/CHANGELOG/
+AGENTS/review/morningguide/checklist/sessionnotes; no productsourcechanges.
+Finalreview completion/RESULTSappend/finalhandoff/mainmergepush stillpending.
+
+# ACTIVE checkpoint — 2026-09-07 04:30 local
+
+Continue overnight work. Collection codex/release-startup-hardening3720b35 pushed.
+Native5bb965763b1/9D8 unchanged, clean/pushedfork. 24cc1a2 fixes the CI8.3 proxy
+retirement failure by canonicalizing all paths before generating PowerShell.
+All4 CI34105656916 jobsPASS, local98testsPASS. e438 validation was deliberately
+CANCELLED/SUPERSEDED (frozen + USAoriginal/USAwide/World24PASS, Germanypartial).
+Stopped only the owned Python runner, then clean WM_CLOSE on its emulator;
+all games exited. Do not mistake that partial report for a passing full suite.
+
+ACTIVE exec85263: startup-work/run_release_accepted_source.py. Final clean ZIP:
+build/CruisnCollection-v0.4.0-rc1-20260907-042637.zip
+SHA279118be3c2c2d504bed09a44053eff60eedc01a468e0217bbd9e7b9f1dc043c.
+Native9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86.
+Source5ae2eda86b09aaa4cd024248f5ca14087567bfe2720517c70542ab4910719d81.
+Full output results/diagnostics/release-3720-final; log startup-work/release-final.log.
+Runs frozen,7regressions,5freshboots,3menus,quality,2exact,gate serially. If automated
+stages pass, ALSO automatically runs six oldaa920/new9D8 full GL comparisons into
+results/diagnostics/release-full-gl-final. No other GPU/build work in parallel.
+No product changes unless a real failure requires them; current docs edits do not
+invalidate source identity. CI3720 also queued/running; source matches24cc.
+
+Remote candidate CI34102127057 source942 still building. It is a packaging/build
+workflow proof, not the final tested nativebinary. Do not publish. Check eventually;
+may take over an hour. All local old/finalZIPs retained. C925 full baseline and
+146runtimearchive entries verified from committed Git bytes; report startup-work/
+committed-release942-proof.json. New morning guide docs/RELEASE-MORNING.md uncommitted.
+AGENTS/review/session docs need final results update. RESULTS new chronology committed
+3720; append final completion later, do not rewrite history. Pending final proof
+archive, committed-byte verification, main merge/push and concise final summary.
+
 # Active overnight checkpoint — 2026-09-07 04:20 local
 
 User remains asleep; continue autonomous release preparation. Collection branch

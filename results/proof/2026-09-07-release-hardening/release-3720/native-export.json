@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "patches": 117,
+  "tree": "a611778155bbaef209f5523bb711ba8b1f127cb6",
+  "expected_tree": "a611778155bbaef209f5523bb711ba8b1f127cb6",
+  "native_commit": "5bb965763b1648fa023f12eaf8fb251f371a0994",
+  "series_sha256": "d9234beed3a17e5e23f37d65ea1cfdb8b7c777da25f6a09d65c50c3be1111c4f"
+}

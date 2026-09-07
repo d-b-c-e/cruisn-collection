@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "commit": "e4384ece838e54e7b885697b3c6308b3c557e40f",
+  "entries": 146,
+  "archive_sha256": "89fa87d35dd2de609ff01a559c374f8a625b3cb51008aaaa419b0459a64b902d",
+  "scope": "Read archive and manifest from committed Git blobs, verify every archived byte"
+}

@@ -29,6 +29,17 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
    it performs a dry run unless `--publish` is explicitly requested. A locally
    tested executable does not certify a newly compiled CI candidate.
 
+## Public distribution decision
+
+As of 2026-09-07 the repository is **private**. An anonymous request to the updater's
+`/repos/d-b-c-e/cruisn-collection/releases/latest` endpoint returns404, although an
+authenticated maintainer can see v0.3.7. Ordinary players cannot use this update
+source yet. Decide whether to make a reviewed source repository public or use a
+separate public distribution destination and update the client/workflow accordingly.
+Changing repository visibility exposes its contents and history; no such change
+was made during unattended work. Keep credentials out of distributed packages.
+A private candidate artifact and a successful local install do not clear this item.
+
 ## Required acceptance
 
 | Area | Automated evidence | Attended acceptance still required |
@@ -40,7 +51,7 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
 | Force feedback | Toolkit signal fixtures and per-game source traces; automated output always off | Correct direction, comparable default weight, distinct car/wall impacts, no oscillation; pause/exit releases torque |
 | Graphics | Default full widescreen + CRT; native exactness and completed GL evidence | Selection screens and a whole race: margins, sky, shadows, seams, sharp turns, collisions; no visibility defect that prevents driving |
 | Menu/exit | V-Unit real menu-handler diagnostic and controller remapping | Physical Esc opens menu/resumes/exits; F12 fallback; clean relaunch; Exotica menu separately |
-| Package/upgrade | Hash emulator, source and evidence; required files/ROM audit through setup | Clean Windows profile without Python, no development paths; import/upgrade retains calibration, bindings and scores |
+| Package/upgrade | Exact ZIP/file hashes; four frozen boots, menu pages, setup/support; real Windows updater and preservation checks | Clean Windows profile without Python, no development paths; import/upgrade retains calibration, bindings and scores |
 
 Fresh defaults: CRT on, full widescreen, scale 4, World 2.4, FFB 50% with
 `cruisn-vunit@2`; distance/terrain/scenery/seam-alignment experiments and added
@@ -49,6 +60,9 @@ saved player choices. The seed correction changes seven setting bytes across
 USA, World 2.5, Off Road and Exotica, plus Off Road's checksum byte. World 2.4
 already had free play on. Off Road discards a free-play edit with a stale checksum;
 the launcher toggle and NVRAM tool now maintain it too.
+
+A concise morning sequence and four recording commands are in
+[RELEASE-MORNING.md](RELEASE-MORNING.md).
 
 ## Short attended drive protocol
 
@@ -106,9 +120,9 @@ recording repeated, **not** that every texture or physical control is correct.
 Current blockers: updated attended gameplay/FFB acceptance (especially World's
 weak collision feel), Exotica direction and
 manual behavior, default-setting visual coverage beyond existing recorded cases,
-an intermittent GL stream timeout observed before the distance patch activates,
-and fresh-package/upgrade/second-wheel/soak acceptance. Add repeated cold starts
-with physical force off; one successful retry does not clear the timeout. The existing synthetic
+longer startup/soak coverage after the masked-upload improvement,
+and clean-profile/attended-upgrade/second-wheel acceptance. Twelve repeated full-window
+starts pass; deliberate long consumer stalls remain correctly rejected. The existing synthetic
 Off Road and Exotica drives are useful regressions but insufficient release coverage.
 
 ## Candidate packaging and promotion

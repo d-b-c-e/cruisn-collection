@@ -26,6 +26,8 @@ awaiting validation.
 - [Global draw distance and native-port reassessment](docs/reviews/2026-09-06-global-distance-and-native-port.md)
 - [Global World distance trial: 2× candidate, playback and visual evidence](docs/reviews/2026-09-06-global-distance-trial.md)
 - [3× distance, activation limits and release baseline](docs/reviews/2026-09-07-world-3x-and-release.md)
+- [Renderer startup and release-package hardening](docs/reviews/2026-09-07-release-hardening.md)
+- [Release-morning recording and acceptance guide](docs/RELEASE-MORNING.md)
 - [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
 - [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
 - [Independent project assessment](docs/reviews/2026-09-05-assessment.md)
@@ -73,7 +75,9 @@ in [docs/INSTALL.md](docs/INSTALL.md#steering-feel-sensitivity-and-curve).
 **Updating**: `CruisnSetup.exe -> Updates...` checks GitHub and installs
 the newer version in place (the launcher's SETTINGS has the same *Check
 for updates*). By hand: unzip the new version over the old folder;
-everything you set up is kept.
+your rig settings, calibration, bindings and scores are preserved. Recognized old
+FFB input plugins are moved into backups under `rig/update`; an unknown custom
+`dinput8.dll` remains intact and must be reviewed before launching or updating.
 
 ## Skip the launcher (frontends, shortcuts, Stream Deck)
 

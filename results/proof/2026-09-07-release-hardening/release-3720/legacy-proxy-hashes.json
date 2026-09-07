@@ -1,0 +1,9 @@
+{
+  "sources": {
+    "build/CruisnCollection-2026-08-20.zip": "2443f1af58743212b7feeb408507b8eaf95922da24f5966b66997898e90817b7",
+    "build/CruisnCollection-2026-09-02.zip": "2443f1af58743212b7feeb408507b8eaf95922da24f5966b66997898e90817b7",
+    "E:/Source/mame-src/_plugin-backup-boomslangnz-2.0.0.53/dinput8.dll": "2443f1af58743212b7feeb408507b8eaf95922da24f5966b66997898e90817b7",
+    "E:/Source/mame-src/_plugin-backup-endprodukt-1.995/dinput8.dll": "10218983a9f101ea1d16925ee229b7f30edca9613b13c3501af7e4144bc09b18"
+  },
+  "scope": "SHA256 of retained historical input proxy binaries; never executed or copied into active emulator paths"
+}

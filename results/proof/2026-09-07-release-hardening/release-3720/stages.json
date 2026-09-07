@@ -1,0 +1,19 @@
+{
+  "automated_stages_pass": true,
+  "candidate_sha256": "9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86",
+  "package_sha256": "279118be3c2c2d504bed09a44053eff60eedc01a468e0217bbd9e7b9f1dc043c",
+  "physical_force": false,
+  "source_identity": "5ae2eda86b09aaa4cd024248f5ca14087567bfe2720517c70542ab4910719d81",
+  "stages": {
+    "exact-capture": 0,
+    "exact-capture-8000": 0,
+    "fresh-boots": 0,
+    "frozen": 0,
+    "gate": 1,
+    "menu-offroad": 0,
+    "menu-usa": 0,
+    "menu-world": 0,
+    "quality": 0,
+    "regressions": 0
+  }
+}

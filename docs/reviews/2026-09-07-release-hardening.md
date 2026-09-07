@@ -173,3 +173,31 @@ folders and backups compared exactly; neither DLL was executed. Real PowerShell
 helper tests cover migration and unchanged personal files. Process enumeration
 uses typed64-bit handles and canonical image paths, tested against a real Python
 child without touching any game. All98 Python tests pass at e4384ec.
+
+
+## Windows CI correction before final acceptance
+
+The new proxy-retirement check failed on the GitHub Windows runner's short-path
+alias: it compared a long install prefix with a short file path. CI34105177890
+correctly rejected this at e4384ec. Commit24cc1a2 canonicalizes the ZIP, install
+and update-work paths in Python before generating the PowerShell helper. All four
+CI34105656916 jobs pass, including the real migration test and native/GPU checks.
+
+The e438 runtime run is explicitly cancelled/superseded after its frozen package,
+two USA cases and World2.4 passed. Its Python runner stopped and its owned emulator
+received a clean WM_CLOSE; no physical output was active. The remaining partial
+Germany data is not accepted. The new clean3720 candidate restarts the complete
+suite; both old ZIPs and the actual CI failure remain available. See
+[the morning guide](../RELEASE-MORNING.md) for the attended work still needed.
+
+
+## Confirmed public-access gap
+
+GitHub reports the repository PRIVATE and authenticated access shows latest v0.3.7.
+The actual anonymous latest-release endpoint returns404. The updater already reports
+this as a private/missing-release error; there is no silent "up to date" claim to
+fix. Its public download path cannot make private releases accessible to ordinary
+players. Public hosting needs a maintainer decision before release: reviewed public
+source repository or a separate public distribution destination with corresponding
+client/workflow changes. No visibility change, token distribution or public release
+was performed. The read-only response is retained in release-access.json.

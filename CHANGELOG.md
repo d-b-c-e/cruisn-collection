@@ -5,6 +5,25 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Reduce V-Unit startup framebuffer upload work with masked GPU copies, keeping
+  untouched pixels and render order. Add repeated full-window startup checks and
+  retained consumer-stall controls; keep the existing timeout protection.
+- Normalize the reserved neutral force command before driver gain and limiters
+  in V-Unit and Exotica. Preserve ordinary force commands and current defaults.
+- Back up recognized obsolete input plugins during update/first launch. Preserve
+  unknown DLLs and block the operation instead of loading conflicting force code.
+- Correct fresh-install free-play seeds and maintain Off Road's settings checksum.
+  Preserve existing calibration, scores and bindings when importing an installation.
+- Restore release artwork/music and include runtime assets, source and licences.
+  Repair frozen support diagnostics and validate actual extracted-package launches.
+- Harden the Windows updater against malformed or changed archives and quoted/short
+  paths. Keep personal rig and ROM files outside the update payload.
+- Build candidate ZIPs without publishing on a tag push. Bind release acceptance to
+  the tested source, native binary and exact ZIP; promotion never rebuilds it.
+- Add a release checklist, fresh-boot persistence gates and attended drive protocol.
+  World 3x far/12-section lookahead remain diagnostics: a larger far limit has not
+  demonstrated extra mountain visibility over 2x at equal lookahead.
+
 - Add optional World2.4 Distant Scenery for five identified mountains, four
   small tree variants and one forest strip, with full-drive repeatability and
   completed-frame comparisons. Advance pending mountain/forest activation by

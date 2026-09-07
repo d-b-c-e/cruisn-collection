@@ -1,0 +1,319 @@
+{
+  "schema": 1,
+  "candidate_sha256": "9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86",
+  "source_identity": "5ae2eda86b09aaa4cd024248f5ca14087567bfe2720517c70542ab4910719d81",
+  "checks": {
+    "crusnusa/drive": {
+      "requirement": "Fresh launch, complete a race, retry, audio and selection performance acceptable",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnusa/freeplay": {
+      "requirement": "Start and restart without inserting a coin; survives exit and relaunch",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnusa/manual-hpattern": {
+      "requirement": "Select MANUAL; engage and hold gears 1-4, neutral and downshift correctly",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnusa/manual-sequential": {
+      "requirement": "Select MANUAL; each paddle press changes one gear, hold does not run through gears",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnusa/rebind": {
+      "requirement": "Bind, rebind, relaunch: new control works, old control stops; other bindings remain",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnusa/ffb": {
+      "requirement": "Correct restoring direction, comparable default weight, distinct car/wall impacts, no oscillation or stuck force",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnusa/graphics": {
+      "requirement": "Default full widescreen + CRT; inspect selection and complete gameplay including margins, sky, shadows and collisions",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnusa/exit": {
+      "requirement": "Esc menu opens/resumes; exit returns to launcher; F12 fallback and immediate relaunch work",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/drive": {
+      "requirement": "Fresh launch, complete a race, retry, audio and selection performance acceptable",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/freeplay": {
+      "requirement": "Start and restart without inserting a coin; survives exit and relaunch",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/manual-hpattern": {
+      "requirement": "Select MANUAL; engage and hold gears 1-4, neutral and downshift correctly",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/manual-sequential": {
+      "requirement": "Select MANUAL; each paddle press changes one gear, hold does not run through gears",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/rebind": {
+      "requirement": "Bind, rebind, relaunch: new control works, old control stops; other bindings remain",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/ffb": {
+      "requirement": "Correct restoring direction, comparable default weight, distinct car/wall impacts, no oscillation or stuck force",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/graphics": {
+      "requirement": "Default full widescreen + CRT; inspect selection and complete gameplay including margins, sky, shadows and collisions",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnwld24/exit": {
+      "requirement": "Esc menu opens/resumes; exit returns to launcher; F12 fallback and immediate relaunch work",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/drive": {
+      "requirement": "Fresh launch, complete a race, retry, audio and selection performance acceptable",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/freeplay": {
+      "requirement": "Start and restart without inserting a coin; survives exit and relaunch",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/manual-hpattern": {
+      "requirement": "Select MANUAL; engage and hold gears 1-4, neutral and downshift correctly",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/manual-sequential": {
+      "requirement": "Select MANUAL; each paddle press changes one gear, hold does not run through gears",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/rebind": {
+      "requirement": "Bind, rebind, relaunch: new control works, old control stops; other bindings remain",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/ffb": {
+      "requirement": "Correct restoring direction, comparable default weight, distinct car/wall impacts, no oscillation or stuck force",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/graphics": {
+      "requirement": "Default full widescreen + CRT; inspect selection and complete gameplay including margins, sky, shadows and collisions",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "offroadc/exit": {
+      "requirement": "Esc menu opens/resumes; exit returns to launcher; F12 fallback and immediate relaunch work",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/drive": {
+      "requirement": "Fresh launch, complete a race, retry, audio and selection performance acceptable",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/freeplay": {
+      "requirement": "Start and restart without inserting a coin; survives exit and relaunch",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/manual-hpattern": {
+      "requirement": "Select MANUAL; engage and hold gears 1-4, neutral and downshift correctly",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/manual-sequential": {
+      "requirement": "Select MANUAL; each paddle press changes one gear, hold does not run through gears",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/rebind": {
+      "requirement": "Bind, rebind, relaunch: new control works, old control stops; other bindings remain",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/ffb": {
+      "requirement": "Correct restoring direction, comparable default weight, distinct car/wall impacts, no oscillation or stuck force",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/graphics": {
+      "requirement": "Default full widescreen + CRT; inspect selection and complete gameplay including margins, sky, shadows and collisions",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "crusnexo/exit": {
+      "requirement": "Esc menu opens/resumes; exit returns to launcher; F12 fallback and immediate relaunch work",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "shared/renderer-startup": {
+      "requirement": "Resolve or explain the observed pre-race GL consumer timeout; retain failed evidence and pass a documented repeated cold-start stress test before release",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "shared/fresh-package": {
+      "requirement": "Extract exact candidate ZIP on a clean Windows profile without Python or development paths; import user ROMs, launch all four games",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "shared/upgrade": {
+      "requirement": "Upgrade/import preserves wheel bindings, scores, calibration and chosen display/force settings; rollback verified",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "shared/wheel-matrix": {
+      "requirement": "Record wheel/base firmware and driver settings; validate local wheel plus a second vendor (Fanatec oscillation report), disconnect/reconnect and no-wheel startup",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "shared/soak": {
+      "requirement": "At least 30 minutes mixed gameplay with repeated game switching; no accumulating slowdown, crash, stuck input/force or capture-related periodic stutter",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "shared/package-review": {
+      "requirement": "Exact ZIP/hash reviewed: no ROMs or personal rig data, runtime DLLs and source/licences present, installer/updater/support bundle work, release notes list remaining limitations",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    },
+    "shared/ci": {
+      "requirement": "All required CI jobs pass on the candidate source revision; attach the run URL or exported report",
+      "status": "pending",
+      "reviewer": "",
+      "date": "",
+      "notes": "",
+      "evidence": []
+    }
+  }
+}

@@ -1,0 +1,375 @@
+BEGIN frozen
+usa PASS
+world PASS
+offroad PASS
+exotica PASS
+Frozen package PASS E:\Source\cruisn-collection\results\diagnostics\release-3720-final\frozen\report.json
+END frozen 0
+BEGIN regressions
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\usa-original
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\usa-original\report.json
+usa-original PASS
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\usa-widescreen
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\usa-widescreen\report.json
+usa-widescreen PASS
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\world24
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\world24\report.json
+world24 PASS
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\world24-germany
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\world24-germany\report.json
+world24-germany PASS
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\world25
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\world25\report.json
+world25 PASS
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\offroad
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\offroad\report.json
+offroad PASS
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\exotica
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\regressions\exotica\report.json
+exotica PASS
+END regressions 0
+BEGIN fresh-boots
+recording recorded: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnusa\case
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnusa\replay
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnusa\replay\report.json
+recording recorded: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnwld24\case
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnwld24\replay
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnwld24\replay\report.json
+recording recorded: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnwld\case
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnwld\replay
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnwld\replay\report.json
+recording recorded: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\offroadc\case
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\offroadc\replay
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\offroadc\replay\report.json
+recording recorded: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnexo\case
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnexo\replay
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\crusnexo\replay\report.json
+Fresh boot persistence PASS: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\fresh-boots\report.json
+END fresh-boots 0
+BEGIN menu-usa
+{
+  "passed": true,
+  "physical_force": false,
+  "frame": 1800,
+  "states": [
+    {
+      "step": 0,
+      "open": 1,
+      "selected": 0,
+      "crt": 0,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "133eea51d8818d1dd66e62ad9f46bceb4fed501c7ba64b66526d6ca2192b351b"
+    },
+    {
+      "step": 1,
+      "open": 1,
+      "selected": 1,
+      "crt": 0,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "ba1e34c46a3ee80f74c447e865492c6c8f5e9e4b5ead8ed280492193c4eb1419"
+    },
+    {
+      "step": 2,
+      "open": 1,
+      "selected": 1,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "7caf6a406cfbdd3dfa404d300ec184ad960ca7de3bdbe6323e93c21c0479ce71"
+    },
+    {
+      "step": 3,
+      "open": 1,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "762026711a6ae4dcfe7edae88672e9741036e249be79602983b521b16ab9cca0"
+    },
+    {
+      "step": 4,
+      "open": 0,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "e7fd5b17afaa6ccbe71a79794fe4b5b3ef25ee8d592e955e3ab4d6be17185be3"
+    },
+    {
+      "step": 5,
+      "open": 1,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1821,
+      "new_frame": 1,
+      "image_sha256": "940767a24048845a8fe7fcdb7de8da4a7093883fce1c264b916c33880befbb11"
+    },
+    {
+      "step": 6,
+      "open": 1,
+      "selected": 1,
+      "crt": 1,
+      "frame": 1821,
+      "new_frame": 0,
+      "image_sha256": "6aa0bfc95d1780f5f035f47e264ae6ceb338667777ccbba7db8624c3c192c41b"
+    },
+    {
+      "step": 7,
+      "open": 1,
+      "selected": 2,
+      "crt": 1,
+      "frame": 1821,
+      "new_frame": 0,
+      "image_sha256": "cf96ae440025ff76093a128824d5ba1666b2803bd36db581c81c5c91a1f5dfce"
+    }
+  ]
+}
+END menu-usa 0
+BEGIN menu-world
+{
+  "passed": true,
+  "physical_force": false,
+  "frame": 1800,
+  "states": [
+    {
+      "step": 0,
+      "open": 1,
+      "selected": 0,
+      "crt": 0,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "c26cceb732c74f1a198106672bd0047f5148d332ec5cff21871b58baa2cf45f3"
+    },
+    {
+      "step": 1,
+      "open": 1,
+      "selected": 1,
+      "crt": 0,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "44841e3093712dac18c7c962ecacc677452d59a0d18aaf0ec3a643505fbeafb0"
+    },
+    {
+      "step": 2,
+      "open": 1,
+      "selected": 1,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "b34e6531a321838659f0509ef6c01c67d0f4bf8c87ef8c9a1e0867bbb99d0a89"
+    },
+    {
+      "step": 3,
+      "open": 1,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "1c97af81cfe8ab0b45b03be003299fff2c7243d8c25cd8a5e2d66aa16154abf2"
+    },
+    {
+      "step": 4,
+      "open": 0,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "467c6ee4f0bc8649f78c9164be72c523872e0c41ff6e3f32b11e8b9d5122da83"
+    },
+    {
+      "step": 5,
+      "open": 1,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1822,
+      "new_frame": 1,
+      "image_sha256": "f40db26d43b8f96aa995fa3251c83a83e42eda831e0fa11e85779b124417c421"
+    },
+    {
+      "step": 6,
+      "open": 1,
+      "selected": 1,
+      "crt": 1,
+      "frame": 1822,
+      "new_frame": 0,
+      "image_sha256": "7d147d8c1d80c1ac15b7929bccf35150c32433776bdf8ade17dc7aa061756f3d"
+    },
+    {
+      "step": 7,
+      "open": 1,
+      "selected": 2,
+      "crt": 1,
+      "frame": 1822,
+      "new_frame": 0,
+      "image_sha256": "360ed926b11f3a09e46fd36221a62139cbe0385e7a3bca46c17377aa29ca34db"
+    }
+  ]
+}
+END menu-world 0
+BEGIN menu-offroad
+{
+  "passed": true,
+  "physical_force": false,
+  "frame": 1800,
+  "states": [
+    {
+      "step": 0,
+      "open": 1,
+      "selected": 0,
+      "crt": 0,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "dde4d8fdfadea3efabfee802b6badaf508a5f996efe3af26219aba2b8665d3e9"
+    },
+    {
+      "step": 1,
+      "open": 1,
+      "selected": 1,
+      "crt": 0,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "34e4f6d3f24800275eae861bd856d270e784a88e4820536c4e41f1dab47cd142"
+    },
+    {
+      "step": 2,
+      "open": 1,
+      "selected": 1,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "a18bda1c45b1b3e27aa66a1708ef7954eedc55f9f4844ddd2d56a78e25838537"
+    },
+    {
+      "step": 3,
+      "open": 1,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "97aa0351a20c866a84816fe637065cc09255647b042d75e85fefd0160cd1c63f"
+    },
+    {
+      "step": 4,
+      "open": 0,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1800,
+      "new_frame": 0,
+      "image_sha256": "0d490918817befdf12c1fe906ad42c3f3a76fe2aa48ac817ad5afddcad009766"
+    },
+    {
+      "step": 5,
+      "open": 1,
+      "selected": 0,
+      "crt": 1,
+      "frame": 1821,
+      "new_frame": 1,
+      "image_sha256": "fa2d006e986bee2beb2eb7c1b91feae903596730f561dada8cd455323574f344"
+    },
+    {
+      "step": 6,
+      "open": 1,
+      "selected": 1,
+      "crt": 1,
+      "frame": 1821,
+      "new_frame": 0,
+      "image_sha256": "9c86a0b1390c46fd8328721b6f85bfad248c7573aa2522069ddbfb490199cb58"
+    },
+    {
+      "step": 7,
+      "open": 1,
+      "selected": 2,
+      "crt": 1,
+      "frame": 1821,
+      "new_frame": 0,
+      "image_sha256": "b9c657edde94280050dfddd807ea89a27e874e42e08a46c7901eb5a38610be83"
+    }
+  ]
+}
+END menu-offroad 0
+BEGIN quality
+{'check': 'cpu-write-mask-preserves-gpu-pixels', 'height': 7, 'scale': 1, 'different_pixels': 0, 'different_mask_pixels': 0, 'passed': True}
+{'check': 'cpu-write-mask-preserves-gpu-pixels', 'height': 7, 'scale': 4, 'different_pixels': 0, 'different_mask_pixels': 0, 'passed': True}
+{'check': 'cpu-write-mask-preserves-gpu-pixels', 'height': 401, 'scale': 1, 'different_pixels': 0, 'different_mask_pixels': 0, 'passed': True}
+{'check': 'cpu-write-mask-preserves-gpu-pixels', 'height': 401, 'scale': 4, 'different_pixels': 0, 'different_mask_pixels': 0, 'passed': True}
+{'check': 'tagged-dither-resolve', 'display_size': 4, 'passed': True}
+{'check': 'tagged-dither-resolve', 'display_size': 7, 'passed': True}
+{'check': 'tagged-dither-resolve', 'display_size': 10, 'passed': True}
+{'check': 'checkerboard-art-preserved', 'display_size': 4, 'passed': True}
+{'check': 'checkerboard-art-preserved', 'display_size': 7, 'passed': True}
+{'check': 'checkerboard-art-preserved', 'display_size': 10, 'passed': True}
+{'check': 'dither-tag-quality-only', 'passed': True}
+{'check': 'native-sloped-endpoint-coverage', 'different_pixels': 0, 'passed': True}
+{'check': 'thin-rectangle-atlas', 'scale': 1, 'covered_pixels': 26, 'foreign_texels': 0, 'passed': True}
+{'check': 'thin-rectangle-atlas', 'scale': 2, 'covered_pixels': 104, 'foreign_texels': 0, 'passed': True}
+{'check': 'thin-rectangle-atlas', 'scale': 3, 'covered_pixels': 234, 'foreign_texels': 0, 'passed': True}
+{'check': 'thin-rectangle-atlas', 'scale': 4, 'covered_pixels': 416, 'foreign_texels': 0, 'passed': True}
+{'check': 'thin-rectangle-atlas', 'scale': 6, 'covered_pixels': 936, 'foreign_texels': 0, 'passed': True}
+{'check': 'adjacent-tile-coverage', 'scale': 2, 'holes': 0, 'passed': True}
+{'check': 'adjacent-tile-coverage', 'scale': 4, 'holes': 0, 'passed': True}
+{'check': 'transparent-polygon-ownership', 'passed': True}
+{'check': 'vertex-builder-equivalence', 'passed': True}
+{'check': 'fine-sample-in-native-empty-span', 'passed': True}
+{'check': 'closed-tjunction-coverage', 'scale': 2, 'gained_pixels': 20, 'lost_pixels': 0, 'passed': True}
+{'check': 'closed-tjunction-coverage', 'scale': 4, 'gained_pixels': 80, 'lost_pixels': 0, 'passed': True}
+PASS 
+END quality 0
+BEGIN exact-capture
+scene: 3019 quads, page_control 513, canvas 512x400 scale 1 (exact/DDA mode)
+GL: NVIDIA GeForce RTX 5080/PCIe/SSE2
+GPU vs MAME videoram: 100.0000% bit-exact (0 differing pixels of 204800)
+wrote results/capture\gpu-s1.png (+ -view.png)
+END exact-capture 0
+BEGIN exact-capture-8000
+scene: 2656 quads, page_control 516, canvas 512x400 scale 1 (exact/DDA mode)
+GL: NVIDIA GeForce RTX 5080/PCIe/SSE2
+GPU vs MAME videoram: 100.0000% bit-exact (0 differing pixels of 204800)
+wrote results/capture-8000\gpu-s1.png (+ -view.png)
+END exact-capture-8000 0
+BEGIN gate
+Release NOT READY: E:\Source\cruisn-collection\results\diagnostics\release-3720-final\readiness.json
+Configuration=True; full replay suite=True; fresh boots=True; attended checks pending=39
+END gate 1
+{
+  "physical_force": false,
+  "candidate_sha256": "9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86",
+  "source_identity": "5ae2eda86b09aaa4cd024248f5ca14087567bfe2720517c70542ab4910719d81",
+  "package_sha256": "279118be3c2c2d504bed09a44053eff60eedc01a468e0217bbd9e7b9f1dc043c",
+  "stages": {
+    "frozen": 0,
+    "regressions": 0,
+    "fresh-boots": 0,
+    "menu-usa": 0,
+    "menu-world": 0,
+    "menu-offroad": 0,
+    "quality": 0,
+    "exact-capture": 0,
+    "exact-capture-8000": 0,
+    "gate": 1
+  },
+  "automated_stages_pass": true
+}
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\usa-old
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\usa-old\report.json
+usa old 0
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\usa-new
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\usa-new\report.json
+usa new 0
+usa full paired graphics True
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\world-old
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\world-old\report.json
+world old 0
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\world-new
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\world-new\report.json
+world new 0
+world full paired graphics True
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\offroad-old
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\offroad-old\report.json
+offroad old 0
+replay evidence: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\offroad-new
+PASS: E:\Source\cruisn-collection\results\diagnostics\release-full-gl-final\offroad-new\report.json
+offroad new 0
+offroad full paired graphics True
+FULL GL PAIRS PROCESS 0

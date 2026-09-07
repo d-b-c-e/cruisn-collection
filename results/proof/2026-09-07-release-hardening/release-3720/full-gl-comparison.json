@@ -1,0 +1,89 @@
+{
+  "candidate_binary": "9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86",
+  "cases": [
+    {
+      "comparison": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\usa-new\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 43,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\usa-old\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "first": 600,
+      "height": 400,
+      "last": 4800,
+      "name": "usa",
+      "passed": true,
+      "runs": [
+        {
+          "exit": 0,
+          "label": "old",
+          "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\usa-old\\report.json"
+        },
+        {
+          "exit": 0,
+          "label": "new",
+          "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\usa-new\\report.json"
+        }
+      ]
+    },
+    {
+      "comparison": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\world-new\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 78,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\world-old\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "first": 1000,
+      "height": 400,
+      "last": 8700,
+      "name": "world",
+      "passed": true,
+      "runs": [
+        {
+          "exit": 0,
+          "label": "old",
+          "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\world-old\\report.json"
+        },
+        {
+          "exit": 0,
+          "label": "new",
+          "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\world-new\\report.json"
+        }
+      ]
+    },
+    {
+      "comparison": {
+        "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\offroad-new\\run\\gl-snap",
+        "different_frames": [],
+        "frames": 53,
+        "passed": true,
+        "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\offroad-old\\run\\gl-snap",
+        "scope": "completed GL frame pixels"
+      },
+      "first": 600,
+      "height": 401,
+      "last": 5800,
+      "name": "offroad",
+      "passed": true,
+      "runs": [
+        {
+          "exit": 0,
+          "label": "old",
+          "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\offroad-old\\report.json"
+        },
+        {
+          "exit": 0,
+          "label": "new",
+          "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-full-gl-final\\offroad-new\\report.json"
+        }
+      ]
+    }
+  ],
+  "passed": true,
+  "physical_force": false,
+  "reference_binary": "aa92018876b8c07868057fdee7ccd1c7391dd1cad3d64f13134b3fbf977b8fec"
+}

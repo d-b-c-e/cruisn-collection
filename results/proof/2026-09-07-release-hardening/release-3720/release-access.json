@@ -1,0 +1,9 @@
+{
+  "scope": "Read-only anonymous request; no credentials or visibility change",
+  "authenticated_repository_visibility": "PRIVATE",
+  "anonymous_latest_release": {
+    "status": 404,
+    "url": "https://api.github.com/repos/d-b-c-e/cruisn-collection/releases/latest",
+    "message": "{\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/releases/releases#get-the-latest-release\",\"status\":\"404\"}"
+  }
+}

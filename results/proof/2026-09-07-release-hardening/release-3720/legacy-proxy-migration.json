@@ -1,0 +1,28 @@
+{
+  "scope": "Copied historical bytes to isolated folders; only hashed and moved; no executable or DLL loaded",
+  "passed": true,
+  "cases": [
+    {
+      "name": "boomslang",
+      "status": {
+        "present": true,
+        "known": true,
+        "sha256": "2443f1af58743212b7feeb408507b8eaf95922da24f5966b66997898e90817b7"
+      },
+      "backup": "E:\\Source\\cruisn-collection\\results\\diagnostics\\startup-work\\legacy-proxy-real-check\\boomslang\\rig\\update\\retired-input-5y99avth\\dinput8.dll",
+      "sha256": "2443f1af58743212b7feeb408507b8eaf95922da24f5966b66997898e90817b7",
+      "passed": true
+    },
+    {
+      "name": "endprodukt",
+      "status": {
+        "present": true,
+        "known": true,
+        "sha256": "10218983a9f101ea1d16925ee229b7f30edca9613b13c3501af7e4144bc09b18"
+      },
+      "backup": "E:\\Source\\cruisn-collection\\results\\diagnostics\\startup-work\\legacy-proxy-real-check\\endprodukt\\rig\\update\\retired-input-fot8295e\\dinput8.dll",
+      "sha256": "10218983a9f101ea1d16925ee229b7f30edca9613b13c3501af7e4144bc09b18",
+      "passed": true
+    }
+  ]
+}

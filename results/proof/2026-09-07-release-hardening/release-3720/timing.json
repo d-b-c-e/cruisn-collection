@@ -1,0 +1,77 @@
+{
+  "scope": "Configured regression intervals; emulation callbacks, not display latency or a full-drive worst-case bound",
+  "rows": [
+    {
+      "case": "usa-widescreen",
+      "first": 1680,
+      "last": 2280,
+      "emulation_percent": 99.99589019068807,
+      "host_frame_ms": {
+        "p50": 17.22749999999884,
+        "p95": 18.329825000003016,
+        "p99": 26.40861900000118,
+        "worst": 30.598799999999926
+      }
+    },
+    {
+      "case": "usa-widescreen",
+      "first": 2700,
+      "last": 3300,
+      "emulation_percent": 100.0012406809784,
+      "host_frame_ms": {
+        "p50": 17.035549999999233,
+        "p95": 25.39131000000019,
+        "p99": 26.83192500000473,
+        "worst": 29.99160000000245
+      }
+    },
+    {
+      "case": "world24",
+      "first": 3600,
+      "last": 4800,
+      "emulation_percent": 99.97472506687373,
+      "host_frame_ms": {
+        "p50": 18.942400000007353,
+        "p95": 25.557380000002183,
+        "p99": 28.69525499999895,
+        "worst": 35.51339999999925
+      }
+    },
+    {
+      "case": "world25",
+      "first": 3600,
+      "last": 4800,
+      "emulation_percent": 100.00098192882443,
+      "host_frame_ms": {
+        "p50": 17.286150000003886,
+        "p95": 25.26769500000583,
+        "p99": 28.31213599999394,
+        "worst": 32.17529999999158
+      }
+    },
+    {
+      "case": "offroad",
+      "first": 3600,
+      "last": 4800,
+      "emulation_percent": 100.00100075589458,
+      "host_frame_ms": {
+        "p50": 17.246949999993433,
+        "p95": 24.694884999990308,
+        "p99": 28.032822000008935,
+        "worst": 33.20689999999615
+      }
+    },
+    {
+      "case": "exotica",
+      "first": 3600,
+      "last": 4800,
+      "emulation_percent": 100.0044281351538,
+      "host_frame_ms": {
+        "p50": 17.489900000001057,
+        "p95": 18.246850000007697,
+        "p99": 19.303267000004354,
+        "worst": 21.465899999995486
+      }
+    }
+  ]
+}

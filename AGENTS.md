@@ -21,15 +21,17 @@ The newest native fix normalizes reserved motor byte -128 before gain/slew/clamp
 in both driver families and clears driver slew history. Normal-command vectors
 are unchanged. This is not evidence of physical feel, instant downstream torque
 release, or an explanation of historical Fanatec oscillation. New source at
-e4384ec has 98 passing Python tests. The launcher/updater backs up only two exact
+24cc1a2 has 98 passing Python tests and all four CI jobs pass (34105656916). The launcher/updater backs up only two exact
 known legacy dinput8.dll hashes before launch/copy. Unknown input DLLs are preserved
 and block launch/update. Never execute historical proxies in automated tests.
 
-Current clean candidate ZIP: build/CruisnCollection-v0.4.0-rc1-20260907-041815.zip,
-SHA256 `09cb7a7db21336815920052ddfa6285c8490a9c68794b87f79c89786cdd4ac57`.
-Full new validation is IN PROGRESS in results/diagnostics/release-e438-final;
+Current clean candidate ZIP: build/CruisnCollection-v0.4.0-rc1-20260907-042637.zip,
+SHA256 `279118be3c2c2d504bed09a44053eff60eedc01a468e0217bbd9e7b9f1dc043c`.
+Full new validation is IN PROGRESS in results/diagnostics/release-3720-final;
 check session notes before overlapping an emulator/build. Source identity
-`9f9b24f234675152ff4bb555919219e1f4a30eaaa4b3abef2b0fe0352d617695`.
+`5ae2eda86b09aaa4cd024248f5ca14087567bfe2720517c70542ab4910719d81`.
+The e438 run was superseded after CI exposed an 8.3 path bug in proxy retirement.
+24cc canonicalizes paths before script generation; the full suite restarts on it.
 
 Packaging restores tracked menu media, runtime dependencies, MAME/toolkit licence
 texts and source. Frozen support output works without stdout. Imports preserve

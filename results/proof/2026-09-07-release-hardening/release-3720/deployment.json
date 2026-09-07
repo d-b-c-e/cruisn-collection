@@ -1,0 +1,14 @@
+{
+  "source_commit": "3720b351b4824b9d8ac41ffaffeba1f2aec790ff",
+  "source_identity": "5ae2eda86b09aaa4cd024248f5ca14087567bfe2720517c70542ab4910719d81",
+  "native_commit": "5bb965763b1648fa023f12eaf8fb251f371a0994",
+  "files": {
+    "E:\\Source\\mame-src\\vunit.exe": "9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86",
+    "E:\\Source\\mame-src\\SDL2.dll": "47a3b27654832d9f7e5719c88078210a3dbfd6407b559c5a3c4eb8ab7d0ebdb6",
+    "E:\\Source\\mame-src\\force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52"
+  },
+  "wrapper": "E:\\Source\\launchbox\\Launchbox-Racing\\scripts\\Launch-Cruisn.bat",
+  "wrapper_sha256": "269aca2c30772109a4a7a0e0ca4f263a817f372250df799b4b05cf01bc02c6eb",
+  "entry": "python harness/collection.py in E:/Source/cruisn-collection",
+  "legacy_input_proxy_present": false
+}

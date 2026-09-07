@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "scope": "Downloaded completed GitHub candidate artifact and verified ZIP plus every file against its manifest/check. Source942 is superseded; its executable was never run or deployed and is not accepted by final9D8 runtime evidence.",
+  "package": "E:\\Source\\cruisn-collection\\results\\diagnostics\\release-ci-942-artifact\\CruisnCollection-v0.4.0-rc1-20260907-093517.zip",
+  "package_sha256": "c92da687b83c9871fee0b3590a33b0993d8808032754462911bc975c7bd7dc96",
+  "candidate_sha256": "80df9ae3e32ac0fb83bbc3adbf998da41cae815e7ef760594c58ce204e19bf6d",
+  "source_identity": "2c816a0a305dfdfbbb8537b5834c5d2608a9c558079d2eccf50cc6ba459f0a85",
+  "source_commit": "942d674655b76015a8a845c28ef03cc80ef0a582",
+  "files": 1614,
+  "manifest_source_clean": true
+}

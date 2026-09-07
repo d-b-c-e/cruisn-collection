@@ -1,0 +1,12 @@
+{
+  "candidate_sha256": "9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86",
+  "package_sha256": "09cb7a7db21336815920052ddfa6285c8490a9c68794b87f79c89786cdd4ac57",
+  "physical_force": false,
+  "source_identity": "9f9b24f234675152ff4bb555919219e1f4a30eaaa4b3abef2b0fe0352d617695",
+  "stages": {
+    "frozen": 0
+  },
+  "status": "cancelled-superseded",
+  "automated_stages_pass": false,
+  "reason": "Windows CI rejected new legacy-proxy check on 8.3 paths; stop this partial source baseline and restart all stages on corrected24cc1a2. Frozen and two USA cases passed; remaining suite incomplete. Emulator receives clean WM_CLOSE, physical force disabled."
+}
