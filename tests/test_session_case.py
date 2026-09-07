@@ -3,6 +3,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
@@ -10,6 +11,34 @@ from session_case import compare_evidence, read_trace, session_evidence, prepare
 
 
 class SessionTests(unittest.TestCase):
+    def test_global_recording_archives_patch_before_temporary_source_disappears(self):
+        from session_case import Recording
+        from world_distance import compose
+        from game_patch import read_patch
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            exe = root/'vunit.exe'; exe.write_bytes(b'fixture executable, never launched')
+            roms = root/'roms'; roms.mkdir()
+            (roms/'crusnwld24.zip').write_bytes(b'container fingerprint fixture')
+            rig = root/'rig'; rig.mkdir()
+            base = root/'base.txt'; base.write_text('247 0C800000 08620056\n')
+            recording = Recording(root/'case')
+            with tempfile.TemporaryDirectory() as patch_directory:
+                patch = compose(base,Path(patch_directory)/'global.txt',160000)
+                settings = {'MIDV_PATCH':str(patch), 'MIDV_WORLD_FAR':'160000',
+                            'MIDV_WORLD_LEAD':'8', 'MIDV_WORLD_CPU_PERCENT':'100', 'MIDV_FFB':'1'}
+                with mock.patch('session_case.subprocess.check_output',
+                                return_value=b'<mame><machine name="crusnwld24"/></mame>'), \
+                     mock.patch('session_case.git_identity', return_value={'commit':'fixture'}):
+                    _,env,runtime = recording.prepare(
+                        [str(exe),'crusnwld24','-rompath',str(roms)],settings,rig)
+            self.assertFalse(patch.exists())
+            self.assertEqual(read_patch(env['MIDV_PATCH'])[0x40], (80000,160000))
+            self.assertEqual(read_patch(env['MIDV_PATCH'])[0x247], (0x0c800000,0x08620056))
+            self.assertEqual(recording.manifest['settings']['MIDV_PATCH'],'@initial/game-patch.txt')
+            self.assertEqual(recording.manifest['settings']['MIDV_WORLD_LEAD'],'8')
+            self.assertEqual(env['MIDV_FFB'],'0')
+
     def test_attended_recording_cannot_enable_replay_actuators(self):
         from diagnostic_runtime import execute
         with tempfile.TemporaryDirectory() as td:

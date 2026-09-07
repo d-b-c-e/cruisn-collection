@@ -134,10 +134,12 @@ class LauncherGraphicsTests(unittest.TestCase):
         recording = types.SimpleNamespace(finish=mock.Mock(), manifest={"status": "recorded"})
         proc = types.SimpleNamespace(poll=lambda: 0, recording=recording)
         with tempfile.TemporaryDirectory() as directory:
-            for attended in (False, True):
+            for attended, far in ((False, None), (True, None), (False, 160000)):
                 args = ["--game", "world", "--no-clock", "--output", str(Path(directory) / "drive")]
                 if attended:
                     args += ["--with-ffb"]
+                if far:
+                    args += ['--world-far',str(far),'--world-lead','8']
                 with mock.patch.object(record_drive.collection, "load_config", return_value=state), \
                         mock.patch.object(record_drive.run_rig, "resolve_world_rom", return_value=("crusnwld24", None)), \
                         mock.patch.object(record_drive.run_rig, "launch_game_async", return_value=(proc, 0)) as launch, \
@@ -150,6 +152,8 @@ class LauncherGraphicsTests(unittest.TestCase):
                 self.assertEqual(applied["margin"], 86)
                 self.assertEqual(applied["ffb"], 80 if attended else 0)
                 self.assertEqual(applied["record_with_ffb"], attended)
+                self.assertEqual(applied['record_world_trial'],
+                                 dict(far=160000,lead=8,cpu=100) if far else None)
 
     def test_real_shell_save_preserves_bindings_and_retires_marginfill(self):
         # Configuration/UI data needs no OpenGL context in hardware-free CI.

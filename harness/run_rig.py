@@ -1235,12 +1235,15 @@ def apply_wheelmap(tree, rig):
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
                       margin=None, ffb=None, marginfill=False,
-                      mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False, record_clock=False):
+                      mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False, record_clock=False,
+                      record_world_trial=None):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
     reappear instantly while vunit's teardown (exit races, WER
     dump writes) drags on for seconds in the background."""
+    if record_world_trial and (not record_case or rom != 'crusnwld24'):
+        raise ValueError('global distance trial requires a World 2.4 recording')
     # the live Zeus GL overlay is the default for Zeus games; MIDZ_GL=0
     # in the environment falls back to MAME's own d3d/bgfx presentation
     zeus_gl = rom in ZEUS_ROMS and os.environ.get("MIDZ_GL", "1") != "0"
@@ -1446,7 +1449,23 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         launch_env, launch_dir = env, os.path.dirname(mame)
         log_path = os.path.join(rig, "launch.log")
         if recording:
-            cmd, launch_env, launch_dir = recording.prepare(cmd, env, rig)
+            if record_world_trial:
+                import tempfile
+                from pathlib import Path
+                from types import SimpleNamespace
+                import world_distance
+                trial_env = dict(env)
+                trial = world_distance.configure(SimpleNamespace(
+                    world_far=record_world_trial['far'], world_lead=record_world_trial['lead'],
+                    world_cpu=record_world_trial['cpu']), rom, trial_env)
+                # Recording.prepare copies and hashes the combined patch before
+                # this temporary directory disappears. Saved shell settings stay intact.
+                with tempfile.TemporaryDirectory(prefix='cruisn-world-distance-') as temporary:
+                    trial_env['MIDV_PATCH'] = str(world_distance.compose(env.get('MIDV_PATCH'),
+                        Path(temporary)/'global-distance-patch.txt', trial['far']))
+                    cmd, launch_env, launch_dir = recording.prepare(cmd, trial_env, rig)
+            else:
+                cmd, launch_env, launch_dir = recording.prepare(cmd, env, rig)
             log_path = os.path.join(launch_dir, "launch.log")
             print(f"Recording effective wheel/pedal/button inputs: {recording.path}")
             print("Recording uses a private copy of the rig state; physical FFB is "
