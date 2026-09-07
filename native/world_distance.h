@@ -8,6 +8,7 @@
 
 namespace cruisn { namespace world_distance {
 constexpr uint32_t original_far=80000, reciprocal_base=0xb66f, first_extra=5000;
+constexpr uint32_t maximum_lead=12;
 struct word { uint32_t address, value; };
 // Low immediate becomes the chosen maximum reciprocal index.
 constexpr word clamps[] = {{0xae,0x04e30000},{0xaf,0x54e30000},
@@ -20,7 +21,7 @@ constexpr word projection_sites[] = {{0xb3,0x0741c300},
     {0x50d,0x24c00182},{0x50f,0xde180b82},{0x67d,0x24c00182},{0x67f,0xde180b82}};
 
 inline bool valid_far(uint32_t far)
-{ return far==80000 || far==100000 || far==160000; }
+{ return far==80000 || far==100000 || far==160000 || far==240000; }
 inline uint32_t maximum_index(uint32_t far)
 { return far==original_far ? 4999 : far/16; }
 inline bool projection_pc(uint32_t pc)

@@ -9,7 +9,7 @@ local last = tonumber(os.getenv('CRUISN_DISTANCE_LAST') or '2061')
 local far = tonumber(os.getenv('CRUISN_DISTANCE_FAR') or '100000')
 assert(first and last and first % 1 == 0 and last % 1 == 0
     and first >= 1 and last >= first and last-first <= 1800, 'invalid bounded interval')
-assert(far and far % 16 == 0 and far > 80000 and far <= 160000, 'far must be a multiple of 16 in 80016..160000')
+assert(far and far % 16 == 0 and far > 80000 and far <= 240000, 'far must be a multiple of 16 in 80016..240000')
 local max_index = far // 16
 local tap, out, count, applied = nil, nil, 0, false
 local words = {{0x40,0x00013880,far},

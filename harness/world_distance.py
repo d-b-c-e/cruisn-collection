@@ -6,7 +6,8 @@ Keep CPU clock and pending admission independent from projection distance.
 from pathlib import Path
 from game_patch import read_patch, combine_patches
 
-FAR_VALUES = (80000, 100000, 160000)
+FAR_VALUES = (80000, 100000, 160000, 240000)
+MAXIMUM_LEAD = 12
 CLAMPS = {0xae: 0x04e30000, 0xaf: 0x54e30000,
           0x13a: 0x04f20000, 0x13b: 0x55720000, 0x14d: 0x04f20000, 0x14e: 0x55720000,
           0x199: 0x04f20000, 0x19a: 0x55720000, 0x677: 0x04f20000, 0x678: 0x55720000}
@@ -15,8 +16,8 @@ CLAMPS = {0xae: 0x04e30000, 0xaf: 0x54e30000,
 def add_arguments(parser):
     parser.add_argument('--world-far', type=int, choices=FAR_VALUES,
                         help='explicit World 2.4 global distance trial; 80000 is the original limit')
-    parser.add_argument('--world-lead', type=int, choices=range(9),
-                        help='shared pending-section lookahead addition, 0..8; requires --world-far')
+    parser.add_argument('--world-lead', type=int, choices=range(MAXIMUM_LEAD + 1),
+                        help='shared pending-section lookahead addition, 0..12; requires --world-far')
     parser.add_argument('--world-cpu', type=int, choices=(100, 125, 150, 200),
                         help='emulated CPU clock percent, diagnostic only; requires --world-far')
 
@@ -33,6 +34,9 @@ def configure(args, rom, settings):
     if getattr(args, 'patch_at_frame', None) is not None:
         raise ValueError('global distance experiment cannot use a late game patch')
     trial = dict(far=args.world_far, lead=args.world_lead or 0, cpu=args.world_cpu or 100)
+    if (trial['far'] not in FAR_VALUES or not 0 <= trial['lead'] <= MAXIMUM_LEAD
+            or trial['cpu'] not in (100, 125, 150, 200)):
+        raise ValueError('unsupported global distance configuration')
     settings.update(MIDV_WORLD_FAR=str(trial['far']), MIDV_WORLD_LEAD=str(trial['lead']),
                     MIDV_WORLD_CPU_PERCENT=str(trial['cpu']), MIDV_SCENERY='off', MIDV_SCENERY_LEAD='0')
     return trial

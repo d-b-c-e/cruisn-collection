@@ -3,7 +3,7 @@ import argparse
 import csv
 from pathlib import Path
 from verification import write_json, sha256_file
-from world_distance import FAR_VALUES
+from world_distance import FAR_VALUES, MAXIMUM_LEAD
 
 FIELDS = ['frame','far','lead','cpu_percent','profile_ok','far_tests',
           'extra_far_tests','extended_reads','maximum_index','pending_comparisons']
@@ -22,7 +22,7 @@ def summarize(path):
             row = {k:int(v) for k,v in row.items()}
             if any(value < 0 for value in row.values()):
                 raise ValueError('negative native distance value')
-            if row['far'] not in FAR_VALUES or row['lead'] > 8 or row['cpu_percent'] not in (100,125,150,200):
+            if row['far'] not in FAR_VALUES or row['lead'] > MAXIMUM_LEAD or row['cpu_percent'] not in (100,125,150,200):
                 raise ValueError('unsupported native distance configuration')
             if row['profile_ok'] not in (0,1) or row['extra_far_tests'] > row['far_tests']:
                 raise ValueError('inconsistent native distance counters')

@@ -9,7 +9,7 @@ local first=tonumber(os.getenv('CRUISN_PENDING_FIRST') or '5900')
 local last=tonumber(os.getenv('CRUISN_PENDING_LAST') or '6140')
 local lead=tonumber(os.getenv('CRUISN_PENDING_LEAD') or '8')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
-    and last-first<=240 and lead and lead%1==0 and lead>=0 and lead<=8,
+    and last-first<=240 and lead and lead%1==0 and lead>=0 and lead<=12,
     'invalid bounded pending-list experiment')
 local frame,taps,out,reads=0,{},nil,0
 local function close()

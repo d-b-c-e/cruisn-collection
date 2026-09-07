@@ -9,6 +9,18 @@ from analyze_world_distance import FIELDS, summarize
 
 
 class DistanceLogTests(unittest.TestCase):
+    def test_three_times_bounds(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td)/'world-distance.csv'
+            rows = [[0,240000,12,100,1,20,3,42,15000,1]]
+            self.write(path, rows)
+            self.assertEqual(summarize(path)['maximum_index'], 15000)
+            for column, value in ((2,13), (8,15001)):
+                invalid = [rows[0].copy()]
+                invalid[0][column] = value
+                self.write(path, invalid)
+                with self.assertRaises(ValueError): summarize(path)
+
     def write(self, path, rows):
         with path.open('w', newline='') as stream:
             writer = csv.writer(stream)

@@ -44,3 +44,16 @@ class GlobalDistanceTests(unittest.TestCase):
             base.write_text('40 00013880 00027100\n')
             with self.assertRaises(ValueError): compose(base,root/'conflict.txt',100000)
             with self.assertRaises(FileExistsError): compose(base,root/'combined.txt',100000)
+
+    def test_three_times_patch_and_bounded_lookahead(self):
+        settings = {}
+        args = self.args('--world-far', '240000', '--world-lead', '12')
+        self.assertEqual(configure(args, 'crusnwld24', settings), dict(far=240000, lead=12, cpu=100))
+        with tempfile.TemporaryDirectory() as td:
+            patch = read_patch(compose(None, Path(td)/'three.txt', 240000))
+            self.assertEqual(patch[0x40], (80000, 240000))
+            self.assertEqual(patch[0xae], (0x04e31387, 0x04e33a98))
+        args.world_lead = 13
+        with self.assertRaises(ValueError): configure(args, 'crusnwld24', settings)
+        for rom in ('crusnwld', 'crusnusa', 'offroadc', 'crusnexo'):
+            with self.assertRaises(ValueError): configure(self.args('--world-far', '240000'), rom, {})

@@ -20,7 +20,8 @@ from verification import sha256_file, write_json
 import replay
 
 TRIALS = {'original': (80000,0), 'far125': (100000,0), 'lead4': (80000,4),
-          'far125-lead4': (100000,4), 'far2-lead4': (160000,4), 'far2-lead8': (160000,8)}
+          'far125-lead4': (100000,4), 'far2-lead4': (160000,4), 'far2-lead8': (160000,8),
+          'far3-lead8': (240000,8), 'far2-lead12': (160000,12), 'far3-lead12': (240000,12)}
 
 
 def interval(text):
