@@ -23,6 +23,10 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
    upgrade away from development paths, run the wheel/soak checks below, close release
    blockers, then tag/publish that exact reviewed candidate. Retain the prior ZIP and
    configuration backup for rollback. This checklist does not publish a release.
+   **Release-process gap:** the current tag workflow rebuilds and immediately
+   publishes. Before the next public tag, change this to promotion of an already
+   tested candidate artifact; a locally tested executable is not acceptance of a
+   newly compiled CI ZIP. Tagging now still triggers publication.
 
 ## Required acceptance
 
@@ -77,6 +81,10 @@ Use a new output path each run. The gate exits 1 while anything is missing. Its
 configuration checks run in a temporary rig and do not launch games. It requires
 the full suite, matching binary/source/suite hashes and no physical output.
 Configuration tests that are skipped on non-Windows cannot clear the gate.
+The release workflow now runs the harness tests and `check_release_package.py`
+before publishing: required runtime/source files, candidate emulator hash, free-play
+seeds and absence of files in the ROM/personal-rig directories. This is not a complete
+asset/licence audit or proof that the frozen application starts on a clean machine.
 `ready_for_release` additionally requires the attended ledger: reviewer, date,
 observations and existing evidence files with SHA256 hashes for every check.
 Paths in the ledger are relative to that JSON. One drive/report can support
