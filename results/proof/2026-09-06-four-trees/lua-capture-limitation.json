@@ -1,0 +1,10 @@
+{
+  "passed": false,
+  "error": "Command '['E:\\\\Source\\\\mame-src\\\\vunit.exe', 'crusnwld24', '-rompath', 'E:\\\\Source\\\\launchbox\\\\Launchbox-Racing\\\\Emulators\\\\mame286\\\\roms', '-inipath', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\ini', '-ctrlrpath', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\ctrlr', '-ctrlr', 'EmuEzRacing', '-nvram_directory', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\nvram', '-cfg_directory', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\cfg', '-window', '-skip_gameinfo', '-maximize', '-nokeepaspect', '-snapshot_directory', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\snap', '-state_directory', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\state', '-input_directory', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\input', '-diff_directory', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\diff', '-autoboot_script', 'E:\\\\Source\\\\cruisn-collection\\\\results\\\\diagnostics\\\\tree-four-live\\\\run\\\\session.lua', '-autoboot_delay', '0', '-snapview', 'native', '-output', 'none', '-frameskip', '0', '-noplugins', '-noautosave', '-norewind', '-noautoframeskip', '-playback', 'session.inp', '-exit_after_playback', '-window', '-nomaximize']' timed out after 150.0 seconds",
+  "completed_images": 164,
+  "last_completed_frame": 2252,
+  "shared_images_match_native": 164,
+  "native_run_completed_images": 201,
+  "native_run_error": null,
+  "timeout_is_not_accepted_as_success": true
+}

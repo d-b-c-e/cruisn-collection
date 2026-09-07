@@ -19,6 +19,7 @@ repairs missing edge geometry; **Margin Fill** is retired. Optional per-game
 awaiting validation.
 
 - [Native scenery changes and evidence](docs/reviews/2026-09-06-native-scenery.md)
+- [Four-tree coverage and gameplay appearance tracing](docs/reviews/2026-09-06-scenery-coverage.md)
 - [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
 - [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
 - [Independent project assessment](docs/reviews/2026-09-05-assessment.md)

@@ -3421,3 +3421,26 @@ configured timing gates and Exotica21completed GL images.67Python tests and all
 four branch CI jobs34067459020 at96ea041 pass (including20GPU fixtures and native
 scenery unit). Full export reconstructs the native tree. No physical force was
 used; the new option remains defaultOFF. See native-scenery/default-regressions.json.
+
+
+## 2026-09-06 — Four tree variants and full-route appearance tracing
+
+Review: `docs/reviews/2026-09-06-scenery-coverage.md`.
+Native5ca501570a5 / binary2e3ac3f32e791516a7b0f8d0339cf7cf98c120e90a02b14b94ce0f34acc09f56.
+Four verified tree cards now included in opt-in World2.4 Distant Scenery.
+Bounded experiment adds289quads/21drawframes, zero originals changed/removed/reordered;
+native matches Lua geometry exactly. Full8783/146 Germany candidate repeats,
+~100.005% driving speed, maximum reciprocal index8120. Parent10native images differ.
+Trees-only completedGL201frames vs scenery-OFF:109changed images, maximum49pixels;
+a small horizon improvement, not a forest pop-in cure. All7defaultcases pass.
+The long LuaGL attempt timed out at2252/164images; retained as failure. Native
+completed201images and both full cases normally. Shared164images match native.
+
+Read-only scenery-events fullrun matches8783inputs/time/146native images. Records
+3584completed page-control runs,4578059matched quads,6700unjoined shared-path calls,
+16323appearanceevents in about1.77MB CSV. Bounds ranking is a candidate locator,
+not visible-pixel measurement or proof of a bug/LOD/asset loading. First gate
+observation is not creation time. Activation trace finds CCF288 allocated2991,
+pendingflags2000, becomesactive1000 at3017 and firstdraws3019 inside80k range.
+Next candidates: additional mountainsCB2314/CB21A2 and groupedforestCB2375,
+plus pending-list activation. No physical FFB or user preferences changed.

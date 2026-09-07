@@ -1,0 +1,1807 @@
+{
+  "schema": 1,
+  "scope": "matched-frame submitted geometry; not visible-pixel or route acceptance",
+  "passed": true,
+  "maximum_added_quad_extent": 32,
+  "allowed_added_models": [
+    "ca57f3",
+    "ca5833",
+    "ca5863",
+    "ca5896"
+  ],
+  "frames": [
+    {
+      "frame": 1998,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 1999,
+      "control_quads": 1755,
+      "candidate_quads": 1769,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            368,
+            197,
+            376,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            370,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            344,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2000,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2001,
+      "control_quads": 1754,
+      "candidate_quads": 1768,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            368,
+            197,
+            376,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            370,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            344,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2002,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2003,
+      "control_quads": 1760,
+      "candidate_quads": 1774,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            368,
+            197,
+            377,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            370,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            344,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2004,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2005,
+      "control_quads": 1742,
+      "candidate_quads": 1756,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            368,
+            197,
+            377,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            370,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            345,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2006,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2007,
+      "control_quads": 1741,
+      "candidate_quads": 1755,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            368,
+            197,
+            377,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            370,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            345,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2008,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2009,
+      "control_quads": 1738,
+      "candidate_quads": 1752,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            368,
+            197,
+            377,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            371,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            345,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2010,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2011,
+      "control_quads": 1739,
+      "candidate_quads": 1753,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            369,
+            197,
+            377,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            371,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            345,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2012,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2013,
+      "control_quads": 1731,
+      "candidate_quads": 1745,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            369,
+            197,
+            377,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            371,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            345,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2014,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2015,
+      "control_quads": 1736,
+      "candidate_quads": 1750,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            369,
+            197,
+            377,
+            206
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            371,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            345,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2016,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2017,
+      "control_quads": 1727,
+      "candidate_quads": 1741,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            369,
+            197,
+            378,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            371,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            345,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            317,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2018,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2019,
+      "control_quads": 1745,
+      "candidate_quads": 1759,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            369,
+            197,
+            378,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            371,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            346,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2020,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2021,
+      "control_quads": 1749,
+      "candidate_quads": 1763,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            369,
+            196,
+            378,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            372,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            346,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2022,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2023,
+      "control_quads": 1742,
+      "candidate_quads": 1756,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            370,
+            196,
+            378,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            372,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            346,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            299,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2024,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2025,
+      "control_quads": 1744,
+      "candidate_quads": 1758,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            370,
+            196,
+            378,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            372,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            346,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2026,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2027,
+      "control_quads": 1755,
+      "candidate_quads": 1769,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            370,
+            196,
+            379,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            372,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            346,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2028,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2029,
+      "control_quads": 1751,
+      "candidate_quads": 1765,
+      "removed_or_changed": 0,
+      "added": 14,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            370,
+            196,
+            379,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            294,
+            195,
+            372,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 5,
+          "objects": [
+            "13a18",
+            "13a88",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            346,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2030,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2031,
+      "control_quads": 1743,
+      "candidate_quads": 1756,
+      "removed_or_changed": 0,
+      "added": 13,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            370,
+            196,
+            379,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            295,
+            195,
+            373,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 4,
+          "objects": [
+            "13a18",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            347,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2032,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2033,
+      "control_quads": 1729,
+      "candidate_quads": 1742,
+      "removed_or_changed": 0,
+      "added": 13,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            371,
+            196,
+            379,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            295,
+            195,
+            373,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 4,
+          "objects": [
+            "13a18",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            347,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2034,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2035,
+      "control_quads": 1724,
+      "candidate_quads": 1737,
+      "removed_or_changed": 0,
+      "added": 13,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            371,
+            196,
+            380,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            295,
+            195,
+            373,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 4,
+          "objects": [
+            "13a18",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            347,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            318,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2036,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2037,
+      "control_quads": 1721,
+      "candidate_quads": 1734,
+      "removed_or_changed": 0,
+      "added": 13,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            371,
+            196,
+            380,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            295,
+            195,
+            373,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 4,
+          "objects": [
+            "13a18",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            347,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            319,
+            206
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2038,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2039,
+      "control_quads": 1737,
+      "candidate_quads": 1750,
+      "removed_or_changed": 0,
+      "added": 13,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ca57f3",
+          "quads": 2,
+          "objects": [
+            "14118",
+            "141dc"
+          ],
+          "bounds": [
+            371,
+            196,
+            380,
+            207
+          ]
+        },
+        {
+          "model": "ca5833",
+          "quads": 5,
+          "objects": [
+            "140a8",
+            "140fc",
+            "1416c",
+            "14310",
+            "1432c"
+          ],
+          "bounds": [
+            295,
+            195,
+            374,
+            207
+          ]
+        },
+        {
+          "model": "ca5863",
+          "quads": 4,
+          "objects": [
+            "13a18",
+            "13f04",
+            "14188",
+            "14364"
+          ],
+          "bounds": [
+            264,
+            197,
+            347,
+            208
+          ]
+        },
+        {
+          "model": "ca5896",
+          "quads": 2,
+          "objects": [
+            "14150",
+            "14348"
+          ],
+          "bounds": [
+            300,
+            199,
+            319,
+            207
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 2040,
+      "control_quads": 45,
+      "candidate_quads": 45,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    }
+  ],
+  "total_added": 289,
+  "total_removed_or_changed": 0
+}
