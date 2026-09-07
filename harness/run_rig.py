@@ -632,9 +632,10 @@ def prepare_rig(rom, crt=False, zeus_gl=False):
         if backend not in ("gdi", "d3d"):
             raise ValueError("CRUISN_VUNIT_VIDEO must be gdi or d3d")
         vid = f"video {backend}\n"
-    open(os.path.join(ini, "mame.ini"), "w").write(
-        f"skip_gameinfo 1\n{vid}output windows\npriority 1\n")
-    open(os.path.join(ini, "ui.ini"), "w").write("skip_warnings 1\n")
+    with open(os.path.join(ini, "mame.ini"), "w") as output:
+        output.write(f"skip_gameinfo 1\n{vid}output windows\npriority 1\n")
+    with open(os.path.join(ini, "ui.ini"), "w") as output:
+        output.write("skip_warnings 1\n")
     seed = os.path.join(POC, "fixtures", f"nvram-{rom}")
     dst = os.path.join(rig, "nvram", rom)
     if os.path.isdir(seed) and not os.path.isdir(dst):

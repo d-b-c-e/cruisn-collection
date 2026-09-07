@@ -488,6 +488,19 @@ def run_gui():
 
 
 def main():
+    if '--health-report' in sys.argv:
+        path=sys.argv[sys.argv.index('--health-report')+1]
+        environment=env_status()
+        games=game_status(load_manifest())
+        report={'scope':'Read-only setup checks; no game launch or physical FFB',
+                'environment':environment,'games':games,
+                'passed':all(row[1] for row in environment) and all(row[2]=='ok' for row in games)}
+        with open(path,'w',encoding='utf-8') as output:json.dump(report,output,indent=2)
+        return 0 if report['passed'] else 1
+    if '--support-out' in sys.argv:
+        import support_bundle
+        support_bundle.bundle(out_dir=sys.argv[sys.argv.index('--support-out')+1])
+        return 0
     if "--check" in sys.argv:
         manifest = load_manifest()
         for p in sys.argv[sys.argv.index("--check") + 1:]:

@@ -1162,9 +1162,13 @@ def main():
     ap.add_argument("--joydump", action="store_true",
                     help="print connected joysticks as JSON and exit "
                          "(support-bundle diagnostics)")
+    ap.add_argument('--joydump-output', metavar='JSON',
+                    help='write --joydump to a file, including in a frozen GUI build')
     args = ap.parse_args()
     if args.shot_page and not args.shot:
         ap.error("--shot-page requires --shot")
+    if args.joydump_output and not args.joydump:
+        ap.error('--joydump-output requires --joydump')
     if args.game:
         card = resolve_game_alias(args.game)
         if not card:
@@ -1194,7 +1198,12 @@ def main():
                         "hats": count(h), "axes": count(a),
                         "gamepad": bool(glfw.joystick_is_gamepad(jid))})
         glfw.terminate()
-        print(json.dumps(out, indent=1))
+        payload=json.dumps(out, indent=1)
+        if args.joydump_output:
+            with open(args.joydump_output,'w',encoding='utf-8') as output:
+                output.write(payload+'\n')
+        else:
+            print(payload)
         return 0
 
     import glfw

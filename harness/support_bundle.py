@@ -54,28 +54,36 @@ def collect(rom="crusnusa", progress=print):
 
     progress("launcher joystick view (glfw)...")
     try:
+        joydump=os.path.join(tmp,'joysticks_glfw.json')
         if run_rig.FROZEN:
             cmd = [os.path.join(run_rig.POC, "CruisnCollection.exe"),
-                   "--joydump"]
+                   "--joydump", '--joydump-output', joydump]
         else:
             cmd = [sys.executable,
                    os.path.join(run_rig.POC, "harness", "collection.py"),
-                   "--joydump"]
+                   "--joydump", '--joydump-output', joydump]
         p = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
-        add_text("joysticks_glfw.json", p.stdout or p.stderr)
+        if p.returncode == 0 and os.path.isfile(joydump):
+            add_file('joysticks_glfw.json',joydump)
+        else:
+            add_text("joysticks_glfw.json", f'failed (exit {p.returncode}): '+(p.stdout or p.stderr))
     except Exception as e:
         add_text("joysticks_glfw.json", f"failed: {e}")
 
     progress("emulator input dump (a game window appears for ~10 s)...")
     try:
         rig, ini = run_rig.prepare_rig(rom)
-        ctrlr = run_rig.sanitized_ctrlrpath(rig)
+        ctrlr = run_rig.sanitized_ctrlrpath(rig,rom)
         dump = os.path.join(tmp, "input_dump.txt")
         lua = os.path.join(run_rig.POC, "lua", "input_dump.lua")
-        if not os.path.isfile(lua):   # frozen: bundled under _internal
+        if not os.path.isfile(lua):
+            lua = os.path.join(run_rig.POC, 'source', 'lua', 'input_dump.lua')
+        if not os.path.isfile(lua):   # setup onefile: bundled under _MEIPASS
             lua = os.path.join(getattr(sys, "_MEIPASS", ""), "input_dump.lua")
-        env = dict(os.environ, INPUT_DUMP=dump,
-                   MIDV_SKIP_STARTUP_SCREENS="1", MIDV_GL_LOG="1")
+        env = {key:value for key,value in os.environ.items()
+               if not key.startswith(('MIDV_','MIDZ_','SNAP_'))}
+        env.update(INPUT_DUMP=dump, MIDV_SKIP_STARTUP_SCREENS='1',
+                   MIDV_FFB='0', MIDV_GL='0', MIDZ_GL='0')
         p = subprocess.run(
             [run_rig.VUNIT, rom,
              "-rompath", run_rig.ROMPATH, "-inipath", ini,
