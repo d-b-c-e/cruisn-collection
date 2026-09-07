@@ -494,3 +494,33 @@ objects transferred during the experiment remain transferred after it ends.
 The archived `world_tree_activation.lua` probe is a selective comparison, not
 the planned global solution. See the [global assessment and measured route
 divergence](reviews/2026-09-06-global-distance-and-native-port.md).
+
+## Drivetrain and actual telemetry packets
+
+USA v4.5's rev and gear producer reads the player structure used by the HUD,
+with ROM-instruction, pointer, value-range and fresh-HUD guards. `drivetrain.csv`
+records native frames, emulated seconds, source, raw rev units, normalized tach
+fill and estimated RPM. The 900–8,000 RPM scale is a presentation choice.
+`gear_source=3` means game state; `=1` means the legacy shifter-input fallback.
+`rpm_estimated=1` identifies the game-derived arcade scale; zero RPM outside the
+HUD is unavailable, not a measured stopped engine. `MIDV_TELEM_ARCADE_RPM=0`
+disables the scale without disabling actual gear telemetry.
+
+```powershell
+python harness/replay.py results/diagnostics/my-drive --candidate E:/Source/mame-src/vunit.exe --headless --telemetry-loopback --output results/diagnostics/usa-wire-new
+python harness/analyze_drivetrain.py results/diagnostics/usa-wire-new/run --require-drive --output results/diagnostics/usa-wire-new/drivetrain-report.json
+```
+
+Loopback uses fresh private localhost ports and captures Forza and JSON packets;
+it never sends to the user's SimHub ports or enables physical force. The analyzer
+requires packet/sample agreement, a complete Forza sequence, valid values, all
+four gears and RPM drops within eight frames of each upshift. A control replay
+can add `--no-arcade-rpm` (analyze without `--require-drive`).
+
+`lua/usa_drivetrain_memory.lua` independently reads the guarded player structure
+over a bounded interval. Pass its CSV with analyzer `--memory FILE`. The report
+explicitly accounts for Lua's one-based frame number versus the native zero-based
+counter. `lua/usa_tach_probe.lua` traces the palette/texture writers; tap errors
+are retained and rethrown from the next frame callback because MAME can otherwise
+swallow a tap-callback exception. A replay PASS alone doesn't validate arbitrary
+probe contents. See [the provenance and verification report](reviews/2026-09-07-usa-drivetrain-and-startup.md).

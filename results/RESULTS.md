@@ -3804,3 +3804,28 @@ ActualGPUcaptures512x451 atinternalscale4/CRT; not4K or originalrouteacceptance.
 Native5bb/9D8 unchanged, automatedphysicalFFB OFF, originalrecordings untouched.
 Overnight050908ZIP preserved; it lacks these sourceUIchanges and must not be
 relabeled with the newer source identity. See docs/reviews/2026-09-07-graphics-menu.md.
+
+
+## 2026-09-07 — Internal USA revs/gears, contextual experiments, startup evidence
+
+USA v4.5 tach-consumer tracing found player pointer E8A8, actual gear +38 and
+C31 rev +39. 9E53..61 scales revs into 22 palette entries; 9D86..89 draws gear.
+Native bf8821358d4 / SHA256 4d63433b45f492ae7dd6f982c0aca92afdf7d12283d19ee194bf5ec95e55fee4
+reads guarded backing RAM, gates on fresh numeric HUD, maps the real rev signal
+to an explicitly estimated 900..8000 RPM scale. Automatic gears now reach JSON/
+Forza. No pixel RPM fallback or E632 RPM mapping. Other games unchanged.
+Original 5012/83 and independent synthetic 6000/100 replays pass, all actual
+Forza/JSON samples agree; 2483 independent RAM samples match. All 12 upshifts
+across the two drives show drops within eight frames. RPM-off control3040 passes.
+All7 game regressions pass on the initial telemetry binary82203f8f; final4d63
+adds stable USA Forza gauge limits and is separately tested by those two drives,
+the RPM-off control and World4x/3x/4x1804-frame boots. The latter retains9 completed
+3824x2073GL images, matching repeated4x. 108Python tests/native helper pass.
+World's reported fallback/artwork incident was not reproduced: its old failure
+log was already lost. Screen-only fallback and bounded launch-history receipts
+now help diagnose recurrence; don't claim a proven scale-initialization fix.
+Experiments show Shared/USA/World/OffRoad/Exotica and only applicable settings;
+6 menu previews inspected. User INI unchanged, automated physical FFB off.
+Native full118-patch export reconstructs tree895aabd69d1efcbab19d63039157c076c4396b2e.
+See docs/reviews/2026-09-07-usa-drivetrain-and-startup.md and its50-entry proof ZIP.
+StreamDeck uses this source and mame-src/vunit.exe; older release ZIPs preserved.

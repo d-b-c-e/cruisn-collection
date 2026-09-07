@@ -66,6 +66,25 @@ prepared ledger attaches automated receipts without fabricating human approval.
 Use new attended manual drives, wheel/FFB checks and the clean-profile/soak protocol
 next. All automated physical FFB remains OFF; original recordings are immutable.
 
+## Latest verified update (2026-09-07)
+
+Read `docs/reviews/2026-09-07-usa-drivetrain-and-startup.md`. USA v4.5 now has
+validated player-state gear and rev producers: E8A8 pointer, +38 gear, +39 C31
+rev, traced from HUD consumers 9D86/9E53. `native/hud_drivetrain.h` guards exact
+opcodes, pointer/range and fresh HUD lifetime; backing-RAM reads only. The
+900..8000 RPM scale is explicitly estimated from that real game rev signal.
+Automatic gear1..4 works; E632 remains speed text, never RPM. Other games need
+their own producers. Nativebf8821358d4 / SHA4d63433b45f492ae7dd6f982c0aca92afdf7d12283d19ee194bf5ec95e55fee4.
+Full118patch export verified. `replay.py --telemetry-loopback` captures real
+Forza/JSON on private localhost ports; `analyze_drivetrain.py` validates samples,
+shift drops and optional independent RAM probe. `--no-arcade-rpm` is the control.
+Lua tap exceptions may be swallowed by MAME: explicitly propagate them to the
+frame callback. A replay PASS alone does not certify arbitrary probe contents.
+Experiments are filtered by Shared/game/revision. World reported fallback was
+not reproduced; screen-only fallback and bounded launch history/GL logs are
+mitigations/evidence, not a proven scale-init fix. No renderer/force algorithm
+change. Original recordings and old release ZIPs remain unchanged.
+
 ## Current verified handoff (2026-09-06)
 
 Latest: `docs/reviews/2026-09-06-global-distance-trial.md`. Native `9ea71f601b3`,

@@ -1,0 +1,22 @@
+{
+  "native_commit": "bf8821358d4afb0b3e776c64c0c6d5be1f309218",
+  "binary_sha256": "4d63433b45f492ae7dd6f982c0aca92afdf7d12283d19ee194bf5ec95e55fee4",
+  "zip_sha256": "f43f686a7aeb2b7498d60c9f6826a29c18c891a5376a7fe1a07c24cb8657f0c8",
+  "entries": 50,
+  "all_entry_hashes_verified": true,
+  "python_tests": 108,
+  "all_seven_regressions": true,
+  "regression_binary_sha256": "82203f8f8d5574e5a21224d7b8471c84a0531bff21da7d5ef7569b36bec22e0b",
+  "final_binary_checks": [
+    "USA original 5012-frame replay + RAM/UDP agreement",
+    "independent USA 6000-frame drive + UDP agreement",
+    "3040-frame RPM-off control + UDP agreement",
+    "World startup 4x/3x/4x, 1804 frames each, 9 completed GL captures"
+  ],
+  "limits": [
+    "Startup incident not reproduced; original failure log lost before investigation.",
+    "Other games retain existing drivetrain coverage.",
+    "No physical FFB or attended SimHub/dashboard test.",
+    "Seven-game suite preceded final USA Forza gauge-limit adjustment; final build tested with checks listed above."
+  ]
+}

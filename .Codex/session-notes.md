@@ -1,4 +1,40 @@
-# Latest source update — graphics controls, 2026-09-07
+# Latest source update — USA internal drivetrain, 2026-09-07
+
+Nativebf8821358d4 / SHA4d63433b45f492ae7dd6f982c0aca92afdf7d12283d19ee194bf5ec95e55fee4
+reads USA v4.5 player E8A8 +38gear/+39C31rev, proven from gear/tach consumers,
+with opcode/pointer/range and fresh-HUD guards. Canonical native/hud_drivetrain.h.
+Revs map continuously to an explicit900..8000arcadeRPM scale; auto shifts now
+reach Forza/JSON. MIDV_TELEM_ARCADE_RPM=0 clears RPM only. Never restore E632RPM.
+Other games still need their own sources. See current review:
+docs/reviews/2026-09-07-usa-drivetrain-and-startup.md. Both actual USA drives match
+5012/83 and6000/100; 2483 independent RAM samples and actual UDP agree; all12
+upshifts drop RPM. Control3040passes. All7regressions pass on initial822binary;
+final4d63 separately passes USA wire/control/heldout plus World4x3x4x boots with
+9 completed GL captures. 108Python/native helper pass. Full118patches verified.
+Experiments contextfilters implemented. Worldfallbackincident not reproduced;
+Screen0 fallback, retained launch history/GL logs added. User INI unchanged.
+No attended FFB/SimHub acceptance, no new public release ZIP. Original probes
+and drives preserved; malformed first palette probe is NOT accepted evidence.
+
+# Latest source update — USA internal drivetrain, 2026-09-07
+
+Nativebf8821358d4 / SHA4d63433b45f492ae7dd6f982c0aca92afdf7d12283d19ee194bf5ec95e55fee4
+reads USA v4.5 player E8A8 +38gear/+39C31rev, proven from gear/tach consumers,
+with opcode/pointer/range and fresh-HUD guards. Canonical native/hud_drivetrain.h.
+Revs map continuously to an explicit900..8000arcadeRPM scale; auto shifts now
+reach Forza/JSON. MIDV_TELEM_ARCADE_RPM=0 clears RPM only. Never restore E632RPM.
+Other games still need their own sources. See current review:
+docs/reviews/2026-09-07-usa-drivetrain-and-startup.md. Both actual USA drives match
+5012/83 and6000/100; 2483 independent RAM samples and actual UDP agree; all12
+upshifts drop RPM. Control3040passes. All7regressions pass on initial822binary;
+final4d63 separately passes USA wire/control/heldout plus World4x3x4x boots with
+9 completed GL captures. 108Python/native helper pass. Full118patches verified.
+Experiments contextfilters implemented. Worldfallbackincident not reproduced;
+Screen0 fallback, retained launch history/GL logs added. User INI unchanged.
+No attended FFB/SimHub acceptance, no new public release ZIP. Original probes
+and drives preserved; malformed first palette probe is NOT accepted evidence.
+
+# Latest source update â€” graphics controls, 2026-09-07
 
 Source c753f4b/9ae9231 moves Crack Fill to Experiments (shared/default preserved),
 and exposes World2.4 Off/2x/3x plus +0/+8/+12 independent lookahead. Defaults remain
@@ -15,7 +51,7 @@ did not help: section activation is an earlier gate for traced Germany mountains
 same-lead2x/3x201frames match, +12 advances submission but changes gameplay history.
 Continue toward host drawing of future static scenery independent of simulation.
 
-# Verified overnight completion — 2026-09-07
+# Verified overnight completion â€” 2026-09-07
 
 The authorized release-preparation work is complete. No local emulator/build/helper
 remains active. All older ACTIVE/checkpoint descriptions below are historical.
@@ -45,7 +81,7 @@ cleanprofile/upgrade/secondwheel/soak acceptance, then chosenpublichosting. No c
 thatpop-in or weakFFBfeel is solved. KeepWorlddistanceexperimental; pursuehoststatic
 transform/drawing independentofguestsimulation afterreleasebaselineaccepted.
 
-# ACTIVE final validation — 2026-09-07 about05:13 local
+# ACTIVE final validation â€” 2026-09-07 about05:13 local
 
 Windows CI and Linux CI BOTH match all201 local source input hashes exactly at
 portable sourcee728e2463bc64d0695433007ec905f56ad93bf7966a791a9845412bf74d56921.
@@ -73,7 +109,7 @@ blobbytes, appendRESULTS, updateconcisehandoff/review/checklist, commit/push, fa
 forwardmaster57e9bdf andpush. No new productchangesunlessdefectfound. No publictag;
 privateGitHub/anonymous404 remainsrealpublicdeliverydecision plus39humanchecks.
 
-# Current checkpoint — 2026-09-07 final source-identity correction
+# Current checkpoint â€” 2026-09-07 final source-identity correction
 
 No emulator/build is running. Prior full runtime85263 and upgrade94879 completed.
 ALL native9D8 checks PASS:7drives,5freshboots,3menus,24quality,2exact100.0000%,
@@ -112,7 +148,7 @@ Documentedrelease-access.json inproof andmorning/checklist/review. This blocks
 promisingpublic in-appupdates.39humanattended/shareditemsstillpending; nevermark
 humanledgerpassfromautomation. Can preattach verifiedreports whilepending.
 
-# Latest checkpoint — 2026-09-07 about04:49 local
+# Latest checkpoint â€” 2026-09-07 about04:49 local
 
 Final3720 full suite COMPLETE PASS: frozen4boots/8UI/setup/support, all7drives,
 5freshseedboot/replay/persistence,3VUnitmenus,24GPUquality,both exact100.0000%.
@@ -144,7 +180,7 @@ inspectionreport ifappropriate. New MD editsuncommitted includeREADME/CHANGELOG/
 AGENTS/review/morningguide/checklist/sessionnotes; no productsourcechanges.
 Finalreview completion/RESULTSappend/finalhandoff/mainmergepush stillpending.
 
-# ACTIVE checkpoint — 2026-09-07 04:30 local
+# ACTIVE checkpoint â€” 2026-09-07 04:30 local
 
 Continue overnight work. Collection codex/release-startup-hardening3720b35 pushed.
 Native5bb965763b1/9D8 unchanged, clean/pushedfork. 24cc1a2 fixes the CI8.3 proxy
@@ -175,7 +211,7 @@ AGENTS/review/session docs need final results update. RESULTS new chronology com
 3720; append final completion later, do not rewrite history. Pending final proof
 archive, committed-byte verification, main merge/push and concise final summary.
 
-# Active overnight checkpoint — 2026-09-07 04:20 local
+# Active overnight checkpoint â€” 2026-09-07 04:20 local
 
 User remains asleep; continue autonomous release preparation. Collection branch
 codex/release-startup-hardening e4384ec pushed; master57e9bdf not yet merged.
@@ -205,7 +241,7 @@ no physical FFB. Package/suite success does not accept a physical wheel or manua
 transmission. Keep attended checklist honest. See prior checkpoints below for
 complete previous work; their ACTIVE and unimplemented descriptions are historical.
 
-# In-progress overnight handoff — 2026-09-07, about03:55 local
+# In-progress overnight handoff â€” 2026-09-07, about03:55 local
 
 User remains asleep and authorized sustained autonomous fixes, separate commits
 and end-to-end validation. Continue this task; do not publish/tag or enable
@@ -274,7 +310,7 @@ scale4/CRT and small output window. Run after finalnativefix and fullgate; old
 binary retained results/diagnostics/release-pre-startup/binary/vunit.exe.
 No shader changes sinceC925. Retain real failed controls, do not fabricatePASS.
 
-# Current handoff — 2026-09-07 overnight release preparation
+# Current handoff â€” 2026-09-07 overnight release preparation
 
 User is going to bed and asks to continue autonomous fixes/improvements, validate
 end-to-end and prepare for a release tomorrow. Continue after this baseline.
@@ -339,7 +375,7 @@ checks; never use the production rig for package experiments. No release publish
 
 # Session Notes
 
-Date: 2026-09-06. User approved steps 1â€“3: global native World distance trial,
+Date: 2026-09-06. User approved steps 1Ã¢â‚¬â€œ3: global native World distance trial,
 controlled comparisons, then a short-term/native-path decision. Continue authorized
 improvements with separate commits/pushes. Automated physical FFB OFF. Native
 pushes fork/poc/quadlog only; never mamedev/origin. Never touch racing mame.exe.
