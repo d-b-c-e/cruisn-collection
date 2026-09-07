@@ -127,9 +127,14 @@ the original case is never edited. `--until-frame` explicitly compares only the
 requested prefix, still checking every input/time and sampled image in that
 prefix. `--capture-state` retains quads and native RAM at stop-minus-two, matching
 the offline renderer's completed-scene convention. Missing dump files fail.
-For live GL capture, stop at least two frames beyond the last requested capture
-so the consumer can present that completed frame before emulator exit. An interval
-missing its final capture fails, even when every earlier image is present.
+For live GL capture, leave playback time after the final requested capture so the
+consumer can finish before emulator exit. Two frames is a minimum, not a guarantee:
+dense near-4K BMP capture can build a much larger backlog. Extend `--until-frame`
+within the recording, or use `--small-window` for an explicitly smaller output.
+Actual dimensions remain in the receipts. Missing final captures fail even when
+every earlier image is present; the report retains missing/unexpected frames and
+maximum queued bytes. A requested budget too small for the interval fails before
+launch, and legacy asynchronous receipts cannot satisfy a completed-frame request.
 `--native-renderer` is an aspect-preserving windowed control with the replacement
 GL disabled. `--gl-scale` and `--no-crackfill` are explicit presentation experiments.
 

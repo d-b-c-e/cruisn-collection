@@ -7,6 +7,35 @@ import sys
 from verification import image_signature, write_json
 
 
+class IncompleteCaptureError(ValueError):
+    def __init__(self, directory, rows, expected, actual):
+        wanted, seen = set(expected), set(actual)
+        self.capture_diagnostics = {
+            'directory': str(Path(directory).resolve()),
+            'expected_count': len(expected), 'captured_count': len(actual),
+            'first_captured': actual[0] if actual else None,
+            'last_captured': actual[-1] if actual else None,
+            'missing_frames': sorted(wanted-seen), 'unexpected_frames': sorted(seen-wanted),
+            'maximum_queued_bytes': max(int(r.get('queued_bytes', 0)) for r in rows),
+            'dimensions': sorted({(int(r['width']), int(r['height'])) for r in rows}),
+        }
+        super().__init__(f'completed GL capture interval is incomplete or unexpected: '
+                         f'{len(actual)}/{len(expected)} images; '
+                         f'{len(wanted-seen)} missing, {len(seen-wanted)} unexpected')
+
+
+def requested_frames(first, last, every, budget=None):
+    """Native global-frame cadence; reject impossible requests before launch."""
+    if not 0 <= first <= last or every < 1:
+        raise ValueError('invalid GL capture interval or cadence')
+    frames = range(first+(-first % every), last+1, every)
+    if not frames:
+        raise ValueError('no capture frames align with the requested interval and cadence')
+    if budget is not None and len(frames) > budget:
+        raise ValueError(f'GL capture budget {budget} cannot cover {len(frames)} requested images')
+    return frames
+
+
 def read_completed_frames(directory, expected=None):
     directory = Path(directory)
     with (directory / "captures.csv").open(newline="", encoding="utf-8") as stream:
@@ -31,8 +60,10 @@ def read_completed_frames(directory, expected=None):
             raise ValueError("GL image dimensions differ from the capture receipt")
         frames[frame] = signature
         previous = frame
-    if expected is not None and list(frames) != list(expected):
-        raise ValueError("completed GL capture interval is incomplete")
+    if expected is not None:
+        expected = list(expected)
+        if list(frames) != expected:
+            raise IncompleteCaptureError(directory, rows, expected, list(frames))
     return frames
 
 
@@ -118,12 +149,7 @@ def main(argv=None):
         expected = None
         if args.frames:
             first, last = map(int, args.frames.split(":"))
-            if not 0 <= first <= last:
-                raise ValueError("invalid frame interval")
-            # Match replay.py and the native producer's frame % every cadence.
-            expected = range(first + (-first % args.every), last + 1, args.every)
-            if not expected:
-                raise ValueError('no capture frames align with the requested interval and --every')
+            expected = requested_frames(first, last, args.every)
         result = compare_completed_frames(args.reference, args.candidate, expected,
                                           args.details or bool(args.contact_sheet))
         if args.contact_sheet:
@@ -132,6 +158,8 @@ def main(argv=None):
     except (ValueError, OSError, KeyError) as exc:
         result['passed'] = False
         result["error"] = str(exc)
+        if isinstance(exc, IncompleteCaptureError):
+            result['capture_diagnostics'] = exc.capture_diagnostics
     write_json(args.report, result)
     print(("PASS" if result["passed"] else "FAIL") + f": {args.report}")
     return 0 if result["passed"] else 1

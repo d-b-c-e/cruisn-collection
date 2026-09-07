@@ -6,10 +6,29 @@ import unittest
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
-from gl_frames import compare_completed_frames, read_completed_frames, main
+from gl_frames import compare_completed_frames, read_completed_frames, main, requested_frames, IncompleteCaptureError
 
 
 class CompletedGlTests(unittest.TestCase):
+    def test_capture_preflight_counts_global_cadence(self):
+        self.assertEqual(list(requested_frames(31, 35, 2, 2)), [32, 34])
+        for args in ((31,35,2,1), (31,31,2), (0,10,0), (-1,5,1)):
+            with self.subTest(args=args), self.assertRaises(ValueError):
+                requested_frames(*args)
+
+    def test_incomplete_capture_retains_missing_and_unexpected_frames(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp)/'run'
+            self.fixture(path, (30,32,35))
+            with self.assertRaises(IncompleteCaptureError) as caught:
+                read_completed_frames(path, iter((30,32,34,36)))
+            report = caught.exception.capture_diagnostics
+            self.assertEqual(report['missing_frames'], [34,36])
+            self.assertEqual(report['unexpected_frames'], [35])
+            self.assertEqual(report['captured_count'], 3)
+            self.assertEqual(report['last_captured'], 35)
+            self.assertEqual(report['dimensions'], [(3,2)])
+
     def fixture(self, path, frames=(30, 31), dropped=0, color="red"):
         path.mkdir()
         with (path / "captures.csv").open("w", newline="") as out:

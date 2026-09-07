@@ -19,6 +19,7 @@ from run_capture import ARTIFACTS
 from session_case import compare_evidence, prepare_run, session_evidence, tree_hashes, set_option
 from verification import sha256_file, write_json, required_files
 from session_clock import SessionClock, position
+from gl_frames import requested_frames, read_completed_frames, IncompleteCaptureError
 
 
 def main(argv=None):
@@ -134,6 +135,7 @@ def main(argv=None):
                 first, last = map(int, args.gl_capture.split(":"))
                 if not 0 <= first < last <= reference["frames"]:
                     raise ValueError("GL interval must be within the recorded frames")
+                expected_gl = requested_frames(first, last, args.gl_every, args.gl_max)
                 overrides.update({gl_key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',
                     SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_EVERY=str(args.gl_every),SNAP_MAX=str(args.gl_max)).items()})
             if args.gl_log:
@@ -246,13 +248,11 @@ def main(argv=None):
         convert_raw_snapshots(runtime)
         report["evidence"] = session_evidence(runtime, manifest["every"], invocation["returncode"],
             require_gl=not (args.headless or args.native_renderer) and bool(manifest["settings"].get(gl_key+"_GL_SNAP")))
-        if args.gl_capture and report["evidence"].get("gl_captures", {}).get("completed_frames"):
-            from gl_frames import read_completed_frames
-            expected = [n for n in range(first, last + 1) if n % args.gl_every == 0]
-            if len(expected) > args.gl_max:
-                raise ValueError("GL capture budget cannot cover the requested interval")
-            read_completed_frames(runtime / "gl-snap", expected)
         report["comparison"] = compare_evidence(case / "record", runtime, reference, report["evidence"])
+        if args.gl_capture:
+            # A legacy receipt cannot validate a requested completed-frame range.
+            # Preserve the independent input/native comparison even if GL is incomplete.
+            read_completed_frames(runtime / "gl-snap", expected_gl)
         report["passed"] = report["comparison"]["passed"]
         if gl_key == 'MIDZ' and not (args.headless or args.native_renderer or args.zeus_native or manifest['settings'].get('MIDZ_GL_NATIVE') == '1'):
             report['native_image_scope'] = 'CPU polygon rasterization disabled by Zeus GL; native images cannot validate visible gameplay'
@@ -272,6 +272,8 @@ def main(argv=None):
     except (ValueError, OSError, KeyError, subprocess.SubprocessError) as exc:
         report["passed"] = False
         report["error"] = str(exc)
+        if isinstance(exc, IncompleteCaptureError):
+            report['capture_diagnostics'] = exc.capture_diagnostics
     write_json(work / "report.json", report)
     print(("PASS" if report["passed"] else "FAIL") + f": {work / 'report.json'}")
     return 0 if report["passed"] else 1
