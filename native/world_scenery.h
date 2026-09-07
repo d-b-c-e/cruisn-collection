@@ -9,18 +9,29 @@
 namespace cruisn { namespace world_scenery {
 constexpr uint32_t original_far = 80000, extended_far = 160000;
 constexpr uint32_t reciprocal_base = 0xb66f, first_extra = 5000, last_extra = 10000;
-enum kind { other, mountain, tree };
+enum kind { other, mountain, tree, forest };
 
 inline kind classify(uint32_t model, uint32_t flags, uint32_t radius)
 {
     flags &= 0x7fffffff; // verified per-instance state bit, not a model class
     if (flags == 0x1000 && ((model == 0xcb15f8 && radius == 33292)
         || (model == 0xcb171e && radius == 31514)
-        || (model == 0xcb1a8b && radius == 26031))) return mountain;
+        || (model == 0xcb1a8b && radius == 26031)
+        || (model == 0xcb2314 && radius == 19772)
+        || (model == 0xcb21a2 && radius == 12790))) return mountain;
+    // Grouped forest strip uses the original clamped projection, like mountains.
+    // It is not a small tree card and must never enter the virtual fast path.
+    if (flags == 0x1000 && model == 0xcb2375 && radius == 10935) return forest;
     if (flags == 0x1008 && (((model == 0xca57f3 || model == 0xca5833) && radius == 1950)
         || (model == 0xca5863 && radius == 818)
         || (model == 0xca5896 && radius == 1252))) return tree;
     return other;
+}
+
+inline bool enabled(kind type, unsigned mode)
+{
+    return (type == mountain && (mode & 1))
+        || ((type == tree || type == forest) && (mode & 2));
 }
 
 inline bool code_matches(const uint32_t *ram, size_t words)
@@ -40,7 +51,7 @@ inline bool code_matches(const uint32_t *ram, size_t words)
 inline uint32_t admission(kind type, int32_t depth_minus_radius, uint32_t radius)
 {
     if (depth_minus_radius <= int32_t(original_far)) return original_far;
-    if (type == mountain) return extended_far; // preserve original clamped perspective
+    if (type == mountain || type == forest) return extended_far; // original clamped perspective
     if (type == tree && radius > 0 && radius <= 2000) return extended_far - 2 * radius - 16;
     return original_far;
 }
