@@ -1,3 +1,33 @@
+# Active overnight checkpoint — 2026-09-07 04:20 local
+
+User remains asleep; continue autonomous release preparation. Collection branch
+codex/release-startup-hardening e4384ec pushed; master57e9bdf not yet merged.
+Native5bb965763b1 pushed fork; binary9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86.
+117-patch export treea611778155bbaef209f5523bb711ba8b1f127cb6 checked. 98Python testsPASS.
+Neutral-byte and legacy-proxy migration fixes committed separately. Known historical
+proxy bytes only hashed/moved in isolated folders, never loaded; both backups match.
+
+ACTIVE exec32018: startup-work/run_release_neutral.py against clean sourcee4384ec,
+ZIP build/CruisnCollection-v0.4.0-rc1-20260907-041815.zip. SHA09cb7a7db21336815920052ddfa6285c8490a9c68794b87f79c89786cdd4ac57.
+Sourceidentity9f9b24f234675152ff4bb555919219e1f4a30eaaa4b3abef2b0fe0352d617695.
+Output results/diagnostics/release-e438-final; log startup-work/release-neutral.log.
+Frozen all4boots/8UI/setup/support,7regressions,5freshboots,3menus,quality/exact/gate
+run serially. DO NOT overlap emulator/build or mutate product source until finished.
+
+C925 prior baseline fully PASS and preserved; release-942-final no longer running.
+Proof release-hardening/release-942 runtime146 archive entries verified locally,
+committed Git-byte verification still pending. 39 attended/shared items pending.
+Remote CI34102127057 source942d674 still compiling candidate; do not call this the
+newest source/binary or publish it. Diagnostic CIe438 pending/latest check needed.
+
+After final suite: run startup-work/run_full_gl_pairs.py E:/Source/mame-src/vunit.exe
+results/diagnostics/release-full-gl-final (six serial full oldaa920/new9D8 VUnit runs,
+USA43/World78/OffRoad53 GL at401 rows). Then archive reports/traces, verify committed
+proof bytes, update docs/RESULTS append-only, merge master/push. No public tag and
+no physical FFB. Package/suite success does not accept a physical wheel or manual
+transmission. Keep attended checklist honest. See prior checkpoints below for
+complete previous work; their ACTIVE and unimplemented descriptions are historical.
+
 # In-progress overnight handoff — 2026-09-07, about03:55 local
 
 User remains asleep and authorized sustained autonomous fixes, separate commits

@@ -141,3 +141,35 @@ emulation during frames900..1650 before requested GL captures. Callback p99 is
 18.3..25.6ms; worst38.8ms. This bounded interval does not establish display latency
 or every driving/selection transition. Renderer proof233 ZIP entries were hashed
 and verified on extraction. See `results/proof/2026-09-07-release-hardening/`.
+
+
+## Complete renderer baseline and subsequent force/upgrade fixes
+
+The C925 candidate at source942d674 completed all automated stages: seven recorded
+driving regressions, five fresh-seed boot/replay persistence checks, three V-Unit
+pause menus, 24 GPU quality fixtures, both exact captures at100.0000%, and the
+frozen package's four game boots/eight UI pages/setup health/support output. Its
+ZIP SHA256 is23414805df1bb51c1529257a5463b9d5a386cac209ffd313b87614d6a10fb4be.
+The gate remains NOT READY with39 attended/shared items pending. Recorded timing
+intervals stay near100% emulation, but one World callback reaches66.73ms; this is
+not proof of stutter-free presentation. Full evidence is retained under
+`results/proof/2026-09-07-release-hardening/release-942` before subsequent fixes.
+
+Native5bb965763b1 integrates the neutral-byte correction in both driver families.
+The same normal-command formula survives61,200 representative vectors; all240
+neutral vectors become zero, including216 formerly nonzero outcomes. Driver slew
+history resets; downstream smoothing still applies to zero. No default gain,
+polarity or force profile changes. Built binary9D8 and the117-patch reconstructed
+tree are recorded in AGENTS/session notes; full new runtime validation follows.
+
+Older released ZIPs retained dinput8.dll, which automatically hooks the process.
+Copying a current ZIP over such an installation could leave both old and built-in
+force implementations present. The updater and first new launch now move only
+two verified historical hashes into unique backups under rig/update. Unknown,
+redirected or unreadable input DLLs are preserved and block the operation. This
+also covers manual ZIP overlay and old updater versions that cannot run new
+migration code. Both actual historical binaries were hashed/moved in isolated
+folders and backups compared exactly; neither DLL was executed. Real PowerShell
+helper tests cover migration and unchanged personal files. Process enumeration
+uses typed64-bit handles and canonical image paths, tested against a real Python
+child without touching any game. All98 Python tests pass at e4384ec.

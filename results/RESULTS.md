@@ -3681,3 +3681,66 @@ verified, five summaries recomputed, two lossless PNG/BMP checks pass; release
 proof124 runtime entries verified. See docs/reviews/2026-09-07-world-3x-and-release.md.
 Old executable/SDL/profile archived locally before further renderer work. Next:
 startup CPU upload batching with strict order, package rehearsal/artifact promotion.
+
+
+## 2026-09-07 — Renderer backlog, complete package baseline and neutral-force fix
+
+The startup stream problem was dominated by scattered CPU framebuffer uploads.
+A contiguous-span prototype barely reduced upload count. Final masked GPU copies
+reduce World420693 spans to196 copies in the bounded startup workload, USA425490
+to330 and Off Road419788 to65. Preserve unwritten pixels and flush before ordered
+non-CPU messages/presentation. Canonical cpu_upload_spans helper and GPU shader
+fixtures cover holes/page selection/order. No guest geometry or simulation change.
+MIDV_GL_BATCH_VRAM=0 retains the immediate control; watchdog threshold unchanged.
+Nativeaef6d4465cd/C925 passes12 scale4 CRT full-window starts, three per game, all
+36 completed images and per-game repeats. Correct Off Road height401 explicitly;
+historical synthetic case used400. Earlier26-image paired prefixes agree exactly,
+including separate401-row Off Road control. Artificial100ms stall recovers3/3.
+1500ms short run ends before requested images and correctlyFAILs; longer2404-frame
+run times out at1829,16MiB/750ms. 5000ms stall times out1607,zero consumerbytes/765ms.
+Those are retained negative controls, not successful recovery. No stutter-free claim.
+
+Packaging restores tracked menu art/music accidentally removed in5ea8b2d, obeys
+NoMedia, retains custom user music, includes SDL/BGFX/source/MAME and toolkit licence
+texts, and freezes both GUIs afresh with checked command failures. Timestamped ZIPs
+and per-file manifests bind exact source/native bytes. Tag pushes no longer publish;
+manual workflow builds candidates and promotion uploads only the reviewed ZIP.
+No public tag/release created. Frozen support now writes JSON to a file, finds its
+packaged input Lua, and disables physical force/graphics experiments. Read-only
+setup-health/support CLI verifies the real package away from development paths.
+
+Importing previous rig data fills missing files, preserving newer calibration,
+bindings and scores. Updater validates ZIP paths/CRC/runtime/personal-file exclusions
+and rechecks package hash in its helper. Real Windows tests cover apostrophes,
+PS7 module-path inheritance and8.3 path cleanup. Corrected CI942 allfourjobsPASS.
+
+Complete C925/source942 release baseline PASS: seven full recorded regressions,
+five real fresh boots/replays with persisted freeplay/checksum, three VUnit menus,
+24 GPUquality fixtures, both native-exact captures100.0000%, frozen allfourboots
+with12 completed GL captures, eight UI pages and real setup/support output. ZIP
+build/CruisnCollection-v0.4.0-rc1-20260907-034453.zip SHA256
+23414805df1bb51c1529257a5463b9d5a386cac209ffd313b87614d6a10fb4be.
+Full logs/proof retained in release-hardening/release-942;146 runtime ZIP entries
+verified from committed Git blobs. Earlier renderer233-entry proof likewise
+verified. Automated releasegatePASS;39attended/shared checks remain pending.
+
+Subsequent native5bb965763b1 normalizes reserved raw motor-128 before gain/slew/
+clamp in both driver families, clearing driver slew history. All61200 ordinary
+vectors retain the prior formula;240neutral cases becomezero,216formerlynonzero.
+Downstream smoothing still applies; no instant physical-stop/feel acceptance.
+Retained Exotica4616raw writes contain zero-128, so this does not diagnose the
+historical Fanatec report. Nativebuilt9D8 SHA256
+9d8a8c14998777a15190ca76edd318380baec05e6dac6086d54929dcd2c62a86;
+117patch export reconstructs treea611778155bbaef209f5523bb711ba8b1f127cb6.
+Nativepushedfork; collectionneutralfixf197337 separatelycommitted.
+
+e4384ec adds reversible exact-hash legacy dinput8 proxy retirement on update and
+firstlaunch, catching old updaters/manual ZIPoverlay. Unknown DLLs remain untouched
+and blocklaunch/update. Actual two historical binaries hashed/moved only in isolated
+folders, exactbackups verified, neverloaded. Processinventory uses typed64bithandles
+and canonicalimagepaths.98Python testsPASS locally. WindowsCI34105177890 exposes
+an additional8.3 mismatch in the new proxy check: Refusing redirected input DLL.
+Keepthisfailure; isolatedfix24cc1a2 canonicalizes allinputpaths inPython beforePS
+scriptgeneration. CI34105656916 running; activee438fullruntimebaseline remains
+unchanged during investigation. New ZIP041815/09cb7a7d is a runtime candidate,
+not releaseaccepted. Finalsource/ZIP must include the CIpathcorrection.
