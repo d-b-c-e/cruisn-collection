@@ -20,6 +20,7 @@ awaiting validation.
 
 - [Native scenery changes and evidence](docs/reviews/2026-09-06-native-scenery.md)
 - [Four-tree coverage and gameplay appearance tracing](docs/reviews/2026-09-06-scenery-coverage.md)
+- [Expanded mountains/forest and object activation](docs/reviews/2026-09-06-expanded-scenery.md)
 - [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
 - [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
 - [Independent project assessment](docs/reviews/2026-09-05-assessment.md)
@@ -117,9 +118,10 @@ on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
   full 16:9 view.
 - Cruis'n Exotica has a separate GPU path at 4× via MAME's Zeus2
   emulation (upstream emulation gaps remain: car-select text is illegible).
-- Telemetry streams to SimHub as JSON or Forza-format UDP. Speed currently
-  uses HUD OCR for USA and World; Off Road's speed reader is not working,
-  and Exotica speed is not implemented. RPM is verified for USA only.
+- Telemetry streams to SimHub as JSON or Forza-format UDP. USA v4.5 reads the
+  game's numeric speed-display buffer, with OCR fallback; World still uses OCR.
+  Off Road's speed reader is not working, and Exotica speed is not implemented.
+  RPM remains unavailable; the old USA mapping was removed because it read speed text.
   Wheel force and lamps are separate available output channels.
 
 Native V-Unit comparisons cover specific archived captures. They do not

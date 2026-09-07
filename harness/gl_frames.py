@@ -37,12 +37,15 @@ def read_completed_frames(directory, expected=None):
 
 
 def compare_completed_frames(reference, candidate, expected=None, details=False):
+    if expected is not None:
+        expected = tuple(expected)
     a, b = read_completed_frames(reference, expected), read_completed_frames(candidate, expected)
     if a.keys() != b.keys():
         raise ValueError("GL recordings cover different completed frames")
     different = [n for n in a if a[n] != b[n]]
     result = {"scope": "completed GL frame pixels", "passed": not different,
-              "frames": len(a), "different_frames": different}
+              "frames": len(a), "different_frames": different,
+              "reference": str(Path(reference).resolve()), "candidate": str(Path(candidate).resolve())}
     if details:
         import numpy as np
         from PIL import Image
@@ -103,7 +106,7 @@ def main(argv=None):
     ap.add_argument("reference", type=Path)
     ap.add_argument("candidate", type=Path)
     ap.add_argument("--frames", help="required inclusive FIRST:LAST capture interval")
-    ap.add_argument("--every", type=int, default=1, help="capture spacing within --frames (default1)")
+    ap.add_argument("--every", type=int, default=1, help="capture global frame multiples of N within --frames (default1)")
     ap.add_argument("--details", action='store_true', help="count changed pixels and locate their bounds")
     ap.add_argument("--contact-sheet", type=Path, help="save first/peak/last changed images side by side")
     ap.add_argument("--report", type=Path, required=True)
@@ -117,7 +120,10 @@ def main(argv=None):
             first, last = map(int, args.frames.split(":"))
             if not 0 <= first <= last:
                 raise ValueError("invalid frame interval")
-            expected = range(first, last + 1, args.every)
+            # Match replay.py and the native producer's frame % every cadence.
+            expected = range(first + (-first % args.every), last + 1, args.every)
+            if not expected:
+                raise ValueError('no capture frames align with the requested interval and --every')
         result = compare_completed_frames(args.reference, args.candidate, expected,
                                           args.details or bool(args.contact_sheet))
         if args.contact_sheet:

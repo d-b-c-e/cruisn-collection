@@ -446,3 +446,30 @@ the parent recording. See the [native scenery evidence](reviews/2026-09-06-nativ
 including duplicate quads and ordering. The extent limit is optional and intended
 for small distant-tree additions. It does not judge visible pixels, whether a
 tree is occluded, or driving-route equivalence. Unknown models remain explicit.
+
+Use `--alignment scene` to compare complete nonempty page-control runs when guest
+drawing work spans a frame boundary. It drops incomplete edge runs, preserves
+duplicates and original order, and records both runs' frame ranges. Keep the
+strict frame comparison too: a scene match does not erase a timing difference.
+
+For completed GL images sampled every few frames:
+
+```powershell
+python harness/gl_frames.py CONTROL/run/gl-snap CANDIDATE/run/gl-snap --frames 1980:2240 --every 2 --details --contact-sheet comparison.png --report visible.json
+```
+
+This checks the requested capture sequence, reports changed pixels and bounds,
+and creates an overview of the first/largest/last changes. Bounds use exclusive
+right/bottom coordinates. Different-sized images are identified separately.
+`--every N` uses global frame multiples, matching the native capture producer.
+Reused filenames, missing frames and dropped stream messages are rejected.
+Expected visual changes still fail pixel identity; inspect `error` and the
+completed evidence before interpreting FAIL as a failed launch or timeout.
+
+`lua/world_scenery_events.lua` and `harness/analyze_scenery_events.py` locate
+candidate appearance windows from complete drawing scenes. Submitted bounds are
+not visible pixels; slot reuse is not proof of LOD. The read-only activation probe
+can then trace a specific object's fields, model assignment and call stack.
+Literal `CRUISN_*` probe parameters are archived beside the script hash in replay
+reports. Mutating probes are explicitly labeled and remain separate from product
+options; their effects can outlive the bounded callback interval.

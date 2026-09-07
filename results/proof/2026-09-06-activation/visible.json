@@ -1,0 +1,181 @@
+{
+  "contact_sheet": "E:\\Source\\cruisn-collection\\results\\proof\\2026-09-06-activation\\comparison.png",
+  "different_frames": [
+    3004,
+    3006,
+    3008,
+    3010,
+    3012,
+    3014,
+    3016,
+    3018,
+    3020
+  ],
+  "frames": 41,
+  "passed": false,
+  "pixel_changes": [
+    {
+      "bounds_xyxy_exclusive": [
+        412,
+        150,
+        510,
+        195
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 19,
+      "frame": 3004,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        420,
+        144,
+        454,
+        194
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 20,
+      "frame": 3006,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        422,
+        143,
+        463,
+        192
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 22,
+      "frame": 3008,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        446,
+        151,
+        456,
+        190
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 16,
+      "frame": 3010,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        440,
+        144,
+        481,
+        180
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 12,
+      "frame": 3012,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        427,
+        144,
+        476,
+        184
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 12,
+      "frame": 3014,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        408,
+        140,
+        508,
+        174
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 10,
+      "frame": 3016,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        408,
+        150,
+        473,
+        196
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 16,
+      "frame": 3018,
+      "reference_size": [
+        512,
+        451
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        406,
+        146,
+        495,
+        169
+      ],
+      "candidate_size": [
+        512,
+        451
+      ],
+      "changed_pixels": 13,
+      "frame": 3020,
+      "reference_size": [
+        512,
+        451
+      ]
+    }
+  ],
+  "scope": "completed GL frame pixels"
+}

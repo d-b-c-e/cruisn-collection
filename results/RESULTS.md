@@ -3444,3 +3444,39 @@ observation is not creation time. Activation trace finds CCF288 allocated2991,
 pendingflags2000, becomesactive1000 at3017 and firstdraws3019 inside80k range.
 Next candidates: additional mountainsCB2314/CB21A2 and groupedforestCB2375,
 plus pending-list activation. No physical FFB or user preferences changed.
+
+
+## 2026-09-06 — Expanded mountains/forest and activation mechanism
+
+Review: `docs/reviews/2026-09-06-expanded-scenery.md`.
+Native abe4b98aa38, binary SHA256
+55578f8a06a81a78391119e4bad29b673b90e7e67ea2d6d29907adec1fe8ee90.
+Adds mountains CB2314/CB21A2 and forest strip CB2375 to World2.4-only opt-in
+scenery. Forest uses original clamped projection and its own counter. Small-tree
+projection remains limited to the four verified cards. No guest RAM writes.
+
+Bounded Lua adds938 quads across99 complete scenes, preserves originals/order.
+Strict frame check retains two unchanged HUD quads spilling2171->2172. Native
+new-model geometry matches Lua exactly; all native scenery adds2184 quads in the
+same scene comparison, retaining every original in order. Bounded GL131completed
+images:90change, max1214pixels at2144, all2184..2240match. Full native GL201images
+vs firstnative build:143change, max1234pixels, last2192; all2196..2400match.
+
+Full native Germany candidate/repeat8783inputs/time/146native images agree;
+parent10images differ. Driving speed100.0041%/100.0048%, callbackp99 26.47/26.19ms.
+Both912mountain/3964tree/277forest admissions,31712reads,maxindex8120.112patches
+reconstruct native tree ae27265e06a1da7ae7646c9ea888857a538ad12f. Cross-game default
+suite remains separately tracked; no physical FFB during automated runs.
+
+Single-object activation experiment CCF288: pending2991, active3017, firstdraw3019
+inside originalfar. Decrementing its activation-section comparison by1 moves
+activation2999/draw3001, adds54quads. Original order changes in scene3019: geometry
+validator correctly FAILs.41completed GLimages show9changes,max22pixels; nearby
+trees obscure this hillside. Oddframe3019 isn't in the every2GLcapture. Not
+promoted. Next stronger candidate: known mountain CB1A8B returns at6093, already
+insidefar53744 and plainly visible over the road around elapsed1:15.
+
+GL comparison now reports pixel counts/bounds and first/peak/last contact sheets,
+validates sparse global-frame cadence and rejects overwritten/reused filenames.
+README telemetry claims corrected: USA numeric HUD with OCRfallback, WorldOCR,
+RPM unavailable (oldUSA RPM mapping was packed speed text).

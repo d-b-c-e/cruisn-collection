@@ -1,33 +1,68 @@
 # Session Notes
 
-- Date:2026-09-06. Branch codex/world-scenery-distance; user authorized ongoing
-  autonomous fixes until return, separate commits/pushes. No physical automated FFB.
-- Native5ca501570a5 pushed fork/poc/quadlog. Deployed rootvunit hash
-  2e3ac3f32e791516a7b0f8d0339cf7cf98c120e90a02b14b94ce0f34acc09f56.
-- Latest review docs/reviews/2026-09-06-scenery-coverage.md; previous native-scenery.md
-  records first3mountain/conifer build. Default option OFF, World24 only.
-- Four treesCA57F3/CA5833/CA5863/CA5896, exact flags/radii, virtualreciprocal5000..10000.
-  No guestRAM writes. Direct backingRAM inside taps avoids nestedread corruption.
-- Fourtree fullGermany8783/146identityPASS, parent10images differ; ~100.005% driving.
-  371mountain/3964tree admissions,31712reads,max8120. All7defaultcasesPASS.
-  Dense trees-onlyGL201images vsOFF:109changes,max49pixels. Small visual gain.
-- Long LuaGL timedout2252/164images; not accepted. Native201completed, shared164match.
-- scenery-events fullread-only8783/146PASS,3584runs,16323events. Ranking proposes
-  windows; bounds not visibility, reusedslot notLOD, firstgate notcreation.
-- Active: scenery-second-control/candidate2000..2200 (Lua selectedCB2314/CB21A2/
-  CB2375 admission-only160k). Strictframecompare FAIL:2HUDquads shift2171->2172.
-  CompletedscenecomparePASS, originals retained/order unchanged. Keeptimingdifference.
-  DenseGL1980..2240 runs started; inspect reporterror/completed counts before claims.
-- Activation: scenery-activation-fields PASS3042. ModelCCF288 slot12668 assigned2991
-  byPC6261; stack7B9C/7CA3. Flags2000->1000 byPC7B5E at3017, firstfar/draw3019
-  alreadyinside80k. Pendinglist at61EC, activeD50B, activationcompares object+1B
-  segment low16 to playersegment+wordD58C; read runtimeasm around7B4C..7B69.
-  lua/world_scenery_activation.lua traces fields and CPUinternalRAMstack809800..809FFF.
-  Runtimeasm results/diagnostics/scenery-activation/run/program.asm.
-- Original attended world-germany-extended-20260906 immutable. No freshrecord needed.
-- Remaining: bigger scenery/activation then cross-gameadapters, weakWorldimpacts
-  (optionalImpactCuesOFF, physicalacceptancepending), MAME XMLCheats submenu stretch.
-  Toolkitv0.11.1 unchanged. Latest CI atfc586ed all4PASS; finalhead stillneedspush/CI.
-- Pushnative tofork only. Export FULLmame0286..HEAD111patches after nativecommit.
-  Collection/master ff only afterfinalCI. Neverracingmame.exe. No emulatorbuildwhile
-  rootexeisused. AutomatedreplayFFBOFF. Keepmeaningfulupdates <=60sec.
+Date: 2026-09-06. Branch: codex/world-scenery-distance. User authorized ongoing
+fixes until they return, with separate commits and pushes. Physical automated FFB
+stays OFF. Native pushes go to fork/poc/quadlog, never mamedev/origin.
+
+## Built and deployed
+
+Native abe4b98aa38, root vunit.exe SHA256
+55578f8a06a81a78391119e4bad29b673b90e7e67ea2d6d29907adec1fe8ee90.
+Distant Scenery remains OFF by default, World 2.4 / widescreen / scale>1 only.
+It now covers five mountains, four tree cards and one grouped forest strip.
+Canonical native/world_scenery.h syncs to MAME. Forest CB2375 uses original
+clamped projection and its own counter, never the small-tree reciprocal path.
+No guest RAM writes. Strict model/radius/flags/code guards; direct backing RAM
+inside taps avoids nested-read corruption. See expanded-scenery review.
+
+Full derived Germany candidate/repeat: 8,783 input/time rows and 146 native images
+match. Parent has ten changed images; no original-route claim. Driving ratios
+100.0041%/100.0048%; counts 912 mountain,3964 tree,277 forest admissions,
+31712 reciprocal reads,max8120. Native GL201 completed frames vs first native
+build:143 changed,max1234pixels,last2192; all2196..2400 match. Two new mountains
+show earlier through bridge. New three-model native geometry matches boundedLua;
+complete scenes preserve all original geometry/order. Strict frame comparison
+retains two HUD quads spilling2171->2172.112patches reconstruct ae27265e06a1da7ae7646c9ea888857a538ad12f.
+
+## Running / next
+
+- scenery-expanded-default-regressions is running serially. First five cases PASS:
+  USA original/wide,World24,oldGermany,World25. Off Road/Exotica remain; don't claim
+  full suite until report completed. Exec session97520 includes GL then this suite.
+- CI34070790847 at e81bc4a all four jobs PASS. New docs/harness cadence changes need
+  final CI; ff master after checkpoint. User's Stream Deck uses this checkout.
+- Strong next candidate: CB1A8B returns at6093 already inside original far (53744),
+  plainly visible above road around game elapsed1:15. Native snapshots6060/6120
+  show huge mountain arrival. Prepared read-only probe
+  results/diagnostics/mountain-return-activation.lua, first6000,last6140,
+  slot11A7C/modelCB1A8B. Run after suite (one emulator at a time), --until-frame6142
+  --capture-state, then inspect field assignment and pending->active timing.
+- Earlier diagnostic CCF288/slot12668: allocated2991, pending2000->active1000 at3017,
+  firstdraw3019 inside80k. lua/world_scenery_early_activation.lua intercepts one
+  object's section atPC7B69, lead1, guest performs list transfer. Activates2999,
+  draws3001,adds54quads but original order changes3019. Only22visiblepixels;
+  most occluded by trees. NOT PROMOTED.41GL every2 captures omit odd3019 concern.
+- Pending comparison: object+0x1B low16 vs player section+wordD58C, program7B58.
+  List61EC -> activeD50B. Factory625C/626D through7B9A/7CA2. Read-only field probe
+  captures internal CPU stack809800..809FFF. RuntimeWorld24asm under
+  results/diagnostics/scenery-activation/run/program.asm. No game code dumps committed.
+
+## Evidence and harness
+
+Latest docs/reviews/2026-09-06-expanded-scenery.md. Proof expanded-scenery/activation.
+Previous scenery-coverage review documents four-tree build and failed Lua capture
+(timeout2252/164images, explicitly not accepted; native full runs completed).
+scenery-events full read-only8783/146PASS:3584complete runs,16323events. Ranking
+bounds is not visibility; slot reuse is notLOD and first gate isn't creation.
+compare_scenery --alignment scene preserves stricter frame differences separately.
+gl_frames --frames FIRST:LAST --every N --details --contact-sheet PNG validates
+global frame multiples, missing/duplicate receipts and reused filenames; reports
+changed pixels/bounds. Latest suite71 Python tests (run final complete set).
+
+Original attended world-germany-extended-20260906 is immutable. No fresh recording
+needed for current probes. Continue graphics/activation, then cross-game adapters,
+weakWorldimpacts (ImpactCues OFF pending attended acceptance), Cheats submenu.
+Toolkit v0.11.1 unchanged. MAME XMLcheatmanager is the right engine; downloaded
+cheat0279 has all games, not installed/enabled here. No frontend Lua cheat API yet.
+README corrected: USA numeric HUD with OCR fallback,World OCR; RPM unavailable.
+Never racing mame.exe; never rebuild root executable while it is in use.

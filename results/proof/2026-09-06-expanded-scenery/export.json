@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "patches": 112,
+  "expected_tree": "ae27265e06a1da7ae7646c9ea888857a538ad12f",
+  "reconstructed_tree": "ae27265e06a1da7ae7646c9ea888857a538ad12f",
+  "base": "mame0286"
+}

@@ -59,3 +59,11 @@ class CompletedGlTests(unittest.TestCase):
             (b / 'captures.csv').write_text(receipts)
             with self.assertRaisesRegex(ValueError, 'filename was reused'):
                 read_completed_frames(b)
+
+    def test_sparse_cadence_matches_global_native_frames(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.fixture(root / 'run', (32, 34))
+            self.assertEqual(main([str(root/'run'), str(root/'run'), '--frames', '31:35',
+                '--every', '2', '--report', str(root/'report.json')]), 0)
+            self.assertTrue(compare_completed_frames(root/'run', root/'run', iter((32, 34)))['passed'])

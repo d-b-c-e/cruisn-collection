@@ -2,22 +2,28 @@
 
 ## Current verified handoff (2026-09-06)
 
-Newest distance evidence: `docs/reviews/2026-09-06-scenery-coverage.md`.
-Native5ca501570a5 / SHA2562e3ac3f3 adds opt-in `MIDV_SCENERY=mountains|trees|all|off`,
-World2.4 only. Canonical `native/world_scenery.h` syncs to MAME. Three identified
+Newest distance evidence: `docs/reviews/2026-09-06-expanded-scenery.md`.
+Native abe4b98aa38 / SHA256 55578f8a adds opt-in `MIDV_SCENERY=mountains|trees|all|off`,
+World2.4 only. Canonical `native/world_scenery.h` syncs to MAME. Five identified
 mountains use earlier admission with ORIGINAL far-clamped perspective; trees
 CA57F3/CA5833/CA5863/CA5896 use valid virtual reciprocals only for rejected instances.
+Forest strip CB2375 uses original clamped projection, never the small-tree fast
+path; it follows Trees mode with its own forest_admissions counter.
 No guest RAM writes. Exact model/radius/flags and projection instructions guard
 it; don't copy addresses into other revisions/games. Reset clears active tree;
 state saves preserve it. MIDV_SCENERY_LOG=1 -> per-frame scenery.csv.
 Shell Distant Scenery is defaultOFF, World2.4/widescreen/scale>1 only. Terrain
 visibility remains separate. Full candidate8783/146 repeats, ~100.005% driving
-speed; ten parent native images differ. Dense GL1600..2400 has201 frames. Four-tree
-vs scenery-OFF changes109 images, maximum49 pixels: a small visible benefit.
-All7 default-build cases pass. Tree admissions don't prove visible improvement.
-Larger forest groups, pending-list activation and attended coverage remain open.
+speed; ten parent native images differ. Dense GL1600..2400 has201 frames. Relative
+to the first native scenery build,143 images differ, maximum1,234 pixels. All
+sampled images2196..2400 match. New mountains show through the bridge earlier.
+Default-build cross-game checks are tracked separately. More scenery, pending-list
+activation and attended coverage remain open. Admissions aren't visible pixels.
 `compare_scenery.py` requires explicit allowed additions, keeps duplicate quads
 and original order, and can bound added quad extent. Pair it with completed GL.
+Optional --alignment scene checks completed page-control runs; preserve stricter
+frame timing differences. gl_frames.py --every N --details --contact-sheet PNG
+validates sparse global-frame captures and locates changed pixels.
 Avoid nested address-space reads inside reciprocal taps: selected-model RAM
 lies in the observed range. A failed Lua prototype caused giant trees this way;
 its negative-control evidence is retained. Native reads backing RAM directly.

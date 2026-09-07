@@ -1,0 +1,524 @@
+{
+  "schema": 1,
+  "scope": "matched-frame submitted geometry; not visible-pixel or route acceptance",
+  "passed": false,
+  "maximum_added_quad_extent": null,
+  "allowed_added_models": [
+    "ccf288"
+  ],
+  "frames": [
+    {
+      "frame": 2971,
+      "control_quads": 1262,
+      "candidate_quads": 1262,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2973,
+      "control_quads": 1279,
+      "candidate_quads": 1279,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2975,
+      "control_quads": 1262,
+      "candidate_quads": 1262,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2977,
+      "control_quads": 1240,
+      "candidate_quads": 1240,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2979,
+      "control_quads": 1250,
+      "candidate_quads": 1250,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2981,
+      "control_quads": 1226,
+      "candidate_quads": 1226,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2983,
+      "control_quads": 1243,
+      "candidate_quads": 1243,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2985,
+      "control_quads": 1215,
+      "candidate_quads": 1215,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2987,
+      "control_quads": 1204,
+      "candidate_quads": 1204,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2989,
+      "control_quads": 1212,
+      "candidate_quads": 1212,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2991,
+      "control_quads": 1246,
+      "candidate_quads": 1246,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2993,
+      "control_quads": 1256,
+      "candidate_quads": 1256,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2995,
+      "control_quads": 1228,
+      "candidate_quads": 1228,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2997,
+      "control_quads": 1223,
+      "candidate_quads": 1223,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 2999,
+      "control_quads": 1231,
+      "candidate_quads": 1231,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3001,
+      "control_quads": 1264,
+      "candidate_quads": 1270,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            443,
+            70,
+            621,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3003,
+      "control_quads": 1271,
+      "candidate_quads": 1277,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            443,
+            69,
+            625,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3005,
+      "control_quads": 1251,
+      "candidate_quads": 1257,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            444,
+            68,
+            629,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3007,
+      "control_quads": 1242,
+      "candidate_quads": 1248,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            446,
+            66,
+            633,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3009,
+      "control_quads": 1246,
+      "candidate_quads": 1252,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            447,
+            65,
+            637,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3011,
+      "control_quads": 1214,
+      "candidate_quads": 1220,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            449,
+            64,
+            641,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3013,
+      "control_quads": 1233,
+      "candidate_quads": 1239,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            451,
+            62,
+            645,
+            183
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3015,
+      "control_quads": 1210,
+      "candidate_quads": 1216,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            449,
+            61,
+            645,
+            182
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3017,
+      "control_quads": 1197,
+      "candidate_quads": 1203,
+      "removed_or_changed": 0,
+      "added": 6,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": [
+        {
+          "model": "ccf288",
+          "quads": 6,
+          "objects": [
+            "12668"
+          ],
+          "bounds": [
+            451,
+            60,
+            649,
+            182
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 3019,
+      "control_quads": 1371,
+      "candidate_quads": 1371,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": false,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3021,
+      "control_quads": 1329,
+      "candidate_quads": 1329,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3023,
+      "control_quads": 1348,
+      "candidate_quads": 1348,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3025,
+      "control_quads": 1331,
+      "candidate_quads": 1331,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3027,
+      "control_quads": 1338,
+      "candidate_quads": 1338,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3029,
+      "control_quads": 1323,
+      "candidate_quads": 1323,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3031,
+      "control_quads": 1309,
+      "candidate_quads": 1309,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3033,
+      "control_quads": 1313,
+      "candidate_quads": 1313,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3035,
+      "control_quads": 1282,
+      "candidate_quads": 1282,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3037,
+      "control_quads": 1295,
+      "candidate_quads": 1295,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    },
+    {
+      "frame": 3039,
+      "control_quads": 1391,
+      "candidate_quads": 1391,
+      "removed_or_changed": 0,
+      "added": 0,
+      "originals_in_order": true,
+      "unexpected_additions": 0,
+      "oversized_additions": 0,
+      "added_models": []
+    }
+  ],
+  "total_added": 54,
+  "total_removed_or_changed": 0
+}
