@@ -1,4 +1,5 @@
 import importlib.util
+import hashlib
 import os
 from pathlib import Path
 import subprocess
@@ -39,6 +40,19 @@ class UpdateTests(unittest.TestCase):
             path.write_bytes(b'truncated ZIP')
             with self.assertRaises(zipfile.BadZipFile):updater.validate_update_package(path)
 
+    def test_first_launch_migration_preserves_unknown_files_and_known_backup_bytes(self):
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);proxy=root/'dinput8.dll';proxy.write_bytes(b'known test proxy')
+            with mock.patch.object(updater,'LEGACY_INPUT_HASHES',{hashlib.sha256(proxy.read_bytes()).hexdigest()}):
+                backup=updater.retire_input_proxy(root,root/'rig/update')
+            self.assertEqual(backup.read_bytes(),b'known test proxy')
+            self.assertFalse(proxy.exists())
+            self.assertIsNone(updater.retire_input_proxy(root,root/'rig/update'))
+            proxy.write_bytes(b'unknown')
+            with self.assertRaisesRegex(RuntimeError,'unrecognized'):
+                updater.retire_input_proxy(root,root/'rig/update')
+            self.assertEqual(proxy.read_bytes(),b'unknown')
+
     @unittest.skipUnless(sys.platform=='win32','executes the actual Windows update helper')
     def test_real_helper_handles_quoted_paths_preserves_rig_and_rejects_changed_zip(self):
         with tempfile.TemporaryDirectory(prefix='cruisn-update-') as td:
@@ -71,3 +85,21 @@ class UpdateTests(unittest.TestCase):
                 second=run(script)
                 self.assertNotEqual(second.returncode,0)
                 self.assertEqual((app/'version.txt').read_bytes(),b'keep this')
+                # Exercise the actual move, retaining a backup. A filename
+                # alone never authorizes moving an unknown custom input DLL.
+                make_zip(package)
+                legacy=b'known legacy input proxy fixture'
+                (app/'dinput8.dll').write_bytes(legacy)
+                with mock.patch.object(updater,'LEGACY_INPUT_HASHES',
+                                       {hashlib.sha256(legacy).hexdigest()}):
+                    self.assertTrue(updater.input_proxy_status(app)['known'])
+                    migrated=run(prepare())
+                self.assertEqual(migrated.returncode,0,(app/'rig/update/apply.log').read_text(errors='replace'))
+                self.assertFalse((app/'dinput8.dll').exists())
+                retired=list((app/'rig/update').glob('retired-input-*/dinput8.dll'))
+                self.assertEqual(len(retired),1)
+                self.assertEqual(retired[0].read_bytes(),legacy)
+                (app/'dinput8.dll').write_bytes(b'unknown custom input proxy')
+                with self.assertRaisesRegex(RuntimeError,'unrecognized dinput8'):
+                    prepare()
+                self.assertEqual((app/'dinput8.dll').read_bytes(),b'unknown custom input proxy')

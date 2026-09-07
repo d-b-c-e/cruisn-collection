@@ -205,6 +205,12 @@ def env_status():
                                           else "the first wheel found (bind a wheel in "
                                                "CONTROLS SETUP to pin it)"))
                  if not missing else "SDL2.dll missing beside vunit.exe"))
+    import updater
+    proxy=updater.input_proxy_status(vdir)
+    if proxy['present']:
+        rows.append(('previous force-feedback plugin',False,
+                     'recognized old plugin: next launch preserves it in a backup and uses built-in FFB'
+                     if proxy['known'] else 'unrecognized input DLL: review it or use a fresh install folder'))
     diag = run_rig.ffb_diag_enabled()
     rows.append(("FFB diagnostics", True,
                  "ON - every drive logs rig\ffb_trace.csv + midv_ffb.log "

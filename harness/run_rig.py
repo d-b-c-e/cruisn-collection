@@ -165,8 +165,16 @@ def window_responding(hwnd, timeout_ms=1000):
 def vunit_processes(exe=None):
     """[(pid, path)] of every running copy of our emulator exe (by image
     path, so a developer's other MAME builds are never touched)."""
-    exe = os.path.normcase(os.path.abspath(exe or VUNIT))
+    exe = os.path.normcase(os.path.realpath(exe or VUNIT))
     psapi, k32 = ctypes.windll.psapi, ctypes.windll.kernel32
+    psapi.EnumProcesses.argtypes = [ctypes.POINTER(wt.DWORD), wt.DWORD, ctypes.POINTER(wt.DWORD)]
+    psapi.EnumProcesses.restype = wt.BOOL
+    k32.OpenProcess.argtypes = [wt.DWORD, wt.BOOL, wt.DWORD]
+    k32.OpenProcess.restype = wt.HANDLE
+    k32.QueryFullProcessImageNameW.argtypes = [wt.HANDLE, wt.DWORD, wt.LPWSTR, ctypes.POINTER(wt.DWORD)]
+    k32.QueryFullProcessImageNameW.restype = wt.BOOL
+    k32.CloseHandle.argtypes = [wt.HANDLE]
+    k32.CloseHandle.restype = wt.BOOL
     arr = (wt.DWORD * 4096)()
     got = wt.DWORD()
     if not psapi.EnumProcesses(arr, ctypes.sizeof(arr), ctypes.byref(got)):
@@ -182,7 +190,7 @@ def vunit_processes(exe=None):
         try:
             size = wt.DWORD(len(buf))
             if k32.QueryFullProcessImageNameW(h, 0, buf, ctypes.byref(size)):
-                if os.path.normcase(buf.value) == exe:
+                if os.path.normcase(os.path.realpath(buf.value)) == exe:
                     out.append((int(pid), buf.value))
         finally:
             k32.CloseHandle(h)
@@ -1262,6 +1270,17 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
     exotica_manual = apply_exotica_dips(rig, rom)
     kill_stale_vunit(mame, why="left-over")
+    # Old updater versions/manual extraction can leave the plugin's automatic
+    # dinput8 hook beside the new emulator. Retire only known historical bytes
+    # before any new process loads them; preserve unknown custom input DLLs.
+    import updater
+    proxy = updater.input_proxy_status(os.path.dirname(mame))
+    if proxy['present']:
+        if vunit_processes(exe=mame):
+            raise RuntimeError('close the old emulator before retiring its force-feedback plugin')
+        retired = updater.retire_input_proxy(os.path.dirname(mame), os.path.join(rig, 'update'))
+        if retired:
+            print(f'Previous force-feedback input plugin preserved at {retired}')
     # the shaper reads this at startup; keep it in step with the repo
     deploy_force_profiles(mame)
     # Game-code widescreen: when the presentation is full 16:9 and a per-game

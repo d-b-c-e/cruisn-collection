@@ -8,7 +8,7 @@ neither) and relaunches. The caller exits right after apply().
 import json
 import hashlib
 import os
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 import re
 import subprocess
 import sys
@@ -22,6 +22,49 @@ import run_rig
 REPO = "d-b-c-e/cruisn-collection"
 API = f"https://api.github.com/repos/{REPO}/releases/latest"
 UA = "CruisnCollection-updater"
+# Retained historical release/backup bytes, not a filename-only deletion rule.
+# Boomslang 2.0.0.53 (August20/September2 packages), Endprodukt1.995 backup.
+LEGACY_INPUT_HASHES = frozenset({
+    '2443f1af58743212b7feeb408507b8eaf95922da24f5966b66997898e90817b7',
+    '10218983a9f101ea1d16925ee229b7f30edca9613b13c3501af7e4144bc09b18',
+})
+
+
+def input_proxy_status(directory):
+    path = Path(directory) / 'dinput8.dll'
+    if not os.path.lexists(path):
+        return {'present': False, 'known': False}
+    if path.is_symlink() or not path.is_file():
+        return {'present': True, 'known': False, 'error': 'input DLL is not a regular file'}
+    try:
+        with path.open('rb') as source:
+            digest = hashlib.file_digest(source, 'sha256').hexdigest()
+    except OSError as error:
+        return {'present': True, 'known': False, 'error': str(error)}
+    return {'present': True, 'known': digest in LEGACY_INPUT_HASHES, 'sha256': digest}
+
+
+def retire_input_proxy(directory, backup_root):
+    """Move a recognized historical proxy aside without deleting it.
+
+    Used by the new launcher too: an older updater or manual ZIP extraction cannot
+    run migration code that only exists in the newly installed version.
+    """
+    status = input_proxy_status(directory)
+    if not status['present']:
+        return None
+    if not status['known']:
+        raise RuntimeError('unrecognized dinput8.dll beside the emulator; use a fresh install folder or review that input DLL before launching')
+    backup_root = Path(backup_root).resolve()
+    backup_root.mkdir(parents=True, exist_ok=True)
+    destination = Path(tempfile.mkdtemp(prefix='retired-input-', dir=backup_root)).resolve() / 'dinput8.dll'
+    if destination.parent.parent != backup_root:
+        raise ValueError('input backup escaped its directory')
+    source = Path(directory).resolve() / 'dinput8.dll'
+    # This is an individual file move. Unknown files and redirected files were
+    # rejected above; rename keeps the exact bytes available for rollback.
+    source.rename(destination)
+    return destination
 
 
 def frozen():
@@ -172,6 +215,9 @@ def apply(zip_path, relaunch=True):
     with open(zip_path,'rb') as payload:
         package_hash=hashlib.file_digest(payload,'sha256').hexdigest()
     app = app_dir()
+    proxy=input_proxy_status(app)
+    if proxy['present'] and not proxy['known']:
+        raise RuntimeError('unrecognized dinput8.dll in this install; use a fresh folder or review that input DLL before updating')
     workdir = os.path.join(run_rig.POC, "rig", "update")
     os.makedirs(workdir, exist_ok=True)
     script = os.path.join(workdir, "apply.ps1")
@@ -187,6 +233,8 @@ def apply(zip_path, relaunch=True):
         f"$work = {ps_literal(workdir)}",
         f"$packageRoot = {ps_literal(package_root)}",
         f"$packageHash = {ps_literal(package_hash)}",
+        "$legacyHashes = @(" + ','.join(ps_literal(value) for value in sorted(LEGACY_INPUT_HASHES)) + ")",
+        f"$retiredName = {ps_literal('retired-input-'+os.path.basename(extract))}",
         f"$relaunch = ${'true' if relaunch else 'false'}",
         f"$exe = {ps_literal(exe)}",
         "function Log($m) { \"$(Get-Date -Format s)  $m\" | Add-Content $log }",
@@ -207,6 +255,19 @@ def apply(zip_path, relaunch=True):
         "Expand-Archive -LiteralPath $zip -DestinationPath $extract -Force",
         "$src = Get-Item -LiteralPath (Join-Path $extract $packageRoot)",
         "if (-not (Test-Path (Join-Path $src.FullName 'CruisnCollection.exe'))) { Log 'zip has no CruisnCollection.exe - aborting'; exit 1 }",
+        "$proxy = Join-Path $app 'dinput8.dll'",
+        "if (Test-Path -LiteralPath $proxy) {",
+        "  $proxyHash = (Get-FileHash -LiteralPath $proxy -Algorithm SHA256).Hash.ToLowerInvariant()",
+        "  if ($legacyHashes -notcontains $proxyHash) { throw 'Input DLL changed or is unrecognized; installation not copied' }",
+        "  $resolvedProxy = (Resolve-Path -LiteralPath $proxy).Path",
+        "  if (-not $resolvedProxy.StartsWith($appPrefix, 'OrdinalIgnoreCase') -or ((Get-Item -LiteralPath $proxy).Attributes -band [IO.FileAttributes]::ReparsePoint)) { throw 'Refusing redirected input DLL' }",
+        "  $retired = Join-Path $work $retiredName",
+        "  New-Item -ItemType Directory -Path $retired | Out-Null",
+        "  $retired = (Resolve-Path -LiteralPath $retired).Path",
+        "  if (-not $retired.StartsWith($work.TrimEnd('\\') + '\\', 'OrdinalIgnoreCase')) { throw 'Retired DLL path is outside update workspace' }",
+        "  Move-Item -LiteralPath $resolvedProxy -Destination (Join-Path $retired 'dinput8.dll')",
+        "  Log \"retired known legacy input proxy ($proxyHash) to $retired\"",
+        "}",
         "Log \"copying $($src.FullName) -> $app\"",
         "robocopy $src.FullName $app /E /XD rig roms /R:5 /W:2 /NFL /NDL /NJH /NJS /NP | Out-Null",
         "if ($LASTEXITCODE -ge 8) { Log \"robocopy failed ($LASTEXITCODE)\"; exit 1 }",

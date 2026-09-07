@@ -8,6 +8,7 @@ import importlib.util
 from pathlib import Path
 import shutil
 import sys
+import subprocess
 import tempfile
 import types
 import unittest
@@ -94,6 +95,14 @@ class ReleaseLauncherTests(unittest.TestCase):
             self.assertEqual((self.root/'rig'/sub/'existing').read_bytes(),b'new scores and calibration')
             self.assertEqual((self.root/'rig'/sub/'missing').read_bytes(),b'import this')
         self.assertEqual(self.cfg.read_text(),'[collection]\nffb=40\n')
+
+    def test_process_inventory_matches_only_the_requested_executable(self):
+        child=subprocess.Popen([sys.executable,'-c','import time; time.sleep(10)'])
+        try:
+            self.assertIn(child.pid,{pid for pid,_ in self.rig.vunit_processes(exe=sys.executable)})
+            self.assertEqual(self.rig.vunit_processes(exe=str(self.root/'absent.exe')),[])
+        finally:
+            child.terminate();child.wait(timeout=10)  # test Python child, never a game
 
     def test_fresh_defaults_and_saved_choices_survive(self):
         state = self.shell.load_config()
