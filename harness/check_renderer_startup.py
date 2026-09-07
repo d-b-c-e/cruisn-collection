@@ -25,10 +25,13 @@ def main(argv=None):
     ap.add_argument('--candidate',type=Path,required=True)
     ap.add_argument('--output',required=True)
     ap.add_argument('--repeats',type=int,default=3)
+    ap.add_argument('--scales',type=int,nargs='+',choices=range(1,7),help='explicit launch scale sequence, e.g. 4 3 4; compares only repeats of the same scale')
     ap.add_argument('--only',choices=CASE_IDS,nargs='+',help='diagnostic subset, never reported as full coverage')
     ap.add_argument('--small-window',action='store_true',help='diagnostic reduced-output variant')
     args=ap.parse_args(argv)
     if not 1 <= args.repeats <= 20:ap.error('repeats must be 1..20')
+    if args.scales and len(args.scales)>20:ap.error('at most 20 scale launches')
+    scales=args.scales or [4]*args.repeats
     suite_path=ROOT/'fixtures/regressions/collection.json'
     suite=json.loads(suite_path.read_text(encoding='utf-8'))
     cases={row['id']:ROOT/row['path'] for row in suite['cases']}
@@ -37,27 +40,32 @@ def main(argv=None):
             'candidate_sha256':sha256_file(args.candidate),'source_identity':source_identity(ROOT)['sha256'],
             'suite_sha256':sha256_file(suite_path),'repeats':args.repeats,
             'subset':args.only,'small_window':args.small_window,'cases':[]}
+    report['scale_sequence']=scales
     expected=requested_frames(1700,1800,50)
     for name in args.only or CASE_IDS:
-        for iteration in range(args.repeats):
+        references={}
+        for iteration,scale in enumerate(scales):
             work=out/f'{name}-{iteration+1}'
             options=['--small-window'] if args.small_window else []
             rom=json.loads((cases[name]/'case.json').read_text(encoding='utf-8'))['rom']
             if rom != 'crusnexo':options+=['--gl-height',str(VUNIT_HEIGHT.get(family(rom),400))]
             code=replay.main([str(cases[name]),'--candidate',str(args.candidate),'--output',str(work),
                 '--until-frame','1804','--gl-capture','1700:1800','--gl-every','50','--gl-max','3',
-                '--gl-scale','4','--gl-crt','on','--timeout','180',*options])
-            row={'id':name,'iteration':iteration+1,'passed':False,'replay_exit':code,
+                '--gl-scale',str(scale),'--gl-crt','on','--timeout','180',*options])
+            row={'id':name,'iteration':iteration+1,'scale':scale,'passed':False,'replay_exit':code,
                  'report':str(work/'report.json')}
             try:
                 row['visual_content']=visual_content(work/'run/gl-snap')
-                row['repeat_gl']=compare_completed_frames(out/f'{name}-1/run/gl-snap',work/'run/gl-snap',expected)
+                reference=references.setdefault(scale,work/'run/gl-snap')
+                row['repeat_gl']=compare_completed_frames(reference,work/'run/gl-snap',expected)
+                row['repeat_reference']=str(reference)
+                row['independent_repeat']=reference!=work/'run/gl-snap'
                 row['passed']=code==0 and row['repeat_gl']['passed']
             except (OSError,ValueError,KeyError) as error:row['error']=str(error)
             report['cases'].append(row);write_json(out/'report.json',report)
             print(name,iteration+1,'PASS' if row['passed'] else 'FAIL',flush=True)
     report['passed']=all(row['passed'] for row in report['cases'])
-    report['full_coverage']=not args.only and not args.small_window and args.repeats>=3
+    report['full_coverage']=not args.only and not args.small_window and len(scales)>=3 and all(s==4 for s in scales)
     write_json(out/'report.json',report)
     return 0 if report['passed'] else 1
 
