@@ -399,9 +399,8 @@ class Shell:
     def draw_settings(self, ssel, title, rows, hint, t, notice=""):
         """One settings page: prepared (label, value) rows, one hint line.
 
-        Pages hold at most six rows, so each row gets more space than the
-        old flat list of fourteen (squeezed to 0.040) without growing the
-        text - the rig is a 43-inch screen at desk distance."""
+        Up to ten rows fit above the shared hint/footer, with text sized
+        for the rig's 43-inch screen at desk distance."""
         self.ctx.enable(moderngl.BLEND)
         self.rect(self.bg, 0, 0, self.w, self.h)
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
@@ -1803,7 +1802,8 @@ def main():
                 elif rid in graphics_options.OPTIONS and (lr or enter):
                     game = state.get("graphics_rom", state.get("rom", "crusnusa"))
                     if graphics_options.toggle(state.setdefault("graphics", {}), game, rid,
-                            state.get("world_rom", "crusnwld24") if game == "crusnwld" else game):
+                            state.get("world_rom", "crusnwld24") if game == "crusnwld" else game,
+                            direction=1 if right or enter else -1):
                         save_config(state)
                         audio.blip("nav")
                 elif rid == "scale" and (lr or enter):

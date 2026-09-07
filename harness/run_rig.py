@@ -1295,7 +1295,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     graphics_config = configparser.ConfigParser(interpolation=None)
     graphics_config.read(os.path.join(POC, "rig", "collection.ini"))
     graphics = launch_overrides(POC, rig, rom, effective_margin, scale,
-        graphics_config["collection"] if "collection" in graphics_config else {}, os.environ)
+        graphics_config["collection"] if "collection" in graphics_config else {}, os.environ,
+        use_saved_distance=not bool(record_world_trial))
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
@@ -1501,6 +1502,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # first line: what this launch actually applied (the support bundle
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
+                "MIDV_GL_CRACKFILL", "MIDV_WORLD_FAR", "MIDV_WORLD_LEAD", "MIDV_WORLD_CPU_PERCENT",
+                "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
                 "MIDV_GL_TJUNCTIONS", "MIDV_GL_MARGIN", "MIDV_GL_MARGINFILL",
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE",
                 "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",

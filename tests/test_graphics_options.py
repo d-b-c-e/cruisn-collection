@@ -31,6 +31,76 @@ class SceneryOptionTests(unittest.TestCase):
         self.assertTrue(state['crusnwld']['scenery_distance'])
 
 
+class WorldDistanceMenuTests(unittest.TestCase):
+    def test_persistence_reverse_adjustment_and_exclusive_scenery_paths(self):
+        state = G.load({})
+        self.assertEqual(state['crusnwld']['world_distance'], 0)
+        self.assertEqual(state['crusnwld']['world_lookahead'], 8)
+        G.toggle(state, 'crusnwld', 'scenery_distance', 'crusnwld24')
+        G.toggle(state, 'crusnwld', 'world_distance', 'crusnwld24', direction=-1)
+        self.assertEqual(state['crusnwld']['world_distance'], 3)
+        self.assertFalse(state['crusnwld']['scenery_distance'])
+        G.toggle(state, 'crusnwld', 'world_lookahead', 'crusnwld24')
+        self.assertEqual(state['crusnwld']['world_lookahead'], 12)
+        self.assertEqual(G.load(G.serialize(state)), state)
+        G.toggle(state, 'crusnwld', 'scenery_distance', 'crusnwld24')
+        self.assertEqual(state['crusnwld']['world_distance'], 0)
+        self.assertTrue(state['crusnwld']['scenery_distance'])
+        edited = G.load({'world_distance_crusnwld':'3', 'scenery_distance_crusnwld':'1'})
+        self.assertFalse(edited['crusnwld']['scenery_distance'])
+
+    def test_all_presets_compose_checked_widescreen_terrain_and_replace_old_limits(self):
+        section = {'world_distance_crusnwld':'3', 'terrain_visibility_crusnwld':'1'}
+        base = dict(read_patch(ROOT/'patch/game/crusnwld24-widescreen.txt'))
+        base.update(read_patch(ROOT/'patch/game/crusnwld-terrain-visibility-experimental.txt'))
+        with tempfile.TemporaryDirectory() as directory:
+            for distance in (3, 2):
+                for lead in (0, 8, 12):
+                    section.update(world_distance_crusnwld=str(distance), world_lookahead_crusnwld=str(lead))
+                    env = G.launch_overrides(ROOT, directory, 'crusnwld24', 86, 4, section, {})
+                    actual = read_patch(env['MIDV_PATCH'])
+                    far = distance * 80000
+                    self.assertEqual(actual[0x40], (80000, far))
+                    for address, opcode in G.world_distance.CLAMPS.items():
+                        self.assertEqual(actual[address], (opcode | 4999, opcode | (far // 16)))
+                    self.assertTrue(all(actual[a] == v for a, v in base.items()))
+                    self.assertEqual(env['MIDV_WORLD_FAR'], str(far))
+                    self.assertEqual(env['MIDV_WORLD_LEAD'], str(lead))
+                    self.assertEqual(env['MIDV_WORLD_CPU_PERCENT'], '100')
+                    self.assertEqual((env['MIDV_SCENERY'],env['MIDV_SCENERY_LEAD']), ('off','0'))
+            section['world_distance_crusnwld'] = '0'
+            env = G.launch_overrides(ROOT, directory, 'crusnwld24', 86, 4, section, {})
+            self.assertNotIn('MIDV_WORLD_FAR', env)
+            self.assertEqual(read_patch(env['MIDV_PATCH']), base)
+
+    def test_unsupported_revisions_and_display_modes_never_enable_native_hooks(self):
+        section = {'world_distance_crusnwld':'3', 'world_lookahead_crusnwld':'12'}
+        with tempfile.TemporaryDirectory() as directory:
+            for rom, margin, scale in [('crusnwld',86,4), ('crusnwld23',86,4),
+                    ('crusnusa',86,4), ('offroadc',86,4), ('crusnexo',86,4),
+                    ('crusnwld24',0,4), ('crusnwld24',86,1)]:
+                env = G.launch_overrides(ROOT, directory, rom, margin, scale, section, {})
+                self.assertFalse(any(key.startswith('MIDV_WORLD_') for key in env))
+                if 'MIDV_PATCH' in env:
+                    self.assertNotIn(0x40, read_patch(env['MIDV_PATCH']))
+        self.assertEqual(G.load(section)['crusnwld']['world_distance'], 3)
+        for option in ('world_distance', 'world_lookahead'):
+            self.assertFalse(G.toggle({}, 'crusnwld', option, 'crusnwld'))
+
+    def test_explicit_patch_and_attended_cli_trial_override_saved_distance(self):
+        section = {'world_distance_crusnwld':'3', 'world_lookahead_crusnwld':'12'}
+        with tempfile.TemporaryDirectory() as directory:
+            env = G.launch_overrides(ROOT, directory, 'crusnwld24', 86, 4, section,
+                                     {'MIDV_PATCH':'developer.txt'})
+            self.assertNotIn('MIDV_PATCH', env)
+            self.assertNotIn('MIDV_WORLD_FAR', env)
+            env = G.launch_overrides(ROOT, directory, 'crusnwld24', 86, 4, section, {},
+                                     use_saved_distance=False)
+            self.assertNotIn('MIDV_WORLD_FAR', env)
+            patch = G.world_distance.compose(env['MIDV_PATCH'], Path(directory)/'recording.txt', 160000)
+            self.assertEqual(read_patch(patch)[0x40], (80000,160000))
+
+
 class GraphicsOptionsTests(unittest.TestCase):
     def test_settings_stay_per_game_and_world_revisions_share_seams(self):
         settings = G.load({})
@@ -182,8 +252,12 @@ class LauncherGraphicsTests(unittest.TestCase):
             self.assertEqual(cp["wheelmap"]["steer"], "wheel|axis:0:0:pos")
             rows = collection.settings_rows("display", restored, False, "")
             self.assertNotIn("marginfill", [r[0] for r in rows])
+            self.assertNotIn("crackfill", [r[0] for r in rows])
             self.assertIn("graphics", [r[0] for r in rows])
             restored["graphics_rom"] = "offroadc"
             rows = {r[0]: r[2] for r in collection.settings_rows("graphics", restored, False, "")}
             self.assertEqual(rows["seam_alignment"], "ON")
             self.assertEqual(rows["detail_distance"], "UNAVAILABLE")
+            self.assertEqual(rows['world_distance'], 'UNAVAILABLE')
+            self.assertEqual(rows['crackfill'], 'ON')
+            self.assertTrue(restored['crackfill'])

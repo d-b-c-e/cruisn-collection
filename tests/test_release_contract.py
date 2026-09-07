@@ -110,7 +110,9 @@ class ReleaseLauncherTests(unittest.TestCase):
         self.assertIsNone(state['margin'])  # full 16:9
         self.assertEqual(state['world_rom'], 'crusnwld24')
         self.assertEqual((state['ffb'],state['ffbprofile']), (50,'cruisn-vunit@2'))
-        self.assertFalse(any(v for game in state['graphics'].values() for v in game.values()))
+        self.assertFalse(any(v for game in state['graphics'].values()
+                             for key,v in game.items() if key != 'world_lookahead'))
+        self.assertEqual(state['graphics']['crusnwld']['world_lookahead'], 8)  # inactive until distance is enabled
         self.write_config({'crt':'0','margin':'0','transmission':'sequential','ffb':'35','custom':'keep'},
                           {'shiftup':'Wheel|btn:5','shiftdn':'Wheel|btn:6'})
         state = self.shell.load_config()
