@@ -59,7 +59,7 @@ return function(n)
             current={serial=serial,frame=frame,emulator_frame=manager.machine.screens[':screen']:frame_number(),
               object=object,source=source,definition=definition,section_pointer=section,section_words=words(section,12),
               section_tag=d,section_flags=s:read_u32(0xd57d),heading=s:read_u32(0xd57e),
-              matrix=words(s:read_u32(0x7c58),9),loader=words(0xd575,17)}
+              matrix=words(s:read_u32(0x7c58),9),loader=words(0xd575,17),trig_constants=words(0xcc35,7)}
         end))
         taps[#taps+1]=s:install_read_tap(0xd58d,0xd58d,'section_object_ready',guarded(function(o,d,m)
             if cpu.state.PC.value~=0x7c1c then return end
