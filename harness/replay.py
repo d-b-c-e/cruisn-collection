@@ -192,6 +192,13 @@ def main(argv=None):
             report['world_distance'] = trial
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
+        if args.compare_gl and gl_key == 'MIDZ':
+            # Zeus covers its owner's monitor. MAME's automatic monitor choice
+            # can land on a secondary 1080p display despite a 4K reference.
+            from display_target import choose, monitors
+            target=choose(read_completed_frames(case/'record/gl-snap'),monitors())
+            command=set_option(command,'-screen',target['selected']['device'])
+            report['display_target']=target
         if args.small_window:
             command += ["-window", "-nomaximize"]
             report["window_override"] = "unmaximized; actual dimensions are recorded in captures.csv"

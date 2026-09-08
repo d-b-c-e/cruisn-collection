@@ -77,6 +77,8 @@ def compare_completed_frames(reference, candidate, expected=None, details=False)
     result = {"scope": "completed GL frame pixels", "passed": not different,
               "frames": len(a), "different_frames": different,
               "reference": str(Path(reference).resolve()), "candidate": str(Path(candidate).resolve())}
+    result['size_mismatches']=[{'frame':n,'reference':a[n]['size'],'candidate':b[n]['size']}
+                              for n in different if a[n]['size']!=b[n]['size']]
     if details:
         import numpy as np
         from PIL import Image
