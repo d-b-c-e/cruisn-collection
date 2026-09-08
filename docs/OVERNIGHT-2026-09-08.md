@@ -4,6 +4,13 @@ Authorized by the maintainer after requesting the v0.4.0 release. Finish and
 verify publication first. Preserve that tag and exact package as the rollback
 baseline. Work in separate commits; do not publish another release overnight.
 
+Release is now published and verified at tag v0.4.0 / c098290. Heartbeat
+`cruisn-overnight-cheats-and-distance` is active every 30 minutes, with the 08:00
+local checkpoint below. [Cheat preflight](reviews/2026-09-08-cheats-preflight.md)
+found 23 entries across the five applicable ROM revisions; none is runtime-validated
+yet. [Upstream inspection](reviews/2026-09-08-release-upstream-check.md) identifies
+a later Zeus2 change for separate post-release compatibility study.
+
 ## 1. Cheats submenu
 
 - [ ] Inspect the user's downloaded cheat archive in Downloads and MAME's existing

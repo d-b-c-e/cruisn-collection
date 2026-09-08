@@ -1,7 +1,8 @@
 # Next public release: roadmap and acceptance checklist
 
-Owner: maintainer + attended testers. Updated 2026-09-08. **v0.4.0 is explicitly
-approved by the maintainer, subject to renewed automated gates.**
+Owner: maintainer + attended testers. Updated 2026-09-08. **v0.4.0 is published**
+with maintainer sign-off and all renewed automated gates passing.
+See [release evidence](../results/proof/2026-09-08-v0.4.0-release/README.md).
 The [recorded sign-off](releases/v0.4.0-approval.md) accepts the current alpha's
 known issues and remaining human coverage. It supersedes older blockers below
 for this release only; unperformed checks must not be relabeled as passes.
@@ -140,7 +141,7 @@ Changes to product code, tests, workflows, profiles, patches or fixtures invalid
 old acceptance. Updates confined to the top-level README and `docs/` do not. A passing replay means the
 recording repeated, **not** that every texture or physical control is correct.
 
-Current blockers: updated attended gameplay/FFB acceptance (especially World's
+Follow-up coverage accepted as v0.4.0 limitations: updated attended gameplay/FFB acceptance (especially World's
 weak collision feel), Exotica direction and
 manual behavior, all-game telemetry/tactile acceptance, race-end force release,
 default-setting visual coverage beyond existing recorded cases,

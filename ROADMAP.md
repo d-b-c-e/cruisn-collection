@@ -13,7 +13,8 @@ capture) · 🙋 needs the user at the wheel
 
 ## Current priorities (2026-09-08, after v0.4.0)
 
-The maintainer approved the current release state. The ordered, actionable queue
+v0.4.0 is published, with its exact ZIP verified after download and release evidence
+archived in results/proof/2026-09-08-v0.4.0-release. The ordered, actionable queue
 is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
 
 1. **Cheats submenu for all four games**, using revision-compatible MAME cheats,

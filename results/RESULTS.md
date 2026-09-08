@@ -3950,3 +3950,35 @@ Updated release notes consolidate previously contradictory unreleased chronology
 Queued postrelease: Cheats first, Experiments beside Display second, global distance
 experiments for USA/World/Off Road/Exotica third. No unattended physical force.
 Fresh release checks and exact ZIP publication are in progress, not yet claimed.
+
+## 2026-09-08 — v0.4.0 published and downloaded-byte verified
+
+Published https://github.com/d-b-c-e/cruisn-collection/releases/tag/v0.4.0 from clean
+c098290aeaa1f19ca37d7bee56c747cbf51350b5; native97600e9597e remains unchanged.
+ZIP CruisnCollection-v0.4.0-20260908-000947.zip is111,918,111bytes, SHA256
+fd292b0d4ba4d2a97147c6ffc1fb95407e3891495dfb68fada2f899e3c31ba4a. Downloaded release
+asset and GitHub digest match exactly; local tag resolves to packaged commit.
+SHA256SUMS and package manifest uploaded too. Existing private visibility retained.
+
+All117Python tests and4CI34189532162 jobs PASS. Linux/Windows/local217-file source
+identity4c9dd0a3d246f9bfa1160360ad551e3af841da3ecf837200626def487d7eb30d matches.
+Full7replays PASS, actual UDP/independent drivetrain memory, World passthrough and
+Exotica cabinet polarity. All21ExoticaGL references match. Measured emulation
+intervals99.9726..100.0069%; no blanket presentation-pacing claim. All5fresh-save
+boot/replays preserve freeplay. Extracted frozen8pages/setup/support/4launches/12GL
+PASS. Actual upgrade helper preserves isolated state and matches1637packagefiles.
+24GPUfixtures/3pause-menu checks PASS. Both native exact comparisons100.0000%.
+
+Release gate READY with10configuration contracts and41explicit human-check waivers,
+not41observed passes. Maintainer's exact sign-off, known issues and package evidence
+are retained. Physical FFB remained disabled throughout. No personal rig settings
+or original recordings rewritten. Stream Deck still uses source launcher and
+E:/Source/mame-src/vunit.exe SHA b5ba0021a51a1f9ec50e105dde9c8112cb3c7e4ce71009ce4294841296383ee2.
+61derivedproof files archived at results/proof/2026-09-08-v0.4.0-release; archive SHA
+ccd2d8d81680626187dafffd10b2cd57616724148c5731609d1c9cade9a67be2, all entries verified.
+
+Overnight heartbeat cruisn-overnight-cheats-and-distance created, every30minutes,
+08:00local checkpoint. Priority Cheats, top-level Experiments, global distance
+across all4games. Nested downloaded cheat.7z has23entries for5supportedROMrevisions;
+preflight only, runtime validation queued. MAME#16046 already backported; newer
+Zeus2#16058 retained for separate postrelease study, no untested backport shipped.

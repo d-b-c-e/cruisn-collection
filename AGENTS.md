@@ -2,6 +2,15 @@
 
 ## Release authorization and overnight queue (2026-09-08)
 
+v0.4.0 is PUBLISHED at c098290aeaa1f19ca37d7bee56c747cbf51350b5, exact ZIP SHA
+fd292b0d4ba4d2a97147c6ffc1fb95407e3891495dfb68fada2f899e3c31ba4a. Download verified.
+Native97600e9597e unchanged. All7 current regressions/5 fresh boots/4 frozen launches,
+117tests/all4CI34189532162, GPU exact/quality and3 pause menus pass. 1637-file upgrade
+rehearsal preserves user-state fixtures. 217-file source identity4c9dd0a3 matches
+local/Linux/Windows. Proof: results/proof/2026-09-08-v0.4.0-release (61 derived files).
+41 human-check waivers are explicit; do not call them observed PASS results.
+Heartbeat cruisn-overnight-cheats-and-distance is active through the morning checkpoint.
+
 User explicitly signs off current state and authorizes v0.4.0 release. This
 supersedes older pending-approval statements below. Read
 docs/releases/v0.4.0-approval.md and docs/release-notes/v0.4.0.md.
