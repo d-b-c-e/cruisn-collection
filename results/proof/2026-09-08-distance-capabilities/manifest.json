@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "native_sha256": "eb2db42a90288bf37ac0dcce9b9ce2106c136fad198c52320ee2b3af3c435a97",
+  "native_commit": "44c3494d6af372d27612f330b86c8001b8c2535f",
+  "archive_sha256": "28a652be3e6064c26ce017df03a297d6b5becc5654072cecb6474f2eab3fb215",
+  "entries": {
+    "usa/report.json": "9adbb5f6e8a8211670fb33ae3ffb8ee15e38138f0881ecd47a829c52ec96471b",
+    "usa/distance-summary.json": "2e9879d11113beaa2b3f1c1b7c6a5f2ea942153481c6cc85c8a77234db6f3b2c",
+    "usa/distance-capability.csv": "e51aaadd7397ffa1a43419aae31f984d2526bce98701183f55a3c0fe26143967",
+    "usa/distance-layout.csv": "c403acaa9e6a8eed8a1f412b882eda12c6c75b4f60e754be47aa7c50f5bf335d",
+    "usa/invocation.json": "6169a558fe661a118f6f6cd26576f3696bb0948950d283d43ca2373b22a5bb4a",
+    "world24/report.json": "7f0353c01178f93150731a0b626f08a3c2fb6b1a5e7b06e2d9489f75409e8dd3",
+    "world24/distance-summary.json": "d0da0e02d0cf9e3fae624d7af83a15906a830d23d2829eab2899c2ee1e95491d",
+    "world24/distance-capability.csv": "d0fc97d22f147608054ca53ca70e54c41d2fa23da84eb33d45c089f24df60286",
+    "world24/distance-layout.csv": "b66e1467084664673a4efa58cc304dabba138181d6253c76c373ed053d1aaa9c",
+    "world24/invocation.json": "c9dda61893dae553925674fb7d20cd66b806071ad624cb15d408400ebbcd4792",
+    "world25/report.json": "9c066608417cd8f820817519ceac316ddf2a6752fe182bc3a78f4a3451771364",
+    "world25/distance-summary.json": "91dc9fdbfcb3b67a7a64a1700038607a40bf5510db73347412b39e51bbca373a",
+    "world25/distance-capability.csv": "23654b9b58debaa7650296c8e0c462285eef03d6a850e88870464e3ef2a0d11d",
+    "world25/distance-layout.csv": "7dc07aca2c7982604e22e8809c4d108588a229eff96d49cba4547d0e6e966f54",
+    "world25/invocation.json": "68c76e218391126ca998490f26edaacd9966fe000f991bc839290ffe98797992",
+    "offroad/report.json": "ade638a6a1c6a1efad1280aa09f4a18ec8935e17a03821c8eae0fc0ddba58ec5",
+    "offroad/distance-summary.json": "289c0f8a58390e92815f62d420a214b8fffac38d65b8cae387ccb20a067b150f",
+    "offroad/distance-capability.csv": "df39bd575ddb2bd825fe49d8cdc8abbea58ac8f1bafb883515001d235d6c3408",
+    "offroad/distance-layout.csv": "a00b4ca6df9776cc66c2adbfe829c291dac1b38e888c064953c26f62e232fb50",
+    "offroad/invocation.json": "6bfe29fe81ecba2474f0b5b67b79478285531ba1de81ae909bad30b3ad9d4043",
+    "exotica/report.json": "fe2d009455a00abea4ad73d6a58f45987022ac0f25c0437fdeb4c49e7f2dd368",
+    "exotica/distance-summary.json": "3b45e5fae18f3d37748def1ddedd7a0232e4bca857aea1e80dc444aed377aac8",
+    "exotica/distance-capability.csv": "446d1ab50fd43d56fd5971b58a5466b0a58604209e3d3b71101b79091219f644",
+    "exotica/distance-layout.csv": "80c5fa7d4259bbe7d432fc901781199dd3da37f2a2abc289f1dc5aabd011eb12",
+    "exotica/invocation.json": "d79640d524440e20e78348e45140429fb6f47a3fe81b3be92eed0644f0f3d0b7",
+    "exotica-gl/report.json": "de5b1afb4f45e293b39afb5d9f23949e84d8273ede1f8a86d578896480c6a06b",
+    "exotica-gl/distance-summary.json": "3b45e5fae18f3d37748def1ddedd7a0232e4bca857aea1e80dc444aed377aac8",
+    "exotica-gl/distance-capability.csv": "446d1ab50fd43d56fd5971b58a5466b0a58604209e3d3b71101b79091219f644",
+    "exotica-gl/distance-layout.csv": "80c5fa7d4259bbe7d432fc901781199dd3da37f2a2abc289f1dc5aabd011eb12",
+    "exotica-gl/invocation.json": "42d7aed4c33cb85ff1f065c001f4b0df3745937fc07311e777267889d3fa6a21",
+    "source/analyze_distance_capability.py": "73d7a23cf29f66cd5c45c195c781cd38b42fe383c16965e53501cdae2a1ec154",
+    "source/distance_capability.lua": "875b40a8f2946348ab114f61aac9f7a184fc145b44c11870ef2ca65b22bc90ba",
+    "source/test_distance_capability.py": "71f1b85b8b8a14c21c9b7f9baf06089d4be4a664c685d6aa2df9c127c016e0b3",
+    "checks/python-tests.txt": "9a34895266dfe7ee93e29d89b99b29c927aa6b94eca4e5f2ac0fd8afbd44c860",
+    "program-source-hashes.json": "35ed01568dc2b555df42454b5845c69a17dd7f92465018e292074027fc3de132"
+  },
+  "runs": [
+    {
+      "id": "usa",
+      "rom": "crusnusa",
+      "passed": true
+    },
+    {
+      "id": "world24",
+      "rom": "crusnwld24",
+      "passed": true
+    },
+    {
+      "id": "world25",
+      "rom": "crusnwld",
+      "passed": true
+    },
+    {
+      "id": "offroad",
+      "rom": "offroadc",
+      "passed": true
+    },
+    {
+      "id": "exotica",
+      "rom": "crusnexo",
+      "passed": false
+    },
+    {
+      "id": "exotica-gl",
+      "rom": "crusnexo",
+      "passed": true
+    }
+  ]
+}

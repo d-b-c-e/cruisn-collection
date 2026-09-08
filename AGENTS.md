@@ -1,5 +1,20 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Cross-game distance capability checkpoint (2026-09-08, 02:05)
+
+Read docs/reviews/2026-09-08-distance-capabilities.md. Bounded read-only gameplay
+probes cover all5 revisions; native44c3494d6af remains unchanged. Four4305-frame
+V-Unit controls pass; fullExotica6000/21GL passes and matches its headless distance
+trace. Initial Exotica headless48native-image FAIL is preserved, not a GL oracle.
+131tests pass. ROM-free35file proof recomputes all counters. USA has only3 plausible
+far rejects within3x plus900 INT_MAX-like visits: admission75k/removal80k must be
+investigated. Both World revisions have substantial80k..160k rejection; 2.5 table
+B665/pendingD586 are separately mapped. OffRoad uses DP1 float1B724=47296 and ROM
+tableCB0FC8 with63679 clamp, not World addresses. Exotica far204800 rejects nothing
+in this sample despite85388 reciprocal clamps. Do not sell a larger far multiplier
+as a fix without earlier visible scenery. NEXT guarded World2.5 adapter, USA
+admission+projection, separate OffRoad/Exotica paths. No product defaults/FFB change.
+
 ## Overnight Cheats and Experiments checkpoint (2026-09-08, 01:40)
 
 Read docs/reviews/2026-09-08-cheats-and-experiments.md. Cheats menu is implemented

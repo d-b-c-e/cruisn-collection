@@ -5,6 +5,9 @@
 - **Branch:** master
 
 ## What Was Done
+- Overnight02:05: all5revision distance capability matrix now measured. Native44c3494d6af unchanged.
+- Four4305frame V-Unit probes pass; Exotica6000/21GL passes with identical distance trace to headless.
+- 131tests pass;35file ROM-free proof recomputes counters. See docs/reviews/2026-09-08-distance-capabilities.md.
 - Overnight01:40: Cheats menu + top-level Experiments implemented/pushed in separate commits.
 - Native44c3494d6af bridge uses MAME engine; built eb2db42a90288bf37ac0dcce9b9ce2106c136fad198c52320ee2b3af3c435a97.
 - Full124patch export tree f7af3475d0ce0b6347e2be669338283437a81447 verified; source Stream Deck uses new native.
@@ -30,7 +33,9 @@
 
 ## Open Items
 - [x] Initial Cheats submenu and top-level Experiments. See docs/reviews/2026-09-08-cheats-and-experiments.md.
-- [ ] NEXT global distance capability matrix and guarded trials across all4games; no new distance code yet.
+- [x] Global distance capability matrix across all4games, including World2.4/2.5; no native changes yet.
+- [ ] NEXT guarded World2.5 global adapter; USA75k admission/80k removal plus virtual projection;
+      OffRoadfloat47296/ROMtable and Exoticaactivation require their own paths. No per-model allowlists.
 - [ ] Live cheat activation for one-shot/code-restoring actions; individual rank/nitro/custom-choice validation.
 - [ ] Physical second-wheel/manual/soak and wider track coverage remain unperformed alpha limitations.
 - [ ] World oscillation/normalization, New York black flashing and3x/+12crash remain known issues.

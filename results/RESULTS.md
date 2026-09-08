@@ -4023,3 +4023,18 @@ ad9ff1881ca4e3e8003794c98a911369e9b6c7fce05451015ebf3da78988c951; verifier check
 native bindings and recomputes five timer effects without ROMs. Next overnight
 work is global distance capability mapping/trials for all4games, World New York
 artifacts/crash. Heartbeat active until08:00local. All current runs completed.
+
+
+## 2026-09-08 02:05 — Cross-game distance capability baseline
+
+Read docs/reviews/2026-09-08-distance-capabilities.md. New bounded read-only Lua
+probe and ROM-free analyzer cover all five revisions. Four V-Unit 4305-frame
+controls pass inputs/native images; Exotica full6000/21 completed4K GL passes.
+The initial headless Exotica native-image FAIL remains retained; its measured
+distance trace exactly matches live GL. Native44c3494d6af/eb2db42 unchanged.
+131Python tests pass. World2.5 has 44807/223727 far rejects (all within2x); USA
+has only3 plausible extension visits plus900 INT_MAX-like visits; OffRoad has
+1173 within1.25x plus198 extreme distances; Exotica zero far rejects despite
+85388 reciprocal clamps. Static activation/table evidence is revision-specific,
+not a new visible-distance claim. No product/native/default/physical-force change.
+Next: guarded World2.5 port, USA admission+projection, separate OffRoad/Exotica paths.

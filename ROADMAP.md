@@ -23,8 +23,12 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    code-restoring actions and individual rank/nitro validation remain follow-up.
 2. **Experiments beside Display: complete.** Contexts, preferences and exclusions
    are preserved; Back returns to Settings. See [overnight evidence](docs/reviews/2026-09-08-cheats-and-experiments.md).
-3. **NEXT: Global draw-distance experiments for all four games**, prioritizing earlier
+3. **IN PROGRESS: Global draw-distance experiments for all four games**, prioritizing earlier
    visible mountains/trees and diagnosing activation, residency and draw limits.
+   The [capability matrix](docs/reviews/2026-09-08-distance-capabilities.md) now has
+   guarded gameplay measurements for all five revisions. World 2.5 is the next
+   adapter; USA needs earlier admission, Off Road a separate float path, and
+   Exotica has no far-plane rejects in its sample.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.

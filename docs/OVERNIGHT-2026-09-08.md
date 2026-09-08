@@ -41,9 +41,11 @@ a later Zeus2 change for separate post-release compatibility study.
 
 ## 3. Global draw-distance experiments across all four games
 
-- [ ] Create a capability/evidence matrix for USA, World, Off Road and Exotica:
+- [x] Create a capability/evidence matrix for USA, World, Off Road and Exotica:
   far clipping, reciprocal projection limits, scene activation/streaming, LOD,
   texture residency and draw budget. Keep verified facts separate from hypotheses.
+  Baseline: [five-revision gameplay evidence](reviews/2026-09-08-distance-capabilities.md);
+  actual far rejects differ substantially, so adapters must remain game-specific.
 - [ ] Reuse the World global experiment architecture for verified V-Unit layouts
   where evidence supports it. Guard instructions, revisions, ranges and option
   composition. Do not copy World addresses into other games. Exotica needs its own
