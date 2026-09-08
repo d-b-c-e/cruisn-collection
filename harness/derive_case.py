@@ -12,13 +12,15 @@ import sys
 from diagnostic_runtime import diagnostic_env, execute, new_run
 from game_patch import read_patch
 from gl_frames import read_completed_frames, requested_frames
-from session_case import Recording, compare_evidence, session_evidence, tree_hashes
+from session_case import Recording, compare_evidence, session_evidence, tree_hashes, set_option
 from session_clock import SessionClock
 from verification import sha256_file, write_json
 import replay
 import world_distance
 import usa_distance
 import exotica_visibility
+import offroad_distance
+from display_target import parse_size
 
 
 def inherited_settings(parent,settings):
@@ -77,9 +79,11 @@ def main(argv=None):
     ap.add_argument('--timeout', type=float, default=300)
     ap.add_argument('--gl-capture', help='FIRST:LAST completed GL frames, verified in both candidate runs')
     ap.add_argument('--gl-every', type=int, default=60)
+    ap.add_argument('--display-size',type=parse_size,help='freeze an actual WIDTH:HEIGHT display selection and maximized window in the candidate')
     world_distance.add_arguments(ap)
     usa_distance.add_arguments(ap)
     exotica_visibility.add_arguments(ap)
+    offroad_distance.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0: ap.error('timeout must be positive')
     work = new_run('derived-case', args.output)
@@ -91,6 +95,13 @@ def main(argv=None):
         manifest = json.loads((parent / 'case.json').read_text(encoding='utf-8'))
         validate_parent(parent, manifest)
         command = [str(args.candidate.resolve()), *manifest['command'][1:]]
+        if args.display_size:
+            from display_target import choose_size,monitors
+            target=choose_size(args.display_size,monitors())
+            command=set_option(command,'-screen',target['selected']['device'])
+            command=set_option(command,'-resolution','x'.join(map(str,args.display_size)))
+            command=[arg for arg in command if arg!='-nomaximize']+['-maximize']
+            report['display_target']=target
         settings = inherited_settings(parent,manifest['settings'])
         if args.patch:
             read_patch(args.patch)
@@ -110,6 +121,9 @@ def main(argv=None):
         exo_trial = exotica_visibility.configure(args, manifest['rom'], settings)
         if exo_trial:
             report['exotica_visibility'] = exo_trial
+        offroad_trial=offroad_distance.configure(args,manifest['rom'],settings)
+        if offroad_trial:
+            report['offroad_distance']=offroad_trial
         expected_gl = configure_gl(settings,manifest['rom'],args.gl_capture,args.gl_every,manifest['evidence']['frames'])
         env = diagnostic_env(settings)
         recording = Recording(work / 'case', every=manifest['every'],

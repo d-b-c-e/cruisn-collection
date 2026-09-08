@@ -2,6 +2,23 @@
 import ctypes
 from ctypes import wintypes as wt
 import os
+import argparse
+
+
+def parse_size(text):
+    try:
+        width,height=map(int,text.split(':'))
+        if width>=320 and height>=240:return width,height
+    except ValueError:
+        pass
+    raise argparse.ArgumentTypeError('expected display WIDTH:HEIGHT, at least 320:240')
+
+
+def choose_size(size,available):
+    matching=[m for m in available if tuple(m['size'])==tuple(size)]
+    if not matching:
+        raise ValueError(f'No display matches requested {size[0]}x{size[1]}; captures cannot silently use another display size')
+    return {'reference_size':list(size),'selected':next((m for m in matching if m['primary']),matching[0]),'available':available}
 
 
 def monitors():
@@ -27,8 +44,4 @@ def choose(reference_frames, available):
     sizes={tuple(row['size']) for row in reference_frames.values()}
     if len(sizes)!=1:raise ValueError('Zeus reference must have one fixed presentation size')
     size=next(iter(sizes))
-    matching=[m for m in available if tuple(m['size'])==size]
-    if not matching:
-        raise ValueError(f'No display matches Zeus reference {size[0]}x{size[1]}; exact pixels cannot be compared at another size')
-    selected=next((m for m in matching if m['primary']),matching[0])
-    return {'reference_size':list(size),'selected':selected,'available':available}
+    return choose_size(size,available)

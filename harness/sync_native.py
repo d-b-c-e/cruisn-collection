@@ -12,7 +12,7 @@ def main():
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
     failed = False
-    for name in ("hud_speed_filter.h", "hud_numeric_speed.h", "hud_drivetrain.h", "motor_signal.h", "tjunctions.h", "checked_patch.h", "retained_texture.h", "world_scenery.h", "world_distance.h", "usa_distance.h", "exotica_visibility.h", "cpu_upload_spans.h"):
+    for name in ("hud_speed_filter.h", "hud_numeric_speed.h", "hud_drivetrain.h", "motor_signal.h", "tjunctions.h", "checked_patch.h", "retained_texture.h", "world_scenery.h", "world_distance.h", "usa_distance.h", "offroad_distance.h", "exotica_visibility.h", "cpu_upload_spans.h"):
         source = ROOT / "native" / name
         target = args.mame / "src" / "mame" / "midway" / "cruisn" / name
         expected = source.read_bytes().replace(b"\r\n", b"\n")

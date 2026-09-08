@@ -1251,7 +1251,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
                       margin=None, ffb=None, marginfill=False,
                       mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False, record_clock=False,
-                      record_world_trial=None, record_usa_trial=None, record_exotica_trial=None):
+                      record_world_trial=None, record_usa_trial=None, record_exotica_trial=None, record_offroad_trial=None):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -1261,6 +1261,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         from world_distance import SUPPORTED_ROMS
         if not record_case or rom not in SUPPORTED_ROMS:
             raise ValueError('global distance trial requires a World 2.4/2.5 recording')
+    if record_offroad_trial and (not record_case or rom!='offroadc' or record_world_trial or record_usa_trial or record_exotica_trial):
+        raise ValueError('Off Road recording trial requires Off Road and no other game trial')
     if record_usa_trial and (not record_case or rom != 'crusnusa' or record_world_trial):
         raise ValueError('USA distance trial requires a USA 4.5 recording')
     if record_exotica_trial and (not record_case or rom!='crusnexo' or record_world_trial or record_usa_trial):
@@ -1493,6 +1495,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         launch_env, launch_dir = env, os.path.dirname(mame)
         log_path = os.path.join(rig, "launch.log")
         if recording:
+            if record_offroad_trial:
+                from types import SimpleNamespace
+                import offroad_distance
+                env=dict(env)
+                offroad_distance.configure(SimpleNamespace(offroad_distance=record_offroad_trial['multiplier']),rom,env)
             if record_exotica_trial:
                 from types import SimpleNamespace
                 import exotica_visibility
@@ -1539,7 +1546,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDV_CHEATS", "MIDV_GL", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
                 "MIDV_GL_CRACKFILL", "MIDV_WORLD_FAR", "MIDV_WORLD_LEAD", "MIDV_WORLD_CPU_PERCENT",
-                "MIDV_USA_FAR", "MIDV_USA_RESIDENCY", "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
+                "MIDV_USA_FAR", "MIDV_USA_RESIDENCY", "MIDV_OFFROAD_DISTANCE", "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
                 "MIDV_GL_TJUNCTIONS", "MIDV_GL_MARGIN", "MIDV_GL_MARGINFILL",
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE",
                 "MIDZ_VISIBILITY", "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",

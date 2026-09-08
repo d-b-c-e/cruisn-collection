@@ -23,6 +23,8 @@ from gl_frames import requested_frames, read_completed_frames, IncompleteCapture
 import world_distance
 import usa_distance
 import exotica_visibility
+import offroad_distance
+from display_target import parse_size
 
 
 def main(argv=None):
@@ -31,6 +33,7 @@ def main(argv=None):
     ap.add_argument("--output", help="new evidence directory (must not exist)")
     ap.add_argument("--headless", action="store_true", help="native snapshots, no GL presentation")
     ap.add_argument("--small-window", action="store_true", help="disable window maximization for cheaper dense GL captures")
+    ap.add_argument('--display-size',type=parse_size,help='select an actual WIDTH:HEIGHT display and maximize; captured client pixels may exclude borders')
     ap.add_argument("--clock", action="store_true", help="show external emulation time and frame; uses current diagnostic script")
     ap.add_argument("--clock-position", type=position, default=(12, 12), help="X:Y in screen pixels")
     ap.add_argument("--candidate", type=Path, help="explicit candidate executable for regression experiments")
@@ -71,11 +74,14 @@ def main(argv=None):
     world_distance.add_arguments(ap)
     usa_distance.add_arguments(ap)
     exotica_visibility.add_arguments(ap)
+    offroad_distance.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0:
         ap.error("timeout must be positive")
     if args.headless and args.small_window:
         ap.error("--small-window requires visible replay")
+    if args.display_size and (args.headless or args.small_window or args.compare_gl):
+        ap.error('--display-size requires visible replay without --small-window or --compare-gl')
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
     gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.gl_crt is not None or args.gl_height is not None or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.no_vram_batching or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
@@ -205,8 +211,19 @@ def main(argv=None):
         exo_trial = exotica_visibility.configure(args, manifest['rom'], manifest['settings'])
         if exo_trial:
             report['exotica_visibility'] = exo_trial
+        offroad_trial=offroad_distance.configure(args,manifest['rom'],manifest['settings'])
+        if offroad_trial:
+            report['offroad_distance']=offroad_trial
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
+        if args.display_size:
+            from display_target import choose_size,monitors
+            target=choose_size(args.display_size,monitors())
+            command=set_option(command,'-screen',target['selected']['device'])
+            command=set_option(command,'-resolution','x'.join(map(str,args.display_size)))
+            command=[arg for arg in command if arg!='-nomaximize']
+            command+=['-maximize']
+            report['display_target']=target
         if args.zeus_capture_frame is not None:
             zeus_capture_directory=runtime/'zeus-capture';zeus_capture_directory.mkdir()
             env.update(MIDZ_CAPTURE=str(zeus_capture_directory),MIDZ_CAPTURE_FRAME=str(args.zeus_capture_frame),MIDZ_CAPTURE_MINQUADS='0')

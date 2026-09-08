@@ -9,6 +9,7 @@ import run_rig
 import world_distance
 import usa_distance
 import exotica_visibility
+import offroad_distance
 from session_clock import SessionClock, position
 
 
@@ -24,6 +25,7 @@ def main(argv=None):
     world_distance.add_arguments(ap)
     usa_distance.add_arguments(ap)
     exotica_visibility.add_arguments(ap)
+    offroad_distance.add_arguments(ap)
     args = ap.parse_args(argv)
     card = collection.resolve_game_alias(args.game)
     if not card:
@@ -40,6 +42,7 @@ def main(argv=None):
         args.world_trial = world_distance.configure(args, rom, {})
         args.usa_trial = usa_distance.configure(args, rom, {})
         args.exotica_trial = exotica_visibility.configure(args, rom, {})
+        args.offroad_trial = offroad_distance.configure(args, rom, {})
     except ValueError as error:
         ap.error(str(error))
     output = args.output or Path(run_rig.POC) / "results" / "diagnostics" / (
@@ -55,6 +58,8 @@ def main(argv=None):
         print(f"EXPERIMENTAL USA global distance: {args.usa_trial}; route changes need attended acceptance.", flush=True)
     if args.exotica_trial:
         print(f"EXPERIMENTAL Exotica CPU visibility: {args.exotica_trial}; far plane unchanged.",flush=True)
+    if args.offroad_trial:
+        print(f"EXPERIMENTAL Off Road global distance: {args.offroad_trial}.",flush=True)
     print("Drive normally. F12 ends the game; wait for 'recording recorded' afterward.", flush=True)
     clock = SessionClock(output / "record", args.title or f"Recording: {rom}", args.clock_position)
     if not args.no_clock:
@@ -75,7 +80,7 @@ def record(args, state, card, rom, output):
         record_case=str(output), record_every=args.every,
         record_with_ffb=args.with_ffb, record_clock=not args.no_clock,
         record_world_trial=args.world_trial, record_usa_trial=args.usa_trial,
-        record_exotica_trial=args.exotica_trial)
+        record_exotica_trial=args.exotica_trial,record_offroad_trial=args.offroad_trial)
     if args.title:
         proc.recording.manifest["title"] = args.title
     while proc.poll() is None and (not hwnd or run_rig.u32.IsWindow(hwnd)):
