@@ -8,7 +8,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 from scenery_c31 import F
-from world_host_scenery import camera_center, rotation_matrix, model_counts, project, fast_quads
+from world_host_scenery import camera_center, rotation_matrix, model_counts, project, fast_quads, reciprocal_table
 from world_host_options import add_arguments,configure
 
 
@@ -76,6 +76,31 @@ class WorldModelTests(unittest.TestCase):
 
 
 class HostOptionsTests(unittest.TestCase):
+    def test_host_far_is_frozen_separately_and_off_removes_it(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        args=parser.parse_args(['--world-host-scenery','observe','--world-host-first','1',
+                               '--world-host-last','10','--world-host-far','240000'])
+        settings={};configure(args,'crusnwld24',settings)
+        self.assertEqual(settings['MIDV_WORLD_HOST_FAR'],'240000')
+        self.assertNotIn('MIDV_WORLD_FAR',settings)
+        self.assertEqual(configure(parser.parse_args([]),'crusnwld24',settings)['far'],240000)
+        settings['MIDV_WORLD_HOST_FAR']='12345'
+        with self.assertRaises(ValueError):configure(parser.parse_args([]),'crusnwld24',settings)
+        configure(parser.parse_args(['--world-host-scenery','off']),'crusnwld24',settings)
+        self.assertNotIn('MIDV_WORLD_HOST_FAR',settings)
+        with self.assertRaises(ValueError):
+            configure(parser.parse_args(['--world-host-far','160000']),'crusnwld24',settings)
+
+    def test_extended_table_preserves_every_original_word(self):
+        original={i:(i+80)^0x12345678 for i in range(-80,5000)}
+        before=dict(original)
+        twice=reciprocal_table(original,160000);triple=reciprocal_table(original,240000)
+        self.assertEqual(original,before)
+        self.assertTrue(all(twice[k]==v and triple[k]==v for k,v in original.items()))
+        self.assertEqual(len(twice),10081);self.assertEqual(len(triple),15081)
+        self.assertTrue(all(triple[k]==v for k,v in twice.items()))
+        self.assertGreater(F.load(twice[5000]).value(),F.load(twice[10000]).value())
+
     def test_revision_bounds_and_simulation_exclusions(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','5900','--world-host-last','6020'])

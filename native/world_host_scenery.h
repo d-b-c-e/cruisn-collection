@@ -2,6 +2,7 @@
 // Host-owned World 2.4 pending scenery. No guest memory writes or game execution.
 #pragma once
 #include "scenery_c31.h"
+#include "world_distance.h"
 #include <algorithm>
 #include <vector>
 
@@ -25,8 +26,9 @@ inline bool pointer(uint32_t p,uint32_t n)
 // pointer must never make this read-only adapter touch side-effecting I/O.
 {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
 
-template<class Read> bool build(Read read,Scene &scene)
+template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000)
 {
+    if(far!=80000 && far!=160000 && far!=240000)return false;
     // The caller guards the exact code, ROM revision and scene boundary.
     uint32_t cam=read(0x41),view=read(0x43),bill=read(0x48),origin=read(0x47)+2;
     uint32_t head=read(0x61ec),table=read(0x4d);
@@ -68,7 +70,7 @@ template<class Read> bool build(Read read,Scene &scene)
         }
         if(!pointer(model,3))return false;
         uint32_t radius=read(model),materials=read(model+1),header=read(model+2);
-        if(int64_t(depth)-radius<1000 || int64_t(depth)+radius>=80000){++scene.distance;continue;}
+        if(int64_t(depth)-radius<1000 || int64_t(depth)+radius>=far){++scene.distance;continue;}
         uint32_t pairs=(header&0x300)?((header>>10)&255)+1:0;
         uint32_t singles=header&255,polygons=(header>>18)+1,vertices=singles+2*pairs;
         if(!vertices || vertices>256 || polygons>1024 ||
@@ -89,8 +91,9 @@ template<class Read> bool build(Read read,Scene &scene)
         auto screen=[&](Float x,Float y,Float z)
         {
             int32_t index=z.fix()>>4;
-            if(index < -80 || index>4999){projection_ok=false;return;}
-            Float r=Float::load(read(uint32_t(int64_t(table)+index)));
+            if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(far))){projection_ok=false;return;}
+            Float r=Float::load(index<5000?read(uint32_t(int64_t(table)+index)):
+                cruisn::world_distance::reciprocal(uint32_t(index),far));
             Float sx=(x*r+ox).reload(),sy=((y*r)*yscale+oy).reload();
             if(sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767)
             {projection_ok=false;return;}

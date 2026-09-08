@@ -29,6 +29,17 @@ int main()
     assert(good.pending==1 && good.decoded==1 && good.objects.size()==1 && good.objects[0].quads.size()==1);
     cruisn::world_host::Quad expected={{0x100,0x200,246,189,266,189,266,210,246,210,0,16,4112,4096,0x60,0}};
     assert(good.objects[0].quads[0]==expected);
+    // Geometry beyond the guest table must use only host reciprocals. The read
+    // callback throws for every uncaptured address, including any table tail.
+    ram[0x10803]=f(96000);
+    const auto before=ram;
+    cruisn::world_host::Scene stock,extended,triple,invalid;
+    assert(cruisn::world_host::build(read,stock) && stock.distance==1 && stock.objects.empty());
+    assert(cruisn::world_host::build(read,extended,160000) && extended.decoded==1);
+    assert(cruisn::world_host::build(read,triple,240000) && triple.decoded==1);
+    assert(extended.objects[0].quads==triple.objects[0].quads && ram==before);
+    assert(!cruisn::world_host::build(read,invalid,100000));
+    ram[0x10803]=f(1024);
     ram[0x1080d]=0x993000;
     cruisn::world_host::Scene corrupt;
     assert(!cruisn::world_host::build(read,corrupt) && !io_read);

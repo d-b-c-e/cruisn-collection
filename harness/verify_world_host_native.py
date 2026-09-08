@@ -9,7 +9,7 @@ import struct
 import subprocess
 
 from scenery_c31 import F
-from world_host_scenery import camera_center, rotation_matrix, project, fast_quads
+from world_host_scenery import camera_center, rotation_matrix, project, fast_quads,reciprocal_table
 from verification import sha256_file, write_json
 
 
@@ -35,7 +35,7 @@ def memory_for_scene(rows,recip):
     return memory
 
 
-def check(binary,run=None):
+def check(binary,run=None,far=80000):
     env=dict(os.environ)
     if os.name=='nt':env['PATH']='E:/msys64/mingw64/bin;'+env.get('PATH','')
     fixture=Path(__file__).resolve().parents[1]/'fixtures/scenery/c31-vectors.json.xz'
@@ -55,11 +55,12 @@ def check(binary,run=None):
     runtime_seen=set()
     if run:
         pending=[json.loads(x) for x in (run/'world-pending-models.jsonl').read_text().splitlines()]
-        recip=dict(zip(range(-80,5000),struct.unpack('<5080I',(run/'world-transform-reciprocals.bin').read_bytes())))
+        original=dict(zip(range(-80,5000),struct.unpack('<5080I',(run/'world-transform-reciprocals.bin').read_bytes())))
+        recip=reciprocal_table(original,far)
         for frame in sorted({r['frame'] for r in pending}):
             entries=[r for r in pending if r['frame']==frame]
-            memory=memory_for_scene(entries,recip)
-            result=subprocess.run([str(binary),'--scene'],input=''.join(f'{a} {b}\n' for a,b in sorted(memory.items())),
+            memory=memory_for_scene(entries,original)
+            result=subprocess.run([str(binary),'--scene',str(far)],input=''.join(f'{a} {b}\n' for a,b in sorted(memory.items())),
                                   capture_output=True,text=True,env=env)
             if result.returncode:
                 scenes.append(dict(frame=frame,passed=False,error=result.stderr.strip()));continue
@@ -69,7 +70,7 @@ def check(binary,run=None):
                 if 'model_words' not in r:continue
                 center=camera_center(r['object_words'],r['camera'],r['view'])
                 depth=center[2].fix();radius=r['model_words'][0]
-                if depth-radius<1000 or depth+radius>=80000:continue
+                if depth-radius<1000 or depth+radius>=far:continue
                 matrix=r['billboard'] if r['object_words'][14]&8 else [x.store() for x in rotation_matrix(r['object_words'],r['view'])]
                 record=dict(r,fast=1,end_pc=0x242,matrix=matrix,camera_space=[x.store() for x in center]+r['origin'])
                 quads=fast_quads(record,project(record,recip))
@@ -89,6 +90,7 @@ def check(binary,run=None):
     return dict(schema=1,passed=math_ok and not uncovered and all(s['passed'] for s in scenes),
                 math_vectors=len(rows),math_passed=math_ok,scenes=scenes,
                 uncovered_runtime_scenes=uncovered,
+                host_far=far,
                 native_sha256=sha256_file(binary),fixture_sha256=sha256_file(fixture))
 
 
@@ -96,8 +98,9 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('binary',type=Path)
     parser.add_argument('--run',type=Path)
+    parser.add_argument('--far',type=int,choices=(80000,160000,240000),default=80000)
     parser.add_argument('--report',type=Path,required=True)
-    args=parser.parse_args();result=check(args.binary,args.run)
+    args=parser.parse_args();result=check(args.binary,args.run,args.far)
     write_json(args.report,result);print('PASS' if result['passed'] else 'FAIL',args.report)
     return 0 if result['passed'] else 1
 

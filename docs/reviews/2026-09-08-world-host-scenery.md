@@ -86,6 +86,30 @@ Full-route observe/draw, default cross-game regressions and larger completed ima
 are the next acceptance checks. Insertion before the main-object pass remains an
 occlusion experiment, not a general depth-order solution.
 
+## Separate host distance limits
+
+Native `cfba021b59e` adds `--world-host-far 80000|160000|240000` to the bounded
+diagnostic interface. This changes only host culling/projection: the game still
+uses its original far limit, reciprocal table and section activation. Original
+table words are read unchanged; extra reciprocals are calculated in host memory.
+The native binary SHA256 is
+`f320ecef22d8974772e89580b0cdba15d239c84d42d3f641c1737cd163aa7398`;
+132 exported patches reconstruct tree `51bd79f93b6d37b7c2f07e88fee94eed8e9e8449`.
+Both larger limits match independent Python projection across the 60 captured
+pending scenes. This checks geometry, not final visibility or correct occlusion.
+
+`analyze_world_host.py` compares full original input values/times, camera and actual
+ADC logs, native replay results and completed GL images. Its explicitly chosen
+GL expectation distinguishes an intended image change from a repeatability check.
+A changed image is never itself a visual-quality PASS. Scene counts must agree
+with actual logged host quads, and missing messages/dimension changes fail.
+
+The user restored the 3840×2160 monitor during testing. The earlier ultrawide run
+is retained with a display-transition notice. The fresh 4K-monitor observe control
+passes all 9,269 original inputs and 154 native snapshots and captures 31 completed
+GL frames at the actual 3824×2073 client size. Full candidate trials and default
+regressions on the new native binary are still pending at this source checkpoint.
+
 Then broaden static model coverage and decode future track sections outside guest
 RAM. Pending-object rendering alone has a finite lead and cannot promise the
 removal of every pop-in. USA/Off Road need separate layout/codec adapters; Exotica

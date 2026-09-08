@@ -5,6 +5,19 @@ modified. Initially restricted to World 2.4's main packed-model path; clipping a
 alternate road/car paths must be reported separately, never silently accepted.
 """
 from scenery_c31 import F, dot, signed
+import math
+import struct
+
+
+def reciprocal_table(original,far=80000):
+    if far not in (80000,160000,240000):raise ValueError('unsupported host far limit')
+    result=dict(original)
+    if far>80000:
+        for index in range(5000,far//16+1):
+            value=math.floor(512.0/(16*index+1)*1000000+0.5)/1000000
+            ieee=struct.unpack('<I',struct.pack('<f',value))[0]
+            result[index]=((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff)
+    return result
 
 
 def model_counts(header):
