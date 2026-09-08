@@ -30,9 +30,10 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    adapter is implemented and 2x repeats (see [evidence](docs/reviews/2026-09-08-world25-distance.md));
    USA now has [global CLI trials](docs/reviews/2026-09-08-usa-global-distance.md) with
    a repeatable2x candidate, but substantial original-route divergence and no
-   launcher promotion yet. Off Road's full projection table is reconstructed
-   exactly; its clipping/vertex path is next. Exotica needs a CPU-frustum probe
-   before changing its unused far limit.
+   launcher promotion yet. [Off Road2x/3x trials](docs/reviews/2026-09-08-offroad-global-distance.md)
+   show modest equal gains, with native cost/repeatability still open.
+   [Exotica's CPU-frustum audit](docs/reviews/2026-09-08-exotica-frustum.md) verifies
+   a global projection/margin hypothesis; a bounded completed-GL matrix is next.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.

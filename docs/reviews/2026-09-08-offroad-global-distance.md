@@ -61,9 +61,26 @@ and rejection of inconsistent/truncated counter traces. The full147-test Python
 suite passes. Native8b151aa9c2f/SHA638 remains unchanged. Runtime evidence is in
 `results/diagnostics/offroad-global-20260908`, including original failed trials.
 
-## Remaining checks
+## Matched scene and remaining checks
 
-Matched captures at frame4400 are being collected to compare original geometry,
-draw order and texture/palette resources. Candidate repeatability, a low-overhead
-implementation and broader attended driving are still required before launcher
-promotion. Do not describe the extra admissions alone as corrected scenery.
+Separate4,402-frame captures at frame4400 have identical camera state, texture
+RAM and palette RAM. The current scene goes from716 to739 quads:715 originals
+remain byte-identical and in the same relative order, one quad changes three
+screen-coordinate words while retaining its flags/color/UVs, and23 other quads
+are added. The strict additions-only geometry check remains FAIL because of that
+changed quad and earlier framebuffer history; do not relabel it a PASS.
+
+All386 changed words on the compared framebuffer page lie within added/changed
+quad coverage. The other page contains384 changed words, outside that check's
+current-page coverage. The all-VRAM test therefore retains those384 as unexplained
+by its narrower scope. The two completedGL frames4399/4400 change186/202 pixels
+near the distant central scenery. This supports a bounded visible extension,
+while remaining a limited scene/resource check.
+
+All four CI jobs34209001116 pass at410ad43. The archived proof recomputes distance,
+input, camera/ADC and ordered quad-hash conclusions without ROMs; raw texture/VRAM
+equality and completed-GL comparisons remain bound run receipts.
+
+Candidate repeatability, a low-overhead implementation and broader attended
+driving are still required before launcher promotion. Do not describe the extra
+admissions alone as corrected scenery or the Lua timing as native performance.

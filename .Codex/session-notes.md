@@ -5,6 +5,13 @@
 - **Branch:** master
 
 ## What Was Done
+- Latest04:25: Off Road/Exotica diagnostics5937063/410ad43; native8b/SHA638 unchanged, v0.4.0 ZIP rehashed unchanged.
+- Exotica339018 validated CPU sphere samples: true reciprocal predicts4051 extra/no losses;88px margins21717;both28610.6000inputs/21completed4KGL exact.
+- Exo acceptance marker68A3/PC68A4; earlier689D lies inside branchdelay and was rejected by analyzer.15file ROM-free proof, verified from Git blobs.
+- Off Road full2x/3x6000 controls: camera/ADCvalues equal,220 pixels in5/42GL512x451;2xvs3x identical. Initializer reset and unrelated ROM-read failures retained/fixed in diagnostic.
+- Off Road trace costs54%/53% emulation (control94%); no product promotion. At4400 texture/palette equal,715common quads ordered,1coordchange+23new. Strict geometryFAIL retained.
+- All147Python tests/4CI34209001116 pass at410ad43.92file Off Road ROM-free proof; no physicalFFB or Worldtuning.
+- Next bounded Exotica stock/true-reciprocal/margins/both GL matrix; then native low-overhead adapters if justified. No emulator/helper running; heartbeat continues to08:00local.
 - Latest USA: native8b151aa9c2f/638c74ff built/pushed,126patch exacttree5e10f68c9badba2385d38d6178eaae1be02d48b6.
 - USA CLI global adapter9e70f6a: five5012frame controls;1x exact, residency altersoldroute.2x repeats5012/83native/19GL1904x993.
 - All7currentdefaults actualtelemetry/memory/Worldpassthrough/Exo21GL pass.139tests/all4CI34202538087.
@@ -69,19 +76,41 @@
 5. At08:00America/Chicago Sep8 checkpoint and pause heartbeat; no additional release/visibility change authorized.
 
 ## Context for Next Session
-Native E:/Source/mame-src/vunit.exe SHA638c74ff4227532d0ff42be4cd46cb8a358a1a343549abb107bb56050e91bd74,
-HEAD8b151aa9c2f on poc/quadlog, pushed fork.126patch exacttree5e10f68c9badba2385d38d6178eaae1be02d48b6.
-Stream Deck uses source launcher and this binary. USA distance is CLI-only; no menu promotion.
-Source9e70f6a adds USA trials;92b6659 fixes World2.5 explicit attended-recording guard;
-fc24e0d/3628c96 make derivation verify completedGL.139tests/4CI34202538087 PASS;
-all237 local/Linux/Windows sourcehashes match946fc6523f110ddc2d91e5a481b4a6cbdd0cc067d73452cc3ab923e42023974c.
-The source menu already has Cheats and top-level Experiments beside Display.
-Publishedv0.4.0 ZIP/tag remain immutable. No newer release is published.
-Next: read docs/reviews/2026-09-08-distance-next-adapters.md. Off Road all67776 tableentries
-match an exact eight-decimal half-even reconstruction (naivePythonround fails2ties).
-Bounded1.25far may retain its current63680 clipping/table limits;2x needs all vertexpaths.
-Exotica mainculler factor is clamped at80k;67DA far204800 was unused in samples. Guarded
-frustum operand probe first. Never read overlappingobjectRAM inside a broadtable tap.
-Native/guest changes may alter ADC interpolation and replay routes. Preserve originals,
-require repeatability and fresh attended acceptance; don't label counts as visible improvements.
-PhysicalFFB off in automation. World force normalization remains deferred.
+Native E:/Source/mame-src/vunit.exe remains8b151aa9c2f on poc/quadlog, pushed fork,
+SHA638c74ff4227532d0ff42be4cd46cb8a358a1a343549abb107bb56050e91bd74.126patch export
+exacttree5e10f68c9badba2385d38d6178eaae1be02d48b6. Stream Deck uses source launcher
+and this binary. Cheats and top-level Experiments are complete; USA global CLI only.
+Publishedv0.4.0 ZIP/tag are immutable, rehashed unchanged04:22. No newrelease.
+
+Read docs/reviews/2026-09-08-exotica-frustum.md and offroad-global-distance.md first.
+Collection5937063/410ad43 diagnostics are committed/pushed,147tests/all4CI34209001116
+pass. Raw evidence results/diagnostics/{exotica-frustum,offroad-global}-20260908;
+proof folders same datednames under results/proof, ROM-free verifiers included.
+
+NEXT: Exotica CPU sphere counterfactual now validated. True reciprocal mainculler
+predicts4051extra admissions, horizontal88margin21717, combined28610; no visible
+change yet. Build bounded four-way Lua GPU trial first, retaining stock control.
+Only replace clamped readPC688C using depth cached atfar tapPC6888; preserve RAM,
+short-rangeC371/C375 helper and unusedfar204800. CPU horizontal center read67D0 at
+PC6898 can become344, upperplane67CE atPC689C can become687 for88px margins;
+other consumers MUST stay original. These precise values are a proposed trial,
+not implemented. Record effectivefactor/margin in observer; its current analyzer
+assumes stockreads. Independent accept marker68A3/PC68A4, not delay-slot689D.
+Run completedGL during2500..4300 plus candidate repeatability and resources. No
+newnative adapter until useful visible evidence; do not equate admissions to pixels.
+
+Off Road diagnostic2x/3x completes6000, camera/actualADCvalues equal to original,
+ADCschedule and originalpixels differ.2x/3x42GL equal,220pixel gain vs original.
+Fivewords include11221/11223 initializers; game resetsactive1B724/5 fourtimes.
+Virtualtail must check PC+AR0+actualindexedaddress; resourcePC1EA8 has staleAR0base.
+Large Lua ROMtap costs~half emulation speed, not product acceptance. At4400 texture/
+palette same;715original quads ordered,1changes3coords,23new. GeometrystrictFAIL
+preserved;386targetpage changes covered,384otherpage outside that narrow scope.
+Fullcandidate repeat, nativecost and attendeddrive remain open. SyntheticElPaso
+sample goes offcourse/slows; no broadlevel acceptance. Do not promote to menu yet.
+
+Native/guest changes can alter actual ADC interpolation/routes. Preserve originals;
+require repeatability and freshattended acceptance for handling. No physical FFB
+unattended. World normalization/oscillation tuning remains explicitly deferred.
+No emulator/helper remains. Heartbeat cruisn-overnight-cheats-and-distance stays
+active until08:00America/Chicago September8; finish safecheckpoint and pause then.

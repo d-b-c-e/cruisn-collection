@@ -4,7 +4,10 @@ These are static analysis leads from the program captures bound in
 `results/diagnostics/distance-layouts-20260908/sources.json`, plus the explicitly
 identified runtime observations below. They are not patches to apply blindly.
 All addresses are hexadecimal C3x word addresses. USA's adapter is now built in native `8b151aa9c2f`; see [its trial report](2026-09-08-usa-global-distance.md).
-Off Road and Exotica interventions below are not built.
+Off Road now has a bounded Lua trial, not a native product adapter; see
+[the results](2026-09-08-offroad-global-distance.md). Exotica now has
+[a validated read-only frustum audit](2026-09-08-exotica-frustum.md); its
+projection/margin intervention is still unbuilt. The static leads below are historical context.
 
 ## USA 4.5: complete the projection profile before extending admission
 

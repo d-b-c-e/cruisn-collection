@@ -4107,3 +4107,27 @@ Fivefocusedtests pass.15derivedfiles/16016714bytes proof archive
 results/proof/2026-09-08-exotica-frustum SHA27aceebcab12aca0dcd1b28ec9fec56d8ef19d82f2deed74c04fb5fad3899d4b
 recomputes all339018 decisions withoutROMs. Native8b/SHA638 unchanged; no physicalFFB.
 Next: boundedstock/true-reciprocal/margins/both GPU matrix, then resources/repeatability.
+
+
+## 2026-09-08 — Off Road coherent global trials, 04:25 checkpoint
+
+Collection410ad43 diagnostics; native8b/SHA638 unchanged. Full6000-frame original/2x/3x
+controls:4191camera samples and actualADCframe/value/PC equal, timestamps and original
+pixels differ.1.25culler adds9011admissions/15pixels in3of42;2x16971/220pixels in5of42;
+3x16977 and same42GL as2x. Maxindices95085/95782;11extended consumers. Guardedfiveword
+interval includesinitializers because game reinitializeslimits fourtimes; initial
+resetfailure retained. UnrelatedresourcePC1EA8 withstaleAR0 excluded by indexedaddress
+guard after initialattributionfailure. Lua instrumentation costs94.2059%control,
+54.2028%2x,53.1330%3x; no nativeperformance or launcherpromotion. Sample is short
+syntheticElPaso, offcourse and slows, not attendedfullrace.
+Matchedframe4400: textures/palette equal;715original quads same/order,onechanges3coords,
+23new. StrictgeometryFAIL retained;386targetpage changes covered,384otherpage changes
+outside narrowcurrentpagecoverage. TwoGLframes4399/4400 change186/202pixels.
+147tests/4CI34209001116 at410ad43 pass.92file4128469byte ROM-free archive
+results/proof/2026-09-08-offroad-global-distance SHAb6295bb08e60a39b6b8f2e8ed06919ad4b5df6c99ec789db87dc3e95c4445c2d
+recomputes five distance/input/motion trials and commonquadorder, retains negatives.
+Exotica5937063 audit separately15file proof; next true-reciprocal/margin/both GPUmatrix.
+v0.4.0 ZIP fd292b0d and native638 both rehashed unchanged04:22. No emulator/helper
+running, no physicalFFB, personalsettings or Worldforce tuning. Heartbeat continues
+to08:00local. SourceStreamDeckstillhasCheats/top-levelExperiments; these distance
+probes do not add launcheroptions.

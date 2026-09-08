@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Off Road / Exotica diagnostic checkpoint (2026-09-08, 04:25 local)
+
+Read docs/reviews/2026-09-08-offroad-global-distance.md and
+2026-09-08-exotica-frustum.md. Collection commits5937063/410ad43 add diagnostics,
+not native/launcher distance options. Native8b151aa9c2f/SHA638c74ff unchanged;
+v0.4.0 ZIP SHAfd292b0d unchanged. No personal settings or physical FFB touched.
+
+Off Road1.25 far-only adds15 pixels in3/42 completed512x451 samples. Bounded2x/3x
+extend far/clip/table coherently using five guarded words (including initializers)
+and a ROM-preserving virtual tail. Full6000-frame trials keep4191camera samples
+and actual ADC frame/value/PC equal; ADC times and original pixel comparisons FAIL.
+2x/3x both change220 pixels in5/42 samples, identical to each other; no3x gain.
+Maximum indices95085/95782, well below configured127359/191039. Probe costs54%/53%
+emulation, control94%; not native-performance acceptance. Atframe4400 textures/
+palette match,715 original quads keep order, one changes three coordinates,23 added.
+Strict geometryFAIL remains: altered original/history;386 target-page changedwords
+covered,384 other-page changes outside current-page scope. Syntheticdrive is short
+and goes off-course. No launcher promotion or fullcandidate/attended acceptance.
+
+Exotica read-only6000/21completed4KGL passes. All339018 CPU sphere decisions match
+captured pose/operands and independent acceptance;85350projection clamps,0far
+rejects204800. Predicted true reciprocal adds4051instances/no losses;88px margins
+alone21717,combined28610. These are CPU predictions, not pixels. Acceptance marker
+MUST be instruction68A3/PC68A4;689D is inside final reject delay slots. Original
+incorrect probe's replayPASS did not validate interpretation; negative sample kept.
+Next: bounded stock/true-reciprocal/margin/both GL matrix. Onlymainculler688B/PC688C;
+cache depth outside tabletap; keep C371/C375 helper and far204800 unchanged.
+
+147 Python tests/all4CI34209001116 at410ad43 PASS. Off Road92file ROM-free proof
+and Exotica15file proof recompute counters/motion/branch decisions; raw RAM/GL
+comparisons are hashed receipts, not independently rerendered. Both native/release
+hashes rechecked. No emulator/helper running at checkpoint. Heartbeat remains active
+to08:00local; next useful work is the Exotica GPU matrix, then low-overhead native
+adapters only if visible gain and resource/repeatability checks justify promotion.
+
 ## USA distance checkpoint (2026-09-08)
 
 Read docs/reviews/2026-09-08-usa-global-distance.md and the updated
