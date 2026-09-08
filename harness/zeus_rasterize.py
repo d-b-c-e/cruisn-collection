@@ -6,6 +6,10 @@ submission order and compares the result against post_color/post_depth -
 the oracle for the Zeus GL renderer, exactly like rasterize.py was for
 V-Unit.
 
+This CPU-buffer oracle requires native rasterization to be enabled explicitly.
+The normal live Zeus GL path skips CPU polygons; its unchanged CPU buffers do
+not validate gameplay. Use completed GL plus submission/resource comparisons.
+
 Semantics replicated bit-for-bit from MAME:
 - poly.h render_triangle: y-sort, round_coordinate (floor + frac>0.5),
   plane-equation param interpolation in float32, extent params at
@@ -24,6 +28,7 @@ import os
 import sys
 
 import numpy as np
+from zeus_capture import parse_records
 
 F = np.float32
 FB_COUNT = 512 * 1024 * 2          # frameColor/frameDepth entries
@@ -39,16 +44,6 @@ QUAD_DTYPE = np.dtype([
 
 FLAG_SOLID, FLAG_BLEND, FLAG_DMIN, FLAG_DTEST, FLAG_DWRITE, FLAG_DCLEAR, \
     FLAG_TALPHA, FLAG_RGB555 = (1 << i for i in range(8))
-
-
-def parse_records(path):
-    raw = open(path, "rb").read()
-    out, pos = [], 0
-    while pos + 8 <= len(raw):
-        t, n = np.frombuffer(raw[pos:pos + 8], "<u4")
-        out.append((int(t), raw[pos + 8:pos + 8 + int(n)]))
-        pos += 8 + int(n)
-    return out
 
 
 def round_coord(v):

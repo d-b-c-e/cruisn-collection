@@ -22,6 +22,7 @@ from session_clock import SessionClock, position
 from gl_frames import requested_frames, read_completed_frames, IncompleteCaptureError
 import world_distance
 import usa_distance
+import exotica_visibility
 
 
 def main(argv=None):
@@ -50,6 +51,7 @@ def main(argv=None):
     ap.add_argument("--align-tjunctions", action="store_true", help="explicit quality-only geometry join experiment")
     ap.add_argument("--compare-gl", action="store_true", help="require identical completed GL pixels against the recorded case")
     ap.add_argument("--zeus-native", action="store_true", help="explicit Zeus diagnostic: also rasterize native CPU frames")
+    ap.add_argument('--zeus-capture-frame',type=int,help='capture Zeus submission/resource records around one emulated frame')
     ap.add_argument("--zeus-stop-frame", type=int, help="diagnostic Zeus consumer failure at this completed frame")
     ap.add_argument("--video", choices=("gdi", "d3d", "bgfx"), help="explicit underlying MAME video-backend experiment")
     ap.add_argument("--native-renderer", action="store_true", help="windowed control with replacement GL disabled")
@@ -68,6 +70,7 @@ def main(argv=None):
     ap.add_argument("--patch-at-frame", type=int, help="apply the checked patch late, preserving earlier game history")
     world_distance.add_arguments(ap)
     usa_distance.add_arguments(ap)
+    exotica_visibility.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0:
         ap.error("timeout must be positive")
@@ -102,6 +105,8 @@ def main(argv=None):
             raise ValueError('requested renderer experiment is V-Unit-only')
         if (args.zeus_native or args.zeus_stop_frame is not None) and gl_key != 'MIDZ':
             raise ValueError('Zeus diagnostics require Exotica')
+        if args.capture_state and gl_key=='MIDZ':
+            raise ValueError('V-Unit state capture does not cover Zeus; use --zeus-capture-frame')
         if manifest.get("schema") != 1 or manifest.get("status") != "recorded":
             raise ValueError("case is not a completed schema-1 recording")
         if tree_hashes(case / "initial") != manifest["initial_hashes"]:
@@ -127,6 +132,8 @@ def main(argv=None):
                                           "kind": "explicit-prefix"}
         if args.patch_at_frame is not None and not 1 <= args.patch_at_frame < reference["frames"] - 2:
             raise ValueError("late patch must precede the final capture/stop frames")
+        if args.zeus_capture_frame is not None and (gl_key!='MIDZ' or not 2<=args.zeus_capture_frame<reference['frames']-1):
+            raise ValueError('Zeus capture requires Exotica and a frame before the replay drain interval')
         if gl_experiment:
             if manifest["settings"].get(gl_key+"_GL") != "1":
                 raise ValueError("GL diagnostics require a recording made with this game's GL renderer")
@@ -195,8 +202,14 @@ def main(argv=None):
         usa_trial = usa_distance.configure(args, manifest['rom'], manifest['settings'])
         if usa_trial:
             report['usa_distance'] = usa_trial
+        exo_trial = exotica_visibility.configure(args, manifest['rom'], manifest['settings'])
+        if exo_trial:
+            report['exotica_visibility'] = exo_trial
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
+        if args.zeus_capture_frame is not None:
+            zeus_capture_directory=runtime/'zeus-capture';zeus_capture_directory.mkdir()
+            env.update(MIDZ_CAPTURE=str(zeus_capture_directory),MIDZ_CAPTURE_FRAME=str(args.zeus_capture_frame),MIDZ_CAPTURE_MINQUADS='0')
         if args.compare_gl and gl_key == 'MIDZ':
             # Zeus covers its owner's monitor. MAME's automatic monitor choice
             # can land on a secondary 1080p display despite a 4K reference.
@@ -329,6 +342,11 @@ def main(argv=None):
                 report["effective_patch"] = verify_patch_ram(program_ram, patch_entries)
                 report["capture"]["sha256"][program_ram.name] = sha256_file(program_ram)
                 report["passed"] = report["passed"] and report["effective_patch"]["passed"]
+        if args.zeus_capture_frame is not None:
+            from zeus_capture import validate as validate_zeus_capture
+            if f'MIDZ capture complete in {zeus_capture_directory}' not in (runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'):
+                raise ValueError('Zeus capture completion receipt missing')
+            report['zeus_capture']=validate_zeus_capture(zeus_capture_directory,args.zeus_capture_frame)
     except (ValueError, OSError, KeyError, subprocess.SubprocessError) as exc:
         report["passed"] = False
         report["error"] = str(exc)

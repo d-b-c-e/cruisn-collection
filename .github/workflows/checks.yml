@@ -54,6 +54,8 @@ jobs:
       - run: /tmp/distance-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/usa_distance_test.cpp -o /tmp/usa-distance-test
       - run: /tmp/usa-distance-test
+      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/exotica_visibility_test.cpp -o /tmp/exotica-visibility-test
+      - run: /tmp/exotica-visibility-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/cpu_upload_spans_test.cpp -o /tmp/cpu-upload-test
       - run: /tmp/cpu-upload-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Ilib/toolkit/include native/analyze_ffb.cpp -o /tmp/ffb-analyzer

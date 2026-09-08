@@ -18,6 +18,17 @@ from verification import sha256_file, write_json
 import replay
 import world_distance
 import usa_distance
+import exotica_visibility
+
+
+def inherited_settings(parent,settings):
+    """Rebind frozen external inputs before Recording.prepare copies them again."""
+    result=dict(settings)
+    for key,name in (('MIDV_PATCH','game-patch.txt'),('MIDV_CHEATS','cheats')):
+        if key in result:
+            if result[key]!='@initial/'+name:raise ValueError('parent external input is not frozen: '+key)
+            result[key]=str(Path(parent)/'initial'/name)
+    return result
 
 
 def configure_gl(settings, rom, interval, every, stop):
@@ -53,7 +64,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument('parent', type=Path)
     ap.add_argument('--candidate', type=Path, required=True)
-    ap.add_argument('--patch', type=Path, required=True)
+    patch_group=ap.add_mutually_exclusive_group(required=True)
+    patch_group.add_argument('--patch', type=Path, help='replace the recorded V-Unit game patch')
+    patch_group.add_argument('--keep-patch',action='store_true',help='preserve the recorded patch, including no patch')
     ap.add_argument('--output', required=True)
     ap.add_argument('--title', required=True)
     ap.add_argument('--scenery', choices=('off', 'mountains', 'trees', 'all'),
@@ -66,6 +79,7 @@ def main(argv=None):
     ap.add_argument('--gl-every', type=int, default=60)
     world_distance.add_arguments(ap)
     usa_distance.add_arguments(ap)
+    exotica_visibility.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0: ap.error('timeout must be positive')
     work = new_run('derived-case', args.output)
@@ -76,22 +90,26 @@ def main(argv=None):
         parent = args.parent.resolve()
         manifest = json.loads((parent / 'case.json').read_text(encoding='utf-8'))
         validate_parent(parent, manifest)
-        read_patch(args.patch)
         command = [str(args.candidate.resolve()), *manifest['command'][1:]]
-        settings = dict(manifest['settings'])
-        settings['MIDV_PATCH'] = str(args.patch.resolve())
+        settings = inherited_settings(parent,manifest['settings'])
+        if args.patch:
+            read_patch(args.patch)
+            settings['MIDV_PATCH'] = str(args.patch.resolve())
         if args.scenery is not None:
             settings.update(MIDV_SCENERY=args.scenery, MIDV_SCENERY_LOG='1')
         if args.scenery_lead is not None:
             settings.update(MIDV_SCENERY_LEAD=str(args.scenery_lead), MIDV_SCENERY_LOG='1')
         trial = world_distance.configure(args, manifest['rom'], settings)
         if trial:
-            settings['MIDV_PATCH'] = str(world_distance.compose(args.patch, work/'global-distance-patch.txt', trial['far']))
+            settings['MIDV_PATCH'] = str(world_distance.compose(settings.get('MIDV_PATCH'), work/'global-distance-patch.txt', trial['far']))
             report['world_distance'] = trial
         usa_trial = usa_distance.configure(args, manifest['rom'], settings)
         if usa_trial:
-            settings['MIDV_PATCH'] = str(usa_distance.compose(args.patch, work/'usa-distance-patch.txt', usa_trial['far']))
+            settings['MIDV_PATCH'] = str(usa_distance.compose(settings.get('MIDV_PATCH'), work/'usa-distance-patch.txt', usa_trial['far']))
             report['usa_distance'] = usa_trial
+        exo_trial = exotica_visibility.configure(args, manifest['rom'], settings)
+        if exo_trial:
+            report['exotica_visibility'] = exo_trial
         expected_gl = configure_gl(settings,manifest['rom'],args.gl_capture,args.gl_every,manifest['evidence']['frames'])
         env = diagnostic_env(settings)
         recording = Recording(work / 'case', every=manifest['every'],
@@ -100,7 +118,7 @@ def main(argv=None):
                                                   stimulus=parent / 'record/input/session.inp')
         recording.manifest.update(title=args.title, derived_from={
             'case': str(parent), 'case_sha256': sha256_file(parent / 'case.json'),
-            'inp_sha256': manifest['inp_sha256'], 'change': 'explicit candidate executable and game patch'})
+            'inp_sha256': manifest['inp_sha256'], 'change': 'explicit candidate executable/settings; '+('recorded patch preserved' if args.keep_patch else 'game patch replaced')})
         write_json(recording.path / 'case.json', recording.manifest)
         clock = SessionClock(runtime, args.title)
         if args.clock: clock.start()

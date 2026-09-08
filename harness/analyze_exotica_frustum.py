@@ -11,6 +11,7 @@ import struct
 from verification import sha256_file,write_json
 
 FIELDS='frame sequence list object flags model depth radius index far x y z factor yl yu xl xu accepted'.split()
+TRIAL_FIELDS=FIELDS+['original_factor','reciprocal','margin']
 
 
 def c31(word):
@@ -46,23 +47,30 @@ def evaluate(row):
             or r['index']!=min(4999,max(0,r['depth'])//16)):
         raise ValueError('invalid culler sample')
     raw={k:int(row[k],16) for k in ('list','object','flags','model','x','y','z','factor')}
+    reciprocal=int(row.get('reciprocal',0));margin=int(row.get('margin',0))
+    original_factor=int(row.get('original_factor',row['factor']),16)
+    if reciprocal not in (0,1) or margin not in (0,88):raise ValueError('unsupported frustum trial')
     if raw['list'] not in (0,0xbbb5,0xbbb6,0xbbb7,0xbbb8) or not 0x1000<=raw['object']<0x40000-0x16:
         raise ValueError('unexpected list/object')
     x,y,z,factor=(c31(raw[k]) for k in ('x','y','z','factor'))
     if not all(math.isfinite(v) for v in (x,y,z,factor)) or factor<=0 or abs(z-r['depth'])>1.01:
         raise ValueError('pose/depth/factor mismatch')
     observed={k:ieee(row[k]) for k in ('yl','yu','xl','xu') if row[k]}
+    if 'xu' in observed:observed['xu']-=margin # normalize the shifted center to original coordinates
+    index=max(0,r['depth'])//16
+    true_factor=struct.unpack('<f',struct.pack('<f',math.floor(512/(index*16+1)*1000000+.5)/1000000))[0] if index>4999 else c31(original_factor)
+    expected_factor=true_factor if reciprocal and index>4999 and r['depth']+r['radius']<=r['far'] else c31(original_factor)
+    if factor!=expected_factor:raise ValueError('effective factor does not match the requested trial')
     expected=planes(x,y,r['radius'],factor)
     errors={k:abs(v-expected[k]) for k,v in observed.items()}
     if any(error>max(.002,abs(expected[k])*3e-6) for k,error in errors.items()):
         raise ValueError('actual sphere operands disagree with captured pose/reciprocal')
-    reason=rejection(r['depth'],r['radius'],r['far'],{**expected,**observed})
+    reason=rejection(r['depth'],r['radius'],r['far'],{**expected,**observed},margin)
     # Delayed branches execute some later operands even when already rejected.
     stages={'far':set(),'yl':{'yl','yu'},'yu':{'yl','yu','xl'},
             'xl':{'yl','yu','xl','xu'},'xu':{'yl','yu','xl','xu'},'accepted':{'yl','yu','xl','xu'}}
     if set(observed)!=stages[reason] or r['accepted']!=(reason=='accepted'):
         raise ValueError('observed stage/acceptance contradicts branch conditions')
-    index=max(0,r['depth'])//16
     actual_factor=factor
     if index>4999:
         factor=struct.unpack('<f',struct.pack('<f',math.floor(512/(index*16+1)*1000000+.5)/1000000))[0]
@@ -72,6 +80,7 @@ def evaluate(row):
     wide=rejection(r['depth'],r['radius'],r['far'],expected,88)
     combined=rejection(r['depth'],r['radius'],r['far'],planes(x,y,r['radius'],factor),88)
     return dict(**r,**raw,reason=reason,predicted=predicted,unclamped_index=index,
+                reciprocal=reciprocal,margin=margin,original_factor=original_factor,
                 predicted_wide88=wide,predicted_combined88=combined,
                 extended=index>4999,factor_value=actual_factor,predicted_factor=factor,
                 maximum_operand_error=max(errors.values(),default=0))
@@ -79,13 +88,16 @@ def evaluate(row):
 
 def summarize(path):
     path=Path(path);count=0;previous_frame=0;reasons=Counter();predicted=Counter();by_list={};new=[];lost=[]
-    first=None;last=None;extended=0;max_error=0;max_depth=0;wide=Counter();combined=Counter()
+    first=None;last=None;extended=0;max_error=0;max_depth=0;wide=Counter();combined=Counter();config=None
     with path.open(newline='',encoding='utf-8') as f:
         reader=csv.DictReader(f)
-        if reader.fieldnames!=FIELDS:raise ValueError('unexpected frustum columns')
+        if reader.fieldnames not in (FIELDS,TRIAL_FIELDS):raise ValueError('unexpected frustum columns')
         for row in reader:
             if None in row or any(v is None for v in row.values()):raise ValueError('incomplete frustum row')
             r=evaluate(row);count+=1
+            pair=(r['reciprocal'],r['margin'])
+            if config is not None and config!=pair:raise ValueError('frustum trial changed during observation')
+            config=pair
             if r['sequence']!=count or r['frame']<previous_frame:raise ValueError('noncontiguous sequence or frame order')
             previous_frame=r['frame'];first=r['frame'] if first is None else first;last=r['frame']
             reasons[r['reason']]+=1;predicted[r['predicted']]+=1
@@ -104,6 +116,7 @@ def summarize(path):
             v['samples']+=1;v['last_frame']=r['frame'];v['minimum_depth']=min(v['minimum_depth'],r['depth']);v['maximum_depth']=max(v['maximum_depth'],r['depth'])
         return objects
     return dict(schema=1,scope=__doc__,source_sha256=sha256_file(path),frames=[first,last],samples=count,
+                trial=dict(reciprocal=config[0],margin=config[1]),
                 extended_samples=extended,maximum_depth=max_depth,maximum_operand_error=max_error,
                 actual_reasons=dict(reasons),predicted_reasons=dict(predicted),by_list=by_list,
                 predicted_wide88_reasons=dict(wide),predicted_combined88_reasons=dict(combined),

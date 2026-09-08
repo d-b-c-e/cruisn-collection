@@ -1,18 +1,28 @@
--- Read-only Exotica 2.4 CPU sphere-culler audit. No guest writes or replacement reads.
+-- Exotica 2.4 CPU sphere audit, read-only unless explicitly opted into a trial.
+-- RECIPROCAL=1 supplies a true far factor; MARGIN=88 expands only CPU sphere tests.
+-- Both are bounded read replacements. No guest RAM or ROM bytes are written.
 -- Cache object/fast RAM at the far comparison, never from a reciprocal-table tap.
 local cpu=manager.machine.devices[':maincpu'];local s=cpu.spaces.program
 assert(manager.machine.system.name=='crusnexo','Exotica2.4 only')
 local first=tonumber(os.getenv('CRUISN_EXOTICA_FIRST') or '2500')
 local last=tonumber(os.getenv('CRUISN_EXOTICA_LAST') or '4300')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>first and last-first<=12000)
+local reciprocal=tonumber(os.getenv('CRUISN_EXOTICA_RECIPROCAL') or '0')
+local margin=tonumber(os.getenv('CRUISN_EXOTICA_MARGIN') or '0')
+assert((reciprocal==0 or reciprocal==1) and (margin==0 or margin==88),'unsupported Exotica trial')
 local frame,taps,out,current,failed,sequence,list=0,{},nil,nil,nil,0,0
+local factors={}
+local function c31(value)
+ local ieee=string.unpack('<I4',string.pack('<f',value))
+ return ((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff)
+end
 local function signed(v) return v>=0x80000000 and v-0x100000000 or v end
 local function flush()
  if not current then return end
  local r=current
- assert(out:write(string.format('%d,%d,%x,%x,%x,%x,%d,%d,%d,%d,%08x,%08x,%08x,%08x,%s,%s,%s,%s,%d\n',
+ assert(out:write(string.format('%d,%d,%x,%x,%x,%x,%d,%d,%d,%d,%08x,%08x,%08x,%08x,%s,%s,%s,%s,%d,%08x,%d,%d\n',
   r.frame,r.seq,r.list,r.object,r.flags,r.model,r.depth,r.radius,r.index,r.far,
-  r.x,r.y,r.z,r.factor,r.yl or '',r.yu or '',r.xl or '',r.xu or '',r.accepted)))
+  r.x,r.y,r.z,r.factor,r.yl or '',r.yu or '',r.xl or '',r.xu or '',r.accepted,r.original_factor,reciprocal,margin)))
  current=nil
 end
 local function close()
@@ -23,8 +33,9 @@ cruisn_exotica_frustum_stop=emu.add_machine_stop_notifier(close)
 local function tap(a,b,name,callback)
  taps[#taps+1]=s:install_read_tap(a,b,name,function(o,d)
   if failed then return end
-  local ok,reason=pcall(callback,o,d);if not ok then failed=tostring(reason) end
-  -- Deliberately no replacement return value.
+  local ok,result=pcall(callback,o,d)
+  if not ok then failed=tostring(result);return end
+  return result -- nil for observation; replacement only at explicitly guarded PCs.
  end)
 end
 local function operand(pc,name,register)
@@ -45,8 +56,13 @@ return function(n)
     {0x682f,0x082fbbb7},{0x6833,0x082fbbb8}}) do
    assert(s:read_u32(w[1])==w[2],string.format('Exotica frustum profile mismatch at%x',w[1]))
   end
+  if reciprocal==1 then
+   for i=5000,12800 do
+    factors[i]=c31(math.floor(512/(16*i+1)*1000000+0.5)/1000000)
+   end
+  end
   out=assert(io.open('exotica-frustum.csv','w'));out:setvbuf('full',65536)
-  out:write('frame,sequence,list,object,flags,model,depth,radius,index,far,x,y,z,factor,yl,yu,xl,xu,accepted\n')
+  out:write('frame,sequence,list,object,flags,model,depth,radius,index,far,x,y,z,factor,yl,yu,xl,xu,accepted,original_factor,reciprocal,margin\n')
   tap(0xbbb5,0xbbb8,'exotica_render_lists',function(o,d)
    local pcs={[0x6820]=0xbbb5,[0x6824]=0xbbb6,[0x6830]=0xbbb7,[0x6834]=0xbbb8}
    if pcs[cpu.state.PC.value]==o then list=o end
@@ -60,6 +76,7 @@ return function(n)
    -- These reads cannot recursively hit this tap, even for a corrupt object.
    assert(object+0x14~=0x67da and object+0x15~=0x67da and object+0xf~=0x67da and object+0x11~=0x67da)
    local depth=signed(s:read_u32(object+0x14));local radius=signed(s:read_u32(object+0x15))
+   assert(radius>=0,'negative sphere radius')
    local index=cpu.state.R3.value
    assert(d==204800 and signed(cpu.state.R2.value)==depth+radius,'far comparison changed')
    assert(index==math.min(4999,math.max(0,depth)//16),'culler clamp does not match cached depth')
@@ -69,12 +86,34 @@ return function(n)
     model=s:read_u32(object+0x11),depth=depth,radius=radius,index=index,far=d,
     x=s:read_u32(0x87ff47),y=s:read_u32(0x87ff48),z=s:read_u32(0x87ff49),
     factor=s:read_u32(0xeaab+index),accepted=0}
+   current.original_factor=current.factor
+  end)
+  tap(0xeaab+4999,0xeaab+4999,'exotica_clamped_reciprocal',function(o,d)
+   if cpu.state.PC.value~=0x688c or not current then return end
+   assert(cpu.state.AR7.value==current.object and cpu.state.AR3.value==0xeaab
+      and cpu.state.IR0.value==4999 and current.index==4999,'reciprocal consumer changed')
+   assert(d==current.original_factor,'original reciprocal changed')
+   local index=math.max(0,current.depth)//16
+   if reciprocal==1 and index>4999 and current.depth+current.radius<=current.far then
+    current.factor=assert(factors[index],'true reciprocal exceeds verified far limit')
+    return current.factor
+   end
   end)
   tap(0x67d1,0x67d1,'exotica_y_planes',function(o,d)
    operand(0x6890,'yl','R2F');operand(0x6893,'yu','R3F')
   end)
-  tap(0x67d0,0x67d0,'exotica_x_lower',function(o,d) operand(0x6898,'xl','R2F') end)
-  tap(0x67ce,0x67ce,'exotica_x_upper',function(o,d) operand(0x689c,'xu','R2F') end)
+  tap(0x67d0,0x67d0,'exotica_x_lower',function(o,d)
+   operand(0x6898,'xl','R2F')
+   if margin>0 and current and cpu.state.PC.value==0x6898 then
+    assert(d==0x08000000,'horizontal center changed');return c31(256+margin)
+   end
+  end)
+  tap(0x67ce,0x67ce,'exotica_x_upper',function(o,d)
+   operand(0x689c,'xu','R2F')
+   if margin>0 and current and cpu.state.PC.value==0x689c then
+    assert(d==0x087f8000,'horizontal plane changed');return c31(511+2*margin)
+   end
+  end)
   -- The 0FF9 read at689D is inside the final X-reject branch delay slots.
   -- 68A3 executes after those slots and therefore proves all sphere tests passed.
   tap(0x67d9,0x67d9,'exotica_sphere_pass',function(o,d)

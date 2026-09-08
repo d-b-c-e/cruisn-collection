@@ -1251,7 +1251,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
                       margin=None, ffb=None, marginfill=False,
                       mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False, record_clock=False,
-                      record_world_trial=None, record_usa_trial=None):
+                      record_world_trial=None, record_usa_trial=None, record_exotica_trial=None):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -1263,6 +1263,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             raise ValueError('global distance trial requires a World 2.4/2.5 recording')
     if record_usa_trial and (not record_case or rom != 'crusnusa' or record_world_trial):
         raise ValueError('USA distance trial requires a USA 4.5 recording')
+    if record_exotica_trial and (not record_case or rom!='crusnexo' or record_world_trial or record_usa_trial):
+        raise ValueError('Exotica visibility trial requires an Exotica 2.4 recording')
     # the live Zeus GL overlay is the default for Zeus games; MIDZ_GL=0
     # in the environment falls back to MAME's own d3d/bgfx presentation
     zeus_gl = rom in ZEUS_ROMS and os.environ.get("MIDZ_GL", "1") != "0"
@@ -1489,6 +1491,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         launch_env, launch_dir = env, os.path.dirname(mame)
         log_path = os.path.join(rig, "launch.log")
         if recording:
+            if record_exotica_trial:
+                from types import SimpleNamespace
+                import exotica_visibility
+                env=dict(env)
+                exotica_visibility.configure(SimpleNamespace(exotica_visibility=record_exotica_trial['mode']),rom,env)
             if record_world_trial or record_usa_trial:
                 import tempfile
                 from pathlib import Path
@@ -1533,7 +1540,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 "MIDV_USA_FAR", "MIDV_USA_RESIDENCY", "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
                 "MIDV_GL_TJUNCTIONS", "MIDV_GL_MARGIN", "MIDV_GL_MARGINFILL",
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE",
-                "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",
+                "MIDZ_VISIBILITY", "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",
                 "MIDV_FFB",
                 "MIDV_FFB_STRENGTH", "MIDV_FFB_DEVICE", "MIDV_FFB_INVERT",
                 "MIDV_FFB_PROFILE", "MIDV_FFB_RUMBLE", "MIDV_FFB_DAMPER",
