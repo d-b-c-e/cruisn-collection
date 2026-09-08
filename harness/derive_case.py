@@ -11,12 +11,28 @@ import sys
 
 from diagnostic_runtime import diagnostic_env, execute, new_run
 from game_patch import read_patch
+from gl_frames import read_completed_frames, requested_frames
 from session_case import Recording, compare_evidence, session_evidence, tree_hashes
 from session_clock import SessionClock
 from verification import sha256_file, write_json
 import replay
 import world_distance
 import usa_distance
+
+
+def configure_gl(settings, rom, interval, every, stop):
+    if interval is None:
+        return None
+    first,last = map(int,interval.split(':'))
+    if not 0 <= first < last < stop-1:
+        raise ValueError('GL interval must leave a completed frame before the recording stops')
+    frames = requested_frames(first,last,every)
+    key = 'MIDZ' if rom=='crusnexo' else 'MIDV'
+    if settings.get(key+'_GL')!='1':
+        raise ValueError('GL capture requires the recorded game renderer')
+    settings.update({key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',
+        SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_EVERY=str(every),SNAP_MAX=str(len(frames))).items()})
+    return frames
 
 
 def validate_parent(case, manifest):
@@ -46,6 +62,8 @@ def main(argv=None):
                     help='archive native background activation lead; 0 disables earlier activation')
     ap.add_argument('--clock', action='store_true', help='show the external emulation clock in both runs')
     ap.add_argument('--timeout', type=float, default=300)
+    ap.add_argument('--gl-capture', help='FIRST:LAST completed GL frames, verified in both candidate runs')
+    ap.add_argument('--gl-every', type=int, default=60)
     world_distance.add_arguments(ap)
     usa_distance.add_arguments(ap)
     args = ap.parse_args(argv)
@@ -74,6 +92,7 @@ def main(argv=None):
         if usa_trial:
             settings['MIDV_PATCH'] = str(usa_distance.compose(args.patch, work/'usa-distance-patch.txt', usa_trial['far']))
             report['usa_distance'] = usa_trial
+        expected_gl = configure_gl(settings,manifest['rom'],args.gl_capture,args.gl_every,manifest['evidence']['frames'])
         env = diagnostic_env(settings)
         recording = Recording(work / 'case', every=manifest['every'],
                               stop_frame=manifest['evidence']['frames'], snapshot_mode='raw', clock=args.clock)
@@ -93,6 +112,9 @@ def main(argv=None):
         recording.finish(invocation['returncode'])
         if invocation['error'] or recording.manifest['status'] != 'recorded':
             raise ValueError(invocation['error'] or recording.manifest.get('error'))
+        if expected_gl:
+            read_completed_frames(runtime/'gl-snap',expected_gl)
+            report['expected_gl_frames']=expected_gl
         comparison = compare_evidence(parent / 'record', runtime, manifest['evidence'],
                                       recording.manifest['evidence'])
         report['parent_comparison'] = comparison
@@ -100,6 +122,7 @@ def main(argv=None):
             raise ValueError('derived recording changed effective input or emulated time')
         report['identity_replay_passed'] = replay.main([
             str(recording.path), '--output', str(work / 'replay'), '--timeout', str(args.timeout),
+            *(['--compare-gl'] if expected_gl else []),
             *(['--clock'] if args.clock else [])]) == 0
         report['passed'] = report['identity_replay_passed']
     except (OSError, ValueError, KeyError) as error:
