@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 from scenery_c31 import F
 from world_host_scenery import camera_center, rotation_matrix, model_counts, project, fast_quads, reciprocal_table
 from world_host_options import add_arguments,configure
+from verify_world_sections import placement
 
 
 class SceneryMathTests(unittest.TestCase):
@@ -35,6 +36,15 @@ class SceneryMathTests(unittest.TestCase):
 
 
 class WorldModelTests(unittest.TestCase):
+    def test_section_placement_rotates_signed_coordinates_before_translation(self):
+        f=lambda n:F.integer(n).store()
+        row=dict(definition=[0xc00000,(-10)&0xffffffff,20,30,f(2),0],
+                 section_words=[0,f(100),f(200),f(300),0,0,0,0,f(1),f(2),f(3),0],
+                 section_flags=0,heading=f(4),matrix=[f(n) for n in (0,0,1,0,1,0,-1,0,0)])
+        self.assertEqual(placement(row),([f(130),f(220),f(310)],f(6)))
+        row['section_flags']=8
+        self.assertEqual(placement(row),([f(133),f(222),f(309)],f(6)))
+
     def record(self):
         f=lambda x:F.integer(x).store()
         identity=[f(x) for x in (1,0,0,0,1,0,0,0,1)]
