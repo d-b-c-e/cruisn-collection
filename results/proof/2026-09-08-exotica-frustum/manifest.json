@@ -1,0 +1,23 @@
+{
+  "archive_sha256": "27aceebcab12aca0dcd1b28ec9fec56d8ef19d82f2deed74c04fb5fad3899d4b",
+  "entries": {
+    "captures.csv": "4a4bcc4cbf2019de4256137b352aedcf9e4b2d9c9323842ac1987dbbd1e69c26",
+    "frames.csv": "d14ff3e22e78bdebbf4df85a51220f3901a43906261adeab321bad520e60b6c0",
+    "invocation.json": "212edd78b9bdb54837de635f42f6a1a5f6d8a01c20a0f01f541d8b33f83a254f",
+    "probe.lua": "df55d1ccc80931ed832d43d3bcc19e5906a4a1dd7f7c8bd21c0d969b795adcc3",
+    "reference/case.json": "7532536b6b99fa7f989f989f0ab3e42749e8233bb51ee354d3f4defbd811cfe3",
+    "reference/frames.csv": "e1956a671e6c0a153f2417f812dc3080d37237f3706a01fdfd37f4e208c8ae74",
+    "rejected/probe.lua": "740ea95eba6d01697a7db4f0badd57d11d0d966ed38618425ab34580e7b1180a",
+    "rejected/report.json": "a86efe6ddd2a64b89bf31c9c080d72ccd0b9b466eec67504660195690da0e016",
+    "rejected/sample.json": "d91421a97853f36211e46b8976deaaece2c664d0d3e7ce29e31ec899828456b0",
+    "report.json": "346c472a342814a18f159af9d80e6240929caf9af8b7512748361251a1560bc9",
+    "source/analyze_exotica_frustum.py": "d72c4fdd69112b73c45595324dd2b4c22f39cc5eaba43b7ad32c242f13e1a422",
+    "source/exotica_frustum.lua": "df55d1ccc80931ed832d43d3bcc19e5906a4a1dd7f7c8bd21c0d969b795adcc3",
+    "source/verification.py": "f03ab8b9abcefb052e1cd9881d97049361132357cd0d50c2fd4b7acb02ae7afe",
+    "summary.json": "84aedca24848c62177511c8916162067343265494e985e363f2dff409057f9a1",
+    "trace.csv": "afa830e9e80126fa00adb8abb196c788547ccebe0f254cf17baf041a8ac3c2f9"
+  },
+  "native_commit": "8b151aa9c2f27d64c80f77b73d680d941e6b9532",
+  "native_sha256": "638c74ff4227532d0ff42be4cd46cb8a358a1a343549abb107bb56050e91bd74",
+  "schema": 1
+}

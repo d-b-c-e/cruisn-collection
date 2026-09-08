@@ -4091,3 +4091,19 @@ CPUfrustum boundedprobe outline updated; noOffRoad/Exotica intervention yet.
 No newrelease; v0.4.0 ZIP rehashedunchanged. NativeusedbyStreamDeckupdated. Noemulator
 orhelper remains. Read dated USAglobal-distance and next-adapters reviews. Overnight
 heartbeat continues to08:00local. USA freshdrive/geometry/order/resource checks open.
+
+
+## 2026-09-08 — Exotica CPU frustum audit
+
+Read-only6000-frame replay retains inputs and21 completed3840x2160GL references.
+Corrected probe validates339018 sphere decisions over2500..4300. Original accepts
+215946, has0far rejects at204800 and85350projection clamps; maxdepth140424.
+Counterfactual unclampedreciprocal adds4051instances with0losses; horizontal88margin
+alone adds21717; combined28610. Admissions are not visiblepixels. No game/native
+intervention yet. First acceptance marker689D was inside Xreject delay slots; its
+replay PASS did not certify the probe. Independent analyzer rejected it; corrected
+68A3/PC68A4 marker and full rerun pass. Retained negative sample and originalprobe.
+Fivefocusedtests pass.15derivedfiles/16016714bytes proof archive
+results/proof/2026-09-08-exotica-frustum SHA27aceebcab12aca0dcd1b28ec9fec56d8ef19d82f2deed74c04fb5fad3899d4b
+recomputes all339018 decisions withoutROMs. Native8b/SHA638 unchanged; no physicalFFB.
+Next: boundedstock/true-reciprocal/margins/both GPU matrix, then resources/repeatability.
