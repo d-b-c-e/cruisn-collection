@@ -74,6 +74,13 @@ native logs; passing it is not a visual acceptance claim.
 an originally absent patch, and rebinds frozen patch/cheat dependencies before
 copying them. Effective options remain in the new recording manifest.
 
+Settings → Experiments → Cruis'n Exotica now exposes **Widescreen Scenery**.
+It selects only `margins`, defaults off, and applies to enhanced widescreen
+scale >1. Native-renderer fallback suppresses the saved experiment. An explicit
+developer environment or recording CLI control still wins. Projection/both stay
+developer controls; their visible distance benefit is not established. The
+top-level Experiments placement and per-game filtering are preserved.
+
 `replay.py --zeus-capture-frame N` now captures and strictly validates Zeus
 submission/resource evidence. `--capture-state` explicitly rejects Zeus instead
 of pretending V-Unit dumps cover it. `zeus_rasterize.py` shares the strict parser,
@@ -84,10 +91,13 @@ completed GL rather than interpreting unchanged live CPU buffers as success.
 ## Current native validation and next work
 
 The native stock control completes all 6000 frames and matches all 21 original
-3840×2160 completed GL images. Stock, margins and projection full-boot runs pass
-input comparisons and native log coverage at approximately 100% emulation speed;
-the remaining candidate repeatability/default regression results will be added
-at the checkpoint. Current local harness: 156 Python tests pass.
+3840×2160 completed GL images. All five full-boot native trials complete. Both
+repeats all 6000 per-frame native counter rows and all 19 completed GL images
+exactly. Each native intervention also matches all 19 images from its corresponding
+bounded Lua trial. Native stock/margins/projection measure approximately 100%
+emulation speed. Broader candidate/default regression results will be added at
+the checkpoint. Current local harness: 157 Python tests pass; offscreen Exotica
+and root menu screenshots were inspected for layout and filtering.
 
 Keep these controls experimental. Full candidate repeatability, cross-game
 disabled controls and a new attended Exotica drive remain separate requirements.

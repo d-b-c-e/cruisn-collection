@@ -126,6 +126,19 @@ class WorldDistanceMenuTests(unittest.TestCase):
 
 
 class GraphicsOptionsTests(unittest.TestCase):
+    def test_exotica_edge_visibility_is_optional_filtered_and_display_gated(self):
+        state=G.load({});self.assertFalse(state['crusnexo']['wide_visibility'])
+        self.assertTrue(G.toggle(state,'crusnexo','wide_visibility'))
+        self.assertEqual(G.load(G.serialize(state)),state)
+        self.assertFalse(G.toggle(state,'crusnusa','wide_visibility'))
+        section=G.serialize(state)
+        with tempfile.TemporaryDirectory() as td:
+            for rom,margin,scale,expected in [('crusnexo',86,4,'margins'),('crusnexo',0,4,'off'),
+                    ('crusnexo',86,1,'off'),('crusnexoa',86,4,None),('crusnwld24',86,4,None)]:
+                self.assertEqual(G.launch_overrides(ROOT,td,rom,margin,scale,section,{}).get('MIDZ_VISIBILITY'),expected)
+            self.assertEqual(G.launch_overrides(ROOT,td,'crusnexo',86,4,section,{'MIDZ_VISIBILITY':'off'})['MIDZ_VISIBILITY'],'off')
+        self.assertEqual([r[0] for r in G.rows('crusnexo',state)],['wide_visibility'])
+
     def test_settings_stay_per_game_and_world_revisions_share_seams(self):
         settings = G.load({})
         self.assertTrue(G.toggle(settings, "offroadc", "seam_alignment"))
@@ -148,7 +161,7 @@ class GraphicsOptionsTests(unittest.TestCase):
                 overrides = G.launch_overrides(ROOT, directory, rom, 0, 4, section, {})
                 self.assertNotIn("MIDV_PATCH", overrides)
         self.assertFalse(G.toggle({}, "crusnexo", "seam_alignment"))
-        self.assertEqual(G.rows("crusnexo", G.load(section)), [])
+        self.assertEqual([r[0] for r in G.rows("crusnexo", G.load(section))], ['wide_visibility'])
 
     def test_every_distance_combination_preserves_widescreen_and_off_removes_stale_words(self):
         widescreen = read_patch(ROOT / "patch/game/crusnusa-widescreen.txt")
@@ -319,6 +332,5 @@ class LauncherGraphicsTests(unittest.TestCase):
             self.assertIn('world_distance',world25)
             restored['graphics_rom'] = 'crusnexo'
             exotica = collection.settings_rows('graphics',restored,False,'')
-            self.assertEqual([r[0] for r in exotica], ['graphics_game','back'])
-            self.assertIn('NO EXPERIMENTS',exotica[0][3])
+            self.assertEqual([r[0] for r in exotica], ['graphics_game','wide_visibility','back'])
             self.assertTrue(restored['crackfill'])

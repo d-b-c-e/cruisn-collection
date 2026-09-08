@@ -1302,6 +1302,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     graphics = launch_overrides(POC, rig, rom, effective_margin, scale,
         graphics_config["collection"] if "collection" in graphics_config else {}, os.environ,
         use_saved_distance=not bool(record_world_trial or record_usa_trial))
+    if rom == 'crusnexo' and not zeus_gl and 'MIDZ_VISIBILITY' not in os.environ:
+        graphics['MIDZ_VISIBILITY']='off'
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)

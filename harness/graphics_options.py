@@ -12,7 +12,7 @@ VUNIT_HEIGHT = {'offroadc':401}  # other V-Unit games use 400 native rows
 CHOICES = {"world_distance": (0, 2, 3), "world_lookahead": (0, 8, 12)}
 DEFAULTS = {"world_distance": 0, "world_lookahead": 8}
 OPTIONS = ("seam_alignment", "terrain_visibility", "world_distance", "world_lookahead",
-           "scenery_distance", "detail_distance", "far_distance")
+           "scenery_distance", "detail_distance", "far_distance", "wide_visibility")
 PATCHES = {
     "terrain_visibility": "crusnwld-terrain-visibility-experimental.txt",
     "detail_distance": "crusnusa-lod-experiment.txt",
@@ -25,6 +25,8 @@ def family(rom):
 
 
 def supported(rom, option):
+    if option == 'wide_visibility':
+        return rom == 'crusnexo'
     if option == "scenery_distance":
         return rom == "crusnwld24"
     if option in ("world_distance", "world_lookahead"):
@@ -86,6 +88,8 @@ def toggle(options, game, option, rom=None, direction=1):
 def rows(game, options, rom=None):
     selected = options.get(game, {})
     descriptions = (
+        ('wide_visibility', 'WIDESCREEN SCENERY',
+         'EXOTICA TRIAL: RESTORES SOME EDGE SCENERY; DRAW DISTANCE IS UNCHANGED. NEXT LAUNCH.'),
         ("seam_alignment", "SEAM ALIGNMENT",
          "EXPERIMENTAL: CLOSES SOME TERRAIN SEAMS; MAY SHIFT TEXTURES. NEXT LAUNCH."),
         ("terrain_visibility", "WIDESCREEN TERRAIN",
@@ -113,7 +117,7 @@ def rows(game, options, rom=None):
                 if not selected.get("world_distance"):
                     hint = "TAKES EFFECT WHEN WORLD DRAW DISTANCE IS 2X OR 3X. DOES NOT AFFECT THE OLDER SCENERY TRIAL."
             else:
-                value = (("ON" if selected.get(option) else "OFF") if option in ("seam_alignment", "terrain_visibility", "scenery_distance")
+                value = (("ON" if selected.get(option) else "OFF") if option in ("seam_alignment", "terrain_visibility", "scenery_distance", "wide_visibility")
                          else ("EXTENDED" if selected.get(option) else "STANDARD"))
         result.append((option, label, value, hint))
     return result
@@ -132,6 +136,9 @@ def launch_overrides(root, rig, rom, margin, scale, section, environment, *, use
            "1" if selected["seam_alignment"] and scale > 1 else "0")}
     env["MIDV_SCENERY"] = environment.get("MIDV_SCENERY",
         "all" if selected["scenery_distance"] and margin >= 80 and scale > 1 else "off")
+    if rom == 'crusnexo':
+        env['MIDZ_VISIBILITY'] = environment.get('MIDZ_VISIBILITY',
+            'margins' if selected['wide_visibility'] and margin >= 80 and scale > 1 else 'off')
     if "MIDV_PATCH" in environment:
         return env
     paths = []
