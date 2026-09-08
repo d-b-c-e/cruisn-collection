@@ -1000,7 +1000,7 @@ def profile_label(state):
 
 SETTINGS_TITLE = {"root": "SETTINGS", "display": "DISPLAY",
                   "ffb": "FORCE FEEDBACK", "controls": "CONTROLS",
-                  "support": "SUPPORT", "graphics": "EXPERIMENTAL GRAPHICS",
+                  "support": "SUPPORT", "graphics": "EXPERIMENTS",
                   "impacts": "EXPERIMENTAL IMPACT CUES", "cheats": "CHEATS"}
 
 
@@ -1047,8 +1047,6 @@ def settings_rows(page, state, diag, version):
              "RENDER RESOLUTION: 4X = SHARPEST (2048 X 1600 INTERNAL)      "
              "LOWER IF A GAME STUTTERS ON YOUR GPU      TAKES EFFECT AT THE "
              "NEXT LAUNCH"),
-            ("graphics", "GRAPHICS EXPERIMENTS", "OPEN",
-             "CRACK FILL, SEAM ALIGNMENT AND DISTANCE TRIALS. CHANGES APPLY NEXT LAUNCH."),
             ("back", "BACK", "", ""),
         ]
     if page == "graphics":
@@ -1064,7 +1062,7 @@ def settings_rows(page, state, diag, version):
             experiments = graphics_options.rows(game, state.get("graphics", {}),
                 state.get("world_rom", "crusnwld24") if game == "crusnwld" else game)
             if not experiments:
-                context[0] = (*context[0][:3], "NO GRAPHICS EXPERIMENTS ARE AVAILABLE FOR THIS GAME YET.")
+                context[0] = (*context[0][:3], "NO EXPERIMENTS ARE AVAILABLE FOR THIS GAME YET.")
         return context + experiments + [("back", "BACK", "", "")]
     if page == "ffb":
         return [
@@ -1119,6 +1117,8 @@ def settings_rows(page, state, diag, version):
     return [
         ("display", "DISPLAY", "CRT, ASPECT, RESOLUTION",
          "HOW THE PICTURE LOOKS"),
+        ("graphics", "EXPERIMENTS", "SHARED / PER GAME",
+         "OPTIONAL TRIALS, GROUPED BY GAME. CHANGES APPLY NEXT LAUNCH."),
         ("ffb", "FORCE FEEDBACK",
          f"{ffb}%" + ("  (DIAGNOSTICS ON)" if diag else ""),
          "HOW THE WHEEL FEELS      PER-GAME STRENGTH LIVES ON EACH GAME CARD"),
@@ -1136,6 +1136,14 @@ GAME_ALIASES = {
     "offroad": "offroadc", "offroadc": "offroadc", "orc": "offroadc",
     "exotica": "crusnexo", "crusnexo": "crusnexo",
 }
+
+
+def settings_back(page, state):
+    """Return to the containing menu with the branch just left selected."""
+    parent = {'impacts':'ffb'}.get(page, 'root')
+    rows = settings_rows(parent, state, False, '')
+    selected = next((i for i,row in enumerate(rows) if row[0] == page), 0)
+    return parent, selected, rows
 
 
 def resolve_game_alias(name):
@@ -1825,12 +1833,8 @@ def main():
                         # back to the root page, landing on the branch just
                         # left rather than at the top of the list
                         leaving = spage
-                        spage = {"graphics": "display", "impacts": "ffb"}.get(leaving, "root")
+                        spage, ssel, srows = settings_back(leaving, state)
                         dbg("settings", f"page {leaving} -> {spage}")
-                        root = settings_rows(spage, state, False, "")
-                        ssel = next((i for i, r in enumerate(root)
-                                     if r[0] == leaving), 0)
-                        srows = root
                     audio.blip("nav")
                 elif enter and rid in ("display", "ffb", "controls", "support", "graphics", "impacts"):
                     dbg("settings", f"page -> {rid}")

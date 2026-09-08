@@ -18,7 +18,8 @@ files. Continuous toggles are off by default; see [the cheat guide](docs/CHEATS.
 for supported actions, import instructions and replay diagnostics. This is
 post-v0.4.0 work and is not in the published ZIP.
 
-**Settings → Display → Graphics Experiments** includes **World Draw Distance**
+**Settings → Experiments** now sits beside Display, with Shared and per-game
+contexts for current rendering trials and future gameplay experiments. It includes **World Draw Distance**
 (Off / 2x / 3x) and independent **Scenery Lookahead** (+0 / +8 / +12 track sections).
 These trials require World 2.4, widescreen and scale 2x or higher. They remain off
 by default; 3x has not shown extra mountain visibility over 2x at equal lookahead.

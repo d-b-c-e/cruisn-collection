@@ -5,6 +5,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Move Experiments beside Display in Settings, preserving Shared/game contexts,
+  saved preferences and revision checks; Back returns to Settings.
+
 - Add a per-game Cheats menu for imported MAME XML/ZIP/7z files, with continuous
   toggles/choices, revision-bound saved selections and a reset to off. One-shot
   actions and code-restoring cheats await live activation support.

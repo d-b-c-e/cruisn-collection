@@ -62,15 +62,16 @@ across. Your `rig` folder and `roms` are never inside the zip.
 - **Cards row**: ← → (or A/D, or steer the wheel) picks a game; **Enter**
   (or the gas pedal) opens it. Each game's page has **PLAY** on top plus
   that game's own settings: steering sensitivity and curve, volume, free
-  play, and for World the 2.4 / 2.5 revision switch.
+  play, [imported Cheats](CHEATS.md), and for World the 2.4 / 2.5 revision switch.
 - **SETTINGS** (below the cards): CRT effects, crack fill, aspect (4:3 /
   16:9 trimmed / 16:9 full), graphics experiments, FFB strength, **TRANSMISSION**
   (H-pattern shifter or sequential paddles), **CONTROLS SETUP**.
 - **Esc** backs out; from the cards row it quits.
 
-### Optional graphics experiments
+### Optional experiments
 
-Open **SETTINGS → DISPLAY → GRAPHICS EXPERIMENTS**, then select a game.
+Open **SETTINGS → EXPERIMENTS**, beside Display, then choose Shared or a game.
+This top-level menu can contain gameplay as well as rendering experiments.
 Changes are saved per game and take effect on its next launch. All start off.
 
 | Setting | Games | What to expect |

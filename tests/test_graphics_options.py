@@ -260,7 +260,8 @@ class LauncherGraphicsTests(unittest.TestCase):
             rows = collection.settings_rows("display", restored, False, "")
             self.assertNotIn("marginfill", [r[0] for r in rows])
             self.assertNotIn("crackfill", [r[0] for r in rows])
-            self.assertIn("graphics", [r[0] for r in rows])
+            self.assertNotIn("graphics", [r[0] for r in rows])
+            self.assertIn("graphics", [r[0] for r in collection.settings_rows("root", restored, False, "")])
             restored["graphics_rom"] = "offroadc"
             rows = {r[0]: r[2] for r in collection.settings_rows("graphics", restored, False, "")}
             self.assertEqual(rows["seam_alignment"], "ON")
@@ -280,5 +281,5 @@ class LauncherGraphicsTests(unittest.TestCase):
             restored['graphics_rom'] = 'crusnexo'
             exotica = collection.settings_rows('graphics',restored,False,'')
             self.assertEqual([r[0] for r in exotica], ['graphics_game','back'])
-            self.assertIn('NO GRAPHICS EXPERIMENTS',exotica[0][3])
+            self.assertIn('NO EXPERIMENTS',exotica[0][3])
             self.assertTrue(restored['crackfill'])

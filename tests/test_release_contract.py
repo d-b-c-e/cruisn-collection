@@ -146,6 +146,20 @@ class ReleaseLauncherTests(unittest.TestCase):
             self.rig.prepare_rig(rom, crt=True, zeus_gl=rom=='crusnexo')
             self.assertEqual(path.read_bytes(),data)
 
+    def test_experiments_are_a_root_branch_and_back_keeps_its_selection(self):
+        state=self.shell.load_config()
+        root=self.shell.settings_rows('root',state,False,'')
+        self.assertEqual([r[1] for r in root[:2]], ['DISPLAY','EXPERIMENTS'])
+        self.assertNotIn('graphics',[r[0] for r in self.shell.settings_rows('display',state,False,'')])
+        self.assertEqual(self.shell.SETTINGS_TITLE['graphics'],'EXPERIMENTS')
+        for context in ('shared','crusnusa','crusnwld','offroadc','crusnexo'):
+            state['graphics_rom']=context
+            parent,selected,rows=self.shell.settings_back('graphics',state)
+            self.assertEqual(parent,'root');self.assertEqual(rows[selected][0],'graphics')
+            self.assertEqual(state['graphics_rom'],context)
+        parent,selected,rows=self.shell.settings_back('impacts',state)
+        self.assertEqual(parent,'ffb');self.assertEqual(rows[selected][0],'impacts')
+
     def test_shifter_mode_and_cabinet_configuration_for_every_game(self):
         for mode in ('hpattern','sequential'):
             keys = ('gear1','gear2','gear3','gear4') if mode=='hpattern' else ('shiftup','shiftdn')
