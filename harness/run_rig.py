@@ -1257,8 +1257,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     the collection shell watches the WINDOW (gone = player exited) so it can
     reappear instantly while vunit's teardown (exit races, WER
     dump writes) drags on for seconds in the background."""
-    if record_world_trial and (not record_case or rom != 'crusnwld24'):
-        raise ValueError('global distance trial requires a World 2.4 recording')
+    if record_world_trial:
+        from world_distance import SUPPORTED_ROMS
+        if not record_case or rom not in SUPPORTED_ROMS:
+            raise ValueError('global distance trial requires a World 2.4/2.5 recording')
     # the live Zeus GL overlay is the default for Zeus games; MIDZ_GL=0
     # in the environment falls back to MAME's own d3d/bgfx presentation
     zeus_gl = rom in ZEUS_ROMS and os.environ.get("MIDZ_GL", "1") != "0"

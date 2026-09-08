@@ -217,6 +217,17 @@ class GraphicsOptionsTests(unittest.TestCase):
 
 @unittest.skipUnless(sys.platform == "win32", "launcher uses Windows APIs")
 class LauncherGraphicsTests(unittest.TestCase):
+    def test_world25_recording_reaches_preparation_with_explicit_distance(self):
+        run_rig = import_shell_module("run_rig")
+        trial = dict(far=160000, lead=8, cpu=100)
+        with mock.patch.object(run_rig, "prepare_rig", side_effect=RuntimeError("preparation reached")):
+            for rom in ("crusnwld24", "crusnwld"):
+                with self.assertRaisesRegex(RuntimeError, "preparation reached"):
+                    run_rig.launch_game_async(rom=rom, record_case="unused", record_world_trial=trial)
+            for rom in ("crusnwld23", "crusnusa"):
+                with self.assertRaises(ValueError):
+                    run_rig.launch_game_async(rom=rom, record_case="unused", record_world_trial=trial)
+
     def test_attended_recorder_preserves_shell_settings_and_requires_ffb_opt_in(self):
         record_drive = import_shell_module("record_drive")
         state = {"world_rom": "crusnwld24", "scale": 4, "crt": False,
