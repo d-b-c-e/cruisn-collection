@@ -4259,3 +4259,14 @@ or physical navigation/force acceptance. ROADMAP now lists current acceptance wo
 and links its immutable historical version, removing obsolete active telemetry,
 checksum and plugin assumptions. No product/native source changed after 4c47b67;
 all 268 source hashes retain identity 8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13.
+
+
+## 2026-09-08 08:00 — Overnight checkpoint complete
+
+Heartbeat paused through the app at 13:00:37 UTC. No emulator/build active.
+All four CI34228828289 jobs pass; downloaded Windows/Linux identity artifacts
+match all268 local source hashes. Native12e, personal config, Stream Deck script
+and published v0.4.0 ZIP/tag hashes reverified unchanged. Final receipts and menu
+previews are in results/proof/2026-09-08-overnight-checkpoint. Morning handoff and
+current roadmap separate available source features, diagnostic failures and needed
+attended drives. No further release, physical FFB or World tuning.

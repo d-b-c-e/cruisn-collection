@@ -62,8 +62,9 @@ allowlists were added as the main strategy.
 
 ## Recommended next work
 
-1. Investigate Exotica's admission-induced depth-state/order changes before a
-   native adapter. Keep the host static-scenery drawing approach as the route to
+1. Trace Exotica render register `0x15`: all 814 matched depth-bias changes
+   switch from 2047 to zero. Isolate the admission-induced state/order changes
+   before a native adapter. Keep the host static-scenery drawing approach as the route to
    extending visibility without adding guest simulation work.
 2. Record World New York to diagnose black flashes and the 3×/+12 finish crash.
    Keep the original Germany recordings intact.
@@ -74,5 +75,6 @@ allowlists were added as the main strategy.
    effects. Current timer verification is not blanket acceptance of every entry.
 
 The detailed queue remains in [the overnight checklist](OVERNIGHT-2026-09-08.md)
-and [ROADMAP.md](../ROADMAP.md). The scheduled overnight work stops at 08:00 local;
-the final checkpoint records its paused state in the session notes.
+and [ROADMAP.md](../ROADMAP.md). The overnight automation was paused at 08:00 local.
+No game or build is running. Final deployment hashes, menu previews and passing
+CI/source-identity receipts are in [the checkpoint evidence](../results/proof/2026-09-08-overnight-checkpoint/README.md).

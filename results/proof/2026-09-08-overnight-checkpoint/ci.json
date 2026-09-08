@@ -1,0 +1,32 @@
+{
+  "conclusion": "success",
+  "databaseId": 34228828289,
+  "headSha": "8157c3a4b2c5b03e21b2f203985861eda5bffe21",
+  "jobs": [
+    {
+      "name": "harness (windows-latest)",
+      "conclusion": "success",
+      "databaseId": 102069515318,
+      "url": "https://github.com/d-b-c-e/cruisn-collection/actions/runs/34228828289/job/102069515318"
+    },
+    {
+      "name": "harness (ubuntu-latest)",
+      "conclusion": "success",
+      "databaseId": 102069515565,
+      "url": "https://github.com/d-b-c-e/cruisn-collection/actions/runs/34228828289/job/102069515565"
+    },
+    {
+      "name": "native-helpers",
+      "conclusion": "success",
+      "databaseId": 102069515713,
+      "url": "https://github.com/d-b-c-e/cruisn-collection/actions/runs/34228828289/job/102069515713"
+    },
+    {
+      "name": "gpu-quality",
+      "conclusion": "success",
+      "databaseId": 102069515860,
+      "url": "https://github.com/d-b-c-e/cruisn-collection/actions/runs/34228828289/job/102069515860"
+    }
+  ],
+  "status": "completed"
+}

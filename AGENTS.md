@@ -1,5 +1,28 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Final overnight handoff (2026-09-08, 08:00 local)
+
+The overnight heartbeat `cruisn-overnight-cheats-and-distance` is PAUSED at the
+scheduled morning checkpoint. Do not resume it without a newer user instruction.
+Read `docs/OVERNIGHT-RESULTS-2026-09-08.md` and the refreshed `ROADMAP.md` first.
+Cheats and top-level Experiments are complete in the source launcher; World 2.5
+and Off Road have optional global distance controls. Exotica's menu fixes margin
+visibility only; its far/admission trials remain diagnostic. USA global distance
+also remains CLI-only. All new per-game trials default off; settings preserved.
+Native `12e9ea6a374` is built/pushed, with its 129-patch export; vunit SHA256
+`9936c7160ddb708949d9e776c9197d833e868ffc921fd679153a72ab99735275`.
+Seven default regressions pass on that binary. All 168 tests and four CI jobs
+34228828289 pass; Windows/Linux/local match all 268 source hashes, identity
+`8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13`.
+Proof/images/deployment checks: `results/proof/2026-09-08-overnight-checkpoint`.
+Exotica follow-up: all 814 matched depth-bias changes are 2047 -> 0, at unique
+geometry and with the bias branch used. Trace register 0x15 command provenance
+next; both strict scene/frame FAILs remain. No native admission promotion.
+No emulator/build is running. Stream Deck still uses this source/root binary.
+Published v0.4.0 tag/ZIP, original recordings and personal settings are preserved.
+No physical FFB was tested; World force normalization remains deferred.
+Earlier active-overnight and pending-release statements below are historical.
+
 ## Exotica admission checkpoint (2026-09-08, 07:35 local)
 
 Read docs/reviews/2026-09-08-exotica-admission.md. Tools4c47b67 pushed; native12e

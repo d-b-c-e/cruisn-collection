@@ -4,9 +4,10 @@ Authorized by the maintainer after requesting the v0.4.0 release. Finish and
 verify publication first. Preserve that tag and exact package as the rollback
 baseline. Work in separate commits; do not publish another release overnight.
 
-Release is now published and verified at tag v0.4.0 / c098290. Heartbeat
-`cruisn-overnight-cheats-and-distance` is active every 30 minutes, with the 08:00
-local checkpoint below. [Cheat preflight](reviews/2026-09-08-cheats-preflight.md)
+Release is published and verified at tag v0.4.0 / c098290. Heartbeat
+`cruisn-overnight-cheats-and-distance` was paused at the 08:00 local checkpoint.
+See [the morning handoff](OVERNIGHT-RESULTS-2026-09-08.md).
+[Cheat preflight](reviews/2026-09-08-cheats-preflight.md)
 found 23 entries across the five applicable ROM revisions. The initial Cheats menu
 and top-level Experiments are now implemented and verified; see
 [the 01:40 checkpoint](reviews/2026-09-08-cheats-and-experiments.md).

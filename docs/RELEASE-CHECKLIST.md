@@ -12,8 +12,10 @@ The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/
 
 Latest [World FFB rollback](reviews/2026-09-07-world-ffb-rollback.md): game-menu
 feedback restored, strength unchanged. Cross-game force normalization and World
-oscillation remain known issues for later work. The prior rc2 ZIP contains the
-rejected driving-state gate; replace it and renew acceptance before publishing.
+oscillation remain known issues for later work. The published v0.4.0 ZIP includes
+the rollback and supersedes the rejected rc2 candidate. Overnight source features
+require a new frozen candidate and renewed gates before another release; see
+[the source-build handoff](OVERNIGHT-RESULTS-2026-09-08.md).
 
 ## Roadmap
 

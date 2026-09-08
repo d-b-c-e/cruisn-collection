@@ -1,0 +1,12 @@
+{
+  "scope": "Final checkpoint hash verification; no attended gameplay or force acceptance.",
+  "hashes": {
+    "E:/Source/mame-src/vunit.exe": "9936c7160ddb708949d9e776c9197d833e868ffc921fd679153a72ab99735275",
+    "rig/collection.ini": "b5c521b42433078a22e87b80753e8a44944ce8056949bee3c45c568b58780752",
+    "E:/Source/launchbox/Launchbox-Racing/scripts/Launch-Cruisn.bat": "269aca2c30772109a4a7a0e0ca4f263a817f372250df799b4b05cf01bc02c6eb",
+    "build/CruisnCollection-v0.4.0-20260908-000947.zip": "fd292b0d4ba4d2a97147c6ffc1fb95407e3891495dfb68fada2f899e3c31ba4a"
+  },
+  "source_identity": "8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13",
+  "source_files": 268,
+  "release_tag_commit": "c098290aeaa1f19ca37d7bee56c747cbf51350b5"
+}
