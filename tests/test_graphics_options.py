@@ -44,6 +44,29 @@ class SceneryOptionTests(unittest.TestCase):
         self.assertTrue(state['crusnwld']['scenery_distance'])
 
 
+class OffroadDistanceMenuTests(unittest.TestCase):
+    def test_default_off_revision_filter_and_persistence(self):
+        state=G.load({});self.assertEqual(state['offroadc']['offroad_distance'],0)
+        G.toggle(state,'offroadc','offroad_distance',direction=-1)
+        self.assertEqual(state['offroadc']['offroad_distance'],3)
+        self.assertEqual(G.load(G.serialize(state)),state)
+        for rom in ('offroadc1','offroadc3','crusnusa','crusnwld24','crusnexo'):
+            self.assertFalse(G.supported(rom,'offroad_distance'))
+            self.assertNotIn('offroad_distance',[r[0] for r in G.rows(G.family(rom),state,rom)])
+
+    def test_launch_preserves_game_patch_and_honors_display_and_explicit_controls(self):
+        section={'offroad_distance_offroadc':'3'}
+        with tempfile.TemporaryDirectory() as d:
+            env=G.launch_overrides(ROOT,d,'offroadc',86,4,section,{})
+            self.assertEqual(env['MIDV_OFFROAD_DISTANCE'],'3')
+            self.assertEqual(read_patch(env['MIDV_PATCH']),read_patch(ROOT/'patch/game/offroadc-widescreen.txt'))
+            for rom,margin,scale in [('offroadc',0,4),('offroadc',86,1),('offroadc3',86,4),('crusnusa',86,4)]:
+                self.assertNotIn('MIDV_OFFROAD_DISTANCE',G.launch_overrides(ROOT,d,rom,margin,scale,section,{}))
+            for explicit in ({'MIDV_PATCH':'custom.txt'},{'MIDV_OFFROAD_DISTANCE':'0'}):
+                self.assertNotIn('MIDV_OFFROAD_DISTANCE',G.launch_overrides(ROOT,d,'offroadc',86,4,section,explicit))
+            self.assertNotIn('MIDV_OFFROAD_DISTANCE',G.launch_overrides(ROOT,d,'offroadc',86,4,section,{},use_saved_distance=False))
+
+
 class WorldDistanceMenuTests(unittest.TestCase):
     def test_persistence_reverse_adjustment_and_exclusive_scenery_paths(self):
         state = G.load({})
@@ -317,7 +340,7 @@ class LauncherGraphicsTests(unittest.TestCase):
             restored["graphics_rom"] = "offroadc"
             rows = {r[0]: r[2] for r in collection.settings_rows("graphics", restored, False, "")}
             self.assertEqual(rows["seam_alignment"], "ON")
-            self.assertEqual(set(rows), {'graphics_game','seam_alignment','back'})
+            self.assertEqual(set(rows), {'graphics_game','seam_alignment','offroad_distance','back'})
             restored['graphics_rom'] = 'shared'
             shared = {r[0]:r[2] for r in collection.settings_rows('graphics',restored,False,'')}
             self.assertEqual(set(shared), {'graphics_game','crackfill','back'})

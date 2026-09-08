@@ -9,10 +9,10 @@ import world_distance
 GAMES = ("crusnusa", "crusnwld", "offroadc", "crusnexo")
 CONTEXTS = ("shared", *GAMES)
 VUNIT_HEIGHT = {'offroadc':401}  # other V-Unit games use 400 native rows
-CHOICES = {"world_distance": (0, 2, 3), "world_lookahead": (0, 8, 12)}
-DEFAULTS = {"world_distance": 0, "world_lookahead": 8}
+CHOICES = {"world_distance": (0, 2, 3), "world_lookahead": (0, 8, 12), "offroad_distance": (0, 2, 3)}
+DEFAULTS = {"world_distance": 0, "world_lookahead": 8, "offroad_distance": 0}
 OPTIONS = ("seam_alignment", "terrain_visibility", "world_distance", "world_lookahead",
-           "scenery_distance", "detail_distance", "far_distance", "wide_visibility")
+           "scenery_distance", "detail_distance", "far_distance", "wide_visibility", "offroad_distance")
 PATCHES = {
     "terrain_visibility": "crusnwld-terrain-visibility-experimental.txt",
     "detail_distance": "crusnusa-lod-experiment.txt",
@@ -25,6 +25,8 @@ def family(rom):
 
 
 def supported(rom, option):
+    if option == 'offroad_distance':
+        return rom == 'offroadc'
     if option == 'wide_visibility':
         return rom == 'crusnexo'
     if option == "scenery_distance":
@@ -96,6 +98,8 @@ def rows(game, options, rom=None):
          "RESTORES SOME MISSING EDGE TERRAIN; DOES NOT EXTEND DRAW DISTANCE. NEXT LAUNCH."),
         ("world_distance", "WORLD DRAW DISTANCE",
          "WORLD 2.4/2.5 TRIAL: CHANGES REPLAY ROUTES. 3X/+12 HAS CRASHED ON NEW YORK. DEFAULT OFF."),
+        ('offroad_distance', 'OFF ROAD DRAW DISTANCE',
+         'EXTENDS DRAW LIMITS; SMALL GAIN IN TESTED DRIVE. 3X SHOWED NO EXTRA DETAIL. NEXT LAUNCH.'),
         ("world_lookahead", "SCENERY LOOKAHEAD",
          "EXTRA TRACK SECTIONS WITH WORLD DRAW DISTANCE. 8 IS THE TRIAL BASELINE; 12 CAN CHANGE GAMEPLAY."),
         ("scenery_distance", "DISTANT SCENERY",
@@ -110,7 +114,7 @@ def rows(game, options, rom=None):
         if not supported(rom or game, option):
             continue
         else:
-            if option == "world_distance":
+            if option in ("world_distance", "offroad_distance"):
                 value = f"< {selected[option]}X >" if selected.get(option) else "< OFF >"
             elif option == "world_lookahead":
                 value = f"< +{selected.get(option, DEFAULTS[option])} >"
@@ -162,6 +166,10 @@ def launch_overrides(root, rig, rom, margin, scale, section, environment, *, use
     if paths:
         env["MIDV_PATCH"] = (str(paths[0]) if len(paths) == 1 else
                              combine_patches(paths, rig / f"gamepatch-{rom}.txt"))
+    if (use_saved_distance and selected['offroad_distance'] and margin >= 80 and scale > 1
+            and 'MIDV_OFFROAD_DISTANCE' not in environment):
+        import offroad_distance
+        offroad_distance.configure(SimpleNamespace(offroad_distance=selected['offroad_distance']),rom,env)
     if (use_saved_distance and selected["world_distance"] and margin >= 80 and scale > 1
             and "MIDV_WORLD_FAR" not in environment):
         trial = world_distance.configure(SimpleNamespace(

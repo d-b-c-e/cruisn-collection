@@ -86,9 +86,12 @@ for repeatable diagnostics but cannot stand in for a fresh attended full race.
 The previous Lua geometry comparison also retained a changed original quad;
 neither the new adapter nor these images erase that strict geometry failure.
 
-Evidence is being completed under `results/diagnostics/offroad-native-20260908`:
-candidate repeatability, larger-display captures and disabled-feature regressions
-are separate checks, not implied by the results above. Physical force stays off.
+The separate 2× candidate also repeats all 6000 input/native frames, its native
+counter CSVs and **13 completed 3824×2073 images** on the 3840×2160 display.
+That derivation creates a new synthetic case; it does not replace the parent
+or establish attended handling acceptance. Disabled-feature regressions and
+paired resource/geometry captures are being completed separately under
+`results/diagnostics/offroad-native-20260908`. Physical force stays off.
 
 The harness now accepts `--display-size WIDTH:HEIGHT` in replay and derivation.
 It selects an actual matching monitor and records that selection, or fails if
@@ -96,3 +99,16 @@ none exists. V-Unit's maximized client area can be smaller than the monitor due
 to borders; completed-capture dimensions remain the evidence, not the requested
 display size. A derived case freezes its selected screen and resolution for its
 identity replay. Existing original recordings are never edited for this purpose.
+
+## Optional launcher control
+
+**Settings → Experiments → Off Road Challenge → Off Road Draw Distance** offers
+Off / 2× / 3×. It defaults to Off and is shown only for the verified Off Road
+1.63 revision. Saved activation requires widescreen and scale >1; explicit
+developer settings and recording CLI overrides take precedence. The ordinary
+widescreen game patch is preserved. The hint describes the modest observed
+gain and lack of extra detail from 3×. Personal preferences are unchanged.
+
+The menu preview and 163 Python tests pass. The core adapter's four CI jobs
+pass at collection `2669afe` / run `34218719680`. Later verification must retain
+its own source identity rather than borrowing that earlier CI result.
