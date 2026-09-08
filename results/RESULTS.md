@@ -4202,3 +4202,21 @@ Archivebuilder correctedper-game memoryfilenames beforevalidation; notagamefailu
 StreamDecksourceupdated; releasedv0.4.0tag/ZIP andpersonalINI unchanged. NoFFB or
 Worldnormalizationtuning. Next:Exoticatruefar/reciprocalextensionlate4686..5986;
 currentWidescreenSceneryisnotadistanceincrease. Overnightdeadline08:00local.
+
+
+## 2026-09-08 07:05 — Exotica coherent far-distance trial, no visible benefit
+
+Tools dc1f07d pushed; native12e9ea6a374/SHA9936c716 unchanged. Five6000-frame
+Lua trials (4500..5990): coherent204800 vs409600/614400 matches515968 poses,
+adds3035 sphere admissions and removes all3732 coherent far rejects. All15 completed
+1920x1080 GL images remain identical;2x full trace repeats. All additional admissions
+areBBB7; no verified mountain/tree far rejection. No new far-menu/native/shader.
+Matched4864:199extraquads/8palettes; resources equal. Strict FAIL because438 old
+quad frame stamps move4863->4864; explicit scene alignment preserves2606 originals
+ordered/effectivepalettes. BothGLsame. OfflineGPUquery:0visible/173depth-disabled
+samples, also0/173 with doubleddepthrange. Captured snapshot/farthestinitialdepth
+limitations retained. Futurework is earlier activation/residency, not morefarwords.
+166tests/all4CI34223306424 PASS; local/Linux/Windows identity54c2b421df9a39bc29c94bf493f2b2805dd8d3a5336d8cd47f0848bb87a10b4b.
+80entryLZMA archive49,050,202bytes SHAac473773075631e6ecafe7e587f171aa8f6386a77c4cd80c414bff9e5c43f0b9; verifier recomputes branch/pose/input/timing, retainsstrictFAIL; GPU outputs are receipts.
+Review:docs/reviews/2026-09-08-exotica-far-distance.md. PhysicalFFB0, Worldtuning
+deferred, personalconfig/StreamDeck/releasedZIP hashes unchanged.

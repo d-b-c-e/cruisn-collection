@@ -37,7 +37,10 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    [Exotica's full trials](docs/reviews/2026-09-08-exotica-visibility-trials.md) now
    include a native optional Widescreen Scenery menu item, unchanged far plane,
    matched geometry/resources and6000-frame/35GL candidate repeats. Projection
-   remains diagnostic; later actual far rejects provide a true-distance target.
+   remains diagnostic. [True far trials](docs/reviews/2026-09-08-exotica-far-distance.md)
+   admit3035 more spheres but change none of15 completed GL samples. A matched
+   scene's extra199 quads are occluded even with a doubled depth range; no new
+   far menu is promoted. Earlier loader/admission controls are the next target.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.

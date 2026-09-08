@@ -74,9 +74,15 @@ a later Zeus2 change for separate post-release compatibility study.
   honestly. Request fresh attended drives only where additional route/handling
   acceptance is needed; lack of a human drive need not stop independent diagnostics.
 
-Next autonomous steps: inspect Exotica's later far rejects and test a coherent
-far-plane/reciprocal extension. Its current CPU visibility experiment preserves
-204800; do not treat margin visibility as increased distance. Off Road's modest
+Exotica's [true far-plane trials](reviews/2026-09-08-exotica-far-distance.md) are
+complete:2x/3x add3035 admissions but change none of15 completed images. The matched
+scene adds199 occluded quads; doubling depth range does not reveal them. The
+new comparison tools retain strict frame-timing failure separately from scene
+geometry equality. No ineffective far-distance menu was promoted.
+
+Next autonomous steps: observe Exotica's earlier admission/loader controls;
+the current native CPU visibility experiment still preserves204800. Do not treat
+margin visibility as increased distance. Off Road's modest
 gain needs a longer attended drive before broader visual conclusions. Keep scene activation,
 resource residency, completed pixels and changes to gameplay history distinct.
 

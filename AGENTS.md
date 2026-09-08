@@ -1,5 +1,28 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Exotica far-distance checkpoint (2026-09-08, 07:05 local)
+
+Read docs/reviews/2026-09-08-exotica-far-distance.md. Tools dc1f07d are pushed;
+native12e9ea6a374/SHA9936c716 remains deployed. No new native far option or shader.
+Five6000 Lua trials4500..5990 complete: coherent stockfar204800 vs2x409600/3x614400
+matches515968 poses;3035 additional admissions, no losses,15/15 GL1920x1080equal.
+2x trace/images repeat exactly. Far rejects are allBBB7; do not call them proven
+mountains/trees. Generic and vehicle LOD branches are separate.
+Matched4864:199 extra quads+8palettes, resources equal. StrictgeometryFAIL retained
+because438 original quads shift4863->4864; explicit --alignment scene preserves
+all2606 original ordered records/effectivepalettes,207insertions. It excludes ONLY
+quad frame stamps. Two completed GLimages equal. Offline query extra199quads:
+0visible/173depth-disabledsamples atscale4; doubling depthrange remains0/173.
+Captured-resource snapshot and conservative farthest initialdepth are diagnostic
+limitations; no whole-frame/native/tactile acceptance implied.
+166tests/all4CI34223306424 PASS; local/Linux/Windows sourceidentity54c2b421df9a39bc29c94bf493f2b2805dd8d3a5336d8cd47f0848bb87a10b4b.
+80entry LZMA proof results/proof/2026-09-08-exotica-far-distance recomputes CPU
+branches/poses/inputs/timing; GPU images/resources/query remain hash-bound receipts.
+Next: read-only Exotica streamer investigation. Static code identifies separate
+589 admission initialization90000 andB7B9..B7BC loader upper+12. These require
+runtime evidence before any mutation. PhysicalFFB stays0; Worldtuning deferred;
+v0.4.0tag/ZIP and personalsettings preserved. Heartbeat stops08:00local.
+
 ## Off Road native checkpoint (2026-09-08, 06:25 local)
 
 Read docs/reviews/2026-09-08-offroad-native-distance.md. Collection2669afe/ba3364c

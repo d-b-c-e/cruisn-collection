@@ -505,6 +505,20 @@ The archived `world_tree_activation.lua` probe is a selective comparison, not
 the planned global solution. See the [global assessment and measured route
 divergence](reviews/2026-09-06-global-distance-and-native-port.md).
 
+## Exotica far distance and submission timing
+
+For Exotica far-distance diagnostics, `run_exotica_distance_trials.py` runs a
+bounded stock/coherent/2x/3x/repeat matrix. `compare_exotica_distance.py` compares
+actual branch outcomes at equal poses while excluding only the requested far
+value. These tools do not grant visual acceptance; use completed GL and actual
+Zeus submissions. The current trial found extra admissions but no sampled pixel
+benefit. See [the far-distance evidence](reviews/2026-09-08-exotica-far-distance.md).
+
+`compare_zeus_capture.py` defaults to strict frame-stamped submission equality.
+Its explicit `--alignment scene` excludes only quad frame stamps and enumerates
+each excluded change, preserving order, geometry and effective palettes. Retain
+both reports: a scene PASS must never replace a strict timing FAIL.
+
 ## Drivetrain and actual telemetry packets
 
 USA v4.5, World2.4/2.5, Off Road and Exotica have separate verified rev and gear

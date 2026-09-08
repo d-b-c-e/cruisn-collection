@@ -5,6 +5,11 @@
 - **Branch:** master
 
 ## What Was Done
+- Latest07:05: Exotica true far trials complete; toolsdc1f07d pushed, native12e unchanged. Coherent204800 vs2x/3x:515968equalposes/3035extraadmissions/no losses,15GLsame;2x rawtrace repeats.
+- Matched4864:199addedquads+8palettes;438originalquads shiftframe only, strictFAIL retained. New explicitZeus --alignment scene matches2606orderedoriginals/effectivepalettes/resources. BothcompletedGLsame.
+- GPUocclusionquery0visible/173withoutdepth; doubleddepthrange remains0/173. No newExotica far menu/native/shader. Need upstreamloader/activation, not another advertisedmultiplier. Probe limitations inreview.
+- 166tests/all4CI34223306424; local/Linux/Windows identity54c2b421df9a39bc29c94bf493f2b2805dd8d3a5336d8cd47f0848bb87a10b4b. 80entry ROM-free proof49MB, archiveac473773075631e6ecafe7e587f171aa8f6386a77c4cd80c414bff9e5c43f0b9. Archive verifier passes both working-copy and staged Git-blob checks.
+- NEXT read-only Exotica streamer probe: staticB710..B712 stores90000at589; B7B9..B7BC comparesupper+12 tocurs598. Do not mutate without runtime evidence. lua/exotica_streaming.lua currently uncommitted. Read-only control matches6000inputs/21originalGL; actual589 varies90000..130000,96016rejects/132624tests. Bounded160k/190k coherent trials active underresults/diagnostics/exotica-streaming-20260908. NoFFB, preservedrelease/settings, stop08:00local.
 - Latest06:25: OffRoad native12e9ea6a374/SHA9936c716 built/pushed;129patch exacttree85f158ec. Core2669afe/menu ba3364c pushed; proof/docs follow.
 - DefaultOFF OffRoad Draw Distance0/2/3 in its top-level Experiments context. Canonicaloffroad_distance.h: no guest writes; guarded far/clip/ceiling and59 projection consumers. Stock1 is CLI observer;0/unset nohooks.
 - run_offroad_native_trials.py is the NEW native runner; old run_offroad_distance_trials.py remains the bounded Lua runner. replay/derive/attendedrecorder --offroad-distance; replay/derive --display-size W:H select actual display.
