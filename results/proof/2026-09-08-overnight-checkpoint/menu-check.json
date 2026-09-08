@@ -1,0 +1,20 @@
+{
+  "scope": "Final source offscreen menu rendering. Visual inspection of labels, contexts and layout; no game launch, input or physical FFB.",
+  "collection_commit": "fde07bdf8276f6c6ab21803207894cb999d4e052",
+  "source_identity": "8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13",
+  "images": {
+    "settings.png": "8d886039016d3583791f7d2ab1b87fb3e3d084866fcb864736d5ef1fd15053ec",
+    "offroad-experiments.png": "163dd71c097604fa1a178f74c25be846397c0534df11758d43015c10d84fd80b",
+    "exotica-experiments.png": "5ad35cb89a67516ff71aefc2140713a82c67219b691b87a8853b29b7981faa15"
+  },
+  "configuration_sha256": "b5c521b42433078a22e87b80753e8a44944ce8056949bee3c45c568b58780752",
+  "observations": [
+    "Settings shows Experiments beside Display.",
+    "Off Road context shows its distance control and existing seam preference.",
+    "Exotica context shows Widescreen Scenery, with no misleading far-distance option."
+  ],
+  "limitations": [
+    "Shows saved personal preferences, not fresh-install defaults.",
+    "Offscreen rendering does not establish physical menu navigation or gameplay acceptance."
+  ]
+}

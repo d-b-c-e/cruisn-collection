@@ -4241,3 +4241,21 @@ Review:docs/reviews/2026-09-08-exotica-admission.md. Morningoverview:
 docs/OVERNIGHT-RESULTS-2026-09-08.md. NoFFB/Worldtuning, originalcases and release
 preserved. Next: isolate depthstate/order orhoststaticdrawing; freshopen-level
 Exotica, longOffRoad andWorldNY recordings useful. Stop/pauseheartbeat08:00local.
+
+
+## 2026-09-08 morning — Exotica bias follow-up and current roadmap
+
+The separate state-bias receipt recomputes all 814 matched changes as 2047 -> 0.
+Every changed pair has unique geometry in both captures, and the depth-bias branch
+is used in both; two other ambiguous geometry associations are marked separately.
+Trace Zeus render register 0x15 and its command provenance next. This finding does
+not prove the visible cause or waive either strict scene/frame FAIL.
+
+The current source Settings, Off Road Experiments and Exotica Experiments pages
+were rendered offscreen and visually inspected. Their source/config-bound receipt
+and three images are archived in results/proof/2026-09-08-overnight-checkpoint.
+Personal preferences remain unchanged; these images are not fresh-install defaults
+or physical navigation/force acceptance. ROADMAP now lists current acceptance work
+and links its immutable historical version, removing obsolete active telemetry,
+checksum and plugin assumptions. No product/native source changed after 4c47b67;
+all 268 source hashes retain identity 8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13.

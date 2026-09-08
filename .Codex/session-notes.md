@@ -5,6 +5,8 @@
 - **Branch:** master
 
 ## What Was Done
+- Morning follow-up: all 814 Exotica changed depth biases are 2047 -> 0 at unique matched geometry, with the bias branch used in both captures. Standalone `results/proof/2026-09-08-exotica-admission/analyze_state_bias.py --check` recomputes the separate receipt. Trace render register 0x15 provenance next; this does not waive scene/frame FAILs or prove the visible cause.
+- Final source offscreen Settings/Off Road/Exotica pages were rendered and visually inspected. Three images and a source/config-bound receipt are in `results/proof/2026-09-08-overnight-checkpoint`. Saved settings remain intact. ROADMAP now links the preserved historical checkpoint and lists current work, removing obsolete active RPM/checksum/plugin assumptions.
 - Latest07:35: global Exotica admission tools4c47b67 pushed. Native12e/release/settings unchanged. Read-only6000/21originalGL passes; actual589 adaptive90000..130000 rejects96016/132624tests within168375depth. Timer0normalclamp60000..130000; distinctspecial47500case unobserved.
 - Four6000coherent/admit160/admit190/repeat trials4500..5990.160 repeatsbothtraces/15GL;190samefrustum/GL.12imageschangebutonly52pixelsat4700and2at5100; laterroute/cameraidentityunproven. CandidatephysicalFFB0.
 - 4Kpaired4700:367/374changedpixels nearhorizon; resources equal. BOTHstrictframe/sceneFAIL:2560/2612originalquadgeometrymultiset,2409ordered,52unmatched;814activedepthbiaschanges. Mostalpha differencesinactive. No nativeadmission/menu promotion; needstate/order isolation orhostdrawing.

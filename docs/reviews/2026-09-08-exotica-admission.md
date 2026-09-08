@@ -83,6 +83,20 @@ has blending enabled; most alpha changes are inactive for those opaque draws.
 The 814 changed depth-bias records have the depth-min flag enabled. These narrower
 findings help prioritize investigation but do not override the strict failures.
 
+A follow-up isolates that bias change further: **all 814 switch from 2047 to
+zero**, and each has unique geometry in both captures. Neither depth-clear flag
+overrides the bias branch. The two ambiguous geometry associations elsewhere in
+the stream are explicitly excluded from this conclusion. This still does not
+establish that those state changes cause the visible differences.
+
+The native renderer copies the signed 24-bit value of render register `0x15`
+into each quad, and both CPU and GL paths add it to depth. The next diagnostic
+should trace `zeus2_pointer_write(0x15, ...)` with FIFO/model command provenance,
+then compare the transition preceding the affected original submissions. Do not
+globally force a bias or assume that extra geometry merely needs a longer far
+plane. The [state-bias receipt](../../results/proof/2026-09-08-exotica-admission/README.md)
+recomputes this narrower finding from the retained local captures.
+
 The experiment therefore identifies a useful earlier control without establishing
 a safe product setting. The next step is to isolate the active depth-bias/order
 effects, or render future static scenery on the host while preserving the game's
