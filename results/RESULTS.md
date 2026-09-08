@@ -4038,3 +4038,24 @@ has only3 plausible extension visits plus900 INT_MAX-like visits; OffRoad has
 85388 reciprocal clamps. Static activation/table evidence is revision-specific,
 not a new visible-distance claim. No product/native/default/physical-force change.
 Next: guarded World2.5 port, USA admission+projection, separate OffRoad/Exotica paths.
+
+
+## 2026-09-08 02:40 — World 2.5 global adapter and USA residency
+
+Native dae2569f793 / sourcevunit f06a160b57c72737e89aedcc159f87cbe173c82620722ea109e84dcdffe70252 built/pushed.
+125patch export exacttree2f4f89c388ba380aa578036143049a723dcad00c. Source117e8fb adds
+World2.5 revision guards and optional menu/CLI trials, defaults unchanged. Separate
+b720b98 USA read-only probe measures22713 pending visits eligible within2x75k,
+maxdepth-minus-radius117026; USA intervention is next, not built.
+World25 original+2x/+8+3x/+8 each6000 frames/~100% speed; original identity passes,
+extended route comparisons fail as retained. 2x separately repeats6000/100native/11GL.
+2x/3x match100native+42GL but33camera samples and ADCtimes differ; no3x visual gain
+or geometry/order/resource acceptance claimed. ExistingWorld24global2x8783/146passes.
+All7 defaults, actualtelemetry/memory/Worldpassthrough andExo21GL pass; bounded
+timing99.9731..100.0035%. 132tests/all4CI34199270158; all229 local/Linux/Windows
+sourcehashes match85ad5a17558ffc18d7f3d8eac431151e6c7582ba6359bd3b8ad3392e573ee152.
+67derivedfiles in results/proof/2026-09-08-world25-distance, ROM-free counters and
+bindings verified. v0.4.0 exactZIP SHAfd292b0d4ba4d2a97147c6ffc1fb95407e3891495dfb68fada2f899e3c31ba4a unchanged.
+No emulator running. No physicalFFB or Worldtuning. Native sourceusedbyStreamDeck
+updated; no newrelease ZIP. See dated world25-distance, usa-residency and
+distance-next-adapters reports. Heartbeat continues to08:00local.

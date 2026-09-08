@@ -5,6 +5,14 @@
 - **Branch:** master
 
 ## What Was Done
+- Overnight02:40: World2.5 global Off/2x/3x +0/8/12 adapter/menu in117e8fb; native dae2569f793 built/pushed.
+- Sourcevunit SHA f06a160b57c72737e89aedcc159f87cbe173c82620722ea109e84dcdffe70252;125patch exacttree2f4f89c388ba380aa578036143049a723dcad00c.
+- All7defaultcases actualtelemetry/memory/Worldpassthrough/Exo21GL pass; existingWorld2.4global2x8783/146 passes.
+- World25 original/2x+8/3x+8 full6000 trials complete at~100%; extended trials change original route (retainedFAIL).
+- Separate2xcase repeats6000/100native/11GL. 2xvs3x match100native+42GL but33camera samples/ADCtimes differ.
+- 132tests/all4CI34199270158; local/Linux/Windows all229sourcehashes match identity85ad5a17558ffc18d7f3d8eac431151e6c7582ba6359bd3b8ad3392e573ee152.
+- 67file ROM-free proof archived under results/proof/2026-09-08-world25-distance, counters recompute.
+- USA residency b720b98 read-onlyprobe matches4305;22713 pending visits within2x75k, max117026.
 - Overnight02:05: all5revision distance capability matrix now measured. Native44c3494d6af unchanged.
 - Four4305frame V-Unit probes pass; Exotica6000/21GL passes with identical distance trace to headless.
 - 131tests pass;35file ROM-free proof recomputes counters. See docs/reviews/2026-09-08-distance-capabilities.md.
@@ -34,8 +42,11 @@
 ## Open Items
 - [x] Initial Cheats submenu and top-level Experiments. See docs/reviews/2026-09-08-cheats-and-experiments.md.
 - [x] Global distance capability matrix across all4games, including World2.4/2.5; no native changes yet.
-- [ ] NEXT guarded World2.5 global adapter; USA75k admission/80k removal plus virtual projection;
-      OffRoadfloat47296/ROMtable and Exoticaactivation require their own paths. No per-model allowlists.
+- [x] Guarded World2.5 global adapter, optional/defaultOFF; no attended/geometry/order acceptance yet.
+- [ ] NEXT USA75k admission/80k removal plus virtual projection. Read docs/reviews/2026-09-08-distance-next-adapters.md:
+      include277/278 clamp +27C/27F dynamic reads;823E/8240+A727 require attribution.
+      OffRoadfloat47296/ROMtable (tail resembles504/(index+1), unverified) and Exotica CPUfrustum/activation
+      require their own paths. No per-model allowlists. All code clean/pushed; no game process at02:40.
 - [ ] Live cheat activation for one-shot/code-restoring actions; individual rank/nitro/custom-choice validation.
 - [ ] Physical second-wheel/manual/soak and wider track coverage remain unperformed alpha limitations.
 - [ ] World oscillation/normalization, New York black flashing and3x/+12crash remain known issues.

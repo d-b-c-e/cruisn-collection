@@ -50,6 +50,9 @@ a later Zeus2 change for separate post-release compatibility study.
   where evidence supports it. Guard instructions, revisions, ranges and option
   composition. Do not copy World addresses into other games. Exotica needs its own
   Zeus/game analysis; add bounded emulator diagnostics before proposing changes.
+  World2.5 adapter is implemented in117e8fb/native dae2569; original control and
+  2x candidate repeatability pass. See [adapter evidence](reviews/2026-09-08-world25-distance.md).
+  USA now has [measured pending scenery](reviews/2026-09-08-usa-residency.md) for the next trial.
 - [ ] Prefer global admission/activation or host scenery drawing over growing
   lists of individual models or levels. Investigate distant mountains/trees and
   World's New York black flashing/3x+12 finish crash using retained diagnostics.

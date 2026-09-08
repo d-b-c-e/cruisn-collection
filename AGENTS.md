@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## World 2.5 distance checkpoint (2026-09-08, 02:40)
+
+Read docs/reviews/2026-09-08-world25-distance.md and
+docs/reviews/2026-09-08-distance-next-adapters.md. Native dae2569f793 is built/pushed;
+source vunit.exe SHA f06a160b57c72737e89aedcc159f87cbe173c82620722ea109e84dcdffe70252.
+125patch export reconstructs tree2f4f89c388ba380aa578036143049a723dcad00c. World2.5
+now supports guarded shared Off/2x/3x and+0/8/12 menu/CLI trials; defaultOFF, same
+exclusions. Source117e8fb; separate USA read-only residency commitb720b98. All7default
+regressions/actualtelemetry+memory+Worldpassthrough/Exotica21GL PASS. 132tests/all4CI
+34199270158 PASS; all229 source hashes match local/Linux/Windows, identity85ad5a175.
+ExistingWorld2.4global2xGermany8783/146 PASS. World2.5original+2x/+8+3x/+8 full6000
+trials complete ~100% speed; extended trials FAIL original-route equality, retained.
+2x candidate repeats6000/100native/11GL. 2x/3x match100native+42GL images, but33camera
+samples/ADCtimes differ; keep stricter motionFAIL. No3x visual gain proven, no2.5
+geometry/order/resource acceptance or full attended race, +12 not newly tested.
+Proof results/proof/2026-09-08-world25-distance (67derivedfiles) recomputes counters.
+Publishedv0.4.0ZIP/tag untouched; no newpackage. No emulator remains running.
+
+NEXT USA global admission+projection: residency trace finds22713 pending visits
+within2x75k, maxdepth-minus-radius117026. Guard75k727D/80k727E windows and enumerate
+ALLreciprocal paths: extra277/278 clamp +27C/27F dynamic-model reads were found;
+823E/8240 andA727 need attribution. No USA intervention built yet. OffRoad float
+far47296/ROMtable63679 are separate; tail resembles504/(index+1), NOT World512
+generator, unverified beyond4samples. Exotica far204800 has no sampled rejects;
+investigate80k CPUculler clamp/frustum and pending lists, not just raisefar.
+Follow overnight queue through08:00. No physicalFFB, Worldtuning remains deferred.
+
 ## Cross-game distance capability checkpoint (2026-09-08, 02:05)
 
 Read docs/reviews/2026-09-08-distance-capabilities.md. Bounded read-only gameplay

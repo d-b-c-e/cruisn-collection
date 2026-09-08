@@ -26,9 +26,10 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
 3. **IN PROGRESS: Global draw-distance experiments for all four games**, prioritizing earlier
    visible mountains/trees and diagnosing activation, residency and draw limits.
    The [capability matrix](docs/reviews/2026-09-08-distance-capabilities.md) now has
-   guarded gameplay measurements for all five revisions. World 2.5 is the next
-   adapter; USA needs earlier admission, Off Road a separate float path, and
-   Exotica has no far-plane rejects in its sample.
+   guarded gameplay measurements for all five revisions. The optional World2.5
+   adapter is implemented and 2x repeats (see [evidence](docs/reviews/2026-09-08-world25-distance.md));
+   USA has measured pending objects ready for an admission-window trial. Off Road
+   needs its own float path; Exotica has no far-plane rejects in its sample.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.
