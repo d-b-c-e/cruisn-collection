@@ -52,7 +52,10 @@ a later Zeus2 change for separate post-release compatibility study.
   Zeus/game analysis; add bounded emulator diagnostics before proposing changes.
   World2.5 adapter is implemented in117e8fb/native dae2569; original control and
   2x candidate repeatability pass. See [adapter evidence](reviews/2026-09-08-world25-distance.md).
-  USA now has [measured pending scenery](reviews/2026-09-08-usa-residency.md) for the next trial.
+  USA global CLI adapter is built in native8b151aa9/collection9e70f6a;
+  [five full controls and2x repeatability](reviews/2026-09-08-usa-global-distance.md)
+  expose route changes, with launcher/geometry/attended acceptance still open.
+  Off Road's full table generator is now exact; Exotica frustum probing is next.
 - [ ] Prefer global admission/activation or host scenery drawing over growing
   lists of individual models or levels. Investigate distant mountains/trees and
   World's New York black flashing/3x+12 finish crash using retained diagnostics.

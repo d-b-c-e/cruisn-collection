@@ -3,8 +3,8 @@
 These are static analysis leads from the program captures bound in
 `results/diagnostics/distance-layouts-20260908/sources.json`, plus the explicitly
 identified runtime observations below. They are not patches to apply blindly.
-All addresses are hexadecimal C3x word addresses. Current built native remains
-`dae2569f793`; the following USA/Off Road/Exotica interventions are **not built**.
+All addresses are hexadecimal C3x word addresses. USA's adapter is now built in native `8b151aa9c2f`; see [its trial report](2026-09-08-usa-global-distance.md).
+Off Road and Exotica interventions below are not built.
 
 ## USA 4.5: complete the projection profile before extending admission
 
@@ -25,9 +25,10 @@ Static reciprocal consumers identified in the low renderer:
 | `277/278`, R0 | `27C:24E0C3C2`, `27F:24E0C3C2` | `AR2=R5+index`, `R5=B2B3`; dynamic model path |
 
 The last pair is easy to miss when searching only for clamps on R3/IR1. It must be
-accounted for when building a global adapter. An additional clamp/table consumer
-around `823E/8240` and a table load at `A727` need attribution before deciding
-whether they should retain stock behavior. Do not assume every reciprocal use is
+accounted for when building a global adapter. The `823E/8240` path is a screen-extremum helper with an explicit >=4999 reject;
+its original behavior is retained. `A727/A728` scales an attached object from
+its parent's cached depth; the guarded host tail covers it, but no extended reads
+from that consumer occurred in the initial USA trials. Do not assume every reciprocal use is
 world rendering. Inspect the code before/after each lookup and guard its base
 register as well as PC. Reads inside a table tap must use backing RAM or captured
 values; nested address-space reads caused a prior broken World prototype.
@@ -40,12 +41,27 @@ at `11221` to that word (`1820/1821`). The reciprocal base is ROM word `CB0FC8`,
 selected through `111A7`; upper index `111A8` is 63,679, with a -4,096 lower bound.
 Runtime culler indices were 184..59,845 in the measured drive.
 
-The far-tail samples numerically resemble **504/(index+1)**, not World's
-512/(16×index+1) table. Samples at 1000, 4900, 4999 and 63679 differ from that
-candidate formula by only a few float ULPs. This is an inference from four samples,
-not a verified generator. Near entries use another behavior (e.g. index100 is
-approximately1.7996), so extrapolating the whole table with that formula is wrong.
-Dump/check a bounded far-tail interval before implementing a host extension.
+All **63,680 nonnegative table entries** now match this generator bit-for-bit:
+use `2-(index+1)/504` below index503, otherwise `504/(index+1)`; round the exact rational to eight
+decimal places with ties to even, convert to float32, then encode C31. Six-, seven- and nine-decimal
+controls produce 62,856 /56,246 /48,268 mismatches. Direct ROM decoding was checked
+against every previously captured runtime table sample. Table SHA256
+`8b4c0581664a93f0225556c87c9cc383f8d43f97e5e779561ccf3ecb41397c76`;
+source ZIP SHA4499df321ede9592f4ad9b3ab255d445acc89754c7c0ead80f9471e131084f63.
+Evidence: `results/diagnostics/offroad-tail-20260908/{analysis,generator}.json`.
+The remaining4,096 negative-index entries also match the same linear near formula
+(`negative.json`): all67,776 entries are now checked. Original entries should still
+stay untouched. Python's direct `round(float,8)` fails two exact decimal ties (20479 and61439);
+integer quotient/remainder rounding fixes both. The failed direct-round receipt
+is retained, and `recompute.py` rechecks all entries with the user's ROM ZIP. This
+validates a reconstruction of the existing table, not an extended renderer or resource lifetime.
+
+Static follow-up also identifies `1E9D` testing `B725`=63,680 after adding the
+object radius: a separate vertex-path clipping boundary. Projection-table base
+loads occur in multiple paths (`1D73`, `1DF4`, `22F7`, `2357`, `237B`, `2575`,
+`259E`, `2787`, `2838`, plus helper `E02E` and `E21F`). Profile these consumers
+and the clipping boundary before any2× table extension. The ROM table ceiling
+can remain unchanged in the bounded1.25× far-culler experiment.
 
 A 1.25× far-limit trial reaches 59,120 and would test the 1,173 measured nearby
 rejections while retaining the existing table ceiling. Even this needs vertex
@@ -75,3 +91,27 @@ The renderer traverses lists reached through `BBB5`, `BBB6`, `BBB7` (calls aroun
 There is also an apparent model LOD switch at `6968:04E261A8` (25,000), following
 `AR7+11` model selection. LOD detail is separate from drawing distance. Neither
 these lists nor the LOD threshold has a runtime intervention or acceptance yet.
+
+### Exotica follow-up after the USA checkpoint
+
+Static attribution reduces the projection scope: `6B99` merely restores the table
+base before returning to the main culler. The other lookup at `C371/C375` belongs
+to a helper with an explicit depth100..30000 gate (`C36A..C36D`), so its stock
+reciprocals should remain unchanged. The main culler `688B` is the observed
+80,000-unit clamp candidate; Zeus receives geometry through its separate path.
+
+For a read-only frustum probe, snapshot object depth/radius and camera XYZ in the
+`67DA` far-word tap atPC6888. Reading them inside a broad reciprocal-table tap risks
+nested address-space callbacks because object RAM overlaps the table range.
+Then observe the actual float-register operands atPC6890(Y lower),6893(Y upper),
+6898(X lower),689C(X upper), retaining which stages execute. This permits checking
+whether a proposed true reciprocal would admit objects the original CPU tests
+reject. Predicted sphere visibility must be compared with actual branch operands;
+it is not a completed-GL result. Guard the fast pointer67C3=87FF48 and all planes.
+
+If justified by that probe, a bounded host/Lua trial could replace only the
+main culler's clamped reciprocal read, using a depth cached outside the table tap,
+without changing guest RAM or the unused204,800 far plane. `688B` also runs in the
+far-reject branch delay slot; do not treat its read count as an accepted object,
+or fail merely because a rejected object would require an out-of-range index.
+No such Exotica intervention has been run at this checkpoint.

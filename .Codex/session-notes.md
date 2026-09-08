@@ -5,6 +5,14 @@
 - **Branch:** master
 
 ## What Was Done
+- Latest USA: native8b151aa9c2f/638c74ff built/pushed,126patch exacttree5e10f68c9badba2385d38d6178eaae1be02d48b6.
+- USA CLI global adapter9e70f6a: five5012frame controls;1x exact, residency altersoldroute.2x repeats5012/83native/19GL1904x993.
+- All7currentdefaults actualtelemetry/memory/Worldpassthrough/Exo21GL pass.139tests/all4CI34202538087.
+- All237sourcehashes local/Linux/Windows match946fc6523f110ddc2d91e5a481b4a6cbdd0cc067d73452cc3ab923e42023974c.
+- 107file ROM-free proof recomputes USA distance/input/motion; archived receipts retained for oldrouteFAIL and GL repeat.
+- Off Road all67776 table entries exactly reconstructed with rational eight-decimal half-even rounding; naivePythonround2tiesFAIL retained.
+- USA no menu promotion/geometry/order/resource/attended acceptance. Next OffRoad floatclipping/vertex path and Exotica frustum probe.
+- v0.4.0 tag/ZIP unchanged, no furtherrelease or Worldtuning. No emulator/helper remains running at checkpoint.
 - Overnight02:40: World2.5 global Off/2x/3x +0/8/12 adapter/menu in117e8fb; native dae2569f793 built/pushed.
 - Sourcevunit SHA f06a160b57c72737e89aedcc159f87cbe173c82620722ea109e84dcdffe70252;125patch exacttree2f4f89c388ba380aa578036143049a723dcad00c.
 - All7defaultcases actualtelemetry/memory/Worldpassthrough/Exo21GL pass; existingWorld2.4global2x8783/146 passes.
@@ -43,27 +51,37 @@
 - [x] Initial Cheats submenu and top-level Experiments. See docs/reviews/2026-09-08-cheats-and-experiments.md.
 - [x] Global distance capability matrix across all4games, including World2.4/2.5; no native changes yet.
 - [x] Guarded World2.5 global adapter, optional/defaultOFF; no attended/geometry/order acceptance yet.
-- [ ] NEXT USA75k admission/80k removal plus virtual projection. Read docs/reviews/2026-09-08-distance-next-adapters.md:
-      include277/278 clamp +27C/27F dynamic reads;823E/8240+A727 require attribution.
-      OffRoadfloat47296/ROMtable (tail resembles504/(index+1), unverified) and Exotica CPUfrustum/activation
-      require their own paths. No per-model allowlists. All code clean/pushed; no game process at02:40.
+- [x] USA global projection/admission CLI trial; no launcher promotion. Five5012frame trials complete;
+      residency changes originalroute. Separate2x repeats5012/83native/19GL at1904x993, not4Kacceptance.
+- [ ] USA geometry/order/resource validation and fresh attended/second-level recording remain open.
+- [ ] NEXT OffRoad own floatfar47296/clipping63680/ROMtable path; Exotica guarded CPUfrustum probe.
+      Full OffRoad table reconstruction now exact across67776 entries. Read distance-next-adapters.md.
 - [ ] Live cheat activation for one-shot/code-restoring actions; individual rank/nitro/custom-choice validation.
 - [ ] Physical second-wheel/manual/soak and wider track coverage remain unperformed alpha limitations.
 - [ ] World oscillation/normalization, New York black flashing and3x/+12crash remain known issues.
 
 ## Next Steps
 1. Follow section3 of docs/OVERNIGHT-2026-09-08.md. Cheats initial milestone and Experiments move are done.
-2. Start cross-game distance capability mapping; reuse verified global architecture, never World addresses blindly.
+2. Continue Off Road culler/vertex/clipping and Exotica CPU-frustum trials. The capability matrix,
+   World2.5 adapter and USA CLI adapter are implemented; inspect their acceptance limits.
 3. Downloaded XMLs are in ignored build/overnight-cheat-inventory; archive C:/Users/antho/Downloads/cheat0279.zip.
 4. Preserve ROM revision checks, cheat-off defaults/replay identity; keep physical force off in all automation.
 5. At08:00America/Chicago Sep8 checkpoint and pause heartbeat; no additional release/visibility change authorized.
 
 ## Context for Next Session
-Native E:/Source/mame-src/vunit.exe SHA eb2db42a90288bf37ac0dcce9b9ce2106c136fad198c52320ee2b3af3c435a97,
-HEAD44c3494d6af on poc/quadlog, pushed fork. Stream Deck uses source launcher and this binary.
-Collection commits eea6ef5/e6154e1/f8a804f/1baa99a separate Cheats/menu/frozen-checks/display-targeting.
-Current proof manifest records final source identity and component scopes. Local devZIP
-build/CruisnCollection-dev-20260908-012408.zip SHA f7a5a641affe81d7e44102d86cc9a6fa19411820a8b9d76607a99e7d08ecfdf5.
-It is built at f8a804f, before diagnostic-only1baa99a; no further release published.
-The initial all7aggregate FAIL is retained; Exotica4K rerun restores exact21GL. No shader/force change.
-All helpers/games completed. Personal settings/calibration unchanged; imported cheats defaultOFF.
+Native E:/Source/mame-src/vunit.exe SHA638c74ff4227532d0ff42be4cd46cb8a358a1a343549abb107bb56050e91bd74,
+HEAD8b151aa9c2f on poc/quadlog, pushed fork.126patch exacttree5e10f68c9badba2385d38d6178eaae1be02d48b6.
+Stream Deck uses source launcher and this binary. USA distance is CLI-only; no menu promotion.
+Source9e70f6a adds USA trials;92b6659 fixes World2.5 explicit attended-recording guard;
+fc24e0d/3628c96 make derivation verify completedGL.139tests/4CI34202538087 PASS;
+all237 local/Linux/Windows sourcehashes match946fc6523f110ddc2d91e5a481b4a6cbdd0cc067d73452cc3ab923e42023974c.
+The source menu already has Cheats and top-level Experiments beside Display.
+Publishedv0.4.0 ZIP/tag remain immutable. No newer release is published.
+Next: read docs/reviews/2026-09-08-distance-next-adapters.md. Off Road all67776 tableentries
+match an exact eight-decimal half-even reconstruction (naivePythonround fails2ties).
+Bounded1.25far may retain its current63680 clipping/table limits;2x needs all vertexpaths.
+Exotica mainculler factor is clamped at80k;67DA far204800 was unused in samples. Guarded
+frustum operand probe first. Never read overlappingobjectRAM inside a broadtable tap.
+Native/guest changes may alter ADC interpolation and replay routes. Preserve originals,
+require repeatability and fresh attended acceptance; don't label counts as visible improvements.
+PhysicalFFB off in automation. World force normalization remains deferred.

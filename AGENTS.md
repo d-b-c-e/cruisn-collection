@@ -1,5 +1,46 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## USA distance checkpoint (2026-09-08)
+
+Read docs/reviews/2026-09-08-usa-global-distance.md and the updated
+2026-09-08-distance-next-adapters.md. Native8b151aa9c2f is built/pushed; sourcevunit
+SHA638c74ff4227532d0ff42be4cd46cb8a358a1a343549abb107bb56050e91bd74.126patch export
+exacttree5e10f68c9badba2385d38d6178eaae1be02d48b6. USA4.5 global projection/residency
+is CLI-ONLY in9e70f6a, defaultunset. --usa-far80000/100000/160000/240000 and
+--usa-residency0/1; no permodel/level allowlist. Checked far/clamps plus hosttable;
+75k admission/80k removal extended through guarded reads, no guest objectRAM writes.
+All projection paths include277/278 dynamic clamp andA728 attachedobject consumer;
+823E explicit screen-extremum reject remains stock. A728 extra reads were zero.
+
+Five full5012frame USA trials complete at99.9900..100.0013% emulation. Original1x
+control passes. Projection2x-only changes3native images/3pixels in1of19GL samples;
+one camera sample differs3012, ADCvalues equal but timestamps differ. Residency
+changes route substantially from2222 with interpolatedADC differences, retainedFAIL.
+2x/3x first camera difference3902; no extra visible3x scenery established. Candidate
+2x repeats5012inputs/83native/19completedGL at1904x993; matrixGL was512x451, not4K.
+No launcher promotion or geometry/order/resource/attended acceptance yet. Derive
+now --gl-capture/--gl-every plus --compare-gl identity check. World2.5 explicit
+attendedrecording guard fixed separately in92b6659; source menu already has Cheats
+and top-level Experiments beside Display. No personal preferences edited.
+
+All7default regressions pass with actualtelemetry/independentmemory and existing
+Worldpassthrough/Exoticaforce checks, physicaloutputOFF. Exotica21completed4KGL match.
+139Python tests/all4CI34202538087 PASS at3628c96. All237sourcehashes matchlocal/Linux/
+Windows identity946fc6523f110ddc2d91e5a481b4a6cbdd0cc067d73452cc3ab923e42023974c.
+107file proof results/proof/2026-09-08-usa-global-distance recomputes inputs/motion/
+distance withoutROMs. v0.4.0 ZIP/tag unchanged. No newrelease. No emulator remains.
+
+NEXT OffRoad: all67776 reciprocal entries now match an exact rational eight-decimal
+half-even reconstruction: index<503 =>2-(index+1)/504, else504/(index+1), thenfloat32
+andC31. NaivePythonround(float,8) fails2ties (20479/61439); preserve failedcontrol.
+Still need vertex/clipping/residency analysis. B725=63680 is a separate geometry
+boundary;1.25far47296->59120 may retain it,2x cannot blindly reuseWorldtable.
+Exotica: mainculler688B has80kclamp, unused204800far. Probe actual CPUfrustum
+operands before intervention, caching object/XYZ at67DAfar tap to avoid recursive
+reads in overlappingtable/objectRAM. C371/C375 helper already limited100..30000;
+6B99 restores mainculler base. See next-adapters for exact consumers/probe outline.
+Continue overnight queue to08:00local; no physicalFFB or deferredWorldforce tuning.
+
 ## World 2.5 distance checkpoint (2026-09-08, 02:40)
 
 Read docs/reviews/2026-09-08-world25-distance.md and

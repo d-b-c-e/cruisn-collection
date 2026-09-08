@@ -28,8 +28,11 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    The [capability matrix](docs/reviews/2026-09-08-distance-capabilities.md) now has
    guarded gameplay measurements for all five revisions. The optional World2.5
    adapter is implemented and 2x repeats (see [evidence](docs/reviews/2026-09-08-world25-distance.md));
-   USA has measured pending objects ready for an admission-window trial. Off Road
-   needs its own float path; Exotica has no far-plane rejects in its sample.
+   USA now has [global CLI trials](docs/reviews/2026-09-08-usa-global-distance.md) with
+   a repeatable2x candidate, but substantial original-route divergence and no
+   launcher promotion yet. Off Road's full projection table is reconstructed
+   exactly; its clipping/vertex path is next. Exotica needs a CPU-frustum probe
+   before changing its unused far limit.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.

@@ -4059,3 +4059,35 @@ bindings verified. v0.4.0 exactZIP SHAfd292b0d4ba4d2a97147c6ffc1fb95407e3891495d
 No emulator running. No physicalFFB or Worldtuning. Native sourceusedbyStreamDeck
 updated; no newrelease ZIP. See dated world25-distance, usa-residency and
 distance-next-adapters reports. Heartbeat continues to08:00local.
+
+
+## 2026-09-08 — USA global trials and complete Off Road table reconstruction
+
+Native8b151aa9c2f / SHA638c74ff4227532d0ff42be4cd46cb8a358a1a343549abb107bb56050e91bd74
+built/pushed;126patch export exacttree5e10f68c9badba2385d38d6178eaae1be02d48b6.
+Collection9e70f6a adds optional USA global CLI projection/residency controls. Guarded
+75k/80k pending/active reads remain guest-managed; all five projectionclamp groups
+and attachedobject lookup covered, hosttail never overwritesRAM. No menu promotion.
+Five5012frame trials ~100% complete;1x control exact. Projection2x-only changes
+3native samples/3pixels in1of19GL, one camera sample3012; actualADCvalues equal,
+timestamps differ. Residency1.25/2/3x changesroute from2222; all originalFAILs retained.
+2x/3x camera first differs3902; no extra visible3x gain proven. Separate2xcase repeats
+5012inputs/83native/19completedGL at1904x993. Matrix captures512x451, not4Kacceptance.
+139tests/all4CI34202538087 at3628c96; all237 local/Linux/Windows sourcehashes match
+946fc6523f110ddc2d91e5a481b4a6cbdd0cc067d73452cc3ab923e42023974c. All7default regressions
+with telemetry/memory/forcecontrols pass; Exotica21completed4KGL exact. No physical
+FFB. World2.5 explicitrecordguard fix92b6659; deriveGLfeaturefc24e0d/3628c96 catches
+incomplete GL references and compares both completed runs. Nativevectors passed;
+a receipt rerun first lackedMSYS DLLs, failedstart preserved separately.
+107derivedfiles archived in results/proof/2026-09-08-usa-global-distance; ROM-free
+verifier recomputes all five distance/input/motion comparisons and checks bindings.
+Archive SHA725c393a7ae8257e5e3565534f65f5bfd12cfcb93adc57f2ff56465b05bc15fd.
+Off Road table now reconstructed exactly for all67776 indices(-4096..63679):
+index<503 linear2-(index+1)/504, otherwise504/(index+1), exact rational rounding to
+8decimals ties-even, float32 thenC31. Naivefloat round fails2ties; retainednegative
+control. Formula6/7/9 decimals has62856/56246/48268 nonnegative mismatches. Static
+B725 geometryclip63680 and multiplevertexconsumers still needprofiling. Exotica
+CPUfrustum boundedprobe outline updated; noOffRoad/Exotica intervention yet.
+No newrelease; v0.4.0 ZIP rehashedunchanged. NativeusedbyStreamDeckupdated. Noemulator
+orhelper remains. Read dated USAglobal-distance and next-adapters reviews. Overnight
+heartbeat continues to08:00local. USA freshdrive/geometry/order/resource checks open.
