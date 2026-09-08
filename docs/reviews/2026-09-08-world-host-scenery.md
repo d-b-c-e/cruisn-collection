@@ -46,12 +46,45 @@ checkpoint, with unchanged release/tag/configuration.
 
 ## Next acceptance work
 
-Implement a guarded native path that sends additional quads only to the host GL
-renderer. It must leave guest RAM, CPU timing, native framebuffer and original DMA
-stream intact. Compare its quads against this independent reference, require
-repeated completed GL frames and actual camera/ADC equality, and inspect the
-handoff when guest drawing takes over. Insertion before the main-object pass is
-an occlusion experiment, not a general depth-order solution.
+The guarded native prototype is now built as `480206c670c`, SHA256
+`33670b9dae672725851a0e177bb58be6eee29402512c41ac8d1875e9e890accd`.
+Its 131-patch export exactly reconstructs tree
+`95c99e6b11ac61756c3fa55761f7eb6bcc676cf0`. The first native commit `7ffdd42ad02`
+was followed by a separate guard restricting geometry/material reads to ROM,
+so a bad resource pointer cannot reach side-effecting I/O.
+
+The option is diagnostic CLI only, bounded explicitly:
+
+```text
+python harness/replay.py results/diagnostics/world-germany-20260906 --candidate E:/Source/mame-src/vunit.exe --world-host-scenery draw --world-host-first 5900 --world-host-last 6020 --gl-capture 5900:6020 --gl-every 2 --gl-max 61 --small-window --output NEW_DIRECTORY
+```
+
+`observe` computes/logs the same host quads without submitting them. `off` and an
+unset `MIDV_WORLD_HOST_SCENERY` install no hooks. Native modes are 0/1/2 and require
+World 2.4, stock guest far/activation and, for drawing, the GL renderer. The
+prototype writes neither guest RAM nor VRAM and adds nothing to the hardware DMA
+stream. Shared C31 math is canonical in `native/scenery_c31.h`; the World adapter
+is `native/world_host_scenery.h`. The source launcher has no new menu/default.
+
+`native-observe-v1` and `native-draw-v1` both pass the original 6023-frame input/
+native-image replay. Their complete camera and actual ADC logs, original quad
+capture, native framebuffer and texture/palette RAM are byte-identical. 59/61
+completed 512×451 GL images change, with extra distant scenery. The observation
+cost was at most 0.630 ms per scene in this bounded sample; that is not a whole-game
+performance claim. The GL equality report intentionally says FAIL for this
+intervention and retains each changed-frame count/bounds.
+
+`native-draw-v2`, on the tighter-guard final binary, repeats all 61 completed GL
+images exactly. Its simultaneous read-only Lua capture independently reconstructs
+every logged host quad across all 61 scenes. The capture now stores both session
+callback count and actual emulator frame: they differ by one in this recording.
+Runtime comparisons use the measured emulator clock, without guessed alignment.
+The heavy Lua capture costs wall time and is excluded from native-cost claims.
+174 Python tests and the ROM-free C++ geometry/I/O-guard/cycle tests pass.
+
+Full-route observe/draw, default cross-game regressions and larger completed images
+are the next acceptance checks. Insertion before the main-object pass remains an
+occlusion experiment, not a general depth-order solution.
 
 Then broaden static model coverage and decode future track sections outside guest
 RAM. Pending-object rendering alone has a finite lead and cannot promise the

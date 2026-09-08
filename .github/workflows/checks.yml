@@ -52,6 +52,10 @@ jobs:
       - run: /tmp/scenery-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/world_distance_test.cpp -o /tmp/distance-test
       - run: /tmp/distance-test
+      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative native/analyze_world_host.cpp -o /tmp/world-host
+      - run: python harness/verify_world_host_native.py /tmp/world-host --report /tmp/world-host-math.json
+      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/world_host_test.cpp -o /tmp/world-host-test
+      - run: /tmp/world-host-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/usa_distance_test.cpp -o /tmp/usa-distance-test
       - run: /tmp/usa-distance-test
       - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/offroad_distance_test.cpp -o /tmp/offroad-distance-test

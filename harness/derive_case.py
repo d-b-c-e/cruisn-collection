@@ -20,6 +20,7 @@ import world_distance
 import usa_distance
 import exotica_visibility
 import offroad_distance
+import world_host_options
 from display_target import parse_size
 
 
@@ -84,6 +85,7 @@ def main(argv=None):
     usa_distance.add_arguments(ap)
     exotica_visibility.add_arguments(ap)
     offroad_distance.add_arguments(ap)
+    world_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0: ap.error('timeout must be positive')
     work = new_run('derived-case', args.output)
@@ -124,6 +126,8 @@ def main(argv=None):
         offroad_trial=offroad_distance.configure(args,manifest['rom'],settings)
         if offroad_trial:
             report['offroad_distance']=offroad_trial
+        host_trial=world_host_options.configure(args,manifest['rom'],settings)
+        if host_trial:report['world_host_scenery']=host_trial
         expected_gl = configure_gl(settings,manifest['rom'],args.gl_capture,args.gl_every,manifest['evidence']['frames'])
         env = diagnostic_env(settings)
         recording = Recording(work / 'case', every=manifest['every'],

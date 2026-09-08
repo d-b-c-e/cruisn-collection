@@ -5,13 +5,17 @@ assert(manager.machine.system.name=='crusnwld24','World 2.4 transform capture on
 local first=tonumber(os.getenv('CRUISN_TRANSFORM_FIRST') or '5900')
 local last=tonumber(os.getenv('CRUISN_TRANSFORM_LAST') or '5910')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
-    and last-first<=120,'invalid bounded transform interval')
+    and last-first<=240,'invalid bounded transform interval')
 local frame,serial,current,error_message=0,0,nil,nil
 local taps,out,draws,future={},nil,nil,nil
 local pending,page={},0
 local counts={starts=0,projected=0,draws=0,unmatched_draws=0,pending=0}
 local function words(address,count)
-    assert(address>=0 and count>=0 and count<=4096 and address+count<=0x1000000,'invalid memory span')
+    local finish=address+count
+    local mapped=address>=0 and finish<=0x20000
+        or address>=0x809800 and finish<=0x80a000
+        or address>=0xc00000 and finish<=0x1000000
+    assert(mapped and count>=0 and count<=4096,'memory span outside captured RAM/ROM regions')
     local v={};for i=0,count-1 do v[#v+1]=s:read_u32(address+i) end;return v
 end
 local function array(v) return '['..table.concat(v,',')..']' end
@@ -77,7 +81,7 @@ return function(n)
                     if flags&4~=0 then lods[#lods+1]=s:read_u32(base-4) end
                 end
                 for lod,model in ipairs(lods) do
-                    local entry={frame=frame,object=id,object_words=obj,model=model,lod=lod-1,
+                    local entry={frame=frame,emulator_frame=manager.machine.screens[':screen']:frame_number(),object=id,object_words=obj,model=model,lod=lod-1,
                         camera=camera,view=view,billboard=billboard,origin=origin,page=page,
                         pending_threshold=s:read_u32(0xd584)}
                     -- Alternate geometry codecs are retained as explicit exclusions.
@@ -115,7 +119,7 @@ return function(n)
             local camera=words(s:read_u32(0x41),3)
             local view=words(s:read_u32(0x43),9)
             local relative=words(cpu.state.AR6.value-1,5)
-            current={frame=frame,call=serial,object=id,model=model,vertex_buffer=d,
+            current={frame=frame,emulator_frame=manager.machine.screens[':screen']:frame_number(),call=serial,object=id,model=model,vertex_buffer=d,
                 object_words=words(id,32),camera=camera,view=view,
                 matrix=words(cpu.state.AR5.value,9),matrix_address=cpu.state.AR5.value,
                 camera_space=relative,vertices=vertices,input_vertices=input_vertices,polygons=polygons,

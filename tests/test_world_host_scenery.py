@@ -1,4 +1,5 @@
 import copy
+import argparse
 import json
 import lzma
 from pathlib import Path
@@ -8,6 +9,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 from scenery_c31 import F
 from world_host_scenery import camera_center, rotation_matrix, model_counts, project, fast_quads
+from world_host_options import add_arguments,configure
 
 
 class SceneryMathTests(unittest.TestCase):
@@ -71,6 +73,25 @@ class WorldModelTests(unittest.TestCase):
         r['end_pc']=0x2e1
         with self.assertRaisesRegex(ValueError,'clipped'):fast_quads(r,[])
         with self.assertRaises(ValueError):model_counts(0)
+
+
+class HostOptionsTests(unittest.TestCase):
+    def test_revision_bounds_and_simulation_exclusions(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','5900','--world-host-last','6020'])
+        with self.assertRaises(ValueError):configure(args,'crusnwld',{'MIDV_GL':'1'})
+        with self.assertRaises(ValueError):configure(args,'crusnwld24',{'MIDV_GL':'1','MIDV_WORLD_FAR':'160000'})
+        with self.assertRaises(ValueError):configure(args,'crusnwld24',{'MIDV_GL':'1','MIDV_SCENERY':'all'})
+        with self.assertRaises(ValueError):configure(args,'crusnwld24',{})
+        settings={'MIDV_GL':'1'};configure(args,'crusnwld24',settings)
+        self.assertEqual(settings['MIDV_WORLD_HOST_SCENERY'],'2')
+        self.assertEqual(settings['MIDV_WORLD_HOST_LAST'],'6020')
+        inherited=parser.parse_args([]);inherited.headless=True
+        with self.assertRaises(ValueError):configure(inherited,'crusnwld24',settings)
+        off=parser.parse_args(['--world-host-scenery','off']);configure(off,'crusnwld24',settings)
+        self.assertNotIn('MIDV_WORLD_HOST_LAST',settings)
+        unbounded=parser.parse_args(['--world-host-scenery','observe'])
+        with self.assertRaises(ValueError):configure(unbounded,'crusnwld24',settings)
 
 
 if __name__=='__main__':unittest.main()
