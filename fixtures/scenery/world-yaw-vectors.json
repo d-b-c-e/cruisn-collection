@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "provenance": "Independent World 2.4 C31 guest object/section matrices captured before list transfer; numerical operands only, no model/texture data",
+  "source_sha256": "f5c4d859f6c4ade0b2305cff3ef75487bbff4e64ab557b5d517431fb1b85146d",
+  "vectors": [
+    {
+      "mantissa": 554362112,
+      "exponent": 0,
+      "constants": [
+        4263704963,
+        4118653474,
+        3979254875,
+        4088417758,
+        4178085694,
+        4258616668,
+        4788187
+      ],
+      "matrix": [
+        4263345014,
+        2147483648,
+        4287392024,
+        2147483648,
+        0,
+        2147483648,
+        4285765352,
+        2147483648,
+        4263345014
+      ]
+    },
+    {
+      "mantissa": 1479579712,
+      "exponent": 2,
+      "constants": [
+        4263704963,
+        4118653474,
+        3979254875,
+        4088417758,
+        4178085694,
+        4258616668,
+        4788187
+      ],
+      "matrix": [
+        4284738579,
+        2147483648,
+        4271300234,
+        2147483648,
+        0,
+        2147483648,
+        4268302710,
+        2147483648,
+        4284738579
+      ]
+    }
+  ]
+}

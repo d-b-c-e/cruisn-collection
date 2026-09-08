@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 from scenery_c31 import F
 from world_host_scenery import camera_center, rotation_matrix, model_counts, project, fast_quads, reciprocal_table
 from world_host_options import add_arguments,configure
-from verify_world_sections import placement
+from verify_world_sections import placement, yaw_matrix
 
 
 class SceneryMathTests(unittest.TestCase):
@@ -36,6 +36,13 @@ class SceneryMathTests(unittest.TestCase):
 
 
 class WorldModelTests(unittest.TestCase):
+    def test_yaw_matches_independently_captured_guest_matrices(self):
+        path=Path(__file__).resolve().parents[1]/'fixtures/scenery/world-yaw-vectors.json'
+        vectors=json.loads(path.read_text())['vectors']
+        self.assertGreater(len(vectors),1)
+        for v in vectors:
+            self.assertEqual(yaw_matrix(F(v['mantissa'],v['exponent']),v['constants']),v['matrix'])
+
     def test_section_placement_rotates_signed_coordinates_before_translation(self):
         f=lambda n:F.integer(n).store()
         row=dict(definition=[0xc00000,(-10)&0xffffffff,20,30,f(2),0],
