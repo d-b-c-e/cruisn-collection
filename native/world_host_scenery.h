@@ -46,7 +46,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000)
     std::vector<uint32_t> seen;
     while(id)
     {
-        if(id<0x1000 || id+32>0x20000 || seen.size()>=2048 ||
+        if(id<0x1000 || id>0x20000-32 || seen.size()>=2048 ||
             std::find(seen.begin(),seen.end(),id)!=seen.end())return false;
         seen.push_back(id);++scene.pending;
         std::array<uint32_t,32> obj;
@@ -65,6 +65,8 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000)
         if(!pointer(model,3))return false;
         if((obj[14]&0x200) && depth>10000)
         {
+            const uint32_t preceding=(obj[14]&4) && depth>15000 ? 4 : 3;
+            if(!pointer(obj[13]-preceding,preceding))return false;
             model=read(obj[13]-3);
             if((obj[14]&4) && depth>15000)model=read(obj[13]-4);
         }

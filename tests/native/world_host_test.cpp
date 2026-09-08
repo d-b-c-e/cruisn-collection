@@ -39,6 +39,13 @@ int main()
     assert(cruisn::world_host::build(read,triple,240000) && triple.decoded==1);
     assert(extended.objects[0].quads==triple.objects[0].quads && ram==before);
     assert(!cruisn::world_host::build(read,invalid,100000));
+    ram[0x1080e]=0x2208;
+    cruisn::world_host::Scene underflow;
+    assert(!cruisn::world_host::build(read,underflow,160000) && !io_read);
+    ram[0x1080e]=0x2008;ram[0x1000]=0xfffffff0;
+    cruisn::world_host::Scene overflow;
+    assert(!cruisn::world_host::build(read,overflow));
+    ram[0x1000]=0x10800;
     ram[0x10803]=f(1024);
     ram[0x1080d]=0x993000;
     cruisn::world_host::Scene corrupt;
