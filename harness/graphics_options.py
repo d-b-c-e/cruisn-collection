@@ -25,8 +25,10 @@ def family(rom):
 
 
 def supported(rom, option):
-    if option in ("scenery_distance", "world_distance", "world_lookahead"):
+    if option == "scenery_distance":
         return rom == "crusnwld24"
+    if option in ("world_distance", "world_lookahead"):
+        return rom in world_distance.SUPPORTED_ROMS
     if option == "terrain_visibility":
         return rom in ("crusnwld", "crusnwld24")
     if option == "seam_alignment":
@@ -89,7 +91,7 @@ def rows(game, options, rom=None):
         ("terrain_visibility", "WIDESCREEN TERRAIN",
          "RESTORES SOME MISSING EDGE TERRAIN; DOES NOT EXTEND DRAW DISTANCE. NEXT LAUNCH."),
         ("world_distance", "WORLD DRAW DISTANCE",
-         "WORLD 2.4 TRIAL: 3X/+12 HAS CRASHED ON NEW YORK. LEAVE OFF FOR THE RELEASE BASELINE."),
+         "WORLD 2.4/2.5 TRIAL: CHANGES REPLAY ROUTES. 3X/+12 HAS CRASHED ON NEW YORK. DEFAULT OFF."),
         ("world_lookahead", "SCENERY LOOKAHEAD",
          "EXTRA TRACK SECTIONS WITH WORLD DRAW DISTANCE. 8 IS THE TRIAL BASELINE; 12 CAN CHANGE GAMEPLAY."),
         ("scenery_distance", "DISTANT SCENERY",

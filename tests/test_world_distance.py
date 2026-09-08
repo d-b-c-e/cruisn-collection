@@ -26,7 +26,9 @@ class GlobalDistanceTests(unittest.TestCase):
         settings = {'MIDV_SCENERY': 'all'}
         self.assertIsNone(configure(self.args(), 'crusnwld24', settings))
         with self.assertRaises(ValueError): configure(self.args('--world-lead','4'), 'crusnwld24', settings)
-        with self.assertRaises(ValueError): configure(self.args('--world-far','100000'), 'crusnwld', settings)
+        with self.assertRaises(ValueError): configure(self.args('--world-far','100000'), 'crusnwld23', settings)
+        self.assertEqual(configure(self.args('--world-far','100000'), 'crusnwld', {}),
+                         dict(far=100000,lead=0,cpu=100))
         actual = configure(self.args('--world-far','100000','--world-lead','4','--world-cpu','125'), 'crusnwld24', settings)
         self.assertEqual(actual, dict(far=100000,lead=4,cpu=125))
         self.assertEqual(settings['MIDV_SCENERY'],'off')
@@ -55,5 +57,5 @@ class GlobalDistanceTests(unittest.TestCase):
             self.assertEqual(patch[0xae], (0x04e31387, 0x04e33a98))
         args.world_lead = 13
         with self.assertRaises(ValueError): configure(args, 'crusnwld24', settings)
-        for rom in ('crusnwld', 'crusnusa', 'offroadc', 'crusnexo'):
+        for rom in ('crusnwld23', 'crusnusa', 'offroadc', 'crusnexo'):
             with self.assertRaises(ValueError): configure(self.args('--world-far', '240000'), rom, {})

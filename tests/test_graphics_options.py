@@ -89,7 +89,7 @@ class WorldDistanceMenuTests(unittest.TestCase):
     def test_unsupported_revisions_and_display_modes_never_enable_native_hooks(self):
         section = {'world_distance_crusnwld':'3', 'world_lookahead_crusnwld':'12'}
         with tempfile.TemporaryDirectory() as directory:
-            for rom, margin, scale in [('crusnwld',86,4), ('crusnwld23',86,4),
+            for rom, margin, scale in [('crusnwld20',86,4), ('crusnwld23',86,4),
                     ('crusnusa',86,4), ('offroadc',86,4), ('crusnexo',86,4),
                     ('crusnwld24',0,4), ('crusnwld24',86,1)]:
                 env = G.launch_overrides(ROOT, directory, rom, margin, scale, section, {})
@@ -98,7 +98,18 @@ class WorldDistanceMenuTests(unittest.TestCase):
                     self.assertNotIn(0x40, read_patch(env['MIDV_PATCH']))
         self.assertEqual(G.load(section)['crusnwld']['world_distance'], 3)
         for option in ('world_distance', 'world_lookahead'):
-            self.assertFalse(G.toggle({}, 'crusnwld', option, 'crusnwld'))
+            self.assertFalse(G.toggle({}, 'crusnwld', option, 'crusnwld23'))
+
+    def test_world25_uses_shared_global_options_but_not_selective_scenery(self):
+        section = {'world_distance_crusnwld':'2', 'world_lookahead_crusnwld':'8',
+                   'scenery_distance_crusnwld':'1'}
+        with tempfile.TemporaryDirectory() as directory:
+            env = G.launch_overrides(ROOT, directory, 'crusnwld', 86, 4, section, {})
+            self.assertEqual(env['MIDV_WORLD_FAR'], '160000')
+            self.assertEqual(env['MIDV_WORLD_LEAD'], '8')
+            self.assertEqual(env['MIDV_SCENERY'], 'off')
+            self.assertEqual(read_patch(env['MIDV_PATCH'])[0x40], (80000,160000))
+        self.assertFalse(G.for_game({}, 'crusnwld')['world_distance'])
 
     def test_explicit_patch_and_attended_cli_trial_override_saved_distance(self):
         section = {'world_distance_crusnwld':'3', 'world_lookahead_crusnwld':'12'}
@@ -277,7 +288,7 @@ class LauncherGraphicsTests(unittest.TestCase):
             self.assertNotIn('far_distance',world)
             restored['world_rom'] = 'crusnwld'
             world25 = {r[0] for r in collection.settings_rows('graphics',restored,False,'')}
-            self.assertNotIn('world_distance',world25)
+            self.assertIn('world_distance',world25)
             restored['graphics_rom'] = 'crusnexo'
             exotica = collection.settings_rows('graphics',restored,False,'')
             self.assertEqual([r[0] for r in exotica], ['graphics_game','back'])

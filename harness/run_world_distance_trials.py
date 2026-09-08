@@ -69,8 +69,8 @@ def main(argv=None):
     try:
         manifest = json.loads((args.case/'case.json').read_text(encoding='utf-8'))
         stop = args.until_frame or manifest['evidence']['frames']
-        if manifest['rom'] != 'crusnwld24' or not args.motion[1] < stop <= manifest['evidence']['frames']:
-            raise ValueError('World 2.4 recording must cover the motion interval and stop')
+        if manifest['rom'] not in ('crusnwld24', 'crusnwld') or not args.motion[1] < stop <= manifest['evidence']['frames']:
+            raise ValueError('World 2.4/2.5 recording must cover the motion interval and stop')
         if args.gl_frames[1] >= stop:
             raise ValueError('leave frames after the GL interval for completed capture delivery')
         frames = requested_frames(*args.gl_frames, args.gl_every)
