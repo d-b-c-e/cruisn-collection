@@ -9,7 +9,9 @@ local last=tonumber(os.getenv('CRUISN_EXOTICA_LAST') or '4300')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>first and last-first<=12000)
 local reciprocal=tonumber(os.getenv('CRUISN_EXOTICA_RECIPROCAL') or '0')
 local margin=tonumber(os.getenv('CRUISN_EXOTICA_MARGIN') or '0')
+local far=tonumber(os.getenv('CRUISN_EXOTICA_FAR') or '204800')
 assert((reciprocal==0 or reciprocal==1) and (margin==0 or margin==88),'unsupported Exotica trial')
+assert((far==204800 or far==409600 or far==614400) and (far==204800 or reciprocal==1),'extended far requires coherent reciprocals')
 local frame,taps,out,current,failed,sequence,list=0,{},nil,nil,nil,0,0
 local factors={}
 local function c31(value)
@@ -57,7 +59,7 @@ return function(n)
    assert(s:read_u32(w[1])==w[2],string.format('Exotica frustum profile mismatch at%x',w[1]))
   end
   if reciprocal==1 then
-   for i=5000,12800 do
+   for i=5000,far//16 do
     factors[i]=c31(math.floor(512/(16*i+1)*1000000+0.5)/1000000)
    end
   end
@@ -83,10 +85,11 @@ return function(n)
    assert(cpu.state.AR3.value==0xeaab and cpu.state.AR6.value==0x87ff48,'culler bases changed')
    sequence=sequence+1
    current={frame=frame,seq=sequence,list=list,object=object,flags=s:read_u32(object+0xf),
-    model=s:read_u32(object+0x11),depth=depth,radius=radius,index=index,far=d,
+    model=s:read_u32(object+0x11),depth=depth,radius=radius,index=index,far=far,
     x=s:read_u32(0x87ff47),y=s:read_u32(0x87ff48),z=s:read_u32(0x87ff49),
     factor=s:read_u32(0xeaab+index),accepted=0}
    current.original_factor=current.factor
+   if far~=204800 then return far end
   end)
   tap(0xeaab+4999,0xeaab+4999,'exotica_clamped_reciprocal',function(o,d)
    if cpu.state.PC.value~=0x688c or not current then return end

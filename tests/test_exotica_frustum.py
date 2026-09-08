@@ -4,6 +4,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'harness'))
 from analyze_exotica_frustum import c31,evaluate,planes
 from run_exotica_visibility_trials import probe_source
 from compare_exotica_visibility import compare
+from compare_exotica_distance import compare as compare_distance
 from analyze_exotica_frustum import FIELDS,TRIAL_FIELDS
 
 
@@ -24,6 +25,43 @@ def sample(x=60000,y=0,depth=160000,radius=1000,accepted=0):
 
 
 class ExoticaFrustumTests(unittest.TestCase):
+    def test_far_pose_comparison_only_excludes_requested_far(self):
+        a=sample(x=10000,depth=250000,radius=1000)
+        a.update(original_factor=a['factor'],reciprocal='1',margin='0',yl='',yu='',xl='',xu='')
+        b={**a,'far':'409600','factor':encoded(.002048),'accepted':'1'}
+        for k,v in planes(10000,0,1000,c31(int(b['factor'],16))).items():
+            b[k]=f'{struct.unpack("<I",struct.pack("<f",v))[0]:08x}'
+        with tempfile.TemporaryDirectory() as td:
+            left,right=Path(td)/'a.csv',Path(td)/'b.csv'
+            def save(path,rows):
+                with path.open('w',newline='') as f:
+                    writer=csv.DictWriter(f,fieldnames=TRIAL_FIELDS);writer.writeheader();writer.writerows(rows)
+            save(left,[a]);save(right,[b])
+            r=compare_distance(left,right)
+            self.assertTrue(r['passed']);self.assertEqual(r['additions_at_equal_pose'],1)
+            self.assertNotIn('far',r['pose_fields']);self.assertIn('original_factor',r['pose_fields'])
+            save(left,[a,{**a,'frame':'2501','sequence':'2'}])
+            save(right,[b,{**b,'frame':'2501','sequence':'2','object':'12001'}])
+            r=compare_distance(left,right)
+            self.assertFalse(r['passed']);self.assertEqual(r['mismatched_poses'],1)
+            save(right,[{**b,'accepted':'0'}])
+            with self.assertRaises(ValueError):compare_distance(left,right)
+
+    def test_extended_far_requires_coherent_factor_and_bound_trial(self):
+        source=probe_source(4500,5990,1,88,409600)
+        self.assertIn('local far=tonumber(409600)',source)
+        self.assertNotIn('os.getenv(',source)
+        with self.assertRaises(ValueError):probe_source(4500,5990,0,88,409600)
+        with self.assertRaises(ValueError):probe_source(4500,5990,1,88,819200)
+        row=sample(x=10000,depth=250000,radius=1000,accepted=1)
+        factor=.002048
+        row.update(far='409600',original_factor=row['factor'],factor=encoded(factor),reciprocal='1',margin='0')
+        for k,v in planes(10000,0,1000,c31(int(row['factor'],16))).items():
+            row[k]=f'{struct.unpack("<I",struct.pack("<f",v))[0]:08x}'
+        self.assertEqual(evaluate(row)['reason'],'accepted')
+        with self.assertRaises(ValueError):evaluate({**row,'far':'204800'})
+        with self.assertRaises(ValueError):evaluate({**row,'reciprocal':'0'})
+
     def test_bounded_trial_is_explicit_and_frozen_in_the_recorded_probe(self):
         source=probe_source(2500,4300,1,88)
         self.assertNotIn('os.getenv(',source)

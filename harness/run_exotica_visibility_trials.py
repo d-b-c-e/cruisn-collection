@@ -19,11 +19,12 @@ import replay
 TRIALS={'stock':(0,0),'reciprocal':(1,0),'margins':(0,88),'both':(1,88),'both-repeat':(1,88)}
 
 
-def probe_source(first,last,reciprocal,margin):
-    if not 1<=first<last or last-first>12000 or reciprocal not in (0,1) or margin not in (0,88):
+def probe_source(first,last,reciprocal,margin,far=204800):
+    if (not 1<=first<last or last-first>12000 or reciprocal not in (0,1) or margin not in (0,88)
+            or far not in (204800,409600,614400) or (far!=204800 and not reciprocal)):
         raise ValueError('invalid Exotica visibility trial')
     source=(ROOT/'lua/exotica_frustum.lua').read_text(encoding='utf-8')
-    for key,default,value in [('FIRST',2500,first),('LAST',4300,last),('RECIPROCAL',0,reciprocal),('MARGIN',0,margin)]:
+    for key,default,value in [('FIRST',2500,first),('LAST',4300,last),('RECIPROCAL',0,reciprocal),('MARGIN',0,margin),('FAR',204800,far)]:
         old=f"os.getenv('CRUISN_EXOTICA_{key}') or '{default}'"
         if source.count(old)!=1:raise ValueError('Exotica probe binding changed')
         source=source.replace(old,str(value))

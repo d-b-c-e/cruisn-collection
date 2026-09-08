@@ -42,7 +42,7 @@ def rejection(depth,radius,far,p,margin=0):
 
 def evaluate(row):
     r={k:int(row[k]) for k in ('frame','sequence','depth','radius','index','far','accepted')}
-    if (r['frame']<1 or r['sequence']<1 or r['accepted'] not in (0,1) or r['far']!=204800
+    if (r['frame']<1 or r['sequence']<1 or r['accepted'] not in (0,1) or r['far'] not in (204800,409600,614400)
             or not 0<=r['radius']<10000000 or r['depth']+r['radius']<0
             or r['index']!=min(4999,max(0,r['depth'])//16)):
         raise ValueError('invalid culler sample')
@@ -50,6 +50,7 @@ def evaluate(row):
     reciprocal=int(row.get('reciprocal',0));margin=int(row.get('margin',0))
     original_factor=int(row.get('original_factor',row['factor']),16)
     if reciprocal not in (0,1) or margin not in (0,88):raise ValueError('unsupported frustum trial')
+    if r['far']!=204800 and not reciprocal:raise ValueError('extended far requires coherent reciprocals')
     if raw['list'] not in (0,0xbbb5,0xbbb6,0xbbb7,0xbbb8) or not 0x1000<=raw['object']<0x40000-0x16:
         raise ValueError('unexpected list/object')
     x,y,z,factor=(c31(raw[k]) for k in ('x','y','z','factor'))
@@ -95,7 +96,7 @@ def summarize(path):
         for row in reader:
             if None in row or any(v is None for v in row.values()):raise ValueError('incomplete frustum row')
             r=evaluate(row);count+=1
-            pair=(r['reciprocal'],r['margin'])
+            pair=(r['reciprocal'],r['margin'],r['far'])
             if config is not None and config!=pair:raise ValueError('frustum trial changed during observation')
             config=pair
             if r['sequence']!=count or r['frame']<previous_frame:raise ValueError('noncontiguous sequence or frame order')
@@ -115,12 +116,14 @@ def summarize(path):
             v=objects.setdefault(k,dict(samples=0,first_frame=r['frame'],last_frame=r['frame'],minimum_depth=r['depth'],maximum_depth=r['depth']))
             v['samples']+=1;v['last_frame']=r['frame'];v['minimum_depth']=min(v['minimum_depth'],r['depth']);v['maximum_depth']=max(v['maximum_depth'],r['depth'])
         return objects
-    return dict(schema=1,scope=__doc__,source_sha256=sha256_file(path),frames=[first,last],samples=count,
+    result=dict(schema=1,scope=__doc__,source_sha256=sha256_file(path),frames=[first,last],samples=count,
                 trial=dict(reciprocal=config[0],margin=config[1]),
                 extended_samples=extended,maximum_depth=max_depth,maximum_operand_error=max_error,
                 actual_reasons=dict(reasons),predicted_reasons=dict(predicted),by_list=by_list,
                 predicted_wide88_reasons=dict(wide),predicted_combined88_reasons=dict(combined),
                 predicted_additions=len(new),predicted_losses=len(lost),addition_models=additions(new),loss_models=additions(lost))
+    if config[2]!=204800:result['trial']['far']=config[2]
+    return result
 
 
 if __name__=='__main__':

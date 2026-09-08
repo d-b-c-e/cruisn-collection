@@ -6,6 +6,20 @@ from compare_zeus_capture import signatures
 
 
 class ZeusCaptureTests(unittest.TestCase):
+    def test_scene_alignment_excludes_only_frame_stamp(self):
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td);(p/'pal_table.bin').write_bytes(bytes(1024))
+            quad=bytearray(260);struct.pack_into('<II',quad,0,4000,4)
+            def save():(p/'records.bin').write_bytes(struct.pack('<II',1,260)+quad)
+            save();strict=signatures(p);scene=signatures(p,'scene')
+            struct.pack_into('<I',quad,0,4001);save()
+            self.assertNotEqual(strict,signatures(p));self.assertEqual(scene,signatures(p,'scene'))
+            struct.pack_into('<f',quad,68,1.0);save()
+            self.assertNotEqual(scene,signatures(p,'scene'))
+            struct.pack_into('<f',quad,68,0.0);save();(p/'pal_table.bin').write_bytes(bytes([1])*1024)
+            self.assertNotEqual(scene,signatures(p,'scene'))
+            with self.assertRaises(ValueError):signatures(p,'unordered')
+
     def test_effective_palette_is_part_of_each_quad_signature(self):
         with tempfile.TemporaryDirectory() as td:
             p=Path(td);(p/'pal_table.bin').write_bytes(bytes(1024))
