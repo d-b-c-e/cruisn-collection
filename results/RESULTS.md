@@ -3883,3 +3883,29 @@ secondwheel/soak acceptance. Public distribution decision remains open; no publi
 tag/release/visibility change. User requested NewYork blackflashes/crash recording,
 cheats and othergame/consistent distance experiments afterrelease. See feedback
 review, RELEASE-MORNING and RELEASE-CHECKLIST for next attended work.
+
+## 2026-09-07 — Revert World force gating after attended regression feedback
+
+User rejected loss of feedback in World's game menus and later cancelled the
+proposed10% boost. World strength stays unchanged; recent20%trim was Exotica only.
+Native b9bef299f6d removes the two World driving-state gate calls, restoring game
+motor requests during selection/race-end. Driver adaptation, profiles, master
+strength, telemetry and Exotica's independent gate/trim are unchanged. Defer further
+World FFB tuning; oscillation and cross-game output normalization are KNOWN ISSUES.
+Goal for later: roughly comparable80% output across games on the same wheel/base,
+using measured common output units plus attended steering/contact/impact assessment.
+
+Built/deployed native SHA093abbeb01ac779dbc81b734bea609a9a358eebc17a7cfbf2ad6002e017135af.
+122patch export refreshed; rollback applied to verified native parent reconstructs
+tree5f33ebed52f7fd7a707c74aeca885989400fdfde. Collection353afac updates the normal
+suite to require World force passthrough instead of driving-state suppression.
+114Python tests PASS. Germany9269inputs/154nativeimages andWorld2.5 6000/100 headless
+replays PASS; actual UDP/independent drivetrain probes agree. All8803/5534 force
+writes enabled;1332/1059 nonzero requests during independently sampled non-driving
+states. Raw/adapted motor-source CSVs exactly match prior verified runs. No physical
+force actuated, no renewed full release/othergame/feel acceptance claim.
+
+UserINI2c5faf831d33e1b4213ab56db6e7fc40efd6dc04131ae290d9dc921c53ef78b0 unchanged.
+Native/source fixes pushedfork/master. rc2 ZIP remains immutable but contains the
+rejected World gate: source supersedes it, replacement package and acceptance needed
+before publication. See docs/reviews/2026-09-07-world-ffb-rollback.md.

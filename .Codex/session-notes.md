@@ -1,3 +1,20 @@
+# Latest World FFB rollback — 2026-09-07
+
+User rejected World menu force suppression and then CANCELLED the proposed10% boost.
+World strength stays unchanged; only the new World driving-state gate was removed.
+The recent20%trim was Exotica-specific and remains; its startup gate also remains.
+Native b9bef299f6d / SHA093abbeb01ac779dbc81b734bea609a9a358eebc17a7cfbf2ad6002e017135af
+built/deployed/pushedfork;122patch export. Collectioncode353afac pushedmaster.
+114Python tests PASS; full headless Germany9269/154 andWorld2.5 6000/100 PASS with
+actual UDP, independent memory and menu-force passthrough analysis. Source motor
+CSVs identical to prior runs; zero gatedwrites. No physical FFB actuated.
+UserINI2c5faf831d33e1b4213ab56db6e7fc40efd6dc04131ae290d9dc921c53ef78b0 unchanged.
+Read docs/reviews/2026-09-07-world-ffb-rollback.md. Mark cross-game normalization
+(roughly comparable80% output on same wheel) and World oscillation KNOWN for later.
+Do not resume tuning or suppress menu feedback without a new request. rc2 is an old
+unpublished candidate containing the rejected gate; replacementpackage/fullrelease
+evidence still needed. Othergame telemetry/render/input unchanged.
+
 # Latest completed release-feedback work — 2026-09-07
 
 Read docs/reviews/2026-09-07-release-feedback.md and AGENTS.md's new first section.

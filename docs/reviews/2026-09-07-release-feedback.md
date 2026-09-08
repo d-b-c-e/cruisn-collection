@@ -1,5 +1,9 @@
 # Release feedback investigation — 2026-09-07
 
+Later attended feedback rejected the World force gate. It has been
+[rolled back with World strength unchanged](2026-09-07-world-ffb-rollback.md).
+The rc2 ZIP and gate evidence below remain the historical baseline.
+
 Status: implemented, built and automatically validated; attended acceptance
 remains pending. No new public release.
 

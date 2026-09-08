@@ -1,6 +1,11 @@
 # Release morning: what still needs a person
 
-The current local candidate is **v0.4.0-rc2**, incorporating the September7 player
+**Update:** the source now restores World menu/race-end feedback following the
+user's regression report. World strength stays unchanged. The rc2 ZIP below still
+contains the rejected gate and must be replaced before publishing. See the
+[rollback and normalization issue](reviews/2026-09-07-world-ffb-rollback.md).
+
+The preserved local candidate is **v0.4.0-rc2**, incorporating the earlier September7 player
 feedback. The earlier `CruisnCollection-v0.4.0-rc1-20260907-050908.zip` remains a
 rollback baseline; it lacks the newer menus, drivetrain telemetry and force fixes.
 Use the new candidate's own manifest and pending ledger for acceptance. No public

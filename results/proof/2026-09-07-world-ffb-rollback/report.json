@@ -1,0 +1,333 @@
+{
+  "archive_sha256": "a016f0e66ab81865733319ec2ec78ebc507556c625bb68ebf9f54e5cd665a704",
+  "candidate_sha256": "093abbeb01ac779dbc81b734bea609a9a358eebc17a7cfbf2ad6002e017135af",
+  "checks": [
+    {
+      "case": "germany",
+      "force": {
+        "disabled_writes": 0,
+        "driving_samples": 6839,
+        "enabled_writes": 8803,
+        "game": "crusnwld24",
+        "independent_state_samples": 8269,
+        "lua_frame_offset": 1,
+        "memory_sha256": "0bb659161efb01bc7bbd7e4251e80d3637f455e15033792bfa6262c0fb553dc0",
+        "non_driving_nonzero_requests": 1332,
+        "non_driving_samples": 1430,
+        "nonzero_raw_suppressed": 0,
+        "passed": true,
+        "physical_force": false,
+        "policy": "passthrough",
+        "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+        "source_writes": 8803,
+        "trace_sha256": "30a4393394e0aad05851cf384882815c0a32f93951e1bb36b089e91c1432dc89"
+      },
+      "motor_source_sha256": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+      "motor_source_unchanged": true,
+      "telemetry": {
+        "game_state_samples": 7516,
+        "gears": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 7516,
+          "sha256": "0bb659161efb01bc7bbd7e4251e80d3637f455e15033792bfa6262c0fb553dc0"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          8000.0
+        ],
+        "samples": 9269,
+        "trace_sha256": "5b468d4d2a60619614893edc2a3be47cc6341f9bad1f818f9a1bcdc8aa423e73",
+        "upshifts": [
+          {
+            "frame": 1831,
+            "from": 1,
+            "minimum_next_8_frames": 4051.556,
+            "rpm_before": 6243.9,
+            "to": 2
+          },
+          {
+            "frame": 1905,
+            "from": 1,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7407.178,
+            "to": 2
+          },
+          {
+            "frame": 1907,
+            "from": 2,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7850.849,
+            "to": 3
+          },
+          {
+            "frame": 1909,
+            "from": 3,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7850.849,
+            "to": 4
+          },
+          {
+            "frame": 2089,
+            "from": 1,
+            "minimum_next_8_frames": 4782.51,
+            "rpm_before": 7223.825,
+            "to": 2
+          },
+          {
+            "frame": 2149,
+            "from": 2,
+            "minimum_next_8_frames": 4751.936,
+            "rpm_before": 7127.885,
+            "to": 3
+          },
+          {
+            "frame": 2337,
+            "from": 3,
+            "minimum_next_8_frames": 4840.252,
+            "rpm_before": 6502.303,
+            "to": 4
+          },
+          {
+            "frame": 3175,
+            "from": 2,
+            "minimum_next_8_frames": 8000.0,
+            "rpm_before": 8000.0,
+            "to": 3
+          },
+          {
+            "frame": 3177,
+            "from": 3,
+            "minimum_next_8_frames": 6160.142,
+            "rpm_before": 8000.0,
+            "to": 4
+          },
+          {
+            "frame": 4075,
+            "from": 1,
+            "minimum_next_8_frames": 4758.04,
+            "rpm_before": 7200.183,
+            "to": 2
+          },
+          {
+            "frame": 4145,
+            "from": 2,
+            "minimum_next_8_frames": 4738.288,
+            "rpm_before": 7117.754,
+            "to": 3
+          },
+          {
+            "frame": 4249,
+            "from": 3,
+            "minimum_next_8_frames": 5408.433,
+            "rpm_before": 7121.168,
+            "to": 4
+          },
+          {
+            "frame": 7263,
+            "from": 3,
+            "minimum_next_8_frames": 4176.489,
+            "rpm_before": 6016.701,
+            "to": 4
+          },
+          {
+            "frame": 7435,
+            "from": 2,
+            "minimum_next_8_frames": 4752.664,
+            "rpm_before": 7129.191,
+            "to": 3
+          },
+          {
+            "frame": 7545,
+            "from": 3,
+            "minimum_next_8_frames": 5440.253,
+            "rpm_before": 7147.65,
+            "to": 4
+          },
+          {
+            "frame": 8203,
+            "from": 2,
+            "minimum_next_8_frames": 4768.26,
+            "rpm_before": 7115.005,
+            "to": 3
+          },
+          {
+            "frame": 8311,
+            "from": 3,
+            "minimum_next_8_frames": 5409.093,
+            "rpm_before": 7122.179,
+            "to": 4
+          }
+        ],
+        "wire": {
+          "forza_packets": 9269,
+          "json_packets": 142786,
+          "maximum_speed_mph": 147.99999695807247,
+          "passed": true
+        }
+      }
+    },
+    {
+      "case": "world25",
+      "force": {
+        "disabled_writes": 0,
+        "driving_samples": 2203,
+        "enabled_writes": 5534,
+        "game": "crusnwld",
+        "independent_state_samples": 5000,
+        "lua_frame_offset": 1,
+        "memory_sha256": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68",
+        "non_driving_nonzero_requests": 1059,
+        "non_driving_samples": 2797,
+        "nonzero_raw_suppressed": 0,
+        "passed": true,
+        "physical_force": false,
+        "policy": "passthrough",
+        "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+        "source_writes": 5534,
+        "trace_sha256": "ece6a97854a2d70dabb95272d247d6ac76c0d56f9493a0a2399710776e6ea8f4"
+      },
+      "motor_source_sha256": "23c72641c76a795faa7804147ab0d835cc49a1341246de28687f317737e1e2f7",
+      "motor_source_unchanged": true,
+      "telemetry": {
+        "game_state_samples": 2538,
+        "gears": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 2538,
+          "sha256": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          7509.443
+        ],
+        "samples": 6000,
+        "trace_sha256": "bddac0d7fd9c3cdf1e8185e72937eff4515c29114ba1423a6a0c0ea918b196a3",
+        "upshifts": [
+          {
+            "frame": 3605,
+            "from": 1,
+            "minimum_next_8_frames": 4047.722,
+            "rpm_before": 6238.953,
+            "to": 2
+          },
+          {
+            "frame": 3931,
+            "from": 1,
+            "minimum_next_8_frames": 4752.161,
+            "rpm_before": 7190.23,
+            "to": 2
+          },
+          {
+            "frame": 3993,
+            "from": 2,
+            "minimum_next_8_frames": 4743.015,
+            "rpm_before": 7117.234,
+            "to": 3
+          },
+          {
+            "frame": 4123,
+            "from": 3,
+            "minimum_next_8_frames": 5401.105,
+            "rpm_before": 7116.596,
+            "to": 4
+          },
+          {
+            "frame": 4509,
+            "from": 2,
+            "minimum_next_8_frames": 4750.928,
+            "rpm_before": 7131.329,
+            "to": 3
+          },
+          {
+            "frame": 4619,
+            "from": 2,
+            "minimum_next_8_frames": 4741.636,
+            "rpm_before": 7114.762,
+            "to": 3
+          },
+          {
+            "frame": 4803,
+            "from": 3,
+            "minimum_next_8_frames": 4927.623,
+            "rpm_before": 7012.634,
+            "to": 4
+          },
+          {
+            "frame": 4991,
+            "from": 2,
+            "minimum_next_8_frames": 4749.867,
+            "rpm_before": 7130.743,
+            "to": 3
+          },
+          {
+            "frame": 5091,
+            "from": 3,
+            "minimum_next_8_frames": 4660.14,
+            "rpm_before": 7337.882,
+            "to": 4
+          }
+        ],
+        "wire": {
+          "forza_packets": 6000,
+          "json_packets": 90332,
+          "maximum_speed_mph": 145.0000017476065,
+          "passed": true
+        }
+      }
+    }
+  ],
+  "files": {
+    "analyzers/analyze_drivetrain.py": "da95cd87dfb956a4003766a49dff9745f02cb95e8405e77fffb3968435a3ac9b",
+    "analyzers/analyze_force_gate.py": "314e3495ef628b23aed15506b4856ecb05ab0f479a05de4d5b13bac7d73339e5",
+    "analyzers/verification.py": "f03ab8b9abcefb052e1cd9881d97049361132357cd0d50c2fd4b7acb02ae7afe",
+    "ci.json": "56a5b126dc1c7b99fd0bbec47166a531bb92727ed5de47fc3c31a61c7d0aa210",
+    "germany/drivetrain.json": "882edaee3a94818bb1b6397d77cd2e3139e7ee661530a108224d1bf56c47b450",
+    "germany/force-policy.json": "f418b526ead5a507630fc7928600fcf257e11231c0d1159a12b2af4e119cab47",
+    "germany/report.json": "7d6280a42a3494c08f3f8460d662e6c72d558906a485a8fbea2d094b954fba22",
+    "germany/run/drivetrain.csv": "5b468d4d2a60619614893edc2a3be47cc6341f9bad1f818f9a1bcdc8aa423e73",
+    "germany/run/force-gate.csv": "30a4393394e0aad05851cf384882815c0a32f93951e1bb36b089e91c1432dc89",
+    "germany/run/force-source.csv": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+    "germany/run/forza.csv": "690da2199ebd9fbe9be037bf62d7ffbfe82dd60bac3e29aac7cff857a58580de",
+    "germany/run/frames.csv": "e87c32f07f9e868dbcf377ac7ef460bcdfec62e7d06f685b742165aec1703731",
+    "germany/run/invocation.json": "a8410432cdaaeef0de8ccace99c154485a6da5cdc4887785206e1630d76138c4",
+    "germany/run/signals.csv": "aab6db84bf9f13c9f2286a2349f621ba876b4b957fb5e7b622ad6fa84dabe8f9",
+    "germany/run/telemetry-loopback.json": "52e2e6a46d2ed8321eada77c63fbcfd785053acfbd6a5e9ab4bbf771c0d963af",
+    "germany/run/telemetry.jsonl": "ac30b9c0bf38f7e64d46b162830776a43c436c9d7087d9615d51878391d357d1",
+    "germany/run/world-drivetrain-memory.csv": "0bb659161efb01bc7bbd7e4251e80d3637f455e15033792bfa6262c0fb553dc0",
+    "native-patch.json": "aa6a4c67b70d3bcad7e9438f582e64e0f7bfb04f4a2aafa27aeb7331b5c4a013",
+    "request-state-manifest.json": "d80ae0017930d0984d524b2a37e48e67fc9bd910a7a623fc7d89b573ca6f1944",
+    "tests.txt": "537e23362c01833fa50d54f623e00f16c9f6d76f0ee31f09157058dedaf81bb5",
+    "world25/drivetrain.json": "0c864fda3bab97dd4ad09dbe692eaa45308cee1136108f5efbface249aa433a5",
+    "world25/force-policy.json": "85ebcaf10ff256b7d628660caa994d8e22c1f7516df7bd8397aea6a738f894cd",
+    "world25/report.json": "306aa7da920704876be77e725edda855805123725df088e3cf8a566d34068908",
+    "world25/run/drivetrain-memory.csv": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68",
+    "world25/run/drivetrain.csv": "bddac0d7fd9c3cdf1e8185e72937eff4515c29114ba1423a6a0c0ea918b196a3",
+    "world25/run/force-gate.csv": "ece6a97854a2d70dabb95272d247d6ac76c0d56f9493a0a2399710776e6ea8f4",
+    "world25/run/force-source.csv": "23c72641c76a795faa7804147ab0d835cc49a1341246de28687f317737e1e2f7",
+    "world25/run/forza.csv": "3fa930fe62983c09745bf79be8cd180ca95c1adc1f002349e70fe5ddbaade978",
+    "world25/run/frames.csv": "39756cf47b2f78402b2c0462b20925b330ab265cdac60ed97072aceb645ddddd",
+    "world25/run/invocation.json": "06dc5781b06909b1849576efa10a735ad42884ad8a27f847e0fd211bbc7e6228",
+    "world25/run/signals.csv": "7e47b573bad7c0216bd4c231793efbef55ff625fe4aee86b2dff322cbaa491a7",
+    "world25/run/telemetry-loopback.json": "314d0b05756e4c2986bd9e1bca120ce3a9126d218cc043ca431415d1ebb1e8a5",
+    "world25/run/telemetry.jsonl": "27cf17de4056d892bb24a66456a92cc6e9f02e9c12875cef5ec08cafbfc5ca00"
+  },
+  "native_commit": "b9bef299f6d4c94fe18e835e8de2d57677117bf5",
+  "passed": true,
+  "physical_force": false,
+  "source_identity": "b1994a10b473c7ce0eaffdc765464f280031372d43361d2535c0a8726c7ba723"
+}

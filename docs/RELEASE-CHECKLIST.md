@@ -5,6 +5,11 @@ Scope: USA 4.5, World 2.4, Off Road, **and Exotica**. World 2.5 remains a compat
 check; its factory automatic-only behavior cannot satisfy manual-transmission acceptance.
 The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/release/checklist.json).
 
+Latest [World FFB rollback](reviews/2026-09-07-world-ffb-rollback.md): game-menu
+feedback restored, strength unchanged. Cross-game force normalization and World
+oscillation remain known issues for later work. The prior rc2 ZIP contains the
+rejected driving-state gate; replace it and renew acceptance before publishing.
+
 ## Roadmap
 
 1. **Choose and freeze the candidate.** The [2x/3x comparison](reviews/2026-09-07-world-3x-and-release.md)

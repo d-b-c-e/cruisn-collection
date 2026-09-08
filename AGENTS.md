@@ -1,5 +1,20 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## World FFB rollback supersedes the gate below (2026-09-07)
+
+User reported World gate as a regression and explicitly deferred further tuning.
+Read docs/reviews/2026-09-07-world-ffb-rollback.md. World2.4/2.5 driving-state gate
+calls removed; game-menu/race-end motor feedback restored. NO10%boost and NO World
+strength reduction: user superseded the boost request. Exotica trim/gate unchanged.
+Native b9bef299f6d / SHA093abbeb01ac779dbc81b734bea609a9a358eebc17a7cfbf2ad6002e017135af,
+built at mame-src/vunit.exe;122patch export refreshed. 114tests and both World
+headless full replays pass: Germany9269/154 and2.5 6000/100, actual UDP/memory and
+ungated force traces. Raw/adapted source CSVs exactly match prior verified runs.
+Normal suite now explicitly requires World passthrough; Exotica still driving-gated.
+Mark oscillation and cross-game80% strength normalization KNOWN ISSUES for later,
+not a new autonomous tuning task. Previous rc2 ZIP contains rejected World gate;
+source is newer and needs a replacement package/release gate before publication.
+
 ## Latest release-feedback fixes (2026-09-07)
 
 Read `docs/reviews/2026-09-07-release-feedback.md` first; older telemetry/force

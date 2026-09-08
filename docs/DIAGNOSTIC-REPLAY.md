@@ -536,9 +536,10 @@ game, requiring at least500 active samples and10MPH. World2.4 uses
 first gear only. A passing suite cannot certify their all-gear behavior or tactile output.
 
 `force-gate.csv` retains enabled state, raw motor command and requested host level
-separately from the unchanged four-column `force-source.csv`. World and Exotica
-release constant force, impact history, rumble and condition effects outside
-verified active driving. `analyze_force_gate.py DIRECTORY --memory CSV --game ROM
---output JSON` checks those decisions against the independent Lua samples.
+separately from the unchanged four-column `force-source.csv`. Exotica releases
+force outside verified active driving. World forwards menu/race-end requests
+after the user's regression report. `analyze_force_gate.py DIRECTORY --memory CSV
+--game ROM --output JSON` checks the driving gate; add `--policy passthrough` for
+current World builds to require nonzero menu requests and no gated writes.
 Physical output stays disabled; requested levels are not wheel torque measurements.
 See [the all-game findings and final validation](reviews/2026-09-07-release-feedback.md).
