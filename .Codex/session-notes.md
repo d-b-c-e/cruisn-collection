@@ -5,6 +5,15 @@
 - **Branch:** master
 
 ## What Was Done
+- Latest06:25: OffRoad native12e9ea6a374/SHA9936c716 built/pushed;129patch exacttree85f158ec. Core2669afe/menu ba3364c pushed; proof/docs follow.
+- DefaultOFF OffRoad Draw Distance0/2/3 in its top-level Experiments context. Canonicaloffroad_distance.h: no guest writes; guarded far/clip/ceiling and59 projection consumers. Stock1 is CLI observer;0/unset nohooks.
+- run_offroad_native_trials.py is the NEW native runner; old run_offroad_distance_trials.py remains the bounded Lua runner. replay/derive/attendedrecorder --offroad-distance; replay/derive --display-size W:H select actual display.
+- Four6000 matrixtrials: stock exact;2x/3x5of42GLchange,2xvs3x42identical. 2x counters/camera/ADCevents/42GL repeat. Derived2x6000/13GL3824x2073 repeats.
+- Strictoldroute ADCtimesFAIL butcamera/actualADCvalues equal1800..5990. Frame4400:715commonordered+1oldcoordinatechange+23new; texture/paletteequal. StrictgeometryFAIL retained. Target386VRAMwords covered;384otherpagehistorychanges.
+- Nativeinitial781af835091 duplicateCSVframe822 rejected;12e correctsperframeemit. Full67776 reciprocalROMentries match measured rational8decimalhalf-even generator.
+- All7defaults actualtelemetry/memory/Worldpassthrough/Exo21GL PASS;163tests/4CI34219090827,262sourcehashes same333901cdae9af35e404fc256ebc27170589c99927ceeb116024e081d00e4244b.
+- 190entry ROM-free proof recomputes7telemetry/4force results, input/motion/nativecounters; GL/resources hashboundreceipts. ZIP077b1aee432ddc754c7b7897cceef876732ba0ad48baae4ae0f27318d04638c6. NoFFB/Worldtuning or personalconfigchanges; releasedv0.4.0ZIP/tag intact.
+- NEXT autonomous: Exotica coherent true far-plane trial targeting4686..5986. Current nativevisibilityonly changesCPUprojection/margins and keepsfar204800. Need extend reciprocal capacity beyond12800 for2x/3x; existingworldhelpercaps15000. Do not assume faradmissions are drawn or resident. No newExotica edits/trials in06:25checkpoint yet. Heartbeatactiveuntil08:00local, then pause.
 - Latest05:30: Exotica native6a2b7ae/SHAcec6d98a built/pushed;127patch exacttree6d2e8a22. Collectiondc1f5af/0e758f3.
 - Exotica Widescreen Scenery optional menu now restores real edge geometry. Explicit CPU projection/margins/both controls leave far204800 unchanged.
 - Matched3500 margin scene preserves3691 ordered records/3532quads/effectivepalettes and texture RAM;1palette+1quad added. Combined42originalchanges remains strictFAIL.

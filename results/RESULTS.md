@@ -4163,3 +4163,42 @@ GL/resource/CI verdicts remain boundreceipts, rawassetslocal. Verifierfield-name
 corrected beforeacceptance; no emulator-testfailure. StreamDecksourceupdated,
 personalsettings andv0.4.0tag/ZIP unchanged. NoFFB/Worldtuning, noemulatorleft.
 Next overnight: OffRoadnativeadapter/cost/repeatability, thenlaterExoticafartrial.
+
+## 2026-09-08 06:25 — native Off Road distance, full-size replay and menu
+
+Core2669afe/menu ba3364c pushed. Native12e9ea6a3742643f5bbc57e7dc07073177594cd6,
+root SHA9936c7160ddb708949d9e776c9197d833e868ffc921fd679153a72ab99735275.
+129patch export reconstructs85f158eccb5f11308144513e77b8678f45a0317b; fork pushed.
+OffRoad1.63 far47296/clip63680/table63679 scale together at1/2/3. Guarded read
+substitutions leave guest limits/initializers and ROM resources intact. All59
+projection consumers require exactPC/opcode/AR0/signedIR0/actualaddress. StaleAR0
+resource PC1EA8 remains excluded. All67776 original reciprocalentries reproduce
+with integer8decimal half-even rounding. Initial native781af835091 loggerduplicate
+frame822 rejected; final12e emits onceperframe. Negative logs preserved.
+
+Fourfull6000 matrix: stock6000inputs/100native exact. 2x16995extra far tests,
+55113extendedreads/max95085, zeroceilingclamps.3x17005/55133/max96264. 2xrepeat
+identicalnativeCSV/camera4191/actualADCevents/42GL. 2xvs3x42GLexact; bothchange
+5samplesvsstock, matchingearlierLua. Nativeconfiguredtimings99.8321..100.0050%,
+removingLua's~54%overhead. Originalcamera/actualADCvalues equal1800..5990 but
+ADCtimesdiffer; strictFAILretained. SyntheticElPasocasegoesoffcourse/slows;
+noattendedlongrace orpopineliminationclaim. Derived2x repeats6000/100native/
+13completed3824x2073GL3500..4700. Newdisplay-sizeoption freezesactual4Kmonitor.
+
+Paired4400:716->739quads,715commonordered;1oldquadchangeswords6/7/8 and23new.
+Texture/paletteequal;386targetVRAMwordchangescovered,384otherpagehistorychanges.
+StrictgeometryFAILretained. GL4399/4400changes10432/11055pixelson3824x2073.
+OffRoad DrawDistance Off/2x/3x menuisdefaultOFF; supportedrevision/enhancedwide
+gates,explicitpatch/environment/recordCLIprecedence tested; userpreferencesintact.
+
+163Pythontests/all4CI34218719680(core)/34219090827(menu)PASS. Local/Linux/Windows
+all262sourcehashes identical333901cdae9af35e404fc256ebc27170589c99927ceeb116024e081d00e4244b.
+All7defaultregressions actualUDP/memory/Worldpassthrough/Exo21GLPASS; timing
+intervals99.9693..100.0022%emulation,notpresentationlatency. ROM-free190entryproof
+recomputesnative/input/motion/7telemetry/4force results, retainsnegativecontrols;
+GL/resourceproofishash-bound,rawassetslocal. ZIP8,664,137bytesSHA
+077b1aee432ddc754c7b7897cceef876732ba0ad48baae4ae0f27318d04638c6.
+Archivebuilder correctedper-game memoryfilenames beforevalidation; notagamefailure.
+StreamDecksourceupdated; releasedv0.4.0tag/ZIP andpersonalINI unchanged. NoFFB or
+Worldnormalizationtuning. Next:Exoticatruefar/reciprocalextensionlate4686..5986;
+currentWidescreenSceneryisnotadistanceincrease. Overnightdeadline08:00local.

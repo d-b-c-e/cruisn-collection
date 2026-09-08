@@ -37,6 +37,7 @@ awaiting validation.
 - [Earlier mountain activation and its remaining limits](docs/reviews/2026-09-06-background-activation.md)
 - [Global draw distance and native-port reassessment](docs/reviews/2026-09-06-global-distance-and-native-port.md)
 - [Global World distance trial: 2× candidate, playback and visual evidence](docs/reviews/2026-09-06-global-distance-trial.md)
+- [Off Road native distance presets, 4K replay and limits](docs/reviews/2026-09-08-offroad-native-distance.md)
 - [3× distance, activation limits and release baseline](docs/reviews/2026-09-07-world-3x-and-release.md)
 - [Launcher distance trials and Crack Fill placement](docs/reviews/2026-09-07-graphics-menu.md)
 - [Renderer startup and release-package hardening](docs/reviews/2026-09-07-release-hardening.md)

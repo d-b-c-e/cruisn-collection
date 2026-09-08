@@ -55,9 +55,11 @@ a later Zeus2 change for separate post-release compatibility study.
   USA global CLI adapter is built in native8b151aa9/collection9e70f6a;
   [five full controls and2x repeatability](reviews/2026-09-08-usa-global-distance.md)
   expose route changes, with launcher/geometry/attended acceptance still open.
-  [Off Road coherent2x/3x trials](reviews/2026-09-08-offroad-global-distance.md) now
-  complete with equal camera paths and modest visible gain; instrumentation cost,
-  full repeatability and attended coverage remain open. [Exotica's completed matrix](reviews/2026-09-08-exotica-visibility-trials.md)
+  [Off Road native2x/3x](reviews/2026-09-08-offroad-native-distance.md) now completes
+  at full emulation speed. 2x repeats6000 frames/native counters and13 completed
+  3824x2073 images; the optional menu defaults off. Camera/ADCvalues remain equal
+  in the observed interval, but ADCtimes and one existing quad change. Fresh
+  attended coverage remains open. [Exotica's completed matrix](reviews/2026-09-08-exotica-visibility-trials.md)
   now supports a native optional Widescreen Scenery menu item. Margins/both each
   repeat6000 frames/35 completed GL; projection remains diagnostic, far plane
   unchanged. Later actual far rejects at4686…5986 provide the next distance target.
@@ -72,9 +74,10 @@ a later Zeus2 change for separate post-release compatibility study.
   honestly. Request fresh attended drives only where additional route/handling
   acceptance is needed; lack of a human drive need not stop independent diagnostics.
 
-Next autonomous steps: move Off Road's coherent whole-scene trial into a guarded
-native adapter and measure real cost/repeatability; inspect Exotica's later far
-rejects and test a coherent far-plane/reciprocal extension. Keep scene activation,
+Next autonomous steps: inspect Exotica's later far rejects and test a coherent
+far-plane/reciprocal extension. Its current CPU visibility experiment preserves
+204800; do not treat margin visibility as increased distance. Off Road's modest
+gain needs a longer attended drive before broader visual conclusions. Keep scene activation,
 resource residency, completed pixels and changes to gameplay history distinct.
 
 ## Completion and limits

@@ -1,5 +1,41 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Off Road native checkpoint (2026-09-08, 06:25 local)
+
+Read docs/reviews/2026-09-08-offroad-native-distance.md. Collection2669afe/ba3364c
+are pushed. Native12e9ea6a3742643f5bbc57e7dc07073177594cd6 is built/pushed to fork;
+root vunit.exe SHA9936c7160ddb708949d9e776c9197d833e868ffc921fd679153a72ab99735275.
+129-patch export exactly reconstructs tree85f158eccb5f11308144513e77b8678f45a0317b.
+Settings -> Experiments -> Off Road Challenge -> Off Road Draw Distance offers
+Off/2x/3x, defaultOFF, enhanced widescreen/scale>1 only. No personal settings changed.
+MIDV_OFFROAD_DISTANCE=0/unset installs no hooks;1 observes stock;2/3 extend far,
+clip and reciprocal ceiling together. Header native/offroad_distance.h is canonical.
+Only verified read consumers receive substitutions; stored limits/initializers
+and ROM resources stay intact. All59 projection signatures plus AR0/signedIR0/
+actual-address checks guard the tail. Stale AR0 resource PC1EA8 must stay excluded.
+All67776 original table entries reproduce exactly; integer eight-decimal half-even
+rounding, not naive binary round. Initial native781af835091 duplicated startup
+frame822 in CSV and is retained as a rejected diagnostic log;12e fixes it.
+
+Native matrix4x6000: stock exact;2x/3x changes5/42 small-windowGL;2xvs3x all42equal.
+2x repeat has identical counters/4191camera samples/actualADC events and42GL.
+Independent derived2x repeats6000inputs/native/counters and13GL3824x2073.
+Camera/ADCvalues equal stock over1800..5990, ADCtimes strictFAIL with added work.
+Frame4400:715common quads ordered,1oldquad changescoordinates+23new. Texture/palette
+equal;target386changedVRAMwords covered,otherpage384historychanges. Strictgeometry
+FAIL retained. Very modest gain; syntheticElPaso driveslow/offcourse, no attended
+handling/long-track/pop-in-elimination claim. replay/derive --display-size W:H
+select actual monitor; client capture can exclude borders. Original cases untouched.
+
+All7defaults actualUDP/memory/Worldpassthrough/Exo21GL PASS,163tests/all4CI34219090827.
+All262sourcehashes local/Linux/Windows agree333901cdae9af35e404fc256ebc27170589c99927ceeb116024e081d00e4244b.
+190-entry proof results/proof/2026-09-08-offroad-native-distance recomputes native,
+input/motion and7telemetry/4force results; rawGL/resources remain hash-bound receipts.
+StreamDeck source deployed; v0.4.0tag/ZIP preserved. No physicalFFB or Worldtuning.
+NEXT: Exotica late far rejects4686..5986; coherent far/reciprocal trial, current
+MIDZ_VISIBILITY still preserves204800. Continue authorized overnight work until
+08:00 local Sep8; then checkpoint and pause heartbeat cruisn-overnight-cheats-and-distance.
+
 ## Exotica visibility checkpoint (2026-09-08, 05:30 local)
 
 Read docs/reviews/2026-09-08-exotica-visibility-trials.md. Native6a2b7ae93fa is built

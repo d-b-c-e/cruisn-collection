@@ -30,8 +30,10 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    adapter is implemented and 2x repeats (see [evidence](docs/reviews/2026-09-08-world25-distance.md));
    USA now has [global CLI trials](docs/reviews/2026-09-08-usa-global-distance.md) with
    a repeatable2x candidate, but substantial original-route divergence and no
-   launcher promotion yet. [Off Road2x/3x trials](docs/reviews/2026-09-08-offroad-global-distance.md)
-   show modest equal gains, with native cost/repeatability still open.
+   launcher promotion yet. [Off Road native 2×/3×](docs/reviews/2026-09-08-offroad-native-distance.md)
+   now runs at full speed with a default-off Experiments control. 2× repeats6000
+   frames and13 completed3824×2073 captures; 3× adds no detail in42 small-window
+   samples. The strict geometry check still finds one changed original quad.
    [Exotica's full trials](docs/reviews/2026-09-08-exotica-visibility-trials.md) now
    include a native optional Widescreen Scenery menu item, unchanged far plane,
    matched geometry/resources and6000-frame/35GL candidate repeats. Projection

@@ -109,6 +109,32 @@ developer settings and recording CLI overrides take precedence. The ordinary
 widescreen game patch is preserved. The hint describes the modest observed
 gain and lack of extra detail from 3×. Personal preferences are unchanged.
 
-The menu preview and 163 Python tests pass. The core adapter's four CI jobs
-pass at collection `2669afe` / run `34218719680`. Later verification must retain
-its own source identity rather than borrowing that earlier CI result.
+The menu preview and 163 Python tests pass. All four CI jobs pass at collection
+`2669afe` / run `34218719680` and menu commit `ba3364c` / run `34219090827`.
+Local, Linux and Windows agree on all 262 source hashes, identity
+`333901cdae9af35e404fc256ebc27170589c99927ceeb116024e081d00e4244b`.
+
+## Final 06:25 checkpoint
+
+All seven disabled-feature regressions pass on the final source/native identity:
+both USA cases, both World revisions, Germany, Off Road and Exotica. Actual UDP,
+independent drivetrain memory and existing force-request checks pass; World
+passthrough remains unchanged. Exotica matches all 21 original completed 4K
+images. Configured timing intervals span 99.9693%…100.0022% emulation speed.
+
+The paired frame4400 captures have 716 stock versus739 candidate quads. Their
+715 common quads preserve order; one original quad changes screen-coordinate
+words6/7/8, and23 additional quads appear. Texture and palette RAM are identical.
+All386 changed words in the target framebuffer page fall within added/changed
+polygon coverage;384 other-page words differ with the earlier rendering history.
+The strict geometry verdict remains **FAIL**. Completed frames4399/4400 differ
+by10,432/11,055 pixels at3824×2073, localized around the distant scenery.
+
+The [190-entry archive](../../results/proof/2026-09-08-offroad-native-distance/README.md)
+recomputes native counters, input/motion comparisons and all seven actual
+telemetry/memory checks, plus the four applicable force policies. It preserves
+the duplicate-row negative controls and strict geometry failure. Raw texture and
+framebuffer captures stay local; their derived receipts are bound by hashes.
+
+Stream Deck still launches this source checkout and the root MAME build. Saved
+preferences and the exact v0.4.0 tag/ZIP are unchanged. No new release was cut.
