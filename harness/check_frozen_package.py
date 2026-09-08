@@ -15,6 +15,7 @@ import shutil
 import subprocess
 import time
 import zipfile
+import cheats
 
 from check_release_package import inspect
 from diagnostic_runtime import new_run
@@ -59,6 +60,8 @@ def main():
     ap.add_argument('--candidate',required=True,type=Path)
     ap.add_argument('--rom-source',required=True,type=Path)
     ap.add_argument('--output',required=True)
+    ap.add_argument('--cheat-archive',type=Path,
+                    help='also exercise frozen import and one cheat-enabled World boot in the isolated install')
     args=ap.parse_args()
     out=new_run('frozen-package',args.output)
     report={'passed':False,'physical_force':False,'scope':__doc__,
@@ -95,9 +98,22 @@ def main():
         run([app/'CruisnSetup.exe','--health-report',out/'setup-health.json'])
         report['setup_health']=json.loads((out/'setup-health.json').read_text(encoding='utf-8'))
         if not report['setup_health']['passed']:raise ValueError('setup reports incomplete runtime or ROMs')
+        if args.cheat_archive:
+            run([app/'CruisnCollection.exe','--import-cheats',args.cheat_archive.resolve()])
+            catalog=cheats.catalog(app/'rig','crusnwld24')
+            if not catalog['entries'] or catalog['entries'][0]['description']!='Infinite Time':
+                raise ValueError('frozen import did not expose the expected World 2.4 timer')
+            if cheats.selections(app/'rig',catalog):raise ValueError('import unexpectedly enabled cheats')
+            report['cheat_import']={'archive_sha256':sha256_file(args.cheat_archive),'xml_sha256':catalog['sha256']}
         save()
-        for game in ('usa','world','offroad','exotica'):
-            work=out/game;work.mkdir();snap=work/'gl-snap';snap.mkdir()
+        trials=('usa','world','offroad','exotica')+(('world-cheats',) if args.cheat_archive else ())
+        for trial in trials:
+            game='world' if trial=='world-cheats' else trial
+            if trial=='world-cheats':
+                cheats.save(app/'rig',catalog,{'1':1})
+                run([app/'CruisnCollection.exe','--shot',out/'cheats-imported.png',
+                     '--shot-page','cheats','--shot-context','crusnwld24'])
+            work=out/trial;work.mkdir();snap=work/'gl-snap';snap.mkdir()
             key='MIDZ' if game=='exotica' else 'MIDV'
             launch_env=dict(env,**{key+'_GL_SNAP':str(snap),key+'_GL_SNAP_FIRST':'1700',
                 key+'_GL_SNAP_LAST':'1800',key+'_GL_SNAP_EVERY':'50',key+'_GL_SNAP_MAX':'3',key+'_GL_LOG':'1'})
@@ -112,7 +128,7 @@ def main():
                     time.sleep(.5)
             finally:close_game(app/'vunit.exe')
             code=proc.wait(timeout=30)
-            row={'game':game,'exit':code,'seconds':time.monotonic()-start,'passed':False}
+            row={'game':trial,'exit':code,'seconds':time.monotonic()-start,'passed':False}
             for name,path in (('launch.log',app/'rig/launch.log'),('gl.log',app/('midz_gl.log' if game=='exotica' else 'midv_gl.log'))):
                 if path.exists():shutil.copy2(path,work/name)
             try:
@@ -120,8 +136,15 @@ def main():
                 row['content']=visual_content(snap)
                 log=(work/'launch.log').read_text(errors='replace')
                 row['passed']=code==0 and 'MIDV_FFB=0' in log and 'render stream failed' not in log
+                if trial=='world-cheats':
+                    import csv
+                    bundle=app/'rig/cheats/runtime/crusnwld24'
+                    with (bundle/'events.csv').open() as source:events=list(csv.DictReader(source))
+                    row['cheat_enabled']=any(r['index']=='1' and r['state']=='On' for r in events)
+                    row['passed'] &= row['cheat_enabled'] and 'MIDV_CHEATS=' in log
+                    for name in ('events.csv','selection.json'):shutil.copy2(bundle/name,work/name)
             except (OSError,ValueError,KeyError) as error:row['error']=str(error)
-            report['games'].append(row);save();print(game,'PASS' if row['passed'] else 'FAIL',flush=True)
+            report['games'].append(row);save();print(trial,'PASS' if row['passed'] else 'FAIL',flush=True)
         run([app/'CruisnSetup.exe','--support-out',out])
         bundles=list(out.glob('CruisnSupport-*.zip'))
         if len(bundles)!=1:raise ValueError('expected one frozen support bundle')
