@@ -51,7 +51,7 @@ def read_trace(path, fields):
 
 
 def compare(reference, candidate, prefix="world"):
-    if prefix not in ("world", "usa"):
+    if prefix not in ("world", "usa", "offroad"):
         raise ValueError("unsupported motion trace profile")
     reference, candidate = Path(reference), Path(candidate)
     camera = [read_trace(p / f'{prefix}-camera.csv', CAMERA) for p in (reference, candidate)]
@@ -75,7 +75,9 @@ def compare(reference, candidate, prefix="world"):
     times = [[r[1] for r in rows] for rows in adc]
     first_adc_difference = next((i for i, (a, b) in enumerate(zip(*values)) if a != b), None)
     return {
-        'schema': 1, 'scope': __doc__.strip() if prefix=='world' else __doc__.strip().replace('World','USA').replace('world_motion_trace.lua','usa_motion_trace.lua'),
+        'schema': 1, 'scope': (__doc__.strip() if prefix=='world' else
+            __doc__.strip().replace('World','USA' if prefix=='usa' else 'Off Road')
+            .replace('world_motion_trace.lua','usa_motion_trace.lua' if prefix=='usa' else 'offroad_distance.lua')),
         'passed': camera_equal and adc[0] == adc[1],
         'camera_equal': camera_equal, 'same_camera_interval': same_interval,
         'camera_samples': [len(rows) for rows in camera],
@@ -103,7 +105,7 @@ def main(argv=None):
     parser.add_argument('reference', type=Path, help='reference replay run directory')
     parser.add_argument('candidate', type=Path, help='candidate replay run directory')
     parser.add_argument('--report', type=Path, required=True)
-    parser.add_argument("--profile", choices=("world", "usa"), default="world")
+    parser.add_argument("--profile", choices=("world", "usa", "offroad"), default="world")
     args = parser.parse_args(argv)
     try:
         result = compare(args.reference, args.candidate, args.profile)

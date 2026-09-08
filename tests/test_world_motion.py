@@ -25,7 +25,11 @@ class MotionTests(unittest.TestCase):
                 (path / 'usa-adc.csv').write_text(adc)
             self.assertTrue(compare(*paths, prefix='usa')['passed'])
             self.assertIn('USA',compare(*paths, prefix='usa')['scope'])
-            with self.assertRaises(ValueError):compare(*paths, prefix='offroad')
+            for path in paths:
+                (path / 'offroad-camera.csv').write_text(camera)
+                (path / 'offroad-adc.csv').write_text(adc)
+            self.assertTrue(compare(*paths,prefix='offroad')['passed'])
+            with self.assertRaises(ValueError):compare(*paths, prefix='unknown')
             (paths[1] / 'world-camera.csv').write_text(camera.replace('101,1,', '101,2,'))
             result = compare(*paths)
             self.assertFalse(result['passed'])

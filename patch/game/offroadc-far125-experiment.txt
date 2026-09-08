@@ -1,0 +1,11 @@
+# Off Road Challenge 1.63 ONLY: bounded global far-culler trial (1.25x).
+# 47,296 -> 59,120 C31 float. Initialization copies this to DP1:B724.
+# The existing 63,680 geometry clip and 63,679 projection table ceiling stay stock.
+# Requires separate completed-GL, resource and route acceptance; not a default.
+1820 07201221 07201221
+1821 1420B724 1420B724
+1C35 0420B724 0420B724
+111A7 00CB0FC8 00CB0FC8
+111A8 0000F8BF 0000F8BF
+11221 0F38C000 0F66F000
+11223 0F78C000 0F78C000
