@@ -14,10 +14,14 @@ inline int adapt_motor_byte(int raw, int gain, int slew, int clamp, int &previou
     return value;
 }
 
-inline int motor_level(int byte, bool invert = false) {
+// Exotica's active-low cabinet switch reverses its motor/shifter signal.
+// Normalize that signal separately from the physical wheel's direction.
+inline bool exotica_motor_inverted(unsigned dips) { return (dips & 0x0800) == 0; }
+
+inline int motor_level(int byte, bool invert = false, bool game_invert = false) {
     if (byte == 0 || byte < -127 || byte > 127) return 0; // -128 is stop, not full force
     int magnitude = byte < 0 ? -byte : byte;
     int level = int(std::min(1.0, double(magnitude) / 126.0) * 32767.0 + .5);
-    return ((byte > 0) != invert) ? -level : level;
+    return ((byte > 0) != (invert != game_invert)) ? -level : level;
 }
 }

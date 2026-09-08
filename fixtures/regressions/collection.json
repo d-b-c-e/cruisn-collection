@@ -45,7 +45,8 @@
         "probe": "lua/world_drivetrain_memory.lua",
         "memory": "world-drivetrain-memory.csv",
         "force_gate_game": "crusnwld24",
-        "force_gate_policy": "passthrough"
+        "force_gate_policy": "passthrough",
+        "force_polarity": true
       },
       "coverage": "synthetic race, native pixels and live timing",
       "timings": [
@@ -65,7 +66,8 @@
         "probe": "lua/world_drivetrain_memory.lua",
         "memory": "world-drivetrain-memory.csv",
         "force_gate_game": "crusnwld24",
-        "force_gate_policy": "passthrough"
+        "force_gate_policy": "passthrough",
+        "force_polarity": true
       },
       "coverage": "Germany Level: complete human race, 9269 input frames, 154 native images; FFB source trace retained, physical outputs disabled on replay"
     },
@@ -78,7 +80,8 @@
         "probe": "lua/drivetrain_memory.lua",
         "memory": "drivetrain-memory.csv",
         "force_gate_game": "crusnwld",
-        "force_gate_policy": "passthrough"
+        "force_gate_policy": "passthrough",
+        "force_polarity": true
       },
       "coverage": "synthetic race, native pixels and live timing",
       "timings": [
@@ -116,7 +119,8 @@
         "minimum_speed_mph": 10,
         "probe": "lua/drivetrain_memory.lua",
         "memory": "drivetrain-memory.csv",
-        "force_gate_game": "crusnexo"
+        "force_gate_game": "crusnexo",
+        "force_polarity": true
       },
       "coverage": "synthetic first-gear race, 21 completed GL frames, CPU rasterization disabled",
       "timings": [

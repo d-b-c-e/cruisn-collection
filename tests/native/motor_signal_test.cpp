@@ -9,6 +9,15 @@ int main() {
     assert(cruisn::motor_level(-126) == 32767);
     assert(cruisn::motor_level(63) == -16384);
     assert(cruisn::motor_level(63, true) == 16384);
+    for (unsigned dips : {0u, 0x0400u, 0xf7ffu}) assert(cruisn::exotica_motor_inverted(dips));
+    for (unsigned dips : {0x0800u, 0x0c00u, 0xffffu}) assert(!cruisn::exotica_motor_inverted(dips));
+    for (int raw=-128; raw<=127; ++raw)
+    for (bool wheel_invert : {false,true}) {
+        int const level=cruisn::motor_level(raw,wheel_invert);
+        assert(cruisn::motor_level(raw,wheel_invert,false)==level);
+        assert(cruisn::motor_level(raw,wheel_invert,true)==-level);
+        assert(cruisn::motor_level(raw,!wheel_invert,true)==level);
+    }
     // Exercise the actual driver helper: normal commands retain the prior
     // formula at all representative gain/limiter boundaries; neutral cannot
     // become a force regardless of previous state or optional conditioning.
