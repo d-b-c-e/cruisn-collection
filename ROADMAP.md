@@ -38,6 +38,13 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    but strict state/order checks fail. Isolate depth bias/order effects before
    native promotion; the host static-scenery path remains the longer-term target.
    World New York black flashing and the 3x/+12 crash need further investigation.
+   The newer [World host-rendering prototype](docs/reviews/2026-09-08-world-host-scenery.md)
+   now draws pending static scenery without changing guest simulation. Full Germany
+   inputs/camera/ADC remain identical; 2× adds visible distant terrain/buildings/trees
+   and repeats 31 completed images on the 4K monitor. Its 61-scene geometry oracle
+   reproduces 13,215 polygons while original DMA/VRAM/texture/palette captures stay
+   identical. This is CLI-only; correct occlusion and future-section residency
+   remain acceptance work. No first-class cross-game or zero-pop-in claim yet.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.
 
@@ -54,12 +61,13 @@ Relevant legacy IDs are retained below.
 
 | ID | Work | Next concrete step | Acceptance needed |
 |---|---|---|---|
-| C2 | Global scenery distance | Trace Exotica's render-register `0x15` transition: all 814 matched bias changes are 2047 → 0. Isolate state/order changes before native admission support. | Preserve original submissions and resources, repeat the candidate, then show earlier visible scenery in completed frames. |
+| C2 / A3 | Global host scenery | Extend the verified World pending-object renderer to PC-owned future sections, then add USA, Off Road and Zeus adapters. Keep layout/codec checks separate from shared math and acceptance. | Original inputs/camera/ADC and guest DMA/resources unchanged; visible benefit, correct occlusion/handover, repeatability, performance and attended cross-track coverage. |
+| C2 | Exotica admission | Trace render-register `0x15`: all 814 matched bias changes are 2047 → 0. Isolate state/order changes before native admission support. | Preserve original submissions/resources and repeat the candidate; additional admissions are not proof of visible scenery. |
 | C2 | USA global distance | Examine geometry and simulation differences in the repeatable CLI candidate before exposing it in the launcher. | Full candidate replay, scene/resource comparisons and an attended drive. |
 | C2 | World / Off Road distance | Broaden coverage beyond the current routes; determine whether activation or residency, rather than far clipping, limits additional benefit. | Matched completed images, timing and fresh drives; do not count extra admissions alone. |
 | C3 | World New York artifacts/crash | Obtain a recorded race reproducing black flashes and, if reproducible, the 3×/+12 finish crash. Preserve the default/2× control. | Diagnose the first bad submission or guest instruction; retain the original failing recording. |
 | B8 | Complete Cheats | Add live activation before enabling one-shots and code-restoring actions. Validate rank/nitro and parameter effects individually. | Exact-revision on/off behavior, correct restoration, recording fidelity and default-off regression controls. |
-| A3 | Host scenery drawing | Build a static-transform oracle and bounded host draw path for pending/future scenery without increasing guest simulation work. | Match the original game's transforms, preserve its state/order, prove resource availability and measure visible benefit. |
+| A3 | World future-section decoder | Placement/yaw match 180 objects (two distinct angles). Broaden angle/offset coverage, reconstruct palette/texture bindings, then decode eligible definitions outside guest RAM. Split host preparation/logging/submission timings and test without per-quad CSV logging. | Correct XYZ/orientation/materials, no dynamic/physics initialization, no per-model/level allowlist, smooth presentation and transfer to ordinary guest drawing. |
 | B1 | Speed telemetry | Replace World's remaining OCR only after finding and guarding a real producer; retain validity/lifetime checks. | Actual outgoing packets versus independent memory/HUD evidence in both revisions. |
 | B2 | Gear / estimated RPM coverage | Existing guarded gear/rev producers work across all four games. Broaden automatic/manual drives and higher-gear Off Road/Exotica coverage. | Real gauges/SimHub/Buttkicker plus independent traces; RPM remains an estimate from the game's rev signal. Never use E632. |
 | B4 | Force normalization and impacts | **Deferred by maintainer.** Preserve World passthrough and existing Exotica polarity/trim. Prepare per-device measurements for a later attended tuning session. | Comparable steering weight, distinguishable impacts, correct centering and no sustained oscillation across games/wheels. |

@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## World host-scenery checkpoint (2026-09-08, later authorized work)
+
+Read `docs/reviews/2026-09-08-world-host-scenery.md` and current ROADMAP first.
+This supersedes the morning native/source baseline below; the old heartbeat stays
+PAUSED. Native `d52b8f95d92` is built/pushed; root vunit SHA256
+`e0cf8a8b498d4499f81228b2fbb3e40367d29fd25e1c86edb9c95ee500c689d1`.
+133-patch export reconstructs tree `8502d3368438573facb5fb8edaaa5d487fe074df`.
+World2.4 now has CLI-only host pending scenery: `--world-host-scenery observe|draw`
+plus bounded first/last and `--world-host-far 80000|160000|240000`. No menu/default
+change, guest activation/CPU/RAM/VRAM/hardware DMA change, or per-model allowlist.
+Native canonical `world_host_scenery.h` uses shared C31 math and checked ROM spans.
+All7 defaults pass on final native: actual UDP/memory, World passthrough, Exotica
+polarity and21 completed4KGL. Default source identity411697739e64f832 is retained;
+later changes affect ONLY the section/yaw diagnostic and numerical tests (four
+files enumerated/rechecked in proof), not default probes or product/native code.
+Final180tests/all4CI34286683257 pass; local/Linux/Windows agree on all287 source
+hashes, identity89efc97dcda1a5f2a14f73ddca5a4d4475511866ce2c588ae809e75cb6438203.
+Full Germany9269/154 remains exact, including camera and actual ADC timestamps.
+At3824x2073 on restored4K monitor, host80 changes18/31GL; host160 changes20/31
+further and repeats all31 plus662946 host quads. Host240 adds132 quads with no
+old loss/order change; sparse31GL equal but targeted21GL finds6 mountain changes.
+Final2x oracle reconstructs13215 host quads/61scenes; original DMA/VRAM/textures/
+palettes byte-equal. Do not call occlusion, stutter or zero-pop-in solved. Host
+callback p99~1.54ms but120ms outlier; split preparation/logging/submission and test
+without per-quad CSV before promotion. Old ultrawide run marked display-transition.
+Read-only section probes preserve inputs/camera/ADC:180 XYZ/heading matches and
+180 object/section yaw matches from actual7 constants; ONLY2 distinct angles and
+no flag8 offset coverage. Next: broader angles/offsets, palette/texture binding,
+PC-owned future-section decoder, occlusion/handover tests, then other-game adapters.
+Proof: `results/proof/2026-09-08-world-host-scenery`; numerical verifier uses no ROMs.
+Model/resource/uncaptured GPU checks remain hashed receipts. Keep original drives,
+v0.4.0 tag/ZIP and personal settings. Stream Deck still uses source/root binary.
+No physical FFB; World normalization remains deferred. No emulator/build running
+at handoff. No new release or resumed overnight automation.
+
 ## Final overnight handoff (2026-09-08, 08:00 local)
 
 The overnight heartbeat `cruisn-overnight-cheats-and-distance` is PAUSED at the

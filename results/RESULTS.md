@@ -4270,3 +4270,41 @@ and published v0.4.0 ZIP/tag hashes reverified unchanged. Final receipts and men
 previews are in results/proof/2026-09-08-overnight-checkpoint. Morning handoff and
 current roadmap separate available source features, diagnostic failures and needed
 attended drives. No further release, physical FFB or World tuning.
+
+## 2026-09-08 — World host scenery and 4K consistency checks
+
+User-authorized work after the paused overnight checkpoint. Native `d52b8f95d92`
+is built/pushed and deployed at the Stream Deck source target; SHA256
+`e0cf8a8b498d4499f81228b2fbb3e40367d29fd25e1c86edb9c95ee500c689d1`.
+133 exported patches reconstruct tree `8502d3368438573facb5fb8edaaa5d487fe074df`.
+The new World2.4 host pending-object renderer has bounded CLI observe/draw and
+80k/160k/240k limits. It changes no guest activation, CPU work, RAM, VRAM or DMA.
+
+Full Germany9269/154 stays exact, including camera and actual ADC timestamps.
+After the user restored the4K monitor, 31 completed3824x2073 captures show18 changes
+for host80 versus observe and20 further changes forhost160. The2x candidate repeats
+all31 images and662946 host quads on the final binary. Host240 preserves all2x quads
+in order and adds132 across7frames; sparse31GL remain equal, but targeted21GL finds
+6 earlier mountain images. The rejected sparse expectation is retained. Final2x
+independent reconstruction matches13215 host quads/61scenes; original hardwareDMA,
+framebuffer, texture/paletteRAM and motion traces are byte-identical tocontrol.
+Occlusion/handover and stutter are not certified. Hostp99~1.54ms includes logging/
+submission; a120ms outlier is not aligned with a screenshot frame.
+
+Two read-only section probes reproduce180 object placements/headings; the second
+also reconstructs180 object/section yaw matrices from7actual C31 coefficients.
+Coverage is only2distinct angles and noflag8offset sections. Future-section
+material/resource binding and wider transform coverage precede a host loader.
+
+All7defaults pass actualUDP/memory, Worldpassthrough, Exotica polarity and21exact4KGL
+on final native. Sourceidentity41169773 is preserved for that suite; the archive
+verifies the only4subsequentlychangedfiles are section/yaw diagnostics/tests,
+not product/native/defaultprobe inputs. Final180tests/all4CI34286683257 pass;
+all287sourcehashes local/Linux/Windows match89efc97dcda1a5f2a14f73ddca5a4d4475511866ce2c588ae809e75cb6438203.
+
+279-file derived archive: `results/proof/2026-09-08-world-host-scenery`,50,466,333bytes,
+SHA64a60b7e535b805a51b8befc3e16cf02031150aa6bf6ed9dd1eeaec60768300a.
+Verifier recomputes inputs, clocks, counters, selected pixels, placement/yaw and
+all7telemetry/4force outcomes. Model and remaining GPU/resource checks are receipts.
+Personalconfig, publishedv0.4.0tag/ZIP and StreamDeckscript remain unchanged.
+No new menu/default/release/physicalFFB; Worldtuning deferred; heartbeat stayspaused.

@@ -32,7 +32,7 @@ pass, preserving every original DMA command and its order. It admits whole objec
 within the original 80,000 far bound and excludes unsupported codecs/near clipping.
 Frame 5909 adds 78 polygons from 34 objects, changing 9,310 pixels in the 2736×1600
 quality preview. This is an offline visibility result, not live GL acceptance.
-All 34 are normally drawn starting at frame 5931, with identical model words,
+All 34 are normally drawn at frames 5921 (18 objects) or 5931 (16), with identical model words,
 materials, position, rotation and palette/texture selectors. No model allowlist
 is used: selection follows the pending list and supported geometry codecs.
 
@@ -115,3 +115,101 @@ RAM. Pending-object rendering alone has a finite lead and cannot promise the
 removal of every pop-in. USA/Off Road need separate layout/codec adapters; Exotica
 also needs a Zeus geometry/material adapter. Shared math, scene evidence and
 acceptance checks should carry across those adapters.
+
+## Full-route 4K-monitor results
+
+The final native pointer hardening is `d52b8f95d92`, SHA256
+`e0cf8a8b498d4499f81228b2fbb3e40367d29fd25e1c86edb9c95ee500c689d1`.
+It guards preceding LOD metadata at the bottom of ROM and rejects overflowing
+object links. Its 133-patch export reconstructs tree
+`8502d3368438573facb5fb8edaaa5d487fe074df`. All settings remain unchanged; the
+host path is still a bounded CLI diagnostic, not a new launcher default.
+
+All full Germany trials complete 9,269 frames and retain the original 154 native
+snapshots. Camera samples and actual ADC reads, including their timestamps, are
+byte-identical. Completed GL captures use 31 frames from 1920 through 9120, every
+240 frames, at 3824×2073 on the restored 3840×2160 monitor.
+
+| Trial | Host quads across 3,731 scenes | Completed images | Interpretation |
+|---|---:|---|---|
+| Observe, 80,000 | 219,528 prepared, none submitted | Control | All guest work stays original |
+| Draw, 80,000 | 219,528 | 18/31 change vs observe | Earlier trees are visible |
+| Draw, 160,000 | 662,946 | 20/31 change beyond host 80,000 | More distant terrain, buildings and trees are visible |
+| Draw, 240,000 | 663,078 | 31/31 equal to 160,000 | No additional visible gain in these samples |
+| Repeat 160,000 on final binary | 662,946 | 31/31 exactly repeat | Input, camera, ADC and host quads also repeat |
+
+The largest sampled 80,000→160,000 change is 144,921 pixels at frame 7680:
+distant hillside/building geometry appears behind the foreground scenery. Changes
+are not automatically correct occlusion or a whole-game visual acceptance result.
+The 3× run preserves all 2× host quads in order and adds only 132 quads at frames
+3666–3678. Its original expectation-of-change FAIL is retained; sparse image
+equality must not be described as proof that every intervening frame is equal.
+The targeted 3650–3690 comparison confirms a short 3× gain: 6/21 completed images
+change at frames 3672–3682, with 2,125–24,047 changed pixels. Distant mountain
+geometry appears earlier. Both prefixes preserve original inputs/native images
+and identical camera/ADC data. This is a brief extension, not a large 3× gain
+throughout the track; the sparse-image negative result remains intact.
+
+The final 2× instrumented run independently reproduces every one of 13,215 host
+quads across 61 scenes. Its original hardware DMA capture, native framebuffer,
+texture RAM and palette RAM are byte-identical to the 80,000 control, as are its
+camera/ADC traces. This directly separates the host drawing from guest rendering
+and simulation. The first 80,000 oracle likewise reproduces all 5,157 host quads.
+
+Full-route callback timing is approximately 99.887%–100.006% emulation speed.
+Individual callback stalls reach 147.9 ms with instrumentation/captures; this is
+not a presentation-latency or stutter-free claim. Heavy Lua projection captures
+are excluded from native performance claims. No physical force was tested.
+The 2× host callback's 99th percentile is about 1.54 ms, but the repeat has one
+120.4 ms outlier. These outliers do **not** align with the requested screenshot
+frames. The current counter includes model preparation, CSV logging and GL
+submission, so their cause is unresolved. Split those phases and benchmark with
+per-quad logging disabled before promoting this path for everyday play.
+
+## Future section decoding
+
+The read-only `world_section_capture.lua` and `verify_world_sections.py` begin
+checking the source definition→object placement boundary. Section record AR7
+contains base XYZ, heading and model-list pointers; World advances D575 by 8 words,
+or 12 when flag 8 supplies an extra placement offset. Each main object definition
+has model pointer, integer XYZ, C31 heading and metadata. The 7B9A allocator copies
+these through the section matrix, then initializes palette/dynamic/list state.
+
+The probe captures the source at read D580/PC7B9E and the initialized object at
+D58D/PC7C1C. The independent reference preserves integer→float stores and 90C5's
+operation order, including its differently scheduled last matrix row. Section
+matrix/trig were initially captured inputs; palette setup, dynamic initialization
+and list membership remain unverified effects. This probe does not create a host
+future-section loader.
+
+Both completed read-only probes pass the original 6,023-frame replay and preserve
+the camera/ADC logs. The first independently reproduces XYZ and heading for 180
+allocated objects across two section records. The second additionally reads the
+seven actual polynomial constants and independently reproduces all 180 object
+and section yaw matrices. There are only **two distinct observed angles** and no
+flag-8 offset sections in this window; broader angular/offset coverage is still
+needed. The two guest-observed numerical vectors are frozen in the test suite.
+The source contains no copied model or texture assets.
+
+Next, broaden placement/orientation coverage and reproduce palette/texture
+bindings for eligible static definitions. Only then draw future
+sections from PC-owned storage and test handover to the original guest renderer.
+Keep alternate road/car codecs and special dynamic classes explicit; never infer
+static eligibility merely from a model name or introduce a level/model allowlist.
+
+## Default regression and source binding
+
+All seven default cases pass on final native `d52b8f95d92`, including actual UDP
+versus independent memory, World force passthrough, Exotica polarity and all 21
+completed 3840×2160 Exotica reference images. The suite uses source identity
+`411697739e64f832e5f819a2995a55f47e74dabd28849a3f88d4ddae6161eb7e`.
+Later changes are confined to the read-only section/yaw diagnostic and its test
+vectors; the archive explicitly verifies these four changed files and confirms
+none is a default-suite probe. No product/native/default-test input changed.
+The suite is retained as evidence on that exact source snapshot, not relabeled.
+Final validation is 180 Python tests and all four CI jobs in run 34286683257.
+All 287 source hashes match on local, Linux and Windows checkouts, identity
+`89efc97dcda1a5f2a14f73ddca5a4d4475511866ce2c588ae809e75cb6438203`.
+The 279-file derived archive and verifier are in
+`results/proof/2026-09-08-world-host-scenery`. Native/root deployment, Stream Deck
+script, personal config and the original v0.4.0 tag/ZIP hashes are recorded there.
