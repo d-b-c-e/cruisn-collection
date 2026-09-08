@@ -32,8 +32,10 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    a repeatable2x candidate, but substantial original-route divergence and no
    launcher promotion yet. [Off Road2x/3x trials](docs/reviews/2026-09-08-offroad-global-distance.md)
    show modest equal gains, with native cost/repeatability still open.
-   [Exotica's CPU-frustum audit](docs/reviews/2026-09-08-exotica-frustum.md) verifies
-   a global projection/margin hypothesis; a bounded completed-GL matrix is next.
+   [Exotica's full trials](docs/reviews/2026-09-08-exotica-visibility-trials.md) now
+   include a native optional Widescreen Scenery menu item, unchanged far plane,
+   matched geometry/resources and6000-frame/35GL candidate repeats. Projection
+   remains diagnostic; later actual far rejects provide a true-distance target.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.

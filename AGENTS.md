@@ -1,5 +1,44 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Exotica visibility checkpoint (2026-09-08, 05:30 local)
+
+Read docs/reviews/2026-09-08-exotica-visibility-trials.md. Native6a2b7ae93fa is built
+and pushed; vunit.exe SHAcec6d98afc732b7e1a268deb763a7afeab112c66e32a4a5ed643817f1f3fdc5a.
+127-patch export reconstructs tree6d2e8a22e8641bbf6709eb2f1d5a5092c6bd0dcc.
+Collectiondc1f5af adds guarded CPU visibility and Zeus capture checks;0e758f3 adds
+Settings -> Experiments -> Exotica -> Widescreen Scenery, defaultOFF. Shared/game
+filtering and top-level placement remain. It selects margins only, enhanced wide
+scale>1; fallback suppresses the saved option. Explicit developer/recording mode wins.
+
+MIDZ_VISIBILITY=stock|projection|margins|both|off is Exotica2.4-only. No guest writes,
+model allowlist or far-plane increase. Canonical native/exotica_visibility.h guards
+code/table,PC/registers,pointer/depth/radius; direct backing RAM avoids recursive taps.
+No transient object cache; counters reset/load. Buffered exotica-visibility.csv.
+replay/derive/record_drive accept --exotica-visibility; derive --keep-patch preserves
+absence and rebinds frozen patch/cheat paths. --zeus-capture-frame validates actual
+Zeus submissions/resources; V-Unit --capture-state explicitly rejects Exotica.
+
+Five bounded Lua trials and five full-boot native trials6000 complete. Native stock
+matches all21 original completed4KGL; each intervention matches19 Lua images.
+Margins and both separately record/replay6000 inputs/counter rows and35 completed
+1920x1080GL2500..5900. Both native full6000 counters also repeat exactly. Not original
+route/attended acceptance: strict pose comparisons fail; combined scene changes42
+original records. Margin-only3500 scene preserves3691 records/3532quads and effective
+palettes in order, same texture RAM; adds one palette load/one real right-edge quad.
+No claim that projection eliminates pop-in; margins vs both diverge markedly after5300.
+Native stock finds3669 actual far rejects4686..5986, absent in early2500..4300window.
+Next Exotica distance target is that late interval, with coherent reciprocal range.
+
+All7 disabled defaults pass actual telemetry/memory/force controls and Exotica21GL.
+157Python tests/all4CI34213524599 pass. Local/Linux/Windows all255 source hashes agree:
+fa5809b1880d4373652c68e2e034afa992c97d15a29b8f4698ba4cf3a0a121a3. ROM-free proof under
+results/proof/2026-09-08-exotica-visibility contains170 derived files and3full traces;
+verifier reconstructs stock from the prior frustum archive, recomputes decisions,
+pose failures,counters,inputs,ordered hashes; GL/resource/CI results are bound receipts.
+StreamDeck source updated; saved config and v0.4.0 tag/ZIP unchanged. No physicalFFB
+or World force tuning. No emulator/helper left. Continue overnight through08:00local:
+Off Road native adapter/cost/repeatability next, then later Exotica global far trials.
+
 ## Off Road / Exotica diagnostic checkpoint (2026-09-08, 04:25 local)
 
 Read docs/reviews/2026-09-08-offroad-global-distance.md and

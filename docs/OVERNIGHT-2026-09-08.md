@@ -57,8 +57,10 @@ a later Zeus2 change for separate post-release compatibility study.
   expose route changes, with launcher/geometry/attended acceptance still open.
   [Off Road coherent2x/3x trials](reviews/2026-09-08-offroad-global-distance.md) now
   complete with equal camera paths and modest visible gain; instrumentation cost,
-  full repeatability and attended coverage remain open. [Exotica's frustum audit](reviews/2026-09-08-exotica-frustum.md)
-  validates the projection/margin hypothesis; its bounded four-way GL trial is next.
+  full repeatability and attended coverage remain open. [Exotica's completed matrix](reviews/2026-09-08-exotica-visibility-trials.md)
+  now supports a native optional Widescreen Scenery menu item. Margins/both each
+  repeat6000 frames/35 completed GL; projection remains diagnostic, far plane
+  unchanged. Later actual far rejects at4686…5986 provide the next distance target.
 - [ ] Prefer global admission/activation or host scenery drawing over growing
   lists of individual models or levels. Investigate distant mountains/trees and
   World's New York black flashing/3x+12 finish crash using retained diagnostics.
@@ -69,6 +71,11 @@ a later Zeus2 change for separate post-release compatibility study.
 - [ ] Keep successful trials optional and default-off. Record unsupported games
   honestly. Request fresh attended drives only where additional route/handling
   acceptance is needed; lack of a human drive need not stop independent diagnostics.
+
+Next autonomous steps: move Off Road's coherent whole-scene trial into a guarded
+native adapter and measure real cost/repeatability; inspect Exotica's later far
+rejects and test a coherent far-plane/reciprocal extension. Keep scene activation,
+resource residency, completed pixels and changes to gameplay history distinct.
 
 ## Completion and limits
 

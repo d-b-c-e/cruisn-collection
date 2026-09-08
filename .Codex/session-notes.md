@@ -5,6 +5,15 @@
 - **Branch:** master
 
 ## What Was Done
+- Latest05:30: Exotica native6a2b7ae/SHAcec6d98a built/pushed;127patch exacttree6d2e8a22. Collectiondc1f5af/0e758f3.
+- Exotica Widescreen Scenery optional menu now restores real edge geometry. Explicit CPU projection/margins/both controls leave far204800 unchanged.
+- Matched3500 margin scene preserves3691 ordered records/3532quads/effectivepalettes and texture RAM;1palette+1quad added. Combined42originalchanges remains strictFAIL.
+- Lua5x6000 andnative5x6000; all19 Lua/native images match bymode. Both6000countertrace/19GL repeats. Separate margins/both cases each6000/35GL repeat.
+- Later margins/both pictures diverge after5300; no originalroute or farbenefit claim. Actualfarrejects3669 at4686..5986 give next Exotica target.
+- All7defaults actualtelemetry/memory/Worldpassthrough/Exo21GL pass.157tests/all4CI34213524599;255sourcehashes same onlocal/Linux/Windows, identityfa5809b1.
+- Proof170derived+3fulltraces recomputes decisions/counters/inputs/posefailures/geometryhashes; stock reconstructed frompriorarchivedbaseline. GL/resource checks remain boundreceipts.
+- SourceStreamDeckhasnewmenu/native; savedsettings andpublishedv0.4.0ZIP/tag unchanged. No physicalFFB/Worldtuning, no emulator/helper left.
+- Next: OffRoad coherent native adapter/cost/repeatability; thenExotica laterfar-limit trial. Heartbeat active until08:00local.
 - Latest04:25: Off Road/Exotica diagnostics5937063/410ad43; native8b/SHA638 unchanged, v0.4.0 ZIP rehashed unchanged.
 - Exotica339018 validated CPU sphere samples: true reciprocal predicts4051 extra/no losses;88px margins21717;both28610.6000inputs/21completed4KGL exact.
 - Exo acceptance marker68A3/PC68A4; earlier689D lies inside branchdelay and was rejected by analyzer.15file ROM-free proof, verified from Git blobs.

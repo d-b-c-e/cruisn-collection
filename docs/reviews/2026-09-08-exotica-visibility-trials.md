@@ -95,11 +95,40 @@ The native stock control completes all 6000 frames and matches all 21 original
 repeats all 6000 per-frame native counter rows and all 19 completed GL images
 exactly. Each native intervention also matches all 19 images from its corresponding
 bounded Lua trial. Native stock/margins/projection measure approximately 100%
-emulation speed. Broader candidate/default regression results will be added at
-the checkpoint. Current local harness: 157 Python tests pass; offscreen Exotica
+emulation speed. The default regression suite also passes all seven cases. Current local harness: 157 Python tests pass; offscreen Exotica
 and root menu screenshots were inspected for layout and filtering.
 
-Keep these controls experimental. Full candidate repeatability, cross-game
-disabled controls and a new attended Exotica drive remain separate requirements.
+New `margins-case` and `both-case` recordings each repeat all 6000 input/native
+frames, all 6000 native counter rows and **35 completed 1920×1080 GL images**
+from frames 2500 through 5900. Derivation is synthetic replay of the existing
+input recording, not a new human drive. Local/Linux/Windows agree on all 255
+source hashes, identity `fa5809b1880d4373652c68e2e034afa992c97d15a29b8f4698ba4cf3a0a121a3`.
+All four CI jobs pass at both `dc1f5af` (34213164187) and `0e758f3` (34213524599).
+
+Comparing margins against both over that longer window changes 19/35 images.
+Large later differences begin at sample 5300; both versions of this synthetic
+drive run off the road. These differences cannot certify earlier scenery at an
+identical camera pose. The full comparison remains a difference/FAIL receipt,
+separate from each candidate's successful repeatability result.
+
+The native stock log also establishes that **3669 actual far rejections** occur
+in frames 4686…5986. None occurred before frame 4301. Thus the initial sphere
+audit correctly found no far rejects in its window, but did not cover the part
+of the drive where the 204800 limit matters. A future global far-plane trial
+should target those later frames and pair an extended reciprocal range with
+actual Zeus submissions/resources and completed images. Simply observing more
+admissions still does not prove successful distant rendering or residency.
+
+All seven disabled-feature regressions pass, including actual telemetry/independent
+memory checks, unchanged World force passthrough expectations and Exotica’s 21
+completed original 4K images. Configured timing windows are 99.9714%…100.0055%
+emulation speed; this is not a measurement of presentation latency.
+
+The [173-entry evidence archive](../../results/proof/2026-09-08-exotica-visibility/README.md)
+passes its standard-library verifier. The source used by Stream Deck is updated;
+saved settings and the v0.4.0 tag/ZIP remain unchanged.
+
+Keep these controls experimental. A fresh attended Exotica drive remains necessary
+for handling/route acceptance.
 The present evidence supports wider edge visibility, not a claim that Exotica
 pop-in is solved. World/USA/Off Road admission/residency mechanisms remain distinct.

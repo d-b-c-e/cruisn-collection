@@ -4131,3 +4131,35 @@ v0.4.0 ZIP fd292b0d and native638 both rehashed unchanged04:22. No emulator/help
 running, no physicalFFB, personalsettings or Worldforce tuning. Heartbeat continues
 to08:00local. SourceStreamDeckstillhasCheats/top-levelExperiments; these distance
 probes do not add launcheroptions.
+
+
+## 2026-09-08 05:30 — Native Exotica visibility and strict Zeus capture proof
+
+Collectiondc1f5af/0e758f3; native6a2b7ae93fa/SHAcec6d98afc732b7e1a268deb763a7afeab112c66e32a4a5ed643817f1f3fdc5a.
+127patch export exactlytree6d2e8a22e8641bbf6709eb2f1d5a5092c6bd0dcc. All pushed.
+Bounded Lua stock/projection/margins/both/bothrepeat6000 each; CPU admissions215946,
+220008,238066,246902,246902.19GL pertrial, both trace/images repeat; strictlaterpose
+FAILs retained. Native5x6000 atnormal speed; stock21original4KGL exact; each native
+intervention matchesall19Lua images. Both fullnativecountertrace also repeats.
+New margins/both cases each6000inputs/counterrows and35GL2500..5900 repeat. Margins
+vsboth changes19/35, largelaterhistory differencesfrom5300; nooldroute/farbenefitclaim.
+Frame3500 Zeus capture: margin preserves3691records/3532quads/effectivepalettes/order,
+textureRAMunchanged; onepalette+onequad added outsideoriginalrightedge. Combined
+changes42originalrecords, strictFAILretained. Newstrictparser rejects truncation,
+unknownrecords/nonfinitevertices; nativebuffersremainnonoraclewhenGLskipsCPUdraws.
+Native stock nowfinds3669actualfarrejects4686..5986 (noneearly2500..4300), givingnext
+truefarplane target. MIDZ_VISIBILITY CPU controls stillkeepfar204800unchanged.
+Exotica WidescreenScenery menudefaultOFF, enhancedwide only; projection/bothCLIonly.
+replay/derive/attendedrecorder archiveoptions; derive--keep-patch supportsnopatch and
+frozencheat/patchrebinding. Nativehelpertested againstactualprogram andCIvectors.
+All7defaults actualtelemetry/memory/Worldpassthrough/Exo21GL PASS; configuredtimings
+99.9714..100.0055%emulation (notpresentationlatency).157Pythontests/all4CI34213524599
+pass; local/Linux/Windows255sourcehashes identicalfa5809b1880d4373652c68e2e034afa992c97d15a29b8f4698ba4cf3a0a121a3.
+Proof results/proof/2026-09-08-exotica-visibility:170derived+3fulltraces; archiveSHA
+b210c932d9b0de91c2048648b89be0f0623fe8402675a71014b8948175a43a22 and
+cda97bfa190e28b157a8d562ecfe6f6f8b9da03b7e43daeafe2bac04b474b7c0.
+Verifier recomputes spheredecisions/posefailures/nativecounters/inputs/geometryhashes;
+GL/resource/CI verdicts remain boundreceipts, rawassetslocal. Verifierfield-name typo
+corrected beforeacceptance; no emulator-testfailure. StreamDecksourceupdated,
+personalsettings andv0.4.0tag/ZIP unchanged. NoFFB/Worldtuning, noemulatorleft.
+Next overnight: OffRoadnativeadapter/cost/repeatability, thenlaterExoticafartrial.
