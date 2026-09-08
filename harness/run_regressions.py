@@ -81,7 +81,8 @@ def main(argv=None):
                     item['telemetry']['wire']['maximum_speed_mph']>=speed)
                 item['passed'] &= item['telemetry']['coverage_passed']
                 if telemetry.get('force_gate_game'):
-                    item['force_gate']=analyze_force_gate(run/'run',memory,telemetry['force_gate_game'])
+                    item['force_gate']=analyze_force_gate(run/'run',memory,telemetry['force_gate_game'],
+                                                        telemetry.get('force_gate_policy','driving'))
                     item['passed'] &= item['force_gate']['passed']
             item['report']=str(run/'report.json')
             item['timings']=[]

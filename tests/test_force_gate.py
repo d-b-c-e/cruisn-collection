@@ -8,6 +8,17 @@ from analyze_force_gate import analyze
 
 
 class ForceGateTests(unittest.TestCase):
+    def test_world_menu_force_passes_through_without_driving_gate(self):
+        with tempfile.TemporaryDirectory() as td:
+            p=Path(td);memory=p/'memory.csv';trace=p/'force-gate.csv'
+            memory.write_text('frame,state,flags\n8853,4,26\n8854,5,2\n')
+            trace.write_text('seconds,frame,enabled,raw,requested_level\n153,8852,1,25,-6501\n153.017,8853,1,20,-5201\n')
+            result=analyze(p,memory,'crusnwld24','passthrough')
+            self.assertEqual(result['non_driving_nonzero_requests'],1)
+            self.assertEqual(result['disabled_writes'],0)
+            trace.write_text(trace.read_text().replace(',1,20,-5201',',0,20,0'))
+            with self.assertRaisesRegex(ValueError,'game-state'): analyze(p,memory,'crusnwld24','passthrough')
+
     def test_world_finish_releases_even_when_motor_commands_continue(self):
         with tempfile.TemporaryDirectory() as td:
             p=Path(td);memory=p/'memory.csv';trace=p/'force-gate.csv'
