@@ -1,6 +1,10 @@
 # Next public release: roadmap and acceptance checklist
 
-Owner: maintainer + attended testers. Updated 2026-09-07. **Not release-ready yet.**
+Owner: maintainer + attended testers. Updated 2026-09-08. **v0.4.0 is explicitly
+approved by the maintainer, subject to renewed automated gates.**
+The [recorded sign-off](releases/v0.4.0-approval.md) accepts the current alpha's
+known issues and remaining human coverage. It supersedes older blockers below
+for this release only; unperformed checks must not be relabeled as passes.
 Scope: USA 4.5, World 2.4, Off Road, **and Exotica**. World 2.5 remains a compatibility
 check; its factory automatic-only behavior cannot satisfy manual-transmission acceptance.
 The machine-readable checklist is [fixtures/release/checklist.json](../fixtures/release/checklist.json).
@@ -122,6 +126,13 @@ observations and existing evidence files with SHA256 hashes for every check.
 Paths in the ledger are relative to that JSON. One drive/report can support
 several checks; leave unobserved checks pending. Attach CI and package evidence
 there too, including the actual ZIP hash.
+
+An explicit maintainer sign-off may instead accept specified remaining human checks
+as `waived`, each with a reason and coverage limits. The same ledger must include
+`maintainer_approval` with decision `release-current-state`, reviewer, date, notes,
+hashed approval evidence and the exact `waived_checks` list. Candidate/source
+binding still applies. The report exposes `waived` and `all_checks_passed=false`;
+automated configuration, regression and fresh-boot gates cannot be waived.
 
 Rerun with `--attended results/diagnostics/release-attended.json` after filling
 the ledger; omit `--init-attended`, which refuses to replace an existing ledger.

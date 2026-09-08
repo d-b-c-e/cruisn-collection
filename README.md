@@ -6,8 +6,12 @@ as a renderer replacement over MAME. One fullscreen launcher, all four games,
 wheel + force feedback, true 16:9 at 4× internal resolution, optional CRT
 look. **No ROMs are included** — you supply your own.
 
-This is an actively tested alpha. Rendering defects beyond the tested routes,
-collision feedback and telemetry coverage remain open work.
+This is an actively tested alpha. **v0.4.0** includes rendering fixes, all-game
+gear/rev telemetry and Exotica force-polarity correction. Fresh installs default
+to **CRT on**, full widescreen, 4x rendering and free play. Rendering defects beyond
+the tested routes, collision feedback and broader wheel coverage remain open work.
+See [release notes and known issues](docs/release-notes/v0.4.0.md) and the
+[post-release work queue](docs/OVERNIGHT-2026-09-08.md).
 
 **Settings → Display → Graphics Experiments** includes **World Draw Distance**
 (Off / 2x / 3x) and independent **Scenery Lookahead** (+0 / +8 / +12 track sections).
@@ -76,7 +80,7 @@ the games' lazy-center feel). Calibrate in-game first, then tune. Details
 in [docs/INSTALL.md](docs/INSTALL.md#steering-feel-sensitivity-and-curve).
 
 **Current private builds:** anonymous update checks return404 while this repository
-is private. Use the supplied candidate ZIP until a public update destination is chosen.
+is private. Download the release ZIP with repository access until a public update destination is chosen.
 
 **Updating**: `CruisnSetup.exe -> Updates...` checks GitHub and installs
 the newer version in place (the launcher's SETTINGS has the same *Check

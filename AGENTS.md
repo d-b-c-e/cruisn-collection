@@ -1,5 +1,19 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Release authorization and overnight queue (2026-09-08)
+
+User explicitly signs off current state and authorizes v0.4.0 release. This
+supersedes older pending-approval statements below. Read
+docs/releases/v0.4.0-approval.md and docs/release-notes/v0.4.0.md.
+Do not invent attended observations: release_gate supports explicit enumerated
+maintainer waivers, bound to candidate/source and hashed approval evidence, while
+all automated gates remain mandatory. Exact ZIP promotion still never rebuilds.
+Repository visibility remains private; no visibility change authorized.
+Post-release order is docs/OVERNIGHT-2026-09-08.md: Cheats first, Experiments as a
+top-level sibling of Display second, global distance trials across all four games
+third. Separate commits; preserve v0.4.0 tag/package and baseline defaults.
+No physical FFB unattended. World force normalization remains deferred.
+
 ## Exotica force polarity correction (2026-09-07)
 
 User reports anti-centering with Wheel Invert On, ADC mirror0 and shared force

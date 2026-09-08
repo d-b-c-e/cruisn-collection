@@ -3937,3 +3937,16 @@ are software-level checks, not proof of physical restoring torque. A brief atten
 low-strength centering check remains needed. Cross-game strength normalization and
 World oscillation stay deferred. No new ZIP/publicrelease; source supersedes rc2.
 See docs/reviews/2026-09-07-exotica-force-polarity.md.
+
+## 2026-09-08 — v0.4.0 release preparation and explicit sign-off
+
+Maintainer authorizes cutting a new release and signs off current state. Native
+97600e9597e / SHA b5ba0021a51a1f9ec50e105dde9c8112cb3c7e4ce71009ce4294841296383ee2
+retains Exotica cabinet polarity correction and World menu-force rollback.
+Release accounting now distinguishes explicit, enumerated maintainer waivers from
+attended PASS observations; automated gates remain mandatory. Current sign-off and
+known limitations are in docs/releases/v0.4.0-approval.md. Old rc2 must not ship.
+Updated release notes consolidate previously contradictory unreleased chronology.
+Queued postrelease: Cheats first, Experiments beside Display second, global distance
+experiments for USA/World/Off Road/Exotica third. No unattended physical force.
+Fresh release checks and exact ZIP publication are in progress, not yet claimed.

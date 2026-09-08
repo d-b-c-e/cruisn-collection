@@ -1,8 +1,8 @@
 """Report release readiness without launching games, actuating a wheel or publishing.
 
 Runs isolated configuration tests and checks a complete local regression report.
-An attended ledger is explicit human acceptance, never inferred from pixel hashes.
-Missing, stale or partial evidence keeps ready_for_release false (exit 1).
+An attended ledger records checks separately from explicit maintainer waivers.
+Waivers never bypass automated gates or turn unperformed checks into passes.
 """
 import argparse
 import io
@@ -35,20 +35,39 @@ def regression_check(report, candidate_hash, source_hash, suite, suite_hash):
 def acceptance_check(ledger, expected, candidate_hash, source_hash, base):
     if ledger.get('candidate_sha256')!=candidate_hash or ledger.get('source_identity')!=source_hash:
         return {'passed':False,'error':'attended evidence belongs to a different build/source','pending':list(expected)}
-    pending=[]; errors=[]
-    for key in expected:
-        row=ledger.get('checks',{}).get(key,{})
-        if row.get('status')!='pass': pending.append(key); continue
+    pending=[]; errors=[]; waived=[]
+    def validate_evidence(row, label):
         if not all(isinstance(row.get(k),str) and row[k].strip() for k in ('reviewer','date','notes')):
-            errors.append(f'{key}: pass requires reviewer, date and observation notes')
+            errors.append(f'{label}: requires reviewer, date and observation/acceptance notes')
         evidence=row.get('evidence',[])
-        if not evidence: errors.append(f'{key}: pass requires hashed evidence files')
+        if not isinstance(evidence,list) or not evidence:
+            errors.append(f'{label}: requires hashed evidence files')
+            return
         for item in evidence:
             try:
                 if sha256_file(Path(base)/item['path'])!=item['sha256']:
-                    errors.append(f'{key}: evidence hash changed')
-            except (OSError,KeyError,TypeError): errors.append(f'{key}: missing/invalid evidence')
-    return {'passed':not pending and not errors,'pending':pending,'errors':errors}
+                    errors.append(f'{label}: evidence hash changed')
+            except (OSError,KeyError,TypeError): errors.append(f'{label}: missing/invalid evidence')
+    for key in expected:
+        row=ledger.get('checks',{}).get(key,{})
+        if row.get('status')=='waived':
+            waived.append(key)
+            if not isinstance(row.get('notes'),str) or not row['notes'].strip():
+                errors.append(f'{key}: waiver requires a reason and remaining coverage limits')
+            continue
+        if row.get('status')!='pass': pending.append(key); continue
+        validate_evidence(row,key)
+    if waived:
+        approval=ledger.get('maintainer_approval',{})
+        if approval.get('decision')!='release-current-state':
+            errors.append('waivers require explicit maintainer release-current-state approval')
+        approved=approval.get('waived_checks',[])
+        if (not isinstance(approved,list) or not all(isinstance(k,str) for k in approved)
+                or sorted(approved)!=sorted(waived)):
+            errors.append('maintainer approval must enumerate exactly the waived checks')
+        validate_evidence(approval,'maintainer approval')
+    return {'passed':not pending and not errors,'all_checks_passed':not pending and not errors and not waived,
+            'pending':pending,'waived':waived,'errors':errors}
 
 
 def fresh_boot_check(report, candidate_hash, source_hash):
@@ -115,7 +134,8 @@ def main(argv=None):
     write_json(args.report,report)
     print(f"Release {'READY' if report['ready_for_release'] else 'NOT READY'}: {args.report}")
     print(f"Configuration={report['configuration']['passed']}; full replay suite={report['regressions']['passed']}; "
-          f"fresh boots={report['fresh_boots']['passed']}; attended checks pending={len(report['attended'].get('pending',[]))}")
+          f"fresh boots={report['fresh_boots']['passed']}; attended checks pending={len(report['attended'].get('pending',[]))}; "
+          f"maintainer waivers={len(report['attended'].get('waived',[]))}")
     return 0 if report['ready_for_release'] else 1
 
 

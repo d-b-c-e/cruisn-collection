@@ -3,243 +3,51 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased
+## v0.4.0 — 2026-09-08
 
-- Move Crack Fill to Graphics Experiments, preserving its shared preference.
-  Expose World 2.4's opt-in 2x/3x distance and independent +0/+8/+12 lookahead.
-  Prevent combining global distance with the older selective scenery experiment.
+This alpha release improves rendering, wheel integration and telemetry across
+Cruis'n USA, Cruis'n World, Off Road Challenge and Cruis'n Exotica.
 
-- Make release source hashes consistent across Windows/Linux text line endings,
-  with CI comparisons of every source input and exact binary-fixture preservation.
+- Fix distant red/blue texture seams, enhanced checkerboard shadows, Off Road's
+  black upper sky corners and World's disappearing transmission artwork.
+- Improve widescreen terrain coverage and preserve thin geometry at high resolution.
+  Margin Fill is retired because it smeared sky textures.
+- Restore the V-Unit Esc menu while paused and address selection-screen slowdown,
+  recording hitches and startup framebuffer uploads.
+- Send real game gear/rev signals for all four games, including automatic shifts.
+  The rev signal maps to an estimated 900–8,000 RPM. USA, Off Road and Exotica have
+  guarded internal speed readers; World speed still uses OCR.
+- Correct Exotica steering/force polarity and reduce its effective force by 20%.
+  Restore World menu/race-end feedback with its strength unchanged.
+- Add force profiles and optional per-game impact cues. Spring, damper and friction
+  respect overall strength; impact cues remain off by default.
+- Add per-game graphics experiments, including World 2.4's 2x/3x distance and
+  +0/+8/+12 scenery lookahead. These are optional trials, off by default.
+- Add recorded-input replay, completed-frame graphics comparisons, actual UDP
+  telemetry checks, fresh-save checks and extracted-package smoke tests.
+- Harden setup/updates and preserve settings, calibration, bindings and scores.
 
-- Reduce V-Unit startup framebuffer upload work with masked GPU copies, keeping
-  untouched pixels and render order. Add repeated full-window startup checks and
-  retained consumer-stall controls; keep the existing timeout protection.
-- Normalize the reserved neutral force command before driver gain and limiters
-  in V-Unit and Exotica. Preserve ordinary force commands and current defaults.
-- Back up recognized obsolete input plugins during update/first launch. Preserve
-  unknown DLLs and block the operation instead of loading conflicting force code.
-- Correct fresh-install free-play seeds and maintain Off Road's settings checksum.
-  Preserve existing calibration, scores and bindings when importing an installation.
-- Restore release artwork/music and include runtime assets, source and licences.
-  Repair frozen support diagnostics and validate actual extracted-package launches.
-- Harden the Windows updater against malformed or changed archives and quoted/short
-  paths. Keep personal rig and ROM files outside the update payload.
-- Build candidate ZIPs without publishing on a tag push. Bind release acceptance to
-  the tested source, native binary and exact ZIP; promotion never rebuilds it.
-- Add a release checklist, fresh-boot persistence gates and attended drive protocol.
-  World 3x far/12-section lookahead remain diagnostics: a larger far limit has not
-  demonstrated extra mountain visibility over 2x at equal lookahead.
+Fresh installs use **full widescreen, 4x internal rendering, CRT on and free play**.
+World defaults to revision 2.4 for manual transmission. Existing preferences are
+preserved when updating. No ROMs are included; supply your own supported sets.
 
-- Add optional World2.4 Distant Scenery for five identified mountains, four
-  small tree variants and one forest strip, with full-drive repeatability and
-  completed-frame comparisons. Advance pending mountain/forest activation by
-  up to eight track sections; retain an explicit activation-disabled control.
-- Add a scenery geometry comparator that checks duplicate polygons, ordering,
-  unknown additions and optional projection-size limits. Report changed-pixel
-  bounds and original-order inversions without hiding failed strict comparisons.
+### Known issues
 
-- Add World scenery provenance and a bounded selective mountain experiment;
-  document an earlier mountain with unchanged later frames and the path toward
-  separate mountain/tree distance improvements.
 
-- Expose optional per-game steering impact cues in Force Feedback settings,
-  with correct World revision resolution and unchanged defaults.
-- Rename World Terrain Visibility to Widescreen Terrain and clarify that it
-  repairs edge geometry without increasing draw distance.
-- Anchor offline force candidates to recorded frames and reject accidental
-  comparisons between host-time force traces and emulated-time collision labels.
+- World can oscillate at race end or in menus; its recent force gate was removed
+  at the maintainer's request. Cross-game force normalization and impact feel need
+  more wheel testing. Equal strength percentages do not yet guarantee equal feel.
+- Exotica force polarity is verified in software; broader physical-wheel testing,
+  including a second vendor, remains incomplete. Exotica also retains upstream
+  emulation/rendering defects, including some car-selection text.
+- Extended distance does not eliminate pop-in. World New York has black flashing
+  artifacts, and a finish-line crash was observed with 3x/+12; causation remains
+  unresolved. Leave distance experiments off for the baseline experience.
+- New human recordings, broader manual-shifter coverage, clean-user-profile
+  installation and a longer mixed-game soak remain follow-up coverage.
+- This repository is private. Downloads require repository access; the built-in
+  anonymous updater cannot currently discover this release.
 
-- Preserve World 2.4's D/A panels and transmission header during level loading
-  in enhanced GL output, using the actual UI model lifetime without changing
-  game memory or recorded driving inputs.
-- Stop diagnostic playback on Lua probe callback errors and reject Lua errors
-  even when the emulator reports a successful exit.
-- Add optional World Terrain Visibility, using conservative projected object
-  bounds to restore a measured missing Germany road section. Preserve original
-  recordings and validate a separate candidate baseline when drawing work changes
-  their route.
-
-- Fix checkerboard/moire shadows and translucent panels in enhanced V-Unit
-  rendering by resolving tagged dither before display scaling; preserve real
-  checkerboard artwork and exact native output.
-- Fill Off Road's black upper sky corners by widening only its flat backdrop,
-  with no additional guest instructions or polygons.
-- Fix two native endpoint coverage errors found in Germany and strengthen the
-  CPU/GPU oracle for signed coordinates and palette arithmetic.
-- Add World camera/ADC comparisons and bounded visibility, distance and texture
-  diagnostics. Keep the World visibility extension experimental after detecting
-  route divergence despite matching inputs. The original Germany drive remains
-  unchanged and passes with the final normal build.
-
-- Fix the invisible V-Unit Esc menu: it now redraws while emulation is paused.
-  Recorded-input menu checks cover USA, World and Off Road, including CRT,
-  resume and exit.
-- Add an attended recorder using saved collection settings, an external
-  recording/playback timer, and the complete Germany Level regression case.
-  Timestamps use emulated time so pauses and replay speed do not shift them.
-  FFB remains opt-in for recording and disabled during playback.
-
-- Add per-game launcher controls for experimental seam alignment, USA detail
-  distance and USA draw limit. All are off by default; unsupported games stay gated.
-- Retire Margin Fill from the launcher and ignore legacy saved values. Its sky
-  stretching remains available only as an explicit developer override.
-- Document Endprodukt's Exotica plugin, cabinet/DIP setup gaps and polarity
-  evidence. No FFB gains, steering inversion or cabinet defaults changed.
-
-- Preserve valid thin geometry at high internal resolutions instead of rejecting
-  spans that contain no native-resolution sample. Native rendering stays exact.
-- Add opt-in, topology/UV-constrained terrain T-junction alignment and polygon
-  ownership reports. The remaining graphical issues are not declared resolved.
-- Add completed-frame Zeus captures, visible Exotica driving replay, diagnostic
-  CPU rasterization/fallback controls, and a serial six-case local regression suite.
-- Reopen distance analysis with object-admission statistics and model transitions.
-
-- Removed invalid USA RPM derived from speed text. RPM now reports unavailable;
-  5,012 actual loopback packets and original replay confirm the correction.
-
-- Fixed distant red/blue road strips caused by rectangle dilation sampling past
-  texture atlas bounds. Original UV domains now bound enhanced sampling; native
-  DDA remains exact. Added ROM-free GPU regression tests on NVIDIA and Mesa CI.
-- Recovered USA's missing margin terrain by widening only whole-object horizontal
-  visibility. Three matched-state captures preserve all original draws and native
-  RAM while adding only off-screen geometry. Full game-code replay has a separate
-  candidate reference; the original user's recording remains unchanged.
-- Removed measured PNG-encoding recording hitches by saving raw snapshots and
-  encoding after exit. V-Unit now uses D3D under its GL overlay, restoring full
-  USA emulation speed through the tested selection countdown and race.
-- Added late patch experiments, effective-RAM checks and scene-extension checks.
-  Reset-time patch installation rejects whole invalid groups before any write;
-  configured experiments compose with widescreen fixes and reject conflicts.
-- Reassessed crack filling, backdrop heuristics and distance using recorded
-  gameplay. Crack-fill radius/default is unchanged; distance extension is not enabled.
-
-- Added developer input recording/playback with retained initial state, archived
-  executable, dependency fingerprints, native screenshot comparisons, input and
-  timing logs, and bounded live GL captures. USA gameplay replay verified across
-  6,000 frames; unattended recordings and all replays disable physical FFB.
-  An attended real recording can explicitly retain force with `--record-with-ffb`.
-- Oracle and renderer checks now fail on incomplete evidence or pixel mismatch;
-  added Windows/Linux harness CI and native helper checks.
-- Updated shared toolkit to v0.11.1, including portable native profile loading,
-  bounded impact envelopes, and scalar telemetry provenance contracts.
-  Impact candidates now include idle-to-hit
-  arrivals and are independent of global strength; supplemental cue amplitude
-  scales with strength. Physical collision feel remains to be evaluated.
-- Fixed consecutive-miss OCR expiry and source initialization for file-only
-  telemetry diagnostics; added freshness/age fields and typed SDL stop cleanup.
-  Off Road speed telemetry remains unresolved.
-
-- Added an independent assessment of widescreen/rendering, force feedback,
-  telemetry and reliability, plus a design for recording and replaying actual
-  driving as the primary gameplay regression suite. No behavior changes are
-  included in the assessment baseline.
-
-- **CRISP is the default feel**, with no centring spring. Driven at the rig
-  against original MAME plus the FFB Arcade Plugin at matched strength, that
-  pairing read closest to the arcade signal; the 50 ms STANDARD tune remains
-  as the reference point to compare against.
-
-- **The centring spring was drowning everything, and is now adjustable.**
-  It was created at its full percentage of the *wheel's* maximum force with
-  no ceiling, while the game's own feedback was scaled down by FFB STRENGTH
-  - so the spring was stronger than the road it was meant to sit under and
-  reached maximum at a modest angle. Spring, damper and friction now scale
-  with FFB STRENGTH and cap their saturation to the same level, so the
-  balance between them holds wherever STRENGTH is set (72 at strength 50 is
-  36% of the wheel, and `midv_ffb.log` states it per effect).
-- **SETTINGS > FORCE FEEDBACK > SPRING** sets it directly - OFF, then 10 to
-  100 - instead of a config-file edit. Cruis'n Exotica never gets one
-  whatever the setting says, because that game generates its own.
-
-- **Force feedback got simpler on purpose.** Three settings were removed
-  because each had a twin that did the same job - `ffb_smooth`, `ffb_slew`
-  and the FFB PEAK LIMIT row all duplicated something in the FEEL profile,
-  and where two settings do one job one of them silently wins. That was not
-  hypothetical: `ffb_smooth` was overriding every FEEL tune with the same
-  number, which made all four tunes identical and the whole feature inert
-  from the moment it shipped. Fixed, and the duplicates are gone.
-
-  There are now three places, each owning one thing: **STRENGTH** decides how
-  strong, **FEEL** decides how the force is shaped (smoothing, ceilings, rate
-  limits), and `rig\collection.ini` holds only the effects your wheel adds
-  that the game never sent - spring, rumble, damper, friction. Anything the
-  old knobs did is still available, in the profile, where it can be changed
-  coherently instead of fighting a menu row.
-
-- **The centring spring is back on for Cruis'n USA.** Releases up to v0.3.0
-  packaged the force-feedback config from this project's own rig, which runs
-  a 72% centring spring on USA and none on World or Off Road. From v0.3.1 the
-  packaging switched to a clean template where the spring is off everywhere,
-  and it has been missing since - the "centre feels looser than normal"
-  report. It is available again as **SETTINGS > FORCE FEEDBACK > SPRING**,
-  but **off by default**: shipped at 72 for a few hours on the strength of
-  the config the early releases carried, it buried the road detail it was
-  meant to sit under, because the games' own forces are small next to a
-  constant device effect. Turn it on if you want centring; start low.
-  Cruis'n Exotica is deliberately excluded: that game generates its own
-  centring force, so a second one on the wheel would fight it.
-  Override per game with `[collection] ffb_spring_<rom>` (0 turns it off).
-
-- **SETTINGS > FORCE FEEDBACK > FEEL** steps through alternative tunes of the
-  same forces, so trying one is a menu row rather than a config edit. Four
-  ship, and they differ in exactly one parameter - how quickly the wheel
-  follows the game - so an A/B can only be that: **RAW** (no filtering, most
-  detail, liveliest), **CRISP**, **STANDARD** (the default, unchanged from
-  v0.3.7) and **CALM** (for a strong base that hunts). Drive two and say
-  which you preferred. Your own tunes go in `force-profiles.user.ini` beside
-  the emulator, which updates never overwrite. A ready-made
-  **`force-profiles.user.ini.example`** ships beside the emulator for that:
-  every value already at the shipped default with a comment on what it
-  changes, inert until you drop the `.example` from its name.
-
-- FFB DIAGNOSTICS moved from the FORCE FEEDBACK page to SUPPORT, next to the
-  bundle it feeds.
-
-- **The launcher menu no longer jumps into a submenu by itself.** It looked
-  like the left arrow key was acting as ENTER; in fact a wheel base can
-  report far more buttons than it has (this project's Moza R12 exposes 132)
-  and pulse the unused ones on its own - measured at ~30 edges a second,
-  on a different button from one run to the next. The menu accepted *any*
-  wheel button as OK, so an isolated phantom pulse became ENTER, landing in
-  whatever frame you happened to be pressing a key. Only buttons you bound
-  in CONTROLS SETUP can confirm a menu row now (gears excluded - an
-  H-pattern shifter holds one closed). With nothing bound yet, any button
-  still works, so a fresh install is unaffected.
-- `CRUISN_INPUT_DEBUG=1` traces where each menu action came from (keyboard,
-  hat, wheel button, steering, gas) - what pinned the above down.
-
-- **Cruis'n Exotica can be driven with a manual transmission at last.** The
-  TRANS SELECT screen ("A / AUTO / M") always confirmed AUTO no matter what
-  the wheel, shifter or buttons did, and we had it logged as a gap in the
-  upstream emulation. It is not: the screen is gated on a barely documented
-  DIP switch, DS1 **"Wheel Invert"**. With it off the game confirms
-  instantly; with it on the screen reads the wheel properly. Credit to
-  Endprodukt for spotting it. The launcher now sets that DIP for Exotica
-  (and cancels the wheel mirroring it would otherwise apply to driving, so
-  steering is unchanged). **On that screen, turn the wheel LEFT for
-  MANUAL.** `[collection] exotica_manual = 0` opts out.
-  This also brings the virtual sequential shifter for Exotica to life - it
-  has been shipped but inert since v0.3.5, waiting for exactly this.
-
-- **Lamp and LED outputs came back.** Retiring the force-feedback plugin in
-  v0.3.6 removed one line from the emulator's config - the Windows output
-  module the plugin needed - and that module is what *every* external
-  consumer reads (cabinet lamps, LED boards, SimHub and Buttkicker feeds).
-  MAME's default silently resolves to "no output module", so they all went
-  quiet. Restored; our own force feedback never used it.
-- **Cruis'n Exotica was running in slow motion** — fixed upstream and
-  backported (mamedev/mame#16046 by mourix). The driver clocked the
-  TMS320C32 timers at 10 MHz, but the games select the chip's internal
-  clock at 15 MHz, so the whole game ran about a third too slow. Expect
-  Exotica to feel quicker; its force effects arrive at the right rate too.
-- **The dark band across Exotica's background during races is gone** (same
-  backport): a Zeus register bit picks between two colour/depth buffer
-  layouts and the driver decoded only one of them, so a screen clear wrote
-  colour bytes into the depth buffer.
-- The wheel-motor output is now named `wheel_motor` (was `wheel`), matching
-  the naming in mamedev/mame#16055, which upstreams the Exotica wheel motor
-  this project located. Support-bundle force traces read either name.
 
 ## v0.3.7 — 2026-09-04
 

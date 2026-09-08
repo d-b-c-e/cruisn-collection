@@ -11,22 +11,26 @@ capture) · 🙋 needs the user at the wheel
 
 ---
 
-## Current priorities (2026-09-06 reassessment)
+## Current priorities (2026-09-08, after v0.4.0)
 
-The older completion labels below describe milestones, not general visual
-acceptance. Read [the current evidence](docs/reviews/2026-09-06-seams-distance.md).
+The maintainer approved the current release state. The ordered, actionable queue
+is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
 
-1. Expand human driving routes and polygon-owner evidence for residual World and
-   Off Road terrain/near-tree seams. Thin-span rejection is fixed; conservative
-   T-junction alignment remains opt-in. Broad sky fill stays off.
-2. Run the six-case local regression suite, including actual completed Exotica GL
-   frames. Its old black native screenshots were not a visible-gameplay oracle.
-3. Investigate earlier object visibility/residency and measure the LOD experiment.
-   A larger far-plane number alone admitted no candidates in the measured trace.
-4. Trace the USA orientation-matrix dependency before declaring widened guest code
-   physics-equivalent. Keep separate stock/widescreen recordings.
-5. Label actual wall/car contacts and evaluate the optional impact mixer on real
-   wheels. Find per-game numeric telemetry producers; RPM remains unavailable.
+1. **Cheats submenu for all four games**, using revision-compatible MAME cheats,
+   default-off behavior and recorded runtime state.
+2. **Experiments beside Display**, with per-game contexts and room for gameplay
+   experiments; preserve existing preferences and exclusions.
+3. **Global draw-distance experiments for all four games**, prioritizing earlier
+   visible mountains/trees and diagnosing activation, residency and draw limits.
+   World New York black flashing and the 3x/+12 crash need further investigation.
+4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
+   and cross-game force normalization remain known issues, with tuning deferred.
+
+Current automated suite has seven cases, including completed Exotica GL frames.
+All games now have guarded gear/rev telemetry with estimated RPM; World speed
+still uses OCR. Fresh free-play seeds are corrected, including Off Road's checksum.
+Historical tables below preserve earlier milestones and are superseded by this
+queue and the dated engineering reviews where their status differs.
 
 ## A. Big arcs
 
