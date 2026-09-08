@@ -26,7 +26,7 @@ def configure_gl(settings, rom, interval, every, stop):
     first,last = map(int,interval.split(':'))
     if not 0 <= first < last < stop-1:
         raise ValueError('GL interval must leave a completed frame before the recording stops')
-    frames = requested_frames(first,last,every)
+    frames = list(requested_frames(first,last,every))
     key = 'MIDZ' if rom=='crusnexo' else 'MIDV'
     if settings.get(key+'_GL')!='1':
         raise ValueError('GL capture requires the recorded game renderer')
