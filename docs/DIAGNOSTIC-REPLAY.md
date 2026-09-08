@@ -279,6 +279,16 @@ Completed-frame captures and `--compare-gl` cover V-Unit and Zeus. Queue capacit
 stall, margin-fill and geometry-join controls are V-Unit-specific. Full-size GL BMP capture can
 stall presentation and should not be used as a clean timing benchmark.
 
+For Zeus comparisons, the harness selects a monitor whose dimensions match the
+recorded completed frames. This prevents automatic placement on a 1080p secondary
+display from invalidating a 4K reference. The report records the chosen device;
+when no matching display exists, the comparison fails before launching. It never
+resizes the reference to manufacture equality.
+
+New cheat-enabled recordings retain the imported XML, selected choices, current
+loader and native state-change log. Replay rejects changed cheat files or state
+even when input samples match. See [the cheat guide](CHEATS.md).
+
 `--no-marginfill` reproduces the new default: render submitted backdrop polygons
 without suppressing them or copying native-boundary columns. Set
 `MIDV_GL_MARGINFILL=1` only for the legacy experiment. `--no-crackfill` controls

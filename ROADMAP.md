@@ -17,11 +17,13 @@ v0.4.0 is published, with its exact ZIP verified after download and release evid
 archived in results/proof/2026-09-08-v0.4.0-release. The ordered, actionable queue
 is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
 
-1. **Cheats submenu for all four games**, using revision-compatible MAME cheats,
-   default-off behavior and recorded runtime state.
-2. **Experiments beside Display**, with per-game contexts and room for gameplay
-   experiments; preserve existing preferences and exclusions.
-3. **Global draw-distance experiments for all four games**, prioritizing earlier
+1. **Cheats submenu: initial implementation complete.** Continuous imported
+   toggles/choices, default-off selections and replay state work across the four
+   games. Five timer probes/replays and a frozen activation pass. Live one-shots,
+   code-restoring actions and individual rank/nitro validation remain follow-up.
+2. **Experiments beside Display: complete.** Contexts, preferences and exclusions
+   are preserved; Back returns to Settings. See [overnight evidence](docs/reviews/2026-09-08-cheats-and-experiments.md).
+3. **NEXT: Global draw-distance experiments for all four games**, prioritizing earlier
    visible mountains/trees and diagnosing activation, residency and draw limits.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation

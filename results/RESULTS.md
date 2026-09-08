@@ -3982,3 +3982,44 @@ Overnight heartbeat cruisn-overnight-cheats-and-distance created, every30minutes
 across all4games. Nested downloaded cheat.7z has23entries for5supportedROMrevisions;
 preflight only, runtime validation queued. MAME#16046 already backported; newer
 Zeus2#16058 retained for separate postrelease study, no untested backport shipped.
+
+### 2026-09-08 01:40 — Initial Cheats menu, top-level Experiments and display-target repair
+
+Collection eea6ef5 adds exact-revision XML/ZIP/nested7z imports and a per-game
+Cheats menu; continuous toggles/choices, hash-bound saved selections, reset OFF.
+User archive imported into rig/cheats, all OFF. One-shots and off-script instruction
+restoration remain unavailable pending live activation. Native44c3494d6af adds
+copied metadata/guarded commands through MAME's original cheat engine. Built/pushed
+vunit SHA eb2db42a90288bf37ac0dcce9b9ce2106c136fad198c52320ee2b3af3c435a97;
+124patch export exactly reconstructs f7af3475d0ce0b6347e2be669338283437a81447.
+
+Collection e6154e1 moves Experiments beside Display with Shared/game filtering and
+Back returning to Settings; existing preference keys/defaults unchanged. Shared
+Crack Fill remains ON by default; per-game trials OFF. f8a804f adds frozen import/
+activation checks. No renderer or force changes. World normalization deferred.
+
+Seven default binary controls have passing evidence: six initial cases pass;
+Exotica initially FAILs21GL because automatic monitor choice produced1080p vs4K
+references. 1baa99a binds Zeus --compare-gl to a matching display and reports size
+mismatches. Separate6000frame Exotica rerun matches all21completed4K images and
+passes memory/UDP/force/polarity/timing. Original aggregate FAIL remains intact.
+These are binary-bound component checks, not a new source-bound release gate:
+launcher/diagnostic edits continued during the first aggregate run.
+
+Five4000frame cheat-on cases replay against the final binary; state/input/native
+snapshot comparisons pass. Exotica headless snapshots are not visual evidence.
+Five independent timer on/off memory probes pass. Early analyzer FAILs assumed
+zero callback-phase ticks; revised checks require bounded correction and resumed
+progression after OFF. Off Road separate seconds/hundredths writes preserved;
+ON stays0.00..0.02, OFF advances. Rank/nitro/one-shot effects not yet accepted.
+128Python tests/all4CI34195061384 PASS. Frozen devZIP at f8a804f SHA
+f7a5a641affe81d7e44102d86cc9a6fa19411820a8b9d76607a99e7d08ecfdf5 has1649hashedfiles;
+9pages,4defaultboots/12GL,1cheatWorldboot/3GL,import/setup/support/defaults PASS.
+Published v0.4.0 ZIP SHA fd292b0d4ba4d2a97147c6ffc1fb95407e3891495dfb68fada2f899e3c31ba4a
+verified unchanged. No additional release. No physical FFB or personal NVRAM edits.
+
+75derivedfiles in results/proof/2026-09-08-cheats-and-experiments, archive SHA
+ad9ff1881ca4e3e8003794c98a911369e9b6c7fce05451015ebf3da78988c951; verifier checks bytes,
+native bindings and recomputes five timer effects without ROMs. Next overnight
+work is global distance capability mapping/trials for all4games, World New York
+artifacts/crash. Heartbeat active until08:00local. All current runs completed.

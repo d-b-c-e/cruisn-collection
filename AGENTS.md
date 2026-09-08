@@ -1,5 +1,36 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Overnight Cheats and Experiments checkpoint (2026-09-08, 01:40)
+
+Read docs/reviews/2026-09-08-cheats-and-experiments.md. Cheats menu is implemented
+for imported exact-revision continuous toggles/choices; all off by default. The
+user archive is imported into rig/cheats, with no active selections. One-shots and
+off-script/code-restoring cheats remain unavailable pending live activation.
+MAME engine bridge native44c3494d6af is built/pushed; source vunit SHA
+eb2db42a90288bf37ac0dcce9b9ce2106c136fad198c52320ee2b3af3c435a97. Full124patch
+export reconstructs tree f7af3475d0ce0b6347e2be669338283437a81447. Never translate
+cheat expressions into a second interpreter or substitute parent-ROM addresses.
+
+Experiments now sits beside Display, preserving Shared/game contexts and keys;
+Back returns to Settings. Shared Crack Fill retains its existing ON default;
+per-game distance trials remain OFF by default. Current source commits eea6ef5
+(cheats), e6154e1 (menu move), f8a804f (frozen checks), 1baa99a (capture targeting).
+128tests/all4CI34195061384 pass. Seven binary-bound default controls pass as six
+initial passes plus an Exotica rerun; initial aggregate FAIL is retained. Zeus
+had chosen secondary1080p vs4Kreference. --compare-gl now selects a matching monitor;
+all21completed4K images match. Do not resize references to fake equality.
+Five4000-frame cheat-on replays and five timer on/off memory probes pass; this
+does not certify rank/nitro/one-shot effects or physical feel. No physical FFB.
+
+DevZIP f8a804f SHA f7a5a641affe81d7e44102d86cc9a6fa19411820a8b9d76607a99e7d08ecfdf5
+passes9pages,4defaultboots/12GL,1cheatWorldboot/3GL,import/setup/support;1649files.
+Proof results/proof/2026-09-08-cheats-and-experiments (75derivedfiles), verifier
+checksbytes/nativebindings and recomputes5timer effects withoutROMs. These are
+component checks, not a new release gate. Published v0.4.0 ZIP/tag untouched.
+NEXT: global distance capability matrix and guarded trials across ALL4games,
+WorldNewYork artifacts/crash. No new distance behavior was added in this checkpoint.
+Heartbeat remains active to08:00local; follow docs/OVERNIGHT-2026-09-08.md.
+
 ## Release authorization and overnight queue (2026-09-08)
 
 v0.4.0 is PUBLISHED at c098290aeaa1f19ca37d7bee56c747cbf51350b5, exact ZIP SHA

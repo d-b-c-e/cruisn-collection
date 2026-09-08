@@ -72,10 +72,12 @@ across. Your `rig` folder and `roms` are never inside the zip.
 
 Open **SETTINGS → EXPERIMENTS**, beside Display, then choose Shared or a game.
 This top-level menu can contain gameplay as well as rendering experiments.
-Changes are saved per game and take effect on its next launch. All start off.
+Per-game trials start off and take effect on the next launch. Shared Crack Fill
+retains its existing On default; moving the menu does not change preferences.
 
 | Setting | Games | What to expect |
 |---|---|---|
+| **Crack Fill** (Shared) | USA, World, Off Road | Borrows nearby pixels for small gaps; can smear fine detail. Its existing default remains On. This is separate from the retired broad Margin Fill. |
 | **Seam Alignment** | USA, World, Off Road | Aligns certain mismatched terrain edges at enhanced resolutions. Closed a measured blue seam in Off Road, but can shift nearby texture interpolation. |
 | **Widescreen Terrain** | World 2.4/2.5 | Repairs some missing edge terrain, including a measured Germany road hole. Does **not** extend draw distance. Adds drawing work; old recordings can take a different route. |
 | **Distant Scenery** | World 2.4, widescreen, scale2×+ | Draws five verified Germany mountain models, four tree variants and one forest strip earlier. Preserves the mountains' later shape. Experimental and limited to identified scenery; remaining pop-in and object activation are still being investigated. |
