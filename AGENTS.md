@@ -1,5 +1,28 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Exotica admission checkpoint (2026-09-08, 07:35 local)
+
+Read docs/reviews/2026-09-08-exotica-admission.md. Tools4c47b67 pushed; native12e
+and release remain unchanged. Streaming589 is adaptive: Timer0-based updates,
+normal60000..130000 clamp, initial90000; a separate conditional47500 cap exists.
+Read-only control6000/21originalGL PASS:132624 admissiontests,96016rejects atdepth
+90111..168375, observedlimit90000..130000. Loader usesupper+12, observedlead45.
+Four6000 bounded4500..5990 trials hold coherentprojection/widebounds fixed and
+replace ONLYtwo admissionlimitreads with160000/190000. No guestwrites/far change.
+160k repeatsbothfulltraces/15GL.190k samefrustum/15GL as160k. Latecontrol9890rejects
+become0;24345passes become24361; sphereadmissions387144->396867.12/15GLchange,
+but late camera/routeidentity is unproven. Do not call allchangedpixels newscenery.
+4Kmatched4700:367/374changedpixels in4699/4700nearhorizon; resources equal.
+Bothframe/scene strictFAIL:2831->2972records;2612->2753quads;2560geometrymatches
+as multiset,2409ordered.52oldquads lackexactgeometry. Alpha changesmostlyinactive
+but814active-depth-biaschanges anddraworderremain. No nativeadmission/menu promotion.
+168tests/all4CI34225451570,268sourcehashes local/Linux/Windows match8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13.
+83entry proof results/proof/2026-09-08-exotica-admission uses previousfararchive
+as a hashed companion; recomputes numericalchecks, GPU evidence remainsreceipts.
+Next: isolate depthstate/order effects orhoststaticdraw preservingoriginals;
+freshopenExotica/longerOffRoad/WorldNY drives useful. No physicalFFB/Worldtuning.
+Stop at08:00local; recordhandoff and pauseovernightheartbeat.
+
 ## Exotica far-distance checkpoint (2026-09-08, 07:05 local)
 
 Read docs/reviews/2026-09-08-exotica-far-distance.md. Tools dc1f07d are pushed;

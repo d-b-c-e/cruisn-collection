@@ -4220,3 +4220,24 @@ limitations retained. Futurework is earlier activation/residency, not morefarwor
 80entryLZMA archive49,050,202bytes SHAac473773075631e6ecafe7e587f171aa8f6386a77c4cd80c414bff9e5c43f0b9; verifier recomputes branch/pose/input/timing, retainsstrictFAIL; GPU outputs are receipts.
 Review:docs/reviews/2026-09-08-exotica-far-distance.md. PhysicalFFB0, Worldtuning
 deferred, personalconfig/StreamDeck/releasedZIP hashes unchanged.
+
+
+## 2026-09-08 07:35 — Exotica adaptive admission, bounded candidate retained
+
+Tools4c47b67 pushed; native12e unchanged. Read-onlycontrol6000inputs/21completed
+originalGL PASS. Actual589 varies90000..130000;96016rejects/132624tests, depth
+90111..168375. Timer0routine840C drives82C2 updates+150/-500 andnormal60k..130k
+clamp; anotherconditional47500 path unobserved. Loader upper+12/lead45 separate.
+Four6000 coherent/admit160/admit190/repeat trials4500..5990:24345passes/9890rejects
+become24361/0; final sphereadmissions387144->396867.160 repeatsbothtraces/15GL;
+190samefinalfrustum/GL.12imageschange; early52pixelsat4700 and2at5100; later
+route/cameraidentity is not established. No newnative/menu promotion.
+Paired4K4700:367/374pixelschangednearhorizon; texture/paletteequal. BOTHframe/scene
+strictFAIL:2831->2972records,2612->2753quads;2560geometrymultisetmatches,2409ordered,
+52oldquadsunmatched. Mostalpha changesinactive;814active-depth-biaschanges remain.
+168tests/all4CI34225451570 PASS;268sourcehashes same8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13.
+83entryLZMA proof21,687,380bytes SHA37aa0c0e953c145a0a4d7bcd17348c80cb5c15d9b8723fd77deb2837ae53a3d8; reuses previousfararchive ashashedcompanion. Numericalverifierpasses; GPUresults remainreceipts.
+Review:docs/reviews/2026-09-08-exotica-admission.md. Morningoverview:
+docs/OVERNIGHT-RESULTS-2026-09-08.md. NoFFB/Worldtuning, originalcases and release
+preserved. Next: isolate depthstate/order orhoststaticdrawing; freshopen-level
+Exotica, longOffRoad andWorldNY recordings useful. Stop/pauseheartbeat08:00local.

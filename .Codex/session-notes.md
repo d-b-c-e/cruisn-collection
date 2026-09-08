@@ -5,6 +5,11 @@
 - **Branch:** master
 
 ## What Was Done
+- Latest07:35: global Exotica admission tools4c47b67 pushed. Native12e/release/settings unchanged. Read-only6000/21originalGL passes; actual589 adaptive90000..130000 rejects96016/132624tests within168375depth. Timer0normalclamp60000..130000; distinctspecial47500case unobserved.
+- Four6000coherent/admit160/admit190/repeat trials4500..5990.160 repeatsbothtraces/15GL;190samefrustum/GL.12imageschangebutonly52pixelsat4700and2at5100; laterroute/cameraidentityunproven. CandidatephysicalFFB0.
+- 4Kpaired4700:367/374changedpixels nearhorizon; resources equal. BOTHstrictframe/sceneFAIL:2560/2612originalquadgeometrymultiset,2409ordered,52unmatched;814activedepthbiaschanges. Mostalpha differencesinactive. No nativeadmission/menu promotion; needstate/order isolation orhostdrawing.
+- 168tests/4CI34225451570 PASS;268sourcehashes same8c20a78779c02b150e4aa3f6a18181a6199a862d736fe9fd24211530e51d9c13.83entry admissionproof21,687,380bytes SHA37aa0c0e953c145a0a4d7bcd17348c80cb5c15d9b8723fd77deb2837ae53a3d8. Verifier reuses the hashed companion far archive and passes both working-copy and staged Git-blob checks.
+- No emulator/build active. Finishmorninghandoff andpauseheartbeat at08:00local. Keepforce/Worldnormalizationdeferred andv0.4.0baselineimmutable.
 - Latest07:05: Exotica true far trials complete; toolsdc1f07d pushed, native12e unchanged. Coherent204800 vs2x/3x:515968equalposes/3035extraadmissions/no losses,15GLsame;2x rawtrace repeats.
 - Matched4864:199addedquads+8palettes;438originalquads shiftframe only, strictFAIL retained. New explicitZeus --alignment scene matches2606orderedoriginals/effectivepalettes/resources. BothcompletedGLsame.
 - GPUocclusionquery0visible/173withoutdepth; doubleddepthrange remains0/173. No newExotica far menu/native/shader. Need upstreamloader/activation, not another advertisedmultiplier. Probe limitations inreview.

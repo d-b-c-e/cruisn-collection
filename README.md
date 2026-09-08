@@ -10,7 +10,8 @@ This is an actively tested alpha. **v0.4.0** includes rendering fixes, all-game
 gear/rev telemetry and Exotica force-polarity correction. Fresh installs default
 to **CRT on**, full widescreen, 4x rendering and free play. Rendering defects beyond
 the tested routes, collision feedback and broader wheel coverage remain open work.
-See [release notes and known issues](docs/release-notes/v0.4.0.md) and the
+See [release notes and known issues](docs/release-notes/v0.4.0.md), the
+[overnight results](docs/OVERNIGHT-RESULTS-2026-09-08.md) and the
 [post-release work queue](docs/OVERNIGHT-2026-09-08.md).
 
 The source build now has a per-game **Cheats** submenu for imported MAME cheat
@@ -19,12 +20,17 @@ for supported actions, import instructions and replay diagnostics. This is
 post-v0.4.0 work and is not in the published ZIP.
 
 **Settings → Experiments** now sits beside Display, with Shared and per-game
-contexts for current rendering trials and future gameplay experiments. It includes **World Draw Distance**
-(Off / 2x / 3x) and independent **Scenery Lookahead** (+0 / +8 / +12 track sections).
-These trials require World 2.4, widescreen and scale 2x or higher. They remain off
-by default; 3x has not shown extra mountain visibility over 2x at equal lookahead.
-Enabling either this distance trial or the older selective **Distant Scenery**
-option turns the other off. **Widescreen Terrain** addresses missing edge geometry.
+contexts for current rendering trials and future gameplay experiments. Optional
+**World Draw Distance** (Off / 2x / 3x) and independent **Scenery Lookahead**
+(+0 / +8 / +12 track sections) now support World 2.4 and 2.5. Off Road 1.63 has
+its own **Off Road Draw Distance** (Off / 2x / 3x). These trials require widescreen
+and scale 2x or higher and default off. The sampled comparisons have not shown
+additional visible scenery at 3x over 2x with equal lookahead.
+On World 2.4, enabling either global distance or the older selective
+**Distant Scenery** option turns the other off. **Widescreen Terrain** addresses
+missing World edge geometry. Exotica's optional **Widescreen Scenery** similarly
+restores edge geometry; it does not extend the far plane. USA's global distance
+and Exotica's far/admission trials remain diagnostics pending further validation.
 **Crack Fill (Shared)** is now on the same page: it borrows nearby pixels to hide
 small gaps and can smear them; its saved setting and existing default are preserved.
 **Margin Fill** is retired. Optional per-game

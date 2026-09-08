@@ -40,7 +40,10 @@ is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
    remains diagnostic. [True far trials](docs/reviews/2026-09-08-exotica-far-distance.md)
    admit3035 more spheres but change none of15 completed GL samples. A matched
    scene's extra199 quads are occluded even with a doubled depth range; no new
-   far menu is promoted. Earlier loader/admission controls are the next target.
+   far menu is promoted. The [earlier adaptive admission control](docs/reviews/2026-09-08-exotica-admission.md)
+   is now verified: bounded160k trials repeat and change a few distant pixels,
+   but strict state/order checks fail. Isolate depth bias/order effects before
+   native promotion; the host static-scenery path remains the longer-term target.
    World New York black flashing and the 3x/+12 crash need further investigation.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.

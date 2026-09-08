@@ -80,7 +80,10 @@ scene adds199 occluded quads; doubling depth range does not reveal them. The
 new comparison tools retain strict frame-timing failure separately from scene
 geometry equality. No ineffective far-distance menu was promoted.
 
-Next autonomous steps: observe Exotica's earlier admission/loader controls;
+Exotica's [earlier admission limit](reviews/2026-09-08-exotica-admission.md) is now
+verified as adaptive.160k/190k boundedtrials repeat, with a few distant changed
+pixels at4K, but strict drawstate/order checks fail. No native/menu promotion.
+Next autonomous steps: isolate active depthbias/order changes orhoststaticdrawing;
 the current native CPU visibility experiment still preserves204800. Do not treat
 margin visibility as increased distance. Off Road's modest
 gain needs a longer attended drive before broader visual conclusions. Keep scene activation,

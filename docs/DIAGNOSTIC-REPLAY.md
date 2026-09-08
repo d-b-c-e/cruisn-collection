@@ -519,6 +519,14 @@ Its explicit `--alignment scene` excludes only quad frame stamps and enumerates
 each excluded change, preserving order, geometry and effective palettes. Retain
 both reports: a scene PASS must never replace a strict timing FAIL.
 
+`run_exotica_admission_trials.py` holds coherent sphere projection/bounds fixed
+while testing two earlier admission-limit consumers at160000/190000.
+`analyze_exotica_streaming.py` validates the independent second comparison after
+each pass and the loader's actual threshold/cursor. The interval is bounded;
+admitted objects can remain active after the taps are removed. The current
+candidate repeats but fails strict scene-state/order checks; see
+[the admission review](reviews/2026-09-08-exotica-admission.md).
+
 ## Drivetrain and actual telemetry packets
 
 USA v4.5, World2.4/2.5, Off Road and Exotica have separate verified rev and gear
