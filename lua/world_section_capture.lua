@@ -6,7 +6,7 @@ local first=tonumber(os.getenv('CRUISN_SECTION_FIRST') or '5900')
 local last=tonumber(os.getenv('CRUISN_SECTION_LAST') or '6020')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
     and last-first<=240,'invalid bounded section interval')
-local frame,taps,out,current,failure,serial=0,{},nil,nil,nil,0
+local frame,taps,out,current,failure,serial,collecting=0,{},nil,nil,nil,0,false
 local function words(p,n)
     assert(p>=0 and n>=0 and n<=64 and (p+n<=0x20000
         or p>=0x809800 and p+n<=0x80a000 or p>=0xc00000 and p+n<=0x1000000),
@@ -23,8 +23,13 @@ local function emit(r)
 end
 local function guarded(fn)
     return function(...)
-        if failure then return end
-        local ok,err=pcall(fn,...);if not ok then failure=tostring(err) end
+        -- The diagnostic globals include D580 itself. Suppress callbacks from
+        -- our own reads so they cannot be mistaken for another guest allocation.
+        if failure or collecting then return end
+        collecting=true
+        local ok,err=pcall(fn,...)
+        collecting=false
+        if not ok then failure=tostring(err) end
     end
 end
 local function close()
