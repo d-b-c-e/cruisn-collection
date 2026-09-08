@@ -136,6 +136,11 @@ def collect(rom="crusnusa", progress=print):
     add_file("launch.log", os.path.join(run_rig.POC, "rig", "launch.log"))
     add_file("launch.json", os.path.join(run_rig.POC, "rig", "launch.json"))
     from pathlib import Path
+    cheat_root = Path(run_rig.POC)/'rig/cheats'
+    add_file('cheats/settings.json',str(cheat_root/'settings.json'))
+    for entry in sorted((cheat_root/'runtime').glob('*/*')):
+        if entry.is_file() and entry.name in ('selection.json','events.csv'):
+            add_file('cheats/'+entry.parent.name+'/'+entry.name,str(entry))
     history = Path(run_rig.POC)/'rig'/'launch-history'
     if history.is_dir():
         for entry in sorted(history.glob('*/*')):

@@ -13,6 +13,11 @@ the tested routes, collision feedback and broader wheel coverage remain open wor
 See [release notes and known issues](docs/release-notes/v0.4.0.md) and the
 [post-release work queue](docs/OVERNIGHT-2026-09-08.md).
 
+The source build now has a per-game **Cheats** submenu for imported MAME cheat
+files. Continuous toggles are off by default; see [the cheat guide](docs/CHEATS.md)
+for supported actions, import instructions and replay diagnostics. This is
+post-v0.4.0 work and is not in the published ZIP.
+
 **Settings → Display → Graphics Experiments** includes **World Draw Distance**
 (Off / 2x / 3x) and independent **Scenery Lookahead** (+0 / +8 / +12 track sections).
 These trials require World 2.4, widescreen and scale 2x or higher. They remain off

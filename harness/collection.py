@@ -32,6 +32,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
 import graphics_options
 import force_options
+import cheats
 try:
     import rawjoy  # noqa: E402  (Raw Input HID: >32-button wizard capture)
 except Exception:
@@ -863,7 +864,16 @@ def render_shot(path, page=None, game=None, selected_row=0):
     ctx.viewport = (0, 0, w, h)
     shell = Shell(ctx, w, h)
     fbo.clear()
-    if page:
+    if page == 'cheats':
+        rom = game or state['rom']
+        if rom == 'crusnwld': rom = state.get('world_rom', 'crusnwld24')
+        cat = cheats.catalog(os.path.join(POC, 'rig'), rom)
+        rows = cheat_rows(cat, cheats.selections(os.path.join(POC, 'rig'), cat))
+        selected_row = max(0, min(selected_row, len(rows)-1))
+        first = max(0, selected_row-6)
+        shell.draw_game_menu(selected_row-first, rom.upper()+' — CHEATS',
+            [(r[1][:30], r[2]) for r in rows[first:first+8]], rows[selected_row][3][:110], 0.4)
+    elif page:
         rows = settings_rows(page, state, False, "PREVIEW")
         selected_row = max(0, min(selected_row, len(rows) - 1))
         shell.draw_settings(selected_row, SETTINGS_TITLE[page],
@@ -991,7 +1001,21 @@ def profile_label(state):
 SETTINGS_TITLE = {"root": "SETTINGS", "display": "DISPLAY",
                   "ffb": "FORCE FEEDBACK", "controls": "CONTROLS",
                   "support": "SUPPORT", "graphics": "EXPERIMENTAL GRAPHICS",
-                  "impacts": "EXPERIMENTAL IMPACT CUES"}
+                  "impacts": "EXPERIMENTAL IMPACT CUES", "cheats": "CHEATS"}
+
+
+def cheat_rows(cat, selected):
+    rows = []
+    for entry in cat['entries']:
+        number = selected.get(str(entry['index']), 0)
+        hint = entry['unavailable'] or entry['comment'] or 'APPLIES NEXT LAUNCH. CHEATS ARE OFF BY DEFAULT.'
+        rows.append(('cheat_'+str(entry['index']), entry['description'].upper(),
+                     'UNAVAILABLE' if entry['unavailable'] else '< '+entry['choices'][number]+' >', hint.upper()))
+    if not rows:
+        rows.append(('empty', 'NO CHEATS IMPORTED', '', 'IMPORT MAME CHEAT XML, ZIP OR 7Z. EXACT ARCADE ROM REVISION REQUIRED.'))
+    return rows + [('import', 'IMPORT CHEAT FILE', 'OPEN', 'XML, ZIP OR 7Z. CONSOLE CHEATS ARE IGNORED.'),
+                   ('reset', 'TURN ALL OFF', '', 'CLEARS SAVED SELECTIONS FOR THIS ROM REVISION.'),
+                   ('back', 'BACK', '', '')]
 
 
 def settings_rows(page, state, diag, version):
@@ -1008,6 +1032,9 @@ def settings_rows(page, state, diag, version):
 
     def onoff(v):
         return "ON" if v else "OFF"
+
+    if page == 'cheats':
+        return cheat_rows({'entries':[]}, {})
 
     if page == "display":
         return [
@@ -1161,6 +1188,10 @@ def main():
                     help="render one offscreen frame and exit")
     ap.add_argument("--shot-page", choices=tuple(SETTINGS_TITLE),
                     help="settings page to preview with --shot; no window or input")
+    ap.add_argument('--shot-context', choices=('shared',)+cheats.ROMS,
+                    help='game context for an offscreen Experiments or Cheats preview')
+    ap.add_argument('--import-cheats', metavar='FILE',
+                    help='import MAME XML/ZIP/7z without enabling cheats or launching a game')
     ap.add_argument("--windowed", action="store_true",
                     help="pass through to the game launch")
     ap.add_argument("--joydump", action="store_true",
@@ -1173,6 +1204,8 @@ def main():
     args = ap.parse_args()
     if args.shot_page and not args.shot:
         ap.error("--shot-page requires --shot")
+    if args.shot_context and not args.shot:
+        ap.error('--shot-context requires --shot')
     if args.joydump_output and not args.joydump:
         ap.error('--joydump-output requires --joydump')
     if args.config_report:
@@ -1181,6 +1214,9 @@ def main():
             json.dump({'schema': 1, 'saved_config_present': os.path.isfile(CFG),
                        'settings': load_config()}, output, indent=2)
         return 0
+    if args.import_cheats:
+        cheats.import_files(args.import_cheats, os.path.join(POC, 'rig'))
+        return 0
     if args.game:
         card = resolve_game_alias(args.game)
         if not card:
@@ -1188,7 +1224,7 @@ def main():
                      f"offroad or exotica")
         return direct_launch(card, windowed=args.windowed)
     if args.shot:
-        render_shot(args.shot, page=args.shot_page)
+        render_shot(args.shot, page=args.shot_page, game=args.shot_context)
         return 0
     if args.joydump:
         import glfw
@@ -1403,6 +1439,7 @@ def main():
         rows.append(("freeplay", "FREE PLAY",
                      "AFTER FIRST PLAY" if v is None
                      else f"< {'ON' if v else 'OFF'} >", FP_HINT))
+        rows.append(('cheats', 'CHEATS', 'OPEN', 'IMPORTED CHEATS FOR THIS GAME REVISION. OFF BY DEFAULT.'))
         if card == "crusnwld":
             wr = state.get("world_rom", "crusnwld24")
             rows.append(("version", "GAME REVISION",
@@ -1557,6 +1594,15 @@ def main():
     ssel = 0             # settings: row index within the current page
     spage = "root"       # settings page: root/display/ffb/controls/support
     gsel = 0             # game submenu: item index
+    cheat_sel = 0
+    cheat_cat = {'entries':[]}
+    cheat_selected = {}
+    cheat_notice = ''
+
+    def refresh_cheats():
+        nonlocal cheat_cat, cheat_selected
+        cheat_cat = cheats.catalog(os.path.join(POC,'rig'), cmos_rom(GAMES[sel][0]))
+        cheat_selected = cheats.selections(os.path.join(POC,'rig'),cheat_cat)
     cmos_cache = {}      # (rom, fname, addr) -> byte (invalidated on write)
     wiz_idx = 0
     wiz_bind = {}
@@ -1579,7 +1625,7 @@ def main():
             actions.clear()
 
         # wheel hat -> arrow keys (menu + settings)
-        if mode in ("menu", "settings", "game"):
+        if mode in ("menu", "settings", "game", "cheats"):
             armed = time.time() >= armed_at
             if game_proc is not None:
                 # the previous vunit is still tearing down in the background:
@@ -1908,6 +1954,51 @@ def main():
                                           upd_version)
             actions.clear()
 
+        elif mode == 'cheats':
+            rows = cheat_rows(cheat_cat,cheat_selected)
+            for key in actions:
+                cheat_notice = ''
+                cheat_sel = min(cheat_sel,len(rows)-1)
+                rid = rows[cheat_sel][0]
+                enter = key in (glfw.KEY_ENTER,glfw.KEY_KP_ENTER,glfw.KEY_SPACE)
+                lr = key in (glfw.KEY_LEFT,glfw.KEY_RIGHT)
+                if key in (glfw.KEY_UP,glfw.KEY_W): cheat_sel = (cheat_sel-1)%len(rows)
+                elif key in (glfw.KEY_DOWN,glfw.KEY_S): cheat_sel = (cheat_sel+1)%len(rows)
+                elif key == glfw.KEY_ESCAPE or (enter and rid == 'back'): mode = 'game'
+                elif enter and rid == 'import':
+                    try:
+                        import tkinter as tk
+                        from tkinter import filedialog
+                        dialog = tk.Tk(); dialog.withdraw(); dialog.attributes('-topmost', True)
+                        try:
+                            source = filedialog.askopenfilename(parent=dialog,title='Import MAME cheat archive or XML',
+                                filetypes=[('MAME cheats','*.xml *.zip *.7z')])
+                        finally: dialog.destroy()
+                        if source:
+                            imported = cheats.import_files(source,os.path.join(POC,'rig'))
+                            cheat_notice = f'IMPORTED {sum(imported.values())} CHEATS FOR {len(imported)} ROM REVISIONS'
+                            refresh_cheats(); cheat_sel = 0
+                    except Exception as error: cheat_notice = str(error).upper()
+                elif enter and rid == 'reset':
+                    try:
+                        cheats.save(os.path.join(POC,'rig'),cheat_cat,{})
+                        cheat_selected = {}; cheat_notice = 'ALL CHEATS OFF FOR THIS REVISION'
+                    except Exception as error: cheat_notice = str(error).upper()
+                elif (lr or enter) and rid.startswith('cheat_'):
+                    index = rid[6:]
+                    entry = next(e for e in cheat_cat['entries'] if str(e['index']) == index)
+                    if not entry['unavailable']:
+                        step = -1 if key == glfw.KEY_LEFT else 1
+                        changed = dict(cheat_selected)
+                        changed[index] = (cheat_selected.get(index,0)+step)%len(entry['choices'])
+                        try:
+                            cheats.save(os.path.join(POC,'rig'),cheat_cat,changed)
+                            cheat_selected = changed; cheat_notice = 'SAVED FOR NEXT LAUNCH'
+                        except Exception as error: cheat_notice = str(error).upper()
+                rows = cheat_rows(cheat_cat,cheat_selected)
+                audio.blip('nav')
+            actions.clear()
+
         elif mode == "game":
             card = GAMES[sel][0]
             grows = game_rows(card)
@@ -1931,6 +2022,11 @@ def main():
                         launch = card
                         mode = "menu"
                         audio.blip("select")
+                    elif enter and rid == 'cheats':
+                        try:
+                            refresh_cheats(); cheat_sel = 0; cheat_notice = ''; mode = 'cheats'
+                        except Exception as error:
+                            notice = 'CHEATS: '+str(error); notice_until = now+8
                     elif lr and rid == "sens":
                         step = 10 if key == glfw.KEY_RIGHT else -10
                         cur = state["steersens"].get(card)
@@ -2031,6 +2127,14 @@ def main():
                 ssel, SETTINGS_TITLE.get(spage, "SETTINGS"),
                 [(r[1], r[2]) for r in srows], srows[ssel][3], t,
                 notice=upd["msg"] if time.time() < upd["until"] else "")
+        elif mode == 'cheats':
+            rows = cheat_rows(cheat_cat,cheat_selected)
+            cheat_sel = min(cheat_sel,len(rows)-1)
+            first = max(0,cheat_sel-6)
+            visible = rows[first:first+8]
+            hint = cheat_notice or rows[cheat_sel][3]
+            shell.draw_game_menu(cheat_sel-first, GAMES[sel][1]+' — CHEATS',
+                [(r[1][:30],r[2]) for r in visible],hint[:110],t)
         elif mode == "game":
             grows = game_rows(GAMES[sel][0])
             gsel = min(gsel, len(grows) - 1)

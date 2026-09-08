@@ -3,6 +3,14 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## Unreleased
+
+- Add a per-game Cheats menu for imported MAME XML/ZIP/7z files, with continuous
+  toggles/choices, revision-bound saved selections and a reset to off. One-shot
+  actions and code-restoring cheats await live activation support.
+- Preserve cheat inputs and native state changes in recordings and support
+  diagnostics; reject mismatched cheat replay state.
+
 ## v0.4.0 — 2026-09-08
 
 This alpha release improves rendering, wheel integration and telemetry across

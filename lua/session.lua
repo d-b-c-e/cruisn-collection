@@ -18,6 +18,11 @@ log:write("\n")
 local started = emu.osd_ticks()
 local probe_path = os.getenv("SNAP_PROBE_SCRIPT")
 local probe, probe_error
+local cheat_tick
+if os.getenv('MIDV_CHEATS') then
+    local ok, result = pcall(function() return assert(loadfile(os.getenv('MIDV_CHEATS')..'/cheats.lua'))() end)
+    if ok then cheat_tick = result else probe_error = tostring(result) end
+end
 if probe_path then
     local ok, result = pcall(function()
         local callback = assert(loadfile(probe_path))()
@@ -41,6 +46,10 @@ emu.register_frame_done(function()
     if emu.time() == last_emulated then return end -- host redraw while paused
     last_emulated = emu.time()
     count = count + 1
+    if cheat_tick then
+        local ok, reason = pcall(cheat_tick)
+        if not ok then fail_probe(reason); return end
+    end
     if probe then
         local ok, reason = pcall(probe, count)
         if not ok then fail_probe(reason); return end

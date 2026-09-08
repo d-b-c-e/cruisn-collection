@@ -86,7 +86,7 @@ def main():
         if result.returncode:raise ValueError(f'frozen command failed ({result.returncode}): {command}')
     save()
     try:
-        for page in (None,'root','display','ffb','controls','support','graphics','impacts'):
+        for page in (None,'root','display','ffb','controls','support','graphics','impacts','cheats'):
             target=out/f'{page or "menu"}.png'
             command=[app/'CruisnCollection.exe','--shot',target]
             if page:command+=['--shot-page',page]

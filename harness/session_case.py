@@ -117,6 +117,10 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
     evidence = {"frames": len(rows), "columns": fields, "snapshots": shots,
             "input_coverage": coverage,
             "trace_sha256": sha256_file(directory / "frames.csv")}
+    if (directory/'cheats').exists():
+        required_files(directory/'cheats', ['settings.lua','selection.json','events.csv'])
+        evidence['cheats'] = {name:sha256_file(directory/'cheats'/name)
+                              for name in ('settings.lua','selection.json','events.csv')}
     raw = directory / "raw-snap"
     if raw.exists():
         expected_raw = [f"frame_{n:08d}.raw" for n in frames]
@@ -148,6 +152,8 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
 
 
 def compare_evidence(reference_dir, replay_dir, reference, replay):
+    if reference.get('cheats') != replay.get('cheats'):
+        raise ValueError('record/replay cheat selections or actual state changes differ')
     if reference["frames"] != replay["frames"] or reference["columns"] != replay["columns"]:
         raise ValueError("record/replay frame count or input columns differ")
     fields, a = read_trace(Path(reference_dir) / "frames.csv")
@@ -203,6 +209,11 @@ class Recording:
         if settings.get("MIDV_PATCH"):
             shutil.copy2(settings["MIDV_PATCH"], initial / "game-patch.txt")
             settings["MIDV_PATCH"] = "@initial/game-patch.txt"
+        if settings.get('MIDV_CHEATS'):
+            source = Path(settings['MIDV_CHEATS']); destination = initial/'cheats'; destination.mkdir()
+            for name in (command[1]+'.xml','settings.lua','selection.json','cheats.lua'):
+                shutil.copy2(source/name,destination/name)
+            settings['MIDV_CHEATS'] = '@initial/cheats'
         exe = Path(command[0]).resolve()
         binary = self.path / "binary"
         binary.mkdir()
@@ -282,6 +293,16 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
     command = set_option(command, "-frameskip", 0)
     command += ["-noplugins", "-noautosave", "-norewind", "-noautoframeskip"]
     settings = dict(manifest["settings"])
+    if settings.get('MIDV_CHEATS'):
+        if settings['MIDV_CHEATS'] != '@initial/cheats':
+            raise ValueError('cheat recording must retain its imported files and selections')
+        settings['MIDV_CHEATS'] = str(runtime/'cheats')
+        command = [arg for arg in command if arg != '-nocheat']
+        command += ['-cheat']
+        command = set_option(command,'-cheatpath',runtime/'cheats')
+    else:
+        command = [arg for arg in command if arg != '-cheat']
+        command += ['-nocheat']
     if settings.get("MIDV_PATCH", "").startswith("@initial/"):
         settings["MIDV_PATCH"] = str(runtime / "game-patch.txt")
     settings.update(SNAP_EVERY=str(manifest["every"]),

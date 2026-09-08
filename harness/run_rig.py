@@ -1458,6 +1458,15 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                "-view", "Screen 0",
                "-window",
                "-skip_gameinfo"]
+        import cheats
+        cheat_bundle = cheats.prepare(POC, rig, rom)
+        if cheat_bundle:
+            env['MIDV_CHEATS'] = str(cheat_bundle.resolve())
+            cmd += ['-cheat', '-cheatpath', str(cheat_bundle.resolve()),
+                    '-autoboot_script', str((cheat_bundle/'cheats.lua').resolve()), '-autoboot_delay', '0']
+        else:
+            env.pop('MIDV_CHEATS', None)
+            cmd += ['-nocheat']
         if not zeus_gl:
             # under the Zeus overlay MAME's window stays SMALL: its gdi
             # software-stretch to 4K cost ~3% speed; it only holds focus
@@ -1512,7 +1521,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         log = open(log_path, "w")
         # first line: what this launch actually applied (the support bundle
         # ships this file; "did the setting take?" is answered here)
-        keys = ("MIDV_PATCH", "MIDV_GL", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
+        keys = ("MIDV_PATCH", "MIDV_CHEATS", "MIDV_GL", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
                 "MIDV_GL_CRACKFILL", "MIDV_WORLD_FAR", "MIDV_WORLD_LEAD", "MIDV_WORLD_CPU_PERCENT",
                 "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
                 "MIDV_GL_TJUNCTIONS", "MIDV_GL_MARGIN", "MIDV_GL_MARGINFILL",
