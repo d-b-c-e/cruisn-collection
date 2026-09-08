@@ -217,6 +217,23 @@ class GraphicsOptionsTests(unittest.TestCase):
 
 @unittest.skipUnless(sys.platform == "win32", "launcher uses Windows APIs")
 class LauncherGraphicsTests(unittest.TestCase):
+    def test_usa_recording_keeps_saved_settings_with_explicit_distance(self):
+        record_drive = import_shell_module("record_drive")
+        state = {"scale": 4, "crt": True, "crackfill": True, "margin": 86, "ffb": 80,
+                 "steersens": {"crusnusa": 90}, "steercurve": {"crusnusa": 120}}
+        recording = types.SimpleNamespace(finish=mock.Mock(), manifest={"status": "recorded"})
+        proc = types.SimpleNamespace(poll=lambda: 0, recording=recording)
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(record_drive.collection, "load_config", return_value=state), \
+                mock.patch.object(record_drive.run_rig, "launch_game_async", return_value=(proc, 0)) as launch, \
+                mock.patch.object(record_drive.run_rig, "wait_or_kill", return_value=0):
+            self.assertEqual(record_drive.main(["--game","usa","--no-clock","--output",str(Path(directory)/'drive'),
+                "--usa-far","160000","--usa-residency","1"]),0)
+        applied=launch.call_args.kwargs
+        self.assertEqual(applied['record_usa_trial'],dict(far=160000,residency=1))
+        self.assertIsNone(applied['record_world_trial'])
+        self.assertEqual((applied['ffb'],applied['crt'],applied['margin']),(0,True,86))
+
     def test_world25_recording_reaches_preparation_with_explicit_distance(self):
         run_rig = import_shell_module("run_rig")
         trial = dict(far=160000, lead=8, cpu=100)

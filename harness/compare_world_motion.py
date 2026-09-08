@@ -50,10 +50,12 @@ def read_trace(path, fields):
     return result
 
 
-def compare(reference, candidate):
+def compare(reference, candidate, prefix="world"):
+    if prefix not in ("world", "usa"):
+        raise ValueError("unsupported motion trace profile")
     reference, candidate = Path(reference), Path(candidate)
-    camera = [read_trace(p / 'world-camera.csv', CAMERA) for p in (reference, candidate)]
-    adc = [read_trace(p / 'world-adc.csv', ADC) for p in (reference, candidate)]
+    camera = [read_trace(p / f'{prefix}-camera.csv', CAMERA) for p in (reference, candidate)]
+    adc = [read_trace(p / f'{prefix}-adc.csv', ADC) for p in (reference, candidate)]
     for poses, reads in zip(camera, adc):
         if not poses[0][0] <= reads[0][0] <= reads[-1][0] <= poses[-1][0]:
             raise ValueError('ADC events fall outside camera interval')
@@ -73,7 +75,7 @@ def compare(reference, candidate):
     times = [[r[1] for r in rows] for rows in adc]
     first_adc_difference = next((i for i, (a, b) in enumerate(zip(*values)) if a != b), None)
     return {
-        'schema': 1, 'scope': __doc__.strip(),
+        'schema': 1, 'scope': __doc__.strip() if prefix=='world' else __doc__.strip().replace('World','USA').replace('world_motion_trace.lua','usa_motion_trace.lua'),
         'passed': camera_equal and adc[0] == adc[1],
         'camera_equal': camera_equal, 'same_camera_interval': same_interval,
         'camera_samples': [len(rows) for rows in camera],
@@ -91,7 +93,7 @@ def compare(reference, candidate):
         },
         'adc_times_equal': times[0] == times[1],
         'first_adc_time_difference_index': next((i for i, (a, b) in enumerate(zip(*times)) if a != b), None),
-        'sources': [{name: sha256_file(path / name) for name in ('world-camera.csv', 'world-adc.csv')}
+        'sources': [{name: sha256_file(path / name) for name in (f'{prefix}-camera.csv', f'{prefix}-adc.csv')}
                     for path in (reference, candidate)],
     }
 
@@ -101,9 +103,10 @@ def main(argv=None):
     parser.add_argument('reference', type=Path, help='reference replay run directory')
     parser.add_argument('candidate', type=Path, help='candidate replay run directory')
     parser.add_argument('--report', type=Path, required=True)
+    parser.add_argument("--profile", choices=("world", "usa"), default="world")
     args = parser.parse_args(argv)
     try:
-        result = compare(args.reference, args.candidate)
+        result = compare(args.reference, args.candidate, args.profile)
     except (OSError, ValueError, InvalidOperation) as error:
         result = {'schema': 1, 'passed': False, 'error': str(error)}
     write_json(args.report, result)

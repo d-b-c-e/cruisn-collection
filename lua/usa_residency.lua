@@ -5,6 +5,11 @@ local first=tonumber(os.getenv('CRUISN_RESIDENCY_FIRST') or '2500')
 local last=tonumber(os.getenv('CRUISN_RESIDENCY_LAST') or '4300')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
     and last-first<=12000,'invalid residency interval')
+local far=tonumber(os.getenv('MIDV_USA_FAR') or '80000')
+assert(far==80000 or far==100000 or far==160000 or far==240000,'invalid USA far')
+local extended=os.getenv('MIDV_USA_FAR') and os.getenv('MIDV_USA_RESIDENCY')~='0'
+local admission=extended and far*15//16 or 75000
+local removal=extended and far or 80000
 local frame,tap,out,failed,checks=0,nil,nil,nil,0
 local function signed(v) return v>=0x80000000 and v-0x100000000 or v end
 local function close()
@@ -35,7 +40,7 @@ return function(n)
     local depth=kind=='pending' and signed(d) or signed(s:read_u32(object+28))
     local flags=kind=='pending' and s:read_u32(object+14) or d
     local limit=cpu.state.R4.value
-    assert(limit==(kind=='deactivate' and 80000 or 75000),'USA active limit changed')
+    assert(limit==(kind=='deactivate' and removal or admission),'USA active limit changed')
     out:write(string.format('%d,%s,%x,%x,%x,%d,%d,%d\n',frame,kind,object,
         s:read_u32(object+13),flags,depth,signed(s:read_u32(object+29)),limit))
     if kind=='pending' then checks=checks+1 end

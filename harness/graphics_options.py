@@ -139,7 +139,8 @@ def launch_overrides(root, rig, rom, margin, scale, section, environment, *, use
     if margin >= 80 and widescreen.is_file():
         paths.append(widescreen)
     for option, filename in PATCHES.items():
-        if selected[option] and (option != "terrain_visibility" or margin >= 80):
+        if (selected[option] and (option != "terrain_visibility" or margin >= 80)
+                and (option != "far_distance" or use_saved_distance)):
             path = root / "patch" / "game" / filename
             if not path.is_file():
                 raise FileNotFoundError(f"Selected graphics experiment is missing: {path}")

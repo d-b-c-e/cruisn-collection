@@ -21,6 +21,7 @@ from verification import sha256_file, write_json, required_files
 from session_clock import SessionClock, position
 from gl_frames import requested_frames, read_completed_frames, IncompleteCaptureError
 import world_distance
+import usa_distance
 
 
 def main(argv=None):
@@ -66,6 +67,7 @@ def main(argv=None):
                     help='native background activation lead in track sections; 0 disables earlier activation')
     ap.add_argument("--patch-at-frame", type=int, help="apply the checked patch late, preserving earlier game history")
     world_distance.add_arguments(ap)
+    usa_distance.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0:
         ap.error("timeout must be positive")
@@ -190,6 +192,9 @@ def main(argv=None):
         trial = world_distance.configure(args, manifest['rom'], manifest['settings'])
         if trial:
             report['world_distance'] = trial
+        usa_trial = usa_distance.configure(args, manifest['rom'], manifest['settings'])
+        if usa_trial:
+            report['usa_distance'] = usa_trial
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
         if args.compare_gl and gl_key == 'MIDZ':
@@ -264,6 +269,13 @@ def main(argv=None):
             report['world_distance']['patch_sha256'] = sha256_file(patch_file)
             if args.capture_state:
                 env.update(MIDV_RAMDUMP_DIR=str(capture), MIDV_RAMDUMP_EVERY=str(args.until_frame - 2))
+        if usa_trial:
+            patch_file = usa_distance.compose(env.get('MIDV_PATCH'), runtime/'usa-distance-patch.txt', usa_trial['far'])
+            env['MIDV_PATCH'] = str(patch_file)
+            patch_entries = read_patch(patch_file)
+            report['usa_distance']['patch_sha256'] = sha256_file(patch_file)
+            if args.capture_state:
+                env.update(MIDV_RAMDUMP_DIR=str(capture), MIDV_RAMDUMP_EVERY=str(args.until_frame - 2))
         clock = SessionClock(runtime, "Replay: " + manifest.get("title", manifest["rom"]), args.clock_position)
         if args.clock:
             clock.start()
@@ -312,7 +324,7 @@ def main(argv=None):
             required_files(capture, ARTIFACTS)
             report["capture"] = {"directory": str(capture), "requested_dump_frame": args.until_frame - 2,
                                  "sha256": {n: sha256_file(capture / n) for n in ARTIFACTS}}
-            if args.patch or trial:
+            if args.patch or trial or usa_trial:
                 program_ram = capture / f"ram_{args.until_frame - 2:06d}.bin"
                 report["effective_patch"] = verify_patch_ram(program_ram, patch_entries)
                 report["capture"]["sha256"][program_ram.name] = sha256_file(program_ram)

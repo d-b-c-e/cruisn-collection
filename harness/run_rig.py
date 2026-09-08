@@ -1251,7 +1251,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
                       margin=None, ffb=None, marginfill=False,
                       mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False, record_clock=False,
-                      record_world_trial=None):
+                      record_world_trial=None, record_usa_trial=None):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
     window is up, fullscreen and focused. The caller decides how to wait -
     the collection shell watches the WINDOW (gone = player exited) so it can
@@ -1261,6 +1261,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         from world_distance import SUPPORTED_ROMS
         if not record_case or rom not in SUPPORTED_ROMS:
             raise ValueError('global distance trial requires a World 2.4/2.5 recording')
+    if record_usa_trial and (not record_case or rom != 'crusnusa' or record_world_trial):
+        raise ValueError('USA distance trial requires a USA 4.5 recording')
     # the live Zeus GL overlay is the default for Zeus games; MIDZ_GL=0
     # in the environment falls back to MAME's own d3d/bgfx presentation
     zeus_gl = rom in ZEUS_ROMS and os.environ.get("MIDZ_GL", "1") != "0"
@@ -1297,7 +1299,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     graphics_config.read(os.path.join(POC, "rig", "collection.ini"))
     graphics = launch_overrides(POC, rig, rom, effective_margin, scale,
         graphics_config["collection"] if "collection" in graphics_config else {}, os.environ,
-        use_saved_distance=not bool(record_world_trial))
+        use_saved_distance=not bool(record_world_trial or record_usa_trial))
     # MIDV_SKIP_STARTUP_SCREENS: our vunit build boots straight past MAME's
     # game-info/warning screens (BAD_DUMP sets like crusnwld otherwise stop
     # at "press any key", which injected keys cannot dismiss)
@@ -1487,19 +1489,22 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         launch_env, launch_dir = env, os.path.dirname(mame)
         log_path = os.path.join(rig, "launch.log")
         if recording:
-            if record_world_trial:
+            if record_world_trial or record_usa_trial:
                 import tempfile
                 from pathlib import Path
                 from types import SimpleNamespace
                 import world_distance
+                import usa_distance
                 trial_env = dict(env)
-                trial = world_distance.configure(SimpleNamespace(
-                    world_far=record_world_trial['far'], world_lead=record_world_trial['lead'],
-                    world_cpu=record_world_trial['cpu']), rom, trial_env)
+                adapter = world_distance if record_world_trial else usa_distance
+                options = (SimpleNamespace(world_far=record_world_trial['far'], world_lead=record_world_trial['lead'],
+                           world_cpu=record_world_trial['cpu']) if record_world_trial else
+                           SimpleNamespace(usa_far=record_usa_trial['far'], usa_residency=record_usa_trial['residency']))
+                trial = adapter.configure(options, rom, trial_env)
                 # Recording.prepare copies and hashes the combined patch before
                 # this temporary directory disappears. Saved shell settings stay intact.
-                with tempfile.TemporaryDirectory(prefix='cruisn-world-distance-') as temporary:
-                    trial_env['MIDV_PATCH'] = str(world_distance.compose(env.get('MIDV_PATCH'),
+                with tempfile.TemporaryDirectory(prefix='cruisn-distance-') as temporary:
+                    trial_env['MIDV_PATCH'] = str(adapter.compose(env.get('MIDV_PATCH'),
                         Path(temporary)/'global-distance-patch.txt', trial['far']))
                     cmd, launch_env, launch_dir = recording.prepare(cmd, trial_env, rig)
             else:
@@ -1525,7 +1530,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # ships this file; "did the setting take?" is answered here)
         keys = ("MIDV_PATCH", "MIDV_CHEATS", "MIDV_GL", "MIDZ_GL", "MIDV_GL_SCALE", "MIDV_GL_CRT",
                 "MIDV_GL_CRACKFILL", "MIDV_WORLD_FAR", "MIDV_WORLD_LEAD", "MIDV_WORLD_CPU_PERCENT",
-                "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
+                "MIDV_USA_FAR", "MIDV_USA_RESIDENCY", "MIDV_SCENERY", "MIDV_SCENERY_LEAD",
                 "MIDV_GL_TJUNCTIONS", "MIDV_GL_MARGIN", "MIDV_GL_MARGINFILL",
                 "MIDV_STEER_GAIN", "MIDV_STEER_CURVE",
                 "MIDZ_FFB_GAIN", "MIDZ_SEQ_SHIFT", "MIDZ_WHEEL_INVERT",

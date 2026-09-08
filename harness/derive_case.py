@@ -16,6 +16,7 @@ from session_clock import SessionClock
 from verification import sha256_file, write_json
 import replay
 import world_distance
+import usa_distance
 
 
 def validate_parent(case, manifest):
@@ -46,6 +47,7 @@ def main(argv=None):
     ap.add_argument('--clock', action='store_true', help='show the external emulation clock in both runs')
     ap.add_argument('--timeout', type=float, default=300)
     world_distance.add_arguments(ap)
+    usa_distance.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0: ap.error('timeout must be positive')
     work = new_run('derived-case', args.output)
@@ -68,6 +70,10 @@ def main(argv=None):
         if trial:
             settings['MIDV_PATCH'] = str(world_distance.compose(args.patch, work/'global-distance-patch.txt', trial['far']))
             report['world_distance'] = trial
+        usa_trial = usa_distance.configure(args, manifest['rom'], settings)
+        if usa_trial:
+            settings['MIDV_PATCH'] = str(usa_distance.compose(args.patch, work/'usa-distance-patch.txt', usa_trial['far']))
+            report['usa_distance'] = usa_trial
         env = diagnostic_env(settings)
         recording = Recording(work / 'case', every=manifest['every'],
                               stop_frame=manifest['evidence']['frames'], snapshot_mode='raw', clock=args.clock)
