@@ -1,3 +1,20 @@
+# Latest Exotica force polarity correction — 2026-09-07
+
+Read docs/reviews/2026-09-07-exotica-force-polarity.md. User reports wheel pulling
+farther in the direction it is turned. Actual setup DIPWheelInvertOn/ADCmirror0/
+deviceinvert0/effectivestrength64. Native97600e9597e normalizes Exotica cabinet motor
+polarity at each write using actual active-low DIP0x0800. Combines independently
+with device inversion; input/gear settings/gain/strength/World unchanged.
+Built nativeb5ba0021a51a1f9ec50e105dde9c8112cb3c7e4ce71009ce4294841296383ee2,
+pushedfork; collectioncode3d990a5 pushedmaster;123patch export synced.
+115Python/native vectors/all4CI34187080921 PASS. Completed Exotica6000/21GL replay
+and UDP/memory/gate/polaritychecks PASS; all2082nonzero requests exactly reversed,
+magnitudes/raw/adaptedsource unchanged. World2.5 control6000/100 and5534requests
+unchanged. First Exoattempt endedcleanly1052frames beforecaptures (reasonunknown),
+retainedFAIL; completedrerunisaccepted. AutomatedFFBoff. Need brief attendedlowgain
+centeringtest; don'tclaim measuredphysicalrestoringtorque yet. No new releaseZIP;
+Worldnormalization/oscillationstilldeferred. Priorrc2predatesbothcorrections.
+
 # Latest World FFB rollback — 2026-09-07
 
 User rejected World menu force suppression and then CANCELLED the proposed10% boost.

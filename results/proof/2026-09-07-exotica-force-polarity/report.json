@@ -1,0 +1,343 @@
+{
+  "archive_sha256": "bdcbc40229509aef384596959cbabd72f2238dd41ae0a9c04fb78fc2a008760d",
+  "candidate_sha256": "b5ba0021a51a1f9ec50e105dde9c8112cb3c7e4ce71009ce4294841296383ee2",
+  "exotica": {
+    "coverage": "synthetic first-gear race, 21 completed GL frames, CPU rasterization disabled",
+    "force_gate": {
+      "disabled_writes": 2251,
+      "driving_samples": 2365,
+      "enabled_writes": 2365,
+      "game": "crusnexo",
+      "independent_state_samples": 4615,
+      "lua_frame_offset": 1,
+      "memory_sha256": "3e81331e28889ad7fd9ad8c6bf9840ee7996efeb35c58d1bbbfc34b2d8e7fae5",
+      "non_driving_nonzero_requests": 0,
+      "non_driving_samples": 2250,
+      "nonzero_raw_suppressed": 2072,
+      "passed": true,
+      "physical_force": false,
+      "polarity": {
+        "corrected_nonzero_requests": 2082,
+        "frames_sha256": "eba9188b6c7af94cb5f067d2146ca41277054b3f1727576c208e8f05e1d4814b",
+        "matched_input_samples": 4616,
+        "passed": true,
+        "source_sha256": "9087fb7a9eb7a32feebc62f81648fe2b701ee74016d4a99939697e7e7350d40f"
+      },
+      "policy": "driving",
+      "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+      "source_writes": 4616,
+      "trace_sha256": "dd03d743e03fdbf73f6f17763e47c7ba450d34e935efae9507f60f22389a75d8"
+    },
+    "id": "exotica",
+    "passed": true,
+    "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-force-polarity-replay-20260907-rerun\\exotica\\report.json",
+    "telemetry": {
+      "coverage_passed": true,
+      "game_state_samples": 2684,
+      "gears": [
+        0,
+        1
+      ],
+      "memory": {
+        "lua_frame_offset": 1,
+        "mismatches": 0,
+        "samples": 2684,
+        "sha256": "3e81331e28889ad7fd9ad8c6bf9840ee7996efeb35c58d1bbbfc34b2d8e7fae5"
+      },
+      "passed": true,
+      "rpm_range": [
+        0.0,
+        8000.0
+      ],
+      "samples": 6000,
+      "trace_sha256": "de75e68ab57e35e4e95dea8a2468be935826252d4b83ff1407b92c12609b6cc2",
+      "upshifts": [],
+      "wire": {
+        "forza_packets": 6000,
+        "json_packets": 55825,
+        "maximum_speed_mph": 38.999997468701245,
+        "passed": true
+      }
+    },
+    "timings": [
+      {
+        "emulated_seconds": 21.002965498516993,
+        "emulation_ratio": 0.9992366100702678,
+        "first_frame": 3600,
+        "host_frame_ms": {
+          "p50": 16.836900000001265,
+          "p95": 28.9213950000061,
+          "p99": 34.461964000001466,
+          "worst": 56.57669999999371
+        },
+        "host_seconds": 21.0190112,
+        "inputs": {
+          ":ANALOG0": {
+            "distinct": 1,
+            "maximum": 0,
+            "minimum": 0
+          },
+          ":ANALOG1": {
+            "distinct": 1,
+            "maximum": 0,
+            "minimum": 0
+          },
+          ":ANALOG2": {
+            "distinct": 1,
+            "maximum": 255,
+            "minimum": 255
+          },
+          ":ANALOG3": {
+            "distinct": 3,
+            "maximum": 141,
+            "minimum": 115
+          },
+          ":DIPS": {
+            "distinct": 1,
+            "maximum": 62463,
+            "minimum": 62463
+          },
+          ":GEARS": {
+            "distinct": 2,
+            "maximum": 15,
+            "minimum": 14
+          },
+          ":IN1": {
+            "distinct": 2,
+            "maximum": 65535,
+            "minimum": 65279
+          },
+          ":IN2": {
+            "distinct": 1,
+            "maximum": 65535,
+            "minimum": 65535
+          },
+          ":KEYPAD": {
+            "distinct": 1,
+            "maximum": 30583,
+            "minimum": 30583
+          },
+          ":SEQ": {
+            "distinct": 1,
+            "maximum": 0,
+            "minimum": 0
+          },
+          ":SYSTEM": {
+            "distinct": 2,
+            "maximum": 65535,
+            "minimum": 65531
+          },
+          ":ioasic:SERIAL_DIGIT": {
+            "distinct": 1,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        "last_frame": 4800,
+        "minimum_ratio": 0.95,
+        "passed": true,
+        "schema": 1,
+        "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+      }
+    ],
+    "visual_reference": {
+      "files": 21,
+      "last_extrema": [
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ],
+        [
+          0,
+          255
+        ]
+      ],
+      "last_image": "mzgl_020.bmp"
+    }
+  },
+  "files": {
+    "analyzers/analyze_drivetrain.py": "da95cd87dfb956a4003766a49dff9745f02cb95e8405e77fffb3968435a3ac9b",
+    "analyzers/analyze_force_gate.py": "11428b0c3a3c6b854df657cb29cfcd075089178ad3b1d035f90dc9b8ca331039",
+    "analyzers/verification.py": "f03ab8b9abcefb052e1cd9881d97049361132357cd0d50c2fd4b7acb02ae7afe",
+    "checks/ci.json": "23b76cb253d63448726cee95c9290b448db0f3715ba34f5904b8f2314392de82",
+    "checks/manifest.json": "0111d63e717eaba7c37eead6a75c82329b6ea85746bae84910b1930c5ac797e9",
+    "checks/native-patch/report.json": "47072e26648e35d90a6ad18a4c8a73508f5e26f16ab77d7efaf762ed50103aa0",
+    "checks/sign-comparison.json": "12fa1ab960ae573b70d77af4f7da98da9dc72961736be1c2673f317e61119513",
+    "checks/tests.txt": "883fca79301fd1a3076aba1a62357e5ac484691a4d92b9c227bba75df9044ffa",
+    "exotica/report.json": "a9e4abb631a0dce5697e061645cae908c977e593cf6d1d6ffca519bade5ac92d",
+    "exotica/run/drivetrain-memory.csv": "3e81331e28889ad7fd9ad8c6bf9840ee7996efeb35c58d1bbbfc34b2d8e7fae5",
+    "exotica/run/drivetrain.csv": "de75e68ab57e35e4e95dea8a2468be935826252d4b83ff1407b92c12609b6cc2",
+    "exotica/run/force-gate.csv": "dd03d743e03fdbf73f6f17763e47c7ba450d34e935efae9507f60f22389a75d8",
+    "exotica/run/force-source.csv": "9087fb7a9eb7a32feebc62f81648fe2b701ee74016d4a99939697e7e7350d40f",
+    "exotica/run/forza.csv": "23cca5e042d6912c3fd97b0ff9feee02c737f12f8c85d238f2bf8ed17d0e20fe",
+    "exotica/run/frames.csv": "eba9188b6c7af94cb5f067d2146ca41277054b3f1727576c208e8f05e1d4814b",
+    "exotica/run/invocation.json": "496d2c6f5b50c8a8488cf3e6e92063c21d3ab82fedda54b49b2eeba61d981416",
+    "exotica/run/signals.csv": "d8a2e0164b7d85ab8d054aea138bb0184a7c6c72c3aff0d56e1c0d47cc6cf085",
+    "exotica/run/stderr.log": "c6dd05341375bed5d50f9049c93bcd0818121efd32d5264d8e73a411922b7b46",
+    "exotica/run/stdout.log": "ec44e7b646c703c2f3e50423ca632faaf4fc98b0fa6bc82933a9aa738ce3d8a0",
+    "exotica/run/telemetry-loopback.json": "e9aecef561537ff62d654424fc079d5d8e654ef36699086720d810bd5d6cb706",
+    "exotica/run/telemetry.jsonl": "20e0ff2463fa832b0a6cd324f47d413ba59e023879b657b7dd8f9d98b86ee16a",
+    "incomplete-attempt/report.json": "dffcab6b0aea283f8431b345ae91c5cfc2b57e532cac65984922499e56f9e088",
+    "incomplete-attempt/stdout.log": "3f4a17196e6e0249a1d1c0cca91fd651c8d04adb2f296142d38724ac4aa8e899",
+    "incomplete-attempt/suite.json": "46ee9888cf8eda12931fe625c7d3a9074b885bcb590c65a8547274cb8c37375b",
+    "prior-attended/ffb_trace.csv": "4628fa31cc490af0e5d4025687a0799a3c75c308c387b6bde5eacf2a6bc644af",
+    "prior-attended/launch.json": "6842aa5ec308cb3f4fdc0be71f8e2e7f92a64465ea87e5b17511749c4f8e2ec4",
+    "prior-attended/midv_ffb.log": "956b62dfeccb31e36768b9cf67fef718116cfbfed82541b7fa596f8b93196a58",
+    "suite.json": "e29aa9de3c89b1e85d3460b49acb6b42e7182d2acfd4cb3af19c8498fe667fd4",
+    "world-control/control.json": "54d66cae1c88e399774fbc461dcd3f27fc555e52363a96d1f6cec052a3b7a0d0",
+    "world-control/report.json": "c143daa00957f1e0961f89848588fb7a5dbc6cbd2a81157b19b526adb87c1b08",
+    "world-control/run/drivetrain-memory.csv": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68",
+    "world-control/run/drivetrain.csv": "bddac0d7fd9c3cdf1e8185e72937eff4515c29114ba1423a6a0c0ea918b196a3",
+    "world-control/run/force-gate.csv": "46424fbb84458a13042f16270c625b038c0649a4cf01c82424051f5ec601adfa",
+    "world-control/run/force-source.csv": "23c72641c76a795faa7804147ab0d835cc49a1341246de28687f317737e1e2f7",
+    "world-control/run/forza.csv": "3fa930fe62983c09745bf79be8cd180ca95c1adc1f002349e70fe5ddbaade978",
+    "world-control/run/frames.csv": "ef19ecc1734638d9ce1d763acd05966695293332d40d3d5f8b86f8c37d606238",
+    "world-control/run/invocation.json": "80591335f767fc4f849dcec98e4efbd565da3daa333497ccf415830e4eb0b2ab",
+    "world-control/run/signals.csv": "7e47b573bad7c0216bd4c231793efbef55ff625fe4aee86b2dff322cbaa491a7",
+    "world-control/run/stderr.log": "b9324f7b13d6863b8acb124ba5867c990c3089a49e58929721f23aa1ea624161",
+    "world-control/run/stdout.log": "4b4e24230dc65975992dca49e2a1bd563a76ff29665b0eb3c0644bec592592a0",
+    "world-control/run/telemetry-loopback.json": "314d0b05756e4c2986bd9e1bca120ce3a9126d218cc043ca431415d1ebb1e8a5",
+    "world-control/run/telemetry.jsonl": "27cf17de4056d892bb24a66456a92cc6e9f02e9c12875cef5ec08cafbfc5ca00"
+  },
+  "native_commit": "97600e9597e46ae3c926164e01c1926340fc759d",
+  "passed": true,
+  "physical_force_during_automated_checks": false,
+  "prior_attended_logs_included": true,
+  "sign_comparison": {
+    "new_gate_sha256": "dd03d743e03fdbf73f6f17763e47c7ba450d34e935efae9507f60f22389a75d8",
+    "nonzero_reversed": 2082,
+    "old_gate_sha256": "ee21f8205c7ec37a6253e2394f294b6c83c32c5ce45ce45f7a1a9c3b29877c40",
+    "old_source_sha256": "9087fb7a9eb7a32feebc62f81648fe2b701ee74016d4a99939697e7e7350d40f",
+    "passed": true,
+    "raw_and_adapted_source_unchanged": true,
+    "rows": 4616,
+    "same_input_and_timing": true
+  },
+  "source_identity": "f5e07b106c6ead459bd2ffe5746bfa357005fe76aea40650266c013c83dfc3c7",
+  "world_control": {
+    "force_gate": {
+      "disabled_writes": 0,
+      "driving_samples": 2203,
+      "enabled_writes": 5534,
+      "game": "crusnwld",
+      "independent_state_samples": 5000,
+      "lua_frame_offset": 1,
+      "memory_sha256": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68",
+      "non_driving_nonzero_requests": 1059,
+      "non_driving_samples": 2797,
+      "nonzero_raw_suppressed": 0,
+      "passed": true,
+      "physical_force": false,
+      "polarity": {
+        "corrected_nonzero_requests": 0,
+        "frames_sha256": "ef19ecc1734638d9ce1d763acd05966695293332d40d3d5f8b86f8c37d606238",
+        "matched_input_samples": 5534,
+        "passed": true,
+        "source_sha256": "23c72641c76a795faa7804147ab0d835cc49a1341246de28687f317737e1e2f7"
+      },
+      "policy": "passthrough",
+      "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+      "source_writes": 5534,
+      "trace_sha256": "46424fbb84458a13042f16270c625b038c0649a4cf01c82424051f5ec601adfa"
+    },
+    "force_requests_unchanged": true,
+    "passed": true,
+    "telemetry": {
+      "game_state_samples": 2538,
+      "gears": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "memory": {
+        "lua_frame_offset": 1,
+        "mismatches": 0,
+        "samples": 2538,
+        "sha256": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68"
+      },
+      "passed": true,
+      "rpm_range": [
+        0.0,
+        7509.443
+      ],
+      "samples": 6000,
+      "trace_sha256": "bddac0d7fd9c3cdf1e8185e72937eff4515c29114ba1423a6a0c0ea918b196a3",
+      "upshifts": [
+        {
+          "frame": 3605,
+          "from": 1,
+          "minimum_next_8_frames": 4047.722,
+          "rpm_before": 6238.953,
+          "to": 2
+        },
+        {
+          "frame": 3931,
+          "from": 1,
+          "minimum_next_8_frames": 4752.161,
+          "rpm_before": 7190.23,
+          "to": 2
+        },
+        {
+          "frame": 3993,
+          "from": 2,
+          "minimum_next_8_frames": 4743.015,
+          "rpm_before": 7117.234,
+          "to": 3
+        },
+        {
+          "frame": 4123,
+          "from": 3,
+          "minimum_next_8_frames": 5401.105,
+          "rpm_before": 7116.596,
+          "to": 4
+        },
+        {
+          "frame": 4509,
+          "from": 2,
+          "minimum_next_8_frames": 4750.928,
+          "rpm_before": 7131.329,
+          "to": 3
+        },
+        {
+          "frame": 4619,
+          "from": 2,
+          "minimum_next_8_frames": 4741.636,
+          "rpm_before": 7114.762,
+          "to": 3
+        },
+        {
+          "frame": 4803,
+          "from": 3,
+          "minimum_next_8_frames": 4927.623,
+          "rpm_before": 7012.634,
+          "to": 4
+        },
+        {
+          "frame": 4991,
+          "from": 2,
+          "minimum_next_8_frames": 4749.867,
+          "rpm_before": 7130.743,
+          "to": 3
+        },
+        {
+          "frame": 5091,
+          "from": 3,
+          "minimum_next_8_frames": 4660.14,
+          "rpm_before": 7337.882,
+          "to": 4
+        }
+      ],
+      "wire": {
+        "forza_packets": 6000,
+        "json_packets": 90332,
+        "maximum_speed_mph": 145.0000017476065,
+        "passed": true
+      }
+    }
+  }
+}

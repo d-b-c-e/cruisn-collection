@@ -1,5 +1,21 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Exotica force polarity correction (2026-09-07)
+
+User reports anti-centering with Wheel Invert On, ADC mirror0 and shared force
+invert0. Native97600e9597e now normalizes Exotica's active-low DIP0x0800 motor sign,
+independent of steering and device inversion. Do not restore ADC mirroring or
+change the global wheel direction to compensate. Strength/gain and World unchanged.
+Read docs/reviews/2026-09-07-exotica-force-polarity.md. Native SHA256
+b5ba0021a51a1f9ec50e105dde9c8112cb3c7e4ce71009ce4294841296383ee2, built in mame-src.
+123patch export; canonical motor_signal.h. force-gate.csv adds game_invert/device_invert;
+analyzer --check-polarity compares adapted source and recorded DIP inputs.
+115Python/native vectors/all4CI34187080921 PASS. FullExotica6000/21GL PASS:2082nonzero
+requests reverse exactly, magnitude/raw/adapted source unchanged. World2.5 control
+6000/100 and all5534force requests unchanged. First replay ended early1052, retained
+FAIL/incomplete; completed rerun passes. Physical centering acceptance still needed.
+No gain/normalization tuning or new release ZIP; prior rc2 remains superseded.
+
 ## World FFB rollback supersedes the gate below (2026-09-07)
 
 User reported World gate as a regression and explicitly deferred further tuning.

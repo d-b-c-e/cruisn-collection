@@ -3909,3 +3909,31 @@ UserINI2c5faf831d33e1b4213ab56db6e7fc40efd6dc04131ae290d9dc921c53ef78b0 unchange
 Native/source fixes pushedfork/master. rc2 ZIP remains immutable but contains the
 rejected World gate: source supersedes it, replacement package and acceptance needed
 before publication. See docs/reviews/2026-09-07-world-ffb-rollback.md.
+
+## 2026-09-07 — Correct Exotica cabinet force polarity without steering changes
+
+User reports anti-centering on both sides. Preserved actual attended logs/config
+hashes: WheelInvertOn, ADCmirror0, sharedforceinvert0, requested80/effective64.
+Native97600e9597e normalizes Exotica's active-low DIP0x0800 motor polarity at each
+write. Game and device inversion compose independently; raw/adapted motor values,
+ADC steering, shifter configuration, gain/strength and World behavior unchanged.
+Canonical motor_signal.h handles signed conversion; force-gate.csv adds game_invert
+and device_invert. Analyzer checks actual inputDIP and adapted source against the
+requestedlevel. Physical output was never enabled by automated tests.
+
+Built native SHAb5ba0021a51a1f9ec50e105dde9c8112cb3c7e4ce71009ce4294841296383ee2;
+123patch export updated, correction reconstructs treecb82b811cd0ceec182734950f7c8ad7ef83fc667
+from verifiedparent. Native/source pushedfork/master (collection3d990a5). 115Python
+tests, native256byte x bothdevice/gamepolarity vectors, sync and4CI34187080921 jobs PASS.
+Full Exotica6000inputs/21completedGL/actualUDP/memory/gate/polarity PASS. All4616
+samples match recordedDIP;2082nonzero requests reverse exactly with same magnitude,
+raw/adapted motorCSV identical. World2.5 control6000/100 passes; all5534requests
+retain prior values and gameinvert0. First Exoattempt endedcleanly at1052beforeGL
+captures (causeunknown), retainedFAIL/incomplete; completedrerun supplies acceptance.
+
+Proof/exotica-force-polarity retains derived traces/reports/analyzers, original
+attended force logs and failed-attempt receipt, with exact archive hashes. These
+are software-level checks, not proof of physical restoring torque. A brief attended
+low-strength centering check remains needed. Cross-game strength normalization and
+World oscillation stay deferred. No new ZIP/publicrelease; source supersedes rc2.
+See docs/reviews/2026-09-07-exotica-force-polarity.md.

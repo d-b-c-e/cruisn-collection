@@ -542,4 +542,8 @@ after the user's regression report. `analyze_force_gate.py DIRECTORY --memory CS
 --game ROM --output JSON` checks the driving gate; add `--policy passthrough` for
 current World builds to require nonzero menu requests and no gated writes.
 Physical output stays disabled; requested levels are not wheel torque measurements.
+Current `force-gate.csv` also includes `game_invert` and `device_invert`.
+`--check-polarity` validates these against `frames.csv` DIP values and recomputes
+the requested signed level from `force-source.csv`. Exotica normalizes its cabinet
+motor switch; World keeps game polarity0. Device inversion remains separate.
 See [the all-game findings and final validation](reviews/2026-09-07-release-feedback.md).

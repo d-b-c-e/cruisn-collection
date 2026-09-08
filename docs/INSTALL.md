@@ -217,9 +217,12 @@ the same. Better crash feel has not yet been confirmed on a physical wheel.
 Increasing Strength alone also increases ordinary steering weight.
 
 **SETTINGS → FFB DIRECTION**: wheel bases do not agree on which way a
-positive force turns. The default is right for a Moza base (measured with
-the game's own spring). If the wheel runs *away* from centre in Cruis'n
-Exotica, or shakes violently in USA at any strength, flip it to INVERTED.
+positive force turns. This setting controls the physical wheel's direction.
+Exotica separately corrects its cabinet motor polarity automatically; its Wheel
+Invert DIP does not require reversing vehicle steering. If centering consistently
+pushes away across games on a different wheel base, check this device direction
+at low strength. Report a problem confined to one game separately; oscillation
+can also come from gain or delay.
 
 Safety: when a game stops writing its motor for half a second (pause,
 menus, exit) the force is released, and everything is stopped when the
