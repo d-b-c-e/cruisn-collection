@@ -109,4 +109,31 @@ template<class Read> bool build(Read read,Result &result,bool loaded=false)
     }
     result=std::move(out);return true;
 }
+
+struct Cache
+{
+    bool valid=false;
+    Result value;
+    void clear(){valid=false;value=Result{};}
+};
+// Cache immutable section operands between frontier changes. Live binding
+// addresses are refreshed even when the track/frontier key is unchanged.
+template<class Read> bool collect(Read read,Result &result,Cache &cache)
+{
+    result=Result{};Frontier f;
+    if(!frontier(read,f))return false;
+    if(f.pretrack){cache.clear();result.frontier=f;return true;}
+    const auto &old=cache.value.frontier;
+    if(!cache.valid || old.track!=f.track || old.count!=f.count || old.front!=f.front || old.partial!=f.partial)
+    {
+        Result value;if(!build(read,value))return false;
+        cache.value=std::move(value);cache.valid=true;
+    }
+    const uint32_t lookup=read(0x1b4cd),palette=read(0x1b4cf),texture=read(0x1b4ce);
+    if(!rom_span(lookup,1) || palette>0x7fff || texture>0xffff)return false;
+    result=cache.value;result.frontier=f;
+    for(auto &source:result.sources)if(source.supported)
+    {source.words[17]=lookup;source.words[18]=palette;source.words[19]=texture;}
+    return true;
+}
 }} // namespace cruisn::offroad_future

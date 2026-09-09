@@ -16,7 +16,10 @@ int main()
         m[data+64*i+16]=1;m[data+64*i+17]=0x20;m[data+64*i+18]=0xc02000;}
     assert(build(read,r) && r.sources.size()==2 && r.sources[0].words[6]==0x18000);
     const auto original=r.sources[0].words;
-    m[0x1b4cf]=0x2300;assert(build(read,r) && r.sources[0].words[18]==0x2300 && original[18]==0x1200);
+    Cache cache;assert(collect(read,r,cache));
+    m[0x1b4cf]=0x2300;assert(collect(read,r,cache) && r.sources[0].words[18]==0x2300 && original[18]==0x1200);
+    m[0x1b4b9]=1;assert(collect(read,r,cache) && r.sources.size()==1 && r.sources[0].number==2);
+    m[0x1b4b9]=0;assert(collect(read,r,cache) && r.sources.size()==2);
     m[0x1b4b9]=1;assert(build(read,r) && r.frontier.partial && r.sources.size()==1 && r.sources[0].number==2);
     m[0x1b4b9]=2;assert(!build(read,r) && r.sources.empty());m[0x1b4b9]=0;
     m[base+5]=17;assert(!build(read,r));m[base+5]=1;

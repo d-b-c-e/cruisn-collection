@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Off Road host foundation — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-offroad-host-foundation.md. Standalone host header,
+independentPython/analyzer match72scenes/50736orderedquads across12snapshots,
+pending/future1/2/3x; cold/warm and newsectioncache exact. Original1399prepared/
+9602DMA and12futureoracles renewed. Radialscore Python matches1399actualscores.
+No MAMEintegration yet. Explicit hostprojection leaves stockdefaults unchanged.
+ImmutableROM caches bounded; livebinding refresh and queue/busy/allocation/material
+guards. Queue/busy deferral synthetic only; zero observed at1978sceneboundaries.
+Localmaterialprobe6000 preserves4191camera/16764actualADCtimes/3GL3824x2073.
+Fivefull8MBtextures/131072bytepalettes byteequal.8backgroundtiles precedehook;
+nativeframe=Luaframe-1, exacttime/page captured. Initial16wordassertFAIL and
+flat-clear suffixFAIL retained. Materiallifetime/foregroundocclusion remainOPEN.
+241Python/no skips,23native,10081C31/137yaw,32GPU/63commandsPASS,363fileidentity
+3fa8026171f79424ece7fe66f4951adb0db2079070d3f94a688687a3ae14b590.
+Raw evidence results/diagnostics/offroad-material-20260909; host-oracle-cached,
+future-final, prepared-*-final andmaterials-v2. Nativecf58/SHA37c0a4ce unchanged,
+prior7defaults; personalv0.5/SHA87d04de4 verified. No newnativebuild/export/deploy.
+NEXT opt-in MAMEadapter/CLI-recordingcompatibility, directRAM/zeroCPUcycles,
+1/2/3x/repeat/originalresources/route/4K/occlusion/handover/performance gates.
+USAperformance/World25roads/Zeus alongside. No release/hostedworkflow/physicalFFB/
+Worldtuning/menu removal. Checkrig; emulatorsserial; continue directly, one-minute
+heartbeat recovery only/no cutoff. Raw game resources stayLOCAL.
+
 ## September 9 Off Road future sections — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-offroad-future-sections.md. Standalone native

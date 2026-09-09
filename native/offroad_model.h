@@ -45,11 +45,12 @@ template<class Read> bool load(Read read,uint32_t descriptor,Model &result)
 
 template<class Reciprocal> bool project(const Model &model,
     const std::array<uint32_t,12> &matrix,uint32_t origin,uint32_t path,
-    Reciprocal reciprocal,std::vector<Vertex> &result)
+    Reciprocal reciprocal,std::vector<Vertex> &result,uint32_t host_multiplier=0)
 {
     result.clear();
     if(model.vertices.empty() || model.vertices.size()>512)return false;
     if(path!=0x1e03 && path!=0x1e3b && path!=0x1e60)return false;
+    if(host_multiplier>3 || (host_multiplier && path!=0x1e03))return false;
     std::array<Float,12> m;
     for(unsigned i=0;i<12;++i)m[i]=Float::load(matrix[i]);
     std::vector<Vertex> points;
@@ -59,12 +60,22 @@ template<class Reciprocal> bool project(const Model &model,
         auto dot=[&](unsigned a){return ((v[0]*m[a]+m[a+3])+v[1]*m[a+1])+v[2]*m[a+2];};
         const auto x=dot(0).reload(),y=dot(4).reload(),z=dot(8);
         int32_t index=z.fix();
-        if(path==0x1e3b && index<-4096)index=-4096;
-        if(path==0x1e60 && index>63679)index=63679;
-        if(index<-4096 || index>63679)return false;
+        if(host_multiplier)
+        {
+            // Host-only extension uses the linear reciprocal domain and rejects
+            // crossing objects. Guest clipping and its clamp paths are unchanged.
+            if(index<503 || index>=int32_t(63680*host_multiplier))return false;
+        }
+        else
+        {
+            if(path==0x1e3b && index<-4096)index=-4096;
+            if(path==0x1e60 && index>63679)index=63679;
+            if(index<-4096 || index>63679)return false;
+        }
         const auto r=Float::load(reciprocal(index));
         // FIX consumes extended registers here, without a final store/reload.
         const int32_t sx=(x*r+Float::load(origin)).fix(),sy=(Float::integer(200)-y*r).fix();
+        if(host_multiplier && (sx<-32768 || sx>32767 || sy<-32768 || sy>32767))return false;
         points.push_back({{uint32_t(sx),uint32_t(sy)}});
     }
     result=std::move(points);return true;

@@ -31,8 +31,10 @@ replays and4K samples. [Transform/LOD reconstruction](docs/reviews/2026-09-09-of
 also matches1,399 matrices/decisions in three further runs. Its
 [future-section decoder](docs/reviews/2026-09-09-offroad-future-sections.md) now
 matches2,424 loaded objects and703 later allocations/bindings across12 snapshots,
-including seven real partial loader boundaries. Next qualify the scene/material
-adapter and integrate pending/future host projection,
+including seven real partial loader boundaries. The
+[host scene foundation](docs/reviews/2026-09-09-offroad-host-foundation.md) matches
+72 scenes/50,736 ordered quads and five material snapshots remain stable. Next
+integrate the opt-in MAME adapter and qualify its actual visual/performance result,
 with World2.5 roads and Zeus adapters alongside.
 
 The earlier [USA pending-object adapter](docs/reviews/2026-09-09-usa-host-scenery.md)
