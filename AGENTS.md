@@ -1,5 +1,48 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 USA host adapter — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-usa-host-scenery.md. Maintainer clarified:30-minute
+heartbeat is recovery ONLY, not a work cadence. Keep progressing directly during
+active turns; do not stop at a milestone to wait for it. No time cutoff.
+
+Collection492bf48 and native4e565971954171798caf7bc633c9a57cb3f23b04 are pushed.
+Native built SEPARATELY, frozen build/candidates/4e565971954/vunit.exe,
+SHA248aef7c5c56402ed117d52ef228cc3864d9f14dadbfaf654a025d4cb834f20b.
+142patches reconstruct tree2ea79b989c1869495cd419aa123a3075be9d680a.
+USA CLI host pending1x/2x/3x now links its own codec. DirectRAM/zeroCPUcycles;
+no guest activation/writes or hardwareDMA changes. Absent controls installnothing.
+
+Six5012controls/draws/repeat/finalobserve preserve3211camera/9633actualADCtimes.
+All16GL3824x2073 complete:1x changes10/16 overstock;2x changes12/16 over1x;
+3x equals2x in all16 and168874orderedquads/755scenes. Repeat/detailed-log parity
+exact.3x callbackp99/max0.439/0.605ms, measuredinterval~100% emulation speed.
+Threeindependent native/Python snapshots and live exactclock/orderedquads PASS.
+Two4502resource runs preserve153833626bytes oforiginalDMA/VRAM/textures/palette/
+metadata and2701camera/8103actualADCtimes. This is NOT full material/occlusion/
+handover/sky acceptance. Earlierlist43empty in750scenes; sky placementunproven.
+
+Initialsnapshot read retriggerednativehook:duplicate FAIL retained. MainRAMshare
+fix removesrecursion. NextlatchedLua/nativeframe mismatch FAIL retained; final
+captures nativeframe+exacttime/page. All7defaults/UDP-memory/4softwareforce/Exo21GL
+PASS on4e565.217Python/no skips,18native,10081C31/137yaw,32GPU/50commands PASS.
+329-file identity90c5978628d5091cd57b4330e5ad5333761a96565a0e2dbf012770c4a2c0c1b8.
+Proof results/proof/2026-09-09-usa-host-scenery recomputes selectedpixels/routes/
+fingerprints/7telemetry/4force; rawmodels/resources/native/GPU remainreceipts.
+
+NEXT USA future sections: loader3F80..4214, allocation40B9/7035, palette9EF8,
+constantsC8ED..C8F3. LOCAL prototype matches383/383 oldsnapshotobjects from26
+sections/1227definitions; not yetnativefuture/render proof. Bounded section-probe
+and independent section-oracle under results/diagnostics/usa-host-scenes-20260909
+now match1700ordinary allocations/1504directpalettebindings,20sections/10headings/
+413offsetplacements;24custom excluded. Pre-class fields ONLY, finalflags/frontiers
+remain. Its5012 replay preservescamera/ADCtimes and3late4KGL. Rawprototype local.
+Initialbroad allocatorprobe rejectedinternalRAMstack at1804; FAIL retained.
+Promote narrowprobe and verifyfinalfields beforefutureintegration. Continue futuredescriptors/materials,
+thenOffRoad/Zeus; World25roads alongside. No per-modelallowlist or nominal3xclaim.
+PersonalStreamDeckv0.5.0/SHA87d04de4 unchanged. No deployment/release/hostedworkflow/
+physicalFFB/Worldtuning/menu removal. Checkrig beforevisible tests; emulatorsserial.
+
 ## September 9 USA native codec checkpoint — ACTIVE
 
 Read docs/reviews/2026-09-09-usa-native-codec.md. Collectionb0d18ca adds native

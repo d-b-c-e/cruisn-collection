@@ -12,6 +12,11 @@ graphical experiments **if the replacement succeeds**. The existing
 the display name **Cruisn extended scenery parity**, every 30 minutes without a
 new time cutoff. The September 8 queue and September 9 morning stop are historical.
 
+**Continuous active work:** the maintainer clarified that30 minutes is only the
+recovery wakeup interval. Do not stop at a milestone to wait for the next trigger.
+Continue implementation and verification directly; use independent offline work
+during builds/replays or while the personal rig is occupied.
+
 v0.5.0 is the published and deployed baseline. The repository is now public.
 Preserve released tags/ZIPs, personal settings, original recordings and default
 behavior. Build native candidates separately using the local build targets.
@@ -40,7 +45,7 @@ per-level allowlists and changes to guest simulation solely to draw more scenery
 |---|---|---|
 | World 2.4 | Host future sections now produce a visible 3x gain over 2x in 16/31 completed Germany images; the 3x repeat preserves all inputs/camera/ADC and 31 images. Final descriptors/frontiers are checked. Opt-in host roads now fill the missing uphill section, repeat21 current4K captures and preserve full input/camera/ADC timing. | Finish resource/occlusion/handover acceptance, decode the separate road path, then carry verified scene contracts to the other adapters. |
 | World 2.5 | Integrated CLI host adapter now completes control/1x/2x/3x/repeat.3x changes10/30 current4K captures over2x and repeats all30 with identical camera/ADC timing. Eleven snapshot/frontier oracles pass. Disconnected distant ground remains. | Verify its road/ground path, material lifetime and occlusion while advancing USA/Off Road/Zeus adapters; no menu promotion yet. |
-| USA 4.5 | Native model/transform codec now matches18,903 captured buffers and111,498 ordered quads in two recorded windows, including billboards/LOD/palettes. Five5012 runs preserve camera/ADC and three4K images. No host insertion yet. | Verify sky insertion, pending/future descriptors and material residency, then integrate host drawing with unchanged guest activation. |
+| USA 4.5 | Host pending scenery is integrated in a separate candidate.2x changes12/16 current4K images over1x;3x matches2x. Original camera/ADC timing and153.8MB of rendering resources remain exact. Independent native/Python/live scene checks pass. | Decode future sections and final material bindings to exceed the loaded-object limit; verify sky/occlusion, clipping and handover. |
 | Off Road 1.25 | Coherent far/clip/reciprocal extension is implemented; modest sampled gain, no extra 3x pixels, strict timing/one-quad differences remain. | Identify the remaining scenery residency or submission limit and map eligible static data to host drawing; retain the stock timing/geometry failures. |
 | Exotica 2.4 | Far-only extra geometry is occluded; earlier admission changes active depth bias/order and loses original geometry matches. | Trace register 0x15 provenance and isolate state/order effects; establish a Zeus static geometry/material adapter before claiming robust distance. |
 

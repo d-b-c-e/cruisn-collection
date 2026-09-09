@@ -16,10 +16,14 @@ experiments only where successfully replaced. The September
 8 queue is historical. The repository is now public; remaining preparation is
 tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 
-Latest cross-game milestone: [USA's native codec](docs/reviews/2026-09-09-usa-native-codec.md)
-matches18,903 projection/transform buffers and111,498 original DMA quads across
-two recorded windows, including billboard and LOD selection. It is a standalone
-verified prerequisite; next integrate scene insertion and pending/future residency.
+The30-minute heartbeat is a recovery wakeup, not a work cadence. During active
+turns, continue directly into the next useful implementation or verification step.
+
+Latest cross-game milestone: [USA host scenery](docs/reviews/2026-09-09-usa-host-scenery.md)
+is integrated in a separate native candidate. Host2x adds distant scenery in12/16
+current4K images over1x, with original inputs/camera/ADC timing and153.8MB of
+original resources unchanged. Host3x currently matches2x; future sections are the
+next loading limit. The independent model, scene and live polygon checks pass.
 World2.4/2.5 host scenery remains a separate candidate with ground/occlusion work
 open. The active queue continues to Off Road/Zeus; Stream Deck stays on v0.5.0.
 

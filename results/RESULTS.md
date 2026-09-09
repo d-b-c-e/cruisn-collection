@@ -4366,3 +4366,19 @@ No host-road drawing was integrated. The unfinished C++ draft stays local. World
 materials/projection/build/GPU results remain receipts. StreamDeck staysv0.5.0,
 with its exact binary/ZIP hashes rechecked. No personal-state changes, new release,
 menu removals, hosted builds or physical force. Resume only on newer direction.
+
+
+## September 9 USA host pending scenery, continuous active work
+
+See [the review](../docs/reviews/2026-09-09-usa-host-scenery.md) and publishable
+proof2026-09-09-usa-host-scenery. Collection492bf48/native4e565971954 adds a
+separate guarded USA host adapter.2x changes12/16 current4K frames over1x;3x
+equals2x. Original inputs, camera/actualADC timing and153833626 resource bytes
+remain exact;755scenes/168874quads repeat. All7defaults and217Python/18native/
+32GPU/50local commands pass on the declared source identity.
+
+Future sections remain the USA loading limit. A local preliminary decoder matches
+383/383 older snapshot objects; fresh allocation/material probes are underway.
+Material lifetime, occlusion/sky/handover and cross-game3x acceptance stay open.
+The30-minute heartbeat is recovery only; active work continues without deliberate
+waiting. StreamDeck staysv0.5.0; no release/deploy/hostedCI/physicalFFB/Worldtuning.
