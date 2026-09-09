@@ -57,9 +57,9 @@ def validate(record):
     return vertices, polygons
 
 
-def project(record, reciprocals):
+def project(record, reciprocals, *, host_far=None):
     vertices, _ = validate(record)
-    if len(reciprocals) != 5080:
+    if host_far is None and len(reciprocals) != 5080:
         raise ValueError('expected complete stock reciprocal table')
     matrix = list(map(F.load, record['matrix']))
     center = list(map(F.load, record['camera_space']))
@@ -80,9 +80,19 @@ def project(record, reciprocals):
             x, y, z = [dot(local, matrix[j:j+3]) for j in (0, 3, 6)]
             x = x.reload()+center[0]
             y, z = y+center[1], z+center[2]
-        reciprocal = F.load(reciprocals[max(-80, min(4999, z.fix() >> 4))+80])
-        buffer.extend([(x*reciprocal+F.integer(256)).store(),
-                       ((y*reciprocal)*F.load(0x00052000)+origin).store(), z.store()])
+        index = z.fix() >> 4
+        if host_far is None:
+            reciprocal = F.load(reciprocals[max(-80, min(4999, index))+80])
+        else:
+            maximum = 4999 if host_far == 80000 else host_far//16
+            if host_far not in (80000, 160000, 240000) or z.fix() < 1000 or index > maximum:
+                raise ValueError('host vertex depth outside projection range')
+            reciprocal = F.load(reciprocals[index])
+        sx = (x*reciprocal+F.integer(256)).reload()
+        sy = ((y*reciprocal)*F.load(0x00052000)+origin).reload()
+        if host_far is not None and not (-32768 <= sx.fix() <= 32767 and -32768 <= sy.fix() <= 32767):
+            raise ValueError('host signed16 screen overflow')
+        buffer.extend([sx.store(), sy.store(), z.store()])
     return buffer
 
 
