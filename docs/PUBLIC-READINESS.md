@@ -1,9 +1,11 @@
-# Preparing public access
+# Public access and remaining preparation
 
-Updated 2026-09-08. The repository is currently **private**. v0.5.0 is published
-inside that private repository, with v0.4.0 preserved for rollback. The maintainer
-wants public access soon. This document records preparation, not a completed
-visibility change or authorization to publish another version.
+Updated 2026-09-09. The maintainer explicitly requested that this repository be made
+public, and its visibility is now **public**. Anonymous source access, the latest
+release endpoint and the updater's v0.5.0 download pass. The downloaded ZIP matches
+the accepted SHA256 `20d1cf67cc7db82fa6cebf494369117e25bf5cf6eae0e8b7d717a55c830d3734`.
+v0.4.0 remains available for rollback. Hosted workflows remain disabled. This
+visibility change does not complete the remaining reviews or authorize a new release.
 
 ## Completed preparation
 
@@ -17,12 +19,12 @@ visibility change or authorization to publish another version.
 - [x] Separate local Release/Personal targets; verify a clean dev ZIP's actual
   frozen factory defaults and reject personal config/profile/runtime files.
 
-## Decisions and checks before public access
+## Public-access decision and remaining checks
 
-- [ ] Decide whether to expose this repository/history or publish from a reviewed
-  distribution repository. Review tracked history and archived diagnostics for
-  material intended only for development. The top-level `rig/`, local recordings,
-  support bundles and `build/` are ignored; that does not audit Git history.
+- [x] The maintainer chose to make this repository and its history public.
+- [ ] Review tracked history and archived diagnostics for material intended only
+  for development. The top-level `rig/`, local recordings, support bundles and
+  `build/` are ignored; that does not audit Git history.
 - [ ] Document the licence for original launcher/tooling code. There is no tracked
   root licence file. The MAME patch distribution, SDL2 and vendored toolkit have
   separate existing notices/source that must remain with their components.
@@ -33,17 +35,19 @@ visibility change or authorization to publish another version.
   was inaccurate and has been removed.
 - [x] Build and verify v0.5.0 with Cheats, new game distance menus and top-level
   Experiments. Exact ZIP uploaded/downloaded and source/runtime gates renewed.
-  Making its distribution publicly accessible remains a separate decision.
+  Its distribution is now publicly accessible under the September 9 instruction.
 - [ ] Complete [release acceptance](RELEASE-CHECKLIST.md), including actual
   launch/drive/exit, all-game shifters, telemetry/tactile output, FFB direction,
   clean-profile installation, upgrade preservation and second-wheel coverage.
   Public testing must describe remaining unperformed checks accurately.
 - [x] Finish five visible Esc → Cheats recordings/replays, all seven defaults and
   the actual frozen live-menu check. Matching native deployed to Stream Deck.
-- [ ] After an explicitly requested visibility/distribution change, verify anonymous
-  source/release access and download the exact asset without authentication.
-  The updater currently queries `d-b-c-e/cruisn-collection`; a separate destination
-  needs a code/config update. Test the packaged updater against the chosen endpoint.
+- [x] Verify anonymous source/release access and download the exact asset without
+  authentication. The current updater's check/download functions retrieved v0.5.0
+  from `d-b-c-e/cruisn-collection` and verified its accepted hash on September 9.
+  No installed files were updated during this check.
+- [ ] Exercise the packaged updater UI against the now-public endpoint. The prior
+  frozen and upgrade/rollback checks remain valid, but are not this new live UI check.
 - [ ] Review the player-facing notes and release ZIP one final time. Publish only
   the same ZIP that passed acceptance; no tag-triggered rebuild.
 

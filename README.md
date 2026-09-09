@@ -92,8 +92,8 @@ CURVE** (response shape; below 100 = more bite near center, the cure for
 the games' lazy-center feel). Calibrate in-game first, then tune. Details
 in [docs/INSTALL.md](docs/INSTALL.md#steering-feel-sensitivity-and-curve).
 
-**Current private builds:** anonymous update checks return404 while this repository
-is private. Download the release ZIP with repository access until a public update destination is chosen.
+The repository and [release downloads](https://github.com/d-b-c-e/cruisn-collection/releases)
+are public. Update checks and downloads work without a GitHub account.
 
 **Updating**: `CruisnSetup.exe -> Updates...` checks GitHub and installs
 the newer version in place (the launcher's SETTINGS → SUPPORT has the same *Check

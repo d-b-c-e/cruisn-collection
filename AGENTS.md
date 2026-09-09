@@ -1,5 +1,17 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Repository made public (2026-09-09)
+
+User explicitly requested public visibility. `d-b-c-e/cruisn-collection` is now
+PUBLIC; older private-visibility restrictions and anonymous-404 notes are historical.
+Anonymous source access and current updater check/download pass for v0.5.0, with
+the exact accepted ZIP SHA25620d1cf67cc7db82fa6cebf494369117e25bf5cf6eae0e8b7d717a55c830d3734.
+Receipt: results/diagnostics/public-access-20260909.json. No new release or tag,
+native deployment, personal-state change or installed update occurred. Both hosted
+workflows remain disabled and the overnight heartbeat stays paused. Remaining
+licence/assets/history and human-coverage reviews in docs/PUBLIC-READINESS.md are
+not newly completed by this visibility change.
+
 ## v0.5.0 published and Stream Deck deployed (2026-09-08, late evening)
 
 v0.5.0 is PUBLISHED at96006e725d370e7222fe1fb97d751c9cd31cd122. Exact ZIP:
