@@ -6,10 +6,14 @@ local first=tonumber(os.getenv('CRUISN_SECTION_FIRST') or '5900')
 local last=tonumber(os.getenv('CRUISN_SECTION_LAST') or '6020')
 local binding_mode=os.getenv('CRUISN_SECTION_BINDINGS') or '0'
 assert(binding_mode=='0' or binding_mode=='1','invalid section binding trace mode')
+local final_mode=os.getenv('CRUISN_SECTION_FINAL') or '0'
+assert(final_mode=='0' or final_mode=='1','invalid final section trace mode')
+assert(final_mode=='0' or binding_mode=='1','final section trace requires material bindings')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
     and last-first<=12000,'invalid bounded section interval')
 local frame,taps,out,current,failure,serial,collecting=0,{},nil,nil,nil,0,false
 local bindings,preallocation=nil,nil
+local final_out,finishing=nil,nil
 local function words(p,n)
     assert(p>=0 and n>=0 and n<=64 and (p+n<=0x20000
         or p>=0x809800 and p+n<=0x80a000 or p>=0xc00000 and p+n<=0x1000000),
@@ -39,6 +43,7 @@ local function close()
     for _,tap in ipairs(taps) do tap:remove() end;taps={}
     if out then out:close();out=nil end
     if bindings then bindings:close();bindings=nil end
+    if final_out then final_out:close();final_out=nil end
 end
 cruisn_section_stop=emu.add_machine_stop_notifier(close)
 return function(n)
@@ -54,8 +59,21 @@ return function(n)
             code[0x6266]=0x08400a01;code[0x6268]=0x15400011
             code[0x9500]=0x022a4151;code[0x9501]=0x0840c200
         end
+        if final_mode=='1' then
+            code[0x7bef]=0x0e200000;code[0x7bf0]=0x03e0ffec;code[0x7bf2]=0x620094fe
+            code[0x7bf3]=0x6a070001;code[0x7bf4]=0x15400410;code[0x7c4e]=0x0820d5a3
+        end
         for p,v in pairs(code) do assert(s:read_u32(p)==v,string.format('section signature %x',p)) end
         out=assert(io.open('world-section-placement.jsonl','w'))
+        if final_mode=='1' then
+            final_out=assert(io.open('world-section-final.jsonl','w'))
+            taps[#taps+1]=s:install_read_tap(0xd5a3,0xd5a3,'section_object_final',guarded(function(o,d,m)
+                if cpu.state.PC.value~=0x7c4f then return end
+                assert(finishing and finishing.object==cpu.state.AR4.value,'final section object owner mismatch')
+                finishing.final=words(finishing.object,28);finishing.final_frame=frame
+                emit(finishing,final_out);finishing=nil
+            end))
+        end
         if binding_mode=='1' then
             bindings=assert(io.open('world-section-bindings.jsonl','w'))
             -- Capture the model argument BEFORE 7B9B calls the allocator.
@@ -102,7 +120,7 @@ return function(n)
         end
         taps[#taps+1]=s:install_read_tap(0xd580,0xd580,'section_object_begin',guarded(function(o,d,m)
             if cpu.state.PC.value~=0x7b9e then return end
-            assert(not current,'unfinished section allocation')
+            assert(not current and not finishing,'unfinished section allocation')
             serial=serial+1
             local object=cpu.state.AR4.value;local source=cpu.state.AR5.value-1
             local section=cpu.state.AR7.value
@@ -127,8 +145,21 @@ return function(n)
             if cpu.state.PC.value~=0x7c1c then return end
             assert(current and current.object==cpu.state.AR4.value,'section object owner mismatch')
             current.actual=words(current.object,28);current.end_frame=frame
+            if final_out then
+                local metadata=current.definition[6]
+                local signed=metadata>=0x80000000 and metadata-0x100000000 or metadata
+                local index=math.floor(signed/0x100000)
+                current.override_index=index;current.override_lookup=-1
+                if index>=0 then
+                    local table=s:read_u32(0x4151)
+                    assert(table<0x20000 and table+index<0x20000,'override table span is outside main RAM')
+                    current.override_lookup=words(table+index,1)[1]
+                end
+                current.loader_special=d
+                finishing=current
+            end
             emit(current);current=nil
         end))
     end
-    if n==last+1 then assert(not current and not preallocation,'incomplete section object at interval end');close() end
+    if n==last+1 then assert(not current and not preallocation and not finishing,'incomplete section object at interval end');close() end
 end
