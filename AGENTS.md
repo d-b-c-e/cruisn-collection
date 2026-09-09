@@ -1,5 +1,42 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 World 2.5 host adapter checkpoint — ACTIVE
+
+Read docs/reviews/2026-09-09-world25-host-scenery.md. Queue remains ACTIVE every30
+minutes without a cutoff. Collection0fcfe3e is pushed; native5a5e11d9ab7eda0ef8ae467ee325aed8d482d727
+is separately built/pushed, SHAa5d0fb417c2277346ae1c0742e82cf7a9ee5832fadde5ce5676f01a598a0ab43.
+Frozen build/candidates/5a5e11d9ab7/vunit.exe;141patches reconstruct
+treea60b47afefbd679d627d4ad4179d9c9e6f54a007. PersonalStreamDeck stillv0.5.0/SHA87d04de4.
+No deployment, release, hosted workflows, menu removal, physicalFFB or World tuning.
+
+World2.5 CLI host pending/future1x/2x/3x uses explicit revision layouts/guards.
+Roads remain24-only. Initialf027 fails2602 because section/lead clear together
+during menus; final skips this exact reset state and clears cache. Failure retained.
+Eleven snapshots/frontiers:42679descriptor/9322later-allocation comparisons PASS;
+four oldWorld24road oracles PASS. Reference fixes explicit pretrack and signed16
+screen bounds; earlier failures retained. Five6000runs preserve4191camera/12573ADC
+times1800..5990. Old5998trace lengthFAIL retained; explicit common interval exact.
+2x changes18/30GL;3x changes10more. All30GL3824x2073 and3773825quads/1666scenes
+repeat.3x p99/max5.09/5.50ms. VISUAL acceptance OPEN: disconnected terrain5900;
+roads/ground, clipping/material lifetime/occlusion/handover incomplete.
+4502pair original79636262-byteDMA/VRAM/textures/palette/meta andmotion exact.
+All7defaults/actualUDP-memory/4softwareforce/Exo21GL PASS on5a5. Local206Python,
+no skips,16native,10081C31/137yaw,32GPU/44commands PASS;314-file identity
+9c155b9359ecce9800bbf9584c52c52eda775f98f6cd68e061747ea81b59e3bf.
+
+NEXT USA: local corrected usa-model-probe-v4.lua + usa-oracle.py under
+results/diagnostics/world25-host-20260909 verifies5178projection buffers and44652
+orderedDMA quads/5068unclipped calls.141models/256objects;5113compact XZ transforms,
+65full;4516direct/662lookup palettes.110clipped/special calls excluded. Control
+matches3552inputs/1751camera/5253actualADCtimes/3GL. v1/v2 EMPTY oracle FAILs retained.
+This is LOCAL prototype, not native host drawing. Promote bounded reusable tools,
+implement USA's own two-word/interleaved codec and scene/residency/binding adapter;
+then OffRoad/Zeus, with World25roads alongside. Preserve zero guest cycles and
+side-effect-free reads. No per-model allowlist or cosmetic cross-game3x claim.
+Proof results/proof/2026-09-09-world25-host recomputes declared route/scalar/pixel/
+telemetry evidence; full geometry/resources/oracles/builds remain receipts. Raw
+game resources stay local. Before visible tests check rig availability; run serially.
+
 ## September 9 resumed host-road milestone — ACTIVE
 
 Maintainer explicitly resumed feature-parity work after the morning cutoff.

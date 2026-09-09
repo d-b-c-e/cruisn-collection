@@ -73,9 +73,12 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
    initial read-handler timing defect was fixed with direct RAM/side-effect-free
    reads and a zero-guest-cycle guard. Native8bc/SHAa2fb is separate; all seven
    defaults and204Python/16native/32GPU local checks pass. The4K monitor is back.
-   A World2.5 offline prototype matches4,390 future descriptors/1,251 later
-   allocations and0/1,048/2,165 projected quads at1x/2x/3x; integrate and exercise
-   it next. USA has a different two-word/interleaved model format, so verify its
+   The [World2.5 host adapter](docs/reviews/2026-09-09-world25-host-scenery.md)
+   is now integrated in a separate native candidate. Eleven snapshot/frontier
+   oracles pass; five6000-input controls preserve camera/actual ADC times.3x adds
+   scenery over2x in10/30 current4K images and repeats all30. Distant ground gaps
+   remain; World2.5 roads and broad visual acceptance are still incomplete.
+   USA has a different two-word/interleaved model format, so verify its
    codec before reusing the shared math. Off Road/Zeus adapters remain unfinished.
    Keep the candidate undeployed; no experiment menu cleanup is justified.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation

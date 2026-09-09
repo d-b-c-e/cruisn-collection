@@ -2,7 +2,9 @@
 
 At this morning checkpoint the overnight queue was **PAUSED**. The maintainer
 has since [explicitly resumed it](OVERNIGHT-2026-09-09.md); see the
-[road-integration milestone](reviews/2026-09-09-host-road-integration.md) for newer work. Robust, comparable 3x draw distance across all
+[road-integration milestone](reviews/2026-09-09-host-road-integration.md) and the
+[World2.5 adapter/USA codec checkpoint](reviews/2026-09-09-world25-host-scenery.md)
+for newer work. The table below preserves the morning state. Robust, comparable 3x draw distance across all
 four games is **not complete**. The useful progress is a World 2.4 future-scenery
 prototype, a targeted tunnel correction and substantially stronger road diagnostics.
 
