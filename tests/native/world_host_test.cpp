@@ -29,6 +29,9 @@ int main()
     assert(good.pending==1 && good.decoded==1 && good.objects.size()==1 && good.objects[0].quads.size()==1);
     cruisn::world_host::Quad expected={{0x100,0x200,246,189,266,189,266,210,246,210,0,16,4112,4096,0x60,0}};
     assert(good.objects[0].quads[0]==expected);
+    assert(cruisn::world_host::quad_hash(cruisn::world_host::hash_seed,expected)==UINT64_C(0xd08f68a370b37824));
+    auto changed=expected;std::swap(changed[2],changed[4]);
+    assert(cruisn::world_host::quad_hash(cruisn::world_host::hash_seed,changed)!=UINT64_C(0xd08f68a370b37824));
     // Geometry beyond the guest table must use only host reciprocals. The read
     // callback throws for every uncaptured address, including any table tail.
     ram[0x10803]=f(96000);

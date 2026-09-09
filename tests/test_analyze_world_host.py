@@ -6,10 +6,36 @@ import unittest
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
-from analyze_world_host import compare
+from analyze_world_host import compare, scene_summary, hash_quad, HASH_SEED, QUAD_FIELDS
 
 
 class HostEvidenceTests(unittest.TestCase):
+    def test_summary_cost_and_fingerprint_are_checked_against_detailed_trace(self):
+        with tempfile.TemporaryDirectory() as td:
+            a,b=Path(td)/'a',Path(td)/'b'
+            for p in (a,b):self.fixture(p,'black')
+            words=[256,512,246,189,266,189,266,210,246,210,0,16,4112,4096,96,0]
+            digest=f'{hash_quad(HASH_SEED,words):016x}'
+            header='frame,page,mode,pending,unsupported,distance,decoded,quads,microseconds,quad_trace,quads_hash,guard_us,prepare_us,pack_us,quad_log_us,submit_us,previous_scene_log_us\n'
+            detailed=header+f'1,513,2,1,0,0,1,1,100,1,{digest},1,10,2,80,7,0\n'
+            summary=header+f'1,513,2,1,0,0,1,1,20,0,{digest},1,10,2,0,7,0\n'
+            (a/'run/world-host-scenes.csv').write_text(detailed)
+            (b/'run/world-host-scenes.csv').write_text(summary)
+            (a/'run/world-host-quads.csv').write_text('frame,page,'+','.join(QUAD_FIELDS)+'\n1,513,'+','.join(map(str,words))+'\n')
+            (b/'run/world-host-quads.csv').unlink()
+            result=compare(a,b,expect_gl='equal',require_host_equal=True)
+            self.assertTrue(result['passed']);self.assertTrue(result['host_scene_fingerprints_equal'])
+            self.assertEqual(result['scenes'][1]['geometry_evidence'],'ordered fingerprint only')
+            self.assertEqual(result['scenes'][0]['phases']['quad_log_us']['p99'],80)
+            (b/'run/world-host-scenes.csv').write_text(summary.replace(digest,'0'*16))
+            self.assertFalse(compare(a,b,expect_gl='equal',require_host_equal=True)['passed'])
+            (a/'run/world-host-scenes.csv').write_text(detailed.replace(digest,'0'*16))
+            with self.assertRaisesRegex(ValueError,'fingerprint'):scene_summary(a/'run')
+            (b/'run/world-host-scenes.csv').write_text(summary.replace(',20,0,',',21,0,'))
+            with self.assertRaisesRegex(ValueError,'sum'):scene_summary(b/'run')
+            (b/'run/world-host-scenes.csv').write_text(summary.replace(',10,2,',',nan,2,'))
+            with self.assertRaisesRegex(ValueError,'cost'):scene_summary(b/'run')
+
     def fixture(self, root, color):
         run=root/'run'; (run/'gl-snap').mkdir(parents=True)
         (root/'report.json').write_text(json.dumps({'passed': True, 'comparison': {'passed': True}}))

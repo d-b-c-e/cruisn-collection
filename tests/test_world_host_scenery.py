@@ -93,6 +93,20 @@ class WorldModelTests(unittest.TestCase):
 
 
 class HostOptionsTests(unittest.TestCase):
+    def test_trace_mode_is_explicit_frozen_and_validated(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        args=parser.parse_args(['--world-host-scenery','observe','--world-host-first','1',
+                               '--world-host-last','10','--world-host-log','summary'])
+        settings={};configure(args,'crusnwld24',settings)
+        self.assertEqual(settings['MIDV_WORLD_HOST_QUADS'],'0')
+        self.assertEqual(configure(parser.parse_args([]),'crusnwld24',settings)['log'],'summary')
+        settings['MIDV_WORLD_HOST_QUADS']='2'
+        with self.assertRaises(ValueError):configure(parser.parse_args([]),'crusnwld24',settings)
+        configure(parser.parse_args(['--world-host-scenery','off']),'crusnwld24',settings)
+        self.assertNotIn('MIDV_WORLD_HOST_QUADS',settings)
+        with self.assertRaises(ValueError):
+            configure(parser.parse_args(['--world-host-log','summary']),'crusnwld24',settings)
+
     def test_host_far_is_frozen_separately_and_off_removes_it(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         args=parser.parse_args(['--world-host-scenery','observe','--world-host-first','1',

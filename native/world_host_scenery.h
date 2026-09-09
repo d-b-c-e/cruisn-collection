@@ -10,6 +10,15 @@ namespace cruisn { namespace world_host {
 using scenery::Float;
 using scenery::dot;
 using Quad=std::array<uint16_t,16>;
+// Stable ordered little-endian FNV-1a fingerprint, also checked independently
+// from detailed CSV traces. A diagnostic receipt, not a cryptographic identity.
+constexpr uint64_t hash_seed=UINT64_C(14695981039346656037);
+inline uint64_t quad_hash(uint64_t hash,const Quad &quad)
+{
+    for(auto word:quad)for(unsigned shift=0;shift<16;shift+=8)
+        hash=(hash^uint8_t(word>>shift))*UINT64_C(1099511628211);
+    return hash;
+}
 struct Object
 {
     uint32_t id=0,model=0,section=0;
