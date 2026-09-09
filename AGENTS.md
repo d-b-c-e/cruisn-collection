@@ -1,29 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September 9 Off Road native integration — ACTIVE validation
+## September 9 Off Road native acceptance — ACTIVE continuous work
 
-Read docs/reviews/2026-09-09-offroad-host-rendering.md. Native4a507c5f3724704b000a52a33a07756cf015202d
-is separately built/pushed, frozen build/candidates/4a507c5f372/vunit.exe,
-SHAc88ae4f260d663734bf9f582a90ca4488cfac154c90be9290bbb08e20b368d8d.
+Read docs/reviews/2026-09-09-offroad-host-rendering.md. Collection32750f7 implements
+explicit Off Road host CLI; native4a507c5f3724704b000a52a33a07756cf015202d is pushed,
+frozen build/candidates/4a507c5f372/vunit.exe, SHAc88ae4f260d663734bf9f582a90ca4488cfac154c90be9290bbb08e20b368d8d.
 146patches reconstruct tree06563dddcaa8c48572d05792c284df88e3e49894.
-Explicit CLI --offroad-host-scenery/source/distance/frame-bounds, old absent
-settings preserved. DirectRAM/zeroCPUcycles, no guest allocations/writes/DMA.
-Observe6000:1978scenes/52pretrack/7partial,4191camera/16764actualADCtimes exact;
-five independent live snapshot clocks/order/scalars/7402quads PASS.
-Control/future1/2/3 complete40GL3824x2073 each, originalroute exact.1xchanges29/40,
-2xchanges40/40over1x,3xchanges6/40over2x (4000..4250).3xp99/max4.303/7.488ms.
-Firstrepeat completed with11.34/5.81second outside-callback stalls during broad
-localdisksearch; retain it. Quietrepeat completes103.55s, pixels notyetcompared.
-Materialrejects272979/476earlyscenes2354..3609; fivegameplaysnapshotsnone.
-NEXT resource-control-v2/resource3-v2, final local checks andall7defaults running
-serially via local remaining-v2.py; checkprocesses before starting another game.
-Initialresource-control failed beforelaunch on equalGLfirst/last; v2uses5500:5501.
-Raw results/diagnostics/offroad-host-20260909. Broaderclipping/materiallifetime/
-occlusion/handover andfulltrackvisual acceptanceOPEN. RecordingonlyElPasostart,
-longnear-stoppedhillside, notwholetrack. Prior7defaults belongcf58untilrenewed.
-Personalv0.5.0/SHA87d04de4 unchanged; no release/deploy/hostedworkflows/physicalFFB/
-Worldtuning/menu removal. Continue directly; one-minute recovery only/no cutoff.
-USAperformance/World25roads/Zeus follow; no cosmeticcross-game3xclaim.
+Old absent options preserved; directRAM/zeroCPUcycles, no guest writes/allocations/DMA.
+Seven6000 observe/control/1/2/3/repeat/quiet preserve4191camera/16764actualADCtimes.
+Sixvisible runs eachcomplete40GL3824x2073.1xchanges29/40overcontrol,2x40/40over1x,
+3x6/40over2x (4000..4250).Bothrepeats match40GL and2573619orderedquads/1978scenes;
+fiveindependentlive clocks/scalars/7402quadsPASS.52pretrack/7partial handled.
+Two5502resourceprefixes preserve3701camera/14804ADC and53802202originalDMA/VRAM/
+texture/palette/meta bytes. No fullocclusion/clipping/handover/materiallifetime claim.
+Materialboundsreject272979objects/476earlyscenes2354..3609; fivegameplaysnapshotsnone.
+3x/quiet speed100.007/100.004%;callbackp99/max4.303/7.488 and4.473/7.642ms.
+Initialrepeat79.524%,11.34/5.81second outside-callback stalls duringbroaddisksearch
+retained; not root-cause proof. SynchronousGLBMP I/O needs separatetiming later.
+Initialresource-control invalid equalGLendpointsFAILretained; v2uses5500:5501.
+All7defaults/UDP-memory/4softwareforce/fullGermany/Exo21GL PASS on4a507.
+247Python/noskips,23native,10081C31/137yaw,32GPU/63commands PASS,367fileidentity
+0770bfc56ce9a35b95e5f2a0e0c14a4f7677fce5b60d855f111ffcf1da54d267.
+231fileproof results/proof/2026-09-09-offroad-host-rendering recomputes9traces,
+selected4Kpixels/scalars/fingerprints/timing/7telemetry/4force; fullrawgeometry/
+resources/otherGL/native/GPU remainreceipts. Raw evidence offroad-host-20260909.
+ElPaso start only, longnear-stoppedhillside; notwholetrack acceptance.
+NEXT Exotica local prototypes results/diagnostics/exotica-model-20260909:
+trials.py runs6000control/model-trial serially,21GL each, nativecapture4700.
+Localmotion actualanalog9C0000..F, cameraFEB..FED/view87FF35; modelreadB47D atPC6964,
+AR7object/AR0metadata, C31view/prepared/translation, ring30000..31FFF. Notqualifiedyet.
+Checkprocesses beforelaunch; modelmetadata+3wave/+4count, LODalternateifdepth>25000.
+Keep renderstate independent (oldadmission changedbias2047->0). OwnZeus codec,
+material residency, futuresections/scene boundary remainOPEN. USAperformance/
+World25roads also remain. Personalv0.5.0/SHA87d04de4 unchanged. No release/deploy/
+hostedworkflow/physicalFFB/Worldtuning/menu removal. Continue directly/no cutoff;
+one-minute heartbeat is recovery only. No cosmeticcross-game3xclaim.
 
 ## September 9 Off Road host foundation — ACTIVE continuous work
 

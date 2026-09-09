@@ -44,8 +44,8 @@ additional mountains and terrain ahead, including210925 changed pixels at4600.
 Three-times adds six more changed images over2x, at4000..4250;4250 changes25409
 pixels. All preserve the complete input sequence and camera/ADC timing. The first
 3x callback p99/max is4.303/7.488ms. Extra pixels are not a full visual acceptance
-verdict. Repeat pixels, original resources and seven-default acceptance are being
-checked separately.
+verdict. Both repeats match all40 completed images and all2573619 ordered host quads
+across1978 scenes, including detailed-observation versus summary fingerprints.
 
 The first repeat completed but encountered11.34s and5.81s frame intervals while
 a broad disk search was also running. Its largest host callback was6.30ms, so
@@ -72,10 +72,33 @@ The146-patch export reconstructs native tree
 `build/candidates/4a507c5f372/vunit.exe`. Raw diagnostic evidence is local under
 `results/diagnostics/offroad-host-20260909`; no raw game resources are published.
 
-Pending: repeat pixel comparison, original DMA/VRAM/material equality,
-4K timing analysis, all-seven default regression renewal and final local checks.
+The original resource pair at5500 matches53802202 bytes of hardware DMA history,
+VRAM, texture RAM, palette RAM and metadata. Both5502-input prefixes preserve
+3701 camera samples and14804 actual ADC reads/timestamps. Original resource
+equality does not certify the new scenery's foreground occlusion.
+
+All seven default regressions pass on this exact native candidate, including the
+full9269-frame Germany drive, seven UDP/independent-memory telemetry checks,
+four software force-policy/polarity checks and Exotica's21 original4K images.
+All physical output remains0; these are not new wheel-feel or whole-track tests.
+Local checks pass247 Python tests/no skips,23 native test programs,10081 C31/137 yaw
+vectors and32 GPU checks,63 commands. All367 source hashes match identity
+`0770bfc56ce9a35b95e5f2a0e0c14a4f7677fce5b60d855f111ffcf1da54d267`.
+
+Over1800..5990, control measures99.835%,1x100.009%,2x100.004%,3x100.007% and
+quiet repeat100.004% emulation speed. The initial interrupted repeat is retained
+at79.524%. Quiet repeat callback p99/max4.473/7.642ms. Screenshot capture performs
+synchronous readback and BMP writes on the GL consumer thread; separating
+readback/write timings is a useful next diagnostic. The present evidence does
+not attribute the entire stall to any one operation.
+
+The public [proof archive](../../results/proof/2026-09-09-offroad-host-rendering/README.md)
+recomputes nine input/motion traces, selected4K pixel differences, host decisions/
+fingerprints/timing and seven telemetry/four software force verdicts. Complete
+raw geometry/material/resource comparisons, otherGL images and native/GPU builds
+remain hash-bound receipts. Raw game resources stay local.
 Broader clipping, foreground occlusion, material lifetime and handover remain
-open even if those bounded checks pass. USA performance, World2.5 roads and the
+open despite these bounded passes. USA performance, World2.5 roads and the
 Zeus adapter remain separate unfinished work.
 
 Personal Stream Deck remains v0.5.0/SHA87d04de4. No release, deployment, hosted

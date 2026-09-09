@@ -22,8 +22,9 @@ turns, continue directly into the next useful implementation or verification ste
 [Off Road host rendering](docs/reviews/2026-09-09-offroad-host-rendering.md) is now
 integrated in a separate candidate. Its future2x adds mountains/terrain in40/40
 sampled4K images over1x;3x adds six further changes. Original inputs/camera/ADC
-and five independent live geometry snapshots pass. Repeat/resource/default/local
-checks are in progress. El Paso start coverage is limited; full clipping,
+and five independent live geometry snapshots pass. Both repeats match40GL/2573619orderedquads; original53.8MB resources and all7defaults
+pass. Clean3x runs measure about100% speed; an interrupted79.5% repeat is retained.
+El Paso start coverage is limited; full clipping,
 material lifetime, foreground occlusion and handover remain open.
 
 
