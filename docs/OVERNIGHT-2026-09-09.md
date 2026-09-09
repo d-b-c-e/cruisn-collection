@@ -9,13 +9,18 @@ The maintainer requests concentration on robust 3x draw distance equally across
 USA, World, Off Road and Exotica, followed by removal of confusing or redundant
 graphical experiments **if the replacement succeeds**. The existing
 `cruisn-overnight-cheats-and-distance` heartbeat is active with this scope and
-the display name **Cruisn extended scenery parity**, every 30 minutes without a
+the display name **Cruisn extended scenery parity**, every one minute without a
 new time cutoff. The September 8 queue and September 9 morning stop are historical.
 
-**Continuous active work:** the maintainer clarified that30 minutes is only the
-recovery wakeup interval. Do not stop at a milestone to wait for the next trigger.
+**Continuous active work:** the maintainer objected to30-minute gaps; the recovery
+wakeup is now one minute. Do not stop at a milestone to wait for the next trigger.
 Continue implementation and verification directly; use independent offline work
 during builds/replays or while the personal rig is occupied.
+
+Latest: [USA future sections](reviews/2026-09-09-usa-future-sections.md), source9058093,
+standalone native decoder and independent future/allocation/material checks.
+Integrate its cached source and live bindings next; do not claim future3x rendering
+from the offline descriptor milestone. Candidate4e565 and Stream Deck remain unchanged.
 
 v0.5.0 is the published and deployed baseline. The repository is now public.
 Preserve released tags/ZIPs, personal settings, original recordings and default

@@ -16,8 +16,14 @@ experiments only where successfully replaced. The September
 8 queue is historical. The repository is now public; remaining preparation is
 tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 
-The30-minute heartbeat is a recovery wakeup, not a work cadence. During active
+The heartbeat now uses a one-minute recovery wakeup, not a work cadence. During active
 turns, continue directly into the next useful implementation or verification step.
+
+[USA future sections](docs/reviews/2026-09-09-usa-future-sections.md) now have a
+standalone native decoder,26,807 independent descriptor comparisons and3,525
+later-allocation matches. Sampled texture/slot ownership checks pass; palette
+colors animate and must remain live. Next connect the cached source to the host
+renderer, checking upload readiness and handover before3x visual acceptance.
 
 Latest cross-game milestone: [USA host scenery](docs/reviews/2026-09-09-usa-host-scenery.md)
 is integrated in a separate native candidate. Host2x adds distant scenery in12/16

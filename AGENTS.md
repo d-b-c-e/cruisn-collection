@@ -1,5 +1,39 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 USA future sections — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-usa-future-sections.md. Collection9058093 adds standalone
+nativeusa_future_sections.h/analyzer, independentPython and boundedLua final
+allocation/frontier/resource probes. NOT linked into MAME yet.26,807ordinary
+Python/native descriptors and3,525lateractualallocations/3,104bindings PASS across
+five snapshots;185futurecustom cases excluded.1,724sources/1,770frontiers PASS;
+no livepartialstate observed, syntheticpartialguard only. Final1,700ordinary
+descriptors/1,504directpalettes/20sections/10headings/413offsets PASS.
+
+Three5012replays preserve3211camera/9633actualADCtimes and3lateGL3824x2073 each.
+Entire8MBtextureatlas equalsall5samples. InitialstaticpaletteFAIL retained:
+bank4300/index46 retainsowner/refcount but cyclesentries251..255. Check live
+ownership, refreshcolors/bindings; do NOT freeze palettecolors or allowlistmodels.
+Queueduploads/materiallifetime/sky/occlusion/handover remain OPEN. Currentpartial
+section is excluded; nextE4A5/loadedE49D/number are checked againsttrackA12E.
+
+223Python/no skips,19native,10081C31/137yaw,32GPU/53commands PASS at339-file identity
+db1c5e42696f8ef8891ca6bd52baba167a649a52fdade9f2c0d3c8c32bcd67e3.
+Native4e565/SHA248aef7c/142patches and personalv0.5.0/SHA87d04de4 unchanged.
+Seven-default acceptance last belongs to4e565's priorhost milestone; not renewed
+by standalonefuturework. Proof results/proof/2026-09-09-usa-future-sections
+recomputes routes/3latepixels/frontier/scalars; rawgeometry/resources/builds receipts.
+
+NEXT integrate boundedcachedUSA future source, explicitCLI/recordingcompatibility,
+livecheckedbinding/upload readiness, zeroCPUcycles/directRAM; verify1/2/3x/repeat,
+originalresources/route and4K/defaultgates. World25roads andOffRoad/Zeus follow.
+No release/deploy/menu removal/hostedworkflows/physicalFFB/Worldtuning.
+
+IMPORTANT: maintainer objects to30-minute idle gaps. Keep working directly during
+active turns. Existing heartbeat is now ACTIVE everyONEminute as recovery only,
+without cutoff. Do not end milestones merely to wait for it. This supersedes all
+older30-minute cadence statements below. Rig check before visible tests; serial emulators.
+
 ## September 9 USA host adapter — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-usa-host-scenery.md. Maintainer clarified:30-minute

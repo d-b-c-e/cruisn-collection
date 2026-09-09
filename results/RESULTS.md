@@ -4382,3 +4382,21 @@ Future sections remain the USA loading limit. A local preliminary decoder matche
 Material lifetime, occlusion/sky/handover and cross-game3x acceptance stay open.
 The30-minute heartbeat is recovery only; active work continues without deliberate
 waiting. StreamDeck staysv0.5.0; no release/deploy/hostedCI/physicalFFB/Worldtuning.
+
+## September 9 USA future descriptors and live material ownership
+
+Source9058093 and [review](../docs/reviews/2026-09-09-usa-future-sections.md):
+standalone native/Python future reader matches26,807 ordinary descriptors and
+3,525 later allocations/3,104 bindings across five snapshots.1,724 captured
+sources/1,770 frontiers and1,700 final ordinary allocations pass. Three new5012
+replays preserve3211camera/9633actualADC times and3late4K images each. Entire8MB
+atlas stays equal across5samples. Initial static-palette FAIL retained: bank4300
+keeps its owner but cycles5color entries. Ownership checks pass; use live colors.
+223Python/no skips,19native,32GPU/53commands pass at339-file identitydb1c5e42.
+Proof2026-09-09-usa-future-sections recomputes declared routes/pixels/frontier/
+scalars; raw descriptors/materials/native/GPU remain hash-bound receipts.
+
+Future decoder is not linked into MAME. Queued uploads, cached source integration,
+sky/occlusion/handover and cross-game3x remain open. Native4e565/seven-default
+lastgate/StreamDeckv0.5 unchanged. Recovery heartbeat nowONEminute; active work
+continues directly, without deliberately ending milestones to wait.
