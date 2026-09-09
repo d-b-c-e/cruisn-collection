@@ -79,6 +79,10 @@ Local checks pass 239 Python tests with no skips, 22 native test executables,
 10,081 C31 vectors/137 yaw vectors and 32 GPU checks, 61 commands total. All 358
 source files match identity
 `c3c81d2a2e74c4ff8152b7bdb85f46bb2189772dd3d0043f6723f367d884680a`.
+The [public proof archive](../../results/proof/2026-09-09-offroad-future-sections/README.md)
+recomputes eight original input/motion traces, fifteen earlier completed 4K images
+and scalar frontier checks. Raw geometry/material comparisons and native/GPU
+executions remain hash-bound receipts.
 An initial standalone analyzer invocation lacked the MinGW DLL path; its failed
 receipt is retained separately from the successful geometry checks.
 

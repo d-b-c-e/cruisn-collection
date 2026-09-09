@@ -19,6 +19,9 @@ No nativebuild/export/default renewal; cf58/SHA37c0a4ce owns previous7defaults.
 PersonalStreamDeckv0.5.0/SHA87d04de4 unchanged. RawresourcesLOCAL under
 results/diagnostics/offroad-model-20260909. Latestqualified verified-frontiers-v1
 andverified-sections-v3; old12snapshots in sections-frontiers/run.
+Sourceccbfb56 is pushed. Publicproof results/proof/2026-09-09-offroad-future-sections
+recomputes8input/motiontraces/15earlier4Kimages/scalarfrontiers; rawgeometry/
+materials/native/GPU stayreceipts. Includes prepared-transform checkpoint.
 NEXT live material/upload readiness, scene/sky/foreground placement and bounded
 cached pending/future hostprojection, then1/2/3x/repeat/route/resources/4K gates.
 USAperformance/World25roads/Zeus alongside. No release/deploy/hostedworkflow/
