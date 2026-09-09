@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 from scenery_c31 import F
 from usa_sections import check_record, future, material_operands, placement, section_definitions, palette_ownership
 from verify_usa_materials import compare_samples
+from usa_future_scene import collect, uploads
 from verify_usa_sections import check
 from verify_world_sections import yaw_matrix
 
@@ -17,6 +18,26 @@ ZERO = 0x80000000
 
 
 class UsaSectionTests(unittest.TestCase):
+    def test_pending_uploads_hold_only_the_affected_future_material(self):
+        m, p, _ = self.memory(0)
+        m.update({0x9ea9: 0x1000, 0x9ea8: 0x2000, 0x62: 0x1000, 0xcc3f: 0,
+                  0xc00001: 0x2003, 0x1003: 0x50001, 0x2005: 0x8003})
+        m.update(dict(enumerate(CONSTANTS, 0xc8ed)))
+        self.assertEqual(collect(m.__getitem__)[1]['ready'], 1)
+        m.update({0xcc3f: 0xcc42, 0xcc42: 0, 0xcc44: 0x9e0500, 0xcc45: 0x80000100})
+        self.assertEqual(uploads(m.__getitem__), (1, {5}, False))
+        self.assertEqual(collect(m.__getitem__)[1]['deferred'], 1)
+        m[0xcc44] = 0x9e0600
+        self.assertEqual(collect(m.__getitem__)[1]['ready'], 1)
+        m[0xcc44] = 0xa00000
+        self.assertEqual(collect(m.__getitem__)[1]['deferred'], 1)
+        m[0xcc42] = 0xcc42
+        with self.assertRaises(ValueError): uploads(m.__getitem__)
+        m[0xcc42] = 0; m[0xcc44] = 0x980040
+        with self.assertRaises(ValueError): uploads(m.__getitem__)
+        m[0xcc3f] = 0; m[0x2005] = 0x8004
+        self.assertEqual(collect(m.__getitem__)[1]['unbound'], 1)
+
     def test_live_palette_colors_can_change_but_wrong_slot_ownership_fails(self):
         m = {0x9ea9: 0x1000, 0x9ea8: 0x2000, 0x1003: 0x50001, 0x2005: 0x8003}
         self.assertEqual(palette_ownership(m.__getitem__, 3), 5)

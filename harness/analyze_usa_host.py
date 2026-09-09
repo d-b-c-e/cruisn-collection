@@ -18,7 +18,7 @@ def key(row):
     return int(row['frame']), row['time'], int(row['page'])
 
 
-def evidence(run):
+def evidence(run, retain_geometry=True):
     _, scenes = rows(run/'usa-host-scenes.csv')
     keys = [key(r) for r in scenes]
     if len(set(keys)) != len(keys) or any(a[0] >= b[0] for a, b in zip(keys, keys[1:])):
@@ -31,8 +31,21 @@ def evidence(run):
                 or int(r['host_far']) not in (80000, 160000, 240000)
                 or len(r['quads_hash']) != 16 or any(c not in '0123456789abcdef' for c in r['quads_hash'])):
             raise ValueError('invalid USA scene mode/count/fingerprint')
-    if any(int(r['pending']) != sum(int(r[k]) for k in COUNTERS[1:6]) for r in scenes):
-        raise ValueError('USA object decisions do not partition the pending list')
+    if any(int(r['pending'])+int(r.get('future_ready', 0)) != sum(int(r[k]) for k in COUNTERS[1:6]) for r in scenes):
+        raise ValueError('USA object decisions do not partition the pending/future sources')
+    future_fields = ('future_enabled', 'future_start', 'future_loading', 'future_number', 'future_sections',
+                     'future_definitions', 'future_special', 'future_unbound', 'future_deferred', 'future_ready',
+                     'future_uploads', 'future_partial', 'future_new_sections')
+    if any('future_enabled' in r for r in scenes):
+        for r in scenes:
+            if any(n not in r or int(r[n]) < 0 for n in future_fields) or int(r['future_enabled']) not in (0, 1):
+                raise ValueError('invalid USA future counts')
+            if int(r['future_definitions']) != sum(int(r[n]) for n in ('future_special', 'future_unbound', 'future_deferred', 'future_ready')):
+                raise ValueError('USA future decisions do not partition definitions')
+            if (int(r['future_partial']) not in (0, 1) or not 0 <= int(r['future_new_sections']) <= int(r['future_sections']) <= 128
+                    or int(r['future_ready']) > 16384 or int(r['future_definitions']) > 65536
+                    or not int(r['future_enabled']) and any(int(r[n]) for n in future_fields)):
+                raise ValueError('USA future state exceeds its declared mode/bounds')
     if any(abs(sum(float(r[p]) for p in PHASES)-float(r['microseconds'])) > .01 for r in scenes):
         raise ValueError('USA host phase costs do not sum to total')
     geometry = None
@@ -44,7 +57,10 @@ def evidence(run):
             reader = csv.DictReader(stream)
             if not {'frame', 'time', 'page', 'object', 'model', 'depth', *QUAD_FIELDS} <= set(reader.fieldnames or []):
                 raise ValueError('incomplete USA quad trace header')
-            geometry = {k: [] for k in keys}
+            if retain_geometry is not False:
+                geometry = {k: [] for k in keys if retain_geometry is True or k in retain_geometry}
+            counts = [0]*len(keys)
+            fingerprints = [HASH_SEED]*len(keys)
             last_index = -1
             indices = {k: i for i, k in enumerate(keys)}
             for row in reader:
@@ -52,27 +68,51 @@ def evidence(run):
                 if k not in indices or indices[k] < last_index:
                     raise ValueError('orphan or unordered USA geometry')
                 last_index = indices[k]
-                geometry[k].append([int(row[n]) for n in ('object', 'model', 'depth', *QUAD_FIELDS)])
-        for r, k in zip(scenes, keys):
-            value = HASH_SEED
-            for q in geometry[k]:
-                value = hash_quad(value, q[3:])
-            if len(geometry[k]) != int(r['quads']) or f'{value:016x}' != r['quads_hash']:
+                q = [int(row[n]) for n in ('object', 'model', 'depth', *QUAD_FIELDS)]
+                counts[last_index] += 1
+                fingerprints[last_index] = hash_quad(fingerprints[last_index], q[3:])
+                if geometry is not None and k in geometry:
+                    geometry[k].append(q)
+        for r, count, value in zip(scenes, counts, fingerprints):
+            if count != int(r['quads']) or f'{value:016x}' != r['quads_hash']:
                 raise ValueError('USA detailed geometry count/fingerprint mismatch')
     signature = [[*k, *(int(r[n]) for n in COUNTERS), r['quads_hash']] for k, r in zip(keys, scenes)]
+    if any(int(r.get('future_enabled', 0)) for r in scenes):
+        for item, r in zip(signature, scenes):
+            item.extend(int(r[n]) for n in future_fields if n != 'future_new_sections')
     summary = dict(scenes=len(scenes), first=keys[0][0], last=keys[-1][0],
                    totals={n: sum(int(r[n]) for r in scenes) for n in COUNTERS},
                    far=sorted({int(r['host_far']) for r in scenes}),
                    modes=sorted({int(r['mode']) for r in scenes}),
                    phases={p: cost_summary(r[p] for r in scenes) for p in (*PHASES, 'microseconds')},
                    scene_signature_sha256=hashlib.sha256(json.dumps(signature).encode()).hexdigest(),
-                   geometry_evidence='detailed' if geometry is not None else 'ordered fingerprints only',
+                   geometry_evidence='detailed' if quad_path.exists() else 'ordered fingerprints only',
                    sources={'scenes': sha256_file(run/'usa-host-scenes.csv'),
-                            'quads': sha256_file(quad_path) if geometry is not None else None})
+                            'quads': sha256_file(quad_path) if quad_path.exists() else None})
+    if any('future_enabled' in r for r in scenes):
+        summary['future'] = {n: sum(int(r[n]) for r in scenes) for n in future_fields if n not in ('future_start', 'future_loading', 'future_number')}
     return scenes, geometry, summary
 
 
-def compare(reference, candidate, expect_gl, require_host_equal=False):
+def compare_host_interval(a, b, first, last):
+    """An explicit interval never silently discards mismatching scene clocks."""
+    if first < 0 or last < first:
+        raise ValueError('invalid USA host comparison interval')
+    selected = [[r for r in rows if first <= int(r['frame']) <= last] for rows in (a, b)]
+    if any(not rows for rows in selected):
+        raise ValueError('empty USA host comparison interval')
+    # Exclude costs and cache misses; every rendering decision and clock remains.
+    def signature(rows):
+        return [[*key(r), *(int(r[n]) for n in COUNTERS), r['quads_hash'],
+                 *sorted((n, int(v)) for n, v in r.items()
+                         if n.startswith('future_') and n != 'future_new_sections' and int(v))]
+                for r in rows]
+    return dict(first=first, last=last, scenes=[len(rows) for rows in selected],
+                passed=signature(selected[0]) == signature(selected[1]),
+                scope='Explicit host interval only; complete inputs, motion and GL compared separately')
+
+
+def compare(reference, candidate, expect_gl, require_host_equal=False, host_frames=None):
     reports = [json.loads((p/'report.json').read_text()) for p in (reference, candidate)]
     result = dict(schema=1, scope='USA original route, host repeatability and visible changes; NOT visual acceptance',
                   reference=str(reference.resolve()), candidate=str(candidate.resolve()),
@@ -88,9 +128,14 @@ def compare(reference, candidate, expect_gl, require_host_equal=False):
         inputs.append((fields, [tuple(r[k] for k in fields) for r in data]))
     result['inputs_equal'] = inputs[0] == inputs[1]
     result['input_frames'] = [len(i[1]) for i in inputs]
-    result['scenes'] = [evidence(p)[2] if (p/'usa-host-scenes.csv').exists() else None for p in (a, b)]
+    host_data = [evidence(p, retain_geometry=False) if (p/'usa-host-scenes.csv').exists() else None for p in (a, b)]
+    result['scenes'] = [data[2] if data else None for data in host_data]
     signatures = [s['scene_signature_sha256'] if s else None for s in result['scenes']]
     result['host_equal'] = signatures[0] == signatures[1] if all(signatures) else None
+    if host_frames is not None:
+        if any(data is None for data in host_data): raise ValueError('missing USA host comparison evidence')
+        result['host_comparison'] = compare_host_interval(host_data[0][0], host_data[1][0], *host_frames)
+        result['host_equal'] = result['host_comparison']['passed']
     result['gl'] = compare_completed_frames(a/'gl-snap', b/'gl-snap', details=True)
     result['expect_gl'] = expect_gl
     result['gl_expectation_passed'] = not result['gl']['size_mismatches'] and result['gl']['passed'] == (expect_gl == 'equal')
@@ -104,10 +149,12 @@ def main():
     ap.add_argument('reference', type=Path); ap.add_argument('candidate', type=Path)
     ap.add_argument('--expect-gl', choices=('equal', 'changed'), required=True)
     ap.add_argument('--require-host-equal', action='store_true')
+    ap.add_argument('--host-frames', nargs=2, type=int, metavar=('FIRST', 'LAST'),
+                    help='explicit common host interval when captures have different bounds')
     ap.add_argument('--report', type=Path, required=True)
     args = ap.parse_args()
     try:
-        result = compare(args.reference, args.candidate, args.expect_gl, args.require_host_equal)
+        result = compare(args.reference, args.candidate, args.expect_gl, args.require_host_equal, args.host_frames)
     except (OSError, ValueError, KeyError, TypeError) as error:
         result = dict(passed=False, error=str(error))
     write_json(args.report, result)

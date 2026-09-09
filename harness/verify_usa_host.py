@@ -17,7 +17,7 @@ from verification import sha256_file, write_json
 from analyze_usa_host import COUNTERS, evidence, key
 
 
-def reference(memory, far):
+def reference(memory, far, future=None):
     def words(address, count):
         return [memory[address+i] for i in range(count)]
     counts = [0]*6
@@ -25,18 +25,24 @@ def reference(memory, far):
     seen = set()
     assert memory[0x41] == 0xc9b4 and memory[0x52] == 0xb2b3
     reciprocal = reciprocal_table({i: memory[0xb2b3+i] for i in range(-80, 5000)}, far)
-    owner = memory[0xc9b4]
+    owner = memory[0xc9b4]; candidates = []
     while owner:
         if owner in seen or len(seen) >= 2048 or not 0x1000 <= owner <= 0x20000-32:
             raise ValueError('invalid pending chain')
         seen.add(owner)
         obj = words(owner, 32)
-        counts[0] += 1
         if obj[14] & 0x3000 != 0x2000:
             raise ValueError('invalid pending flags')
+        candidates.append((owner, obj));owner = obj[0]
+    if future is not None:
+        for owner, obj in future:
+            if not owner & 0x80000000 or owner in seen:
+                raise ValueError('invalid future descriptor identity')
+            seen.add(owner);candidates.append((owner, obj))
+    for owner, obj in candidates:
+        counts[0] += 1
         if obj[14] & 0x8e3:
             counts[1] += 1
-            owner = obj[0]
             continue
         compact = int(not obj[14] & 0x08000840 and memory[0xc8f5] & 15 == 4 and memory[0xe8a1] != 0)
         record = dict(object_words=obj, compact=compact, camera=words(memory[0x45], 3),
@@ -74,7 +80,6 @@ def reference(memory, far):
             else:
                 counts[5] += 1
                 objects.append((owner, model, depth, quads(record, buffer)))
-        owner = obj[0]
     objects.sort(key=lambda item: (-item[2], item[0]))
     return counts, [[owner, model, depth, *q] for owner, model, depth, output in objects for q in output]
 

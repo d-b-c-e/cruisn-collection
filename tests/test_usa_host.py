@@ -8,7 +8,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 from usa_host_options import add_arguments, configure
-from analyze_usa_host import COUNTERS, PHASES, evidence
+from analyze_usa_host import COUNTERS, PHASES, evidence, compare_host_interval
 from analyze_world_host import HASH_SEED, QUAD_FIELDS, hash_quad
 
 
@@ -36,6 +36,24 @@ class UsaHostOptionsTests(unittest.TestCase):
         self.assertEqual(result['layer'], 'both')
         configure(self.args('--usa-host-scenery', 'off'), 'crusnusa', settings)
         self.assertEqual(settings, dict(MIDV_GL='1', MIDV_USA_HOST_SCENERY='0'))
+
+    def test_future_source_is_explicit_frozen_and_removed_with_off(self):
+        settings = dict(MIDV_GL='1')
+        args = self.args('--usa-host-scenery', 'draw', '--usa-host-first', '3500', '--usa-host-last', '5000')
+        configure(args, 'crusnusa', settings)
+        self.assertNotIn('MIDV_USA_HOST_FUTURE', settings)
+        configure(self.args(), 'crusnusa', settings)
+        self.assertNotIn('MIDV_USA_HOST_FUTURE', settings)
+        for label, value in [('future', '1'), ('pending', '0')]:
+            args.usa_host_source = label
+            configure(args, 'crusnusa', settings)
+            self.assertEqual(settings['MIDV_USA_HOST_FUTURE'], value)
+            self.assertEqual(configure(self.args(), 'crusnusa', settings)['source'], label)
+        settings['MIDV_USA_HOST_FUTURE'] = '2'
+        with self.assertRaises(ValueError): configure(self.args(), 'crusnusa', settings)
+        configure(self.args('--usa-host-scenery', 'off'), 'crusnusa', settings)
+        self.assertNotIn('MIDV_USA_HOST_FUTURE', settings)
+        with self.assertRaises(ValueError): configure(self.args('--usa-host-source', 'future'), 'crusnusa', settings)
 
     def test_incompatible_modes_and_incomplete_recordings_fail(self):
         valid = self.args('--usa-host-scenery', 'draw', '--usa-host-first', '3500', '--usa-host-last', '5000')
@@ -78,9 +96,12 @@ class UsaHostEvidenceTests(unittest.TestCase):
             scene, quad = self.fixture()
             self.write(run, [scene], [quad])
             self.assertEqual(evidence(run)[2]['totals']['quads'], 1)
+            self.assertIsNone(evidence(run, retain_geometry=False)[1])
+            self.assertEqual(evidence(run, retain_geometry=set())[1], {})
             for field, value in [('palette', 123), ('time', '60.123456789001'), ('page', 516)]:
                 self.write(run, [scene], [dict(quad, **{field: value})])
                 with self.assertRaises(ValueError): evidence(run)
+                with self.assertRaises(ValueError): evidence(run, retain_geometry=False)
 
     def test_duplicate_instrumentation_and_incomplete_counts_fail(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -89,4 +110,26 @@ class UsaHostEvidenceTests(unittest.TestCase):
             for scenes in ([scene, scene], [dict(scene, pending=2)], [dict(scene, quads=2)],
                            [dict(scene, time='NaN')], [dict(scene, prepare_us=-1, microseconds=-1)]):
                 self.write(run, scenes, [quad])
+                with self.assertRaises(ValueError): evidence(run)
+
+    def test_common_interval_preserves_clock_and_geometry_checks(self):
+        scene, _ = self.fixture()
+        later = dict(scene, frame=3503, time='60.2')
+        current = dict(scene, future_enabled=0, future_ready=0)
+        self.assertTrue(compare_host_interval([scene, later], [current], 3501, 3501)['passed'])
+        self.assertFalse(compare_host_interval([scene, later], [current], 3501, 3503)['passed'])
+        for changes in (dict(time='60.123456789001'), dict(quads_hash='0'*16), dict(future_ready=1)):
+            self.assertFalse(compare_host_interval([scene], [dict(current, **changes)], 3501, 3501)['passed'])
+        with self.assertRaises(ValueError): compare_host_interval([scene], [current], 3600, 3700)
+
+    def test_future_decisions_and_disabled_state_are_validated(self):
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory)
+            scene, quad = self.fixture()
+            scene.update(**dict.fromkeys(('future_enabled', 'future_start', 'future_loading', 'future_number',
+                'future_sections', 'future_definitions', 'future_special', 'future_unbound', 'future_deferred',
+                'future_ready', 'future_uploads', 'future_partial', 'future_new_sections'), 0))
+            for changes in (dict(future_ready=1), dict(future_enabled=0, future_uploads=1),
+                            dict(future_enabled=1, future_partial=2), dict(future_enabled=1, future_new_sections=1)):
+                self.write(run, [dict(scene, **changes)], [quad])
                 with self.assertRaises(ValueError): evidence(run)

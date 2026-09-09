@@ -3,7 +3,13 @@ local cpu=manager.machine.devices[':maincpu'];local s=cpu.spaces.program
 local ram=assert(manager.machine.memory.shares[':ram_base'])
 assert(manager.machine.system.name=='crusnusa')
 local first,last=1800,5010
-local frames={3000,3500,4000,4500,4900};local next_capture=1
+local frames={};local next_capture=1
+for part in (os.getenv('CRUISN_USA_FUTURE_FRAMES')or'3000,3500,4000,4500,4900'):gmatch('[^,]+')do
+ local n=tonumber(part)
+ assert(n and n%1==0 and n>=first and n<=last and (#frames==0 or n>frames[#frames]),'invalid future snapshot frames')
+ frames[#frames+1]=n
+end
+assert(#frames>0 and #frames<=16,'bounded future snapshot count required')
 local resources=os.getenv('CRUISN_USA_FUTURE_RESOURCES')=='1'
 local frame,tap,out,busy,failure,rom_done,scenes=0,nil,nil,false,nil,false,0
 local function read(p)

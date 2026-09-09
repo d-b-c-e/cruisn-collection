@@ -16,7 +16,13 @@ struct Object
 struct Scene
 {
     uint32_t pending=0,unsupported=0,near=0,far=0,projection=0,decoded=0;
+    uint32_t future=0;
     std::vector<Object> objects;
+};
+struct Descriptor
+{
+    uint32_t id=0;
+    std::array<uint32_t,32> words{};
 };
 inline bool ram_span(uint32_t p,uint32_t n)
 {return n<=8192 && uint64_t(p)+n<=0x20000;}
@@ -34,7 +40,8 @@ inline bool code_matches(const uint32_t *ram,size_t words)
         if(ram[op.address]!=op.value)return false;
     return true;
 }
-template<class Read> bool build(Read read,Scene &result,uint32_t far=80000)
+template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
+    const std::vector<Descriptor> *future=nullptr)
 {
     result=Scene{};
     if(far!=80000 && far!=160000 && far!=240000)return false;
@@ -49,29 +56,47 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000)
     for(unsigned i=0;i<3;++i)camera[i]=read(cam+i);
     for(unsigned i=0;i<9;++i){matrix[i]=read(view+i);billboard[i]=read(bill+i);}
     for(unsigned i=0;i<4;++i)compact_billboard[i]=read(compact_bill+i);
-    Scene scene;std::set<uint32_t> seen;
+    Scene scene;std::set<uint32_t> seen;std::vector<Descriptor> candidates;
     uint32_t id=read(0xc9b4);
     while(id)
     {
         if(id<0x1000 || !ram_span(id,32) || seen.size()>=2048 || !seen.insert(id).second)return false;
-        std::array<uint32_t,32> object;
-        const uint32_t owner=id;
-        for(unsigned i=0;i<32;++i)object[i]=read(id+i);
-        id=object[0];++scene.pending;
-        if((object[14]&0x3000)!=0x2000)return false;
+        Descriptor descriptor;descriptor.id=id;
+        for(unsigned i=0;i<32;++i)descriptor.words[i]=read(id+i);
+        id=descriptor.words[0];++scene.pending;
+        if((descriptor.words[14]&0x3000)!=0x2000)return false;
+        candidates.push_back(descriptor);
+    }
+    if(future)
+    {
+        if(future->size()>16384)return false;
+        for(const auto &descriptor:*future)
+        {
+            if(!(descriptor.id&0x80000000) || !seen.insert(descriptor.id).second)return false;
+            candidates.push_back(descriptor);++scene.future;
+        }
+    }
+    const std::array<Float,3> depth_row={{Float::load(matrix[6]),Float::load(matrix[7]),Float::load(matrix[8])}};
+    for(const auto &descriptor:candidates)
+    {
+        const auto &object=descriptor.words;const uint32_t owner=descriptor.id;
         // Unsupported transform/deformed/clipped codecs stay explicit. These
         // are branch flags, not model or track allowlists.
         if(object[14]&0x8e3){++scene.unsupported;continue;}
-        const bool compact=usa_model::compact_dispatch(object[14],mode,enabled);
-        usa_model::Transform transform;
-        if(!usa_model::prepare(object,camera,matrix,billboard,compact_billboard,
-            compact,compact?read(0x54):Float::integer(200).store(),transform))return false;
-        const int32_t depth=Float::load(transform.center[2]).fix();
+        // Reject out-of-range objects before constructing all nine transform
+        // elements. Preserve exactly the center's C31 store/reload boundary.
+        std::array<Float,3> delta;
+        for(unsigned i=0;i<3;++i)delta[i]=Float::load(object[1+i])-Float::load(camera[i]);
+        const int32_t depth=scenery::dot(delta,depth_row.data()).reload().fix();
         const uint32_t address=usa_model::select_model(object,depth);
         if(!address)return false;
         const uint32_t radius=read(address);
         if(int64_t(depth)-radius<1000){++scene.near;continue;}
         if(int64_t(depth)-radius>far){++scene.far;continue;}
+        const bool compact=usa_model::compact_dispatch(object[14],mode,enabled);
+        usa_model::Transform transform;
+        if(!usa_model::prepare(object,camera,matrix,billboard,compact_billboard,
+            compact,compact?read(0x54):Float::integer(200).store(),transform))return false;
         usa_model::Model model;
         if(!usa_model::load(read,address,model))return false;
         std::vector<usa_model::Vertex> projected;

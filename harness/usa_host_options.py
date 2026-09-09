@@ -11,14 +11,15 @@ def add_arguments(parser):
     parser.add_argument('--usa-host-far', type=int, choices=(80000, 160000, 240000))
     parser.add_argument('--usa-host-log', choices=('summary', 'quads'))
     parser.add_argument('--usa-host-layer', choices=LAYERS)
+    parser.add_argument('--usa-host-source', choices=('pending', 'future'))
 
 
 def configure(args, rom, settings):
     mode = getattr(args, 'usa_host_scenery', None)
-    first, last, far, trace, layer = [getattr(args, 'usa_host_'+name, None)
-                                     for name in ('first', 'last', 'far', 'log', 'layer')]
+    first, last, far, trace, layer, source = [getattr(args, 'usa_host_'+name, None)
+                                     for name in ('first', 'last', 'far', 'log', 'layer', 'source')]
     if mode is None:
-        if any(v is not None for v in (first, last, far, trace, layer)):
+        if any(v is not None for v in (first, last, far, trace, layer, source)):
             raise ValueError('USA host controls require an explicit mode')
         saved = settings.get(PREFIX+'SCENERY', '0')
         if saved == '0':
@@ -31,14 +32,15 @@ def configure(args, rom, settings):
             far = int(settings.get(PREFIX+'FAR', '80000'))
             trace = {'0': 'summary', '1': 'quads'}[settings.get(PREFIX+'QUADS', '0')]
             layer = {v: k for k, v in LAYERS.items()}[settings.get(PREFIX+'LAYER', '3')]
+            source = {'0': 'pending', '1': 'future'}[settings[PREFIX+'FUTURE']] if PREFIX+'FUTURE' in settings else None
         except (ValueError, KeyError) as error:
             raise ValueError('invalid recorded USA host controls') from error
     if rom != 'crusnusa' or mode not in MODES:
         raise ValueError('USA host scenery requires USA 4.5')
     if mode == 'off':
-        if any(v is not None for v in (first, last, far, trace, layer)):
+        if any(v is not None for v in (first, last, far, trace, layer, source)):
             raise ValueError('USA host off does not take additional controls')
-        for key in ('FIRST', 'LAST', 'FAR', 'QUADS', 'LAYER'):
+        for key in ('FIRST', 'LAST', 'FAR', 'QUADS', 'LAYER', 'FUTURE'):
             settings.pop(PREFIX+key, None)
         settings[PREFIX+'SCENERY'] = '0'
         return dict(mode='off')
@@ -47,7 +49,7 @@ def configure(args, rom, settings):
     layer = 'both' if layer is None else layer
     if first is None or last is None or not 1 <= first <= last <= 1000000:
         raise ValueError('USA host requires bounded first/last frames')
-    if far not in (80000, 160000, 240000) or trace not in ('summary', 'quads') or layer not in LAYERS:
+    if far not in (80000, 160000, 240000) or trace not in ('summary', 'quads') or layer not in LAYERS or source not in (None, 'pending', 'future'):
         raise ValueError('invalid USA host controls')
     if settings.get('MIDV_USA_FAR') or getattr(args, 'usa_far', None) is not None:
         raise ValueError('USA host requires stock guest distance/residency')
@@ -55,4 +57,7 @@ def configure(args, rom, settings):
         raise ValueError('USA host draw requires live GL')
     settings.update({PREFIX+'SCENERY': MODES[mode], PREFIX+'FIRST': str(first), PREFIX+'LAST': str(last),
                      PREFIX+'FAR': str(far), PREFIX+'QUADS': '1' if trace == 'quads' else '0', PREFIX+'LAYER': LAYERS[layer]})
-    return dict(mode=mode, first=first, last=last, far=far, log=trace, layer=layer, source='pending')
+    if source is not None:
+        settings[PREFIX+'FUTURE'] = '1' if source == 'future' else '0'
+    return dict(mode=mode, first=first, last=last, far=far, log=trace, layer=layer,
+                source='future' if settings.get(PREFIX+'FUTURE') == '1' else 'pending')

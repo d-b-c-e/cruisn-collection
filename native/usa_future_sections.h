@@ -2,6 +2,7 @@
 // USA 4.5 host-owned section descriptors. No guest allocation or state writes.
 #pragma once
 #include "usa_model.h"
+#include "usa_host_scenery.h"
 #include "world_future_sections.h" // Shared, independently checked C31 yaw polynomial only.
 
 namespace cruisn { namespace usa_future {
@@ -27,7 +28,9 @@ template<class Read> bool code_matches(Read read)
     const uint32_t code[][2]={{0x401a,0x0828e49d},{0x403b,0x1528e49d},
         {0x4096,0x082ae4a5},{0x40a1,0x152ae4a5},{0x40b9,0x62007035},
         {0x4114,0x0840040f},{0x95f7,0x6200b072},{0x9efc,0x0840c200},
-        {0x9efd,0x6a050005},{0x9f45,0x10628000},{0x9f46,0x15420801}};
+        {0x9efd,0x6a050005},{0x9f45,0x10628000},{0x9f46,0x15420801},
+        {0x9ec4,0x0820cc3f},{0x9ec6,0x1520cc41},{0x9edb,0x08422101},
+        {0x9ee9,0xda822221},{0x9fb7,0x1528cc3f},{0x9fc3,0x1541c100}};
     for(const auto &op:code)if(read(op[0])!=op[1])return false;
     const uint32_t constants[]={4263704963U,4118653474U,3979254875U,4088417758U,4178085694U,4258616668U,4788187U};
     for(unsigned i=0;i<7;++i)if(read(0xc8ed+i)!=constants[i])return false;
@@ -76,7 +79,7 @@ inline bool descriptor(const std::array<uint32_t,6> &definition,
     return true;
 }
 template<class Read> bool decode(Read read,uint32_t p,uint32_t number,
-    std::vector<Source> &result,uint32_t &next)
+    std::vector<Source> &result,uint32_t &next,bool bindings=true)
 {
     result.clear();next=0;
     if(!span(p,12))return false;
@@ -84,8 +87,8 @@ template<class Read> bool decode(Read read,uint32_t p,uint32_t number,
     if(section[0]==UINT32_MAX){next=p;return true;}
     const uint32_t count=header_size(section[0]);next=p+count;
     std::array<uint32_t,7> constants;for(unsigned i=0;i<7;++i)constants[i]=read(0xc8ed+i);
-    const uint32_t table=read(0x9ea9),owners=read(0x9ea8);
-    if(table>=0x20000 || uint64_t(owners)+128>0x20000)return false;
+    const uint32_t table=bindings?read(0x9ea9):0,owners=bindings?read(0x9ea8):0;
+    if(bindings && (table>=0x20000 || uint64_t(owners)+128>0x20000))return false;
     std::vector<Source> objects;
     for(uint32_t stage=0;stage<3;++stage)
     {
@@ -105,9 +108,9 @@ template<class Read> bool decode(Read read,uint32_t p,uint32_t number,
             {
                 if(!span(definition[0]-1,3))return false;
                 object.prefix=read(definition[0]-1);const uint32_t binding=table+(object.prefix&0xfff);
-                if(binding>=0x20000)return false;
-                object.binding=read(binding);
-                if(object.binding)
+                if(bindings && binding>=0x20000)return false;
+                object.binding=bindings?read(binding):0;
+                if(bindings && object.binding)
                 {
                     const uint32_t slot=object.binding>>16;
                     if(slot>=128 || !(object.binding&65535) ||
@@ -145,5 +148,136 @@ template<class Read> bool build(Read read,Result &result,uint32_t limit=64)
         out.sources.insert(out.sources.end(),sources.begin(),sources.end());p=following;
     }
     result=std::move(out);return true;
+}
+
+struct Uploads
+{
+    uint32_t count=0;
+    bool textures=false;
+    std::array<bool,128> palettes{};
+};
+template<class Read> bool queued_uploads(Read read,Uploads &result)
+{
+    result=Uploads{};Uploads uploads;std::set<uint32_t> seen;
+    uint32_t p=read(0xcc3f);
+    while(p)
+    {
+        if(p<0xcc42 || p>=0xce42 || (p-0xcc42)%4 || !seen.insert(p).second || seen.size()>128)return false;
+        const uint32_t destination=read(p+2),length=read(p+3)&0x7fffffff;
+        if(!length || length>0x200000)return false;
+        const uint64_t end=uint64_t(destination)+length;
+        if(destination>=0x9e0000 && end<=0x9e8000)
+        {
+            for(uint32_t bank=(destination-0x9e0000)/256;bank<=(uint32_t(end)-1-0x9e0000)/256;++bank)
+                uploads.palettes[bank]=true;
+        }
+        else if(destination>=0xa00000 && end<=0xc00000)uploads.textures=true;
+        else return false; // Unmapped upload target must not be treated as ready.
+        ++uploads.count;p=read(p);
+    }
+    result=uploads;return true;
+}
+struct Section
+{
+    uint32_t next=0,number=0;
+    std::vector<Source> sources;
+};
+struct Cache
+{
+    uint32_t track=0,last=0;
+    std::map<uint32_t,Section> sections;
+    std::map<uint32_t,std::vector<uint32_t>> palettes;
+    void clear(){track=last=0;sections.clear();palettes.clear();}
+};
+struct Stats
+{
+    uint32_t start=0,loading=0,number=0,sections=0,new_sections=0,definitions=0;
+    uint32_t special=0,unbound=0,deferred=0,ready=0,uploads=0;
+    bool partial=false,pretrack=false;
+};
+template<class Read> bool collect(Read read,Cache &cache,std::vector<usa_host::Descriptor> &result,
+    Stats &stats,uint32_t limit=64)
+{
+    result.clear();stats=Stats{};
+    if(!limit || limit>128)return false;
+    Stats current;current.start=read(0xe4a5);current.loading=read(0xe49d);current.number=read(0xe4a4);
+    const uint32_t track=read(0xa12e);
+    if(!current.start && !current.loading){cache.clear();current.pretrack=true;stats=current;return true;}
+    if(!span(track,1) || !span(current.start,1) || !span(current.loading,1) || current.number>4096)return false;
+    uint32_t p=track,previous=0;
+    for(uint32_t i=0;i<current.number;++i)
+    {
+        if(!span(p,1) || read(p)==UINT32_MAX)return false;
+        previous=p;p+=header_size(read(p));
+    }
+    if(p!=current.start || (current.loading!=current.start && current.loading!=previous))return false;
+    current.partial=current.loading!=current.start;
+    if(cache.track!=track || (cache.last && current.start<cache.last))cache.clear();
+    cache.track=track;cache.last=current.start;
+    while(!cache.sections.empty() && cache.sections.begin()->first<current.start)cache.sections.erase(cache.sections.begin());
+    // Static palette-index lists are small, but remain bounded on long sessions.
+    if(cache.palettes.size()>4096)cache.palettes.clear();
+    const uint32_t table=read(0x9ea9),owners=read(0x9ea8);
+    if(table>=0x20000 || uint64_t(owners)+128>0x20000 || read(0x62)!=table)return false;
+    Uploads uploads;if(!queued_uploads(read,uploads))return false;current.uploads=uploads.count;
+    std::vector<usa_host::Descriptor> objects;
+    std::set<uint32_t> live_sections;
+    p=current.start;
+    for(uint32_t number=0;number<limit;++number)
+    {
+        if(!span(p,1))return false;
+        if(read(p)==UINT32_MAX)break;
+        auto found=cache.sections.find(p);
+        if(found==cache.sections.end())
+        {
+            if(cache.sections.size()>=128)return false;
+            Section section;section.number=current.number+number+1;
+            if(!decode(read,p,section.number,section.sources,section.next,false))return false;
+            found=cache.sections.emplace(p,std::move(section)).first;++current.new_sections;
+        }
+        const auto &section=found->second;
+        if(section.number!=current.number+number+1)return false;
+        ++current.sections;live_sections.insert(p);
+        for(size_t ordinal=0;ordinal<section.sources.size();++ordinal)
+        {
+            const auto &source=section.sources[ordinal];++current.definitions;
+            if(!source.supported){++current.special;continue;}
+            const uint32_t model=source.words[13];auto material=cache.palettes.find(model);
+            if(material==cache.palettes.end())
+            {
+                if(cache.palettes.size()>=8192)return false;
+                std::set<uint32_t> indices;indices.insert(source.prefix&0xfff);
+                if(!(source.words[14]&0x400))
+                {
+                    usa_model::Model decoded;if(!usa_model::load(read,model,decoded))return false;
+                    for(const auto &polygon:decoded.polygons)indices.insert(polygon[0]>>16);
+                }
+                material=cache.palettes.emplace(model,std::vector<uint32_t>(indices.begin(),indices.end())).first;
+            }
+            bool unbound=false,deferred=uploads.textures;uint32_t direct=0;
+            for(uint32_t index:material->second)
+            {
+                if(index>=4096 || uint64_t(table)+index>=0x20000)return false;
+                const uint32_t binding=read(table+index),slot=binding>>16;
+                if(!binding){unbound=true;continue;}
+                // A pending guest release/upload may temporarily clear the refcount.
+                // Skip this descriptor instead of borrowing a recycled bank.
+                if(slot>=128 || !(binding&65535) || read(owners+slot)!=(0x8000|index))
+                {unbound=true;continue;}
+                deferred|=uploads.palettes[slot];
+                if(index==(source.prefix&0xfff))direct=slot<<8;
+            }
+            if(unbound){++current.unbound;continue;}
+            if(deferred){++current.deferred;continue;}
+            if(objects.size()>=16384 || ordinal>=65536 || section.number>=32768)return false;
+            usa_host::Descriptor object;object.id=0x80000000|(section.number<<16)|uint32_t(ordinal);
+            std::copy_n(source.words.begin(),32,object.words.begin());object.words[16]=direct;
+            objects.push_back(object);++current.ready;
+        }
+        p=section.next;
+    }
+    for(auto it=cache.sections.begin();it!=cache.sections.end();)
+        if(!live_sections.count(it->first))it=cache.sections.erase(it);else ++it;
+    result=std::move(objects);stats=current;return true;
 }
 } }

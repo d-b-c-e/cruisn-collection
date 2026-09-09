@@ -27,6 +27,8 @@ class Memory:
                 return struct.unpack_from('<I', data, 4*(p-start))[0]
         raise ValueError(f'uncaptured USA operand {p:x}')
 
+    __getitem__ = __call__
+
 
 def native_check(binary, run, frame, memory, decoded):
     command = [str(binary.resolve()), '--future', str(run/f'usa-future-ram-{frame}.bin'),
