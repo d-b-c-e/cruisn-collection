@@ -1,8 +1,8 @@
 # Cruis'n Collection — Setup Guide
 
 Two audiences: **players** (a release zip; nothing to build) and
-**developers** (build from source). This project ships no ROMs, no game
-assets and no stock MAME binaries — you supply your own MAME 0.286 ROM sets;
+**developers** (build from source). This project ships no ROMs — you supply
+your own MAME 0.286 ROM sets;
 the emulator in the zip is built from the GPL patch series in `patch/`.
 
 ---
@@ -11,13 +11,13 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 
 ### You need
 
-- Windows 10/11, 64-bit. A GPU with **OpenGL 4.3** (GeForce 600+ / Radeon
-  HD 7000+ / Intel HD 4000+ or newer; integrated graphics are fine).
+- Windows 10/11, 64-bit. A GPU and driver supporting **OpenGL 4.3**.
+  Performance at 4K depends on the GPU; model-wide minimums have not been qualified.
 - Your own **MAME 0.286 ROM sets**: `crusnusa`, `crusnwld`, `offroadc`,
   `crusnexo` — plus **`crusnwld24`** for Cruis'n World and the two DSP boot
   ROM sets **`tms320c31`** / **`tms320c32`** (see the ROM table).
-- Optional: a wheel (any DirectInput wheel; force feedback is driven by
-  the emulator itself), a shifter or paddles, a gamepad.
+- Optional: DirectInput wheel/pedals/shifter or a gamepad (force feedback is driven by
+  the emulator through SDL2 haptics). Wheel compatibility is still being expanded.
 
 ### Steps
 
@@ -31,7 +31,7 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
    0.286's ROM list and copied into `roms\` under the right name. A file or
    two with odd checksums is reported but doesn't block anything (redumps
    are common; MAME loads them).
-4. Have a wheel? Bind it in the launcher (**SETTINGS → CONTROLS SETUP**);
+4. Have a wheel? Bind it in the launcher (**SETTINGS → CONTROLS → CONTROLS SETUP**);
    force feedback follows the steering device by itself — see *Force
    feedback* below.
 5. **Launch Collection** (or double-click `CruisnCollection.exe` any time).
@@ -46,11 +46,15 @@ the emulator in the zip is built from the GPL patch series in `patch/`.
 
 ### Updating to a new version
 
+As of 2026-09-08 the repository is private. Downloads need repository access and
+the anonymous updater cannot discover releases. Public access is being prepared;
+see [PUBLIC-READINESS.md](PUBLIC-READINESS.md).
+
 **In the app** (v0.3.4+): `CruisnSetup.exe` -> **Updates...** checks
 GitHub for a newer release; **Download and install** downloads it, closes
 the launcher, installs over this folder and reopens the launcher. ROMs,
 settings, bindings, calibration and the wheel stay. The launcher's
-SETTINGS -> CHECK FOR UPDATES does the same from the menu.
+SETTINGS -> SUPPORT -> CHECK FOR UPDATES does the same from the menu.
 
 **By hand**: close the launcher and unzip the new version over your
 existing folder (say yes to overwriting). Or unzip into a new folder and
@@ -63,16 +67,20 @@ across. Your `rig` folder and `roms` are never inside the zip.
   (or the gas pedal) opens it. Each game's page has **PLAY** on top plus
   that game's own settings: steering sensitivity and curve, volume, free
   play, [imported Cheats](CHEATS.md), and for World the 2.4 / 2.5 revision switch.
-- **SETTINGS** (below the cards): CRT effects, crack fill, aspect (4:3 /
-  16:9 trimmed / 16:9 full), graphics experiments, FFB strength, **TRANSMISSION**
-  (H-pattern shifter or sequential paddles), **CONTROLS SETUP**.
+- **SETTINGS** (below the cards): **Display** controls CRT, aspect and internal
+  scale; **Experiments** selects shared/per-game trials; **Force Feedback** controls
+  strength, direction, spring, feel and impact cues; **Controls** selects transmission
+  and bindings; **Support** provides updates, diagnostics and support bundles.
+- Cheats and top-level Experiments describe the current source. The published
+  v0.4.0 ZIP has no Cheats menu and still nests Experiments under Display.
 - **Esc** backs out; from the cards row it quits.
 
 ### Optional experiments
 
 Open **SETTINGS → EXPERIMENTS**, beside Display, then choose Shared or a game.
 This top-level menu can contain gameplay as well as rendering experiments.
-Per-game trials start off and take effect on the next launch. Shared Crack Fill
+Per-game trials start off and take effect on the next launch. World lookahead
+presets to +8 but is inactive while World Draw Distance is Off. Shared Crack Fill
 retains its existing On default; moving the menu does not change preferences.
 
 | Setting | Games | What to expect |
@@ -80,7 +88,10 @@ retains its existing On default; moving the menu does not change preferences.
 | **Crack Fill** (Shared) | USA, World, Off Road | Borrows nearby pixels for small gaps; can smear fine detail. Its existing default remains On. This is separate from the retired broad Margin Fill. |
 | **Seam Alignment** | USA, World, Off Road | Aligns certain mismatched terrain edges at enhanced resolutions. Closed a measured blue seam in Off Road, but can shift nearby texture interpolation. |
 | **Widescreen Terrain** | World 2.4/2.5 | Repairs some missing edge terrain, including a measured Germany road hole. Does **not** extend draw distance. Adds drawing work; old recordings can take a different route. |
-| **Distant Scenery** | World 2.4, widescreen, scale2×+ | Draws five verified Germany mountain models, four tree variants and one forest strip earlier. Preserves the mountains' later shape. Experimental and limited to identified scenery; remaining pop-in and object activation are still being investigated. |
+| **Distant Scenery** | World 2.4, widescreen, scale 2×+ | Draws five verified Germany mountain models, four tree variants and one forest strip earlier. Preserves the mountains' later shape. Experimental and limited to identified scenery; remaining pop-in and object activation are still being investigated. |
+| **World Draw Distance / Scenery Lookahead** | World 2.4/2.5 | Off/2×/3× with +0/+8/+12 section lookahead. Shared across the World revisions; excludes Distant Scenery. Requires full widescreen and scale 2×+. New York 3×/+12 has a reported finish crash. |
+| **Off Road Draw Distance** | Off Road | Off/2×/3× global far/projection trial. Modest measured benefit; no sampled 3× gain over 2×. Requires full widescreen and scale 2×+. |
+| **Widescreen Scenery** | Exotica | Restores some missing margin geometry. Does not extend far distance; enhanced renderer/full widescreen/scale 2×+ required. |
 | **Detail Distance** | USA v4.5 | Keeps higher-detail models farther away. The recorded route required about 5.25% more polygon submissions. |
 | **Draw Limit** | USA v4.5 | Raises a distant-object rejection limit. It added submissions but **no visible improvement** in the tested scene; it cannot load missing scenery. |
 
@@ -105,7 +116,7 @@ local treatment for small unwritten gaps; neither setting creates missing terrai
 Keyboard works with nothing bound: **5** = coin, **1** = start, arrow keys
 steer / gas / brake, plus the in-game keys below.
 
-**Wheel, pedals, gamepad: SETTINGS → CONTROLS SETUP.** It asks for each
+**Wheel, pedals, gamepad: SETTINGS → CONTROLS → CONTROLS SETUP.** It asks for each
 control in turn — turn the wheel, press each pedal, press the buttons you
 want for coin, start, views, radio, then your shifter (H-pattern gears 1–4)
 *or* paddles (shift up / down), depending on the TRANSMISSION setting.
@@ -120,21 +131,18 @@ then follow the prompts — turn the wheel fully each way, press each pedal
 fully, F2 to advance. It's stored in the game's own settings memory and
 never asked again. USA and Off Road don't do this.
 
-Pick **TRANSMISSION** first: *H-PATTERN SHIFTER* for a real H-pattern
-shifter, *SEQUENTIAL* for paddles or a sequential stick. Both sets of
-bindings are remembered, so switching later needs no rebinding. (Cruis'n
-Exotica has no sequential mode in its hardware — it stays on
-automatic-select with paddles.)
+Pick **SETTINGS → CONTROLS → TRANSMISSION** first: *H-PATTERN SHIFTER* for
+a real shifter, *SEQUENTIAL* for paddles or a sequential stick. Both binding sets
+are preserved when switching. Select **MANUAL inside the game** as well.
+World revision 2.5 is automatic-only; choose 2.4 on its game card for manual racing.
 
-**Cruis'n Exotica and shifting**: the game only knows a 4-position
-H-pattern shifter. With TRANSMISSION set to SEQUENTIAL, the collection
-gives it a virtual one: your shift-up / shift-down paddles move a gear
-1-4 and the game sees that gear engaged (v0.3.5+). With H-PATTERN the
-real shifter is used as-is. **Known gap**: in MAME today the TRANS
-SELECT screen always picks AUTO whatever you do (it ignores the wheel,
-the shifter and every button); the upstream Exotica emulation is still
-marked not-working and this is one of the reasons. Exotica drives as an
-automatic until that is solved.
+Exotica's hardware has a four-position shifter. The collection provides a virtual
+four-speed shifter when sequential mode and both paddle bindings are present.
+The launcher also sets the cabinet option needed for transmission selection;
+steer to the displayed **M** and confirm with the accelerator. Older instructions
+that Exotica always selects AUTO or requires reversed driving input are obsolete.
+If `exotica_manual = 0` was saved in `rig/collection.ini`, it disables this cabinet
+setup. All-gear acceptance with both physical shifter styles remains incomplete.
 
 ### In-game keys
 
@@ -150,128 +158,72 @@ automatic until that is solved.
 
 ### Force feedback
 
-The emulator drives your wheel itself. The value the arcade board wrote to
-its wheel motor every frame becomes one signed constant force on the
-wheel's steering axis through SDL2 haptics - the way Cannonball DX and
-Flycast drive wheels. Nothing to install and no device IDs: forces go to
-the device you bound as steering in **SETTINGS → CONTROLS SETUP** (with no
-wheel bound, to the first wheel-type force-feedback device found).
-`midv_ffb.log` beside `vunit.exe` records which device was taken and why,
-and it is part of every support bundle.
+FFB is built into the emulator through SDL2 haptics and the shared wheel toolkit.
+It follows the device bound to steering; no FFB Arcade Plugin, GUID or external
+FFB application is required. If no steering device is bound, the emulator tries
+the first wheel-type haptic device. `midv_ffb.log` identifies the selected device.
 
-Overall strength is **SETTINGS → FFB STRENGTH** (0% = force feedback off);
-each game card also has its own **FFB STRENGTH** row (blank = the SETTINGS
-value) - Cruis'n Exotica's spring is much softer than the V-Unit kicks, so
-100 there with 50 globally is a sensible pairing.
-What the V-Unit games send is
-not a centering spring: every time the wheel moves, the game kicks back
-against the movement, harder for a bigger movement, and the kick fades
-within a tenth of a second (a damper - it made the weak arcade motor
-feel heavy). On a strong direct-drive base (Fanatec DD, Moza, Simucube)
-at 100% the kick itself moves the wheel, the game kicks back again, and
-the wheel starts slamming left-right on its own. So: start at **30-40%**
-on an 8 Nm base (this project's Moza rig runs 50%) and raise until it
-starts to feel nervous, then back off (a fresh install starts at 50).
-Adding some damping/friction in
-the wheel's own software helps too. **SETTINGS → FFB PEAK LIMIT** is the
-other tool: it caps the kicks (try **40**) while small road forces keep
-their full strength, so the wheel stays lively without the slamming. It
-applies to all three V-Unit games; **Cruis'n World** is the one that
-needs it most - off-track and in crashes it holds *full* force for half
-a second at a time, which on a direct-drive base is a punch.
-**Cruis'n Exotica** has force feedback too (since v0.3.5): its motor
-signal was not emulated by MAME at all until this project found it; it is
-a centering spring plus race effects, and FFB STRENGTH and FFB PEAK LIMIT
-apply to it as well. Rotation range (arcade Cruis'n wheels turn about
-270°) is set in your wheel's own software.
+Use **SETTINGS → FORCE FEEDBACK**:
 
-**SETTINGS → FORCE FEEDBACK → FEEL** offers four tunes of the same forces,
-differing in one thing only - how fast the wheel follows the game. **RAW**
-does no filtering at all (most detail, and the most likely to make a strong
-direct-drive base hunt), **CRISP** is lightly filtered, **STANDARD** is the
-default, **CALM** is heavily filtered for a base that will not settle. Drive
-two and tell us which you liked; that is far easier to act on than a
-description.
+| Control | Meaning |
+|---|---|
+| **Strength** | Shared 0–100% level; fresh default 50%. 0 disables physical output. There is no current per-game strength row. |
+| **Feel** | CRISP (`cruisn-vunit@2`) is the current default. STANDARD uses more smoothing; RAW removes smoothing; CALM smooths more heavily. These are signal-conditioning presets. |
+| **Spring** | Optional extra centering; default Off. Scales with Strength and is not applied to Exotica, which supplies its own centering force. |
+| **Direction** | Physical device force sign, separate from steering input and Exotica's cabinet-polarity correction. |
+| **Impact Cues** | Per-game trial, default Off. Infers contacts from force spikes and adds short pulses while reserving 25% of the constant-force budget, making sustained steering lighter. It does not read collision flags. |
 
-**Making your own tune**: beside `vunit.exe` there is a
-`force-profiles.user.ini.example`. Rename it to `force-profiles.user.ini`
-(drop the `.example`) and it becomes yours - every value is already set to
-what STANDARD uses, with a comment saying what it changes, so your first
-edit is the only difference between them. Then pick **MY TUNE (50)** in the
-FEEL row. That file is never overwritten by an update, and its tunes win
-over the shipped ones; the `force-profiles.ini` next to it is replaced on
-every update, so edit the `.user.ini`, not that one.
+There is no current **FFB Peak Limit** menu row; older guides described a removed
+control. Start with a low Strength on an unfamiliar base and compare one setting
+at a time. If the wheel oscillates or pulls away from centre, turn Strength to 0
+before adjusting it. Comfortable force has not been certified across every wheel.
 
-**Centring spring** (SETTINGS > FORCE FEEDBACK > SPRING) pulls the wheel
-back to straight so it does not feel floppy. It is **off by default**: the
-games' own forces are small, and a constant spring easily drowns the road
-detail underneath it. If you want centring, start around 20-30 and stop as
-soon as you can still feel the road. Cruis'n Exotica never uses it - that
-game makes its own centring force. Change it per game with `[collection] ffb_spring_<rom>` in
-`rig\collection.ini`; `0` turns it off.
+Exotica applies an effective 20% trim (80% becomes 64%) and normalizes its cabinet
+motor polarity independently of steering. World strength and menu/race-end force
+remain unchanged after the rejected driving gate was rolled back. **World can
+still oscillate in menus or after finishing**; equal strength percentages do not
+yet imply equal feel across games. Collision feel and cross-game normalization
+remain known work. Software traces do not measure torque at the rim.
 
-**Impact cues** (**SETTINGS → FORCE FEEDBACK → IMPACT CUES**) are an optional
-experiment saved per game, off by default. World targets the configured ROM revision.
-They replace the generic rumble cue with a short steering-axis pulse and reserve
-25% of the constant-force budget, so sustained steering becomes lighter.
-They infer hits from force spikes; they do not read actual collision flags.
-Enable World alone for a comparison on the next launch, keeping Strength and Feel
-the same. Better crash feel has not yet been confirmed on a physical wheel.
-Increasing Strength alone also increases ordinary steering weight.
+Opening the collection's Esc menu and closing the game release its force effects.
+A motor-command timeout also releases stale output. This does not guarantee that
+an in-game menu or stopped car is quiet: World may continue issuing commands.
 
-**SETTINGS → FFB DIRECTION**: wheel bases do not agree on which way a
-positive force turns. This setting controls the physical wheel's direction.
-Exotica separately corrects its cabinet motor polarity automatically; its Wheel
-Invert DIP does not require reversing vehicle steering. If centering consistently
-pushes away across games on a different wheel base, check this device direction
-at low strength. Report a problem confined to one game separately; oscillation
-can also come from gain or delay.
+**Custom profiles:** copy/edit `force-profiles.user.ini.example` beside `vunit.exe`
+as `force-profiles.user.ini`, then select its tune under Feel. The supplied example
+starts from STANDARD; the release default is CRISP. Keep custom edits in the
+`.user.ini` file; updates replace the shipped `force-profiles.ini`. Additional
+`[collection]` controls include `ffb_rumble`, `ffb_damper`, `ffb_friction` and
+`ffb_spring_<rom>`. Change one at a time and preserve a copy of your settings.
 
-Safety: when a game stops writing its motor for half a second (pause,
-menus, exit) the force is released, and everything is stopped when the
-game closes - a direct-drive base never holds a stranded force.
+**Diagnostics:** enable **SETTINGS → SUPPORT → FFB DIAGNOSTICS**, drive briefly,
+then choose **SAVE SUPPORT BUNDLE** in that same submenu. The bundle contains
+`rig/ffb_trace.csv` (motor and wheel-position observations), `midv_ffb.log`, a
+trace report and plot. Record wheel model, driver/base settings, selected profile
+and strength, and distinguish road weight, car contacts and wall contacts in the
+report. Turn diagnostics off after collecting the case.
 
-**FFB diagnostics** (when forces are missing, wrong or intermittent):
-**SETTINGS → FFB DIAGNOSTICS** (or `CruisnSetup.exe → FFB diagnostics`)
-turns on two logs for every drive - `rig\ffb_trace.csv` (every force
-value the game sends, timestamped, plus the wheel position it read) and
-`midv_ffb.log` (the device chosen and every motor write with the level
-actually sent to the wheel). Drive for a minute, then **Save support
-bundle**; the two logs tell us whether the game stopped sending or the
-wheel stopped listening. Turn it off afterwards.
+### Telemetry and SimHub
 
-### Force feedback on a strong (direct-drive) wheel
+USA, World, Off Road and Exotica send actual game gear/rev signals, including
+automatic shifts. The game's rev signal is mapped to **estimated 900–8,000 RPM**;
+it is an arcade display scale, not a measured engine speed. USA, Off Road and
+Exotica have internal speed readers; World still reads the displayed speed using
+OCR. Invalid or inactive HUD samples are cleared.
 
-Why a direct-drive base needs these: the games' force is a kick against
-every wheel movement that keeps pushing for about 150 ms after the wheel
-has stopped. On the arcade cabinet the wheel's own friction and inertia
-absorbed that tail; a direct-drive base has almost none, so the tail moves
-the wheel, the game kicks back the other way, and driving straight turns
-into alternating pulls. Three places, each owning one thing - nothing overlaps, so nothing silently
-overrides anything else:
+Close the launcher before editing `rig/collection.ini`. For a Forza-compatible
+SimHub receiver on the same PC, add or update the existing section:
 
-| where | what it decides | try |
-|---|---|---|
-| **SETTINGS > FORCE FEEDBACK > STRENGTH** | how strong, overall (per game on each game card) | 40% on an 8 Nm base |
-| **SETTINGS > FORCE FEEDBACK > FEEL** | how the force is shaped - smoothing, ceilings, rate limits, all of it | CALM if the wheel hunts, RAW if it feels dull |
-| **SETTINGS > FORCE FEEDBACK > SPRING** | how hard the wheel pulls back to straight | lower it if the centring buries the road feel |
-| `rig\collection.ini` `[collection]` | effects your **wheel** adds that the game never sent: `ffb_spring_<rom>`, `ffb_rumble`, `ffb_damper`, `ffb_friction` | `ffb_rumble = 0` if the wheel buzzes constantly |
+```ini
+[telemetry]
+forza = 127.0.0.1:5300
+```
 
-If a shaping value needs changing beyond what FEEL offers, that belongs in
-your own tune (see below) rather than a second setting somewhere else.
-
-Change one at a time and drive a minute of USA; the launch log's first
-line shows what was applied.
-
-**Show us what the wheel is doing**: in the launcher, **SETTINGS → FFB
-DIAGNOSTICS ON**, drive the minute, then **SETTINGS → SAVE SUPPORT
-BUNDLE** (both also exist as buttons in the setup window). Besides the
-raw trace, the bundle now carries `ffb_trace_report.txt` and
-`ffb_trace.png`: the force the game sent and the **wheel position it read
-back**, on one timeline. An oscillating wheel shows as the blue position
-line swinging in step with the orange force kicks, and the report states
-the swing rate and amplitude. With `midv_ffb.log` (the level sent to the
-wheel for every motor write) that is the whole force loop on record.
+Configure the receiver for the same UDP port and relaunch. `forza = on` selects
+that same address. The optional `udp = host:port` key sends JSON for custom
+consumers. Explicit `MIDV_TELEM_FORZA` / `MIDV_TELEM_UDP` environment overrides
+win over the file. SimHub/Buttkicker output and higher gears still need broader
+attended Off Road/Exotica coverage; packet tests alone do not certify tactile feel.
 
 ### Steering feel: sensitivity and curve
 
@@ -324,10 +276,9 @@ and so on).
   wheel's device scan (rare); the launcher detects it and relaunches
   automatically.
 - **A game runs slow / stutters** — four one-line experiments, each a
-  SETTINGS row, no files to touch: INTERNAL SCALE 2X (GPU), FFB STRENGTH
-  0% (force feedback off), ASPECT 4:3 (no widescreen
-  patch or margins), CRT off (F9). Whichever one fixes it names the
-  culprit; then Save support bundle after the slow game — its
+  setting change: DISPLAY → INTERNAL SCALE2X, FORCE FEEDBACK → STRENGTH
+  0%, DISPLAY → ASPECT4:3 (no widescreen
+  patch or margins), CRT off (F9). These comparisons help narrow the cause; then Save support bundle after the slow game — its
   `launch.log` ends with the emulator's measured speed.
 - **The menu opens a game or a settings row by itself** — fixed in this
   version. Some wheel bases report dozens of buttons they do not have and
@@ -337,13 +288,10 @@ and so on).
 - **The menu selection scrolls on its own** — the steering axis moves the
   highlight, so a wheel resting away from centre scrolls continuously.
   Centre the wheel, or re-run CONTROLS SETUP if its centre looks wrong.
-- **Cruis'n Exotica: choosing MANUAL on the TRANS SELECT screen** — turn
-  the wheel **left** to move the highlight to M, then press the gas. (It
-  reads backwards against the on-screen layout: the cabinet DIP that makes
-  that screen work at all also mirrors the wheel, and we cancel the mirror
-  for driving rather than for the menu.) If you would rather the screen
-  went back to picking AUTO by itself, set `exotica_manual = 0` under
-  `[collection]` in `rig\collection.ini`.
+- **Exotica transmission selection does not respond** — use the displayed M/A
+  highlight and accelerator; confirm the Controls transmission mode/bindings.
+  Check that `exotica_manual = 0` has not disabled the launcher cabinet setup.
+  Do not reverse driving input to compensate for a force-polarity problem.
 - **Exotica shows glitches (the Amazon track especially)** — known.
   To tell our GL overlay from MAME's own Zeus2 emulation, put
   `exotica_gl = 0` under `[collection]` in `rig\collection.ini`: Exotica
@@ -378,17 +326,10 @@ and so on).
   are pressed once: press the brake fully and release it. The launcher
   now refuses to start a game while a pedal reads pressed and tells you
   which one.
-- **The wheel slams left-right on its own / forces are harsh** — first
-  check **FFB DIRECTION**: with the sign wrong for your base the games'
-  damper becomes an anti-damper and the wheel shakes at any strength
-  (Exotica then runs away from centre instead of returning). If the
-  direction is right, FFB STRENGTH is too high for your base: the games'
-  force is a kick against every wheel movement, and a strong wheel turns
-  that into a runaway loop (see *Force feedback*). 30-40% on an 8 Nm
-  direct-drive wheel is the place to start, or set **FFB PEAK LIMIT** to
-  40; add damping in the wheel software. With FFB diagnostics on, the support bundle's
-  trace shows it as rapid alternating kicks
-  (`python harness/ffb_trace_report.py` on it).
+- **The wheel slams left-right or pulls away from centre** — turn Force Feedback
+  Strength to 0, then check the device direction at low strength. World also has a
+  known race-end/menu oscillation issue; reducing gain does not establish its cause.
+  Collect FFB diagnostics and report whether other games behave the same way.
 - **Force feedback comes and goes** — turn on *FFB diagnostics*, drive a
   minute, save a support bundle: `midv_ffb.log` shows every level sent to
   the wheel next to the game's trace.
@@ -407,7 +348,7 @@ and so on).
 - **Which version am I on?** The setup window's *version / updates* row
   says (folder names can lie after unzipping over an old folder), and
   the support bundle includes `version.txt`.
-- **Reporting a bug**: **SETTINGS → SAVE SUPPORT BUNDLE** in the launcher
+- **Reporting a bug**: **SETTINGS → SUPPORT → SAVE SUPPORT BUNDLE** in the launcher
   (or `CruisnSetup.exe → Save support bundle`) writes one
   zip (logs, your controller layout as MAME sees it, settings — never ROMs).
   Attach it with a note on *what you expected vs what you saw*. For visual
@@ -472,11 +413,10 @@ into a launcher `.bat`):
 Missing art falls back to generated cards; a missing ctrlr file means
 wizard-only bindings; missing music means a quiet menu.
 
-## Legal posture
+## Distribution and licences
 
-Cruis'n USA, Cruis'n World, Off Road Challenge, Cruis'n Exotica and all
-associated art are Midway / Warner Bros. properties. This project
-distributes **no ROMs and no game assets** — original launcher code, a
-GPL-2.0+ patch series against MAME (source included, as GPL requires) and
-SDL2 (zlib license, included) for wheel force feedback. Supply your own
-legally obtained ROM dumps.
+The project includes no game ROMs. The default package includes menu artwork
+and music; `make_release.ps1 -NoMedia` excludes those assets. MAME, SDL2 and the
+vendored wheel toolkit have separate included licence notices/source. Original
+launcher licensing and menu asset provenance/permissions are public-readiness
+work; see [PUBLIC-READINESS.md](PUBLIC-READINESS.md). This project is unofficial.

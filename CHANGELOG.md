@@ -5,14 +5,30 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
-- Move Experiments beside Display in Settings, preserving Shared/game contexts,
-  saved preferences and revision checks; Back returns to Settings.
+### Added
 
-- Add a per-game Cheats menu for imported MAME XML/ZIP/7z files, with continuous
-  toggles/choices, revision-bound saved selections and a reset to off. One-shot
-  actions and code-restoring cheats await live activation support.
-- Preserve cheat inputs and native state changes in recordings and support
-  diagnostics; reject mismatched cheat replay state.
+- Imported per-game Cheats: continuous toggles/choices, exact revision/hash binding,
+  reset to off and recorded cheat-state verification. One-shots and code-restoring
+  actions remain unavailable; imported effects need individual validation.
+- Optional World 2.5 and Off Road 2×/3× distance menus, plus Exotica margin scenery.
+  All default Off; increased limits do not guarantee visible scenery or eliminate pop-in.
+- Bounded CLI-only World 2.4 host scenery prototype: earlier terrain/buildings/trees
+  without guest activation changes. Occlusion, handover and timing remain experimental.
+- One local Python/native/GPU check runner with source and evidence hashes.
+
+### Changed
+
+- Experiments is beside Display, with Shared/game contexts and saved preferences.
+- Builds/checks/releases run locally. Hosted workflows are disabled; pushes, PRs
+  and tags do not build or publish. Promotion uploads the exact tested ZIP.
+- Refresh setup, FFB/transmission guidance and public-readiness documentation.
+
+### Fixed
+
+- Normal launches could fail with an uninitialized `env` after recording-override
+  changes, including when enabling a USA cheat. Each launch attempt now owns its
+  environment. Added process-boundary coverage with cheats on/off for all games
+  and recording variants. Reopen the source launcher after updating.
 
 ## v0.4.0 — 2026-09-08
 

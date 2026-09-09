@@ -1,5 +1,10 @@
 # Recorded gameplay and diagnostic tests
 
+Current developer guide. Run ROM-free checks with `python harness/local_checks.py`;
+GitHub Actions are disabled. See [local builds](LOCAL-BUILDS.md) and the
+[documentation index](README.md) for release/source status. Paths below are
+examples or named local references, not recordings included in a downloaded ZIP.
+
 The recorder saves MAME's effective game inputs, including analog wheel and
 pedal interpolation, into an INP file. Playback runs the emulator with those
 inputs. Playback never physically turns the wheel. Recording defaults to FFB

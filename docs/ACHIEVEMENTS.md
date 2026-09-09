@@ -1,5 +1,9 @@
 # Achievements for the Cruis'n Collection — feasibility research
 
+> Historical research/design note. Its assumptions and proposed settings may be
+> superseded. Use the [current documentation index](README.md) and
+> [roadmap](../ROADMAP.md) for supported behavior and next work.
+
 *Status: parked idea, researched 2026-08-20. No implementation planned.*
 
 ## Why there is no existing path

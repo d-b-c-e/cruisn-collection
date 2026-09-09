@@ -8,7 +8,9 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 
 v0.4.0 is published, with its exact ZIP verified after download and release evidence
 archived in results/proof/2026-09-08-v0.4.0-release. The ordered, actionable queue
-is [the overnight checklist](docs/OVERNIGHT-2026-09-08.md):
+is below. The [overnight checklist](docs/OVERNIGHT-2026-09-08.md) is a completed
+historical work order; its automation remains paused. Public access preparation
+now also follows [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 
 1. **Cheats submenu: initial implementation complete.** Continuous imported
    toggles/choices, default-off selections and replay state work across the four
@@ -76,6 +78,12 @@ Relevant legacy IDs are retained below.
 
 ## Testing and reusable infrastructure
 
+- Run `python harness/local_checks.py` locally; hosted GitHub workflows are disabled.
+  Release gates require the complete Windows report through `--checks`. Preserve
+  source-bound evidence. Ordinary launch and replay are separate paths: test both.
+- The September 8 normal-launch `env` regression is fixed and covered at the
+  process boundary; source launchers need reopening after the update.
+
 - Keep original human recordings immutable. Freeze inputs, starting state,
   effective options, cheats and source/native identity for every derived case.
 - Keep original-route fidelity, candidate repeatability, actual ADC timing,
@@ -109,7 +117,8 @@ Relevant legacy IDs are retained below.
 ## Fixed baseline and limits
 
 - **v0.4.0 is published and preserved.** Overnight source features are newer than
-  that package. No further release or repository visibility change is authorized.
+  that package. Public access is being prepared; another release or visibility
+  change still needs an explicit request after that preparation.
 - **Experiments is beside Display**, retaining Shared/game/revision contexts.
   Cheats are per game/revision and start off. New distance/scenery trials start off.
 - Fresh installs retain CRT on, full widescreen, scale4, free play and World2.4.

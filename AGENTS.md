@@ -696,103 +696,62 @@ shifter/paddle bindings; existing Kit DIP survives. No physical Fanatec retest y
 
 ## What this is
 
-Working proof-of-concept for a **native PC port of the Midway Cruis'n
-games** (Cruis'n USA, Cruis'n World, Off Road Challenge — V-Unit hardware,
-renderer-replaced and verified bit-exact — plus **Cruis'n Exotica**, Zeus2
-hardware, with a live Zeus GL replacement and a MAME-renderer fallback;
-upstream emulation limitations remain). Built as a
-renderer-replacement over MAME, the same architecture as wanszai's arcade
-ports. As of 2026-09-05 the collection launches all four games with scaled
-widescreen rendering and built-in SDL force feedback, conditioned by the
-vendored wheel-toolkit shaper. Gameplay rendering artifacts, collision feel,
-and telemetry coverage remain open. USA's measured GDI selection slowdown is fixed
-with an underlying D3D window; native exactness
-on archived captures must not be described as proof of artifact-free gameplay.
+Customized MAME 0.286 with V-Unit and Zeus2 GPU rendering, a Windows launcher,
+built-in SDL2 wheel FFB and guarded telemetry for USA, World, Off Road and Exotica.
+It still emulates the guest game; the host scenery prototype is not a native port.
+Read the newest checkpoint above, current ROADMAP.md and docs/README.md first.
+Dated reviews and results/RESULTS.md preserve evidence, including failures; they
+must not override newer instructions or be described as current acceptance.
 
-Current assessment: `docs/reviews/2026-09-05-assessment.md`, with dedicated
-widescreen/distance, replay/testing, FFB and telemetry companion reports.
-The user authorized implementation after committing/pushing this assessment
-baseline. Prioritize diagnostic evidence and real gameplay input replay;
-automated graphics runs must disable physical wheel output. Preserve the
-review reports as a dated baseline and record fixes separately.
+Player/developer setup is docs/INSTALL.md. Use harness/record_drive.py for saved
+settings, harness/replay.py for identity/candidate tests, and harness/local_checks.py
+for ROM-free Python/native/GPU checks. Physical FFB is disabled for all unattended
+runs. Preserve original recordings and distinguish original-route fidelity from
+candidate repeatability, completed GL pixels, scene/resource preservation and timing.
+Run the real launcher path as well as replays: the env regression demonstrated
+that passing emulator replays do not prove the product can launch it.
 
-Implemented workflow: `docs/DIAGNOSTIC-REPLAY.md`; results and remaining work:
-`docs/reviews/2026-09-05-implementation.md`. Record with `run_rig.py --record-case`;
-replay with `harness/replay.py`. Force defaults off; only explicitly attended
-recording may retain it. Real USA synthetic
-gameplay has matched 6,000 input frames and 100 native snapshots on replay.
-The user's LA Freeway recording and a separate improved-build candidate each
-replay 5,012 frames / 83 native images exactly. This does not establish other
-games or GL pixel equality. Preserve `results/diagnostics/my-drive` unchanged.
-See `docs/reviews/2026-09-05-recorded-drive-findings.md` for the UV atlas-bleed
-fix, USA object-visibility patch and crack-filler reassessment. A full-run game
-patch changes later native frames; use late matched-state tests for causal
-graphics comparisons and a separate candidate case for new-build determinism.
-New recordings defer PNG encoding until exit (`raw-snap/` retained and hashed).
-`replay.py --patch --patch-at-frame --capture-state` checks effective program
-words; `verify_scene_extension.py` checks preserved draw order and native RAM.
-`verify_quality.py` runs ROM-free GPU fixtures locally and under Mesa in CI.
-Run `python -m unittest discover -s tests -v` for hardware-free harness checks.
-Toolkit source is pinned to v0.11.1: `harness/sync_toolkit.py --ref v0.11.1`
-checks both consumers; `--write` updates. The OCR filter's canonical source is
-`native/hud_speed_filter.h`; reset-time patch preflight is in `native/checked_patch.h`.
-`harness/sync_native.py` checks both MAME copies. Patch installation validates
-the entire file before writing; the legacy per-frame self-healer remains per-word.
-Configured game experiments compose with widescreen defaults; conflicts fail.
-An explicit `MIDV_PATCH` environment setting replaces all defaults.
+Native helper sources are canonical under native/. Use harness/sync_native.py to
+check both MAME copies. GPU shader source is gpu/renderer.py; regenerate with
+harness/gen_shaders.py before rebuilding. The toolkit is pinned by lib/toolkit/VERSION
+(currently v0.11.1); harness/sync_toolkit.py checks both consumers. Never copy an
+unverified address layout across ROM revisions. Explicit MIDV_PATCH overrides
+normal patch selection; conflicting configured game experiments must fail.
 
-**Read these two documents before doing anything:**
-
-1. `results/RESULTS.md` — the complete chronological engineering log. Every
-   phase, every bug, every number, current staging state. This is the primary
-   handoff document.
-2. `E:\Source\launchbox\Launchbox-Racing\docs\cruisn-usa-port-feasibility.md`
-   — strategy, product roadmap, feature wishlist, collection framing, legal
-   posture (WB owns a live brand: no ROMs shipped, no binaries hosted, GPL
-   obligations from deriving from MAME).
-
-`.Codex/session-notes.md` has the immediate open items and a complete
-self-sufficient handoff (written for context-loss resilience).
-
-**GitHub:** `d-b-c-e/cruisn-collection` (private; renamed from cruisn-poc
-2026-08-20 — old URL redirects). Releases publish via tag push
-(`.github/workflows/release.yml`); see CHANGELOG.md for releases. Local folder renamed
-to `E:\Source\cruisn-collection` 2026-08-20 (matches the repo name).
+**GitHub:** d-b-c-e/cruisn-collection is private as of 2026-09-08. Public access is
+being prepared in docs/PUBLIC-READINESS.md. Both workflows are disabled; tag pushes
+do not build or publish. Build/check/package locally, and use promote_release.py
+with --checks and the full evidence set to upload the exact accepted ZIP only
+when release publication is authorized. See docs/LOCAL-BUILDS.md.
 
 ## Repo map
 
-```
-cruisn-collection/
-├── harness/
-│   ├── collection.py     ← THE product entry: fullscreen game-select shell
-│   │                     (Stream Deck button opens this; config rig/collection.ini)
-│   ├── run_rig.py        single-game launcher (in-process GL, sound, wheel);
-│   │                     importable: collection.py calls launch_game()
-│   ├── run_oracle.py     determinism oracle (2 cleanroom runs, pixel diff)
-│   ├── run_capture.py    instrumented capture (quads + state dumps)
-│   ├── rasterize.py      CPU reference rasterizer (bit-exact vs MAME)
-│   ├── widescreen.py     16:9 margin analysis/render
-│   └── record_diag.py    60fps desktop capture + frame-diff (flashing detector)
-├── gpu/
-│   ├── renderer.py       verified GPU pipeline (moderngl). THE SHADER SOURCE OF
-│   │                     TRUTH — midvunit_gl_shaders.h is generated from it
-│   └── live_viewer.py    out-of-process viewer (debug/reference path, MIDV_LIVE)
-├── lua/snap.lua          frame-scheduled snapshots (SNAP_FRAMES env)
-├── fixtures/nvram-crusnusa/  calibrated NVRAM (skips CALIBRATE CONTROLS boot)
-├── patch/vunit-poc-patches.patch  FULL series vs mame-src base 6f55ed93
-├── results/              RESULTS.md + proof images + flash-evidence
-└── rig/                  gitignored per-user runtime (ini/nvram/cfg)
-```
+| Path | Responsibility |
+|---|---|
+| harness/collection.py | Product launcher; local Stream Deck target; rig/collection.ini preferences |
+| harness/run_rig.py | Shared game launch path, inputs, per-game overrides and launch history |
+| harness/record_drive.py, replay.py, derive_case.py | Attended input recording and isolated candidate replay |
+| harness/local_checks.py, release_gate.py, promote_release.py | Local automated evidence and exact-ZIP release |
+| harness/cheats.py, lua/cheats.lua | Exact-revision import and MAME cheat-engine bridge |
+| native/ | Canonical C++ math, telemetry, force and distance helpers; standalone analyzers |
+| gpu/ | Renderer/shader source of truth, reference renderer and diagnostic viewer |
+| lua/ | Recording, independent memory probes and bounded game-code investigations |
+| fixtures/ | Per-game NVRAM, scenarios, numerical vectors and release/regression contracts |
+| tests/ | Python contracts and native helper tests; no physical force |
+| patch/ | Full mame0286 patch export and checked game-memory patches |
+| lib/toolkit/, profiles/ | Pinned wheel toolkit and profile examples |
+| media/, third_party/ | Menu media and dependency notices; see public-readiness review |
+| docs/ | Current guides; dated reviews/release notes are historical evidence |
+| results/ | Engineering history/proof archives; large diagnostics are ignored |
+| rig/, build/ | Ignored personal state and local candidate outputs |
 
 ## The mame-src relationship (critical)
 
 - The emulator half lives in **`E:\Source\mame-src`**, branch **`poc/quadlog`**
   (MAME 0.286 + our DIJOYSTATE2 base patch `6f55ed93` + the POC series).
-  POC code: **`src/mame/midway/midvunit_v.cpp`** (env-gated, zero cost when
-  unset) + `midvunit.h` (visibility + `mvgl_exit` teardown hook) + one
-  7-line env-gated block in `src/frontend/mame/ui/ui.cpp`
-  (`MIDV_SKIP_STARTUP_SCREENS` — BAD_DUMP warning screens refuse
-  skip_warnings by design and block launcher boots).
+  Native changes span both midway driver families, their rendering code, shared
+  helpers and the frontend/Lua bridge. The complete patch export is authoritative;
+  do not assume the original small set of modified files still describes it.
 - Build product is **`E:\Source\mame-src\vunit.exe`** (subtarget build —
   physically cannot clobber `mame.exe`). Since 2026-08-20 the subtarget
   includes **midzeus** (Cruis'n Exotica): build with
@@ -802,30 +761,18 @@ cruisn-collection/
   **`python harness/gen_shaders.py`** (emits escaped C strings — genie's
   REGENIE source scanner cannot tokenize raw strings and dies with
   "unterminated character literal").
-- **Force feedback is built into vunit.exe** (2026-09-03, `mvffb` in
-  `midvunit_v.cpp`, replaces the FFB Arcade Plugin on Endprodukt's advice):
-  the drivers hand the signed motor byte to `midv_ffb_write()` (V-Unit
-  WHLCTLZ, Exotica LED-board offset 0, after gain/slew/clamp) and a worker
-  thread drives ONE signed constant force on the wheel's steering axis
-  through SDL2 haptics (Cannonball DX / Flycast model: STEERING_AXIS,
-  infinite length, update + run per write). **`SDL2.dll` (MSYS2
-  `/mingw64/bin`, 2.32) sits UNTRACKED beside vunit.exe** and is loaded at
-  run time - no import, no build-time link; without it FFB is off and
-  `midv_ffb.log` says so. Byte interpretation = the plugin's Cruis'n
-  handler (0 stop, |v|/126). Sign: a positive byte pushes RIGHT (Exotica
-  spring measurement) and a positive SDL level turns the Moza LEFT, so the
-  level is `-sign(byte)`; `MIDV_FFB_INVERT` / SETTINGS FFB DIRECTION flips
-  it. The game writes the motor every frame (~17 ms), so the 500 ms hold
-  watchdog only fires on pause/exit. The old plugin files are parked in
-  `mame-src/_plugin-backup-*` (never copy them back: its dinput8.dll hooks
-  the process).
-- Known-cosmetic: vunit exits sometimes logged a post-exit ACCESS VIOLATION
-  (Event Log; also fired headless with our GL thread not running — it was
-  attributed to the plugin's teardown; re-observe now that it is gone).
-  Our GL and FFB threads stop cleanly via machine-exit notifiers.
-  WER minidumps land in `rig/crashdumps/` for future forensics.
+- **FFB is built into vunit.exe** through SDL2 haptics and the pinned toolkit.
+  SDL2.dll must remain beside the binary. Canonical motor_signal.h normalizes
+  reserved motor bytes and Exotica cabinet polarity independently of device sign.
+  World passes game-menu/race-end requests through; do not restore its rejected
+  driving gate or tune strength unattended. Exotica retains its gate and 20% trim.
+  Old dinput8/plugin files remain retired; never copy them back.
+- Preserve crash evidence. A guest-fatal instruction, renderer startup failure
+  and post-exit host exception are different failures; do not label new crashes
+  harmless based on an old teardown hypothesis. The launcher changes Windows
+  error mode, so a new WER/minidump is not guaranteed.
 - After committing in mame-src, refresh the exported series (FULL series
-  from the upstream tag — CI and INSTALL.md apply it onto a clean mame0286
+  from the upstream tag — the local reproducible build applies it onto a clean mame0286
   clone, so the DIJOYSTATE2 base commit must be included):
   `git format-patch --stdout mame0286..HEAD > E:/Source/cruisn-collection/patch/vunit-poc-patches.patch`
 - ⚠️ **NEVER touch the racing build's deployed
@@ -848,16 +795,16 @@ cruisn-collection/
 - Python side: system Python 3.14 with numpy, pillow, moderngl, glfw
   (pygame has no 3.14 wheels — don't try).
 
-## Env vars (all read by vunit.exe, all inert when unset)
+## Selected native environment controls
 
 | var | effect |
 |---|---|
 | `MIDV_GL=1` | **in-process GL renderer** (the product path) |
-| `MIDV_GL_SCALE` | internal scale (default 3; rig uses 4) |
+| `MIDV_GL_SCALE` | internal rendering scale; source launcher/release default 4 |
 | `MIDV_GL_CRT=1` | CRT pass on at boot (mask+scanlines+curvature); **F9** toggles live |
 | `MIDV_GL_CRACKFILL=0` | disable crack fill (default ON: unwritten hardware quad-crack pixels get filled from axis-bounded neighbours in the palette pass; 3D scenes only; shell SETTINGS has the toggle) |
 | `MIDV_SKIP_STARTUP_SCREENS=1` | boot straight past MAME warning/info screens (frontend gate) |
-| `MIDV_TELEM_UDP=host:port` | mirror MAME outputs (wheel force, lamps) as JSON UDP datagrams (SimHub/Buttkicker); also via collection.ini `[telemetry] udp=` |
+| `MIDV_TELEM_UDP=host:port` | mirror MAME outputs (wheel force, lamps) as JSON UDP datagrams (SimHub/Buttkicker); also via collection.ini `[telemetry] udp=`; custom consumer required |
 | `MIDV_FFB=1` | **built-in force feedback** (SDL2 haptics on the wheel's steering axis); `MIDV_FFB_STRENGTH` 0-100, `MIDV_FFB_DEVICE` name substring or vid:pid, `MIDV_FFB_INVERT=1`, `MIDV_FFB_HOLD_MS` (500), `MIDV_FFB_TEST=<pct>` (1.5 s level at start), `MIDV_FFB_LOG=2` (every write) → `midv_ffb.log` |
 | `MIDV_FFB_SMOOTH` / `MIDV_FFB_DAMPER` / `MIDV_FFB_FRICTION` | low-pass time constant (ms) on the level; DirectInput damper / friction condition effects in % for the session (launcher: `[collection] ffb_smooth / ffb_damper / ffb_friction`) |
 | `MIDV_FFB_CLAMP` / `MIDV_FFB_SLEW` | cap the motor byte at ±N / limit its change per write (driver side, before the FFB output and the trace) |
@@ -870,10 +817,11 @@ cruisn-collection/
 | `MIDV_QUADLOG=<file>` | offline quad capture (38-byte records) |
 | `MIDV_STATEDUMP_FRAME/DIR` | one-shot videoram/texram/palette dump |
 
-## Verification workflow (the project's superpower)
+## Verification workflow
 
-Attract mode is a **bit-identical deterministic oracle** (seeded NVRAM
-fixture required). The invariant to protect: `gpu/renderer.py` exact mode
+Archived V-Unit native captures provide an exact reference (seeded NVRAM
+fixture required). They do not establish artifact-free gameplay or Zeus GL fidelity.
+Use recorded drives and completed-frame GL comparisons for those. The invariant to protect: `gpu/renderer.py` exact mode
 (`--scale 1`) must stay **100.0000%** vs MAME's videoram on
 `results/capture` and `results/capture-8000`. After any shader/pipeline
 change: `python gpu/renderer.py results/capture-8000` and expect zero

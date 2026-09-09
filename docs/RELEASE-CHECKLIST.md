@@ -43,11 +43,12 @@ require a new frozen candidate and renewed gates before another release; see
 
 ## Public distribution decision
 
-As of 2026-09-07 the repository is **private**. An anonymous request to the updater's
+As of 2026-09-08 the repository is **private**. An anonymous request to the updater's
 `/repos/d-b-c-e/cruisn-collection/releases/latest` endpoint returns404, although an
-authenticated maintainer can see v0.3.7. Ordinary players cannot use this update
+authenticated maintainer can see v0.4.0. Ordinary players cannot use this update
 source yet. Decide whether to make a reviewed source repository public or use a
 separate public distribution destination and update the client/workflow accordingly.
+Public access is being prepared using [PUBLIC-READINESS.md](PUBLIC-READINESS.md).
 Changing repository visibility exposes its contents and history; no such change
 was made during unattended work. Keep credentials out of distributed packages.
 A private candidate artifact and a successful local install do not clear this item.

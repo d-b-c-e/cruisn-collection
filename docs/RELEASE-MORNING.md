@@ -1,34 +1,24 @@
 # Release morning: what still needs a person
 
-**Update:** the source now restores World menu/race-end feedback following the
-user's regression report. World strength stays unchanged. The rc2 ZIP below still
-contains the rejected gate and must be replaced before publishing. See the
-[rollback and normalization issue](reviews/2026-09-07-world-ffb-rollback.md).
+Updated 2026-09-08. **v0.4.0 is published and preserved**; the source checkout has
+newer Cheats, menu and distance work. The old rc1/rc2 candidates are historical,
+and rc2 includes a rejected World force gate. Do not use either as the next
+candidate or copy their acceptance forward.
 
-The preserved local candidate is **v0.4.0-rc2**, incorporating the earlier September7 player
-feedback. The earlier `CruisnCollection-v0.4.0-rc1-20260907-050908.zip` remains a
-rollback baseline; it lacks the newer menus, drivetrain telemetry and force fixes.
-Use the new candidate's own manifest and pending ledger for acceptance. No public
-release has been created.
-
-Exact ZIP: `build/CruisnCollection-v0.4.0-rc2-20260907-170505.zip`.
-Its [manifest](../results/proof/2026-09-07-release-feedback/package.manifest.json)
-and [43-check pending ledger](../results/proof/2026-09-07-release-feedback/attended-pending.json)
-are preserved with the [automated evidence](../results/proof/2026-09-07-release-feedback/README.md).
-
-The new work adds game-derived gears/revs for World, Off Road and Exotica,
-restores Off Road speed and Exotica UDP packets, and gates World/Exotica force
-outside active driving. Exotica's automatic steering mirror is removed and its
-output is trimmed20%. Read [the feedback review](reviews/2026-09-07-release-feedback.md)
-alongside [the overnight baseline](reviews/2026-09-07-release-hardening.md).
-The full acceptance contract remains [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
+This is the practical attended companion to [RELEASE-CHECKLIST.md](RELEASE-CHECKLIST.md).
+Use the exact candidate being considered for the next release. Build and validate
+it locally using [LOCAL-BUILDS.md](LOCAL-BUILDS.md); hosted workflows are disabled.
+World force passes through in menus/race end and retains its existing strength.
+Exotica keeps the separate polarity correction and 20% trim. These software changes
+do not substitute for physical-wheel observations.
 
 ## Start with the release configuration
 
 Use full widescreen, CRT on, scale 4, World 2.4, launcher force at 50%, and the
 default force profile (`cruisn-vunit@2`). Record the wheel-base settings separately.
 Leave per-game graphics trials and extra impact cues off for the release baseline.
-Crack Fill (Shared), now under Graphics Experiments, retains the baseline ON setting.
+Crack Fill (Shared) under Settings → Experiments retains the baseline ON setting
+in current source. Published v0.4.0 still nests Experiments under Display.
 Saved personal preferences were preserved, so an existing installation may differ
 from these fresh defaults. Check the settings before recording. The Stream Deck
 entry uses the source checkout and the root native executable on this machine;
@@ -90,8 +80,7 @@ an unattended driver's subjective discomfort.
 
 Scenery pop-in is still a known limitation. 3x/+12 has a confirmed New York guest
 CPU crash and distant black flashing; the causal mechanism remains unresolved.
-Keep distance off for release acceptance. Record New York and investigate it
-after release as requested; a single clean2x race does not certify that experiment.
+Keep distance off for release acceptance. Record New York for the ongoing investigation; a single clean2x race does not certify that experiment.
 World collision feel, race-end force release and Exotica direction remain explicit
 attended acceptance questions.
 Record any failed check as a blocker or a clearly described candidate limitation;

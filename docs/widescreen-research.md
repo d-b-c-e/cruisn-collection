@@ -1,5 +1,9 @@
 # Widescreen techniques for fixed-4:3 3D games — research (2026-08-22)
 
+> Historical research/design note. Its assumptions and proposed settings may be
+> superseded. Use the [current documentation index](README.md) and
+> [roadmap](../ROADMAP.md) for supported behavior and next work.
+
 Due-diligence survey of how the emulation/modding community adds 16:9 to
 games authored for 4:3, and what applies to the V-Unit / Zeus games.
 

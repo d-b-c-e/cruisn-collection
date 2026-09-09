@@ -1,5 +1,9 @@
 # Off Road Challenge — widescreen left edge: fresh-eyes handoff
 
+> Historical research/design note. Its assumptions and proposed settings may be
+> superseded. Use the [current documentation index](README.md) and
+> [roadmap](../ROADMAP.md) for supported behavior and next work.
+
 Written 2026-08-24 after a long session with many model hand-offs. The
 right edge is solved and shipping; the **left edge is not**, and this
 document is a clean, self-contained brief so a fresh session can solve the

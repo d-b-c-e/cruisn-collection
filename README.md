@@ -11,8 +11,7 @@ gear/rev telemetry and Exotica force-polarity correction. Fresh installs default
 to **CRT on**, full widescreen, 4x rendering and free play. Rendering defects beyond
 the tested routes, collision feedback and broader wheel coverage remain open work.
 See [release notes and known issues](docs/release-notes/v0.4.0.md), the
-[overnight results](docs/OVERNIGHT-RESULTS-2026-09-08.md) and the
-[post-release work queue](docs/OVERNIGHT-2026-09-08.md).
+[current roadmap](ROADMAP.md) and [documentation index](docs/README.md).
 
 The source build now has a per-game **Cheats** submenu for imported MAME cheat
 files. Continuous toggles are off by default; see [the cheat guide](docs/CHEATS.md)
@@ -24,7 +23,7 @@ contexts for current rendering trials and future gameplay experiments. Optional
 **World Draw Distance** (Off / 2x / 3x) and independent **Scenery Lookahead**
 (+0 / +8 / +12 track sections) now support World 2.4 and 2.5. Off Road 1.63 has
 its own **Off Road Draw Distance** (Off / 2x / 3x). These trials require widescreen
-and scale 2x or higher and default off. The sampled comparisons have not shown
+and scale 2x or higher and default off. The guest-distance comparisons have not shown
 additional visible scenery at 3x over 2x with equal lookahead.
 On World 2.4, enabling either global distance or the older selective
 **Distant Scenery** option turns the other off. **Widescreen Terrain** addresses
@@ -37,21 +36,20 @@ small gaps and can smear them; its saved setting and existing default are preser
 **Impact Cues** are available under Force Feedback, with physical feel still
 awaiting validation.
 
-- [Native scenery changes and evidence](docs/reviews/2026-09-06-native-scenery.md)
-- [Four-tree coverage and gameplay appearance tracing](docs/reviews/2026-09-06-scenery-coverage.md)
-- [Expanded mountains/forest and object activation](docs/reviews/2026-09-06-expanded-scenery.md)
-- [Earlier mountain activation and its remaining limits](docs/reviews/2026-09-06-background-activation.md)
-- [Global draw distance and native-port reassessment](docs/reviews/2026-09-06-global-distance-and-native-port.md)
-- [Global World distance trial: 2× candidate, playback and visual evidence](docs/reviews/2026-09-06-global-distance-trial.md)
-- [Off Road native distance presets, 4K replay and limits](docs/reviews/2026-09-08-offroad-native-distance.md)
-- [3× distance, activation limits and release baseline](docs/reviews/2026-09-07-world-3x-and-release.md)
-- [Launcher distance trials and Crack Fill placement](docs/reviews/2026-09-07-graphics-menu.md)
-- [Renderer startup and release-package hardening](docs/reviews/2026-09-07-release-hardening.md)
-- [Release-morning recording and acceptance guide](docs/RELEASE-MORNING.md)
-- [World transmission artwork and missing-road fixes](docs/reviews/2026-09-06-world-assets-and-road.md)
-- [Recorded input, playback and diagnostic testing](docs/DIAGNOSTIC-REPLAY.md)
-- [Independent project assessment](docs/reviews/2026-09-05-assessment.md)
-- [Shared wheel toolkit review](https://github.com/d-b-c-e/dbce-wheel-mod-toolkit/blob/master/docs/REVIEW-2026-09-05.md)
+A separate **World 2.4 host scenery prototype** draws pending scenery without
+changing guest simulation. Its 2× trial shows earlier hills, buildings and trees;
+3× adds a brief mountain benefit in a targeted interval. This is **CLI-only**,
+not the menu's World Draw Distance option. Occlusion, handover, longer-range
+section loading and occasional rendering stalls remain under investigation.
+It is not enabled by an ordinary launcher session. [Evidence and limits](docs/reviews/2026-09-08-world-host-scenery.md).
+
+- [Setup, controls, telemetry and troubleshooting](docs/INSTALL.md)
+- [Cheats and supported actions](docs/CHEATS.md)
+- [Record and replay a drive](docs/DIAGNOSTIC-REPLAY.md)
+- [Current work and acceptance criteria](ROADMAP.md)
+- [Local builds and release uploads](docs/LOCAL-BUILDS.md)
+- [Public launch preparation](docs/PUBLIC-READINESS.md)
+- [Research and historical evidence](docs/README.md#research-and-historical-evidence)
 
 The harness records effective analog wheel inputs, initial configuration and
 binary/settings provenance. Candidate changes are compared with their parent
@@ -75,16 +73,17 @@ The full engineering history is in [results/RESULTS.md](results/RESULTS.md).
    | Cruis'n World | `crusnwld` **plus** `crusnwld24` (rev 2.4 keeps the manual transmission; a merged `crusnwld` set already contains it) |
    | Off Road Challenge | `offroadc` |
    | Cruis'n Exotica | `crusnexo` |
-   | all three V-Unit games / Exotica | `tms320c31` / `tms320c32` (older romsets: `tms32031` / `tms32032` — same files) | tiny DSP boot-ROM *device* sets from the same MAME romset — easy to miss, required |
+   | DSP boot ROMs | `tms320c31` for USA / World / Off Road; `tms320c32` for Exotica. Older romsets use `tms32031` / `tms32032`; setup recognizes their contents. |
 
    Any subset works — missing games just don't appear as playable.
 3. **Launch Collection**. Pick a game, drive. Keyboard out of the box:
    **5** = coin, **1** = start, arrows steer, **Esc** = in-game menu.
    Cruis'n World asks you to calibrate once on first boot (press **F2**,
    follow the prompts).
-4. Have a wheel? **SETTINGS → CONTROLS SETUP** binds it in about a minute
-   (press-to-bind; any wheel, pedals, shifter or paddles). Force feedback
-   then goes to that wheel by itself; **SETTINGS → FFB STRENGTH** sets it.
+4. Have a wheel? **SETTINGS → CONTROLS → CONTROLS SETUP** binds it in about a minute
+   (press-to-bind wheel, pedals, shifter or paddles). SDL force feedback
+   targets the steering device; **SETTINGS → FORCE FEEDBACK → STRENGTH** sets it.
+   Broader wheel-model and reconnect testing is still in progress.
 
 **Steering feel**: each game has a **STEERING SENSITIVITY** (how far you
 turn for full lock; 100% = the game's calibration) and a **STEERING
@@ -96,7 +95,7 @@ in [docs/INSTALL.md](docs/INSTALL.md#steering-feel-sensitivity-and-curve).
 is private. Download the release ZIP with repository access until a public update destination is chosen.
 
 **Updating**: `CruisnSetup.exe -> Updates...` checks GitHub and installs
-the newer version in place (the launcher's SETTINGS has the same *Check
+the newer version in place (the launcher's SETTINGS → SUPPORT has the same *Check
 for updates*). By hand: unzip the new version over the old folder;
 your rig settings, calibration, bindings and scores are preserved. Recognized old
 FFB input plugins are moved into backups under `rig/update`; an unknown custom
@@ -133,10 +132,10 @@ troubleshooting, and how to report a bug with a support bundle — is in
 
 **Alpha testers:** when something looks or feels wrong, the most useful
 report is *what you expected vs what you saw*, plus a **support bundle**
-(SETTINGS → SAVE SUPPORT BUNDLE in the launcher, or the button in
+(SETTINGS → SUPPORT → SAVE SUPPORT BUNDLE in the launcher, or the button in
 `CruisnSetup.exe` — it captures logs, your controller layout and the
 force-feedback trace, never your ROMs). For force-feedback complaints turn
-on SETTINGS → FFB DIAGNOSTICS first and drive a minute.
+on SETTINGS → SUPPORT → FFB DIAGNOSTICS first and drive a minute.
 
 ## What it is, technically
 
@@ -187,20 +186,28 @@ the verification workflow are in [docs/INSTALL.md](docs/INSTALL.md)
 `.Codex/session-notes.md`; older session history remains under `.claude/`.
 
 ```
-harness/   launcher (collection.py), run_rig.py, setup GUI, capture/oracle tools
+harness/   launcher, setup, recording/replay, local checks and release tools
+native/    shared C++ renderer, drivetrain and distance helpers
+tests/     Python contracts and standalone native helper checks
 gpu/       renderer.py — the verified GPU pipeline (shader source of truth)
 patch/     full MAME patch series + in-memory game-code patches (patch/game)
 fixtures/  NVRAM so each game boots straight to attract, calibrated
 lua/       headless drivers (frame snapshots, scripted coin-up/driving)
 results/   RESULTS.md engineering log + proof images
-docs/reviews/ independent assessment, replay/testing and rendering/FFB proposals
+docs/      player/developer guides; dated research under reviews/
+media/     default menu artwork and music (excluded with -NoMedia)
 lib/toolkit/ pinned wheel-toolkit profiles and version marker
 ```
 
 ## Legal
 
-Cruis'n USA, Cruis'n World, Off Road Challenge, Cruis'n Exotica and their
-art are Midway / Warner Bros. properties. This project distributes no ROMs
-and no game assets: original launcher code, a GPL-2.0+ patch series against
-MAME (source included, as GPL requires) and SDL2 (zlib license, included) for
-wheel force feedback. Supply your own legally obtained ROM dumps.
+Cruis'n and the game artwork belong to their respective rights holders. This is
+an unofficial project. No game ROMs are distributed; supply your own supported
+sets. The modified MAME emulator derives from GPL-2.0+ code; its patch series and
+source are included in release packages. SDL2 and the vendored wheel toolkit have
+their own included licence notices.
+
+The default package **does include menu artwork and music** from `media/`;
+`make_release.ps1 -NoMedia` omits those assets. Asset provenance/permissions and
+the original launcher code's licence declaration still need review before public
+distribution. See [public readiness](docs/PUBLIC-READINESS.md).

@@ -1,5 +1,9 @@
 # SETTINGS redesign proposal (G5) — draft for discussion, 2026-08-26
 
+> Historical research/design note. Its assumptions and proposed settings may be
+> superseded. Use the [current documentation index](README.md) and
+> [roadmap](../ROADMAP.md) for supported behavior and next work.
+
 The current single-screen settings list has outgrown itself (9 rows, mixed
 scopes), and the per-game model ("highlight a game card, then SETTINGS
 tunes that game") works but is invisible. Confirmed with the user
