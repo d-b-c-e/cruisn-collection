@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Off Road model codec — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-offroad-model-codec.md. Standalone native
+native/offroad_model.h/analyzer, independentPython and boundedLua capture now
+match1399 projections/9602 orderedDMAquads across2500..2550,3500..3550,5500..5550;
+68models/78LODdescriptors/67objects. Canonicalrepeat463/3309 and547excluded.
+Threewordstride consumesXY; thirdword priorbufferdata, notcurrentdepth. DP1,
+5wordLOD,floatvertices,6wordpolygons. Initial2strideFAIL and rawpage0/1-verifier
+FAIL retained. Rawpageactual201/204. Liveonlyordinaryprojection; clampbranches
+synthetic. No hostdraw mode or MAME integration yet.
+
+Three3001headless preserve1201camera/3603actualADCtimes; four6000visible preserve
+4191camera/12573actualADCtimes and all3GL3824x2073 each. Originalinputs/native
+referencePASS. Canonicalviewcapture locallymatches463translations/68identity
+bases; yaw/fullrotation/LODchoice remainunqualified. Raw resources stayLOCAL.
+232Python/no skips,20native,10081C31/137yaw,32GPU/56commands PASS at348fileidentity
+df90e4202a5af21db24ebc49d4016958dba301003050119d863cf43e9b3e52ba.
+No nativebuild/export/default renewal: cf58/SHA37c0a4ce owns prior7defaultpasses.
+PersonalStreamDeckv0.5.0/SHA87d04de4 unchanged. No release/deploy/hostedworkflow/
+physicalFFB/Worldtuning/menu removal. Checkrig; emulatorsserial.
+NEXT independentOffRoad transforms/LOD, scene/loading/material bindings, guarded
+futurehost adapter. USA97–98%performance/visualacceptance, World25roads and Zeus
+remainalongside. Continue directly; ONEminute heartbeat recovery only/no cutoff.
+
 ## September 9 USA future rendering — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-usa-future-rendering.md. Collection39750ad/dd803a0

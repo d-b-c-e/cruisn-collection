@@ -24,16 +24,15 @@ the independently checked section decoder to a separate MAME candidate. 2x adds
 13/16 current4K images over1x;3x adds three smaller changes beyond2x. Route,
 ordered output and original resources are preserved. Cached models/reciprocals
 reduce cost, but3x still measures97–98% speed: full-speed and visual acceptance
-remain open. Next complete final regression gates and Off Road's own model
-capture/decoder, with World2.5 roads and Zeus adapters alongside.
+remain open. Final original-resource and seven-default regression gates pass on
+the separatecf58 candidate. [Off Road's own codec](docs/reviews/2026-09-09-offroad-model-codec.md)
+now matches1,399 projections/9,602 ordered draws and preserves four6,000-input
+replays and4K samples. Next qualify its transform/LOD and scene/material adapter,
+with World2.5 roads and Zeus adapters alongside.
 
-Latest cross-game milestone: [USA host scenery](docs/reviews/2026-09-09-usa-host-scenery.md)
-is integrated in a separate native candidate. Host2x adds distant scenery in12/16
-current4K images over1x, with original inputs/camera/ADC timing and153.8MB of
-original resources unchanged. Host3x currently matches2x; future sections are the
-next loading limit. The independent model, scene and live polygon checks pass.
-World2.4/2.5 host scenery remains a separate candidate with ground/occlusion work
-open. The active queue continues to Off Road/Zeus; Stream Deck stays on v0.5.0.
+The earlier [USA pending-object adapter](docs/reviews/2026-09-09-usa-host-scenery.md)
+was the foundation for the current future-section renderer above. World2.4/2.5
+host scenery still has ground/occlusion work open. Stream Deck stays on v0.5.0.
 
 1. **Cheats submenu and live activation: shipped in v0.5.0.** Imported choices,
    session-only Esc actions, one-shots/restoration and frame-stamped replay work
