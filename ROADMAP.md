@@ -66,11 +66,18 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
    ground gaps remain. The [coverage trial](docs/reviews/2026-09-09-host-layers-and-roads.md)
    removes the new green tunnel line in the targeted 4K frame (3,079 differing
    pixels reduced to139), while full visual acceptance remains open. The separate
-   road oracle now checks23,589 projections/21,123 unclipped ordered calls. No host
-   road implementation or World2.5 future adapter is integrated yet. A diagnostic
-   capture-shutdown handshake is built and small-window tested; final4K/default
-   qualification remains pending because the4K display became unavailable.
-   Keep the candidate undeployed; no experiment menu cleanup was justified.
+   road oracle now checks23,589 projections/21,123 unclipped ordered calls. The
+   [resumed road implementation](docs/reviews/2026-09-09-host-road-integration.md)
+   now fills the distant uphill road gap;18/21 current4K frames change and all21
+   repeat. Full9,269-input routes/camera/actualADC timestamps remain exact. An
+   initial read-handler timing defect was fixed with direct RAM/side-effect-free
+   reads and a zero-guest-cycle guard. Native8bc/SHAa2fb is separate; all seven
+   defaults and204Python/16native/32GPU local checks pass. The4K monitor is back.
+   A World2.5 offline prototype matches4,390 future descriptors/1,251 later
+   allocations and0/1,048/2,165 projected quads at1x/2x/3x; integrate and exercise
+   it next. USA has a different two-word/interleaved model format, so verify its
+   codec before reusing the shared math. Off Road/Zeus adapters remain unfinished.
+   Keep the candidate undeployed; no experiment menu cleanup is justified.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.
 

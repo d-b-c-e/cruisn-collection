@@ -1,6 +1,8 @@
 # September 9 morning handoff
 
-The overnight queue is **PAUSED**. Robust, comparable 3x draw distance across all
+At this morning checkpoint the overnight queue was **PAUSED**. The maintainer
+has since [explicitly resumed it](OVERNIGHT-2026-09-09.md); see the
+[road-integration milestone](reviews/2026-09-09-host-road-integration.md) for newer work. Robust, comparable 3x draw distance across all
 four games is **not complete**. The useful progress is a World 2.4 future-scenery
 prototype, a targeted tunnel correction and substantially stronger road diagnostics.
 

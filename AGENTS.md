@@ -1,5 +1,54 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 resumed host-road milestone — ACTIVE
+
+Maintainer explicitly resumed feature-parity work after the morning cutoff.
+Heartbeat cruisn-overnight-cheats-and-distance is ACTIVE, renamed Cruisn extended
+scenery parity, every30minutes WITHOUT the old UNTIL or08:00 stop. Continue toward
+four-game parity. Read docs/reviews/2026-09-09-host-road-integration.md and ROADMAP.
+No new release, hosted workflows, physicalFFB or World tuning. No menu removals
+until successful replacements. PersonalStreamDeck remainsv0.5.0/SHA87d04de4.
+Before visible tests, check for an existing personal game; use independent
+offline work while the rig is occupied. Run emulator tests serially.
+
+Collectionc74c152 implements --world-host-roads on|off; absent preserves old drives.
+Native8bc9de136e6c24121d61bc1a991805c5c3438a2a is built SEPARATELY/pushed, SHA
+a2fbecfb4179a4a00f4fa90795b10729f7f178b62a7c07166be1834c76877148. Frozen copy
+build/candidates/8bc9de136e6/vunit.exe.139patches reconstruct treedcb854a8574e3e48758acefc0c163329eef4d91d.
+All7defaults now PASS on8bc: actualUDP/memory,4forcepolicy/polarity,Exo21GL.
+204Python/no skips,16native,10081C31/137yaw,32GPU/44commands PASS; sourceidentity
+f93ad7f9e32fe0da96aced4ed4b439d7df036d76c6528662de285b1251d392c5.
+
+World2.4 road templates: originalROMvertices, checkedRAMfar polygons/materials;
+futureclassB render fields only, no physicslinks.23,589native selectors,21,123
+unclipped DMA calls and four snapshot descriptor/projection oracles PASS.
+ThreefullGermany9269/154 preserve7461camera/22383actualADCtimes. Roads on fills
+the distant uphill gap:18/21GL3824x2073 change,6720 changes41705pixels. All21 and
+10,094,461hostquads/3731scenes repeat. Callbackp99/max7.98/9.43ms.51tunnelGL equal
+earliercoverage; original82,601,136byteDMA/VRAM/texture/palette/meta exact.
+Tree-side sky gaps, broader clipping/occlusion/handover/material lifetime remain.
+
+InitialnativeSHA82635f77 readD4C0 through generic_speedup_r (100cycle side effect),
+changingADCtimes1802/camera3108; headless8562guard and on-screen FAILs retained.
+FIX: direct mainRAM reads, bounded ROM/internalRAM with sideeffectsdisabled,
+assert zero emulatedCPUcycle delta in each hostcallback. Carry this to adapters.
+Interruptedtrial and display-transition FAIL retained;4K is now available again.
+Proof results/proof/2026-09-09-host-roads recomputes selectedpixels/threefulltraces/
+7telemetry/4force; completegeometry/resources/native/GPU/otherGL remain receipts.
+RawROM/model/code resources stay LOCAL in results/diagnostics/world-host-roads-20260909.
+
+NEXT: World2.5 offline prototype LOCAL under world25-draft; prepare-world25.py and
+world25-oracle.py reproduce it.4390descriptors,1251laterallocations,0/1048/2165future
+quads at1/2/3x PASS atframe4500; oldWorld2.4 four road snapshot oracles also PASS.
+Not integrated in MAME, no gameplay/GPU or World2.5road claim. Promote explicit
+world_host_layout profiles/guards, broaden snapshots/frontiers and test serially.
+USA needs its own model codec: staticmainpath uses2word header, count-minus-one
+vertices, interleaved polygon/UV/texture words; palette lookup and sky insertion
+boundary need runtime proof. Existing usa.asm is LOCAL under distance-layouts-
+20260908; other adapter snapshots under world-future-sections-20260909. OffRoad
+andZeus contracts remain unfinished. Keep old experiments until verified parity.
+
+
 ## September 9 maintainer resumption — ACTIVE
 
 The maintainer explicitly asks to continue toward extended-drawing feature parity
