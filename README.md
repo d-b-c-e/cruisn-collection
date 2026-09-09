@@ -37,12 +37,13 @@ small gaps and can smear them; its saved setting and existing default are preser
 **Impact Cues** are available under Force Feedback, with physical feel still
 awaiting validation.
 
-A separate **World 2.4 host scenery prototype** draws pending scenery without
-changing guest simulation. Its 2× trial shows earlier hills, buildings and trees;
-3× adds a brief mountain benefit in a targeted interval. This is **CLI-only**,
-not the menu's World Draw Distance option. Occlusion, handover, longer-range
-section loading and occasional rendering stalls remain under investigation.
-It is not enabled by an ordinary launcher session. [Evidence and limits](docs/reviews/2026-09-08-world-host-scenery.md).
+A separate **World 2.4 host scenery prototype** now decodes upcoming sections
+without changing guest simulation. Its 3× trial adds visible mountains/buildings
+over 2× in 16 of 31 recorded Germany images. This is an **undeployed CLI candidate**;
+the menu's World Draw Distance option uses the earlier guest-distance experiment.
+Road gaps, occlusion, material lifetime and cross-game adapters remain unfinished.
+It is not enabled by an ordinary launcher session. See the [morning handoff](docs/OVERNIGHT-RESULTS-2026-09-09.md)
+and [evidence and limits](docs/reviews/2026-09-09-host-layers-and-roads.md).
 
 - [Setup, controls, telemetry and troubleshooting](docs/INSTALL.md)
 - [Cheats and supported actions](docs/CHEATS.md)

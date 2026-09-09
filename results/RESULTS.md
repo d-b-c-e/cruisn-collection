@@ -4336,3 +4336,33 @@ and corrected scope remain in the archive. USA/OffRoad/Exotica mapping captures
 pass, but no equivalent new3x renderer is claimed. StreamDeck remainsv0.5.0;
 no deployment, menu removals, force tuning, hosted builds or release. Overnight
 queue remains ACTIVE to08:00local. See docs/reviews/2026-09-09-world-future-sections.md.
+
+## September 9 morning checkpoint: host coverage and road reference
+
+The overnight heartbeat is now PAUSED; earlier active statements are historical.
+See docs/OVERNIGHT-RESULTS-2026-09-09.md and the host-layers-and-roads review.
+Coverage ownership reduces the tunnel frame's changed pixels from3,079 to139
+against the pending control, without a newly differing region. Legacy/coverage/
+both complete51 images each at3824x2073; coverage and both are byte-equal. Original
+4502inputs/camera/ADC timestamps and original hardware capture resources remain
+exact. This is a targeted seam correction, not complete foreground acceptance.
+Boot timeout and41/51,50/51 split-only capture failures remain archived.
+
+Final native94368ee939e/SHA2099a187 is built separately/pushed. Its diagnostic
+capture-drain handshake completes51 small-window images and exercises a32ms wait
+at the300-frame boundary. Requested final4K run failed because that display was
+unavailable. Seven defaults were last qualified on de1, not this final candidate.
+Local203Python/no skips,15native,32GPU/42commands pass at311-file source identity
+388cb344a01bc0271310f46f9f42bb4238506da3643eeab6a99353591263dc77.
+138patches reconstruct tree3e7058bd9f494a871bae2ffd687e61edcc4366c2.
+
+Reusable road probes reproduce23,589 projected calls,17,821 distant-template
+choices and21,123 unclipped ordered draws across two gameplay intervals;2,466
+clipped calls remain excluded. Final8,155 render descriptors include1,332 road
+allocations after correcting the bit24 tag assumption; the first failure remains.
+No host-road drawing was integrated. The unfinished C++ draft stays local. World
+2.5/USA/OffRoad/Zeus future adapters and comparable3x acceptance remain incomplete.
+106-file public proof recomputes selectedpixels/routes/scalars; raw geometry,
+materials/projection/build/GPU results remain receipts. StreamDeck staysv0.5.0,
+with its exact binary/ZIP hashes rechecked. No personal-state changes, new release,
+menu removals, hosted builds or physical force. Resume only on newer direction.

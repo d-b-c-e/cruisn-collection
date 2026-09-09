@@ -3,6 +3,17 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
+## Unreleased — September 9 diagnostics
+
+- World 2.4 future-section host scenery gives a measured 3x-over-2x benefit on
+  Germany; still CLI-only, undeployed and incomplete for roads/occlusion.
+- Explicit host coverage/vertex-batch trials, with a targeted tunnel-seam
+  improvement and synthetic GPU checks preserving shadows/transparent texels.
+- Read-only road-template, projection and final-render-descriptor verification.
+- Bounded completion handshake for queued diagnostic captures at shutdown.
+- See the [morning handoff](docs/OVERNIGHT-RESULTS-2026-09-09.md) for retained failures,
+  pending final4K/cross-game acceptance and unchanged released behavior.
+
 ## v0.5.0 — 2026-09-08
 
 - Optional Exotica Menu Force Feedback experiment; default Off preserves suppression outside driving and World remains unchanged.

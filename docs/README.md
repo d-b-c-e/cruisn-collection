@@ -12,6 +12,7 @@ assuming that a source feature is present in a downloaded package.
 | [Cheats](CHEATS.md) | Importing exact-revision cheats and supported actions |
 | [Recorded gameplay](DIAGNOSTIC-REPLAY.md) | Attended recording, playback, captures and diagnostic evidence |
 | [Roadmap](../ROADMAP.md) | Current work and acceptance criteria |
+| [September 9 handoff](OVERNIGHT-RESULTS-2026-09-09.md) | Measured 3x progress, undeployed candidates and remaining cross-game work |
 | [Local builds](LOCAL-BUILDS.md) | Local checks, packaging and exact-ZIP upload; Actions disabled |
 | [Release checklist](RELEASE-CHECKLIST.md) | Automated gates, attended acceptance and promotion |
 | [Attended release testing](RELEASE-MORNING.md) | Short practical drive protocol |
@@ -54,7 +55,8 @@ supersede them without rewriting a recorded FAIL into a PASS.
 - [World FFB rollback](reviews/2026-09-07-world-ffb-rollback.md) and
   [Exotica polarity correction](reviews/2026-09-07-exotica-force-polarity.md)
 - [Normal-launch regression and test coverage](reviews/2026-09-08-launch-environment.md)
-- [Current September 9 overnight queue](OVERNIGHT-2026-09-09.md), active through its morning checkpoint
+- [September 9 morning handoff](OVERNIGHT-RESULTS-2026-09-09.md) and
+  [paused work order](OVERNIGHT-2026-09-09.md)
 - [Completed September 8 checkpoint](OVERNIGHT-RESULTS-2026-09-08.md) and
   [archived work order](OVERNIGHT-2026-09-08.md); their older scheduling statements are historical
 

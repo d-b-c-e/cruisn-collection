@@ -9,10 +9,10 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
 The ordered, actionable queue
-is below. The [September 9 overnight queue](docs/OVERNIGHT-2026-09-09.md) is ACTIVE
-through the 08:00 local checkpoint: concentrate on robust, comparable 3x scenery
-across all four games, then retire older experiments only where successfully
-replaced. This takes priority over the other unfinished items below. The September
+is below. The [September 9 overnight queue](docs/OVERNIGHT-2026-09-09.md) is PAUSED
+at the morning handoff. [Results and remaining work](docs/OVERNIGHT-RESULTS-2026-09-09.md)
+distinguish World's visible 3x gains from unfinished cross-game parity. Retire older
+experiments only where successfully replaced. The September
 8 queue is historical. The repository is now public; remaining preparation is
 tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 
@@ -63,11 +63,14 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
    visible mountains/buildings over future2x in16/31 completed4K images; all31
    images, geometry fingerprints and original camera/ADC repeat exactly. Callback
    max6.6ms with~100% emulation. Roads/custom codecs remain excluded and distant
-   ground gaps remain. Dense testing also exposes a new green line across the
-   tunnel road at frame4408: **visual acceptance fails**, despite unchanged
-   original geometry/resources. Keep the candidate undeployed. The separate road
-   codec and World2.5 allocation membership now have read-only oracles to guide
-   the next work; full occlusion/handover and cross-game acceptance remain open.
+   ground gaps remain. The [coverage trial](docs/reviews/2026-09-09-host-layers-and-roads.md)
+   removes the new green tunnel line in the targeted 4K frame (3,079 differing
+   pixels reduced to139), while full visual acceptance remains open. The separate
+   road oracle now checks23,589 projections/21,123 unclipped ordered calls. No host
+   road implementation or World2.5 future adapter is integrated yet. A diagnostic
+   capture-shutdown handshake is built and small-window tested; final4K/default
+   qualification remains pending because the4K display became unavailable.
+   Keep the candidate undeployed; no experiment menu cleanup was justified.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.
 

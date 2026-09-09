@@ -1,5 +1,53 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 morning checkpoint — overnight PAUSED
+
+The morning cutoff has passed. Heartbeat cruisn-overnight-cheats-and-distance is
+PAUSED; do not resume without newer maintainer direction. Read
+docs/OVERNIGHT-RESULTS-2026-09-09.md and
+docs/reviews/2026-09-09-host-layers-and-roads.md. No deployment, menu removal or
+new release: personal Stream Deck remains v0.5.0 native4ac/SHA87d04de4; released
+packages and personal settings are unchanged. All physical force stayed0.
+
+New CLI-only --world-host-layer legacy|coverage|split|both preserves absent/old
+recording behavior. Host mask5/7 separates auxiliary coverage from foreground1/3;
+material dither stays tagged. World2.4 coverage and both each complete4502inputs,
+camera/actualADCtimes,51GL3824x2073 and identical original capture resources.
+Legacy matches all51 old future images. Coverage changes44/51; tunnel4408 changes
+3079->139pixels versus pending control, no newly different region. Green line
+visually removed, not a full occlusion pass. Coverage/both all51 BMPs byteequal;
+split has no demonstrated additional benefit. First legacy boot consumer timeout
+and split41/51,50/51 end-capture FAILs retained.
+
+Layer native5214d945b28/SHA5fbf43960b3f9ae4ee8f4bbee19e1d07c2bb38a1578a85129e53a633d14fb491
+owns4K evidence. Final native94368ee939ec305bd201fe061d2eed06384380f3 is built/pushed
+SEPARATELY, SHA2099a1879ad59bebdb2918117dd166ae6bc4780d54386d4505d8fc77cc2b33b9.
+It adds bounded diagnostic capture-drain acknowledgement only with MIDV_FFB=0.
+Small4502 replay completes51 captures;300-frame boundary exercises32ms wait to298.
+Final4K attempt FAIL because requested display unavailable; no silent substitution.
+Seven defaults last passed on de1, NOT renewed on943. Renew4K/defaults before deploy.
+138-patch export reconstructs tree3e7058bd9f494a871bae2ffd687e61edcc4366c2.
+Local203Python/no skips,15native,32GPU/42commands PASS, source identity
+388cb344a01bc0271310f46f9f42bb4238506da3643eeab6a99353591263dc77.
+
+Reusable lua/world_road_capture.lua + harness/verify_world_roads.py verify tunnel
+4400..4500 and road-gap6400..6800:23589center/matrix/projection/template matches,
+17821far calls,21123unclipped orderedDMA matches;2466clipped excluded. Optional
+verify_world_future.py --roads verifies8155 final render descriptors including1332
+road allocations;67custom excluded. Initial bit24 tag failure retained, corrected
+bit24/section-direction bit25 from actual allocator. No broad direction coverage.
+NO integrated host roads: uncompiled draft saved LOCAL under
+results/diagnostics/world-host-layers-20260909/unfinished-road-draft. Canonical
+decoder still excludes roads. Next integrate guarded template selection and future
+road descriptors, verify scene oracle then visible road gaps/occlusion; World2.5
+adapter follows earlier mapped layout. USA/OffRoad/Zeus adapters remain unfinished.
+
+Proof results/proof/2026-09-09-host-layers-and-roads recomputes selected4K pixels,
+four input/ADC/fingerprint traces and road scalar decisions. Full raw geometry,
+materials/projection/native-build/GPU checks remain receipts. Raw resources stay
+local. No cross-game3x or full material/handover claim. All older ACTIVE queue
+statements below are historical. Hosted workflows stay disabled; World FFB deferred.
+
 ## September 9 World future-section checkpoint — overnight still ACTIVE
 
 Read docs/reviews/2026-09-09-world-future-sections.md and the overnight work order.

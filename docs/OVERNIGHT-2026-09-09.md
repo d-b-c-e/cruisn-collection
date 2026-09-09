@@ -1,5 +1,10 @@
 # Overnight queue: consistent 3x scenery — September 9, 2026
 
+**Checkpoint: PAUSED after the morning cutoff.** Read
+[the September 9 handoff](OVERNIGHT-RESULTS-2026-09-09.md) for actual results and
+remaining work. The authorization and checklist below are the historical work
+order; do not resume the heartbeat without newer maintainer direction.
+
 The maintainer requests concentration on robust 3x draw distance equally across
 USA, World, Off Road and Exotica, followed by removal of confusing or redundant
 graphical experiments **if the replacement succeeds**. Work is authorized through
