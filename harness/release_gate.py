@@ -15,6 +15,7 @@ from diagnostic_runtime import ROOT
 from release_identity import source_identity
 from verification import sha256_file, write_json
 from check_release_package import FREEPLAY
+from local_checks import validate_report as validate_local_checks
 
 
 def requirements(plan):
@@ -84,6 +85,7 @@ def fresh_boot_check(report, candidate_hash, source_hash):
 def main(argv=None):
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--candidate',required=True,type=Path)
+    ap.add_argument('--checks',type=Path,help='complete current Windows local_checks.py report')
     ap.add_argument('--regressions',type=Path)
     ap.add_argument('--fresh-boots',type=Path,help='complete current check_fresh_boots.py report')
     ap.add_argument('--attended',type=Path)
@@ -101,6 +103,14 @@ def main(argv=None):
         with args.init_attended.open('x',encoding='utf-8') as out: json.dump(ledger,out,indent=2)
     report={'schema':1,'ready_for_release':False,'candidate_sha256':candidate,
             'source_identity':identity['sha256'],'physical_force':False}
+    report['local_checks']={'passed':False,'error':'complete current Windows local check report required'}
+    if args.checks:
+        try:
+            value=json.loads(args.checks.read_text())
+            passed=validate_local_checks(value,identity['sha256'],args.checks.parent)
+            report['local_checks']={'passed':passed,'path':str(args.checks),'sha256':sha256_file(args.checks),
+                                   'error':None if passed else 'failed, partial, stale or damaged local check evidence'}
+        except (OSError,ValueError,KeyError,TypeError) as error: report['local_checks']['error']=str(error)
     stream=io.StringIO()
     tests=unittest.defaultTestLoader.discover(str(ROOT/'tests'),pattern='test_release_contract.py')
     result=unittest.TextTestRunner(stream=stream,verbosity=2).run(tests)
@@ -129,11 +139,12 @@ def main(argv=None):
             report['attended']=acceptance_check(json.loads(args.attended.read_text()),expected,candidate,identity['sha256'],args.attended.parent)
         except (OSError,ValueError,KeyError,TypeError) as error: report['attended']['error']=str(error)
     report['automated_configuration_and_replays_pass']=report['configuration']['passed'] and report['regressions']['passed']
-    report['automated_pass']=report['automated_configuration_and_replays_pass'] and report['fresh_boots']['passed']
+    report['automated_pass']=(report['automated_configuration_and_replays_pass']
+                              and report['fresh_boots']['passed'] and report['local_checks']['passed'])
     report['ready_for_release']=report['automated_pass'] and report['attended']['passed']
     write_json(args.report,report)
     print(f"Release {'READY' if report['ready_for_release'] else 'NOT READY'}: {args.report}")
-    print(f"Configuration={report['configuration']['passed']}; full replay suite={report['regressions']['passed']}; "
+    print(f"Local checks={report['local_checks']['passed']}; configuration={report['configuration']['passed']}; full replay suite={report['regressions']['passed']}; "
           f"fresh boots={report['fresh_boots']['passed']}; attended checks pending={len(report['attended'].get('pending',[]))}; "
           f"maintainer waivers={len(report['attended'].get('waived',[]))}")
     return 0 if report['ready_for_release'] else 1

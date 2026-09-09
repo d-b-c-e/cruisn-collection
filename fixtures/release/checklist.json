@@ -19,6 +19,6 @@
     "wheel-matrix": "Record wheel/base firmware and driver settings; validate local wheel plus a second vendor (Fanatec oscillation report), disconnect/reconnect and no-wheel startup",
     "soak": "At least 30 minutes mixed gameplay with repeated game switching; no accumulating slowdown, crash, stuck input/force or capture-related periodic stutter",
     "package-review": "Exact ZIP/hash reviewed: no ROMs or personal rig data, runtime DLLs and source/licences present, installer/updater/support bundle work, release notes list remaining limitations",
-    "ci": "All required CI jobs pass on the candidate source revision; attach the run URL or exported report"
+    "ci": "Complete Windows local_checks.py report passes on the candidate source identity, including Python, native helpers and GPU quality; attach its report and hashed evidence (legacy ledger key retained)"
   }
 }

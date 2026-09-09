@@ -448,9 +448,12 @@ Advanced / scripted setup (custom paths, no GUI): `setup.ps1` in the zip.
    change: `python harness/gen_shaders.py`, rebuild `vunit.exe`, then verify
    `python gpu/renderer.py results/capture-8000` still prints **100.0000%**
    (bit-exact against MAME's framebuffer).
-6. Release zip: `.\make_release.ps1` freezes the launcher and setup GUI and
-   bundles emulator + plugin + fixtures + docs (~90 MB). Pushing a `v*` tag
-   builds the same thing on GitHub Actions and publishes it.
+6. Run `python harness/local_checks.py` for Python/native/GPU checks. Release
+   ZIPs are assembled locally with `.\make_release.ps1 -Version vMAJOR.MINOR.PATCH`;
+   this freezes launcher/setup and bundles the already-built emulator, SDL2,
+   fixtures and source/docs. Hosted workflows are disabled; tags do not build
+   or publish. Follow [LOCAL-BUILDS.md](LOCAL-BUILDS.md) and the release checklist
+   to validate and promote the exact tested ZIP.
 
 ### Path configuration
 

@@ -25,7 +25,7 @@ require a new frozen candidate and renewed gates before another release; see
    World level justify promotion. Freeze source, emulator, DLLs, toolkit profiles,
    default graphics settings and package hash. Do not make distance elimination a
    prerequisite for shipping the other fixes.
-2. **Clear automated gates.** Run CI, the complete seven-case local replay suite,
+2. **Clear automated gates.** Run `python harness/local_checks.py`, the complete seven-case local replay suite,
    exact/quality GPU checks, configuration contracts, and V-Unit pause-menu checks.
    Check selection and driving speed separately; average speed does not clear stutter.
 3. **Collect attended acceptance.** Record one complete manual-transmission race
@@ -36,10 +36,10 @@ require a new frozen candidate and renewed gates before another release; see
    upgrade away from development paths, run the wheel/soak checks below, close release
    blockers, then tag/publish that exact reviewed candidate. Retain the prior ZIP and
    configuration backup for rollback. This checklist does not publish a release.
-   The release workflow now builds a candidate only. Tag pushes do not publish.
+   Hosted workflows are disabled; builds and checks run locally. Tag pushes do not publish.
    `promote_release.py` rechecks current evidence and uploads the exact accepted ZIP;
    it performs a dry run unless `--publish` is explicitly requested. A locally
-   tested executable does not certify a newly compiled CI candidate.
+   tested executable does not certify a different compile. See [LOCAL-BUILDS.md](LOCAL-BUILDS.md).
 
 ## Public distribution decision
 
@@ -100,10 +100,10 @@ A concise morning sequence and four recording commands are in
 ## Repeatable commands and evidence
 
 ```powershell
-python -m unittest discover -s tests -v
+python harness/local_checks.py --output results/diagnostics/release-checks
 python harness/run_regressions.py --candidate E:/Source/mame-src/vunit.exe --output results/diagnostics/release-candidate
 python harness/check_fresh_boots.py --candidate E:/Source/mame-src/vunit.exe --output results/diagnostics/release-fresh-boots
-python harness/release_gate.py --candidate E:/Source/mame-src/vunit.exe --regressions results/diagnostics/release-candidate/report.json --fresh-boots results/diagnostics/release-fresh-boots/report.json --init-attended results/diagnostics/release-attended.json --report results/diagnostics/release-readiness.json
+python harness/release_gate.py --candidate E:/Source/mame-src/vunit.exe --checks results/diagnostics/release-checks/report.json --regressions results/diagnostics/release-candidate/report.json --fresh-boots results/diagnostics/release-fresh-boots/report.json --init-attended results/diagnostics/release-attended.json --report results/diagnostics/release-readiness.json
 # Only with a person at the wheel; uses SAVED settings, so confirm release defaults first:
 python harness/record_drive.py --game world --title "Release World manual Germany" --with-ffb
 ```
@@ -113,10 +113,11 @@ configuration checks run in a temporary rig and do not launch games. It requires
 the full suite, all five fresh-seed boot/persistence checks, matching binary/source/suite
 hashes and no physical output. A matching replay alone cannot clear failed persistence.
 Source identity normalizes known text line endings while preserving binary bytes.
-CI exports the complete identity on both Windows and Linux; compare both with the
-local checkout before freezing a candidate. Raw ZIP/file hashes remain exact.
+The local runner exports the complete identity and checks source stability across
+the run. Windows full coverage is required; current Linux/cloud coverage is not
+claimed or required while hosted workflows are disabled. Raw ZIP/file hashes remain exact.
 Configuration tests that are skipped on non-Windows cannot clear the gate.
-The candidate workflow runs the harness tests and `check_release_package.py`:
+The local runner covers Python/native/GPU checks; `make_release.ps1` runs `check_release_package.py`:
 required runtime/source files, menu media, fallback shaders, candidate emulator hash,
 free-play seeds and absence of files in the ROM/personal-rig directories. The ZIP
 manifest records every packaged file hash and source identity. This is not a complete
@@ -127,7 +128,7 @@ off in an installation without personal settings. Existing CRT preferences are p
 `ready_for_release` additionally requires the attended ledger: reviewer, date,
 observations and existing evidence files with SHA256 hashes for every check.
 Paths in the ledger are relative to that JSON. One drive/report can support
-several checks; leave unobserved checks pending. Attach CI and package evidence
+several checks; leave unobserved checks pending. Attach local check and package evidence
 there too, including the actual ZIP hash.
 
 An explicit maintainer sign-off may instead accept specified remaining human checks
@@ -135,7 +136,7 @@ as `waived`, each with a reason and coverage limits. The same ledger must includ
 `maintainer_approval` with decision `release-current-state`, reviewer, date, notes,
 hashed approval evidence and the exact `waived_checks` list. Candidate/source
 binding still applies. The report exposes `waived` and `all_checks_passed=false`;
-automated configuration, regression and fresh-boot gates cannot be waived.
+automated local-check, configuration, regression and fresh-boot gates cannot be waived.
 
 Rerun with `--attended results/diagnostics/release-attended.json` after filling
 the ledger; omit `--init-attended`, which refuses to replace an existing ledger.
@@ -154,22 +155,21 @@ Off Road and Exotica drives are useful regressions but insufficient release cove
 
 ## Candidate packaging and promotion
 
-Build from a clean committed checkout with `./make_release.ps1 -Version v0.4.0-rc2`
-(or manually dispatch the **release candidate** workflow with that version). The
+Build from a clean committed checkout with `./make_release.ps1 -Version v0.4.1-rc1`
+(example next candidate label). Do not dispatch the disabled hosted workflow. The
 version is a candidate label, not a published tag. ZIP names include a timestamp;
 previous packages remain available. `-NoMedia` deliberately omits artwork/music.
 Normal packages restore the repository artwork and music, with custom music in
 `rig/assets` taking precedence. Personal rig directories are never bundled.
 
 Keep the `.zip`, `.zip.check.json`, `.zip.defaults.json` and `.zip.manifest.json` together. Test the
-extracted ZIP away from development paths. For a CI build, download its artifact
-using the [GitHub CLI artifact workflow](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts?tool=cli);
-replay evidence must reference that extracted emulator. A different compile is a
+extracted ZIP away from development paths; no Actions artifact download is needed.
+Replay evidence must reference that extracted emulator. A different compile is a
 different candidate. Source, media or runtime changes require renewed acceptance.
 
 After all acceptance is recorded, attach the exact ZIP and its SHA256 in the
 `shared/package-review` ledger entry. Run `harness/promote_release.py ZIP` with
-`--manifest MANIFEST --candidate EXE --regressions REPORT --fresh-boots REPORT
+`--manifest MANIFEST --candidate EXE --checks LOCAL_CHECK_REPORT --regressions REPORT --fresh-boots REPORT
 --attended LEDGER --notes NOTES.md`. Its dry run rechecks the complete gate.
 Only a subsequent explicit `--publish` creates a release, targeting the recorded
 commit and uploading the same ZIP without rebuilding. Existing tags are refused.

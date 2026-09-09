@@ -1,8 +1,8 @@
 name: diagnostic checks (manual hosted fallback)
 
 # Local checks are the default: python harness/local_checks.py
-# This workflow is also disabled in GitHub. Do not re-enable hosted compute
-# without a new maintainer request; pushes and PRs must not spend Actions minutes.
+# Disabled in GitHub. A new maintainer request is required to re-enable hosted
+# compute. Pushes and PRs must not spend Actions minutes.
 on:
   workflow_dispatch:
 
@@ -15,63 +15,42 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: python -m pip install -r requirements-test.txt
-      - run: python -m unittest discover -s tests -v
-      - name: Record checkout-independent source identity
-        run: python -c "import json,sys; from pathlib import Path; sys.path.insert(0,'harness'); from release_identity import source_identity; Path('source-identity.json').write_text(json.dumps(source_identity(Path('.')),sort_keys=True,indent=2),encoding='utf-8')"
+      - run: python harness/local_checks.py --group python --output checks
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: source-identity-${{ matrix.os }}
-          path: source-identity.json
+          name: python-checks-${{ matrix.os }}
+          path: |
+            checks/*.json
+            checks/*.log
   native-helpers:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install numpy
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/hud_speed_test.cpp -o /tmp/hud-test
-      - run: /tmp/hud-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/hud_numeric_test.cpp -o /tmp/hud-numeric-test
-      - run: /tmp/hud-numeric-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/hud_drivetrain_test.cpp -o /tmp/hud-drivetrain-test
-      - run: /tmp/hud-drivetrain-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra tests/native/motor_signal_test.cpp -o /tmp/motor-test
-      - run: /tmp/motor-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/checked_patch_test.cpp -o /tmp/patch-test
-      - run: /tmp/patch-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/retained_texture_test.cpp -o /tmp/texture-test
-      - run: /tmp/texture-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/world_scenery_test.cpp -o /tmp/scenery-test
-      - run: /tmp/scenery-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/world_distance_test.cpp -o /tmp/distance-test
-      - run: /tmp/distance-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative native/analyze_world_host.cpp -o /tmp/world-host
-      - run: python harness/verify_world_host_native.py /tmp/world-host --report /tmp/world-host-math.json
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/world_host_test.cpp -o /tmp/world-host-test
-      - run: /tmp/world-host-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/usa_distance_test.cpp -o /tmp/usa-distance-test
-      - run: /tmp/usa-distance-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/offroad_distance_test.cpp -o /tmp/offroad-distance-test
-      - run: /tmp/offroad-distance-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/exotica_visibility_test.cpp -o /tmp/exotica-visibility-test
-      - run: /tmp/exotica-visibility-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Inative tests/native/cpu_upload_spans_test.cpp -o /tmp/cpu-upload-test
-      - run: /tmp/cpu-upload-test
-      - run: g++ -std=c++11 -O2 -Wall -Wextra -Ilib/toolkit/include native/analyze_ffb.cpp -o /tmp/ffb-analyzer
-      - run: /tmp/ffb-analyzer fixtures/signals/idle-hit.csv lib/toolkit/profiles cruisn-vunit@2 50 /tmp/stages.csv
-      - run: /tmp/ffb-analyzer fixtures/signals/idle-hit.csv lib/toolkit/profiles cruisn-vunit@2 50 /tmp/impacts.csv --impacts
-      - run: python tests/native/check_motor_adapter.py /tmp/ffb-analyzer
-      - run: g++ -std=c++11 -O2 -Wall -Wextra native/analyze_tjunctions.cpp -o /tmp/tjunctions
-      - run: python tests/native/check_tjunctions.py /tmp/tjunctions
+      - run: python -m pip install -r requirements-test.txt
+      - run: python harness/local_checks.py --group native --output checks
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-checks
+          path: |
+            checks/*.json
+            checks/*.log
+            checks/*.csv
   gpu-quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
     steps:
@@ -80,10 +59,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-dri xvfb xauth
-      - run: python -m pip install numpy pillow moderngl
-      - run: xvfb-run -a python harness/verify_quality.py --report quality-report.json
+      - run: python -m pip install -r requirements-test.txt moderngl
+      - run: xvfb-run -a python harness/local_checks.py --group gpu --output checks
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: gpu-quality-evidence
-          path: quality-report.json
+          path: |
+            checks/*.json
+            checks/*.log

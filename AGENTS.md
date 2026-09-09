@@ -7,6 +7,11 @@ in GitHub, and diagnostic checks now have a manual-only trigger. Do not enable
 or dispatch hosted workflows without a newer user request. No hosted CI is
 required for subsequent work: run the equivalent checks locally and preserve
 their reports/source identities. Previous CI PASS statements below are historical.
+Use `python harness/local_checks.py` for the full ROM-free Python/native/GPU
+inventory; see `docs/LOCAL-BUILDS.md`. Release gate and promotion now require
+`--checks` pointing to its complete Windows report and intact evidence files.
+Subset/Linux runs cannot clear release coverage. Retain the legacy shared/ci
+ledger key but attach local evidence; this automated gate cannot be waived.
 Build MAME on this PC when native code changes; assemble releases locally with
 make_release.ps1 and promote the exact tested ZIP with promote_release.py.
 Do not publish a release merely because the build policy changed. Keep v0.4.0,

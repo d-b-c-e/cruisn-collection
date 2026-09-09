@@ -37,7 +37,7 @@ def verify_identity(manifest, package_report, ledger, current_source):
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('package',type=Path)
-    for name in ('manifest','candidate','regressions','fresh-boots','attended','notes'):
+    for name in ('manifest','candidate','checks','regressions','fresh-boots','attended','notes'):
         ap.add_argument('--'+name,type=Path,required=True)
     ap.add_argument('--publish',action='store_true',help='explicitly create the public release after all checks pass')
     args=ap.parse_args()
@@ -49,7 +49,7 @@ def main():
     if not args.notes.read_text(encoding='utf-8').strip():
         raise ValueError('reviewed release notes are required')
     with tempfile.TemporaryDirectory(prefix='cruisn-promotion-') as tmp:
-        code=release_gate.main(['--candidate',str(args.candidate),'--regressions',str(args.regressions),
+        code=release_gate.main(['--candidate',str(args.candidate),'--checks',str(args.checks),'--regressions',str(args.regressions),
             '--fresh-boots',str(args.fresh_boots),'--attended',str(args.attended),
             '--report',str(Path(tmp)/'readiness.json')])
         if code: raise ValueError('release gate is not ready; no publication performed')

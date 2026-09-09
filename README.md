@@ -171,6 +171,11 @@ Full engineering log with every finding and number:
 
 ## Build it (developers)
 
+Builds and checks run locally; GitHub Actions workflows are disabled to avoid
+hosted runner usage. Run `python harness/local_checks.py` for Python, native and
+GPU checks. [Local build and release workflow](docs/LOCAL-BUILDS.md) explains
+how to package, validate and upload the exact tested ZIP.
+
 Release roadmap and required acceptance: [docs/RELEASE-CHECKLIST.md](docs/RELEASE-CHECKLIST.md).
 `harness/release_gate.py` checks fresh-install configuration and current regression
 evidence, and keeps missing attended checks visible before a public release.
