@@ -64,6 +64,7 @@ def commands(group, output, cxx):
     compile_one('world-future', 'native/analyze_world_future.cpp')
     compile_one('usa-model', 'native/analyze_usa_model.cpp')
     compile_one('offroad-model', 'native/analyze_offroad_model.cpp')
+    compile_one('offroad-future', 'native/analyze_offroad_future.cpp')
     compile_one('usa-host', 'native/analyze_usa_host.cpp')
     compile_one('usa-future', 'native/analyze_usa_future.cpp')
     steps.append(('world-host-math', [py, 'harness/verify_world_host_native.py', host,

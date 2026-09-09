@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Off Road future sections — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-offroad-future-sections.md. Standalone native
+offroad_future_sections.h/analyzer and independentPython match46133loaded/future
+definitions across12snapshots,2424actualordinaryobjects and703laterallocations/
+bindings. Initial1380descriptors/17940fieldsPASS;29dynamicmodelcases excluded,
+initialFAILretained. Behavior exclusions only, no modelallowlist/materialfreeze.
+Two6000canonicalheadless probes preserve4191camera/16764actualADCtimes andinputs.
+Each1978frontiers:1926initialized (81/59sectiontracks),52pretrack,7partial.
+Initial7equalityFAILs retained; now exclude entire uncertain section at observed
+one-section lead mismatch. All7partial snapshots +5original qualify against actual
+pool/laterallocations. Larger mismatches fail. No MAMEintegration or GPUclaim.
+Localfutureprojection suggests3x beyondpending2x, but overlap!=visiblepixels.
+239Python/no skips,22native,10081C31/137yaw,32GPU/61commandsPASS,358fileidentity
+c3c81d2a2e74c4ff8152b7bdb85f46bb2189772dd3d0043f6723f367d884680a.
+No nativebuild/export/default renewal; cf58/SHA37c0a4ce owns previous7defaults.
+PersonalStreamDeckv0.5.0/SHA87d04de4 unchanged. RawresourcesLOCAL under
+results/diagnostics/offroad-model-20260909. Latestqualified verified-frontiers-v1
+andverified-sections-v3; old12snapshots in sections-frontiers/run.
+NEXT live material/upload readiness, scene/sky/foreground placement and bounded
+cached pending/future hostprojection, then1/2/3x/repeat/route/resources/4K gates.
+USAperformance/World25roads/Zeus alongside. No release/deploy/hostedworkflow/
+physicalFFB/Worldtuning/menu removal. Checkrig; serialemulators. Continue directly,
+ONEminute heartbeat recovery only/no cutoff; do not end milestones to wait.
+
 ## September 9 Off Road transforms/LOD — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-offroad-transform-and-lod.md. Native

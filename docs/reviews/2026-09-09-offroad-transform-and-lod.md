@@ -78,6 +78,10 @@ still need an integrated contract. No host draw mode has been promoted.
 
 ## Next work, already underway
 
+**Follow-up:** the [future-section source](2026-09-09-offroad-future-sections.md)
+now qualifies ordinary descriptors and real partial loader boundaries. The
+allocation investigation below records the starting point for that milestone.
+
 The section loader at9B63..9BC1 advances a four-word section table and calls9C24.
 The ordinary allocation path9C68/184D starts from eleven-word descriptors with
 absolute positions and rotations; it assigns the current track material bases or

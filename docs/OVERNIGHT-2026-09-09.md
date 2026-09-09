@@ -24,8 +24,10 @@ Performance remains below full speed after model/reciprocal caching. Final
 resource/default gates pass. [Off Road's standalone codec](reviews/2026-09-09-offroad-model-codec.md)
 now passes independent/live projection and ordered-DMA checks. Its
 [transform/LOD reconstruction](reviews/2026-09-09-offroad-transform-and-lod.md)
-also passes. Pending/future section descriptors, scene insertion and live
-materials are next. Stream Deck is unchanged.
+also passes. Its [future-section source](reviews/2026-09-09-offroad-future-sections.md)
+now matches actual loaded/later objects and seven partial loader boundaries.
+Scene insertion, live materials and native host integration are next. Stream Deck
+is unchanged.
 
 v0.5.0 is the published and deployed baseline. The repository is now public.
 Preserve released tags/ZIPs, personal settings, original recordings and default
