@@ -7,7 +7,7 @@
 namespace cruisn { namespace world_future {
 using scenery::Float;
 using world_host::Descriptor;
-template<class Read> bool code_matches(Read read)
+template<class Read> bool code_matches(Read read,uint32_t revision=24)
 {
     static const uint32_t code[][2]={
         {0x6263,0x08400a02},{0x6265,0x15400010},{0x6266,0x08400a01},{0x6268,0x15400011},
@@ -20,7 +20,21 @@ template<class Read> bool code_matches(Read read)
         {0x9500,0x022a4151},{0x9501,0x0840c200},
         {0xcc35,4263704963U},{0xcc36,4118653474U},{0xcc37,3979254875U},
         {0xcc38,4088417758U},{0xcc39,4178085694U},{0xcc3a,4258616668U},{0xcc3b,4788187U}};
-    for(const auto &entry:code)if(read(entry[0])!=entry[1])return false;
+    const auto *profile=world_host::layout(revision);if(!profile)return false;
+    static const uint32_t code25[][2]={
+        {0x6604,0x08400a02},{0x6606,0x15400010},{0x6607,0x08400a01},{0x6609,0x15400011},
+        {0x7b8c,0x084a2501},{0x7b8d,0x620065fd},{0x7b97,0x0820d577},{0x7bb9,0x08227c4a},
+        {0x7bcf,0x08412501},{0x7bd7,0x7205dd14},{0x7be1,0x0e200000},{0x7be2,0x03e0ffec},
+        {0x7be4,0x620094f3},{0x7be5,0x6a070001},{0x7be6,0x15400410},{0x7c40,0x0820d59d},
+        {0x7c5f,0x0840c700},{0x7c73,0x084d0705},{0x7c75,0x08442501},{0x7c9b,0x08400706},
+        {0x7ca2,0x08442501},{0x7cba,0x08400707},{0x7cc1,0x08442501},{0x7cd0,0x08412008},
+        {0x7cd3,0x0cc02004},{0x90c0,0x24e02122},{0x90d0,0xc00201c1},
+        {0x94f5,0x022a4121},{0x94f6,0x0840c200},
+        {0x7d1e,0x0820ebdd},{0x7d1f,0x1a600004},{0x7d23,0x04a0d57e}};
+    if(revision==24){for(const auto &entry:code)if(read(entry[0])!=entry[1])return false;}
+    else {for(const auto &entry:code25)if(read(entry[0])!=entry[1])return false;}
+    const uint32_t constants[]={4263704963U,4118653474U,3979254875U,4088417758U,4178085694U,4258616668U,4788187U};
+    for(unsigned i=0;i<7;++i)if(read(profile->trig+i)!=constants[i])return false;
     return true;
 }
 inline bool span(uint32_t p,uint32_t n)
@@ -67,11 +81,13 @@ struct Cache
     std::map<uint32_t,Section> sections;
     uint32_t last_start=0,next_id=0x80000000;
     bool roads=false;
+    uint32_t revision=24;
     void clear(){sections.clear();last_start=0;next_id=0x80000000;}
 };
 
-template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &next_id,bool roads=false)
+template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &next_id,bool roads=false,uint32_t revision=24)
 {
+    const auto *profile=world_host::layout(revision);if(!profile || (roads && revision!=24))return false;
     if(!span(p,8))return false;
     std::array<uint32_t,12> section{};for(int i=0;i<8;++i)section[i]=read(p+i);
     if(section[0]==UINT32_MAX){out.end=true;out.next=p;return true;}
@@ -79,7 +95,7 @@ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &nex
     if(!span(p,8+extra))return false;
     for(uint32_t i=0;i<extra;++i)section[8+i]=read(p+8+i);
     out.next=p+8+extra;
-    std::array<uint32_t,7> constants;for(int i=0;i<7;++i)constants[i]=read(0xcc35+i);
+    std::array<uint32_t,7> constants;for(int i=0;i<7;++i)constants[i]=read(profile->trig+i);
     const auto section_yaw=yaw(Float::load(section[4]),constants);
     std::array<Float,9> matrix;for(int i=0;i<9;++i)matrix[i]=Float::load(section_yaw[i]);
     for(uint32_t slot=5;slot<=7;++slot)
@@ -123,11 +139,12 @@ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &nex
     return true;
 }
 
-template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor> &objects,Stats &stats,uint32_t count=64,bool roads=false)
+template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor> &objects,Stats &stats,uint32_t count=64,bool roads=false,uint32_t revision=24)
 {
+    const auto *profile=world_host::layout(revision);if(!profile || (roads && revision!=24))return false;
     if(!count || count>128)return false;
-    if(cache.roads!=roads){cache.clear();cache.roads=roads;}
-    stats.start=read(0xd575);stats.stage=read(0xd5a5);stats.cursor=read(0xd5a1);
+    if(cache.roads!=roads || cache.revision!=revision){cache.clear();cache.roads=roads;cache.revision=revision;}
+    stats.start=read(profile->section);stats.stage=read(profile->stage);stats.cursor=read(profile->cursor);
     // Before track setup there is no valid section cursor; no host geometry.
     if(!span(stats.start,8)){cache.clear();return true;}
     if(stats.stage>2)return false;
@@ -135,7 +152,7 @@ template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor>
     cache.last_start=stats.start;
     // Keep only the frontier and future sections, bounding long-session memory.
     while(!cache.sections.empty() && cache.sections.begin()->first<stats.start)cache.sections.erase(cache.sections.begin());
-    uint32_t pt=read(0x4151),tt=read(0x4150);
+    uint32_t pt=read(profile->palette),tt=read(profile->texture);
     if(pt>=0x20000 || tt>=0x20000)return false;
     uint32_t p=stats.start;
     for(uint32_t index=0;index<count;++index)
@@ -144,7 +161,7 @@ template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor>
         if(found==cache.sections.end())
         {
             if(cache.sections.size()>=128)return false;
-            Section fresh;if(!decode(read,p,fresh,cache.next_id,roads))return false;
+            Section fresh;if(!decode(read,p,fresh,cache.next_id,roads,revision))return false;
             found=cache.sections.emplace(p,std::move(fresh)).first;++stats.new_sections;
         }
         const auto &section=found->second;if(section.end)break;

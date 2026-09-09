@@ -135,7 +135,7 @@ class HostOptionsTests(unittest.TestCase):
     def test_revision_bounds_and_simulation_exclusions(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','5900','--world-host-last','6020'])
-        with self.assertRaises(ValueError):configure(args,'crusnwld',{'MIDV_GL':'1'})
+        with self.assertRaises(ValueError):configure(args,'crusnwld23',{'MIDV_GL':'1'})
         with self.assertRaises(ValueError):configure(args,'crusnwld24',{'MIDV_GL':'1','MIDV_WORLD_FAR':'160000'})
         with self.assertRaises(ValueError):configure(args,'crusnwld24',{'MIDV_GL':'1','MIDV_SCENERY':'all'})
         with self.assertRaises(ValueError):configure(args,'crusnwld24',{})

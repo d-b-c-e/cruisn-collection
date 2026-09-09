@@ -1,10 +1,19 @@
-"""World 2.4 section descriptors without guest allocation or per-model rules.
+"""World 2.4/2.5 section descriptors without guest allocation or per-model rules.
 
 This is a diagnostic reference. Custom allocation remains excluded; resource
 lookup validity is not evidence that the GPU slot still contains the right data.
 """
 from scenery_c31 import F,signed
 from verify_world_sections import placement,yaw_matrix
+
+LAYOUTS={
+    24:dict(section=0xd575,stage=0xd5a5,cursor=0xd5a1,palette=0x4151,texture=0x4150,trig=0xcc35,table=0xb66f),
+    25:dict(section=0xd56f,stage=0xd59f,cursor=0xd59b,palette=0x4121,texture=0x4120,trig=0xcc2f,table=0xb665)}
+
+
+def layout(revision):
+    if revision not in LAYOUTS:raise ValueError('unsupported World revision')
+    return LAYOUTS[revision]
 
 
 def rom_span(p,n):
@@ -67,11 +76,12 @@ def section_definitions(read,p):
     return definitions,p+8+extra
 
 
-def material_operands(read,definition):
+def material_operands(read,definition,*,revision=24):
+    profile=layout(revision)
     model=definition[0]
     if not rom_span(model-2,5):raise ValueError('model header outside ROM')
     pi,ti=read(model-2),read(model-1)
-    pt,tt=read(0x4151),read(0x4150)
+    pt,tt=read(profile['palette']),read(profile['texture'])
     pa,ta=pt+pi,tt+ti
     # Fail closed on signed/missing indices; never alias arithmetic into I/O.
     if not (0<=pt<0x20000 and 0<=tt<0x20000 and 0<=pa<0x20000 and 0<=ta<0x20000):
@@ -85,14 +95,18 @@ def material_operands(read,definition):
     return resources,index,override
 
 
-def future(read,sections=64):
+def future(read,sections=64,*,revision=24):
     """Enumerate not-yet-allocated definitions from the saved loader frontier.
 
     The current partial section uses the guest's list stage and next-definition
     cursor. Later sections remain entirely host-owned. No guest state is written.
     """
     if not 1<=sections<=128:raise ValueError('bounded section count required')
-    start=read(0xd575);stage=read(0xd5a5);cursor=read(0xd5a1)
+    profile=layout(revision)
+    start=read(profile['section']);stage=read(profile['stage']);cursor=read(profile['cursor'])
+    if start==0:
+        return dict(start=start,stage=stage,cursor=cursor,definitions=[],skipped_allocated=0,
+                    stop=dict(section=0,reason='track not initialized'))
     if stage not in (0,1,2):raise ValueError('unsupported loader stage')
     result=[];p=start;stop=None;skipped=0
     for number in range(sections):

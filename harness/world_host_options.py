@@ -1,11 +1,11 @@
-"""Explicit, bounded World 2.4 host-scenery diagnostics; no product defaults."""
+"""Explicit, bounded World 2.4/2.5 host-scenery diagnostics; no product defaults."""
 MODES={'off':'0','observe':'1','draw':'2'}
 LAYERS={'legacy':'0','coverage':'1','split':'2','both':'3'}
 
 
 def add_arguments(parser):
     parser.add_argument('--world-host-scenery',choices=MODES,
-                        help='World 2.4 host-owned pending scenery: off/observe/draw (diagnostic)')
+                        help='World 2.4/2.5 host-owned pending scenery: off/observe/draw (diagnostic)')
     parser.add_argument('--world-host-first',type=int)
     parser.add_argument('--world-host-last',type=int)
     parser.add_argument('--world-host-far',type=int,choices=(80000,160000,240000),
@@ -52,13 +52,15 @@ def configure(args,rom,settings):
             saved_roads=settings['MIDV_WORLD_HOST_ROADS']
             if saved_roads not in ('0','1'):raise ValueError('invalid recorded host roads')
             roads='on' if saved_roads=='1' else 'off'
-    if rom!='crusnwld24' or mode not in MODES:raise ValueError('host scenery supports World 2.4 only')
+    if rom not in ('crusnwld24','crusnwld') or mode not in MODES:
+        raise ValueError('host scenery supports World 2.4/2.5 only')
     if mode!='off':
         trace='quads' if trace is None else trace
         if trace not in ('summary','quads'):raise ValueError('invalid host trace mode')
         if source not in (None,'pending','future'):raise ValueError('invalid host source')
         if layer is not None and layer not in LAYERS:raise ValueError('invalid host layer')
         if roads not in (None,'off','on'):raise ValueError('invalid host roads')
+        if roads=='on' and rom!='crusnwld24':raise ValueError('host roads require World 2.4')
         far=80000 if far is None else far
         if far not in (80000,160000,240000):raise ValueError('invalid host far limit')
         if first is None or last is None or not 1<=first<=last<=1000000:

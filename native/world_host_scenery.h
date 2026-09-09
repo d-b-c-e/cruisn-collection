@@ -4,6 +4,7 @@
 #include "scenery_c31.h"
 #include "world_distance.h"
 #include "world_road_scenery.h"
+#include "world_host_layout.h"
 #include <algorithm>
 #include <vector>
 
@@ -42,16 +43,18 @@ inline bool pointer(uint32_t p,uint32_t n)
 {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
 
 template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
-    const std::vector<Descriptor> *future=nullptr,bool roads=false)
+    const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24)
 {
+    const auto *profile=layout(revision);
+    if(!profile || (roads && revision!=24))return false;
     if(far!=80000 && far!=160000 && far!=240000)return false;
     // The caller guards the exact code, ROM revision and scene boundary.
     uint32_t cam=read(0x41),view=read(0x43),bill=read(0x48),origin=read(0x47)+2;
-    uint32_t head=read(0x61ec),table=read(0x4d);
+    uint32_t head=read(profile->pending),table=read(0x4d);
     if(!head && (!future || future->empty()))return true;
     if(cam>=0x20000-3 || view<0x809800 || view>0x809ff7 ||
        bill<0x809800 || bill>0x809ff7 || origin<0x809800 || origin>0x809ffe ||
-       (head && (head<0x1000 || head>=0x20000)) || table!=0xb66f)return false;
+       (head && (head<0x1000 || head>=0x20000)) || table!=profile->table)return false;
     std::array<Float,3> camera;
     std::array<Float,9> camera_matrix,billboard;
     for(int i=0;i<3;++i)camera[i]=Float::load(read(cam+i));

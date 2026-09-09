@@ -7,6 +7,30 @@ from world_host_options import add_arguments,configure
 
 
 class FutureSectionTests(unittest.TestCase):
+    def test_world25_freezes_supported_options_but_rejects_unverified_roads(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','1800',
+            '--world-host-last','5990','--world-host-source','future','--world-host-far','240000'])
+        settings={'MIDV_GL':'1'}
+        original=configure(args,'crusnwld',settings)
+        self.assertEqual(configure(parser.parse_args([]),'crusnwld',settings),original)
+        self.assertNotIn('MIDV_WORLD_HOST_ROADS',settings)
+        for rom in ('crusnusa','offroadc','crusnexo','crusnwld23'):
+            with self.assertRaises(ValueError):configure(args,rom,dict(settings))
+        settings['MIDV_WORLD_HOST_ROADS']='1'
+        with self.assertRaisesRegex(ValueError,'World 2.4'):configure(parser.parse_args([]),'crusnwld',settings)
+
+    def test_world25_frontier_uses_its_own_bindings(self):
+        m=self.memory();expected=future(m.__getitem__)
+        for old,new in ((0xd575,0xd56f),(0xd5a5,0xd59f),(0xd5a1,0xd59b)):
+            m[new]=m.pop(old)
+        self.assertEqual(future(m.__getitem__,revision=25),expected)
+        m[0xd59f]=1;m[0xd59b]=0xc20008
+        self.assertEqual(future(m.__getitem__,revision=25)['skipped_allocated'],1)
+        m[0xd56f]=0
+        self.assertEqual(future(m.__getitem__,revision=25)['definitions'],[])
+        with self.assertRaises(ValueError):future(m.__getitem__,revision=23)
+
     def test_road_codec_is_explicit_and_recordings_keep_their_choice(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         settings={'MIDV_GL':'1'}

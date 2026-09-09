@@ -32,6 +32,28 @@ int main()
     std::vector<world_host::Descriptor> warm;world_future::Stats warm_stats;
     assert(world_future::collect(read,cache,warm,warm_stats) && warm_stats.new_sections==0 && m==before);
     for(size_t i=0;i<warm.size();++i)assert(warm[i].id==objects[i].id && warm[i].words==objects[i].words);
+    // A reused cache cannot leak a descriptor or binding across revisions.
+    m[0xd56f]=0xc10000;m[0xd59f]=0;m[0xd59b]=0;
+    m[0x4121]=0x1100;m[0x4120]=0x2100;m[0x1100]=512;m[0x2101]=32;
+    for(unsigned i=0;i<7;++i)m[0xcc2f+i]=constants[i];
+    warm.clear();warm_stats={};
+    assert(world_future::collect(read,cache,warm,warm_stats,64,false,25) && warm_stats.new_sections==2);
+    for(const auto &o:warm)assert(o.words[16]==512 && o.words[17]==32);
+    assert(!world_future::collect(read,cache,warm,warm_stats,64,true,25));
+    assert(!world_future::collect(read,cache,warm,warm_stats,64,false,23));
+    // The two revision images overlap at CC35; restore the original ROM image.
+    for(unsigned i=0;i<7;++i)m[0xcc35+i]=constants[i];
+    warm.clear();warm_stats={};
+    assert(world_future::collect(read,cache,warm,warm_stats) && warm_stats.new_sections==2);
+    for(size_t i=0;i<warm.size();++i)assert(warm[i].words==objects[i].words);
+    m[0x69]=0x0828658f;m[0x7b47]=0x0828658d;m[0x7b4e]=0x1ae03000;m[0xd586]=11;
+    assert(world_host::scene_matches(read,25));
+    m[0xd586]=0;m[0xd56f]=0;
+    assert(world_host::track_reset(read,25) && world_host::scene_matches(read,25));
+    m[0xd56f]=0xc10000;
+    assert(!world_host::track_reset(read,25) && !world_host::scene_matches(read,25));
+    m[0xd586]=12;assert(!world_host::scene_matches(read,25));m[0xd586]=11;
+    m[0x69]=0x082861ee;assert(!world_host::scene_matches(read,25));
     // A warm cache must not retain excluded roads after a diagnostic toggle.
     m[0xc20007]=0xfff01b00;cache.clear();objects.clear();stats={};
     assert(world_future::collect(read,cache,objects,stats) && objects.size()==3 && stats.special==1);
