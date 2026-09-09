@@ -30,3 +30,6 @@ The complete local suite passes187 Python tests without skips, all native helper
 `results/diagnostics/local-checks-20260908-launch-fix`; the initial failure log is
 retained in `results/diagnostics/local-checks-20260908-first/launch-boundary-before.log`.
 No automated game was opened while the maintainer was testing.
+
+The [ROM-free proof archive](../../results/proof/2026-09-08-launch-environment/README.md)
+preserves the failure and complete local check evidence with a standalone verifier.
