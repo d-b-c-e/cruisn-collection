@@ -13,7 +13,7 @@ from world_host_scenery import camera_center,rotation_matrix,model_counts,projec
 from verification import sha256_file,write_json
 
 
-def check(run,allocations,binary,output):
+def check(run,allocations,binary,output,*,roads=False):
     output.mkdir(parents=True,exist_ok=False)
     rom=(run/'world-future-rom.bin').read_bytes()
     if len(rom)!=0x1000000:raise ValueError('invalid ROM snapshot size')
@@ -34,7 +34,7 @@ def check(run,allocations,binary,output):
             raise ValueError('unmapped snapshot read')
         def execute(mode,far):
             r=subprocess.run([str(binary.resolve()),mode,str(ram_path.resolve()),str((run/'world-future-rom.bin').resolve()),
-                str(fast_path.resolve()),str(far)],env=env,capture_output=True,text=True)
+                str(fast_path.resolve()),str(far)]+(['--roads'] if roads else []),env=env,capture_output=True,text=True)
             name=f'{frame}-{mode[2:]}-{far}'
             (output/(name+'.txt')).write_text(r.stdout);(output/(name+'.log')).write_text(r.stderr)
             if r.returncode:raise ValueError(r.stderr)
@@ -45,13 +45,13 @@ def check(run,allocations,binary,output):
         listing=future(read);expected={};later=0;already=0;later_failures=[]
         for row in listing['definitions']:
             metadata=row['definition'][5]
-            if ((metadata>>8)&15) in (10,11):continue
+            if ((metadata>>8)&15)==10 or (not roads and ((metadata>>8)&15)==11):continue
             resources,index,override=material_operands(read,row['definition'])
             row.update(binding_resources=resources,override_index=index,override_lookup=override,
                 trig_constants=[read(0xcc35+i) for i in range(7)],section_tag=row['section_pointer'])
             row['matrix']=yaw_matrix(F.load(row['heading']),row['trig_constants'])
-            obj=descriptor(row)
-            if obj[14]&0x861 or any(v>65535 for v in obj[16:18]):continue
+            obj=descriptor(row,roads=roads)
+            if obj[14]&(0x860 if roads else 0x861) or any(v>65535 for v in obj[16:18]):continue
             key=row['section_pointer'],row['source'];expected[key]=obj+[0]*4
             for a in bykey.get(key,[]):
                 if a['frame']<frame:already+=1;continue
@@ -70,8 +70,20 @@ def check(run,allocations,binary,output):
             for key,obj in expected.items():
                 center=camera_center(obj,camera,view);depth=center[2].fix();model=obj[13];radius=read(model)
                 if depth-radius<1000 or depth+radius>=far:continue
-                pairs,singles,polygons=model_counts(read(model+2));objects+=1
-                model_words=[read(model+i) for i in range(3+2*(pairs+singles)+2*polygons)]
+                if obj[14]&1 and depth>=read(0xd4c0):
+                    ordinal=(obj[15]>>12)&15
+                    if not ordinal:raise ValueError('invalid far road template ordinal')
+                    selected=read(read(0x624)+ordinal-1)
+                    header=read(selected);materials_pointer=read(selected+1)
+                    pairs,singles,polygons=model_counts(header)
+                    if pairs:raise ValueError('paired road template')
+                    model_words=[radius,materials_pointer,header]+[read(model+3+i) for i in range(2*singles)]
+                    model_words += [read(selected+2+i) for i in range(2*polygons)]
+                    model=selected
+                else:
+                    pairs,singles,polygons=model_counts(read(model+2))
+                    model_words=[read(model+i) for i in range(3+2*(pairs+singles)+2*polygons)]
+                objects+=1
                 materials=[read(model_words[1]+i) for i in range(3*polygons)]
                 matrix=bill if obj[14]&8 else [f.store() for f in rotation_matrix(obj,view)]
                 record=dict(object_words=obj,model_words=model_words,material_words=materials,fast=1,end_pc=0x242,
@@ -91,14 +103,14 @@ def check(run,allocations,binary,output):
     return dict(passed=bool(results) and all(r['passed'] for r in results),results=results,
         binary_sha256=sha256_file(binary),allocation_sha256=sha256_file(allocations),
         input_hashes={p.name:sha256_file(p) for p in sorted(run.glob('world-future-*.bin'))},
-        scope=__doc__)
+        roads=roads,scope=__doc__)
 
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('run',type=Path)
     ap.add_argument('allocations',type=Path);ap.add_argument('binary',type=Path)
-    ap.add_argument('--output',type=Path,required=True);args=ap.parse_args()
-    report=check(args.run,args.allocations,args.binary,args.output)
+    ap.add_argument('--output',type=Path,required=True);ap.add_argument('--roads',action='store_true');args=ap.parse_args()
+    report=check(args.run,args.allocations,args.binary,args.output,roads=args.roads)
     write_json(args.output/'report.json',report);print('PASS' if report['passed'] else 'FAIL',args.output/'report.json')
     return 0 if report['passed'] else 1
 

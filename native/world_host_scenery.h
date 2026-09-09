@@ -3,6 +3,7 @@
 #pragma once
 #include "scenery_c31.h"
 #include "world_distance.h"
+#include "world_road_scenery.h"
 #include <algorithm>
 #include <vector>
 
@@ -27,7 +28,7 @@ struct Object
 };
 struct Scene
 {
-    uint32_t pending=0,unsupported=0,distance=0,decoded=0;
+    uint32_t pending=0,unsupported=0,distance=0,decoded=0,roads=0,road_quads=0;
     std::vector<Object> objects;
 };
 struct Descriptor
@@ -41,7 +42,7 @@ inline bool pointer(uint32_t p,uint32_t n)
 {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
 
 template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
-    const std::vector<Descriptor> *future=nullptr)
+    const std::vector<Descriptor> *future=nullptr,bool roads=false)
 {
     if(far!=80000 && far!=160000 && far!=240000)return false;
     // The caller guards the exact code, ROM revision and scene boundary.
@@ -77,10 +78,11 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             const auto &item=(*future)[future_index++];obj=item.words;object_id=item.id;
             if(object_id<0x80000000)return false;
         }
-        // The pending flag proves list membership; alternate road/car codecs
-        // (including dynamic bit 0) are explicitly excluded, not guessed.
+        // The pending flag proves list membership. Road decoding is opt-in;
+        // other alternate/dynamic codecs remain excluded.
         if((obj[14]&0x3000)!=0x2000)return false;
-        if(obj[14]&0x861){++scene.unsupported;continue;}
+        if(obj[14]&(roads?0x860:0x861)){++scene.unsupported;continue;}
+        const bool road=bool(obj[14]&1);
         std::array<Float,3> delta,center;
         for(int i=0;i<3;++i)delta[i]=Float::load(obj[i+1])-camera[i];
         for(int i=0;i<3;++i)center[i]=dot(delta,&camera_matrix[i*3]);
@@ -88,7 +90,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         for(auto &v:center)v=v.reload();
         uint32_t model=obj[13];
         if(!pointer(model,3))return false;
-        if((obj[14]&0x200) && depth>10000)
+        if(!road && (obj[14]&0x200) && depth>10000)
         {
             const uint32_t preceding=(obj[14]&4) && depth>15000 ? 4 : 3;
             if(!pointer(obj[13]-preceding,preceding))return false;
@@ -97,11 +99,19 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         }
         if(!pointer(model,3))return false;
         uint32_t radius=read(model),materials=read(model+1),header=read(model+2);
+        uint32_t vertex_start=model+3,poly_start=0;
+        if(road)
+        {
+            world_road::Model selected;
+            if(!world_road::select(read,obj,depth,selected))return false;
+            model=selected.selected;radius=selected.radius;header=selected.header;
+            materials=selected.materials;vertex_start=selected.vertex_data;poly_start=selected.polygon_data;
+        }
         if(int64_t(depth)-radius<1000 || int64_t(depth)+radius>=far){++scene.distance;continue;}
         uint32_t pairs=(header&0x300)?((header>>10)&255)+1:0;
         uint32_t singles=header&255,polygons=(header>>18)+1,vertices=singles+2*pairs;
         if(!vertices || vertices>256 || polygons>1024 ||
-            !pointer(model,3+2*(pairs+singles)+2*polygons) || !pointer(materials,3*polygons))return false;
+            (!road && (!pointer(model,3+2*(pairs+singles)+2*polygons) || !pointer(materials,3*polygons))))return false;
         std::array<Float,9> matrix;
         if(obj[14]&8)matrix=billboard;
         else
@@ -129,7 +139,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         int axis=int((header>>8)&3)-1;
         for(uint32_t i=0;i<pairs+singles;++i)
         {
-            uint32_t xy=read(model+3+2*i),second=read(model+4+2*i);
+            uint32_t xy=read(vertex_start+2*i),second=read(vertex_start+1+2*i);
             std::array<Float,3> local={{Float::integer(int16_t(xy)),Float::integer(int16_t(xy>>16)),
                 Float::integer(i<pairs?int32_t(int16_t(second>>16)):int32_t(second))}};
             Float x=dot(local,&matrix[0]).reload()+center[0];
@@ -144,7 +154,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         if(!projection_ok){++scene.distance;continue;}
         if(projected.size()!=vertices)return false;
         Object object;object.id=object_id;object.model=model;object.depth=depth;object.section=obj[27]&65535;
-        uint32_t poly_start=model+3+2*(pairs+singles);
+        if(!road)poly_start=model+3+2*(pairs+singles);
         for(uint32_t i=0;i<polygons;++i)
         {
             uint32_t flags=read(poly_start+2*i),packed=read(poly_start+2*i+1);
@@ -159,6 +169,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             quad[10]=uint16_t(uv0);quad[11]=uint16_t(uv0>>16);quad[12]=uint16_t(uv1);quad[13]=uint16_t(uv1>>16);
             quad[14]=uint16_t(tex+obj[17]);object.quads.push_back(quad);
         }
+        if(road){++scene.roads;scene.road_quads+=uint32_t(object.quads.size());}
         ++scene.decoded;scene.objects.push_back(std::move(object));
     }
     std::sort(scene.objects.begin(),scene.objects.end(),[](const Object &a,const Object &b)

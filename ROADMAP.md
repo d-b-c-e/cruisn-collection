@@ -9,8 +9,8 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
 The ordered, actionable queue
-is below. The [September 9 overnight queue](docs/OVERNIGHT-2026-09-09.md) is PAUSED
-at the morning handoff. [Results and remaining work](docs/OVERNIGHT-RESULTS-2026-09-09.md)
+is below. The [September 9 queue](docs/OVERNIGHT-2026-09-09.md) is ACTIVE again
+by explicit maintainer direction, without the expired morning cutoff. [Results and remaining work](docs/OVERNIGHT-RESULTS-2026-09-09.md)
 distinguish World's visible 3x gains from unfinished cross-game parity. Retire older
 experiments only where successfully replaced. The September
 8 queue is historical. The repository is now public; remaining preparation is

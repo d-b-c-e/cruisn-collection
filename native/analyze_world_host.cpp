@@ -8,6 +8,29 @@
 int main(int argc,char **argv)
 {
     using cruisn::scenery::Float;
+    if(argc==2 && std::string(argv[1])=="--road-model")
+    {
+        int32_t depth;
+        while(std::cin>>depth)
+        {
+            std::array<uint32_t,32> obj{};uint32_t count,address,value;
+            for(auto &word:obj)if(!(std::cin>>word))return 2;
+            if(!(std::cin>>count) || count>64)return 2;
+            std::map<uint32_t,uint32_t> memory;
+            for(uint32_t i=0;i<count;++i){if(!(std::cin>>address>>value))return 2;memory[address]=value;}
+            cruisn::world_road::Model model;
+            try
+            {
+                if(!cruisn::world_road::select([&](uint32_t p){return memory.at(p);},obj,depth,model))
+                    throw std::runtime_error("road model guard failed");
+            }
+            catch(const std::exception &error){std::cerr<<error.what()<<'\n';return 1;}
+            std::cout<<model.selected<<' '<<model.radius<<' '<<model.header<<' '<<model.vertices<<' '
+                <<model.polygons<<' '<<model.vertex_data<<' '<<model.polygon_data<<' '<<model.materials<<' '
+                <<model.far_template<<'\n';
+        }
+        return 0;
+    }
     if(argc==2 && std::string(argv[1])=="--yaw")
     {
         int32_t m;int e;std::array<uint32_t,7> c;

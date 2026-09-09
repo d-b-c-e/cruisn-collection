@@ -7,6 +7,23 @@ from world_host_options import add_arguments,configure
 
 
 class FutureSectionTests(unittest.TestCase):
+    def test_road_codec_is_explicit_and_recordings_keep_their_choice(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        settings={'MIDV_GL':'1'}
+        with self.assertRaises(ValueError):configure(parser.parse_args(['--world-host-roads','on']),'crusnwld24',settings)
+        base=['--world-host-scenery','draw','--world-host-first','1','--world-host-last','2']
+        configure(parser.parse_args(base),'crusnwld24',settings)
+        configure(parser.parse_args([]),'crusnwld24',settings)
+        self.assertNotIn('MIDV_WORLD_HOST_ROADS',settings)
+        for option,value in [('on','1'),('off','0')]:
+            configure(parser.parse_args(base+['--world-host-roads',option]),'crusnwld24',settings)
+            self.assertEqual(settings['MIDV_WORLD_HOST_ROADS'],value)
+            self.assertEqual(configure(parser.parse_args([]),'crusnwld24',settings)['roads'],option)
+        settings['MIDV_WORLD_HOST_ROADS']='2'
+        with self.assertRaises(ValueError):configure(parser.parse_args([]),'crusnwld24',settings)
+        configure(parser.parse_args(['--world-host-scenery','off']),'crusnwld24',settings)
+        self.assertNotIn('MIDV_WORLD_HOST_ROADS',settings)
+
     def test_host_layer_trial_freezes_without_changing_old_recordings(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         for label,value in (('legacy','0'),('coverage','1'),('split','2'),('both','3')):

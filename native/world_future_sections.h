@@ -66,10 +66,11 @@ struct Cache
 {
     std::map<uint32_t,Section> sections;
     uint32_t last_start=0,next_id=0x80000000;
+    bool roads=false;
     void clear(){sections.clear();last_start=0;next_id=0x80000000;}
 };
 
-template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &next_id)
+template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &next_id,bool roads=false)
 {
     if(!span(p,8))return false;
     std::array<uint32_t,12> section{};for(int i=0;i<8;++i)section[i]=read(p+i);
@@ -95,9 +96,10 @@ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &nex
             uint32_t metadata=definition[5],kind=(metadata>>8)&15;
             auto &obj=source.descriptor.words;
             obj[13]=definition[0];obj[14]=object_flags(metadata);obj[15]=metadata&65535;
-            // A runs custom allocation; B initializes road-chain links after
-            // the ordinary transform. Neither is inferred from a model name.
-            source.supported=kind!=10 && kind!=11 && !(obj[14]&0x861);
+            // A remains custom allocation. B contributes only checked render
+            // fields; the host never initializes or follows its physics links.
+            source.supported=kind!=10 && (roads || kind!=11) && !(obj[14]&(roads?0x860:0x861));
+            if(roads && kind==11){obj[14]|=1U<<28;obj[15]=(metadata&0xf000)|0x300;}
             if(source.supported)
             {
                 if(!span(obj[13]-2,5))return false;
@@ -113,6 +115,7 @@ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &nex
                 auto heading=Float::load(definition[4])+Float::load(section[4]);obj[20]=heading.store();
                 const auto object_yaw=yaw(heading,constants);for(int i=0;i<9;++i)obj[4+i]=object_yaw[i];
                 obj[27]=p; // Host diagnostic identity only, never written into a guest object.
+                if(roads && kind==11)obj[27]|=(1U<<24)|((section[0]&16)?1U<<25:0);
             }
             out.sources.push_back(std::move(source));
         }
@@ -120,9 +123,10 @@ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &nex
     return true;
 }
 
-template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor> &objects,Stats &stats,uint32_t count=64)
+template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor> &objects,Stats &stats,uint32_t count=64,bool roads=false)
 {
     if(!count || count>128)return false;
+    if(cache.roads!=roads){cache.clear();cache.roads=roads;}
     stats.start=read(0xd575);stats.stage=read(0xd5a5);stats.cursor=read(0xd5a1);
     // Before track setup there is no valid section cursor; no host geometry.
     if(!span(stats.start,8)){cache.clear();return true;}
@@ -140,7 +144,7 @@ template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor>
         if(found==cache.sections.end())
         {
             if(cache.sections.size()>=128)return false;
-            Section fresh;if(!decode(read,p,fresh,cache.next_id))return false;
+            Section fresh;if(!decode(read,p,fresh,cache.next_id,roads))return false;
             found=cache.sections.emplace(p,std::move(fresh)).first;++stats.new_sections;
         }
         const auto &section=found->second;if(section.end)break;

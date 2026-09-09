@@ -1,6 +1,17 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September 9 morning checkpoint — overnight PAUSED
+## September 9 maintainer resumption — ACTIVE
+
+The maintainer explicitly asks to continue toward extended-drawing feature parity
+across all four games. This supersedes the morning stop below. The heartbeat is
+ACTIVE as Cruisn extended scenery parity, every 30 minutes, without the expired
+08:00 cutoff. Follow docs/OVERNIGHT-2026-09-09.md and ROADMAP.md. Continue separate
+local candidates, original-recording/geometry/resource checks and physical FFB0.
+No new release or hosted workflows; deploy only after cross-game acceptance.
+Personal Stream Deck remains v0.5.0. Current monitor inventory is3440x1440 only;
+do not present smaller-display evidence as renewed4K acceptance.
+
+## September 9 morning checkpoint — historical PAUSED state
 
 The morning cutoff has passed. Heartbeat cruisn-overnight-cheats-and-distance is
 PAUSED; do not resume without newer maintainer direction. Read

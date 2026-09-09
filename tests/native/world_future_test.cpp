@@ -32,6 +32,17 @@ int main()
     std::vector<world_host::Descriptor> warm;world_future::Stats warm_stats;
     assert(world_future::collect(read,cache,warm,warm_stats) && warm_stats.new_sections==0 && m==before);
     for(size_t i=0;i<warm.size();++i)assert(warm[i].id==objects[i].id && warm[i].words==objects[i].words);
+    // A warm cache must not retain excluded roads after a diagnostic toggle.
+    m[0xc20007]=0xfff01b00;cache.clear();objects.clear();stats={};
+    assert(world_future::collect(read,cache,objects,stats) && objects.size()==3 && stats.special==1);
+    objects.clear();stats={};
+    assert(world_future::collect(read,cache,objects,stats,64,true) && objects.size()==4);
+    assert(objects[0].words[15]==0x1300 && objects[0].words[14]==0x10002001);
+    assert(objects[0].words[27]==(0xc10000|(1U<<24)));
+    for(unsigned i=22;i<27;++i)assert(objects[0].words[i]==0); // no physics links
+    objects.clear();stats={};
+    assert(world_future::collect(read,cache,objects,stats) && objects.size()==3);
+    m[0xc20007]=0xfff00000;cache.clear();
     m[0xd5a5]=1;m[0xd5a1]=0xc20008;objects.clear();stats={};
     assert(world_future::collect(read,cache,objects,stats) && objects.size()==3 && stats.skipped==1);
     m[0xd5a5]=2;m[0xd5a1]=0xc20022;objects.clear();stats={};

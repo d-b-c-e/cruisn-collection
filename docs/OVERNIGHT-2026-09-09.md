@@ -1,16 +1,16 @@
 # Overnight queue: consistent 3x scenery — September 9, 2026
 
-**Checkpoint: PAUSED after the morning cutoff.** Read
-[the September 9 handoff](OVERNIGHT-RESULTS-2026-09-09.md) for actual results and
-remaining work. The authorization and checklist below are the historical work
-order; do not resume the heartbeat without newer maintainer direction.
+**ACTIVE: explicitly resumed by the maintainer after the morning checkpoint.**
+The expired 08:00 cutoff has been removed. Continue toward feature parity across
+all four games; [the morning handoff](OVERNIGHT-RESULTS-2026-09-09.md) records the
+starting evidence and limitations, rather than a current stop instruction.
 
 The maintainer requests concentration on robust 3x draw distance equally across
 USA, World, Off Road and Exotica, followed by removal of confusing or redundant
-graphical experiments **if the replacement succeeds**. Work is authorized through
-the morning checkpoint at 08:00 America/Chicago on September 9. The existing
-`cruisn-overnight-cheats-and-distance` heartbeat is reactivated with this scope and
-the display name **Cruisn overnight 3x scenery**. The September 8 queue is historical.
+graphical experiments **if the replacement succeeds**. The existing
+`cruisn-overnight-cheats-and-distance` heartbeat is active with this scope and
+the display name **Cruisn extended scenery parity**, every 30 minutes without a
+new time cutoff. The September 8 queue and September 9 morning stop are historical.
 
 v0.5.0 is the published and deployed baseline. The repository is now public.
 Preserve released tags/ZIPs, personal settings, original recordings and default
@@ -128,10 +128,11 @@ through an explicit migration and keep old recording options interpretable.
 If comparable cross-game behavior remains incomplete, keep the existing menu and
 document the gaps instead of presenting a cosmetic unification as completion.
 
-## Morning handoff
+## Continuing checkpoints
 
-At or after 08:00 local, stop starting long tests, safely finish/checkpoint the
-current operation, commit/push completed work, record findings and pause the
-heartbeat. Report implemented versus diagnostic-only versus deployed behavior,
-per-game evidence, retained failures, menu removals/migrations and precise remaining
-work. Do not create a new public release from this overnight authorization.
+Commit and push completed milestones separately. Keep the next concrete task and
+its evidence in the handoff so scheduled continuations can resume useful work.
+Continue until the parity objective succeeds, newer steering changes the scope,
+or a concrete blocker requires maintainer input. Report implemented versus
+diagnostic-only versus deployed behavior, per-game evidence and retained failures.
+Do not create a new public release from this authorization.

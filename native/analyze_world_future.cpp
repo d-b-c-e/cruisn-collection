@@ -27,7 +27,9 @@ int main(int argc,char **argv)
         }
         return 0;
     }
-    if(argc!=6 || (std::string(argv[1])!="--descriptors" && std::string(argv[1])!="--scene"))return 2;
+    if((argc!=6 && argc!=7) || (std::string(argv[1])!="--descriptors" && std::string(argv[1])!="--scene"))return 2;
+    const bool roads=argc==7 && std::string(argv[6])=="--roads";
+    if(argc==7 && !roads)return 2;
     try
     {
         auto ram=load(argv[2],0x20000),rom=load(argv[3],0x400000),fast=load(argv[4],0x800);
@@ -40,10 +42,11 @@ int main(int argc,char **argv)
         std::vector<cruisn::world_host::Descriptor> descriptors;
         cruisn::world_future::Stats stats;
         auto begin=std::chrono::steady_clock::now();
-        if(!cruisn::world_future::collect(read,cache,descriptors,stats))throw std::runtime_error("future guard failed");
+        if(roads && !cruisn::world_road::code_matches(read))throw std::runtime_error("road code guard failed");
+        if(!cruisn::world_future::collect(read,cache,descriptors,stats,64,roads))throw std::runtime_error("future guard failed");
         auto built=std::chrono::steady_clock::now();
         std::vector<cruisn::world_host::Descriptor> repeat;cruisn::world_future::Stats warm;
-        if(!cruisn::world_future::collect(read,cache,repeat,warm) || repeat.size()!=descriptors.size() || warm.new_sections)
+        if(!cruisn::world_future::collect(read,cache,repeat,warm,64,roads) || repeat.size()!=descriptors.size() || warm.new_sections)
             throw std::runtime_error("warm cache mismatch");
         for(size_t i=0;i<repeat.size();++i)if(repeat[i].id!=descriptors[i].id || repeat[i].words!=descriptors[i].words)
             throw std::runtime_error("warm descriptor mismatch");
@@ -61,7 +64,7 @@ int main(int argc,char **argv)
         else
         {
             cruisn::world_host::Scene scene;
-            if(!cruisn::world_host::build(read,scene,uint32_t(std::stoul(argv[5])),&descriptors))
+            if(!cruisn::world_host::build(read,scene,uint32_t(std::stoul(argv[5])),&descriptors,roads))
                 throw std::runtime_error("future projection guard failed");
             for(const auto &object:scene.objects)for(const auto &quad:object.quads)
             {
