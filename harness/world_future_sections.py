@@ -1,6 +1,6 @@
 """World 2.4 section descriptors without guest allocation or per-model rules.
 
-This is a diagnostic reference. Special allocation classes are excluded; resource
+This is a diagnostic reference. Custom allocation remains excluded; resource
 lookup validity is not evidence that the GPU slot still contains the right data.
 """
 from scenery_c31 import F,signed
@@ -17,26 +17,31 @@ def flags(metadata):
         3:1<<21,9:1<<21,6:1<<31,7:1<<22}.get(kind,0)
 
 
-def descriptor(row):
+def descriptor(row,*,roads=False):
     """Reconstruct fields consumed by packed scenery from captured operands.
 
-    Excludes class A's custom allocation and class B's road-chain initialization.
-    It does not reproduce physics lists, guest allocations or mutable state.
+    Class A custom allocation stays excluded. Explicit roads=True adds class B
+    render fields, without reproducing physics links or guest allocations.
     """
     definition=row['definition']
     if len(definition)!=6 or len(row['binding_resources'])!=6:
         raise ValueError('incomplete section descriptor operands')
     metadata=definition[5]
-    if ((metadata>>8)&15) in (10,11):return None
+    kind=(metadata>>8)&15
+    if kind==10 or (kind==11 and not roads):return None
     obj=[0]*28
     obj[1:4],obj[20]=placement(row)
     obj[4:13]=yaw_matrix(F.load(definition[4])+F.load(row['heading']),row['trig_constants'])
     obj[13]=definition[0];obj[14]=flags(metadata);obj[15]=metadata&65535
+    if kind==11:
+        obj[14]|=1<<28
+        obj[15]=(metadata&0xf000)|0x300
     obj[16:18]=row['binding_resources'][4:6]
     index=signed(metadata)>>20
     if index!=row['override_index']:raise ValueError('metadata override index mismatch')
     if index>=0 and 0<=row['override_lookup']<0x80000000:obj[16]=row['override_lookup']
     obj[27]=row['section_tag']
+    if kind==11:obj[27]|=(1<<24)|((1<<25) if row['section_flags']&16 else 0)
     return obj
 
 
