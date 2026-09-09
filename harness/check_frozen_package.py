@@ -16,6 +16,7 @@ import subprocess
 import time
 import zipfile
 import cheats
+from check_live_cheat_menu import inspect as inspect_live_menu
 
 from check_release_package import inspect
 from diagnostic_runtime import new_run
@@ -106,17 +107,20 @@ def main():
             if cheats.selections(app/'rig',catalog):raise ValueError('import unexpectedly enabled cheats')
             report['cheat_import']={'archive_sha256':sha256_file(args.cheat_archive),'xml_sha256':catalog['sha256']}
         save()
-        trials=('usa','world','offroad','exotica')+(('world-cheats',) if args.cheat_archive else ())
+        trials=('usa','world','offroad','exotica')+(('world-cheats','world-live-cheats') if args.cheat_archive else ())
         for trial in trials:
-            game='world' if trial=='world-cheats' else trial
+            live=trial=='world-live-cheats'
+            game='world' if trial in ('world-cheats','world-live-cheats') else trial
             if trial=='world-cheats':
                 cheats.save(app/'rig',catalog,{'1':1})
                 run([app/'CruisnCollection.exe','--shot',out/'cheats-imported.png',
                      '--shot-page','cheats','--shot-context','crusnwld24'])
+            if live: cheats.save(app/'rig',catalog,{})
             work=out/trial;work.mkdir();snap=work/'gl-snap';snap.mkdir()
             key='MIDZ' if game=='exotica' else 'MIDV'
             launch_env=dict(env,**{key+'_GL_SNAP':str(snap),key+'_GL_SNAP_FIRST':'1700',
                 key+'_GL_SNAP_LAST':'1800',key+'_GL_SNAP_EVERY':'50',key+'_GL_SNAP_MAX':'3',key+'_GL_LOG':'1'})
+            if live: launch_env['MIDV_CHEAT_MENU_TEST_FRAME']='1850'
             command=[str(app/'CruisnCollection.exe'),'--game',game]
             write_json(work/'invocation.json',{'command':command,'cwd':str(app),
                 'physical_force':False,'PATH':env['PATH'],'overrides':{k:v for k,v in launch_env.items() if k.startswith(('MIDV_','MIDZ_'))}})
@@ -124,7 +128,8 @@ def main():
             start=time.monotonic()
             try:
                 while proc.poll() is None and time.monotonic()-start<120:
-                    if len(list(snap.glob('*.bmp')))>=3:break
+                    # The live trial exits itself through the real native menu.
+                    if not live and len(list(snap.glob('*.bmp')))>=3:break
                     time.sleep(.5)
             finally:close_game(app/'vunit.exe')
             code=proc.wait(timeout=30)
@@ -143,6 +148,12 @@ def main():
                     row['cheat_enabled']=any(r['index']=='1' and r['state']=='On' for r in events)
                     row['passed'] &= row['cheat_enabled'] and 'MIDV_CHEATS=' in log
                     for name in ('events.csv','selection.json'):shutil.copy2(bundle/name,work/name)
+                if live:
+                    bundle=app/'rig/cheats/runtime/crusnwld24'
+                    (work/'cheats').mkdir()
+                    for name in ('actions.csv','selection.json'):shutil.copy2(bundle/name,work/'cheats'/name)
+                    shutil.copy2(work/'gl.log',work/'midv_gl.log')
+                    row['live_menu']=inspect_live_menu(work,'crusnwld24')
             except (OSError,ValueError,KeyError) as error:row['error']=str(error)
             report['games'].append(row);save();print(trial,'PASS' if row['passed'] else 'FAIL',flush=True)
         run([app/'CruisnSetup.exe','--support-out',out])
