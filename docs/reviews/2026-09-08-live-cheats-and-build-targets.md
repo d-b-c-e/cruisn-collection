@@ -45,8 +45,10 @@ state events, excluding XML and ROMs.
 
 - Full local Windows inventory: 196 Python tests, no skips; 14 standalone native
   helpers; host C31 math and force/T-junction analyzers; 24 OpenGL quality fixtures.
-  `results/diagnostics/local-checks-live-cheats-20260908/report.json` binds source
-  inputs, commands, results and logs. No hosted minutes were used.
+  `results/diagnostics/local-checks-live-cheats-20260908/report.json` binds all297
+  source inputs, 39 commands, results and logs; source identity
+  `6899b54e3067a8e6bffa6b59bbd0b706cae70be77102d101ab7535f852faeed9`.
+  No hosted minutes were used.
 - Native staged-menu tests cover Resume versus Back/Exit, read-only replay, repeated
   one-shots, parameter selection, an empty catalog and the per-pause action limit.
 - Actual Lua 5.4 runs the shipped loader in tests, with a mocked native boundary:
@@ -82,9 +84,22 @@ it is not a claim that its sources were rebuilt.
 
 Package validation rejects personal config/profile/runtime files and checks actual
 frozen CRT-on, full widescreen, scale4, World2.4, 50% strength, CRISP profile and
-experiment-off defaults. No target publishes anything. See [local build commands](../LOCAL-BUILDS.md).
+per-game experiment-off defaults; Shared Crack Fill retains its existing default.
+No target publishes anything. See [local build commands](../LOCAL-BUILDS.md).
 The published v0.4.0 tag/ZIP, personal preferences and original recordings remain
 intact. This candidate is preparation, not a new release or a public visibility change.
+
+The Release target was exercised end-to-end with `-SkipNativeBuild -Version dev`:
+`build/CruisnCollection-dev-20260908-220014.zip`, SHA256
+`0a45aec96dea094a04a672d7180ebb2ab683cf371edf1628d2a4a52d236e9ad1`.
+Its 1724 files, native identity and actual frozen factory defaults pass. Source
+commit245b318 was clean while packaging. Native compilation was verified separately;
+the explicit Personal deployment target has not run. No frozen game launch is claimed.
+
+`results/proof/2026-09-08-live-cheats/verify_archive.py` verifies the 78-file archive
+and recomputes all five timer/restoration/action verdicts without ROMs or cheat XML.
+Build, native helper, GPU and package verdicts are hash-bound receipts; the verifier
+does not rebuild the binary, rerender the GPU fixtures or execute a packaged game.
 
 ## Other feedback
 

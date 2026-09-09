@@ -14,6 +14,8 @@ visibility change or authorization to publish another version.
 - [x] Preserve the published tag/ZIP, original recordings and local settings.
 - [x] Correct the normal-launch environment regression and add launch-boundary
   tests for five ROM revisions with cheats on/off and recording overrides.
+- [x] Separate local Release/Personal targets; verify a clean dev ZIP's actual
+  frozen factory defaults and reject personal config/profile/runtime files.
 
 ## Decisions and checks before public access
 
@@ -36,6 +38,9 @@ visibility change or authorization to publish another version.
   launch/drive/exit, all-game shifters, telemetry/tactile output, FFB direction,
   clean-profile installation, upgrade preservation and second-wheel coverage.
   Public testing must describe remaining unperformed checks accurately.
+- [ ] Finish visible Esc → Cheats checks and renew all seven default drives on
+  the separate live-Cheats native candidate before personal deployment/promotion.
+  Headless timer/restoration checks pass; they do not establish visible menu behavior.
 - [ ] After an explicitly requested visibility/distribution change, verify anonymous
   source/release access and download the exact asset without authentication.
   The updater currently queries `d-b-c-e/cruisn-collection`; a separate destination

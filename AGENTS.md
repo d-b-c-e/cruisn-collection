@@ -1,5 +1,50 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Live Cheats candidate and local build separation (2026-09-08, 22:00 local)
+
+Read `docs/reviews/2026-09-08-live-cheats-and-build-targets.md` and `docs/CHEATS.md`.
+Native `4ac6a84b51b` is built separately and pushed to fork; candidate SHA256
+`87d04de42d10a731f1d951a1fa378d784059d862063b224764ca6294fa5fe9d8`, 134-patch export
+reconstructs tree `007c6ac1f1b6471237241d07275fd57024c19d01`. NOT deployed: Stream Deck
+still uses root native d52/SHAe0cf8a8b below. Updated Lua gracefully supports it.
+User testing availability question remains pending. Do not start competing visible
+games. All isolated headless runs are complete; no emulator/helper remains running.
+
+Esc Cheats is implemented in both enhanced renderers: metadata/action mailbox only
+on render thread, actual MAME interpreter on emulation thread after Resume. Back
+stages, Exit discards; one-shots repeat explicitly. Session-only actions.csv freezes
+frame/index/value/activation, copied to playback/derived cases with hash validation.
+Replay menu read-only; imported all-off catalog enables engine for live activation.
+Prelaunch one-shots/instruction-restoring selections remain excluded. No new evaluator.
+Five real3300 timer probes and five3300 restoration/finish probes pass, FFB/video/audio0.
+Restore USA4words/World2.5+OffRoad+Exo3each; World2.4 lacks that cheat. Finish timer
+zero3200 in USA/both Worlds/Exo; OffRoad lacks it. Rank/nitro/parameter effects pending.
+
+196Python/no skips,14native helpers,10081C31 vectors,24GPU fixtures/39local commands
+PASS; all297 source hashes identity6899b54e3067a8e6bffa6b59bbd0b706cae70be77102d101ab7535f852faeed9.
+DevZIP `build/CruisnCollection-dev-20260908-220014.zip` SHA
+`0a45aec96dea094a04a672d7180ebb2ab683cf371edf1628d2a4a52d236e9ad1` at245b318:
+1724 files/frozen factory defaults PASS. NO frozen game or visible native menu
+acceptance and NO seven-case regression renewal on this candidate yet.
+Proof `results/proof/2026-09-08-live-cheats` recomputes five memory/action verdicts;
+build/native/GPU/package results remain hash-bound receipts. Publishedv0.4.0 intact.
+
+Next, once rig availability is confirmed: run check_live_cheat_menu.py for all5 ROM
+revisions and inspect images, run seven defaults with --candidate separate binary,
+then deploy with build_local.ps1 -Target Personal -SkipNativeBuild. Fix/rebuild and
+renew package/check identities if those tests expose defects. Do not claim the live
+menu already exists in the Stream Deck binary. Release target stages defaults without
+touching rig; Personal explicitly backs up/copies only native. Hosted workflows stay
+disabled, old overnight heartbeat PAUSED; no new release or visibility authorization.
+
+Exotica-only Menu Force Feedback experiment is available in SOURCE now (works with
+existing native): Off keeps menu/race-end suppression, On sets MIDV_FFB_GAME_GATE=0
+at next launch. Explicit environment wins; display settings independent. No gain,
+polarity, World passthrough or saved preferences changed. Other-game menu controls
+are POST-RELEASE per latest user instruction, separate from deferred normalization.
+Scenery alpha/fog fade roadmap added with temporal/occlusion/performance acceptance.
+Equalizer APO1.4.2 popup belongs to its Windows scheduled updater; settings unchanged.
+
 ## Normal launcher fix and public-doc preparation (2026-09-08, evening)
 
 Read `docs/reviews/2026-09-08-launch-environment.md`. User reproduced unbound
