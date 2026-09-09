@@ -59,16 +59,16 @@ independently verify the game's LOD choice or transform preparation. The canonic
 probe separately records547 clipped/special calls excluded from its ordinary
 projection contract. The prototype did not count those exclusions.
 
-Three initial3,001-input headless runs preserve1,201 camera samples and3,603
+Three initial3,001-input headless runs preserve1,201 camera samples and4,804
 actual ADC reads/timestamps over1800..3000. Four6,000-input runs—control, middle,
-late and canonical—preserve4,191 camera samples and12,573 actual ADC reads/times
+late and canonical—preserve4,191 camera samples and16,764 actual ADC reads/times
 over1800..5990. Every replay also passes its original input/native comparison.
 All three completed3824x2073 GL images at5500/5550/5600 match the control in each
 of the four visible runs. The late scene is gameplay, not attract mode. These
 checks demonstrate diagnostic transparency, not better scenery or whole-track
 visual correctness; the baseline itself has visible road/terrain defects.
 
-Two initial assumptions failed and are retained locally:
+Three initial assumptions failed and are retained locally:
 
 - The first model prototype assumed a two-word vertex stride. Captured offsets
   such as3 and6 disproved that; both independent and native checks failed.
@@ -77,6 +77,10 @@ Two initial assumptions failed and are retained locally:
   number. Actual values were0x201 and0x204. `verified-model-v2.json` retains that
   failure; the final verifier checks the raw32-bit register without discarding
   its control flags. The capture and rendering never changed for this correction.
+- The first archive verifier/narrative reused USA's three ADC reads per frame.
+  Off Road has four:4,804 in the short runs and16,764 in the long runs. The
+  archive verifier exposed and corrected the count; all original traces already
+  matched byte-for-byte. This failure is retained in the public archive.
 
 The local suite passes232 Python tests with no skips,20 native test executables,
 10,081 C31 vectors/137 yaw vectors and32 GPU checks,56 commands total. All348
@@ -84,6 +88,8 @@ source files match identity
 `df90e4202a5af21db24ebc49d4016958dba301003050119d863cf43e9b3e52ba`.
 Native/GPU execution and private geometry comparisons remain hash-bound receipts
 in the public proof; raw geometry/material operands are not published.
+The [public archive](../../results/proof/2026-09-09-offroad-model-codec/README.md)
+recomputes all seven route/input traces and twelve completed4K images.
 
 ## Next work
 

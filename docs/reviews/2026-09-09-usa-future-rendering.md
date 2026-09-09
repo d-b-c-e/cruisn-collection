@@ -132,7 +132,7 @@ The first oracle rejected an assumed two-word vertex stride. Correcting the
 capture to its actual three-word stride gives463 prepared projections/3309
 ordered DMA quads matching Python/native references. The ordinary path consumes
 XY; the third word contains prior data and is not asserted. Original1201 camera/
-3603 ADC values and times remain equal in these3001 runs. The failure is retained.
+4804 ADC values and times remain equal in these3001 runs. The failure is retained.
 This is a local decoder prototype, not an extended Off Road renderer. Broader
 windows, LOD/material/transform dispatch and4K captures are next.
 

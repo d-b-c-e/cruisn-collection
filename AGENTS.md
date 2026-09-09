@@ -11,8 +11,8 @@ Threewordstride consumesXY; thirdword priorbufferdata, notcurrentdepth. DP1,
 FAIL retained. Rawpageactual201/204. Liveonlyordinaryprojection; clampbranches
 synthetic. No hostdraw mode or MAME integration yet.
 
-Three3001headless preserve1201camera/3603actualADCtimes; four6000visible preserve
-4191camera/12573actualADCtimes and all3GL3824x2073 each. Originalinputs/native
+Three3001headless preserve1201camera/4804actualADCtimes; four6000visible preserve
+4191camera/16764actualADCtimes and all3GL3824x2073 each. Originalinputs/native
 referencePASS. Canonicalviewcapture locallymatches463translations/68identity
 bases; yaw/fullrotation/LODchoice remainunqualified. Raw resources stayLOCAL.
 232Python/no skips,20native,10081C31/137yaw,32GPU/56commands PASS at348fileidentity
@@ -59,7 +59,7 @@ polygons. Initial two-word-stride oracle FAIL retained; actual offsets use a
 THREE-word buffer stride with only XY consumed by this ordinary DMA path. Third
 words contain prior data and are not asserted. Corrected model-v2 matches463
 prepared projections/3309 ordered DMA quads in Python/native over2500..2550.
-Three3001 headless runs preserve1201 camera/3603 actual ADC times. Local decoder
+Three3001 headless runs preserve1201 camera/4804 actual ADC times. Local decoder
 is NOT integrated. Next broaden windows/LOD/materials/transform dispatch with4K
 captures before promoting its own codec. Static frame3000snapshot has82 objects/
 37 ROM models with valid5-word primary LOD counts/pointers.
