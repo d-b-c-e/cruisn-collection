@@ -44,6 +44,11 @@ def check(binary,run=None,far=80000):
     result=subprocess.run([str(binary),'--math'],input=inputs,capture_output=True,text=True,env=env,check=True)
     actual=[list(map(int,line.split())) for line in result.stdout.splitlines()]
     math_ok=actual==[r[4] for r in rows]
+    yaw_path=fixture.parent/'world-yaw-vectors.json'
+    yaw=json.loads(yaw_path.read_text())['vectors']
+    yaw_input=''.join(' '.join(map(str,[r['mantissa'],r['exponent'],*r['constants']]))+'\n' for r in yaw)
+    output=subprocess.run([str(binary),'--yaw'],input=yaw_input,capture_output=True,text=True,env=env,check=True)
+    yaw_ok=[list(map(int,l.split())) for l in output.stdout.splitlines()]==[r['matrix'] for r in yaw]
     scenes=[]
     runtime={}
     if run and (run/'world-host-quads.csv').is_file():
@@ -87,8 +92,9 @@ def check(binary,run=None,far=80000):
                 item['passed'] &= item['runtime_passed']
             scenes.append(item)
     uncovered=sorted(set(runtime)-runtime_seen)
-    return dict(schema=1,passed=math_ok and not uncovered and all(s['passed'] for s in scenes),
+    return dict(schema=1,passed=math_ok and yaw_ok and not uncovered and all(s['passed'] for s in scenes),
                 math_vectors=len(rows),math_passed=math_ok,scenes=scenes,
+                yaw_vectors=len(yaw),yaw_passed=yaw_ok,yaw_fixture_sha256=sha256_file(yaw_path),
                 uncovered_runtime_scenes=uncovered,
                 host_far=far,
                 native_sha256=sha256_file(binary),fixture_sha256=sha256_file(fixture))

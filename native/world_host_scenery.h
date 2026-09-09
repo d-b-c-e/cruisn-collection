@@ -30,37 +30,53 @@ struct Scene
     uint32_t pending=0,unsupported=0,distance=0,decoded=0;
     std::vector<Object> objects;
 };
+struct Descriptor
+{
+    uint32_t id=0;
+    std::array<uint32_t,32> words{};
+};
 inline bool pointer(uint32_t p,uint32_t n)
 // Static geometry/materials must reside in the mapped ROM region. A corrupt
 // pointer must never make this read-only adapter touch side-effecting I/O.
 {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
 
-template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000)
+template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+    const std::vector<Descriptor> *future=nullptr)
 {
     if(far!=80000 && far!=160000 && far!=240000)return false;
     // The caller guards the exact code, ROM revision and scene boundary.
     uint32_t cam=read(0x41),view=read(0x43),bill=read(0x48),origin=read(0x47)+2;
     uint32_t head=read(0x61ec),table=read(0x4d);
-    if(!head)return true;
+    if(!head && (!future || future->empty()))return true;
     if(cam>=0x20000-3 || view<0x809800 || view>0x809ff7 ||
        bill<0x809800 || bill>0x809ff7 || origin<0x809800 || origin>0x809ffe ||
-       head<0x1000 || head>=0x20000 || table!=0xb66f)return false;
+       (head && (head<0x1000 || head>=0x20000)) || table!=0xb66f)return false;
     std::array<Float,3> camera;
     std::array<Float,9> camera_matrix,billboard;
     for(int i=0;i<3;++i)camera[i]=Float::load(read(cam+i));
     for(int i=0;i<9;++i){camera_matrix[i]=Float::load(read(view+i));billboard[i]=Float::load(read(bill+i));}
     Float ox=Float::load(read(origin)),oy=Float::load(read(origin+1));
     const Float yscale=Float::load(0x00052000);
-    uint32_t id=read(head);
+    uint32_t id=head?read(head):0;
     std::vector<uint32_t> seen;
-    while(id)
+    size_t future_index=0;
+    while(id || (future && future_index<future->size()))
     {
-        if(id<0x1000 || id>0x20000-32 || seen.size()>=2048 ||
-            std::find(seen.begin(),seen.end(),id)!=seen.end())return false;
-        seen.push_back(id);++scene.pending;
         std::array<uint32_t,32> obj;
-        for(int i=0;i<32;++i)obj[i]=read(id+i);
-        uint32_t object_id=id;id=obj[0];
+        uint32_t object_id;
+        if(id)
+        {
+            if(id<0x1000 || id>0x20000-32 || seen.size()>=2048 ||
+                std::find(seen.begin(),seen.end(),id)!=seen.end())return false;
+            seen.push_back(id);++scene.pending;
+            for(int i=0;i<32;++i)obj[i]=read(id+i);
+            object_id=id;id=obj[0];
+        }
+        else
+        {
+            const auto &item=(*future)[future_index++];obj=item.words;object_id=item.id;
+            if(object_id<0x80000000)return false;
+        }
         // The pending flag proves list membership; alternate road/car codecs
         // (including dynamic bit 0) are explicitly excluded, not guessed.
         if((obj[14]&0x3000)!=0x2000)return false;

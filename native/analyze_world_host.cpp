@@ -1,6 +1,6 @@
 // license:BSD-3-Clause
 // Offline entry for the exact same host helper used by the emulator adapter.
-#include "world_host_scenery.h"
+#include "world_future_sections.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -8,6 +8,17 @@
 int main(int argc,char **argv)
 {
     using cruisn::scenery::Float;
+    if(argc==2 && std::string(argv[1])=="--yaw")
+    {
+        int32_t m;int e;std::array<uint32_t,7> c;
+        while(std::cin>>m>>e)
+        {
+            for(auto &v:c)if(!(std::cin>>v))return 2;
+            for(auto v:cruisn::world_future::yaw({m,e},c))std::cout<<v<<' ';
+            std::cout<<'\n';
+        }
+        return 0;
+    }
     if(argc==2 && std::string(argv[1])=="--math")
     {
         int32_t am,bm;int ae,be;
