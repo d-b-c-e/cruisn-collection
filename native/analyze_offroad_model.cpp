@@ -1,13 +1,25 @@
 // SPDX-License-Identifier: BSD-3-Clause
 // Bounded, ROM-free executable; private captures are supplied through stdin.
 #include "offroad_model.h"
+#include "offroad_transform.h"
 #include <iostream>
 #include <map>
-int main()
+#include <string>
+int main(int argc,char **argv)
 {
     using namespace cruisn::offroad_model;
+    const bool prepared=argc==2 && std::string(argv[1])=="--prepared";
+    if(argc!=1 && !prepared)return 2;
     std::vector<uint32_t> reciprocals(67776);
     for(auto &v:reciprocals)if(!(std::cin>>v))return 2;
+    std::vector<uint32_t> trigonometry;
+    if(prepared)
+    {
+        for(uint32_t expected:{0x1ffffU,0x3fffU,0xef000040U,0xc23e97U})
+        {uint32_t value;if(!(std::cin>>value) || value!=expected)return 2;}
+        trigonometry.resize(16386);
+        for(auto &v:trigonometry)if(!(std::cin>>v))return 2;
+    }
     uint32_t id,previous=0;unsigned records=0;
     while(std::cin>>id)
     {
@@ -42,6 +54,21 @@ int main()
             auto i=palettes.find(p[0]>>16);
             if(i!=palettes.end() && i->second!=value)return 2;
             palettes[p[0]>>16]=value;
+        }
+        if(prepared)
+        {
+            std::array<uint32_t,22> object;
+            std::array<uint32_t,12> view,actual;
+            std::array<uint32_t,13> context;
+            for(auto &v:object)std::cin>>v;
+            for(auto &v:view)std::cin>>v;
+            for(auto &v:context)std::cin>>v;
+            if(!std::cin || !cruisn::offroad_transform::prepare(object,view,
+                [&](int32_t index){return trigonometry.at(index+1);},actual) || actual!=matrix)return 6;
+            const auto selection=cruisn::offroad_transform::select_lod(object,context);
+            if(uint64_t(object[20])+7+5*selection.first!=lod ||
+                ((object[5]&0x20) && context[1]==context[2] && uint32_t(selection.second)!=object[9]))return 7;
+            matrix=actual;
         }
         std::vector<Vertex> points;std::vector<Quad> output;
         if(!project(model,matrix,origin,path,[&](int32_t index){return reciprocals.at(index+4096);},points))return 4;

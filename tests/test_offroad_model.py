@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 from scenery_c31 import F
 from offroad_model import project, quads
 from verify_offroad_model import check, FIELDS
+from offroad_transform import prepare, trig, select_lod, CONSTANTS
 
 
 def sample():
@@ -108,6 +109,58 @@ class OffroadModelTests(unittest.TestCase):
                                    str(root), '--report', str(root/'report.json')], capture_output=True)
             self.assertEqual(proc.returncode, 1)
             self.assertFalse(json.loads((root/'report.json').read_text())['passed'])
+
+    def test_prepared_matrix_is_checked_even_when_pixels_would_match(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td);r = self.fixture(root)
+            f = lambda n: F.integer(n).store()
+            r.update(trig_constants=CONSTANTS, view=[f(i in (0, 5, 10)) for i in range(12)],
+                     lod_context=[0]*13, lod_index=0)
+            r['object_words'][5] = 1
+            r['object_words'][11:14] = [f(0), f(0), f(1000)]
+            path = root/'offroad-model-transform.jsonl'
+            path.write_text(json.dumps(r)+'\n')
+            (root/'offroad-model-trig.bin').write_bytes(struct.pack('<16386I', *[f(0)]*16386))
+            result = check(root)
+            self.assertTrue(result['passed'])
+            self.assertEqual((result['prepared_transforms'], result['lod_selections']), (1, 1))
+            # The constant reciprocal fixture produces identical XY at depth1001.
+            r['matrix'][11] = f(1001);path.write_text(json.dumps(r)+'\n')
+            result = check(root)
+            self.assertFalse(result['passed'])
+            self.assertEqual(result['failures'], [dict(call=1, kind='object transform')])
+
+    def test_trigonometry_quadrants_and_yaw_product_reload(self):
+        f = lambda n: F.integer(n).store()
+        table = [f(0)]*16386;table[16384:] = [f(1)]*2
+        for angle, expected in [(0, (0, 1)), (0x40000000, (1, 0)),
+                                (0x80000000, (0, -1)), (0xc0000000, (-1, 0))]:
+            self.assertEqual(tuple(n.fix() for n in trig(angle, table)), expected)
+        table[8192:8194] = [0xff3504f3]*2
+        r = sample();r.update(trig_constants=CONSTANTS, view=[f(i in (0, 5, 10)) for i in range(12)],
+                             lod_context=[0]*13)
+        r['object_words'][5], r['object_words'][15] = 0x10, 0x20000000
+        r['view'][0], r['view'][2] = 0xff1b925a, 0xff689868
+        self.assertEqual(prepare(r, table)[2], 0x00093cdd)
+        r['object_words'][5] = 2
+        with self.assertRaisesRegex(ValueError, 'unsupported'):
+            prepare(r, table)
+        r['trig_constants'] = []
+        with self.assertRaisesRegex(ValueError, 'resources'):
+            prepare(r, table)
+
+    def test_lod_selection_wrap_mode_and_all_threshold_groups(self):
+        r = sample()
+        r['lod_context'] = [100, 1, 1, 1000, (-1000)&0xffffffff, 500, (-500)&0xffffffff,
+                            10, 20, 30, 40, 50, 60]
+        for flags, position, expected in [(0x60, 109, (0, 9)), (0x60, 110, (1, 10)),
+                                          (0x60, 120, (2, 20)), (0x20, 120, (1, 20)),
+                                          (0xe0, 140, (2, 40)), (0x2020, 160, (2, 60)),
+                                          (0x60, 620, (0, -480)), (0x60, -400, (2, 500))]:
+            r['object_words'][5], r['object_words'][8] = flags, position & 0xffffffff
+            self.assertEqual(select_lod(r), expected)
+        r['lod_context'][1] = 2
+        self.assertEqual(select_lod(r), (0, None))
 
 
 if __name__ == '__main__':

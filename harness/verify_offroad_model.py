@@ -4,6 +4,7 @@ Reject empty, incomplete, duplicated, unowned or mismatched evidence. Report onl
 counts, verdicts and identities; raw geometry and material operands stay local.
 """
 import argparse
+from collections import Counter
 import csv
 import json
 import os
@@ -13,23 +14,29 @@ import subprocess
 import sys
 
 from offroad_model import project, quads, validate
+import offroad_transform
 from verification import sha256_file, write_json
 
 FIELDS = ('flags', 'palette', 'x0', 'y0', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3',
           'uv0', 'uv1', 'uv2', 'uv3', 'texture', 'word15')
 
 
-def native_records(binary, records, reciprocals):
+def native_records(binary, records, reciprocals, transform_table=None):
     lines = [' '.join(map(str, reciprocals))]
+    if transform_table is not None:
+        lines.append(' '.join(map(str, [*offroad_transform.CONSTANTS, *transform_table])))
     for r in records:
         values = [r['call'], r['lod'], r['vertices'], r['polygons'], r['origin_x'], r['path'],
                   r['extra_flags'], r['object_words'][18], r['object_words'][19],
                   *r['lod_words'], *r['matrix'], *r['vertex_words'], *r['polygon_words'], *r['palette_words']]
+        if transform_table is not None:
+            values += [*r['object_words'], *r['view'], *r['lod_context']]
         lines.append(' '.join(map(str, values)))
     env = dict(os.environ)
     if os.name == 'nt':
         env['PATH'] = 'E:/msys64/mingw64/bin;'+env.get('PATH', '')
-    process = subprocess.run([str(binary)], input='\n'.join(lines)+'\n', capture_output=True,
+    command = [str(binary)]+(['--prepared'] if transform_table is not None else [])
+    process = subprocess.run(command, input='\n'.join(lines)+'\n', capture_output=True,
                              text=True, env=env, timeout=120)
     if process.returncode:
         raise ValueError(f'native codec failed ({process.returncode}): '+process.stderr[:300])
@@ -64,6 +71,21 @@ def check(run, binary=None):
     if len(raw) != 67776*4:
         raise ValueError('incomplete reciprocal table')
     reciprocals = struct.unpack('<67776I', raw)
+    prepared = [r for r in records if 'trig_constants' in r]
+    table = None
+    eligible = []
+    if prepared:
+        if len(prepared) != len(records):
+            raise ValueError('mixed prepared/captured model schema')
+        table_path = run/'offroad-model-trig.bin'
+        table_raw = table_path.read_bytes()
+        if len(table_raw) != 16386*4:
+            raise ValueError('incomplete trigonometry table')
+        table = struct.unpack('<16386I', table_raw)
+        paths.append(table_path)
+        for r in records:
+            offroad_transform.validate(r, table)
+        eligible = [r for r in records if not r['object_words'][5] & 0x200e]
     receipt = json.loads(paths[3].read_text())
     first, last = receipt['first'], receipt['last']
     if (not receipt.get('complete') or receipt['projected'] != len(records) or
@@ -98,6 +120,7 @@ def check(run, binary=None):
     if not count or receipt['draws'] != count:
         raise ValueError('empty or incomplete DMA coverage')
     native = native_records(binary, records, reciprocals) if binary else None
+    prepared_native = native_records(binary, eligible, reciprocals, table) if binary and eligible else None
     failures = []
     for r in records:
         points = project(r, reciprocals)
@@ -110,15 +133,30 @@ def check(run, binary=None):
                                  expected=len(expected), actual=len(draws.get(r['call'], []))))
         if native is not None and native[r['call']] != (points, expected):
             failures.append(dict(call=r['call'], kind='native'))
+        if table is not None:
+            index, relative = offroad_transform.select_lod(r)
+            if (r['lod_index'] != index or r['lod'] != r['model']+7+5*index or
+                    relative is not None and relative & 0xffffffff != r['object_words'][9]):
+                failures.append(dict(call=r['call'], kind='LOD selection'))
+            if not r['object_words'][5] & 0x200e:
+                if offroad_transform.prepare(r, table) != r['matrix']:
+                    failures.append(dict(call=r['call'], kind='object transform'))
+                if prepared_native is not None and prepared_native[r['call']] != (points, expected):
+                    failures.append(dict(call=r['call'], kind='prepared native'))
+    transform_paths = Counter('identity' if r['object_words'][5] & 1 else
+                              'yaw' if r['object_words'][5] & 0x10 else 'full' for r in eligible)
     return dict(schema=1, passed=not failures, projected=len(records), quads=count,
                 models=len({r['model'] for r in records}), objects=len({r['object'] for r in records}),
                 lod_indices=sorted({(r['lod']-r['model']-7)//5 for r in records}),
                 projection_paths=sorted({r['path'] for r in records}), first=first, last=last,
                 page_controls=sorted(pages),
+                prepared_transforms=len(eligible), lod_selections=len(prepared),
+                prepared_native_checked=prepared_native is not None,
+                transform_paths={kind: transform_paths[kind] for kind in ('identity', 'yaw', 'full')},
                 native_checked=native is not None, native_sha256=sha256_file(binary) if binary else None,
                 failures=failures, files={p.name: sha256_file(p) for p in paths},
-                scope='Captured ordinary projection and ordered DMA only; no prepared-transform, LOD-choice, '
-                      'scene insertion, residency, clipping or visible-distance acceptance')
+                scope='Ordinary projection and ordered DMA; prepared transforms/LOD only where explicitly counted. '
+                      'No scene insertion, residency, clipping or visible-distance acceptance')
 
 
 def main():

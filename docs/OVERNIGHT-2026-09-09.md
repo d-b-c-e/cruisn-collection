@@ -22,8 +22,10 @@ integrated in a separate native candidate with live material checks. 3x adds
 small visible changes beyond2x and repeats its original route and images.
 Performance remains below full speed after model/reciprocal caching. Final
 resource/default gates pass. [Off Road's standalone codec](reviews/2026-09-09-offroad-model-codec.md)
-now passes independent/live projection and ordered-DMA checks; transform/LOD,
-scene membership and live materials are next. Stream Deck is unchanged.
+now passes independent/live projection and ordered-DMA checks. Its
+[transform/LOD reconstruction](reviews/2026-09-09-offroad-transform-and-lod.md)
+also passes. Pending/future section descriptors, scene insertion and live
+materials are next. Stream Deck is unchanged.
 
 v0.5.0 is the published and deployed baseline. The repository is now public.
 Preserve released tags/ZIPs, personal settings, original recordings and default

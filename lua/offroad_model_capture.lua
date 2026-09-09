@@ -47,6 +47,8 @@ return function(n)
   local f=assert(io.open('offroad-model-reciprocals.bin','wb'));local base=read(0x111a7)
   assert(base==0xcb0fc8,'Off Road reciprocal table changed')
   for i=-4096,63679 do f:write(string.pack('<I4',read(base+i))) end;f:close()
+  local trigbase=read(0x1117b);assert(trigbase==0xc23e97,'Off Road trig table changed')
+  local t=assert(io.open('offroad-model-trig.bin','wb'));for i=-1,16384 do t:write(string.pack('<I4',read(trigbase+i))) end;t:close()
   page=s:read_u32(0x980040)
   taps[#taps+1]=s:install_read_tap(0x1120b,0x1120b,'offroad_model_owner',guard(function(o,d,m)
    if cpu.state.PC.value==0x1bfd then current=nil end
@@ -64,6 +66,8 @@ return function(n)
     object_words=obj,vertices=vertices,polygons=polygons,vertex_buffer=read(0x11201),
     vertex_words=words(read(d+1),3*vertices),polygon_words=words(read(d+4),6*polygons),
     matrix=words(cpu.state.AR7.value,12),view=words(read(0x1120b),12),
+    trig_constants={read(0x11174),read(0x11175),read(0x11176),read(0x1117b)},
+    lod_context={read(0x19731),read(0x1b4bd),read(0x1d0af),read(0x1b4c1),read(0x1b4c2),read(0x1b4c3),read(0x1b4c4),read(0x1122a),read(0x1122b),read(0x1122c),read(0x1122d),read(0x1122e),read(0x1122f)},lod_index=read(0x1b718),
     origin_x=read(0x11230),radius=read(0x1b70c),
     near=read(0x11222),far=read(0x1b725),extra_flags=read(0x1b71e),path=0}
   end))

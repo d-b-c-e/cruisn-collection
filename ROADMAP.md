@@ -27,7 +27,9 @@ reduce cost, but3x still measures97–98% speed: full-speed and visual acceptanc
 remain open. Final original-resource and seven-default regression gates pass on
 the separatecf58 candidate. [Off Road's own codec](docs/reviews/2026-09-09-offroad-model-codec.md)
 now matches1,399 projections/9,602 ordered draws and preserves four6,000-input
-replays and4K samples. Next qualify its transform/LOD and scene/material adapter,
+replays and4K samples. [Transform/LOD reconstruction](docs/reviews/2026-09-09-offroad-transform-and-lod.md)
+also matches1,399 matrices/decisions in three further runs. Next qualify its
+pending/future descriptors and scene/material adapter,
 with World2.5 roads and Zeus adapters alongside.
 
 The earlier [USA pending-object adapter](docs/reviews/2026-09-09-usa-host-scenery.md)

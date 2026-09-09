@@ -1,5 +1,31 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Off Road transforms/LOD — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-offroad-transform-and-lod.md. Native
+native/offroad_transform.h, independentPython and --prepared analyzer match1399
+matrices/LOD choices/9602orderedDMA.68identity/1143yaw/188full;9yaw/28Euler values.
+Initial301/463 yaw-low-bit FAIL retained: cosine product needs store/reload.
+3prepared6000 runs +1scene snapshot run preserve4191camera/16764actualADCtimes
+and3GL3824x2073 each. Off Road has FOUR ADC reads/frame, unlikeUSA/World.
+235Python/no skips,21native,10081C31/137yaw,32GPU/58commands PASS,351fileidentity
+ddf24a4d159ae14eae2bcf4333cc2056a32494d6fc33803c58c0870f160c9c63.
+Standalone only; no MAME build/export/default renewal. cf58/SHA37c0a4ce retains
+previous7defaultpasses. PersonalStreamDeckv0.5.0/SHA87d04de4 unchanged.
+
+FiveLOCALscene snapshots4000/4500/5000/5500/5900: active170/209/219/179/175;
+pending90/87/124/124/86 at111F5->1B73E. Supported ordinary transforms,93models at
+5500, ROM palette tables/currenttrackbases. Local pending-prototype.py computes
+more2x overlapquads but3x==2x; NOT visible/native/material/occlusion proof.
+Loader9B63..9BC1,4wordsectiontable,9C24/9C68 ordinary11worddescriptors are
+provisional. Local allocation-probe.lua/trial under results/diagnostics/
+offroad-model-20260909 is checking finalfields; inspect current process/results.
+NEXT bounded pending/future source, material/residency and scene insertion,
+then zeroCPUcycle hostintegration and1/2/3x/repeat/route/resources/4K acceptance.
+USAperformance/World25roads/Zeus alongside. No release/deploy/hostedworkflow/
+physicalFFB/Worldtuning/menu removal. Checkrig; serialemulators; continue directly,
+ONEminute heartbeat recovery only/no cutoff. Raw game resources stayLOCAL.
+
 ## September 9 Off Road model codec — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-offroad-model-codec.md. Standalone native
