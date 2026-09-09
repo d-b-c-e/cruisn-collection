@@ -15,9 +15,11 @@ USA future1x/2x/3x now renders; 2x adds13/16 GL images over1x,3x adds3/16 over2x
 Nine integration/resource runs and six cache/tail runs preserve original inputs,
 camera and actual ADC times. Four live/five old snapshot oracles match all3planes;
 the4 exact-clock runtime scenes match independent projection. Original153,833,626
-bytes of hardware DMA/VRAM/texture/palette/meta match on initialeee9. Finalcf58
-resource and seven-default gates are RUNNING serially in session81417, followed
-by pending source/proof updates; inspect actual process state before more games.
+bytes of hardware DMA/VRAM/texture/palette/meta match on initialeee9 and finalcf58.
+All7 defaults/UDP-memory/4 software-force checks/Exotica21GL PASS on cf58.
+227Python/no skips,19native,10081C31/137yaw,32GPU/53commands PASS at341-file
+identityb04de1be0667dfc3c17d6bcdc51c2a447fd95b67c35c09e2e24d751f436176f0.
+Seventeen USA runs preserve their complete original input/motion intervals.
 
 PERFORMANCE OPEN: initial3x95.2/95.4% speed,p99/max14.98/16.58ms. Model cache96.1/
 95.5%; tail97.6/97.0%,p99/max11.94/12.55ms. Final2x98.7%. Not full-speed acceptance.
@@ -28,9 +30,15 @@ interval750 scenes matches. Detailed log verifier now streams fingerprints and
 retains only selected snapshot geometry. Public raw resources stay LOCAL.
 
 Local Off Road draft results/diagnostics/offroad-model-20260909/offroad-model.lua,
-oracle.py and trials.py: DP1 data, 5-word LOD, float vertices,6-word polygons;
-NOT RUN YET. Next run serial headless control/model3001 after existing gates,
-verify projection/DMA plus original camera/ADC, then promote its own codec.
+oracle.py/native-check.py/trials.py: DP1 data,5-word LOD,float vertices,6-word
+polygons. Initial two-word-stride oracle FAIL retained; actual offsets use a
+THREE-word buffer stride with only XY consumed by this ordinary DMA path. Third
+words contain prior data and are not asserted. Corrected model-v2 matches463
+prepared projections/3309 ordered DMA quads in Python/native over2500..2550.
+Three3001 headless runs preserve1201 camera/3603 actual ADC times. Local decoder
+is NOT integrated. Next broaden windows/LOD/materials/transform dispatch with4K
+captures before promoting its own codec. Static frame3000snapshot has82 objects/
+37 ROM models with valid5-word primary LOD counts/pointers.
 USA performance and World2.5 roads remain alongside. Continue directly during
 active turns; ONE-minute heartbeat is recovery only, not a work cadence. No cutoff.
 

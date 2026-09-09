@@ -5,7 +5,8 @@ has since [explicitly resumed it](OVERNIGHT-2026-09-09.md); see the
 [road-integration milestone](reviews/2026-09-09-host-road-integration.md) and the
 [World2.5 adapter/USA codec checkpoint](reviews/2026-09-09-world25-host-scenery.md)
 and [USA's integrated host adapter](reviews/2026-09-09-usa-host-scenery.md), followed
-by the [USA future-section decoder](reviews/2026-09-09-usa-future-sections.md),
+by the [USA future-section decoder](reviews/2026-09-09-usa-future-sections.md) and
+[integrated future rendering](reviews/2026-09-09-usa-future-rendering.md),
 for newer work. The recovery wakeup is now one minute; continue directly during active work.
 The table below preserves the morning state. Robust, comparable 3x draw distance across all
 four games is **not complete**. The useful progress is a World 2.4 future-scenery

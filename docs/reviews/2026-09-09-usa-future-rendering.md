@@ -117,8 +117,27 @@ cost includes projection and submitting substantial scenery that is often
 hidden. A future visibility optimization needs its own conservative geometry
 and occlusion proof; do not drop objects merely to improve the timing numbers.
 
-Final resource preservation and seven-default gates are being renewed on this
-candidate. Off Road's separate model/projection probe is prepared locally and
-will run serially after these gates. It uses DP=1 data addresses, five-word LOD
+Final resource preservation and all seven-default gates pass on this candidate:
+the original153,833,626 bytes remain identical, actual UDP/memory checks and four
+software force-policy checks pass, and Exotica's21 GL images match. All227 Python,
+19 native,10081 C31/137 yaw and32 GPU checks pass at341-file source identity
+`b04de1be0667dfc3c17d6bcdc51c2a447fd95b67c35c09e2e24d751f436176f0`.
+The145-patch export reconstructs tree`9befa7f28da953a1f32d9a4142bf9bae431e9b10`.
+These default checks do not certify the new USA extended scene's performance.
+
+Off Road's separate model/projection probe has completed its first control and
+two capture runs after these gates. It uses DP=1 data addresses, five-word LOD
 descriptors, float vertices and six-word polygons rather than USA's model layout.
-This mapping is not yet a qualified decoder or extended Off Road renderer.
+The first oracle rejected an assumed two-word vertex stride. Correcting the
+capture to its actual three-word stride gives463 prepared projections/3309
+ordered DMA quads matching Python/native references. The ordinary path consumes
+XY; the third word contains prior data and is not asserted. Original1201 camera/
+3603 ADC values and times remain equal in these3001 runs. The failure is retained.
+This is a local decoder prototype, not an extended Off Road renderer. Broader
+windows, LOD/material/transform dispatch and4K captures are next.
+
+Publishable USA evidence is archived in
+`results/proof/2026-09-09-usa-future-rendering`:282 files/49,509,678 bytes. The
+standalone verifier recomputes17 routes, four selected4K windows, repeated host
+fingerprints/costs and seven telemetry/four software force verdicts. Full raw
+model/resource oracles, other GL images and native/GPU builds remain receipts.
