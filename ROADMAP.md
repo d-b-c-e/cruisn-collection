@@ -16,6 +16,13 @@ experiments only where successfully replaced. The September
 8 queue is historical. The repository is now public; remaining preparation is
 tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 
+Latest cross-game milestone: [USA's native codec](docs/reviews/2026-09-09-usa-native-codec.md)
+matches18,903 projection/transform buffers and111,498 original DMA quads across
+two recorded windows, including billboard and LOD selection. It is a standalone
+verified prerequisite; next integrate scene insertion and pending/future residency.
+World2.4/2.5 host scenery remains a separate candidate with ground/occlusion work
+open. The active queue continues to Off Road/Zeus; Stream Deck stays on v0.5.0.
+
 1. **Cheats submenu and live activation: shipped in v0.5.0.** Imported choices,
    session-only Esc actions, one-shots/restoration and frame-stamped replay work
    across the four games. Five 4K menu/replay checks and the frozen launcher pass.

@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 USA native codec checkpoint — ACTIVE
+
+Read docs/reviews/2026-09-09-usa-native-codec.md. Collectionb0d18ca adds native
+usa_model.h, offline analyzer, independent Python and bounded Lua capture.
+USA's own two-word/interleaved format, full/compact transforms, billboards,
+direct/lookup palettes and per-objectLOD match18903captured buffers and111498
+orderedquads/18541unclipped calls across3500..3550 and4900..5000.362clipped/special
+calls excluded fromDMA,225models/408objects/5610billboards. Allpreparedtransforms,
+compactdispatch(bit27) andLOD PASS. Initial32signed-depth verifier FAILs retained;
+fixed signed conversion has a negative-depth test. Raw operands remainLOCAL.
+
+Five5012replays preserve3211camera/9633actualADCtimes1800..5010 and3GL3824x2073
+each. Diagnosticloggingcost remains (~1.6s/86.52s, late sampled79%); not hostdraw
+performance.212Python/no skips,17native,10081C31/137yaw,32GPU/47commands PASS,
+321-file identityb10063d3d943eadd579f31bb38303f3ce01eaf07841eab49f2821169f6aef103.
+Nativecodec is standalone, NOT linked into MAME; no newnativebuild/export or
+seven-default renewal. Candidate5a5/SHAa5d0fb41 and personalv0.5.0/SHA87d04de4
+unchanged. No release/deploy/hostedworkflow/physicalFFB/Worldtuning/menu removal.
+
+NEXT verify USA sky/scene insertion, pending/future descriptors and material
+residency, then integrate host adapter with directRAM/zeroCPUcycles and renew
+originalroute/resources/occlusion/handover/4K acceptance. Carry toOffRoad/Zeus;
+World25roads remains alongside. QueueACTIVE every30minutes without cutoff.
+Proof results/proof/2026-09-09-usa-native-codec recomputes route/pixels; rawmodel,
+geometry andnative/GPU builds remain receipts. Before visible tests check rig;
+emulators serially. Local drafts/evidence results/diagnostics/usa-native-codec-20260909.
+
 ## September 9 World 2.5 host adapter checkpoint — ACTIVE
 
 Read docs/reviews/2026-09-09-world25-host-scenery.md. Queue remains ACTIVE every30
