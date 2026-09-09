@@ -26,6 +26,7 @@ import exotica_visibility
 import offroad_distance
 import world_host_options
 import usa_host_options
+import offroad_host_options
 from display_target import parse_size
 
 
@@ -79,6 +80,7 @@ def main(argv=None):
     offroad_distance.add_arguments(ap)
     world_host_options.add_arguments(ap)
     usa_host_options.add_arguments(ap)
+    offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
     if args.timeout <= 0:
         ap.error("timeout must be positive")
@@ -227,6 +229,8 @@ def main(argv=None):
         if host_trial:report['world_host_scenery']=host_trial
         usa_host_trial=usa_host_options.configure(args,manifest['rom'],manifest['settings'])
         if usa_host_trial:report['usa_host_scenery']=usa_host_trial
+        offroad_host_trial=offroad_host_options.configure(args,manifest['rom'],manifest['settings'])
+        if offroad_host_trial:report['offroad_host_scenery']=offroad_host_trial
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
         if args.display_size:

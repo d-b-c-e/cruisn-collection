@@ -70,7 +70,8 @@ return function(n)
     local stem=string.format('offroad-scene-%d',frame)
     dump(stem..'.bin',0,0x20000)
     local out=assert(io.open(stem..'.json','w'))
-    emit(out,{frame=frame,time=emu.time(),pc=cpu.state.PC.value,scene=scenes,live_allocations=pending,
+    emit(out,{frame=frame,native_frame=manager.machine.screens[':screen']:frame_number(),
+     page=space:read_u32(0x980040),time=emu.time(),pc=cpu.state.PC.value,scene=scenes,live_allocations=pending,
      active_slot=d,active_head=read(d),pending_slot=read(0x111f5),pending_head=read(read(0x111f5))});out:close()
    end
   end))

@@ -19,6 +19,14 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 The heartbeat now uses a one-minute recovery wakeup, not a work cadence. During active
 turns, continue directly into the next useful implementation or verification step.
 
+[Off Road host rendering](docs/reviews/2026-09-09-offroad-host-rendering.md) is now
+integrated in a separate candidate. Its future2x adds mountains/terrain in40/40
+sampled4K images over1x;3x adds six further changes. Original inputs/camera/ADC
+and five independent live geometry snapshots pass. Repeat/resource/default/local
+checks are in progress. El Paso start coverage is limited; full clipping,
+material lifetime, foreground occlusion and handover remain open.
+
+
 [USA future rendering](docs/reviews/2026-09-09-usa-future-rendering.md) now connects
 the independently checked section decoder to a separate MAME candidate. 2x adds
 13/16 current4K images over1x;3x adds three smaller changes beyond2x. Route,

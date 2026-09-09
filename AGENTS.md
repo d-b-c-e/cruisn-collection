@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Off Road native integration — ACTIVE validation
+
+Read docs/reviews/2026-09-09-offroad-host-rendering.md. Native4a507c5f3724704b000a52a33a07756cf015202d
+is separately built/pushed, frozen build/candidates/4a507c5f372/vunit.exe,
+SHAc88ae4f260d663734bf9f582a90ca4488cfac154c90be9290bbb08e20b368d8d.
+146patches reconstruct tree06563dddcaa8c48572d05792c284df88e3e49894.
+Explicit CLI --offroad-host-scenery/source/distance/frame-bounds, old absent
+settings preserved. DirectRAM/zeroCPUcycles, no guest allocations/writes/DMA.
+Observe6000:1978scenes/52pretrack/7partial,4191camera/16764actualADCtimes exact;
+five independent live snapshot clocks/order/scalars/7402quads PASS.
+Control/future1/2/3 complete40GL3824x2073 each, originalroute exact.1xchanges29/40,
+2xchanges40/40over1x,3xchanges6/40over2x (4000..4250).3xp99/max4.303/7.488ms.
+Firstrepeat completed with11.34/5.81second outside-callback stalls during broad
+localdisksearch; retain it. Quietrepeat completes103.55s, pixels notyetcompared.
+Materialrejects272979/476earlyscenes2354..3609; fivegameplaysnapshotsnone.
+NEXT resource-control-v2/resource3-v2, final local checks andall7defaults running
+serially via local remaining-v2.py; checkprocesses before starting another game.
+Initialresource-control failed beforelaunch on equalGLfirst/last; v2uses5500:5501.
+Raw results/diagnostics/offroad-host-20260909. Broaderclipping/materiallifetime/
+occlusion/handover andfulltrackvisual acceptanceOPEN. RecordingonlyElPasostart,
+longnear-stoppedhillside, notwholetrack. Prior7defaults belongcf58untilrenewed.
+Personalv0.5.0/SHA87d04de4 unchanged; no release/deploy/hostedworkflows/physicalFFB/
+Worldtuning/menu removal. Continue directly; one-minute recovery only/no cutoff.
+USAperformance/World25roads/Zeus follow; no cosmeticcross-game3xclaim.
+
 ## September 9 Off Road host foundation — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-offroad-host-foundation.md. Standalone host header,
