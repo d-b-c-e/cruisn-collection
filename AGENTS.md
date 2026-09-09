@@ -1,5 +1,17 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Local build/check/release policy (2026-09-08)
+
+GitHub Actions minutes are exhausted. Both collection workflows are disabled
+in GitHub, and diagnostic checks now have a manual-only trigger. Do not enable
+or dispatch hosted workflows without a newer user request. No hosted CI is
+required for subsequent work: run the equivalent checks locally and preserve
+their reports/source identities. Previous CI PASS statements below are historical.
+Build MAME on this PC when native code changes; assemble releases locally with
+make_release.ps1 and promote the exact tested ZIP with promote_release.py.
+Do not publish a release merely because the build policy changed. Keep v0.4.0,
+its ZIP/tag, personal settings and existing physical-FFB restrictions intact.
+
 ## World host-scenery checkpoint (2026-09-08, later authorized work)
 
 Read `docs/reviews/2026-09-08-world-host-scenery.md` and current ROADMAP first.

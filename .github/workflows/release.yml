@@ -1,5 +1,8 @@
-name: release candidate
+name: release candidate (manual hosted fallback)
 
+# DISABLED in GitHub: build locally with make_release.ps1, then upload the
+# accepted ZIP with harness/promote_release.py. Hosted MAME builds are opt-in
+# only, requiring a new maintainer request to re-enable this workflow.
 # Tagging no longer rebuilds and publishes an untested executable. Test the
 # downloaded candidate, then promote those exact bytes with promote_release.py.
 on:

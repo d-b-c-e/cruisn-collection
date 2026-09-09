@@ -1,9 +1,9 @@
-name: diagnostic checks
+name: diagnostic checks (manual hosted fallback)
 
+# Local checks are the default: python harness/local_checks.py
+# This workflow is also disabled in GitHub. Do not re-enable hosted compute
+# without a new maintainer request; pushes and PRs must not spend Actions minutes.
 on:
-  push:
-    branches: [master, 'codex/**']
-  pull_request:
   workflow_dispatch:
 
 permissions:
