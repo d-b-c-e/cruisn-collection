@@ -13,6 +13,7 @@ from PIL import Image
 import cheats
 from derive_case import inherited_settings, validate_parent
 from diagnostic_runtime import ROOT, diagnostic_env, execute, new_run
+from display_target import choose_size, monitors, parse_size
 import replay
 from session_case import Recording, set_option
 from verification import sha256_file, write_json
@@ -57,6 +58,7 @@ def main(argv=None):
     ap.add_argument('--archive',type=Path,help='default: imported exact-revision XML in the personal rig, read-only')
     ap.add_argument('--frame',type=int,default=2700); ap.add_argument('--output')
     ap.add_argument('--timeout',type=int,default=150)
+    ap.add_argument('--display-size',type=parse_size,default=(3840,2160),help='actual display WIDTH:HEIGHT; default 3840:2160, with a maximized game window')
     args=ap.parse_args(argv)
     work=new_run('live-cheat-menu',args.output)
     report={'passed':False,'physical_force':False,'candidate_sha256':sha256_file(args.candidate)}
@@ -72,8 +74,10 @@ def main(argv=None):
             raise ValueError('this diagnostic requires Infinite Time as the first imported entry')
         bundle=cheats.prepare(ROOT,work/'import',manifest['rom'])
         command=list(manifest['command']); command[0]=str(args.candidate.resolve())
-        command=[arg for arg in command if arg not in ('-nocheat','-maximize','-nowindow')]+['-cheat','-window','-nomaximize','-throttle']
-        for option,value in (('-resolution','1280x720'),('-sound','none'),('-video','d3d')):
+        command=[arg for arg in command if arg not in ('-nocheat','-maximize','-nomaximize','-nowindow')]+['-cheat','-window','-maximize','-throttle']
+        target=choose_size(args.display_size,monitors())
+        report['display_target']=target
+        for option,value in (('-screen',target['selected']['device']),('-resolution','x'.join(map(str,args.display_size))),('-sound','none'),('-video','d3d')):
             command=set_option(command,option,value)
         settings=inherited_settings(parent,manifest['settings'])
         settings.update(MIDV_CHEATS=str(bundle),MIDV_GL_LOG='1',MIDZ_GL_LOG='1')
