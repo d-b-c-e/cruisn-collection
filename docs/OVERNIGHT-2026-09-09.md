@@ -33,7 +33,7 @@ per-level allowlists and changes to guest simulation solely to draw more scenery
 
 | Game | Current evidence | Next implementation target |
 |---|---|---|
-| World 2.4 | Host pending scenery preserves full Germany inputs/camera/ADC and guest resources; 2x visibly helps, 3x adds a brief mountain gain. Future sections are not decoded yet. | Finish host-owned future-section placement/material binding, broaden yaw/offset checks, split preparation/logging/submission cost, then test occlusion and handover. |
+| World 2.4 | Host pending scenery preserves full Germany inputs/camera/ADC and guest resources; 2x visibly helps, 3x adds a brief mountain gain. Summary tracing now avoids a measured logging stall; full-drive placement/initial materials are mapped. Future sections are not decoded yet. | Verify metadata overrides/static classes and future resource residency, implement PC-owned section data, then test occlusion and handover. |
 | World 2.5 | Guest far/lookahead trials repeat against themselves but diverge from the original route; no extra 3x visibility established. | Verify its section/object/material layout before adapting the host path; keep its own scene oracle and full replay. |
 | USA 4.5 | Far-only gains are tiny; guest residency changes route. | Verify static section/admission and material layouts for a host adapter that leaves guest activation unchanged. |
 | Off Road 1.25 | Coherent far/clip/reciprocal extension is implemented; modest sampled gain, no extra 3x pixels, strict timing/one-quad differences remain. | Identify the remaining scenery residency or submission limit and map eligible static data to host drawing; retain the stock timing/geometry failures. |
@@ -41,17 +41,25 @@ per-level allowlists and changes to guest simulation solely to draw more scenery
 
 Start with [World's host-scenery evidence](reviews/2026-09-08-world-host-scenery.md)
 and the canonical `native/world_host_scenery.h`/`native/scenery_c31.h`. The existing
-section capture verified only two angles and no flag-8 placement offsets. Broaden
-that evidence before extrapolating. Do not discard the successful original-route
+section capture originally verified only two angles and no flag-8 placement offsets.
+The [September 9 milestone](reviews/2026-09-09-world-host-cost-and-sections.md) now
+checks 8,222 placements, 46 section angles, 970 offsets and both initial material
+lookups for every object. Special class handling and future resource residency
+remain unverified. Do not discard the successful original-route
 and resource equality to obtain more admitted scenery.
 
 ## Ordered implementation checklist
 
-- [ ] Split World host preparation, logging and GPU submission timings; allow
+- [x] Split World host preparation, logging and GPU submission timings; allow
   expensive per-quad tracing to be disabled while retaining cheap scene counters.
   Measure uncaptured gameplay intervals at the actual 4K display size. Attribute
-  the prior 120 ms outlier before claiming smooth performance.
-- [ ] Broaden section placement/yaw/offset and palette/texture binding evidence.
+  new 16.127-second outlier to polygon logging; summary controls stay below 0.9 ms
+  with identical geometry fingerprints and completed images. The older 120 ms
+  cause and whole-game smoothness remain unproven.
+- [x] Broaden section placement/yaw/offset and initial palette/texture evidence.
+  Corrected full-drive probe verifies 16,444 initial writes and 410 later writes;
+  preserve the first two probes' incomplete allocator coverage.
+- [ ] Verify metadata overrides, static classes and future resource residency.
   Reconstruct eligible future static objects in PC-owned storage with bounded
   caches and checked ROM reads, without invoking guest object initialization.
 - [ ] Draw the future scenery at 3x, preserving original submissions and materials.

@@ -1,5 +1,46 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 World host cost/material milestone (02:50 local)
+
+Read docs/reviews/2026-09-09-world-host-cost-and-sections.md. Overnight queue remains
+ACTIVE to08:00local; this is a foundation checkpoint, not cross-game3x completion.
+Nativec1ef52c2dcc is built SEPARATELY/pushed, candidateSHA41b0fdf35edf3c61ec2448721a5d283061f1e310c794028a0ec1e83fd5c01690.
+135patch export reconstructs tree1cab12fd29e633d412b0b07a1ccd6ac37a3855c6.
+Personal root/StreamDeck remainsv0.5.0 native4ac/SHA87d04de4; no deployment or release.
+
+--world-host-log summary selects MIDV_WORLD_HOST_QUADS=0, keeps phase timings and
+ordered16word FNV fingerprints; absent option preserves old detailed diagnostics.
+Five fullGermany9269/154controls keep inputs/camera/actualADCtimes exact. Detailed
+3x finds a16.127SECOND polygon-log pause and88.633%intervalspeed FAIL. Summary3x,
+repeat,2x,noGLcapture callbacksmax0.631/0.860/0.671/0.450ms; all>99%intervalspeed.
+All3x fingerprint663078quads/3731scenes same; detailedquads byteequal priorcontrol;
+31completed4KGL old/new/trace-toggle/repeat equal. Summary2x662946quads; sparse31GL
+equal3x, olderdensemountainbenefit remains. No new geometry/whole-game smoothness,
+old120msrootcause, GPUlatency or newresource equality claim.
+
+Fullsectionprobe reproduces8222XYZ/yaws,92sections,46sectionangles,970flag8offsets;
+137actualmath-only yawvectors. Correctedbindingv3 verifies16444initialpalette/texture
+lookups plus410laterwrites, all8222objects, originalplacement/motion exact. v1/v2
+410write traces have INCOMPLETEinitialcoverage: scope startedlate, then wrongowner
+AR4. Initialstores6266/6269 useAR0; caller copiesAR0->AR4 onlyat7B9C. Keepfailures.
+Genericbindings: palette=mem[mem4151+model[-2]], texture=mem[mem4150+model[-1]].
+Metadata>>20 signed may overridepalette (399writes);11specialhandlerwrites remain.
+Currentreadyboundary7C1C precedes specialtype0xB processing; not allclasses mapped.
+NEXT verifymetadataoverride/finalstaticflags and futurematerialresidency, then
+PC-owned future-section storage/projecteddescriptors without guestinitialization.
+Preserveoriginals/occlusion/handover beforeWorld2.5/USA/OffRoad/Zeus adapters. No
+per-modelallowlists or menu cleanup until useful replacement passes.
+
+All7defaults candidate41b actualUDP/memory/4forcepolicychecks andExo21GL PASS.
+Suite sourceacf7c0b4 is explicitly bound tofinald4237a33; ONLYlater3files differ:
+analyze_world_bindings.py,world_section_capture.lua,test_world_bindings.py. Final
+199Python/no skips,14native,10081C31/137yaw,24GPU/39commands PASS;299sourcehashes
+d4237a33c3d590ac4b12fb3eac44f459f64392a6a20370074e50d7283161844d.
+145file proof results/proof/2026-09-09-world-host-cost-and-sections recomputes timing,
+input/motion/fingerprints,yaw,scalarbindings,7telemetry/4force. Fullgeometry/resources/
+placement/ownership/GL/build stayreceipts; rawROM/model/code dumps notpublished.
+No emulator/build running atcheckpoint; physicalFFB0, hostedworkflowsdisabled.
+
 ## September 9 overnight 3x priority — ACTIVE
 
 The maintainer explicitly requests overnight work on robust, comparable 3x draw

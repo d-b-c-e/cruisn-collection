@@ -52,6 +52,12 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
    reproduces 13,215 polygons while original DMA/VRAM/texture/palette captures stay
    identical. This is CLI-only; correct occlusion and future-section residency
    remain acceptance work. No first-class cross-game or zero-pop-in claim yet.
+   The [September 9 foundation](docs/reviews/2026-09-09-world-host-cost-and-sections.md)
+   now separates host timing phases and avoids a measured 16-second polygon-log
+   stall using summary traces; original motion and completed images stay exact.
+   Full-drive section math covers8,222 objects/46section angles/970offsets, and
+   corrected probes verify both initial material lookups for all objects. Candidate
+   remains separate from the v0.5.0 personal binary; no future-section geometry yet.
 4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
    and cross-game force normalization remain known issues, with tuning deferred.
 
@@ -75,7 +81,7 @@ Relevant legacy IDs are retained below.
 | C2 / G8 | Soften remaining scenery pop-in | Investigate distance-based alpha or fog transitions after the host scenery path is stable. Capture Exotica's existing appearance and trace its alpha/depth state as a reference; do not assume the same mechanism exists on V-Unit. Prefer a shared renderer transition with game-specific depth/material adapters. | Matched drives show reduced temporal jumps without transparent roads, halos, depth/order errors, temporal trails or new stutter. Preserve native translucency and shadows; fade static distant scenery only, with default-off A/B controls. Fading cannot reveal geometry before it is available. |
 | C3 | World New York artifacts/crash | Obtain a recorded race reproducing black flashes and, if reproducible, the 3×/+12 finish crash. Preserve the default/2× control. | Diagnose the first bad submission or guest instruction; retain the original failing recording. |
 | B8 | Broaden Cheats coverage | Live activation/replay is shipped and deployed. Validate rank/nitro and parameter effects individually; broaden actual race-end and code-restoration gameplay coverage beyond the current memory checks. | Exact-revision effects, correct restoration, recording fidelity and default-off regression controls. |
-| A3 | World future-section decoder | Placement/yaw match 180 objects (two distinct angles). Broaden angle/offset coverage, reconstruct palette/texture bindings, then decode eligible definitions outside guest RAM. Split host preparation/logging/submission timings and test without per-quad CSV logging. | Correct XYZ/orientation/materials, no dynamic/physics initialization, no per-model/level allowlist, smooth presentation and transfer to ordinary guest drawing. |
+| A3 | World future-section decoder | Full-drive placement/yaw and initial palette/texture lookups now pass; summary tracing removes the observed expensive polygon-log path. Verify metadata overrides/static classes and future resource residency, then decode eligible definitions outside guest RAM. | Correct XYZ/orientation/materials, no dynamic/physics initialization, no per-model/level allowlist, smooth presentation and transfer to ordinary guest drawing. |
 | B1 | Speed telemetry | Replace World's remaining OCR only after finding and guarding a real producer; retain validity/lifetime checks. | Actual outgoing packets versus independent memory/HUD evidence in both revisions. |
 | B2 | Gear / estimated RPM coverage | Existing guarded gear/rev producers work across all four games. Broaden automatic/manual drives and higher-gear Off Road/Exotica coverage. | Real gauges/SimHub/Buttkicker plus independent traces; RPM remains an estimate from the game's rev signal. Never use E632. |
 | B4 / B9 | Per-game menu force controls | **Post-release.** Extend the Exotica Menu Force Feedback experiment to USA, World and Off Road after verifying each game's menu/driving/race-end states. Preserve current World passthrough until that work is requested. | Correct transitions, no stuck effects, recorded gate/source traces and attended wheel checks. Do not conflate this with force normalization or alter defaults without testing. |
