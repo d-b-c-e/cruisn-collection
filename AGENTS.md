@@ -1,5 +1,22 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 overnight 3x priority — ACTIVE
+
+The maintainer explicitly requests overnight work on robust, comparable 3x draw
+distance across USA, both supported World revisions, Off Road and Exotica. Read
+docs/OVERNIGHT-2026-09-09.md and the current ROADMAP.md. The existing heartbeat
+cruisn-overnight-cheats-and-distance is ACTIVE again, renamed Cruisn overnight 3x
+scenery, through the 08:00 America/Chicago September 9 checkpoint. This supersedes
+older paused/no-resumption statements. At the checkpoint, write a handoff and pause.
+Prioritize host-owned future scenery and game-specific adapters, visible benefit,
+original route/resources, occlusion/handover and smooth 4K presentation. Remove
+confusing/redundant experiment options ONLY after a verified replacement succeeds;
+preserve preference migration and original recording compatibility. No cosmetic
+cross-game 3x claim, model allowlists or extra-admissions-as-success. Work in separate
+commits, build/check locally, preserve v0.5.0 and personal settings, and deploy only
+after cross-game acceptance. No new release, hosted CI or unattended physical FFB.
+World force tuning remains deferred. Repo is public; archive only publishable proof.
+
 ## Repository made public (2026-09-09)
 
 User explicitly requested public visibility. `d-b-c-e/cruisn-collection` is now

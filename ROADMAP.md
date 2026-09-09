@@ -4,14 +4,17 @@ Current work and acceptance criteria, with relevant legacy IDs retained.
 Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 (handoff). Update status here as items move.
 
-## Current priorities (2026-09-08, after v0.5.0)
+## Current priorities (2026-09-09, after v0.5.0)
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
 The ordered, actionable queue
-is below. The [overnight checklist](docs/OVERNIGHT-2026-09-08.md) is a completed
-historical work order; its automation remains paused. Public access preparation
-now also follows [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
+is below. The [September 9 overnight queue](docs/OVERNIGHT-2026-09-09.md) is ACTIVE
+through the 08:00 local checkpoint: concentrate on robust, comparable 3x scenery
+across all four games, then retire older experiments only where successfully
+replaced. This takes priority over the other unfinished items below. The September
+8 queue is historical. The repository is now public; remaining preparation is
+tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 
 1. **Cheats submenu and live activation: shipped in v0.5.0.** Imported choices,
    session-only Esc actions, one-shots/restoration and frame-stamped replay work
@@ -120,9 +123,9 @@ Relevant legacy IDs are retained below.
 
 ## Fixed baseline and limits
 
-- **v0.4.0 is published and preserved.** Overnight source features are newer than
-  that package. Public access is being prepared; another release or visibility
-  change still needs an explicit request after that preparation.
+- **v0.5.0 is published and deployed; v0.4.0 is preserved.** The repository became
+  public at the maintainer's September 9 request. Overnight distance work does not
+  authorize another release; preserve both existing tags and packages.
 - **Experiments is beside Display**, retaining Shared/game/revision contexts.
   Cheats are per game/revision and start off. New distance/scenery trials start off.
 - Fresh installs retain CRT on, full widescreen, scale4, free play and World2.4.
