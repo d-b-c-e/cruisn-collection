@@ -10,14 +10,14 @@
 #   - vunit.exe (statically-linked; GPL source = patch\ + source\ + MAME)
 #   - SDL2.dll (zlib license, included) - the emulator's own force feedback
 #   - NVRAM fixtures, setup.ps1, docs
-param([switch]$NoMedia, [string]$Version = "dev")
+param([switch]$NoMedia, [string]$Version = "dev", [string]$Emulator = '', [string]$RuntimeRoot = '')
 $ErrorActionPreference = "Stop"
 $root   = $PSScriptRoot
 if ($Version -notmatch '^(dev|v[0-9]+\.[0-9]+\.[0-9]+(?:-[A-Za-z0-9.-]+)?)$') {
     throw "Version must be dev or vMAJOR.MINOR.PATCH with an optional prerelease suffix"
 }
-$vunit  = if ($env:CRUISN_VUNIT) { $env:CRUISN_VUNIT } else { "E:\Source\mame-src\vunit.exe" }
-$vdir   = Split-Path $vunit
+$vunit  = if ($Emulator) { $Emulator } elseif ($env:CRUISN_VUNIT) { $env:CRUISN_VUNIT } else { "E:\Source\mame-src\vunit.exe" }
+$vdir   = if ($RuntimeRoot) { $RuntimeRoot } else { Split-Path $vunit }
 $dist   = Join-Path $root "build\dist\CruisnCollection"
 $rel    = Join-Path $root "build\release\CruisnCollection"
 
@@ -99,7 +99,7 @@ Copy-Item (Join-Path $root "profiles\force-profiles.user.ini.example") $rel
 New-Item -ItemType Directory -Force (Join-Path $rel "roms") | Out-Null
 New-Item -ItemType Directory -Force (Join-Path $rel "source") | Out-Null
 foreach ($d in "harness", "gpu", "lua", "native", "lib", "profiles") { Copy-TrackedTree $d (Join-Path $rel "source") }
-foreach ($f in "make_release.ps1", "setup.ps1") { Copy-Item (Join-Path $root $f) (Join-Path $rel "source") }
+foreach ($f in "build_local.ps1", "make_release.ps1", "setup.ps1") { Copy-Item (Join-Path $root $f) (Join-Path $rel "source") }
 Copy-Item (Join-Path $root "setup.ps1") $rel
 $Version | Set-Content (Join-Path $rel "version.txt")   # the in-app updater compares this with GitHub
 

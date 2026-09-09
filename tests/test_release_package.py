@@ -35,7 +35,9 @@ class PackageTests(unittest.TestCase):
             for bad in ({'SDL2.dll':None},{'vunit.exe':b'wrong'},{'rig/collection.ini':b'personal'},
                         {'audio/menumusic.mp3':None},{'bgfx/chains/crt-geom-deluxe.json':None},
                         {'source/harness/__pycache__/private.pyc':b'stale'},
-                        {'roms/game.zip':b'rom'},{'../outside':b'bad'}, {'dinput8.dll':b'old plugin'},
+                        {'roms/game.zip':b'rom'}, {'collection.ini':b'personal'},
+                        {'force-profiles.user.ini':b'personal'}, {'source/harness/collection.ini':b'personal'},
+                        {'cfg/crusnusa.cfg':b'bindings'}, {'cheats/settings.json':b'personal'},{'../outside':b'bad'}, {'dinput8.dll':b'old plugin'},
                         {'fixtures/nvram-crusnexo/m48t35':bytes(0x74)},
                         {'fixtures/nvram-offroadc/nvram':bytes(0x8000)}):
                 with self.assertRaises(ValueError):check(bad)

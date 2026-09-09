@@ -24,6 +24,13 @@ def check(folder):
         raise ValueError('fresh-default check read or created personal settings')
     if state['crt'] is not True or state['margin'] is not None or state['scale']!=4:
         raise ValueError('release must default to CRT on, full widescreen and scale 4')
+    for key, expected in {'ffb':50, 'ffbprofile':'cruisn-vunit@2', 'ffbinvert':0,
+                          'ffbspring':0, 'world_rom':'crusnwld24'}.items():
+        if state[key] != expected:
+            raise ValueError(f'release default changed: {key} must be {expected!r}')
+    if (any(state['ffbimpacts'].values()) or
+            any(value is not None for key in ('steersens','steercurve') for value in state[key].values())):
+        raise ValueError('release must not contain personal impact or steering preferences')
     if any(value for game in state['graphics'].values() for key,value in game.items()
            if key!='world_lookahead'):
         raise ValueError('per-game graphics experiments must default off')

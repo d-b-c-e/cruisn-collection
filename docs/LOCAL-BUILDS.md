@@ -5,6 +5,37 @@ Both GitHub workflows are disabled. Neither pushes, PRs nor tags start hosted
 jobs. Do not enable or dispatch the manual hosted fallbacks without a new
 maintainer request. The MAME fork currently has no Actions workflows.
 
+## Separate personal and release targets
+
+```powershell
+# Build a fresh candidate package with factory defaults; leave the Stream Deck copy alone.
+./build_local.ps1 -Target Release -Version dev
+
+# Explicitly deploy a compiled native build to the personal Stream Deck copy.
+./build_local.ps1 -Target Personal
+```
+
+Both compile incrementally with MAME's `SEPARATE_BIN=1`, writing
+`mame-src/build/mingw-gcc/bin/x64/Release/vunit.exe`. The Release target freezes
+launcher/setup into a fresh `build/release/CruisnCollection` and creates a dated
+ZIP. It reads tracked fixtures and declared media, never the personal `rig/`,
+cheat database, bindings, calibration or user force profile. Factory CRT, full
+widescreen, scale4, World2.4, 50% force and CRISP profile are checked inside the
+frozen executable. Packaging rejects personal config/profile/runtime files.
+
+The Personal target copies only the compiled emulator to `mame-src/vunit.exe`,
+keeping a hash-named backup under `build/personal/previous/`. It refuses deployment
+while that game is running and does not change settings. Stream Deck continues
+to launch the source checkout, so Python updates take effect when its launcher
+is reopened. The two targets share code and compiler settings; personal preferences
+are runtime files, not alternate compiled defaults.
+
+Use `-SkipNativeBuild` to stage/deploy the already compiled separate candidate;
+it is an explicit request to reuse that binary, not a freshness check. `-MameRoot`,
+`-MsysRoot` and `-Jobs` override this PC's paths/concurrency. Neither target uploads
+a release or runs GitHub Actions. `make_release.ps1` also accepts `-Emulator` and
+`-RuntimeRoot` separately, so a candidate need not live beside SDL/BGFX resources.
+
 ## Development checks
 
 Install the test dependencies once in the Python environment used for this repo:
@@ -36,7 +67,7 @@ Windows launcher coverage. The disabled hosted fallback uses the same runner.
 
 For a native change, build MAME locally using the [developer setup](INSTALL.md#developer-setup-build-from-source)
 and keep `patch/vunit-poc-patches.patch` synchronized with the built native tree.
-The existing incremental build in `E:/Source/mame-src` remains the normal route.
+Use the separate targets above for incremental compilation and explicit deployment.
 Python/docs-only changes do not need a MAME rebuild.
 
 ## Release sequence
@@ -44,9 +75,8 @@ Python/docs-only changes do not need a MAME rebuild.
 1. Commit the intended source and native patch export. Run all local checks on
    that source and keep their output directory. Commit documentation separately
    if needed; changing product/check inputs requires renewed evidence.
-2. Assemble a candidate locally with `./make_release.ps1 -Version v0.4.1-rc1`
-   (example next candidate label, **not** an instruction to publish). Set
-   `CRUISN_VUNIT` if the intended binary differs from the default native path.
+2. Assemble a candidate locally with `./build_local.ps1 -Target Release -Version v0.4.1-rc1`
+   (example next candidate label, **not** an instruction to publish). Use the explicit candidate options on `make_release.ps1` when packaging another binary.
    Packaging freezes launcher/setup, checks fresh CRT/widescreen defaults,
    verifies the ZIP and emits its file manifest. It does not build MAME.
 3. Test the extracted candidate using the complete replay suite, fresh boots,

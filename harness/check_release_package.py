@@ -47,6 +47,10 @@ def inspect(package, candidate, *, media=True):
         for name in entries:
             if name.startswith(('roms/','rig/')) or name=='dinput8.dll':
                 raise ValueError(f'ROM, personal rig data or obsolete plugin in package: {name}')
+            if (PurePosixPath(name).name in ('collection.ini', 'force-profiles.user.ini',
+                                             'ffb_trace.csv', 'gl_state.txt') or
+                    name.startswith(('cfg/', 'nvram/', 'ctrlr/', 'cheats/', 'input/', 'state/'))):
+                raise ValueError(f'personal preferences or runtime state in package: {name}')
             if not media and name.startswith(('art/','audio/')):
                 raise ValueError('media found in requested no-media package')
             if '/__pycache__/' in name or name.endswith('.pyc'):

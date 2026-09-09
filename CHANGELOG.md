@@ -5,6 +5,8 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Separate local Release/Personal targets: compile away from the Stream Deck binary, stage factory defaults for releases, and deploy personal builds explicitly with a backup.
+
 ### Added
 
 - Imported per-game Cheats: continuous toggles/choices, exact revision/hash binding,

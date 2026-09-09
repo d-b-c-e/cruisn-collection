@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 
 PREFIXES = ('harness/','gpu/','lua/','native/','lib/','profiles/','patch/','fixtures/','tests/','.github/','media/','third_party/')
-FILES = {'make_release.ps1','setup.ps1','requirements-test.txt'}
+FILES = {'build_local.ps1','make_release.ps1','setup.ps1','requirements-test.txt'}
 TEXT = {'.py','.lua','.h','.cpp','.json','.ini','.txt','.patch','.ps1','.yml','.yaml','.md',
         '.csv','.cfg','.xml','.example'}
 TEXT_NAMES = {'LICENSE','COPYING','VERSION'}
