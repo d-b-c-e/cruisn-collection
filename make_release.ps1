@@ -137,7 +137,7 @@ CRUIS'N COLLECTION
 3. Have a wheel? SETTINGS > CONTROLS SETUP binds it in a minute; force
    feedback then goes to that wheel automatically (SETTINGS > FFB STRENGTH).
 
-In-game: 5 = coin, 1 = start, Esc = menu (resume / CRT / exit),
+In-game: 5 = coin, 1 = start, Esc = menu (resume / CRT / cheats / exit),
 F9 = CRT toggle, F12 = quit to the launcher, Shift+F12 = quit to the
 desktop.
 Frontends / shortcuts: "CruisnCollection.exe --game usa" (or world,

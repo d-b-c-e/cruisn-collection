@@ -14,8 +14,9 @@ now also follows [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 
 1. **Cheats submenu: initial implementation complete.** Continuous imported
    toggles/choices, default-off selections and replay state work across the four
-   games. Five timer probes/replays and a frozen activation pass. Live one-shots,
-   code-restoring actions and individual rank/nitro validation remain follow-up.
+   games. The newer live menu/action journal is built in a separate native candidate.
+   Visual Esc-menu acceptance, candidate deployment and individual rank/nitro
+   validation remain follow-up; see [current usage and limits](docs/CHEATS.md).
 2. **Experiments beside Display: complete.** Contexts, preferences and exclusions
    are preserved; Back returns to Settings. See [overnight evidence](docs/reviews/2026-09-08-cheats-and-experiments.md).
 3. **IN PROGRESS: Global draw-distance experiments for all four games**, prioritizing earlier
@@ -69,7 +70,7 @@ Relevant legacy IDs are retained below.
 | C2 | World / Off Road distance | Broaden coverage beyond the current routes; determine whether activation or residency, rather than far clipping, limits additional benefit. | Matched completed images, timing and fresh drives; do not count extra admissions alone. |
 | C2 / G8 | Soften remaining scenery pop-in | Investigate distance-based alpha or fog transitions after the host scenery path is stable. Capture Exotica's existing appearance and trace its alpha/depth state as a reference; do not assume the same mechanism exists on V-Unit. Prefer a shared renderer transition with game-specific depth/material adapters. | Matched drives show reduced temporal jumps without transparent roads, halos, depth/order errors, temporal trails or new stutter. Preserve native translucency and shadows; fade static distant scenery only, with default-off A/B controls. Fading cannot reveal geometry before it is available. |
 | C3 | World New York artifacts/crash | Obtain a recorded race reproducing black flashes and, if reproducible, the 3×/+12 finish crash. Preserve the default/2× control. | Diagnose the first bad submission or guest instruction; retain the original failing recording. |
-| B8 | Complete Cheats | Add live activation before enabling one-shots and code-restoring actions. Validate rank/nitro and parameter effects individually. | Exact-revision on/off behavior, correct restoration, recording fidelity and default-off regression controls. |
+| B8 | Complete Cheats | Live activation and frame-stamped replay are implemented in the separate native candidate. Finish windowed menu/replay acceptance and default regressions before personal deployment. Validate rank/nitro and parameter effects individually. | Exact-revision on/off behavior, correct restoration, recording fidelity and default-off regression controls. |
 | A3 | World future-section decoder | Placement/yaw match 180 objects (two distinct angles). Broaden angle/offset coverage, reconstruct palette/texture bindings, then decode eligible definitions outside guest RAM. Split host preparation/logging/submission timings and test without per-quad CSV logging. | Correct XYZ/orientation/materials, no dynamic/physics initialization, no per-model/level allowlist, smooth presentation and transfer to ordinary guest drawing. |
 | B1 | Speed telemetry | Replace World's remaining OCR only after finding and guarding a real producer; retain validity/lifetime checks. | Actual outgoing packets versus independent memory/HUD evidence in both revisions. |
 | B2 | Gear / estimated RPM coverage | Existing guarded gear/rev producers work across all four games. Broaden automatic/manual drives and higher-gear Off Road/Exotica coverage. | Real gauges/SimHub/Buttkicker plus independent traces; RPM remains an estimate from the game's rev signal. Never use E632. |

@@ -71,6 +71,51 @@ class CheatTests(unittest.TestCase):
             (bundle/'crusnusa.xml').write_bytes(b'changed outside recording')
             self.assertEqual((root/'case/initial/cheats/crusnusa.xml').read_bytes(),XML)
 
+    def test_actions_are_frozen_for_derived_cases_and_hash_checked_on_replay(self):
+        from session_case import prepare_run
+        from verification import sha256_file
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);rig=root/'rig';(rig/'cheats').mkdir(parents=True)
+            (rig/'cheats/crusnusa.xml').write_bytes(XML)
+            bundle=cheats.prepare(Path(__file__).resolve().parents[1],rig,'crusnusa')
+            exe=root/'vunit.exe';exe.write_bytes(b'fixture, never launched')
+            roms=root/'roms';roms.mkdir();(roms/'crusnusa.zip').write_bytes(b'fixture')
+            actions=root/'parent-actions.csv';actions.write_text('frame,index,steps,activate\n90,2,0,1\n',encoding='utf-8')
+            recording=Recording(root/'case',every=60,stop_frame=120)
+            with mock.patch('session_case.subprocess.check_output',return_value=b'<mame><machine name="crusnusa"/></mame>'),mock.patch('session_case.git_identity',return_value={}):
+                _,_,runtime=recording.prepare([str(exe),'crusnusa','-rompath',str(roms)],
+                    {'MIDV_CHEATS':str(bundle)},rig,cheat_actions=actions)
+            self.assertEqual((root/'case/initial/cheats/replay-actions.csv').read_bytes(),actions.read_bytes())
+            (runtime/'cheats/actions.csv').write_bytes(actions.read_bytes())
+            (runtime/'input/session.inp').write_bytes(b'fixture')
+            recording.manifest['evidence']={'frames':120,'cheats':{'actions.csv':sha256_file(actions)}}
+            prepare_run(root/'case',recording.manifest,root/'replay',playback=True)
+            self.assertEqual((root/'replay/cheats/replay-actions.csv').read_bytes(),actions.read_bytes())
+            (runtime/'cheats/actions.csv').write_text('frame,index,steps,activate\n',encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'cheat actions changed'):
+                prepare_run(root/'case',recording.manifest,root/'tampered',playback=True)
+
+    def test_action_evidence_rejects_events_past_recording_end_or_out_of_order(self):
+        with tempfile.TemporaryDirectory() as td:
+            path=Path(td)/'actions.csv';cat={'entries':cheats.metadata(XML)}
+            for rows in ('121,2,0,1\n','90,2,0,1\n89,2,0,1\n','90,2,0,2\n','90,99,0,1\n'):
+                path.write_text('frame,index,steps,activate\n'+rows,encoding='utf-8')
+                with self.assertRaises(ValueError): cheats.read_actions(path,cat,120)
+            path.write_text('frame,index,steps,activate\n90,2,0,1\n90,2,0,1\n',encoding='utf-8')
+            self.assertEqual(len(cheats.read_actions(path,cat,120)),2)
+
+    def test_all_off_import_still_provides_live_menu_but_absent_catalog_disables_engine(self):
+        with tempfile.TemporaryDirectory() as td:
+            rig=Path(td); (rig/'cheats').mkdir()
+            self.assertIsNone(cheats.prepare(Path(__file__).resolve().parents[1],rig,'crusnusa'))
+            (rig/'cheats/crusnusa.xml').write_bytes(XML)
+            bundle=cheats.prepare(Path(__file__).resolve().parents[1],rig,'crusnusa')
+            selection=json.loads((bundle/'selection.json').read_text(encoding='utf-8'))
+            self.assertEqual(selection['selected'],{})
+            self.assertEqual(selection['live_protocol'],1)
+            self.assertEqual(len(selection['entries']),4)
+            self.assertIn('entries={},catalog={', (bundle/'settings.lua').read_text(encoding='utf-8'))
+
     def test_cheat_state_mismatch_cannot_pass_a_pixel_comparison(self):
         with self.assertRaisesRegex(ValueError,'cheat'):
             compare_evidence('.', '.', {'cheats':{'events.csv':'one'}},{'cheats':{'events.csv':'two'}})

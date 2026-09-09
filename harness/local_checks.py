@@ -166,7 +166,7 @@ def main(argv=None):
               'host': platform.platform(), 'python': sys.version, 'executable': sys.executable,
               'groups': list(groups), 'source_identity': identity['sha256'], 'steps': []}
     report['packages'] = {}
-    for package in ('numpy', 'Pillow', 'moderngl'):
+    for package in ('numpy', 'Pillow', 'moderngl', 'lupa'):
         try:
             report['packages'][package] = importlib.metadata.version(package)
         except importlib.metadata.PackageNotFoundError:

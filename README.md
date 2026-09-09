@@ -14,7 +14,9 @@ See [release notes and known issues](docs/release-notes/v0.4.0.md), the
 [current roadmap](ROADMAP.md) and [documentation index](docs/README.md).
 
 The source build now has a per-game **Cheats** submenu for imported MAME cheat
-files. Continuous toggles are off by default; see [the cheat guide](docs/CHEATS.md)
+files. The new native candidate also adds **Esc → Cheats** for live toggles and
+one-shot actions, applied on Resume and recorded for playback. Visual acceptance
+and personal deployment are pending; see [the cheat guide](docs/CHEATS.md)
 for supported actions, import instructions and replay diagnostics. This is
 post-v0.4.0 work and is not in the published ZIP.
 
@@ -119,7 +121,7 @@ key or a desktop shortcut can treat it like any other game executable.
 | key | does |
 |---|---|
 | **5** / **1** | coin / start (or your bound wheel buttons) |
-| **Esc** | in-game menu: resume, CRT toggle, exit to the launcher |
+| **Esc** | in-game menu: resume, CRT toggle, exit to the launcher; the new native candidate also includes Cheats |
 | **F9** | CRT look on/off |
 | **F12** | quit the game, back to the launcher |
 | **Shift+F12** | quit the game **and** the launcher — straight to the desktop |

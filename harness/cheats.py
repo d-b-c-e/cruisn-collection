@@ -1,5 +1,6 @@
 """Revision-specific imported MAME cheats; expressions are executed only by MAME."""
 import argparse
+import csv
 import hashlib
 import json
 from pathlib import Path
@@ -64,15 +65,15 @@ def metadata(data):
                 # not divide evenly. Keep menu indices identical to its engine.
                 if choices[-1] != str(high): choices.append(str(high))
             if 'run' not in scripts and 'off' not in scripts and 'change' in scripts:
-                reason = 'One-shot actions require an in-game cheat menu.'
+                reason = 'Use Esc > Cheats during gameplay to activate this action.'
         elif 'run' in scripts or ('on' in scripts and 'off' in scripts):
             choices.append('ON')
         else:
-            reason = 'One-shot or information entry; unavailable before a race.'
+            reason = 'One-shot or information entry; use Esc > Cheats during gameplay.'
         # Saving/restoring instruction words at boot can capture uninitialised
-        # code. Do not offer those pre-race until a live activation UI exists.
+        # code. Keep these in the live menu, never in pre-race preferences.
         if 'off' in scripts:
-            reason = 'This cheat needs live activation after game code is loaded.'
+            reason = 'Use Esc > Cheats after the game has loaded; this action restores game code.'
         if len(choices) > 65 or any(not c or len(c) > 100 for c in choices):
             raise ValueError('Invalid cheat choices')
         entries.append({'index':index, 'description':description, 'choices':choices,
@@ -153,9 +154,30 @@ def lua_string(value):
     return '"'+''.join('\\%03d'%b for b in value.encode('utf-8'))+'"'
 
 
+def read_actions(path, selection, frames):
+    """Validate a recorded action journal independently of the Lua consumer."""
+    entries = {e['index']: e for e in selection['entries']}
+    result = []
+    previous = 1
+    with Path(path).open(encoding='utf-8', newline='') as stream:
+        reader = csv.reader(stream)
+        if next(reader, None) != ['frame','index','steps','activate']:
+            raise ValueError('invalid cheat action header')
+        for row in reader:
+            if len(row) != 4 or any(not v.isascii() or not v.isdigit() for v in row):
+                raise ValueError('invalid cheat action row')
+            frame, index, steps, activate = map(int, row)
+            if (not previous <= frame <= frames or len(result) >= 100000 or
+                    index not in entries or not 0 <= steps < len(entries[index]['choices']) or activate not in (0,1)):
+                raise ValueError('invalid cheat action frame or selection')
+            previous = frame
+            result.append(dict(frame=frame,index=index,steps=steps,activate=activate))
+    return result
+
+
 def prepare(root, rig, rom):
     cat = catalog(rig,rom); selected = selections(rig,cat)
-    if not selected: return None
+    if not cat["entries"]: return None
     bundle = Path(rig)/'cheats/runtime'/rom; bundle.mkdir(parents=True,exist_ok=True)
     shutil.copy2(Path(rig)/'cheats'/(rom+'.xml'),bundle/(rom+'.xml'))
     script = Path(root)/'lua/cheats.lua'
@@ -165,8 +187,14 @@ def prepare(root, rig, rom):
     for entry in cat['entries']:
         count = selected.get(str(entry['index']),0)
         if count: rows.append('{index=%d,description=%s,steps=%d}'%(entry['index'],lua_string(entry['description']),count))
-    (bundle/'settings.lua').write_text('return {rom='+lua_string(rom)+',entries={'+','.join(rows)+'}}\n',encoding='utf-8')
-    (bundle/'selection.json').write_text(json.dumps(dict(cat,selected=selected),indent=2),encoding='utf-8')
+    menu = []
+    for entry in cat['entries']:
+        menu.append('{index=%d,description=%s,comment=%s,choices={%s}}' % (
+            entry['index'], lua_string(entry['description']), lua_string(entry['comment']),
+            ','.join(lua_string(choice) for choice in entry['choices'])))
+    (bundle/'settings.lua').write_text('return {live_protocol=1,rom='+lua_string(rom)+
+        ',entries={'+','.join(rows)+'},catalog={'+','.join(menu)+'}}\n',encoding='utf-8')
+    (bundle/'selection.json').write_text(json.dumps(dict(cat,selected=selected,live_protocol=1),indent=2),encoding='utf-8')
     return bundle
 
 

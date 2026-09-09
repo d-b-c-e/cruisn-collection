@@ -150,7 +150,7 @@ setup. All-gear acceptance with both physical shifter styles remains incomplete.
 | key | action |
 |---|---|
 | **5** / **1** | coin / start (or whatever you bound) |
-| **Esc** | in-game menu: Resume, CRT on/off, Exit to launcher |
+| **Esc** | in-game menu: Resume, CRT on/off, Exit to launcher; the new native candidate adds [Cheats](CHEATS.md#during-gameplay) |
 | **F9** | toggle the CRT look instantly |
 | **=** / **-** | game volume in Cruis'n USA (the other games have a VOLUME setting on their page) |
 | **F2** / **9** | operator test menu / service credit |

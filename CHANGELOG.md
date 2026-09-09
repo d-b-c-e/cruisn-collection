@@ -11,8 +11,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 ### Added
 
 - Imported per-game Cheats: continuous toggles/choices, exact revision/hash binding,
-  reset to off and recorded cheat-state verification. One-shots and code-restoring
-  actions remain unavailable; imported effects need individual validation.
+  reset to off and recorded cheat-state verification. The new native candidate adds
+  Esc → Cheats with staged live actions and a frame-stamped replay journal, including
+  one-shots and code restoration. Visual acceptance/deployment are pending; imported
+  effects need individual validation.
 - Optional World 2.5 and Off Road 2×/3× distance menus, plus Exotica margin scenery.
   All default Off; increased limits do not guarantee visible scenery or eliminate pop-in.
 - Bounded CLI-only World 2.4 host scenery prototype: earlier terrain/buildings/trees

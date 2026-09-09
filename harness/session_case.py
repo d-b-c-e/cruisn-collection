@@ -121,6 +121,12 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
         required_files(directory/'cheats', ['settings.lua','selection.json','events.csv'])
         evidence['cheats'] = {name:sha256_file(directory/'cheats'/name)
                               for name in ('settings.lua','selection.json','events.csv')}
+        selection = json.loads((directory/'cheats/selection.json').read_text(encoding='utf-8'))
+        if selection.get('live_protocol') == 1:
+            from cheats import read_actions
+            required_files(directory/'cheats', ['actions.csv'])
+            read_actions(directory/'cheats/actions.csv', selection, len(rows))
+            evidence['cheats']['actions.csv'] = sha256_file(directory/'cheats/actions.csv')
     raw = directory / "raw-snap"
     if raw.exists():
         expected_raw = [f"frame_{n:08d}.raw" for n in frames]
@@ -183,7 +189,7 @@ class Recording:
         self.clock = clock
         self.manifest = None
 
-    def prepare(self, command, env, rig, *, stimulus=None):
+    def prepare(self, command, env, rig, *, stimulus=None, cheat_actions=None):
         """Freeze the already-prepared launch configuration, then run a copy."""
         rig = Path(rig)
         if self.with_ffb and stimulus:
@@ -213,7 +219,16 @@ class Recording:
             source = Path(settings['MIDV_CHEATS']); destination = initial/'cheats'; destination.mkdir()
             for name in (command[1]+'.xml','settings.lua','selection.json','cheats.lua'):
                 shutil.copy2(source/name,destination/name)
+            if cheat_actions:
+                from cheats import read_actions
+                selection = json.loads((destination/'selection.json').read_text(encoding='utf-8'))
+                if selection.get('live_protocol') != 1:
+                    raise ValueError('cheat actions require a compatible frozen loader')
+                read_actions(cheat_actions, selection, self.stop_frame)
+                shutil.copy2(cheat_actions, destination/'replay-actions.csv')
             settings['MIDV_CHEATS'] = '@initial/cheats'
+        elif cheat_actions:
+            raise ValueError('cheat actions require a frozen cheat catalog')
         exe = Path(command[0]).resolve()
         binary = self.path / "binary"
         binary.mkdir()
@@ -300,6 +315,12 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
         command = [arg for arg in command if arg != '-nocheat']
         command += ['-cheat']
         command = set_option(command,'-cheatpath',runtime/'cheats')
+        selection = json.loads((runtime/'cheats/selection.json').read_text(encoding='utf-8'))
+        if playback and selection.get('live_protocol') == 1:
+            actions = case/'record/cheats/actions.csv'
+            if sha256_file(actions) != manifest['evidence']['cheats'].get('actions.csv'):
+                raise ValueError('recorded cheat actions changed or are missing')
+            shutil.copy2(actions, runtime/'cheats/replay-actions.csv')
     else:
         command = [arg for arg in command if arg != '-cheat']
         command += ['-nocheat']

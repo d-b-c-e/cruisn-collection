@@ -139,7 +139,7 @@ def collect(rom="crusnusa", progress=print):
     cheat_root = Path(run_rig.POC)/'rig/cheats'
     add_file('cheats/settings.json',str(cheat_root/'settings.json'))
     for entry in sorted((cheat_root/'runtime').glob('*/*')):
-        if entry.is_file() and entry.name in ('selection.json','events.csv'):
+        if entry.is_file() and entry.name in ('selection.json','events.csv','actions.csv'):
             add_file('cheats/'+entry.parent.name+'/'+entry.name,str(entry))
     history = Path(run_rig.POC)/'rig'/'launch-history'
     if history.is_dir():

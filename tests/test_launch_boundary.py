@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 
 @unittest.skipUnless(sys.platform == 'win32', 'launcher uses Windows APIs')
 class LaunchBoundaryTests(unittest.TestCase):
-    def exercise_launch(self, rom, enabled, recording=False, trial=None):
+    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None):
         import cheats
         import run_rig
 
@@ -22,11 +22,13 @@ class LaunchBoundaryTests(unittest.TestCase):
             root = Path(td)
             rig = root/'rig'
             rig.mkdir()
+            if config:
+                (rig/'collection.ini').write_text('[collection]\n'+''.join(f'{k}={v}\n' for k,v in config.items()),encoding='utf-8')
             (root/'lua').mkdir()
             (root/'lua/cheats.lua').write_text('-- fixture, never executed')
             (rig/'cheats').mkdir()
             xml = b'<mamecheat version="1"><cheat desc="Continuous fixture"><script state="run"><action>maincpu.pb@1234=1</action></script></cheat></mamecheat>'
-            (rig/'cheats'/(rom+'.xml')).write_bytes(xml)
+            if imported: (rig/'cheats'/(rom+'.xml')).write_bytes(xml)
             cat = cheats.catalog(rig, rom)
             cheats.save(rig, cat, {'1': 1} if enabled else {})
             for target, value in (('POC', str(root)), ('ROMPATH', str(root/'roms'))):
@@ -50,10 +52,10 @@ class LaunchBoundaryTests(unittest.TestCase):
             command = spawn.call_args.args[0]
             env = spawn.call_args.kwargs['env']
             self.assertEqual(env['MIDV_FFB'], '0')
-            self.assertEqual('-cheat' in command, enabled)
-            self.assertEqual('-nocheat' in command, not enabled)
-            self.assertEqual('MIDV_CHEATS' in env, enabled)
-            if enabled:
+            self.assertEqual('-cheat' in command, imported)
+            self.assertEqual('-nocheat' in command, not imported)
+            self.assertEqual('MIDV_CHEATS' in env, imported)
+            if imported:
                 self.assertTrue((Path(env['MIDV_CHEATS'])/'settings.lua').is_file())
                 self.assertIn('-autoboot_script', command)
             return env
@@ -64,6 +66,15 @@ class LaunchBoundaryTests(unittest.TestCase):
             for enabled in (False, True):
                 with self.subTest(rom=rom, cheats=enabled):
                     self.exercise_launch(rom, enabled)
+            self.exercise_launch(rom, False, imported=False)
+
+    def test_exotica_feedback_experiment_reaches_normal_and_recording_launch(self):
+        for recording in (False,True):
+            for value,expected in (('0','1'),('1','0')):
+                env=self.exercise_launch('crusnexo',False,recording=recording,
+                    config={'menu_feedback_crusnexo':value},trial={'scale':1,'margin':0})
+                self.assertEqual(env['MIDV_FFB_GAME_GATE'],expected)
+                self.assertEqual(env['MIDV_FFB'],'0')
 
     def test_recording_and_each_explicit_trial_reach_process_creation(self):
         cases = [

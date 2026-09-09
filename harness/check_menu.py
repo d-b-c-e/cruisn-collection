@@ -23,10 +23,10 @@ def inspect(directory):
                r"completed_frame=(\d+) new_frame=(\d+)")
     rows = [dict(zip(("step", "open", "selected", "crt", "frame", "new_frame"), map(int, m)))
             for m in re.findall(pattern, log)]
-    if [r["step"] for r in rows] != list(range(8)):
+    if [r["step"] for r in rows] != list(range(9)):
         raise ValueError("missing menu redraws while emulation is paused")
     states = [(r["open"], r["selected"]) for r in rows]
-    if states != [(1, 0), (1, 1), (1, 1), (1, 0), (0, 0), (1, 0), (1, 1), (1, 2)]:
+    if states != [(1, 0), (1, 1), (1, 1), (1, 0), (0, 0), (1, 0), (1, 1), (1, 2), (1, 3)]:
         raise ValueError("menu navigation/resume state mismatch")
     if rows[0]["crt"] != rows[1]["crt"] or rows[2]["crt"] == rows[1]["crt"]:
         raise ValueError("CRT toggle failed while paused")
@@ -41,7 +41,7 @@ def inspect(directory):
         row["image_sha256"] = sha256_file(path)
     if rows[0]["image_sha256"] == rows[1]["image_sha256"]:
         raise ValueError("selection change did not redraw the menu")
-    if "menu test step=8" not in log or "machine exit" not in log:
+    if "menu test step=9" not in log or "machine exit" not in log:
         raise ValueError("menu exit did not complete cleanly")
     return rows
 

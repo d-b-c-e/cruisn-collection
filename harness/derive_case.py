@@ -133,7 +133,9 @@ def main(argv=None):
         recording = Recording(work / 'case', every=manifest['every'],
                               stop_frame=manifest['evidence']['frames'], snapshot_mode='raw', clock=args.clock)
         cmd, run_env, runtime = recording.prepare(command, env, parent / 'initial',
-                                                  stimulus=parent / 'record/input/session.inp')
+            stimulus=parent / 'record/input/session.inp',
+            cheat_actions=(parent/'record/cheats/actions.csv'
+                if 'actions.csv' in manifest['evidence'].get('cheats', {}) else None))
         recording.manifest.update(title=args.title, derived_from={
             'case': str(parent), 'case_sha256': sha256_file(parent / 'case.json'),
             'inp_sha256': manifest['inp_sha256'], 'change': 'explicit candidate executable/settings; '+('recorded patch preserved' if args.keep_patch else 'game patch replaced')})
