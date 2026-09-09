@@ -23,7 +23,7 @@ def rectangle(x0=2, y0=2, x1=14, y1=3, mode=0x100):
     return q
 
 
-def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS, positions=None, canvas=(20,12)):
+def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS, positions=None, canvas=(20,12), meta_bits=0):
     size = (canvas[0] * scale, canvas[1] * scale)
     prog = ctx.program(vertex_shader=R.VS, fragment_shader=fragment_shader)
     for name, value in {"uCanvas": tuple(map(float,canvas)), "uScale": scale, "uClipRight": canvas[0]-1,
@@ -33,6 +33,7 @@ def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS, pos
     tex = ctx.texture((4096, texture.size // 4096), 1, texture.tobytes(), dtype="u1")
     tex.use(0)
     f, u = R.build_vertices(quads, 0, dilate2d=scale > 1, positions=positions)
+    u[:,2] |= meta_bits
     vf, vu = ctx.buffer(f.tobytes()), ctx.buffer(u.tobytes())
     vao = ctx.vertex_array(prog, [(vf, "2f 2f 2f 2f 2f 4f 4f 4f", "in_corner",
         "in_v0", "in_v1", "in_v2", "in_v3", "in_uv01", "in_uv23", "in_uvBounds"),
@@ -194,6 +195,8 @@ def main(argv=None):
         ctx = moderngl.create_context(standalone=True, require=430)
         report["renderer"] = ctx.info["GL_RENDERER"]
         report["checks"] = checks(ctx)
+        from verify_host_layers import checks as host_layer_checks
+        report['checks'].extend(host_layer_checks(ctx))
         report["passed"] = all(c["passed"] for c in report["checks"])
         ctx.release()
     except Exception as exc:

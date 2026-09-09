@@ -7,6 +7,25 @@ from world_host_options import add_arguments,configure
 
 
 class FutureSectionTests(unittest.TestCase):
+    def test_host_layer_trial_freezes_without_changing_old_recordings(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        for label,value in (('legacy','0'),('coverage','1'),('split','2'),('both','3')):
+            settings={'MIDV_GL':'1'}
+            with self.assertRaises(ValueError):configure(parser.parse_args(['--world-host-layer',label]),'crusnwld24',settings)
+            args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','1',
+                '--world-host-last','2','--world-host-layer',label])
+            configure(args,'crusnwld24',settings)
+            self.assertEqual(settings['MIDV_WORLD_HOST_LAYER'],value)
+            self.assertEqual(configure(parser.parse_args([]),'crusnwld24',settings)['layer'],label)
+            configure(parser.parse_args(['--world-host-scenery','off']),'crusnwld24',settings)
+            self.assertNotIn('MIDV_WORLD_HOST_LAYER',settings)
+        settings={'MIDV_GL':'1'}
+        configure(parser.parse_args(['--world-host-scenery','draw','--world-host-first','1','--world-host-last','2']),'crusnwld24',settings)
+        configure(parser.parse_args([]),'crusnwld24',settings)
+        self.assertNotIn('MIDV_WORLD_HOST_LAYER',settings)
+        settings['MIDV_WORLD_HOST_LAYER']='4'
+        with self.assertRaises(ValueError):configure(parser.parse_args([]),'crusnwld24',settings)
+
     def test_future_source_is_explicit_frozen_and_removed_when_disabled(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         settings={'MIDV_GL':'1'}

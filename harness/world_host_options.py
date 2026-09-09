@@ -1,5 +1,6 @@
 """Explicit, bounded World 2.4 host-scenery diagnostics; no product defaults."""
 MODES={'off':'0','observe':'1','draw':'2'}
+LAYERS={'legacy':'0','coverage':'1','split':'2','both':'3'}
 
 
 def add_arguments(parser):
@@ -13,6 +14,8 @@ def add_arguments(parser):
                         help='summary keeps scene counts/fingerprints/timing without per-quad CSV cost')
     parser.add_argument('--world-host-source',choices=('pending','future'),
                         help='future adds PC-owned upcoming section scenery to the pending-object path')
+    parser.add_argument('--world-host-layer',choices=LAYERS,
+                        help='isolate auxiliary coverage and vertex-batch ownership (diagnostic)')
 
 
 def configure(args,rom,settings):
@@ -21,8 +24,9 @@ def configure(args,rom,settings):
     far=getattr(args,'world_host_far',None)
     trace=getattr(args,'world_host_log',None)
     source=getattr(args,'world_host_source',None)
+    layer=getattr(args,'world_host_layer',None)
     if mode is None:
-        if first is not None or last is not None or far is not None or trace is not None or source is not None:
+        if any(value is not None for value in (first,last,far,trace,source,layer)):
             raise ValueError('host bounds/logging require an explicit mode')
         inherited=settings.get('MIDV_WORLD_HOST_SCENERY','0')
         if inherited=='0':return None
@@ -37,11 +41,16 @@ def configure(args,rom,settings):
         saved_source=settings.get('MIDV_WORLD_HOST_FUTURE','0')
         if saved_source not in ('0','1'):raise ValueError('invalid recorded host source')
         if 'MIDV_WORLD_HOST_FUTURE' in settings:source='future' if saved_source=='1' else 'pending'
+        if 'MIDV_WORLD_HOST_LAYER' in settings:
+            layers={v:k for k,v in LAYERS.items()}
+            if settings['MIDV_WORLD_HOST_LAYER'] not in layers:raise ValueError('invalid recorded host layer')
+            layer=layers[settings['MIDV_WORLD_HOST_LAYER']]
     if rom!='crusnwld24' or mode not in MODES:raise ValueError('host scenery supports World 2.4 only')
     if mode!='off':
         trace='quads' if trace is None else trace
         if trace not in ('summary','quads'):raise ValueError('invalid host trace mode')
         if source not in (None,'pending','future'):raise ValueError('invalid host source')
+        if layer is not None and layer not in LAYERS:raise ValueError('invalid host layer')
         far=80000 if far is None else far
         if far not in (80000,160000,240000):raise ValueError('invalid host far limit')
         if first is None or last is None or not 1<=first<=last<=1000000:
@@ -52,7 +61,7 @@ def configure(args,rom,settings):
         if mode=='draw' and (getattr(args,'headless',False) or getattr(args,'native_renderer',False)
                             or settings.get('MIDV_GL')!='1'):
             raise ValueError('host scenery drawing requires live GL presentation')
-    elif first is not None or last is not None or far is not None or trace is not None or source is not None:
+    elif any(value is not None for value in (first,last,far,trace,source,layer)):
         raise ValueError('off mode does not take a frame interval')
     settings['MIDV_WORLD_HOST_SCENERY']=MODES[mode]
     for key,value in [('MIDV_WORLD_HOST_FIRST',first),('MIDV_WORLD_HOST_LAST',last),('MIDV_WORLD_HOST_FAR',far)]:
@@ -62,4 +71,6 @@ def configure(args,rom,settings):
     else:settings['MIDV_WORLD_HOST_QUADS']='0' if trace=='summary' else '1'
     if source is None:settings.pop('MIDV_WORLD_HOST_FUTURE',None)
     else:settings['MIDV_WORLD_HOST_FUTURE']='1' if source=='future' else '0'
-    return dict(mode=mode,first=first,last=last,far=far,log=trace,source=source or 'pending')
+    if layer is None:settings.pop('MIDV_WORLD_HOST_LAYER',None)
+    else:settings['MIDV_WORLD_HOST_LAYER']=LAYERS[layer]
+    return dict(mode=mode,first=first,last=last,far=far,log=trace,source=source or 'pending',layer=layer or 'legacy')

@@ -254,6 +254,9 @@ void main() {
     // sampled with nearest-neighbor at a noninteger display ratio makes moire.
     // Native-exact masks remain 1; opaque geometry overwrites the dither tag.
     outMask = (uScale > 1 && dither == 1u) ? 3u : 1u;
+    // Auxiliary scenery must not claim that a foreground seam was covered.
+    // This provenance bit is supplied only by the explicit host-layer trial.
+    if ((meta.z & 8u) != 0u) outMask |= 4u;
     if (mode == 0u) {
         outIndex = (uDbgQuadId == 1) ? uint(gl_PrimitiveID / 2) : pixdata & 0xffffu;
         return;
@@ -323,38 +326,44 @@ uniform float uSrcH;         // simulated source scanline count (coarse height)
 uniform usampler2D maskTex;  // R8UI: 1 = written by the CURRENT scene
 uniform int uFillR;          // crack-fill search radius in fine px; 0 = off
 uniform int uMargin;         // margin width in fine px for clamp-extend; 0 = off
+uniform int uHostLayers;     // auxiliary coverage trial; absent/default stays legacy
 in vec2 uv;
 out vec4 color;
 
-ivec2 fill_px(ivec2 p) {
+bool covered(ivec2 p, bool foreground) {
+    uint tag = texelFetch(maskTex, p, 0).r;
+    return tag != 0u && (!foreground || (tag & 4u) == 0u);
+}
+
+ivec2 fill_layer(ivec2 p, bool foreground) {
     // Crack fill: the hardware leaves sub-pixel gaps between adjacent quads
     // where the page's PREVIOUS frame shows through (authentic, but it
     // shimmers). An unwritten pixel is redirected to its nearest written
     // neighbour - only when written pixels exist on BOTH sides along some
     // axis (a true between-polys crack). One-sided pixels (silhouettes
     // against the cleared 16:9 margins) are left untouched.
-    if (uFillR == 0 || texelFetch(maskTex, p, 0).r != 0u) return p;
+    if (uFillR == 0 || covered(p, foreground)) return p;
     ivec2 sz = textureSize(maskTex, 0);
     int dl = 0, dr = 0, du = 0, dd = 0;
     for (int i = 1; i <= uFillR; i++) {
         if (dl == 0 && p.x - i >= 0
-            && texelFetch(maskTex, p - ivec2(i, 0), 0).r != 0u) dl = i;
+            && covered(p - ivec2(i, 0), foreground)) dl = i;
         if (dr == 0 && p.x + i < sz.x
-            && texelFetch(maskTex, p + ivec2(i, 0), 0).r != 0u) dr = i;
+            && covered(p + ivec2(i, 0), foreground)) dr = i;
         if (du == 0 && p.y - i >= 0
-            && texelFetch(maskTex, p - ivec2(0, i), 0).r != 0u) du = i;
+            && covered(p - ivec2(0, i), foreground)) du = i;
         if (dd == 0 && p.y + i < sz.y
-            && texelFetch(maskTex, p + ivec2(0, i), 0).r != 0u) dd = i;
+            && covered(p + ivec2(0, i), foreground)) dd = i;
     }
     // fine-dither translucency leaves a 1-px checkerboard: all four axis
     // neighbours written, all four diagonals unwritten. That is
     // translucency, not a crack - never fill it.
     if (dl == 1 && dr == 1 && du == 1 && dd == 1
         && p.x > 0 && p.y > 0 && p.x + 1 < sz.x && p.y + 1 < sz.y
-        && texelFetch(maskTex, p + ivec2( 1,  1), 0).r == 0u
-        && texelFetch(maskTex, p + ivec2( 1, -1), 0).r == 0u
-        && texelFetch(maskTex, p + ivec2(-1,  1), 0).r == 0u
-        && texelFetch(maskTex, p + ivec2(-1, -1), 0).r == 0u) return p;
+        && !covered(p + ivec2( 1,  1), foreground)
+        && !covered(p + ivec2( 1, -1), foreground)
+        && !covered(p + ivec2(-1,  1), foreground)
+        && !covered(p + ivec2(-1, -1), foreground)) return p;
     int wh = (dl > 0 && dr > 0) ? dl + dr : 1 << 20;
     int wv = (du > 0 && dd > 0) ? du + dd : 1 << 20;
     if (min(wh, wv) >= (1 << 20)) {
@@ -364,18 +373,18 @@ ivec2 fill_px(ivec2 p) {
         // column sits a couple of fine pixels inside the nominal edge
         // (vertices carry a +0.5 coarse offset), so probe a short inward
         // run rather than the exact edge column.
-        if (uMargin > 0) {
+        if (uMargin > 0 && (!foreground || texelFetch(maskTex, p, 0).r == 0u)) {
             if (p.x < uMargin + 8) {
                 int start = max(p.x + 1, uMargin);
                 for (int k = start; k <= uMargin + 8; k++) {
                     ivec2 q = ivec2(k, p.y);
-                    if (texelFetch(maskTex, q, 0).r != 0u) return q;
+                    if (covered(q, foreground)) return q;
                 }
             } else if (p.x >= sz.x - uMargin - 8) {
                 int start = min(p.x - 1, sz.x - 1 - uMargin);
                 for (int k = start; k >= sz.x - 1 - uMargin - 8; k--) {
                     ivec2 q = ivec2(k, p.y);
-                    if (texelFetch(maskTex, q, 0).r != 0u) return q;
+                    if (covered(q, foreground)) return q;
                 }
             }
         }
@@ -383,6 +392,15 @@ ivec2 fill_px(ivec2 p) {
     }
     if (wh <= wv) return p + ((dl <= dr) ? ivec2(-dl, 0) : ivec2(dr, 0));
     return p + ((du <= dd) ? ivec2(0, -du) : ivec2(0, dd));
+}
+
+ivec2 fill_px(ivec2 p) {
+    if (uHostLayers == 0) return fill_layer(p, false);
+    ivec2 q = fill_layer(p, true);
+    // Keep actual auxiliary silhouettes when no foreground cavity surrounds
+    // them. Only unwritten pixels fall back to repairing auxiliary seams.
+    if (any(notEqual(q, p)) || texelFetch(maskTex, p, 0).r != 0u) return q;
+    return fill_layer(p, false);
 }
 
 vec3 fetch_raw(ivec2 p) {
@@ -400,10 +418,10 @@ vec3 fetch_at(ivec2 p) {
     p = clamp(p, ivec2(0), sz - 1);
     ivec2 b = (p / 2) * 2;
     if (b.x + 1 < sz.x && b.y + 1 < sz.y) {
-        bool a = texelFetch(maskTex, b, 0).r == 3u;
-        bool c = texelFetch(maskTex, b + ivec2(1, 0), 0).r == 3u;
-        bool d = texelFetch(maskTex, b + ivec2(0, 1), 0).r == 3u;
-        bool e = texelFetch(maskTex, b + ivec2(1, 1), 0).r == 3u;
+        bool a = (texelFetch(maskTex, b, 0).r & 3u) == 3u;
+        bool c = (texelFetch(maskTex, b + ivec2(1, 0), 0).r & 3u) == 3u;
+        bool d = (texelFetch(maskTex, b + ivec2(0, 1), 0).r & 3u) == 3u;
+        bool e = (texelFetch(maskTex, b + ivec2(1, 1), 0).r & 3u) == 3u;
         // Only a complete, explicitly tagged hardware-dither pair qualifies.
         // Real checkerboard artwork and ordinary polygon edges stay untouched.
         if (a == e && c == d && a != c)
