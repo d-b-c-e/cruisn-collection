@@ -1,5 +1,10 @@
 # Release morning: what still needs a person
 
+**Latest:** v0.5.0 is published after renewed automated gates and explicit
+[maintainer authorization](releases/v0.5.0-approval.md). The human protocol below
+remains follow-up coverage; it was not silently converted to passing observations.
+Source/Stream Deck now include live Cheats and the matching emulator.
+
 Updated 2026-09-08. **v0.4.0 is published and preserved**; the source checkout has
 newer Cheats, menu and distance work. The old rc1/rc2 candidates are historical,
 and rc2 includes a rejected World force gate. Do not use either as the next

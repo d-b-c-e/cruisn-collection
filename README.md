@@ -6,11 +6,11 @@ as a renderer replacement over MAME. One fullscreen launcher, all four games,
 wheel + force feedback, true 16:9 at 4× internal resolution, optional CRT
 look. **No ROMs are included** — you supply your own.
 
-This is an actively tested alpha. **v0.4.0** includes rendering fixes, all-game
+This is an actively tested alpha. **v0.5.0** includes rendering fixes, all-game
 gear/rev telemetry and Exotica force-polarity correction. Fresh installs default
 to **CRT on**, full widescreen, 4x rendering and free play. Rendering defects beyond
 the tested routes, collision feedback and broader wheel coverage remain open work.
-See [release notes and known issues](docs/release-notes/v0.4.0.md), the
+See [release notes and known issues](docs/release-notes/v0.5.0.md), the
 [current roadmap](ROADMAP.md) and [documentation index](docs/README.md).
 
 **v0.5.0** adds a per-game **Cheats** submenu for imported MAME cheat files and

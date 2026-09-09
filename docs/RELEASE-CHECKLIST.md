@@ -1,5 +1,12 @@
 # Next public release: roadmap and acceptance checklist
 
+**Latest:** v0.5.0 is published and the Stream Deck copy is deployed. All automated
+gates were renewed, including live Cheats through the frozen launcher, and the
+uploaded ZIP was downloaded/hash-verified. See [v0.5.0 approval](releases/v0.5.0-approval.md),
+[notes](release-notes/v0.5.0.md) and [evidence](../results/proof/2026-09-08-v0.5.0-release/README.md).
+Its 41 human-coverage waivers remain accepted limitations, not new observed passes.
+The v0.4.0 discussion below documents the earlier baseline and reusable protocol.
+
 Owner: maintainer + attended testers. Updated 2026-09-08. **v0.4.0 is published**
 with maintainer sign-off and all renewed automated gates passing.
 See [release evidence](../results/proof/2026-09-08-v0.4.0-release/README.md).

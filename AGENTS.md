@@ -1,5 +1,44 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## v0.5.0 published and Stream Deck deployed (2026-09-08, late evening)
+
+v0.5.0 is PUBLISHED at96006e725d370e7222fe1fb97d751c9cd31cd122. Exact ZIP:
+`build/CruisnCollection-v0.5.0-20260908-221432.zip`, SHA256
+`20d1cf67cc7db82fa6cebf494369117e25bf5cf6eae0e8b7d717a55c830d3734`.
+Uploaded download verified byte-for-byte and tag target checked. Private visibility
+unchanged; hosted workflows disabled, overnight heartbeat still PAUSED. Prior
+no-release/no-testing/no-deployment statements below are historical and superseded.
+
+Personal root `E:/Source/mame-src/vunit.exe` NOW matches native4ac6a84b51b, SHA
+`87d04de42d10a731f1d951a1fa378d784059d862063b224764ca6294fa5fe9d8`.
+Stream Deck launches this binary with current source. Personal target deployment
+verified all26 preference/state files unchanged; previous d52/SHAe0cf8a8b is backed
+up in build/personal/previous/<sha>/vunit.exe. v0.4.0 ZIP/tag preserved. No game or
+helper remains running. User can test normally; all automated physical force was0.
+
+All5 real4K Esc/Cheats/Resume/Exit recordings replay inputs, state/actions and
+completed GL captures. Initial USA512x451 small-window text-count FAIL retained;
+diagnostic now explicitly selects/maximizes4K. No new native fix was needed.
+All7 defaults (including full Germany9269 and Exotica21GL), actualUDP/memory and
+4force policy/polarity checks PASS. All5 fresh boot/replay free-play checks PASS.
+Current local196Python/no skips,14native helpers,10081C31 vectors,24GPU/39commands
+PASS at297-file source identityf4d17d053cbc511b5644abe5f2cc707998a8ca83cae895663d2b427ce6376295.
+1726-file frozen ZIP/defaults,9pages,4default+2Worldcheat launches/18completedGL,
+real frozen EscCheats, import/setup/support PASS. Actual upgrade/rollback/re-upgrade
+matches1726/1637/1726files and preserves7synthetic user-state fixtures. Human41
+coverage waivers remain explicit under docs/releases/v0.5.0-approval.md; not new
+physical/whole-track/clean-profile/soak passes. Never describe approval as observation.
+
+Read docs/release-notes/v0.5.0.md and results/proof/2026-09-08-v0.5.0-release.
+Proof recomputes7telemetry/4force verdicts; native/GPU/menu/package/build results
+remain hash-bound receipts. Companion2026-09-08-live-cheats recomputes5timer/restore
+checks. Named finish checks validate timer writes, not every resulting game effect.
+Cheats are session-only live actions applied on Resume; replay read-only. Exotica
+Menu Force Feedback is defaultOff (existing gate), next-launch; other-game menu
+controls remain POST-RELEASE. World normalization/tuning stays deferred. Next work:
+host future-section scenery, cross-game adapters/fading, WorldNY, rank/nitro/parameter
+coverage. No automatic overnight resumption or new release work is implied.
+
 ## New release authorization (2026-09-08, after 22:00)
 
 User asked why Stream Deck still lacked live Cheats, then explicitly accepted the

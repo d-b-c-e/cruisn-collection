@@ -1,5 +1,10 @@
 # Live Cheats, menu feedback and separate local builds
 
+**Later completion:** v0.5.0 is now published, its download verified and the matching
+emulator deployed to Stream Deck. Five 4K menu/replay checks, all seven defaults and
+fresh/frozen/upgrade gates passed. See [final evidence](../../results/proof/2026-09-08-v0.5.0-release/README.md).
+The candidate/pending statements below describe the earlier checkpoint.
+
 ## Status
 
 The source launcher now exposes **Settings → Experiments → Exotica → Menu Force

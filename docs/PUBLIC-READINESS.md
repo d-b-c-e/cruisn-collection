@@ -1,7 +1,7 @@
 # Preparing public access
 
-Updated 2026-09-08. The repository is currently **private**. v0.4.0 is published
-inside that private repository; the source contains newer work. The maintainer
+Updated 2026-09-08. The repository is currently **private**. v0.5.0 is published
+inside that private repository, with v0.4.0 preserved for rollback. The maintainer
 wants public access soon. This document records preparation, not a completed
 visibility change or authorization to publish another version.
 
@@ -31,16 +31,15 @@ visibility change or authorization to publish another version.
   excludes these from a candidate ZIP but does not remove them from repository
   history. The previous blanket claim that packages contained no game assets
   was inaccurate and has been removed.
-- [ ] Select the package to offer publicly. Keeping v0.4.0 means documenting that
-  Cheats, new game distance menus and top-level Experiments are not in that ZIP.
-  Shipping current source requires a new clean candidate and renewed gates.
+- [x] Build and verify v0.5.0 with Cheats, new game distance menus and top-level
+  Experiments. Exact ZIP uploaded/downloaded and source/runtime gates renewed.
+  Making its distribution publicly accessible remains a separate decision.
 - [ ] Complete [release acceptance](RELEASE-CHECKLIST.md), including actual
   launch/drive/exit, all-game shifters, telemetry/tactile output, FFB direction,
   clean-profile installation, upgrade preservation and second-wheel coverage.
   Public testing must describe remaining unperformed checks accurately.
-- [ ] Finish visible Esc → Cheats checks and renew all seven default drives on
-  the separate live-Cheats native candidate before personal deployment/promotion.
-  Headless timer/restoration checks pass; they do not establish visible menu behavior.
+- [x] Finish five visible Esc → Cheats recordings/replays, all seven defaults and
+  the actual frozen live-menu check. Matching native deployed to Stream Deck.
 - [ ] After an explicitly requested visibility/distribution change, verify anonymous
   source/release access and download the exact asset without authentication.
   The updater currently queries `d-b-c-e/cruisn-collection`; a separate destination
