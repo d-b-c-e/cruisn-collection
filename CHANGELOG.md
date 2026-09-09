@@ -5,6 +5,7 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased
 
+- Optional Exotica Menu Force Feedback experiment; default Off preserves suppression outside driving and World remains unchanged.
 - Separate local Release/Personal targets: compile away from the Stream Deck binary, stage factory defaults for releases, and deploy personal builds explicitly with a backup.
 
 ### Added

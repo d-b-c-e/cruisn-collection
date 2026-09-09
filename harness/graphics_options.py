@@ -1,4 +1,7 @@
-"""Per-game graphics experiments shared by the shell and every launch path."""
+"""Per-game experiments shared by the shell and every launch path.
+
+The historical module/settings name also carries non-graphical experiments.
+"""
 from pathlib import Path
 import tempfile
 from types import SimpleNamespace
@@ -12,7 +15,7 @@ VUNIT_HEIGHT = {'offroadc':401}  # other V-Unit games use 400 native rows
 CHOICES = {"world_distance": (0, 2, 3), "world_lookahead": (0, 8, 12), "offroad_distance": (0, 2, 3)}
 DEFAULTS = {"world_distance": 0, "world_lookahead": 8, "offroad_distance": 0}
 OPTIONS = ("seam_alignment", "terrain_visibility", "world_distance", "world_lookahead",
-           "scenery_distance", "detail_distance", "far_distance", "wide_visibility", "offroad_distance")
+           "scenery_distance", "detail_distance", "far_distance", "wide_visibility", "offroad_distance", "menu_feedback")
 PATCHES = {
     "terrain_visibility": "crusnwld-terrain-visibility-experimental.txt",
     "detail_distance": "crusnusa-lod-experiment.txt",
@@ -25,6 +28,8 @@ def family(rom):
 
 
 def supported(rom, option):
+    if option == 'menu_feedback':
+        return rom == 'crusnexo'
     if option == 'offroad_distance':
         return rom == 'offroadc'
     if option == 'wide_visibility':
@@ -90,6 +95,8 @@ def toggle(options, game, option, rom=None, direction=1):
 def rows(game, options, rom=None):
     selected = options.get(game, {})
     descriptions = (
+        ('menu_feedback', 'MENU FORCE FEEDBACK',
+         'EXOTICA: ALLOWS WHEEL FORCES DURING MENUS AND RACE END. OFF KEEPS THEM SUPPRESSED. NEXT LAUNCH.'),
         ('wide_visibility', 'WIDESCREEN SCENERY',
          'EXOTICA TRIAL: RESTORES SOME EDGE SCENERY; DRAW DISTANCE IS UNCHANGED. NEXT LAUNCH.'),
         ("seam_alignment", "SEAM ALIGNMENT",
@@ -121,7 +128,7 @@ def rows(game, options, rom=None):
                 if not selected.get("world_distance"):
                     hint = "TAKES EFFECT WHEN WORLD DRAW DISTANCE IS 2X OR 3X. DOES NOT AFFECT THE OLDER SCENERY TRIAL."
             else:
-                value = (("ON" if selected.get(option) else "OFF") if option in ("seam_alignment", "terrain_visibility", "scenery_distance", "wide_visibility")
+                value = (("ON" if selected.get(option) else "OFF") if option in ("seam_alignment", "terrain_visibility", "scenery_distance", "wide_visibility", "menu_feedback")
                          else ("EXTENDED" if selected.get(option) else "STANDARD"))
         result.append((option, label, value, hint))
     return result
@@ -141,6 +148,10 @@ def launch_overrides(root, rig, rom, margin, scale, section, environment, *, use
     env["MIDV_SCENERY"] = environment.get("MIDV_SCENERY",
         "all" if selected["scenery_distance"] and margin >= 80 and scale > 1 else "off")
     if rom == 'crusnexo':
+        # Force gating is independent of resolution, widescreen and renderer.
+        # World passthrough is deliberately not changed by this experiment.
+        env['MIDV_FFB_GAME_GATE'] = environment.get('MIDV_FFB_GAME_GATE',
+            '0' if selected['menu_feedback'] else '1')
         env['MIDZ_VISIBILITY'] = environment.get('MIDZ_VISIBILITY',
             'margins' if selected['wide_visibility'] and margin >= 80 and scale > 1 else 'off')
     if "MIDV_PATCH" in environment:

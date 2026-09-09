@@ -149,6 +149,23 @@ class WorldDistanceMenuTests(unittest.TestCase):
 
 
 class GraphicsOptionsTests(unittest.TestCase):
+    def test_exotica_menu_feedback_is_optional_and_independent_of_display(self):
+        state=G.load({})
+        self.assertFalse(state['crusnexo']['menu_feedback'])
+        self.assertTrue(G.toggle(state,'crusnexo','menu_feedback'))
+        self.assertEqual(G.load(G.serialize(state)),state)
+        with tempfile.TemporaryDirectory() as td:
+            for margin,scale in ((0,1),(0,4),(86,1),(86,4)):
+                env=G.launch_overrides(ROOT,td,'crusnexo',margin,scale,G.serialize(state),{})
+                self.assertEqual(env['MIDV_FFB_GAME_GATE'],'0')
+            self.assertEqual(G.launch_overrides(ROOT,td,'crusnexo',86,4,{}, {})['MIDV_FFB_GAME_GATE'],'1')
+            env=G.launch_overrides(ROOT,td,'crusnexo',86,4,G.serialize(state),{'MIDV_FFB_GAME_GATE':'1','MIDV_PATCH':'custom'})
+            self.assertEqual(env['MIDV_FFB_GAME_GATE'],'1')
+            for rom in ('crusnusa','crusnwld24','crusnwld','offroadc','crusnexoa'):
+                self.assertFalse(G.toggle(state,G.family(rom),'menu_feedback',rom))
+                self.assertNotIn('menu_feedback',[r[0] for r in G.rows(G.family(rom),state,rom)])
+                self.assertNotIn('MIDV_FFB_GAME_GATE',G.launch_overrides(ROOT,td,rom,86,4,G.serialize(state),{}))
+
     def test_exotica_edge_visibility_is_optional_filtered_and_display_gated(self):
         state=G.load({});self.assertFalse(state['crusnexo']['wide_visibility'])
         self.assertTrue(G.toggle(state,'crusnexo','wide_visibility'))
@@ -160,7 +177,7 @@ class GraphicsOptionsTests(unittest.TestCase):
                     ('crusnexo',86,1,'off'),('crusnexoa',86,4,None),('crusnwld24',86,4,None)]:
                 self.assertEqual(G.launch_overrides(ROOT,td,rom,margin,scale,section,{}).get('MIDZ_VISIBILITY'),expected)
             self.assertEqual(G.launch_overrides(ROOT,td,'crusnexo',86,4,section,{'MIDZ_VISIBILITY':'off'})['MIDZ_VISIBILITY'],'off')
-        self.assertEqual([r[0] for r in G.rows('crusnexo',state)],['wide_visibility'])
+        self.assertEqual([r[0] for r in G.rows('crusnexo',state)],['menu_feedback','wide_visibility'])
 
     def test_settings_stay_per_game_and_world_revisions_share_seams(self):
         settings = G.load({})
@@ -184,7 +201,7 @@ class GraphicsOptionsTests(unittest.TestCase):
                 overrides = G.launch_overrides(ROOT, directory, rom, 0, 4, section, {})
                 self.assertNotIn("MIDV_PATCH", overrides)
         self.assertFalse(G.toggle({}, "crusnexo", "seam_alignment"))
-        self.assertEqual([r[0] for r in G.rows("crusnexo", G.load(section))], ['wide_visibility'])
+        self.assertEqual([r[0] for r in G.rows("crusnexo", G.load(section))], ['menu_feedback','wide_visibility'])
 
     def test_every_distance_combination_preserves_widescreen_and_off_removes_stale_words(self):
         widescreen = read_patch(ROOT / "patch/game/crusnusa-widescreen.txt")
@@ -355,5 +372,5 @@ class LauncherGraphicsTests(unittest.TestCase):
             self.assertIn('world_distance',world25)
             restored['graphics_rom'] = 'crusnexo'
             exotica = collection.settings_rows('graphics',restored,False,'')
-            self.assertEqual([r[0] for r in exotica], ['graphics_game','wide_visibility','back'])
+            self.assertEqual([r[0] for r in exotica], ['graphics_game','menu_feedback','wide_visibility','back'])
             self.assertTrue(restored['crackfill'])

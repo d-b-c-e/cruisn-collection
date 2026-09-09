@@ -92,6 +92,7 @@ retains its existing On default; moving the menu does not change preferences.
 | **World Draw Distance / Scenery Lookahead** | World 2.4/2.5 | Off/2×/3× with +0/+8/+12 section lookahead. Shared across the World revisions; excludes Distant Scenery. Requires full widescreen and scale 2×+. New York 3×/+12 has a reported finish crash. |
 | **Off Road Draw Distance** | Off Road | Off/2×/3× global far/projection trial. Modest measured benefit; no sampled 3× gain over 2×. Requires full widescreen and scale 2×+. |
 | **Widescreen Scenery** | Exotica | Restores some missing margin geometry. Does not extend far distance; enhanced renderer/full widescreen/scale 2×+ required. |
+| **Menu Force Feedback** | Exotica | Allows the game's wheel forces during selection screens and race end. Off by default retains driving-only suppression; applies next launch in every display mode. |
 | **Detail Distance** | USA v4.5 | Keeps higher-detail models farther away. The recorded route required about 5.25% more polygon submissions. |
 | **Draw Limit** | USA v4.5 | Raises a distant-object rejection limit. It added submissions but **no visible improvement** in the tested scene; it cannot load missing scenery. |
 
@@ -179,7 +180,10 @@ at a time. If the wheel oscillates or pulls away from centre, turn Strength to 0
 before adjusting it. Comfortable force has not been certified across every wheel.
 
 Exotica applies an effective 20% trim (80% becomes 64%) and normalizes its cabinet
-motor polarity independently of steering. World strength and menu/race-end force
+motor polarity independently of steering. Its menu/race-end forces are suppressed
+by default; **SETTINGS → EXPERIMENTS → EXOTICA → MENU FORCE FEEDBACK** turns them
+back on for the next launch. This does not change strength or steering direction.
+World strength and menu/race-end force
 remain unchanged after the rejected driving gate was rolled back. **World can
 still oscillate in menus or after finishing**; equal strength percentages do not
 yet imply equal feel across games. Collision feel and cross-game normalization
