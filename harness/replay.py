@@ -162,6 +162,11 @@ def main(argv=None):
                 expected_gl = requested_frames(first, last, args.gl_every, args.gl_max)
                 overrides.update({gl_key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',
                     SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_EVERY=str(args.gl_every),SNAP_MAX=str(args.gl_max)).items()})
+                if gl_key=='MIDV':
+                    # New candidates can finish queued captures before teardown.
+                    # Old binaries ignore this request; strict image validation
+                    # still applies equally to both.
+                    overrides['MIDV_GL_DRAIN_FRAME']=str(expected_gl[-1])
             if args.gl_log:
                 overrides[gl_key+"_GL_LOG"] = "1"
             if args.gl_scale is not None:
