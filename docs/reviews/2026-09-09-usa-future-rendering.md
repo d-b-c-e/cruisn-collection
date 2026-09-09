@@ -100,3 +100,25 @@ falls from 14.98 to 12.95 ms (repeat 13.66 ms), but throughput is still only
 consistent gain from a different leading-zero instruction or cached local float
 coordinates; those prototypes were not promoted. A cached extended reciprocal
 table shows a small repeatable saving and is the next isolated trial.
+
+## Separate reciprocal-table trial
+
+Native `cf58c40632c`, SHA `37c0a4cef63b2bc56ef8d8daaccd4b75e457621633e3c93f228570cda6d0dc93`,
+adds a bounded 40 KB host table for USA's extended reciprocal entries. Original
+guest entries remain live. Exhaustive boundary comparisons cover all supported
+planes and reject invalid ranges. World has the reusable helper available but
+its rendering call sites are unchanged.
+
+Two 3x runs and one 2x run again preserve the original route and all 16 GL images
+and ordered fingerprints compared with the uncached implementation. 3x p99/max
+is 11.94/12.55 ms (repeat 12.49/12.93 ms), approximately 97.6%/97.0% emulation
+speed; 2x is 98.7%. This is progress, **not a full-speed pass**. The remaining
+cost includes projection and submitting substantial scenery that is often
+hidden. A future visibility optimization needs its own conservative geometry
+and occlusion proof; do not drop objects merely to improve the timing numbers.
+
+Final resource preservation and seven-default gates are being renewed on this
+candidate. Off Road's separate model/projection probe is prepared locally and
+will run serially after these gates. It uses DP=1 data addresses, five-word LOD
+descriptors, float vertices and six-word polygons rather than USA's model layout.
+This mapping is not yet a qualified decoder or extended Off Road renderer.

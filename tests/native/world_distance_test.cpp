@@ -10,6 +10,9 @@ int main(int argc, char **argv)
     assert(maximum_index(80000)==4999 && maximum_index(100000)==6250 && maximum_index(160000)==10000);
     assert(valid_far(240000) && maximum_index(240000)==15000);
     assert(reciprocal(15001,240000)==0);
+    for(uint32_t far:{0U,80000U,100000U,160000U,240000U,320000U})
+        for(uint32_t i=4990;i<=15001;++i)assert(cached_reciprocal(i,far)==reciprocal(i,far));
+    assert(cached_reciprocal(UINT32_MAX,240000)==0);
     // The immediate and observed backing-RAM range both contain the 3x tail.
     assert(maximum_index(240000)<0x8000 && reciprocal_base+15000<0x20000);
     assert(reciprocal(10000,240000)==reciprocal(10000,160000));

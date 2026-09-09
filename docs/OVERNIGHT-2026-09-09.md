@@ -17,10 +17,11 @@ wakeup is now one minute. Do not stop at a milestone to wait for the next trigge
 Continue implementation and verification directly; use independent offline work
 during builds/replays or while the personal rig is occupied.
 
-Latest: [USA future sections](reviews/2026-09-09-usa-future-sections.md), source9058093,
-standalone native decoder and independent future/allocation/material checks.
-Integrate its cached source and live bindings next; do not claim future3x rendering
-from the offline descriptor milestone. Candidate4e565 and Stream Deck remain unchanged.
+Latest: [USA future rendering](reviews/2026-09-09-usa-future-rendering.md) is
+integrated in a separate native candidate with live material checks. 3x adds
+small visible changes beyond2x and repeats its original route and images.
+Performance remains below full speed after model/reciprocal caching. Final
+resource/default gates and Off Road model capture are next; Stream Deck is unchanged.
 
 v0.5.0 is the published and deployed baseline. The repository is now public.
 Preserve released tags/ZIPs, personal settings, original recordings and default

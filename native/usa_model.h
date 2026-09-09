@@ -136,7 +136,7 @@ template<class Reciprocal> bool project(const Model &model,const Transform &tran
         int32_t index=z.fix()>>4;
         if(mode==Projection::captured)index=std::max(-80,std::min(4999,index));
         else if(z.fix()<1000 || index>int32_t(usa_distance::maximum_index(far)))return false;
-        const Float r=Float::load(index<5000?reciprocal(index):usa_distance::reciprocal(uint32_t(index),far));
+        const Float r=Float::load(index<5000?reciprocal(index):usa_distance::cached_reciprocal(uint32_t(index),far));
         const Float sx=(x*r+Float::integer(256)).reload();
         const Float sy=((y*r)*Float::load(0x00052000)+Float::load(transform.origin_y)).reload();
         if(mode==Projection::host && (sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767))return false;

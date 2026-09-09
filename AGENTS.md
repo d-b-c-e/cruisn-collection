@@ -1,5 +1,39 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 USA future rendering — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-usa-future-rendering.md. Collection39750ad/dd803a0
+integrate cached USA future sections and immutable model caching. Native eee9fc5
+and439c5 add future drawing/model cache; final cf58c40632c adds a40KB reciprocal
+tail. Separate candidate build/candidates/cf58c40632c/vunit.exe has SHA37c0a4ce.
+145-patch export reconstructs tree9befa7f28da953a1f32d9a4142bf9bae431e9b10.
+Personal Stream Deck v0.5.0/SHA87d04de4 is unchanged. No deployment/release,
+hosted workflow, physical FFB, World force tuning or menu removal.
+
+USA future1x/2x/3x now renders; 2x adds13/16 GL images over1x,3x adds3/16 over2x
+(1005/68/46 pixels). All16 GL3824x2073 and6,445,085 ordered quads/750 scenes repeat.
+Nine integration/resource runs and six cache/tail runs preserve original inputs,
+camera and actual ADC times. Four live/five old snapshot oracles match all3planes;
+the4 exact-clock runtime scenes match independent projection. Original153,833,626
+bytes of hardware DMA/VRAM/texture/palette/meta match on initialeee9. Finalcf58
+resource and seven-default gates are RUNNING serially in session81417, followed
+by pending source/proof updates; inspect actual process state before more games.
+
+PERFORMANCE OPEN: initial3x95.2/95.4% speed,p99/max14.98/16.58ms. Model cache96.1/
+95.5%; tail97.6/97.0%,p99/max11.94/12.55ms. Final2x98.7%. Not full-speed acceptance.
+Queued uploads/current partial sections are guarded but not encountered live;
+material lifetime, sky, occlusion and handover remain open. Preserve failure from
+mismatched old3501..5009 versus new3501..4999 host intervals; explicit common
+interval750 scenes matches. Detailed log verifier now streams fingerprints and
+retains only selected snapshot geometry. Public raw resources stay LOCAL.
+
+Local Off Road draft results/diagnostics/offroad-model-20260909/offroad-model.lua,
+oracle.py and trials.py: DP1 data, 5-word LOD, float vertices,6-word polygons;
+NOT RUN YET. Next run serial headless control/model3001 after existing gates,
+verify projection/DMA plus original camera/ADC, then promote its own codec.
+USA performance and World2.5 roads remain alongside. Continue directly during
+active turns; ONE-minute heartbeat is recovery only, not a work cadence. No cutoff.
+
 ## September 9 USA future sections — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-usa-future-sections.md. Collection9058093 adds standalone

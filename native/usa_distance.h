@@ -8,6 +8,7 @@ using world_distance::word;
 using world_distance::valid_far;
 using world_distance::maximum_index;
 using world_distance::reciprocal;
+using world_distance::cached_reciprocal;
 constexpr uint32_t original_far=80000, reciprocal_base=0xb2b3, first_extra=5000;
 constexpr word clamps[]={{0xd0,0x04e30000},{0xd1,0x54e30000},
     {0x157,0x04f20000},{0x158,0x55720000},{0x1b1,0x04f20000},{0x1b2,0x55720000},

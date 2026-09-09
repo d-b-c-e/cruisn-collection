@@ -2,6 +2,7 @@
 // Global World 2.4/2.5 distance experiment. No model or level allowlist.
 #pragma once
 #include <cmath>
+#include <array>
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -68,5 +69,18 @@ inline uint32_t reciprocal(uint32_t index, uint32_t far)
     float value=float(std::floor(512.0/(16*index+1)*1000000+0.5)/1000000);
     uint32_t ieee; std::memcpy(&ieee,&value,sizeof(ieee));
     return ((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff);
+}
+inline uint32_t cached_reciprocal(uint32_t index,uint32_t far)
+{
+    if(!valid_far(far) || index<first_extra || index>maximum_index(far))return 0;
+    // Pure host constants, generated once. Original guest table entries are
+    // still read live by the caller; no guest RAM or CPU cycle is consumed.
+    static const auto tail=[]()
+    {
+        std::array<uint32_t,10001> values{};
+        for(uint32_t i=5000;i<=15000;++i)values[i-5000]=reciprocal(i,240000);
+        return values;
+    }();
+    return tail[index-first_extra];
 }
 } }
