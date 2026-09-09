@@ -1458,6 +1458,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         recording = Recording(record_case, every=record_every, stop_frame=record_frames, with_ffb=record_with_ffb, clock=record_clock)
 
     def start():
+        # Each retry owns its launch settings. Assigning to the enclosing `env`
+        # in a recording-only branch made every earlier read an unbound local,
+        # including ordinary launches with cheats disabled.
+        launch_env = dict(env)
         cmd = [mame, rom,
                "-rompath", ROMPATH,
                "-inipath", ini,
@@ -1471,11 +1475,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         import cheats
         cheat_bundle = cheats.prepare(POC, rig, rom)
         if cheat_bundle:
-            env['MIDV_CHEATS'] = str(cheat_bundle.resolve())
+            launch_env['MIDV_CHEATS'] = str(cheat_bundle.resolve())
             cmd += ['-cheat', '-cheatpath', str(cheat_bundle.resolve()),
                     '-autoboot_script', str((cheat_bundle/'cheats.lua').resolve()), '-autoboot_delay', '0']
         else:
-            env.pop('MIDV_CHEATS', None)
+            launch_env.pop('MIDV_CHEATS', None)
             cmd += ['-nocheat']
         if not zeus_gl:
             # under the Zeus overlay MAME's window stays SMALL: its gdi
@@ -1492,26 +1496,24 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         # vunit's console output goes to rig/launch.log: a startup exit
         # (missing ROM files, bad ini) is explained by its last lines,
         # which the launcher surfaces on screen and the support bundle ships
-        launch_env, launch_dir = env, os.path.dirname(mame)
+        launch_dir = os.path.dirname(mame)
         log_path = os.path.join(rig, "launch.log")
         if recording:
             if record_offroad_trial:
                 from types import SimpleNamespace
                 import offroad_distance
-                env=dict(env)
-                offroad_distance.configure(SimpleNamespace(offroad_distance=record_offroad_trial['multiplier']),rom,env)
+                offroad_distance.configure(SimpleNamespace(offroad_distance=record_offroad_trial['multiplier']),rom,launch_env)
             if record_exotica_trial:
                 from types import SimpleNamespace
                 import exotica_visibility
-                env=dict(env)
-                exotica_visibility.configure(SimpleNamespace(exotica_visibility=record_exotica_trial['mode']),rom,env)
+                exotica_visibility.configure(SimpleNamespace(exotica_visibility=record_exotica_trial['mode']),rom,launch_env)
             if record_world_trial or record_usa_trial:
                 import tempfile
                 from pathlib import Path
                 from types import SimpleNamespace
                 import world_distance
                 import usa_distance
-                trial_env = dict(env)
+                trial_env = dict(launch_env)
                 adapter = world_distance if record_world_trial else usa_distance
                 options = (SimpleNamespace(world_far=record_world_trial['far'], world_lead=record_world_trial['lead'],
                            world_cpu=record_world_trial['cpu']) if record_world_trial else
@@ -1520,11 +1522,11 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                 # Recording.prepare copies and hashes the combined patch before
                 # this temporary directory disappears. Saved shell settings stay intact.
                 with tempfile.TemporaryDirectory(prefix='cruisn-distance-') as temporary:
-                    trial_env['MIDV_PATCH'] = str(adapter.compose(env.get('MIDV_PATCH'),
+                    trial_env['MIDV_PATCH'] = str(adapter.compose(launch_env.get('MIDV_PATCH'),
                         Path(temporary)/'global-distance-patch.txt', trial['far']))
                     cmd, launch_env, launch_dir = recording.prepare(cmd, trial_env, rig)
             else:
-                cmd, launch_env, launch_dir = recording.prepare(cmd, env, rig)
+                cmd, launch_env, launch_dir = recording.prepare(cmd, launch_env, rig)
             log_path = os.path.join(launch_dir, "launch.log")
             print(f"Recording effective wheel/pedal/button inputs: {recording.path}")
             print("Recording uses a private copy of the rig state; physical FFB is "
@@ -1533,7 +1535,6 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
             from launch_history import archive_previous, write_receipt
             # Detailed GL logs are modest (startup and periodic summaries).
             # Keep the preceding run before the native logger truncates its file.
-            launch_env = dict(launch_env)
             launch_env.setdefault("MIDV_GL_LOG", "1")
             launch_env.setdefault("MIDZ_GL_LOG", "1")
             try:

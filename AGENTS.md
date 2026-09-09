@@ -1,5 +1,19 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## Normal launcher fix and public-doc preparation (2026-09-08, evening)
+
+Read `docs/reviews/2026-09-08-launch-environment.md`. User reproduced unbound
+`env` while launching USA with Always in 1st Place. Recording-only assignment
+inside nested start() shadowed the enclosing environment and broke normal
+launches, including cheats off. Each start now owns launch_env; no native rebuild.
+Tests reach Popen for all5 ROMs, cheats on/off, plus ordinary/explicit-trial
+recordings (30 paths); no emulator/physical force.187Python/native/24GPU pass.
+Replay tools use another path; older replay passes did not certify normal launch.
+Source launcher must be reopened after this fix. User is actively testing;
+do not start competing automated games. Public docs are being refreshed; current
+guide index is docs/README.md, readiness is docs/PUBLIC-READINESS.md. Repository
+remains private; "go public soon" is preparation, not a visibility-change command.
+
 ## Local build/check/release policy (2026-09-08)
 
 GitHub Actions minutes are exhausted. Both collection workflows are disabled
