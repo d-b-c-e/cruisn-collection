@@ -33,7 +33,7 @@ per-level allowlists and changes to guest simulation solely to draw more scenery
 
 | Game | Current evidence | Next implementation target |
 |---|---|---|
-| World 2.4 | Host pending scenery preserves full Germany inputs/camera/ADC and guest resources; 2x visibly helps, 3x adds a brief mountain gain. Summary tracing now avoids a measured logging stall; full-drive placement/initial materials are mapped. Future sections are not decoded yet. | Verify metadata overrides/static classes and future resource residency, implement PC-owned section data, then test occlusion and handover. |
+| World 2.4 | Host future sections now produce a visible 3x gain over 2x in 16/31 completed Germany images; the 3x repeat preserves all inputs/camera/ADC and 31 images. Final descriptors and partial frontiers are independently checked. Roads remain excluded. | Finish resource/occlusion/handover acceptance, decode the separate road path, then carry verified scene contracts to the other adapters. |
 | World 2.5 | Guest far/lookahead trials repeat against themselves but diverge from the original route; no extra 3x visibility established. | Verify its section/object/material layout before adapting the host path; keep its own scene oracle and full replay. |
 | USA 4.5 | Far-only gains are tiny; guest residency changes route. | Verify static section/admission and material layouts for a host adapter that leaves guest activation unchanged. |
 | Off Road 1.25 | Coherent far/clip/reciprocal extension is implemented; modest sampled gain, no extra 3x pixels, strict timing/one-quad differences remain. | Identify the remaining scenery residency or submission limit and map eligible static data to host drawing; retain the stock timing/geometry failures. |
@@ -59,12 +59,19 @@ and resource equality to obtain more admitted scenery.
 - [x] Broaden section placement/yaw/offset and initial palette/texture evidence.
   Corrected full-drive probe verifies 16,444 initial writes and 410 later writes;
   preserve the first two probes' incomplete allocator coverage.
-- [ ] Verify metadata overrides, static classes and future resource residency.
-  Reconstruct eligible future static objects in PC-owned storage with bounded
-  caches and checked ROM reads, without invoking guest object initialization.
+- [x] Verify final metadata overrides and reconstruct eligible packed future
+  objects in PC-owned storage with bounded caches and checked ROM reads. All
+  6,823 ordinary descriptors and 166 partial frontiers pass; 5,405 allocations fit
+  this codec. Custom and road-chain classes stay excluded. See the
+  [future-section milestone](reviews/2026-09-09-world-future-sections.md).
+- [ ] Complete future GPU resource-lifetime and static-class coverage across tracks.
+  Initial binding/descriptor equality alone does not establish these properties.
 - [ ] Draw the future scenery at 3x, preserving original submissions and materials.
   Verify near/side clipping, transparent shadows, roads/sky, occlusion, cache
   invalidation and exactly-once handover as the original renderer takes over.
+  **Implemented for World 2.4 packed scenery, acceptance incomplete:** 3x now
+  visibly adds terrain/buildings over 2x and repeats at full speed; distant road
+  gaps and other codecs prevent promoting it as the complete replacement.
 - [ ] Carry the shared math, scene contract and verification harness to the other
   game/revision adapters above. If one decoder is blocked, make useful progress on
   another adapter or its independent acceptance rather than retuning unrelated FFB.

@@ -4308,3 +4308,31 @@ Verifier recomputes inputs, clocks, counters, selected pixels, placement/yaw and
 all7telemetry/4force outcomes. Model and remaining GPU/resource checks are receipts.
 Personalconfig, publishedv0.4.0tag/ZIP and StreamDeckscript remain unchanged.
 No new menu/default/release/physicalFFB; Worldtuning deferred; heartbeat stayspaused.
+
+## 2026-09-09: World future-section renderer, visible 3x gain and retained tunnel defect
+
+Collection66ed6ab/d427029/43d462d implement final descriptor verification, bounded
+PC-owned future sections and mapping captures. Native de1d6333cd9 is separately
+built/pushed; 136 exported patches reconstruct ef9e2f9741e766211669ede31874a7178489769f.
+Future 3x visibly improves mountains/buildings over 2x in16/31 completed Germany
+4K images and repeats all31. All9269 inputs/154 native images, camera/ADC timing
+remain exact. Callback maximum6.608ms/~100% emulation. Dense51-image comparison
+preserves original82.6MB DMA stream,1354 frame4500 quads/order/history and all
+VRAM/texture/palette bytes, but frame4408 has a new thin green line across the
+foreground tunnel road. VISUAL ACCEPTANCE FAIL is retained. Roads and full
+occlusion/handover remain open;416 late unbound descriptors are excluded.
+
+Seven defaults/actualUDP-memory/four force checks/Exotica21GL and202Python/no skips,
+15native helpers,10081C31/137yaw,24GPU/42local commands pass at308-source identity
+b317fd06db0015eb3d2ed322a81a1858e64fe4775121b1d4d83c4b15fe6b94fb. Proof includes
+selected completed images, numerical/scalar recomputation and clearly labeled
+raw-resource/build receipts. No ROM/model/code dumps are published.
+
+Read-only next-step probes verify2308 road projections (1802 far-template calls)
+and2140 unclipped ordered DMA calls. World2.5 initial pending-only reference
+fails390 flags; independently captured mode/threshold explains390 active and2296
+pending ordinary allocations, with all2686 descriptors matching. Both failures
+and corrected scope remain in the archive. USA/OffRoad/Exotica mapping captures
+pass, but no equivalent new3x renderer is claimed. StreamDeck remainsv0.5.0;
+no deployment, menu removals, force tuning, hosted builds or release. Overnight
+queue remains ACTIVE to08:00local. See docs/reviews/2026-09-09-world-future-sections.md.

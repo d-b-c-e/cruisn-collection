@@ -1,5 +1,61 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 World future-section checkpoint — overnight still ACTIVE
+
+Read docs/reviews/2026-09-09-world-future-sections.md and the overnight work order.
+Collection 66ed6ab/d427029/43d462d are pushed. Native de1d6333cd9918305d9b1d300c357d2dca5a3abf
+is built separately and pushed; candidate SHA256
+0f947fd500385cbab10bd68a857703f2659d7dcdfc1b8334bcae52d5cdc4b0d1.
+136-patch export reconstructs tree ef9e2f9741e766211669ede31874a7178489769f.
+Personal Stream Deck remains v0.5.0 / SHA87d04de4; NO deployment or menu removal.
+
+World2.4 --world-host-source future now decodes all three upcoming section lists,
+bounded caches and partial loader frontiers, using existing C31 packed projection.
+No guest writes/allocations/activation or hardware DMA changes. Ordinary final
+descriptors 6823/5405 eligible, 166 partial frontiers, four snapshot descriptor/
+projection oracles all pass. Class A67/B1332 and flags0x861 remain excluded.
+Full Germany five runs preserve9269 inputs/154native/camera/actualADCtimes.
+Future3x adds visible mountains/buildings over future2x in16/31 completed4K images;
+3x repeats all31 and8774663 ordered host quads/3731scenes. Callback max6.608ms,
+~100% interval speed. Dense51GL preserves original82,601,136-byte hardware stream,
+1354 matched frame4500 quads/order/history and VRAM/texture/palette bytes.
+
+VISUAL ACCEPTANCE FAIL: dense frame4408 exposes a new thin green line across the
+tunnel road (3079 changed pixels). Original-resource equality does NOT certify
+foreground occlusion. Retain this failing pair; locate primitive/render-stage
+cause before deployment. Distant road/ground gaps also remain. Late frames9025..9259
+exclude416 unbound descriptors in118 scenes; earlier snapshots missed this state.
+Do not claim complete material lifetime, handover, clipping or cross-game3x.
+
+Seven defaults/actualUDP-memory/four force checks/Exotica21GL PASS on de1.
+202Python/no skips,15native,10081C31/137yaw,24GPU/42local commands PASS at308-file
+source identity b317fd06db0015eb3d2ed322a81a1858e64fe4775121b1d4d83c4b15fe6b94fb.
+Proof results/proof/2026-09-09-world-future-sections recomputes route/timing/
+fingerprints, three selected4K pairs, scalar descriptors/frontiers, World2.5
+membership and seven telemetry/four force verdicts. Full geometry/resources,
+placement, remainingGL and build checks are receipts. Raw resources remain LOCAL.
+
+NEXT concrete work (local draft probes/evidence under
+results/diagnostics/world-future-sections-20260909):
+1. Road probe road-probe.lua / road-control passes4502 prefix. Independent
+   road-codec-check.json matches2308 centers/matrices/projections,1802 far-template
+   calls and2140 unclipped ordered DMA calls;168 clipped calls excluded. Far path
+   62C comparesD4C0; metadataF000 selects template via624, unlike ROM packed models.
+   Original unpaired vertices remain at model+3; selected template owns polygons/
+   materials in checked main RAM. Preserve this oracle before adding host roads.
+2. World2.5 read-only section-control/v2 both complete6000. Initial pending-only
+   reference FAIL390 flags retained. v2 captures EBDD mode and D57E threshold;
+   pending iff(mode&4)&&(tagLow>limit), else active. All2686 ordinary descriptors
+   then match (2296pending/390active);32A/596B excluded. Camera/ADC equal. Its
+   allocator6604/6607 initial material reads, tables4121/4120, sectionD56F,
+   stageD59F/cursorD59B, trigCC2F, pending658D/scene658F need separate layout guards.
+   Local mapping/assembly drafts are NOT a promoted native World2.5 adapter.
+3. USA/OffRoad/Exotica bounded mapping snapshots replay; Exotica21GL matches.
+   Carry shared contracts to their own adapters; do not promise nominal3x parity.
+Promote reusable probes in separate source/check milestones. Continue overnight
+to08:00local; then handoff/pause heartbeat. Preserve v0.5.0/v0.4.0, settings,
+physicalFFB0 and deferred World tuning. No hosted workflows or new release.
+
 ## September 9 World host cost/material milestone (02:50 local)
 
 Read docs/reviews/2026-09-09-world-host-cost-and-sections.md. Overnight queue remains
