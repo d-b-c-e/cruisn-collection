@@ -62,6 +62,8 @@ def check(path,require_orientation=False):
         evidence.append(item)
     return dict(schema=1,passed=all(r['passed'] for r in evidence),objects=len(records),
                 sections=sorted({r['section_pointer'] for r in records}),
+                distinct_section_headings=len({r['heading'] for r in records}),
+                distinct_object_headings=len({r['actual'][20] for r in records}),
                 offset_objects=sum(bool(r['section_flags']&8) for r in records),
                 orientation_objects=sum('trig_constants' in r for r in records),
                 require_orientation=require_orientation,

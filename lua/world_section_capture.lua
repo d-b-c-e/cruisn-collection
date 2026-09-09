@@ -5,7 +5,7 @@ assert(manager.machine.system.name=='crusnwld24','World 2.4 section capture only
 local first=tonumber(os.getenv('CRUISN_SECTION_FIRST') or '5900')
 local last=tonumber(os.getenv('CRUISN_SECTION_LAST') or '6020')
 assert(first and last and first%1==0 and last%1==0 and first>=1 and last>=first
-    and last-first<=240,'invalid bounded section interval')
+    and last-first<=12000,'invalid bounded section interval')
 local frame,taps,out,current,failure,serial,collecting=0,{},nil,nil,nil,0,false
 local function words(p,n)
     assert(p>=0 and n>=0 and n<=64 and (p+n<=0x20000
