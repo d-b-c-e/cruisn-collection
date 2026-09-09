@@ -1,5 +1,15 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## New release authorization (2026-09-08, after 22:00)
+
+User asked why Stream Deck still lacked live Cheats, then explicitly accepted the
+visible testing and requested a new release. See docs/releases/v0.5.0-approval.md.
+Game/launcher were closed; visible serial tests now authorized and underway, physical
+FFB0. This supersedes the pending-testing/no-new-release statements below. Finish
+all5 menu/replay checks, seven defaults and fresh/frozen/local gates, deploy matching
+native with Personal target and publish the exact verified v0.5.0 ZIP. Preserve
+v0.4.0, preferences and private visibility. No hosted builds or overnight heartbeat.
+
 ## Live Cheats candidate and local build separation (2026-09-08, 22:00 local)
 
 Read `docs/reviews/2026-09-08-live-cheats-and-build-targets.md` and `docs/CHEATS.md`.

@@ -1,6 +1,6 @@
 # Imported cheats
 
-Available in the current source; **not included in the published v0.4.0 ZIP**.
+Included in v0.5.0 and the current source; **not included in the v0.4.0 ZIP**.
 Reopen a source launcher after updating: the September8 `env` launch regression
 is corrected in [the launch fix](reviews/2026-09-08-launch-environment.md).
 
@@ -22,11 +22,9 @@ visible when selecting an entry.
 
 ## During gameplay
 
-The new native candidate adds **Esc → Cheats** to the enhanced renderer in all
-four games. This needs the matching rebuilt emulator, not just updated Python
-files. As of September 8 evening, the candidate is built separately; visual menu
-acceptance and deployment to the Stream Deck copy are pending a free testing window.
-The published v0.4.0 ZIP and previous personal emulator have no live Cheats page.
+v0.5.0 adds **Esc → Cheats** to the enhanced renderer in all four games. This needs
+the matching emulator supplied with v0.5.0, not just updated Python files. The
+v0.4.0 emulator has no live Cheats page.
 
 Use Up/Down to select, Left/Right to change a toggle or value, and Enter to activate
 one-shot actions such as Finish Race Now. A parameter action uses the selected

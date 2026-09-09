@@ -71,7 +71,7 @@ across. Your `rig` folder and `roms` are never inside the zip.
   scale; **Experiments** selects shared/per-game trials; **Force Feedback** controls
   strength, direction, spring, feel and impact cues; **Controls** selects transmission
   and bindings; **Support** provides updates, diagnostics and support bundles.
-- Cheats and top-level Experiments describe the current source. The published
+- Cheats and top-level Experiments are included in v0.5.0 and current source. The older
   v0.4.0 ZIP has no Cheats menu and still nests Experiments under Display.
 - **Esc** backs out; from the cards row it quits.
 
@@ -150,7 +150,7 @@ setup. All-gear acceptance with both physical shifter styles remains incomplete.
 | key | action |
 |---|---|
 | **5** / **1** | coin / start (or whatever you bound) |
-| **Esc** | in-game menu: Resume, CRT on/off, Exit to launcher; the new native candidate adds [Cheats](CHEATS.md#during-gameplay) |
+| **Esc** | in-game menu: Resume, CRT on/off, Exit to launcher; v0.5.0 adds [Cheats](CHEATS.md#during-gameplay) |
 | **F9** | toggle the CRT look instantly |
 | **=** / **-** | game volume in Cruis'n USA (the other games have a VOLUME setting on their page) |
 | **F2** / **9** | operator test menu / service credit |

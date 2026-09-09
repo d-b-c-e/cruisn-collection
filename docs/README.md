@@ -26,7 +26,7 @@ assuming that a source feature is present in a downloaded package.
 | Internal gear/rev telemetry, estimated RPM | Included | Included |
 | World 2.4 guest distance trial | Optional 2×/3× and lookahead | Same optional trial |
 | Experiments placement | Nested under Display | Beside Display, Shared/game contexts |
-| Imported Cheats | Unavailable | Launcher toggles/choices; rebuilt candidate adds Esc live actions, pending visual acceptance/deployment |
+| Imported Cheats | Unavailable | Launcher toggles/choices and Esc live actions (v0.5.0) |
 | World 2.5 / Off Road distance menus | Unavailable | Optional 2×/3×; default Off |
 | Exotica margin scenery trial | Unavailable | Optional Widescreen Scenery; does not extend far distance |
 | World host-owned pending scenery | Unavailable | Bounded CLI diagnostic; not enabled by normal launch |

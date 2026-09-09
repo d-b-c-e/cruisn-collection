@@ -3,7 +3,7 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased
+## v0.5.0 — 2026-09-08
 
 - Optional Exotica Menu Force Feedback experiment; default Off preserves suppression outside driving and World remains unchanged.
 - Separate local Release/Personal targets: compile away from the Stream Deck binary, stage factory defaults for releases, and deploy personal builds explicitly with a backup.
@@ -11,10 +11,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 ### Added
 
 - Imported per-game Cheats: continuous toggles/choices, exact revision/hash binding,
-  reset to off and recorded cheat-state verification. The new native candidate adds
+  reset to off and recorded cheat-state verification. The updated emulator adds
   Esc → Cheats with staged live actions and a frame-stamped replay journal, including
-  one-shots and code restoration. Visual acceptance/deployment are pending; imported
-  effects need individual validation.
+  one-shots and code restoration. Imported effects need individual validation.
 - Optional World 2.5 and Off Road 2×/3× distance menus, plus Exotica margin scenery.
   All default Off; increased limits do not guarantee visible scenery or eliminate pop-in.
 - Bounded CLI-only World 2.4 host scenery prototype: earlier terrain/buildings/trees
