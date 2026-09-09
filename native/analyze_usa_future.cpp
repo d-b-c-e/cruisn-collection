@@ -35,8 +35,10 @@ int main(int argc,char **argv)
                 <<stats.sections<<' '<<stats.definitions<<' '<<stats.special<<' '<<stats.unbound<<' '<<stats.deferred<<' '<<stats.ready<<' '<<stats.uploads<<'\n';
             if(scene_mode)
             {
-                cruisn::usa_host::Scene scene;
-                if(!cruisn::usa_host::build(read,scene,uint32_t(std::stoul(argv[2])),&descriptors))throw std::runtime_error("USA scene rejected");
+                cruisn::usa_host::Scene scene;cruisn::usa_host::ModelCache models;
+                // Exercise both cold and warm ROM caches against the same independent oracle.
+                for(unsigned pass=0;pass<2;++pass)
+                    if(!cruisn::usa_host::build(read,scene,uint32_t(std::stoul(argv[2])),&descriptors,&models))throw std::runtime_error("USA scene rejected");
                 std::cout<<scene.pending+scene.future<<' '<<scene.unsupported<<' '<<scene.near<<' '<<scene.far<<' '<<scene.projection<<' '<<scene.decoded<<'\n';
                 for(const auto &o:scene.objects)for(const auto &q:o.quads)
                 {std::cout<<o.id<<' '<<o.model<<' '<<o.depth;for(auto word:q)std::cout<<' '<<word;std::cout<<'\n';}

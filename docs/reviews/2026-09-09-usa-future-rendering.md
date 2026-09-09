@@ -84,3 +84,19 @@ Seven-default acceptance still belongs to candidate4e565; this checkpoint does
 not renew it. Raw resources stay local in
 `results/diagnostics/usa-future-render-20260909`. No release, deployment, physical
 FFB, World force tuning or hosted workflow occurred.
+
+## Separate model-cache trial
+
+Native `439c5f1ab0a`, SHA `17dc5cc93e6317f8873f861fb211857be12924cd62a89c922ba910d59fe6198e`,
+caches immutable ROM models with bounds of 1024 entries/1,048,576 operand words.
+Track changes clear the cache; live palette bindings and projected vertices are
+excluded. The future-definition limit is now explicitly enforced at 65,536.
+
+Two new 3x runs and one 2x run preserve all inputs, camera/ADC timing, all 16 GL
+images per comparison and complete ordered scene fingerprints. 3x callback p99
+falls from 14.98 to 12.95 ms (repeat 13.66 ms), but throughput is still only
+96.1%/95.5%; 2x is 98.3%. The full-speed acceptance failure remains open.
+227 Python/19 native/32 GPU checks pass. Further local microbenchmarks found no
+consistent gain from a different leading-zero instruction or cached local float
+coordinates; those prototypes were not promoted. A cached extended reciprocal
+table shows a small repeatable saving and is the next isolated trial.

@@ -240,7 +240,9 @@ template<class Read> bool collect(Read read,Cache &cache,std::vector<usa_host::D
         ++current.sections;live_sections.insert(p);
         for(size_t ordinal=0;ordinal<section.sources.size();++ordinal)
         {
-            const auto &source=section.sources[ordinal];++current.definitions;
+            const auto &source=section.sources[ordinal];
+            if(current.definitions>=65536)return false;
+            ++current.definitions;
             if(!source.supported){++current.special;continue;}
             const uint32_t model=source.words[13];auto material=cache.palettes.find(model);
             if(material==cache.palettes.end())

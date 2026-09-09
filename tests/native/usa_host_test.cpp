@@ -25,6 +25,15 @@ int main()
     assert(build(read,scene) && scene.pending==1 && scene.decoded==1 && scene.objects.size()==1);
     const Quad expected={{0x100,0x200,246,189,266,189,266,210,246,210,0,16,4112,4096,0x20,0}};
     assert(scene.objects[0].quads.size()==1 && scene.objects[0].quads[0]==expected && memory==before);
+    ModelCache cache;size_t model_reads=0;
+    auto counted=[&](uint32_t p){if(p>=0xc00000)++model_reads;return read(p);};
+    assert(build(counted,scene,80000,nullptr,&cache) && scene.objects[0].quads[0]==expected);
+    const size_t first_reads=model_reads;assert(first_reads>1 && cache.models.size()==1);
+    model_reads=0;memory[0x10010]=0x300;
+    assert(build(counted,scene,80000,nullptr,&cache) && model_reads==1);
+    assert(scene.objects[0].quads[0][1]==0x300); // Live palette stays outside cache.
+    cache.clear();assert(cache.models.empty() && cache.words==0);
+    memory[0x10010]=0x200;
     // Extended projection is host-owned; the callback has no guest tail words.
     memory[0x10003]=f(160016);
     assert(build(read,scene,80000) && scene.objects.empty());

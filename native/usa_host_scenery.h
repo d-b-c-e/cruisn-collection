@@ -2,6 +2,7 @@
 // USA 4.5 pending scenery. Caller supplies direct RAM and checked ROM reads.
 #pragma once
 #include "usa_model.h"
+#include <map>
 #include <set>
 
 namespace cruisn { namespace usa_host {
@@ -24,6 +25,24 @@ struct Descriptor
     uint32_t id=0;
     std::array<uint32_t,32> words{};
 };
+// USA model operands reside in immutable ROM. Palette bindings and projected
+// vertices are deliberately excluded from this bounded host-only cache.
+struct ModelCache
+{
+    std::map<uint32_t,usa_model::Model> models;
+    size_t words=0;
+    void clear(){models.clear();words=0;}
+    template<class Read> const usa_model::Model *get(Read read,uint32_t address)
+    {
+        auto found=models.find(address);
+        if(found!=models.end())return &found->second;
+        usa_model::Model model;if(!usa_model::load(read,address,model))return nullptr;
+        const size_t size=2+2*model.vertices.size()+5*model.polygons.size();
+        if(models.size()>=1024 || words+size>1048576)clear();
+        words+=size;
+        return &models.emplace(address,std::move(model)).first->second;
+    }
+};
 inline bool ram_span(uint32_t p,uint32_t n)
 {return n<=8192 && uint64_t(p)+n<=0x20000;}
 inline bool fast_span(uint32_t p,uint32_t n)
@@ -41,7 +60,7 @@ inline bool code_matches(const uint32_t *ram,size_t words)
     return true;
 }
 template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
-    const std::vector<Descriptor> *future=nullptr)
+    const std::vector<Descriptor> *future=nullptr,ModelCache *cache=nullptr)
 {
     result=Scene{};
     if(far!=80000 && far!=160000 && far!=240000)return false;
@@ -97,8 +116,12 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
         usa_model::Transform transform;
         if(!usa_model::prepare(object,camera,matrix,billboard,compact_billboard,
             compact,compact?read(0x54):Float::integer(200).store(),transform))return false;
-        usa_model::Model model;
-        if(!usa_model::load(read,address,model))return false;
+        usa_model::Model loaded;
+        const usa_model::Model *selected=nullptr;
+        if(cache)selected=cache->get(read,address);
+        else if(usa_model::load(read,address,loaded))selected=&loaded;
+        if(!selected)return false;
+        const auto &model=*selected;
         std::vector<usa_model::Vertex> projected;
         if(!usa_model::project(model,transform,[&](int32_t index)
             {return read(uint32_t(int64_t(usa_distance::reciprocal_base)+index));},projected,
