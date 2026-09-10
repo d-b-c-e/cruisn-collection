@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "reason": "Requested original-context frame7187 is outside original model capture frame range; keep original failure. New source-only check does not establish the missing original-context match.",
+  "requested_frame": 7187,
+  "original_model_frames": {
+    "7199": 194,
+    "7200": 29
+  }
+}

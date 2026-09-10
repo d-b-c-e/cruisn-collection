@@ -54,4 +54,27 @@ for label in labels:
     print(f'{label}: 2457 queued scenes; observed interval {speed:.2f}% with diagnostics')
 assert images==123
 assert all(all(a[k]==b[k] for k in fields) for a,b in zip(queues['5072-on3'],queues['5072-repeat3']))
+for name in ('private-nogl-bounds3','private-nogl-material3','private-material-full3'):
+    assert read(name+'/run.json')['passed']
+    motion=read(name+'/motion.json');assert motion['passed'] and motion['adc_times_equal']
+    full=name=='private-material-full3'
+    assert motion['camera_samples']==[7060,7060] if full else motion['camera_samples']==[4191,4191]
+    assert motion['actual_adc_reads']==[21180,21180] if full else motion['actual_adc_reads']==[12573,12573]
+    if name!='private-nogl-bounds3':
+        a,b=rows(name+'/materials.csv'),rows(name+'/materials-gpu.csv')
+        assert len(a)==len(b)==(5290 if full else 2457)
+        assert all(all(x[k]==y[k] for k in fields) for x,y in zip(a,b))
+        assert read(name+'/materials.json')['passed']
+    if not full:
+        clock={int(r['frame']):r for r in rows(name+'/clock.csv')};a,b=clock[3501],clock[5990]
+        speed=100*(float(b['emulated_seconds'])-float(a['emulated_seconds']))/(float(b['host_seconds'])-float(a['host_seconds']))
+        print(f'{name}: {speed:.2f}% with regular raw snapshots but no GL snapshots')
+for name in ('6330-oracle','7187-source-oracle','8760-oracle'):
+    assert read('private-material-full3/'+name+'.json')['passed']
+failure=read('private-material-full3/7187-context-coverage-failure.json')
+assert not read('private-material-full3/7187-oracle.json')['passed'] and not failure['passed']
+assert failure['requested_frame']==7187 and sorted(failure['original_model_frames'])==['7199','7200']
+assert read('private-material-full3/gl.json')['passed'] and read('private-material-full3/gl.json')['frames']==117
+assert read('private-material-full3/resources.json')['passed']
 print(f'PASS {len(manifest["files"])} evidence hashes, 17199 queue updates and receipts for 123 matching4K captures. No raw-pixel or geometry recomputation.')
+print('Extended coverage:5290 full-drive material updates,117 more matching4K images; original-context7187 coverage failure retained.')

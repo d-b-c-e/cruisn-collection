@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "scenes": 5290,
+  "snapshots": [
+    {
+      "frame": 6330,
+      "scene": 4901,
+      "generation": 2790,
+      "pages": 3,
+      "palettes": 5,
+      "root": "c261f61ac0e1bc76",
+      "wave_sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+      "palette_sha256": "d1a9610a32a26868035420fa4c15e6a4aafc094d1b85071404c24fa0c9ad9b3f",
+      "packet_sha256": "47e45f3c871056e6842fd234708e3b52cc592d584dd0ad12f8dcd7a2c7d1b05b"
+    },
+    {
+      "frame": 7187,
+      "scene": 5748,
+      "generation": 3637,
+      "pages": 3,
+      "palettes": 28,
+      "root": "209ce18a570c8996",
+      "wave_sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+      "palette_sha256": "6a0671cf9b3124d1607c1eeb2340d863dbdd0f1ef9a5e54c3f21abd5bc4be8ae",
+      "packet_sha256": "9ba4a4faff9a2f8b31092b56de31390d09d7b351433e5adce583909a97d4f7ff"
+    },
+    {
+      "frame": 8760,
+      "scene": 7311,
+      "generation": 5200,
+      "pages": 0,
+      "palettes": 0,
+      "root": "755fed384b27d94c",
+      "wave_sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+      "palette_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "packet_sha256": "0f5a8e1831979ab57059fab8fb8c56702020779a19ee980a940a80ded106e4f4"
+    }
+  ],
+  "scope": "Private material upload/ownership; no added drawing or general lifetime/handover acceptance."
+}

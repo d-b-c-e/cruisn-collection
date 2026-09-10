@@ -1,0 +1,6 @@
+{
+  "error": "live scene context differs from original model journal",
+  "passed": false,
+  "schema": 1,
+  "scope": "Independently reconstruct a bounded native Exotica scene-observer snapshot.\n\nChecks live generated instance/quad bytes against Python, snapshot operands and\nthe original device context journal when requested. It does not certify live\nmaterial ownership or submit/render future geometry. Raw resources stay local.\n"
+}

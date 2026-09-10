@@ -1,0 +1,822 @@
+{
+  "scope": "Measured observer/diagnostic runs. No-GL still records regular raw snapshots every60 frames. Frame delays alone do not establish their cause.",
+  "runs": {
+    "bounds-live5072-on3": {
+      "intervals": {
+        "3501:5000": {
+          "emulated_seconds": 26.236204401898,
+          "host_seconds": 28.830586700000005,
+          "speed_percent": 91.00128511050382
+        },
+        "5100:5990": {
+          "emulated_seconds": 15.577199411401011,
+          "host_seconds": 18.330158300000008,
+          "speed_percent": 84.98125960756708
+        },
+        "3501:5990": {
+          "emulated_seconds": 43.56365093817501,
+          "host_seconds": 50.045926400000006,
+          "speed_percent": 87.04734645130877
+        }
+      },
+      "scene_ms": {
+        "source_us": {
+          "n": 2455,
+          "mean": 1.0027259877800407,
+          "p99": 1.2385,
+          "maximum": 1.657
+        },
+        "assembly_us": {
+          "n": 2455,
+          "mean": 2.0792470875763747,
+          "p99": 3.5993000000000004,
+          "maximum": 4.1734
+        },
+        "hash_us": {
+          "n": 2455,
+          "mean": 0.4435658655804481,
+          "p99": 1.7609000000000001,
+          "maximum": 1.9763
+        },
+        "total_without_snapshot_ms": {
+          "n": 2455,
+          "mean": 3.5255389409368636,
+          "p99": 6.1303,
+          "maximum": 6.9239
+        }
+      },
+      "frame_step_ms": {
+        "n": 2490,
+        "mean": 20.105807871485947,
+        "p99": 24.199899999999275,
+        "maximum": 762.5862999999953
+      },
+      "longest_steps": [
+        {
+          "frame": 5074,
+          "ms": 762.5862999999953,
+          "raw_distance": 26
+        },
+        {
+          "frame": 5073,
+          "ms": 154.73579999999743,
+          "raw_distance": 27
+        },
+        {
+          "frame": 5101,
+          "ms": 61.0242999999997,
+          "raw_distance": 1
+        },
+        {
+          "frame": 5084,
+          "ms": 28.906299999988505,
+          "raw_distance": 16
+        },
+        {
+          "frame": 5082,
+          "ms": 27.7305000000041,
+          "raw_distance": 18
+        },
+        {
+          "frame": 4147,
+          "ms": 27.098600000002193,
+          "raw_distance": 7
+        },
+        {
+          "frame": 5075,
+          "ms": 26.806300000004057,
+          "raw_distance": 25
+        },
+        {
+          "frame": 5070,
+          "ms": 26.14750000000754,
+          "raw_distance": 30
+        },
+        {
+          "frame": 3503,
+          "ms": 25.603600000003723,
+          "raw_distance": 23
+        },
+        {
+          "frame": 5985,
+          "ms": 25.39259999998933,
+          "raw_distance": 15
+        },
+        {
+          "frame": 5067,
+          "ms": 25.282300000000646,
+          "raw_distance": 27
+        },
+        {
+          "frame": 4269,
+          "ms": 25.134500000007165,
+          "raw_distance": 9
+        }
+      ]
+    },
+    "private-material5072-on3": {
+      "intervals": {
+        "3501:5000": {
+          "emulated_seconds": 26.236204401898,
+          "host_seconds": 31.127540100000004,
+          "speed_percent": 84.28614762879381
+        },
+        "5100:5990": {
+          "emulated_seconds": 15.577199411401011,
+          "host_seconds": 19.5506503,
+          "speed_percent": 79.67611906700111
+        },
+        "3501:5990": {
+          "emulated_seconds": 43.56365093817501,
+          "host_seconds": 53.347746599999994,
+          "speed_percent": 81.65977705640337
+        }
+      },
+      "scene_ms": {
+        "source_us": {
+          "n": 2455,
+          "mean": 0.9994712423625255,
+          "p99": 1.2295,
+          "maximum": 1.8511
+        },
+        "assembly_us": {
+          "n": 2455,
+          "mean": 2.0859832179226068,
+          "p99": 3.7111,
+          "maximum": 3.9453
+        },
+        "hash_us": {
+          "n": 2455,
+          "mean": 0.44335042769857436,
+          "p99": 1.7463,
+          "maximum": 2.0943
+        },
+        "materials_us": {
+          "n": 2455,
+          "mean": 1.4506549083503055,
+          "p99": 2.173,
+          "maximum": 2.9835
+        },
+        "total_without_snapshot_ms": {
+          "n": 2455,
+          "mean": 4.979459796334012,
+          "p99": 7.888199999999999,
+          "maximum": 8.7155
+        }
+      },
+      "frame_step_ms": {
+        "n": 2490,
+        "mean": 21.431807911646583,
+        "p99": 25.854600000002392,
+        "maximum": 398.9374000000083
+      },
+      "longest_steps": [
+        {
+          "frame": 5074,
+          "ms": 398.9374000000083,
+          "raw_distance": 26
+        },
+        {
+          "frame": 5097,
+          "ms": 99.07490000000507,
+          "raw_distance": 3
+        },
+        {
+          "frame": 3741,
+          "ms": 90.45790000000409,
+          "raw_distance": 21
+        },
+        {
+          "frame": 5072,
+          "ms": 87.40900000000806,
+          "raw_distance": 28
+        },
+        {
+          "frame": 3503,
+          "ms": 76.38490000000075,
+          "raw_distance": 23
+        },
+        {
+          "frame": 4741,
+          "ms": 57.47380000001101,
+          "raw_distance": 1
+        },
+        {
+          "frame": 5149,
+          "ms": 37.51800000000571,
+          "raw_distance": 11
+        },
+        {
+          "frame": 5101,
+          "ms": 36.555200000009336,
+          "raw_distance": 1
+        },
+        {
+          "frame": 5498,
+          "ms": 28.56740000000002,
+          "raw_distance": 22
+        },
+        {
+          "frame": 5073,
+          "ms": 27.829099999991058,
+          "raw_distance": 27
+        },
+        {
+          "frame": 5920,
+          "ms": 27.722800000006487,
+          "raw_distance": 20
+        },
+        {
+          "frame": 5985,
+          "ms": 27.27339999999856,
+          "raw_distance": 15
+        }
+      ],
+      "gpu_ms": {
+        "decode_us": {
+          "n": 2429,
+          "mean": 0.036990160559901196,
+          "p99": 0.07479999999999999,
+          "maximum": 0.29
+        },
+        "upload_us": {
+          "n": 2429,
+          "mean": 0.20804606834088102,
+          "p99": 0.339,
+          "maximum": 88.35730000000001
+        }
+      },
+      "longest_gpu_uploads": [
+        {
+          "frame": 5064,
+          "upload_ms": 88.35730000000001,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5072,
+          "upload_ms": 9.736600000000001,
+          "snapshot_ms": 23.3818
+        },
+        {
+          "frame": 3501,
+          "upload_ms": 2.3504,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5065,
+          "upload_ms": 1.7502,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5079,
+          "upload_ms": 0.8904,
+          "snapshot_ms": 0.0004
+        },
+        {
+          "frame": 5076,
+          "upload_ms": 0.8792000000000001,
+          "snapshot_ms": 0.0005
+        },
+        {
+          "frame": 5077,
+          "upload_ms": 0.7443,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5078,
+          "upload_ms": 0.7297,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5071,
+          "upload_ms": 0.6828,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5080,
+          "upload_ms": 0.6601,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5075,
+          "upload_ms": 0.6547000000000001,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5066,
+          "upload_ms": 0.6331,
+          "snapshot_ms": 0.0001
+        }
+      ]
+    },
+    "private-material5072-repeat3": {
+      "intervals": {
+        "3501:5000": {
+          "emulated_seconds": 26.236204401898,
+          "host_seconds": 30.991900900000005,
+          "speed_percent": 84.65503450902553
+        },
+        "5100:5990": {
+          "emulated_seconds": 15.577199411401011,
+          "host_seconds": 19.518331500000002,
+          "speed_percent": 79.80804820023171
+        },
+        "3501:5990": {
+          "emulated_seconds": 43.56365093817501,
+          "host_seconds": 53.447993999999994,
+          "speed_percent": 81.5066154553434
+        }
+      },
+      "scene_ms": {
+        "source_us": {
+          "n": 2455,
+          "mean": 1.004548798370672,
+          "p99": 1.2414,
+          "maximum": 1.4301
+        },
+        "assembly_us": {
+          "n": 2455,
+          "mean": 2.08782350305499,
+          "p99": 3.7455,
+          "maximum": 4.0266
+        },
+        "hash_us": {
+          "n": 2455,
+          "mean": 0.44285723014256617,
+          "p99": 1.7549000000000001,
+          "maximum": 1.888
+        },
+        "materials_us": {
+          "n": 2455,
+          "mean": 1.4437000814663952,
+          "p99": 2.0981,
+          "maximum": 3.4379
+        },
+        "total_without_snapshot_ms": {
+          "n": 2455,
+          "mean": 4.978929613034623,
+          "p99": 7.9464,
+          "maximum": 8.6155
+        }
+      },
+      "frame_step_ms": {
+        "n": 2490,
+        "mean": 21.471987349397587,
+        "p99": 25.4265000000089,
+        "maximum": 802.883599999987
+      },
+      "longest_steps": [
+        {
+          "frame": 5074,
+          "ms": 802.883599999987,
+          "raw_distance": 26
+        },
+        {
+          "frame": 3503,
+          "ms": 75.45749999999884,
+          "raw_distance": 23
+        },
+        {
+          "frame": 5101,
+          "ms": 44.06150000001219,
+          "raw_distance": 1
+        },
+        {
+          "frame": 5070,
+          "ms": 29.505000000000337,
+          "raw_distance": 30
+        },
+        {
+          "frame": 5076,
+          "ms": 28.947199999990403,
+          "raw_distance": 24
+        },
+        {
+          "frame": 5083,
+          "ms": 28.59990000000323,
+          "raw_distance": 17
+        },
+        {
+          "frame": 5920,
+          "ms": 28.15569999999923,
+          "raw_distance": 20
+        },
+        {
+          "frame": 5075,
+          "ms": 27.966600000013386,
+          "raw_distance": 25
+        },
+        {
+          "frame": 5073,
+          "ms": 27.130800000009003,
+          "raw_distance": 27
+        },
+        {
+          "frame": 5985,
+          "ms": 26.781999999997197,
+          "raw_distance": 15
+        },
+        {
+          "frame": 3514,
+          "ms": 26.534300000001565,
+          "raw_distance": 26
+        },
+        {
+          "frame": 5755,
+          "ms": 26.518899999999235,
+          "raw_distance": 5
+        }
+      ],
+      "gpu_ms": {
+        "decode_us": {
+          "n": 2433,
+          "mean": 0.036942827784628034,
+          "p99": 0.0705,
+          "maximum": 0.2652
+        },
+        "upload_us": {
+          "n": 2433,
+          "mean": 0.22641574188244964,
+          "p99": 0.3618,
+          "maximum": 122.3608
+        }
+      },
+      "longest_gpu_uploads": [
+        {
+          "frame": 5064,
+          "upload_ms": 122.3608,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5072,
+          "upload_ms": 7.846100000000001,
+          "snapshot_ms": 21.7045
+        },
+        {
+          "frame": 5082,
+          "upload_ms": 4.7543999999999995,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5081,
+          "upload_ms": 2.7331,
+          "snapshot_ms": 0.0003
+        },
+        {
+          "frame": 5083,
+          "upload_ms": 2.6832,
+          "snapshot_ms": 0.0013
+        },
+        {
+          "frame": 3501,
+          "upload_ms": 2.2254,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5077,
+          "upload_ms": 1.9614,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5074,
+          "upload_ms": 1.2055,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5080,
+          "upload_ms": 1.1493,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5079,
+          "upload_ms": 0.9459,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5065,
+          "upload_ms": 0.9076000000000001,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5078,
+          "upload_ms": 0.8308,
+          "snapshot_ms": 0.0002
+        }
+      ]
+    },
+    "private-nogl-bounds3": {
+      "intervals": {
+        "3501:5000": {
+          "emulated_seconds": 26.236204401898,
+          "host_seconds": 28.896937699999995,
+          "speed_percent": 90.79233472513596
+        },
+        "5100:5990": {
+          "emulated_seconds": 15.577199411401011,
+          "host_seconds": 18.316411799999997,
+          "speed_percent": 85.04503819575083
+        },
+        "3501:5990": {
+          "emulated_seconds": 43.56365093817501,
+          "host_seconds": 49.15452239999999,
+          "speed_percent": 88.62592659058166
+        }
+      },
+      "scene_ms": {
+        "source_us": {
+          "n": 2456,
+          "mean": 0.9940799267100977,
+          "p99": 1.223,
+          "maximum": 1.6465999999999998
+        },
+        "assembly_us": {
+          "n": 2456,
+          "mean": 2.0799899022801305,
+          "p99": 3.7161999999999997,
+          "maximum": 4.763199999999999
+        },
+        "hash_us": {
+          "n": 2456,
+          "mean": 0.44275907980456025,
+          "p99": 1.7462,
+          "maximum": 1.9714
+        },
+        "materials_us": {
+          "n": 2456,
+          "mean": 0.00030370521172638434,
+          "p99": 0.0009,
+          "maximum": 0.013900000000000001
+        },
+        "total_without_snapshot_ms": {
+          "n": 2456,
+          "mean": 3.5171326140065147,
+          "p99": 6.4401,
+          "maximum": 7.5622
+        }
+      },
+      "frame_step_ms": {
+        "n": 2490,
+        "mean": 19.74784204819277,
+        "p99": 23.4143000000131,
+        "maximum": 26.88580000000229
+      },
+      "longest_steps": [
+        {
+          "frame": 5985,
+          "ms": 26.88580000000229,
+          "raw_distance": 15
+        },
+        {
+          "frame": 3503,
+          "ms": 26.131099999993523,
+          "raw_distance": 23
+        },
+        {
+          "frame": 5920,
+          "ms": 25.38440000000719,
+          "raw_distance": 20
+        },
+        {
+          "frame": 4269,
+          "ms": 24.89169999999774,
+          "raw_distance": 9
+        },
+        {
+          "frame": 3514,
+          "ms": 24.858399999999392,
+          "raw_distance": 26
+        },
+        {
+          "frame": 5627,
+          "ms": 24.85809999998878,
+          "raw_distance": 13
+        },
+        {
+          "frame": 5916,
+          "ms": 24.843199999992294,
+          "raw_distance": 24
+        },
+        {
+          "frame": 5821,
+          "ms": 24.638899999999353,
+          "raw_distance": 1
+        },
+        {
+          "frame": 5199,
+          "ms": 24.62500000000034,
+          "raw_distance": 21
+        },
+        {
+          "frame": 5980,
+          "ms": 24.1675999999984,
+          "raw_distance": 20
+        },
+        {
+          "frame": 5755,
+          "ms": 24.130700000000616,
+          "raw_distance": 5
+        },
+        {
+          "frame": 5776,
+          "ms": 24.128200000006927,
+          "raw_distance": 16
+        }
+      ]
+    },
+    "private-nogl-material3": {
+      "intervals": {
+        "3501:5000": {
+          "emulated_seconds": 26.236204401898,
+          "host_seconds": 31.113385299999997,
+          "speed_percent": 84.32449297601184
+        },
+        "5100:5990": {
+          "emulated_seconds": 15.577199411401011,
+          "host_seconds": 19.5857795,
+          "speed_percent": 79.5332113863582
+        },
+        "3501:5990": {
+          "emulated_seconds": 43.56365093817501,
+          "host_seconds": 52.778351199999996,
+          "speed_percent": 82.54075761687494
+        }
+      },
+      "scene_ms": {
+        "source_us": {
+          "n": 2456,
+          "mean": 1.0058962947882737,
+          "p99": 1.2438,
+          "maximum": 1.588
+        },
+        "assembly_us": {
+          "n": 2456,
+          "mean": 2.0767633143322475,
+          "p99": 3.7249,
+          "maximum": 4.258100000000001
+        },
+        "hash_us": {
+          "n": 2456,
+          "mean": 0.4440692996742671,
+          "p99": 1.7563,
+          "maximum": 1.8434000000000001
+        },
+        "materials_us": {
+          "n": 2456,
+          "mean": 1.4385390472312705,
+          "p99": 2.0930999999999997,
+          "maximum": 2.8476999999999997
+        },
+        "total_without_snapshot_ms": {
+          "n": 2456,
+          "mean": 4.965267956026059,
+          "p99": 7.8761,
+          "maximum": 8.9487
+        }
+      },
+      "frame_step_ms": {
+        "n": 2490,
+        "mean": 21.203964939759036,
+        "p99": 25.2016000000026,
+        "maximum": 84.30339999999603
+      },
+      "longest_steps": [
+        {
+          "frame": 3723,
+          "ms": 84.30339999999603,
+          "raw_distance": 3
+        },
+        {
+          "frame": 3503,
+          "ms": 76.97290000000123,
+          "raw_distance": 23
+        },
+        {
+          "frame": 4040,
+          "ms": 53.36830000000248,
+          "raw_distance": 20
+        },
+        {
+          "frame": 4501,
+          "ms": 32.5388999999916,
+          "raw_distance": 1
+        },
+        {
+          "frame": 5985,
+          "ms": 27.79150000000641,
+          "raw_distance": 15
+        },
+        {
+          "frame": 5727,
+          "ms": 27.504600000000323,
+          "raw_distance": 27
+        },
+        {
+          "frame": 3544,
+          "ms": 27.43939999999867,
+          "raw_distance": 4
+        },
+        {
+          "frame": 5971,
+          "ms": 26.928799999993203,
+          "raw_distance": 29
+        },
+        {
+          "frame": 4244,
+          "ms": 26.439999999993802,
+          "raw_distance": 16
+        },
+        {
+          "frame": 5920,
+          "ms": 26.37919999999383,
+          "raw_distance": 20
+        },
+        {
+          "frame": 3514,
+          "ms": 26.303800000000876,
+          "raw_distance": 26
+        },
+        {
+          "frame": 5627,
+          "ms": 26.297400000004245,
+          "raw_distance": 13
+        }
+      ],
+      "gpu_ms": {
+        "decode_us": {
+          "n": 2429,
+          "mean": 0.0362053931659119,
+          "p99": 0.0673,
+          "maximum": 0.1425
+        },
+        "upload_us": {
+          "n": 2429,
+          "mean": 0.16911988472622477,
+          "p99": 0.2857,
+          "maximum": 0.5203
+        }
+      },
+      "longest_gpu_uploads": [
+        {
+          "frame": 3501,
+          "upload_ms": 2.2374,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5005,
+          "upload_ms": 0.6032000000000001,
+          "snapshot_ms": 0.0012
+        },
+        {
+          "frame": 5190,
+          "upload_ms": 0.5203,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5010,
+          "upload_ms": 0.48969999999999997,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 5465,
+          "upload_ms": 0.4415,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 5989,
+          "upload_ms": 0.37960000000000005,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 4023,
+          "upload_ms": 0.3659,
+          "snapshot_ms": 0.0001
+        },
+        {
+          "frame": 4169,
+          "upload_ms": 0.3639,
+          "snapshot_ms": 0.0004
+        },
+        {
+          "frame": 5659,
+          "upload_ms": 0.35719999999999996,
+          "snapshot_ms": 0.0002
+        },
+        {
+          "frame": 3629,
+          "upload_ms": 0.3561,
+          "snapshot_ms": 0.0004
+        },
+        {
+          "frame": 4560,
+          "upload_ms": 0.3409,
+          "snapshot_ms": 0.0003
+        },
+        {
+          "frame": 3972,
+          "upload_ms": 0.3322,
+          "snapshot_ms": 0.0007
+        }
+      ]
+    }
+  }
+}

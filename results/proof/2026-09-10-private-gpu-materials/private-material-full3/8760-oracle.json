@@ -1,0 +1,41 @@
+{
+  "completed_fade": false,
+  "counts": {
+    "culled_bounds": 0,
+    "instances": 0,
+    "quads": 0,
+    "viewport_quads": 0
+  },
+  "frame": 8760,
+  "frustum_bounds": true,
+  "game_scene_boundary": {
+    "camera_matches": true,
+    "cpu_frame": 8760,
+    "first_supported_model": true,
+    "game_scene": 7311,
+    "initial_special_models": 0,
+    "passed": true,
+    "scene_frame": 8760,
+    "supported_models": 11
+  },
+  "immutable_inputs": true,
+  "inputs": {
+    "exotica-host-8760-context.bin": "687c3bef19a6b02f793be7d102f0a70ebf875e242f1aceaeb86f9b04100e2ff5",
+    "exotica-host-8760-instances.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exotica-host-8760-quads.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "exotica-host-8760-ram.bin": "129766e5571ff0cf6a1fe405a8d14bbf698e4273b127e64244eaba6b9109ef34",
+    "exotica-host-8760-wave.bin": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+    "exotica-host-banked-rom.bin": "c52563cc72334e44dc6fd941161018061b481510113db5e23d6c7c58272ccfb9",
+    "exotica-host-main-rom.bin": "0ceae1c09e36daab4bd4084a3a0f9c0f8f94ae2bdd18f668f5f7be233fe0f1ba",
+    "exotica-host-scenes.csv": "999fe2a6405c10706b54b955effaa61c58aae316ff2c0201f190b32429e0aa53",
+    "exotica-scene-events.json": "5c022c21cb5a6c68db3a169ad006509b5def4b4d0e53c9a5fbb19d2124000ed5",
+    "exotica-scene-events.jsonl": "0dc870907cb8c5c50e26d69489bf51d2c0555f681cede7f69b8cf75b645e94ec"
+  },
+  "multiplier": 3,
+  "ordered_hash": "cbf29ce484222325",
+  "original_context": null,
+  "passed": true,
+  "schema": 1,
+  "scope": "Independently reconstruct a bounded native Exotica scene-observer snapshot.\n\nChecks live generated instance/quad bytes against Python, snapshot operands and\nthe original device context journal when requested. It does not certify live\nmaterial ownership or submit/render future geometry. Raw resources stay local.\n",
+  "sources": 4286
+}

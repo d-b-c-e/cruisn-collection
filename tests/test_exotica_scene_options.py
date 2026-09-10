@@ -42,6 +42,34 @@ class ExoticaSceneOptions(unittest.TestCase):
         p = argparse.ArgumentParser();add_arguments(p);p.add_argument('--candidate')
         return p.parse_args(items)
 
+    def test_written_page_mode_requires_materials_and_roundtrips(self):
+        args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
+                '--exotica-host-first', '5000', '--exotica-host-last', '5002')
+        settings = {}
+        self.assertEqual(configure(self.args(*args), 'crusnexo', settings)['material_pages'], 0)
+        self.assertNotIn('MIDZ_HOST_MATERIAL_PAGES', settings)
+        with self.assertRaisesRegex(ValueError, 'private material observation'):
+            configure(self.args(*args, '--exotica-host-material-pages', 'written'), 'crusnexo', {})
+        for mode, number in [('scan', 0), ('written', 1), ('verify', 2)]:
+            trial = configure(self.args(*args, '--exotica-host-materials', 'observe',
+                                       '--exotica-host-material-pages', mode), 'crusnexo', settings)
+            self.assertEqual(trial['material_pages'], number)
+            saved = dict(settings)
+            self.assertEqual(configure(self.args(), 'crusnexo', settings)['material_pages'], number)
+            self.assertEqual(saved, settings)
+        configure(self.args('--candidate', 'candidate.exe', '--exotica-host-scene', 'off'), 'crusnexo', settings)
+        self.assertEqual(settings, {'MIDZ_HOST_SCENE': '0'})
+        with self.assertRaisesRegex(ValueError, 'explicit mode'):
+            configure(self.args('--exotica-host-material-pages', 'verify'), 'crusnexo', {})
+
+    def test_written_page_comparison_requires_all_scenes(self):
+        text = ('MIDZ_HOST_SCENE=1 first=5000 last=5002 multiplier=3 snapshots=0\n'
+                'MIDZ_HOST_MATERIAL_PAGES=2\n'
+                'MIDZ_HOST_SCENE_RESULT complete=1 prepared=1 matched=1 quads=5 snapshots=0 pending=0 remaining=0\n'
+                'MIDZ_HOST_MATERIAL_PAGES_RESULT mode=2 verified=0\n')
+        with self.assertRaisesRegex(ValueError, 'page comparison'):
+            verify_receipt(dict(self.trial(), material_pages=2), text, 'unused')
+
     def trial(self, captured=None):
         return dict(mode='observe', first=5000, last=5002, multiplier=3, snapshots=captured or [])
 

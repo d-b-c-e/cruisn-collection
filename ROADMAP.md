@@ -18,7 +18,12 @@ the new Amazon5978 composition shows only modest extra3x pixels through the fore
 [Standalone private page images](docs/reviews/2026-09-10-private-page-images.md)
 reconstruct five queued16MB texture snapshots exactly, with independent validation
 and corrupt-packet rejection. Their initial upload/validation cost still needs
-handling. Next: private GPU materials, safe host depth/insertion and source handover.
+handling. [Private GPU materials](docs/reviews/2026-09-10-private-gpu-materials.md)
+now pass seven short trials and the full Amazon drive, preserving240 sampled4K
+images; all seven defaults pass on99442. This still adds no live scenery.
+[Written-page updates](docs/reviews/2026-09-10-written-material-pages.md) are built
+separately to reduce the measured material scan cost; live verification is next.
+Then: initialization cost, safe host depth/insertion, source eligibility and handover.
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.

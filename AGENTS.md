@@ -1,5 +1,28 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 written material pages — ACTIVE acceptance
+
+Read docs/reviews/2026-09-10-written-material-pages.md. Nativeac10f2aae6e14650958f6a5ae249216b0cde1f31
+separately built/frozen/pushed, SHA9daeb048e585bda8426fc9be83cd75eb3393a4d6e5d0193e1718436a4fce23cd.
+164patches/tree5a3703028fd9856a7e087a5e631e5dbcc8728ae1. Explicit CLI
+--exotica-host-material-pages scan|written|verify; absent fullscan. Actual8byte
+WaveRAM writes mark pages; postload marksall; clear onlyafterqueue+commit.
+Verify compares entire full/selected packet eachscene. Still no extra drawing.
+Final317Python/no skips,39native/111commands PASS at
+f106f6e526f9333889bb410a3cee1af43d3e67a1bbb19203787f922eb01c0a6a.
+NEXT LOCAL written-pages-acceptance.py:5072verify/on/repeat,noGL,HK5000verify/
+5990written,fullAmazon7187scanbaseline/written/verify then7defaults. Not launched
+at this edit. Inspect process/results first; source frozen during gates.
+Last7defaults99442. Earlier full99442/8860 PASS7060camera/21180ADCtimes,117GL,
+tenresources/5290GPUupdates and6330/7187/8760GPUbytes. Scene/source oracles pass;
+originalcontext7187 FAIL retained because journalcovers7199..7200. Newpairuses
+7188capture to close gap. Noglbounds88.63% vsmaterials82.54%, raw60frame snapshots
+STILLon; CPUscene3.517vs4.965ms. See110-file publicprivateGPUproof.
+Personalv0.5.0/SHA87d04de4 unchanged. No release/deploy/hostedworkflow/physicalFFB/
+World tuning/menu removal. Continue directly; dirty-page speed is not yet live
+accepted. Initialize/prewarm then privateD32F/sky/foreground/handover and earlier
+blackground source eligibility. Do not wait for recovery heartbeat.
+
 ## September10 private material acceptance — ACTIVE cost/late-drive work
 
 Collectiond3aff61/native99442/SHA70a190d7 are pushed. ALL7defaults now PASS on99442:

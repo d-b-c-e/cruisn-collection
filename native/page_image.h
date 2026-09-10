@@ -55,6 +55,29 @@ public:
         return true;
     }
 
+    // Caller must report EVERY written page. Initial image remains full.
+    // Missing marks cannot be inferred; validate each live writer separately.
+    bool stage_selected_pages(const uint8_t *source, std::size_t size,
+                              const std::vector<uint32_t> &dirty, Packet &output) const {
+        if (!source || size != Bytes || generation_ == UINT64_MAX || dirty.size() > page_count) return false;
+        for (std::size_t i=0;i<dirty.size();++i)
+            if (dirty[i]>=page_count || (i && dirty[i-1]>=dirty[i])) return false;
+        if (!generation_) return stage(source,size,output);
+        Packet packet;
+        packet.base=generation_;packet.generation=generation_+1;
+        packet.base_hash=packet.result_hash=root_hash_;
+        for (auto i:dirty) {
+            const auto *data=source+std::size_t(i)*PageSize;
+            if (std::memcmp(data,bytes_.data()+std::size_t(i)*PageSize,PageSize)) {
+                Update update;update.index=i;
+                std::memcpy(update.bytes.data(),data,PageSize);
+                packet.result_hash^=page_hashes_[i]^page_hash(update);
+                packet.pages.push_back(std::move(update));
+            }
+        }
+        output=std::move(packet);return true;
+    }
+
     bool apply(const Packet &packet) {
         if (!structure(packet) || generation_ == UINT64_MAX || packet.base != generation_ ||
             packet.generation != generation_ + 1 || packet.base_hash != root_hash_ ||
