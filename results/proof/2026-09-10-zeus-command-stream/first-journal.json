@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "header": {
+    "frame": 5080,
+    "width": 2736,
+    "height": 4096,
+    "margin": 86,
+    "scale": 4,
+    "palette": 81,
+    "flags": 13
+  },
+  "commands": 3989,
+  "record_counts": {
+    "1": 3799,
+    "2": 186,
+    "3": 1,
+    "5": 1,
+    "6": 2
+  },
+  "upload_bytes": 9192,
+  "sha256": {
+    "wave": "23a0121daa6bc5df79f84417d1b86105dad667a8fdad74b372d1a6b5478d0524",
+    "palette": "5abe90140f56c864ba94f5faf98fa3261af1f49d3bf4c20e0acd6557c5085364",
+    "records": "1a7160e941cc3cc1066ed3fca648ff6c56c3cd19cd8a5b4a662189a76b1ca037"
+  },
+  "scope": "Journal structure, material images, ordered upload bounds and completion only; pixels require independent playback."
+}

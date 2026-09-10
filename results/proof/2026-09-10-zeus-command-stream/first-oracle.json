@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "passed": true,
+      "mode": "original",
+      "header": {
+        "frame": 5080,
+        "width": 2736,
+        "height": 4096,
+        "margin": 86,
+        "scale": 4,
+        "palette": 81,
+        "flags": 13
+      },
+      "counters": {
+        "quads": 3799,
+        "sky_copies": 0,
+        "clears": 1,
+        "uploads": 1
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "shader_sha256": "43d9744abdece0dcaa7cbf9ce87c1efc10f944acf351bb425f9d2ed35da6c405",
+      "actual_sha256": [
+        "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+        "6da49274bd9e4a5442536c3e1ebd05ef0cd3426038725505dfb7e01c72dbe55f"
+      ],
+      "expected_sha256": [
+        "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+        "6da49274bd9e4a5442536c3e1ebd05ef0cd3426038725505dfb7e01c72dbe55f"
+      ],
+      "scope": "Independent command playback from prior completed GPU state, including exact initial materials and ordered updates. Original material/vertex shaders shared; wider mapping independently expressed. No future geometry or whole-game acceptance."
+    },
+    {
+      "passed": true,
+      "mode": "mirror",
+      "header": {
+        "frame": 5080,
+        "width": 2736,
+        "height": 4096,
+        "margin": 86,
+        "scale": 4,
+        "palette": 81,
+        "flags": 13
+      },
+      "counters": {
+        "quads": 3799,
+        "sky_copies": 0,
+        "clears": 1,
+        "uploads": 1
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+        "0e03effa42d6fc3ec70a272969e57c6d5bcfbb382aa7fcce7f090bf08bf4ea32"
+      ],
+      "expected_sha256": [
+        "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+        "0e03effa42d6fc3ec70a272969e57c6d5bcfbb382aa7fcce7f090bf08bf4ea32"
+      ],
+      "scope": "Independent command playback from prior completed GPU state, including exact initial materials and ordered updates. Original material/vertex shaders shared; wider mapping independently expressed. No future geometry or whole-game acceptance."
+    }
+  ]
+}

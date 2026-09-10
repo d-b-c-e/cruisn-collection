@@ -1,5 +1,36 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 Zeus consumer journal — ACTIVE matched future insertion next
+
+Read docs/reviews/2026-09-10-zeus-command-stream.md. Native24519f861ba59d0fffe4eedcc059531e6835224e
+builtSEPARATELY/pushed/frozen build/candidates/24519f861ba/vunit.exe SHAebb8602d.
+179patches reconstruct2cd4112e9884bfeaaf623633f9e75e781df74a15. CLI
+--zeus-depth-stream-frame requiresbothboundarysnapshots. InitialGPUWave/palette
+plusordered1..6commands/uploads,64MiB/131072bound. FirstparserFAILretained: type6
+alsohas4bytelegacydisplaynotification, notonly16byteFrameTick. Correctedstrict
+parser+fresh6000PASS originalroutes/10resources/25completed4K/eightrawsnapshots.
+Two3989commandjournals byteequal;3799quads/186palettes/one9192byteupload/oneclear.
+Independentfull2736x4096originalANDwidecolor/depthplayback exactonbothcaptures.
+Sharesmaterial/vertexshader; independentwideexpression, earlier292syntheticCPU
+policycases. ThisintervalhasZEROskycopies, no newlivecoverageofthatbranch.
+345Python/no skips,47native,132commands PASS at500-file sourceidentity
+fba6aafeb463ccc2cc3d5b0c139993e110b7273a2d0608578842e45192e97a1b.
+Proof results/proof/2026-09-10-zeus-command-stream recomputesidentity/coverage/
+repeatresult hashes; rawresources/GPU/replay/build remainreceipts. No futuredraw,
+7default renewal, normalperformance orhandoverclaim. Personal87dunchanged.
+
+NEXT continue directly. CURRENT serial6000trialexec88328 depth-stream-5073 under
+results/diagnostics/exotica-amazon-20260909 uses24519, wide,stream5073,snaps5072/5073,
+CPUcapture5073; originalresources comparedto private-material5072-on3. Await/check
+beforeGPUchecks. Prove exactoriginalquad/modeljoin to oldfutureCPUscene5072;
+don'tassumeCPUframe==GPUcompletedframe. Thenoffline1/2/3xfutureinsertionwithowned
+materials andXWD1, followedbynativetype9afterfinish_sky+flush. Oldsource5072 has
+fullRAM/Wave/context/instances in private-material5072-on3/run; reusablePython
+verify_exotica_live_scene andverify_exotica_scene.reference/expected_bytes can
+rebuildbands. Priorstandalonepacketvalidated14,696quads. Keepfutureopacity,
+materials/handover/performanceOPEN. No release/deploy/physicalFFB/Worldtuning/
+hostedCI/menu removal. Rigcheck,serialemulators/GPU,no builds duringtimedtests.
+
 ## September10 native wider-original control — ACTIVE command journal next
 
 Read docs/reviews/2026-09-10-zeus-wide-original.md. Native802714912c919d5394eb7a0eb4699b8926c8bf56

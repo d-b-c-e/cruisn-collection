@@ -5,8 +5,9 @@ import math
 from pathlib import Path
 import re
 import numpy as np
+import zeus_command_stream
 
-KEYS=('MIDZ_DEPTH_MIRROR','MIDZ_DEPTH_FIRST','MIDZ_DEPTH_LAST','MIDZ_DEPTH_SNAPSHOTS')
+KEYS=('MIDZ_DEPTH_MIRROR','MIDZ_DEPTH_FIRST','MIDZ_DEPTH_LAST','MIDZ_DEPTH_SNAPSHOTS','MIDZ_DEPTH_STREAM_FRAME')
 
 
 def add_arguments(parser):
@@ -14,11 +15,12 @@ def add_arguments(parser):
     parser.add_argument('--zeus-depth-first',type=int)
     parser.add_argument('--zeus-depth-last',type=int)
     parser.add_argument('--zeus-depth-snapshots',help='up to16 comma-separated completed frames; omit for timing-only observation')
+    parser.add_argument('--zeus-depth-stream-frame',type=int,help='capture one consumer command/upload interval; requires this and the preceding frame as raw snapshots')
 
 
 def configure(args,rom,settings,frames):
     mode=getattr(args,'zeus_depth_mirror',None)
-    values=[getattr(args,'zeus_depth_'+name,None) for name in ('first','last','snapshots')]
+    values=[getattr(args,'zeus_depth_'+name,None) for name in ('first','last','snapshots','stream_frame')]
     if mode is None and any(v is not None for v in values):raise ValueError('depth mirror bounds require explicit mode')
     if mode is not None:
         if mode not in ('off','observe','wide') or not getattr(args,'candidate',None):raise ValueError('depth mirror requires an explicit candidate')
@@ -28,6 +30,7 @@ def configure(args,rom,settings,frames):
             return dict(enabled=False,explicit=True)
         if values[0] is None or values[1] is None:raise ValueError('depth mirror requires first and last frames')
         settings.update(zip(KEYS,('2' if mode=='wide' else '1',str(values[0]),str(values[1]),values[2] or '')))
+        if values[3] is not None:settings[KEYS[4]]=str(values[3])
     if 'MIDZ_DEPTH_MIRROR' not in settings:
         if any(k in settings for k in KEYS[1:]):raise ValueError('orphan depth mirror bounds')
         return None
@@ -41,7 +44,14 @@ def configure(args,rom,settings,frames):
     if raw and not re.fullmatch('[0-9]+(?:,[0-9]+)*',raw):raise ValueError('invalid depth mirror snapshots')
     snapshots=[int(v) for v in raw.split(',')] if raw else []
     if len(snapshots)>16 or len(snapshots)!=len(set(snapshots)) or any(not first<=v<=last for v in snapshots):raise ValueError('depth mirror snapshot bounds')
-    return dict(enabled=True,explicit=mode is not None,mode='wide' if settings['MIDZ_DEPTH_MIRROR']=='2' else 'observe',first=first,last=last,snapshots=sorted(snapshots))
+    stream=settings.get(KEYS[4])
+    if stream is not None:
+        if not re.fullmatch('[0-9]+',stream):raise ValueError('invalid command journal frame')
+        stream=int(stream)
+        if not first<stream<=last or stream-1 not in snapshots or stream not in snapshots:
+            raise ValueError('command journal requires both boundary snapshots')
+    return dict(enabled=True,explicit=mode is not None,mode='wide' if settings['MIDZ_DEPTH_MIRROR']=='2' else 'observe',first=first,last=last,snapshots=sorted(snapshots),
+                **({'stream_frame':stream} if stream is not None else {}))
 
 
 def compare_buffers(original_color,mirror_color,original_depth,mirror_depth):
@@ -74,6 +84,7 @@ def verify_receipt(trial,text,directory):
     writer=re.findall(r'^MIDZ_DEPTH_MIRROR_WRITER submitted=(\d+) written=(\d+) failed=(\d+) rejected=(\d+) peak_bytes=(\d+) write_total_us=(\d+) write_max_us=(\d+) drain_us=(\d+) waits=(\d+) wait_us=(\d+)$',text,re.M)
     if not trial or not trial['enabled']:
         if initial or final or writer:raise ValueError('disabled depth mirror ran')
+        zeus_command_stream.verify(None,text,directory)
         return None
     first,last,captures=trial['first'],trial['last'],trial['snapshots'];count=last-first+1
     mode=trial.get('mode','observe')
@@ -110,7 +121,9 @@ def verify_receipt(trial,text,directory):
             if not result['passed']:raise ValueError(f'independent depth mirror comparison failed at{frame}')
             if (result['color_differences'],result['depth_differences'])!=differences:raise ValueError('native/independent depth readback counters differ')
             results.append(dict(frame=frame,**result))
+    stream=zeus_command_stream.verify(trial.get('stream_frame'),text,directory)
     return dict(passed=True,frames=count,batches=batches,vertices=vertices,clears=clears,snapshots=results,
+        **({'command_stream':stream} if stream is not None else {}),
         pixel_depth_policy_verified=not wide,
         scope=('Wide original-only readback integrity; pixel depth policy needs a separate oracle. No future drawing or handover acceptance.' if wide else
                'Original-only private color/D32F comparison at requested frames. No farther scenery, general handover or full visual acceptance.'))

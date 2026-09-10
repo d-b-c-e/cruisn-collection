@@ -1,0 +1,109 @@
+{
+  "case": "E:\\Source\\cruisn-collection\\results\\diagnostics\\drive-crusnexo-20260909-203557",
+  "comparison_scope": {
+    "first_frame": 1,
+    "kind": "explicit-prefix",
+    "last_frame": 6000
+  },
+  "diagnostic_script_sha256": "02ee840a612e4842668b512ad850371242d2c14c9616a76eb267be3ca600c6eb",
+  "display_target": {
+    "available": [
+      {
+        "device": "\\\\.\\DISPLAY1",
+        "primary": true,
+        "size": [
+          3840,
+          2160
+        ]
+      }
+    ],
+    "reference_size": [
+      3840,
+      2160
+    ],
+    "selected": {
+      "device": "\\\\.\\DISPLAY1",
+      "primary": true,
+      "size": [
+        3840,
+        2160
+      ]
+    }
+  },
+  "error": "command journal record size",
+  "exotica_host_scene": {
+    "mode": "off",
+    "result": {
+      "disabled": true
+    }
+  },
+  "kind": "candidate-regression",
+  "passed": false,
+  "presentation": "explicit-gl-experiment",
+  "presentation_overrides": {
+    "MIDZ_CAPTURE_PACE": "1",
+    "MIDZ_GL_DRAIN_FRAME": "5088",
+    "MIDZ_GL_LOG": "1",
+    "MIDZ_GL_SNAP": "redirect-at-launch",
+    "MIDZ_GL_SNAP_EVERY": "1",
+    "MIDZ_GL_SNAP_FIRST": "5064",
+    "MIDZ_GL_SNAP_LAST": "5088",
+    "MIDZ_GL_SNAP_MAX": "25"
+  },
+  "probe_script": {
+    "environment": {
+      "CRUISN_EXOTICA_MOTION_FIRST": "1800",
+      "CRUISN_EXOTICA_MOTION_LAST": "5990"
+    },
+    "sha256": "ef4e8f2b0260c0ca658baa5767773d46cf9eefb7fa94ee21afd3a2e6c0908d76",
+    "source": "E:\\Source\\cruisn-collection\\lua\\exotica_motion_trace.lua"
+  },
+  "schema": 1,
+  "zeus_depth_mirror": {
+    "enabled": true,
+    "explicit": true,
+    "first": 2,
+    "last": 5990,
+    "mode": "wide",
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      5072,
+      5079,
+      5080,
+      5604,
+      5990
+    ],
+    "stream_frame": 5080
+  },
+  "zeus_margin_clear": {
+    "explicit": true,
+    "page": 1,
+    "result": {
+      "clears": 4578,
+      "expanded": 2881,
+      "page": 1
+    }
+  },
+  "zeus_palette": {
+    "explicit": true,
+    "guard": 1,
+    "result": {
+      "conflicts": 0,
+      "flushes": 0,
+      "guard": 1
+    }
+  },
+  "zeus_sky": {
+    "enabled": 1,
+    "explicit": true,
+    "result": {
+      "accepted": 3030,
+      "budget_rejected": 0,
+      "copied": 124,
+      "enabled": 1,
+      "groups": 3030
+    }
+  }
+}
