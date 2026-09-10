@@ -19,7 +19,7 @@ python harness/record_drive.py --game offroad --title "Off Road - El Paso - full
 ```
 
 ```powershell
-python harness/record_drive.py --game exotica --title "Exotica - Hong Kong - full drive" --exotica-visibility off --with-ffb
+python harness/record_drive.py --game exotica --title "Exotica - Amazon - full drive" --exotica-visibility off --with-ffb
 ```
 
 The title does not select the course: choose that course in the game. The helper
@@ -45,12 +45,33 @@ the exit menu, then wait for `recording recorded` before starting the next game.
 | World 2.4 | Full human Germany route | New York through finish, including distant black flashing | Recording pending |
 | World 2.5 | Scripted prefix and host comparisons | Full human route; retain revision identity | Recording pending |
 | Off Road 1.63 | Limited El Paso start/hillside sequence | Full El Paso, then a course with different terrain/materials | Preset ready; recording pending |
-| Exotica 2.4 | Limited Hong Kong sequence | Full Hong Kong, then a visually distinct course | Preset ready; recording pending |
+| Exotica 2.4 | Hong Kong prefix; full human Amazon drive through finish | Amazon defect windows, then a contrasting course | 8,860 inputs and motion repeat; 58/59 4K images repeat, frame 3600 remains FAIL |
 
 A second course should add features absent from the first: open distant terrain,
 tunnels or bridges, sharp turns, elevation changes, transparency/fog, or different
 sky and road materials. Choose it after reviewing the first drive's coverage.
 Do not infer acceptance for every track from two representative recordings.
+
+### Amazon, September 9
+
+Local case `results/diagnostics/drive-crusnexo-20260909-203557` is titled
+**Exotica - Amazon - full drive**. It stops cleanly after 8,860 frames / 155.071895
+emulated seconds, with a fourth-place finish at game elapsed **1:30.52**.
+The archived executable SHA256 starts `87d04de4` (personal v0.5.0); source-checkout
+metadata at recording time does not change that actual binary identity.
+Physical force was attended at the saved strength; every replay uses zero force.
+
+Two original-binary replays match all inputs/native snapshots, 7,051 camera
+samples and 21,153 actual ADC reads/times. Both complete 59 GL images at 3840x2160.
+One pair, frame 3600, has different sky/material colors with the same driving
+path. Preserve this failing pair; visual repeatability is not yet fully passed.
+
+Maintainer-reported windows are on the **game's elapsed timer**: black ground on
+the left at **0:35, 0:45 and 0:57**, and a tall rectangular right-side artifact at
+**1:12**. The latter is near replay frame 7200, whose image reads 1:12.26.
+Do not treat the initial 1:16 sky-strip observation as this confirmed timestamp.
+Collisions in the recording are useful stress coverage; no rerecording is needed
+merely because the drive was untidy.
 
 ## Acceptance for each new case
 

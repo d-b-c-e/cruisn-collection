@@ -21,8 +21,17 @@ turns, continue directly into the next useful implementation or verification ste
 
 The maintainer requested broader track coverage. [Recording presets and the
 track checklist](docs/SCENERY-TRACK-COVERAGE.md) are ready for full Off Road El Paso
-and Exotica Hong Kong drives, followed by contrasting courses. Both recordings
-remain pending; limited scripted routes cannot certify cross-track behavior.
+and Exotica drives, followed by contrasting courses. The maintainer selected Amazon
+for its known bugs. Its 8,860-frame recording reaches the finish. Two archived-binary
+replays preserve inputs, camera and actual ADC timing; 58/59 completed 4K images
+repeat. Frame 3600 differs in sky/material appearance and remains a failing pair.
+Off Road is pending; limited scripted routes cannot certify cross-track behavior.
+
+[The fresh Zeus upstream review](docs/reviews/2026-09-09-zeus-upstream.md) checks
+current master and all 291 open PRs. Trial #16094's depth/blend changes separately
+against Amazon/Hong Kong; follow with #16058's framebuffer/timing work. Timer and
+SGRAM fixes from #16046 are already backported. Preserve legacy controls and
+renew cross-game defaults before adoption or deployment.
 
 [Exotica's future-section decoder](docs/reviews/2026-09-09-exotica-future-sections.md)
 now matches native/Python sources across 54 sections and predicts 2,507 later
