@@ -1,0 +1,159 @@
+{
+  "passed": true,
+  "equal_completed_prefix_frames": 60,
+  "prefix_frames": [
+    1800,
+    8880
+  ],
+  "equal_ordered_scene_prefix": 3542,
+  "prior_last_scene": 8984,
+  "full_new_scenes": {
+    "scenes": 3865,
+    "first": 1800,
+    "last": 9630,
+    "totals": {
+      "pending": 332267,
+      "future": 4697227,
+      "future_definitions": 6012067,
+      "unsupported": 1471840,
+      "near": 290363,
+      "far": 3347287,
+      "projection": 1039,
+      "material": 12515,
+      "decoded": 1221290,
+      "pretrack": 134,
+      "partial": 54,
+      "deferred": 0,
+      "quads": 3675128
+    },
+    "phases": {
+      "guard_us": {
+        "maximum": 8.7,
+        "p50": 1.0,
+        "p95": 1.7,
+        "p99": 2.1
+      },
+      "prepare_us": {
+        "maximum": 3450.7,
+        "p50": 712.7,
+        "p95": 1323.1,
+        "p99": 2338.1
+      },
+      "pack_us": {
+        "maximum": 215.8,
+        "p50": 28.7,
+        "p95": 60.9,
+        "p99": 142.2
+      },
+      "log_us": {
+        "maximum": 25.6,
+        "p50": 0.4,
+        "p95": 0.9,
+        "p99": 1.3
+      },
+      "submit_us": {
+        "maximum": 124.7,
+        "p50": 19.0,
+        "p95": 39.9,
+        "p99": 78.6
+      },
+      "microseconds": {
+        "maximum": 3649.6,
+        "p50": 763.1,
+        "p95": 1429.3,
+        "p99": 2566.8
+      }
+    },
+    "signature_sha256": "7b9e03342c96b1a9e8ea6d8da9f1a49695dab98f353f50ccc8772c967d716a97",
+    "sources": {
+      "scenes": "4a760832c78c57cb963fcf6969f4da6b2743cd0bbdcb7dce2356eecfc22a03a1",
+      "quads": null
+    }
+  },
+  "prior_scenes": {
+    "scenes": 3542,
+    "first": 1800,
+    "last": 8984,
+    "totals": {
+      "pending": 312343,
+      "future": 4697227,
+      "future_definitions": 6012067,
+      "unsupported": 1471840,
+      "near": 271629,
+      "far": 3347287,
+      "projection": 1039,
+      "material": 12515,
+      "decoded": 1220100,
+      "pretrack": 134,
+      "partial": 52,
+      "deferred": 0,
+      "quads": 3671948
+    },
+    "phases": {
+      "guard_us": {
+        "maximum": 13.1,
+        "p50": 1.0,
+        "p95": 1.7,
+        "p99": 2.1
+      },
+      "prepare_us": {
+        "maximum": 4061.3,
+        "p50": 717.9,
+        "p95": 1330.6,
+        "p99": 2339.0
+      },
+      "pack_us": {
+        "maximum": 216.2,
+        "p50": 29.7,
+        "p95": 61.2,
+        "p99": 153.0
+      },
+      "log_us": {
+        "maximum": 1.7,
+        "p50": 0.3,
+        "p95": 0.8,
+        "p99": 1.2
+      },
+      "submit_us": {
+        "maximum": 142.2,
+        "p50": 19.6,
+        "p95": 40.4,
+        "p99": 78.6
+      },
+      "microseconds": {
+        "maximum": 4402.4,
+        "p50": 768.9,
+        "p95": 1433.9,
+        "p99": 2563.2
+      }
+    },
+    "signature_sha256": "f63cc6337cdd7b45837cfaa2c6a4a87957e7effbc89fcc089dc7ad307c387da8",
+    "sources": {
+      "scenes": "2d8ec42302c841cfc1373418d5e87e2951e414cbc3aed322fca75e3e2fc5f68d",
+      "quads": null
+    }
+  },
+  "compared_scene_fields": [
+    "frame",
+    "time",
+    "page",
+    "mode",
+    "multiplier",
+    "future_enabled",
+    "pending",
+    "future",
+    "future_definitions",
+    "unsupported",
+    "near",
+    "far",
+    "projection",
+    "material",
+    "decoded",
+    "pretrack",
+    "partial",
+    "deferred",
+    "quads",
+    "quads_hash"
+  ],
+  "scope": "Exact completed pixels and ordered scene/count/fingerprint prefix. The retained prior run still failed at native8986; no claim it completed."
+}

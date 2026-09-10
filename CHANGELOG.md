@@ -5,6 +5,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–10 diagnostics
 
+- Add a complete attended Off Road El Paso recording: archived replays and a
+  candidate control preserve the full route and all 66 sampled display images.
+- Fix Off Road host scenery stopping near the final section. Full 2×/3× runs
+  complete the recorded route; 3× repeats all 66 sampled display images and shows
+  additional distant terrain over 2×. Broader visual acceptance remains open.
 - Native host future-scenery prototypes now cover all four games. World, USA
   and Off Road show measured earlier scenery; useful 3× gains remain uneven.
 - World 2.4 future road rendering fills measured distant gaps. World 2.5's

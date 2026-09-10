@@ -1,0 +1,427 @@
+{
+  "frames": 66,
+  "images_identical": false,
+  "different_frames": [
+    2280,
+    2400,
+    2520,
+    3120,
+    3480,
+    3600,
+    3720,
+    4560,
+    4680,
+    4800,
+    6480,
+    6720,
+    6840,
+    6960,
+    7080,
+    7440,
+    7560,
+    7680,
+    7800,
+    8520,
+    8640,
+    8760
+  ],
+  "pixel_changes": [
+    {
+      "bounds_xyxy_exclusive": [
+        745,
+        700,
+        2231,
+        817
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 21658,
+      "frame": 2280,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        735,
+        708,
+        2234,
+        822
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 20831,
+      "frame": 2400,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1350,
+        701,
+        1813,
+        822
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 26938,
+      "frame": 2520,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        188,
+        788,
+        295,
+        821
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 1464,
+      "frame": 3120,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1278,
+        734,
+        1736,
+        831
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 903,
+      "frame": 3480,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1333,
+        700,
+        1520,
+        800
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 10920,
+      "frame": 3600,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        2631,
+        722,
+        3530,
+        783
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 938,
+      "frame": 3720,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1905,
+        786,
+        2368,
+        817
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 2654,
+      "frame": 4560,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        2071,
+        615,
+        2176,
+        650
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 2596,
+      "frame": 4680,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1220,
+        791,
+        1578,
+        826
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 1365,
+      "frame": 4800,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1734,
+        781,
+        1852,
+        799
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 901,
+      "frame": 6480,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1682,
+        684,
+        2287,
+        796
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 7734,
+      "frame": 6720,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1893,
+        664,
+        1944,
+        755
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 322,
+      "frame": 6840,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1890,
+        704,
+        1944,
+        813
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 212,
+      "frame": 6960,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1910,
+        679,
+        1981,
+        735
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 182,
+      "frame": 7080,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1925,
+        714,
+        2162,
+        791
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 315,
+      "frame": 7440,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1865,
+        682,
+        2214,
+        773
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 6365,
+      "frame": 7560,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1863,
+        732,
+        2050,
+        809
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 7757,
+      "frame": 7680,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1053,
+        706,
+        1813,
+        810
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 18156,
+      "frame": 7800,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        796,
+        713,
+        1162,
+        818
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 24954,
+      "frame": 8520,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1854,
+        736,
+        2397,
+        864
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 51706,
+      "frame": 8640,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    },
+    {
+      "bounds_xyxy_exclusive": [
+        1688,
+        507,
+        2568,
+        624
+      ],
+      "candidate_size": [
+        3824,
+        2073
+      ],
+      "changed_pixels": 56669,
+      "frame": 8760,
+      "reference_size": [
+        3824,
+        2073
+      ]
+    }
+  ],
+  "scope": "Changed-pixel counts remain receipts; hashes independently establish differing captured frames."
+}

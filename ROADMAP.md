@@ -30,9 +30,11 @@ and the public package remain v0.5.0.
 - **World:** earlier scenery at 3× is demonstrated for both revisions. World
   2.4 host roads fill measured distant gaps; carry roads/ground to 2.5, then
   broaden continuity, occlusion and handover checks.
-- **Off Road:** visible 3× gains and full-speed quiet runs on the existing
-  scripted El Paso sample. Obtain an attended complete-track recording before
-  claiming broad terrain, tunnel, finish or handover coverage.
+- **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
+  exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
+  3× adds differences in22/66 images over2× and repeats all66 exactly. Complete
+  later-course resource/geometry checks, materials and handover; other courses
+  and broader foreground-occlusion acceptance remain open.
 
 Shared acceptance still requires useful visible benefit, stable materials,
 correct foreground occlusion, smooth activation handover, full-speed 4K and

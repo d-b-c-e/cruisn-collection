@@ -39,8 +39,10 @@ awaiting validation.
 
 Separate **host scenery prototypes for all four games** now decode upcoming
 sections without changing guest simulation. World, USA and Off Road have measured
-earlier scenery; Exotica's private renderer is undergoing completed-image and
-presentation comparisons. These are **undeployed CLI candidates**. The launcher
+earlier scenery; Exotica's private renderer has repeatable display comparisons
+but still needs faster preparation and smooth fade transitions. The new attended
+Off Road full-course recording is being used for broader comparisons.
+These are **undeployed CLI candidates**. The launcher
 distance menus still use the earlier guest-distance experiments. Useful 3× gains
 are uneven, and performance, ground continuity, materials and broader track
 coverage remain unfinished. See the [current four-game assessment](docs/reviews/2026-09-10-scenery-parity-status.md)

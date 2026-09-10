@@ -1,0 +1,199 @@
+{
+  "expect_gl": "equal",
+  "gl": {
+    "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\offroad-full-20260910\\final-frontier-repeat3\\run\\gl-snap",
+    "different_frames": [],
+    "frames": 66,
+    "passed": true,
+    "pixel_changes": [],
+    "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\offroad-full-20260910\\final-frontier-draw3\\run\\gl-snap",
+    "scope": "completed GL frame pixels",
+    "size_mismatches": []
+  },
+  "host": [
+    {
+      "first": 1800,
+      "last": 9630,
+      "phases": {
+        "guard_us": {
+          "maximum": 8.7,
+          "p50": 1.0,
+          "p95": 1.7,
+          "p99": 2.1
+        },
+        "log_us": {
+          "maximum": 25.6,
+          "p50": 0.4,
+          "p95": 0.9,
+          "p99": 1.3
+        },
+        "microseconds": {
+          "maximum": 3649.6,
+          "p50": 763.1,
+          "p95": 1429.3,
+          "p99": 2566.8
+        },
+        "pack_us": {
+          "maximum": 215.8,
+          "p50": 28.7,
+          "p95": 60.9,
+          "p99": 142.2
+        },
+        "prepare_us": {
+          "maximum": 3450.7,
+          "p50": 712.7,
+          "p95": 1323.1,
+          "p99": 2338.1
+        },
+        "submit_us": {
+          "maximum": 124.7,
+          "p50": 19.0,
+          "p95": 39.9,
+          "p99": 78.6
+        }
+      },
+      "scenes": 3865,
+      "signature_sha256": "7b9e03342c96b1a9e8ea6d8da9f1a49695dab98f353f50ccc8772c967d716a97",
+      "sources": {
+        "quads": null,
+        "scenes": "4a760832c78c57cb963fcf6969f4da6b2743cd0bbdcb7dce2356eecfc22a03a1"
+      },
+      "totals": {
+        "decoded": 1221290,
+        "deferred": 0,
+        "far": 3347287,
+        "future": 4697227,
+        "future_definitions": 6012067,
+        "material": 12515,
+        "near": 290363,
+        "partial": 54,
+        "pending": 332267,
+        "pretrack": 134,
+        "projection": 1039,
+        "quads": 3675128,
+        "unsupported": 1471840
+      }
+    },
+    {
+      "first": 1800,
+      "last": 9630,
+      "phases": {
+        "guard_us": {
+          "maximum": 52.5,
+          "p50": 1.0,
+          "p95": 1.8,
+          "p99": 2.4
+        },
+        "log_us": {
+          "maximum": 16.9,
+          "p50": 0.4,
+          "p95": 1.0,
+          "p99": 1.5
+        },
+        "microseconds": {
+          "maximum": 3387.4,
+          "p50": 765.9,
+          "p95": 1419.3,
+          "p99": 2554.8
+        },
+        "pack_us": {
+          "maximum": 197.6,
+          "p50": 29.2,
+          "p95": 61.5,
+          "p99": 157.5
+        },
+        "prepare_us": {
+          "maximum": 3167.9,
+          "p50": 715.6,
+          "p95": 1322.3,
+          "p99": 2330.6
+        },
+        "submit_us": {
+          "maximum": 209.3,
+          "p50": 19.2,
+          "p95": 39.6,
+          "p99": 78.2
+        }
+      },
+      "scenes": 3865,
+      "signature_sha256": "7b9e03342c96b1a9e8ea6d8da9f1a49695dab98f353f50ccc8772c967d716a97",
+      "sources": {
+        "quads": null,
+        "scenes": "c90f4de5752c3a67abf8d667f0bbac0ee393e3fb293ce138f7cb8d45e48b3412"
+      },
+      "totals": {
+        "decoded": 1221290,
+        "deferred": 0,
+        "far": 3347287,
+        "future": 4697227,
+        "future_definitions": 6012067,
+        "material": 12515,
+        "near": 290363,
+        "partial": 54,
+        "pending": 332267,
+        "pretrack": 134,
+        "projection": 1039,
+        "quads": 3675128,
+        "unsupported": 1471840
+      }
+    }
+  ],
+  "host_equal": true,
+  "input_frames": [
+    9644,
+    9644
+  ],
+  "inputs_equal": true,
+  "motion": {
+    "actual_adc_reads": [
+      31324,
+      31324
+    ],
+    "adc_address_compared": false,
+    "adc_frame_value_pc_equal": true,
+    "adc_times_equal": true,
+    "camera_equal": true,
+    "camera_equal_frame_intervals": [
+      [
+        1800,
+        9630
+      ]
+    ],
+    "camera_equal_frames": 7831,
+    "camera_intervals": [
+      [
+        1800,
+        9630
+      ],
+      [
+        1800,
+        9630
+      ]
+    ],
+    "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+    "camera_samples": [
+      7831,
+      7831
+    ],
+    "first_adc_frame_value_pc_difference": null,
+    "first_adc_time_difference_index": null,
+    "first_camera_difference_frame": null,
+    "passed": true,
+    "same_camera_interval": true,
+    "schema": 1,
+    "scope": "Compare Off Road camera state and actual ADC reads from offroad_distance.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+    "sources": [
+      {
+        "offroad-adc.csv": "7d0494e3cd0fc9b633d109bd3c29acbda5026cad66804c7f4f8e72d6b757c248",
+        "offroad-camera.csv": "8afedcff4c96041eb13c60ef1e28d08ea82727ae70daaceab538bbd28a332cac"
+      },
+      {
+        "offroad-adc.csv": "7d0494e3cd0fc9b633d109bd3c29acbda5026cad66804c7f4f8e72d6b757c248",
+        "offroad-camera.csv": "8afedcff4c96041eb13c60ef1e28d08ea82727ae70daaceab538bbd28a332cac"
+      }
+    ]
+  },
+  "passed": true,
+  "replays_passed": true,
+  "scope": "Complete recorded inputs, camera/ADC times, host decisions and GL; not visual acceptance"
+}

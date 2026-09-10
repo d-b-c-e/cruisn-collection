@@ -1,5 +1,60 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 attended Off Road and packet optimization — ACTIVE
+
+User finished the attended drive and stepped away; continue directly. Read
+docs/reviews/2026-09-10-offroad-full-drive.md. New LOCAL case
+results/diagnostics/drive-offroadc-20260910-175036 completes El Paso, automatic,
+first place, game1:52.66. 9644 inputs/166.481673344817 emulated seconds; INP
+7618b9fd29d4a145264850c5e460801e6240bf1a15659ee9db9dd6e58ce86831.
+Original-control/repeat and candidate-control PASS all inputs/native snapshots,
+7831camera/31324actualADCtimes and66completed3824x2073 client captures on4K
+monitor, frames1800..9600 every120. Speeds99.78/99.92/100.00%. PhysicalFFB0 in
+all automated replays. LOCAL offroad-full-20260910/trial.py runs full comparisons.
+Full draw3 FAIL at nativeframe8986: host scene/model/material guard, exit3;
+60captures written, route ended8987. Failure retained. Exact original
+scene atLua8987 (native8986) captured with hostoff, full route/66GL exact. Actual
+frontier: final58of59, current55->56 butlead3->2 settles one scene later. Same
+atLua9087. All3864original scenes fit settled/one-scene delay;54partial including
+2atend. Fix applies existing partial rule atfinalentry; future stays empty,
+larger mismatch/end-marker/pointer guards retained. Threeactual snapshots pass18
+native/Python cold/warm 1/2/3 pending/future comparisons; failure now56objects132quads.
+Native583481f82833f9e3087af5be30ef3d3e4664f82e SEPARATELY built/frozen
+build/candidates/583481f8283/vunit.exe SHAeb4d790ddb8c84a6488cc43b89fe7f7528f1fb78e74004c677d302e87f31b850.
+184patches reconstructc942ec9ae50c30296d97021d7e41bc54d9f093e2; native pushed.
+Full localchecks97389 EXIT/PASS352Python/no skips,48native/136commands,
+source6c2c6e3f99c291f00912158a028ccda89f4272b05c86941b14f7f73a886cd315.
+Corrected full3x/2x/repeat PASS all9644inputs/160native/7831camera/31324ADCtimes
+and66completed client images each. Speeds99.81/100.00/99.93%. Repeat all66pixels
+and3865ordered scenes/3675128quads exact; failed-run60GL/3542scene prefix exact.
+3x changes40/66 vsoriginal and22/66 vs2x; viewed useful late terrain atGAME1:46.90,
+large mesa vsstock1:48.90. Not eliminatedpop-in/othertrack/occlusion acceptance.
+Code fix committed/pushed1ad1bd9. Publicproof2026-09-10-offroad-full-drive PASS
+source/coverage/hash pairs/receipt consistency; rawgame/native/GPU remainreceipts.
+CURRENT bounded late geometry exec67104 final-frontier-live-scenes: native
+8970..9090 draw3/detailedquads, originalLua snapshots8983/8985/8987/9087. WaitEXIT,
+then analyze_offroad_host.py RUN --rom RUN/offroad-section-rom.bin --reportNEW
+for independent actualframe/time/page/orderedgeometry. Original resource pair
+stillopen; Exotica packet live/performance renewal and fade-owner study next.
+
+Pending Exotica bounded fixed-size XWD1 serializer is promoted to native431f4810a86f2441fb2c3df7f3cbef69b9e9f55a,
+SEPARATELY built/frozen build/candidates/431f4810a86/vunit.exe SHA
+a3c60475297fbb948e409ef26b31e2f39bcb14c3d801c419625ad7113b0e0ea6 and pushed.
+183patches reconstructa9962a7a188966580d7be2a1b5b32ab74d81b891; personal87d
+unchanged. Packet helper/test/export committed and pushed ascollection7282583.
+Earlier351Python/48native/136commands passed beforeexport atb314; currentcombined
+source is the renewed352/48/136 at6c2c above. Isolated five actual packets encode
+45–61% faster; no live Exotica speed/pixel acceptance on431 yet. Run full dense
+2x/3x/repeat packet/route/resource/pixel comparisons and uncaptured performance.
+
+LOCAL fade-owner-probe.lua/trial.py and analyze-fade-owners.py in
+exotica-amazon-20260909 remain NOT RUN. Allocation-to-fade ownership/handover is
+next after useful packet promotion; model-validation cache benchmark rejected.
+World2.5roads/USAfullspeed remain open. Last clean7defaults50a; laterUSA6.13s
+stall retained. No deploy/release/hostedCI/physicalFFB/Worldtuning/menu removal.
+Serial rig, no builds/exports/broad scans during timed games. Await checks EXIT
+before games. One-minute heartbeat ACTIVE recovery only; no milestone idle.
+
 ## September 10 Exotica fade and measured cost — ACTIVE
 
 Read docs/reviews/2026-09-10-exotica-fade-and-performance.md. Native9ed remains

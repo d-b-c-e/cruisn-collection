@@ -1,0 +1,9 @@
+{
+  "error": "emulator exit code 3",
+  "native_frame": 8986,
+  "stop_frame": 8987,
+  "completed_captures": 60,
+  "report_sha256": "75988910ce8976591806a646d97fa4160cadfc5befb6974cf839a95dd38a82c9",
+  "initial_reconstruction_sha256": "641e867ba34c2d2c3d17fe7050e23ec2bbdea148646c6c765f8ce8ec9b878a3f",
+  "scope": "Retained initial failed 3x run. Native source431; this run never completed."
+}
