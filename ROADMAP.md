@@ -24,7 +24,11 @@ track checklist](docs/SCENERY-TRACK-COVERAGE.md) are ready for full Off Road El 
 and Exotica drives, followed by contrasting courses. The maintainer selected Amazon
 for its known bugs. Its 8,860-frame recording reaches the finish. Two archived-binary
 replays preserve inputs, camera and actual ADC timing; 58/59 completed 4K images
-repeat. Frame 3600 differs in sky/material appearance and remains a failing pair.
+repeat. The original frame3600 sky/material failure is retained; the new
+[palette lifetime candidate](docs/reviews/2026-09-09-zeus-palette-lifetime.md)
+reproduces and corrects it, restoring the original good4K image exactly. Both
+dense windows repeat all49+21 guarded images while preserving original motion
+and resources. The later user-marked margins and1:12 rectangle remain open.
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 
 [The fresh Zeus upstream review](docs/reviews/2026-09-09-zeus-upstream.md) checks
@@ -34,8 +38,10 @@ trials preserve motion; the combined59-frame4K result repeats, and blend decodin
 restores car-selection reflections. It does not fix the marked1:12 artifact.
 Both CPU policies match captured full color/depth buffers exactly; all seven
 default cases pass. Enabled-policy Hong Kong motion/resources also pass;19/21
-sampled4K frames are identical and two differ by two pixels each. Next trace/fix
-pending palette-row reuse and evaluate #16058's framebuffer/timing work. Timer
+sampled4K frames are identical and two differ by two pixels each. Pending palette
+row reuse is now fixed in a separate diagnostic candidate; final cross-game
+acceptance is being renewed. Next evaluate #16058's framebuffer/timing work and
+the remaining Amazon marked windows. Timer
 and SGRAM fixes from #16046 are already backported. Recheck pinned upstream heads
 when adopting/rebasing candidates; preserve legacy controls and renew cross-game
 defaults before adoption or deployment.

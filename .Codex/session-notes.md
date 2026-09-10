@@ -1,5 +1,17 @@
 # Session Notes
 
+- **Palette correction and shutdown baseline:** native5a80a77e589/SHA66b0132e
+  separately built/pushed,151patches. Collectionbd60bef fixes CPU oracle exit
+  status, c543c52 adds Zeus diagnostic capture drain. Densef537 guards restore
+  original good3600pixels and repeat49+21images, with exact motion/resources;
+  final5a80 repeats49 and all7defaults/telemetry/4softwareforce/Exo21GL PASS.
+  276Python/no skips,30native,84commands,415identity8de7361d PASS. Public245-file
+  palette-lifetime proof passes; rawresources stay local. First47/49captureFAIL
+  and originalblackskyFAIL retained. StreamDeck87d04de4 unchanged, no deployment.
+  ACTIVE localamazon-defect-trials.py now captures35/45/57/72s with actual CPU
+  rendering+GL; legacy blankCPU comparison expectedFAIL, native oracle mustpass.
+  Inspect processes; emulatorsserial. Continue palette/material/future-host work.
+
 - **Palette guard in active validation:** nativef537f74ddbf/SHA37515ca7 built
   separately/pushed,150patches. Explicit--zeus-palette legacy|guard requires
   candidate/liveGL/FFB0 and native completion counters. First full Amazonlegacy

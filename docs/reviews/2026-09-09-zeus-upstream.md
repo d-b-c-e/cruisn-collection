@@ -120,6 +120,15 @@ X offset: the old and new clock formulas agree for that sample. That observation
 does not establish timing compatibility for every track. Renew original
 input/ADC timing after any clock change.
 
+Follow-up snapshots at Amazon3600/4200/7200 and HongKong4700 cover1,365 model
+contexts and19,972 submitted polygons, including all in-model register writes.
+Every draw retains X offset0; all contexts use yScale0 and divider field5.
+No in-model write changes either render-window offset. This narrows the likely
+benefit for these scenes but does not cover unjournaled CPU register changes or
+deferred CPU ordering. The independently reconstructed7200 CPU page also shows
+the silver checkpoint structure visible in the4K image. Its later clipped edge
+still needs a matched capture; it is not explained by a nonzero X offset here.
+
 ## Other open PRs
 
 - [#16021](https://github.com/mamedev/mame/pull/16021) adds motor output naming

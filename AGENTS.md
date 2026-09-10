@@ -1,5 +1,42 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 palette corruption reproduced — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-zeus-palette-lifetime.md. Collection bd60bef fixes
+CPU oracle false-success exit codes; c543c52 exports the separate capture-drain
+candidate. Native 5a80a77e589bfac396208bfb153e741c766cfac4 is built/pushed;
+build/candidates/5a80a77e589/vunit.exe SHA66b0132ea2b312e2284f76be6cfed7ac8061b6752ba9517b6a84f896e501b39c.
+151 patches reconstruct tree8285f1816927eb9fd7986f3d42884d711c620a9e.
+276 Python/no skips,30 native,10081C31/137yaw,32GPU+25policy+3palette/84 commands
+PASS at415-file identity8de7361df4a0e0040f519a3d3a8bd1058bf3c644eb6d72e0752b6d21ad263359.
+
+f537 dense legacy reproduces black sky/wrong mountains at3600. Guard restores
+the original good4K frame exactly; all49 images3576..3624 repeat. Second window
+4190..4210 has wrong distant colors in legacy; all21 guarded images repeat.
+Guard changes25/49 and16/21; both windows preserve camera/actualADC times and
+all ten original model/ordered submission/resource files. Four full8860 runs
+also pass motion/59GL/geometry. Original FAIL and first dense47/49 FAIL retained.
+This fixes reproduced palette corruption at game0:09/0:19; later user-marked
+0:35/0:45/0:57 margins and1:12 rectangle remain OPEN. No extra host drawing claim.
+
+New diagnostic shutdown drain requires FFB0 and has10s bound. Boundary300
+completes49 captures250..298 with1078ms wait; stopped-consumer control correctly
+FAILs immediately, no false success. Two3650 Amazon guards both complete49GL,
+match prior guarded pixels/resources and preserve original motion. All7defaults
+now PASS on5a80, actualUDP-memory/4softwareforce/Exo21GL included. Personal87d04de4
+unchanged. Public245-file proof recomputes12motion prefixes and selectedpixels;
+fullimages/native/resources/CPU/GPU/defaults/build remain hash-bound receipts.
+Local amazon-defect-trials.py is ACTIVE: four marked35/45/57/72s windows enable
+real CPU rasterization alongside GL. Old blankCPU-image comparison is expected
+FAIL; independently require exact input/camera/ADC and native CPU-buffer oracle.
+Inspect processes before another game. Native geometry and actual image analysis
+follow. Missing upstream16058:1365contexts/19972in-model polygons retain xoffset0,
+yscale0/divider5; timing formula is equivalent there. CPU ordering remains open.
+Checkpoint post also appears in independently rendered CPU page7200; later flat
+edge still needs attribution. Continue future-host/material readiness after
+these fixes. No deploy/release/hosted workflows/physicalFFB/World tuning/menu
+removal. Keep working directly, serial emulators, one-minute heartbeat recovery.
+
 ## September 9 Zeus palette guard — ACTIVE validation
 
 Read docs/reviews/2026-09-09-zeus-palette-lifetime.md. Nativef537f74ddbf5f93cfb0daa23c7a26c30b482cbbb
