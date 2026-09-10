@@ -1,5 +1,17 @@
 # Session Notes
 
+- **Continuous Exotica future sections:** docs/reviews/2026-09-09-exotica-future-sections.md.
+  Native/Python42882source records/6474actual comparisons/2507laterallocations PASS.
+  1079ordinary/2158initialbindings/9overrides;56customexcluded,18initialtypeFAILs retained.
+  Five6000drives preserve4191camera/12573ADCtimes/21original4KGL; canonicalrepeat11files/
+  67144279bytes equal. No livepartial4191boundaries; wholeloaderB7E8..B840 markerfixed
+  beforepromotedcapture, syntheticpartialguards only.263Python/26native/32GPU/72commands,
+  392identityff1886dd. Public133fileproof recomputestraces/selectedpixels/frontiers;
+  descriptor/material/build receipts. No MAMEbuild/default renewal; eb17 remainsprior
+  acceptedcandidate, personalv0.5 unchanged. NextZeusobjectstate688B..696F/private
+  palette/WaveRAM/readiness/sceneinsertion. Rawsection-* underexotica-zeus-models-20260909.
+  Continue directly withone-minute recoveryonly, no release/deploy/menu removal.
+
 - **Continuous Exotica model codec:** review docs/reviews/2026-09-09-exotica-model-codec.md.
   Nativeeb17/SHAee2bd4d0 separate/pushed,147patches.939models/8126entireorderedquads
   across3windows pass independentPython/native, frame4700repeat exact inclclock.

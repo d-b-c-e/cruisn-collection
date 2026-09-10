@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Exotica future sections — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-exotica-future-sections.md. Standalone native/Python
+section decoder, bounded Lua whole-loader/allocation/ROM/RAM probe and verifier.
+1135allocations/1079ordinary/2158initialbindings/9overrides PASS;56custom/classA/F
+excluded. Initial18classFtype FAILs retained. Sixsnapshots54sections/7147sources/
+6323ordinary each,42882native/Pythonrecords and6474actual comparisons including
+2507laterallocations PASS. Reverse sections have independent/synthetic checks;
+only8forward sections/sixheadings have liveallocation evidence. No extra hostdraw.
+Loader trackedB7E8 throughfinalB840 positionwrite (oldlocalprobe endedB817 tooearly).
+4191boundaries showNOlivepartial; syntheticpartialexclusion/scalarmismatch checks.
+Futurecaller needs trustedbank andloaderstate; rejectinconsistent scalarfrontier.
+Five6000drives preserve4191camera/12573actualADCtimes/21GL3840x2160. Canonicalrepeat
+matches11capturefiles/67144279bytes includingclock, allocation/ROM/RAM/progress.
+263Python/noskips,26native,10081C31/137yaw,32GPU/72commands PASS;392fileidentity
+ff1886dd6960bbe032f79038e1c747ee55d0622fa283c6d14cd62321a085337c.
+133fileproof results/proof/2026-09-09-exotica-future-sections recomputes5traces/
+3selectedGL/loader scalars; fulldescriptors/resources/native/GPU are receipts.
+Raw localresults/diagnostics/exotica-zeus-models-20260909 (section-* andfuture-*).
+MAMEunchangedeb17/SHAee2bd4d0, all7defaults belong to precedingmodelcodec milestone.
+NEXT Exotica objectstate setup688B..696F, renderprogramsE7C1/E7C7/E7D3/E7D9,
+materialbinding/residency/privatepalette andWaveRAMmodel readiness, sceneinsertion.
+Host extras mustnot mutate actualZeus registers/bias/order. Existing previous_alpha
+name iscachedheading0FF9. Needpending/futurehostscene adapter andvisual/performance
+acceptance. USAperformance/World25roads/OffRoadbroadercoverage remain. Personal
+v0.5.0/SHA87d04de4 unchanged; no release/deploy/hostedworkflows/physicalFFB/Worldtuning/
+menu removal. Continue directly/no cutoff; one-minute heartbeat recovery only.
+Checkrigbeforevisibletests; emulatorsserial.
+
 ## September 9 Exotica model codec — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-exotica-model-codec.md. Native eb17cf2dd048 is built

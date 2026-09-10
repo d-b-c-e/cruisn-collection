@@ -19,12 +19,18 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 The heartbeat now uses a one-minute recovery wakeup, not a work cadence. During active
 turns, continue directly into the next useful implementation or verification step.
 
+[Exotica's future-section decoder](docs/reviews/2026-09-09-exotica-future-sections.md)
+now matches native/Python sources across 54 sections and predicts 2,507 later
+allocations from six earlier snapshots. Five drives preserve original motion and
+4K captures; the final capture repeats byte-for-byte. It remains standalone:
+private Zeus state, material readiness and scene insertion are next.
+
 [Exotica's model codec](docs/reviews/2026-09-09-exotica-model-codec.md) now
 reproduces 8,126 complete original geometry/state records across three scenes in
 independent Python and native decoders. Model-local state is isolated; five drives
 preserve original inputs, motion and 4K captures. All seven defaults pass on the
-separate candidate. Future sections, material residency and scene insertion are
-next; it does not yet draw extra scenery.
+separate candidate. The section decoder above follows it; it does not yet draw
+extra scenery.
 
 [Exotica's transform foundation](docs/reviews/2026-09-09-exotica-transforms.md)
 now reproduces40093 centers/scaled command packets,13693 matrix updates,
