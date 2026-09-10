@@ -1,5 +1,23 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 measured capture stalls — ACTIVE continuous work
+
+Read docs/reviews/2026-09-10-zeus-stream-timing.md. Native34b24a2fef3/SHA2ebe8aeb
+separatelybuilt/frozen/pushed;156patches exact1e1c6ef674dbf8b764d32e29697bf655a25d898b.
+Timing commit e3e8 separate fromboundedstall34b. --gl-stall nowacknowledged onExo
+(candidate/liveGL/FFB0). Short100ms/6000HongKong preservesmotion/all21GL; long5000
+correctlyFAILs replay withphase=stall, queued67108800/67108864,wait797ms, no
+consumerprogress; separate expected-fault verdictPASS, originalmotion exact.
+Old6864/300run rejectedmissingack. Original500wait threshold unchanged.
+Short run also measures594ms screenshotfile operation at5417; readbackmax16ms.
+This is actualI/O evidence, NOT proof of priorAmazon8460timeoutcause. NEXT shared
+bulkBMPencoder/writer forZeus+VUnit, comparewholeBMPs/nativepixels andtimings,
+thenrenew final7defaults (lastPASS2b55). Ifstillneeded boundedasyncwriter, no
+silentdrops.286Python/32native/92commands PASS at431-file
+9c7fe842d424d46b95c1cbd749bc37758e7869fe1205eaf7970d83693ff485b5.
+No game/build running. Continue alsofuturematerial/fadehandover work; no deploy/
+release/physicalFFB/Worldtuning/menuremoval; personal87dunchanged.
+
 ## September 10 screenshot packing — ACTIVE next diagnostic work
 
 Read docs/reviews/2026-09-10-zeus-readback.md. Native6864d3c6cde/SHA84b0a06a

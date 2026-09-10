@@ -27,6 +27,7 @@ import zeus_render_policy
 import zeus_palette
 import zeus_margin_clear
 import zeus_sky_options
+import zeus_stream
 import offroad_distance
 import world_host_options
 import usa_host_options
@@ -124,7 +125,7 @@ def main(argv=None):
         case = args.case.resolve()
         manifest = json.loads((case / "case.json").read_text(encoding="utf-8"))
         gl_key = "MIDZ" if manifest.get('rom') == 'crusnexo' else 'MIDV'
-        if gl_key == 'MIDZ' and (args.gl_queue_mb or args.gl_stall or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions):
+        if gl_key == 'MIDZ' and (args.gl_queue_mb or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions):
             raise ValueError('requested renderer experiment is V-Unit-only')
         if (args.zeus_native or args.zeus_stop_frame is not None) and gl_key != 'MIDZ':
             raise ValueError('Zeus diagnostics require Exotica')
@@ -169,7 +170,8 @@ def main(argv=None):
                 stall_frame, stall_ms = map(int, args.gl_stall.split(":"))
                 if not 0 <= stall_frame < reference["frames"] or not 0 < stall_ms <= 5000:
                     raise ValueError("GL stall must lie within the recording and last 1..5000 ms")
-                overrides.update(MIDV_GL_STALL_FRAME=str(stall_frame), MIDV_GL_STALL_MS=str(stall_ms), MIDV_GL_LOG="1")
+                overrides.update({gl_key+'_GL_STALL_FRAME':str(stall_frame),
+                                  gl_key+'_GL_STALL_MS':str(stall_ms), gl_key+'_GL_LOG':'1'})
             if args.gl_capture:
                 first, last = map(int, args.gl_capture.split(":"))
                 if not 0 <= first < last <= reference["frames"]:
@@ -240,6 +242,8 @@ def main(argv=None):
         if margin_trial:report['zeus_margin_clear']=margin_trial
         sky_trial=zeus_sky_options.configure(args,manifest['rom'],manifest['settings'])
         if sky_trial:report['zeus_sky']=sky_trial
+        stall_trial=zeus_stream.configure_stall(args,manifest['rom'],manifest['settings'],reference['frames'])
+        if stall_trial:report['zeus_stall']=stall_trial
         offroad_trial=offroad_distance.configure(args,manifest['rom'],manifest['settings'])
         if offroad_trial:
             report['offroad_distance']=offroad_trial
@@ -369,6 +373,8 @@ def main(argv=None):
         if margin_result:report['zeus_margin_clear']['result']=margin_result
         sky_result=zeus_sky_options.verify_receipt(sky_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if sky_result:report['zeus_sky']['result']=sky_result
+        stall_result=zeus_stream.verify_stall(stall_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
+        if stall_result:report['zeus_stall']['result']=stall_result
         if args.patch_at_frame is not None:
             receipt = f"session.lua: game patch {len(patch_entries)} words at frame {args.patch_at_frame}"
             if receipt not in (runtime / "launch.log").read_text(encoding="utf-8", errors="replace"):
