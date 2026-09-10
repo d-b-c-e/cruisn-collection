@@ -25,6 +25,7 @@ import usa_distance
 import exotica_visibility
 import zeus_render_policy
 import zeus_palette
+import zeus_margin_clear
 import offroad_distance
 import world_host_options
 import usa_host_options
@@ -82,6 +83,7 @@ def main(argv=None):
     exotica_visibility.add_arguments(ap)
     zeus_render_policy.add_arguments(ap)
     zeus_palette.add_arguments(ap)
+    zeus_margin_clear.add_arguments(ap)
     offroad_distance.add_arguments(ap)
     world_host_options.add_arguments(ap)
     usa_host_options.add_arguments(ap)
@@ -232,6 +234,8 @@ def main(argv=None):
         if zeus_trial:report['zeus_upstream']=zeus_trial
         palette_trial=zeus_palette.configure(args,manifest['rom'],manifest['settings'])
         if palette_trial:report['zeus_palette']=palette_trial
+        margin_trial=zeus_margin_clear.configure(args,manifest['rom'],manifest['settings'])
+        if margin_trial:report['zeus_margin_clear']=margin_trial
         offroad_trial=offroad_distance.configure(args,manifest['rom'],manifest['settings'])
         if offroad_trial:
             report['offroad_distance']=offroad_trial
@@ -357,6 +361,8 @@ def main(argv=None):
         zeus_render_policy.verify_receipt(zeus_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         palette_result=zeus_palette.verify_receipt(palette_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if palette_result:report['zeus_palette']['result']=palette_result
+        margin_result=zeus_margin_clear.verify_receipt(margin_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
+        if margin_result:report['zeus_margin_clear']['result']=margin_result
         if args.patch_at_frame is not None:
             receipt = f"session.lua: game patch {len(patch_entries)} words at frame {args.patch_at_frame}"
             if receipt not in (runtime / "launch.log").read_text(encoding="utf-8", errors="replace"):

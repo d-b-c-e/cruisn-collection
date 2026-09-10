@@ -1,5 +1,18 @@
 # Session Notes
 
+- **Amazon page-clear trial active:** marked realCPU captures preserve original
+  motion and full1048576RGB24/depth. WideCPU explains35/45s holes as missing
+  geometry. Exact57s center clear; broaderwindow pending. Odd7215 keeps oldpost
+  after modelabsent; fastclear lower184rows leaves upper216margin depth.
+  Nativec527bbf4792/SHA238a8798 separate/pushed,152patches; explicit
+  --zeus-margin-clear legacy|page, FFBO and liveGL only, absentlegacy.
+  278Python/31native/87commands pass, identity7cb966d1. Localmargin-trials.py
+  active with three7290replays/31GL7198..7228/native7216. Inspectprocesses,
+  verify route/resources/CPU/images, then7defaults (lastpassedparent5a80).
+  Actualfuture3500C31centers3x exceed24bit1425times; widerhostdepth needed.
+  Review docs/reviews/2026-09-09-amazon-margin-depth.md. No deployment/physical
+  force/release. Continue directly, personalStreamDeck87d unchanged.
+
 - **Palette correction and shutdown baseline:** native5a80a77e589/SHA66b0132e
   separately built/pushed,151patches. Collectionbd60bef fixes CPU oracle exit
   status, c543c52 adds Zeus diagnostic capture drain. Densef537 guards restore

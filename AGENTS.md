@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Amazon page clearing — ACTIVE continuous validation
+
+Read docs/reviews/2026-09-09-amazon-margin-depth.md. Five marked35/45/57/72s
+CPU+GL captures preserve original camera/actualADC and match all1048576native
+RGB24/depth entries. Old CPU-skipped recording comparisons remain expectedFAIL.
+Independent wideCPU center exact; most35/45s blackwedges lack submittedgeometry.
+57s exactcenter no blackground; broader approximatewindow remains open.
+Everyframe7198..7228 catches oldcheckpointpost onodd7215 after modelabsent.
+Partialfastclear onlylower184rows leaves upper216margin depth; test pageclear.
+
+Nativec527bbf4792533b587d8d48692d69ca112b0fc1e built SEPARATELY/pushed;
+build/candidates/c527bbf4792/vunit.exe SHA238a879814d43fae349329d88a21e77a1d3dbdc5325c27be42274f8b89d7baef.
+152patches reconstruct treedd624bb767ab5f044dfa42c57ff7d42cb395fd9d.
+--zeus-margin-clear legacy|page diagnostic only, absentpreserved, liveExo/FFB0.
+Knownalignedpartialpage expandsmarginrows only; center/otherpage unchanged.
+278Python/no skips,31native,10081C31/137yaw,32GPU+25policy+3palette+4margin,
+87commands PASS at7cb966d14bcf2f06986024ff7e7d68bb58c8fa7add94a9cbe6a6f3dbefecfde2.
+Local margin-trials.py ACTIVE seriallegacy/page/repeat7290 with31GL/native7216.
+Checkprocesses beforegame; inspectpixels/resources/route/CPU and then7defaults.
+All7defaultacceptance lastbelongs to5a80/SHA66b, NOT newc527yet.
+ActualfutureC31center study:3500snapshot3x includes1425centersabove24bitdepth;
+separatehostdepthmapping/backgroundlayer needed before extraExotica3x drawing.
+No deploy/release/hostedworkflow/physicalFFB/Worldtuning/menuremoval. Personal87d
+unchanged. Keep working directly; one-minuteheartbeat recovery only. Rawlocal.
+
 ## September 9 palette corruption reproduced — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-zeus-palette-lifetime.md. Collection bd60bef fixes

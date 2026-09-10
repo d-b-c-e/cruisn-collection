@@ -28,7 +28,12 @@ repeat. The original frame3600 sky/material failure is retained; the new
 [palette lifetime candidate](docs/reviews/2026-09-09-zeus-palette-lifetime.md)
 reproduces and corrects it, restoring the original good4K image exactly. Both
 dense windows repeat all49+21 guarded images while preserving original motion
-and resources. The later user-marked margins and1:12 rectangle remain open.
+and resources. The [marked-window CPU analysis and page-clear trial](docs/reviews/2026-09-09-amazon-margin-depth.md)
+separate missing submitted ground from stale margin depth: most35/45s black
+wedges lack geometry, while the1:12 checkpoint rectangle persists on alternating
+pages after its model disappears. A separate page-clear candidate is under
+native legacy/page/repeat validation. Actual future3x centers also exceed the
+current24-bit depth range; host depth representation is an integration requirement.
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 
 [The fresh Zeus upstream review](docs/reviews/2026-09-09-zeus-upstream.md) checks
@@ -39,8 +44,8 @@ restores car-selection reflections. It does not fix the marked1:12 artifact.
 Both CPU policies match captured full color/depth buffers exactly; all seven
 default cases pass. Enabled-policy Hong Kong motion/resources also pass;19/21
 sampled4K frames are identical and two differ by two pixels each. Pending palette
-row reuse is now fixed in a separate diagnostic candidate; final cross-game
-acceptance is being renewed. Next evaluate #16058's framebuffer/timing work and
+row reuse is now fixed in a separate diagnostic candidate; all seven defaults
+pass on its final capture-drain build. Next evaluate #16058's framebuffer/timing work and
 the remaining Amazon marked windows. Timer
 and SGRAM fixes from #16046 are already backported. Recheck pinned upstream heads
 when adopting/rebasing candidates; preserve legacy controls and renew cross-game
