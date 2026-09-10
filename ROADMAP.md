@@ -36,9 +36,17 @@ native legacy/page/repeat validation. All31 page-cleared images now repeat and
 the old rectangle is removed, but it exposes an uncovered sky strip. The separate
 [panorama continuation candidate](docs/reviews/2026-09-10-zeus-panorama.md)
 copies structurally verified original tiles into that strip at unchanged scale;
-four offline Amazon plans/CPU and two GPU fixtures pass. Native gameplay tests
-are active. Hong Kong's strict period checks reject its pattern, so broader
-coverage remains open. Actual future3x centers also exceed the
+all31 dense real4K images repeat with original motion/resources/fullCPU exact.
+Two fullAmazon8860 drives repeat all117GL/fullmotion; enabledHongKong preserves
+all21GL and originals. All7 defaults pass on final2b55/SHAe0ba. The first full
+repeat's consumer timeout8460 is retained despite the successful retry; diagnose
+its stage before deployment. A separate guardedGPU reproduction proves an odd-
+width screenshot packing bug, with the fix next. Hong Kong's unsupported
+panorama is left alone; broader coverage remains open. The
+[future-model/fade study](docs/reviews/2026-09-10-exotica-future-materials.md)
+finds970model buffers already present and unchanged across later snapshots,
+401later actual submissions matching earlier bytes, and a time-based fade ramp.
+Live resource ownership and fade handover still require implementation. Actual future3x centers also exceed the
 current24-bit depth range; host depth representation is an integration requirement.
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 

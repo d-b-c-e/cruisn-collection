@@ -26,7 +26,9 @@ The local wide CPU coverage prototype preserves the full native center exactly.
 It starts unknown margins without prior geometry and separately rasterizes the
 extra columns. Its margin output is an absence/coverage diagnostic, not a GL
 pixel oracle. Counts above cover the lower 250 rows of the two 88-column margins
-on the active page. Unknown contents on the inactive page are excluded.
+on the active page. Unknown contents on the inactive page are excluded. The
+actual Amazon recording uses86-column margins; the88-column prototype is an
+explicitly wider coverage experiment, not the recorded GL pixel oracle.
 
 ## Checkpoint rectangle hypothesis and isolated candidate
 
@@ -39,7 +41,9 @@ The corresponding guest clear covers only rows216–399 of page0, or616–799 of
 page400: 184 rows. The enhanced renderer clears the same rows in its widened
 margins. Old color and depth can therefore survive in their upper216 rows.
 New, more distant geometry fails against that old near depth. This explains the
-alternating page behavior and is under direct native A/B validation.
+alternating page behavior. Direct native A/B validation subsequently confirms
+that page clearing removes the remnant; the newly exposed sky needs the separate
+[panorama continuation](2026-09-10-zeus-panorama.md).
 
 Native `c527bbf4792533b587d8d48692d69ca112b0fc1e` adds an isolated
 `--zeus-margin-clear legacy|page` diagnostic. Page mode expands an aligned clear
@@ -54,14 +58,16 @@ verify its removal, with exact center/other-page colors and depth. Native tests
 cover every aligned subrange of both pages plus unaligned, spanning and wrapped
 addresses. The first GPU fixture failed because it used a nonexistent capture
 field; that failure is retained, followed by the corrected four passing cases.
-These are fixture results, not yet gameplay acceptance.
+The subsequent three native trials preserve original resources and motion;
+page mode changes all31 dense4K frames, and its repeat matches all31. Page
+clearing alone exposes a sky gap, so it is not complete visual acceptance.
 
 Full local checks pass278 Python tests without skips,31 native helpers,
 10,081 C31/137 yaw vectors,32 existing GPU cases,25 upstream policy cases,
 three palette cases and four page-clear cases across87 commands. Source identity:
 `7cb966d14bcf2f06986024ff7e7d68bb58c8fa7add94a9cbe6a6f3dbefecfde2`.
-The serial native legacy/page/repeat Amazon trial is active; its dense window
-captures every completed frame7198–7228 and actual CPU resources at7216.
+The serial native legacy/page/repeat Amazon trial completes its dense window:
+every frame7198–7228 and actual CPU resources at7216.
 
 Separate candidate: `build/candidates/c527bbf4792/vunit.exe`, SHA256
 `238a879814d43fae349329d88a21e77a1d3dbdc5325c27be42274f8b89d7baef`.
@@ -75,7 +81,8 @@ The personal Stream Deck executable remains v0.5.0/SHA87d04de4.
 The host must support larger depth values before drawing distant future scenery.
 The current Zeus fragment shader clamps to the original24-bit depth maximum.
 Independent future-section descriptors and actual camera/C31 transforms already
-produce larger centers when the original far-sphere criterion is expanded.
+produce larger centers when the original far-sphere criterion is expanded. The
+following snapshots are from the earlier Hong Kong drive, separate from Amazon.
 
 | Snapshot | 1x potential spheres / over24-bit centers | 2x | 3x |
 |---|---:|---:|---:|

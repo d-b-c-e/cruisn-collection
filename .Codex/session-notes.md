@@ -1,5 +1,17 @@
 # Session Notes
 
+- **September10 panorama validation:** final2b55/SHAe0ba all7defaults PASS at
+  frozen428-file49343cca;281Python/32native/91commands. Dense31GL repeat and
+  fullAmazon117GL/7060camera/21180ADC repeat, enabledHongKong21GL/originals exact.
+  First fullrepeat timeout8460 retained112files/111nodrops; cause open.293-file
+  public margins proof verifier PASS. Read current AGENTS and Sept10 reviews.
+  LOCAL fade-write-native6000 PASS489writes/17completions, originalmotion/21GL;
+  no game running. Reusableprobe promotion next.
+  LOCAL native OpenGL packing test confirms odd-width tightbuffer bug; next
+  packingfix/stage timing/explicit Exo stall validation.970futuremodel buffers
+  stable,401laterdraws match;486renderalpha/flags match time-based+8,3lowword
+  membership differences retained. No deploy/release/physicalFFB, personal87d.
+
 - **September10 panorama candidate:** native2b55a1d7947/SHAe0ba3bf0 separate,
   built/pushed;153patches. Structuralperiodic tile copies outside512, sameUVs,
   bounded64tiles beforeforeground/palette/upload; no addressallowlist. Four

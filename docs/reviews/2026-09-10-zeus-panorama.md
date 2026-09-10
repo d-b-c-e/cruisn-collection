@@ -17,8 +17,10 @@ is visibly gone, restoring the wall behind it. A small upper-right sky gap is
 now black. Therefore **page clearing alone is not complete visual acceptance**.
 
 The original sky consists of coplanar textured rectangles. At7216 the last tile
-ends at projected X564.42, while the widened view reaches X600. The missing
-35.58-column strip accounts for the exposed sky area. Original submitted tiles
+ends at projected X564.42, while this recording's86-column margins reach X598.
+The local CPU coverage prototype deliberately uses88-column margins, reaching
+X600; its35.58-column gap and pixel counts are a wider coverage experiment,
+not an exact pixel oracle for the recorded GL view. Original submitted tiles
 already demonstrate a repeating panorama:32 overlap comparisons agree on a
 1536-column period in each of the four marked Amazon captures. Shorter apparent
 periods fail material/UV comparisons and are rejected.
@@ -50,7 +52,41 @@ and filling the exposed sky. The other three center captures require no copy.
 All four retain the entire native center's RGB24/depth exactly. Two actual shader
 fixtures also preserve the center and other page and keep foreground geometry
 in front of the continued panorama. These are controlled fixture/offline results;
-native gameplay validation is in progress.
+native gameplay validation follows below.
+
+Three native7290-frame trials now complete all31 real3840x2160 captures from
+7198 through7228. Sky Off matches the parent page-clear candidate in all31.
+Repeat changes all31, and a second enabled run repeats all31 exactly. The
+inspected7215 image removes the checkpoint remnant, restores the wall and fills
+the upper-right sky without stretching it. The central screen rectangle
+X768..3071 is unchanged in every page-clear and panorama A/B image. All ten
+original resource files at7216 remain exact; the actual CPU oracle matches all
+1,048,576 color and depth entries, and original camera/ADC timing is preserved.
+These CPU-instrumented runs do not measure normal GL-only performance.
+
+The first full8860-frame Amazon run passes, including117 completed4K images,
+original7200 resources and the original7051camera/21153ADC samples. It captures
+nine additional late camera samples; comparison explicitly uses the older
+reference's1800..8850 interval and retains the complete new trace for repetition.
+Two local comparison failures are retained: the initial unequal trace lengths,
+and a mistakenly selected3600 resource reference for a7200 capture. Comparing
+the matching7200 reference verifies all ten files exactly.
+
+The first full repeat fails at the renderer's consumer timeout near frame8460:
+112/117 capture files are written;111 report no drops and the last records a
+dropped state message. The
+failure remains intact. Rendering and synchronous screenshot readback/file
+writing share that consumer thread, but the current log cannot identify which
+operation stalled. The fresh `sky-full-amazon-repeat-v2` succeeds: all117 images,
+the full7060camera/21180ADC samples and the original resources match. Thus a
+complete repeat pair passes, while the earlier timeout remains an open harness
+failure, not a resolved or discarded result.
+
+Enabled Hong Kong also completes6000 inputs, preserving the original shared
+4191camera/12573ADC interval and all ten original4700 resource files. All21
+completed4K images5400..5420 remain identical. The detector observes2480 groups
+and accepts none, making no copies for the unsupported pattern. This is sampled
+regression coverage, not proof of whole-track correctness.
 
 Hong Kong snapshots3500/4700/5410 fail the current strict period condition.
 Those failures are retained. The candidate therefore adds no inferred panorama
@@ -70,9 +106,9 @@ Full local checks pass281 Python tests without skips,32 native helpers,
 three palette, four margin and two panorama cases across91 commands.
 The428-file source identity is
 `49343cca42e07c6683f2570e14cd4f6a2eab204eb5fe72210922ecbc8460a9f5`.
-Serial off/repeat/repeated-repeat native Amazon7290/31GL/CPU7216 trials are active.
-Seven-default acceptance still belongs to parent5a80; it must be renewed on the
-final candidate. Personal Stream Deck v0.5.0/SHA87d04de4 is unchanged.
+The three dense native Amazon7290/31GL/CPU7216 trials pass their separate oracles.
+All seven default cases now pass on this exact candidate: actual UDP/memory
+telemetry, four software force-policy/polarity checks and Exotica21GL included. Personal Stream Deck v0.5.0/SHA87d04de4 is unchanged.
 
 ## Other findings to carry into future scenery
 
@@ -88,7 +124,25 @@ establishes that most sampled35/45s ground wedges lack submitted geometry.
 Page/panorama clearing cannot supply that ground. The future-depth capacity study
 uses the earlier Hong Kong section snapshots, separate from Amazon:1,425 eligible
 future centers at3x exceed the current24-bit range in snapshot3500. Host depth,
-future source readiness and extra geometry remain unfinished.
+future source readiness and extra geometry remain unfinished. A separate local
+cross-capture study at Hong Kong3500 associates580 of2719 potential3x future
+spheres with model/palette bindings already submitted in that snapshot. Their
+captured model bytes match the final WaveRAM snapshot. The remaining2139 use
+836 other bindings. This is catalog coverage, not proof those resources are
+missing or ready: exact clock identity, ownership and queued upload completion
+remain unverified. A per-model allowlist would leave most sources unaddressed.
+The follow-up [future-material and fade study](2026-09-10-exotica-future-materials.md)
+finds all970 selected model buffers parse and remain unchanged at later4700/5410
+snapshots;401 later actual model submissions match their earlier bytes. It also
+reconstructs486 original time-based fade-alpha/flag transitions, with three
+low-word list-membership changes explicitly outside that render-only result.
+
+The293-file [public proof](../../results/proof/2026-09-10-zeus-margins/README.md)
+recomputes original routes and selected4K pixels. Full image sequences, hardware
+resources, CPU/native/GPU/build and seven-default gates remain hash-bound
+receipts. Its first verifier count error is retained locally:112 capture files
+were written in the failed repeat,111 without drops and one with a dropped state
+message. The corrected verifier checks those distinctions explicitly.
 
 Raw evidence and local drafts remain in
 `results/diagnostics/exotica-amazon-20260909`. No raw game resources are published.

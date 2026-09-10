@@ -1,28 +1,42 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September 10 Zeus panorama — ACTIVE continuous validation
+## September 10 Zeus panorama validated — ACTIVE continuous work
 
-Read docs/reviews/2026-09-10-zeus-panorama.md. Native2b55a1d7947e178406b02ed9b876f97073116b96
-builtSEPARATELY/pushed; build/candidates/2b55a1d7947/vunit.exe
-SHAe0ba3bf0c4da44b9c0f022cf547cbad34ab2dc0bf9fa4eb5de679503eb898eb1.
-153patches reconstruct tree6ee1a6085a58121b0848272d5e77ac83c886ab57.
-281Python/no skips,32native,10081C31/137yaw,32GPU+25policy+3palette+4margin+2sky,
-91commands PASS at428identity49343cca42e07c6683f2570e14cd4f6a2eab204eb5fe72210922ecbc8460a9f5.
---zeus-sky off|repeat diagnostic, repeat needs paletteguard/pageclear/liveExo/FFB0.
-Boundedstructural periodicbackground copies, no model/textureallowlist or fixedperiod;
-sameUV/shape, onlyoutside512, beforeforeground andpalette/uploadchanges.
-FourAmazon Python/native plans PASS,32overlapchecks each; CPU7216copy fills2495
-sky pixels and fullcenter stays exact. HongKong3500/4700/5410 periodFAIL retained,
-no copy there. Local sky-trials.py ACTIVE: serialoff/repeat/repeat-again7290,
-31GL7198..7228/nativeCPU7216. Checkprocesses beforegame. Nextinspectimages/
-route/resources thenfullAmazon and7defaults; last7PASS belongs to5a80/SHA66b.
-Earlierc527pageclear removesoldpost, all31images repeat, but exposes upperright
-sky gap: partialfix, NOT completevisualacceptance. All10originalfiles/CPU/route exact.
-Model/palette snapshot audit:1600palettes matchfinalWaveRAM;1680/1686modelsmatch,
-sixvolatile-sourceFAIL retained. Finalsnapshotnotgeneralreadiness. HongKongfuture
-3500has1425centersabove24bitat3x; hostdepth/material/ground readinessstillopen.
-No deploy/release/hostedworkflow/physicalFFB/Worldtuning/menuremoval; personal87d
-unchanged. Continue directly; one-minuteheartbeat recovery only; rawresourceslocal.
+Read docs/reviews/2026-09-10-zeus-panorama.md and
+2026-09-10-exotica-future-materials.md. Native2b55a1d7947/SHAe0ba3bf0 is built
+SEPARATELY/pushed, frozen build/candidates/2b55a1d7947/vunit.exe.153patches exact
+6ee1a6085a58121b0848272d5e77ac83c886ab57. All7defaults/actualUDP-memory/4software
+force/Exo21GL now PASS on this candidate.281Python/no skips,32native,10081C31/
+137yaw,32GPU+25policy+3palette+4margin+2sky,91commands PASS,428-file identity
+49343cca42e07c6683f2570e14cd4f6a2eab204eb5fe72210922ecbc8460a9f5.
+
+All3dense sky7290 runs preserve originalroute/resources/fullCPU7216.31real4K
+images7198..7228 repeat; actual7215post remnant and upperrightsky gap are fixed.
+Originalscreen interior exact. Earlier pageclear alone exposes skygap, NOT fullfix.
+FullAmazon sky-full-amazon and sky-full-amazon-repeat-v2 pass8860/all117GL and
+full7060camera/21180ADC. Originalcommon interval1800..8850 explicit; new repeats
+through8859. First fullrepeat consumer timeout8460 FAIL retained:112files/117,
+111withoutdrops, last1state drop. Retry success does NOT explain this timeout.
+EnabledHongKong6000/all21GL/originalresources/motion PASS, unsupportedperiod
+rejected2480groups/0copies. ActualAmazon margins86; offlineCPUcoverage88 is a
+separate coverageexperiment. Proof results/proof/2026-09-10-zeus-margins has293
+files, verifierPASS; selectedpixels/routes recomputed, fullresources/geometry/
+CPU/GPU/build/7defaults remain receipts. Rawresourceslocal.
+
+LOCAL future-model-lifetime:970futuremodel buffers parse13638polygons, all970
+unchanged3500/4700/5410;401later actualdraws matchearlierWaveRAM. NOT liveownership/
+upload/texture-readiness proof.486original time-based alpha/flags transitions
+match+8;3low16list-membership changes retainfullwordFAIL. Fade-combined.lua actual
+write probe fade-write-native6000HongKong PASS:489actualwrites/17completions,
+originalcamera/ADC and21GL exact. No emulator remains; promote reusableprobe. LOCAL realOpenGL
+readback-padding.py PASS proves Zeus tightcapture storage needs PACK_ALIGNMENT1
+at oddwidths; VUnit alreadyhandlesit. NOT fixed in2b55. Next follow LOCAL
+next-diagnostic-candidate.md: separate packingfix, consumerstage timing and
+acknowledged Exo stall test (existing --gl-stall silentlysetsMIDV vars onExo).
+Do not guess stalled phase or simply raise timeout. Then exactscene/resources,
+widehostdepth/futuregeometry/fadehandover; other-game paritycontinues.
+No deploy/release/hostedworkflows/physicalFFB/Worldtuning/menu removal; personal
+v0.5/SHA87d04de4 unchanged. Work directly; one-minuteheartbeat recovery only.
 
 ## September 9 Amazon page clearing — ACTIVE continuous validation
 
