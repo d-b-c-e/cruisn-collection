@@ -36,11 +36,62 @@ change in 33/59 samples. The car-selection reflection is restored in the inspect
 frame, while damaged description text and the 1:12 artifact remain. Changed pixel
 counts are not a visual acceptance verdict.
 
-Individual-policy trials, repeatability, Hong Kong and seven-default renewal are
-still in progress at this checkpoint. Do not deploy or make this the default yet.
-The earlier baseline frame3600 mismatch remains open. A separate local code review
-identified possible palette-slot reuse before pending draws are flushed; this is
-a hypothesis to reproduce, not a confirmed explanation of that frame.
+The individual trials and combined repeat now finish the full drive with the same
+inputs, camera and ADC timing. Their frame7200 model/geometry/resource checks all
+pass. The combined repeat matches all59 completed4K images exactly.
+
+| Selected policy | Amazon images changed from legacy | Observation |
+|---|---:|---|
+| Depth floor | 33/59 | Changes depth/overlap decisions; not a whole-track visual acceptance verdict. |
+| Alpha depth | 0/59 | No visible benefit in this sample; synthetic foreground/behind-surface GPU tests exercise it. |
+| Blend fields | 4/59 | Changes frames2520/2640/2760/2880, restoring car-selection floor reflections. |
+| All three | 33/59 | Includes the reflection improvement; all59 images repeat exactly. |
+
+Two additional headless CPU runs preserve the original3650-frame input prefix and
+1850camera/5550actual ADC samples. At frame3600, the independent CPU rasterizer
+matches **all1,048,576 RGB24 and depth entries exactly**, under both legacy and
+combined semantics. Both native/Python model oracles also match414models and
+3488ordered quads. The headless replay's comparison against the original GL-only
+CPU snapshots deliberately fails; those retained reports are not overall passes.
+The CPU-buffer results are separate, explicit evidence. WaveRAM is a final
+snapshot, so these checks do not establish write/upload ordering generally.
+
+The damaged car-description text also appears in the headless CPU image at2520.
+That defect is not explained solely by the enhanced GL renderer. The marked
+Amazon1:12 artifact is unchanged by the combined trial at7200. All seven default
+cases now pass on this exact candidate, including actual UDP/memory telemetry,
+four software force-policy/polarity checks and Exotica's21 completed4K images.
+The enabled-policy Hong Kong trial also completes6000frames and preserves
+4191camera/12573actual ADC samples. Native/Python match316models and2570ordered
+quads; original model/device/resource bytes are unchanged after only the declared
+policy fields are normalized. Of its21 completed4K gameplay images,19 are exact
+and frames5417/5418 each change just two pixels. This is narrow sampled coverage,
+not whole-track visual acceptance. Do not deploy or make this the default.
+
+Public proof is in `results/proof/2026-09-09-zeus-upstream`. Its verifier
+recomputes six full Amazon input/motion traces, two headless prefixes and the
+selected4K car-selection/1:12 windows, using lossless image bases/deltas. Full
+geometry/resources, all59GL, CPU/GPU/build, Hong Kong and seven-default checks
+remain hash-bound receipts. Raw game operands stay local.
+
+## Separate palette-lifetime investigation
+
+The native GL consumer uses256 palette rows. Queued vertices retain their row
+number, but an upload can wrap around and replace that row before those vertices
+are drawn. Its batch boundaries depend on when the consumer reads the ring, so
+this is a concrete route to host-timing-dependent material corruption.
+
+A synthetic GPU reproduction produces different colors for the same geometry
+and palette loads when the draw is delayed. Flushing before overwriting a row
+still used by pending geometry preserves its intended color. The actual Amazon
+frame3600 capture contains288 palette loads between its clear and final draw.
+Replaying those captured commands/resources with the CPU oracle produces29,968
+wrong full-buffer pixels under the delayed256-row policy; an early draw or one
+guarded flush restores exact native CPU pixels. Those differences are outside
+the currently displayed page in that capture. This demonstrates susceptibility
+in real captured data, but **does not yet reproduce the specific displayed
+black-sky failure** in the earlier repeat. Native consumer event tracing and a
+guarded A/B trial are next. Keep the earlier frame3600 failure as unresolved.
 
 ## Relevant changes
 

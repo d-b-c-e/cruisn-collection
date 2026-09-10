@@ -1,5 +1,19 @@
 # Session Notes
 
+- **Zeus upstream trial checkpoint:** see zeus-upstream review and proof. Native
+  edb517/cb65a787 is separate/pushed,149patches; personal87d04de4 unchanged.
+  Six full Amazon policy runs preserve motion,all59combined images/resources
+  repeat. Blend restores car-select reflections;1:12 artifact remains. Legacy/all
+  CPU3600 full1048576color/depth entries exact; headless GL-snapshot FAIL separate.
+  Enabled HongKong6000 motion/resources/geometry pass;19/21GL equal,2pixels each
+  in5417/5418. All7defaultcases/telemetry/4softwareforce now pass onedb.
+  273Python,29native,32GPU+25Zeus cases,81commands,409identityad11a87d.
+  Public proof recomputes6Amazon routes/2CPU prefixes/selected2520+7200pixels;
+  other results receipts. Local palette reuse repro shows actual288load scene
+  susceptible but NOT displayedblacksky rootcause yet. Next nativepending-slot
+  guard/trace withlegacy control, then upstream16058 and futurehost readiness.
+  Local palette-draft helper/test pass, NOT linked. Continue directly,serialFFB0.
+
 - **Private Zeus state / Amazon / upstream:** see the September 9 private-state
   and zeus-upstream reviews. 40093 Hong Kong + 537/19445 Amazon setup calls,
   278/170/164 private-context pairs match independent native/Python. 269 Python,

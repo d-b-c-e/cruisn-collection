@@ -28,10 +28,17 @@ repeat. Frame 3600 differs in sky/material appearance and remains a failing pair
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 
 [The fresh Zeus upstream review](docs/reviews/2026-09-09-zeus-upstream.md) checks
-current master and all 291 open PRs. Trial #16094's depth/blend changes separately
-against Amazon/Hong Kong; follow with #16058's framebuffer/timing work. Timer and
-SGRAM fixes from #16046 are already backported. Preserve legacy controls and
-renew cross-game defaults before adoption or deployment.
+current master and all 291 open PRs. A separate default-off candidate now carries
+#16094 in CPU, GPU and independent geometry oracles. Amazon's six full policy
+trials preserve motion; the combined59-frame4K result repeats, and blend decoding
+restores car-selection reflections. It does not fix the marked1:12 artifact.
+Both CPU policies match captured full color/depth buffers exactly; all seven
+default cases pass. Enabled-policy Hong Kong motion/resources also pass;19/21
+sampled4K frames are identical and two differ by two pixels each. Next trace/fix
+pending palette-row reuse and evaluate #16058's framebuffer/timing work. Timer
+and SGRAM fixes from #16046 are already backported. Recheck pinned upstream heads
+when adopting/rebasing candidates; preserve legacy controls and renew cross-game
+defaults before adoption or deployment.
 
 [Exotica's future-section decoder](docs/reviews/2026-09-09-exotica-future-sections.md)
 now matches native/Python sources across 54 sections and predicts 2,507 later

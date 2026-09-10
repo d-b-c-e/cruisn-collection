@@ -1,5 +1,42 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Zeus upstream trials — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-zeus-upstream.md. Native edb517392f82b14646736c47f12519bf28900b9c
+is separately built/pushed, frozen build/candidates/edb517392f8/vunit.exe,
+SHA cb65a78766284fd839965f363e5173056e15a3a8664fcbdd65e435d9dd6179bb.
+149 patches reconstruct tree0f37e795158c8792ba000c7e3228035c3dec2808.
+CLI-only --zeus-upstream legacy|depth|alpha|blend|all adapts open upstream16094
+head54b7ec07 to CPU/GL/native/Python; absent retains old recordings. Nonlegacy
+requires candidate/FFB0/native acknowledgment. Versioned model journal checked.
+
+Six8860 Amazon runs preserve7051camera/21153actualADCtimes; combined all59GL
+3840x2160 and ten model/resource files repeat exactly. Blend restores car-select
+reflections (4/59); depth changes33/59; alpha0/59. Marked1:12 artifact unchanged.
+Two3650 headless runs preserve1850camera/5550ADC and independently match all
+1048576 native RGB24/depth entries; native/Python414models/3488quads PASS.
+Headless-vs-GL CPU screenshot comparisons deliberately FAIL, retained separately.
+Hong Kong enabled trial6000/4191camera/12573ADC/316models/2570quads/resources PASS;
+19/21GL exact,5417/5418 each differ2pixels. No broad visual/future drawing claim.
+All7defaults/actualUDP-memory/4softwareforce/Exo21GL now PASS on edb517.
+273Python/no skips,29native,10081C31/137yaw,32GPU+25Zeus pixels/81commands PASS at
+409-file identityad11a87d8f9def7406d807c25d606b513671938bbc9bb3881e8b1c9b720b2336.
+Public proof recomputes6Amazon routes/2CPU prefixes/selected2520+7200pixels;
+HongKong/fullgeometry/resources/59GL/CPU/GPU/defaults/build remain receipts.
+
+NEXT actual palette lifetime: GL256row pool can overwrite pending vertices.
+SyntheticGPU reproduction PASS. Captured3600 has288loads; delayed CPU replay
+corrupts29968full-buffer pixels; guard restores exactnative. These are outside
+the displayed page: NOT yet specific oldblacksky explanation. Local drafts
+palette-lifetime-draft.h/palette-test-draft.cpp pass native; NOT linked yet.
+Add native pending-slot trace/guard with explicitlegacy control, serial4K A/B,
+originalresources and renewed defaults. Car-descriptiontext broken in CPU too.
+Missing upstream16058 framebufferorigin/stride/clock follows;16046 alreadyours.
+Then resume Exotica future host material/readiness and four-game parity.
+Personalv0.5/SHA87d04de4 unchanged. No deploy/release/hostedworkflows/physicalFFB/
+Worldtuning/menuremoval. Rawresources LOCAL. Checkrig, serialemulators. Continue
+directly; one-minute heartbeat is recoveryonly, no cutoff.
+
 ## September 9 Exotica private state and Amazon — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-exotica-private-state.md and zeus-upstream.md.
