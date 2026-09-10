@@ -1,0 +1,82 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-10T21:02:54.083545+00:00",
+  "master": "999a6334107a4d6a88c728781c00163c67af6054",
+  "previous_master": "607f9dc340bff276bb61f1357d3915e8d53ac556",
+  "open_prs": 292,
+  "main_commits": [
+    {
+      "sha": "999a6334107a4d6a88c728781c00163c67af6054",
+      "subject": "w65816.cpp: fix regressed status flag bits (#16097)"
+    }
+  ],
+  "main_files": [
+    "src/devices/cpu/m6502/w65816.cpp",
+    "src/devices/cpu/m6502/w65816.h"
+  ],
+  "main_relevant": [],
+  "changed_prs": [
+    {
+      "number": 16098,
+      "head": "0d956a221dd9a013468256aee895ec373cd221a7",
+      "title": "floppy: fix/extend hard-sectored variant handling in the core",
+      "url": "https://github.com/mamedev/mame/pull/16098",
+      "files": [
+        "src/devices/imagedev/floppy.cpp",
+        "src/lib/formats/flopimg.cpp"
+      ],
+      "relevant": []
+    },
+    {
+      "number": 16096,
+      "head": "b33063c2f8b8d142eef9babfc5281a98be057489",
+      "title": "dsbz80: supply uart clock from parent model(1|2|3) device",
+      "url": "https://github.com/mamedev/mame/pull/16096",
+      "files": [
+        "src/mame/sega/dsbz80.cpp",
+        "src/mame/sega/dsbz80.h",
+        "src/mame/sega/model1.cpp",
+        "src/mame/sega/model1.h",
+        "src/mame/sega/model2.cpp",
+        "src/mame/sega/model2.h",
+        "src/mame/sega/model3.cpp",
+        "src/mame/sega/model3.h"
+      ],
+      "relevant": []
+    },
+    {
+      "number": 16090,
+      "head": "cac7b3bb51821485437d67368c88881c7cd03a2d",
+      "title": "Add Macintosh Cordyceps (Power Mac x200) stub driver",
+      "url": "https://github.com/mamedev/mame/pull/16090",
+      "files": [
+        "src/mame/apple/capella.cpp",
+        "src/mame/apple/capella.h",
+        "src/mame/apple/f108.cpp",
+        "src/mame/apple/iosb.cpp",
+        "src/mame/apple/iosb.h",
+        "src/mame/apple/maccordyceps.cpp",
+        "src/mame/apple/macquadra630.cpp",
+        "src/mame/mame.lst"
+      ],
+      "relevant": []
+    },
+    {
+      "number": 16083,
+      "head": "1106ed51ff7e2e833a2dfa95adea2bb1f40726e7",
+      "title": "galaxian/galaxian.cpp: Add another clone of Port Man (bad Gfx ROMs)",
+      "url": "https://github.com/mamedev/mame/pull/16083",
+      "files": [
+        "src/mame/galaxian/galaxian.cpp",
+        "src/mame/galaxian/galaxian.h",
+        "src/mame/mame.lst"
+      ],
+      "relevant": []
+    }
+  ],
+  "closed": [
+    16097,
+    13444
+  ],
+  "scope": "All current open heads and current main inventoried. Main delta and new/changed heads inspected; unchanged heads inherit prior full-path audit, not fresh downloads of every PR diff."
+}

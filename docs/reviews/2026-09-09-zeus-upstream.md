@@ -243,3 +243,20 @@ The same four open Zeus PRs remain, including16094 at
 in master or the open-PR inventory since the first review. This remains a dated
 snapshot; upstream work may change later. Local refresh receipts are in
 `upstream/refresh-summary.json` and `upstream/refresh-all-open-pr-files.json`.
+
+### September10 evening refresh
+
+At21:02:54UTC, master is `999a6334107a4d6a88c728781c00163c67af6054`.
+Since the17:03 audit, it gained only the unrelated
+[65816 status-register fix](https://github.com/mamedev/mame/pull/16097).
+All292 current open PR heads were inventoried. Four new/changed heads had their
+complete file lists fetched; they concern floppy images, Sega sound UART clocks,
+Macintosh hardware and a Galaxian clone. None touches Zeus, TMS320C3x or `poly.h`.
+
+The four previously identified Zeus PR heads remain unchanged, including
+[16094's depth/blending work](https://github.com/mamedev/mame/pull/16094).
+Unchanged heads inherit the earlier complete path audit; this refresh does not
+claim a new full diff download of every open PR. The
+[archived inventory verifier](../../results/proof/2026-09-10-upstream-evening/README.md)
+recomputes head changes and path selection. No newly detected upstream Zeus fix
+changes the current candidate plan.

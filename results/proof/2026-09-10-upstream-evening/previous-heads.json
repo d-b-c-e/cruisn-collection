@@ -1,0 +1,1760 @@
+[
+  {
+    "number": 16097,
+    "head": "4b7b1ab9cb595bd903ad133a5366f3966c193967",
+    "title": "w65816.cpp: fix regressed status flag bits",
+    "url": "https://github.com/mamedev/mame/pull/16097"
+  },
+  {
+    "number": 16096,
+    "head": "9c0521b37882006e9f1d9919f03b69b349ab4cf4",
+    "title": "dsbz80: supply uart clock from parent model(1|2|3) device",
+    "url": "https://github.com/mamedev/mame/pull/16096"
+  },
+  {
+    "number": 16094,
+    "head": "54b7ec0720e1d3a3d26a2e881b06628f78732837",
+    "title": "video/zeus2.cpp: improve depth and blending",
+    "url": "https://github.com/mamedev/mame/pull/16094"
+  },
+  {
+    "number": 16093,
+    "head": "46d6825b9ea6980e50899a4a51dbe922c61a9893",
+    "title": "st2302u_bbl_spi.cpp - improved sound further, allowed toumapet & qpet to boot [anonymous]",
+    "url": "https://github.com/mamedev/mame/pull/16093"
+  },
+  {
+    "number": 16092,
+    "head": "a370d5e33c2f169fbf9cbf632cc9d3fa4428e778",
+    "title": "ti99: add configurable Gigacart cartridge boards",
+    "url": "https://github.com/mamedev/mame/pull/16092"
+  },
+  {
+    "number": 16091,
+    "head": "423d87942492d30cdf48c736062c3b90db967e92",
+    "title": "tms9901: update synchronous interrupt output on every external clock",
+    "url": "https://github.com/mamedev/mame/pull/16091"
+  },
+  {
+    "number": 16090,
+    "head": "fb3504c038daec1eaa42eda726059d419cf06745",
+    "title": "Add Macintosh Cordyceps (Power Mac x200) stub driver",
+    "url": "https://github.com/mamedev/mame/pull/16090"
+  },
+  {
+    "number": 16089,
+    "head": "b9fbfde774fdd3f3bed5b5f4367301f842f907fc",
+    "title": "Update leapfrog_leappad_cart.xml - fix 2 sizes",
+    "url": "https://github.com/mamedev/mame/pull/16089"
+  },
+  {
+    "number": 16088,
+    "head": "bf850e460d8f490632c9a5c89e232c6c89b28e48",
+    "title": "gaelco/lotoplay.cpp: Z80 sets are devices for programming Loto-Plays, not Loto-Plays",
+    "url": "https://github.com/mamedev/mame/pull/16088"
+  },
+  {
+    "number": 16087,
+    "head": "0b8217b553c73c4093f8e590d058d89a6ce1473a",
+    "title": "i386: correct CPU generation flags for several opcodes",
+    "url": "https://github.com/mamedev/mame/pull/16087"
+  },
+  {
+    "number": 16086,
+    "head": "c3fca6cfb6b8118812a688dcbf9f0bcfb1e2bd62",
+    "title": "roland/roland_sc8850.cpp: Hook up SC-8820 peripherals",
+    "url": "https://github.com/mamedev/mame/pull/16086"
+  },
+  {
+    "number": 16084,
+    "head": "fe8b357cdb82f55a82c5a284c4ee985cd6ec7a94",
+    "title": "arktechnico/wildcats.cpp: Add Wild Cats pachislot machine",
+    "url": "https://github.com/mamedev/mame/pull/16084"
+  },
+  {
+    "number": 16083,
+    "head": "8d9aa303a40ac357538889c033e025c2e5a202a9",
+    "title": "galaxian/galaxian.cpp: Add another clone of Port Man (bad Gfx ROMs)",
+    "url": "https://github.com/mamedev/mame/pull/16083"
+  },
+  {
+    "number": 16079,
+    "head": "4785a2244de77593c89c8d2e5a03658257980814",
+    "title": "ti/ti80.cpp: Add TI-80 graphing calculator",
+    "url": "https://github.com/mamedev/mame/pull/16079"
+  },
+  {
+    "number": 16077,
+    "head": "c61af78b72ef211c9122064602a5fdb33341ed0a",
+    "title": "util/avhuff: enforce audio channel limit consistently",
+    "url": "https://github.com/mamedev/mame/pull/16077"
+  },
+  {
+    "number": 16076,
+    "head": "a5221e92ff7fa5f9c0f8cab1e8b3e2c25e87b896",
+    "title": "mame/ui: Supported predefined palettes",
+    "url": "https://github.com/mamedev/mame/pull/16076"
+  },
+  {
+    "number": 16074,
+    "head": "3142cb1b04b43dc76f4675ac09abc757db6d35af",
+    "title": "Add new device for UM348xA and hook it up to atetb3482 [ClawGrip, ArcadeHacker, Sean Riddle]",
+    "url": "https://github.com/mamedev/mame/pull/16074"
+  },
+  {
+    "number": 16073,
+    "head": "c300984d950e1f308a12bbb19913dc798c7cccb8",
+    "title": "Creating a `manager.warnings_enabled` property exposed to LUA",
+    "url": "https://github.com/mamedev/mame/pull/16073"
+  },
+  {
+    "number": 16071,
+    "head": "d64ad0515beac6adeffada16b2500d8f58b26bc7",
+    "title": "philips/velo.cpp: Add not working Velo 1 handheld PC",
+    "url": "https://github.com/mamedev/mame/pull/16071"
+  },
+  {
+    "number": 16070,
+    "head": "b833b369b70e071e82f7b2220b24395f98e421d8",
+    "title": "nec/mobilepro.cpp: Add not working MobilePro 450 handheld PC",
+    "url": "https://github.com/mamedev/mame/pull/16070"
+  },
+  {
+    "number": 16067,
+    "head": "389dbb74e7311beb8169e2ca2ba2ee281ee7fe59",
+    "title": "oberheim/xpander.cpp: Added preliminary driver for the Matrix-12.",
+    "url": "https://github.com/mamedev/mame/pull/16067"
+  },
+  {
+    "number": 16059,
+    "head": "3f1d1cfcd051b071bdf0bd3d41696fa594b579fc",
+    "title": "matsushita/fwu1.cpp: Add not working word processors",
+    "url": "https://github.com/mamedev/mame/pull/16059"
+  },
+  {
+    "number": 16056,
+    "head": "516fcfaece7ef1167b4288418cefae1187fca6e9",
+    "title": "osd/sdl: quit on SDL_QUIT (Cmd-Q / app Quit) on macOS",
+    "url": "https://github.com/mamedev/mame/pull/16056"
+  },
+  {
+    "number": 16054,
+    "head": "d798958091abcd053496b961e140081eb798fa93",
+    "title": "toshiba/rupo.cpp: Add not working word processor",
+    "url": "https://github.com/mamedev/mame/pull/16054"
+  },
+  {
+    "number": 16053,
+    "head": "9cc940f874faeb43d4ba18f7fb009aed6f897d3d",
+    "title": "video/sti3400: Add preliminary MPEG video decoder",
+    "url": "https://github.com/mamedev/mame/pull/16053"
+  },
+  {
+    "number": 16047,
+    "head": "80da107336dbbf2370fd26b7ec3ae85aebad498c",
+    "title": "cdrom: Reject negative track numbers",
+    "url": "https://github.com/mamedev/mame/pull/16047"
+  },
+  {
+    "number": 16045,
+    "head": "d564647552e1f35e322564c6d29da9f7453df107",
+    "title": "chdman: Handle metadata stdout write errors",
+    "url": "https://github.com/mamedev/mame/pull/16045"
+  },
+  {
+    "number": 16044,
+    "head": "53814aab35dd2198cc2a8a9bb495c0dc9b2e9990",
+    "title": "chdman: Handle CD extraction read failures",
+    "url": "https://github.com/mamedev/mame/pull/16044"
+  },
+  {
+    "number": 16043,
+    "head": "35079d2772f8f3174146b1268c90ff0cb33e26e7",
+    "title": "chdman: Handle raw input read errors and padding",
+    "url": "https://github.com/mamedev/mame/pull/16043"
+  },
+  {
+    "number": 16038,
+    "head": "a7086e977a90277f182e31537ab8d5e87606e0d1",
+    "title": "segas32_v.cpp per line clipping - titlef, jpark, ga2",
+    "url": "https://github.com/mamedev/mame/pull/16038"
+  },
+  {
+    "number": 16033,
+    "head": "df37015761620fd3e62e08901e42e048e564f813",
+    "title": "dec/decwritr.cpp: Add an older LA120",
+    "url": "https://github.com/mamedev/mame/pull/16033"
+  },
+  {
+    "number": 16032,
+    "head": "85c1c8fac4188dea5eb13ad5147cc2a9e59c7198",
+    "title": "zaurus: Fixed metadata spacing for MI/MT systems",
+    "url": "https://github.com/mamedev/mame/pull/16032"
+  },
+  {
+    "number": 16028,
+    "head": "d7cd38a79c37f1f3c5562bae34545c22827b055c",
+    "title": "segas32: Emulate the per-scanline line window (ga2 cave torch, titlef arena)",
+    "url": "https://github.com/mamedev/mame/pull/16028"
+  },
+  {
+    "number": 16023,
+    "head": "735f29b8fdfcb9ab6829f09216162c54d7b5d919",
+    "title": "Add a UNIBUG ROM version of TM 990 189",
+    "url": "https://github.com/mamedev/mame/pull/16023"
+  },
+  {
+    "number": 16021,
+    "head": "67e1d2311f150e6b496001ab5366d6a603b5daca",
+    "title": "itech/itech32: Drivers Edge wheel output",
+    "url": "https://github.com/mamedev/mame/pull/16021"
+  },
+  {
+    "number": 16016,
+    "head": "c05c712368ae53a166d43bc9bf9bbb1ae3eab5fc",
+    "title": "cpu/sharc: fix circular buffer wrap when the index lands on B+L",
+    "url": "https://github.com/mamedev/mame/pull/16016"
+  },
+  {
+    "number": 16015,
+    "head": "41c52cf3494af3077e5d1de913589cb3a5605205",
+    "title": "Armadillo Racing (adillor, adillorj) - Additional dev inputs",
+    "url": "https://github.com/mamedev/mame/pull/16015"
+  },
+  {
+    "number": 16004,
+    "head": "da0db98cc327401675e9094d4bd029583f421d0d",
+    "title": "gaelco/gaelco3d.cpp: Add wheel motor output for Speed Up",
+    "url": "https://github.com/mamedev/mame/pull/16004"
+  },
+  {
+    "number": 15998,
+    "head": "3d9cbaa2f7bead46dbbdf32021106d135be0d122",
+    "title": "video/huc6260.cpp: Fix possible compile error",
+    "url": "https://github.com/mamedev/mame/pull/15998"
+  },
+  {
+    "number": 15995,
+    "head": "99924a059e285fbb6b0213f5bb14092e3c7b416c",
+    "title": "tests: add filename utility coverage",
+    "url": "https://github.com/mamedev/mame/pull/15995"
+  },
+  {
+    "number": 15991,
+    "head": "48e22f787c54838b343f5673ae5022e08ef1be37",
+    "title": "konami/overdriv.cpp: Updates",
+    "url": "https://github.com/mamedev/mame/pull/15991"
+  },
+  {
+    "number": 15979,
+    "head": "cd08bd4ba00ea7bd1a0c2a8df2fab2f451bca3f7",
+    "title": "Update Chinese_Simplified strings.mo",
+    "url": "https://github.com/mamedev/mame/pull/15979"
+  },
+  {
+    "number": 15978,
+    "head": "6574f9ced52b8e19a813f4329ce34df8278427b7",
+    "title": "scc68070: Add UART output",
+    "url": "https://github.com/mamedev/mame/pull/15978"
+  },
+  {
+    "number": 15972,
+    "head": "53fe5e7286ac3a39068a99753b7832519c7b8b71",
+    "title": "wangpc: add the PC-PM007 IBM PC Color Emulation card",
+    "url": "https://github.com/mamedev/mame/pull/15972"
+  },
+  {
+    "number": 15943,
+    "head": "c13b53ee9e0f309e7846b6de8175b67df5baabef",
+    "title": "video/imagetek_i4100.cpp: Fix regression with buffered sprite RAM, Updates",
+    "url": "https://github.com/mamedev/mame/pull/15943"
+  },
+  {
+    "number": 15940,
+    "head": "4c8e8e80a871b2b3c15eb2343f2a8a8b748b1e7e",
+    "title": "metro/hyprduel.cpp: Demote magerror as MACHINE_IMPERFECT_GRAPHICS due to glitchy graphics, Updates",
+    "url": "https://github.com/mamedev/mame/pull/15940"
+  },
+  {
+    "number": 15930,
+    "head": "61bf7226c601a96d0ef96d1ef5df2e5e2719873d",
+    "title": "stv, saturn: Fixed Sand-R title and shortname consistency, promoted saturn:sandra to working, misc: Some cleanups",
+    "url": "https://github.com/mamedev/mame/pull/15930"
+  },
+  {
+    "number": 15923,
+    "head": "fdf86878b29072091a6f02c53098a6a360907f44",
+    "title": "mc6852: drive the interrupt output",
+    "url": "https://github.com/mamedev/mame/pull/15923"
+  },
+  {
+    "number": 15922,
+    "head": "84c932f6879f7afc90f5a8bec40ec8ea9b406b31",
+    "title": "mc6844: arbitrate continuously and implement memory to device transfers",
+    "url": "https://github.com/mamedev/mame/pull/15922"
+  },
+  {
+    "number": 15921,
+    "head": "4324994a2a9bca9633ec689c0c33d31a805a2570",
+    "title": "mc6854: fix status/interrupt handling and the DMA data path",
+    "url": "https://github.com/mamedev/mame/pull/15921"
+  },
+  {
+    "number": 15920,
+    "head": "6200a5fa1ec12a77d2d3bde262a59a494a768b6b",
+    "title": "luna_88k.cpp: first pass of a layout",
+    "url": "https://github.com/mamedev/mame/pull/15920"
+  },
+  {
+    "number": 15917,
+    "head": "caea700d0ee95a1d2f03b71794be5376093c6d22",
+    "title": "wangpc: don't wedge the machine when a floppy is inserted",
+    "url": "https://github.com/mamedev/mame/pull/15917"
+  },
+  {
+    "number": 15910,
+    "head": "e6907c924e41ad6b74cc547a88cf4601beb19902",
+    "title": "util/cdrom.cpp: Support CD+G Discs",
+    "url": "https://github.com/mamedev/mame/pull/15910"
+  },
+  {
+    "number": 15905,
+    "head": "15d0f295741f2a56f2ca5d0e1c018e0046490a29",
+    "title": "cdrom: preserve additional CD track indexes",
+    "url": "https://github.com/mamedev/mame/pull/15905"
+  },
+  {
+    "number": 15904,
+    "head": "d92760c2f9c92787aeba2c29f1b72d39d7a0de04",
+    "title": "chdman: Return failure when CHD verification fails",
+    "url": "https://github.com/mamedev/mame/pull/15904"
+  },
+  {
+    "number": 15903,
+    "head": "015522d3be944186969f0cca98dde6233863e04d",
+    "title": "emax.cpp: Boot past loading software",
+    "url": "https://github.com/mamedev/mame/pull/15903"
+  },
+  {
+    "number": 15901,
+    "head": "c1e3a4627ee9fd2e87d3d5e02eacd9745777948f",
+    "title": "chd: Validate compressed hunk lengths",
+    "url": "https://github.com/mamedev/mame/pull/15901"
+  },
+  {
+    "number": 15900,
+    "head": "38f057a5b0a39ad34e0550eab8ff20a27899dae3",
+    "title": "cdrom: Handle short sector reads",
+    "url": "https://github.com/mamedev/mame/pull/15900"
+  },
+  {
+    "number": 15895,
+    "head": "b981745cabe7756ed8a7f341f8d43a4fa840d88c",
+    "title": "avoid unnecessary `c_str()` calls",
+    "url": "https://github.com/mamedev/mame/pull/15895"
+  },
+  {
+    "number": 15871,
+    "head": "bcff3962c2c63f74d03186ed3a2244fb69609c40",
+    "title": "konami/twinkle: Configure XV-D701 for DVD media on IIDX 6th through 8th style",
+    "url": "https://github.com/mamedev/mame/pull/15871"
+  },
+  {
+    "number": 15863,
+    "head": "8173c6332bbf470b194dec386bd26dd6799b0a8f",
+    "title": "i8291a: release bus outputs on reset, gate APT on TPAS/LPAS in mode 3",
+    "url": "https://github.com/mamedev/mame/pull/15863"
+  },
+  {
+    "number": 15857,
+    "head": "0b96524a389f0565a4ec76e0ffdff587b28378d6",
+    "title": "Skeleton driver for Covielsa Multigame",
+    "url": "https://github.com/mamedev/mame/pull/15857"
+  },
+  {
+    "number": 15856,
+    "head": "06af1c2ef6ad2f95c5832fe7c95d47987d6a3f4b",
+    "title": "Skeleton driver for Octavian G650 hardware",
+    "url": "https://github.com/mamedev/mame/pull/15856"
+  },
+  {
+    "number": 15820,
+    "head": "a2a2d0f4f9512d577308f24c0d307ea6b48f4d3e",
+    "title": "Libraries update and some chores",
+    "url": "https://github.com/mamedev/mame/pull/15820"
+  },
+  {
+    "number": 15795,
+    "head": "f17b3ad2c0e029702baed43ac1f9346e870bc6c5",
+    "title": "{vfx,vfxsd,sd1,sd132}.lay: Regenerate with improved SVG tags.",
+    "url": "https://github.com/mamedev/mame/pull/15795"
+  },
+  {
+    "number": 15794,
+    "head": "beff82d54a0de0f8e8e167fd83c22650dc1b7b7a",
+    "title": "Prose 2000: Added missing DSP rom to older hardware, added new upd7720 CPU core, corrected interrupt hookup, both versions are now working.",
+    "url": "https://github.com/mamedev/mame/pull/15794"
+  },
+  {
+    "number": 15786,
+    "head": "1021a789e26e0f62305677ce216178b654f0a157",
+    "title": "prose2k: emulate uPD7720 DSP audio output",
+    "url": "https://github.com/mamedev/mame/pull/15786"
+  },
+  {
+    "number": 15777,
+    "head": "313ead5c1647ac1fbdbd53156d01dc505373de2b",
+    "title": "namco/namcos23: emulate the C139 serial link - two-cabinet link play for Time Crisis II",
+    "url": "https://github.com/mamedev/mame/pull/15777"
+  },
+  {
+    "number": 15767,
+    "head": "ca147139f4b1e2382cb3680c5415f4a1b11fd298",
+    "title": "psx.cpp: wrap CLUT fetch at the right edge of VRAM",
+    "url": "https://github.com/mamedev/mame/pull/15767"
+  },
+  {
+    "number": 15764,
+    "head": "3281a86103abbd2155860226ddf4a4e8840ec468",
+    "title": "swim1.cpp: Set long cell error only when synched",
+    "url": "https://github.com/mamedev/mame/pull/15764"
+  },
+  {
+    "number": 15755,
+    "head": "606d61dbcb3fedab7a5fec8206c897a31eec3ccc",
+    "title": "williams/seattle.cpp: Advance simulated wheel motor at a fixed time-based rate",
+    "url": "https://github.com/mamedev/mame/pull/15755"
+  },
+  {
+    "number": 15751,
+    "head": "122181b29be97a8f6d728b34daf0fbbce2f3f94f",
+    "title": "gridcomp/gridcomp.cpp: add rom with machine id",
+    "url": "https://github.com/mamedev/mame/pull/15751"
+  },
+  {
+    "number": 15749,
+    "head": "ec9319a61e09bf9ed2221e17ec2d0c5148b7d1d2",
+    "title": "namcos22.cpp: Correct Cyber Commando ROM labels [sjy96525]",
+    "url": "https://github.com/mamedev/mame/pull/15749"
+  },
+  {
+    "number": 15748,
+    "head": "6e05a6b7ed1d03caf0012860a38053ea20360c95",
+    "title": "dataeast/deco_bufpal.cpp: Make buffered palette hardware as device",
+    "url": "https://github.com/mamedev/mame/pull/15748"
+  },
+  {
+    "number": 15742,
+    "head": "ef9322b828b9f91e512760574e96342a2f50e355",
+    "title": "compis.xml - Add key dump for RitEtt",
+    "url": "https://github.com/mamedev/mame/pull/15742"
+  },
+  {
+    "number": 15741,
+    "head": "cc7a9be22bc90e152e77391eef9c67ab853efec6",
+    "title": "abc806: service-manual-grounded HR cleanup",
+    "url": "https://github.com/mamedev/mame/pull/15741"
+  },
+  {
+    "number": 15734,
+    "head": "e0316ec0f233c4bc5f1b5eca3aaf25ca3ce3492b",
+    "title": "cpu/drcfe.ipp: Fix generic DRC frontend losing the end_sequence() terminator off the live instruction list",
+    "url": "https://github.com/mamedev/mame/pull/15734"
+  },
+  {
+    "number": 15729,
+    "head": "31ec4678ae4cafc240068bb1455970385efbd6e9",
+    "title": "s3000.cpp - Set floppy state as HD if it is HD",
+    "url": "https://github.com/mamedev/mame/pull/15729"
+  },
+  {
+    "number": 15722,
+    "head": "cc3b340d0d3319abbfbdc2d2f3e3472157d29102",
+    "title": "Update snapshot option to use translation function",
+    "url": "https://github.com/mamedev/mame/pull/15722"
+  },
+  {
+    "number": 15707,
+    "head": "83c445fa04ec289cea92cc7106266cf5bed1b340",
+    "title": "Add a Non Working Driver For Guxiang guxiang.cpp",
+    "url": "https://github.com/mamedev/mame/pull/15707"
+  },
+  {
+    "number": 15703,
+    "head": "7e9f3d4528e8a3fb046c9abaa841b39adb247a8a",
+    "title": "ringkingw: Fixed Wood Place name in title",
+    "url": "https://github.com/mamedev/mame/pull/15703"
+  },
+  {
+    "number": 15667,
+    "head": "934cb1ad3147cd4015bc58b44e2626fc8737b734",
+    "title": "sinclair/next/specnext.cpp: Added final v30204 BIOS options.",
+    "url": "https://github.com/mamedev/mame/pull/15667"
+  },
+  {
+    "number": 15666,
+    "head": "74c0062af93606544dc82dd1a915a1645eac9e85",
+    "title": "sound/js_sound.cpp: Fixed output delay in js_sound",
+    "url": "https://github.com/mamedev/mame/pull/15666"
+  },
+  {
+    "number": 15653,
+    "head": "f62725cfe659651197604861a115fb7b4538e8bc",
+    "title": "emu/addrmap.cpp: Allow to map shares with offset. Performed size validation for union of partial ranges.",
+    "url": "https://github.com/mamedev/mame/pull/15653"
+  },
+  {
+    "number": 15651,
+    "head": "bec2286383b8601bedab58a49fc3ed8ef7d5ec68",
+    "title": "frontend/mame/ui/filesel.cpp: Improved navigation in media selector.",
+    "url": "https://github.com/mamedev/mame/pull/15651"
+  },
+  {
+    "number": 15637,
+    "head": "2ce36d253da918417beac4a37cde9baab8579e24",
+    "title": "can not translationing",
+    "url": "https://github.com/mamedev/mame/pull/15637"
+  },
+  {
+    "number": 15632,
+    "head": "cb51dc6426d26dec356007aa1c539c78c8a95325",
+    "title": "imagedev/snapquik.cpp: Allowed to use quickload together with -state",
+    "url": "https://github.com/mamedev/mame/pull/15632"
+  },
+  {
+    "number": 15627,
+    "head": "42008d1eb2c0579505f9b6da05ae5f1e01d90af9",
+    "title": "gridcomp/gridmodem.cpp: HLE internal modem emulation",
+    "url": "https://github.com/mamedev/mame/pull/15627"
+  },
+  {
+    "number": 15603,
+    "head": "ffcf19df7954b4156604c6ed839cd4f51f1fcc2e",
+    "title": "hornet.cpp add wheel motor output",
+    "url": "https://github.com/mamedev/mame/pull/15603"
+  },
+  {
+    "number": 15548,
+    "head": "e8ee96217a3e0307ad83cab417e41f292c0838b1",
+    "title": "[banprestoms.cpp] tvdenwam / Adjust Mario mouth and arrow position down to 16 pixels.",
+    "url": "https://github.com/mamedev/mame/pull/15548"
+  },
+  {
+    "number": 15546,
+    "head": "6440f4a5a4211936de24cde526e262c318906627",
+    "title": "tektronix/tek440.xcpp adds 8255 printer interface",
+    "url": "https://github.com/mamedev/mame/pull/15546"
+  },
+  {
+    "number": 15545,
+    "head": "dfaf2979814a8e7fd6572f7f6f6ee1c053812776",
+    "title": "tektronix/tek440x.cpp  Put MOS6551 behind a device finder, corrected typo in device name",
+    "url": "https://github.com/mamedev/mame/pull/15545"
+  },
+  {
+    "number": 15544,
+    "head": "5feecd8b681e2805f7540b3393b86ecd17ce2a60",
+    "title": "tektronix/tek440x.cpp adds diagnostics register and DUART r/w wrapper",
+    "url": "https://github.com/mamedev/mame/pull/15544"
+  },
+  {
+    "number": 15540,
+    "head": "ebe4fee791f6bd00f25c491af71d95a158a6db3e",
+    "title": "devices/machine/i8256: remove dependency on device_serial_interface",
+    "url": "https://github.com/mamedev/mame/pull/15540"
+  },
+  {
+    "number": 15523,
+    "head": "7ae0eb20f236c4f5e0f507feaa51bec06de66132",
+    "title": "tektronix/tek440x.cpp  QoL defines and comments ",
+    "url": "https://github.com/mamedev/mame/pull/15523"
+  },
+  {
+    "number": 15522,
+    "head": "8c9f934017f0eed5f7f2ac455a926fc5488711f0",
+    "title": "tektronix/tek440x.cpp  adds timer AM9513 and fix for RTC MC146818",
+    "url": "https://github.com/mamedev/mame/pull/15522"
+  },
+  {
+    "number": 15521,
+    "head": "ce62128e7be917076d48b6135c14b28c34389574",
+    "title": "tektronix/tek440x.cpp  adding activity LEDs to display",
+    "url": "https://github.com/mamedev/mame/pull/15521"
+  },
+  {
+    "number": 15520,
+    "head": "f1436ab4b63af772cd6b4d589cdced87317b7fe6",
+    "title": "tektronix/tek440x.cpp  Vblanks masks in bit indicating sound has finished, so generate it",
+    "url": "https://github.com/mamedev/mame/pull/15520"
+  },
+  {
+    "number": 15519,
+    "head": "d7099bc49f4b6b5c582711961ab0c487bdf34eb7",
+    "title": "tektronix/tek440x.cpp adding ethernet am7990 (lance) chip",
+    "url": "https://github.com/mamedev/mame/pull/15519"
+  },
+  {
+    "number": 15518,
+    "head": "8a53bd51caf260ad700b74d10768a3bf2ff83047",
+    "title": "tektronix/tek440x.cpp adding ns32081 FPU",
+    "url": "https://github.com/mamedev/mame/pull/15518"
+  },
+  {
+    "number": 15481,
+    "head": "039b838edbb8612eb8d387d8ac3b10012f79ea84",
+    "title": "`emuopts,driver,video,luascript,cucaracha`: allow more flexible  frame rate for screenless devices.",
+    "url": "https://github.com/mamedev/mame/pull/15481"
+  },
+  {
+    "number": 15475,
+    "head": "c6a4adc666527ea76678aef6e0de717ac80151f2",
+    "title": "`emuopts,machine,driver,video,osdcore,luascript,cucaracha`: allow more flexible time synchronization and frame rate",
+    "url": "https://github.com/mamedev/mame/pull/15475"
+  },
+  {
+    "number": 15450,
+    "head": "b7523a3bb1ec904f92fad393374e9d481541f15a",
+    "title": "misc/blitz68k.cpp: added MCU comms and a couple of new dumps",
+    "url": "https://github.com/mamedev/mame/pull/15450"
+  },
+  {
+    "number": 15442,
+    "head": "345bff16b52ac6b77cda9d06b287d61a6e62e7b1",
+    "title": "hook up the pkzw add new dumps (lanmao)",
+    "url": "https://github.com/mamedev/mame/pull/15442"
+  },
+  {
+    "number": 15439,
+    "head": "20be16ea4a54eab9ebdbad3f1603a305e7cc1727",
+    "title": "Update nl_tank.cpp",
+    "url": "https://github.com/mamedev/mame/pull/15439"
+  },
+  {
+    "number": 15435,
+    "head": "310c5ccb30d2246a174ab545ef135f21c387d01b",
+    "title": "added ROMs for Peter Pack Rat T11 prototype",
+    "url": "https://github.com/mamedev/mame/pull/15435"
+  },
+  {
+    "number": 15421,
+    "head": "c52312635068ba5410561a29d476c61932d15254",
+    "title": "tools/coldcheck.py: Added tool for ATTR_COLD audit in common lifecycle methods",
+    "url": "https://github.com/mamedev/mame/pull/15421"
+  },
+  {
+    "number": 15375,
+    "head": "a605db17b4b09f5e15b4f944ad4e153b0d8d1e52",
+    "title": "qx10: Move video subsystem to use a slot based architecutre",
+    "url": "https://github.com/mamedev/mame/pull/15375"
+  },
+  {
+    "number": 15345,
+    "head": "57a03f95a1624c8ba31e4e7160970933b377159b",
+    "title": "ti57: Add Texas Instruments TI-57 driver and TMC1500 CPU family",
+    "url": "https://github.com/mamedev/mame/pull/15345"
+  },
+  {
+    "number": 15340,
+    "head": "1b89f07bac2a1627d12ce0cecfdcbb7876deb78d",
+    "title": "Add New sets for whujian2",
+    "url": "https://github.com/mamedev/mame/pull/15340"
+  },
+  {
+    "number": 15331,
+    "head": "40018675a25fa0b408dddcbc48ecf22c41c211c1",
+    "title": "sound/capcom_q1*.cpp: Match device name as chip markings",
+    "url": "https://github.com/mamedev/mame/pull/15331"
+  },
+  {
+    "number": 15317,
+    "head": "e78c29732fa5291fd0e254853dc58732983963a5",
+    "title": "Implement Alphasmart 3000 more fully",
+    "url": "https://github.com/mamedev/mame/pull/15317"
+  },
+  {
+    "number": 15314,
+    "head": "44c511b4fbdc594e1caee4858744286a3456de44",
+    "title": "add memory maps info for the whujiang and tzwang",
+    "url": "https://github.com/mamedev/mame/pull/15314"
+  },
+  {
+    "number": 15305,
+    "head": "a6eb6389e8139a6c32890a0eef33f789896cc4ba",
+    "title": "ui/menu.cpp: Deemphazied On/Off/Auto.",
+    "url": "https://github.com/mamedev/mame/pull/15305"
+  },
+  {
+    "number": 15295,
+    "head": "ecc83a993b7f098ef4d7743d8e5d721b620ae3f9",
+    "title": "Redoing offs_t to 64-bits expansion.",
+    "url": "https://github.com/mamedev/mame/pull/15295"
+  },
+  {
+    "number": 15274,
+    "head": "58cc1b149439b8d71d79d018d374795670232472",
+    "title": "- moved mg1 implementation into correctly named manufacturer folder",
+    "url": "https://github.com/mamedev/mame/pull/15274"
+  },
+  {
+    "number": 15266,
+    "head": "6b50cc45d9588b84ddeb9b53955081688424ecff",
+    "title": "apple2_cass.xml, apple2_flop_misc.xml: Added 12 type-in programs.",
+    "url": "https://github.com/mamedev/mame/pull/15266"
+  },
+  {
+    "number": 15262,
+    "head": "398da6f294d59ffa1fe14c7a98c3422eaa2832eb",
+    "title": "Update Polish translation",
+    "url": "https://github.com/mamedev/mame/pull/15262"
+  },
+  {
+    "number": 15256,
+    "head": "e35c319ddd3b91140917009a9e141c3ea6699a50",
+    "title": "osd: add serial output provider",
+    "url": "https://github.com/mamedev/mame/pull/15256"
+  },
+  {
+    "number": 15198,
+    "head": "ce3cfa985880705072596f103ddb1fdf8290646a",
+    "title": "mingw: use response files to avoid long command lines",
+    "url": "https://github.com/mamedev/mame/pull/15198"
+  },
+  {
+    "number": 15197,
+    "head": "d45f6ea3bd6ba673964e36baafa0d1189f7f1c3d",
+    "title": "rm/rm480z.cpp: Added nmi single step debugging support and corrected alternative character set display logic",
+    "url": "https://github.com/mamedev/mame/pull/15197"
+  },
+  {
+    "number": 15193,
+    "head": "e3e1d9bb27c79fed53e9c1779e8c62dfde60c3c5",
+    "title": "gridcomp/gridcomp.cpp: implement application ROMs",
+    "url": "https://github.com/mamedev/mame/pull/15193"
+  },
+  {
+    "number": 15178,
+    "head": "59dcc9eeb2902c1fe9a124d0e1207e30293d59d7",
+    "title": "matmania/maniach timings and vblank interval",
+    "url": "https://github.com/mamedev/mame/pull/15178"
+  },
+  {
+    "number": 15083,
+    "head": "23942fafbf2b0a63515ad867abbd7db2fa4222b4",
+    "title": "pdp-11 clone WIP (ms1201, pk11, uknc)",
+    "url": "https://github.com/mamedev/mame/pull/15083"
+  },
+  {
+    "number": 15075,
+    "head": "152b7f5d06b5e22491bb4d94006757b825a0be5d",
+    "title": "psx.xml: Added 16 working items + 6 redumped items",
+    "url": "https://github.com/mamedev/mame/pull/15075"
+  },
+  {
+    "number": 15039,
+    "head": "a28bf9f5d4dfb45b8b83a63f3ab6aabf7be2176d",
+    "title": "Simplify handling of clang targets, fix clang build on aarch64 and riscv64",
+    "url": "https://github.com/mamedev/mame/pull/15039"
+  },
+  {
+    "number": 15034,
+    "head": "a1f10a16ffe8e2e2f6858388431dbf4e543ce006",
+    "title": "update fixed Chinese_Simplified strings.po",
+    "url": "https://github.com/mamedev/mame/pull/15034"
+  },
+  {
+    "number": 15033,
+    "head": "5ae7babe81a48b8da797172437b15477eeb1419a",
+    "title": "Change YM2413 to YMF281. sammy_pachislo_z80.cpp",
+    "url": "https://github.com/mamedev/mame/pull/15033"
+  },
+  {
+    "number": 15026,
+    "head": "53ac3cd3759621ddcb7c6876fd84fa5018a9b4a0",
+    "title": "Add variants for Konami Viper games [sjy96525]",
+    "url": "https://github.com/mamedev/mame/pull/15026"
+  },
+  {
+    "number": 15009,
+    "head": "8f98374fbe9da8093784a7b39d88435b791fa0fe",
+    "title": "include `pngcmp` in the build and added manpage for it",
+    "url": "https://github.com/mamedev/mame/pull/15009"
+  },
+  {
+    "number": 14944,
+    "head": "10b92dcfa7bb8e9c9f905c900b31951bb5a9ab93",
+    "title": "cpu/mips3: Fix DRC debugger interaction for register and memory modifications",
+    "url": "https://github.com/mamedev/mame/pull/14944"
+  },
+  {
+    "number": 14884,
+    "head": "4e704cc53a452ff32dd4c3c61f1fb3e2bd42d717",
+    "title": "sega/megadriv.cpp, sega/mdconsole.cpp, video/315_5313.cpp: Allow LCM scaling for handle mismatch 32x vs megadriv vdp horizontal screen width case",
+    "url": "https://github.com/mamedev/mame/pull/14884"
+  },
+  {
+    "number": 14876,
+    "head": "abdb49922ad007f8bfc598c4ae16081982389c6d",
+    "title": "Sys68k cpu20",
+    "url": "https://github.com/mamedev/mame/pull/14876"
+  },
+  {
+    "number": 14858,
+    "head": "eed235fdd80a793be13bc40358ef94ec6b66b397",
+    "title": "posixdir.cpp: implement XDG_*_HOME variables",
+    "url": "https://github.com/mamedev/mame/pull/14858"
+  },
+  {
+    "number": 14841,
+    "head": "15d9791ea8fbc37b999650df31be9a9c429fa2a9",
+    "title": "Added support for <piece> elements in software lists.",
+    "url": "https://github.com/mamedev/mame/pull/14841"
+  },
+  {
+    "number": 14819,
+    "head": "8c21f1f2b5ca1dc7a3bab2efba9a02955c241e6a",
+    "title": "Add a Non Working Driver For  Feitalin Game Square",
+    "url": "https://github.com/mamedev/mame/pull/14819"
+  },
+  {
+    "number": 14800,
+    "head": "7f916b23322bfed16ee5a1c592457bfc66eb4057",
+    "title": "Update strings.po (korean)",
+    "url": "https://github.com/mamedev/mame/pull/14800"
+  },
+  {
+    "number": 14790,
+    "head": "179b57242205de54d000835c9f57df3c5ce8fc95",
+    "title": "Add official princess and frog dutch title",
+    "url": "https://github.com/mamedev/mame/pull/14790"
+  },
+  {
+    "number": 14771,
+    "head": "308ca4d44cfbc331980e20a73e13cd56f0440aed",
+    "title": "concept: Use 1.7 ROM by default",
+    "url": "https://github.com/mamedev/mame/pull/14771"
+  },
+  {
+    "number": 14759,
+    "head": "7f727e2c14c5e47fb91dcc07cdbc797adb183b93",
+    "title": "vsmileb_cart.xml: Add info about 2 undumped Spain versions of games: Learn and Discovery Home and Baby Einstein: World of Discoveries",
+    "url": "https://github.com/mamedev/mame/pull/14759"
+  },
+  {
+    "number": 14751,
+    "head": "fdfde4cda917604d2f2def03546e97b65de2090f",
+    "title": "vtech_innotab.cpp: Add known undumped US versions",
+    "url": "https://github.com/mamedev/mame/pull/14751"
+  },
+  {
+    "number": 14750,
+    "head": "e37ef4a2f9454a2cb770d6ea9d32788226a47442",
+    "title": "innotv_innotabmax.cpp: Add note about undumped system",
+    "url": "https://github.com/mamedev/mame/pull/14750"
+  },
+  {
+    "number": 14743,
+    "head": "a03e4a4932d6dfca1a81a93842ffb561f957b47a",
+    "title": "vbaby_cart.xml: Add the United Kingdom and French versions",
+    "url": "https://github.com/mamedev/mame/pull/14743"
+  },
+  {
+    "number": 14730,
+    "head": "8138c948dfb611dc0c520750a37d2cde2263ee08",
+    "title": "vtech_innotab_cart.xml: Add note about international releases + add more undumped USA/UK games",
+    "url": "https://github.com/mamedev/mame/pull/14730"
+  },
+  {
+    "number": 14721,
+    "head": "323956f666f8081f3084b906e2bfc67c477c5586",
+    "title": "spg2xx.cpp: fix parent-clone relationships, the text changed from Dut\u2026",
+    "url": "https://github.com/mamedev/mame/pull/14721"
+  },
+  {
+    "number": 14710,
+    "head": "6c18548154f77ce3cc5ba8c3a88eb67ebb4b1c71",
+    "title": "storio.cpp: One Spanish BIOS flagged as 2011-06-17",
+    "url": "https://github.com/mamedev/mame/pull/14710"
+  },
+  {
+    "number": 14699,
+    "head": "5c9f51ca2d86d85347891681b36510407ccd10bf",
+    "title": "Add a list of InnoTV compatible games",
+    "url": "https://github.com/mamedev/mame/pull/14699"
+  },
+  {
+    "number": 14688,
+    "head": "144d000d419b1cd37244944b7bb5c2438dbe66be",
+    "title": "pasopia7_cass: 25 additions to software list (19 working)",
+    "url": "https://github.com/mamedev/mame/pull/14688"
+  },
+  {
+    "number": 14685,
+    "head": "24e147fc983431898eaa435fc3f9f3debea64345",
+    "title": "skeleton/digijet.cpp: New clone marked not working",
+    "url": "https://github.com/mamedev/mame/pull/14685"
+  },
+  {
+    "number": 14664,
+    "head": "cedc03aa6cbe04f05bd35b4bf5a72cf6d8a7b886",
+    "title": "fix risc-v build error casued by cast-align warnings",
+    "url": "https://github.com/mamedev/mame/pull/14664"
+  },
+  {
+    "number": 14662,
+    "head": "60e601fea6e922e6589c62ab71343d415e73662a",
+    "title": "mz2000_cass: 75 additions to software list, 1 item promoted to fully working and other enhancements",
+    "url": "https://github.com/mamedev/mame/pull/14662"
+  },
+  {
+    "number": 14653,
+    "head": "3aff8c868d96427c84cfece63a33ee0f87c10dc1",
+    "title": "Dumped the Dutch version of Kidizoom Twist's user data",
+    "url": "https://github.com/mamedev/mame/pull/14653"
+  },
+  {
+    "number": 14610,
+    "head": "4ce8a11122fb9089c27abce382a5bcc021a52f1b",
+    "title": "vtech_storio_cart.xml: Fix Rufus info + ITA and DUT info",
+    "url": "https://github.com/mamedev/mame/pull/14610"
+  },
+  {
+    "number": 14607,
+    "head": "8c65ba9eed33311a08f1df4d8644d2162d223f0e",
+    "title": "hash/mobigo_cart.xml: Add notes for undumped english games + Fix Mickey game description",
+    "url": "https://github.com/mamedev/mame/pull/14607"
+  },
+  {
+    "number": 14603,
+    "head": "4d6a41cb6a1eccf44eca48fb87e9c38f768a3153",
+    "title": "Service periodic callbacks on Windows while MAME debugger is active - Issue #14600",
+    "url": "https://github.com/mamedev/mame/pull/14603"
+  },
+  {
+    "number": 14559,
+    "head": "52fe95419a6055564b90aa042c28aac779f440ac",
+    "title": "mz2000_flop: 11 additions to software list",
+    "url": "https://github.com/mamedev/mame/pull/14559"
+  },
+  {
+    "number": 14555,
+    "head": "f6f06c154907b516ef4d40acaa3062d1c3256432",
+    "title": "Update copyright year megacrane.cpp",
+    "url": "https://github.com/mamedev/mame/pull/14555"
+  },
+  {
+    "number": 14551,
+    "head": "39e640698a7f5b33fa40b3cd54b2cab88401d2ad",
+    "title": "mz700_cass, mz800_cass: 43 additions and other updates to software lists",
+    "url": "https://github.com/mamedev/mame/pull/14551"
+  },
+  {
+    "number": 14535,
+    "head": "58a879ee775f51d918be9a8d2438802817ed729f",
+    "title": "Add Preliminary Hopper Support marywu.cpp",
+    "url": "https://github.com/mamedev/mame/pull/14535"
+  },
+  {
+    "number": 14525,
+    "head": "6d8d5988a81ca25d034f9e9b328c091e8b8e78aa",
+    "title": "Support for Clockwork Aquario (prototype)",
+    "url": "https://github.com/mamedev/mame/pull/14525"
+  },
+  {
+    "number": 14517,
+    "head": "75ff5aebb6fd707c7165b01ad805ac26016e306c",
+    "title": "add  adpcm bank code. huangyeh_m68k.cpp",
+    "url": "https://github.com/mamedev/mame/pull/14517"
+  },
+  {
+    "number": 14516,
+    "head": "be54bebc8240fe787d9559e020d04f63872c6489",
+    "title": "mz80b_cass: 12 additions to software list",
+    "url": "https://github.com/mamedev/mame/pull/14516"
+  },
+  {
+    "number": 14514,
+    "head": "3d6a312be8f6839c6dc456bc481b85d5747a8140",
+    "title": "Add a Non Working Driver For Unknown Labeled 'MUSICBAR VER 201",
+    "url": "https://github.com/mamedev/mame/pull/14514"
+  },
+  {
+    "number": 14494,
+    "head": "d37d171db6b3b2dee9eaf2b9f75722753b3e4d58",
+    "title": "Fix led 30 layout issues.",
+    "url": "https://github.com/mamedev/mame/pull/14494"
+  },
+  {
+    "number": 14448,
+    "head": "9363b1accc6e41586770af755cb10bd6d0c58e98",
+    "title": "Add a Non Working Driver For Soccer 2004 (TSK)",
+    "url": "https://github.com/mamedev/mame/pull/14448"
+  },
+  {
+    "number": 14442,
+    "head": "573b356fc6a1baf47b019792c2bda212cf9301bc",
+    "title": "tangerine/oric.cpp: Addition of telstrat_flop software list ",
+    "url": "https://github.com/mamedev/mame/pull/14442"
+  },
+  {
+    "number": 14411,
+    "head": "e6374fe752eebef1beca6e313016b9f9e2a15bf7",
+    "title": "Debugger disassembly view: Restrict coloring of breakpointed instructions to their addresses; add asterisk characters to make breakpointed addresses more conspicuous",
+    "url": "https://github.com/mamedev/mame/pull/14411"
+  },
+  {
+    "number": 14337,
+    "head": "65ba6c35987fc27c35f5d4d770f8a21131d02955",
+    "title": "jpmimpct: add layouts to Scrabble, Hangman, Coronation Street, Trivial Pursuit, and Treasure Quest - update Cluedo layout",
+    "url": "https://github.com/mamedev/mame/pull/14337"
+  },
+  {
+    "number": 14223,
+    "head": "8d61abfdc73d318f1352fd823dcf89db89c922ed",
+    "title": "src/frontend/mame/ui/slotopt.cpp: add a menu option to copy the curre\u2026",
+    "url": "https://github.com/mamedev/mame/pull/14223"
+  },
+  {
+    "number": 14210,
+    "head": "b21da54028d87deeaf7116fd6438c7abb9845816",
+    "title": "Update Turkish strings.po",
+    "url": "https://github.com/mamedev/mame/pull/14210"
+  },
+  {
+    "number": 14184,
+    "head": "eb9d457eb0101b8e15773024307d806b2a37cc13",
+    "title": "Move switching of screen's current bitmap to after layout updates",
+    "url": "https://github.com/mamedev/mame/pull/14184"
+  },
+  {
+    "number": 14172,
+    "head": "0662b121cedc40099a375b1f643054a89c05b2fc",
+    "title": "konami/k005885.cpp: Device-fied K005885, Add notes",
+    "url": "https://github.com/mamedev/mame/pull/14172"
+  },
+  {
+    "number": 14114,
+    "head": "6c3ac370a17cc14bdbfdc3e0b9209e62ab5d86f7",
+    "title": "Add AM6012/TL084 analog output model",
+    "url": "https://github.com/mamedev/mame/pull/14114"
+  },
+  {
+    "number": 14107,
+    "head": "1f15d552a6d6c39e7e689f6c928623135cc2ff86",
+    "title": "scripts/build: add a python script for checking EoF markers across source tree",
+    "url": "https://github.com/mamedev/mame/pull/14107"
+  },
+  {
+    "number": 14029,
+    "head": "8d5fdaafafc132cc34276935fe1775f64427a1e3",
+    "title": "Commit for Foenix F256K retro-computer.",
+    "url": "https://github.com/mamedev/mame/pull/14029"
+  },
+  {
+    "number": 13939,
+    "head": "6b8fd9a99b4db3bf546d30b6adf8974abe7a866f",
+    "title": "Megadrive/Paprium",
+    "url": "https://github.com/mamedev/mame/pull/13939"
+  },
+  {
+    "number": 13867,
+    "head": "78d023cd16579383f2f2ade5fdad8cd676ac9db8",
+    "title": "namco_c139: semi working implementation (ASIO, async, threaded)",
+    "url": "https://github.com/mamedev/mame/pull/13867"
+  },
+  {
+    "number": 13866,
+    "head": "057e92ae690dc193bcd785c8b5c593c34dcdd72e",
+    "title": "ybdcomm: first implementation (ASIO, async, polled)",
+    "url": "https://github.com/mamedev/mame/pull/13866"
+  },
+  {
+    "number": 13865,
+    "head": "74f7016d52f2f7c8475a6974ecf8868afae3ecd2",
+    "title": "xbdcomm: first implementation (ASIO, async, polled)",
+    "url": "https://github.com/mamedev/mame/pull/13865"
+  },
+  {
+    "number": 13863,
+    "head": "22e536d0d91de9c8b9a7b61dcf30045855dc0114",
+    "title": "s32comm: ASIO rewrite (async, polled)",
+    "url": "https://github.com/mamedev/mame/pull/13863"
+  },
+  {
+    "number": 13862,
+    "head": "320b608d7f92a48d91a19c07cd3080a610d872cd",
+    "title": "m2comm: ASIO rewrite (async polled)",
+    "url": "https://github.com/mamedev/mame/pull/13862"
+  },
+  {
+    "number": 13861,
+    "head": "c2bb9ebcfb9a769ad124c5b62f5748f2eae48e6e",
+    "title": "m1comm: ASIO rewrite (async, polled)",
+    "url": "https://github.com/mamedev/mame/pull/13861"
+  },
+  {
+    "number": 13853,
+    "head": "030878d9a6b80151247cd89770f001164f6f55c9",
+    "title": "k056230: working implementation (ASIO, async, threaded).",
+    "url": "https://github.com/mamedev/mame/pull/13853"
+  },
+  {
+    "number": 13852,
+    "head": "86f27b3fd5dd3b3345c0c8a3be28afffa64767df",
+    "title": "add some inputs and outputs as well as osd_file socket fix",
+    "url": "https://github.com/mamedev/mame/pull/13852"
+  },
+  {
+    "number": 13845,
+    "head": "d3e474125ae6f07049511cfb71000660be8bbc89",
+    "title": "posixfile.cpp: remove redundant realpath() call",
+    "url": "https://github.com/mamedev/mame/pull/13845"
+  },
+  {
+    "number": 13791,
+    "head": "82a4d178785325997dd9c893997d1ee58a9e67d4",
+    "title": "romcopy: Add new tool for interleaving and bitswapping binary data files",
+    "url": "https://github.com/mamedev/mame/pull/13791"
+  },
+  {
+    "number": 13790,
+    "head": "39d87a7c1df28177d9481c6d4713dffc40d3dc6e",
+    "title": "hash/snes: New dump that will never give you up",
+    "url": "https://github.com/mamedev/mame/pull/13790"
+  },
+  {
+    "number": 13733,
+    "head": "afe99e6ee9bb3b1cc27c1371b53740615df5a19d",
+    "title": "debugger: more granular naming for symbol table types",
+    "url": "https://github.com/mamedev/mame/pull/13733"
+  },
+  {
+    "number": 13596,
+    "head": "e3c11b3c77625d0215678e885bd529edd0b8034c",
+    "title": "src/devices/bus/a2bus/a2frob.cpp: Add Apple II frob device",
+    "url": "https://github.com/mamedev/mame/pull/13596"
+  },
+  {
+    "number": 13567,
+    "head": "d38ce55749cc8ee068577b86c78a3745ec9395e3",
+    "title": "Update dynax.cpp",
+    "url": "https://github.com/mamedev/mame/pull/13567"
+  },
+  {
+    "number": 13551,
+    "head": "b803587a76e18f726877690c3cd01d42a3e86bde",
+    "title": "Update ddenlovr.cpp",
+    "url": "https://github.com/mamedev/mame/pull/13551"
+  },
+  {
+    "number": 13535,
+    "head": "c0fd4c0ac751eeab4f33f719603562e8738640fd",
+    "title": "Corrected simplified Chinese translation text",
+    "url": "https://github.com/mamedev/mame/pull/13535"
+  },
+  {
+    "number": 13444,
+    "head": "ff91a69eb13f7b502a518b2231894a9f66070bcf",
+    "title": "Debugger: New Feature: source-level debugging",
+    "url": "https://github.com/mamedev/mame/pull/13444"
+  },
+  {
+    "number": 13421,
+    "head": "d224a2eda90cf987d7e1d33032fbba893972f26a",
+    "title": "update to add network for Sega X-Board, Y-Board, Konami K056230, Namco C139",
+    "url": "https://github.com/mamedev/mame/pull/13421"
+  },
+  {
+    "number": 13419,
+    "head": "4588f781eb9be3cba73a14096aba1b7f0a3f2274",
+    "title": "IMDS2/IPB/IPC fixes",
+    "url": "https://github.com/mamedev/mame/pull/13419"
+  },
+  {
+    "number": 13356,
+    "head": "e2395e04ecf6e7d835f1c4ea33a32905eb9b64ca",
+    "title": "Adding machine IBM System/23 Datamaster (system23.cpp, non-working); its keyboard; corrections to Intel 8275",
+    "url": "https://github.com/mamedev/mame/pull/13356"
+  },
+  {
+    "number": 13349,
+    "head": "184b893b53181a86dc2e33aad0c777a34f2e6c34",
+    "title": "Added support for Roland PRO-E Arranger",
+    "url": "https://github.com/mamedev/mame/pull/13349"
+  },
+  {
+    "number": 13343,
+    "head": "e3edd6b2875db08d92ea68060c2c2c7d8049c37e",
+    "title": "bus/rs232: Add the Cricket external sound box for the Apple IIc.",
+    "url": "https://github.com/mamedev/mame/pull/13343"
+  },
+  {
+    "number": 13282,
+    "head": "4f87ad9243a268fe674b98193dabe4238e02c7b6",
+    "title": "Minimize tools-only build",
+    "url": "https://github.com/mamedev/mame/pull/13282"
+  },
+  {
+    "number": 13281,
+    "head": "a5190aba697df46dfc9cf8fe2db853675b7dad59",
+    "title": "Add a Non Working Driver For Paokai toy soldier toysoldier.cpp",
+    "url": "https://github.com/mamedev/mame/pull/13281"
+  },
+  {
+    "number": 13277,
+    "head": "bded2d879083dafb2909ace03e3abd9c0a7282a2",
+    "title": "Add a Non Working Driver For Unknown 6 Ball Pinball Gambling.",
+    "url": "https://github.com/mamedev/mame/pull/13277"
+  },
+  {
+    "number": 13216,
+    "head": "fb0a48ffae0c5d6083584b5742677399f56d0d26",
+    "title": "kaneko/expro02.cpp: dsw improvements, continue screen fix",
+    "url": "https://github.com/mamedev/mame/pull/13216"
+  },
+  {
+    "number": 13208,
+    "head": "da26bf97521621dcd023d2212fedd79ad001aff1",
+    "title": "Adding two new 8008 homebrew computers",
+    "url": "https://github.com/mamedev/mame/pull/13208"
+  },
+  {
+    "number": 13148,
+    "head": "a1146dfd6ed7967ed566d29743e2d40c1d7bcfb9",
+    "title": "Add comments on how the Uniwars Warp effect works.",
+    "url": "https://github.com/mamedev/mame/pull/13148"
+  },
+  {
+    "number": 13138,
+    "head": "ac80ac9d18f714a2eb2de7ba72389eeaf6cc2b41",
+    "title": "DIP switch validation updates",
+    "url": "https://github.com/mamedev/mame/pull/13138"
+  },
+  {
+    "number": 13131,
+    "head": "eb2325c1663b7352332f125fc7608faec5f11427",
+    "title": "Update spanish translation",
+    "url": "https://github.com/mamedev/mame/pull/13131"
+  },
+  {
+    "number": 13116,
+    "head": "dfe6c73c7e6f14ebacdfd7ec0711df2e1d9171a6",
+    "title": "vector_device: render dots using a circle texture",
+    "url": "https://github.com/mamedev/mame/pull/13116"
+  },
+  {
+    "number": 13102,
+    "head": "b3358ea137d61f8cd9c0c37e1deef7dd7837f408",
+    "title": "hash/ibm51?0.xml: MS-DOS 6.22 variants",
+    "url": "https://github.com/mamedev/mame/pull/13102"
+  },
+  {
+    "number": 13075,
+    "head": "58f1e5d2a3154e4a1dcfe5d0bde901ec8919bac1",
+    "title": "makefile: add an helper target to genie xcode targets",
+    "url": "https://github.com/mamedev/mame/pull/13075"
+  },
+  {
+    "number": 13054,
+    "head": "187390227b20990057d343b319fa1cfd0ad4a1b3",
+    "title": "Sync bgfx, bx and bimg with upstream as of 20241207",
+    "url": "https://github.com/mamedev/mame/pull/13054"
+  },
+  {
+    "number": 13016,
+    "head": "5bc93a1d43e347f38cb49aed74b077d093d44b3f",
+    "title": "H8 improvements: H8/3437, I2C master and Sun Fire V120 stub",
+    "url": "https://github.com/mamedev/mame/pull/13016"
+  },
+  {
+    "number": 13002,
+    "head": "58ec5b98423f5ba0099423d21020398e5e93f122",
+    "title": "Add a Non Working Driver For MARY-1/SUNRISE",
+    "url": "https://github.com/mamedev/mame/pull/13002"
+  },
+  {
+    "number": 12963,
+    "head": "f37248ca93e716902c14794677da5dcc26cf034a",
+    "title": "Game Boy: add new BIOS variants",
+    "url": "https://github.com/mamedev/mame/pull/12963"
+  },
+  {
+    "number": 12915,
+    "head": "7583612846f4ed8a0f18b5a4253e707c56e23abc",
+    "title": "Add -rtcdate option to set initial date and/or time for RTCs",
+    "url": "https://github.com/mamedev/mame/pull/12915"
+  },
+  {
+    "number": 12581,
+    "head": "f916d401af83045abb403676eaa9e7e31792b01a",
+    "title": "microsoft/xbox.cpp: hookup HDD SW list",
+    "url": "https://github.com/mamedev/mame/pull/12581"
+  },
+  {
+    "number": 12541,
+    "head": "18f2bf1ef191e71e06801380f8df7114222827c0",
+    "title": "Fix one x way joystick rotary step sometimes rotates character2 steps",
+    "url": "https://github.com/mamedev/mame/pull/12541"
+  },
+  {
+    "number": 12505,
+    "head": "68a938f59033d194299176eee7b72ce2d3255ba8",
+    "title": "initialize Tandy Color Computer cassette software list",
+    "url": "https://github.com/mamedev/mame/pull/12505"
+  },
+  {
+    "number": 12463,
+    "head": "4275ae670f4908ff3800492a8eb899a73c8f25af",
+    "title": "Add new device Generic I/O Opto coin device",
+    "url": "https://github.com/mamedev/mame/pull/12463"
+  },
+  {
+    "number": 12456,
+    "head": "84ca40133fbcff0ec2717f857614023ebd356538",
+    "title": "msx softlists: Rename gtin info entries to barcode.",
+    "url": "https://github.com/mamedev/mame/pull/12456"
+  },
+  {
+    "number": 12449,
+    "head": "d360ad5b776eae5a4dc171fab22184e4c3ab0aca",
+    "title": "taito/taito_f2.cpp, seta/ssv.cpp: change some games to 2-way joystick",
+    "url": "https://github.com/mamedev/mame/pull/12449"
+  },
+  {
+    "number": 12397,
+    "head": "3d2e2afe6190896a3b792771799fc0d30d802136",
+    "title": "gba.xml: Added five prototypes",
+    "url": "https://github.com/mamedev/mame/pull/12397"
+  },
+  {
+    "number": 12386,
+    "head": "6cb5622bff024b675eeeaf9ac4d94cbf3bd75d26",
+    "title": "coco_flop: Add new software from colorcomputerarchive.com disk images",
+    "url": "https://github.com/mamedev/mame/pull/12386"
+  },
+  {
+    "number": 12368,
+    "head": "98a26494fa56456ad52db4bb5552b0caeb9f863f",
+    "title": "Add DRAC-1, an AIM 65 clone from Comelta",
+    "url": "https://github.com/mamedev/mame/pull/12368"
+  },
+  {
+    "number": 12345,
+    "head": "9c2b8d3697bfb78c0904228ce2c71344b8668a3e",
+    "title": "taito/taito_f3.cpp: split graphics into TC0630FDP device",
+    "url": "https://github.com/mamedev/mame/pull/12345"
+  },
+  {
+    "number": 12174,
+    "head": "b8d8e7a0527afabd6abc3eb48dba6ba6efdb1bf6",
+    "title": "cpu/i386: saner fatal error handling",
+    "url": "https://github.com/mamedev/mame/pull/12174"
+  },
+  {
+    "number": 12136,
+    "head": "7a548176d43b099063a2d7c42f4e9e57b1fba1a6",
+    "title": "util/cdrom.cpp: Replace stdio usage with core_file.",
+    "url": "https://github.com/mamedev/mame/pull/12136"
+  },
+  {
+    "number": 12062,
+    "head": "be4935bbc5c8c5f629461509f589653a52bd4b74",
+    "title": "msx_dsk.cpp: Attempt to more strongly identify MSX-DOS disk images",
+    "url": "https://github.com/mamedev/mame/pull/12062"
+  },
+  {
+    "number": 11983,
+    "head": "a0167134d725b9c26efefa185b7abc73182a318f",
+    "title": "Add update for russian translation",
+    "url": "https://github.com/mamedev/mame/pull/11983"
+  },
+  {
+    "number": 11982,
+    "head": "9d773429719d7e1edd8da087d30a7cf0fe3acee0",
+    "title": "Added Vib-Ribbon (Japan, Asia) to psx.xml",
+    "url": "https://github.com/mamedev/mame/pull/11982"
+  },
+  {
+    "number": 11853,
+    "head": "175a7bf7780e98c0366c8e00afb20005e25ed756",
+    "title": "fix vs2019_clang",
+    "url": "https://github.com/mamedev/mame/pull/11853"
+  },
+  {
+    "number": 11825,
+    "head": "35fc01c228f04bec1abef4cb30f2a465345e2c6a",
+    "title": "nabupc: Update keyboard to use REVB ROM image",
+    "url": "https://github.com/mamedev/mame/pull/11825"
+  },
+  {
+    "number": 11763,
+    "head": "c23fb2effb378a85fdcc84edd269549702404747",
+    "title": "nabupc/bus: Update builtin adapter to support local and remote loading",
+    "url": "https://github.com/mamedev/mame/pull/11763"
+  },
+  {
+    "number": 11696,
+    "head": "a7f0170c57f6571fc3a243ce0e4b4d01494ebbc1",
+    "title": "atari/mediagx: Adds Preliminary Input Handling, gets machine working for a51site4",
+    "url": "https://github.com/mamedev/mame/pull/11696"
+  },
+  {
+    "number": 11617,
+    "head": "1d88baeebbb1f86a9dd873b37b0b5833aec15f37",
+    "title": "netdev: Add support for the macOS 10.10+ vmnet virtual network interface [Kelvin Sherlock, R. Belmont]",
+    "url": "https://github.com/mamedev/mame/pull/11617"
+  },
+  {
+    "number": 11598,
+    "head": "3cde111f09eb68171d2737911075311966a637b1",
+    "title": "isa/sblaster_lle.cpp: Add LLE Sound Blaster 2.0 device",
+    "url": "https://github.com/mamedev/mame/pull/11598"
+  },
+  {
+    "number": 11592,
+    "head": "cd1a9c691397176d4c65a29f2ade81a9436a2cc3",
+    "title": "sega/segapico.cpp: Add support for PS/2 peripherals",
+    "url": "https://github.com/mamedev/mame/pull/11592"
+  },
+  {
+    "number": 11549,
+    "head": "87ee33fb917ffb3715e87f67fc5092c3d7059563",
+    "title": "Change Zaxxon based games default rotation to actual hardware ROT270",
+    "url": "https://github.com/mamedev/mame/pull/11549"
+  },
+  {
+    "number": 11502,
+    "head": "3dcb9882551a3413064d02c54050d65490e6e83e",
+    "title": "Update Korean translation",
+    "url": "https://github.com/mamedev/mame/pull/11502"
+  },
+  {
+    "number": 11484,
+    "head": "d0beea5e9ae53784760bfd6f5ce858b9e92ad78b",
+    "title": "suprloco.cpp: accuracy overhaul based on recent pcb tracing and schematic generation",
+    "url": "https://github.com/mamedev/mame/pull/11484"
+  },
+  {
+    "number": 11382,
+    "head": "90826f6b10d774e74714ae4ae19f78ce474a1383",
+    "title": "bus/a2bus: Add Uthernet II support Wiznet w5100",
+    "url": "https://github.com/mamedev/mame/pull/11382"
+  },
+  {
+    "number": 11379,
+    "head": "dc86f0e589e0d806978d29e81656b88ef3f8c25f",
+    "title": "i960 movre instruction will result in out of bounds read/write on platforms where double is 8-bytes in size.",
+    "url": "https://github.com/mamedev/mame/pull/11379"
+  },
+  {
+    "number": 11287,
+    "head": "676f72e4715d0ef9234e151a633c9b1a58d5dbdf",
+    "title": "discrete: fix DISC_OP_AMP_OSCILLATOR_VCO_3",
+    "url": "https://github.com/mamedev/mame/pull/11287"
+  },
+  {
+    "number": 11254,
+    "head": "6ba3332e03e081446fbf92dfc96241d552fdefd2",
+    "title": "Dreamcast dc.xml hash updates",
+    "url": "https://github.com/mamedev/mame/pull/11254"
+  },
+  {
+    "number": 11252,
+    "head": "8ab5e5f9764f33b45ecdb3008c4c3121abca4d91",
+    "title": "updates for PSX CHD hashes",
+    "url": "https://github.com/mamedev/mame/pull/11252"
+  },
+  {
+    "number": 11208,
+    "head": "71de1ddb2e9d77659abc722ca2d327d0c1087dba",
+    "title": "sega/powervr2.cpp: move renderer to threaded code",
+    "url": "https://github.com/mamedev/mame/pull/11208"
+  },
+  {
+    "number": 11194,
+    "head": "50b407fc598b8eccd450276ee4572c82cccdc18e",
+    "title": "udev gun support for mame",
+    "url": "https://github.com/mamedev/mame/pull/11194"
+  },
+  {
+    "number": 11178,
+    "head": "1fa29009652f0e5eec50cc03957bd8a4cb3f1605",
+    "title": "dec/vt100.cpp: add layout for vt102",
+    "url": "https://github.com/mamedev/mame/pull/11178"
+  },
+  {
+    "number": 11060,
+    "head": "6155349715627046071f8aad35a9e6edcbaba598",
+    "title": "print out text from initial screens that require user input for `-video none`",
+    "url": "https://github.com/mamedev/mame/pull/11060"
+  },
+  {
+    "number": 10974,
+    "head": "823737f7b8c9b8185f931c34bdef8849677ded2b",
+    "title": "tetrisp2: Implement MPEG video decoding for VJ's King Qtaro PCI video decoder card",
+    "url": "https://github.com/mamedev/mame/pull/10974"
+  },
+  {
+    "number": 10963,
+    "head": "0c1923b16a90a08cd6fe1e52ce1e5b3a762cedf1",
+    "title": "emu/render.cpp: Add 'vector' render primitive type (#399)",
+    "url": "https://github.com/mamedev/mame/pull/10963"
+  },
+  {
+    "number": 10946,
+    "head": "c992274769b218feb060455b859538ba0933c129",
+    "title": "bus/s100/vectordualmode.cpp: Added Micropolis MFM HDD support",
+    "url": "https://github.com/mamedev/mame/pull/10946"
+  },
+  {
+    "number": 10913,
+    "head": "19ac3f2a7f2872cff2acd70cf0b4d85168d7f078",
+    "title": "Update Brazilian Portuguese translation",
+    "url": "https://github.com/mamedev/mame/pull/10913"
+  },
+  {
+    "number": 10853,
+    "head": "6076fb4c5d3963a34dea8b1c8dc01005197c44b6",
+    "title": "Reset vector without deleting elements",
+    "url": "https://github.com/mamedev/mame/pull/10853"
+  },
+  {
+    "number": 10836,
+    "head": "a4f429e234bb204f66259fb4e4c4b6ba3a1ae80e",
+    "title": "Changed CoCo Raw format to be anonymous",
+    "url": "https://github.com/mamedev/mame/pull/10836"
+  },
+  {
+    "number": 10758,
+    "head": "1d47d6b01573aa70dfa9b6ffffaef39dc61fd925",
+    "title": "Fix opening local 'socket.' files instead of actually opening a TCP socket",
+    "url": "https://github.com/mamedev/mame/pull/10758"
+  },
+  {
+    "number": 10745,
+    "head": "a868d34b9ca2fafadbcdae85df050c38f39d44f0",
+    "title": "mw8080bw_a: fix different parts value",
+    "url": "https://github.com/mamedev/mame/pull/10745"
+  },
+  {
+    "number": 10727,
+    "head": "63aa5b965467f5bb28738de43767ed44292192f3",
+    "title": "nes_ctrl/zapper.cpp: Use port impulse to fire Zapper (no longer need to release key).",
+    "url": "https://github.com/mamedev/mame/pull/10727"
+  },
+  {
+    "number": 10714,
+    "head": "ff3fb71b3061e0aac12ce81d2e08390789030990",
+    "title": "Victor9k sound ii",
+    "url": "https://github.com/mamedev/mame/pull/10714"
+  },
+  {
+    "number": 10632,
+    "head": "ddf5f6d6d92c6de34edf0c00d9de40e8dd6e708d",
+    "title": "nintendo/punchout.cpp: Swap left and right speakers.",
+    "url": "https://github.com/mamedev/mame/pull/10632"
+  },
+  {
+    "number": 10533,
+    "head": "921e7c1bc0772bc0585da3e523ea6c06c4f1d45e",
+    "title": "taito/tc0080vco.cpp: fix HUD display for ainferno",
+    "url": "https://github.com/mamedev/mame/pull/10533"
+  },
+  {
+    "number": 10418,
+    "head": "6182b5a5bff4e55140880a339223daab9aa772d6",
+    "title": "Avoid position > end for floppy sample playback",
+    "url": "https://github.com/mamedev/mame/pull/10418"
+  },
+  {
+    "number": 10329,
+    "head": "c29dfca299e65289306c3ef7af6d31a6550eef2c",
+    "title": "shangha3_v.cpp: proposed fix for shangha3 drawing phantom drop shadows for player sprites",
+    "url": "https://github.com/mamedev/mame/pull/10329"
+  },
+  {
+    "number": 10222,
+    "head": "42354aae22e2618466207c886d2f9387af3de2f3",
+    "title": "doc: Formal documentation for CHD",
+    "url": "https://github.com/mamedev/mame/pull/10222"
+  },
+  {
+    "number": 10169,
+    "head": "46194fc0b1fb9b5aad73bd3740940d01edac3ca6",
+    "title": "evdev input module",
+    "url": "https://github.com/mamedev/mame/pull/10169"
+  },
+  {
+    "number": 10168,
+    "head": "624b9146eceb3bdec3f5ded2290508899e7672b1",
+    "title": "raiden2.cpp: update Coin A, Coin B and Difficulty DIP switch labels (MT08388)",
+    "url": "https://github.com/mamedev/mame/pull/10168"
+  },
+  {
+    "number": 10148,
+    "head": "1addce426a035c872170cd2793387e1df2e60ca4",
+    "title": "netlist: cspell, clang-format, readability",
+    "url": "https://github.com/mamedev/mame/pull/10148"
+  },
+  {
+    "number": 10097,
+    "head": "2dbafbf091b8dbab3ced5d204fc64e9652e2e581",
+    "title": "dirtc.cpp: Properly calculate leap years.",
+    "url": "https://github.com/mamedev/mame/pull/10097"
+  },
+  {
+    "number": 10017,
+    "head": "3d2515dd1ea05d0eb571dee7ac4fbf6e7372206e",
+    "title": "New working software list additions",
+    "url": "https://github.com/mamedev/mame/pull/10017"
+  },
+  {
+    "number": 9908,
+    "head": "8b5136070e86b5b1c27cf83de78fb1d6240603dc",
+    "title": "r2dtank.cpp: correct release year as per notes on MT08250",
+    "url": "https://github.com/mamedev/mame/pull/9908"
+  },
+  {
+    "number": 9774,
+    "head": "e4f4e2b0582ec8517c61d7d3315c690471ae3de8",
+    "title": "slot bios handling improvements",
+    "url": "https://github.com/mamedev/mame/pull/9774"
+  },
+  {
+    "number": 9765,
+    "head": "87b8c29ee7e82effcf20fe91cdc2c479ec6a75b9",
+    "title": "Expose NeoGeo VRAM as debuggable memory space",
+    "url": "https://github.com/mamedev/mame/pull/9765"
+  },
+  {
+    "number": 9685,
+    "head": "db5342b57ef829989807d44090dd45f3e424a3b4",
+    "title": "Reporting error when software list names are ambiguous",
+    "url": "https://github.com/mamedev/mame/pull/9685"
+  },
+  {
+    "number": 9661,
+    "head": "170c219c3b00f66aee6de59353e90be3dbe8d060",
+    "title": "Add include path on linux when SDL_INSTALL_ROOT is used",
+    "url": "https://github.com/mamedev/mame/pull/9661"
+  },
+  {
+    "number": 9387,
+    "head": "c79f812f01a360fda3102333b806411f8e6858b5",
+    "title": "Added Sega's SP-400 plotter emulation",
+    "url": "https://github.com/mamedev/mame/pull/9387"
+  },
+  {
+    "number": 9368,
+    "head": "7fdd26bf40912e99776ced806a1f256d15fad1f9",
+    "title": "Initial exposure of floppy_image_device and related classes to LUA",
+    "url": "https://github.com/mamedev/mame/pull/9368"
+  },
+  {
+    "number": 8963,
+    "head": "4fa8ad3b8610448688e44403619de07c9c479831",
+    "title": "Correct Tondemo Crisis, 1 on 1 Government Manufacturer and year [sjy96525]",
+    "url": "https://github.com/mamedev/mame/pull/8963"
+  },
+  {
+    "number": 8929,
+    "head": "a7e856d0b22851d52edf8cf2e738c6c56c519e2d",
+    "title": "Multiple Atari drivers: Various documentation and ROM name updates",
+    "url": "https://github.com/mamedev/mame/pull/8929"
+  },
+  {
+    "number": 8924,
+    "head": "4ae50807b262fb76852943cccf3bbe9dff6efcb0",
+    "title": "frontend: Use RapidFuzz Levenshtein Distance for UI searches.",
+    "url": "https://github.com/mamedev/mame/pull/8924"
+  },
+  {
+    "number": 8805,
+    "head": "5fc9fe3a4d2d8b6a85d5c6205438807ede8b1a83",
+    "title": "Dragon/CoCo Ramoth Multicart.",
+    "url": "https://github.com/mamedev/mame/pull/8805"
+  },
+  {
+    "number": 8491,
+    "head": "8bfaa3fa0106af3ef99d56b7bcff243bec9f7fd3",
+    "title": "Added support for alternate vector renderers",
+    "url": "https://github.com/mamedev/mame/pull/8491"
+  },
+  {
+    "number": 7788,
+    "head": "d944c7e7a9f5836c0405a78ff86cda49936a4a26",
+    "title": "Initial overhaul of python integrated tests for tools.",
+    "url": "https://github.com/mamedev/mame/pull/7788"
+  },
+  {
+    "number": 7670,
+    "head": "7730a728c855a55643387c4e1fa15c9fc86f622a",
+    "title": "Add mame cross compilation fix",
+    "url": "https://github.com/mamedev/mame/pull/7670"
+  },
+  {
+    "number": 7577,
+    "head": "74b26e5655b2a25bc6020fc3e64c77fe5f1230d3",
+    "title": "P2000T:Add FDC, hires, ROM cartridges, I/O cartridges and 80 char support",
+    "url": "https://github.com/mamedev/mame/pull/7577"
+  },
+  {
+    "number": 7438,
+    "head": "f843c08474ccf350bfcbbb907252d3f2b56dde79",
+    "title": "model2.cpp, model3.cpp: standardize description for cab-based sets, added \"Sega Super GT\" to description of scud clones on region-adjustable sets, per name when game is set to US region",
+    "url": "https://github.com/mamedev/mame/pull/7438"
+  },
+  {
+    "number": 7247,
+    "head": "af93002e218cf691fbfa898a6829b673b115f539",
+    "title": "more consistent -confirm_quit support",
+    "url": "https://github.com/mamedev/mame/pull/7247"
+  },
+  {
+    "number": 7239,
+    "head": "489d080304d77c5ed03dd47894ea30d5885d31ae",
+    "title": "alpha68k_palette.cpp: Implement Neo Geo palette hardware features, Minor adjust",
+    "url": "https://github.com/mamedev/mame/pull/7239"
+  },
+  {
+    "number": 7225,
+    "head": "a4f859ca8f52151cb00691cd758fd9f7c435d28e",
+    "title": "Prepare inclusion of netlist.lua into make generated target.",
+    "url": "https://github.com/mamedev/mame/pull/7225"
+  },
+  {
+    "number": 6718,
+    "head": "8519d743234639783c15ee7ad2e441196ca64f63",
+    "title": "Fix for Issue #6712",
+    "url": "https://github.com/mamedev/mame/pull/6718"
+  },
+  {
+    "number": 6519,
+    "head": "7b4fec177d116a06a9da71c7fc1e7aec80385104",
+    "title": "- Updated infoxml to include attribute tags, masks, and values for mo\u2026",
+    "url": "https://github.com/mamedev/mame/pull/6519"
+  },
+  {
+    "number": 6515,
+    "head": "24f7615cd676a4511582afc0177da3160a7c662d",
+    "title": "Allow embedded filesystems. [O. Galibert]",
+    "url": "https://github.com/mamedev/mame/pull/6515"
+  },
+  {
+    "number": 6072,
+    "head": "44d2408773633ebd235d15f2e840845e1fa7cd76",
+    "title": "add decaped PIC16C54 images to 2 unlicensed NES games (Block Force, 3-D Block)  [Caps0ff]",
+    "url": "https://github.com/mamedev/mame/pull/6072"
+  },
+  {
+    "number": 5995,
+    "head": "a6fb608203db0a6a20e2f07b9859a2acf25afc3c",
+    "title": "adding LFO to some alpha denshi games' music",
+    "url": "https://github.com/mamedev/mame/pull/5995"
+  },
+  {
+    "number": 3735,
+    "head": "bbd9b25c2fa7f31969e1a2d86c698b49cd7a87d7",
+    "title": "Update williams.cpp",
+    "url": "https://github.com/mamedev/mame/pull/3735"
+  }
+]
