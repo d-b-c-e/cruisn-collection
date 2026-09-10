@@ -1,0 +1,78 @@
+{
+  "passed": true,
+  "master": "607f9dc340bff276bb61f1357d3915e8d53ac556",
+  "open_prs": 293,
+  "main_commits": [
+    {
+      "sha": "e59c49eb85a7554ab5911190f25a2942c8db5aea",
+      "subject": "commodore/c64: Improve the accuracy of 6526 CIA emulation. [Curt Coder]"
+    },
+    {
+      "sha": "6368179e56da62aeeb5e1c082995e255db0fea68",
+      "subject": "New clones marked not working"
+    },
+    {
+      "sha": "607f9dc340bff276bb61f1357d3915e8d53ac556",
+      "subject": "sega/segasp.cpp: Dumped PIC16C621A microcontroller for 100&Medal KAZAAAN!!. [HRKT20, MetalliC, rtw]"
+    }
+  ],
+  "main_relevant": [],
+  "changed_prs": [
+    {
+      "number": 16097,
+      "title": "w65816.cpp: fix regressed status flag bits",
+      "files": [
+        "src/devices/cpu/m6502/w65816.cpp",
+        "src/devices/cpu/m6502/w65816.h"
+      ],
+      "relevant": []
+    },
+    {
+      "number": 16096,
+      "title": "dsbz80: supply uart clock from parent model(1|2|3) device",
+      "files": [
+        "src/mame/sega/dsbz80.cpp",
+        "src/mame/sega/dsbz80.h",
+        "src/mame/sega/model1.cpp",
+        "src/mame/sega/model1.h",
+        "src/mame/sega/model2.cpp",
+        "src/mame/sega/model2.h",
+        "src/mame/sega/model3.cpp",
+        "src/mame/sega/model3.h"
+      ],
+      "relevant": []
+    },
+    {
+      "number": 16090,
+      "title": "Add Macintosh Cordyceps (Power Mac x200) stub driver",
+      "files": [
+        "src/mame/apple/capella.cpp",
+        "src/mame/apple/capella.h",
+        "src/mame/apple/f108.cpp",
+        "src/mame/apple/iosb.cpp",
+        "src/mame/apple/iosb.h",
+        "src/mame/apple/maccordyceps.cpp",
+        "src/mame/apple/macquadra630.cpp",
+        "src/mame/mame.lst"
+      ],
+      "relevant": []
+    }
+  ],
+  "scope": "All293 open heads inventoried; main delta and three changed/new heads completely inspected. Unchanged relevant PR heads inherit prior full-path audit.",
+  "checked_utc": "2026-09-10T17:03:34.500914+00:00",
+  "main_files": [
+    "src/devices/cpu/m6502/m6502.cpp",
+    "src/devices/cpu/m6502/m6502.h",
+    "src/devices/cpu/m6502/m6502make.py",
+    "src/devices/cpu/m6502/om6502.lst",
+    "src/devices/cpu/m6502/w65c02.cpp",
+    "src/devices/cpu/m6502/w65c02.h",
+    "src/devices/machine/mos6526.cpp",
+    "src/devices/machine/mos6526.h",
+    "src/lib/util/archiver.cpp",
+    "src/mame/igs/igs017.cpp",
+    "src/mame/mame.lst",
+    "src/mame/sega/segasp.cpp",
+    "src/mame/vtech/vsmilepro.cpp"
+  ]
+}

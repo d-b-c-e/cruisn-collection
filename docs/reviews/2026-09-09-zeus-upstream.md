@@ -42,6 +42,19 @@ inventory and relevant-PR selection. Git execution remains a hash-bound receipt.
 
 ## Isolated candidate checkpoint
 
+The **17:03UTC September10** refresh reaches master
+[`607f9dc340bf`](https://github.com/mamedev/mame/commit/607f9dc340bff276bb61f1357d3915e8d53ac556)
+and inventories all **293 open PR heads**. The three newer main commits concern
+C64 CIA emulation, additional clones and a Sega PIC dump. Complete file lists
+for new [#16096](https://github.com/mamedev/mame/pull/16096), new
+[#16097](https://github.com/mamedev/mame/pull/16097) and changed
+[#16090](https://github.com/mamedev/mame/pull/16090) also contain no Zeus, shared
+C3x or shared polygon changes. All four relevant Zeus PR heads are unchanged.
+Unchanged PRs retain the previous complete path inventory; this is an incremental
+audit with a fresh full head inventory, not a claim of293 newly fetched diffs.
+`results/proof/2026-09-10-upstream-afternoon/verify.py` recomputes that selection
+against the hash-bound earlier inventory.
+
 Native `9136388a026` adds diagnostic policy bits; `edb517392f82b14646736c47f12519bf28900b9c`
 separately clarifies the DIP label. Both are pushed to our fork. The separately
 built candidate is `build/candidates/edb517392f8/vunit.exe`, SHA256
