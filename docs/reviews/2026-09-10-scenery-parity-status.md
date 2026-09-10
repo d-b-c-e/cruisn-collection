@@ -18,7 +18,7 @@ The launcher's existing distance menus do not select these newer host renderers.
 | World 2.5 | 3× changes 10 additional images beyond 2× in a 30-image sample; ordered scenery and images repeat. | Road/ground rendering is still restricted to 2.4. Disconnected terrain remains visible in the 2.5 sample. |
 | USA | Earlier scenery at 1×/2×; 3× adds small changes in three of 16 sampled images. Independent geometry and original resources match. | Last measured 3× runs reached about 97.6%/97.0% emulation speed after caching; 2× reached 98.7%. Full-speed acceptance and broader visibility coverage remain open. |
 | Off Road | 2× changes all 40 sampled images relative to 1×; 3× adds changes in six. Quiet runs measure approximately 100% speed and repeat exactly. | Existing scripted El Paso recording spends too long near one hillside. An attended complete-track drive is needed for terrain, tunnels, finish and handover coverage. |
-| Exotica | Live future geometry/material insertion now works through the private wide-depth renderer. Full Amazon 1×/2×/3× drives preserve the original route and graphics resources. | In all 14 sampled completed internal images, 3× equals 2×. Dense actual display comparisons, opacity/handover, performance and broader routes remain open. |
+| Exotica | Live future geometry/material insertion works through the private wide-depth renderer. Full Amazon drives preserve original route/resources; denser actual display sampling finds 33 of 233 frames differing at 3× versus 2×, and 3× repeats all 233 exactly. | The inspected changes are mostly small additions through foliage or at margins. Useful visibility, opacity/handover, performance and broader routes remain open. |
 
 Detailed evidence: [World 2.4 roads](2026-09-09-host-road-integration.md),
 [World 2.5](2026-09-09-world25-host-scenery.md),
@@ -46,7 +46,11 @@ larger difference is behind the race-results screen; it should not be counted as
 proof of better distant scenery while driving. The next comparison presents the
 extended target explicitly and records 233 completed 4K/CRT frames per drive,
 using the game's actual display page. Sparse internal snapshots are insufficient
-to settle the useful 3× question.
+to settle the useful 3× question. The first [dense actual display comparison](2026-09-10-zeus-future-presentation.md)
+now finds 33 of 233 frames differing between 2× and 3×. The largest changes occur
+at the grid; inspected later changes are small regions through foliage or at the
+left margin. The3× repeat matches all233 displayed frames exactly. This extends the sampling evidence
+without turning changed-pixel counts into a useful-distance acceptance claim.
 
 Separate Amazon candidates also address palette flicker, the stale rectangle
 around the reported 1:12 and measured black ground wedges. The full active-margin

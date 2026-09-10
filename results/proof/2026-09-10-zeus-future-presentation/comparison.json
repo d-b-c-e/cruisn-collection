@@ -1,0 +1,1322 @@
+{
+  "passed": true,
+  "names": [
+    "future-present-control3",
+    "future-present-extended2",
+    "future-present-extended3",
+    "future-present-extended3-repeat"
+  ],
+  "pairs": [
+    {
+      "left": "future-present-control3",
+      "right": "future-present-extended2",
+      "frames": 233,
+      "different": 84,
+      "details": [
+        {
+          "frame": 2940,
+          "pixels": 82019,
+          "max_channel_delta": 37,
+          "bounds": [
+            1547,
+            923,
+            3077,
+            1085
+          ]
+        },
+        {
+          "frame": 2970,
+          "pixels": 106037,
+          "max_channel_delta": 155,
+          "bounds": [
+            1547,
+            923,
+            3079,
+            1085
+          ]
+        },
+        {
+          "frame": 3000,
+          "pixels": 107828,
+          "max_channel_delta": 201,
+          "bounds": [
+            1547,
+            923,
+            3079,
+            1085
+          ]
+        },
+        {
+          "frame": 3030,
+          "pixels": 107828,
+          "max_channel_delta": 201,
+          "bounds": [
+            1547,
+            923,
+            3079,
+            1085
+          ]
+        },
+        {
+          "frame": 3060,
+          "pixels": 108141,
+          "max_channel_delta": 201,
+          "bounds": [
+            1547,
+            923,
+            3079,
+            1085
+          ]
+        },
+        {
+          "frame": 3090,
+          "pixels": 89455,
+          "max_channel_delta": 201,
+          "bounds": [
+            1547,
+            923,
+            3086,
+            1085
+          ]
+        },
+        {
+          "frame": 3120,
+          "pixels": 91790,
+          "max_channel_delta": 202,
+          "bounds": [
+            1544,
+            923,
+            3096,
+            1087
+          ]
+        },
+        {
+          "frame": 3150,
+          "pixels": 93610,
+          "max_channel_delta": 202,
+          "bounds": [
+            1517,
+            921,
+            3105,
+            1085
+          ]
+        },
+        {
+          "frame": 3180,
+          "pixels": 49073,
+          "max_channel_delta": 201,
+          "bounds": [
+            1531,
+            930,
+            2890,
+            1077
+          ]
+        },
+        {
+          "frame": 3210,
+          "pixels": 51608,
+          "max_channel_delta": 201,
+          "bounds": [
+            1527,
+            938,
+            2961,
+            1077
+          ]
+        },
+        {
+          "frame": 3240,
+          "pixels": 51912,
+          "max_channel_delta": 201,
+          "bounds": [
+            1503,
+            934,
+            3070,
+            1077
+          ]
+        },
+        {
+          "frame": 3270,
+          "pixels": 46592,
+          "max_channel_delta": 206,
+          "bounds": [
+            1768,
+            916,
+            3298,
+            1077
+          ]
+        },
+        {
+          "frame": 3300,
+          "pixels": 56638,
+          "max_channel_delta": 198,
+          "bounds": [
+            1799,
+            908,
+            3124,
+            1077
+          ]
+        },
+        {
+          "frame": 3330,
+          "pixels": 52054,
+          "max_channel_delta": 146,
+          "bounds": [
+            1787,
+            915,
+            2621,
+            1073
+          ]
+        },
+        {
+          "frame": 3360,
+          "pixels": 1159,
+          "max_channel_delta": 12,
+          "bounds": [
+            1808,
+            908,
+            2585,
+            994
+          ]
+        },
+        {
+          "frame": 3390,
+          "pixels": 926,
+          "max_channel_delta": 61,
+          "bounds": [
+            1767,
+            915,
+            2686,
+            1012
+          ]
+        },
+        {
+          "frame": 3420,
+          "pixels": 1014,
+          "max_channel_delta": 22,
+          "bounds": [
+            1728,
+            889,
+            2853,
+            1003
+          ]
+        },
+        {
+          "frame": 3450,
+          "pixels": 1312,
+          "max_channel_delta": 12,
+          "bounds": [
+            1627,
+            886,
+            3007,
+            998
+          ]
+        },
+        {
+          "frame": 3480,
+          "pixels": 1264,
+          "max_channel_delta": 13,
+          "bounds": [
+            2251,
+            884,
+            3156,
+            987
+          ]
+        },
+        {
+          "frame": 3510,
+          "pixels": 1413,
+          "max_channel_delta": 10,
+          "bounds": [
+            2203,
+            881,
+            3087,
+            981
+          ]
+        },
+        {
+          "frame": 3870,
+          "pixels": 458,
+          "max_channel_delta": 13,
+          "bounds": [
+            452,
+            885,
+            566,
+            937
+          ]
+        },
+        {
+          "frame": 3960,
+          "pixels": 204,
+          "max_channel_delta": 4,
+          "bounds": [
+            4,
+            846,
+            20,
+            868
+          ]
+        },
+        {
+          "frame": 4170,
+          "pixels": 384,
+          "max_channel_delta": 27,
+          "bounds": [
+            7,
+            1131,
+            393,
+            1296
+          ]
+        },
+        {
+          "frame": 4230,
+          "pixels": 96,
+          "max_channel_delta": 9,
+          "bounds": [
+            946,
+            1153,
+            1718,
+            1161
+          ]
+        },
+        {
+          "frame": 4260,
+          "pixels": 31,
+          "max_channel_delta": 9,
+          "bounds": [
+            652,
+            1145,
+            1667,
+            1240
+          ]
+        },
+        {
+          "frame": 4470,
+          "pixels": 8,
+          "max_channel_delta": 2,
+          "bounds": [
+            185,
+            1327,
+            192,
+            1329
+          ]
+        },
+        {
+          "frame": 4710,
+          "pixels": 3221,
+          "max_channel_delta": 9,
+          "bounds": [
+            1553,
+            1234,
+            1607,
+            1333
+          ]
+        },
+        {
+          "frame": 4740,
+          "pixels": 6870,
+          "max_channel_delta": 9,
+          "bounds": [
+            1550,
+            1154,
+            1826,
+            1382
+          ]
+        },
+        {
+          "frame": 4770,
+          "pixels": 26176,
+          "max_channel_delta": 19,
+          "bounds": [
+            2,
+            1056,
+            1652,
+            1273
+          ]
+        },
+        {
+          "frame": 4800,
+          "pixels": 24179,
+          "max_channel_delta": 10,
+          "bounds": [
+            257,
+            992,
+            780,
+            1182
+          ]
+        },
+        {
+          "frame": 4830,
+          "pixels": 1621,
+          "max_channel_delta": 7,
+          "bounds": [
+            261,
+            1006,
+            323,
+            1060
+          ]
+        },
+        {
+          "frame": 4860,
+          "pixels": 26541,
+          "max_channel_delta": 14,
+          "bounds": [
+            97,
+            956,
+            441,
+            1070
+          ]
+        },
+        {
+          "frame": 4890,
+          "pixels": 25406,
+          "max_channel_delta": 18,
+          "bounds": [
+            1,
+            889,
+            347,
+            1045
+          ]
+        },
+        {
+          "frame": 4920,
+          "pixels": 7573,
+          "max_channel_delta": 16,
+          "bounds": [
+            2,
+            905,
+            397,
+            986
+          ]
+        },
+        {
+          "frame": 5070,
+          "pixels": 28739,
+          "max_channel_delta": 23,
+          "bounds": [
+            1,
+            887,
+            486,
+            1140
+          ]
+        },
+        {
+          "frame": 5100,
+          "pixels": 94,
+          "max_channel_delta": 5,
+          "bounds": [
+            350,
+            946,
+            981,
+            1043
+          ]
+        },
+        {
+          "frame": 5130,
+          "pixels": 81,
+          "max_channel_delta": 6,
+          "bounds": [
+            762,
+            929,
+            1485,
+            1002
+          ]
+        },
+        {
+          "frame": 5160,
+          "pixels": 137,
+          "max_channel_delta": 5,
+          "bounds": [
+            574,
+            934,
+            1009,
+            1048
+          ]
+        },
+        {
+          "frame": 5190,
+          "pixels": 176,
+          "max_channel_delta": 8,
+          "bounds": [
+            67,
+            897,
+            1499,
+            1130
+          ]
+        },
+        {
+          "frame": 5220,
+          "pixels": 88,
+          "max_channel_delta": 2,
+          "bounds": [
+            635,
+            944,
+            1012,
+            980
+          ]
+        },
+        {
+          "frame": 5250,
+          "pixels": 219,
+          "max_channel_delta": 7,
+          "bounds": [
+            11,
+            915,
+            846,
+            1039
+          ]
+        },
+        {
+          "frame": 5280,
+          "pixels": 10,
+          "max_channel_delta": 3,
+          "bounds": [
+            382,
+            928,
+            389,
+            930
+          ]
+        },
+        {
+          "frame": 5310,
+          "pixels": 5264,
+          "max_channel_delta": 9,
+          "bounds": [
+            100,
+            877,
+            561,
+            1030
+          ]
+        },
+        {
+          "frame": 5340,
+          "pixels": 3085,
+          "max_channel_delta": 107,
+          "bounds": [
+            97,
+            887,
+            225,
+            1021
+          ]
+        },
+        {
+          "frame": 5460,
+          "pixels": 19033,
+          "max_channel_delta": 65,
+          "bounds": [
+            248,
+            838,
+            686,
+            997
+          ]
+        },
+        {
+          "frame": 5490,
+          "pixels": 31143,
+          "max_channel_delta": 211,
+          "bounds": [
+            390,
+            997,
+            1044,
+            1102
+          ]
+        },
+        {
+          "frame": 5520,
+          "pixels": 16861,
+          "max_channel_delta": 203,
+          "bounds": [
+            1599,
+            990,
+            2056,
+            1088
+          ]
+        },
+        {
+          "frame": 5550,
+          "pixels": 17696,
+          "max_channel_delta": 191,
+          "bounds": [
+            2662,
+            979,
+            3242,
+            1085
+          ]
+        },
+        {
+          "frame": 5760,
+          "pixels": 6919,
+          "max_channel_delta": 9,
+          "bounds": [
+            1,
+            1024,
+            175,
+            1093
+          ]
+        },
+        {
+          "frame": 5790,
+          "pixels": 533,
+          "max_channel_delta": 53,
+          "bounds": [
+            1,
+            1029,
+            24,
+            1068
+          ]
+        },
+        {
+          "frame": 5880,
+          "pixels": 930,
+          "max_channel_delta": 11,
+          "bounds": [
+            68,
+            1093,
+            971,
+            1195
+          ]
+        },
+        {
+          "frame": 5970,
+          "pixels": 218,
+          "max_channel_delta": 8,
+          "bounds": [
+            156,
+            1118,
+            1026,
+            1155
+          ]
+        },
+        {
+          "frame": 6000,
+          "pixels": 170,
+          "max_channel_delta": 7,
+          "bounds": [
+            728,
+            1065,
+            756,
+            1077
+          ]
+        },
+        {
+          "frame": 6150,
+          "pixels": 746,
+          "max_channel_delta": 8,
+          "bounds": [
+            185,
+            1050,
+            1618,
+            1123
+          ]
+        },
+        {
+          "frame": 6180,
+          "pixels": 22240,
+          "max_channel_delta": 22,
+          "bounds": [
+            1347,
+            1053,
+            2547,
+            1129
+          ]
+        },
+        {
+          "frame": 6210,
+          "pixels": 77315,
+          "max_channel_delta": 122,
+          "bounds": [
+            686,
+            1055,
+            2964,
+            1147
+          ]
+        },
+        {
+          "frame": 6240,
+          "pixels": 116894,
+          "max_channel_delta": 144,
+          "bounds": [
+            940,
+            1030,
+            3839,
+            1156
+          ]
+        },
+        {
+          "frame": 6270,
+          "pixels": 89888,
+          "max_channel_delta": 174,
+          "bounds": [
+            1357,
+            1014,
+            3839,
+            1152
+          ]
+        },
+        {
+          "frame": 6300,
+          "pixels": 10751,
+          "max_channel_delta": 132,
+          "bounds": [
+            2877,
+            982,
+            3752,
+            1116
+          ]
+        },
+        {
+          "frame": 6420,
+          "pixels": 704,
+          "max_channel_delta": 13,
+          "bounds": [
+            2543,
+            1049,
+            2699,
+            1105
+          ]
+        },
+        {
+          "frame": 6480,
+          "pixels": 4,
+          "max_channel_delta": 1,
+          "bounds": [
+            3034,
+            1023,
+            3041,
+            1024
+          ]
+        },
+        {
+          "frame": 6900,
+          "pixels": 3137,
+          "max_channel_delta": 15,
+          "bounds": [
+            1906,
+            996,
+            2779,
+            1326
+          ]
+        },
+        {
+          "frame": 6930,
+          "pixels": 99,
+          "max_channel_delta": 7,
+          "bounds": [
+            834,
+            1399,
+            1366,
+            1473
+          ]
+        },
+        {
+          "frame": 7080,
+          "pixels": 8050,
+          "max_channel_delta": 40,
+          "bounds": [
+            180,
+            1065,
+            1533,
+            1197
+          ]
+        },
+        {
+          "frame": 7110,
+          "pixels": 4,
+          "max_channel_delta": 19,
+          "bounds": [
+            2025,
+            1172,
+            2032,
+            1173
+          ]
+        },
+        {
+          "frame": 7320,
+          "pixels": 3831,
+          "max_channel_delta": 189,
+          "bounds": [
+            3728,
+            1162,
+            3834,
+            1240
+          ]
+        },
+        {
+          "frame": 7740,
+          "pixels": 22,
+          "max_channel_delta": 7,
+          "bounds": [
+            1683,
+            1096,
+            1694,
+            1098
+          ]
+        },
+        {
+          "frame": 7860,
+          "pixels": 250,
+          "max_channel_delta": 26,
+          "bounds": [
+            1231,
+            1084,
+            1255,
+            1099
+          ]
+        },
+        {
+          "frame": 7890,
+          "pixels": 48,
+          "max_channel_delta": 4,
+          "bounds": [
+            333,
+            1097,
+            341,
+            1103
+          ]
+        },
+        {
+          "frame": 7920,
+          "pixels": 373,
+          "max_channel_delta": 12,
+          "bounds": [
+            187,
+            1007,
+            341,
+            1070
+          ]
+        },
+        {
+          "frame": 7980,
+          "pixels": 17,
+          "max_channel_delta": 4,
+          "bounds": [
+            459,
+            999,
+            483,
+            1063
+          ]
+        },
+        {
+          "frame": 8010,
+          "pixels": 8,
+          "max_channel_delta": 3,
+          "bounds": [
+            291,
+            1049,
+            299,
+            1050
+          ]
+        },
+        {
+          "frame": 8040,
+          "pixels": 5330,
+          "max_channel_delta": 102,
+          "bounds": [
+            8,
+            927,
+            574,
+            1024
+          ]
+        },
+        {
+          "frame": 8130,
+          "pixels": 59613,
+          "max_channel_delta": 195,
+          "bounds": [
+            1,
+            905,
+            740,
+            1042
+          ]
+        },
+        {
+          "frame": 8160,
+          "pixels": 50366,
+          "max_channel_delta": 163,
+          "bounds": [
+            114,
+            887,
+            1432,
+            1041
+          ]
+        },
+        {
+          "frame": 8190,
+          "pixels": 306,
+          "max_channel_delta": 5,
+          "bounds": [
+            1506,
+            887,
+            1914,
+            914
+          ]
+        },
+        {
+          "frame": 8220,
+          "pixels": 27721,
+          "max_channel_delta": 199,
+          "bounds": [
+            1942,
+            878,
+            2473,
+            1015
+          ]
+        },
+        {
+          "frame": 8250,
+          "pixels": 26955,
+          "max_channel_delta": 108,
+          "bounds": [
+            2449,
+            521,
+            3389,
+            662
+          ]
+        },
+        {
+          "frame": 8280,
+          "pixels": 46530,
+          "max_channel_delta": 119,
+          "bounds": [
+            2555,
+            407,
+            3521,
+            557
+          ]
+        },
+        {
+          "frame": 8310,
+          "pixels": 57482,
+          "max_channel_delta": 124,
+          "bounds": [
+            2607,
+            425,
+            3587,
+            574
+          ]
+        },
+        {
+          "frame": 8340,
+          "pixels": 55686,
+          "max_channel_delta": 125,
+          "bounds": [
+            2617,
+            425,
+            3597,
+            574
+          ]
+        },
+        {
+          "frame": 8370,
+          "pixels": 54988,
+          "max_channel_delta": 125,
+          "bounds": [
+            2617,
+            425,
+            3597,
+            574
+          ]
+        },
+        {
+          "frame": 8400,
+          "pixels": 52387,
+          "max_channel_delta": 125,
+          "bounds": [
+            2617,
+            425,
+            3597,
+            574
+          ]
+        },
+        {
+          "frame": 8430,
+          "pixels": 41128,
+          "max_channel_delta": 125,
+          "bounds": [
+            2617,
+            425,
+            3597,
+            574
+          ]
+        }
+      ]
+    },
+    {
+      "left": "future-present-extended2",
+      "right": "future-present-extended3",
+      "frames": 233,
+      "different": 33,
+      "details": [
+        {
+          "frame": 2940,
+          "pixels": 36026,
+          "max_channel_delta": 36,
+          "bounds": [
+            1078,
+            897,
+            2230,
+            1093
+          ]
+        },
+        {
+          "frame": 2970,
+          "pixels": 47000,
+          "max_channel_delta": 155,
+          "bounds": [
+            1078,
+            897,
+            2232,
+            1093
+          ]
+        },
+        {
+          "frame": 3000,
+          "pixels": 48153,
+          "max_channel_delta": 205,
+          "bounds": [
+            1078,
+            897,
+            2232,
+            1093
+          ]
+        },
+        {
+          "frame": 3030,
+          "pixels": 48153,
+          "max_channel_delta": 205,
+          "bounds": [
+            1078,
+            897,
+            2232,
+            1093
+          ]
+        },
+        {
+          "frame": 3060,
+          "pixels": 48169,
+          "max_channel_delta": 205,
+          "bounds": [
+            1078,
+            897,
+            2232,
+            1093
+          ]
+        },
+        {
+          "frame": 3090,
+          "pixels": 46941,
+          "max_channel_delta": 205,
+          "bounds": [
+            1077,
+            897,
+            2232,
+            1092
+          ]
+        },
+        {
+          "frame": 3120,
+          "pixels": 44369,
+          "max_channel_delta": 205,
+          "bounds": [
+            1183,
+            897,
+            2233,
+            1092
+          ]
+        },
+        {
+          "frame": 3150,
+          "pixels": 42773,
+          "max_channel_delta": 195,
+          "bounds": [
+            1178,
+            896,
+            2254,
+            1092
+          ]
+        },
+        {
+          "frame": 3180,
+          "pixels": 15818,
+          "max_channel_delta": 195,
+          "bounds": [
+            1515,
+            967,
+            1997,
+            1092
+          ]
+        },
+        {
+          "frame": 3210,
+          "pixels": 15502,
+          "max_channel_delta": 167,
+          "bounds": [
+            1496,
+            964,
+            1964,
+            1092
+          ]
+        },
+        {
+          "frame": 3240,
+          "pixels": 9899,
+          "max_channel_delta": 37,
+          "bounds": [
+            1491,
+            962,
+            1976,
+            1092
+          ]
+        },
+        {
+          "frame": 3270,
+          "pixels": 2946,
+          "max_channel_delta": 10,
+          "bounds": [
+            1773,
+            990,
+            2042,
+            1060
+          ]
+        },
+        {
+          "frame": 3300,
+          "pixels": 3003,
+          "max_channel_delta": 9,
+          "bounds": [
+            1820,
+            988,
+            2086,
+            1057
+          ]
+        },
+        {
+          "frame": 3330,
+          "pixels": 538,
+          "max_channel_delta": 4,
+          "bounds": [
+            1851,
+            986,
+            2049,
+            1002
+          ]
+        },
+        {
+          "frame": 3450,
+          "pixels": 19,
+          "max_channel_delta": 2,
+          "bounds": [
+            1167,
+            966,
+            1175,
+            969
+          ]
+        },
+        {
+          "frame": 5490,
+          "pixels": 6678,
+          "max_channel_delta": 20,
+          "bounds": [
+            497,
+            1098,
+            672,
+            1172
+          ]
+        },
+        {
+          "frame": 5580,
+          "pixels": 10643,
+          "max_channel_delta": 144,
+          "bounds": [
+            1,
+            1065,
+            232,
+            1233
+          ]
+        },
+        {
+          "frame": 5610,
+          "pixels": 980,
+          "max_channel_delta": 113,
+          "bounds": [
+            1,
+            1107,
+            82,
+            1122
+          ]
+        },
+        {
+          "frame": 5700,
+          "pixels": 2,
+          "max_channel_delta": 1,
+          "bounds": [
+            1,
+            1066,
+            5,
+            1068
+          ]
+        },
+        {
+          "frame": 5880,
+          "pixels": 9609,
+          "max_channel_delta": 110,
+          "bounds": [
+            1320,
+            1115,
+            2241,
+            1261
+          ]
+        },
+        {
+          "frame": 5910,
+          "pixels": 2943,
+          "max_channel_delta": 56,
+          "bounds": [
+            1360,
+            1103,
+            2306,
+            1153
+          ]
+        },
+        {
+          "frame": 5970,
+          "pixels": 6433,
+          "max_channel_delta": 83,
+          "bounds": [
+            978,
+            1107,
+            1199,
+            1179
+          ]
+        },
+        {
+          "frame": 6120,
+          "pixels": 8,
+          "max_channel_delta": 2,
+          "bounds": [
+            2734,
+            1184,
+            2741,
+            1186
+          ]
+        },
+        {
+          "frame": 7080,
+          "pixels": 42,
+          "max_channel_delta": 6,
+          "bounds": [
+            1846,
+            1181,
+            1867,
+            1183
+          ]
+        },
+        {
+          "frame": 7680,
+          "pixels": 243,
+          "max_channel_delta": 15,
+          "bounds": [
+            3,
+            999,
+            86,
+            1013
+          ]
+        },
+        {
+          "frame": 7920,
+          "pixels": 54,
+          "max_channel_delta": 5,
+          "bounds": [
+            185,
+            1015,
+            202,
+            1024
+          ]
+        },
+        {
+          "frame": 7950,
+          "pixels": 4969,
+          "max_channel_delta": 164,
+          "bounds": [
+            632,
+            998,
+            862,
+            1089
+          ]
+        },
+        {
+          "frame": 7980,
+          "pixels": 117,
+          "max_channel_delta": 3,
+          "bounds": [
+            444,
+            962,
+            828,
+            1054
+          ]
+        },
+        {
+          "frame": 8010,
+          "pixels": 1986,
+          "max_channel_delta": 215,
+          "bounds": [
+            519,
+            938,
+            751,
+            1008
+          ]
+        },
+        {
+          "frame": 8040,
+          "pixels": 578,
+          "max_channel_delta": 81,
+          "bounds": [
+            291,
+            971,
+            353,
+            1016
+          ]
+        },
+        {
+          "frame": 8130,
+          "pixels": 17861,
+          "max_channel_delta": 129,
+          "bounds": [
+            185,
+            938,
+            705,
+            1032
+          ]
+        },
+        {
+          "frame": 8160,
+          "pixels": 8390,
+          "max_channel_delta": 58,
+          "bounds": [
+            985,
+            935,
+            1480,
+            1001
+          ]
+        },
+        {
+          "frame": 8220,
+          "pixels": 349,
+          "max_channel_delta": 4,
+          "bounds": [
+            2411,
+            966,
+            2457,
+            993
+          ]
+        }
+      ]
+    },
+    {
+      "left": "future-present-extended3",
+      "right": "future-present-extended3-repeat",
+      "frames": 233,
+      "different": 0,
+      "details": []
+    }
+  ],
+  "scope": "All233 completed actual4K/CRT captures validated. Changed pixels are measured differences, not automatic visual acceptance. Repeat must be exact."
+}

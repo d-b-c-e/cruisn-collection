@@ -256,6 +256,8 @@ def main(argv=None):
         depth_trial=zeus_depth_mirror.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
         if depth_trial:report['zeus_depth_mirror']=depth_trial
         exotica_scene_options.validate_runtime(scene_trial,args,manifest['settings'])
+        if scene_trial and scene_trial.get('future_present'):
+            report['presentation']='explicit-extended-target'
         stall_trial=zeus_stream.configure_stall(args,manifest['rom'],manifest['settings'],reference['frames'])
         if stall_trial:report['zeus_stall']=stall_trial
         offroad_trial=offroad_distance.configure(args,manifest['rom'],manifest['settings'])

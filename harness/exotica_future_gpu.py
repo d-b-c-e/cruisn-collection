@@ -76,9 +76,12 @@ def snapshot(directory, cpu, gpu, mode):
     return dict(frame=frame, quads=cursor, vertices=vertices, packet_sha256=hashlib.sha256(wire).hexdigest(), **result)
 
 
-def verify(directory, scenes, text, mode, captures):
+def verify(directory, scenes, text, mode, captures, present=False):
     initial = re.findall(r'^MIDZ_HOST_FUTURE=(\d+)$', text, re.M)
     final = re.findall(r'^MIDZ_HOST_FUTURE_GPU_RESULT complete=(\d+) scenes=(\d+) quads=(\d+) snapshots=(\d+) written=(\d+) failed=(\d+) rejected=(\d+)$', text, re.M)
+    presentation = re.findall(r'^MIDZ_HOST_FUTURE_PRESENT=(\d+)$', text, re.M)
+    if present and mode != 2 or presentation != (['1'] if present else []):
+        raise ValueError('future presentation acknowledgment differs')
     if not mode:
         if initial or final:
             raise ValueError('disabled future drawing ran')
@@ -113,5 +116,5 @@ def verify(directory, scenes, text, mode, captures):
             sampled.append(snapshot(directory, cpu, received, mode))
     if [r['frame'] for r in sampled] != sorted(captures):
         raise ValueError('future snapshot frame coverage differs')
-    return dict(passed=True, scenes=len(scenes), quads=total, snapshots=sampled, pixel_policy_verified=False,
+    return dict(passed=True, scenes=len(scenes), quads=total, snapshots=sampled, pixel_policy_verified=False, presented=present,
                 scope='Owned future delivery, ordered geometry, material bindings, private readback integrity. Separate insertion oracle and visual/handover acceptance required.')

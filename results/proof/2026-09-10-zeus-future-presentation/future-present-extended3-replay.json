@@ -1,0 +1,405 @@
+{
+  "passed": true,
+  "presentation": "explicit-extended-target",
+  "scene": {
+    "active": 0,
+    "bounds": true,
+    "early_depth": 1,
+    "explicit": true,
+    "fence": false,
+    "first": 1800,
+    "future": 2,
+    "future_present": true,
+    "last": 8848,
+    "material_pages": 1,
+    "materials": true,
+    "mode": "observe",
+    "multiplier": 3,
+    "result": {
+      "active_margins": null,
+      "command_fence": null,
+      "game_scene_boundary": true,
+      "guest_cycles_unchanged": true,
+      "passed": true,
+      "private_future": {
+        "passed": true,
+        "pixel_policy_verified": false,
+        "presented": true,
+        "quads": 19945019,
+        "scenes": 6953,
+        "scope": "Owned future delivery, ordered geometry, material bindings, private readback integrity. Separate insertion oracle and visual/handover acceptance required.",
+        "snapshots": [
+          {
+            "color_differences": 61220,
+            "depth_differences": 61317,
+            "frame": 3900,
+            "height": 4096,
+            "other_page_unchanged": true,
+            "packet_sha256": "b15c61a944aeaf7f53f6efa3dcf390e1e79b4e0a4ec1959702111ebe9e81b584",
+            "quads": 354,
+            "sha256": [
+              "d6d6c7cc7dfba9338e32c9519dad1c10b368152ed7f42f7f7a1a1a71386a995d",
+              "77525427cd01524943f6d22658349d580cb6fbf928e7f5aff1c03190c19fe761",
+              "c23d04fa786b9e01a51c7cd4c53d874a5d80bef9a922b5870465812ddb50bce2",
+              "e91494dcc1ddf5f92a01489a140184c6251cc1b7e7dc7e9e9c2394130a9c5ba1"
+            ],
+            "vertices": 2136,
+            "width": 2736
+          },
+          {
+            "color_differences": 69300,
+            "depth_differences": 69550,
+            "frame": 5072,
+            "height": 4096,
+            "other_page_unchanged": true,
+            "packet_sha256": "0915e9b7fd321c8fff97ae8b4ecc6f9104193661a2ad24e68af50bb4abd24acc",
+            "quads": 538,
+            "sha256": [
+              "ddb78679341f2a0ce41dad444ed3828cf2fdbfbd3ad2cf266e2a348d3e285d79",
+              "c17f5fde5efbaf2f617eae53eea07d7f91535b13f9b1812f2e92c1f1adffdc05",
+              "49013e62453eeb1de59635a5a6542c63dc605f6f2a7118f3df985d9b4013c582",
+              "8509a2ce8275fe71d9470058aa6d58fd8c2b670c3309151a0d8614b768bf88d6"
+            ],
+            "vertices": 3228,
+            "width": 2736
+          },
+          {
+            "color_differences": 59001,
+            "depth_differences": 59126,
+            "frame": 5644,
+            "height": 4096,
+            "other_page_unchanged": true,
+            "packet_sha256": "bab82176828d485f046b55cfab7bdfaa05d3702998077ddf2293b0fd135f38bd",
+            "quads": 6123,
+            "sha256": [
+              "1ed63401780bca197ca66049a47b71b00568f584e4f942d65aafa1ff5d23dba3",
+              "d9f6f9920e6f404533e79ff593caf51967bd51bc2a5a0eb385074558a3c999db",
+              "58dcf21179baa6928df773af9e0fc6f9b18aa1a5993d2dd1c11a10264a99eb61",
+              "c00bedd4ad6a8631e2a56158b339f1068c8d7c452879c91fcb4c60df1dfcd04b"
+            ],
+            "vertices": 36738,
+            "width": 2736
+          },
+          {
+            "color_differences": 0,
+            "depth_differences": 0,
+            "frame": 6330,
+            "height": 4096,
+            "other_page_unchanged": true,
+            "packet_sha256": "d41ffb5b54576cc62728202bbb355233f3834a9457cf1c6a38eb573ce19b5c7d",
+            "quads": 141,
+            "sha256": [
+              "d820d0ea94182ee5faf13f157f9a8a7be7d76b038ded13c76e8c1c3d869607c4",
+              "f121649ee45ed4fb3c3d02221eb71514a4d74069c4639c310cdec3c05230a1b3",
+              "d820d0ea94182ee5faf13f157f9a8a7be7d76b038ded13c76e8c1c3d869607c4",
+              "f121649ee45ed4fb3c3d02221eb71514a4d74069c4639c310cdec3c05230a1b3"
+            ],
+            "vertices": 870,
+            "width": 2736
+          },
+          {
+            "color_differences": 131707,
+            "depth_differences": 131715,
+            "frame": 7187,
+            "height": 4096,
+            "other_page_unchanged": true,
+            "packet_sha256": "1f043bd07fbbb062140a6ebdbdd7671abb5a9788303a3509b1b6a87fd886c428",
+            "quads": 8283,
+            "sha256": [
+              "f400f08e3551ce50a7ba2817c095d12e3566d7be75893f0aee7d9e0d088775a4",
+              "3123a9264f9ba70cdbf825641eb74882fef2c08a8faa302608c28b9fdbd41a12",
+              "a34563435cfe0650379087642a9a380c5091368e939bbb7c36bd8d6b1d8c22b4",
+              "b70fe983312c38a8a75b3fe344c937a4c8728cc73571bb541e66039ddbe102fd"
+            ],
+            "vertices": 49698,
+            "width": 2736
+          }
+        ]
+      },
+      "quads": 19945019,
+      "scenes": 6953,
+      "scope": "Bounded live scene/material receipts; independent geometry and visual acceptance are separate.",
+      "snapshots": 5
+    },
+    "snapshots": [
+      3900,
+      5072,
+      5644,
+      6330,
+      7187
+    ],
+    "source_cache": 1
+  },
+  "depth": {
+    "enabled": true,
+    "explicit": true,
+    "first": 2,
+    "last": 8850,
+    "mode": "wide",
+    "result": {
+      "batches": 133623,
+      "clears": 14823,
+      "frames": 8849,
+      "passed": true,
+      "pixel_depth_policy_verified": false,
+      "scope": "Private wide readback integrity and original-command counters; pixel depth policy and any future drawing need separate oracles. No handover acceptance.",
+      "snapshots": [
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 6553600,
+          "frame": 300,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.9999848008155823,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+            "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+            "ab935d639880f00b607aa5a52ea079b612c42633b8981bb0660327b262228649",
+            "5b38758e77555991f1d789f8faf4de8973feddb6fee754babe1f785e4978c7e7"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 29152,
+          "frame": 1800,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+            "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+            "68b8cd83e3ccbc3a2ee3076cc1a63f099b7a4a5815b1d336ddd2893a021eebc0",
+            "31b3f3be89c424b0390bc68a4aa6a717835edafa2c9b5c105a02114282fd880e"
+          ]
+        },
+        {
+          "color_differences": 778,
+          "compatibility_equal": false,
+          "depth_differences": 954,
+          "frame": 3500,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3",
+            "3dd582d9d57c017206bace17d5956a0707c782c777e55bb22d6a097b84bea48f",
+            "03fbbc4788b2702b8545dff8a89c77ab811541b0b377b7e44f0998b1a4d08495",
+            "808a16795232b11fad348b3fd830b7a708a42022bff299059e3fdd3bc130ba8a"
+          ]
+        },
+        {
+          "color_differences": 80,
+          "compatibility_equal": false,
+          "depth_differences": 80,
+          "frame": 3901,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "8955c27f882608e3c930e8da77be0ee6e6e85edd08e93d5651cdf4cda05305e1",
+            "16754cacd69c25abac560cf523d2c4c324e62941d9b606acded958e1995aa438",
+            "d557f3da1d60668f4f610a7ec3d0fc0dd6b9e3c9225ad65df276c505258d6670",
+            "5d83b029832fb156c51b028234cc6373081ee7d8c22e79007dbac05594d3ad1f"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 10,
+          "frame": 4501,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "5a72c79601ec591486fa13faef3efc7649bc48f1050a87d9f958acfb4cc9ca06",
+            "5a72c79601ec591486fa13faef3efc7649bc48f1050a87d9f958acfb4cc9ca06",
+            "b85c1a8bab31467ff43399d4289a8fd073f54d5063d2a06e37ae7d90906ace15",
+            "6262027b7d552e04169146189356bd8e0eab2c30da766da405091e39ebf17e8f"
+          ]
+        },
+        {
+          "color_differences": 34004,
+          "compatibility_equal": false,
+          "depth_differences": 3852,
+          "frame": 5073,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "9246387d19726bc4701354772dd70f70309db7270a006c6fd64b74fd73af8a9b",
+            "8062a558d00a9669dfd0333bec8aae04036f73dd3d72327ca38032bceae49439",
+            "4945dc543f5b1a8bfd89f1fee75b8c4564668002374d977820ad245578efd3a8",
+            "06f0b3d73bbe2a4b7847c89f93dc4b992ba8c51f520094bf0074007e31d5977c"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 307,
+          "frame": 5645,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "deda444fd9a3c990726ac19d977433ce0a566eff5945b6876db5d6ea6aa9c569",
+            "deda444fd9a3c990726ac19d977433ce0a566eff5945b6876db5d6ea6aa9c569",
+            "603a6790e47104d7ce5f673d958d54502fa4c3c14da3bfa9ca6258d5d2e42e31",
+            "d44e0ffede987904f89e678482ae40efce3faf5ba80fb152b84d20d8aee70d48"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 1,
+          "frame": 6331,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "60da983bed37fd9b36e600e8a8afabc2165af94d862be51c277cad035e22055d",
+            "60da983bed37fd9b36e600e8a8afabc2165af94d862be51c277cad035e22055d",
+            "3c33c23906c3c26d1b69374c5f5204f2a5b712ca858f9fd2d1b542ddf5117b86",
+            "a5f312aaebb63de8fc22a07e5a7ddf0e67f1d3d55370f187ee8c9173ed2ceadb"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 4,
+          "frame": 6751,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "d9947cfaafa3852adc3b5ab04e5b07ae4d3b62d346df4e54e117b7ed95c50e7a",
+            "d9947cfaafa3852adc3b5ab04e5b07ae4d3b62d346df4e54e117b7ed95c50e7a",
+            "4cf84433fb195dd63836e59523d67c41ecbf32a8885607a9227dd837caaef65d",
+            "0173cfbb8a5f74840c9dd1d8b4b116de2a6f185d3d932d4f2ac41d59178c4f2f"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 1,
+          "frame": 7188,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "7c81c0914d06d9f3a01549d8cf253c27fb108213b812e17330f4374bd94d51b5",
+            "7c81c0914d06d9f3a01549d8cf253c27fb108213b812e17330f4374bd94d51b5",
+            "b5e25bf8c10b3ff05142e89ad9479cda1a5f2940a01d661c67ac620c4f243e70",
+            "1f04f66aa98a2f1b666412bdaeb453d741daf0b81f2ad10f7993f44cd5708337"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": true,
+          "depth_differences": 0,
+          "frame": 7801,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "6e0c6c7cbfae3d3ac3e9783b2d78296d2b5ecc89ce995bc5180807108154a00c",
+            "6e0c6c7cbfae3d3ac3e9783b2d78296d2b5ecc89ce995bc5180807108154a00c",
+            "77f804ed89cd09d47bdd341042aba1d42896fb208f800d619ff170ccf86b0e75",
+            "f9fa745bccd7544e9bb9c9f2881d5c282367564f7b1d992c0339b96beb01002d"
+          ]
+        },
+        {
+          "color_differences": 55287,
+          "compatibility_equal": false,
+          "depth_differences": 0,
+          "frame": 8401,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "7068a164710b2767e885359785374a92c4886f9e6bba38e14de5ab497afd2b68",
+            "5f0e6fc9824fbf876ddcd55c2027e1c8c9e238267d0ae6207246209c0bd31ceb",
+            "85af5e13221b685b3d280ffa86148543356caf5268437a32bc0730255fe5a988",
+            "c95e7065048f8eee05a13457937c081775e228a9c35fdf60c21cde14daa72405"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": true,
+          "depth_differences": 0,
+          "frame": 8760,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "16c4cd59c0f30e0c399b7535ec6201247af7a4cb6febf78399b35b4d82795045",
+            "16c4cd59c0f30e0c399b7535ec6201247af7a4cb6febf78399b35b4d82795045",
+            "0537f35cbc66834cb58b354fa2754432d8dc0158002b42de8176275eb5ef0115",
+            "bfa8243dbf389800d48b7355d70fc0d350e874e086bbb4fff4d972c0f72767f9"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": true,
+          "depth_differences": 0,
+          "frame": 8850,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "4ad2bbf2a95c70e86b5e033f7539f5181a6b068adca5226720afc959297ef703",
+            "4ad2bbf2a95c70e86b5e033f7539f5181a6b068adca5226720afc959297ef703",
+            "3cd4957474ac93200c8fff491ad4b652c360d10fd6c2f332d4b62f8c98c65945",
+            "2e9143ad80ebfb656a4a520f6ca91d1c7f9f7d805ed4d787efaccd111921fcef"
+          ]
+        }
+      ],
+      "vertices": 112157367
+    },
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      3901,
+      4501,
+      5073,
+      5645,
+      6331,
+      6751,
+      7188,
+      7801,
+      8401,
+      8760,
+      8850
+    ]
+  }
+}

@@ -1,5 +1,52 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 four-game status and dense Exotica presentation — ACTIVE
+
+Maintainer asked for an up-to-date parity assessment. Read
+`docs/reviews/2026-09-10-scenery-parity-status.md`; README/ROADMAP now distinguish
+all four native prototypes from accepted/deployed features. No cosmetic parity
+claim: USA needs full speed, World2.5 roads remain open, OffRoad needs an attended
+complete-track recording. Exotica14 internal2x/3x samples match, but NEWdense
+actualdisplay comparisons find33differences/233; mostly small foliage/margin
+regions. Do not confuse sparse internal results with full actualdisplay coverage.
+
+Full e144 draw2/draw3/repeat and five independent insertion checks each PASS.
+All preserve8860 inputs, original camera/ADC/resources and117completed4K.
+3x repeats14 internal snapshots/five immediate packets/6953ordered scene/material
+records. All14 completed2x/3x colors match;2x changesfour over1x, one behind race
+results. Earlier raw immediate gains can be completely occluded by nearer
+original geometry. Preserve correct occlusion; no polygon-count success claim.
+
+Native9edda839517fa8966bca33d998b999c7b0c3581b is separately built/frozen/pushed,
+SHAca7e814bcb62efa15e2192c857bd4dd24a69fbe8660a895b1a2aafcc5917105c,
+182patches reconstruct71259d64dd528c7e207f1792e0963047b109f836.
+Explicit --exotica-host-future-present original|extended switches only the final
+presentation sampler; extended requiresdraw/privatewide/physicalFFB0. Original
+target/resources remain untouched. See docs/reviews/2026-09-10-zeus-future-presentation.md.
+349Python/no skips,47native/132commands PASS at503-file source identity
+5677488a9cc392e261b00f0edc3b3694b7060c4cef2d649766216a15aa6b4960.
+
+Four full8860 original/extended2/extended3/repeat runs PASS: originalcamera/ADC/
+10resources and233actual4K/CRT each. Original117oldframes equal. 2x changes84/233
+vsoriginal;3x changes33/233vs2x;repeat all233exact plus14internals/fivepackets/
+6953ordered scene/material records. All20 independent insertion oraclesPASS.
+Across9ed/e144,42private snapshots/15immediate packets equal. Last sourcechecks
+above bindexactpresentation source. Proof2026-09-10-zeus-future-presentation
+recomputessource/receiptconsistency; actualGPU/route/pixels remainreceipts.
+
+NEXT inspectdense3060/5580/8130differences (LOCAL exactpixelregions), measure
+uncapturedperformance, thenimplementhostfade/handover. Localfuture-opacity-summary
+confirmsmostblendedfuturequadsstartsrc8/dst240; originalfade routinealreadymapped
+in2026-09-10-exotica-future-materials.md. LOCAL fade-promotion containsnativehelper/
+analyzer/probe, NOTcanonicalyet. Retaincorrectforegrounddepth; noforcedopaque
+policywithout handoverproof. LOCALfuture-present-trial.py/compare.py and
+future-wide-next.md carry reproduciblecommands. Noemulator/build/GPUtest remains.
+
+Personal87d/v0.5.0 unchanged. Lastclean7defaults50a; USA6.13second timing failure
+remains. No deployment/release/physicalFFB/Worldtuning/menu removal/hosted CI.
+Serialemulators/GPU, rigcheck beforevisible tests; no build/export/broad scans
+duringtimedplayback. Keepworkingdirectly; heartbeatone-minute recoveryonly.
+
 ## September 10 live private Zeus future — ACTIVE continuous comparisons
 
 Read `docs/reviews/2026-09-10-zeus-live-future.md` and LOCAL

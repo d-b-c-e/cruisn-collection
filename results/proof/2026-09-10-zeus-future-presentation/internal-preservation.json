@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "pairs": [
+    {
+      "reference": "wide-future-full3",
+      "candidate": "future-present-control3",
+      "completed": 14,
+      "immediate": 5,
+      "passed": true
+    },
+    {
+      "reference": "wide-future-full2",
+      "candidate": "future-present-extended2",
+      "completed": 14,
+      "immediate": 5,
+      "passed": true
+    },
+    {
+      "reference": "wide-future-full3",
+      "candidate": "future-present-extended3",
+      "completed": 14,
+      "immediate": 5,
+      "passed": true
+    }
+  ],
+  "scope": "Matching captured internal/private state and owned packet hashes across e144 and9ed. This does not assert matching final displayed targets."
+}

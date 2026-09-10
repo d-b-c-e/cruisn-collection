@@ -55,6 +55,29 @@ class ExoticaFutureGpu(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'nonfinite'):
             framebuffer([color, depth, color, bad], 0, 0, True)
 
+    def test_extended_presentation_is_explicit_and_recorded(self):
+        words = ('--candidate', 'x.exe', '--exotica-host-scene', 'observe',
+                 '--exotica-host-first', '5000', '--exotica-host-last', '5002',
+                 '--exotica-host-materials', 'observe')
+        for mode in ('off', 'observe'):
+            with self.assertRaisesRegex(ValueError, 'requires future draw'):
+                configure(self.args(*words, '--exotica-host-future', mode,
+                    '--exotica-host-future-present', 'extended'), 'crusnexo', {})
+        settings = {}
+        result = configure(self.args(*words, '--exotica-host-future', 'draw'), 'crusnexo', settings)
+        self.assertFalse(result['future_present']); self.assertNotIn('MIDZ_HOST_FUTURE_PRESENT', settings)
+        result = configure(self.args(*words, '--exotica-host-future', 'draw',
+            '--exotica-host-future-present', 'extended'), 'crusnexo', settings)
+        self.assertTrue(result['future_present']); saved = dict(settings)
+        self.assertTrue(configure(self.args(), 'crusnexo', settings)['future_present'])
+        self.assertEqual(settings, saved)
+        with self.assertRaisesRegex(ValueError, 'presentation acknowledgment'):
+            verify('.', [], '', 2, [], present=True)
+        with self.assertRaisesRegex(ValueError, 'presentation acknowledgment'):
+            verify('.', [], 'MIDZ_HOST_FUTURE_PRESENT=1\n', 2, [])
+        configure(self.args('--candidate', 'x.exe', '--exotica-host-scene', 'off'), 'crusnexo', settings)
+        self.assertNotIn('MIDZ_HOST_FUTURE_PRESENT', settings)
+
     def test_receipt_rejects_undelivered_or_changed_quads(self):
         source = dict(scene='3', frame='5001', multiplier='3', quads='1', hash='123456789abcdef0')
         received = dict(source, mode='2', page='0', vertices='6', bytes=str(32+96+264), snapshot='0', host_us='1.5')

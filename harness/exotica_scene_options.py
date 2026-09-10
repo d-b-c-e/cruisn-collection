@@ -40,7 +40,9 @@ def add_arguments(parser):
     parser.add_argument('--exotica-host-active', choices=('off', 'observe', 'draw'),
                         help='capture current margin objects after original commands; optionally draw with private depth')
     parser.add_argument('--exotica-host-future', choices=('off', 'observe', 'draw'),
-                        help='validate owned future scenery, or draw it into the private wide-depth target; original target stays displayed')
+                        help='validate owned future scenery, or draw it into the private wide-depth target; original display by default')
+    parser.add_argument('--exotica-host-future-present', choices=('original', 'extended'),
+                        help='explicitly present the original or extended target for completed-frame visual comparisons')
 
 
 def configure(args, rom, settings):
@@ -53,17 +55,18 @@ def configure(args, rom, settings):
     fence_option = getattr(args, 'exotica_host_fence', None)
     active_option = getattr(args, 'exotica_host_active', None)
     future_option = getattr(args, 'exotica_host_future', None)
+    present_option = getattr(args, 'exotica_host_future_present', None)
     values = [getattr(args, 'exotica_host_'+name, None) for name in ('first', 'last', 'multiplier', 'snapshots')]
     explicit = mode is not None
     if explicit:
         if not getattr(args, 'candidate', None):
             raise ValueError('Exotica host observation requires an explicit candidate')
     else:
-        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option, fence_option, active_option, future_option)):
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option, fence_option, active_option, future_option, present_option)):
             raise ValueError('Exotica host bounds require an explicit mode')
         inherited = settings.get('MIDZ_HOST_SCENE')
         if inherited in (None, '0'):
-            if settings.get('MIDZ_HOST_FUTURE', '0') != '0':
+            if settings.get('MIDZ_HOST_FUTURE', '0') != '0' or settings.get('MIDZ_HOST_FUTURE_PRESENT', '0') != '0':
                 raise ValueError('orphan Exotica future mode')
             return None
         if inherited != '1':
@@ -73,7 +76,7 @@ def configure(args, rom, settings):
     if rom != 'crusnexo' or mode not in ('off', 'observe'):
         raise ValueError('Exotica host observation supports Exotica2.4 only')
     if mode == 'off':
-        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option, fence_option, active_option, future_option)):
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option, fence_option, active_option, future_option, present_option)):
             raise ValueError('Exotica host off does not take bounds')
         settings['MIDZ_HOST_SCENE'] = '0'
         for key in KEYS:
@@ -86,6 +89,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_FENCE', None)
         settings.pop('MIDZ_HOST_ACTIVE', None)
         settings.pop('MIDZ_HOST_FUTURE', None)
+        settings.pop('MIDZ_HOST_FUTURE_PRESENT', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier
@@ -140,6 +144,11 @@ def configure(args, rom, settings):
         raise ValueError('Exotica future requires private materials and no active margin drawing')
     if future_option is not None:
         settings['MIDZ_HOST_FUTURE'] = future_setting
+    present_setting = settings.get('MIDZ_HOST_FUTURE_PRESENT', '0') if present_option is None else str(int(present_option == 'extended'))
+    if present_setting not in ('0', '1') or present_setting == '1' and future_setting != '2':
+        raise ValueError('Exotica extended presentation requires future draw mode')
+    if present_option is not None:
+        settings['MIDZ_HOST_FUTURE_PRESENT'] = present_setting
     settings.update(MIDZ_HOST_SCENE='1', MIDZ_HOST_FIRST=str(first), MIDZ_HOST_LAST=str(last),
                     MIDZ_HOST_MULTIPLIER=str(multiplier))
     if captured:
@@ -148,7 +157,8 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_SNAPSHOTS', None)
     return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured,
                 bounds=bound_setting == '1', materials=material_setting == '1', material_pages=int(page_setting),
-                source_cache=int(cache_setting), early_depth=int(depth_setting), fence=fence_setting == '1', active=int(active_setting), future=int(future_setting), explicit=explicit)
+                source_cache=int(cache_setting), early_depth=int(depth_setting), fence=fence_setting == '1', active=int(active_setting),
+                future=int(future_setting), future_present=present_setting == '1', explicit=explicit)
 
 
 def validate_runtime(trial, args, settings):
@@ -265,7 +275,7 @@ def verify_receipt(trial, text, directory):
     from exotica_active import verify as verify_active
     active_result = verify_active(directory, rows, text, active, trial['snapshots'])
     from exotica_future_gpu import verify as verify_future
-    future_result = verify_future(directory, rows, text, trial.get('future', 0), trial['snapshots'])
+    future_result = verify_future(directory, rows, text, trial.get('future', 0), trial['snapshots'], present=trial.get('future_present', False))
     return dict(passed=True, scenes=matched, quads=quads, snapshots=saved, guest_cycles_unchanged=True, game_scene_boundary=True,
                 command_fence=fence_result, active_margins=active_result, private_future=future_result,
                 scope='Bounded live scene/material receipts; independent geometry and visual acceptance are separate.')

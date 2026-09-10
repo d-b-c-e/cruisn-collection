@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "scope": "Complete actual4K captures; original identity only required when presenting original target",
+  "frames": 233,
+  "common_original_frames": 117,
+  "original_identity": true,
+  "different_common_frames": [],
+  "present": "original"
+}

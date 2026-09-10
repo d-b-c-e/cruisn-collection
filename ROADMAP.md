@@ -16,8 +16,10 @@ and the public package remain v0.5.0.
   and resources. The 3× repeat is exact across 14 completed internal snapshots
   and the ordered scene/material stream. However, all 14 completed 2×/3× color
   images match: extra polygons have not demonstrated extra visible 3× benefit
-  there. A separate candidate can explicitly present the extended target for
-  denser actual 4K/CRT comparisons; its gameplay validation is underway.
+  there. The separate [presentation candidate](docs/reviews/2026-09-10-zeus-future-presentation.md)
+  now finds33 changed3×-over2× images in233 actual4K/CRT samples. Inspected changes
+  are mostly small regions through foliage/at margins;3× repeats all233 exactly.
+  Useful visual acceptance remains open. This expands coverage beyond the14 internal samples.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.
