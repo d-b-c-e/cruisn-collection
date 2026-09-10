@@ -121,12 +121,19 @@ def verify(directory, scenes, text, mode, captures):
     initial = re.findall(r'^MIDZ_HOST_ACTIVE=(\d+)$', text, re.M)
     final = re.findall(r'^MIDZ_HOST_ACTIVE_RESULT complete=(\d+) scenes=(\d+) quads=(\d+) remaining=(\d+)$', text, re.M)
     gpu_final = re.findall(r'^MIDZ_HOST_ACTIVE_GPU_RESULT complete=(\d+) scenes=(\d+) quads=(\d+)$', text, re.M)
+    writer = re.findall(r'^MIDZ_HOST_ACTIVE_WRITER submitted=(\d+) written=(\d+) failed=(\d+) rejected=(\d+) peak_bytes=(\d+) write_total_us=(\d+) write_max_us=(\d+) drain_us=(\d+) waits=(\d+) wait_us=(\d+)$', text, re.M)
     if not mode:
-        if initial or final or gpu_final:
+        if initial or final or gpu_final or writer:
             raise ValueError('disabled Exotica active margins ran')
         return None
     if mode not in (1, 2) or initial != [str(mode)] or len(final) != 1 or len(gpu_final) != 1:
         raise ValueError('active margin acknowledgment')
+    if len(writer) != 1:
+        raise ValueError('missing active margin writer completion')
+    submitted, written, failed, rejected, peak, total_us, max_us, drain_us, waits, wait_us = map(int, writer[0])
+    if (submitted != 4*len(captures) or written != submitted or failed or rejected or
+            peak > 512*1024*1024 or max_us > total_us or waits > submitted):
+        raise ValueError('incomplete active margin writer')
     def rows(name):
         path = Path(directory)/name
         if path.stat().st_size > 8*1024*1024:

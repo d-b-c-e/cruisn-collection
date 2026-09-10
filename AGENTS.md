@@ -1,5 +1,23 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 live margin capture fix — ACTIVE drawing tests
+
+Read docs/reviews/2026-09-10-exotica-live-margins.md. Latestnativec9982f3e662
+SEPARATELYbuilt/pushed/frozen SHA7bf0f365,171patches/treeff66026f1203fb21df1b70ceb13a1d2e1cec6593.
+First5ffobserve FAIL: synchronous180MB framebuffer snapshots stalledGL1.27/1.49s,
+watchdogloststream after11/13scenes. Retained active-margin-observe. Late snapshots
+stillindependently match5072(63/522),5080(56/160), originaldepth/color androuteexact.
+c998 queuesownedbytes through boundedCaptureWriter, explicitcompletionreceipts.
+active-margin-observe-async PASS13scenes4435quads/26materials/25paired4K,4191camera/
+12573actualADCtimes/10originalresources. IndependentPython/native lategeometryPASS.
+Snapshotcallbacks139/130ms; diagnosticreadbackcost, notordinarydrawperformance.
+Draw/repeat currentlyINPROGRESS throughLOCAL active-margin-trial.py; usecandidate
+build/candidates/c9982f3e662/vunit.exe. Do not claimdrawvisual/fullgame/defaultpass.
+329/45/125localchecks belong5ffsourcefa537af0; renewafterfinalsource. Last7defaults
+still2eac. Personal87dunchanged; no deploy/release/hostedworkflow/physicalFFB/World
+tuning/menu removal. Continue directly; serialrig. LOCALextended-depth-next-plan.md
+is UNIMPLEMENTED privateD32F original-command replay idea, notglobal3xproof.
+
 ## September10 live margin candidate — ACTIVE validation
 
 Read docs/reviews/2026-09-10-exotica-live-margins.md. Native5ff1f9f8132 built

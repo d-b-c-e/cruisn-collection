@@ -6,6 +6,37 @@ diagnostic. It keeps original far distance and does not change product defaults.
 Live gameplay acceptance is in progress; the earlier offline repair does not
 establish acceptance for this integration.
 
+## First integration checks and retained failure
+
+The disabled5ff control completes6000 recorded inputs and25 paired4K images,
+matching accepted2eac. All4,191 camera samples,12,573 actual ADC read times, and
+ten original command/model/material resources are identical.
+
+The initial observe run fails the render watchdog at frame5080. Both captured
+late scenes reconstruct independently:5072 has63 instances/522 quads;5080 has56
+instances/160 quads. Their original color and depth remain unchanged, and the
+complete camera/input-read trace matches. However, synchronous raw color/depth
+file writes hold the GL consumer for1.274/1.487seconds. Only11 of13 scenes reach
+the consumer; the harness correctly rejects the lost rendering state and missing
+material generations. The failed run remains local and is not a visual pass.
+
+Native`c9982f3e662b7932ff598741b797662faf4fa978` moves those owned snapshot bytes
+to the existing bounded FIFO writer, with separate completion/failure receipts.
+It uses at most512MiB/32 pending-or-in-flight requests. Only explicit offline
+capture pacing can wait for capacity; no GL or game memory reaches the writer.
+This is a separate native fix, frozen at`build/candidates/c9982f3e662/vunit.exe`,
+SHA256`7bf0f3659ca4adc58d4d91914bec7e91710c141f5499c858ec68bde519297d40`.
+The171-patch export reconstructs tree`ff66026f1203fb21df1b70ceb13a1d2e1cec6593`.
+
+Its capture-only replay now completes all13 scenes/4,435 captured quads,26 owned
+material generations and all requested files. The same25 images, route, actual
+ADC times and ten original resources match2eac. Both late independent geometry
+reconstructions pass again. Snapshot callbacks drop to139/130ms, including full
+GPU readback and validation; this is diagnostic overhead, not ordinary drawing
+cost. Drawing/repeat and broader acceptance are still in progress. The329-test
+source identity below belongs to the pre-async checkpoint; final checks must be
+renewed after this fix.
+
 `--exotica-host-active off|observe|draw` requires an explicit candidate when
 overridden, the bounded scene observer, private materials, and command-fence
 observation. Absent settings preserve old recording behavior. Recorded settings

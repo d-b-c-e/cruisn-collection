@@ -54,13 +54,16 @@ class ActiveReceipts(unittest.TestCase):
                    page='0', margin='86', snapshot='0', host_us='1')
         fence = dict(scene='12', ready_frame='5001')
         text = ('MIDZ_HOST_ACTIVE=2\nMIDZ_HOST_ACTIVE_RESULT complete=1 scenes=1 quads=0 remaining=0\n'
-                'MIDZ_HOST_ACTIVE_GPU_RESULT complete=1 scenes=1 quads=0\n')
+                'MIDZ_HOST_ACTIVE_GPU_RESULT complete=1 scenes=1 quads=0\n'
+                'MIDZ_HOST_ACTIVE_WRITER submitted=0 written=0 failed=0 rejected=0 peak_bytes=0 write_total_us=0 write_max_us=0 drain_us=0 waits=0 wait_us=0\n')
         with tempfile.TemporaryDirectory() as temp:
             def write(name, row):
                 with (Path(temp)/name).open('w', encoding='utf-8', newline='') as f:
                     writer = csv.DictWriter(f, fieldnames=list(row));writer.writeheader();writer.writerow(row)
             write('exotica-active-scenes.csv', sent);write('exotica-active-gpu.csv', gpu);write('exotica-host-fences.csv', fence)
             self.assertTrue(verify(temp, [source], text, 2, [])['passed'])
+            with self.assertRaisesRegex(ValueError, 'writer'):
+                verify(temp, [source], text.replace('failed=0', 'failed=1'), 2, [])
             with self.assertRaisesRegex(ValueError, 'disabled'):verify(temp, [source], text, 0, [])
             with self.assertRaisesRegex(ValueError, 'incomplete'):
                 verify(temp, [source], text.replace('complete=1', 'complete=0'), 2, [])
