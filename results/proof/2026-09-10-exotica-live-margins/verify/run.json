@@ -1,0 +1,426 @@
+{
+  "source_sha256": "2b75c5efc9cabd293792b4c7693a239afdae5effa0ca336db4c3861184da5c8f",
+  "receipt": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "display_target": {
+      "available": [
+        {
+          "device": "\\\\.\\DISPLAY1",
+          "primary": true,
+          "size": [
+            3840,
+            2160
+          ]
+        }
+      ],
+      "reference_size": [
+        3840,
+        2160
+      ],
+      "selected": {
+        "device": "\\\\.\\DISPLAY1",
+        "primary": true,
+        "size": [
+          3840,
+          2160
+        ]
+      }
+    },
+    "presentation": "explicit-gl-experiment",
+    "exotica_host_scene": {
+      "active": 2,
+      "bounds": true,
+      "early_depth": 1,
+      "explicit": true,
+      "fence": true,
+      "first": 3500,
+      "last": 5990,
+      "material_pages": 2,
+      "materials": true,
+      "mode": "observe",
+      "multiplier": 3,
+      "result": {
+        "active_margins": {
+          "mode": 2,
+          "passed": true,
+          "quads": 547883,
+          "ram_models": true,
+          "resource_lease": true,
+          "scenes": 2457,
+          "scope": "Current margin geometry and private D24 preservation; far distance and full occlusion remain unproven.",
+          "seal_pages": true,
+          "sealed_at_scene_end": true,
+          "snapshots": [
+            {
+              "changed_margin_pixels": 7952,
+              "color_sha256": [
+                "3616eb28d238e69a3107f505f5285457bde3b165b9da1684ed96946c8f05a749",
+                "8740cb68f52fcdcb72997791d1d5475396f86a4b1ccffd3578eeb602e790a533"
+              ],
+              "frame": 3510,
+              "original_depth_unchanged": true,
+              "outside_color_unchanged": true,
+              "quads": 476,
+              "resource_lease": {
+                "checked_texture_pages": 117,
+                "palettes": 41,
+                "passed": true,
+                "rendered_instances": 41,
+                "rendered_model_bytes": 28144,
+                "rendered_model_spans": 38,
+                "required_texture_pages": 117
+              },
+              "sealed": {
+                "camera_advanced": true,
+                "instance_bindings_checked": 41
+              },
+              "vertices": 2856
+            },
+            {
+              "changed_margin_pixels": 33554,
+              "color_sha256": [
+                "d6ca17faf171f00bf581e052f3b324350f2906b9e420a1485d7eca5c2ef430b8",
+                "809b062b8480a886c7d0a5b6ba9f7d401f0f5a18920c4ab129e58c3f37576a73"
+              ],
+              "frame": 4131,
+              "original_depth_unchanged": true,
+              "outside_color_unchanged": true,
+              "quads": 364,
+              "resource_lease": {
+                "checked_texture_pages": 136,
+                "palettes": 42,
+                "passed": true,
+                "rendered_instances": 42,
+                "rendered_model_bytes": 26288,
+                "rendered_model_spans": 40,
+                "required_texture_pages": 136
+              },
+              "sealed": {
+                "camera_advanced": true,
+                "instance_bindings_checked": 42
+              },
+              "vertices": 2196
+            },
+            {
+              "changed_margin_pixels": 8416,
+              "color_sha256": [
+                "0b350a426082c270ca32563b1f834b3ca7f601e8370cd4351814cb41f45b4985",
+                "93d9a76da37393a63c3e52da5fd5df43e5f510770c56e127d7f1033d9817d649"
+              ],
+              "frame": 5072,
+              "original_depth_unchanged": true,
+              "outside_color_unchanged": true,
+              "quads": 522,
+              "resource_lease": {
+                "checked_texture_pages": 154,
+                "palettes": 63,
+                "passed": true,
+                "rendered_instances": 63,
+                "rendered_model_bytes": 26016,
+                "rendered_model_spans": 54,
+                "required_texture_pages": 154
+              },
+              "sealed": {
+                "camera_advanced": false,
+                "instance_bindings_checked": 63
+              },
+              "vertices": 3132
+            },
+            {
+              "changed_margin_pixels": 7348,
+              "color_sha256": [
+                "1e044929c9deeb4b348855dd396aeffdfa2b6c5aac95a8f17151a9b6b1fa2fe8",
+                "b0424176891a224f212ba8647d0f54ddbc9818fb9f947c2267975bfc08b9159e"
+              ],
+              "frame": 5080,
+              "original_depth_unchanged": true,
+              "outside_color_unchanged": true,
+              "quads": 160,
+              "resource_lease": {
+                "checked_texture_pages": 131,
+                "palettes": 56,
+                "passed": true,
+                "rendered_instances": 56,
+                "rendered_model_bytes": 16056,
+                "rendered_model_spans": 45,
+                "required_texture_pages": 131
+              },
+              "sealed": {
+                "camera_advanced": false,
+                "instance_bindings_checked": 56
+              },
+              "vertices": 960
+            },
+            {
+              "changed_margin_pixels": 59881,
+              "color_sha256": [
+                "32b4f1fc4edc9a25964e6aae373aa48059646535649929db5f55f937204f1ba1",
+                "1bd9823adf457deda7c20b60f19ab456e88bb307f6133a5f0c003d8f48003e2c"
+              ],
+              "frame": 5604,
+              "original_depth_unchanged": true,
+              "outside_color_unchanged": true,
+              "quads": 435,
+              "resource_lease": {
+                "checked_texture_pages": 108,
+                "palettes": 23,
+                "passed": true,
+                "rendered_instances": 23,
+                "rendered_model_bytes": 34000,
+                "rendered_model_spans": 22,
+                "required_texture_pages": 108
+              },
+              "sealed": {
+                "camera_advanced": false,
+                "instance_bindings_checked": 23
+              },
+              "vertices": 2610
+            }
+          ]
+        },
+        "command_fence": {
+          "immediate": 713,
+          "passed": true,
+          "scenes": 2457,
+          "scope": "Existing FIFO completion only; original resource and visual checks are separate.",
+          "waited_words": 105409
+        },
+        "game_scene_boundary": true,
+        "guest_cycles_unchanged": true,
+        "passed": true,
+        "quads": 4848660,
+        "scenes": 2457,
+        "scope": "Bounded live scene/material receipts; independent geometry and visual acceptance are separate.",
+        "snapshots": 5
+      },
+      "snapshots": [
+        3510,
+        4131,
+        5072,
+        5080,
+        5604
+      ],
+      "source_cache": 1
+    },
+    "evidence": {
+      "frames": 6000,
+      "gl_captures": {
+        "completed_frames": [
+          5064,
+          5065,
+          5066,
+          5067,
+          5068,
+          5069,
+          5070,
+          5071,
+          5072,
+          5073,
+          5074,
+          5075,
+          5076,
+          5077,
+          5078,
+          5079,
+          5080,
+          5081,
+          5082,
+          5083,
+          5084,
+          5085,
+          5086,
+          5087,
+          5088
+        ],
+        "count": 25,
+        "dropped_messages": 0,
+        "files": {
+          "mzgl_000.bmp": {
+            "sha256": "ad7ec9050db66eac4c249fc257c8d51661d0444b72a26713d20a8c60d5fb1b86",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_001.bmp": {
+            "sha256": "7598f4dc8fcff93794c528ceb6369a6d28bebd7424ae432e3f096d9430abf7c1",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_002.bmp": {
+            "sha256": "ee56ade795020155ea7e17528ef4418d97cad0f0790fbef8ed2e839b37fdfad9",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_003.bmp": {
+            "sha256": "5903b3754a880996a1dd1ce91eb9e06c3acbadb3398aba87839981c189521a43",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_004.bmp": {
+            "sha256": "cdd53a7693b1f99621314c1d10fe778cad1720c4ba4a9dcabf069115831b88b7",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_005.bmp": {
+            "sha256": "44a32439c2d83a3e6c4a0cb89e6ce70af465845a9eea70dde48fd2bdaf520a74",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_006.bmp": {
+            "sha256": "5067261818c5efaa710bbe20ae2d13c29fb620a8771590e282a56cb71dc18eb7",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_007.bmp": {
+            "sha256": "70b11fd3273dfad6c571982b8a32b70afe37d6e56c1a20690db37a011a056881",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_008.bmp": {
+            "sha256": "1ee8b59d4b5b2c92d024e92fc7c1c5b9d49b5630901eb79ceb31f4ca941eb044",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_009.bmp": {
+            "sha256": "bde1eb5d1f8126e327cd70a65b209b830b2d6de742e5c50332f5713d4a522829",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_010.bmp": {
+            "sha256": "a055a58b05a4838d64a29eea4388fa4de5e5a238ebcfbb87fedfeedc26a6cbaf",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_011.bmp": {
+            "sha256": "658ef5882f2aed05b6e344dacd9d8496696f51eef84c931d5f29e8955fa5a7c0",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_012.bmp": {
+            "sha256": "2ab5f7e226a4ff0eb4e312ad591bccf1cdc4654b65a7d04f92db13a28115419d",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_013.bmp": {
+            "sha256": "6bfd122d2df21e79778b2cc492347ee1370c9cb0dc2af0f900d6a36c5d91ec38",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_014.bmp": {
+            "sha256": "1a58e044f3c8b11c5bbea2a31363616900d23b745be8a39f4985061c7171133f",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_015.bmp": {
+            "sha256": "31e6b7db258d3871f89321dcc98bcbb0a4ea4846fb4defc69bbc1f4b2ca2f1fe",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_016.bmp": {
+            "sha256": "417e0dd8997c87c23a01a0301f569227c69f92bb7ae4d830145a50aafa3d8ddf",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_017.bmp": {
+            "sha256": "adec9379a949a0333270a7b0ee36b9903cd29a5ccd71c851a8762cad4daee177",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_018.bmp": {
+            "sha256": "91523f02b63aa9fd7b65914e6cde67105ff58130791340e5f625a9897c0e747f",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_019.bmp": {
+            "sha256": "41870fdd7c3de9eed73c1ea5277a3ce5da9fbff3e1a24ac34594c8c68318895d",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_020.bmp": {
+            "sha256": "aaab2d44e7225379140fd5da5ef7ddaf67c23e28a4d1672333ddecd90f7bf343",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_021.bmp": {
+            "sha256": "768a01bb08a2952e689f7a5db25f741ac44acd60ef6c9faed366c6442e40a0b1",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_022.bmp": {
+            "sha256": "fff8537249155ff7faf3e030f0127b12ac5a155905f5426f281b7ca96be31bae",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_023.bmp": {
+            "sha256": "95b51800717eac0304c62e8c0a5677f83ce51e3223453fc3fcc23f4e0e99b60a",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_024.bmp": {
+            "sha256": "8a9f6f0de86ab0e6d8d26467fce9300503e3e1e51f7ad4c7f986d900890ae6e8",
+            "size": [
+              3840,
+              2160
+            ]
+          }
+        },
+        "index_sha256": "424449793b29c5f5811229e62779ca84475cc08ce4b31be0c86a88a7693e2848",
+        "scope": "completed GL frame pixels"
+      }
+    }
+  }
+}

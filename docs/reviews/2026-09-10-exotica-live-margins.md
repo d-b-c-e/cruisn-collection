@@ -1,5 +1,10 @@
 # Exotica live margin candidate — September 10, 2026
 
+**Current status:** full/repeat/Hong Kong/observe, seven defaults and final local
+checks now pass on 50a. Read the [acceptance report](2026-09-10-exotica-margin-acceptance.md).
+The chronological checkpoints below retain earlier pending and failed states;
+they do not override that report. No personal deployment or farther drawing yet.
+
 ## Current extension status
 
 The separate write-tracking optimization now passes the6,000-frame verification

@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "runs": [
+    {
+      "name": "active-margin-generated-full",
+      "scenes": 5290,
+      "seal_mean_us": 1353.8254586722148,
+      "seal_p99_us": 2093.7660000000005,
+      "seal_max_us": 2933.3,
+      "quads": 970889
+    },
+    {
+      "name": "active-margin-seal-pages-full",
+      "scenes": 5290,
+      "seal_mean_us": 199.92496689994326,
+      "seal_p99_us": 349.28200000000044,
+      "seal_max_us": 2034.0,
+      "quads": 970889,
+      "copied_pages": 20255,
+      "full_comparisons": 3
+    },
+    {
+      "name": "active-margin-seal-pages-repeat",
+      "scenes": 5290,
+      "seal_mean_us": 201.11333459428792,
+      "seal_p99_us": 390.8820000000004,
+      "seal_max_us": 1662.0,
+      "quads": 970889,
+      "copied_pages": 20255,
+      "full_comparisons": 3
+    }
+  ],
+  "scope": "Instrumented full Amazon scene sealing; exclude three raw snapshots. Same scene counts/quads and exact displayed pixels required separately, not whole-game smoothness."
+}

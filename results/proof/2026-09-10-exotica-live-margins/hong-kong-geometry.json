@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "frame": 5000,
+      "passed": true,
+      "objects": 274,
+      "candidates": 4,
+      "instances": 4,
+      "quads": 9,
+      "excluded_raster": 0,
+      "quads_sha256": "3a9a2aeba60ddc958d909dfd17e8411b0916a2d58337ecbab34bfdde76e266c4",
+      "instances_sha256": "4b20a63add538c4d60ea1dcbebf63208002ba4327e7e37e2abbae6d15365b1f3",
+      "native": {
+        "passed": true,
+        "sources": 4,
+        "instances": 4,
+        "quads": 9,
+        "viewport_quads": 9,
+        "model_words_read": 202,
+        "selected": 4,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 4,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 8008238,
+        "source_microseconds": 237,
+        "assembly_microseconds": 39
+      }
+    }
+  ],
+  "scope": "Independent current list culling plus Python/native geometry at exact late snapshot. No unobserved actual-submission exclusion or general occlusion claim."
+}

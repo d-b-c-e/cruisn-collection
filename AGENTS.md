@@ -1,5 +1,36 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 live margin acceptance — ACTIVE wider-depth work
+
+Read docs/reviews/2026-09-10-exotica-margin-acceptance.md. This supersedes older
+pending checkpoints below. Native50a6eaa3d1f/SHAa4e4cd4d now passes full Amazon8860,
+repeat117GL, HongKong21GL, observe117GL, all7defaults/actualUDP-memory/4software
+force checks and final332Python/no skips/46native/127commands. Source identity
+a3d78d50fb5a045fa77c0b19657c3f209970eaac2ab08aa197c0c1e94bc541f2.
+5290scenes970889quads repeat exactly;7060camera21180ADCtimes/10resources exact.
+All51/51/17/51 active raw files equal earlier full/repeat/HK/observe candidates.
+Independent final geometry6330/7187/8760/HK5000 passes. CPU seal pages6000verify
+2457complete16MBchecks,11499copiedpages,max4later;25GL/85rawfiles equal d4d.
+176patches/tree0bf35ca188db56a9a90166f13763af39df28fbfd. Personal87d/v0.5.0 unchanged.
+
+No farther-distance claim: current1x margin pass excludes55instances, including
+5604 generatedRAM non-depthtestquad; renderedRAMmodels0. Originaldepth/outsidecolor
+protected in snapshots, not full transparent ordering/handover/material acceptance.
+Instrumented full speed89.29->92.37/92.04%, scene sealmean1.354->0.200ms. Current
+exec77659 runs LOCAL active-performance-series.py under
+results/diagnostics/exotica-amazon-20260909: serial no-heavy-capture stock/observe/draw.
+Read active-performance-series.log; no competing emulators/GPU work.
+
+NEXT wider-depth private original-scene mirror before future insertion. LOCAL
+private-depth-gl.py initial FAIL: two adjacent-depth ties differ with naive D32F.
+Diagnostic reveals existing reciprocal-float/D24 quantization, not simply ideal
+integer mapping. private-depth-gl-quantized.py PASS all16777216original depths
+at biases+1/0/-1 using double-intermediate quantization and2^26 mapping. OnlyRTX5080
+synthetic proof, no game shader/mirror/future/handover/other-driver acceptance.
+Retain initial failure; do not hardcode exceptional depth values. Rawgamebyteslocal.
+Keep working directly, no cutoff or heartbeat idle gaps. No deploy/release/hosted
+workflows/physicalFFB/Worldtuning/menu removal. Rig check before visible tests.
+
 ## September10 full margin acceptance — ACTIVE copy-cost reduction
 
 50a/SHAa4e4cd4d6000verify PASS2457fullWavecomparisons;11499copiedpages including

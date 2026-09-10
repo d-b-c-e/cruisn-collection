@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "samples": [
+    {
+      "frame": 5072,
+      "source_sha256": "64ce38fc51dddd80092e08379c1a087302d1a561f7d3fc1ba10f49e969ec3978",
+      "quads": 522,
+      "bounding_texels": 5520336,
+      "unique_bytes": 463397,
+      "actual_pages": 154,
+      "reference_pages": 154,
+      "native_pages": 154,
+      "passed": true
+    },
+    {
+      "frame": 5080,
+      "source_sha256": "d1d6774cbfcc2a34e51fcfc5ec46528102a4663145665c8f396513acb8c97da3",
+      "quads": 160,
+      "bounding_texels": 1756102,
+      "unique_bytes": 411143,
+      "actual_pages": 131,
+      "reference_pages": 131,
+      "native_pages": 131,
+      "passed": true
+    },
+    {
+      "frame": 3510,
+      "source_sha256": "3c086f760da4f84173b14cc5a2f821ea038c388744e37b879fde1e0d5324c90a",
+      "quads": 476,
+      "bounding_texels": 4212439,
+      "unique_bytes": 327206,
+      "actual_pages": 117,
+      "reference_pages": 117,
+      "native_pages": 117,
+      "passed": true
+    }
+  ],
+  "scope": "Actual quad UV bounds, negative clamp, bilinear padding and independently enumerated swizzles; not a whole-GPU interpolation proof."
+}

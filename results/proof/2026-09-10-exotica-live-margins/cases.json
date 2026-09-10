@@ -1,0 +1,47 @@
+{
+  "verify": {
+    "scenes": 2457,
+    "quads": 547883,
+    "snapshot_frames": [
+      3510,
+      4131,
+      5072,
+      5080,
+      5604
+    ]
+  },
+  "full": {
+    "scenes": 5290,
+    "quads": 970889,
+    "snapshot_frames": [
+      6330,
+      7187,
+      8760
+    ]
+  },
+  "repeat": {
+    "scenes": 5290,
+    "quads": 970889,
+    "snapshot_frames": [
+      6330,
+      7187,
+      8760
+    ]
+  },
+  "hong-kong": {
+    "scenes": 2457,
+    "quads": 509622,
+    "snapshot_frames": [
+      5000
+    ]
+  },
+  "observe": {
+    "scenes": 5290,
+    "quads": 970889,
+    "snapshot_frames": [
+      6330,
+      7187,
+      8760
+    ]
+  }
+}

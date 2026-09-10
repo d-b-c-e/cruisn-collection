@@ -1,0 +1,818 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "actual": "active-margin-seal-pages-full",
+      "expected": "active-margin-generated-full",
+      "passed": true,
+      "scenes": 5290,
+      "quads": 970889,
+      "fields": [
+        "already_submitted",
+        "binding_checks",
+        "bindings_advanced",
+        "camera_advanced",
+        "candidates",
+        "changed_objects",
+        "excluded_raster",
+        "frame",
+        "guest_cycles",
+        "hash",
+        "instances",
+        "model_bytes",
+        "model_checks",
+        "objects",
+        "palette_checks",
+        "quads",
+        "ram_models",
+        "ready_frame",
+        "scene",
+        "scene_frame",
+        "sealed_frame",
+        "texture_pages"
+      ],
+      "files": {
+        "exotica-active-6330-context.bin": {
+          "sha256": "3593ece2417b4f28931b777d863787d0157166358f23b9450e5768ea9fe8ce6e",
+          "bytes": 1368
+        },
+        "exotica-active-6330-end-internal.bin": {
+          "sha256": "aab854e89511f6442dcaaf8c628f0da8bd0cdae79491605da7980437837e1e58",
+          "bytes": 2048
+        },
+        "exotica-active-6330-end-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-6330-gpu-after-color.bin": {
+          "sha256": "05af62bd9b9fd6d6d69b05f612cf6936efa10e418faebddcb742793fb62ec3f9",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-after-depth.bin": {
+          "sha256": "18e8f9b316d5aeb96510cd90ea242dd640e790c545010086ef51177055ff93ee",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-before-color.bin": {
+          "sha256": "05af62bd9b9fd6d6d69b05f612cf6936efa10e418faebddcb742793fb62ec3f9",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-before-depth.bin": {
+          "sha256": "18e8f9b316d5aeb96510cd90ea242dd640e790c545010086ef51177055ff93ee",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-palettes.bin": {
+          "sha256": "374790fefacf5fa4141e6d6fb82b60b3268ee8f81ca30aae585a7186668c1d62",
+          "bytes": 5120
+        },
+        "exotica-active-6330-gpu-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-6330-instances.bin": {
+          "sha256": "dae2c856ceec2c24bb5a70a45bcc13720f34f72ddfeedaf979e567ab0db056d6",
+          "bytes": 1056
+        },
+        "exotica-active-6330-materials.bin": {
+          "sha256": "14ef6497934dbe1c8c0b02569dc87c43ec2f2c65843413215e742b0c6b5425e4",
+          "bytes": 5256
+        },
+        "exotica-active-6330-packet.bin": {
+          "sha256": "a77af42c709f700be40667ebcb253160294a0e0909da57878dd26c6da1faf1e8",
+          "bytes": 48848
+        },
+        "exotica-active-6330-quads.bin": {
+          "sha256": "82038ed8b30d548d63a207b2a31ac24f2d4a3f3f9bf683c42a63553103d92303",
+          "bytes": 42900
+        },
+        "exotica-active-6330-ram.bin": {
+          "sha256": "7e5201e4e4b8c7868c21294a738ba885f7e7b94110cce5683f21a2fab3364231",
+          "bytes": 1048576
+        },
+        "exotica-active-6330-ready-ram.bin": {
+          "sha256": "3ad2f1838886dfde7381a0b7a5d3900e6c56b12da4217a831d8c10fcaaf853b9",
+          "bytes": 1048576
+        },
+        "exotica-active-6330-texture-pages.bin": {
+          "sha256": "002c636f9d8b051f7560f45bf0c175852af40930ae567266ac80a6c775bfe34d",
+          "bytes": 4096
+        },
+        "exotica-active-6330-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-context.bin": {
+          "sha256": "670e2e5abba3dcab2ea6341401a638ac2744426980132537bc8ffac16790d89d",
+          "bytes": 1368
+        },
+        "exotica-active-7187-end-internal.bin": {
+          "sha256": "c843c1263f23eb93f570876850bf0f00e951e1cf5e5896055ebc7f38f44ef5c0",
+          "bytes": 2048
+        },
+        "exotica-active-7187-end-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-gpu-after-color.bin": {
+          "sha256": "61da417fa41a8d36cb88debc1291dc559bdc784f31b8355c4217aa850b4ce7dd",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-after-depth.bin": {
+          "sha256": "adef8124dac6d03c083a9206376e68b7d13a516af25acdf36ac5a412d36e5f02",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-before-color.bin": {
+          "sha256": "61da417fa41a8d36cb88debc1291dc559bdc784f31b8355c4217aa850b4ce7dd",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-before-depth.bin": {
+          "sha256": "adef8124dac6d03c083a9206376e68b7d13a516af25acdf36ac5a412d36e5f02",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-palettes.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-gpu-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-instances.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-materials.bin": {
+          "sha256": "29065a1a3f52e661819a83d937f1d7d854c63ed23fba1ec0468653fcbbf3d856",
+          "bytes": 96
+        },
+        "exotica-active-7187-packet.bin": {
+          "sha256": "ffcf8dc3366ec8d34c46bf08eba8307574d5aaede3469d21929bbf24d3f34412",
+          "bytes": 128
+        },
+        "exotica-active-7187-quads.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-ram.bin": {
+          "sha256": "545497582e30dd4426c3e84385be43dc9399f5929717a0812407dc8009cb9153",
+          "bytes": 1048576
+        },
+        "exotica-active-7187-ready-ram.bin": {
+          "sha256": "5564ddaef12e67ddc4a44d7534ccde8f73d12bbd8474bfe6f751e02054594993",
+          "bytes": 1048576
+        },
+        "exotica-active-7187-texture-pages.bin": {
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "bytes": 4096
+        },
+        "exotica-active-7187-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-context.bin": {
+          "sha256": "ef5604d4122d5f3bd72013a4af7d7dfb527bbbe34975db066c756ccaa9751395",
+          "bytes": 1368
+        },
+        "exotica-active-8760-end-internal.bin": {
+          "sha256": "c555f3bf482f159ecd55d4c6bddd3111f9432ac6278da35246e15484cf9c6d56",
+          "bytes": 2048
+        },
+        "exotica-active-8760-end-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-gpu-after-color.bin": {
+          "sha256": "97c8e2d924d9a75bb99ac24d9a5db79683282aab92f6f68521f6b2c321164982",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-after-depth.bin": {
+          "sha256": "db7784e464aad66009c6cbdd89d0240693b1f4d8bb4dfb2eca7b2931ba36815b",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-before-color.bin": {
+          "sha256": "97c8e2d924d9a75bb99ac24d9a5db79683282aab92f6f68521f6b2c321164982",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-before-depth.bin": {
+          "sha256": "db7784e464aad66009c6cbdd89d0240693b1f4d8bb4dfb2eca7b2931ba36815b",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-palettes.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-gpu-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-instances.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-materials.bin": {
+          "sha256": "41fc95998c9377e768110aacaca34b060389edd2c7660f5025fe385e34f5d906",
+          "bytes": 96
+        },
+        "exotica-active-8760-packet.bin": {
+          "sha256": "1d2a88244c72ddd954f71ca597f7988f295d1fd5ad31c16bcd6268fba3b75551",
+          "bytes": 128
+        },
+        "exotica-active-8760-quads.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-ram.bin": {
+          "sha256": "154b23fa7eecb59cefe39af81283c2b01b8120d62ddae9be697a6fb1e55b96ab",
+          "bytes": 1048576
+        },
+        "exotica-active-8760-ready-ram.bin": {
+          "sha256": "896abea23be6a9281d2a50c51a38bebe0aed33c703c98a850b9a036f33eca3b0",
+          "bytes": 1048576
+        },
+        "exotica-active-8760-texture-pages.bin": {
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "bytes": 4096
+        },
+        "exotica-active-8760-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        }
+      }
+    },
+    {
+      "actual": "active-margin-seal-pages-repeat",
+      "expected": "active-margin-seal-pages-full",
+      "passed": true,
+      "scenes": 5290,
+      "quads": 970889,
+      "fields": [
+        "already_submitted",
+        "binding_checks",
+        "bindings_advanced",
+        "camera_advanced",
+        "candidates",
+        "changed_objects",
+        "excluded_raster",
+        "frame",
+        "guest_cycles",
+        "hash",
+        "instances",
+        "model_bytes",
+        "model_checks",
+        "objects",
+        "palette_checks",
+        "quads",
+        "ram_models",
+        "ready_frame",
+        "scene",
+        "scene_frame",
+        "sealed_frame",
+        "texture_pages"
+      ],
+      "files": {
+        "exotica-active-6330-context.bin": {
+          "sha256": "3593ece2417b4f28931b777d863787d0157166358f23b9450e5768ea9fe8ce6e",
+          "bytes": 1368
+        },
+        "exotica-active-6330-end-internal.bin": {
+          "sha256": "aab854e89511f6442dcaaf8c628f0da8bd0cdae79491605da7980437837e1e58",
+          "bytes": 2048
+        },
+        "exotica-active-6330-end-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-6330-gpu-after-color.bin": {
+          "sha256": "05af62bd9b9fd6d6d69b05f612cf6936efa10e418faebddcb742793fb62ec3f9",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-after-depth.bin": {
+          "sha256": "18e8f9b316d5aeb96510cd90ea242dd640e790c545010086ef51177055ff93ee",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-before-color.bin": {
+          "sha256": "05af62bd9b9fd6d6d69b05f612cf6936efa10e418faebddcb742793fb62ec3f9",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-before-depth.bin": {
+          "sha256": "18e8f9b316d5aeb96510cd90ea242dd640e790c545010086ef51177055ff93ee",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-palettes.bin": {
+          "sha256": "374790fefacf5fa4141e6d6fb82b60b3268ee8f81ca30aae585a7186668c1d62",
+          "bytes": 5120
+        },
+        "exotica-active-6330-gpu-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-6330-instances.bin": {
+          "sha256": "dae2c856ceec2c24bb5a70a45bcc13720f34f72ddfeedaf979e567ab0db056d6",
+          "bytes": 1056
+        },
+        "exotica-active-6330-materials.bin": {
+          "sha256": "14ef6497934dbe1c8c0b02569dc87c43ec2f2c65843413215e742b0c6b5425e4",
+          "bytes": 5256
+        },
+        "exotica-active-6330-packet.bin": {
+          "sha256": "a77af42c709f700be40667ebcb253160294a0e0909da57878dd26c6da1faf1e8",
+          "bytes": 48848
+        },
+        "exotica-active-6330-quads.bin": {
+          "sha256": "82038ed8b30d548d63a207b2a31ac24f2d4a3f3f9bf683c42a63553103d92303",
+          "bytes": 42900
+        },
+        "exotica-active-6330-ram.bin": {
+          "sha256": "7e5201e4e4b8c7868c21294a738ba885f7e7b94110cce5683f21a2fab3364231",
+          "bytes": 1048576
+        },
+        "exotica-active-6330-ready-ram.bin": {
+          "sha256": "3ad2f1838886dfde7381a0b7a5d3900e6c56b12da4217a831d8c10fcaaf853b9",
+          "bytes": 1048576
+        },
+        "exotica-active-6330-texture-pages.bin": {
+          "sha256": "002c636f9d8b051f7560f45bf0c175852af40930ae567266ac80a6c775bfe34d",
+          "bytes": 4096
+        },
+        "exotica-active-6330-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-context.bin": {
+          "sha256": "670e2e5abba3dcab2ea6341401a638ac2744426980132537bc8ffac16790d89d",
+          "bytes": 1368
+        },
+        "exotica-active-7187-end-internal.bin": {
+          "sha256": "c843c1263f23eb93f570876850bf0f00e951e1cf5e5896055ebc7f38f44ef5c0",
+          "bytes": 2048
+        },
+        "exotica-active-7187-end-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-gpu-after-color.bin": {
+          "sha256": "61da417fa41a8d36cb88debc1291dc559bdc784f31b8355c4217aa850b4ce7dd",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-after-depth.bin": {
+          "sha256": "adef8124dac6d03c083a9206376e68b7d13a516af25acdf36ac5a412d36e5f02",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-before-color.bin": {
+          "sha256": "61da417fa41a8d36cb88debc1291dc559bdc784f31b8355c4217aa850b4ce7dd",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-before-depth.bin": {
+          "sha256": "adef8124dac6d03c083a9206376e68b7d13a516af25acdf36ac5a412d36e5f02",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-palettes.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-gpu-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-instances.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-materials.bin": {
+          "sha256": "29065a1a3f52e661819a83d937f1d7d854c63ed23fba1ec0468653fcbbf3d856",
+          "bytes": 96
+        },
+        "exotica-active-7187-packet.bin": {
+          "sha256": "ffcf8dc3366ec8d34c46bf08eba8307574d5aaede3469d21929bbf24d3f34412",
+          "bytes": 128
+        },
+        "exotica-active-7187-quads.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-ram.bin": {
+          "sha256": "545497582e30dd4426c3e84385be43dc9399f5929717a0812407dc8009cb9153",
+          "bytes": 1048576
+        },
+        "exotica-active-7187-ready-ram.bin": {
+          "sha256": "5564ddaef12e67ddc4a44d7534ccde8f73d12bbd8474bfe6f751e02054594993",
+          "bytes": 1048576
+        },
+        "exotica-active-7187-texture-pages.bin": {
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "bytes": 4096
+        },
+        "exotica-active-7187-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-context.bin": {
+          "sha256": "ef5604d4122d5f3bd72013a4af7d7dfb527bbbe34975db066c756ccaa9751395",
+          "bytes": 1368
+        },
+        "exotica-active-8760-end-internal.bin": {
+          "sha256": "c555f3bf482f159ecd55d4c6bddd3111f9432ac6278da35246e15484cf9c6d56",
+          "bytes": 2048
+        },
+        "exotica-active-8760-end-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-gpu-after-color.bin": {
+          "sha256": "97c8e2d924d9a75bb99ac24d9a5db79683282aab92f6f68521f6b2c321164982",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-after-depth.bin": {
+          "sha256": "db7784e464aad66009c6cbdd89d0240693b1f4d8bb4dfb2eca7b2931ba36815b",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-before-color.bin": {
+          "sha256": "97c8e2d924d9a75bb99ac24d9a5db79683282aab92f6f68521f6b2c321164982",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-before-depth.bin": {
+          "sha256": "db7784e464aad66009c6cbdd89d0240693b1f4d8bb4dfb2eca7b2931ba36815b",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-palettes.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-gpu-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-instances.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-materials.bin": {
+          "sha256": "41fc95998c9377e768110aacaca34b060389edd2c7660f5025fe385e34f5d906",
+          "bytes": 96
+        },
+        "exotica-active-8760-packet.bin": {
+          "sha256": "1d2a88244c72ddd954f71ca597f7988f295d1fd5ad31c16bcd6268fba3b75551",
+          "bytes": 128
+        },
+        "exotica-active-8760-quads.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-ram.bin": {
+          "sha256": "154b23fa7eecb59cefe39af81283c2b01b8120d62ddae9be697a6fb1e55b96ab",
+          "bytes": 1048576
+        },
+        "exotica-active-8760-ready-ram.bin": {
+          "sha256": "896abea23be6a9281d2a50c51a38bebe0aed33c703c98a850b9a036f33eca3b0",
+          "bytes": 1048576
+        },
+        "exotica-active-8760-texture-pages.bin": {
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "bytes": 4096
+        },
+        "exotica-active-8760-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        }
+      }
+    },
+    {
+      "actual": "active-margin-seal-pages-hong-kong",
+      "expected": "active-margin-generated-hong-kong",
+      "passed": true,
+      "scenes": 2457,
+      "quads": 509622,
+      "fields": [
+        "already_submitted",
+        "binding_checks",
+        "bindings_advanced",
+        "camera_advanced",
+        "candidates",
+        "changed_objects",
+        "excluded_raster",
+        "frame",
+        "guest_cycles",
+        "hash",
+        "instances",
+        "model_bytes",
+        "model_checks",
+        "objects",
+        "palette_checks",
+        "quads",
+        "ram_models",
+        "ready_frame",
+        "scene",
+        "scene_frame",
+        "sealed_frame",
+        "texture_pages"
+      ],
+      "files": {
+        "exotica-active-5000-context.bin": {
+          "sha256": "b0672e4fea319774aa50bcc725502f0d6f564c77f2b8eafd605d5358cbfce359",
+          "bytes": 1368
+        },
+        "exotica-active-5000-end-internal.bin": {
+          "sha256": "877e0fb7157067b46def7a7473b896be3faf259cff1ae2aaaf90e78230b9abbf",
+          "bytes": 2048
+        },
+        "exotica-active-5000-end-wave.bin": {
+          "sha256": "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+          "bytes": 16777216
+        },
+        "exotica-active-5000-gpu-after-color.bin": {
+          "sha256": "37027014669eca26444fe24c36b5862275f66da0c48ec5f241e5e704358a5715",
+          "bytes": 45088768
+        },
+        "exotica-active-5000-gpu-after-depth.bin": {
+          "sha256": "fbba52613bb223d13da5550549f101131a15e1f59f69a409f0cd0d7fd0b2fedd",
+          "bytes": 45088768
+        },
+        "exotica-active-5000-gpu-before-color.bin": {
+          "sha256": "9f7252f276191f3c33ce803b4aba679adca9d62ec9d993981d60e9735d2b9890",
+          "bytes": 45088768
+        },
+        "exotica-active-5000-gpu-before-depth.bin": {
+          "sha256": "fbba52613bb223d13da5550549f101131a15e1f59f69a409f0cd0d7fd0b2fedd",
+          "bytes": 45088768
+        },
+        "exotica-active-5000-gpu-palettes.bin": {
+          "sha256": "e605448f137897c15900f7d3917b6ec58bb65d21c25f99131c50b525154511f1",
+          "bytes": 4096
+        },
+        "exotica-active-5000-gpu-wave.bin": {
+          "sha256": "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+          "bytes": 16777216
+        },
+        "exotica-active-5000-instances.bin": {
+          "sha256": "4b20a63add538c4d60ea1dcbebf63208002ba4327e7e37e2abbae6d15365b1f3",
+          "bytes": 176
+        },
+        "exotica-active-5000-materials.bin": {
+          "sha256": "cf750d24b784c6ea97f0f9b1b90ed65bd8fb86feded3d3f5396f6a2a18b79c51",
+          "bytes": 4224
+        },
+        "exotica-active-5000-packet.bin": {
+          "sha256": "c051c7b8a69974f8a0509b99168aa95ae5a83da72a4c17369a768392898a302a",
+          "bytes": 6632
+        },
+        "exotica-active-5000-quads.bin": {
+          "sha256": "3a9a2aeba60ddc958d909dfd17e8411b0916a2d58337ecbab34bfdde76e266c4",
+          "bytes": 2340
+        },
+        "exotica-active-5000-ram.bin": {
+          "sha256": "d0fa2df57f98ecb4d16b7cd3c29e08785b5ec1322e4cd41594de3e68780102df",
+          "bytes": 1048576
+        },
+        "exotica-active-5000-ready-ram.bin": {
+          "sha256": "d0fa2df57f98ecb4d16b7cd3c29e08785b5ec1322e4cd41594de3e68780102df",
+          "bytes": 1048576
+        },
+        "exotica-active-5000-texture-pages.bin": {
+          "sha256": "eb0983ea44e605230947ce50350b7fccf1986a9ea10b59fed93ef1678c4fd357",
+          "bytes": 4096
+        },
+        "exotica-active-5000-wave.bin": {
+          "sha256": "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+          "bytes": 16777216
+        }
+      }
+    },
+    {
+      "actual": "active-margin-seal-pages-observe",
+      "expected": "active-margin-generated-full-observe",
+      "passed": true,
+      "scenes": 5290,
+      "quads": 970889,
+      "fields": [
+        "already_submitted",
+        "binding_checks",
+        "bindings_advanced",
+        "camera_advanced",
+        "candidates",
+        "changed_objects",
+        "excluded_raster",
+        "frame",
+        "guest_cycles",
+        "hash",
+        "instances",
+        "model_bytes",
+        "model_checks",
+        "objects",
+        "palette_checks",
+        "quads",
+        "ram_models",
+        "ready_frame",
+        "scene",
+        "scene_frame",
+        "sealed_frame",
+        "texture_pages"
+      ],
+      "files": {
+        "exotica-active-6330-context.bin": {
+          "sha256": "3593ece2417b4f28931b777d863787d0157166358f23b9450e5768ea9fe8ce6e",
+          "bytes": 1368
+        },
+        "exotica-active-6330-end-internal.bin": {
+          "sha256": "aab854e89511f6442dcaaf8c628f0da8bd0cdae79491605da7980437837e1e58",
+          "bytes": 2048
+        },
+        "exotica-active-6330-end-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-6330-gpu-after-color.bin": {
+          "sha256": "05af62bd9b9fd6d6d69b05f612cf6936efa10e418faebddcb742793fb62ec3f9",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-after-depth.bin": {
+          "sha256": "18e8f9b316d5aeb96510cd90ea242dd640e790c545010086ef51177055ff93ee",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-before-color.bin": {
+          "sha256": "05af62bd9b9fd6d6d69b05f612cf6936efa10e418faebddcb742793fb62ec3f9",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-before-depth.bin": {
+          "sha256": "18e8f9b316d5aeb96510cd90ea242dd640e790c545010086ef51177055ff93ee",
+          "bytes": 44826624
+        },
+        "exotica-active-6330-gpu-palettes.bin": {
+          "sha256": "374790fefacf5fa4141e6d6fb82b60b3268ee8f81ca30aae585a7186668c1d62",
+          "bytes": 5120
+        },
+        "exotica-active-6330-gpu-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-6330-instances.bin": {
+          "sha256": "dae2c856ceec2c24bb5a70a45bcc13720f34f72ddfeedaf979e567ab0db056d6",
+          "bytes": 1056
+        },
+        "exotica-active-6330-materials.bin": {
+          "sha256": "14ef6497934dbe1c8c0b02569dc87c43ec2f2c65843413215e742b0c6b5425e4",
+          "bytes": 5256
+        },
+        "exotica-active-6330-packet.bin": {
+          "sha256": "2e23adab47e1605589da9af7bd0961d3bc7a963a7707ffc493a414fea7593e32",
+          "bytes": 48848
+        },
+        "exotica-active-6330-quads.bin": {
+          "sha256": "82038ed8b30d548d63a207b2a31ac24f2d4a3f3f9bf683c42a63553103d92303",
+          "bytes": 42900
+        },
+        "exotica-active-6330-ram.bin": {
+          "sha256": "7e5201e4e4b8c7868c21294a738ba885f7e7b94110cce5683f21a2fab3364231",
+          "bytes": 1048576
+        },
+        "exotica-active-6330-ready-ram.bin": {
+          "sha256": "3ad2f1838886dfde7381a0b7a5d3900e6c56b12da4217a831d8c10fcaaf853b9",
+          "bytes": 1048576
+        },
+        "exotica-active-6330-texture-pages.bin": {
+          "sha256": "002c636f9d8b051f7560f45bf0c175852af40930ae567266ac80a6c775bfe34d",
+          "bytes": 4096
+        },
+        "exotica-active-6330-wave.bin": {
+          "sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-context.bin": {
+          "sha256": "670e2e5abba3dcab2ea6341401a638ac2744426980132537bc8ffac16790d89d",
+          "bytes": 1368
+        },
+        "exotica-active-7187-end-internal.bin": {
+          "sha256": "c843c1263f23eb93f570876850bf0f00e951e1cf5e5896055ebc7f38f44ef5c0",
+          "bytes": 2048
+        },
+        "exotica-active-7187-end-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-gpu-after-color.bin": {
+          "sha256": "61da417fa41a8d36cb88debc1291dc559bdc784f31b8355c4217aa850b4ce7dd",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-after-depth.bin": {
+          "sha256": "adef8124dac6d03c083a9206376e68b7d13a516af25acdf36ac5a412d36e5f02",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-before-color.bin": {
+          "sha256": "61da417fa41a8d36cb88debc1291dc559bdc784f31b8355c4217aa850b4ce7dd",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-before-depth.bin": {
+          "sha256": "adef8124dac6d03c083a9206376e68b7d13a516af25acdf36ac5a412d36e5f02",
+          "bytes": 44826624
+        },
+        "exotica-active-7187-gpu-palettes.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-gpu-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-7187-instances.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-materials.bin": {
+          "sha256": "29065a1a3f52e661819a83d937f1d7d854c63ed23fba1ec0468653fcbbf3d856",
+          "bytes": 96
+        },
+        "exotica-active-7187-packet.bin": {
+          "sha256": "eaf995816e8d69e95f4d2b31dae58a0d61d3992b8eedd11f8d87688436dcc9b9",
+          "bytes": 128
+        },
+        "exotica-active-7187-quads.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-7187-ram.bin": {
+          "sha256": "545497582e30dd4426c3e84385be43dc9399f5929717a0812407dc8009cb9153",
+          "bytes": 1048576
+        },
+        "exotica-active-7187-ready-ram.bin": {
+          "sha256": "5564ddaef12e67ddc4a44d7534ccde8f73d12bbd8474bfe6f751e02054594993",
+          "bytes": 1048576
+        },
+        "exotica-active-7187-texture-pages.bin": {
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "bytes": 4096
+        },
+        "exotica-active-7187-wave.bin": {
+          "sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-context.bin": {
+          "sha256": "ef5604d4122d5f3bd72013a4af7d7dfb527bbbe34975db066c756ccaa9751395",
+          "bytes": 1368
+        },
+        "exotica-active-8760-end-internal.bin": {
+          "sha256": "c555f3bf482f159ecd55d4c6bddd3111f9432ac6278da35246e15484cf9c6d56",
+          "bytes": 2048
+        },
+        "exotica-active-8760-end-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-gpu-after-color.bin": {
+          "sha256": "97c8e2d924d9a75bb99ac24d9a5db79683282aab92f6f68521f6b2c321164982",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-after-depth.bin": {
+          "sha256": "db7784e464aad66009c6cbdd89d0240693b1f4d8bb4dfb2eca7b2931ba36815b",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-before-color.bin": {
+          "sha256": "97c8e2d924d9a75bb99ac24d9a5db79683282aab92f6f68521f6b2c321164982",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-before-depth.bin": {
+          "sha256": "db7784e464aad66009c6cbdd89d0240693b1f4d8bb4dfb2eca7b2931ba36815b",
+          "bytes": 44826624
+        },
+        "exotica-active-8760-gpu-palettes.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-gpu-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        },
+        "exotica-active-8760-instances.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-materials.bin": {
+          "sha256": "41fc95998c9377e768110aacaca34b060389edd2c7660f5025fe385e34f5d906",
+          "bytes": 96
+        },
+        "exotica-active-8760-packet.bin": {
+          "sha256": "8acc653e4e7f7fdcd645378b0804d743babd20e782fa043a4db3b52ff90c5e23",
+          "bytes": 128
+        },
+        "exotica-active-8760-quads.bin": {
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        "exotica-active-8760-ram.bin": {
+          "sha256": "154b23fa7eecb59cefe39af81283c2b01b8120d62ddae9be697a6fb1e55b96ab",
+          "bytes": 1048576
+        },
+        "exotica-active-8760-ready-ram.bin": {
+          "sha256": "896abea23be6a9281d2a50c51a38bebe0aed33c703c98a850b9a036f33eca3b0",
+          "bytes": 1048576
+        },
+        "exotica-active-8760-texture-pages.bin": {
+          "sha256": "ad7facb2586fc6e966c004d7d1d16b024f5805ff7cb47c7a85dabd8b48892ca7",
+          "bytes": 4096
+        },
+        "exotica-active-8760-wave.bin": {
+          "sha256": "7ca578164252a1cbf425106395cb86a04b70499bfe2cc1fa163ce0c22156b394",
+          "bytes": 16777216
+        }
+      }
+    }
+  ],
+  "scope": "Every owned raw active snapshot and ordered scene field except timings/copy-count optimization fields. Raw game resources stay local."
+}

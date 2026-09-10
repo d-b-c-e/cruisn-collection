@@ -1,0 +1,290 @@
+{
+  "source_sha256": "c6a224a5183df9b1313080d8becb35f33b108f46bf55ba35159856f8c10b683b",
+  "receipt": {
+    "passed": true,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "display_target": {
+      "available": [
+        {
+          "device": "\\\\.\\DISPLAY1",
+          "primary": true,
+          "size": [
+            3840,
+            2160
+          ]
+        }
+      ],
+      "reference_size": [
+        3840,
+        2160
+      ],
+      "selected": {
+        "device": "\\\\.\\DISPLAY1",
+        "primary": true,
+        "size": [
+          3840,
+          2160
+        ]
+      }
+    },
+    "presentation": "explicit-gl-experiment",
+    "exotica_host_scene": {
+      "active": 2,
+      "bounds": true,
+      "early_depth": 1,
+      "explicit": true,
+      "fence": true,
+      "first": 3500,
+      "last": 5990,
+      "material_pages": 1,
+      "materials": true,
+      "mode": "observe",
+      "multiplier": 3,
+      "result": {
+        "active_margins": {
+          "mode": 2,
+          "passed": true,
+          "quads": 509622,
+          "ram_models": true,
+          "resource_lease": true,
+          "scenes": 2457,
+          "scope": "Current margin geometry and private D24 preservation; far distance and full occlusion remain unproven.",
+          "seal_pages": true,
+          "sealed_at_scene_end": true,
+          "snapshots": [
+            {
+              "changed_margin_pixels": 3910,
+              "color_sha256": [
+                "9f7252f276191f3c33ce803b4aba679adca9d62ec9d993981d60e9735d2b9890",
+                "37027014669eca26444fe24c36b5862275f66da0c48ec5f241e5e704358a5715"
+              ],
+              "frame": 5000,
+              "original_depth_unchanged": true,
+              "outside_color_unchanged": true,
+              "quads": 9,
+              "resource_lease": {
+                "checked_texture_pages": 17,
+                "palettes": 4,
+                "passed": true,
+                "rendered_instances": 4,
+                "rendered_model_bytes": 808,
+                "rendered_model_spans": 4,
+                "required_texture_pages": 17
+              },
+              "sealed": {
+                "camera_advanced": false,
+                "instance_bindings_checked": 4
+              },
+              "vertices": 54
+            }
+          ]
+        },
+        "command_fence": {
+          "immediate": 1573,
+          "passed": true,
+          "scenes": 2457,
+          "scope": "Existing FIFO completion only; original resource and visual checks are separate.",
+          "waited_words": 68730
+        },
+        "game_scene_boundary": true,
+        "guest_cycles_unchanged": true,
+        "passed": true,
+        "quads": 2776927,
+        "scenes": 2457,
+        "scope": "Bounded live scene/material receipts; independent geometry and visual acceptance are separate.",
+        "snapshots": 1
+      },
+      "snapshots": [
+        5000
+      ],
+      "source_cache": 1
+    },
+    "evidence": {
+      "frames": 6000,
+      "gl_captures": {
+        "completed_frames": [
+          4990,
+          4991,
+          4992,
+          4993,
+          4994,
+          4995,
+          4996,
+          4997,
+          4998,
+          4999,
+          5000,
+          5001,
+          5002,
+          5003,
+          5004,
+          5005,
+          5006,
+          5007,
+          5008,
+          5009,
+          5010
+        ],
+        "count": 21,
+        "dropped_messages": 0,
+        "files": {
+          "mzgl_000.bmp": {
+            "sha256": "6aa56346eb11f12c098e398025c530fbe765c71dd332d2666b7f2f126966b6e8",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_001.bmp": {
+            "sha256": "98baf0f67e0d79102845344d0cadf8fe1e7b3f9bfa0fdab8ea62336b24d3c882",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_002.bmp": {
+            "sha256": "98ad787b7cd200ca89e5e5ab4523bcc72bc64fffffac0dd3476d48669be6a936",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_003.bmp": {
+            "sha256": "47825ea01544c53c8e981c83fc927dfc68527c5ae42b6abd090071368f294b18",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_004.bmp": {
+            "sha256": "e496cbdad785d294958433865bfafb4259dbf17f141b0c4e7862909d6d4f6f19",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_005.bmp": {
+            "sha256": "1a6d48962612c83e5b964c4be9bcc8d44bc1834afbeda19ee933f5a378542f4e",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_006.bmp": {
+            "sha256": "b1fe1f2c8f2efe27ef49f8161bff0164f9e02343c70690580dd0923cf3cf6f45",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_007.bmp": {
+            "sha256": "f5c47e976c6b2fe732742f0bd23832497649f14beb6eb42265a2699e8ff470d6",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_008.bmp": {
+            "sha256": "72db6a8019d210c9c317130674996992396e933098c1cf02e628146b032e51ea",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_009.bmp": {
+            "sha256": "9217c67b223c5f5bf4e194f1b110db3c4b2f39bf4d15e9b1335c35df6c7afa85",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_010.bmp": {
+            "sha256": "74c3f4cb1d644162e4d6e6d3989b100369b436e9ed3ac16a392056547a8ce8ca",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_011.bmp": {
+            "sha256": "be0eb94c2bd40a1379e336c5aa75a5954262af32c4575dfefa9df89031f8d7ca",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_012.bmp": {
+            "sha256": "9a872c71303fce92a56588f9f5ca92d9eaa7ba40eb7028ad9c2a1742ef4c9024",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_013.bmp": {
+            "sha256": "795a00f7c00d1724db0d8d434bda7b1dc3325f3f1d19e9e2d807e0d7fd23f7d8",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_014.bmp": {
+            "sha256": "da526faab1877c7d15c3aef0cc958749a2b04315cf531eef6820e9450f01bacb",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_015.bmp": {
+            "sha256": "873e8449b305756f740e9cfa2e34c957bfbf3c3ec58a996ddc6f44a393556f05",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_016.bmp": {
+            "sha256": "b97acdd9a1e3413bdee53319e90b10ae24741a78964fa4e48abc2ddf833d0ee2",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_017.bmp": {
+            "sha256": "610c5e31867046665091bed4d3fcade603ec6e69205a58bda10d8cb2e719ecd1",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_018.bmp": {
+            "sha256": "9cbc9f9f0b33ec991ca3da5daf0a864f233b199a8830d3be5b2795cea0f9a14c",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_019.bmp": {
+            "sha256": "59447cfa884312a66040b5c30e4399a4c54a8353b678543363e5c25bf6965f10",
+            "size": [
+              3840,
+              2160
+            ]
+          },
+          "mzgl_020.bmp": {
+            "sha256": "e71b3aa62a97e7e90e6a92c7c1f838d5617d0b0ee60355667a127153f6a914cd",
+            "size": [
+              3840,
+              2160
+            ]
+          }
+        },
+        "index_sha256": "1d16dabb6e3273e6e213e1d7c21e478d4e022e138abcd3abb90d2b2607647810",
+        "scope": "completed GL frame pixels"
+      }
+    }
+  }
+}

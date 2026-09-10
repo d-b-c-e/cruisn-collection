@@ -1,0 +1,32 @@
+{
+  "active-margin-observe": {
+    "source_sha256": "850af471d49a1752788b26afeff1fd8ac2f8ade445be536046231f2360378564",
+    "passed": false,
+    "error": "material queue did not drain every scene",
+    "scope": "Retained initial rejection; full raw diagnostic remains local."
+  },
+  "active-margin-broad": {
+    "source_sha256": "757b09a7d147031d1ae5156bfb6270fd597975defebddaa45185e4c86a7148a1",
+    "passed": false,
+    "error": "incomplete Exotica host observation",
+    "scope": "Retained initial rejection; full raw diagnostic remains local."
+  },
+  "active-margin-sealed-broad": {
+    "source_sha256": "6a66e0872c4522ffb6b33125e68a0b996495f3d974940948ca5f9d02224eb00c",
+    "passed": false,
+    "error": "incomplete Exotica host observation",
+    "scope": "Retained initial rejection; full raw diagnostic remains local."
+  },
+  "active-margin-lease-broad": {
+    "source_sha256": "eac4975b42eeceec54284f7f4376245a6274a23a92d94ed5cef6e925f0ffd81e",
+    "passed": false,
+    "error": "incomplete Exotica host observation",
+    "scope": "Retained initial rejection; full raw diagnostic remains local."
+  },
+  "active-margin-geometry-failure": {
+    "source_sha256": "b938084b91a7641c72ea026074e12f359f4c4150cd6dc00a55750937076bb588",
+    "passed": false,
+    "error": "incomplete Exotica host observation",
+    "scope": "Retained initial rejection; full raw diagnostic remains local."
+  }
+}

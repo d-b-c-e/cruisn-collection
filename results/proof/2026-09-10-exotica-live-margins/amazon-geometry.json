@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "frame": 6330,
+      "passed": true,
+      "objects": 333,
+      "candidates": 24,
+      "instances": 24,
+      "quads": 165,
+      "excluded_raster": 0,
+      "quads_sha256": "82038ed8b30d548d63a207b2a31ac24f2d4a3f3f9bf683c42a63553103d92303",
+      "instances_sha256": "dae2c856ceec2c24bb5a70a45bcc13720f34f72ddfeedaf979e567ab0db056d6",
+      "native": {
+        "passed": true,
+        "sources": 24,
+        "instances": 24,
+        "quads": 165,
+        "viewport_quads": 143,
+        "model_words_read": 7252,
+        "selected": 24,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 24,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 8769714,
+        "source_microseconds": 257,
+        "assembly_microseconds": 247
+      }
+    },
+    {
+      "frame": 7187,
+      "passed": true,
+      "objects": 214,
+      "candidates": 0,
+      "instances": 0,
+      "quads": 0,
+      "excluded_raster": 0,
+      "quads_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "instances_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native": {
+        "passed": true,
+        "sources": 0,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 0,
+        "selected": 0,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 0,
+        "source_microseconds": 169,
+        "assembly_microseconds": 3
+      }
+    },
+    {
+      "frame": 8760,
+      "passed": true,
+      "objects": 42,
+      "candidates": 0,
+      "instances": 0,
+      "quads": 0,
+      "excluded_raster": 0,
+      "quads_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "instances_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native": {
+        "passed": true,
+        "sources": 0,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 0,
+        "selected": 0,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 0,
+        "source_microseconds": 46,
+        "assembly_microseconds": 2
+      }
+    }
+  ],
+  "scope": "Independent current list culling plus Python/native geometry at exact late snapshot. No unobserved actual-submission exclusion or general occlusion claim."
+}

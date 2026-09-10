@@ -6,19 +6,23 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 
 ## Current priorities (2026-09-10, after v0.5.0)
 
-The [live Exotica margin candidate](docs/reviews/2026-09-10-exotica-live-margins.md)
-now repairs the reported Amazon black-ground wedge in a short recorded4K/CRT
-comparison. All25 frames and the added geometry repeat; original route/resources
-remain unchanged. The full-scene expansion exposed a legitimate camera/animation
-advance before the original command queue finishes. Sealing scene operands and
-checking their retained resource bytes now passes2,457 active scenes, including
-those transitions. Generated RAM descriptors are supported for current objects;
-the associated non-depth-tested primitive remains excluded from this private pass.
-Five snapshots reconstruct independently and preserve original depth and
-outside-margin color. This is still an
-isolated diagnostic, with original far distance and no personal deployment.
-Broader Amazon/Hong Kong coverage, material lifetime, foreground ordering and
-all seven defaults are required before integration into normal play.
+The [live Exotica margin candidate](docs/reviews/2026-09-10-exotica-margin-acceptance.md)
+now passes full Amazon/repeat/observe comparisons, Hong Kong and all seven default
+cases on native50a. All117 Amazon images and970,889 added quads repeat, with
+original route/resources preserved. Independent dirty-page tracking reduces
+scene-sealing cost from1.354ms to0.200ms without changing saved rendering state.
+Normal-play overhead is being measured without heavy captures. The candidate
+retains original far distance and remains separate from the Stream Deck build.
+The generated non-depth-tested primitive remains excluded; broader transparent
+ordering, material lifetime, other tracks and handover remain open.
+
+Next, prototype a private original-scene renderer with wider depth storage, prove
+original-only picture/order equivalence, then insert farther scenery at its actual
+scene phase. The first synthetic GPU check exposed existing D24 quantization ties;
+a corrected diagnostic preserves all16,777,216 original depth values' comparisons
+on this GPU. This is a foundation check, not a live renderer or3x acceptance.
+
+### Earlier foundation checkpoints
 
 The [Exotica live scene observer](docs/reviews/2026-09-10-exotica-live-scenes.md)
 now passes three independent scene/geometry/context checks and six paired6000
