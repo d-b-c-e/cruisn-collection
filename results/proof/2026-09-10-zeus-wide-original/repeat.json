@@ -1,0 +1,150 @@
+{
+  "passed": true,
+  "mirror": {
+    "enabled": true,
+    "explicit": true,
+    "first": 2,
+    "last": 5990,
+    "mode": "wide",
+    "result": {
+      "batches": 85819,
+      "clears": 9157,
+      "frames": 5989,
+      "passed": true,
+      "pixel_depth_policy_verified": false,
+      "scope": "Wide original-only readback integrity; pixel depth policy needs a separate oracle. No future drawing or handover acceptance.",
+      "snapshots": [
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 6553600,
+          "frame": 300,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.9999848008155823,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+            "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+            "ab935d639880f00b607aa5a52ea079b612c42633b8981bb0660327b262228649",
+            "5b38758e77555991f1d789f8faf4de8973feddb6fee754babe1f785e4978c7e7"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 29152,
+          "frame": 1800,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+            "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+            "68b8cd83e3ccbc3a2ee3076cc1a63f099b7a4a5815b1d336ddd2893a021eebc0",
+            "31b3f3be89c424b0390bc68a4aa6a717835edafa2c9b5c105a02114282fd880e"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 203,
+          "frame": 3500,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3",
+            "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3",
+            "03fbbc4788b2702b8545dff8a89c77ab811541b0b377b7e44f0998b1a4d08495",
+            "354d3c1d7bccae1b383ae090736aa63d1780acd79a5bfd7f36f52082bb916cef"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 179,
+          "frame": 5072,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+            "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+            "cbcf7a0af796db2392446a33ced229183a3313690cb135c15f6163f36b300e70",
+            "a55990a06d4f5c5b837c71a1e6b46622867c8f9eb0fedf0b4943e0a489ecf72e"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 70,
+          "frame": 5080,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+            "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+            "6da49274bd9e4a5442536c3e1ebd05ef0cd3426038725505dfb7e01c72dbe55f",
+            "0e03effa42d6fc3ec70a272969e57c6d5bcfbb382aa7fcce7f090bf08bf4ea32"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": false,
+          "depth_differences": 89,
+          "frame": 5604,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3",
+            "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3",
+            "3dc546cf08ab733a3174be54ce5740ea11e328dc410b0929ae27d7bfea4ee9bd",
+            "f19d18668d38a718d587268d537dec1594f7738c236c6599d368427c44e5c854"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "compatibility_equal": true,
+          "depth_differences": 0,
+          "frame": 5990,
+          "maximum_depth": 1.0,
+          "minimum_depth": 0.0,
+          "passed": true,
+          "pixel_depth_policy_verified": false,
+          "scope": "Wide readback integrity and differences from compatibility only; requires a separate pre-clamp geometry/clear oracle.",
+          "sha256": [
+            "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81",
+            "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81",
+            "dd90e48d05c152eb71f46eab4f22a8153948659b7b33ac263124ed561bc1a67f",
+            "15d9164ebae761cdea82bf461feb89dcf50c4318f1b34c7bd8306809567306e0"
+          ]
+        }
+      ],
+      "vertices": 73032699
+    },
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      5072,
+      5080,
+      5604,
+      5990
+    ]
+  },
+  "scope": "Original replay and bounded private-depth readback receipt; no future drawing."
+}

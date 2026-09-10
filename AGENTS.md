@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 native wider-original control — ACTIVE command journal next
+
+Read docs/reviews/2026-09-10-zeus-wide-original.md. Native802714912c919d5394eb7a0eb4699b8926c8bf56
+builtSEPARATELY/pushed/frozen build/candidates/802714912c9/vunit.exe SHA05b132f9.
+178patches reconstruct562497b3f3aff904326d64214a76d82e80862292. ExplicitCLI
+--zeus-depth-mirror wide useswideFS; onlycase3fastclear getsrangetag1024.
+Observe remainsstrict, originaltargetdisplayed, nofuturegeometrylinked.
+Three6000Amazon controls/repeat preserveoriginalroutes/resources/75completed4K.
+21rawsnapshots: privatecolorsallequaloriginal; widerepeats28files/5989framecounts.
+Wide readback integrity isNOTperpixeldepthpolicy proof; fieldexplicitfalse.
+342Python/no skips,47native,132commands PASS at497-file sourceidentity
+23d19be2ebcc3e43dfff2fe8411869ab18f9d0ff579b98ec6c1c153fe7148bb1.
+Proof results/proof/2026-09-10-zeus-wide-original recomputesidentity/coverage/
+repeatcounts; rawbuffers/routes/resources/GPU/build remainreceipts. No renewed
+7defaults, normalperformance, handover or futuredrawclaim. USAstallunresolved.
+Personal87d/v0.5.0 unchanged. No release/deploy/physicalFFB/Worldtuning/hostedCI.
+
+NEXT continue directly: boundedGPUconsumerjournal, initialWave/palette plus
+orderedcommands/uploads betweencompletedframes. OldCPUcaptureWaveisENDONLY.
+LOCAL add-depth-stream-native.py,zeus_command_stream.py,replay-depth-stream.py
+drafts underresults/diagnostics/exotica-amazon-20260909 areNOTyetapplied/built/run.
+Requiretwo boundaries/rawsnapshots andindependentoriginal/privatepixelplayback.
+ThenearlyXWD1future1/2/3xafterfinish_sky+flush, materials/handover/defaults.
+Rigcheck, serialemulators/GPU, no build/exportduringtimedtests. No milestoneidle.
+
 ## September10 wider-depth contracts — ACTIVE native integration next
 
 Read docs/reviews/2026-09-10-zeus-wide-depth-contract.md. Standalone wide_fragment,

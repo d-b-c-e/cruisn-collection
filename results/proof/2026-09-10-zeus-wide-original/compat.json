@@ -1,0 +1,115 @@
+{
+  "passed": true,
+  "mirror": {
+    "enabled": true,
+    "explicit": true,
+    "first": 2,
+    "last": 5990,
+    "mode": "observe",
+    "result": {
+      "batches": 85679,
+      "clears": 9157,
+      "frames": 5989,
+      "passed": true,
+      "pixel_depth_policy_verified": true,
+      "scope": "Original-only private color/D32F comparison at requested frames. No farther scenery, general handover or full visual acceptance.",
+      "snapshots": [
+        {
+          "color_differences": 0,
+          "depth_differences": 0,
+          "frame": 300,
+          "passed": true,
+          "sha256": [
+            "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+            "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+            "ab935d639880f00b607aa5a52ea079b612c42633b8981bb0660327b262228649",
+            "6658f9b621c517fcc453727e50f46f4e1f2433150f24970f0c78bc8966931cf2"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "depth_differences": 0,
+          "frame": 1800,
+          "passed": true,
+          "sha256": [
+            "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+            "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+            "68b8cd83e3ccbc3a2ee3076cc1a63f099b7a4a5815b1d336ddd2893a021eebc0",
+            "bd4671aa8032741b3e6e9ee433c2de60ff942bfc7b6209e58339ce763f0df6d4"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "depth_differences": 0,
+          "frame": 3500,
+          "passed": true,
+          "sha256": [
+            "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3",
+            "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3",
+            "03fbbc4788b2702b8545dff8a89c77ab811541b0b377b7e44f0998b1a4d08495",
+            "09be4e63f2edec9d7d1e23de1f12877d5a93f360669b0e46c8f18f6047e1b0ae"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "depth_differences": 0,
+          "frame": 5072,
+          "passed": true,
+          "sha256": [
+            "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+            "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+            "cbcf7a0af796db2392446a33ced229183a3313690cb135c15f6163f36b300e70",
+            "6d39fcdbb991e3378237784cf91586a2d9923b0f12bb39ba39bf08d19f834e6f"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "depth_differences": 0,
+          "frame": 5080,
+          "passed": true,
+          "sha256": [
+            "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+            "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+            "6da49274bd9e4a5442536c3e1ebd05ef0cd3426038725505dfb7e01c72dbe55f",
+            "5f78135cd020ed54b2aa9a406bc04b325eec0da57b4f56913ad40c0c816af438"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "depth_differences": 0,
+          "frame": 5604,
+          "passed": true,
+          "sha256": [
+            "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3",
+            "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3",
+            "3dc546cf08ab733a3174be54ce5740ea11e328dc410b0929ae27d7bfea4ee9bd",
+            "8673f75a8944d960d1dadad218f5a37534dca69c424d58ba98cc7d5d7aef596d"
+          ]
+        },
+        {
+          "color_differences": 0,
+          "depth_differences": 0,
+          "frame": 5990,
+          "passed": true,
+          "sha256": [
+            "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81",
+            "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81",
+            "dd90e48d05c152eb71f46eab4f22a8153948659b7b33ac263124ed561bc1a67f",
+            "15d9164ebae761cdea82bf461feb89dcf50c4318f1b34c7bd8306809567306e0"
+          ]
+        }
+      ],
+      "vertices": 73032699
+    },
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      5072,
+      5080,
+      5604,
+      5990
+    ]
+  },
+  "scope": "Original replay and bounded private-depth readback receipt; no future drawing."
+}

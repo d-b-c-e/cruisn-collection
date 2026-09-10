@@ -1,0 +1,147 @@
+{
+  "passed": true,
+  "scope": "LOCAL independent full mirror repeat identity, excluding variable batch splits.",
+  "files": {
+    "zeus-depth-1800-mirror-color.bin": [
+      "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+      "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753"
+    ],
+    "zeus-depth-1800-mirror-depth.bin": [
+      "31b3f3be89c424b0390bc68a4aa6a717835edafa2c9b5c105a02114282fd880e",
+      "31b3f3be89c424b0390bc68a4aa6a717835edafa2c9b5c105a02114282fd880e"
+    ],
+    "zeus-depth-1800-original-color.bin": [
+      "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753",
+      "4250968d5a651bd3b1e8c7894ee83845ae5308320d7dc3f6eb65ed0f945c1753"
+    ],
+    "zeus-depth-1800-original-depth.bin": [
+      "68b8cd83e3ccbc3a2ee3076cc1a63f099b7a4a5815b1d336ddd2893a021eebc0",
+      "68b8cd83e3ccbc3a2ee3076cc1a63f099b7a4a5815b1d336ddd2893a021eebc0"
+    ],
+    "zeus-depth-300-mirror-color.bin": [
+      "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+      "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd"
+    ],
+    "zeus-depth-300-mirror-depth.bin": [
+      "5b38758e77555991f1d789f8faf4de8973feddb6fee754babe1f785e4978c7e7",
+      "5b38758e77555991f1d789f8faf4de8973feddb6fee754babe1f785e4978c7e7"
+    ],
+    "zeus-depth-300-original-color.bin": [
+      "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd",
+      "a1c37eb4b5aa3342decead67f6c5123b11a366a7290fe8f417c64370886d3fcd"
+    ],
+    "zeus-depth-300-original-depth.bin": [
+      "ab935d639880f00b607aa5a52ea079b612c42633b8981bb0660327b262228649",
+      "ab935d639880f00b607aa5a52ea079b612c42633b8981bb0660327b262228649"
+    ],
+    "zeus-depth-3500-mirror-color.bin": [
+      "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3",
+      "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3"
+    ],
+    "zeus-depth-3500-mirror-depth.bin": [
+      "354d3c1d7bccae1b383ae090736aa63d1780acd79a5bfd7f36f52082bb916cef",
+      "354d3c1d7bccae1b383ae090736aa63d1780acd79a5bfd7f36f52082bb916cef"
+    ],
+    "zeus-depth-3500-original-color.bin": [
+      "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3",
+      "1ea231c19fcf9cb1d220dd93a2394e4fa15a965f8208650284256edc99ede4c3"
+    ],
+    "zeus-depth-3500-original-depth.bin": [
+      "03fbbc4788b2702b8545dff8a89c77ab811541b0b377b7e44f0998b1a4d08495",
+      "03fbbc4788b2702b8545dff8a89c77ab811541b0b377b7e44f0998b1a4d08495"
+    ],
+    "zeus-depth-5072-mirror-color.bin": [
+      "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+      "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19"
+    ],
+    "zeus-depth-5072-mirror-depth.bin": [
+      "a55990a06d4f5c5b837c71a1e6b46622867c8f9eb0fedf0b4943e0a489ecf72e",
+      "a55990a06d4f5c5b837c71a1e6b46622867c8f9eb0fedf0b4943e0a489ecf72e"
+    ],
+    "zeus-depth-5072-original-color.bin": [
+      "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+      "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19"
+    ],
+    "zeus-depth-5072-original-depth.bin": [
+      "cbcf7a0af796db2392446a33ced229183a3313690cb135c15f6163f36b300e70",
+      "cbcf7a0af796db2392446a33ced229183a3313690cb135c15f6163f36b300e70"
+    ],
+    "zeus-depth-5080-mirror-color.bin": [
+      "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+      "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72"
+    ],
+    "zeus-depth-5080-mirror-depth.bin": [
+      "0e03effa42d6fc3ec70a272969e57c6d5bcfbb382aa7fcce7f090bf08bf4ea32",
+      "0e03effa42d6fc3ec70a272969e57c6d5bcfbb382aa7fcce7f090bf08bf4ea32"
+    ],
+    "zeus-depth-5080-original-color.bin": [
+      "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72",
+      "029cd36e8b925618edb40b3598690d93f762a97b2a8b7f87aa8184396a115c72"
+    ],
+    "zeus-depth-5080-original-depth.bin": [
+      "6da49274bd9e4a5442536c3e1ebd05ef0cd3426038725505dfb7e01c72dbe55f",
+      "6da49274bd9e4a5442536c3e1ebd05ef0cd3426038725505dfb7e01c72dbe55f"
+    ],
+    "zeus-depth-5604-mirror-color.bin": [
+      "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3",
+      "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3"
+    ],
+    "zeus-depth-5604-mirror-depth.bin": [
+      "f19d18668d38a718d587268d537dec1594f7738c236c6599d368427c44e5c854",
+      "f19d18668d38a718d587268d537dec1594f7738c236c6599d368427c44e5c854"
+    ],
+    "zeus-depth-5604-original-color.bin": [
+      "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3",
+      "f81218947d6545c467ba80904a5cffceffc6d41fde21095cfeff3d34c08eeed3"
+    ],
+    "zeus-depth-5604-original-depth.bin": [
+      "3dc546cf08ab733a3174be54ce5740ea11e328dc410b0929ae27d7bfea4ee9bd",
+      "3dc546cf08ab733a3174be54ce5740ea11e328dc410b0929ae27d7bfea4ee9bd"
+    ],
+    "zeus-depth-5990-mirror-color.bin": [
+      "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81",
+      "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81"
+    ],
+    "zeus-depth-5990-mirror-depth.bin": [
+      "15d9164ebae761cdea82bf461feb89dcf50c4318f1b34c7bd8306809567306e0",
+      "15d9164ebae761cdea82bf461feb89dcf50c4318f1b34c7bd8306809567306e0"
+    ],
+    "zeus-depth-5990-original-color.bin": [
+      "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81",
+      "85334129b9da5ffde5c605dd1233bcf01fbb9fa69fa9ff6405ac8322ca67ae81"
+    ],
+    "zeus-depth-5990-original-depth.bin": [
+      "dd90e48d05c152eb71f46eab4f22a8153948659b7b33ac263124ed561bc1a67f",
+      "dd90e48d05c152eb71f46eab4f22a8153948659b7b33ac263124ed561bc1a67f"
+    ]
+  },
+  "frames": 5989,
+  "compared_fields": [
+    "frame",
+    "width",
+    "height",
+    "vertices",
+    "clears",
+    "snapshot",
+    "color_differences",
+    "depth_differences"
+  ],
+  "final_counters": {
+    "frame": "5990",
+    "width": "2736",
+    "height": "4096",
+    "vertices": "72892569",
+    "clears": "9139",
+    "snapshot": "1",
+    "color_differences": "0",
+    "depth_differences": "0"
+  },
+  "variable_batches": [
+    "85471",
+    "85639"
+  ],
+  "csv_sha256": [
+    "2c3ea88a365369938fc677f115fb474c6af9a8531bffad0290e221c91c76c644",
+    "be233d84d3a5d6f772b9c2c275dbc793ec2f5d4813ed7b95859a8cd103de833d"
+  ]
+}

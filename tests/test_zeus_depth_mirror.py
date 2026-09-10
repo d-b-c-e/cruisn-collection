@@ -44,6 +44,36 @@ class DepthMirrorTests(unittest.TestCase):
         with self.assertRaises(ValueError):D.compare_buffers(b'',b'',b'',b'')
         with self.assertRaises(ValueError):D.compare_buffers(color,color,original,mapped[:-1])
 
+    def test_wide_mode_is_explicit_and_integrity_is_not_depth_correctness(self):
+        settings={'MIDZ_GL':'1'}
+        trial=D.configure(self.args(zeus_depth_mirror='wide',zeus_depth_first=2,zeus_depth_last=4),'crusnexo',settings,30)
+        self.assertEqual((settings['MIDZ_DEPTH_MIRROR'],trial['mode']),('2','wide'))
+        self.assertEqual(D.configure(self.args(),'crusnexo',settings,30)['mode'],'wide')
+        color=bytes(16);original=bytes(16);wide=struct.pack('<4f',0,.25,.75,1)
+        result=D.inspect_wide_buffers(color,color,original,wide)
+        self.assertTrue(result['passed']);self.assertFalse(result['pixel_depth_policy_verified'])
+        self.assertFalse(result['compatibility_equal']);self.assertFalse(D.compare_buffers(color,color,original,wide)['passed'])
+        for value in (-.1,1.1,float('inf'),float('nan')):
+            self.assertFalse(D.inspect_wide_buffers(color,color,original,struct.pack('<f',value)+wide[4:])['passed'])
+
+    def test_wide_receipt_keeps_policy_and_counter_checks(self):
+        trial=dict(enabled=True,mode='wide',first=2,last=2,snapshots=[2]);pixels=512*1024
+        text=('MIDZ_DEPTH_MIRROR=2 first=2 last=2 snapshots=1\n'
+            'MIDZ_DEPTH_MIRROR_RESULT complete=1 frames=1 batches=6 vertices=36 clears=1 snapshots=1 remaining=0\n'
+            'MIDZ_DEPTH_MIRROR_WRITER submitted=4 written=4 failed=0 rejected=0 peak_bytes=8388608 write_total_us=1 write_max_us=1 drain_us=0 waits=0 wait_us=0\n')
+        with tempfile.TemporaryDirectory() as temp:
+            directory=Path(temp);zero=bytes(pixels*4)
+            for suffix in ('original-color','mirror-color','original-depth'):(directory/f'zeus-depth-2-{suffix}.bin').write_bytes(zero)
+            depth=directory/'zeus-depth-2-mirror-depth.bin';depth.write_bytes(struct.pack('<f',.5)*pixels)
+            path=directory/'zeus-depth-mirror.csv';path.write_text('frame,width,height,batches,vertices,clears,snapshot,color_differences,depth_differences,mirror_us,snapshot_us\n'+f'2,512,1024,6,36,1,1,0,{pixels},1,1\n',encoding='utf-8')
+            result=D.verify_receipt(trial,text,temp)
+            self.assertTrue(result['passed']);self.assertFalse(result['pixel_depth_policy_verified'])
+            with self.assertRaises(ValueError):D.verify_receipt(dict(trial,mode='observe'),text,temp)
+            with self.assertRaises(ValueError):D.verify_receipt(None,text,temp)
+            with self.assertRaises(ValueError):D.verify_receipt(trial,text.replace('MIRROR=2','MIRROR=9'),temp)
+            path.write_text(path.read_text(encoding='utf-8').replace(f',0,{pixels},',',0,1,'),encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'counters'):D.verify_receipt(trial,text,temp)
+
     def test_completion_and_frame_coverage(self):
         trial=dict(enabled=True,first=2,last=4,snapshots=[])
         text=('MIDZ_DEPTH_MIRROR=1 first=2 last=4 snapshots=0\n'

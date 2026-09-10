@@ -13,7 +13,7 @@ POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path[:0] = [os.path.join(POC, "gpu"), os.path.join(POC, "harness")]
 import renderer as R  # noqa: E402
 import zeus_renderer as Z  # noqa: E402
-from zeus_depth import compatibility_fragment  # noqa: E402
+from zeus_depth import compatibility_fragment, wide_fragment  # noqa: E402
 
 HEADER = r"E:\Source\mame-src\src\mame\midway\midvunit_gl_shaders.h"
 ZHEADER = r"E:\Source\mame-src\src\devices\video\zeus2_gl_shaders.h"
@@ -43,6 +43,7 @@ def main():
     for n in ("VS", "FS", "PRESENT_VS", "PRESENT_FS"):
         body += cstr("MZGL", n, getattr(Z, n))
     body += cstr("MZGL", "DEPTH_COMPAT_FS", compatibility_fragment(Z.FS))
+    body += cstr("MZGL", "DEPTH_WIDE_FS", wide_fragment(Z.FS))
     for n in ("MENU_VS", "MENU_FS"):
         body += cstr("MZGL", n, getattr(R, n))
     with open(ZHEADER, "w", newline="\n") as f:
