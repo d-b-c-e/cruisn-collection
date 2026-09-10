@@ -23,6 +23,21 @@ class ExoticaSceneOptions(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'explicit mode'):
             configure(self.args('--exotica-host-bounds', 'on'), 'crusnexo', {})
 
+    def test_materials_are_explicit_and_preserve_old_recordings(self):
+        args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
+                '--exotica-host-first', '5000', '--exotica-host-last', '5002')
+        settings = {}
+        self.assertFalse(configure(self.args(*args), 'crusnexo', settings)['materials'])
+        self.assertNotIn('MIDZ_HOST_MATERIALS', settings)
+        self.assertTrue(configure(self.args(*args, '--exotica-host-materials', 'observe'), 'crusnexo', settings)['materials'])
+        before = dict(settings)
+        self.assertTrue(configure(self.args(), 'crusnexo', settings)['materials'])
+        self.assertEqual(before, settings)
+        configure(self.args('--candidate', 'candidate.exe', '--exotica-host-scene', 'off'), 'crusnexo', settings)
+        self.assertEqual(settings, {'MIDZ_HOST_SCENE': '0'})
+        with self.assertRaisesRegex(ValueError, 'explicit mode'):
+            configure(self.args('--exotica-host-materials', 'observe'), 'crusnexo', {})
+
     def args(self, *items):
         p = argparse.ArgumentParser();add_arguments(p);p.add_argument('--candidate')
         return p.parse_args(items)

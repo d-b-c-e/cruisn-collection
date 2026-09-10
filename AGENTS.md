@@ -1,5 +1,23 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 live private GPU materials — ACTIVE acceptance
+
+Read docs/reviews/2026-09-10-private-gpu-materials.md. Native99442f1a7b6ed6079a40d315feb067c03c89ddfa
+is separately built/frozen/pushed; SHA70a190d7bc732a42848644cfaf5becb777a749b3468699712d7f4219bf6a8c40.
+163patches reconstructd6dd3cc96b336080b35b084b9299cc62af89e07b. Explicit
+--exotica-host-materials observe|off stages owned HMT1/PIM1 into private GPU
+WaveRAM/palettes only; no extra drawing. Checks proposed palette colors BEFORE
+image commit; producer commits AFTER whole queue packet. Snapshot GPU readbacks
+match owned bytes and original GPU resources before/after; independent Python
+checks device bytes/instance bindings and every queue scene/hash/count.
+Initial315Python/38native/109commands PASS before final export. NEXT finalchecks
+then LOCAL private-material-trial.py: Amazon6000/5072,original route/resources/
+17GL/independent scene/materials vs86deac control. Not launched at this edit.
+Then repeats/HongKong/all7defaults; retain failures, no early acceptance claim.
+Last7defaults remain86deac/SHAf25ecd8e. Personalv0.5.0 unchanged. No release/deploy/
+hostedworkflows/physicalFFB/World tuning/menu removal. Continue directly after
+acceptance to safe live geometry insertion/private depth/foreground/handover.
+
 ## September10 private page ownership — ACTIVE GPU material work
 
 Read docs/reviews/2026-09-10-private-page-images.md. Standalone native/page_image.h,

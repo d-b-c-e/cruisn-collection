@@ -27,18 +27,21 @@ def add_arguments(parser):
     parser.add_argument('--exotica-host-snapshots', help='up to 16 native frames; raw local RAM/WaveRAM and generated geometry')
     parser.add_argument('--exotica-host-bounds', choices=('off', 'on'),
                         help='cache conservative model bounds before private polygon projection')
+    parser.add_argument('--exotica-host-materials', choices=('off', 'observe'),
+                        help='verify private GPU texture/palette uploads without extra drawing')
 
 
 def configure(args, rom, settings):
     mode = getattr(args, 'exotica_host_scene', None)
     bounds_option = getattr(args, 'exotica_host_bounds', None)
+    material_option = getattr(args, 'exotica_host_materials', None)
     values = [getattr(args, 'exotica_host_'+name, None) for name in ('first', 'last', 'multiplier', 'snapshots')]
     explicit = mode is not None
     if explicit:
         if not getattr(args, 'candidate', None):
             raise ValueError('Exotica host observation requires an explicit candidate')
     else:
-        if any(v is not None for v in values) or bounds_option is not None:
+        if any(v is not None for v in values) or bounds_option is not None or material_option is not None:
             raise ValueError('Exotica host bounds require an explicit mode')
         inherited = settings.get('MIDZ_HOST_SCENE')
         if inherited in (None, '0'):
@@ -50,12 +53,13 @@ def configure(args, rom, settings):
     if rom != 'crusnexo' or mode not in ('off', 'observe'):
         raise ValueError('Exotica host observation supports Exotica2.4 only')
     if mode == 'off':
-        if any(v is not None for v in values) or bounds_option is not None:
+        if any(v is not None for v in values) or bounds_option is not None or material_option is not None:
             raise ValueError('Exotica host off does not take bounds')
         settings['MIDZ_HOST_SCENE'] = '0'
         for key in KEYS:
             settings.pop(key, None)
         settings.pop('MIDZ_HOST_BOUNDS', None)
+        settings.pop('MIDZ_HOST_MATERIALS', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier
@@ -71,6 +75,11 @@ def configure(args, rom, settings):
         raise ValueError('invalid recorded Exotica host bounds mode')
     if bounds_option is not None:
         settings['MIDZ_HOST_BOUNDS'] = bound_setting
+    material_setting = settings.get('MIDZ_HOST_MATERIALS', '0') if material_option is None else str(int(material_option == 'observe'))
+    if material_setting not in ('0', '1'):
+        raise ValueError('invalid recorded Exotica host materials mode')
+    if material_option is not None:
+        settings['MIDZ_HOST_MATERIALS'] = material_setting
     settings.update(MIDZ_HOST_SCENE='1', MIDZ_HOST_FIRST=str(first), MIDZ_HOST_LAST=str(last),
                     MIDZ_HOST_MULTIPLIER=str(multiplier))
     if captured:
@@ -78,7 +87,7 @@ def configure(args, rom, settings):
     else:
         settings.pop('MIDZ_HOST_SNAPSHOTS', None)
     return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured,
-                bounds=bound_setting == '1', explicit=explicit)
+                bounds=bound_setting == '1', materials=material_setting == '1', explicit=explicit)
 
 
 def verify_receipt(trial, text, directory):
@@ -96,6 +105,9 @@ def verify_receipt(trial, text, directory):
     bounds = trial.get('bounds', False)
     if re.findall(r'^MIDZ_HOST_BOUNDS=(\d+)$', text, re.M) != (['1'] if bounds else []):
         raise ValueError('missing or mismatched Exotica bounds acknowledgment')
+    materials = trial.get('materials', False)
+    if re.findall(r'^MIDZ_HOST_MATERIALS=(\d+)$', text, re.M) != (['1'] if materials else []):
+        raise ValueError('missing or mismatched Exotica material acknowledgment')
     finals = re.findall(r'^MIDZ_HOST_SCENE_RESULT complete=(\d+) prepared=(\d+) matched=(\d+) quads=(\d+) snapshots=(\d+) pending=(\d+) remaining=(\d+)$', text, re.M)
     if len(finals) != 1:
         raise ValueError('missing Exotica host completion')
@@ -132,5 +144,8 @@ def verify_receipt(trial, text, directory):
         for suffix in ('-context.bin', '-quads.bin', '-instances.bin'):
             if not Path(str(prefix)+suffix).is_file():
                 raise ValueError('missing Exotica host geometry snapshot')
+    if materials:
+        from zeus_host_materials import verify_live
+        verify_live(directory, rows, trial['snapshots'], text)
     return dict(passed=True, scenes=matched, quads=quads, snapshots=saved, guest_cycles_unchanged=True, game_scene_boundary=True,
                 scope='Live source/geometry observation only; independent snapshot verification is separate.')
