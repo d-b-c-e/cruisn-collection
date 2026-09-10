@@ -1,0 +1,141 @@
+{
+  "passed": true,
+  "scope": "Standalone CPU microbenchmark with byte equality; not live frame pacing, GPU upload or emulation performance. Initial and track-switch costs reported separately.",
+  "samples": 705,
+  "phases": {
+    "four_pages": {
+      "count": 200,
+      "page_counts": [
+        4
+      ],
+      "timing": {
+        "stage_us": {
+          "mean": 1151.3645,
+          "p99": 1645.3,
+          "max": 1780.8
+        },
+        "encode_us": {
+          "mean": 6.0895,
+          "p99": 13.4,
+          "max": 26.0
+        },
+        "producer_commit_us": {
+          "mean": 15.7005,
+          "p99": 32.9,
+          "max": 40.8
+        },
+        "decode_us": {
+          "mean": 5.426,
+          "p99": 11.3,
+          "max": 14.3
+        },
+        "consumer_commit_us": {
+          "mean": 15.0505,
+          "p99": 26.0,
+          "max": 30.7
+        }
+      }
+    },
+    "initial": {
+      "count": 1,
+      "page_counts": [
+        4096
+      ],
+      "timing": {
+        "stage_us": {
+          "mean": 20455.2,
+          "p99": 20455.2,
+          "max": 20455.2
+        },
+        "encode_us": {
+          "mean": 2771.4,
+          "p99": 2771.4,
+          "max": 2771.4
+        },
+        "producer_commit_us": {
+          "mean": 18481.4,
+          "p99": 18481.4,
+          "max": 18481.4
+        },
+        "decode_us": {
+          "mean": 3243.4,
+          "p99": 3243.4,
+          "max": 3243.4
+        },
+        "consumer_commit_us": {
+          "mean": 18782.8,
+          "p99": 18782.8,
+          "max": 18782.8
+        }
+      }
+    },
+    "track_switch": {
+      "count": 4,
+      "page_counts": [
+        4,
+        1376
+      ],
+      "timing": {
+        "stage_us": {
+          "mean": 6619.875,
+          "p99": 8561.9,
+          "max": 8561.9
+        },
+        "encode_us": {
+          "mean": 651.6,
+          "p99": 905.9,
+          "max": 905.9
+        },
+        "producer_commit_us": {
+          "mean": 3960.475,
+          "p99": 5394.8,
+          "max": 5394.8
+        },
+        "decode_us": {
+          "mean": 819.075,
+          "p99": 1191.6,
+          "max": 1191.6
+        },
+        "consumer_commit_us": {
+          "mean": 3946.0,
+          "p99": 5292.5,
+          "max": 5292.5
+        }
+      }
+    },
+    "unchanged": {
+      "count": 500,
+      "page_counts": [
+        0
+      ],
+      "timing": {
+        "stage_us": {
+          "mean": 1048.8356,
+          "p99": 1552.1,
+          "max": 1652.8
+        },
+        "encode_us": {
+          "mean": 2.5488,
+          "p99": 5.0,
+          "max": 18.1
+        },
+        "producer_commit_us": {
+          "mean": 0.1898,
+          "p99": 0.8,
+          "max": 1.0
+        },
+        "decode_us": {
+          "mean": 0.3498,
+          "p99": 1.1,
+          "max": 10.6
+        },
+        "consumer_commit_us": {
+          "mean": 0.1216,
+          "p99": 0.7,
+          "max": 0.7
+        }
+      }
+    }
+  },
+  "native_sha256": "7079817cd8943ceb8c186fa7dfe7775c7ff8ac48eff6cf14601f66bab300aa13"
+}

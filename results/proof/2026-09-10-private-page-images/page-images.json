@@ -1,0 +1,57 @@
+{
+  "malformed_rejections": [
+    "truncated",
+    "trailing",
+    "count",
+    "flags",
+    "reserved",
+    "last-page-corruption"
+  ],
+  "native_sha256": "d6f303b39960cb9d2abd76d49ff6894abb06605bbadce7687d7a6642f253010a",
+  "passed": true,
+  "reverse_serialization": true,
+  "scope": "Standalone owned page deltas; no MAME/GPU integration or live residency claim.",
+  "snapshots": [
+    {
+      "generation": 1,
+      "image_sha256": "341aacac661ccb210720bedaa9ead5d668fe5ea41a73532fc147c71e34040df1",
+      "packet_bytes": 16793664,
+      "packet_sha256": "34d19a16d9bdcd82d0eb1ef068d8217dd69791ab25ca225ba02b6387478ef41c",
+      "pages": 4096,
+      "root": 15627711299394708480
+    },
+    {
+      "generation": 2,
+      "image_sha256": "950879625c63dcd071ff5a0ab16c459b578fe88070536835bb9093cb8061d3b4",
+      "packet_bytes": 12364,
+      "packet_sha256": "9c3da53715cf98dbfdcee3e5e0193396bcbe5b0a53c5eac29a4c54e4bae0ae5c",
+      "pages": 3,
+      "root": 3396351374666372672
+    },
+    {
+      "generation": 3,
+      "image_sha256": "950879625c63dcd071ff5a0ab16c459b578fe88070536835bb9093cb8061d3b4",
+      "packet_bytes": 64,
+      "packet_sha256": "c98038ecbf79e269105b2d736eace170d70a1095b28663f778a3a049698229da",
+      "pages": 0,
+      "root": 3396351374666372672
+    },
+    {
+      "generation": 4,
+      "image_sha256": "679ce194e3bddcb2df35a0343b45d1e2b8e8224fc7b7636bdf5ea89506549ce6",
+      "packet_bytes": 4164,
+      "packet_sha256": "0a065bcdbaf94526377b076212d214d159cfd71c828f212d3eff79190276f161",
+      "pages": 1,
+      "root": 9342679726460155456
+    },
+    {
+      "generation": 5,
+      "image_sha256": "341aacac661ccb210720bedaa9ead5d668fe5ea41a73532fc147c71e34040df1",
+      "packet_bytes": 16464,
+      "packet_sha256": "f75f1997ca6c16c54e68917795ec14cb985ffab83b53cdeb88bbf3d0b6c1ced1",
+      "pages": 4,
+      "root": 15627711299394708480
+    }
+  ],
+  "total_image_bytes": 83886080
+}

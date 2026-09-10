@@ -1,5 +1,22 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 private page ownership — ACTIVE GPU material work
+
+Read docs/reviews/2026-09-10-private-page-images.md. Standalone native/page_image.h,
+analyzer and independent Python PIM1 reference own full/delta4KB pages with
+generation/base/hash/length/order guards and atomic rejection. Five queued16MB
+captured images reconstruct83886080bytes exactly; pages4096/4/4/1376/1376.
+311Python/no skips,37native,107commands PASS at c5e43b05b42a4783d6a3b0548fab632dffe7f4a24d823aa769ecfff1f6fd6716.
+Not linked into MAME; last7defaults/candidate remain86deac/SHAf25ecd8e,162patches.
+Standalone705sample CPU benchmark: unchanged staging1.049ms,4-page1.151ms;
+initial staging20.455ms+producer18.481ms+consumer18.783ms and serialization cost.
+Do not claim live smoothness; initialization/prewarming remains required.
+NEXT private GPU WaveRAM/palette uploads/readiness, whole-scene budgets, structural
+sky/foreground/D32F/handover. Source eligibility still needed for Amazon black
+ground. Local material-page-captured and page-image-benchmark receipts; raw game
+bytes stay ignored. Continue directly; no heartbeat waits. Personalv0.5.0 unchanged;
+no release/deploy/hostedworkflows/physicalFFB/World tuning/menu removal.
+
 ## September10 Exotica bounds accepted — ACTIVE material work
 
 Read docs/reviews/2026-09-10-exotica-bounds-integration.md. Collection4019155

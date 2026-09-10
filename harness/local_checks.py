@@ -76,6 +76,9 @@ def commands(group, output, cxx):
     compile_one('zeus-models', 'native/analyze_zeus_models.cpp')
     compile_one('zeus-state', 'native/analyze_zeus_state.cpp')
     compile_one('zeus-sky', 'native/analyze_zeus_sky.cpp')
+    pages = compile_one('page-image', 'native/analyze_page_image.cpp')
+    steps.append(('page-image-ownership', [py, 'harness/verify_page_image.py', '--native', pages,
+                  '--work-dir', str(output/'page-images'), '--report', str(output/'page-images.json')]))
     bounds = compile_one('zeus-bounds', 'native/analyze_zeus_bounds.cpp')
     steps.append(('zeus-bounds-projection', [py, 'harness/verify_zeus_bounds.py', '--native', bounds,
                   '--work-dir', str(output/'bounds-batch'), '--report', str(output/'zeus-bounds.json')]))

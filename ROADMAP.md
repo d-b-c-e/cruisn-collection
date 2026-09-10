@@ -11,8 +11,14 @@ now passes three independent scene/geometry/context checks and six paired6000
 replays, preserving original motion/resources and55 completed4K images per side.
 It observes private future geometry; it does not draw it. The initial camera
 failure led to actual game-scene boundaries instead of native refresh boundaries.
-All seven defaults pass onf49. Next: owned materials, safe host depth/insertion,
-source handover and a validated offscreen model bound to reduce CPU cost.
+The [cached model bounds](docs/reviews/2026-09-10-exotica-bounds-integration.md)
+now preserve visible geometry and original resources across ten6000-frame trials;
+all seven defaults pass on86deac. Bounds reduce measured observer cost, while
+the new Amazon5978 composition shows only modest extra3x pixels through the forest.
+[Standalone private page images](docs/reviews/2026-09-10-private-page-images.md)
+reconstruct five queued16MB texture snapshots exactly, with independent validation
+and corrupt-packet rejection. Their initial upload/validation cost still needs
+handling. Next: private GPU materials, safe host depth/insertion and source handover.
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.

@@ -1,0 +1,1658 @@
+{
+  "artifacts": {
+    "compile-capture_bitmap_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-capture_writer_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-checked_patch_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-cpu_upload_spans_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica-future.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica-scene.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica-state.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica-transform.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica_future_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica_scene_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica_state_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica_transform_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-exotica_visibility_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-ffb-analyzer.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-hud_drivetrain_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-hud_numeric_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-hud_speed_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-motor_signal_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-offroad-future.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-offroad-model.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-offroad_distance_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-offroad_future_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-offroad_host_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-offroad_model_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-offroad_transform_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-page-image.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-page_image_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-pause_cheats_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-retained_texture_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-tjunctions.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-usa-future.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-usa-host.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-usa-model.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-usa_distance_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-usa_future_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-usa_host_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-usa_model_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-world-future.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-world-host.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-world_distance_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-world_future_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-world_host_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-world_road_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-world_scenery_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus-bounds.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus-models.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus-sky.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus-state.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus_margin_clear_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus_model_bounds_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus_model_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus_palette_lifetime_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus_render_policy_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus_sky_repeat_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compile-zeus_state_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "compiler-version.log": "cd0be1113ba1a5c94c6e504050108d0d5535a617bc910e90a1b70c5ecaeec8fa",
+    "ffb-impacts.log": "9006ad77e0003a0af7b13793a99c6c93123ba0010049591da0184e619961e561",
+    "ffb-stages.log": "27df054fc359f390fa3ddf26aff0a4498e67239596c104accd6d91eaa1fe24c4",
+    "gl-readback.json": "b6a162186f1de71ffa61e242583955ba1bc0dbc73442782811454902503f6038",
+    "gl-readback.log": "64966643ba5b022d4f7da506a77e0a6ecb27fa73545579ef68724e3e0ab6e7ca",
+    "gpu-quality.json": "2ac3518b4cc7d8c00224e7bef9bea457f44c27a5472a8f7e30046cd19a15dd1b",
+    "gpu-quality.log": "f1c9ee92f3287d2352a1df177a23aab758898f590cc41fd781ec1b5c67f17cca",
+    "impacts.csv": "5c21b618a2c1501c40d3c709c755673557731a09c3f7bf03a737c89a444072ae",
+    "motor-adapter.log": "78d0e7f99bb63492bf0b2d6a5ea7e8be4c79d6ab03ffc0a38d41bf44c0670b1e",
+    "page-image-ownership.log": "ae4b511afcad26f2774710e3cff119e3f7b72cdad514e49b20f65347c38e8caf",
+    "page-images.json": "cb27782f96a9a4e541f6531a6ab3b232201322839e2229902619d285e0b8be11",
+    "python-tests.log": "5c9511d3c26c97f338017701607f5d6b53d13c9930e5ab9d10ea03fbf681aada",
+    "run-capture_bitmap_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-capture_writer_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-checked_patch_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-cpu_upload_spans_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-exotica_future_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-exotica_scene_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-exotica_state_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-exotica_transform_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-exotica_visibility_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-hud_drivetrain_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-hud_numeric_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-hud_speed_test.log": "825f437a1b4e0a75bb074f666058fee6dc55b70725634e96d1e0edae4f4e5f57",
+    "run-motor_signal_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-offroad_distance_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-offroad_future_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-offroad_host_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-offroad_model_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-offroad_transform_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-page_image_test.log": "0264b56be2c6fb36fd26ea993aed87cba4be6215b5c25330090cc6265a209437",
+    "run-pause_cheats_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-retained_texture_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-usa_distance_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-usa_future_test.log": "f471fd2e7011ef59b73777b9ff34eef5c1056ec75f13bd3cc61e30579576c9ad",
+    "run-usa_host_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-usa_model_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-world_distance_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-world_future_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-world_host_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-world_road_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-world_scenery_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-zeus_margin_clear_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-zeus_model_bounds_test.log": "8e9993862f556f71ec848c6f5834cdcf50f1942edae062b908b22fa6983887ef",
+    "run-zeus_model_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-zeus_palette_lifetime_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-zeus_render_policy_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-zeus_sky_repeat_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "run-zeus_state_test.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-identity.json": "c499abf1bdf6a983e46d599ca674f535a8b47f57e0e72df235592277faa7e3da",
+    "stages.csv": "c94952e0f6ac2519fecdd0710b6ba9e7b0d64ccfcc2b6512213b632aef2939a6",
+    "tjunctions.log": "2f0730d19bbc4ddaa221f7180fb3c8b01487220f5cedb1867d3d7e302faf18b0",
+    "unit-tests.json": "625c6cd02cf8293e20e56f7aef2cc77cbd8f113c00d1614546182c1873052b71",
+    "world-host-math.json": "0802e30c398a3fb803e9d979d2a08b44ef3d229efe3071688e43546b93dde2b7",
+    "world-host-math.log": "2678dc7f370f89e3d9859a919de76d0a71877eed08510cf5e92c1b839cf689f7",
+    "zeus-bounds-projection.log": "0e231ac2f436b13329e3c4cde541b2f0e92a920327c169c0ee99bd32d655c0b3",
+    "zeus-bounds.json": "da8c6bb6fbbdf56da70d7cff566b2eaa0a6b952bb41ffb188d329a93adbcaa0d",
+    "zeus-margin-pixels.json": "bf442626205e9f38b868dccb7255a9a94118819cc8e31fadfbc48c7ca7077dc9",
+    "zeus-margin-pixels.log": "7ef666bd4aa7c0581ace53b462b2a81ce491552f38e978a53790bad386c89abb",
+    "zeus-palette-pixels.json": "11d1f623a8476ee43152b63dae614bf6f050beeb14defec151dc867f1802e2bb",
+    "zeus-palette-pixels.log": "dd7c924f453049a2394e240600b2ff71a422b6a949c50e10b0293e5685f5d4a1",
+    "zeus-policy-pixels.json": "289c458756c63a66b01a4b623680220c9bdc6665f3c7565bcd51bd2c53727dbb",
+    "zeus-policy-pixels.log": "3c6e4a24c1ff380e33004746d4b3f7dc6e6106c86c68c6425bec19deba913987",
+    "zeus-sky-pixels.json": "13c410e1c4173e868014569ab0d52145e12a2cf881c9e17cde5b9a2ab54c6825",
+    "zeus-sky-pixels.log": "8a4f6e30f540c021d54fc990fc3d41d757eddc9bf2b9aa67982a7b31d1879c95"
+  },
+  "executable": "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+  "groups": [
+    "python",
+    "native",
+    "gpu"
+  ],
+  "host": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "Pillow": "12.3.0",
+    "lupa": "2.8",
+    "moderngl": "5.12.0",
+    "numpy": "2.5.2"
+  },
+  "passed": true,
+  "platform": "win32",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "schema": 1,
+  "source_identity": "c5e43b05b42a4783d6a3b0548fab632dffe7f4a24d823aa769ecfff1f6fd6716",
+  "source_identity_after": "c5e43b05b42a4783d6a3b0548fab632dffe7f4a24d823aa769ecfff1f6fd6716",
+  "steps": [
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "E:\\Source\\cruisn-collection\\harness\\local_checks.py",
+        "--unit-worker",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\unit-tests.json"
+      ],
+      "log": "python-tests.log",
+      "name": "python-tests",
+      "returncode": 0,
+      "seconds": 10.929
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "--version"
+      ],
+      "log": "compiler-version.log",
+      "name": "compiler-version",
+      "returncode": 0,
+      "seconds": 0.018
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/capture_bitmap_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\capture_bitmap_test.exe"
+      ],
+      "log": "compile-capture_bitmap_test.log",
+      "name": "compile-capture_bitmap_test",
+      "returncode": 0,
+      "seconds": 0.38
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\capture_bitmap_test.exe"
+      ],
+      "log": "run-capture_bitmap_test.log",
+      "name": "run-capture_bitmap_test",
+      "returncode": 0,
+      "seconds": 0.018
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/capture_writer_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\capture_writer_test.exe"
+      ],
+      "log": "compile-capture_writer_test.log",
+      "name": "compile-capture_writer_test",
+      "returncode": 0,
+      "seconds": 0.805
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\capture_writer_test.exe"
+      ],
+      "log": "run-capture_writer_test.log",
+      "name": "run-capture_writer_test",
+      "returncode": 0,
+      "seconds": 0.034
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/checked_patch_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\checked_patch_test.exe"
+      ],
+      "log": "compile-checked_patch_test.log",
+      "name": "compile-checked_patch_test",
+      "returncode": 0,
+      "seconds": 0.273
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\checked_patch_test.exe"
+      ],
+      "log": "run-checked_patch_test.log",
+      "name": "run-checked_patch_test",
+      "returncode": 0,
+      "seconds": 0.017
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/cpu_upload_spans_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\cpu_upload_spans_test.exe"
+      ],
+      "log": "compile-cpu_upload_spans_test.log",
+      "name": "compile-cpu_upload_spans_test",
+      "returncode": 0,
+      "seconds": 0.358
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\cpu_upload_spans_test.exe"
+      ],
+      "log": "run-cpu_upload_spans_test.log",
+      "name": "run-cpu_upload_spans_test",
+      "returncode": 0,
+      "seconds": 0.043
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/exotica_future_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_future_test.exe"
+      ],
+      "log": "compile-exotica_future_test.log",
+      "name": "compile-exotica_future_test",
+      "returncode": 0,
+      "seconds": 1.138
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_future_test.exe"
+      ],
+      "log": "run-exotica_future_test.log",
+      "name": "run-exotica_future_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/exotica_scene_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_scene_test.exe"
+      ],
+      "log": "compile-exotica_scene_test.log",
+      "name": "compile-exotica_scene_test",
+      "returncode": 0,
+      "seconds": 1.693
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_scene_test.exe"
+      ],
+      "log": "run-exotica_scene_test.log",
+      "name": "run-exotica_scene_test",
+      "returncode": 0,
+      "seconds": 0.02
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/exotica_state_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_state_test.exe"
+      ],
+      "log": "compile-exotica_state_test.log",
+      "name": "compile-exotica_state_test",
+      "returncode": 0,
+      "seconds": 0.421
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_state_test.exe"
+      ],
+      "log": "run-exotica_state_test.log",
+      "name": "run-exotica_state_test",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/exotica_transform_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_transform_test.exe"
+      ],
+      "log": "compile-exotica_transform_test.log",
+      "name": "compile-exotica_transform_test",
+      "returncode": 0,
+      "seconds": 0.476
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_transform_test.exe"
+      ],
+      "log": "run-exotica_transform_test.log",
+      "name": "run-exotica_transform_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/exotica_visibility_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_visibility_test.exe"
+      ],
+      "log": "compile-exotica_visibility_test.log",
+      "name": "compile-exotica_visibility_test",
+      "returncode": 0,
+      "seconds": 0.444
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica_visibility_test.exe"
+      ],
+      "log": "run-exotica_visibility_test.log",
+      "name": "run-exotica_visibility_test",
+      "returncode": 0,
+      "seconds": 0.019
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/hud_drivetrain_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\hud_drivetrain_test.exe"
+      ],
+      "log": "compile-hud_drivetrain_test.log",
+      "name": "compile-hud_drivetrain_test",
+      "returncode": 0,
+      "seconds": 0.455
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\hud_drivetrain_test.exe"
+      ],
+      "log": "run-hud_drivetrain_test.log",
+      "name": "run-hud_drivetrain_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/hud_numeric_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\hud_numeric_test.exe"
+      ],
+      "log": "compile-hud_numeric_test.log",
+      "name": "compile-hud_numeric_test",
+      "returncode": 0,
+      "seconds": 0.202
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\hud_numeric_test.exe"
+      ],
+      "log": "run-hud_numeric_test.log",
+      "name": "run-hud_numeric_test",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/hud_speed_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\hud_speed_test.exe"
+      ],
+      "log": "compile-hud_speed_test.log",
+      "name": "compile-hud_speed_test",
+      "returncode": 0,
+      "seconds": 0.205
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\hud_speed_test.exe"
+      ],
+      "log": "run-hud_speed_test.log",
+      "name": "run-hud_speed_test",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/motor_signal_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\motor_signal_test.exe"
+      ],
+      "log": "compile-motor_signal_test.log",
+      "name": "compile-motor_signal_test",
+      "returncode": 0,
+      "seconds": 0.269
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\motor_signal_test.exe"
+      ],
+      "log": "run-motor_signal_test.log",
+      "name": "run-motor_signal_test",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/offroad_distance_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_distance_test.exe"
+      ],
+      "log": "compile-offroad_distance_test.log",
+      "name": "compile-offroad_distance_test",
+      "returncode": 0,
+      "seconds": 0.452
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_distance_test.exe"
+      ],
+      "log": "run-offroad_distance_test.log",
+      "name": "run-offroad_distance_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/offroad_future_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_future_test.exe"
+      ],
+      "log": "compile-offroad_future_test.log",
+      "name": "compile-offroad_future_test",
+      "returncode": 0,
+      "seconds": 0.547
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_future_test.exe"
+      ],
+      "log": "run-offroad_future_test.log",
+      "name": "run-offroad_future_test",
+      "returncode": 0,
+      "seconds": 0.022
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/offroad_host_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_host_test.exe"
+      ],
+      "log": "compile-offroad_host_test.log",
+      "name": "compile-offroad_host_test",
+      "returncode": 0,
+      "seconds": 2.172
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_host_test.exe"
+      ],
+      "log": "run-offroad_host_test.log",
+      "name": "run-offroad_host_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/offroad_model_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_model_test.exe"
+      ],
+      "log": "compile-offroad_model_test.log",
+      "name": "compile-offroad_model_test",
+      "returncode": 0,
+      "seconds": 0.919
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_model_test.exe"
+      ],
+      "log": "run-offroad_model_test.log",
+      "name": "run-offroad_model_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/offroad_transform_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_transform_test.exe"
+      ],
+      "log": "compile-offroad_transform_test.log",
+      "name": "compile-offroad_transform_test",
+      "returncode": 0,
+      "seconds": 0.761
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad_transform_test.exe"
+      ],
+      "log": "run-offroad_transform_test.log",
+      "name": "run-offroad_transform_test",
+      "returncode": 0,
+      "seconds": 0.017
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/page_image_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\page_image_test.exe"
+      ],
+      "log": "compile-page_image_test.log",
+      "name": "compile-page_image_test",
+      "returncode": 0,
+      "seconds": 0.779
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\page_image_test.exe"
+      ],
+      "log": "run-page_image_test.log",
+      "name": "run-page_image_test",
+      "returncode": 0,
+      "seconds": 0.017
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/pause_cheats_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\pause_cheats_test.exe"
+      ],
+      "log": "compile-pause_cheats_test.log",
+      "name": "compile-pause_cheats_test",
+      "returncode": 0,
+      "seconds": 0.739
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\pause_cheats_test.exe"
+      ],
+      "log": "run-pause_cheats_test.log",
+      "name": "run-pause_cheats_test",
+      "returncode": 0,
+      "seconds": 0.018
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/retained_texture_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\retained_texture_test.exe"
+      ],
+      "log": "compile-retained_texture_test.log",
+      "name": "compile-retained_texture_test",
+      "returncode": 0,
+      "seconds": 0.323
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\retained_texture_test.exe"
+      ],
+      "log": "run-retained_texture_test.log",
+      "name": "run-retained_texture_test",
+      "returncode": 0,
+      "seconds": 0.033
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/usa_distance_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_distance_test.exe"
+      ],
+      "log": "compile-usa_distance_test.log",
+      "name": "compile-usa_distance_test",
+      "returncode": 0,
+      "seconds": 0.453
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_distance_test.exe"
+      ],
+      "log": "run-usa_distance_test.log",
+      "name": "run-usa_distance_test",
+      "returncode": 0,
+      "seconds": 0.018
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/usa_future_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_future_test.exe"
+      ],
+      "log": "compile-usa_future_test.log",
+      "name": "compile-usa_future_test",
+      "returncode": 0,
+      "seconds": 1.572
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_future_test.exe"
+      ],
+      "log": "run-usa_future_test.log",
+      "name": "run-usa_future_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/usa_host_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_host_test.exe"
+      ],
+      "log": "compile-usa_host_test.log",
+      "name": "compile-usa_host_test",
+      "returncode": 0,
+      "seconds": 1.826
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_host_test.exe"
+      ],
+      "log": "run-usa_host_test.log",
+      "name": "run-usa_host_test",
+      "returncode": 0,
+      "seconds": 0.018
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/usa_model_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_model_test.exe"
+      ],
+      "log": "compile-usa_model_test.log",
+      "name": "compile-usa_model_test",
+      "returncode": 0,
+      "seconds": 1.243
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa_model_test.exe"
+      ],
+      "log": "run-usa_model_test.log",
+      "name": "run-usa_model_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/world_distance_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_distance_test.exe"
+      ],
+      "log": "compile-world_distance_test.log",
+      "name": "compile-world_distance_test",
+      "returncode": 0,
+      "seconds": 0.52
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_distance_test.exe"
+      ],
+      "log": "run-world_distance_test.log",
+      "name": "run-world_distance_test",
+      "returncode": 0,
+      "seconds": 0.018
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/world_future_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_future_test.exe"
+      ],
+      "log": "compile-world_future_test.log",
+      "name": "compile-world_future_test",
+      "returncode": 0,
+      "seconds": 1.152
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_future_test.exe"
+      ],
+      "log": "run-world_future_test.log",
+      "name": "run-world_future_test",
+      "returncode": 0,
+      "seconds": 0.017
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/world_host_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_host_test.exe"
+      ],
+      "log": "compile-world_host_test.log",
+      "name": "compile-world_host_test",
+      "returncode": 0,
+      "seconds": 1.039
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_host_test.exe"
+      ],
+      "log": "run-world_host_test.log",
+      "name": "run-world_host_test",
+      "returncode": 0,
+      "seconds": 0.017
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/world_road_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_road_test.exe"
+      ],
+      "log": "compile-world_road_test.log",
+      "name": "compile-world_road_test",
+      "returncode": 0,
+      "seconds": 0.432
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_road_test.exe"
+      ],
+      "log": "run-world_road_test.log",
+      "name": "run-world_road_test",
+      "returncode": 0,
+      "seconds": 0.017
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/world_scenery_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_scenery_test.exe"
+      ],
+      "log": "compile-world_scenery_test.log",
+      "name": "compile-world_scenery_test",
+      "returncode": 0,
+      "seconds": 0.276
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world_scenery_test.exe"
+      ],
+      "log": "run-world_scenery_test.log",
+      "name": "run-world_scenery_test",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/zeus_margin_clear_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_margin_clear_test.exe"
+      ],
+      "log": "compile-zeus_margin_clear_test.log",
+      "name": "compile-zeus_margin_clear_test",
+      "returncode": 0,
+      "seconds": 0.247
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_margin_clear_test.exe"
+      ],
+      "log": "run-zeus_margin_clear_test.log",
+      "name": "run-zeus_margin_clear_test",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/zeus_model_bounds_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_model_bounds_test.exe"
+      ],
+      "log": "compile-zeus_model_bounds_test.log",
+      "name": "compile-zeus_model_bounds_test",
+      "returncode": 0,
+      "seconds": 0.635
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_model_bounds_test.exe"
+      ],
+      "log": "run-zeus_model_bounds_test.log",
+      "name": "run-zeus_model_bounds_test",
+      "returncode": 0,
+      "seconds": 0.022
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/zeus_model_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_model_test.exe"
+      ],
+      "log": "compile-zeus_model_test.log",
+      "name": "compile-zeus_model_test",
+      "returncode": 0,
+      "seconds": 0.506
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_model_test.exe"
+      ],
+      "log": "run-zeus_model_test.log",
+      "name": "run-zeus_model_test",
+      "returncode": 0,
+      "seconds": 0.018
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/zeus_palette_lifetime_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_palette_lifetime_test.exe"
+      ],
+      "log": "compile-zeus_palette_lifetime_test.log",
+      "name": "compile-zeus_palette_lifetime_test",
+      "returncode": 0,
+      "seconds": 0.222
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_palette_lifetime_test.exe"
+      ],
+      "log": "run-zeus_palette_lifetime_test.log",
+      "name": "run-zeus_palette_lifetime_test",
+      "returncode": 0,
+      "seconds": 0.017
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/zeus_render_policy_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_render_policy_test.exe"
+      ],
+      "log": "compile-zeus_render_policy_test.log",
+      "name": "compile-zeus_render_policy_test",
+      "returncode": 0,
+      "seconds": 0.235
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_render_policy_test.exe"
+      ],
+      "log": "run-zeus_render_policy_test.log",
+      "name": "run-zeus_render_policy_test",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/zeus_sky_repeat_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_sky_repeat_test.exe"
+      ],
+      "log": "compile-zeus_sky_repeat_test.log",
+      "name": "compile-zeus_sky_repeat_test",
+      "returncode": 0,
+      "seconds": 0.65
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_sky_repeat_test.exe"
+      ],
+      "log": "run-zeus_sky_repeat_test.log",
+      "name": "run-zeus_sky_repeat_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "tests/native/zeus_state_test.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_state_test.exe"
+      ],
+      "log": "compile-zeus_state_test.log",
+      "name": "compile-zeus_state_test",
+      "returncode": 0,
+      "seconds": 0.403
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus_state_test.exe"
+      ],
+      "log": "run-zeus_state_test.log",
+      "name": "run-zeus_state_test",
+      "returncode": 0,
+      "seconds": 0.016
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_world_host.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world-host.exe"
+      ],
+      "log": "compile-world-host.log",
+      "name": "compile-world-host",
+      "returncode": 0,
+      "seconds": 1.311
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_world_future.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world-future.exe"
+      ],
+      "log": "compile-world-future.log",
+      "name": "compile-world-future",
+      "returncode": 0,
+      "seconds": 1.529
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_usa_model.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa-model.exe"
+      ],
+      "log": "compile-usa-model.log",
+      "name": "compile-usa-model",
+      "returncode": 0,
+      "seconds": 1.036
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_offroad_model.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad-model.exe"
+      ],
+      "log": "compile-offroad-model.log",
+      "name": "compile-offroad-model",
+      "returncode": 0,
+      "seconds": 1.334
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_exotica_transform.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica-transform.exe"
+      ],
+      "log": "compile-exotica-transform.log",
+      "name": "compile-exotica-transform",
+      "returncode": 0,
+      "seconds": 0.588
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_exotica_state.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica-state.exe"
+      ],
+      "log": "compile-exotica-state.log",
+      "name": "compile-exotica-state",
+      "returncode": 0,
+      "seconds": 0.546
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_exotica_future.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica-future.exe"
+      ],
+      "log": "compile-exotica-future.log",
+      "name": "compile-exotica-future",
+      "returncode": 0,
+      "seconds": 1.151
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_exotica_scene.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\exotica-scene.exe"
+      ],
+      "log": "compile-exotica-scene.log",
+      "name": "compile-exotica-scene",
+      "returncode": 0,
+      "seconds": 2.246
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_zeus_models.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus-models.exe"
+      ],
+      "log": "compile-zeus-models.log",
+      "name": "compile-zeus-models",
+      "returncode": 0,
+      "seconds": 0.712
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_zeus_state.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus-state.exe"
+      ],
+      "log": "compile-zeus-state.log",
+      "name": "compile-zeus-state",
+      "returncode": 0,
+      "seconds": 0.526
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_zeus_sky.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus-sky.exe"
+      ],
+      "log": "compile-zeus-sky.log",
+      "name": "compile-zeus-sky",
+      "returncode": 0,
+      "seconds": 0.753
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_page_image.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\page-image.exe"
+      ],
+      "log": "compile-page-image.log",
+      "name": "compile-page-image",
+      "returncode": 0,
+      "seconds": 0.81
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_page_image.py",
+        "--native",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\page-image.exe",
+        "--work-dir",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\page-images",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\page-images.json"
+      ],
+      "log": "page-image-ownership.log",
+      "name": "page-image-ownership",
+      "returncode": 0,
+      "seconds": 3.642
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_zeus_bounds.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus-bounds.exe"
+      ],
+      "log": "compile-zeus-bounds.log",
+      "name": "compile-zeus-bounds",
+      "returncode": 0,
+      "seconds": 0.634
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_zeus_bounds.py",
+        "--native",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\zeus-bounds.exe",
+        "--work-dir",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bounds-batch",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\zeus-bounds.json"
+      ],
+      "log": "zeus-bounds-projection.log",
+      "name": "zeus-bounds-projection",
+      "returncode": 0,
+      "seconds": 1.648
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_offroad_future.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\offroad-future.exe"
+      ],
+      "log": "compile-offroad-future.log",
+      "name": "compile-offroad-future",
+      "returncode": 0,
+      "seconds": 2.074
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_usa_host.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa-host.exe"
+      ],
+      "log": "compile-usa-host.log",
+      "name": "compile-usa-host",
+      "returncode": 0,
+      "seconds": 1.276
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_usa_future.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\usa-future.exe"
+      ],
+      "log": "compile-usa-future.log",
+      "name": "compile-usa-future",
+      "returncode": 0,
+      "seconds": 2.084
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_world_host_native.py",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\world-host.exe",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\world-host-math.json"
+      ],
+      "log": "world-host-math.log",
+      "name": "world-host-math",
+      "returncode": 0,
+      "seconds": 0.304
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_ffb.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\ffb-analyzer.exe"
+      ],
+      "log": "compile-ffb-analyzer.log",
+      "name": "compile-ffb-analyzer",
+      "returncode": 0,
+      "seconds": 1.187
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\ffb-analyzer.exe",
+        "fixtures/signals/idle-hit.csv",
+        "lib/toolkit/profiles",
+        "cruisn-vunit@2",
+        "50",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\stages.csv"
+      ],
+      "log": "ffb-stages.log",
+      "name": "ffb-stages",
+      "returncode": 0,
+      "seconds": 0.043
+    },
+    {
+      "command": [
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\ffb-analyzer.exe",
+        "fixtures/signals/idle-hit.csv",
+        "lib/toolkit/profiles",
+        "cruisn-vunit@2",
+        "50",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\impacts.csv",
+        "--impacts"
+      ],
+      "log": "ffb-impacts.log",
+      "name": "ffb-impacts",
+      "returncode": 0,
+      "seconds": 0.015
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "tests/native/check_motor_adapter.py",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\ffb-analyzer.exe"
+      ],
+      "log": "motor-adapter.log",
+      "name": "motor-adapter",
+      "returncode": 0,
+      "seconds": 0.19
+    },
+    {
+      "command": [
+        "E:\\msys64\\mingw64\\bin\\g++.exe",
+        "-std=c++11",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Inative",
+        "-Ilib/toolkit/include",
+        "native/analyze_tjunctions.cpp",
+        "-o",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\tjunctions.exe"
+      ],
+      "log": "compile-tjunctions.log",
+      "name": "compile-tjunctions",
+      "returncode": 0,
+      "seconds": 0.98
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "tests/native/check_tjunctions.py",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\bin\\tjunctions.exe"
+      ],
+      "log": "tjunctions.log",
+      "name": "tjunctions",
+      "returncode": 0,
+      "seconds": 0.626
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_quality.py",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\gpu-quality.json"
+      ],
+      "log": "gpu-quality.log",
+      "name": "gpu-quality",
+      "returncode": 0,
+      "seconds": 0.945
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_zeus_policy.py",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\zeus-policy-pixels.json"
+      ],
+      "log": "zeus-policy-pixels.log",
+      "name": "zeus-policy-pixels",
+      "returncode": 0,
+      "seconds": 0.617
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_zeus_palette.py",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\zeus-palette-pixels.json"
+      ],
+      "log": "zeus-palette-pixels.log",
+      "name": "zeus-palette-pixels",
+      "returncode": 0,
+      "seconds": 0.594
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_zeus_margin_clear.py",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\zeus-margin-pixels.json"
+      ],
+      "log": "zeus-margin-pixels.log",
+      "name": "zeus-margin-pixels",
+      "returncode": 0,
+      "seconds": 0.696
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_zeus_sky_pixels.py",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\zeus-sky-pixels.json"
+      ],
+      "log": "zeus-sky-pixels.log",
+      "name": "zeus-sky-pixels",
+      "returncode": 0,
+      "seconds": 0.643
+    },
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "harness/verify_gl_readback.py",
+        "--report",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\material-page-checks\\gl-readback.json"
+      ],
+      "log": "gl-readback.log",
+      "name": "gl-readback",
+      "returncode": 0,
+      "seconds": 0.46
+    }
+  ]
+}
