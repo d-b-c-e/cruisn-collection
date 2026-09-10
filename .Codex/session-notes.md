@@ -1,5 +1,16 @@
 # Session Notes
 
+- **September10 standalone Exotica scene assembler:** native/exotica_scene.h,
+  analyzer and independent capture-driven verifier pass24cases on5000/5072/5990;
+  1/2/3x+repeat under original/completed fade. Rechecks7469originalquads and534
+  statepairs. Standard analyzerSHA4f595c8f; no MAME integration yet.295Python,
+  35native,99commands;442-file0ad4af67.13public proof receipts. All processes
+  complete; no deploy/release/physicalFFB. Nativeb3d82b/personal87d unchanged.
+  Next guarded live observer with directRAM/zeroCPUcycles, material/scene/depth
+  contracts, then render. Earlier unsubmitted source eligibility still needed
+  for blackground. Read current AGENTS and scene-assembler review. Keep working
+  directly without heartbeat waits.
+
 - **September10 panorama validation:** final2b55/SHAe0ba all7defaults PASS at
   frozen428-file49343cca;281Python/32native/91commands. Dense31GL repeat and
   fullAmazon117GL/7060camera/21180ADC repeat, enabledHongKong21GL/originals exact.

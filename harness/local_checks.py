@@ -72,6 +72,7 @@ def commands(group, output, cxx):
     compile_one('exotica-transform', 'native/analyze_exotica_transform.cpp')
     compile_one('exotica-state', 'native/analyze_exotica_state.cpp')
     compile_one('exotica-future', 'native/analyze_exotica_future.cpp')
+    compile_one('exotica-scene', 'native/analyze_exotica_scene.cpp')
     compile_one('zeus-models', 'native/analyze_zeus_models.cpp')
     compile_one('zeus-state', 'native/analyze_zeus_state.cpp')
     compile_one('zeus-sky', 'native/analyze_zeus_sky.cpp')

@@ -1,0 +1,33 @@
+{
+  "cases": [
+    {
+      "cadence": "late",
+      "flushes": 1,
+      "rgb": [
+        0,
+        248,
+        0
+      ]
+    },
+    {
+      "cadence": "early",
+      "flushes": 1,
+      "rgb": [
+        248,
+        0,
+        0
+      ]
+    },
+    {
+      "cadence": "guarded-late",
+      "flushes": 1,
+      "rgb": [
+        248,
+        0,
+        0
+      ]
+    }
+  ],
+  "passed": true,
+  "scope": "Synthetic reproduction only: same pending geometry and palette loads, different consumer batch boundaries change legacy pixels. Flush before slot reuse preserves intended material. Does not establish cause of Amazon frame3600."
+}

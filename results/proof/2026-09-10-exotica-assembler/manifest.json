@@ -1,0 +1,20 @@
+{
+  "scope": "Hash-bound receipts only. Raw resources, native executions and geometry are not archived or recomputed.",
+  "source_identity": "0ad4af67d712be6a4e19a90698f3e22968b1cd01ed7c5636791b18d43701e855",
+  "native_analyzer_sha256": "4f595c8fd2402708619be51e54c52516aeac98fb0e0c885133fa58b073aea5be",
+  "files": {
+    "assembler5000-final.json": "461f8c091d3aa80e6ea9186075a9e8e99e10744b35b852181427aa5ba70838b9",
+    "assembler5072-final.json": "8e77740ed6d3f2a8c6403f1e99710b23857af107a48a0ca7581d2a5ab4ca9177",
+    "assembler5990-final.json": "9abc4d3457de5d199c234ffee01105bddc378cafcf8518b019e60138fe3dec67",
+    "checks/gl-readback.json": "b6a162186f1de71ffa61e242583955ba1bc0dbc73442782811454902503f6038",
+    "checks/gpu-quality.json": "2ac3518b4cc7d8c00224e7bef9bea457f44c27a5472a8f7e30046cd19a15dd1b",
+    "checks/report.json": "427f08dec613dda89288d45c6c77a65d600bba1bbb7de83b5f7a6031c090ca30",
+    "checks/source-identity.json": "c2079bad3333b07ade4b8ae40b7154519fe5246b1091ce82c53c3e6b9b3271eb",
+    "checks/unit-tests.json": "50d2aa4eb43b93a8dbad849de5f210d9cad58cbfed0cc67d2f210c7ce1550fcd",
+    "checks/world-host-math.json": "3e8b9cb05e868b9cad684eb6d9db4dbb8412b66bf4e56ccfe81a2f6126e09fa0",
+    "checks/zeus-margin-pixels.json": "bf442626205e9f38b868dccb7255a9a94118819cc8e31fadfbc48c7ca7077dc9",
+    "checks/zeus-palette-pixels.json": "11d1f623a8476ee43152b63dae614bf6f050beeb14defec151dc867f1802e2bb",
+    "checks/zeus-policy-pixels.json": "289c458756c63a66b01a4b623680220c9bdc6665f3c7565bcd51bd2c53727dbb",
+    "checks/zeus-sky-pixels.json": "13c410e1c4173e868014569ab0d52145e12a2cf881c9e17cde5b9a2ab54c6825"
+  }
+}

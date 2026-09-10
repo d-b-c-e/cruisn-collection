@@ -1,0 +1,34 @@
+{
+  "cases": [
+    {
+      "continued_rgb": [
+        0,
+        0,
+        248
+      ],
+      "foreground_rgb": [
+        248,
+        0,
+        0
+      ],
+      "original_center_and_other_page_exact": true,
+      "page": 0
+    },
+    {
+      "continued_rgb": [
+        0,
+        0,
+        248
+      ],
+      "foreground_rgb": [
+        248,
+        0,
+        0
+      ],
+      "original_center_and_other_page_exact": true,
+      "page": 400
+    }
+  ],
+  "passed": true,
+  "scope": "Synthetic panorama, original Zeus shaders, unchanged tile UVs/shape, center preservation and foreground depth. Native gameplay acceptance separate."
+}

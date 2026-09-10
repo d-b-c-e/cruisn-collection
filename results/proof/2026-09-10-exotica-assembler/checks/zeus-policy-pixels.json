@@ -1,0 +1,457 @@
+{
+  "checks": [
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        0,
+        0,
+        128
+      ],
+      "kind": "depth-floor",
+      "mask": 0,
+      "passed": true,
+      "rgb": [
+        0,
+        0,
+        128
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-behind",
+      "mask": 0,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-front",
+      "mask": 0,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "blend-unity",
+      "mask": 0,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 16777215,
+      "expected_depth": 16777215,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "depth-clear",
+      "mask": 0,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "depth-floor",
+      "mask": 1,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-behind",
+      "mask": 1,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-front",
+      "mask": 1,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "blend-unity",
+      "mask": 1,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 16777215,
+      "expected_depth": 16777215,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "depth-clear",
+      "mask": 1,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        0,
+        0,
+        128
+      ],
+      "kind": "depth-floor",
+      "mask": 2,
+      "passed": true,
+      "rgb": [
+        0,
+        0,
+        128
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        0,
+        0,
+        128
+      ],
+      "kind": "alpha-behind",
+      "mask": 2,
+      "passed": true,
+      "rgb": [
+        0,
+        0,
+        128
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-front",
+      "mask": 2,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "blend-unity",
+      "mask": 2,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 16777215,
+      "expected_depth": 16777215,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "depth-clear",
+      "mask": 2,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        0,
+        0,
+        128
+      ],
+      "kind": "depth-floor",
+      "mask": 4,
+      "passed": true,
+      "rgb": [
+        0,
+        0,
+        128
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-behind",
+      "mask": 4,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-front",
+      "mask": 4,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        248,
+        0,
+        64
+      ],
+      "kind": "blend-unity",
+      "mask": 4,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 16777215,
+      "expected_depth": 16777215,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "depth-clear",
+      "mask": 4,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "depth-floor",
+      "mask": 7,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 125,
+      "expected_depth": 125,
+      "expected_rgb": [
+        0,
+        0,
+        128
+      ],
+      "kind": "alpha-behind",
+      "mask": 7,
+      "passed": true,
+      "rgb": [
+        0,
+        0,
+        128
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        124,
+        0,
+        64
+      ],
+      "kind": "alpha-front",
+      "mask": 7,
+      "passed": true,
+      "rgb": [
+        124,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 100,
+      "expected_depth": 100,
+      "expected_rgb": [
+        248,
+        0,
+        64
+      ],
+      "kind": "blend-unity",
+      "mask": 7,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        64
+      ],
+      "source": "prototype"
+    },
+    {
+      "depth": 16777215,
+      "expected_depth": 16777215,
+      "expected_rgb": [
+        248,
+        0,
+        0
+      ],
+      "kind": "depth-clear",
+      "mask": 7,
+      "passed": true,
+      "rgb": [
+        248,
+        0,
+        0
+      ],
+      "source": "prototype"
+    }
+  ],
+  "fragment_sha256": "43d9744abdece0dcaa7cbf9ce87c1efc10f944acf351bb425f9d2ed35da6c405",
+  "native_shader_sha256": null,
+  "passed": true
+}

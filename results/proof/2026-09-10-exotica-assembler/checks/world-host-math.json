@@ -1,0 +1,14 @@
+{
+  "fixture_sha256": "a83992fb80297e3f91e4c2fd954652ad118d3518c9d03f44147908b37e8a171d",
+  "host_far": 80000,
+  "math_passed": true,
+  "math_vectors": 10081,
+  "native_sha256": "99d24c8d089e5bb4372263d78fdf3264fd0276832c5153138ace660ac6e54c52",
+  "passed": true,
+  "scenes": [],
+  "schema": 1,
+  "uncovered_runtime_scenes": [],
+  "yaw_fixture_sha256": "9f421492f41870dd6a115897a2e01df9000fd8a42a642779d027762a87d39324",
+  "yaw_passed": true,
+  "yaw_vectors": 137
+}

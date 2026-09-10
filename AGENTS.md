@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 Exotica scene assembler — ACTIVE continuous integration
+
+Read docs/reviews/2026-09-10-exotica-scene-assembler.md. Standalone native
+exotica_scene.h/analyzer now joins future sources, exact C32 transforms, private
+setup/state and packed geometry. NOT linked into MAME. Fresh bounded model cache,
+duplicate/size/format/explicit-texture guards; resource requests are NOT live
+ownership. Only future sources selected; earlier unsubmitted/dynamic eligibility
+remains open. Legacy policy only; optional private completed-fade flags.
+Three captured scenes5000/5072/5990 pass24 complete native/Python comparisons:
+1/2/3x+repeat, original/completed fade. Rechecks7469 original ordered quads and
+534 consecutive state pairs. Standard analyzerSHA4f595c8fd2402708619be51e54c52516aeac98fb0e0c885133fa58b073aea5be.
+Amazon3x adds326instances/3063quads over2x but0viewport gains; no3xparity claim.
+442-file identity0ad4af67d712be6a4e19a90698f3e22968b1cd01ed7c5636791b18d43701e855
+passes295Python/no skips,35native helpers,99commands. Proof
+results/proof/2026-09-10-exotica-assembler checks13 hash-boundreceipts only.
+Raw game resources/geometry stayLOCAL. NativeMAME remainsb3d82b/SHAe7780a7a,
+159patches/prior7default acceptance; personalv0.5.0/SHA87d04de4 unchanged.
+All test processes complete. NEXT guarded native live observation/integration,
+exact clocks/camera/directRAM/zeroCPUcycles and originalresources before drawing.
+Then ownedmaterials/D32F/structural sky insertion/handover; Amazon leftground
+attribution separate. Continue directly without cutoff/heartbeatwaiting.
+No release/deploy/hostedworkflow/physicalFFB/Worldtuning/menuremoval. Rig check
+before visible games; emulators serial, no GPU suite while MAME is running.
+
 ## September10 Exotica scene layers — ACTIVE continuous work
 
 Read docs/reviews/2026-09-10-exotica-scene-layers.md. Collectione298067 and native

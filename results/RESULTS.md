@@ -4400,3 +4400,20 @@ Future decoder is not linked into MAME. Queued uploads, cached source integratio
 sky/occlusion/handover and cross-game3x remain open. Native4e565/seven-default
 lastgate/StreamDeckv0.5 unchanged. Recovery heartbeat nowONEminute; active work
 continues directly, without deliberately ending milestones to wait.
+
+
+## September10 — standalone Exotica scene assembler
+
+The bounded native scene assembler and independent capture-driven Python verifier
+pass24 complete1/2/3x/repeat comparisons with original/completed fade across
+HongKong5000/5990 and Amazon5072. All generated instance/quad bytes match after
+rechecking7469 original ordered quads and534 consecutive state pairs. Amazon3x
+adds326instances/3063polygons but0viewport polygons in this viewpoint. No live
+rendering or cross-game3x claim. Standard analyzerSHA4f595c8f.295Python/no skips,
+35native helpers,99commands pass at442-file0ad4af67.13hash-boundpublic receipts
+under results/proof/2026-09-10-exotica-assembler; raw operands/geometry remainlocal.
+Read docs/reviews/2026-09-10-exotica-scene-assembler.md for bounds, material guards
+and remaining live ownership/scene insertion/handover work. MAMEb3d82b/SHAe7780a7a
+and its prior seven-default acceptance remain unchanged. PersonalStreamDeck87d;
+no release, deployment or physical-force test. Continuous integration work resumes
+immediately after this checkpoint.

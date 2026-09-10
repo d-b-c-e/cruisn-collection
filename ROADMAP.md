@@ -73,6 +73,13 @@ all2376 ordinary matrices, with291 Python/34native/96local checks passing.
 These prototypes remain local and are not a deployed extension. Actual future3x
 centers can exceed the current24-bit depth range; isolated host depth remains
 an integration requirement.
+The [reusable native scene assembler](docs/reviews/2026-09-10-exotica-scene-assembler.md)
+now passes24 complete independent comparisons across these three scenes at
+1/2/3x with original/completed fade and repeats. It enforces bounded private
+geometry, explicit model textures and source identity;295Python/35native/99local
+checks pass. This remains standalone: live resource ownership, scene insertion
+and handover are the next integration requirements. No new native deployment
+or visible cross-game3x acceptance is implied.
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 
 [The fresh Zeus upstream review](docs/reviews/2026-09-09-zeus-upstream.md) checks

@@ -1,0 +1,114 @@
+{
+  "cases": [
+    {
+      "center_and_other_page_exact": true,
+      "mode": "legacy",
+      "page": 0,
+      "samples": [
+        [
+          248,
+          0,
+          0
+        ],
+        [
+          248,
+          0,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ]
+      ]
+    },
+    {
+      "center_and_other_page_exact": true,
+      "mode": "page",
+      "page": 0,
+      "samples": [
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ]
+      ]
+    },
+    {
+      "center_and_other_page_exact": true,
+      "mode": "legacy",
+      "page": 400,
+      "samples": [
+        [
+          248,
+          0,
+          0
+        ],
+        [
+          248,
+          0,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ]
+      ]
+    },
+    {
+      "center_and_other_page_exact": true,
+      "mode": "page",
+      "page": 400,
+      "samples": [
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ],
+        [
+          0,
+          248,
+          0
+        ]
+      ]
+    }
+  ],
+  "passed": true,
+  "scope": "Synthetic stale-depth regression using Zeus shaders. Known page-only margin clears preserve center and other page. Gameplay acceptance separate."
+}

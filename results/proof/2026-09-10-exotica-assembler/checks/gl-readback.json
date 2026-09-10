@@ -1,0 +1,150 @@
+{
+  "cases": [
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 5,
+          "different_tight_bytes": 15
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 4,
+      "tight_bytes": 21,
+      "width": 1
+    },
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 10,
+          "different_tight_bytes": 30
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 8,
+      "tight_bytes": 42,
+      "width": 2
+    },
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 15,
+          "different_tight_bytes": 15
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 12,
+      "tight_bytes": 63,
+      "width": 3
+    },
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 1536,
+      "tight_bytes": 10752,
+      "width": 512
+    },
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 6,
+          "different_tight_bytes": 6162
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 1540,
+      "tight_bytes": 10773,
+      "width": 513
+    },
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 18,
+          "different_tight_bytes": 18
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 3840,
+      "tight_bytes": 26859,
+      "width": 1279
+    },
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 6,
+          "different_tight_bytes": 23058
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 5764,
+      "tight_bytes": 40341,
+      "width": 1921
+    },
+    {
+      "checks": [
+        {
+          "alignment": 4,
+          "bytes_beyond_tight": 6,
+          "different_tight_bytes": 45906
+        },
+        {
+          "alignment": 1,
+          "bytes_beyond_tight": 0,
+          "different_tight_bytes": 0
+        }
+      ],
+      "height": 7,
+      "padded_stride": 11476,
+      "tight_bytes": 80325,
+      "width": 3825
+    }
+  ],
+  "passed": true,
+  "scope": "Exercise native Windows OpenGL screenshot packing with guarded storage.\n\nBoth native renderers allocate tightly packed RGB screenshot buffers. Explicit\npack alignment of one is required when row widths are not multiples of four.\nThe reproduction overallocates guard storage, so the legacy test does not write\noutside the real allocation. No game resources or visible window are required."
+}
