@@ -252,7 +252,7 @@ class Replay:
         if flags & FLAG_DCLEAR:
             depthval = np.full(n, 0xffffff, np.int64)
         elif flags & FLAG_DMIN:
-            depthval = curz + int(r["zbuf_min"])
+            depthval = np.maximum(curz,int(r["zbuf_min"])) if flags & 512 else curz + int(r["zbuf_min"])
         else:
             depthval = curz.copy()
         np.maximum(depthval, 0, out=depthval)

@@ -50,7 +50,8 @@ int main(int argc,char **argv)
             p[1]>sizeof(Header)+8*(0xc800+1) || ++models>4096)return fail("invalid source record",models);
         Header h;if(!source.read(reinterpret_cast<char *>(&h),sizeof(h)))return fail("truncated source header",models);
         const uint32_t block=h.base%1024+((h.base>>16)%2048)*1024;
-        if(h.id!=models || h.version!=1 || h.system!=1 || h.reserved || h.zoffset || h.count>0xc800 ||
+        const bool valid_policy=(h.version==1 && h.reserved==0) || (h.version==2 && h.reserved>=1 && h.reserved<=7);
+        if(h.id!=models || !valid_policy || h.system!=1 || h.zoffset || h.count>0xc800 ||
             h.raw_words!=(h.base?2*(h.count+1):0) || p[1]!=sizeof(h)+4*h.raw_words ||
             uint64_t(block)*2+h.raw_words>1024*2048*2 || h.first_quad<last || h.last_quad<h.first_quad ||
             h.last_quad>quads.size() || !std::isfinite(h.time) || h.time<time || h.frame<frame)
@@ -58,6 +59,7 @@ int main(int argc,char **argv)
         std::vector<uint32_t> words(h.raw_words);
         if(!source.read(reinterpret_cast<char *>(words.data()),4*words.size()))return fail("truncated model words",models);
         Context c;c.frame=h.frame;c.quad_size=h.quad_size;c.texture=h.texture;c.yscale=h.yscale;
+        c.render_policy=h.reserved;
         std::copy(h.matrix,h.matrix+9,c.matrix.begin());std::copy(h.translation,h.translation+3,c.translation.begin());
         std::copy(h.regs,h.regs+128,c.regs.begin());std::copy(h.render,h.render+80,c.render.begin());
         Result r;if(!decode(words,c,r))return fail("unsupported or invalid model",models);

@@ -31,6 +31,27 @@ capture ran at 78% during car selection and 84% while racing with GDI; D3D held
 provides a compatibility fallback. This measurement covers USA on this rig;
 World/Off Road and physical wheel/menu behavior need their own acceptance.
 
+## Isolated Zeus upstream rendering trials
+
+The separate development candidate supports `replay.py --zeus-upstream
+legacy|depth|alpha|blend|all`. This is an Exotica 2.4 diagnostic control for the
+three changes in [upstream #16094](https://github.com/mamedev/mame/pull/16094),
+not a draw-distance setting or a shipped default. Nonlegacy explicit trials
+require `--candidate`; physical force remains off. The runner requires the native
+candidate's acknowledgment, so an older binary cannot silently ignore the trial.
+Absent controls preserve recorded settings. Legacy captures retain their original
+format; new-policy model journals explicitly version and record their semantics.
+
+For example, with the named local Amazon case and a built diagnostic candidate:
+
+```powershell
+python harness/replay.py results/diagnostics/drive-crusnexo-20260909-203557 --candidate build/candidates/edb517392f8/vunit.exe --zeus-upstream all --gl-capture 1800:8760 --gl-every 120 --gl-max 59
+```
+
+Use separate output directories and compare against `legacy`, then repeat the
+trial. Counts and changed pixels do not establish visual correctness. See the
+[upstream review](reviews/2026-09-09-zeus-upstream.md) and retained Amazon failure.
+
 ## Record a drive
 
 For the next full Off Road and Exotica drives, use the ready

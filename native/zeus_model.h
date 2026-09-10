@@ -10,10 +10,11 @@
 #include <cmath>
 #include <algorithm>
 #include <cstring>
+#include "zeus_render_policy.h"
 namespace cruisn { namespace zeus_model {
 struct Context
 {
-    uint32_t frame=0,quad_size=10,texture=0,yscale=0;
+    uint32_t frame=0,quad_size=10,texture=0,yscale=0,render_policy=0;
     std::array<float,9> matrix{};
     std::array<float,3> translation{};
     std::array<uint32_t,128> regs{};
@@ -85,24 +86,26 @@ inline int project(const uint32_t *d,uint32_t tex,const Context &ctx,Quad &quad)
     const auto &a=output[0],&b=output[1],&c=output[2];
     if((a[1]-b[1])*(b[0]-c[0])-(a[0]-b[0])*(b[1]-c[1])>=0)return 1;
     const uint32_t mode=tex&65535,type=mode&3;const bool alpha=type==2 && (mode&0x80);
+    const auto mat=zeus_policy::material(ctx.render_policy,mode,ctx.render[0x14],ctx.render[0x40],ctx.render[0xc]);
     uint32_t flags=((mode&0xc00)==0xc00?1:0)|4;
-    if(ctx.render[0x40]==0x20202 || (ctx.render[0x40]==0x21e0e && type==2))flags|=2;
-    if(!(ctx.render[0x14]&0x20) && !alpha)flags|=8;
-    if(!(ctx.render[0x14]&0x1000) && !alpha)flags|=16;
+    if(ctx.render_policy&zeus_policy::DepthFloor)flags|=zeus_policy::QuadDepthFloor;
+    if(mat.blend)flags|=2;
+    if(mat.depth_test)flags|=8;
+    if(mat.depth_write)flags|=16;
     if(ctx.render[0x14]&0xc00)flags|=32;
     if(alpha)flags|=64;
     if(type==2 && !alpha)flags|=128;
     uint32_t width=0x20<<((mode>>2)&3);if(type==0)width>>=1;
     const uint32_t bias=uint32_t(int32_t(ctx.render[0x15]<<8)>>8);
     quad.state={{ctx.frame,count,tex,ctx.texture,width,ctx.regs[0]&0x7fff,
-        (mode&0x180)?0U:0x100U,std::min(ctx.render[0xc],0x100U),std::min(ctx.render[0xd],0x100U),
+        (mode&0x180)?0U:0x100U,mat.source_alpha,std::min(ctx.render[0xd],0x100U),
         flags,bias,ctx.render[4],ctx.yscale,0,0,ctx.render[1]&0xfff,ctx.render[2]&0xfff}};
     quad.vertices=output;return any_clipped?3:2;
 }
 inline bool decode(const std::vector<uint32_t> &words,Context context,Result &result)
 {
     result=Result();
-    if(words.size()>2*(0xc800+1) || words.size()%2 || context.yscale>1 ||
+    if(words.size()>2*(0xc800+1) || words.size()%2 || context.yscale>1 || context.render_policy>7 ||
         (context.quad_size!=10 && context.quad_size!=12 && context.quad_size!=14))return false;
     for(auto f:context.matrix)if(!std::isfinite(f))return false;
     for(auto f:context.translation)if(!std::isfinite(f))return false;

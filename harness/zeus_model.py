@@ -10,6 +10,7 @@ import struct
 import math
 import numpy as np
 from scenery_c31 import signed
+from zeus_render_policy import material,FLAG_DEPTH_FLOOR
 
 F=np.float32
 def float_word(w):return struct.unpack('<f',struct.pack('<I',w))[0]
@@ -73,16 +74,18 @@ def decode(r):
    points,kind=project(d,tex,regs,matrix,trans);stats[kind]+=1
    if points is None:continue
    mode=tex&65535;typ=mode&3;alpha=typ==2 and bool(mode&0x80)
-   flags=(1 if mode&0xc00==0xc00 else 0)|(2 if render[0x40]==0x20202 or render[0x40]==0x21e0e and typ==2 else 0)|4
-   if not render[0x14]&0x20 and not alpha:flags|=8
-   if not render[0x14]&0x1000 and not alpha:flags|=16
+   policy=r.get('render_policy',0);mat=material(policy,mode,render[0x14],render[0x40],render[0xc])
+   flags=(1 if mode&0xc00==0xc00 else 0)|(2 if mat['blend'] else 0)|4
+   if policy&1:flags|=FLAG_DEPTH_FLOOR
+   if mat['depth_test']:flags|=8
+   if mat['depth_write']:flags|=16
    if render[0x14]&0xc00:flags|=32
    if alpha:flags|=64
    if typ==2 and not alpha:flags|=128
    width=0x20<<((mode>>2)&3)
    if typ==0:width>>=1
    fields=[r['frame'],len(points),tex,texture,width,regs[0]&0x7fff,0 if mode&0x180 else 0x100,
-    min(render[0xc],0x100),min(render[0xd],0x100),flags,signed(render[0x15],24)&0xffffffff,render[4],r['yscale'],0,0,render[1]&0xfff,render[2]&0xfff]
+    mat['source_alpha'],min(render[0xd],0x100),flags,signed(render[0x15],24)&0xffffffff,render[4],r['yscale'],0,0,render[1]&0xfff,render[2]&0xfff]
    result.append((fields,points))
   else:raise ValueError('unsupported model command '+hex(cmd))
  return result,stats

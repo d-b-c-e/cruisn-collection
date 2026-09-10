@@ -142,7 +142,7 @@ void main() {
     int curz = int(p.x);
     int dv;
     if ((flags & 32u) != 0u)      dv = 0xffffff;          // depth_clear
-    else if ((flags & 4u) != 0u)  dv = curz + zmin;       // depth_min
+    else if ((flags & 4u) != 0u)  dv = (flags & 512u) != 0u ? max(curz,zmin) : curz + zmin;
     else                          dv = curz;
     dv = clamp(dv, 0, 0xffffff);
     gl_FragDepth = float(dv) / 16777215.0;

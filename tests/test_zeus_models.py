@@ -20,6 +20,7 @@ class ZeusModelJournalTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             p=Path(directory);binary=p/'models.bin';binary.write_bytes(record())
             self.assertEqual(parse(binary)[0]['words'],[0,0])
+            self.assertEqual(parse(binary)[0]['render_policy'],0)
             receipt=dict(schema=1,complete=True,models=1,bytes=binary.stat().st_size,quads=1)
             (p/'models.json').write_text(json.dumps(receipt))
             self.assertEqual(validate(p,4700,1)['covered_quads'],1)
@@ -30,6 +31,18 @@ class ZeusModelJournalTests(unittest.TestCase):
                         record(**{'5':8}),record(**{'8':0,'7':1}),record(**{'14':4}),record(**{'15':1})):
                 binary.write_bytes(bad)
                 with self.assertRaises(ValueError):parse(binary)
+
+    def test_versioned_render_policy_cannot_reinterpret_old_capture(self):
+        with tempfile.TemporaryDirectory() as directory:
+            binary=Path(directory)/'models.bin'
+            for mask in range(1,8):
+                binary.write_bytes(record(**{'0':2,'15':mask}))
+                self.assertEqual(parse(binary)[0]['render_policy'],mask)
+            for version,mask in ((1,1),(2,0),(2,8),(3,1)):
+                binary.write_bytes(record(**{'0':version,'15':mask}))
+                with self.assertRaises(ValueError):parse(binary)
+            binary.write_bytes(record()+record(**{'0':2,'2':2,'7':1,'8':2,'15':1}))
+            with self.assertRaisesRegex(ValueError,'policy changed'):parse(binary)
 
 
 if __name__=='__main__':unittest.main()

@@ -23,6 +23,7 @@ from gl_frames import requested_frames, read_completed_frames, IncompleteCapture
 import world_distance
 import usa_distance
 import exotica_visibility
+import zeus_render_policy
 import offroad_distance
 import world_host_options
 import usa_host_options
@@ -78,6 +79,7 @@ def main(argv=None):
     world_distance.add_arguments(ap)
     usa_distance.add_arguments(ap)
     exotica_visibility.add_arguments(ap)
+    zeus_render_policy.add_arguments(ap)
     offroad_distance.add_arguments(ap)
     world_host_options.add_arguments(ap)
     usa_host_options.add_arguments(ap)
@@ -225,6 +227,8 @@ def main(argv=None):
         exo_trial = exotica_visibility.configure(args, manifest['rom'], manifest['settings'])
         if exo_trial:
             report['exotica_visibility'] = exo_trial
+        zeus_trial=zeus_render_policy.configure(args,manifest['rom'],manifest['settings'])
+        if zeus_trial:report['zeus_upstream']=zeus_trial
         offroad_trial=offroad_distance.configure(args,manifest['rom'],manifest['settings'])
         if offroad_trial:
             report['offroad_distance']=offroad_trial
@@ -347,6 +351,7 @@ def main(argv=None):
             (runtime / "launch.log").write_bytes((runtime / "stdout.log").read_bytes())
         if invocation["error"]:
             raise ValueError(invocation["error"])
+        zeus_render_policy.verify_receipt(zeus_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if args.patch_at_frame is not None:
             receipt = f"session.lua: game patch {len(patch_entries)} words at frame {args.patch_at_frame}"
             if receipt not in (runtime / "launch.log").read_text(encoding="utf-8", errors="replace"):
@@ -389,6 +394,8 @@ def main(argv=None):
                 from zeus_models import validate as validate_zeus_models
                 report['zeus_models']=validate_zeus_models(zeus_capture_directory,args.zeus_capture_frame,
                     sum(report['zeus_capture']['quad_frames'].values()))
+                if report['zeus_models']['render_policy']!=(zeus_trial['mask'] if zeus_trial else 0):
+                    raise ValueError('Zeus model capture policy differs from the requested rendering semantics')
     except (ValueError, OSError, KeyError, subprocess.SubprocessError) as exc:
         report["passed"] = False
         report["error"] = str(exc)
