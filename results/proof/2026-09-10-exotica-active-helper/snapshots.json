@@ -1,0 +1,483 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "frame": 5000,
+      "mode": "active",
+      "passed": true,
+      "files": {
+        "quads": [
+          "3a9a2aeba60ddc958d909dfd17e8411b0916a2d58337ecbab34bfdde76e266c4",
+          "3a9a2aeba60ddc958d909dfd17e8411b0916a2d58337ecbab34bfdde76e266c4"
+        ],
+        "instances": [
+          "4b20a63add538c4d60ea1dcbebf63208002ba4327e7e37e2abbae6d15365b1f3",
+          "4b20a63add538c4d60ea1dcbebf63208002ba4327e7e37e2abbae6d15365b1f3"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4,
+        "instances": 4,
+        "quads": 9,
+        "viewport_quads": 9,
+        "model_words_read": 202,
+        "selected": 4,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 4,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 8008238,
+        "source_microseconds": 210,
+        "assembly_microseconds": 31
+      },
+      "decisions": 274
+    },
+    {
+      "frame": 5000,
+      "mode": "future",
+      "passed": true,
+      "files": {
+        "quads": [
+          "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531",
+          "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531"
+        ],
+        "instances": [
+          "6dea3a218548b18516a0d955a076363fdb0c9f02123dc8adc87281daf5753066",
+          "6dea3a218548b18516a0d955a076363fdb0c9f02123dc8adc87281daf5753066"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 7147,
+        "instances": 790,
+        "quads": 4854,
+        "viewport_quads": 4740,
+        "model_words_read": 108830,
+        "selected": 5723,
+        "unsupported_transform": 0,
+        "culled_distance": 4208,
+        "culled_bounds": 725,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 24394356,
+        "source_microseconds": 1547,
+        "assembly_microseconds": 4962
+      },
+      "decisions": 0
+    },
+    {
+      "frame": 5990,
+      "mode": "active",
+      "passed": true,
+      "files": {
+        "quads": [
+          "4f0bcd148ffc8f74351eb29c23983631873ce4772016dce4b1c6062f0c8e5b3a",
+          "4f0bcd148ffc8f74351eb29c23983631873ce4772016dce4b1c6062f0c8e5b3a"
+        ],
+        "instances": [
+          "9f049269f62b83c4430e919dec4bf16282af006507bcdd308ff4c06ee23d6c89",
+          "9f049269f62b83c4430e919dec4bf16282af006507bcdd308ff4c06ee23d6c89"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 82,
+        "instances": 82,
+        "quads": 481,
+        "viewport_quads": 425,
+        "model_words_read": 8842,
+        "selected": 82,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 82,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 10119854,
+        "source_microseconds": 352,
+        "assembly_microseconds": 383
+      },
+      "decisions": 520
+    },
+    {
+      "frame": 5990,
+      "mode": "future",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026",
+          "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026"
+        ],
+        "instances": [
+          "c806737daf5ee0b02639430a68f28b82dfecd5457d8af6cbdde40738bfc6a57d",
+          "c806737daf5ee0b02639430a68f28b82dfecd5457d8af6cbdde40738bfc6a57d"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 7147,
+        "instances": 78,
+        "quads": 880,
+        "viewport_quads": 452,
+        "model_words_read": 76668,
+        "selected": 5244,
+        "unsupported_transform": 0,
+        "culled_distance": 4426,
+        "culled_bounds": 740,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 16231789,
+        "source_microseconds": 1675,
+        "assembly_microseconds": 2792
+      },
+      "decisions": 0
+    },
+    {
+      "frame": 5072,
+      "mode": "active",
+      "passed": true,
+      "files": {
+        "quads": [
+          "64ce38fc51dddd80092e08379c1a087302d1a561f7d3fc1ba10f49e969ec3978",
+          "64ce38fc51dddd80092e08379c1a087302d1a561f7d3fc1ba10f49e969ec3978"
+        ],
+        "instances": [
+          "ed80e131bec88222488038f4273f12f2bb4ee5b9c6ac34b7ffbdb632c0c1e73c",
+          "ed80e131bec88222488038f4273f12f2bb4ee5b9c6ac34b7ffbdb632c0c1e73c"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 67,
+        "instances": 63,
+        "quads": 522,
+        "viewport_quads": 501,
+        "model_words_read": 6504,
+        "selected": 67,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 4,
+        "depth_tests": 67,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 15192156,
+        "source_microseconds": 288,
+        "assembly_microseconds": 375
+      },
+      "decisions": 355
+    },
+    {
+      "frame": 5072,
+      "mode": "future",
+      "passed": true,
+      "files": {
+        "quads": [
+          "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e",
+          "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e"
+        ],
+        "instances": [
+          "efba3aeeaf686241806750fef3757146be5b7ae58efc5caf66003b31709f5a13",
+          "efba3aeeaf686241806750fef3757146be5b7ae58efc5caf66003b31709f5a13"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 94,
+        "quads": 538,
+        "viewport_quads": 401,
+        "model_words_read": 155734,
+        "selected": 2465,
+        "unsupported_transform": 0,
+        "culled_distance": 854,
+        "culled_bounds": 1517,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 24417420,
+        "source_microseconds": 1151,
+        "assembly_microseconds": 3531
+      },
+      "decisions": 0
+    },
+    {
+      "frame": 5978,
+      "mode": "active",
+      "passed": true,
+      "files": {
+        "quads": [
+          "7f459504f77417c7f70beb466528a2eaf71c6c85b4d3c7e0ebef9db6fdfc07b6",
+          "7f459504f77417c7f70beb466528a2eaf71c6c85b4d3c7e0ebef9db6fdfc07b6"
+        ],
+        "instances": [
+          "61ee5228274379aa3532cbe7afb0cf90e42d2bd2a5a95c66801ec607e34de302",
+          "61ee5228274379aa3532cbe7afb0cf90e42d2bd2a5a95c66801ec607e34de302"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 18,
+        "instances": 16,
+        "quads": 61,
+        "viewport_quads": 60,
+        "model_words_read": 1762,
+        "selected": 18,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 2,
+        "depth_tests": 18,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 8698732,
+        "source_microseconds": 352,
+        "assembly_microseconds": 91
+      },
+      "decisions": 537
+    },
+    {
+      "frame": 5978,
+      "mode": "future",
+      "passed": true,
+      "files": {
+        "quads": [
+          "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b",
+          "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b"
+        ],
+        "instances": [
+          "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4",
+          "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 589,
+        "quads": 7974,
+        "viewport_quads": 7941,
+        "model_words_read": 101170,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 957,
+        "culled_bounds": 278,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 50286264,
+        "source_microseconds": 1104,
+        "assembly_microseconds": 4509
+      },
+      "decisions": 0
+    },
+    {
+      "frame": 6330,
+      "mode": "active",
+      "passed": true,
+      "files": {
+        "quads": [
+          "82038ed8b30d548d63a207b2a31ac24f2d4a3f3f9bf683c42a63553103d92303",
+          "82038ed8b30d548d63a207b2a31ac24f2d4a3f3f9bf683c42a63553103d92303"
+        ],
+        "instances": [
+          "dae2c856ceec2c24bb5a70a45bcc13720f34f72ddfeedaf979e567ab0db056d6",
+          "dae2c856ceec2c24bb5a70a45bcc13720f34f72ddfeedaf979e567ab0db056d6"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 24,
+        "instances": 24,
+        "quads": 165,
+        "viewport_quads": 143,
+        "model_words_read": 7252,
+        "selected": 24,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 24,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 8769714,
+        "source_microseconds": 238,
+        "assembly_microseconds": 228
+      },
+      "decisions": 333
+    },
+    {
+      "frame": 6330,
+      "mode": "future",
+      "passed": true,
+      "files": {
+        "quads": [
+          "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194",
+          "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194"
+        ],
+        "instances": [
+          "2770c479b2c948bcbe52c058dd97ce321057f22a99e611b909eca432cd2acbd3",
+          "2770c479b2c948bcbe52c058dd97ce321057f22a99e611b909eca432cd2acbd3"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 10,
+        "quads": 141,
+        "viewport_quads": 0,
+        "model_words_read": 21256,
+        "selected": 1722,
+        "unsupported_transform": 0,
+        "culled_distance": 1451,
+        "culled_bounds": 261,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 11112534,
+        "source_microseconds": 1099,
+        "assembly_microseconds": 838
+      },
+      "decisions": 0
+    },
+    {
+      "frame": 7187,
+      "mode": "active",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "instances": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 0,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 0,
+        "selected": 0,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 0,
+        "source_microseconds": 171,
+        "assembly_microseconds": 2
+      },
+      "decisions": 214
+    },
+    {
+      "frame": 7187,
+      "mode": "future",
+      "passed": true,
+      "files": {
+        "quads": [
+          "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db",
+          "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db"
+        ],
+        "instances": [
+          "e25f5ab20c8a74575f70326de80b618ed1186996819948993492f0735e854add",
+          "e25f5ab20c8a74575f70326de80b618ed1186996819948993492f0735e854add"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 809,
+        "quads": 8283,
+        "viewport_quads": 8280,
+        "model_words_read": 101394,
+        "selected": 1306,
+        "unsupported_transform": 0,
+        "culled_distance": 497,
+        "culled_bounds": 0,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 50310036,
+        "source_microseconds": 1109,
+        "assembly_microseconds": 4314
+      },
+      "decisions": 0
+    },
+    {
+      "frame": 8760,
+      "mode": "active",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "instances": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 0,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 0,
+        "selected": 0,
+        "unsupported_transform": 0,
+        "culled_distance": 0,
+        "culled_bounds": 0,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 0,
+        "source_microseconds": 49,
+        "assembly_microseconds": 2
+      },
+      "decisions": 42
+    },
+    {
+      "frame": 8760,
+      "mode": "future",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "instances": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 0,
+        "selected": 268,
+        "unsupported_transform": 0,
+        "culled_distance": 268,
+        "culled_bounds": 0,
+        "depth_tests": 0,
+        "depth_verified": 0,
+        "depth_skipped": 0,
+        "maximum_depth": 0,
+        "source_microseconds": 1156,
+        "assembly_microseconds": 84
+      },
+      "decisions": 0
+    }
+  ],
+  "native_sha256": "98251523d733e968aef94b4c4b8ba413abd3adc400c372ed961ec3bca67ad5f8",
+  "scope": "Canonical current-list/culling/active geometry versus independent seven-snapshot reference, plus unchanged future geometry on the same snapshots. Active32-word DTO zero-pads word31; reads only current offsets0..30. No live native hook/drawing claim."
+}

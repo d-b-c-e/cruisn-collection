@@ -94,11 +94,35 @@ independently reconstruct raw culling, materials or pixels.
 
 ## Next implementation
 
-Promote a distinct current-object source type and bounded horizontal-culling
-adapter, preserving the existing future-ROM source contract. Then implement the
-post-model fence and a private copy of original depth, drawing only margin
+The distinct current-object source type and bounded horizontal-culling adapter
+are now implemented in `native/exotica_active.h`, with a separate `build_active`
+entry point. The existing future-ROM overload still rejects RAM identities.
+Duplicated slots across lists, malformed pointers/cycles, invalid culling inputs,
+far multipliers and forced fade completion are rejected by the active path.
+Current offsets0..30 are copied; the common32-word geometry DTO's final word is
+zero padding, so it does not borrow a neighboring allocation's first word.
+
+The canonical helper matches all4,591 live decisions/52lists/814margin candidates.
+At seven snapshots it reproduces2,275 decisions and189instances/1,238quads; the
+same refactored assembler preserves all22,670 existing future quads. Native
+`analyze_exotica_scene` accepts the explicit `active-margins` offline mode, and
+`analyze_exotica_active` checks bounded active-list operand streams. All321Python
+tests/no skips,42native tests and118local commands pass at source identity
+`d641c801c076ef54fa70d811474be603f6fff7defde61ad794813122a7cd45ee`.
+Proof lives in `results/proof/2026-09-10-exotica-active-helper`. These changes have
+not been synced into a new live MAME build; last live acceptance remains7b432.
+
+Next implement the completion fence and a private copy of original depth, drawing only margin
 rectangles. Original center pixels and original depth/resources must remain exact.
 Unknown coordinate/material paths remain explicit unsupported classes. General
 3x future scenery, far depth, foreground occlusion and fade handover remain
 separate unfinished work. No release, deployment or menu removal is authorized
 by this diagnostic checkpoint.
+
+A more general fence is now being considered: the game drains its command ring
+at B684/B685 into Zeus register8, then commits the consumer pointer at B686.
+The ordinary-end producer pointer names an exact command boundary. A callback
+after Zeus processes that final FIFO word could certify completion for standard
+and special model commands alike, without relying on matching the final model.
+This is a code-derived design, not a tested implementation. Ring wrap, already
+drained targets, partial commands and reset handling need explicit verification.

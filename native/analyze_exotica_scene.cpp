@@ -31,10 +31,12 @@ int main(int argc,char **argv)
         const auto magic=word();
         if(magic!=0x31534358 && magic!=0x32534358)throw std::runtime_error("context magic");
         cruisn::exotica_scene::Parameters p;
+        bool active_margins=false;
         if(argc==8)
         {
             const std::string mode=argv[7];
-            if(mode=="early-depth=on")p.early_depth=1;
+            if(mode=="active-margins")active_margins=true;
+            else if(mode=="early-depth=on")p.early_depth=1;
             else if(mode=="early-depth=verify")p.early_depth=2;
             else if(mode!="early-depth=off")return 2;
         }
@@ -76,18 +78,47 @@ int main(int argc,char **argv)
             words.assign(wave.begin()+start,wave.begin()+start+size);return true;};
         const auto start=std::chrono::steady_clock::now();
         cruisn::exotica_future::Result sources;
-        if(!cruisn::exotica_future::build(read,sources,partial!=0))throw std::runtime_error("source boundary");
+        std::vector<cruisn::exotica_active::Source> active;
+        std::vector<std::array<uint32_t,12>> decisions;
+        if(active_margins)
+        {
+            if(p.margin!=std::floor(p.margin) || p.margin<0 || p.margin>256)throw std::runtime_error("active integer margin");
+            cruisn::exotica_active::Parameters a;
+            a.mode=read(0x75);a.projection_table=read(0x67cc);a.margin=uint32_t(p.margin);
+            a.camera=p.camera;a.view=p.view;a.alternate=p.alternate;
+            for(unsigned i=0;i<14;++i)a.constants[i]=read(0x67ce + i);
+            std::set<uint32_t> membership;
+            for(uint32_t entry=0xbbb5;entry<=0xbbb8;++entry)
+            {
+                std::vector<cruisn::exotica_active::Source> members;
+                if(!cruisn::exotica_active::read_list(entry,read(entry),read,members))throw std::runtime_error("active list bounds");
+                for(auto s:members)
+                {
+                    if(!membership.insert(s.source).second || membership.size()>cruisn::exotica_active::max_objects)throw std::runtime_error("active ownership");
+                    cruisn::exotica_active::Decision d;
+                    if(!cruisn::exotica_active::classify(s,a,read,d))throw std::runtime_error("active culling");
+                    decisions.push_back({{s.entry,s.source,uint32_t(d.stock),uint32_t(d.wide),d.flags,uint32_t(d.depth),d.index,d.factor,d.translation[0],d.translation[1],d.translation[2],uint32_t(d.margin_candidate)}});
+                    if(d.margin_candidate){s.words[15]=d.flags;active.push_back(s);}
+                }
+            }
+            p.multiplier=1;p.complete_fade=false;p.early_depth=1;
+        }
+        else if(!cruisn::exotica_future::build(read,sources,partial!=0))throw std::runtime_error("source boundary");
         const auto ready=std::chrono::steady_clock::now();
         cruisn::exotica_scene::Result scene;
-        if(!cruisn::exotica_scene::build(sources.sources,p,read,model_read,[](const cruisn::exotica_future::Source &s){return s.future;},scene))
+        const bool accepted=active_margins?
+            cruisn::exotica_scene::build_active(active,p,read,model_read,scene):
+            cruisn::exotica_scene::build(sources.sources,p,read,model_read,[](const cruisn::exotica_future::Source &s){return s.future;},scene);
+        if(!accepted)
             throw std::runtime_error("scene assembly rejected");
         const auto end=std::chrono::steady_clock::now();
         const std::string prefix=argv[6];write(prefix+"-quads.bin",scene.quads);
+        if(active_margins)write(prefix+"-active-decisions.bin",decisions);
         std::vector<std::array<uint32_t,11>> instances;
         for(const auto &s:scene.instances)instances.push_back({{s.entry,s.source,s.descriptor,s.base,s.count,s.band,s.palette,s.palette_control,
             uint32_t(s.depth),uint32_t(s.first_quad),uint32_t(s.quad_count)}});
         write(prefix+"-instances.bin",instances);
-        std::cout<<std::setprecision(9)<<"{\"passed\":true,\"sources\":"<<sources.sources.size()<<",\"instances\":"<<scene.instances.size()
+        std::cout<<std::setprecision(9)<<"{\"passed\":true,\"sources\":"<<(active_margins?active.size():sources.sources.size())<<",\"instances\":"<<scene.instances.size()
             <<",\"quads\":"<<scene.quads.size()<<",\"viewport_quads\":"<<scene.viewport_polygons
             <<",\"model_words_read\":"<<scene.model_words_read<<",\"selected\":"<<scene.selected
             <<",\"unsupported_transform\":"<<scene.unsupported_transform<<",\"culled_distance\":"<<scene.culled_distance

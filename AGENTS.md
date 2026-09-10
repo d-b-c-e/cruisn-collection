@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 current-object helper — ACTIVE fence integration
+
+Canonical native/exotica_active.h now provides distinctcurrentSource,boundedlists
+and exact horizontal culling. build_active rejects duplicatecrosslist slots,
+futureROMidentities,far multipliers/forcedfade; futureoverloadstillrejectsRAM.
+Copy offsets0..30; DTOword31zero padding, never readadjacentallocation.
+PASS4591live decisions/52lists/814candidates;7snapshot2275decisions/189instances/
+1238quads, unchanged22670futurequads.321Python/no skips,42native/118commands PASS
+source d641c801c076ef54fa70d811474be603f6fff7defde61ad794813122a7cd45ee.
+Publicproof2026-09-10-exotica-active-helper validates hash-bound receipts only;
+rawoperandsstayLOCAL. No new MAMEsync/build/export or7default renewal; last7b432.
+NEXT completion fence/privateD24/margin drawing. Betterglobal fence DESIGN:
+ring drainB684(read)/B685(Zeuswrite),consumercommitB686. Ordinary-endproducer046e
+targets exact FIFOword; post-zeus2_fifo_process callback atPCb686 withAR0next
+can certify allcommands, including specialpaths. Handle alreadydrained046d==046e,
+wrap/reset/partialcommand/rejecttargetmismatch. Design UNTESTED; see LOCAL
+active-object-next-plan.md and docs/reviews/2026-09-10-exotica-active-margins.md.
+No physicalFFB/deploy/release/hostedworkflow/Worldtuning/menu removal. Personal
+v0.5.0 unchanged. Continue directly, no milestone waits; rigcheck/serialemulators.
+
 ## September10 active margin proof — ACTIVE implementation
 
 Read docs/reviews/2026-09-10-exotica-active-margins.md. Paired6000 control/probe

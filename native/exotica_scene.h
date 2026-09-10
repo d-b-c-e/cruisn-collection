@@ -4,6 +4,7 @@
 // source eligibility, scene insertion, or handover to original game objects.
 #pragma once
 #include "exotica_future_sections.h"
+#include "exotica_active.h"
 #include "exotica_transform.h"
 #include "exotica_state.h"
 #include "zeus_state.h"
@@ -81,9 +82,10 @@ inline bool intersects(const zeus_model::Quad &q,float margin)
 // current WaveRAM words into owned storage, with bounds checked by the caller.
 // Select owns source eligibility; choosing every historical descriptor is not
 // safe for dynamic objects. Every call starts with a fresh, bounded model cache.
-template<class Read,class ModelRead,class Select>
-bool build(const std::vector<exotica_future::Source> &sources,const Parameters &p,
-    Read read,ModelRead model_read,Select select,Result &result)
+namespace detail {
+template<class Source,class Read,class ModelRead,class Select,class Identity>
+bool build_sources(const std::vector<Source> &sources,const Parameters &p,
+    Read read,ModelRead model_read,Select select,Identity valid_identity,Result &result)
 {
     result=Result();
     if(sources.size()>max_sources || p.far_limit!=204800 || p.multiplier<1 || p.multiplier>3 ||
@@ -100,8 +102,7 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
     for(const auto &s:sources)
     {
         if(!s.supported || !select(s))continue;
-        if(!exotica_future::span(s.entry,4) || !exotica_future::span(s.source,6) ||
-            !identities.emplace(s.entry,s.source).second)return false;
+        if(!valid_identity(s) || !identities.emplace(s.entry,s.source).second)return false;
         ++out.selected;const auto &o=s.words;uint32_t flags=o[15];
         if(((flags&3)!=0 && (flags&3)!=3) || flags&0x80)
         {++out.unsupported_transform;continue;}
@@ -202,5 +203,30 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
         out.instances.push_back(instance);
     }
     result=std::move(out);return true;
+}
+} //detail
+
+template<class Read,class ModelRead,class Select>
+bool build(const std::vector<exotica_future::Source> &sources,const Parameters &p,
+    Read read,ModelRead model_read,Select select,Result &result)
+{
+    return detail::build_sources(sources,p,read,model_read,select,[](const exotica_future::Source &s){
+        return exotica_future::span(s.entry,4) && exotica_future::span(s.source,6);
+    },result);
+}
+
+// Caller provides current, independently selected list members. Active identity
+// is never accepted by the future-ROM overload. Duplicated slots across lists
+// reject the whole scene; selection must not hide contradictory ownership.
+template<class Read,class ModelRead>
+bool build_active(const std::vector<exotica_active::Source> &sources,const Parameters &p,
+    Read read,ModelRead model_read,Result &result)
+{
+    result=Result();
+    if(p.multiplier!=1 || p.complete_fade || sources.size()>exotica_active::max_objects)return false;
+    std::set<uint32_t> objects;
+    for(const auto &s:sources)if(!exotica_active::valid(s) || !objects.insert(s.source).second)return false;
+    return detail::build_sources(sources,p,read,model_read,[](const exotica_active::Source &){return true;},
+        [](const exotica_active::Source &s){return exotica_active::valid(s);},result);
 }
 } }

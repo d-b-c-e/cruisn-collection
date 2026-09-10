@@ -44,6 +44,21 @@ int main()
     assert(headers.size()==1 && headers[0][0]==source.entry && headers[0][9]==0 && headers[0][10]==1);
     assert(exotica_scene::byte_hash("hello",5)==UINT64_C(0xa430d84680aabd0b));
     assert((model==original_model && p.context.translation==std::array<float,4>{}));
+    // Current-list sources use their own type/entry point. The future path
+    // must never accept a RAM slot disguised as an immutable ROM descriptor.
+    const auto one_quad=result.quads;
+    exotica_active::Source active;active.entry=0xbbb6;active.source=0x1200;active.words=source.words;
+    assert(exotica_scene::build_active({active},p,read,models,result));
+    assert(result.instances.size()==1 && result.instances[0].entry==active.entry && result.instances[0].source==active.source);
+    assert(result.quads.size()==1 && !std::memcmp(result.quads.data(),one_quad.data(),sizeof(one_quad[0])));
+    auto duplicate=active;duplicate.entry=0xbbb8;
+    assert(!exotica_scene::build_active({active,duplicate},p,read,models,result) && result.quads.empty());
+    duplicate=active;duplicate.source=0xa00000;
+    assert(!exotica_scene::build_active({duplicate},p,read,models,result));
+    auto forged=source;forged.entry=active.entry;forged.source=active.source;
+    assert(!exotica_scene::build({forged},p,read,models,selected,result));
+    p.multiplier=2;assert(!exotica_scene::build_active({active},p,read,models,result));p.multiplier=1;
+    p.complete_fade=true;assert(!exotica_scene::build_active({active},p,read,models,result));p.complete_fade=false;
     auto second=source;second.source+=6;second.words[1]=f(10);reads=0;
     assert(exotica_scene::build({source,second},p,read,models,selected,result));
     assert(result.instances.size()==2 && result.quads.size()==2 && reads==1 && result.model_words_read==14);

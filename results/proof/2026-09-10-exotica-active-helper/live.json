@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "native": {
+    "passed": true,
+    "lists": 52,
+    "objects": 4591,
+    "margin_candidates": 814
+  },
+  "decisions": 4591,
+  "input_sha256": "670b09494f5b2d83210c01f9b974de914e3af38b99a2ca4e7d063f84c67ac764",
+  "native_sha256": "6a48193db355bc200d1f10ca262f111741a7a69a8a35f6e877151e7ea1d8affe",
+  "scope": "Canonical bounded current-list/cull helper versus independently validated live13-scene CPU operands; exact projection-table factors also agree. Current offsets0..30 only; padded31 never borrowed from adjacent allocations. Not integrated into live MAME."
+}
