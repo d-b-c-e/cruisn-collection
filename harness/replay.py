@@ -28,6 +28,7 @@ import zeus_render_policy
 import zeus_palette
 import zeus_margin_clear
 import zeus_sky_options
+import zeus_depth_mirror
 import zeus_stream
 import offroad_distance
 import world_host_options
@@ -90,6 +91,7 @@ def main(argv=None):
     zeus_palette.add_arguments(ap)
     zeus_margin_clear.add_arguments(ap)
     zeus_sky_options.add_arguments(ap)
+    zeus_depth_mirror.add_arguments(ap)
     offroad_distance.add_arguments(ap)
     world_host_options.add_arguments(ap)
     usa_host_options.add_arguments(ap)
@@ -251,6 +253,8 @@ def main(argv=None):
         if sky_trial:report['zeus_sky']=sky_trial
         scene_trial=exotica_scene_options.configure(args,manifest['rom'],manifest['settings'])
         if scene_trial:report['exotica_host_scene']=scene_trial
+        depth_trial=zeus_depth_mirror.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
+        if depth_trial:report['zeus_depth_mirror']=depth_trial
         stall_trial=zeus_stream.configure_stall(args,manifest['rom'],manifest['settings'],reference['frames'])
         if stall_trial:report['zeus_stall']=stall_trial
         offroad_trial=offroad_distance.configure(args,manifest['rom'],manifest['settings'])
@@ -387,6 +391,8 @@ def main(argv=None):
         if sky_result:report['zeus_sky']['result']=sky_result
         scene_result=exotica_scene_options.verify_receipt(scene_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if scene_result:report['exotica_host_scene']['result']=scene_result
+        depth_result=zeus_depth_mirror.verify_receipt(depth_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+        if depth_result:report['zeus_depth_mirror']['result']=depth_result
         stall_result=zeus_stream.verify_stall(stall_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if stall_result:report['zeus_stall']['result']=stall_result
         if args.patch_at_frame is not None:

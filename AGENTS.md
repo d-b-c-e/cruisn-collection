@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 live D32F mirror — ACTIVE serial acceptance
+
+Read docs/reviews/2026-09-10-zeus-live-depth-mirror.md. Native25228b19d59bf434817b998134a042637b16075b
+built SEPARATELY/pushed/frozen build/candidates/25228b19d59/vunit.exe SHA
+2267c6502d17e6c8efe73d7a2daecda4e752267f26bcbf25af088bb3488f321f.
+177patches reconstruct2ec2d719b45267c9fece2bfeacd1f68420cd780c. Original-only
+privateRGBA/D32F mirrors alloriginalbatches/startup/pageclears; originalstilldisplayed.
+CLI --zeus-depth-mirror observe plusfirst/last/snapshots; FFB0/Exo/liveGL/noactivehost.
+No future drawing. First1..5990request FAIL because completedmarkersstart2; retained
+all6 independentrawpairs/25GL/routePASS aspartial evidence. Fresh2..5990aligned
+6000inputs PASS5989markers/6rawpairs/25GL/originalcameraADC/10resources. Different
+batchsplits are legitimate; compare orderedvertices/clears/rawpixels, not exact
+batchcount equality. Current4focused option/corruption/completion tests PASS.
+
+CURRENT exec21137 runs LOCAL depth-mirror-acceptance-series.py under
+results/diagnostics/exotica-amazon-20260909: disabledshort,fullAmazon8860/repeat,
+HongKong6000,finallocalchecks,7defaults serially. Read depth-mirror-acceptance-series.log;
+stoponfailure. Do notrun competing emulator/GPU/build orchange code during checks.
+Newactualshader fixture additionally covers blended-nondepthtest flags0x16;
+76cases expected but notyetclaimed (last72belongs preceding helpermilestone).
+Last7default acceptance still50a/a3d78 below. Personal87d/v0.5.0 unchanged.
+Next inspect full/repeatrawidentity/resources,performance,finalchecks/defaults;
+publishproof/commit. Then earlyfutureinsertion inprivatewide target, separate
+truepreclampdepth/clear semantics andhandover; compatmaxsentinel isnotfinal3xpolicy.
+Keepdirectcontinuouswork, no milestoneidle. No deploy/release/hostedworkflows/
+physicalFFB/Worldtuning/menu removal. Rawgamebyteslocal; rigcheck/serialemulators.
+
 ## September 10 live margin acceptance — ACTIVE wider-depth work
 
 Read docs/reviews/2026-09-10-exotica-margin-acceptance.md. This supersedes older

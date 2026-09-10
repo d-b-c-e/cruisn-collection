@@ -16,11 +16,15 @@ retains original far distance and remains separate from the Stream Deck build.
 The generated non-depth-tested primitive remains excluded; broader transparent
 ordering, material lifetime, other tracks and handover remain open.
 
-Next, prototype a private original-scene renderer with wider depth storage, prove
-original-only picture/order equivalence, then insert farther scenery at its actual
-scene phase. The first synthetic GPU check exposed existing D24 quantization ties;
-a corrected diagnostic preserves all16,777,216 original depth values' comparisons
-on this GPU. This is a foundation check, not a live renderer or3x acceptance.
+The [private original-scene renderer](docs/reviews/2026-09-10-zeus-live-depth-mirror.md)
+now passes a short live6000-input trial: six independent full color/depth pairs,
+25 completed4K images and original route/resources. Broader full/repeat/Hong Kong
+and default acceptance are running. It still displays the original target and
+adds no farther scenery. The initial requested frame1 interval remains a failure;
+actual completed markers start2. The prior synthetic GPU check exposed existing
+D24 quantization ties; a corrected diagnostic preserves all16,777,216 original
+depth inputs' comparisons on this GPU. Next prove full live original-only
+equivalence, then true wider depth/clear semantics and early future insertion.
 
 ### Earlier foundation checkpoints
 

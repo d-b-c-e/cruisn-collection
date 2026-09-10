@@ -62,6 +62,7 @@ try:
               ('middle-tie',8388608,29,256,0,1),('maximum-tie',16777215,29,256,0,1),
               ('negative-bias',100,29,256,-200,1),('depth-floor',100,541,256,300,1),
               ('depth-clear',100,61,256,0,1),('no-depth-test',8388608,21,256,0,1),
+              ('blended-no-depth-test',100,22,128,0,1),
               ('no-depth-write',100,13,256,0,1),('blend',100,31,128,0,1),
               ('alpha-zero',100,31,0,0,1),('palette4',100,28,256,0,0),
               ('palette8',100,28,256,0,1),('palette8-other',100,28,256,0,2),
