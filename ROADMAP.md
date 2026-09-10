@@ -19,6 +19,11 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 The heartbeat now uses a one-minute recovery wakeup, not a work cadence. During active
 turns, continue directly into the next useful implementation or verification step.
 
+The maintainer requested broader track coverage. [Recording presets and the
+track checklist](docs/SCENERY-TRACK-COVERAGE.md) are ready for full Off Road El Paso
+and Exotica Hong Kong drives, followed by contrasting courses. Both recordings
+remain pending; limited scripted routes cannot certify cross-track behavior.
+
 [Exotica's future-section decoder](docs/reviews/2026-09-09-exotica-future-sections.md)
 now matches native/Python sources across 54 sections and predicts 2,507 later
 allocations from six earlier snapshots. Five drives preserve original motion and

@@ -33,6 +33,11 @@ World/Off Road and physical wheel/menu behavior need their own acceptance.
 
 ## Record a drive
 
+For the next full Off Road and Exotica drives, use the ready
+[track coverage presets and acceptance checklist](SCENERY-TRACK-COVERAGE.md).
+The current scripted cases cover limited routes; they do not establish that
+extended scenery works across tracks.
+
 From the repository root, using the existing rig configuration:
 
 ```powershell
