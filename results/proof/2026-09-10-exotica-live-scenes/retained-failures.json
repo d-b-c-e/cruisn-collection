@@ -1,0 +1,17 @@
+{
+  "scope": "Failures retained locally: initial refresh-based camera mismatch, original journal window missing selected scene, and5000 comparison interval21/17 mismatch. None is counted as a passing gameplay or oracle run.",
+  "failures": [
+    {
+      "path": "observer5072-initial/report.json",
+      "sha256": "619b71f1745f49764571c291063c898147d5be98081b76f4bf9e15ab46139363"
+    },
+    {
+      "path": "boundary5072-initial-oracle.json",
+      "sha256": "44024cc9229150008d301a070c8d038bd804098d6a0cdefade73d8bab67afe62"
+    },
+    {
+      "path": "scene-boundary-paired-process.log",
+      "sha256": "379d42247bb01d9a6bca92b299a7007be885eeb2889bbc3e3bd10c26b6a6dda4"
+    }
+  ]
+}

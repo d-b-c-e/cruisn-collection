@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "cases": 3955,
+  "native_python_exact": true,
+  "culled": 3000,
+  "native_seconds_including_process_and_io": 0.16922920000797603,
+  "by_scene": {
+    "5000": {
+      "instances": 1515,
+      "culled": 725
+    },
+    "5072": {
+      "instances": 1622,
+      "culled": 1535
+    },
+    "5990": {
+      "instances": 818,
+      "culled": 740
+    }
+  },
+  "scope": "Local draft interval bounds over every captured model/instance; not linked into MAME and not live performance.",
+  "sha256": {
+    "zeus-bounds-draft-input.bin": "a9f2e50dc1dbc2edce4e487582880a9aaf1ecb523c7ecc8a78fabcec09064827",
+    "zeus-bounds-draft-output.bin": "48ec4d968380b4dd73b6601f92173a8375fbe99cb2449e9f6c23b7f9c3dd7910",
+    "zeus-bounds-draft.exe": "62840505ad37f201787bfb63d2ea5b0786a08a2d67fcb050b0ba67bb3cd91cd1",
+    "zeus_model_bounds-draft.h": "9e1ddc0ed4d31efd87569f909985e5813e923ffeb0d7b7afc5bb01596e52d59e"
+  }
+}

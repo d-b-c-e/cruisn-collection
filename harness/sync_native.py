@@ -12,7 +12,7 @@ def main():
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
     failed = False
-    for name in ("capture_writer.h", "capture_bitmap.h", "pause_cheats.h", "pause_cheats_win.h", "hud_speed_filter.h", "hud_numeric_speed.h", "hud_drivetrain.h", "motor_signal.h", "tjunctions.h", "checked_patch.h", "retained_texture.h", "world_scenery.h", "world_distance.h", "usa_distance.h", "offroad_distance.h", "exotica_visibility.h", "cpu_upload_spans.h", "scenery_c31.h", "world_host_layout.h", "world_host_scenery.h", "world_future_sections.h", "world_road_scenery.h", "usa_model.h", "usa_host_scenery.h", "usa_future_sections.h", "offroad_model.h", "offroad_transform.h", "offroad_future_sections.h", "offroad_host_scenery.h"):
+    for name in ("capture_writer.h", "capture_bitmap.h", "pause_cheats.h", "pause_cheats_win.h", "hud_speed_filter.h", "hud_numeric_speed.h", "hud_drivetrain.h", "motor_signal.h", "tjunctions.h", "checked_patch.h", "retained_texture.h", "world_scenery.h", "world_distance.h", "usa_distance.h", "offroad_distance.h", "exotica_visibility.h", "cpu_upload_spans.h", "scenery_c31.h", "world_host_layout.h", "world_host_scenery.h", "world_future_sections.h", "world_road_scenery.h", "usa_model.h", "usa_host_scenery.h", "usa_future_sections.h", "offroad_model.h", "offroad_transform.h", "offroad_future_sections.h", "offroad_host_scenery.h", "exotica_future_sections.h", "exotica_transform.h", "exotica_state.h", "exotica_scene.h", "exotica_scene_capture.h", "zeus_model.h", "zeus_state.h", "zeus_render_policy.h"):
         source = ROOT / "native" / name
         target = args.mame / "src" / "mame" / "midway" / "cruisn" / name
         expected = source.read_bytes().replace(b"\r\n", b"\n")

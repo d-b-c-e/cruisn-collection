@@ -4417,3 +4417,20 @@ and remaining live ownership/scene insertion/handover work. MAMEb3d82b/SHAe7780a
 and its prior seven-default acceptance remain unchanged. PersonalStreamDeck87d;
 no release, deployment or physical-force test. Continuous integration work resumes
 immediately after this checkpoint.
+
+
+## September10 — Live Exotica scene observation
+
+See [the review](../docs/reviews/2026-09-10-exotica-live-scenes.md). Separate
+nativef49e8acc7d3/SHA9c7dcd27 observes actual game-scene boundaries, preserving
+camera/view/clock and zero guest cycles. The initial native-refresh camera
+failure and later capture-interval failures remain local. Three independent
+native/Python scene, original device context and Lua boundary checks pass.
+Six paired6000 replays preserve original motion, three resource pairs and55
+completed4K images per side. Full Amazon2457scene/20343986quad and Hong Kong
+2457scene/30411603quad fingerprints repeat.301Python/no skips,35native helpers,
+99commands pass at448-file identity64fe3294.33public proof receipts pass; raw
+geometry/resources/motion/pixels are not recomputed by the public verifier.
+A LOCAL conservative model-bound draft agrees across3955instances and rejects
+3000offscreen instances without losing visible quads. No live extra drawing.
+Seven-default renewal is running separately; no deployment/release/physicalFFB.

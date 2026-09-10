@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: BSD-3-Clause
 #include "exotica_scene.h"
+#include "exotica_scene_capture.h"
 #include <cassert>
 #include <limits>
 using namespace cruisn;
@@ -36,6 +37,12 @@ int main()
     assert(result.instances.size()==1 && result.quads.size()==1 && result.viewport_polygons==1);
     assert(result.instances[0].band==1 && result.instances[0].depth==100 && reads==1);
     assert(result.quads[0].state[0]==1 && result.quads[0].state[9]==28);
+    const auto serialized=exotica_scene::parameter_words(p,2,true);
+    assert(serialized[0]==0x31534358 && serialized[1]==1 && serialized[3]==bits(88));
+    assert(serialized[5]==2 && serialized[6]==1 && serialized[7]==p.scale);
+    const auto headers=exotica_scene::instance_words(result);
+    assert(headers.size()==1 && headers[0][0]==source.entry && headers[0][9]==0 && headers[0][10]==1);
+    assert(exotica_scene::byte_hash("hello",5)==UINT64_C(0xa430d84680aabd0b));
     assert((model==original_model && p.context.translation==std::array<float,4>{}));
     auto second=source;second.source+=6;second.words[1]=f(10);reads=0;
     assert(exotica_scene::build({source,second},p,read,models,selected,result));

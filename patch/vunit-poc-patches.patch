@@ -1,7 +1,7 @@
 From 6f55ed93ce5df76f01007096657cfd2491000ad0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 28 Mar 2026 20:27:47 -0500
-Subject: [PATCH 001/159] dinput joystick: use DIJOYSTATE2 for 128-button
+Subject: [PATCH 001/161] dinput joystick: use DIJOYSTATE2 for 128-button
  support Use c_dfDIJoystick2 as the primary data format for DirectInput
  joystick devices, with c_dfDIJoystick as a fallback. This raises the button
  limit from 32 (DIJOYSTATE) to 128 (DIJOYSTATE2). The existing code already
@@ -63,7 +63,7 @@ index 98fdfb011bb..c01403ee4bc 100644
 From 9cc3ff6333a8f8174f99c8fff4aae78ff160b05f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 17 Aug 2026 23:54:14 -0500
-Subject: [PATCH 002/159] POC: env-gated DMA quad logging + one-shot state dump
+Subject: [PATCH 002/161] POC: env-gated DMA quad logging + one-shot state dump
  for midvunit
 
 MIDV_QUADLOG appends a 38-byte binary record per quad (frame,
@@ -184,7 +184,7 @@ index 385c7287166..2e3cabdc2fa 100644
 From 83377a2258894abd45fa609cf1bbd009e8482b22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 12:04:11 -0500
-Subject: [PATCH 003/159] POC: MIDV_LIVE shared-memory bridge for live external
+Subject: [PATCH 003/161] POC: MIDV_LIVE shared-memory bridge for live external
  rendering
 
 MIDV_LIVE=1 opens a 128MB named shared-memory ring (Local\MIDV_LIVE)
@@ -443,7 +443,7 @@ index 2e3cabdc2fa..f00e97a880d 100644
 From 6fbb1dee1da02aa478d901b1a071a193629b3837 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:03:18 -0500
-Subject: [PATCH 004/159] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
+Subject: [PATCH 004/161] POC: MIDV_GL in-process GL renderer (Phase 1 step 2)
 
 MIDV_GL=1 spawns a render thread inside vunit.exe that consumes the
 same ring as the external viewer, renders scenes with the verified
@@ -1383,7 +1383,7 @@ index f00e97a880d..f0e71a36da0 100644
 From c168cfe1ee1f4917cafc74a4a7a1f4786aea30d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:05:15 -0500
-Subject: [PATCH 005/159] POC: fix vertically flipped CPU-drawn screens in the
+Subject: [PATCH 005/161] POC: fix vertically flipped CPU-drawn screens in the
  in-process renderer
 
 The palette pass samples rows bottom-up (the quad path flips Y in its
@@ -1421,7 +1421,7 @@ index f0e71a36da0..cf52d88f1a7 100644
 From c6618fe3f4cb6902df6b361d3151c257e9817556 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:27:49 -0500
-Subject: [PATCH 006/159] POC: force frame change after WS_CLIPCHILDREN - style
+Subject: [PATCH 006/161] POC: force frame change after WS_CLIPCHILDREN - style
  bits do not apply without it
 
 The user's rig observation nailed the diagnosis: after -nokeepaspect,
@@ -1456,7 +1456,7 @@ index cf52d88f1a7..d9cac7bb251 100644
 From df0f1a74ec2e8d2535beb3633b99b49619e860e7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:33:05 -0500
-Subject: [PATCH 007/159] POC: overlay is an owned top-level popup, not a child
+Subject: [PATCH 007/161] POC: overlay is an owned top-level popup, not a child
  window
 
 WS_CLIPCHILDREN never worked because MAME's gdi renderer caches its
@@ -1548,7 +1548,7 @@ index d9cac7bb251..296b263a95e 100644
 From 25d825df4ce116537875e4934bed7d5388db56a7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:35:05 -0500
-Subject: [PATCH 008/159] POC: classify 2D screens by axis-aligned-rectangle
+Subject: [PATCH 008/161] POC: classify 2D screens by axis-aligned-rectangle
  dominance
 
 Quad-count thresholds cannot separate 2D screens (~160 quads) from
@@ -1610,7 +1610,7 @@ index 296b263a95e..7936ea9fb3a 100644
 From 4a99ed194ebb080f2d2ac99d67b1a9b3be352197 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:41:30 -0500
-Subject: [PATCH 009/159] POC: scissor-clear the margin strips per scene -
+Subject: [PATCH 009/161] POC: scissor-clear the margin strips per scene -
  stale-margin artifacts
 
 The hardware guarantees repaint of the 512-wide region only; the 16:9
@@ -1673,7 +1673,7 @@ index 7936ea9fb3a..3d5b3200070 100644
 From a9c61b6a8e26c8a83001acee652878f16d6274f7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 14:44:03 -0500
-Subject: [PATCH 010/159] POC: 2px overscan inset - CRT-hidden edge pixels
+Subject: [PATCH 010/161] POC: 2px overscan inset - CRT-hidden edge pixels
  showed as a thin border
 
 ---
@@ -1711,7 +1711,7 @@ index 3d5b3200070..af795ef769a 100644
 From 90c532c7d0291dbe3f037662222a327bce843c0e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 18 Aug 2026 21:22:25 -0500
-Subject: [PATCH 011/159] POC-NOTES: point sessions opened here at the
+Subject: [PATCH 011/161] POC-NOTES: point sessions opened here at the
  cruisn-poc project home
 
 ---
@@ -1746,7 +1746,7 @@ index 00000000000..1b4841d03ea
 From 5283e4a1fbe514be3031241a01aaa6a388be9670 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:08:42 -0500
-Subject: [PATCH 012/159] CRT pass: mask + scanlines + curvature in the palette
+Subject: [PATCH 012/161] CRT pass: mask + scanlines + curvature in the palette
  stage, F9 live toggle
 
 PAL_FS gains a uCrt-gated block (uCrt=0 is the untouched raw path; the
@@ -1921,7 +1921,7 @@ index af795ef769a..e302e1f4b21 100644
 From b565ee3e8dbe4664c69b44b6a224578117cc1f3a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 02:32:30 -0500
-Subject: [PATCH 013/159] MIDV_SKIP_STARTUP_SCREENS: env-gated
+Subject: [PATCH 013/161] MIDV_SKIP_STARTUP_SCREENS: env-gated
  boot-straight-to-game (frontend)
 
 BAD_DUMP sets (crusnwld c31boot) force the warning screen past
@@ -1968,7 +1968,7 @@ index f2c9b7d1608..0cc79ff205f 100644
 From 1bc48fcea8b586a0a60b4359ccdb7aeedaca39ed Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:17:53 -0500
-Subject: [PATCH 014/159] GL thread teardown handshake: stop before machine
+Subject: [PATCH 014/161] GL thread teardown handshake: stop before machine
  destruction
 
 Exit-time msvcrt!memcpy AVs logged at roughly every second close. A
@@ -2083,7 +2083,7 @@ index e302e1f4b21..28e3351963a 100644
 From 3cac3d671118aa443ce4701e8cd9364f6d4f578d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:42:26 -0500
-Subject: [PATCH 015/159] winhybrid: DIJoystick2 primary format - 128-button
+Subject: [PATCH 015/161] winhybrid: DIJoystick2 primary format - 128-button
  support in the default provider
 
 The DIJOYSTATE2 base patch updated only the pure dinput module's enum
@@ -2150,7 +2150,7 @@ index d6f33d2df02..856fb3333e8 100644
 From cc0aff8c51463d6d006c837ba4fcccdabc8db7fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 19 Aug 2026 21:53:03 -0500
-Subject: [PATCH 016/159] Overlay wndproc: hide cursor over the game, clicks
+Subject: [PATCH 016/161] Overlay wndproc: hide cursor over the game, clicks
  refocus MAME's window
 
 The DISABLED+TRANSPARENT overlay made every click a Windows error beep
@@ -2221,7 +2221,7 @@ index 28e3351963a..6a3395fdef6 100644
 From ad4d2d8bb312ffc1c05d1513d7b162e3306dfa14 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 01:24:00 -0500
-Subject: [PATCH 017/159] Zeus scoping counters + scanner-safe shader header
+Subject: [PATCH 017/161] Zeus scoping counters + scanner-safe shader header
  (midzeus joins the subtarget)
 
 - zeus2.cpp: env-gated MIDZ_STATS=1 quads/frame profiler at the
@@ -2827,7 +2827,7 @@ index 233e8a13e96..e27ff2e3a4c 100644
 From a97419f068281bab1cc1c8e20f8b036b22a5d3cb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:23:43 -0500
-Subject: [PATCH 018/159] In-game Esc options menu + UDP telemetry (Phase A)
+Subject: [PATCH 018/161] In-game Esc options menu + UDP telemetry (Phase A)
 
 - Esc menu drawn by the GL overlay itself: MENU_VS/FS shaders (generated),
   pre-rendered A8 label bitmaps (midvunit_menu_assets.h, generated),
@@ -6266,7 +6266,7 @@ index 6a3395fdef6..0f0e0efd953 100644
 From 366f811988600fc2abc62f534d0107cbde4a173c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 14:46:12 -0500
-Subject: [PATCH 019/159] Overlay: runtime coarse height - offroadc's 401st
+Subject: [PATCH 019/161] Overlay: runtime coarse height - offroadc's 401st
  scanline restored
 
 offroadc runs a 512x401 mode (visarea bottom 400); HEIGHT=400 was compiled
@@ -6388,7 +6388,7 @@ index 0f0e0efd953..f363dcb7b6a 100644
 From 71e566039517000202fd4c3848d438227d9de430 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 20 Aug 2026 21:52:44 -0500
-Subject: [PATCH 020/159] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL,
+Subject: [PATCH 020/161] GL overlay: crack-fill pass (MIDV_GL_CRACKFILL,
  default on)
 
 Scene pass gains an R8UI "written this scene" mask on attachment 1
@@ -6563,7 +6563,7 @@ index f363dcb7b6a..95d0e3eab82 100644
 From d5f9f613a339fe6bb7154b9862f21944ef1b1461 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:38 -0500
-Subject: [PATCH 021/159] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
+Subject: [PATCH 021/161] zeus2: backport mamedev/mame#15719 - Cruis'n Exotica
  road rendering
 
 Upstream fix by Jos van Mourik (merged 2026-07-18, post-0.286): drop the
@@ -6757,7 +6757,7 @@ index ff15fbc0fde..5383fa5b567 100644
 From 40c0fd8efb3997e126c3d4ab9fe1daff4fbcc919 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:21:50 -0500
-Subject: [PATCH 022/159] zeus2: backport mamedev/mame#15723 - solid fills,
+Subject: [PATCH 022/161] zeus2: backport mamedev/mame#15723 - solid fills,
  depth clear, translucency
 
 Open upstream PR by Jos van Mourik: guard fast-clear depth 0 (stuck black
@@ -6926,7 +6926,7 @@ index 5383fa5b567..ff1959b8f84 100644
 From 93acdd2bb8c8a7953702e213c6a930763ad1659f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:35 -0500
-Subject: [PATCH 023/159] GL overlay: persist live CRT toggle state for the
+Subject: [PATCH 023/161] GL overlay: persist live CRT toggle state for the
  launcher
 
 F9 and the Esc-menu CRT toggle flip the pass live, but the collection
@@ -6970,7 +6970,7 @@ index 95d0e3eab82..39290867808 100644
 From 3c2dab3df51c1cb22f5bc7102dee557589600773 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 21 Aug 2026 01:22:53 -0500
-Subject: [PATCH 024/159] zeus2: include zeus2.h hunk missed from the
+Subject: [PATCH 024/161] zeus2: include zeus2.h hunk missed from the
  #15719/#15723 backports
 
 Co-Authored-By: Claude Fable 5 <noreply@anthropic.com>
@@ -7024,7 +7024,7 @@ index cd2c30b2047..874bece3d96 100644
 From c2003def0707ff71f91cfc35cdaa1e4fb516619b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:11:29 -0500
-Subject: [PATCH 025/159] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
+Subject: [PATCH 025/161] zeus2: POC capture instrumentation (MIDZ_CAPTURE) for
  the GL-renderer oracle
 
 Env-gated, zero cost unset. Records quads (post-transform clipped verts +
@@ -7312,7 +7312,7 @@ index 874bece3d96..4ba8ac06e85 100644
 From d3269e559855935bae803b9f71dfcde329625aad Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 14:59:58 -0500
-Subject: [PATCH 026/159] GL overlay: Esc-menu pause + margin extend
+Subject: [PATCH 026/161] GL overlay: Esc-menu pause + margin extend
  (MIDV_GL_MARGINFILL)
 
 The Esc options menu now pauses the machine while open (request from the
@@ -7442,7 +7442,7 @@ index 39290867808..37c704ad67c 100644
 From 795ef54adc64bbccb019fd853457209a1618dd93 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 15:52:57 -0500
-Subject: [PATCH 027/159] zeus2: LIVE in-process GL renderer (MIDZ_GL) -
+Subject: [PATCH 027/161] zeus2: LIVE in-process GL renderer (MIDZ_GL) -
  Exotica at 4x for real
 
 The mzgl overlay (inside zeus2.cpp, mirroring midvunit_v.cpp): monitor-
@@ -8918,7 +8918,7 @@ index 37c704ad67c..de3d4830052 100644
 From 4a0d50c01d436d3ba8bca454379230164bb71001 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:13:22 -0500
-Subject: [PATCH 028/159] ioport: env-gated steering response curve for PADDLE
+Subject: [PATCH 028/161] ioport: env-gated steering response curve for PADDLE
  fields
 
 MIDV_STEER_CURVE (percent exponent on normalized wheel deflection,
@@ -8984,7 +8984,7 @@ index 8c4cd18e8c2..5197e95ef04 100644
 From 152fb87ddd321f3100d7cedfe28cf9d6f66867b3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:36:45 -0500
-Subject: [PATCH 029/159] GL overlay: margin extend actually works now
+Subject: [PATCH 029/161] GL overlay: margin extend actually works now
  (off-by-half-pixel probe)
 
 The clamp-extend sampled exactly the nominal margin-edge column - the
@@ -9043,7 +9043,7 @@ index 6c11a6b959a..d4380e4617f 100644
 From ed208255c50c8ad457f1c3efb11671fe1c394e35 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 20:56:16 -0500
-Subject: [PATCH 030/159] midvunit: in-memory code patcher (MIDV_PATCH) +
+Subject: [PATCH 030/161] midvunit: in-memory code patcher (MIDV_PATCH) +
  runtime 16:9 margin
 
 Code patcher: the TMS320C31 program is copied maindata ROM -> program RAM
@@ -9171,7 +9171,7 @@ index de3d4830052..02e4fb5a9a8 100644
 From a75813dddec3f7d54b056f8103bada857270a2ea Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 22 Aug 2026 23:47:03 -0500
-Subject: [PATCH 031/159] Telemetry Phase B: live speed over UDP (crusnusa) +
+Subject: [PATCH 031/161] Telemetry Phase B: live speed over UDP (crusnusa) +
  RAM-dump hunt tooling
 
 MIDV_RAMDUMP_DIR/_EVERY dumps DSP work RAM periodically for offline
@@ -9279,7 +9279,7 @@ index 02e4fb5a9a8..baf3c9d1328 100644
 From dce4734c36c510e7a739e0d2d37dc06a2e57f137 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 00:47:30 -0500
-Subject: [PATCH 032/159] GL overlay: backdrop-margin suppress fixes the "water
+Subject: [PATCH 032/161] GL overlay: backdrop-margin suppress fixes the "water
  through the ground"
 
 The Off Road bottom-corner "lake" reveal was the sky/horizon BACKDROP band
@@ -9427,7 +9427,7 @@ index baf3c9d1328..b45aeed94ea 100644
 From d49c8acdaae51d904b21c64644ce8003545b156b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 11:57:13 -0500
-Subject: [PATCH 033/159] GL overlay: extend backdrop-margin suppress to
+Subject: [PATCH 033/161] GL overlay: extend backdrop-margin suppress to
  crusnusa + crusnwld
 
 Generalize the backdrop signature to the per-game sky texbase low bytes
@@ -9476,7 +9476,7 @@ index b45aeed94ea..9bd977d9974 100644
 From 6b28ed89c5788932d556c277794dcc30a693d70a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:22:32 -0500
-Subject: [PATCH 034/159] Fix Esc-menu resume: block the emu thread instead of
+Subject: [PATCH 034/161] Fix Esc-menu resume: block the emu thread instead of
  machine().pause()
 
 Resume could hang the game paused: machine().pause() paused fine, but the
@@ -9576,7 +9576,7 @@ index 9bd977d9974..a92c28a93f4 100644
 From ffba178f038af29c4efe04deda9fbcd6b2f8576b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 12:55:30 -0500
-Subject: [PATCH 035/159] A1b: Exotica 16:9 widescreen (Zeus overlay)
+Subject: [PATCH 035/161] A1b: Exotica 16:9 widescreen (Zeus overlay)
 
 Render all Zeus geometry into a wider canvas (CW+2*MARGIN, shifted via a
 VS uMargin uniform); present 3D driving scenes at 16:9 (full wide canvas)
@@ -9768,7 +9768,7 @@ index 18c23b15129..9c7d95bf58c 100644
 From 50e811d75d515932295a7b6fbf0e4319a3db9db1 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 13:04:39 -0500
-Subject: [PATCH 036/159] zeus2: silence the stock resolution-setup debug
+Subject: [PATCH 036/161] zeus2: silence the stock resolution-setup debug
  popmessage
 
 Exotica flashed "reg[30]: ... Screen: 512H X 400V yScale: 0" at the bottom
@@ -9805,7 +9805,7 @@ index 7bffa4b22fc..e35aceec835 100644
 From 5f9bdcc56cc6a74270fed65199df72e491cf9570 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:25:04 -0500
-Subject: [PATCH 037/159] zeus2: skip per-quad frame_number call when live
+Subject: [PATCH 037/161] zeus2: skip per-quad frame_number call when live
  (emu-thread micro-opt)
 
 screen().frame_number() ran ~6.5k times/frame in the live emit path; the
@@ -9844,7 +9844,7 @@ index e35aceec835..201bef85988 100644
 From 5d0e2f95acee02701803a331d7f78691d51ce0eb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:37:41 -0500
-Subject: [PATCH 038/159] zeus2: skip MAME's CPU rasterization when the live
+Subject: [PATCH 038/161] zeus2: skip MAME's CPU rasterization when the live
  overlay renders
 
 With MIDZ_GL the game was rendered TWICE: our GL renderer draws every quad,
@@ -9907,7 +9907,7 @@ index 201bef85988..80d0c937b84 100644
 From 5d11d1fe3e033e35d664ccec2391b50f851ba817 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 14:40:11 -0500
-Subject: [PATCH 039/159] zeus2 overlay: aspect-mode hysteresis fixes the width
+Subject: [PATCH 039/161] zeus2 overlay: aspect-mode hysteresis fixes the width
  wobble
 
 An iteration catching only HUD frame writes (no quads, pure timing)
@@ -9955,7 +9955,7 @@ index 80d0c937b84..f991981ed71 100644
 From 383046dd1e72d4a461ce5d3a4340ea9e4b958952 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:04:56 -0500
-Subject: [PATCH 040/159] zeus2: true full 16:9 for crusnexo - page-scoped
+Subject: [PATCH 040/161] zeus2: true full 16:9 for crusnexo - page-scoped
  margin clear + diag hooks
 
 The game renders a full 16:9 field of view already; the black margins were
@@ -10194,7 +10194,7 @@ index c06d6525c0f..13f9f93b855 100644
 From 9bcb20be675f5fe7d4a600ed2d57579958ed0dba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 16:24:08 -0500
-Subject: [PATCH 041/159] telem: wire crusnwld speed (0x0DDDC), tighten
+Subject: [PATCH 041/161] telem: wire crusnwld speed (0x0DDDC), tighten
  s_speed_addr to hunted parents
 
 Differential RAM-hunt of the crusnwld attract demo (results/ramhunt-wld)
@@ -10259,7 +10259,7 @@ index a92c28a93f4..25277823298 100644
 From e028a2f8a9217603413ae43f8da44e7b04337b2a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:42:55 -0500
-Subject: [PATCH 042/159] midvunit shaders: regen for B5 sky-margin vertical
+Subject: [PATCH 042/161] midvunit shaders: regen for B5 sky-margin vertical
  smoothing
 
 Generated from gpu/renderer.py (never hand-edited). Present-pass margin
@@ -10340,7 +10340,7 @@ index 54113399836..06c5cbf196a 100644
 From 43ee457e55f05a8b0fdde8462931bf6bf3c1c43c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 18:45:26 -0500
-Subject: [PATCH 043/159] D1: menu-assets header comment cruisn-poc ->
+Subject: [PATCH 043/161] D1: menu-assets header comment cruisn-poc ->
  cruisn-collection
 
 Matches what gen_menu_assets.py already emits (the header just predated
@@ -10369,7 +10369,7 @@ index 97598357243..4ae0a6e49cf 100644
 From 5f155d26df43bfc80266b780c1737ceb80373df3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:38:55 -0500
-Subject: [PATCH 044/159] Revert B5 sky-margin vertical smoothing - regressed
+Subject: [PATCH 044/161] Revert B5 sky-margin vertical smoothing - regressed
  2D screens
 
 The vertical gaussian blur smears any structured margin content (e.g. the
@@ -10450,7 +10450,7 @@ index 06c5cbf196a..54113399836 100644
 From 23adde255511f37970dacd7ec39db84a0525ec79 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:44:42 -0500
-Subject: [PATCH 045/159] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
+Subject: [PATCH 045/161] telem: wire crusnusa RPM (0x0DC20) - confirmed from a
  real drive
 
 A real driving capture (results/drive-capture-crusnusa-*) debunked the
@@ -10523,7 +10523,7 @@ index 25277823298..27b2d187112 100644
 From ccc6b321980e972870c23538acb4f76029fbda62 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 19:54:30 -0500
-Subject: [PATCH 046/159] telem Phase C: Forza Horizon "Data Out" packet
+Subject: [PATCH 046/161] telem Phase C: Forza Horizon "Data Out" packet
  emitter (SimHub-native)
 
 MIDV_TELEM_FORZA=host:port (default 127.0.0.1:5300) emits the FH4/5
@@ -10697,7 +10697,7 @@ index 27b2d187112..3e2ce518ab9 100644
 From 795d4f1fbc8deb6ccdef5ad842a21f6be7c60e5b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:07:31 -0500
-Subject: [PATCH 047/159] telem: Forza gear byte mirrors the real latched
+Subject: [PATCH 047/161] telem: Forza gear byte mirrors the real latched
  shifter
 
 Read the driver-maintained m_shifter_state (fed by both the 4-position
@@ -10761,7 +10761,7 @@ index 3e2ce518ab9..6905fd7e27a 100644
 From def66dab2025f9cf2f4e338ebcbfee5255324cc8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:24:59 -0500
-Subject: [PATCH 048/159] telem: gate speed/rpm - menu garbage pegged SimHub
+Subject: [PATCH 048/161] telem: gate speed/rpm - menu garbage pegged SimHub
  gauges
 
 Live rig finding (forza_probe): outside races the DSP words hold unrelated
@@ -10855,7 +10855,7 @@ index 6905fd7e27a..6865bc9fe3d 100644
 From f7251ce9e2b65cac39ff992f9a09b734800cc47f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:42:23 -0500
-Subject: [PATCH 049/159] telem: MIDV_TELEM_FORZA accepts comma-separated
+Subject: [PATCH 049/161] telem: MIDV_TELEM_FORZA accepts comma-separated
  targets
 
 So SimHub (8000) and the forza_probe diagnostic (8001) can watch the same
@@ -10930,7 +10930,7 @@ index 6865bc9fe3d..914472fb88e 100644
 From 5c3b5787fee2d8111ed84ea1d23902a98fb300d7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 20:51:50 -0500
-Subject: [PATCH 050/159] telem: tighten speed plausibility gate 400 -> 320
+Subject: [PATCH 050/161] telem: tighten speed plausibility gate 400 -> 320
 
 Menu junk observed at 373 slipped under the 400 bound (and at 990 before);
 real max is ~301, so the bound must sit under 373.
@@ -10971,7 +10971,7 @@ index 914472fb88e..ae7d8706365 100644
 From 0f3759db6a29c8f840d6fd0f28cf74564478426a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:13:25 -0500
-Subject: [PATCH 051/159] telem: dump the second work-RAM bank (0x400000) -
+Subject: [PATCH 051/161] telem: dump the second work-RAM bank (0x400000) -
  player physics lives there
 
 Detective chain from the user's 5x accelerate-to-full-stop drive: NO word
@@ -11058,7 +11058,7 @@ index ae7d8706365..0368443e51a 100644
 From 70552419d62a694e61bb409901e73918003c9084 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:25:02 -0500
-Subject: [PATCH 052/159] telem: dump HUD rows (300-399, visible page)
+Subject: [PATCH 052/161] telem: dump HUD rows (300-399, visible page)
  alongside RAM dumps
 
 The on-screen MPH + gear digits are the incorruptible ground truth: OCR
@@ -11104,7 +11104,7 @@ index 0368443e51a..ff611a5de56 100644
 From e22e161bc23a108e1d25595f6691a3e249f85b82 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:40:45 -0500
-Subject: [PATCH 053/159] telem: dump C31 on-chip internal RAM (0x809800, 2K
+Subject: [PATCH 053/161] telem: dump C31 on-chip internal RAM (0x809800, 2K
  words) as ram3
 
 By elimination: the HUD-OCR ground truth from a real drive correlates with
@@ -11153,7 +11153,7 @@ index ff611a5de56..b4d3c40eb9b 100644
 From 8bb8d18801c7f71bb2a1c71024305295201f1978 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 21:56:25 -0500
-Subject: [PATCH 054/159] telem: crusnusa RPM = 0x0E632.lo16
+Subject: [PATCH 054/161] telem: crusnusa RPM = 0x0E632.lo16
  (screen-confirmed); retire drone speed
 
 The HUD ground-truth investigation concluded: the on-screen RPM gauge's
@@ -11302,7 +11302,7 @@ index b4d3c40eb9b..31e523934f7 100644
 From f91ec0dca3dba674c669f04083336318a9fa4d7f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 23 Aug 2026 22:04:19 -0500
-Subject: [PATCH 055/159] telem: runtime HUD OCR - crusnusa speed read straight
+Subject: [PATCH 055/161] telem: runtime HUD OCR - crusnusa speed read straight
  off the frame
 
 The displayed MPH exists in no memory and the HUD is CPU-blitted (no
@@ -11719,7 +11719,7 @@ index 31e523934f7..7e74f9bbf1d 100644
 From 381216fdc3df855a5f5e91dfda900bb1fc12c075 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 21:11:55 -0500
-Subject: [PATCH 056/159] Fix sky-through-ground on the left: backdrop cover is
+Subject: [PATCH 056/161] Fix sky-through-ground on the left: backdrop cover is
  now independent
 
 The user's driving screenshots showed the sky/horizon backdrop through
@@ -11782,7 +11782,7 @@ index 7e74f9bbf1d..7fed9666ed0 100644
 From d7770521dabf9aad82b5882d0df263bb788dffba Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 21:27:44 -0500
-Subject: [PATCH 057/159] Revert "Fix sky-through-ground on the left: backdrop
+Subject: [PATCH 057/161] Revert "Fix sky-through-ground on the left: backdrop
  cover is now independent"
 
 This reverts commit 381216fdc3df855a5f5e91dfda900bb1fc12c075.
@@ -11826,7 +11826,7 @@ index 7fed9666ed0..7e74f9bbf1d 100644
 From b4dbf50514f08ac3dfab80186e3198e1eeb55cf2 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 22:49:14 -0500
-Subject: [PATCH 058/159] MIDV_FAST_EXIT + parked-UI suppression (crusnwld
+Subject: [PATCH 058/161] MIDV_FAST_EXIT + parked-UI suppression (crusnwld
  radio panel)
 
 - winmain: env-gated TerminateProcess after a clean frontend exit. The FFB
@@ -11925,7 +11925,7 @@ index 4c656623a9c..efd02e7b1d2 100644
 From 2ff12aaa474f2030acc1a15105bf8d20d3c52a22 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 24 Aug 2026 23:14:04 -0500
-Subject: [PATCH 059/159] Fine-space dither translucency (regenerated from
+Subject: [PATCH 059/161] Fine-space dither translucency (regenerated from
  gpu/renderer.py)
 
 The hardware fakes 50% alpha with a per-pixel checkerboard the CRT blends;
@@ -11988,7 +11988,7 @@ index 998ed76e347..0f5fdfef477 100644
 From f41dd7c8e6563166432ab3f5494114b605c1e54c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 25 Aug 2026 21:39:17 -0500
-Subject: [PATCH 060/159] HUD-OCR speed for World + provisional Off Road; 2D
+Subject: [PATCH 060/161] HUD-OCR speed for World + provisional Off Road; 2D
  seam fill; per-game hud dump
 
 - s_hud_box: crusnwld (14,76,342,368) calibrated offline from drive
@@ -12071,7 +12071,7 @@ index 904679ef464..de471e3388e 100644
 From 4b801483f56124439fdcb16f4265f488d0e91045 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 26 Aug 2026 01:00:21 -0500
-Subject: [PATCH 061/159] MIDV_DMA_PCLOG: native unique-PC logger on the quad
+Subject: [PATCH 061/161] MIDV_DMA_PCLOG: native unique-PC logger on the quad
  DMA port
 
 One full-speed headless run maps every poly-emit site in a game's DSP
@@ -12129,7 +12129,7 @@ index de471e3388e..50daacfe638 100644
 From 80cb7a0e718e4428b099627aba96fa3fe45e4a26 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 29 Aug 2026 18:03:00 -0500
-Subject: [PATCH 062/159] Fix G10 perf regression: hoist MIDV_DMA_PCLOG getenv
+Subject: [PATCH 062/161] Fix G10 perf regression: hoist MIDV_DMA_PCLOG getenv
  out of the DMA hot path
 
 std::getenv ran once per DMA word (>1M environment scans/sec) since the
@@ -12163,7 +12163,7 @@ index 50daacfe638..ff93ee70d42 100644
 From 97a330a72b19e90adf8dc14b1c6996ce198ce732 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 29 Aug 2026 19:08:18 -0500
-Subject: [PATCH 063/159] telem_init: clone-tolerant game matching (crusnwld24
+Subject: [PATCH 063/161] telem_init: clone-tolerant game matching (crusnwld24
  support)
 
 The World card now boots rev 2.4 (crusnwld24), the last revision with
@@ -12214,7 +12214,7 @@ index ff93ee70d42..709843ffdda 100644
 From 200e986e5327d97507335ff63d52b88c30fbd150 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 30 Aug 2026 21:37:20 -0500
-Subject: [PATCH 064/159] Quality mode: DDA-inclusive coverage for axis-aligned
+Subject: [PATCH 064/161] Quality mode: DDA-inclusive coverage for axis-aligned
  quads; merge split runs
 
 Two fixes for the crusnusa continue-screen vertical line (user report;
@@ -12345,7 +12345,7 @@ index 709843ffdda..16ae6eff87f 100644
 From 784bdfc6da392ec301b98d2840f270c519615136 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 30 Aug 2026 22:38:38 -0500
-Subject: [PATCH 065/159] MIDV_PATCH: self-healing re-assert (games revert low
+Subject: [PATCH 065/161] MIDV_PATCH: self-healing re-assert (games revert low
  words at startup)
 
 The V-Unit games' own startup code re-copies the low program words from
@@ -12474,7 +12474,7 @@ index 16ae6eff87f..4d91cf28bb2 100644
 From 019efb24a06c4b0f8de8fbc4e9c8f610241424fb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 01:55:12 -0500
-Subject: [PATCH 066/159] Review fixes: UV-extrapolated dilation, snapshot
+Subject: [PATCH 066/161] Review fixes: UV-extrapolated dilation, snapshot
  overrun, merge cap
 
 Second-set-of-eyes pass over today's overlay changes:
@@ -12605,7 +12605,7 @@ index 4d91cf28bb2..9a0dbe23602 100644
 From bcffabf54bcb22386f86c2472a26cffaba524c6c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 16:57:44 -0500
-Subject: [PATCH 067/159] MIDV_FFB_TRACE: timestamped log of every game output
+Subject: [PATCH 067/161] MIDV_FFB_TRACE: timestamped log of every game output
  (FFB diagnostics)
 
 MIDV_FFB_TRACE=<file> appends "ms,output,value" for every output change
@@ -12692,7 +12692,7 @@ index 9a0dbe23602..13c65b293ec 100644
 From 8f3f785ffa833b2bab88f5a8645b489c66c19a9e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 18:17:24 -0500
-Subject: [PATCH 068/159] Overlay stats: MAME speed readout (support-bundle
+Subject: [PATCH 068/161] Overlay stats: MAME speed readout (support-bundle
  diagnostics)
 
 screen_update publishes machine().video().speed_percent()*100 into the
@@ -12757,7 +12757,7 @@ index 13c65b293ec..d246641efc3 100644
 From 5027dab8cc439f917bd7de8fb0583a9ef5df1243 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 19:09:21 -0500
-Subject: [PATCH 069/159] ioport: MIDV_STEER_GAIN - a steering sensitivity that
+Subject: [PATCH 069/161] ioport: MIDV_STEER_GAIN - a steering sensitivity that
  reaches the wheel
 
 MAME's per-port "sensitivity" is an exact identity for absolute analog
@@ -12832,7 +12832,7 @@ index 5197e95ef04..1e7679a97b0 100644
 From 93bac9db22eda14bef465c25366eef212274f1b0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 20:38:11 -0500
-Subject: [PATCH 070/159] midvunit: MIDV_FFB_CLAMP - cap the wheel-motor force
+Subject: [PATCH 070/161] midvunit: MIDV_FFB_CLAMP - cap the wheel-motor force
  byte (env-gated)
 
 Measured headless (wheel sweep under the force trace): the V-Unit games'
@@ -12900,7 +12900,7 @@ index c6841984880..a5d5e0186ac 100644
 From a3bc6cc97382aa308340b0073b13243f1c76e70d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 21:09:27 -0500
-Subject: [PATCH 071/159] Cruis'n Exotica wheel-motor output; telemetry shared
+Subject: [PATCH 071/161] Cruis'n Exotica wheel-motor output; telemetry shared
  with midzeus; output name override
 
 Exotica's force byte lives on the LED/lamp board write at offset 0
@@ -13167,7 +13167,7 @@ index 0d2d355b577..491f3d711c5 100644
 From 566429c683c5488cbcc7d7544e9c5739facc2225 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 22:17:01 -0500
-Subject: [PATCH 072/159] midzeus: Cruis'n Exotica virtual sequential shifter
+Subject: [PATCH 072/161] midzeus: Cruis'n Exotica virtual sequential shifter
  (MIDZ_SEQ_SHIFT), FFB gain
 
 The game only knows a 4-position H-pattern shifter (IN1 bits 8-11). The
@@ -13313,7 +13313,7 @@ index 9e3a46ccab0..e7478c1379f 100644
 From 35d152752af50e5f6352b50f2d17cf511487b881 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 2 Sep 2026 22:44:59 -0500
-Subject: [PATCH 073/159] midzeus: MIDZ_FORCE_IN1 - env-forceable "Not Used"
+Subject: [PATCH 073/161] midzeus: MIDZ_FORCE_IN1 - env-forceable "Not Used"
  IN1 lines on Exotica (shifter-line hunt)
 
 The seven lines the driver marks unused (0xF00D) become one IPT_CUSTOM
@@ -13392,7 +13392,7 @@ index e7478c1379f..eb5c2c458b2 100644
 From 4f5767929e5e97d519c3b260adb631f7c7691768 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 01:17:48 -0500
-Subject: [PATCH 074/159] zeus2 live overlay: never lose texture/palette state
+Subject: [PATCH 074/161] zeus2 live overlay: never lose texture/palette state
  to a full ring; dense snapshot controls
 
 ring_push2 dropped any record when the 64 MB ring was full. A dropped
@@ -13541,7 +13541,7 @@ index 93b0482fbb1..08a2ad130aa 100644
 From 72c9e6feedefa416ee117ed6891eb2a6bd703e87 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 10:52:16 -0500
-Subject: [PATCH 075/159] MIDV_FFB_SLEW - cap the wheel-motor force change per
+Subject: [PATCH 075/161] MIDV_FFB_SLEW - cap the wheel-motor force change per
  game update (V-Unit + Exotica)
 
 The FFB Arcade Plugin applies every game update instantly (one constant
@@ -13630,7 +13630,7 @@ index eb5c2c458b2..da63df49133 100644
 From 958ca346f5b8d5ff5af3cef834a18e66f73318c8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 12:01:47 -0500
-Subject: [PATCH 076/159] FFB trace: log the steering input ("wheelpos" rows)
+Subject: [PATCH 076/161] FFB trace: log the steering input ("wheelpos" rows)
  next to the force output
 
 midv_trace_wheelpos(machine, tag) writes the steering port value into the
@@ -13712,7 +13712,7 @@ index 19fc9bea778..d2fb9365f89 100644
 From daf47365925490105aa8798a3d24dbefbc6a29c5 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 3 Sep 2026 13:33:57 -0500
-Subject: [PATCH 077/159] Built-in force feedback (mvffb): SDL2 haptics on the
+Subject: [PATCH 077/161] Built-in force feedback (mvffb): SDL2 haptics on the
  steering axis, replaces the FFB Arcade Plugin
 
 The drivers hand the signed wheel-motor byte (V-Unit WHLCTLZ, Exotica LED-board
@@ -14227,7 +14227,7 @@ index da63df49133..59993cde186 100644
 From 1c919566c1fd435ac45044d2230b39e104c16129 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 00:28:45 -0500
-Subject: [PATCH 078/159] mvffb: force low-pass (MIDV_FFB_SMOOTH),
+Subject: [PATCH 078/161] mvffb: force low-pass (MIDV_FFB_SMOOTH),
  damper/friction condition effects (MIDV_FFB_DAMPER/_FRICTION), instant
  release when the Esc menu opens
 
@@ -14399,7 +14399,7 @@ index 7ade3edba98..2a185c04833 100644
 From 95d0121ff6db841c9edc303fbfa1780f0573476b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 00:41:11 -0500
-Subject: [PATCH 079/159] mvffb: rumble channel (MIDV_FFB_RUMBLE, 100 ms burst
+Subject: [PATCH 079/161] mvffb: rumble channel (MIDV_FFB_RUMBLE, 100 ms burst
  per force update like the plugin), impulses bypass the smoothing
 
 Exotica's crash/jump effects are single 17 ms full-force spikes; the plugin's
@@ -14529,7 +14529,7 @@ index 2a185c04833..d633d3bc6bf 100644
 From 9f8397cf6eaaad68db02283cc0b3ce205aa25ae0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 10:27:00 -0500
-Subject: [PATCH 080/159] Backport mamedev/mame#16046 (Exotica game speed +
+Subject: [PATCH 080/161] Backport mamedev/mame#16046 (Exotica game speed +
  SGRAM fill decode); wheel output renamed wheel_motor per #16055
 
 #16046 (mourix, merged 2026-09-03): the TMS320C32 timers were hardcoded at 10 MHz
@@ -14654,7 +14654,7 @@ index 59993cde186..bf7a57f70c5 100644
 From 35b0a2507c87e3f6359700adb11a0bd2a5075585 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 10:50:24 -0500
-Subject: [PATCH 081/159] crusnexo: MIDZ_WHEEL_INVERT mirrors the steering
+Subject: [PATCH 081/161] crusnexo: MIDZ_WHEEL_INVERT mirrors the steering
  read, cancelling the Wheel Invert DIP for driving
 
 Exotica s TRANS SELECT screen is gated on the DS1 Wheel Invert DIP - with it off
@@ -14705,7 +14705,7 @@ index bf7a57f70c5..d55e7ea934f 100644
 From 9a32a191911d56b66b8bedc80ff165079665e10b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 21:20:00 -0500
-Subject: [PATCH 082/159] FFB conditioning moves to the shared toolkit shaper
+Subject: [PATCH 082/161] FFB conditioning moves to the shared toolkit shaper
 
 mvffb's hand-written chain (impulse bypass, dt-aware low-pass, settle-to-zero,
 re-level threshold) is now dbce::force::Shaper driven by a named profile, so a
@@ -15565,7 +15565,7 @@ index d633d3bc6bf..3ca37046d12 100644
 From 4da28a04e7de9ae60ac93edbea65c63f0549280e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 21:23:27 -0500
-Subject: [PATCH 083/159] Add the centring spring the FFB Arcade Plugin has and
+Subject: [PATCH 083/161] Add the centring spring the FFB Arcade Plugin has and
  this did not
 
 MIDV_FFB_SPRING creates an SDL_HAPTIC_SPRING condition effect alongside the
@@ -15649,7 +15649,7 @@ index 3ca37046d12..0bd5031e2b1 100644
 From aed633273eaa355a635058bf44ec34321ee6cfa6 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Fri, 4 Sep 2026 23:33:26 -0500
-Subject: [PATCH 084/159] Trace our shaped FFB output beside the game's motor
+Subject: [PATCH 084/161] Trace our shaped FFB output beside the game's motor
  byte
 
 ffb_trace.csv carried the input (the wheel_motor output) but not what we
@@ -15702,7 +15702,7 @@ index 0bd5031e2b1..ab58bbd933c 100644
 From c562491a611c312d028350dfc6c9ed4b3816902a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 13:15:17 -0500
-Subject: [PATCH 085/159] The FEEL profile owns smoothing; MIDV_FFB_SMOOTH
+Subject: [PATCH 085/161] The FEEL profile owns smoothing; MIDV_FFB_SMOOTH
  becomes an explicit override
 
 The profile s smoothing was overwritten unconditionally from MIDV_FFB_SMOOTH, whose
@@ -15765,7 +15765,7 @@ index ab58bbd933c..172d94e1db5 100644
 From 18bf1b72e69ed0ba47a9180fd5ce10c02c944484 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 13:42:17 -0500
-Subject: [PATCH 086/159] Condition effects scale with FFB STRENGTH and cap
+Subject: [PATCH 086/161] Condition effects scale with FFB STRENGTH and cap
  their saturation
 
 The spring, damper and friction were absolute: a 72% spring ran at 72% of the
@@ -15825,7 +15825,7 @@ index 172d94e1db5..11fa1e59e32 100644
 From 4d96ca9c6ced9b9cfb27ddca0aac2df349371490 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 15:18:52 -0500
-Subject: [PATCH 087/159] Rumble fires on force onset; speed no longer zeroes
+Subject: [PATCH 087/161] Rumble fires on force onset; speed no longer zeroes
  after one unreadable second
 
 Rumble: a Cruis n USA collision holds near-full force for 1.2-4.7 SECONDS (measured
@@ -15927,7 +15927,7 @@ index 11fa1e59e32..8feb10f579c 100644
 From cac686346f106cf97cb53f0eee90ff32b3dc6861 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 15:40:53 -0500
-Subject: [PATCH 088/159] Rumble fires on a real hit (ramp-aware); trace the
+Subject: [PATCH 088/161] Rumble fires on a real hit (ramp-aware); trace the
  OCR speed
 
 The collision force RAMPS - byte -25 -40 -67 -80 -103 -113 -126 over about six
@@ -16038,7 +16038,7 @@ index 8feb10f579c..e531e7eaf83 100644
 From e309c3c777b72d17d43e238d578f1762786ef37a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 16:13:03 -0500
-Subject: [PATCH 089/159] HUD OCR was clipping the hundreds digit - speed could
+Subject: [PATCH 089/161] HUD OCR was clipping the hundreds digit - speed could
  never exceed 99
 
 The crusnusa window started at x0=30 and cut the leading digit off. Its own new
@@ -16173,7 +16173,7 @@ index e531e7eaf83..3d3f2ab43fa 100644
 From 58203bb13f7b4a5997b4f6dceed1e36a8fd631d8 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 16:41:51 -0500
-Subject: [PATCH 090/159] Verify the World OCR box (not clipped) and record
+Subject: [PATCH 090/161] Verify the World OCR box (not clipped) and record
  that Off Road s has never worked
 
 crusnwld: re-checked after USA turned out to be clipping - it reads to 142 mph with
@@ -16222,7 +16222,7 @@ index 3d3f2ab43fa..da6cb87c5b8 100644
 From 1c420f324c79e7e4c5b77a808b366cbdababa256 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 18:14:37 -0500
-Subject: [PATCH 091/159] Improve force event detection and preserve
+Subject: [PATCH 091/161] Improve force event detection and preserve
  frame-indexed diagnostics
 
 ---
@@ -16639,7 +16639,7 @@ index da6cb87c5b8..a5e16e6fa05 100644
 From 1a2bb35f8ad58e2f0960c1d8b15bd361725a7a51 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 18:26:11 -0500
-Subject: [PATCH 092/159] Pin toolkit profile loader portability fix
+Subject: [PATCH 092/161] Pin toolkit profile loader portability fix
 
 ---
  src/mame/midway/dbce/README.md       | 2 +-
@@ -16689,7 +16689,7 @@ index 2d468dc288b..207b229f633 100644
 From 45a05364e115280f5d816a90d1aa5c826f6f2f37 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 21:34:04 -0500
-Subject: [PATCH 093/159] Bound enhanced V-Unit texture sampling to original
+Subject: [PATCH 093/161] Bound enhanced V-Unit texture sampling to original
  quad UVs
 
 ---
@@ -16827,7 +16827,7 @@ index a5e16e6fa05..4bebbb22fa6 100644
 From eb4db8fc7069ec927e1e7562c529ae832def26db Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sat, 5 Sep 2026 21:55:56 -0500
-Subject: [PATCH 094/159] Validate complete V-Unit patch files before modifying
+Subject: [PATCH 094/161] Validate complete V-Unit patch files before modifying
  program RAM
 
 ---
@@ -16976,7 +16976,7 @@ index 78140da368f..8c71ab48049 100644
 From 7ca1b7dc83d49b3a7348bb20ef0710e7eb475fca Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 00:04:02 -0500
-Subject: [PATCH 095/159] Render persistent commands in order and fence V-Unit
+Subject: [PATCH 095/161] Render persistent commands in order and fence V-Unit
  presentation frames
 
 ---
@@ -17524,7 +17524,7 @@ index 4bebbb22fa6..274d59cc987 100644
 From 96112c4384b0c90674e775b9d46c3ab39f10cd1d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 00:22:08 -0500
-Subject: [PATCH 096/159] Isolate the in-process renderer stream by process
+Subject: [PATCH 096/161] Isolate the in-process renderer stream by process
  identity
 
 ---
@@ -17558,7 +17558,7 @@ index 274d59cc987..512e4b13834 100644
 From 3cc43acf8dd9d6225d24d56c7e403b4f92345b6a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 00:24:02 -0500
-Subject: [PATCH 097/159] Add opt-in bounded steering impacts and emulated-time
+Subject: [PATCH 097/161] Add opt-in bounded steering impacts and emulated-time
  motor source traces
 
 ---
@@ -17904,7 +17904,7 @@ index d55e7ea934f..77c5047c3bc 100644
 From bf3edd785d88c19d839dd819859551188b64d56b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 00:24:04 -0500
-Subject: [PATCH 098/159] Read guarded USA numeric HUD speed with shared
+Subject: [PATCH 098/161] Read guarded USA numeric HUD speed with shared
  provenance metadata
 
 ---
@@ -18100,7 +18100,7 @@ index 0e5602cb816..cf1593500a0 100644
 From 55c2cd5faa130dadd4759524db46ef5ae2a067cf Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 00:28:15 -0500
-Subject: [PATCH 099/159] Track toolkit 0.11.1 source release; native contract
+Subject: [PATCH 099/161] Track toolkit 0.11.1 source release; native contract
  code unchanged
 
 ---
@@ -18123,7 +18123,7 @@ index 1c7b69a9501..5d021b51d69 100644
 From fb7a322409d01ca8dfd5ea5d86bc10df5dd16292 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 00:36:30 -0500
-Subject: [PATCH 100/159] Restore real widescreen skies by disabling broad
+Subject: [PATCH 100/161] Restore real widescreen skies by disabling broad
  margin filling by default
 
 ---
@@ -18181,7 +18181,7 @@ index cf1593500a0..c8052e8dbdb 100644
 From 368fab713acdfc53cb29188da2c59540000aaa88 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 00:54:47 -0500
-Subject: [PATCH 101/159] Detect opt-in steering impacts before driver force
+Subject: [PATCH 101/161] Detect opt-in steering impacts before driver force
  adaptation
 
 ---
@@ -18316,7 +18316,7 @@ index c8052e8dbdb..eeb9932d528 100644
 From 921bd047cc648a8e2615e3feba48a31bc0ea18b0 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 01:42:06 -0500
-Subject: [PATCH 102/159] Retire invalid RPM mapping derived from packed speed
+Subject: [PATCH 102/161] Retire invalid RPM mapping derived from packed speed
  text
 
 ---
@@ -18479,7 +18479,7 @@ index eeb9932d528..c1891d4813f 100644
 From 53ad07961483587d8c81c266c0b11beb74cfe872 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 01:57:06 -0500
-Subject: [PATCH 103/159] Add opt-in topology-constrained terrain T-junction
+Subject: [PATCH 103/161] Add opt-in topology-constrained terrain T-junction
  alignment
 
 ---
@@ -18656,7 +18656,7 @@ index c1891d4813f..abe369fdb31 100644
 From fd158fa851178eddf5169967c8126e16951804db Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 02:23:52 -0500
-Subject: [PATCH 104/159] Preserve subpixel coverage in enhanced V-Unit
+Subject: [PATCH 104/161] Preserve subpixel coverage in enhanced V-Unit
  rendering
 
 ---
@@ -18694,7 +18694,7 @@ index 82e596080b5..5095da93de1 100644
 From 377ddc06db10a2787a136ee76ceb7f421a0674ce Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 02:32:18 -0500
-Subject: [PATCH 105/159] Fence Zeus captures to completed frames and restore
+Subject: [PATCH 105/161] Fence Zeus captures to completed frames and restore
  native fallback
 
 ---
@@ -18895,7 +18895,7 @@ index c679870ea98..72fa8378087 100644
 From daed6ea2a196d6fdfc0c8392aafa1ee7179356c6 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 13:50:55 -0500
-Subject: [PATCH 106/159] Keep V-Unit pause menus responsive without new game
+Subject: [PATCH 106/161] Keep V-Unit pause menus responsive without new game
  frame fences
 
 ---
@@ -19035,7 +19035,7 @@ index abe369fdb31..faa286ddb79 100644
 From dd12bed67f0d3ed9776ce375885c133d5a133927 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 14:43:42 -0500
-Subject: [PATCH 107/159] Match native endpoint coverage with rounded shader
+Subject: [PATCH 107/161] Match native endpoint coverage with rounded shader
  reciprocals
 
 ---
@@ -19096,7 +19096,7 @@ index 5095da93de1..d5051cdd86f 100644
 From f40c28f8e0a3b13a8d8aece8d11db9dfa006147b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 15:04:28 -0500
-Subject: [PATCH 108/159] Resolve enhanced V-Unit dither before display scaling
+Subject: [PATCH 108/161] Resolve enhanced V-Unit dither before display scaling
 
 ---
  src/mame/midway/midvunit_gl_shaders.h | 25 +++++++++++++++++++++++--
@@ -19159,7 +19159,7 @@ index d5051cdd86f..e3386754fac 100644
 From 2bf1048a1cf4b38854a4ac6ddb32431df9e4f542 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 16:48:07 -0500
-Subject: [PATCH 109/159] Preserve World transmission assets in enhanced GL
+Subject: [PATCH 109/161] Preserve World transmission assets in enhanced GL
  uploads
 
 ---
@@ -19367,7 +19367,7 @@ index faa286ddb79..f2d2c8337b4 100644
 From 3dc426ec75dac6241c4333407bc61f9a8bf43ae9 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 18:30:29 -0500
-Subject: [PATCH 110/159] Add opt-in World 2.4 mountain and tree distance
+Subject: [PATCH 110/161] Add opt-in World 2.4 mountain and tree distance
  policy
 
 ---
@@ -19617,7 +19617,7 @@ index f2d2c8337b4..695ee8fc981 100644
 From 5ca501570a5876618aa0909303c4ef3bfb3845af Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 18:57:47 -0500
-Subject: [PATCH 111/159] Extend World scenery coverage to mirrored and
+Subject: [PATCH 111/161] Extend World scenery coverage to mirrored and
  broadleaf trees
 
 ---
@@ -19646,7 +19646,7 @@ index cd113572a19..650be0561fe 100644
 From abe4b98aa388fcc2a13ceb0dce551d4bdeedf667 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 19:32:27 -0500
-Subject: [PATCH 112/159] Extend guarded World scenery to two more mountains
+Subject: [PATCH 112/161] Extend guarded World scenery to two more mountains
  and a forest strip
 
 ---
@@ -19764,7 +19764,7 @@ index 2b68354c1bd..029d198f0c3 100644
 From e8b8fc3be9c0eb924363617233d83cd8362646ec Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 20:25:18 -0500
-Subject: [PATCH 113/159] Activate identified World backgrounds before their
+Subject: [PATCH 113/161] Activate identified World backgrounds before their
  visible section boundary
 
 ---
@@ -19893,7 +19893,7 @@ index 029d198f0c3..71ca5e4ab81 100644
 From 9ea71f601b3a52a70aa62c81b012ae0d2266f3ce Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Sun, 6 Sep 2026 22:26:38 -0500
-Subject: [PATCH 114/159] Add guarded global World distance experiment and
+Subject: [PATCH 114/161] Add guarded global World distance experiment and
  native counters
 
 ---
@@ -20132,7 +20132,7 @@ index 695ee8fc981..edd1a850c17 100644
 From b0540e36189cf799bd13d0b5796dc19a9d8e243a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 01:30:47 -0500
-Subject: [PATCH 115/159] Extend guarded World distance trials to 3x and
+Subject: [PATCH 115/161] Extend guarded World distance trials to 3x and
  12-section lead
 
 ---
@@ -20187,7 +20187,7 @@ index 607654c5be6..54cc53a28d1 100644
 From aef6d4465cd94018a641aa5edc2ab83295bfccaf Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 03:11:08 -0500
-Subject: [PATCH 116/159] Batch scattered CPU framebuffer writes with an
+Subject: [PATCH 116/161] Batch scattered CPU framebuffer writes with an
  ordered masked GPU copy
 
 ---
@@ -20494,7 +20494,7 @@ index edd1a850c17..5d0cc257d8c 100644
 From 5bb965763b1648fa023f12eaf8fb251f371a0994 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 04:06:08 -0500
-Subject: [PATCH 117/159] Preserve neutral wheel commands before gain and
+Subject: [PATCH 117/161] Preserve neutral wheel commands before gain and
  driver limiting
 
 ---
@@ -20589,7 +20589,7 @@ index 77c5047c3bc..05aa3be16ad 100644
 From bf8821358d4afb0b3e776c64c0c6d5be1f309218 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 15:11:33 -0500
-Subject: [PATCH 118/159] Read USA drivetrain state for automatic gear and
+Subject: [PATCH 118/161] Read USA drivetrain state for automatic gear and
  game-derived arcade RPM
 
 ---
@@ -20802,7 +20802,7 @@ index 5d0cc257d8c..a1ad223d724 100644
 From b0c4252940d08e79cfecb59383d4fd29babac46f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 16:33:53 -0500
-Subject: [PATCH 119/159] Read game drivetrain telemetry for World, Off Road
+Subject: [PATCH 119/161] Read game drivetrain telemetry for World, Off Road
  and Exotica
 
 ---
@@ -21155,7 +21155,7 @@ index 05aa3be16ad..7c376cbb3ad 100644
 From ae32731b0f52b2bb8bd3c8225b84c0a0d7e2cab2 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 16:43:07 -0500
-Subject: [PATCH 120/159] Release World and Exotica force outside active
+Subject: [PATCH 120/161] Release World and Exotica force outside active
  driving
 
 ---
@@ -21393,7 +21393,7 @@ index 7c376cbb3ad..88fdf6e30fd 100644
 From f2e5b63dd72ebb26d474b09282756021ab55a144 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 16:44:40 -0500
-Subject: [PATCH 121/159] Clear held HUD speed outside verified World and Off
+Subject: [PATCH 121/161] Clear held HUD speed outside verified World and Off
  Road gameplay
 
 ---
@@ -21430,7 +21430,7 @@ index 1e35c665cd4..638abf1207a 100644
 From b9bef299f6d4c94fe18e835e8de2d57677117bf5 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 23:05:51 -0500
-Subject: [PATCH 122/159] Restore World motor feedback outside active driving
+Subject: [PATCH 122/161] Restore World motor feedback outside active driving
 
 ---
  src/mame/midway/midvunit.cpp   | 5 ++---
@@ -21474,7 +21474,7 @@ index 638abf1207a..a6e668f991d 100644
 From 97600e9597e46ae3c926164e01c1926340fc759d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Mon, 7 Sep 2026 23:24:08 -0500
-Subject: [PATCH 123/159] Normalize Exotica cabinet motor polarity
+Subject: [PATCH 123/161] Normalize Exotica cabinet motor polarity
  independently of wheel direction
 
 ---
@@ -21608,7 +21608,7 @@ index 88fdf6e30fd..b15092a209a 100644
 From 44c3494d6af372d27612f330b86c8001b8c2535f Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 01:10:06 -0500
-Subject: [PATCH 124/159] Expose guarded native cheat metadata and commands to
+Subject: [PATCH 124/161] Expose guarded native cheat metadata and commands to
  Lua
 
 ---
@@ -21683,7 +21683,7 @@ index d0c01053c55..e6b5f3ba9ef 100644
 From dae2569f79347d1260ecdf31a77b3afefd4e4721 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 02:10:06 -0500
-Subject: [PATCH 125/159] Support guarded global distance trials in Cruis'n
+Subject: [PATCH 125/161] Support guarded global distance trials in Cruis'n
  World 2.5
 
 ---
@@ -21856,7 +21856,7 @@ index 5520e11cc31..f82d2cfb462 100644
 From 8b151aa9c2f27d64c80f77b73d680d941e6b9532 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 02:51:26 -0500
-Subject: [PATCH 126/159] Add guarded USA global projection and residency trial
+Subject: [PATCH 126/161] Add guarded USA global projection and residency trial
 
 ---
  src/mame/midway/cruisn/usa_distance.h |  49 +++++++++++++
@@ -22093,7 +22093,7 @@ index c9541ee7af5..fdac95c0f0c 100644
 From 6a2b7ae93fa9c51606ede096c44c72af5634a4c9 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 04:52:04 -0500
-Subject: [PATCH 127/159] Add opt-in Exotica CPU sphere visibility controls
+Subject: [PATCH 127/161] Add opt-in Exotica CPU sphere visibility controls
 
 ---
  src/mame/midway/cruisn/exotica_visibility.h |  57 +++++++++
@@ -22332,7 +22332,7 @@ index b15092a209a..f665fb337c0 100644
 From 781af835091d6d994181edb0e456e9164499b938 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 05:46:55 -0500
-Subject: [PATCH 128/159] Add guarded global Off Road distance adapter without
+Subject: [PATCH 128/161] Add guarded global Off Road distance adapter without
  guest writes
 
 ---
@@ -22667,7 +22667,7 @@ index fdac95c0f0c..f65849ab6a0 100644
 From 12e9ea6a3742643f5bbc57e7dc07073177594cd6 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 05:51:52 -0500
-Subject: [PATCH 129/159] Emit Off Road counters once per emulated frame
+Subject: [PATCH 129/161] Emit Off Road counters once per emulated frame
 
 ---
  src/mame/midway/midvunit.cpp | 5 +++++
@@ -22723,7 +22723,7 @@ index d8d0049d89d..2ea98c8ede9 100644
 From 7ffdd42ad0257a06b66d1c4622e9b23eb47aa468 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 16:30:23 -0500
-Subject: [PATCH 130/159] Prototype host-only pending scenery drawing for World
+Subject: [PATCH 130/161] Prototype host-only pending scenery drawing for World
  2.4
 
 ---
@@ -23097,7 +23097,7 @@ index f65849ab6a0..abce4fd59ec 100644
 From 480206c670cf212e61e3419823770c6565d1daf3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 16:37:21 -0500
-Subject: [PATCH 131/159] Restrict host scenery resource reads to mapped ROM
+Subject: [PATCH 131/161] Restrict host scenery resource reads to mapped ROM
 
 ---
  src/mame/midway/cruisn/world_host_scenery.h | 4 +++-
@@ -23125,7 +23125,7 @@ index 3d97826346b..d0512fe84ce 100644
 From cfba021b59efede8c1353ba4587b0e509ba69887 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 17:00:21 -0500
-Subject: [PATCH 132/159] Extend host scenery projection without changing guest
+Subject: [PATCH 132/161] Extend host scenery projection without changing guest
  distance or residency
 
 ---
@@ -23248,7 +23248,7 @@ index 71dc88ac79a..e3e98ce4b85 100644
 From d52b8f95d92e8e9419fb895cdce475152fa2e905 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 17:06:35 -0500
-Subject: [PATCH 133/159] Guard host scenery LOD headers and overflowing object
+Subject: [PATCH 133/161] Guard host scenery LOD headers and overflowing object
  links
 
 ---
@@ -23284,7 +23284,7 @@ index 5f1d00a4cc9..92e49ac18c6 100644
 From 4ac6a84b51b4ae549399c81ffe1b9346e2c04758 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Tue, 8 Sep 2026 21:56:03 -0500
-Subject: [PATCH 134/159] Add staged live Cheats to both GPU pause menus
+Subject: [PATCH 134/161] Add staged live Cheats to both GPU pause menus
 
 ---
  src/devices/video/zeus2.cpp               | 109 ++++++++++++++++------
@@ -23882,7 +23882,7 @@ index abce4fd59ec..1c3ca3bf125 100644
 From c1ef52c2dccfd9ccc2f4a9e0e6f30516b17036b3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 02:01:25 -0500
-Subject: [PATCH 135/159] Measure host scenery phases and support summary
+Subject: [PATCH 135/161] Measure host scenery phases and support summary
  tracing
 
 ---
@@ -24008,7 +24008,7 @@ index e3e98ce4b85..8ef5054fcfe 100644
 From de1d6333cd9918305d9b1d300c357d2dca5a3abf Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 03:21:00 -0500
-Subject: [PATCH 136/159] Draw upcoming World sections from host-owned
+Subject: [PATCH 136/161] Draw upcoming World sections from host-owned
  descriptors
 
 ---
@@ -24362,7 +24362,7 @@ index 8ef5054fcfe..e44a875c0c5 100644
 From 5214d945b28c5c51a74f1d2ad5569324af2f2279 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 04:26:27 -0500
-Subject: [PATCH 137/159] Isolate host scenery coverage and vertex batching for
+Subject: [PATCH 137/161] Isolate host scenery coverage and vertex batching for
  diagnostics
 
 ---
@@ -24608,7 +24608,7 @@ index 1c3ca3bf125..50be50914ee 100644
 From 94368ee939ec305bd201fe061d2eed06384380f3 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 09:00:43 -0500
-Subject: [PATCH 138/159] Drain requested diagnostic captures before machine
+Subject: [PATCH 138/161] Drain requested diagnostic captures before machine
  teardown
 
 ---
@@ -24668,7 +24668,7 @@ index 50be50914ee..b5cb63f3031 100644
 From 8bc9de136e6c24121d61bc1a991805c5c3438a2a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 10:32:44 -0500
-Subject: [PATCH 139/159] Decode host road templates without changing emulated
+Subject: [PATCH 139/161] Decode host road templates without changing emulated
  CPU timing
 
 ---
@@ -25018,7 +25018,7 @@ index a3ad179a1d6..fe71cfc6d1a 100644
 From f027edd9d8654c45acf6ee81e83036b6fcf5aa4e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 11:41:00 -0500
-Subject: [PATCH 140/159] Add separately guarded World 2.5 host scenery layout
+Subject: [PATCH 140/161] Add separately guarded World 2.5 host scenery layout
 
 ---
  .../midway/cruisn/world_future_sections.h     | 35 ++++++++++++++-----
@@ -25275,7 +25275,7 @@ index fe71cfc6d1a..3cc453aba4d 100644
 From 5a5e11d9ab7eda0ef8ae467ee325aed8d482d727 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 11:51:12 -0500
-Subject: [PATCH 141/159] Wait for World 2.5 track initialization before host
+Subject: [PATCH 141/161] Wait for World 2.5 track initialization before host
  scenery
 
 ---
@@ -25330,7 +25330,7 @@ index 7174f4a9501..2691fb644fa 100644
 From 4e565971954171798caf7bc633c9a57cb3f23b04 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 13:57:12 -0500
-Subject: [PATCH 142/159] Add bounded USA host pending scenery without guest
+Subject: [PATCH 142/161] Add bounded USA host pending scenery without guest
  activation
 
 ---
@@ -25761,7 +25761,7 @@ index 3cc453aba4d..d069fd7cbc8 100644
 From eee9fc5dd29ff4aa17b235393136a5a6b0c929ec Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 15:21:20 -0500
-Subject: [PATCH 143/159] Add guarded cached USA future scenery with live
+Subject: [PATCH 143/161] Add guarded cached USA future scenery with live
  palette ownership
 
 ---
@@ -26245,7 +26245,7 @@ index d069fd7cbc8..c00f0c28881 100644
 From 439c5f1ab0acaa60db01d4de401d1e27ede38eb2 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 15:41:52 -0500
-Subject: [PATCH 144/159] Cache immutable USA scenery models without caching
+Subject: [PATCH 144/161] Cache immutable USA scenery models without caching
  live materials
 
 ---
@@ -26376,7 +26376,7 @@ index c00f0c28881..beb29631319 100644
 From cf58c40632cda7ead63087ee83137cf1819e38a5 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 15:52:20 -0500
-Subject: [PATCH 145/159] Precompute USA host reciprocal tail without changing
+Subject: [PATCH 145/161] Precompute USA host reciprocal tail without changing
  projection values
 
 ---
@@ -26447,7 +26447,7 @@ index 6e8e7d5378a..a15260aeb33 100644
 From 4a507c5f3724704b000a52a33a07756cf015202d Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 18:08:21 -0500
-Subject: [PATCH 146/159] Add explicit Off Road host scenery adapter with
+Subject: [PATCH 146/161] Add explicit Off Road host scenery adapter with
  checked future sections
 
 ---
@@ -27117,7 +27117,7 @@ index beb29631319..e7f52cab101 100644
 From eb17cf2dd0483e9e08907eb994643570977b289b Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 19:15:47 -0500
-Subject: [PATCH 147/159] Capture bounded Zeus model operands and exact quad
+Subject: [PATCH 147/161] Capture bounded Zeus model operands and exact quad
  ownership
 
 ---
@@ -27254,7 +27254,7 @@ index e5e22609ffd..768dd20c82c 100644
 From 9136388a0266cd73d497e10b9368f63c5b8f1de7 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 21:20:24 -0500
-Subject: [PATCH 148/159] video/zeus2: isolate upstream depth and blend trials
+Subject: [PATCH 148/161] video/zeus2: isolate upstream depth and blend trials
 
 Add explicit Exotica diagnostic policy bits for mamedev/mame#16094 at 54b7ec0720e1. Preserve legacy behavior when absent, version capture metadata, and carry the depth floor into the enhanced GL path. No defaults or wheel policy changes.
 ---
@@ -27434,7 +27434,7 @@ index 00000000000..522023e7c0e
 From edb517392f82b14646736c47f12519bf28900b9c Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 21:24:01 -0500
-Subject: [PATCH 149/159] midzeus: clarify Exotica force and shifter polarity
+Subject: [PATCH 149/161] midzeus: clarify Exotica force and shifter polarity
  DIP
 
 Backport the label from mamedev/mame#16057; preserve the mask, defaults and motor/steering behavior. Normalize the generated shader header trailing newline.
@@ -27472,7 +27472,7 @@ index f665fb337c0..04738b22add 100644
 From f537f74ddbf5f93cfb0daa23c7a26c30b482cbbb Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 22:13:01 -0500
-Subject: [PATCH 150/159] Guard Zeus pending palette rows behind a diagnostic
+Subject: [PATCH 150/161] Guard Zeus pending palette rows behind a diagnostic
  legacy control
 
 ---
@@ -27601,7 +27601,7 @@ index 00000000000..f13ac2a68bc
 From 5a80a77e589bfac396208bfb153e741c766cfac4 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 22:45:54 -0500
-Subject: [PATCH 151/159] Drain queued Zeus diagnostic captures before renderer
+Subject: [PATCH 151/161] Drain queued Zeus diagnostic captures before renderer
  teardown
 
 ---
@@ -27662,7 +27662,7 @@ index c1a0aa8b470..9b4282af2fa 100644
 From c527bbf4792533b587d8d48692d69ca112b0fc1e Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Wed, 9 Sep 2026 23:34:05 -0500
-Subject: [PATCH 152/159] zeus2: isolate full-page margin clears for stale
+Subject: [PATCH 152/161] zeus2: isolate full-page margin clears for stale
  depth diagnosis
 
 ---
@@ -27775,7 +27775,7 @@ index 00000000000..01a9d65549c
 From 2b55a1d7947e178406b02ed9b876f97073116b96 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 10 Sep 2026 00:00:23 -0500
-Subject: [PATCH 153/159] zeus2: trial structural panorama continuation beyond
+Subject: [PATCH 153/161] zeus2: trial structural panorama continuation beyond
  original margins
 
 ---
@@ -28027,7 +28027,7 @@ index 00000000000..8df40fbb955
 From 6864d3c6cde623fd4dc87b0b77d309ebe3c70864 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 10 Sep 2026 00:55:32 -0500
-Subject: [PATCH 154/159] Fix Zeus screenshot readback row alignment
+Subject: [PATCH 154/161] Fix Zeus screenshot readback row alignment
 
 ---
  src/devices/video/zeus2.cpp | 3 +++
@@ -28054,7 +28054,7 @@ index 3091e33c76e..d06c19bb579 100644
 From e3e8d23de5b215eec15a91ba7cdad1df19a7f7f4 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 10 Sep 2026 01:04:38 -0500
-Subject: [PATCH 155/159] Trace Zeus consumer phase and screenshot timing
+Subject: [PATCH 155/161] Trace Zeus consumer phase and screenshot timing
 
 ---
  src/devices/video/zeus2.cpp | 58 ++++++++++++++++++++++++++++++++++++-
@@ -28192,7 +28192,7 @@ index d06c19bb579..469bbcb06ba 100644
 From 34b24a2fef31469e96fa55882c19527bb42cc171 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 10 Sep 2026 01:08:08 -0500
-Subject: [PATCH 156/159] Add bounded Zeus consumer stall diagnostics
+Subject: [PATCH 156/161] Add bounded Zeus consumer stall diagnostics
 
 ---
  src/devices/video/zeus2.cpp | 36 ++++++++++++++++++++++++++++++++++--
@@ -28275,7 +28275,7 @@ index 469bbcb06ba..2b6c14007ae 100644
 From 77a33a4b1e744c07f1783cb6375b7cab12bcdcd6 Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 10 Sep 2026 01:29:00 -0500
-Subject: [PATCH 157/159] Write diagnostic screenshots as checked bulk BMPs in
+Subject: [PATCH 157/161] Write diagnostic screenshots as checked bulk BMPs in
  both renderers
 
 ---
@@ -28455,7 +28455,7 @@ index b5cb63f3031..0ee307ed4ed 100644
 From 515ba93691df71b35712dd10db0967c1b8fc6f4a Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 10 Sep 2026 01:44:24 -0500
-Subject: [PATCH 158/159] Drain bounded screenshot jobs off the render thread
+Subject: [PATCH 158/161] Drain bounded screenshot jobs off the render thread
  with explicit failure receipts
 
 ---
@@ -28842,7 +28842,7 @@ index 0ee307ed4ed..eeb6d291e82 100644
 From b3d82b67257ad8fe8738bfc4e0240647315318fd Mon Sep 17 00:00:00 2001
 From: d-b-c-e <anthony.mason1@gmail.com>
 Date: Thu, 10 Sep 2026 01:52:56 -0500
-Subject: [PATCH 159/159] Gate bounded lossless screenshot pacing for offline
+Subject: [PATCH 159/161] Gate bounded lossless screenshot pacing for offline
  captures
 
 ---
@@ -29038,6 +29038,1272 @@ index eeb6d291e82..efabad53ad5 100644
  		if (capture_stats.failed || capture_stats.rejected)
  			std::fprintf(stderr, "MIDV screenshot writer failed: captures incomplete\n");
  	}
+-- 
+2.55.0.windows.3
+
+
+From a56142283b9f5deb45c4f7f59eff12b3ce1a9891 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Thu, 10 Sep 2026 03:45:19 -0500
+Subject: [PATCH 160/161] Observe bounded Exotica host scenes at original model
+ submissions
+
+---
+ src/devices/video/zeus2.cpp                   |   1 +
+ src/devices/video/zeus2.h                     |   6 +
+ .../midway/cruisn/exotica_future_sections.h   | 168 ++++++++++++
+ src/mame/midway/cruisn/exotica_scene.h        | 161 ++++++++++++
+ .../midway/cruisn/exotica_scene_capture.h     |  36 +++
+ src/mame/midway/cruisn/exotica_state.h        |  82 ++++++
+ src/mame/midway/cruisn/exotica_transform.h    |  54 ++++
+ src/mame/midway/cruisn/zeus_model.h           | 141 +++++++++++
+ src/mame/midway/cruisn/zeus_state.h           | 101 ++++++++
+ src/mame/midway/midzeus.cpp                   | 239 ++++++++++++++++++
+ 10 files changed, 989 insertions(+)
+ create mode 100644 src/mame/midway/cruisn/exotica_future_sections.h
+ create mode 100644 src/mame/midway/cruisn/exotica_scene.h
+ create mode 100644 src/mame/midway/cruisn/exotica_scene_capture.h
+ create mode 100644 src/mame/midway/cruisn/exotica_state.h
+ create mode 100644 src/mame/midway/cruisn/exotica_transform.h
+ create mode 100644 src/mame/midway/cruisn/zeus_model.h
+ create mode 100644 src/mame/midway/cruisn/zeus_state.h
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 62f95cef707..134beeee5d2 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -3114,6 +3114,7 @@ bool zeus2_device::zeus2_fifo_process(const uint32_t *data, int numwords)
+ 
+ void zeus2_device::zeus2_draw_model(uint32_t baseaddr, uint16_t count, int logit)
+ {
++	if (m_midz_model_observer) m_midz_model_observer(baseaddr,count,uint32_t(m_yScale));
+ 	midz_model_rec captured;
+ 	std::vector<uint32_t> captured_words;
+ 	const bool capture_model = s_cap_models && midz_cap;
+diff --git a/src/devices/video/zeus2.h b/src/devices/video/zeus2.h
+index e67110d0fad..1df07eb415b 100644
+--- a/src/devices/video/zeus2.h
++++ b/src/devices/video/zeus2.h
+@@ -14,6 +14,7 @@
+ #include "video/poly.h"
+ 
+ #include "video/rgbutil.h"
++#include <functional>
+ 
+ 
+ /*************************************
+@@ -142,6 +143,10 @@ public:
+ 	void midz_cap_clear(uint32_t addr, uint32_t numPixels, uint32_t color, int32_t depth);
+ 	void midz_capture_framewrite();
+ 	void midz_wave_dirty(uint32_t addr41);
++	// Optional read-only driver observation before an original model executes.
++	// No observer is installed in ordinary launches.
++	void set_midz_model_observer(std::function<void(uint32_t,uint32_t,uint32_t)> observer)
++	{ m_midz_model_observer=std::move(observer); }
+ 
+ 	uint32_t m_zeusbase[0x80];
+ 	uint32_t m_renderRegs[0x50];
+@@ -190,6 +195,7 @@ protected:
+ 	virtual void device_stop() override ATTR_COLD;
+ 
+ private:
++	std::function<void(uint32_t,uint32_t,uint32_t)> m_midz_model_observer;
+ 	TIMER_CALLBACK_MEMBER(int_timer_callback);
+ 	void zeus2_register32_w(offs_t offset, uint32_t data, int logit);
+ 	void zeus2_register_update(offs_t offset, uint32_t oldval, int logit);
+diff --git a/src/mame/midway/cruisn/exotica_future_sections.h b/src/mame/midway/cruisn/exotica_future_sections.h
+new file mode 100644
+index 00000000000..96890fbf145
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_future_sections.h
+@@ -0,0 +1,168 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Exotica 2.4 render descriptors before activation; no guest writes or drawing.
++#pragma once
++#include "world_future_sections.h" // Shared independently checked C31 yaw polynomial.
++
++namespace cruisn { namespace exotica_future {
++using scenery::Float;
++struct Section
++{
++    uint32_t entry=0,index=0,cursor=0,heading=0x80000000,section_heading=0x80000000,gap=0,flags=0;
++    std::array<uint32_t,3> position{};
++    std::array<uint32_t,9> matrix{};
++    std::array<uint32_t,5> header{};
++    bool initial=false;
++};
++struct Source
++{
++    uint32_t entry=0,source=0,index=0,ordinal=0;
++    bool supported=false,future=false;
++    std::array<uint32_t,32> words{};
++};
++struct Result
++{
++    bool pretrack=false,partial=false;
++    uint32_t frontier=0;
++    std::vector<Section> sections;
++    std::vector<Source> sources;
++};
++inline bool span(uint32_t p,uint32_t n)
++{return p>=0xa00000 && n>0 && n<=65536 && uint64_t(p)+n<=0x1000000;}
++
++template<class Read> bool code_matches(Read read)
++{
++    const uint32_t code[][2]={{0xb7e8,0x082e0597},{0xb804,0x08442501},{0xb817,0x152e0597},
++        {0xb842,0x084a2501},{0xb859,0x082267c4},{0xb86f,0x14420416},{0xb878,0x08402501},
++        {0xb8cb,0x0840041d},{0xbc36,0x08400202},{0xa032,0x0221e67c},{0xa025,0x0221e67d},
++        {0x92e8,0x24e02122},{0x92f8,0xc00201c1},{0xb840,0x1420059b},{0xbbaa,0x80000},{0xbbb1,0x4000000}};
++    for(const auto &r:code)if(read(r[0])!=r[1])return false;
++    return true;
++}
++inline std::array<Float,3> transform(const std::array<Float,3> &v,const std::array<uint32_t,9> &matrix)
++{
++    std::array<Float,9> m;for(unsigned i=0;i<9;++i)m[i]=Float::load(matrix[i]);
++    return {{((v[0]*m[0]+v[1]*m[1])+v[2]*m[2]).reload(),
++        ((v[0]*m[3]+v[1]*m[4])+v[2]*m[5]).reload(),
++        (v[1]*m[7]+(v[2]*m[8]+v[0]*m[6])).reload()}};
++}
++template<class Read> bool binding(Read read,uint32_t token,uint32_t table,uint32_t &value)
++{
++    if(table>0x3fff0)return false;
++    const uint32_t base=read(table+(token>>28)),index=token&0x3fff;
++    if(!span(base,index+1))return false;
++    value=read(base+index);return true;
++}
++inline bool descriptor(const std::array<uint32_t,6> &d,const std::array<uint32_t,6> &model,
++    const Section &section,const std::array<uint32_t,11> &constants,const std::array<uint32_t,7> &trig,
++    const std::array<uint32_t,2> &materials,Source &out)
++{
++    out.supported=false;out.words={};const uint32_t type=d[5]&0xf00;
++    if(d[0]>>24 || type==0xa00 || type==0xf00)return true;
++    if(!span(d[0],6))return false;
++    std::array<Float,3> v;
++    for(unsigned i=0;i<3;++i)
++    {
++        v[i]=Float::integer(int32_t(d[i+1]));
++        if(section.flags&1)v[i]=v[i]-Float::load(section.header[i]);
++        v[i]=v[i].reload();
++    }
++    const auto position=transform(v,section.matrix);
++    auto heading=Float::load(d[4])+Float::load(section.heading);
++    if(section.flags&1)heading=heading-Float::load(section.header[3])+Float::load(0x01491000);
++    const auto rotation=(heading-Float::load(section.section_heading)).e==-128?
++        section.matrix:world_future::yaw(heading,trig);
++    auto &o=out.words;
++    for(unsigned i=0;i<3;++i)o[1+i]=(position[i]+Float::load(section.position[i])).store();
++    for(unsigned i=0;i<9;++i)o[5+i]=rotation[i];
++    o[14]=d[5]&0xfff;o[15]=model[5]|((d[5]&0xf000)<<4)|0x30;
++    o[16]=2;o[17]=d[0];o[18]=materials[0];o[19]=materials[1];o[21]=model[1];
++    o[22]=(((d[5]&0xf000)<<4)&constants[0])?0x077e0000:heading.store();
++    uint32_t offset=(d[5]>>26)&63;if(section.flags&1)offset=section.gap-offset;
++    o[29]=offset+section.cursor;
++    if(!section.initial && !(o[15]&0x4900)){o[15]|=0x100|constants[7];o[16]|=0x78080000;}
++    if(type==0xb00 || type==0xc00)
++    {
++        const unsigned map[][2]={{8,1},{16,2},{32,8},{64,9},{128,10}};
++        for(const auto &item:map)if(section.flags&item[0])o[15]|=constants[item[1]];
++        const uint32_t tag=d[5]&255;o[24]=((section.flags&1)?255-tag:tag)|(section.index<<8);
++    }
++    out.supported=true;return true;
++}
++
++// partial must cover the entire loader transaction, through its final position
++// write at B840. It is not inferred from the current CPU PC after a coroutine yields.
++// A mismatch in frontier scalars rejects the entire result without guest changes.
++template<class Read> bool build(Read read,Result &result,bool partial=false)
++{
++    result=Result{};Result out;
++    if(!code_matches(read))return false;
++    const uint32_t entry=read(0x597),number=read(0x590),cursor=read(0x598);
++    if(!entry && !number && !cursor){out.pretrack=true;result=out;return true;}
++    const uint64_t table=uint64_t(read(0xe9))+read(0x1fbc);
++    if(table>UINT32_MAX || !span(uint32_t(table),1))return false;
++    const uint32_t track=read(uint32_t(table));
++    if(!span(track,3) || entry<track+3 || (entry-track-3)%4)return false;
++    std::array<uint32_t,7> trig;for(unsigned i=0;i<7;++i)trig[i]=read(0xe991+i);
++    std::array<uint32_t,11> constants;for(unsigned i=0;i<11;++i)constants[i]=read(0xbbaa+i);
++    std::array<uint32_t,3> position={{0x80000000,0x80000000,0x80000000}};
++    uint32_t heading=0x80000000,offset=0;bool matched=false,ended=false;
++    auto frontier_matches=[&](uint32_t index){
++        if(offset!=cursor || number!=index*256 || heading!=read(0x59c))return false;
++        for(unsigned i=0;i<3;++i)if(position[i]!=read(0x599+i))return false;
++        return true;};
++    for(uint32_t index=0;index<128;++index)
++    {
++        const uint32_t pointer=track+3+4*index;if(!span(pointer,4))return false;
++        std::array<uint32_t,4> lists;for(unsigned i=0;i<4;++i)lists[i]=read(pointer+i);
++        if(std::all_of(lists.begin(),lists.end(),[](uint32_t x){return x==UINT32_MAX;}))
++        {ended=true;if(pointer==entry && !partial)matched=frontier_matches(index);break;}
++        if(lists[0]<4 || !span(lists[0]-4,5))return false;
++        Section section;section.entry=pointer;section.index=index;section.cursor=offset;
++        section.position=position;section.heading=heading;section.flags=lists[3];section.initial=index<2;
++        for(unsigned i=0;i<5;++i)section.header[i]=read(lists[0]-4+i);
++        section.gap=(section.header[4]>>16)&255;
++        auto angle=Float::load(heading);
++        if(section.flags&1)angle=angle-Float::load(section.header[3])+Float::load(0x01491000);
++        section.section_heading=angle.store();section.matrix=world_future::yaw(angle,trig);
++        out.sections.push_back(section);
++        if(pointer==entry)matched=frontier_matches(index);
++        for(unsigned list_index=0;list_index<3;++list_index)
++        {
++            const uint32_t base=lists[list_index];if(!base)continue;
++            if(!span(base,1))return false;
++            const uint64_t count=uint64_t(list_index?read(base):read(base)&65535)+1;
++            if(count>4096 || !span(base+1,uint32_t(6*count)) || out.sources.size()+count>32768)return false;
++            for(uint32_t ordinal=0;ordinal<count;++ordinal)
++            {
++                Source source;source.entry=pointer;source.source=base+1+6*ordinal;
++                source.index=index;source.ordinal=ordinal;source.future=uint64_t(pointer)>=uint64_t(entry)+4*partial;
++                std::array<uint32_t,6> d;for(unsigned i=0;i<6;++i)d[i]=read(source.source+i);
++                if(!(d[0]>>24) && (d[5]&0xf00)!=0xa00 && (d[5]&0xf00)!=0xf00)
++                {
++                    if(!span(d[0],6))return false;
++                    std::array<uint32_t,6> model;for(unsigned i=0;i<6;++i)model[i]=read(d[0]+i);
++                    const uint32_t material=model[2],override_index=(d[5]>>16)&1023;
++                    std::array<uint32_t,2> bindings;
++                    if(!binding(read,material&0xf0003fff,read(0xe67c),bindings[1]))return false;
++                    const uint32_t bank=read(0xf5);if(bank>15)return false;
++                    const uint32_t token=override_index?(override_index|(bank<<28)):
++                        (material&0xf0000000)|((material&0x0fffc000)>>14);
++                    if(!binding(read,token,read(0xe67d),bindings[0]))return false;
++                    Section context=section;if(list_index==2)context.flags&=~1U;
++                    if(!descriptor(d,model,context,constants,trig,bindings,source))return false;
++                }
++                out.sources.push_back(source);
++            }
++        }
++        std::array<Float,3> delta;
++        for(unsigned i=0;i<3;++i){delta[i]=Float::load(section.header[i]);if(section.flags&1)delta[i]=-delta[i];}
++        const auto advance=transform(delta,section.matrix);
++        for(unsigned i=0;i<3;++i)position[i]=(advance[i]+Float::load(position[i])).store();
++        heading=((section.flags&1)?Float::load(heading)-Float::load(section.header[3]):
++            Float::load(section.header[3])+Float::load(heading)).store();
++        offset+=section.gap+1;
++    }
++    if(!ended || !matched)return false;
++    out.frontier=entry;out.partial=partial;result=std::move(out);return true;
++}
++} }
+diff --git a/src/mame/midway/cruisn/exotica_scene.h b/src/mame/midway/cruisn/exotica_scene.h
+new file mode 100644
+index 00000000000..645b1254e9e
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_scene.h
+@@ -0,0 +1,161 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Bounded private Exotica scene assembly. No guest writes, FIFO or GPU calls.
++// This describes geometry/material requests; it does NOT certify live residency,
++// source eligibility, scene insertion, or handover to original game objects.
++#pragma once
++#include "exotica_future_sections.h"
++#include "exotica_transform.h"
++#include "exotica_state.h"
++#include "zeus_state.h"
++#include "zeus_model.h"
++#include <map>
++#include <set>
++
++namespace cruisn { namespace exotica_scene {
++struct Parameters
++{
++    uint32_t frame=0,far_limit=204800,multiplier=1,scale=0,render_policy=0;
++    float margin=0;
++    bool complete_fade=false;
++    std::array<uint32_t,3> camera{};
++    std::array<uint32_t,9> view{},alternate{};
++    exotica_state::Operands setup;
++    zeus_state::Context context;
++};
++struct Instance
++{
++    uint32_t entry=0,source=0,descriptor=0,base=0,count=0,band=0;
++    uint32_t palette=0,palette_control=0;
++    int32_t depth=0;
++    size_t first_quad=0,quad_count=0;
++};
++struct Result
++{
++    std::vector<Instance> instances;
++    std::vector<zeus_model::Quad> quads;
++    size_t selected=0,unsupported_transform=0,culled_distance=0;
++    size_t model_words_read=0,decoded_polygons=0,viewport_polygons=0;
++    float maximum_depth=0;
++};
++constexpr size_t max_sources=32768,max_instances=4096,max_quads=131072,max_model_words=4*1024*1024;
++
++// Every polygon must have an explicit format and texture base in its own model.
++// Private geometry must not borrow these from an unrelated original submission.
++inline bool explicit_texture(const std::vector<uint32_t> &words,uint32_t quad_size)
++{
++    bool format=false,texture=false;
++    for(size_t i=0;i<words.size();)
++    {
++        const auto *d=&words[i];const unsigned op=d[0]>>24,n=op==0x38?quad_size:2;
++        if(!n || n>words.size()-i)return false;
++        i+=n;
++        if(op==0 || op==0x22)format=true;
++        else if(op==0x36 && ((d[0]>>16)&127)==0x20 && d[1]>>24==5)texture=true;
++        else if(op==0x38 && (!format || !texture))return false;
++    }
++    return true;
++}
++
++inline bool intersects(const zeus_model::Quad &q,float margin)
++{
++    float left=q.vertices[0][0],right=left,top=q.vertices[0][1],bottom=top;
++    for(unsigned i=1;i<q.state[1];++i)
++    {
++        left=std::min(left,q.vertices[i][0]);right=std::max(right,q.vertices[i][0]);
++        top=std::min(top,q.vertices[i][1]);bottom=std::max(bottom,q.vertices[i][1]);
++    }
++    return right>=-margin && left<=512+margin && bottom>=0 && top<=400;
++}
++
++// Read supplies checked C32 words. ModelRead must copy exactly the requested
++// current WaveRAM words into owned storage, with bounds checked by the caller.
++// Select owns source eligibility; choosing every historical descriptor is not
++// safe for dynamic objects. Every call starts with a fresh, bounded model cache.
++template<class Read,class ModelRead,class Select>
++bool build(const std::vector<exotica_future::Source> &sources,const Parameters &p,
++    Read read,ModelRead model_read,Select select,Result &result)
++{
++    result=Result();
++    if(sources.size()>max_sources || p.far_limit!=204800 || p.multiplier<1 || p.multiplier>3 ||
++        !std::isfinite(p.margin) || p.margin<0 || p.margin>256 || p.render_policy || !zeus_state::valid(p.context))return false;
++    if(read(0x67da)!=p.far_limit || read(0x67db)!=p.scale)return false;
++    Result out;
++    std::map<std::pair<uint32_t,uint32_t>,std::vector<uint32_t>> cache;
++    std::set<std::pair<uint32_t,uint32_t>> identities;
++    for(const auto &s:sources)
++    {
++        if(!s.supported || !select(s))continue;
++        if(!exotica_future::span(s.entry,4) || !exotica_future::span(s.source,6) ||
++            !identities.emplace(s.entry,s.source).second)return false;
++        ++out.selected;const auto &o=s.words;uint32_t flags=o[15];
++        if(((flags&3)!=0 && (flags&3)!=3) || flags&0x80)
++        {++out.unsupported_transform;continue;}
++        std::array<uint32_t,3> position;std::array<uint32_t,9> rotation;
++        std::copy_n(o.begin()+1,3,position.begin());std::copy_n(o.begin()+5,9,rotation.begin());
++        exotica_transform::Prepared transform;
++        if(!exotica_transform::prepare(position,p.camera,p.view,rotation,p.alternate,flags,transform))return false;
++        const int32_t radius=int32_t(o[21]);const int64_t distance=int64_t(transform.depth)+radius;
++        if(radius<0 || radius>=10000000)return false;
++        if(transform.depth<=0 || distance>int64_t(p.far_limit)*p.multiplier)
++        {++out.culled_distance;continue;}
++        if(out.instances.size()>=max_instances || !exotica_future::span(o[17],6))return false;
++        const uint32_t descriptor=exotica_transform::select_model(o[17],read(o[17]),transform.depth);
++        if(!exotica_future::span(descriptor,6))return false;
++        const uint32_t base=read(descriptor+3),count=read(descriptor+4);
++        const uint64_t block=(base%1024)+((base>>16)%2048)*1024;
++        const size_t size=2*(size_t(count)+1);
++        if(!base || count>0xc800 || block*2+size>4*1024*1024)return false;
++        const auto key=std::make_pair(base,count);
++        auto found=cache.find(key);
++        if(found==cache.end())
++        {
++            if(size>max_model_words-out.model_words_read)return false;
++            std::vector<uint32_t> words;
++            if(!model_read(base,count,words) || words.size()!=size)return false;
++            out.model_words_read+=size;found=cache.emplace(key,std::move(words)).first;
++        }
++        auto operands=p.setup;operands.object=o;operands.cache.fill(UINT32_MAX);
++        if(p.complete_fade)flags&=~uint32_t(0x04000100);
++        operands.flags=flags;exotica_state::Result setup;
++        if(!exotica_state::setup(operands,setup))return false;
++        auto packet=std::move(setup.packet);
++        const auto placement=exotica_transform::packet(transform,p.scale,true);
++        packet.insert(packet.end(),placement.begin(),placement.end());
++        zeus_state::Result state;
++        if(!zeus_state::transition(p.context,{},packet,base,state))return false;
++        if(state.context.regs[0x40]!=0x0084003f ||
++            !explicit_texture(found->second,state.context.quad_size))return false;
++        zeus_model::Context context;
++        context.frame=p.frame;context.quad_size=state.context.quad_size;
++        context.texture=state.context.texture;context.yscale=state.context.yscale;
++        context.regs=state.context.regs;context.render=state.context.render;
++        context.matrix=state.context.matrix;
++        std::copy_n(state.context.translation.begin(),3,context.translation.begin());
++        // This initial assembler covers legacy policy only. A policy extension
++        // must be explicit and independently compared before use.
++        context.render_policy=0;
++        zeus_model::Result decoded;
++        if(!zeus_model::decode(found->second,context,decoded) || decoded.quads.size()>max_quads-out.quads.size())return false;
++        Instance instance;instance.entry=s.entry;instance.source=s.source;instance.descriptor=descriptor;
++        instance.base=base;instance.count=count;instance.depth=transform.depth;
++        instance.band=uint32_t((distance-1)/p.far_limit)+1;
++        instance.palette=state.context.palette;instance.palette_control=state.context.regs[0x40];
++        instance.first_quad=out.quads.size();instance.quad_count=decoded.quads.size();
++        for(const auto &q:decoded.quads)
++        {
++            if(intersects(q,p.margin))++out.viewport_polygons;
++            const int32_t bias=int32_t(q.state[10]);
++            for(unsigned i=0;i<q.state[1];++i)
++            {
++                const float depth=q.vertices[i][2]+float(std::max(bias,0));
++                if(!std::isfinite(depth) || depth>=2147483520.f)return false;
++                out.maximum_depth=std::max(out.maximum_depth,depth);
++            }
++        }
++        out.decoded_polygons+=decoded.polygons;
++        out.quads.insert(out.quads.end(),decoded.quads.begin(),decoded.quads.end());
++        out.instances.push_back(instance);
++    }
++    result=std::move(out);return true;
++}
++} }
+diff --git a/src/mame/midway/cruisn/exotica_scene_capture.h b/src/mame/midway/cruisn/exotica_scene_capture.h
+new file mode 100644
+index 00000000000..0a572e25b26
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_scene_capture.h
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Local-only scene evidence serialization. Contains no game resources.
++#pragma once
++#include "exotica_scene.h"
++namespace cruisn { namespace exotica_scene {
++template<class Values> void append_words(std::vector<uint32_t> &out,const Values &values)
++{out.insert(out.end(),values.begin(),values.end());}
++inline std::vector<uint32_t> parameter_words(const Parameters &p,uint32_t bank,bool partial)
++{
++    auto bits=[](float f){uint32_t w;std::memcpy(&w,&f,4);return w;};
++    std::vector<uint32_t> out={0x31534358,p.frame,p.multiplier,bits(p.margin),uint32_t(p.complete_fade),
++        bank,uint32_t(partial),p.scale,p.setup.palette_setup};
++    append_words(out,p.camera);append_words(out,p.view);append_words(out,p.alternate);
++    append_words(out,p.setup.constants);append_words(out,p.setup.commands);append_words(out,p.setup.programs);
++    for(const auto &b:p.setup.bodies)append_words(out,b);
++    out.push_back(uint32_t(p.setup.defaults.size()));append_words(out,p.setup.defaults);
++    const auto &c=p.context;
++    for(auto w:{c.quad_size,c.ucode,c.palette,c.texture,c.yscale,c.zoffset})out.push_back(w);
++    for(auto f:c.matrix)out.push_back(bits(f));
++    for(auto f:c.translation)out.push_back(bits(f));
++    for(auto f:c.light)out.push_back(bits(f));
++    append_words(out,c.regs);append_words(out,c.render);return out;
++}
++inline std::vector<std::array<uint32_t,11>> instance_words(const Result &scene)
++{
++    std::vector<std::array<uint32_t,11>> out;
++    for(const auto &s:scene.instances)out.push_back({{s.entry,s.source,s.descriptor,s.base,s.count,s.band,s.palette,s.palette_control,
++        uint32_t(s.depth),uint32_t(s.first_quad),uint32_t(s.quad_count)}});
++    return out;
++}
++inline uint64_t byte_hash(const void *data,size_t bytes)
++{
++    uint64_t h=UINT64_C(14695981039346656037);const auto *p=static_cast<const uint8_t *>(data);
++    for(size_t i=0;i<bytes;++i){h^=p[i];h*=UINT64_C(1099511628211);}return h;
++}
++} }
+diff --git a/src/mame/midway/cruisn/exotica_state.h b/src/mame/midway/cruisn/exotica_state.h
+new file mode 100644
+index 00000000000..7f6d88247c1
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_state.h
+@@ -0,0 +1,82 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Exotica2.4 CPU-side object setup. All operands/caches are private, no guest cycles.
++// The light branch inherits depth register15; this is not a self-contained context.
++#pragma once
++#include "scenery_c31.h"
++#include <vector>
++namespace cruisn { namespace exotica_state {
++struct Operands
++{
++    std::array<uint32_t,32> object{};
++    uint32_t flags=0,palette_setup=0;
++    std::array<uint32_t,3> cache{};
++    std::array<uint32_t,12> constants{};
++    std::array<uint32_t,46> commands{};
++    std::array<uint32_t,4> programs{};
++    std::array<std::array<uint32_t,4>,4> bodies{};
++    std::vector<uint32_t> defaults;
++};
++enum class Branch { Cached, Light, Fade, Flag400, Flag200, Default };
++struct Result
++{
++    std::vector<uint32_t> packet;
++    std::array<uint32_t,3> cache{};
++    Branch branch=Branch::Cached;
++    int program=-1;
++};
++inline bool setup(const Operands &a,Result &output)
++{
++    output=Result();Result r;r.cache=a.cache;
++    const auto c=[&](unsigned p){return a.constants[p-0x67d0];};
++    const auto w=[&](unsigned p){return a.commands[p-0xb479];};
++    if(a.defaults.empty() || a.defaults.size()>16 || !c(0x67d6) ||
++        w(0xb47b)!=0x32000000 || w(0xb47c)!=0x1c000000 ||
++        w(0xb481)!=0x05410000 || w(0xb482)!=0x05400000 || w(0xb493)!=0x05200000)return false;
++    for(const auto &b:a.bodies)if(b[0]!=0x05410000 || b[2]!=0x05400000)return false;
++    auto &v=r.packet;
++    const auto pointer=[&](uint32_t value){v.push_back(w(0xb493));v.push_back(value);};
++    const uint32_t flags=a.flags,key=(flags&c(0x67d2))|(a.object[16]&0xffff0000);
++    // Cache invalidation executes in 68D1's delay slots on both branch outcomes.
++    r.cache[2]=(flags&0x800)?0xffffffff:key;
++    if(key!=a.cache[2])
++    {
++        r.program=(flags&0x8000)?2:0;
++        if(flags&0x4000)r.program=1;
++        if((flags&c(0x67d6))==c(0x67d6))r.program=3;
++        if(a.programs[r.program]!=a.cache[1])
++        {
++            r.cache[1]=a.programs[r.program];v.push_back(w(0xb47b));
++            v.insert(v.end(),a.bodies[r.program].begin(),a.bodies[r.program].end());
++        }
++        const uint32_t high=a.object[16]>>16;
++        if((flags&c(0x67d6))==c(0x67d6))
++        {
++            using scenery::Float;
++            r.branch=Branch::Light;pointer(w(0xb4a1));pointer(w(0xb498));pointer(w(0xb4a6)|((high>>8)<<1));
++            v.push_back(w(0xb47c));v.push_back(Float::integer(10).store());
++            v.push_back((-Float::integer(5)*Float::load(0xff000000)).store());
++            v.push_back((Float::integer(high&255)*Float::load(c(0x67d7))).store());
++        }
++        else if(flags&0x100)
++        {
++            r.branch=Branch::Fade;pointer(w(0xb49d)|0x7ff);pointer(w(0xb4a0));
++            pointer(w(0xb4a4)|(high&255));pointer(w(0xb4a6)|((high>>8)<<1));
++            pointer(w((flags&8)?0xb499:0xb498));
++        }
++        else if(flags&0x400){r.branch=Branch::Flag400;pointer(c(0x67d3));pointer(w(0xb498));}
++        else if(flags&0x200){r.branch=Branch::Flag200;pointer(c(0x67d4));pointer(c(0x67d5));}
++        else
++        {
++            r.branch=Branch::Default;
++            for(auto value:a.defaults)pointer(value);
++            pointer(w(0xb49d));
++        }
++    }
++    if(a.object[18]!=a.cache[0])
++    {
++        r.cache[0]=a.object[18];
++        for(auto value:{w(0xb47b),w(0xb481),a.object[18],w(0xb482),a.palette_setup})v.push_back(value);
++    }
++    output=std::move(r);return true;
++}
++} }
+diff --git a/src/mame/midway/cruisn/exotica_transform.h b/src/mame/midway/cruisn/exotica_transform.h
+new file mode 100644
+index 00000000000..17f6f575ca3
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_transform.h
+@@ -0,0 +1,54 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Exotica 2.4 world/translation-only transforms; no CPU execution or game resources.
++// Caller supplies the actual rotation source (+5, or +0x8b for special flag0x80).
++// Material/matrix-reuse policy and special-model decoding are separate contracts.
++#pragma once
++#include "scenery_c31.h"
++#include <vector>
++namespace cruisn { namespace exotica_transform {
++using scenery::Float;
++struct Prepared
++{
++    std::array<uint32_t,9> matrix{};
++    std::array<uint32_t,3> translation{};
++    int32_t depth=0;
++};
++inline bool prepare(const std::array<uint32_t,3> &position,
++    const std::array<uint32_t,3> &camera,const std::array<uint32_t,9> &view,
++    const std::array<uint32_t,9> &rotation,const std::array<uint32_t,9> &alternate,
++    uint32_t flags,Prepared &result)
++{
++    result=Prepared();if((flags&3)!=0 && (flags&3)!=3)return false;
++    std::array<Float,3> delta;std::array<Float,9> m,r;
++    for(unsigned i=0;i<3;++i)delta[i]=Float::load(position[i])-Float::load(camera[i]);
++    for(unsigned i=0;i<9;++i){m[i]=Float::load(view[i]);r[i]=Float::load(rotation[i]);}
++    for(unsigned row=0;row<3;++row)
++    {
++        const auto x=row?delta[0].reload():delta[0];
++        const auto z=(flags&3)==3?Float::load(position[row]):
++            (delta[1]*m[row*3+1]+x*m[row*3])+delta[2].reload()*m[row*3+2];
++        result.translation[row]=z.store();if(row==2)result.depth=z.fix();
++    }
++    if(flags&0x80000)result.matrix=alternate;
++    else if(flags&2)result.matrix=rotation;
++    else for(unsigned row=0;row<3;++row)for(unsigned col=0;col<3;++col)
++        result.matrix[row*3+col]=((r[col]*m[row*3]+r[col+3]*m[row*3+1])+r[col+6]*m[row*3+2]).store();
++    return true;
++}
++inline std::vector<uint32_t> packet(const Prepared &prepared,uint32_t scale,bool update)
++{
++    std::vector<uint32_t> output(1,update?0x07000000:0x16000000);
++    const auto f=Float::load(scale);
++    if(update)for(auto w:prepared.matrix)output.push_back((Float::load(w)*f).store());
++    for(auto w:prepared.translation)output.push_back((Float::load(w)*f).store());
++    return output;
++}
++inline uint32_t select_model(uint32_t descriptor,uint32_t alternate,int32_t depth)
++{return alternate && depth>25000?alternate:descriptor;}
++inline bool matrix_update(uint32_t flags,uint32_t previous_alpha,uint32_t alpha)
++{
++    const auto previous=Float::load(previous_alpha),current=Float::load(alpha);
++    return !(flags&0x80000 && (previous-Float::integer(254)).e==-128) &&
++        ((previous-current).e!=-128 || !(flags&0x10));
++}
++} }
+diff --git a/src/mame/midway/cruisn/zeus_model.h b/src/mame/midway/cruisn/zeus_model.h
+new file mode 100644
+index 00000000000..4237b389b29
+--- /dev/null
++++ b/src/mame/midway/cruisn/zeus_model.h
+@@ -0,0 +1,141 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// copyright-holders:Aaron Giles
++// Read-only Zeus2 packed model/projection semantics adapted from MAME zeus2.cpp
++// and poly.h. Full BSD notice: harness/scenery_c31.py. No guest/game data.
++// Context is copied: model-local register writes never reach the real device.
++#pragma once
++#include <array>
++#include <vector>
++#include <cstdint>
++#include <cmath>
++#include <algorithm>
++#include <cstring>
++#include "zeus_render_policy.h"
++namespace cruisn { namespace zeus_model {
++struct Context
++{
++    uint32_t frame=0,quad_size=10,texture=0,yscale=0,render_policy=0;
++    std::array<float,9> matrix{};
++    std::array<float,3> translation{};
++    std::array<uint32_t,128> regs{};
++    std::array<uint32_t,80> render{};
++};
++struct Quad
++{
++    std::array<uint32_t,17> state{};
++    std::array<std::array<float,6>,8> vertices{};
++};
++static_assert(sizeof(Quad)==260,"Zeus projected record layout");
++struct Result
++{
++    std::vector<Quad> quads;
++    unsigned polygons=0,near_rejected=0,backfaces=0,near_clipped=0,register_writes=0;
++};
++inline float word_float(uint32_t value)
++{
++    float f;static_assert(sizeof(f)==sizeof(value),"float word size");
++    std::memcpy(&f,&value,sizeof(f));return f;
++}
++using Vertex=std::array<float,6>;
++inline int project(const uint32_t *d,uint32_t tex,const Context &ctx,Quad &quad)
++{
++    const int vs=int(ctx.regs[0x66])-0x8e,us=int(ctx.regs[0x68])-0x9d;
++    if(vs<-31 || vs>31 || us<-31 || us>31 || ctx.regs[0x6c]>30)return -1;
++    const float scale=std::ldexp(1.0f,vs),uvscale=std::ldexp(1.0f,us);
++    const float clip=word_float(ctx.regs[0x78]),ox=word_float(ctx.regs[0x6a]),oy=word_float(ctx.regs[0x6b]);
++    if(!std::isfinite(clip) || !std::isfinite(ox) || !std::isfinite(oy))return -1;
++    const int32_t xyz[4][3]={{int16_t(d[2]),int16_t(d[3]),int16_t(d[6])},
++        {int16_t(d[2]>>16),int16_t(d[3]>>16),int16_t(d[6]>>16)},
++        {int16_t(d[8]),int16_t(d[9]),int16_t(d[7])},
++        {int16_t(d[8]>>16),int16_t(d[9]>>16),int16_t(d[7]>>16)}};
++    const uint32_t uv[4][2]={{d[1]&1023,(d[1]>>16)&1023},{d[4]&1023,(d[4]>>10)&1023},
++        {(d[4]>>20)&1023,d[5]&1023},{(d[5]>>10)&1023,(d[5]>>20)&1023}};
++    std::array<Vertex,4> input{};
++    for(unsigned i=0;i<4;++i)
++    {
++        const float x=xyz[i][0]*scale,y=xyz[i][1]*scale,z=xyz[i][2]*scale;
++        for(unsigned row=0;row<3;++row)
++            input[i][row]=((x*ctx.matrix[3*row]+y*ctx.matrix[3*row+1])+z*ctx.matrix[3*row+2])+ctx.translation[row];
++        input[i][3]=(float(uv[i][0])*uvscale)*256.0f;
++        input[i][4]=(float(uv[i][1])*uvscale+float(tex>>16))*256.0f;
++    }
++    std::array<Vertex,8> output{};unsigned count=0;
++    Vertex previous=input[3];bool prior=previous[2]<clip,any_clipped=prior;
++    for(const auto &v:input)
++    {
++        const bool outside=v[2]<clip;any_clipped|=outside;
++        if(outside!=prior)
++        {
++            const float fraction=(clip-previous[2])/(v[2]-previous[2]);
++            if(count>=8)return -1;
++            for(unsigned j=0;j<6;++j)output[count][j]=previous[j]+fraction*(v[j]-previous[j]);
++            ++count;
++        }
++        if(!outside){if(count>=8)return -1;output[count++]=v;}
++        previous=v;prior=outside;
++    }
++    if(count<3)return 0;
++    for(unsigned i=0;i<count;++i)
++    {
++        auto &v=output[i];if(v[2]<0)v[2]=0;
++        const float ooz=float(1U<<ctx.regs[0x6c])/(v[2]+2.0f);
++        v[0]=v[0]*ooz+ox;v[1]=v[1]*ooz+oy;
++        v[2]*=4096.0f;v[3]*=ooz;v[4]*=ooz;v[5]=ooz;
++        for(auto value:v)if(!std::isfinite(value))return -1;
++    }
++    const auto &a=output[0],&b=output[1],&c=output[2];
++    if((a[1]-b[1])*(b[0]-c[0])-(a[0]-b[0])*(b[1]-c[1])>=0)return 1;
++    const uint32_t mode=tex&65535,type=mode&3;const bool alpha=type==2 && (mode&0x80);
++    const auto mat=zeus_policy::material(ctx.render_policy,mode,ctx.render[0x14],ctx.render[0x40],ctx.render[0xc]);
++    uint32_t flags=((mode&0xc00)==0xc00?1:0)|4;
++    if(ctx.render_policy&zeus_policy::DepthFloor)flags|=zeus_policy::QuadDepthFloor;
++    if(mat.blend)flags|=2;
++    if(mat.depth_test)flags|=8;
++    if(mat.depth_write)flags|=16;
++    if(ctx.render[0x14]&0xc00)flags|=32;
++    if(alpha)flags|=64;
++    if(type==2 && !alpha)flags|=128;
++    uint32_t width=0x20<<((mode>>2)&3);if(type==0)width>>=1;
++    const uint32_t bias=uint32_t(int32_t(ctx.render[0x15]<<8)>>8);
++    quad.state={{ctx.frame,count,tex,ctx.texture,width,ctx.regs[0]&0x7fff,
++        (mode&0x180)?0U:0x100U,mat.source_alpha,std::min(ctx.render[0xd],0x100U),
++        flags,bias,ctx.render[4],ctx.yscale,0,0,ctx.render[1]&0xfff,ctx.render[2]&0xfff}};
++    quad.vertices=output;return any_clipped?3:2;
++}
++inline bool decode(const std::vector<uint32_t> &words,Context context,Result &result)
++{
++    result=Result();
++    if(words.size()>2*(0xc800+1) || words.size()%2 || context.yscale>1 || context.render_policy>7 ||
++        (context.quad_size!=10 && context.quad_size!=12 && context.quad_size!=14))return false;
++    for(auto f:context.matrix)if(!std::isfinite(f))return false;
++    for(auto f:context.translation)if(!std::isfinite(f))return false;
++    uint32_t tex=0;
++    for(size_t i=0;i<words.size();)
++    {
++        const uint32_t *d=words.data()+i,cmd=d[0]>>24;
++        const unsigned length=cmd==0x38?context.quad_size:2;
++        if(length>words.size()-i)return false;
++        i+=length;
++        if(cmd==0 || cmd==0x22){context.regs[0x68]=(d[0]>>16)&255;tex=d[1];}
++        else if(cmd==0x36)
++        {
++            const uint32_t reg=(d[0]>>16)&127,pointer=d[1]>>24,value=d[1]&0xffffff;
++            // Palette loads require separate live material ownership/readiness.
++            if(reg!=0x20 || pointer>=80 || pointer==8)return false;
++            context.regs[reg]=d[1];context.render[pointer]=value;++result.register_writes;
++            if(pointer==5)context.texture=value%(1024*2048);
++            if(pointer==1 || pointer==2)context.render[pointer]&=0xfff;
++        }
++        else if(cmd==0x38)
++        {
++            ++result.polygons;Quad quad;const int status=project(d,tex,context,quad);
++            if(status<0)return false;
++            if(status==0)++result.near_rejected;
++            else if(status==1)++result.backfaces;
++            else{if(status==3)++result.near_clipped;result.quads.push_back(quad);}
++        }
++        else return false;
++    }
++    return true;
++}
++} }
+diff --git a/src/mame/midway/cruisn/zeus_state.h b/src/mame/midway/cruisn/zeus_state.h
+new file mode 100644
+index 00000000000..386c62ee730
+--- /dev/null
++++ b/src/mame/midway/cruisn/zeus_state.h
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// copyright-holders:Aaron Giles
++// Private Exotica state transitions from zeus2.cpp. BSD notice: scenery_c31.py.
++// Load requests describe required resources; they do not certify residency/colors.
++#pragma once
++#include "scenery_c31.h"
++#include <vector>
++#include <cmath>
++namespace cruisn { namespace zeus_state {
++struct Context
++{
++    uint32_t quad_size=10,ucode=0,palette=0,texture=0,yscale=0,zoffset=0;
++    std::array<float,9> matrix{};
++    std::array<float,4> translation{};
++    std::array<float,3> light{};
++    std::array<uint32_t,128> regs{};
++    std::array<uint32_t,80> render{};
++};
++struct Load { uint32_t kind,source,control; };
++struct Result { Context context;std::vector<Load> loads; };
++inline float floating(uint32_t w)
++{
++    const auto f=scenery::Float::load(w);
++    return f.e==-128?0.0f:float(std::ldexp(double(int64_t(f.m)^INT64_C(0x80000000)),f.e-31));
++}
++inline bool valid(const Context &c)
++{
++    if((c.quad_size!=10 && c.quad_size!=12 && c.quad_size!=14) || c.yscale>1 || c.zoffset)return false;
++    for(auto f:c.matrix)if(!std::isfinite(f))return false;
++    for(auto f:c.translation)if(!std::isfinite(f))return false;
++    for(auto f:c.light)if(!std::isfinite(f))return false;
++    return true;
++}
++inline bool pointer(Context &c,uint32_t word)
++{
++    const unsigned p=word>>24;const uint32_t value=word&0xffffff;
++    if(p>=80 || p==8)return false;
++    c.regs[0x20]=word;c.render[p]=value;
++    if(p==1 || p==2)c.render[p]&=0xfff;
++    if(p==5)c.texture=value%(1024*2048);
++    return true;
++}
++inline bool transition(const Context &previous,const std::vector<uint32_t> &model,
++    const std::vector<uint32_t> &packet,uint32_t base,Result &output)
++{
++    const Context input=previous; // Permit output.context as the previous context.
++    output=Result();if(!valid(input) || model.size()%2 || model.size()>2*(0xc800+1) ||
++        packet.size()<4 || packet.size()>128)return false;
++    Result r;r.context=input;auto &c=r.context;
++    for(size_t i=0;i<model.size();)
++    {
++        const auto *d=&model[i];unsigned cmd=d[0]>>24,n=cmd==0x38?c.quad_size:2;
++        if(i+n>model.size())return false;
++        i+=n;c.regs[0x19]+=n;
++        if(cmd==0 || cmd==0x22)c.regs[0x68]=(d[0]>>16)&255;
++        else if(cmd==0x36){if(((d[0]>>16)&127)!=0x20 || !pointer(c,d[1]))return false;}
++        else if(cmd!=0x38)return false;
++    }
++    for(size_t i=0;i<packet.size();)
++    {
++        const auto *d=&packet[i];unsigned cmd=d[0]>>24,n=0;
++        switch(cmd){case 0x32:n=1;break;case 5:n=2;break;case 7:n=13;break;case 0x16:case 0x1c:n=4;break;}
++        if(!n || i+n>packet.size())return false;
++        i+=n;c.regs[0x18]+=n;
++        if(cmd==0x32)continue;
++        if(cmd==7)
++        {
++            for(unsigned j=0;j<9;++j)c.matrix[j]=floating(d[j+1]);
++            for(unsigned j=0;j<3;++j)c.translation[j]=floating(d[j+10]);
++        }
++        else if(cmd==0x16){for(unsigned j=0;j<3;++j)c.translation[j]=floating(d[j+1]);}
++        else if(cmd==0x1c){for(unsigned j=0;j<3;++j)c.light[j]=floating(d[j+1]);}
++        else
++        {
++            const unsigned reg=(d[0]>>16)&127;const uint32_t value=d[1];
++            if(reg!=0x20 && reg!=0x40 && reg!=0x41)return false;
++            c.regs[reg]=value;
++            if(reg==0x20){if(!pointer(c,value))return false;}
++            else if(reg==0x41)c.regs[reg]&=0x1fff03ff;
++            else
++            {
++                if(c.regs[0x4e]&15)return false;
++                const unsigned code=(value>>16)&15;const uint32_t address=c.regs[0x41];
++                if(code==5)
++                {
++                    if(value>>24>=0xc0)return false;
++                    switch(address){case 0xc0:c.quad_size=10;break;case 0x136:c.quad_size=14;break;
++                        case 0x22b:case 0x29b:c.quad_size=12;break;default:return false;}
++                    c.ucode=address;c.zoffset=0;
++                }
++                else if(code==4)c.palette=address%1024+((address>>16)%2048)*1024;
++                else return false;
++                r.loads.push_back({code,address,value});
++            }
++        }
++    }
++    c.regs[0x18]+=2;c.regs[8]=base;
++    if(!valid(c))return false;
++    output=std::move(r);return true;
++}
++} }
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 04738b22add..ed3db838023 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -30,8 +30,11 @@ The Grid         v1.2   10/18/2000
+ #include "cruisn/motor_signal.h"
+ #include "cruisn/hud_drivetrain.h"
+ #include "cruisn/exotica_visibility.h"
++#include "cruisn/exotica_scene_capture.h"
+ 
+ #include <algorithm>
++#include <chrono>
++#include <deque>
+ 
+ #include "midzeus.h"
+ 
+@@ -169,6 +172,7 @@ protected:
+ 		save_item(NAME(m_keypad_select));
+ 		save_item(NAME(m_crusnexo_leds_select));
+ 		visibility_start();
++		scene_observer_start();
+ 	}
+ 
+ 	virtual void machine_reset() override
+@@ -178,6 +182,27 @@ protected:
+ 	}
+ 
+ private:
++	void scene_observer_start();
++	void scene_observer_prepare();
++	void scene_observer_model(uint32_t base,uint32_t count,uint32_t yscale);
++	void scene_observer_exit();
++	uint32_t scene_read(uint32_t address);
++	struct ScenePending {
++		cruisn::exotica_scene::Parameters parameters;
++		uint32_t base=0,count=0,bank=0,object=0;
++		double time=0;
++		std::array<float,3> translation{};
++	};
++	std::deque<ScenePending> m_scene_pending;
++	memory_passthrough_handler m_scene_ready_tap,m_scene_begin_tap,m_scene_end_tap;
++	FILE *m_scene_log=nullptr;
++	uint32_t m_scene_first=0,m_scene_last=0,m_scene_multiplier=1,m_scene_prepared_frame=UINT32_MAX;
++	uint32_t m_scene_loading=0;
++	float m_scene_margin=88;
++	std::set<uint32_t> m_scene_snapshots;
++	uint64_t m_scene_prepared=0,m_scene_matched=0,m_scene_quads=0,m_scene_saved=0;
++	bool m_scene_busy=false,m_scene_rom_saved=false;
++
+ 	void visibility_start();
+ 	void visibility_guard();
+ 	void visibility_tick();
+@@ -261,6 +286,220 @@ void midv_ffb_write(int f, bool game_invert = false);    // midvunit_v.cpp (POC
+ // The far plane and Zeus projection remain unchanged. Backing RAM reads avoid
+ // recursive address-space taps and need no transient object cache across loads.
+ void midv_ffb_cancel();
++
++uint32_t crusnexo_state::scene_read(uint32_t address)
++{
++	address&=0xffffff;
++	if(address<0x40000)return m_ram_base[address];
++	if(address>=0xa00000 && address<0xc00000)
++		return reinterpret_cast<const uint32_t *>(memregion("maindata")->base())[address-0xa00000];
++	if(address>=0xc00000)
++		return reinterpret_cast<const uint32_t *>(m_mainbank->base())[address-0xc00000];
++	if(address>=0x87fe00 && address<0x880000)
++	{
++		auto disabler=machine().disable_side_effects();
++		return m_maincpu->space(AS_PROGRAM).read_dword(address);
++	}
++	fatalerror("Exotica host read outside captured RAM/ROM contract: %08x\n",address);
++}
++
++void crusnexo_state::scene_observer_start()
++{
++	const char *mode=std::getenv("MIDZ_HOST_SCENE");
++	if(!mode || !strcmp(mode,"0"))return;
++	const char *ffb=std::getenv("MIDV_FFB");
++	if(strcmp(mode,"1") || !ffb || strcmp(ffb,"0") || strcmp(machine().system().name,"crusnexo"))
++		fatalerror("Exotica host observation requires crusnexo, MIDZ_HOST_SCENE=1 and MIDV_FFB=0\n");
++	auto number=[](const char *name,uint32_t low,uint32_t high,uint32_t fallback) {
++		const char *text=std::getenv(name);if(!text)return fallback;
++		char *end=nullptr;const auto n=strtoul(text,&end,10);
++		if(!text[0] || *end || n<low || n>high)fatalerror("Invalid Exotica host bound: %s\n",name);
++		return uint32_t(n);
++	};
++	m_scene_first=number("MIDZ_HOST_FIRST",1800,16000,0);
++	m_scene_last=number("MIDZ_HOST_LAST",1800,16000,0);
++	m_scene_multiplier=number("MIDZ_HOST_MULTIPLIER",1,3,1);
++	m_scene_margin=float(number("MIDZ_GL_MARGIN",0,120,number("MIDV_GL_MARGIN",0,120,88)));
++	if(!m_scene_first || m_scene_last<m_scene_first || m_scene_last-m_scene_first>10000 ||
++		memregion("maindata")->bytes()!=0x800000 || memregion("bankeddata")->bytes()!=0x3000000 ||
++		m_ram_base.bytes()!=0x100000 || m_zeus->m_upstream_render)
++		fatalerror("Exotica host observation requires bounded frames and legacy Zeus policy\n");
++	if(const char *text=std::getenv("MIDZ_HOST_SNAPSHOTS"))
++	{
++		while(*text) {
++			char *end=nullptr;const auto n=strtoul(text,&end,10);
++			if(end==text || (*end && *end!=',') || n<m_scene_first || n>m_scene_last ||
++				!m_scene_snapshots.insert(uint32_t(n)).second || m_scene_snapshots.size()>16)
++				fatalerror("Invalid Exotica host snapshot interval\n");
++			text=*end?end+1:end;
++			if(*end && !*text)fatalerror("Empty Exotica host snapshot\n");
++		}
++	}
++	m_scene_log=fopen("exotica-host-scenes.csv","w");
++	if(!m_scene_log)fatalerror("Cannot create Exotica host scene log\n");
++	setvbuf(m_scene_log,nullptr,_IOFBF,65536);
++	fprintf(m_scene_log,"frame,cpu_frame,cpu_time,device_time,base,count,bank,page,multiplier,partial,sources,instances,quads,viewport,hash,source_us,assembly_us,hash_us,snapshot_us,guest_cycles\n");
++	auto &space=m_maincpu->space(AS_PROGRAM);
++	m_scene_ready_tap=space.install_read_tap(0xb47d,0xb47d,"exotica_host_ready",
++		[this](offs_t offset,uint32_t &data,uint32_t mask) {
++			if(!machine().side_effects_disabled() && !m_scene_busy && m_maincpu->state_int(TMS320C3X_PC)==0x6964)
++				scene_observer_prepare();
++		});
++	m_scene_begin_tap=space.install_read_tap(0x597,0x597,"exotica_host_loader_begin",
++		[this](offs_t offset,uint32_t &data,uint32_t mask) {
++			if(!machine().side_effects_disabled() && m_maincpu->state_int(TMS320C3X_PC)==0xb7e9) {
++				if(m_scene_loading)fatalerror("Exotica host nested loader\n");
++				m_scene_loading=data;
++			}
++		});
++	m_scene_end_tap=space.install_write_tap(0x59b,0x59b,"exotica_host_loader_end",
++		[this](offs_t offset,uint32_t &data,uint32_t mask) {
++			if(!machine().side_effects_disabled() && m_maincpu->state_int(TMS320C3X_PC)==0xb841) {
++				if(!m_scene_loading || m_ram_base[0x597]!=m_scene_loading+4)fatalerror("Exotica host loader frontier\n");
++				m_scene_loading=0;
++			}
++		});
++	m_zeus->set_midz_model_observer([this](uint32_t base,uint32_t count,uint32_t yscale){scene_observer_model(base,count,yscale);});
++	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::scene_observer_exit,this));
++	fprintf(stderr,"MIDZ_HOST_SCENE=1 first=%u last=%u multiplier=%u snapshots=%u\n",m_scene_first,m_scene_last,m_scene_multiplier,unsigned(m_scene_snapshots.size()));
++}
++
++void crusnexo_state::scene_observer_prepare()
++{
++	const uint32_t frame=uint32_t(m_screen->frame_number());
++	if(frame<m_scene_first || frame>m_scene_last || frame==m_scene_prepared_frame)return;
++	const uint32_t flags=uint32_t(m_maincpu->state_int(TMS320C3X_R6));
++	if(flags&0x80 || ((flags&3)!=0 && (flags&3)!=3))return;
++	const auto cycles=m_maincpu->total_cycles();m_scene_busy=true;
++	ScenePending pending;auto &p=pending.parameters;p.frame=frame;p.multiplier=m_scene_multiplier;p.margin=m_scene_margin;
++	pending.object=uint32_t(m_maincpu->state_int(TMS320C3X_AR7));
++	if(pending.object<0x1000 || uint64_t(pending.object)+0x94>0x40000 || m_scene_pending.size()>=16)
++		fatalerror("Exotica host object/queue bounds\n");
++	auto read=[&](uint32_t address){return scene_read(address);};
++	if(read(0x6963)!=0x0820b47d || read(0xb47d)!=0x24860000 || read(0x67bf)!=0x87ff35 ||
++		read(0x67c0)!=0x87ff3e || !cruisn::exotica_future::code_matches(read))
++		fatalerror("Exotica host code/camera signature\n");
++	for(unsigned i=0;i<32;++i)p.setup.object[i]=read(pending.object+i);
++	for(unsigned i=0;i<3;++i)p.camera[i]=read(0xfeb+i);
++	for(unsigned i=0;i<9;++i){p.view[i]=read(read(0x67bf)+i);p.alternate[i]=read(read(0x67c0)+i);}
++	p.scale=read(0x67db);p.setup.palette_setup=read(0x15f2);
++	for(unsigned i=0;i<12;++i)p.setup.constants[i]=read(0x67d0+i);
++	for(unsigned i=0;i<46;++i)p.setup.commands[i]=read(0xb479+i);
++	const uint32_t program_addresses[]={0xe7c1,0xe7c7,0xe7d3,0xe7d9};
++	for(unsigned i=0;i<4;++i) {
++		p.setup.programs[i]=read(program_addresses[i]);
++		for(unsigned j=0;j<4;++j)p.setup.bodies[i][j]=read(p.setup.programs[i]+j);
++	}
++	const uint32_t defaults=read(0xe4),size=read(defaults)+1;
++	if(!size || size>16)fatalerror("Exotica host default state bounds\n");
++	for(unsigned i=0;i<size;++i)p.setup.defaults.push_back(read(defaults+1+i));
++	std::array<uint32_t,3> position;std::array<uint32_t,9> rotation;
++	std::copy_n(p.setup.object.begin()+1,3,position.begin());std::copy_n(p.setup.object.begin()+5,9,rotation.begin());
++	cruisn::exotica_transform::Prepared transformed;
++	if(!cruisn::exotica_transform::prepare(position,p.camera,p.view,rotation,p.alternate,flags,transformed))
++		fatalerror("Exotica host original transform\n");
++	const auto packet=cruisn::exotica_transform::packet(transformed,p.scale,false);
++	for(unsigned i=0;i<3;++i)pending.translation[i]=cruisn::zeus_state::floating(packet[i+1]);
++	const uint32_t model=p.setup.object[17];
++	if(!cruisn::exotica_future::span(model,6))fatalerror("Exotica host original model pointer\n");
++	const uint32_t selected=cruisn::exotica_transform::select_model(model,read(model),transformed.depth);
++	if(!cruisn::exotica_future::span(selected,6))fatalerror("Exotica host original LOD pointer\n");
++	pending.base=read(selected+3);pending.count=read(selected+4);pending.bank=m_disk_asic_jr[5]&3;
++	if(!pending.base || pending.count>0xc800 || pending.bank>2)fatalerror("Exotica host original model/bank\n");
++	pending.time=machine().time().as_double();m_scene_pending.push_back(std::move(pending));
++	m_scene_prepared_frame=frame;++m_scene_prepared;
++	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica host preparation changed CPU cycles\n");
++	m_scene_busy=false;
++}
++
++void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t yscale)
++{
++	if(!m_scene_log || m_scene_pending.empty())return;
++	const double now=machine().time().as_double();
++	auto found=m_scene_pending.end();
++	for(auto it=m_scene_pending.begin();it!=m_scene_pending.end();++it) {
++		if(now-it->time>.0176)fatalerror("Exotica host original model join expired\n");
++		if(it->base==base && it->count==count && now>=it->time &&
++			std::equal(it->translation.begin(),it->translation.end(),m_zeus->zeus_trans)) {
++			if(found!=m_scene_pending.end())fatalerror("Exotica host ambiguous original model join\n");
++			found=it;
++		}
++	}
++	if(found==m_scene_pending.end())return;
++	const auto cycles=m_maincpu->total_cycles();const auto started=std::chrono::steady_clock::now();
++	ScenePending pending=std::move(*found);m_scene_pending.erase(found);auto &p=pending.parameters;
++	const uint32_t cpu_frame=p.frame;p.frame=uint32_t(m_screen->frame_number());
++	if(p.frame<cpu_frame || p.frame>cpu_frame+1 || pending.bank!=(m_disk_asic_jr[5]&3))
++		fatalerror("Exotica host source/device frame or bank changed\n");
++	auto read=[&](uint32_t address){return scene_read(address);};
++	for(unsigned i=0;i<3;++i)if(p.camera[i]!=read(0xfeb+i))fatalerror("Exotica host live camera changed\n");
++	for(unsigned i=0;i<9;++i)if(p.view[i]!=read(read(0x67bf)+i) || p.alternate[i]!=read(read(0x67c0)+i))
++		fatalerror("Exotica host live view changed\n");
++	for(unsigned i=0;i<12;++i)if(p.setup.constants[i]!=read(0x67d0+i))fatalerror("Exotica host setup constants changed\n");
++	for(unsigned i=0;i<46;++i)if(p.setup.commands[i]!=read(0xb479+i))fatalerror("Exotica host setup commands changed\n");
++	if(p.scale!=read(0x67db) || p.setup.palette_setup!=read(0x15f2))fatalerror("Exotica host setup scale/palette changed\n");
++	auto &c=p.context;const auto &z=*m_zeus;
++	c.quad_size=z.zeus_quad_size;c.ucode=z.m_curUCodeSrc;c.palette=z.m_curPalTableSrc;
++	c.texture=z.zeus_texbase;c.yscale=yscale;c.zoffset=z.m_useZOffset;p.render_policy=z.m_upstream_render;
++	std::memcpy(c.matrix.data(),z.zeus_matrix,sizeof(z.zeus_matrix));
++	std::copy_n(z.zeus_trans,4,c.translation.begin());std::copy_n(z.zeus_light,3,c.light.begin());
++	std::copy_n(z.m_zeusbase,128,c.regs.begin());std::copy_n(z.m_renderRegs,80,c.render.begin());
++	cruisn::exotica_future::Result sources;
++	if(!cruisn::exotica_future::build(read,sources,m_scene_loading!=0))fatalerror("Exotica host live sources rejected\n");
++	const auto ready=std::chrono::steady_clock::now();
++	auto model_read=[&](uint32_t address,uint32_t size,std::vector<uint32_t> &words) {
++		const size_t offset=2*(size_t(address%1024)+size_t((address>>16)%2048)*1024),n=2*(size_t(size)+1);
++		if(offset>4*1024*1024 || n>4*1024*1024-offset)return false;
++		words.assign(z.m_waveram.get()+offset,z.m_waveram.get()+offset+n);return true;
++	};
++	cruisn::exotica_scene::Result scene;
++	if(!cruisn::exotica_scene::build(sources.sources,p,read,model_read,[](const cruisn::exotica_future::Source &s){return s.future;},scene))
++		fatalerror("Exotica host live scene rejected\n");
++	const auto built=std::chrono::steady_clock::now();
++	const uint64_t hash=cruisn::exotica_scene::byte_hash(scene.quads.data(),scene.quads.size()*sizeof(scene.quads[0]));
++	const auto hashed=std::chrono::steady_clock::now();
++	if(m_scene_snapshots.erase(p.frame)) {
++		auto dump=[](const std::string &name,const void *data,size_t bytes) {
++			FILE *f=fopen(name.c_str(),"wb");if(!f)fatalerror("Cannot open Exotica host snapshot\n");
++			const bool ok=fwrite(data,1,bytes,f)==bytes;const int closed=fclose(f);
++			if(!ok || closed)fatalerror("Cannot complete Exotica host snapshot\n");
++		};
++		if(!m_scene_rom_saved) {
++			dump("exotica-host-main-rom.bin",memregion("maindata")->base(),0x800000);
++			dump("exotica-host-banked-rom.bin",memregion("bankeddata")->base(),0x3000000);m_scene_rom_saved=true;
++		}
++		const std::string prefix="exotica-host-"+std::to_string(p.frame);
++		const auto parameters=cruisn::exotica_scene::parameter_words(p,pending.bank,m_scene_loading!=0);
++		const auto instances=cruisn::exotica_scene::instance_words(scene);
++		dump(prefix+"-context.bin",parameters.data(),parameters.size()*4);
++		dump(prefix+"-ram.bin",m_ram_base.target(),m_ram_base.bytes());
++		dump(prefix+"-wave.bin",z.m_waveram.get(),0x1000000);
++		dump(prefix+"-quads.bin",scene.quads.data(),scene.quads.size()*sizeof(scene.quads[0]));
++		dump(prefix+"-instances.bin",instances.data(),instances.size()*sizeof(instances[0]));++m_scene_saved;
++	}
++	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica host assembly changed CPU cycles\n");
++	const auto finished=std::chrono::steady_clock::now();
++	auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
++	if(fprintf(m_scene_log,"%u,%u,%.12f,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,0\n",
++		p.frame,cpu_frame,pending.time,now,base,count,pending.bank,c.render[4],p.multiplier,unsigned(m_scene_loading!=0),
++		unsigned(sources.sources.size()),unsigned(scene.instances.size()),unsigned(scene.quads.size()),unsigned(scene.viewport_polygons),
++		(unsigned long long)hash,us(started,ready),us(ready,built),us(built,hashed),us(hashed,finished))<0)
++		fatalerror("Exotica host scene log write\n");
++	++m_scene_matched;m_scene_quads+=scene.quads.size();
++}
++
++void crusnexo_state::scene_observer_exit()
++{
++	if(!m_scene_log)return;
++	m_zeus->set_midz_model_observer({});
++	const int closed=fclose(m_scene_log);m_scene_log=nullptr;
++	const bool complete=!closed && m_scene_prepared && m_scene_prepared==m_scene_matched &&
++		m_scene_pending.empty() && m_scene_snapshots.empty() && m_screen->frame_number()>=m_scene_last;
++	fprintf(stderr,"MIDZ_HOST_SCENE_RESULT complete=%u prepared=%llu matched=%llu quads=%llu snapshots=%llu pending=%u remaining=%u\n",
++		unsigned(complete),(unsigned long long)m_scene_prepared,(unsigned long long)m_scene_matched,
++		(unsigned long long)m_scene_quads,(unsigned long long)m_scene_saved,unsigned(m_scene_pending.size()),unsigned(m_scene_snapshots.size()));
++}
++
+ void crusnexo_state::visibility_guard()
+ {
+ 	if (!cruisn::exotica_visibility::code_matches(m_ram_base.target(),m_ram_base.bytes()/4)) {
+-- 
+2.55.0.windows.3
+
+
+From f49e8acc7d3b2da5beb0c7815804fa0a79117ab0 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Thu, 10 Sep 2026 04:07:58 -0500
+Subject: [PATCH 161/161] Bind Exotica observation to game scene boundaries
+
+---
+ src/mame/midway/midzeus.cpp | 57 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 47 insertions(+), 10 deletions(-)
+
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index ed3db838023..9f6e2668ef1 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -189,14 +189,20 @@ private:
+ 	uint32_t scene_read(uint32_t address);
+ 	struct ScenePending {
+ 		cruisn::exotica_scene::Parameters parameters;
+-		uint32_t base=0,count=0,bank=0,object=0;
++		uint32_t base=0,count=0,bank=0,object=0,scene_frame=0;
++		uint64_t scene=0;
++		double scene_time=0;
+ 		double time=0;
+ 		std::array<float,3> translation{};
+ 	};
+ 	std::deque<ScenePending> m_scene_pending;
+-	memory_passthrough_handler m_scene_ready_tap,m_scene_begin_tap,m_scene_end_tap;
++	memory_passthrough_handler m_scene_ready_tap,m_scene_begin_tap,m_scene_end_tap,m_scene_marker_tap,m_scene_lists_tap;
+ 	FILE *m_scene_log=nullptr;
+-	uint32_t m_scene_first=0,m_scene_last=0,m_scene_multiplier=1,m_scene_prepared_frame=UINT32_MAX;
++	uint32_t m_scene_first=0,m_scene_last=0,m_scene_multiplier=1,m_scene_cpu_frame=0;
++	uint64_t m_scene_serial=0;
++	double m_scene_cpu_time=0;
++	bool m_scene_open=false,m_scene_armed=false;
++	std::array<uint32_t,3> m_scene_camera{};
+ 	uint32_t m_scene_loading=0;
+ 	float m_scene_margin=88;
+ 	std::set<uint32_t> m_scene_snapshots;
+@@ -338,8 +344,32 @@ void crusnexo_state::scene_observer_start()
+ 	m_scene_log=fopen("exotica-host-scenes.csv","w");
+ 	if(!m_scene_log)fatalerror("Cannot create Exotica host scene log\n");
+ 	setvbuf(m_scene_log,nullptr,_IOFBF,65536);
+-	fprintf(m_scene_log,"frame,cpu_frame,cpu_time,device_time,base,count,bank,page,multiplier,partial,sources,instances,quads,viewport,hash,source_us,assembly_us,hash_us,snapshot_us,guest_cycles\n");
++	fprintf(m_scene_log,"frame,cpu_frame,cpu_time,device_time,base,count,bank,page,multiplier,partial,sources,instances,quads,viewport,hash,source_us,assembly_us,hash_us,snapshot_us,guest_cycles,scene,scene_frame,scene_time\n");
+ 	auto &space=m_maincpu->space(AS_PROGRAM);
++	// Native refreshes can split one game's scene. Latch its actual scene/list
++	// boundary, then join only the first supported original scenery submission.
++	m_scene_marker_tap=space.install_write_tap(0xff2,0xff2,"exotica_host_scene_begin",
++		[this](offs_t offset,uint32_t &data,uint32_t mask) {
++			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x67f6)return;
++			if(m_scene_open || data!=UINT32_MAX)fatalerror("Exotica host scene begin order\n");
++			m_scene_cpu_frame=uint32_t(m_screen->frame_number());m_scene_cpu_time=machine().time().as_double();
++			m_scene_open=true;m_scene_armed=false;++m_scene_serial;
++			for(unsigned i=0;i<3;++i)m_scene_camera[i]=m_ram_base[0xfeb+i];
++		});
++	m_scene_lists_tap=space.install_read_tap(0xbbb5,0xbbb9,"exotica_host_scene_lists",
++		[this](offs_t offset,uint32_t &data,uint32_t mask) {
++			if(machine().side_effects_disabled())return;
++			const auto pc=m_maincpu->state_int(TMS320C3X_PC);
++			if(offset==0xbbb5 && pc==0x6820) {
++				if(!m_scene_open || m_scene_armed || m_ram_base[0x67f5]!=0x15200ff2 ||
++					m_ram_base[0x681f]!=0x082fbbb5 || m_ram_base[0x6835]!=0x082fbbb9)
++					fatalerror("Exotica host scene list signature/order\n");
++				m_scene_armed=m_scene_cpu_frame>=m_scene_first && m_scene_cpu_frame<=m_scene_last;
++			} else if(offset==0xbbb9 && pc==0x6836) {
++				if(!m_scene_open)fatalerror("Exotica host scene end order\n");
++				m_scene_open=false;m_scene_armed=false;
++			}
++		});
+ 	m_scene_ready_tap=space.install_read_tap(0xb47d,0xb47d,"exotica_host_ready",
+ 		[this](offs_t offset,uint32_t &data,uint32_t mask) {
+ 			if(!machine().side_effects_disabled() && !m_scene_busy && m_maincpu->state_int(TMS320C3X_PC)==0x6964)
+@@ -367,11 +397,13 @@ void crusnexo_state::scene_observer_start()
+ void crusnexo_state::scene_observer_prepare()
+ {
+ 	const uint32_t frame=uint32_t(m_screen->frame_number());
+-	if(frame<m_scene_first || frame>m_scene_last || frame==m_scene_prepared_frame)return;
++	if(!m_scene_armed)return;
+ 	const uint32_t flags=uint32_t(m_maincpu->state_int(TMS320C3X_R6));
+ 	if(flags&0x80 || ((flags&3)!=0 && (flags&3)!=3))return;
+ 	const auto cycles=m_maincpu->total_cycles();m_scene_busy=true;
+ 	ScenePending pending;auto &p=pending.parameters;p.frame=frame;p.multiplier=m_scene_multiplier;p.margin=m_scene_margin;
++	pending.scene=m_scene_serial;pending.scene_frame=m_scene_cpu_frame;pending.scene_time=m_scene_cpu_time;
++	if(frame<m_scene_cpu_frame || frame>m_scene_cpu_frame+1)fatalerror("Exotica host scenery preparation frame\n");
+ 	pending.object=uint32_t(m_maincpu->state_int(TMS320C3X_AR7));
+ 	if(pending.object<0x1000 || uint64_t(pending.object)+0x94>0x40000 || m_scene_pending.size()>=16)
+ 		fatalerror("Exotica host object/queue bounds\n");
+@@ -380,7 +412,10 @@ void crusnexo_state::scene_observer_prepare()
+ 		read(0x67c0)!=0x87ff3e || !cruisn::exotica_future::code_matches(read))
+ 		fatalerror("Exotica host code/camera signature\n");
+ 	for(unsigned i=0;i<32;++i)p.setup.object[i]=read(pending.object+i);
+-	for(unsigned i=0;i<3;++i)p.camera[i]=read(0xfeb+i);
++	for(unsigned i=0;i<3;++i) {
++		p.camera[i]=read(0xfeb+i);
++		if(p.camera[i]!=m_scene_camera[i])fatalerror("Exotica host scene preparation camera changed\n");
++	}
+ 	for(unsigned i=0;i<9;++i){p.view[i]=read(read(0x67bf)+i);p.alternate[i]=read(read(0x67c0)+i);}
+ 	p.scale=read(0x67db);p.setup.palette_setup=read(0x15f2);
+ 	for(unsigned i=0;i<12;++i)p.setup.constants[i]=read(0x67d0+i);
+@@ -407,7 +442,7 @@ void crusnexo_state::scene_observer_prepare()
+ 	pending.base=read(selected+3);pending.count=read(selected+4);pending.bank=m_disk_asic_jr[5]&3;
+ 	if(!pending.base || pending.count>0xc800 || pending.bank>2)fatalerror("Exotica host original model/bank\n");
+ 	pending.time=machine().time().as_double();m_scene_pending.push_back(std::move(pending));
+-	m_scene_prepared_frame=frame;++m_scene_prepared;
++	m_scene_armed=false;++m_scene_prepared;
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica host preparation changed CPU cycles\n");
+ 	m_scene_busy=false;
+ }
+@@ -432,7 +467,8 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 	if(p.frame<cpu_frame || p.frame>cpu_frame+1 || pending.bank!=(m_disk_asic_jr[5]&3))
+ 		fatalerror("Exotica host source/device frame or bank changed\n");
+ 	auto read=[&](uint32_t address){return scene_read(address);};
+-	for(unsigned i=0;i<3;++i)if(p.camera[i]!=read(0xfeb+i))fatalerror("Exotica host live camera changed\n");
++	for(unsigned i=0;i<3;++i)if(p.camera[i]!=read(0xfeb+i))fatalerror("Exotica host live camera changed: scene=%llu scene_frame=%u cpu_frame=%u frame=%u axis=%u before=%08x after=%08x cpu_time=%.12f device_time=%.12f\n",
++		(unsigned long long)pending.scene,pending.scene_frame,cpu_frame,p.frame,i,p.camera[i],read(0xfeb+i),pending.time,now);
+ 	for(unsigned i=0;i<9;++i)if(p.view[i]!=read(read(0x67bf)+i) || p.alternate[i]!=read(read(0x67c0)+i))
+ 		fatalerror("Exotica host live view changed\n");
+ 	for(unsigned i=0;i<12;++i)if(p.setup.constants[i]!=read(0x67d0+i))fatalerror("Exotica host setup constants changed\n");
+@@ -480,10 +516,11 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica host assembly changed CPU cycles\n");
+ 	const auto finished=std::chrono::steady_clock::now();
+ 	auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+-	if(fprintf(m_scene_log,"%u,%u,%.12f,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,0\n",
++	if(fprintf(m_scene_log,"%u,%u,%.12f,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,0,%llu,%u,%.12f\n",
+ 		p.frame,cpu_frame,pending.time,now,base,count,pending.bank,c.render[4],p.multiplier,unsigned(m_scene_loading!=0),
+ 		unsigned(sources.sources.size()),unsigned(scene.instances.size()),unsigned(scene.quads.size()),unsigned(scene.viewport_polygons),
+-		(unsigned long long)hash,us(started,ready),us(ready,built),us(built,hashed),us(hashed,finished))<0)
++		(unsigned long long)hash,us(started,ready),us(ready,built),us(built,hashed),us(hashed,finished),
++		(unsigned long long)pending.scene,pending.scene_frame,pending.scene_time)<0)
+ 		fatalerror("Exotica host scene log write\n");
+ 	++m_scene_matched;m_scene_quads+=scene.quads.size();
+ }
 -- 
 2.55.0.windows.3
 

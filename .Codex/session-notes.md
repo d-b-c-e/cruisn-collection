@@ -1,5 +1,20 @@
 # Session Notes
 
+- **September10 live Exotica observer:** nativef49e8acc7d3 separately built/pushed,
+  SHA9c7dcd27,161patches exact. Actual scene/list boundaries fix retained a561
+  camera-queue failure. Three live native/Python geometry, original context and
+  independent Lua scene checks pass; six6000 controls/observations preserve
+  motion/resources and55GL per side. Amazon2457scene/20343986quad fingerprints
+  repeat; HK2457scene/30411603 repeat. Capture-window and21/17 reference failures
+  retained.301Python/no skips,35native,99commands at448-file64fe3294.33public
+  receipts pass. Seven defaults now running separately (session19329,
+  boundary-defaults); last accepted defaults stillb3 until renewed. No deploy.
+  LOCAL native/Python conservative model-bound draft matches3955instances,
+  rejects3000 offscreen without losing visible quads; not promoted/linked.
+  Next finish defaults, guarded materials/D32F/insertion/handover and bounds.
+  Upstream09:17UTC master17d291/all291PRs still no additional Zeus changes.
+  Continue directly; preserve personal87d, no release/physicalFFB/World tuning.
+
 - **September10 standalone Exotica scene assembler:** native/exotica_scene.h,
   analyzer and independent capture-driven verifier pass24cases on5000/5072/5990;
   1/2/3x+repeat under original/completed fade. Rechecks7469originalquads and534

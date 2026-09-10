@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "scenes": 2457,
+  "quads": 30411603,
+  "scope": "Full Hong Kong observation geometry/scene/clock fingerprints repeat across two different captured windows.",
+  "files": {
+    "boundary5990-paired-observe/run/exotica-host-scenes.csv": "3c6f8d08c2aa2b6ebfb635dc61c45b1c0f1c9997a684d04fa7d388a4811ab8e5",
+    "boundary5000-paired-v2-observe/run/exotica-host-scenes.csv": "d8bcba602ae76e1442c81e45f7ae3952dac0941560942529b2b7262785aac475"
+  }
+}

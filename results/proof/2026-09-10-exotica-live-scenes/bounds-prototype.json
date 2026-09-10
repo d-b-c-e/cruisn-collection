@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "scope": "Offline conservative float-interval bounds from actual model vertices, compared to all decoded polygon viewport bounds. Not a native implementation, GPU image comparison or complete performance benchmark.",
+  "cases": [
+    {
+      "frame": 5000,
+      "native_instance_sha256": "b187def6610f438d645a558a0056d71b3180eace62dd5f949028f8be6fdc4888",
+      "native_quad_sha256": "22f5d93a309afdcd5f1b8df2508bf0802aea151991b4f5c68ec246ab12bdd495",
+      "instances": 1515,
+      "culled": 725,
+      "culled_quads": 4741,
+      "all_quads": 9596,
+      "viewport_quads": 4740,
+      "false_rejections": 0,
+      "sha256": "390cc1f1a4faf20e2c88a6294fe1cb96a9b640993804cd4e86b75c55e53b8da0",
+      "passed": true
+    },
+    {
+      "frame": 5072,
+      "native_instance_sha256": "e70fe3ae7aa8081c45d00c8a3c02fc9cca7db0a0fdedf519bdda24a86d81ee9f",
+      "native_quad_sha256": "d15dfddaabda932bb7d4fc0335861f91f34bb12db99761a9a4c882f47c38ec6e",
+      "instances": 1622,
+      "culled": 1535,
+      "culled_quads": 15881,
+      "all_quads": 16408,
+      "viewport_quads": 382,
+      "false_rejections": 0,
+      "sha256": "b70a0d2445a680bdb03d2da673ec106e131e3a02a200736fedbc149b8f3a692a",
+      "passed": true
+    },
+    {
+      "frame": 5990,
+      "native_instance_sha256": "4c7c8ead0ac18eaf44bebca529448dc5fa1920482e30b60f32a14e0b18fc5d4d",
+      "native_quad_sha256": "58e5c74734bf209dc6bf4b98cc00be1ac69a9dbeae382533897501a4fe0c66b2",
+      "instances": 818,
+      "culled": 740,
+      "culled_quads": 4598,
+      "all_quads": 5478,
+      "viewport_quads": 457,
+      "false_rejections": 0,
+      "sha256": "29aaf13baa352c1001b9396ba8234c3526f117acc50e2f1e31274296eb318665",
+      "passed": true
+    }
+  ]
+}

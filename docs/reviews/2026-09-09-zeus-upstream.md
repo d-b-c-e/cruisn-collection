@@ -6,6 +6,11 @@ including every page of changed filenames. Four open PRs touch Zeus paths.
 This is a source review, not evidence that an upstream change fixes Amazon.
 The personal v0.5.0 executable and published releases remain unchanged.
 
+A September10 **09:17UTC** refresh again finds master17d291 and291 open PRs.
+All four Zeus PR heads below remain unchanged. Changed PR file lists were
+refetched with pagination; none adds Zeus work. The refresh receipts remain
+local under the same upstream diagnostic directory.
+
 ## Isolated candidate checkpoint
 
 Native `9136388a026` adds diagnostic policy bits; `edb517392f82b14646736c47f12519bf28900b9c`

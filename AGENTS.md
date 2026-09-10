@@ -1,5 +1,43 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 Exotica live observer — ACTIVE integration
+
+Read docs/reviews/2026-09-10-exotica-live-scenes.md. The collection observer milestone is now verified; native f49e8acc7d3b2da5beb0c7815804fa0a79117ab0 is built separately,
+frozen/pushed. Candidate build/candidates/f49e8acc7d3/vunit.exe SHA
+9c7dcd272ea609e1b28fa86c9cdd07f2dfca0b089edcbf198e3dfee8caa1d606.
+161 patches reconstruct tree958fde28bb648cc97910856e992e38b95dbafdb0.
+This observer builds private geometry only; NO extra live drawing/deployment.
+Initial a561 refresh-based observation failed Amazon3500 camera guard. Independent
+scene-queue-timing trace proves a game scene spans native refreshes. Corrected
+f49 uses actual scene/list boundaries and keeps camera/view/clock/zero-cycle
+checks. Amazon5072 and Hong Kong5990 paired6000 runs now pass independent native/
+Python geometry, actual original context and independent Lua scene ownership,
+original motion,17GL each and ten resource files each. Amazon2457scene/20343986
+ordered-quad/clock fingerprints repeat. Initial missing journal-window failure
+retained; captureframe+1 aligns actual device scene. Initial5000 reference21 vs
+requested17 FAIL retained; corrected21-image pair now passes all original resources/motion and independent
+scene/geometry/context. Hong Kong2457scene/30411603quad fingerprints repeat
+between5000/5990 observations. All55GL per side match across the six runs.
+33public receipts are under results/proof/2026-09-10-exotica-live-scenes.
+Seven-default renewal runs in boundary-defaults (session19329 at checkpoint).
+Inspect current process/results state before launching more.
+301Python/no skips,35native,99commands PASS at448-file identity
+64fe329411b7e8207c763258889829a9072a7aff268b6465743c6f8f05a4a1d3.
+
+NEXT finish seven defaults on f49, then guarded live drawing/materials/D32F/sky/
+handover. No milestone pause; continue directly. LOCAL conservative
+model-bounds draft under results/diagnostics/exotica-amazon-20260909 now agrees
+native/Python on3955objects; rejects3000 offscreen objects without losing any
+viewport quad across three original snapshots. NOT linked/promoted. See
+zeus_model_bounds-draft.h, analyze-zeus-bounds-draft.cpp,
+verify-zeus-bounds-draft.py, scene-model-bounds-native-quads.json. Need synthetic
+boundary/rounding tests and broader validation before enabling. First broad
+Amazon source+assembly+hash avg6.21/p9911.61ms; snapshot separately336.5ms.
+Upstream refreshed09:17UTC September10: master17d291/all291PRs, no newZeus work.
+Personal StreamDeck remainsv0.5.0/SHA87d04de4; last7defaults belongb3d82b, notf49.
+No release/deploy/hostedworkflow/physicalFFB/World tuning/menu removal. Keepworking
+directly without heartbeat waits; checkrig and serialize emulator/GPU tests.
+
 ## September10 Exotica scene assembler — ACTIVE continuous integration
 
 Read docs/reviews/2026-09-10-exotica-scene-assembler.md. Standalone native

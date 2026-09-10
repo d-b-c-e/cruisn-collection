@@ -1,0 +1,10 @@
+{
+  "scope": "completed GL frame pixels",
+  "passed": true,
+  "frames": 21,
+  "different_frames": [],
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\scene5000-control\\run\\gl-snap",
+  "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\boundary5000-paired-v2-control\\run\\gl-snap",
+  "size_mismatches": [],
+  "pixel_changes": []
+}

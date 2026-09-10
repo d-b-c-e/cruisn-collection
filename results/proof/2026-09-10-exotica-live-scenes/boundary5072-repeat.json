@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "scenes": 2457,
+  "quads": 20343986,
+  "fields": [
+    "frame",
+    "cpu_frame",
+    "cpu_time",
+    "device_time",
+    "base",
+    "count",
+    "bank",
+    "page",
+    "multiplier",
+    "partial",
+    "sources",
+    "instances",
+    "quads",
+    "viewport",
+    "hash",
+    "guest_cycles",
+    "scene",
+    "scene_frame",
+    "scene_time"
+  ],
+  "scope": "All ordered live observer geometry/scene/clock fingerprints repeat when the original capture window moves by one frame; no extra rendering.",
+  "files": {
+    "boundary5072-initial/run/exotica-host-scenes.csv": "59f9521a9325f8a34a2f8a313a12e6722f578109644ca72ccd5b225e1307a613",
+    "boundary5072-paired-observe/run/exotica-host-scenes.csv": "0cd613007a2d7e66971f6dcc0af46e4dcb5699fa97edbd5050011d8a2b837821"
+  }
+}
