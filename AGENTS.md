@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 written material acceptance — ACTIVE CPU cost work
+
+All9 trials and ALL7defaults PASS on separately frozen nativeac10/SHA9daeb048.
+164patches/tree5a3703028fd9856a7e087a5e631e5dbcc8728ae1;317Python/no skips,
+39native/111commands atf106f6e526f9333889bb410a3cee1af43d3e67a1bbb19203787f922eb01c0a6a.
+Nine scan/written/verify pairs preserve440paired4K images (323 onac10), original
+motion/resources and full sampled GPU bytes.10,204 live complete packets equal.
+Three full7188 captures CLOSE originalcontext7187 coverage; prior FAIL retained.
+All7defaults include actualUDP/memory,4softwareforce/fullGermany/Exo21GL.
+Live stage1.412ms->0.026ms; noGL speed82.54%->88.42%, bounds88.63%, regularraw
+60frame snapshots STILLon. Initial49msCPU/25msGPU OPEN. No extra live drawing.
+Proof results/proof/2026-09-10-written-pages recomputes staging/identity/coverage;
+raw GPU/resource/route bytes receipts only. written-pages-acceptance.py DONE;
+no emulator/build running at checkpoint, source freeze released.
+
+NEXT promote checked source-cache and exact early-depth LOCAL prototypes in
+results/diagnostics/exotica-amazon-20260909. Cache v3 verifies35,724 descriptors/
+7snapshots,686synthetic frontiers/693rejects/7material changes. Immutable ROM
+owner plus all live RAM dependencies; no cached WaveRAM or palette colors.
+Benchmark700 iterations improves full source0.72..1.38ms to0.056..0.316ms,
+NOT live performance. Earlydepth70,000 C31 decisions/7snapshots/22,670quads PASS;
+not integrated. Use explicit CLI/recording compatibility and full verification.
+Then initial upload/private depth/sky/occlusion/handover and active unsubmitted
+blackground ownership. Do not render every historical descriptor.
+Upstream refreshed12:41UTC to7a8b22c8/all291PRs; PR13054 API3000cap CLOSED via
+fullGit3306paths. No new Zeus/C3x/poly work;4relevant heads unchanged. Read audit.
+Personalv0.5.0/SHA87d04de4 unchanged. No deploy/release/hostedworkflow/physicalFFB/
+Worldtuning/menu removal. Continue directly; heartbeat recovery only, no idle gaps.
+
 ## September10 written material pages — ACTIVE acceptance
 
 Read docs/reviews/2026-09-10-written-material-pages.md. Nativeac10f2aae6e14650958f6a5ae249216b0cde1f31

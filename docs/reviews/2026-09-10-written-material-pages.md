@@ -25,9 +25,13 @@ Frozen `build/candidates/ac10f2aae6e/vunit.exe` SHA256:
 The164-patch export reconstructs tree`5a3703028fd9856a7e087a5e631e5dbcc8728ae1`.
 Final317 Python tests/no skips,39 native programs and111 commands pass at
 `f106f6e526f9333889bb410a3cee1af43d3e67a1bbb19203787f922eb01c0a6a`.
-Live tracker acceptance is pending: Amazon5072 verify/written/repeat, no-GL
-performance, Hong Kong and full Amazon with a corrected7187 context capture,
-then all seven default regressions. Last defaults belong to99442.
+All nine paired trials pass: Amazon5072 verify/written/repeat, no-GL performance,
+Hong Kong5000 verify/5990 written and full Amazon scan/written/verify. The scan
+reference uses99442; eight trials useac10. They preserve440 paired4K images
+(323 onac10), original motion/resources and sampled complete GPU material bytes.
+Verify mode matches10,204 complete scan/selected packets. All seven default
+regressions now pass onac10, including actual UDP/memory telemetry, four software
+force checks, full Germany and21 Exotica images. Automated physical force stays0.
 
 The earlier99442 full Amazon material run completed8860 frames, preserved7060
 camera samples/21180 actual ADC reads and times, ten original resource files
@@ -36,7 +40,9 @@ complete GPU image/palette checks passed at6330,7187 and8760. The8760 scene has
 no extra instances or palette rows. Independent geometry and scene-boundary
 checks pass for all three snapshots. The attempted original-context7187 check
 failed because its reference journal covers7199–7200; that failure is retained.
-The new paired run will capture7187–7188 and test that missing comparison.
+The three new full runs capture7187–7188 and pass that original-context check,
+closing the missing comparison without discarding the earlier failure. Independent
+source/scene oracles and full GPU bytes also pass at6330 and8760.
 
 No-GL controls still include regular raw snapshots every60frames. They measured
 88.63% emulation speed with bounds alone and82.54% with full-scan materials over
@@ -44,9 +50,21 @@ No-GL controls still include regular raw snapshots every60frames. They measured
 material upload maximum was0.603ms after initialization; the earlier88.357ms
 capture-window spike was not reproduced there. This narrows its conditions,
 not its root cause. The first full material image still requires initialization
-or prewarming, even if written-page staging reduces steady cost.
+or prewarming. Live written-page staging reduces steady mean work from1.412ms
+to0.026ms (2456 scenes after initialization). With dense GL captures, measured
+speed improves81.66% to87.82%, repeating at87.53%; the bounds-only control is87.05%.
+Without GL captures, written mode reaches88.42%, versus82.54% for full scanning
+and88.63% for bounds alone. These are instrumented intervals, not whole-game
+smoothness acceptance. Initial producer/GPU work remains about49ms/25ms.
+
+The public proof at `results/proof/2026-09-10-written-pages` recomputes the source
+identity, measured staging means and receipt coverage for nine trials,10,204
+comparisons,440 images and seven defaults. Raw GPU/resource/route bytes remain
+local and are represented by receipts, not recomputed by that public verifier.
 
 Personal Stream Deck stays v0.5.0/SHA87d04de4. No deployment, release, hosted
 workflow, physical FFB, World tuning or experiment removal. Continue with
-guarded scene insertion/private depth, foreground occlusion, handover and source
-eligibility after material correctness and performance checks.
+cached source descriptors and exact early depth rejection to reduce remaining
+CPU cost, then initialization, guarded scene insertion/private depth, foreground
+occlusion, handover and source eligibility. Local cache/depth prototypes are not
+yet native runtime acceptance.

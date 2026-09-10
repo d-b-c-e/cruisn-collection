@@ -21,9 +21,12 @@ and corrupt-packet rejection. Their initial upload/validation cost still needs
 handling. [Private GPU materials](docs/reviews/2026-09-10-private-gpu-materials.md)
 now pass seven short trials and the full Amazon drive, preserving240 sampled4K
 images; all seven defaults pass on99442. This still adds no live scenery.
-[Written-page updates](docs/reviews/2026-09-10-written-material-pages.md) are built
-separately to reduce the measured material scan cost; live verification is next.
-Then: initialization cost, safe host depth/insertion, source eligibility and handover.
+[Written-page updates](docs/reviews/2026-09-10-written-material-pages.md) now pass
+nine paired trials,10,204 complete live scan comparisons and all seven defaults.
+Steady staging falls1.412ms to0.026ms; no-GL measured speed returns82.54% to88.42%
+with regular raw snapshots still enabled. Initial full upload remains expensive.
+Next: checked source caching and exact early depth rejection, initialization cost,
+safe host depth/insertion, source eligibility and handover.
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
