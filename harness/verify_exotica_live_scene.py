@@ -38,7 +38,8 @@ def decode_context(raw):
     def floating(w):
         return struct.unpack('<f', struct.pack('<I', w))[0]
 
-    if word() != 0x31534358:
+    magic = word()
+    if magic not in (0x31534358, 0x32534358):
         raise ValueError('live scene context magic')
     frame, multiplier, margin_word, fade, bank, partial, scale, palette = take(8)
     margin = floating(margin_word)
@@ -58,12 +59,15 @@ def decode_context(raw):
     for key, size in FLOATS:
         context[key] = list(map(floating, take(size)))
     context['regs'] = take(128);context['render'] = take(80);context['render_policy'] = 0
+    frustum_bounds = magic == 0x32534358
+    if frustum_bounds and word() != 1:
+        raise ValueError('live scene bounds switch')
     if offset != len(values):
         raise ValueError('live scene context trailing words')
     validate(context)
     return dict(frame=frame, multiplier=multiplier, margin=margin, fade=fade, bank=bank,
                 partial=bool(partial), position=position, view=view, alternate=alternate,
-                call=call, context=context)
+                call=call, context=context, frustum_bounds=frustum_bounds)
 
 
 def fnv_bytes(raw):
@@ -124,8 +128,8 @@ def check(directory, frame, require_original=False, require_boundary=False):
         raise ValueError('live scene WaveRAM size')
     sources = sections(read, args['partial'])
     instances, counts = reference(sources['sources'], read, paths[2].read_bytes(), frame, args['margin'], args['fade'],
-                                  args['call'], args['context'], args['position'], args['view'], args['alternate'])
-    expected, expected_headers, summary = expected_bytes(instances, args['multiplier'])
+                                  args['call'], args['context'], args['position'], args['view'], args['alternate'], args['frustum_bounds'])
+    expected, expected_headers, summary = expected_bytes(instances, args['multiplier'], args['frustum_bounds'])
     actual, headers = paths[3].read_bytes(), paths[4].read_bytes()
     if actual != expected or headers != expected_headers:
         raise ValueError('live native scene instance/geometry mismatch')
@@ -142,6 +146,8 @@ def check(directory, frame, require_original=False, require_boundary=False):
             int(row['viewport']) != summary['viewport_quads'] or int(row['sources']) != len(sources['sources']) or
             int(row['guest_cycles']) or int(row['bank']) != args['bank'] or int(row['partial']) != args['partial']):
         raise ValueError('live scene counters/cycles/source state mismatch')
+    if args['frustum_bounds'] and (int(row['bounds']) != 1 or int(row['culled_bounds']) != summary['culled_bounds']):
+        raise ValueError('live scene bounds counters mismatch')
     original = None
     boundary = None
     if require_boundary:
@@ -162,7 +168,7 @@ def check(directory, frame, require_original=False, require_boundary=False):
     if before != {p.relative_to(directory).as_posix(): sha256_file(p) for p in paths}:
         raise ValueError('live scene snapshot changed during verification')
     return dict(schema=1, passed=True, scope=__doc__, frame=frame, multiplier=args['multiplier'],
-                completed_fade=bool(args['fade']), sources=len(sources['sources']), counts=summary,
+                completed_fade=bool(args['fade']), frustum_bounds=args['frustum_bounds'], sources=len(sources['sources']), counts=summary,
                 original_context=original, game_scene_boundary=boundary, ordered_hash=fingerprint, immutable_inputs=True, inputs=before)
 
 

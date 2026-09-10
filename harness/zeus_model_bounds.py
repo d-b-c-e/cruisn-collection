@@ -76,11 +76,12 @@ def model_bounds(words, quad_size):
     return None if low is None else list(zip(low, high))
 
 
-def outside(bounds, context, margin):
+def outside(bounds, context, margin, maximum_depth=math.inf):
     regs = context['regs'];matrix = context['matrix'];translation = context['translation'][:3]
     exponent = regs[0x66]-0x8e
     if (not math.isfinite(margin) or not 0 <= margin <= 256 or
-            not -31 <= exponent <= 31 or not 0 <= regs[0x6c] <= 30):
+            not -31 <= exponent <= 31 or not -31 <= regs[0x68]-0x9d <= 31 or
+            not 0 <= regs[0x6c] <= 30 or context.get('yscale', 0) > 1 or context.get('render_policy', 0) > 7):
         return False
     clip, ox, oy = (float_word(regs[i]) for i in (0x78, 0x6a, 0x6b))
     if not all(math.isfinite(v) for v in [clip, ox, oy, *matrix, *translation]):
@@ -101,6 +102,9 @@ def outside(bounds, context, margin):
         if transformed[2][1] < clip:
             return True
         if transformed[2][0] < max(clip, F(0)):
+            return False
+        depth = add(multiply(transformed[2], (F(4096),)*2), (F(8388607),)*2)
+        if not finite(depth) or math.isnan(maximum_depth) or depth[1] >= maximum_depth:
             return False
         denominator = add(transformed[2], (F(2), F(2)))
         if not finite(denominator) or denominator[0] <= 0:

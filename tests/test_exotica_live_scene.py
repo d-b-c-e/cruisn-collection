@@ -34,6 +34,17 @@ class ExoticaLiveScene(unittest.TestCase):
         self.assertEqual(fnv_bytes(b''), 'cbf29ce484222325')
         self.assertNotEqual(fnv_bytes(b'\1\2\3\4'), fnv_bytes(b'\4\3\2\1'))
 
+    def test_bounds_requires_versioned_context_without_changing_original_fields(self):
+        old, call, context = self.payload()
+        new = context_bytes(5000, 3, 86., 0, dict(bank=2, loading=1), call, context,
+                            [1, 2, 3], [0]*9, [1]*9, frustum_bounds=True)
+        self.assertEqual(new[4:-4], old[4:])
+        self.assertFalse(decode_context(old)['frustum_bounds'])
+        self.assertTrue(decode_context(new)['frustum_bounds'])
+        self.assertEqual(decode_context(new)['context'], context)
+        for bad in (new[:-4], new[:-4]+struct.pack('<I', 0), new+b'\0'*4, old+struct.pack('<I', 1)):
+            with self.assertRaises(ValueError):decode_context(bad)
+
     def test_scene_can_cross_refresh_but_must_own_first_supported_model(self):
         events = [dict(kind=kind, pc=pc, time=time, frame=frame, flags=flags, camera=[1, 2, 3])
                   for kind, pc, time, frame, flags in (

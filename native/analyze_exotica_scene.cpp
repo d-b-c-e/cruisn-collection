@@ -28,7 +28,8 @@ int main(int argc,char **argv)
         if(argc!=7)return 2;
         std::ifstream input(argv[5],std::ios::binary);
         auto word=[&](){uint32_t w;if(!input.read(reinterpret_cast<char *>(&w),4))throw std::runtime_error("context truncated");return w;};
-        if(word()!=0x31534358)throw std::runtime_error("context magic");
+        const auto magic=word();
+        if(magic!=0x31534358 && magic!=0x32534358)throw std::runtime_error("context magic");
         cruisn::exotica_scene::Parameters p;
         p.frame=word();p.multiplier=word();p.margin=cruisn::zeus_model::word_float(word());
         const auto fade=word(),bank=word(),partial=word();
@@ -50,6 +51,11 @@ int main(int argc,char **argv)
         for(auto &v:p.context.light)v=cruisn::zeus_model::word_float(word());
         for(auto &v:p.context.regs)v=word();
         for(auto &v:p.context.render)v=word();
+        if(magic==0x32534358)
+        {
+            if(word()!=1)throw std::runtime_error("context bounds switch");
+            p.frustum_bounds=true;
+        }
         if(input.peek()!=std::char_traits<char>::eof())throw std::runtime_error("context trailing bytes");
         const auto ram=load(argv[1],0x100000),main=load(argv[2],0x800000),banks=load(argv[3],0x3000000),wave=load(argv[4],0x1000000);
         auto read=[&](uint32_t a){
@@ -78,6 +84,7 @@ int main(int argc,char **argv)
             <<",\"quads\":"<<scene.quads.size()<<",\"viewport_quads\":"<<scene.viewport_polygons
             <<",\"model_words_read\":"<<scene.model_words_read<<",\"selected\":"<<scene.selected
             <<",\"unsupported_transform\":"<<scene.unsupported_transform<<",\"culled_distance\":"<<scene.culled_distance
+            <<",\"culled_bounds\":"<<scene.culled_bounds
             <<",\"maximum_depth\":"<<scene.maximum_depth
             <<",\"source_microseconds\":"<<std::chrono::duration_cast<std::chrono::microseconds>(ready-start).count()
             <<",\"assembly_microseconds\":"<<std::chrono::duration_cast<std::chrono::microseconds>(end-ready).count()<<"}\n";

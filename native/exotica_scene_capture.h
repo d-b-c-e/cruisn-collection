@@ -8,7 +8,7 @@ template<class Values> void append_words(std::vector<uint32_t> &out,const Values
 inline std::vector<uint32_t> parameter_words(const Parameters &p,uint32_t bank,bool partial)
 {
     auto bits=[](float f){uint32_t w;std::memcpy(&w,&f,4);return w;};
-    std::vector<uint32_t> out={0x31534358,p.frame,p.multiplier,bits(p.margin),uint32_t(p.complete_fade),
+    std::vector<uint32_t> out={p.frustum_bounds?0x32534358U:0x31534358U,p.frame,p.multiplier,bits(p.margin),uint32_t(p.complete_fade),
         bank,uint32_t(partial),p.scale,p.setup.palette_setup};
     append_words(out,p.camera);append_words(out,p.view);append_words(out,p.alternate);
     append_words(out,p.setup.constants);append_words(out,p.setup.commands);append_words(out,p.setup.programs);
@@ -19,7 +19,9 @@ inline std::vector<uint32_t> parameter_words(const Parameters &p,uint32_t bank,b
     for(auto f:c.matrix)out.push_back(bits(f));
     for(auto f:c.translation)out.push_back(bits(f));
     for(auto f:c.light)out.push_back(bits(f));
-    append_words(out,c.regs);append_words(out,c.render);return out;
+    append_words(out,c.regs);append_words(out,c.render);
+    if(p.frustum_bounds)out.push_back(1);
+    return out;
 }
 inline std::vector<std::array<uint32_t,11>> instance_words(const Result &scene)
 {

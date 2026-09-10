@@ -25,17 +25,20 @@ def add_arguments(parser):
     parser.add_argument('--exotica-host-last', type=int)
     parser.add_argument('--exotica-host-multiplier', type=int, choices=(1, 2, 3))
     parser.add_argument('--exotica-host-snapshots', help='up to 16 native frames; raw local RAM/WaveRAM and generated geometry')
+    parser.add_argument('--exotica-host-bounds', choices=('off', 'on'),
+                        help='cache conservative model bounds before private polygon projection')
 
 
 def configure(args, rom, settings):
     mode = getattr(args, 'exotica_host_scene', None)
+    bounds_option = getattr(args, 'exotica_host_bounds', None)
     values = [getattr(args, 'exotica_host_'+name, None) for name in ('first', 'last', 'multiplier', 'snapshots')]
     explicit = mode is not None
     if explicit:
         if not getattr(args, 'candidate', None):
             raise ValueError('Exotica host observation requires an explicit candidate')
     else:
-        if any(v is not None for v in values):
+        if any(v is not None for v in values) or bounds_option is not None:
             raise ValueError('Exotica host bounds require an explicit mode')
         inherited = settings.get('MIDZ_HOST_SCENE')
         if inherited in (None, '0'):
@@ -47,11 +50,12 @@ def configure(args, rom, settings):
     if rom != 'crusnexo' or mode not in ('off', 'observe'):
         raise ValueError('Exotica host observation supports Exotica2.4 only')
     if mode == 'off':
-        if any(v is not None for v in values):
+        if any(v is not None for v in values) or bounds_option is not None:
             raise ValueError('Exotica host off does not take bounds')
         settings['MIDZ_HOST_SCENE'] = '0'
         for key in KEYS:
             settings.pop(key, None)
+        settings.pop('MIDZ_HOST_BOUNDS', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier
@@ -62,13 +66,19 @@ def configure(args, rom, settings):
         raise ValueError('Exotica host frame/multiplier bounds')
     if settings.get('MIDZ_UPSTREAM_RENDER', '0') != '0':
         raise ValueError('Exotica host observation currently requires legacy render policy')
+    bound_setting = settings.get('MIDZ_HOST_BOUNDS', '0') if bounds_option is None else str(int(bounds_option == 'on'))
+    if bound_setting not in ('0', '1'):
+        raise ValueError('invalid recorded Exotica host bounds mode')
+    if bounds_option is not None:
+        settings['MIDZ_HOST_BOUNDS'] = bound_setting
     settings.update(MIDZ_HOST_SCENE='1', MIDZ_HOST_FIRST=str(first), MIDZ_HOST_LAST=str(last),
                     MIDZ_HOST_MULTIPLIER=str(multiplier))
     if captured:
         settings['MIDZ_HOST_SNAPSHOTS'] = ','.join(map(str, captured))
     else:
         settings.pop('MIDZ_HOST_SNAPSHOTS', None)
-    return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured, explicit=explicit)
+    return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured,
+                bounds=bound_setting == '1', explicit=explicit)
 
 
 def verify_receipt(trial, text, directory):
@@ -83,6 +93,9 @@ def verify_receipt(trial, text, directory):
     expected = (trial['first'], trial['last'], trial['multiplier'], len(trial['snapshots']))
     if len(acknowledgments) != 1 or tuple(map(int, acknowledgments[0])) != expected:
         raise ValueError('missing or mismatched Exotica host acknowledgment')
+    bounds = trial.get('bounds', False)
+    if re.findall(r'^MIDZ_HOST_BOUNDS=(\d+)$', text, re.M) != (['1'] if bounds else []):
+        raise ValueError('missing or mismatched Exotica bounds acknowledgment')
     finals = re.findall(r'^MIDZ_HOST_SCENE_RESULT complete=(\d+) prepared=(\d+) matched=(\d+) quads=(\d+) snapshots=(\d+) pending=(\d+) remaining=(\d+)$', text, re.M)
     if len(finals) != 1:
         raise ValueError('missing Exotica host completion')
@@ -106,6 +119,8 @@ def verify_receipt(trial, text, directory):
                 cpu_frame-scene_frame not in (0, 1) or frame-cpu_frame not in (0, 1) or
                 not 0 <= preparation < .0176 or
                 not 0 <= delay < .0176 or int(row['guest_cycles']) != 0 or
+                int(row.get('bounds', '0')) != int(bounds) or
+                (bounds and not 0 <= int(row['culled_bounds']) <= 32768) or
                 int(row['multiplier']) != trial['multiplier'] or int(row['viewport']) > int(row['quads'])):
             raise ValueError('Exotica host clock/frame/cycle contract')
         previous, previous_scene = frame, scene

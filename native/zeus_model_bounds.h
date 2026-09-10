@@ -43,10 +43,13 @@ inline bool prepare(const std::vector<uint32_t> &words,uint32_t size,Bounds &res
 }
 // Uncertain/nonfinite/near-plane-crossing bounds fail open. Original decoding
 // remains responsible for validation, clipping and exact polygon output.
-inline bool outside(const Bounds &b,const zeus_model::Context &c,float margin) {
+inline bool outside(const Bounds &b,const zeus_model::Context &c,float margin,
+ float maximum_depth=std::numeric_limits<float>::infinity()) {
  if(!std::isfinite(margin)||margin<0||margin>256)return false;
  const int exponent=int(c.regs[0x66])-0x8e;
- if(exponent<-31||exponent>31||c.regs[0x6c]>30)return false;
+ const int uv_exponent=int(c.regs[0x68])-0x9d;
+ if(exponent<-31||exponent>31||uv_exponent<-31||uv_exponent>31||
+    c.regs[0x6c]>30||c.yscale>1||c.render_policy>7)return false;
  const float clip=zeus_model::word_float(c.regs[0x78]);
  const float ox=zeus_model::word_float(c.regs[0x6a]),oy=zeus_model::word_float(c.regs[0x6b]);
  if(!std::isfinite(clip)||!std::isfinite(ox)||!std::isfinite(oy))return false;
@@ -62,6 +65,8 @@ inline bool outside(const Bounds &b,const zeus_model::Context &c,float margin) {
  }
  if(v[2].high<clip)return true;
  if(v[2].low<std::max(clip,0.f))return false;
+ const auto depth=add(mul(v[2],point(4096.f)),point(8388607.f));
+ if(!finite(depth)||std::isnan(maximum_depth)||depth.high>=maximum_depth)return false;
  const auto denominator=add(v[2],point(2.f));if(!finite(denominator)||denominator.low<=0)return false;
  const auto factor=divide(point(float(1U<<c.regs[0x6c])),denominator);
  const auto x=add(mul(v[0],factor),point(ox)),y=add(mul(v[1],factor),point(oy));

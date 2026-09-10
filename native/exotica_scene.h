@@ -8,6 +8,7 @@
 #include "exotica_state.h"
 #include "zeus_state.h"
 #include "zeus_model.h"
+#include "zeus_model_bounds.h"
 #include <map>
 #include <set>
 
@@ -16,7 +17,7 @@ struct Parameters
 {
     uint32_t frame=0,far_limit=204800,multiplier=1,scale=0,render_policy=0;
     float margin=0;
-    bool complete_fade=false;
+    bool complete_fade=false,frustum_bounds=false;
     std::array<uint32_t,3> camera{};
     std::array<uint32_t,9> view{},alternate{};
     exotica_state::Operands setup;
@@ -33,7 +34,7 @@ struct Result
 {
     std::vector<Instance> instances;
     std::vector<zeus_model::Quad> quads;
-    size_t selected=0,unsupported_transform=0,culled_distance=0;
+    size_t selected=0,unsupported_transform=0,culled_distance=0,culled_bounds=0;
     size_t model_words_read=0,decoded_polygons=0,viewport_polygons=0;
     float maximum_depth=0;
 };
@@ -49,7 +50,12 @@ inline bool explicit_texture(const std::vector<uint32_t> &words,uint32_t quad_si
         const auto *d=&words[i];const unsigned op=d[0]>>24,n=op==0x38?quad_size:2;
         if(!n || n>words.size()-i)return false;
         i+=n;
-        if(op==0 || op==0x22)format=true;
+        if(op==0 || op==0x22)
+        {
+            const int shift=int((d[0]>>16)&255)-0x9d;
+            if(shift<-31 || shift>31)return false;
+            format=true;
+        }
         else if(op==0x36 && ((d[0]>>16)&127)==0x20 && d[1]>>24==5)texture=true;
         else if(op==0x38 && (!format || !texture))return false;
     }
@@ -80,7 +86,12 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
         !std::isfinite(p.margin) || p.margin<0 || p.margin>256 || p.render_policy || !zeus_state::valid(p.context))return false;
     if(read(0x67da)!=p.far_limit || read(0x67db)!=p.scale)return false;
     Result out;
-    std::map<std::pair<uint32_t,uint32_t>,std::vector<uint32_t>> cache;
+    struct CachedModel
+    {
+        std::vector<uint32_t> words;
+        std::map<uint32_t,zeus_bounds::Bounds> bounds;
+    };
+    std::map<std::pair<uint32_t,uint32_t>,CachedModel> cache;
     std::set<std::pair<uint32_t,uint32_t>> identities;
     for(const auto &s:sources)
     {
@@ -112,7 +123,8 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
             if(size>max_model_words-out.model_words_read)return false;
             std::vector<uint32_t> words;
             if(!model_read(base,count,words) || words.size()!=size)return false;
-            out.model_words_read+=size;found=cache.emplace(key,std::move(words)).first;
+            out.model_words_read+=size;CachedModel model;model.words=std::move(words);
+            found=cache.emplace(key,std::move(model)).first;
         }
         auto operands=p.setup;operands.object=o;operands.cache.fill(UINT32_MAX);
         if(p.complete_fade)flags&=~uint32_t(0x04000100);
@@ -124,7 +136,7 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
         zeus_state::Result state;
         if(!zeus_state::transition(p.context,{},packet,base,state))return false;
         if(state.context.regs[0x40]!=0x0084003f ||
-            !explicit_texture(found->second,state.context.quad_size))return false;
+            !explicit_texture(found->second.words,state.context.quad_size))return false;
         zeus_model::Context context;
         context.frame=p.frame;context.quad_size=state.context.quad_size;
         context.texture=state.context.texture;context.yscale=state.context.yscale;
@@ -134,8 +146,22 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
         // This initial assembler covers legacy policy only. A policy extension
         // must be explicit and independently compared before use.
         context.render_policy=0;
+        if(p.frustum_bounds)
+        {
+            auto &model=found->second;auto bound=model.bounds.find(context.quad_size);
+            if(bound==model.bounds.end())
+            {
+                zeus_bounds::Bounds prepared;
+                if(!zeus_bounds::prepare(model.words,context.quad_size,prepared))return false;
+                bound=model.bounds.emplace(context.quad_size,prepared).first;
+            }
+            // Retain full projection when depth could violate the assembler's
+            // existing numeric guard, even if the model is entirely offscreen.
+            if(zeus_bounds::outside(bound->second,context,p.margin,2147483520.f))
+            {++out.culled_bounds;continue;}
+        }
         zeus_model::Result decoded;
-        if(!zeus_model::decode(found->second,context,decoded) || decoded.quads.size()>max_quads-out.quads.size())return false;
+        if(!zeus_model::decode(found->second.words,context,decoded) || decoded.quads.size()>max_quads-out.quads.size())return false;
         Instance instance;instance.entry=s.entry;instance.source=s.source;instance.descriptor=descriptor;
         instance.base=base;instance.count=count;instance.depth=transform.depth;
         instance.band=uint32_t((distance-1)/p.far_limit)+1;

@@ -8,6 +8,21 @@ from exotica_scene_options import add_arguments, configure, snapshots, verify_re
 
 
 class ExoticaSceneOptions(unittest.TestCase):
+    def test_bounds_are_explicit_and_recorded(self):
+        args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
+                '--exotica-host-first', '5000', '--exotica-host-last', '5002')
+        settings = {}
+        self.assertFalse(configure(self.args(*args), 'crusnexo', settings)['bounds'])
+        self.assertNotIn('MIDZ_HOST_BOUNDS', settings)
+        self.assertTrue(configure(self.args(*args, '--exotica-host-bounds', 'on'), 'crusnexo', settings)['bounds'])
+        before = dict(settings)
+        self.assertTrue(configure(self.args(), 'crusnexo', settings)['bounds'])
+        self.assertEqual(settings, before)
+        self.assertFalse(configure(self.args(*args, '--exotica-host-bounds', 'off'), 'crusnexo', settings)['bounds'])
+        self.assertEqual(settings['MIDZ_HOST_BOUNDS'], '0')
+        with self.assertRaisesRegex(ValueError, 'explicit mode'):
+            configure(self.args('--exotica-host-bounds', 'on'), 'crusnexo', {})
+
     def args(self, *items):
         p = argparse.ArgumentParser();add_arguments(p);p.add_argument('--candidate')
         return p.parse_args(items)
@@ -51,6 +66,8 @@ class ExoticaSceneOptions(unittest.TestCase):
             row = '5001,5000,1.0,1.001,5,4,0,3,170,5000,0.999\n'
             path.write_text(columns+row, encoding='utf-8')
             self.assertTrue(verify_receipt(self.trial(), text, temp)['passed'])
+            with self.assertRaisesRegex(ValueError, 'bounds acknowledgment'):
+                verify_receipt(dict(self.trial(), bounds=True), text, temp)
             with self.assertRaisesRegex(ValueError, 'incomplete'):
                 verify_receipt(self.trial(), text.replace('complete=1', 'complete=0'), temp)
             with self.assertRaisesRegex(ValueError, 'acknowledgment'):

@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 Exotica bounds integration — ACTIVE acceptance
+
+Read docs/reviews/2026-09-10-exotica-bounds-integration.md. Native86deac56192a7692110d44d264b5d30b02c5f208
+is separately built/frozen/pushed; SHA f25ecd8ea7cd9d2a0c13becb94c96d59aebffc8f1aabe92cd6431c2cfe18e471.
+162patches reconstruct tree55f86667417c7895dd98aff50926c54a050238dd.
+Explicit --exotica-host-bounds on|off caches actual-vertex bounds, defaults off;
+XCS2-on/XCS1-off compatibility and malformed/depth guards. No extra live drawing.
+307Python/no skips,36native,103commands PASS at454-file89674403e4130d759d235e6c259dbe8cf8f334a4325665afc7ec5fe56d905585.
+48standalone scene variants pass. Five6000 Amazon off3/on1/on2/on3/repeat pass
+original motion/resources/17GL each and independent device/scene/geometry checks.
+All2457 scene clocks and3x viewport counts match;4,848,660 ordered quads repeat.
+Average source+assembly+hash6.33->3.53ms/p9913.04->6.13ms. Raw snapshot pauses
+remain separate (293/651ms), not gameplay performance. Local bounds-live-trials.py
+session60879 is now running Hong Kong cases; inspect results/processes first.
+Seven defaults NOT yet renewed on86deac; last acceptance f49/SHA9c7dcd27.
+NEW Amazon578 scenes have3x>2x viewport polygons;5978 peaks+5142. Capture that
+window next; projected intersection is NOT final visible-pixel benefit.
+Material LOCAL studies:655models/7569original palette quad rows match; fullWave
+HK5000->5990 differs1910bytes/4pages. Five delayed owned page-delta snapshots
+reconstruct all16MB. See materials-next-plan.md/page-image-draft.h locally.
+NEXT finish bounds acceptance/defaults, captureAmazon5978, then promote private
+page/material/depth/sky/handover contracts. Earlier-source eligibility still needed
+for black ground. Continue directly; no heartbeat waits. Personalv0.5.0/SHA87d04de4
+unchanged. No deploy/release/hostedworkflow/physicalFFB/Worldtuning/menu removal.
+
 ## September10 Exotica standalone bounds — ACTIVE integration
 
 Read docs/reviews/2026-09-10-exotica-model-bounds.md. Standalone native/Python

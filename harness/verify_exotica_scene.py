@@ -26,6 +26,7 @@ from verify_zeus_state import floats, verify as verify_original_state
 from verify_zeus_models import verify as verify_original_geometry
 from verification import sha256_file, write_json
 from zeus_model import decode
+from zeus_model_bounds import model_bounds, outside
 from zeus_models import parse
 from zeus_state import SCALARS, FLOATS, transition, validate
 from zeus_capture import ARTIFACTS, validate as validate_resources
@@ -98,18 +99,20 @@ def verify_operands(read, call, position):
         raise ValueError('scene snapshot/setup operand mismatch')
 
 
-def context_bytes(frame, multiplier, margin, fade, progress, call, context, position, view, alternate):
+def context_bytes(frame, multiplier, margin, fade, progress, call, context, position, view, alternate, frustum_bounds=False):
     if (not 1800 <= frame <= 16000 or multiplier not in (1, 2, 3) or
             not math.isfinite(margin) or not 0 <= margin <= 256 or fade not in (0, 1) or
             context.get('render_policy', 0)):
         raise ValueError('scene context bounds/policy')
     bits = lambda f: struct.unpack('<I', struct.pack('<f', f))[0]
-    values = [0x31534358, frame, multiplier, bits(margin), fade,
+    values = [0x32534358 if frustum_bounds else 0x31534358, frame, multiplier, bits(margin), fade,
               int(progress['bank']), int(progress['loading']), call['scale'], call['palette_setup'],
               *position, *view, *alternate, *call['state_constants'], *call['state_commands'],
               *call['programs'], *[w for i in range(4) for w in call['program'+str(i)]],
               len(call['default_state']), *call['default_state'], *[context[k] for k in SCALARS],
               *[bits(f) for k, _ in FLOATS for f in context[k]], *context['regs'], *context['render']]
+    if frustum_bounds:
+        values.append(1)
     return struct.pack('<'+str(len(values))+'I', *values)
 
 
@@ -122,6 +125,8 @@ def explicit_texture(model, quad_size):
             raise ValueError('scene incomplete model')
         d = model[index:index+size];index += size
         if op in (0, 0x22):
+            if not -31 <= ((d[0] >> 16) & 255)-0x9d <= 31:
+                raise ValueError('scene invalid UV exponent')
             format_seen = True
         if op == 0x36 and (d[0] >> 16) & 127 == 0x20 and d[1] >> 24 == 5:
             texture = True
@@ -129,7 +134,7 @@ def explicit_texture(model, quad_size):
             raise ValueError('scene inherited model texture')
 
 
-def reference(sources, read, wave, frame, margin, fade, call, context, position, view, alternate):
+def reference(sources, read, wave, frame, margin, fade, call, context, position, view, alternate, frustum_bounds=False):
     """Build at 3x once; band filtering preserves original source/quad order."""
     instances = []; identities = set();selected = unsupported = culled = 0
     for source in sources:
@@ -173,21 +178,31 @@ def reference(sources, read, wave, frame, margin, fade, call, context, position,
         band = (distance-1)//204800+1
         header = [*key, descriptor, base, count, band, private['palette'], private['regs'][0x40],
                   transform['depth'] & 0xffffffff]
-        instances.append(dict(header=header, band=band, raw=raw, viewport=int(viewport)))
+        culled_bounds = frustum_bounds and outside(model_bounds(model, private['quad_size']), private, margin, 2147483520.)
+        if culled_bounds and viewport:
+            raise ValueError('scene bounds dropped a visible polygon')
+        instances.append(dict(header=header, band=band, raw=raw, viewport=int(viewport), bounds_culled=bool(culled_bounds)))
     return instances, dict(selected=selected, unsupported_transform=unsupported, culled_distance=culled)
 
 
-def expected_bytes(instances, multiplier):
+def expected_bytes(instances, multiplier, frustum_bounds=False):
     quads = bytearray();headers = bytearray();viewport = 0;included = 0
+    culled_bounds = 0
     for row in instances:
         if row['band'] > multiplier:
             continue
+        if frustum_bounds and row['bounds_culled']:
+            culled_bounds += 1
+            continue
         headers.extend(struct.pack('<11I', *row['header'], len(quads)//260, len(row['raw'])//260))
         quads.extend(row['raw']);viewport += row['viewport'];included += 1
-    return quads, headers, dict(instances=included, quads=len(quads)//260, viewport_quads=viewport)
+    counts = dict(instances=included, quads=len(quads)//260, viewport_quads=viewport)
+    if frustum_bounds:
+        counts['culled_bounds'] = culled_bounds
+    return quads, headers, counts
 
 
-def check(directory, frame, margin, native, output):
+def check(directory, frame, margin, native, output, frustum_bounds=False):
     directory = directory.resolve();native = native.resolve();output = output.resolve()
     if not 1800 <= frame <= 16000 or not math.isfinite(margin) or not 0 <= margin <= 256:
         raise ValueError('scene frame/margin bounds')
@@ -223,13 +238,13 @@ def check(directory, frame, margin, native, output):
     results = []
     for fade in (0, 1):
         instances, counts = reference(source_result['sources'], read, wave, frame, margin, fade,
-                                      call, context, position, view, alternate)
+                                      call, context, position, view, alternate, frustum_bounds)
         repeat = None
         for ordinal, multiplier in enumerate((1, 2, 3, 3)):
             prefix = output/f'fade{fade}-{ordinal}-{multiplier}x'
             binary_context = prefix.with_suffix('.context')
             binary_context.write_bytes(context_bytes(frame, multiplier, margin, fade, progress, call,
-                                                      context, position, view, alternate))
+                                                      context, position, view, alternate, frustum_bounds))
             command = [str(native), str(ram), str(directory/'exotica-main-rom.bin'),
                        str(directory/'exotica-banked-rom.bin'), str(capture/'waveram.bin'),
                        str(binary_context), str(prefix)]
@@ -241,7 +256,7 @@ def check(directory, frame, margin, native, output):
             actual = json.loads(run.stdout)
             raw = Path(str(prefix)+'-quads.bin').read_bytes()
             headers = Path(str(prefix)+'-instances.bin').read_bytes()
-            expected, expected_headers, summary = expected_bytes(instances, multiplier)
+            expected, expected_headers, summary = expected_bytes(instances, multiplier, frustum_bounds)
             if raw != expected or headers != expected_headers:
                 raise ValueError(f'native scene geometry mismatch {prefix.name}')
             expected_counts = dict(counts, **summary)
@@ -259,7 +274,7 @@ def check(directory, frame, margin, native, output):
     after = {p.relative_to(directory).as_posix(): sha256_file(p) for p in paths}
     if before != after or native_hash != sha256_file(native):
         raise ValueError('scene inputs/native changed during verification')
-    return dict(schema=1, passed=True, scope=__doc__, frame=frame, margin=margin, joins=joins,
+    return dict(schema=1, passed=True, scope=__doc__, frame=frame, margin=margin, joins=joins, frustum_bounds=frustum_bounds,
                 original_context_pairs=original['consecutive_contexts'],
                 original_ordered_quads=geometry['covered_quads'], cases=results,
                 native_sha256=native_hash, sources=before, immutable_inputs=True)
@@ -270,9 +285,10 @@ def main():
     p.add_argument('directory', type=Path);p.add_argument('--frame', type=int, required=True)
     p.add_argument('--margin', type=float, required=True);p.add_argument('--native', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True);p.add_argument('--report', type=Path, required=True)
+    p.add_argument('--frustum-bounds', choices=('off', 'on'), default='off')
     a = p.parse_args()
     try:
-        result = check(a.directory, a.frame, a.margin, a.native, a.output)
+        result = check(a.directory, a.frame, a.margin, a.native, a.output, a.frustum_bounds == 'on')
     except (ValueError, OSError, KeyError, TypeError, OverflowError, subprocess.SubprocessError) as error:
         result = dict(schema=1, passed=False, scope=__doc__, error=str(error))
     write_json(a.report, result);print('PASS' if result['passed'] else 'FAIL', a.report)

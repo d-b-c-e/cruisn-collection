@@ -80,4 +80,22 @@ int main()
     p.margin=std::numeric_limits<float>::quiet_NaN();assert(!exotica_scene::build({source},p,read,models,selected,result));p.margin=88;
     std::vector<exotica_future::Source> too_many(exotica_scene::max_sources+1);
     assert(!exotica_scene::build(too_many,p,read,models,selected,result));
+    // Opt-in bounds remove only the wholly offscreen instance. Original/off
+    // serialization stays byte-identical; on has an explicit versioned field.
+    second.words[1]=f(100000);p.frustum_bounds=true;reads=0;
+    assert(exotica_scene::build({source,second},p,read,models,selected,result));
+    assert(result.instances.size()==1 && result.viewport_polygons==1 && result.culled_bounds==1 && reads==1);
+    auto bounded=exotica_scene::parameter_words(p,2,true);
+    assert(bounded[0]==0x32534358 && bounded.back()==1 && bounded.size()==serialized.size()+1);
+    bounded[0]=0x31534358;bounded.pop_back();
+    p.frustum_bounds=false;assert(bounded==exotica_scene::parameter_words(p,2,true));p.frustum_bounds=true;
+    // An invalid format or unsupported state must still fail offscreen.
+    model[0]=0x22000000;
+    assert(!exotica_scene::build({second},p,read,models,selected,result));model=original_model;
+    model[2]=0x36660000;
+    assert(!exotica_scene::build({second},p,read,models,selected,result));model=original_model;
+    // Preserve the pre-existing signed-depth guard, rather than hiding it by
+    // culling a dangerous offscreen projection.
+    second.words[3]=f(500000);p.scale=0x02000000;memory[0x67db]=p.scale;
+    assert(!exotica_scene::build({second},p,read,models,selected,result));
 }
