@@ -15,6 +15,7 @@ struct Packet {
     std::vector<Quad> quads;
 };
 constexpr size_t header_bytes=32,quad_bytes=264,max_quads=131072;
+static_assert(sizeof(zeus_model::Quad)==quad_bytes-4,"XWD1 polygon shape changed");
 constexpr size_t maximum_bytes=header_bytes+zeus_host::maximum_material_bytes+max_quads*quad_bytes;
 static_assert(maximum_bytes+8<(64u<<20),"private wide scene exceeds native queue");
 
@@ -51,17 +52,22 @@ inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
     if(!shape(p))return false;
     std::vector<uint8_t> material,wire;
     if(!zeus_host::encode(p.materials,material))return false;
-    wire.reserve(header_bytes+material.size()+p.quads.size()*quad_bytes);
-    using zeus_host::put32;
-    put32(wire,0x31445758); //XWD1: ordinary wider geometry, owned materials
-    put32(wire,uint32_t(material.size()));put32(wire,uint32_t(p.quads.size()));
-    put32(wire,p.margin);put32(wire,p.page);put32(wire,p.multiplier);put32(wire,p.draw?1:0);put32(wire,0);
-    wire.insert(wire.end(),material.begin(),material.end());
+    wire.resize(header_bytes+material.size()+p.quads.size()*quad_bytes);
+    auto *data=wire.data();
+    // Shape and material encoding bound the complete allocation before writes.
+    // Keep the portable little-endian wire format without per-byte vector growth.
+    auto put=[&](uint32_t word) {
+        *data++=uint8_t(word);*data++=uint8_t(word>>8);
+        *data++=uint8_t(word>>16);*data++=uint8_t(word>>24);
+    };
+    put(0x31445758);put(uint32_t(material.size()));put(uint32_t(p.quads.size()));
+    put(p.margin);put(p.page);put(p.multiplier);put(p.draw?1:0);put(0);
+    std::memcpy(data,material.data(),material.size());data+=material.size();
     for(const auto &q:p.quads) {
-        put32(wire,q.palette);
-        for(auto value:q.polygon.state)put32(wire,value);
+        put(q.palette);
+        for(auto value:q.polygon.state)put(value);
         for(const auto &v:q.polygon.vertices)for(float f:v) {
-            uint32_t word;std::memcpy(&word,&f,4);put32(wire,word);
+            uint32_t word;std::memcpy(&word,&f,4);put(word);
         }
     }
     out=std::move(wire);return true;

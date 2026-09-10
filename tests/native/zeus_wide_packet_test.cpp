@@ -49,7 +49,9 @@ int main(int argc,char **argv) {
     }
     bad=q.polygon;bad.state[12]=1;assert(!zeus_wide::depth_range(bad,5000,400));
     assert(!zeus_wide::depth_range(q.polygon,5001,400) && !zeus_wide::depth_range(q.polygon,5000,0));
-    p.quads[0].palette=1;assert(!zeus_wide::encode(p,again));p.quads.clear();
+    again={0xaa,0x55};const auto unchanged_wire=again;
+    p.quads[0].palette=1;
+    assert(!zeus_wide::encode(p,again) && again==unchanged_wire);p.quads.clear();
     assert(zeus_wide::encode(p,again) && zeus_wide::decode(again.data(),again.size(),decoded));
     assert(!zeus_margin::depth24(q.polygon,5000,400));
     zeus_margin::Packet old;
