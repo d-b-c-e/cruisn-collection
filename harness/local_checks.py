@@ -76,6 +76,9 @@ def commands(group, output, cxx):
     compile_one('zeus-models', 'native/analyze_zeus_models.cpp')
     compile_one('zeus-state', 'native/analyze_zeus_state.cpp')
     compile_one('zeus-sky', 'native/analyze_zeus_sky.cpp')
+    bounds = compile_one('zeus-bounds', 'native/analyze_zeus_bounds.cpp')
+    steps.append(('zeus-bounds-projection', [py, 'harness/verify_zeus_bounds.py', '--native', bounds,
+                  '--work-dir', str(output/'bounds-batch'), '--report', str(output/'zeus-bounds.json')]))
     compile_one('offroad-future', 'native/analyze_offroad_future.cpp')
     compile_one('usa-host', 'native/analyze_usa_host.cpp')
     compile_one('usa-future', 'native/analyze_usa_future.cpp')

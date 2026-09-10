@@ -1,5 +1,21 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 Exotica standalone bounds — ACTIVE integration
+
+Read docs/reviews/2026-09-10-exotica-model-bounds.md. Standalone native/Python
+actual-vertex outward-rounded bounds pass3955 captured decisions/3000 rejected,
+zero visible polygons lost;5000 canonical synthetic cases also pass (808 rejected,
+3307 visible). Older draft synthetic inputs/right edge differ; keep their receipts.
+305Python/no skips,36native,103commands,454-file identity
+3a342df2214ecbd1d8a71e8a19bde2e5ec203bd3eb77d1dd08da2864be37e78f.
+NOT linked into assembler/MAME yet. No native build/deploy or new default acceptance.
+Last7defaults belong f49/SHA9c7dcd27; personalv0.5.0/SHA87d04de4 unchanged.
+NEXT integrate explicit default-off cached bounds, preserve malformed/projection
+validation, version capture-on bytes while keeping old/off contexts identical;
+compare ordered visible geometry and repeat before live cost/route/resources/4K.
+Continue directly toward private materials/depth/sky/handover, no heartbeat waits.
+No release/hosted workflows/physical FFB/World tuning/menu removal.
+
 ## September10 Exotica live observer — ACTIVE integration
 
 Read docs/reviews/2026-09-10-exotica-live-scenes.md. The collection observer milestone is now verified; native f49e8acc7d3b2da5beb0c7815804fa0a79117ab0 is built separately,

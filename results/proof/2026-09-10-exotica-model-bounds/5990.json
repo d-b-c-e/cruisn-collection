@@ -1,0 +1,19 @@
+{
+  "avoided_polygons": 4598,
+  "cases": 818,
+  "decoded_polygons": 5478,
+  "false_rejections": 0,
+  "input_sha256": "96f38f888c7d7760f051fefbce8f03cad2c101b249c23286c1d93f4cfc118cf0",
+  "malformed_batches_rejected": 4,
+  "native_python_exact": true,
+  "native_sha256": "11579692674e424625898959030cffc76eff29fcf5d875b1b9808eccdf67869c",
+  "output_sha256": "1f9d0c156db4dd07b8c6e8a631542bdab3f3356c8ab9fec4ae0186be752e8b08",
+  "passed": true,
+  "rejected": 740,
+  "scope": "Compare native model bounds with Python and full independent polygon projection.\n\nJSON contexts and binary work files contain raw game operands: keep them local.\nThe synthetic suite covers random transforms, viewport edges and near clipping.\nNo drawing, live material acceptance or performance claim is made.\n",
+  "sources": {
+    "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\scene5990-future-instances.json": "29aaf13baa352c1001b9396ba8234c3526f117acc50e2f1e31274296eb318665"
+  },
+  "synthetic": false,
+  "visible_polygons": 457
+}

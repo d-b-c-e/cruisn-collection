@@ -1,0 +1,17 @@
+{
+  "avoided_polygons": 159,
+  "cases": 5000,
+  "decoded_polygons": 3701,
+  "false_rejections": 0,
+  "input_sha256": "3eb1b275f30415dc90fb1afc9651f6d45fe3b9a307e42b58f9aaac6887218a93",
+  "malformed_batches_rejected": 4,
+  "native_python_exact": true,
+  "native_sha256": "11579692674e424625898959030cffc76eff29fcf5d875b1b9808eccdf67869c",
+  "output_sha256": "f07148053a19e04761abdae1918095a905bb44d13d701595c3a54ef9bb366af6",
+  "passed": true,
+  "rejected": 808,
+  "scope": "Compare native model bounds with Python and full independent polygon projection.\n\nJSON contexts and binary work files contain raw game operands: keep them local.\nThe synthetic suite covers random transforms, viewport edges and near clipping.\nNo drawing, live material acceptance or performance claim is made.\n",
+  "sources": {},
+  "synthetic": true,
+  "visible_polygons": 3307
+}
