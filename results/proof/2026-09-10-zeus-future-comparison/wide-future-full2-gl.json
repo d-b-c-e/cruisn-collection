@@ -1,0 +1,10 @@
+{
+  "scope": "completed GL frame pixels",
+  "passed": true,
+  "frames": 117,
+  "different_frames": [],
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\fence-full-on\\run\\gl-snap",
+  "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\wide-future-full2\\run\\gl-snap",
+  "size_mismatches": [],
+  "pixel_changes": []
+}

@@ -6,6 +6,35 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 
 ## Current priorities (2026-09-10, after v0.5.0)
 
+All four games now have native host future-scenery implementations. This is
+implementation progress, **not accepted four-game 3× parity**. The
+[current status assessment](docs/reviews/2026-09-10-scenery-parity-status.md)
+distinguishes visible benefit, performance and coverage. Personal Stream Deck
+and the public package remain v0.5.0.
+
+- **Exotica:** live 1×/2×/3× and repeat runs preserve the original Amazon route
+  and resources. The 3× repeat is exact across 14 completed internal snapshots
+  and the ordered scene/material stream. However, all 14 completed 2×/3× color
+  images match: extra polygons have not demonstrated extra visible 3× benefit
+  there. A separate candidate can explicitly present the extended target for
+  denser actual 4K/CRT comparisons; its gameplay validation is underway.
+- **USA:** visible earlier scenery, including small 3× gains, but the last
+  measured 3× performance is approximately 97–98%. Reduce unnecessary projection
+  work while preserving visibility and original game behavior.
+- **World:** earlier scenery at 3× is demonstrated for both revisions. World
+  2.4 host roads fill measured distant gaps; carry roads/ground to 2.5, then
+  broaden continuity, occlusion and handover checks.
+- **Off Road:** visible 3× gains and full-speed quiet runs on the existing
+  scripted El Paso sample. Obtain an attended complete-track recording before
+  claiming broad terrain, tunnel, finish or handover coverage.
+
+Shared acceptance still requires useful visible benefit, stable materials,
+correct foreground occlusion, smooth activation handover, full-speed 4K and
+renewed default regressions on the final combined candidate. Do not remove the
+existing experiments or deploy a nominal 3× replacement before those gates.
+
+### Exotica rendering foundations and retained limitations
+
 The [live Exotica margin candidate](docs/reviews/2026-09-10-exotica-margin-acceptance.md)
 now passes full Amazon/repeat/observe comparisons, Hong Kong and all seven default
 cases on native50a. All117 Amazon images and970,889 added quads repeat, with
@@ -26,14 +55,14 @@ USA widescreen has one retained6.13second menu-timing failure and a separate
 passing retry. That stall's cause remains unresolved; this is not a clean
 seven-case suite renewal. Personal v0.5.0 remains unchanged.
 
-Next prove true wider depth and explicit clear-command semantics, then insert
-future scenery before original foreground drawing. Real fast clears use0xffff00,
-so simply treating only0xffffff as empty would still block some farther scenery.
-Captured future vertices reach about3x the original depth range. Their initial
-fade values and handover into original objects also need validation. The [standalone wider-depth and packet contracts](docs/reviews/2026-09-10-zeus-wide-depth-contract.md)
-now pass292GPUcases/636steps and independent native/Python bounds checks on
-14,696captured polygons. They are not integrated in MAME. Next is a private
-wide-original native control before actual future insertion. Preserve the initial frame-coverage/display failures.
+The [wider-depth and packet contracts](docs/reviews/2026-09-10-zeus-wide-depth-contract.md)
+pass 292 GPU cases/636 steps and independent native/Python bounds checks on
+14,696 captured polygons. They are now integrated into MAME's separate private
+target. [Original command playback](docs/reviews/2026-09-10-zeus-command-stream.md)
+and [live future insertion](docs/reviews/2026-09-10-zeus-live-future.md) have
+independent sampled pixel checks. Explicit fast-clear semantics preserve real
+0xffff00 clears. Future fade values, visible benefit, performance and handover
+still require validation. Keep the original frame-coverage/display failures.
 
 ### Earlier foundation checkpoints
 

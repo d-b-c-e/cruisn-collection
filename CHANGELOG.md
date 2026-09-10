@@ -3,16 +3,25 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased — September 9 diagnostics
+## Unreleased — September 9–10 diagnostics
 
-- World 2.4 future-section host scenery gives a measured 3x-over-2x benefit on
-  Germany; still CLI-only, undeployed and incomplete for roads/occlusion.
+- Native host future-scenery prototypes now cover all four games. World, USA
+  and Off Road show measured earlier scenery; useful 3× gains remain uneven.
+- World 2.4 future road rendering fills measured distant gaps. World 2.5's
+  separate scenery adapter still needs its road/ground path.
+- Exotica candidates address Amazon palette flicker, a stale margin rectangle
+  and measured black ground wedges. Performance and broader coverage remain open.
+- Exotica private wider-depth rendering now accepts independently checked future
+  geometry and material packets. Dense presentation comparisons are in progress;
+  sampled 3× images currently match 2× despite additional geometry.
+- Full recorded drives, original input/camera timing and graphics-resource checks,
+  independent geometry/pixel comparisons and repeat runs support these candidates.
 - Explicit host coverage/vertex-batch trials, with a targeted tunnel-seam
   improvement and synthetic GPU checks preserving shadows/transparent texels.
 - Read-only road-template, projection and final-render-descriptor verification.
 - Bounded completion handshake for queued diagnostic captures at shutdown.
-- See the [morning handoff](docs/OVERNIGHT-RESULTS-2026-09-09.md) for retained failures,
-  pending final4K/cross-game acceptance and unchanged released behavior.
+- See the [current status](docs/reviews/2026-09-10-scenery-parity-status.md) for
+  remaining acceptance work. These prototypes are undeployed; v0.5.0 is unchanged.
 
 ## v0.5.0 — 2026-09-08
 

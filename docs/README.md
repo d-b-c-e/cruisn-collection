@@ -1,6 +1,6 @@
 # Documentation
 
-Current guides describe the source checkout as of 2026-09-09. The published
+Current guides describe the source checkout as of 2026-09-10. The published
 **v0.5.0** ZIP is the accepted baseline; v0.4.0 remains preserved for rollback.
 Check the release notes before
 assuming that a source feature is present in a downloaded package.
@@ -12,6 +12,7 @@ assuming that a source feature is present in a downloaded package.
 | [Cheats](CHEATS.md) | Importing exact-revision cheats and supported actions |
 | [Recorded gameplay](DIAGNOSTIC-REPLAY.md) | Attended recording, playback, captures and diagnostic evidence |
 | [Roadmap](../ROADMAP.md) | Current work and acceptance criteria |
+| [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
 | [September 9 handoff](OVERNIGHT-RESULTS-2026-09-09.md) | Measured 3x progress, undeployed candidates and remaining cross-game work |
 | [Local builds](LOCAL-BUILDS.md) | Local checks, packaging and exact-ZIP upload; Actions disabled |
 | [Release checklist](RELEASE-CHECKLIST.md) | Automated gates, attended acceptance and promotion |
@@ -33,6 +34,8 @@ assuming that a source feature is present in a downloaded package.
 | World 2.5 / Off Road distance menus | Optional 2×/3×; default Off | Same |
 | Exotica margin scenery trial | Optional Widescreen Scenery | Same; does not extend far distance |
 | World host-owned scenery | Pending prototype, disabled by normal launch | Future-section CLI candidate; not deployed, visual acceptance incomplete |
+| USA / Off Road host future scenery | Not included | Separate native CLI candidates; measured earlier scenery, acceptance incomplete |
+| Exotica host future scenery | Not included | Private wide-depth native candidate; dense presentation comparison underway |
 | Normal-launch `env` regression | Fixed | Fixed |
 
 ## Research and historical evidence
@@ -48,6 +51,9 @@ supersede them without rewriting a recorded FAIL into a PASS.
 - [World guest distance trial](reviews/2026-09-06-global-distance-trial.md)
 - [World host scenery prototype](reviews/2026-09-08-world-host-scenery.md)
 - [World future sections and retained tunnel regression](reviews/2026-09-09-world-future-sections.md)
+- [World 2.4 host roads](reviews/2026-09-09-host-road-integration.md) and [World 2.5 scenery](reviews/2026-09-09-world25-host-scenery.md)
+- [USA future rendering/performance](reviews/2026-09-09-usa-future-rendering.md) and [Off Road host rendering](reviews/2026-09-09-offroad-host-rendering.md)
+- [Exotica live future rendering](reviews/2026-09-10-zeus-live-future.md) and [Amazon margin acceptance](reviews/2026-09-10-exotica-margin-acceptance.md)
 - [Off Road native distance](reviews/2026-09-08-offroad-native-distance.md)
 - [Exotica visibility](reviews/2026-09-08-exotica-visibility-trials.md),
   [far distance](reviews/2026-09-08-exotica-far-distance.md) and

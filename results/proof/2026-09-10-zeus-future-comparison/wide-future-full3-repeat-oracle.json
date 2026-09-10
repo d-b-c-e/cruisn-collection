@@ -1,0 +1,260 @@
+{
+  "passed": true,
+  "samples": [
+    {
+      "passed": true,
+      "frame": 3900,
+      "multiplier": 3,
+      "draw": true,
+      "sources": {
+        "selected": 3114,
+        "unsupported_transform": 0,
+        "culled_distance": 2341
+      },
+      "geometry": {
+        "instances": 80,
+        "quads": 354,
+        "viewport_quads": 137,
+        "culled_bounds": 693
+      },
+      "materials": {
+        "frame": 3900,
+        "phase": "host",
+        "scene": 2504,
+        "generation": 2058,
+        "pages": 3,
+        "palettes": 9,
+        "root": "9eb986d3d4e58a2a",
+        "wave_sha256": "0f7f22505cae2350b85c71d88a73a27f6314e7d6015021e17e79482bb9528288",
+        "palette_sha256": "60ae3468ed5677a1f3371849524c92f155d9e49ac871be0c630b3c62a03bea04",
+        "packet_sha256": "1ce5254f1212c330d421eb45ee1a7bc5fdd1a809aea743382b7dce0688fa97f9"
+      },
+      "integrity": {
+        "width": 2736,
+        "height": 4096,
+        "color_differences": 61220,
+        "depth_differences": 61317,
+        "other_page_unchanged": true,
+        "sha256": [
+          "d6d6c7cc7dfba9338e32c9519dad1c10b368152ed7f42f7f7a1a1a71386a995d",
+          "77525427cd01524943f6d22658349d580cb6fbf928e7f5aff1c03190c19fe761",
+          "c23d04fa786b9e01a51c7cd4c53d874a5d80bef9a922b5870465812ddb50bce2",
+          "e91494dcc1ddf5f92a01489a140184c6251cc1b7e7dc7e9e9c2394130a9c5ba1"
+        ]
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "c23d04fa786b9e01a51c7cd4c53d874a5d80bef9a922b5870465812ddb50bce2",
+        "e91494dcc1ddf5f92a01489a140184c6251cc1b7e7dc7e9e9c2394130a9c5ba1"
+      ],
+      "scope": "Independent geometry preparation and immediate insertion on captured private state; shared material/vertex shader. No complete temporal/occlusion/handover acceptance."
+    },
+    {
+      "passed": true,
+      "frame": 5072,
+      "multiplier": 3,
+      "draw": true,
+      "sources": {
+        "selected": 2465,
+        "unsupported_transform": 0,
+        "culled_distance": 854
+      },
+      "geometry": {
+        "instances": 94,
+        "quads": 538,
+        "viewport_quads": 401,
+        "culled_bounds": 1517
+      },
+      "materials": {
+        "frame": 5072,
+        "phase": "host",
+        "scene": 3662,
+        "generation": 3216,
+        "pages": 3,
+        "palettes": 13,
+        "root": "602acf5f05372eb9",
+        "wave_sha256": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+        "palette_sha256": "f771c7d6160d777e37f56b84cdc6849afef7ede2e58fdd280958fd17eeabb063",
+        "packet_sha256": "eff5a9810d41f768c5743558b331ee62dc75101dfc65c9bd85aa04db5b84a953"
+      },
+      "integrity": {
+        "width": 2736,
+        "height": 4096,
+        "color_differences": 69300,
+        "depth_differences": 69550,
+        "other_page_unchanged": true,
+        "sha256": [
+          "ddb78679341f2a0ce41dad444ed3828cf2fdbfbd3ad2cf266e2a348d3e285d79",
+          "c17f5fde5efbaf2f617eae53eea07d7f91535b13f9b1812f2e92c1f1adffdc05",
+          "49013e62453eeb1de59635a5a6542c63dc605f6f2a7118f3df985d9b4013c582",
+          "8509a2ce8275fe71d9470058aa6d58fd8c2b670c3309151a0d8614b768bf88d6"
+        ]
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "49013e62453eeb1de59635a5a6542c63dc605f6f2a7118f3df985d9b4013c582",
+        "8509a2ce8275fe71d9470058aa6d58fd8c2b670c3309151a0d8614b768bf88d6"
+      ],
+      "scope": "Independent geometry preparation and immediate insertion on captured private state; shared material/vertex shader. No complete temporal/occlusion/handover acceptance."
+    },
+    {
+      "passed": true,
+      "frame": 5644,
+      "multiplier": 3,
+      "draw": true,
+      "sources": {
+        "selected": 1952,
+        "unsupported_transform": 0,
+        "culled_distance": 1280
+      },
+      "geometry": {
+        "instances": 672,
+        "quads": 6123,
+        "viewport_quads": 6123,
+        "culled_bounds": 0
+      },
+      "materials": {
+        "frame": 5644,
+        "phase": "host",
+        "scene": 4229,
+        "generation": 3783,
+        "pages": 3,
+        "palettes": 20,
+        "root": "803accbcaf1f3877",
+        "wave_sha256": "99e38290259ae70fe64d6faf55e14bd5d211d17ddc0919a95c3890797588c810",
+        "palette_sha256": "2fe529705e1011ac1589ab72b217b7cc13c2e918ff1f4b35105c40ead4afdcc0",
+        "packet_sha256": "ba9815fa4bcb8be4efcce8828e30e502c791ab93ef9c79a74c356366a815feb7"
+      },
+      "integrity": {
+        "width": 2736,
+        "height": 4096,
+        "color_differences": 59001,
+        "depth_differences": 59126,
+        "other_page_unchanged": true,
+        "sha256": [
+          "1ed63401780bca197ca66049a47b71b00568f584e4f942d65aafa1ff5d23dba3",
+          "d9f6f9920e6f404533e79ff593caf51967bd51bc2a5a0eb385074558a3c999db",
+          "58dcf21179baa6928df773af9e0fc6f9b18aa1a5993d2dd1c11a10264a99eb61",
+          "c00bedd4ad6a8631e2a56158b339f1068c8d7c452879c91fcb4c60df1dfcd04b"
+        ]
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "58dcf21179baa6928df773af9e0fc6f9b18aa1a5993d2dd1c11a10264a99eb61",
+        "c00bedd4ad6a8631e2a56158b339f1068c8d7c452879c91fcb4c60df1dfcd04b"
+      ],
+      "scope": "Independent geometry preparation and immediate insertion on captured private state; shared material/vertex shader. No complete temporal/occlusion/handover acceptance."
+    },
+    {
+      "passed": true,
+      "frame": 6330,
+      "multiplier": 3,
+      "draw": true,
+      "sources": {
+        "selected": 1722,
+        "unsupported_transform": 0,
+        "culled_distance": 1451
+      },
+      "geometry": {
+        "instances": 10,
+        "quads": 141,
+        "viewport_quads": 0,
+        "culled_bounds": 261
+      },
+      "materials": {
+        "frame": 6330,
+        "phase": "host",
+        "scene": 4901,
+        "generation": 4455,
+        "pages": 3,
+        "palettes": 5,
+        "root": "c261f61ac0e1bc76",
+        "wave_sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+        "palette_sha256": "d1a9610a32a26868035420fa4c15e6a4aafc094d1b85071404c24fa0c9ad9b3f",
+        "packet_sha256": "465d1eaf9fabc2e7af83c1c208e32dfde3b573c1374508679b87cdf0810ab292"
+      },
+      "integrity": {
+        "width": 2736,
+        "height": 4096,
+        "color_differences": 0,
+        "depth_differences": 0,
+        "other_page_unchanged": true,
+        "sha256": [
+          "d820d0ea94182ee5faf13f157f9a8a7be7d76b038ded13c76e8c1c3d869607c4",
+          "f121649ee45ed4fb3c3d02221eb71514a4d74069c4639c310cdec3c05230a1b3",
+          "d820d0ea94182ee5faf13f157f9a8a7be7d76b038ded13c76e8c1c3d869607c4",
+          "f121649ee45ed4fb3c3d02221eb71514a4d74069c4639c310cdec3c05230a1b3"
+        ]
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "d820d0ea94182ee5faf13f157f9a8a7be7d76b038ded13c76e8c1c3d869607c4",
+        "f121649ee45ed4fb3c3d02221eb71514a4d74069c4639c310cdec3c05230a1b3"
+      ],
+      "scope": "Independent geometry preparation and immediate insertion on captured private state; shared material/vertex shader. No complete temporal/occlusion/handover acceptance."
+    },
+    {
+      "passed": true,
+      "frame": 7187,
+      "multiplier": 3,
+      "draw": true,
+      "sources": {
+        "selected": 1306,
+        "unsupported_transform": 0,
+        "culled_distance": 497
+      },
+      "geometry": {
+        "instances": 809,
+        "quads": 8283,
+        "viewport_quads": 8280,
+        "culled_bounds": 0
+      },
+      "materials": {
+        "frame": 7187,
+        "phase": "host",
+        "scene": 5748,
+        "generation": 5302,
+        "pages": 3,
+        "palettes": 28,
+        "root": "209ce18a570c8996",
+        "wave_sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+        "palette_sha256": "6a0671cf9b3124d1607c1eeb2340d863dbdd0f1ef9a5e54c3f21abd5bc4be8ae",
+        "packet_sha256": "695d659ad478f5f83718ef0cd7b379cc4cf92b9f4a3a50f89c2e1df419c7fafe"
+      },
+      "integrity": {
+        "width": 2736,
+        "height": 4096,
+        "color_differences": 131707,
+        "depth_differences": 131715,
+        "other_page_unchanged": true,
+        "sha256": [
+          "f400f08e3551ce50a7ba2817c095d12e3566d7be75893f0aee7d9e0d088775a4",
+          "3123a9264f9ba70cdbf825641eb74882fef2c08a8faa302608c28b9fdbd41a12",
+          "a34563435cfe0650379087642a9a380c5091368e939bbb7c36bd8d6b1d8c22b4",
+          "b70fe983312c38a8a75b3fe344c937a4c8728cc73571bb541e66039ddbe102fd"
+        ]
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "a34563435cfe0650379087642a9a380c5091368e939bbb7c36bd8d6b1d8c22b4",
+        "b70fe983312c38a8a75b3fe344c937a4c8728cc73571bb541e66039ddbe102fd"
+      ],
+      "scope": "Independent geometry preparation and immediate insertion on captured private state; shared material/vertex shader. No complete temporal/occlusion/handover acceptance."
+    }
+  ]
+}

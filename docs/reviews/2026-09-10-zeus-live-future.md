@@ -4,8 +4,9 @@ Exotica's future scenery can now be drawn by the native renderer into a separate
 wide-depth target while the original game continues to render and display normally.
 The first full1x drawing replay preserves the recorded drive and original output;
 five independently reconstructed insertions match its private pixels exactly.
-The full3x data-only control also passes. Full2x/3x drawing and temporal acceptance
-are still in progress at this checkpoint.
+The full3x data-only control and full2x/3x drawing and repeat also pass. Completed
+internal image comparisons have not demonstrated additional3x benefit over2x.
+Dense actual display and temporal acceptance remain in progress.
 
 Native `e144228a8953e49d36f255826202b8fa8bdf21ca` is built separately and pushed,
 frozen at `build/candidates/e144228a895/vunit.exe`, SHA256
@@ -44,8 +45,11 @@ The `_WIN32` correction was built and tested in a fresh candidate and run.
 | 6000-frame1x observation | 4,120 | 835,720 | 25 |
 | Full8860-frame1x drawing | 6,953 | 2,312,876 | 117 |
 | Full8860-frame3x observation | 6,953 | 19,945,019 | 117 |
+| Full8860-frame2x drawing | 6,953 | 12,133,607 | 117 |
+| Full8860-frame3x drawing | 6,953 | 19,945,019 | 117 |
+| Full8860-frame3x repeated drawing | 6,953 | 19,945,019 | 117 |
 
-All three preserve original input, camera, actual ADC times and ten captured
+All six preserve original input, camera, actual ADC times and ten captured
 original resources. The full runs save14 private completed-frame color/depth
 snapshots and five immediate insertion snapshots. All14 private control colors
 equal original color. Wider-depth values deliberately differ from D24 storage.
@@ -87,8 +91,24 @@ create incorrect visibility.
 
 ## Remaining work
 
-Complete full2x/3x/repeat drawing comparisons and inspect the private images at
-multiple points along Amazon. Validate transparency, material lifetime, handover
+The full2x/3x/repeat runs each pass five independent immediate geometry/material/
+pixel oracles. The3x repeat matches all14 completed internal color/depth snapshots,
+five immediate insertion packets/buffers and all6,953 ordered scene/material
+records. Across all14 completed internal color images,2x equals3x. Relative to1x,
+2x changes four snapshots:3500,3901,5073 and8401. Frame8401 is behind the
+race-results screen; frame5073 shows a faint distant foliage change. This sample
+does not establish useful additional3x visibility during driving.
+
+Raw follow-up results remain local under `wide-future-full2`, `wide-future-full3`,
+`wide-future-full3-repeat`, `wide-future-repeat.json` and `wide-future-visuals`
+in the Amazon diagnostic directory. The [comparison proof](../../results/proof/2026-09-10-zeus-future-comparison/README.md)
+checks the corresponding scalar/hash receipts; the original public foundation
+proof above has narrower coverage. A separate native9ed candidate adds an explicit diagnostic
+switch to present the extended target using the game's actual display page and
+existing CRT path. Its dense233-frame4K comparisons are underway; it has not
+been deployed or accepted by these earlier e144 results.
+
+Validate transparency, material lifetime, handover
 when original objects activate, and a run without expensive readbacks. Low source
 opacity needs investigation; forcing full opacity without a matching handover
 could create a new pop when the original object begins its own fade.
