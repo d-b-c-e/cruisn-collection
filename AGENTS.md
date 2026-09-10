@@ -1,5 +1,35 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Exotica model codec — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-exotica-model-codec.md. Native eb17cf2dd048 is built
+SEPARATELY/pushed; frozen build/candidates/eb17cf2dd04/vunit.exe SHA
+ee2bd4d0070f3b2126c9971b30074e1160bc3f4bece76839f30559a9cff0017f.
+147patches reconstruct tree87a5bf7c64ed8aec6c17f05120be0ef9775f139a.
+Opt-in --zeus-capture-models journals preexecution model/privatecontext and
+original quad ownership, bounded4096models/64MB, requires physicalFFB0.
+Standalone native/independentPython matches939models/13876inputpolygons/
+8126entire260byteorderedquads in3windows3500/4700/5410.131near rejects,
+5619backfaces,50clipped,1732private registerwrites;10/12/14word formats.
+4700repeat identical316models/2570quads and539152bytejournal includingclock.
+Five6000replays preserve4191camera/12573actualADCtimes and21GL3840x2160;
+4700control/source/repeat original8Zeusresources equal priorcandidate.
+All7defaults/UDP-memory/4softwareforce/Exo21GL PASS on eb17.257Python/noskips,
+25native,10081C31/137yaw,32GPU/69commands,384fileidentity
+1f74e3a1f37d9c5ea06dc36595ffe640489ae2c48b6b98258c0b14d51055441c.
+182file proof results/proof/2026-09-09-exotica-model-codec recomputes5traces/
+3selected4Kpixels/7telemetry/4force. Fullgeometry/state/resources/builds receipts.
+Initial10wordprototype1271unknowncommands retainedLOCAL; raw resourcesLOCAL.
+NEXT Exotica futuresection allocator B7E8/B842/B8CB, section597/cursor598/
+position599..59B/heading59C, materialA021/A02E tablesE67D/E67C. Local bounded
+section-probe.lua + section-trial.py under results/diagnostics/exotica-zeus-models-20260909
+are exploratory, not promoted/verified yet. Currenttransform field previous_alpha
+is actually cachedheading key0FF9 (legacyname), not transparency. No extra host
+draw yet: need descriptors/residency/scene insertion and isolated modelcontext.
+USAperformance/World25roads/OffRoadbroadercoverage remain. Personalv0.5.0/SHA87d04de4
+unchanged. No release/deploy/hostedworkflow/physicalFFB/Worldtuning/menu removal.
+Continue directly, no cutoff; one-minute heartbeat recovery only. Rigcheck/serialemulators.
+
 ## September 9 Exotica transform foundation — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-exotica-transforms.md. Standalone native/Python

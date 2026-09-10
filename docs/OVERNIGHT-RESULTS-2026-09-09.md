@@ -1,5 +1,11 @@
 # September 9 morning handoff
 
+Latest evening work: [Off Road host rendering](reviews/2026-09-09-offroad-host-rendering.md)
+and [Exotica model decoding](reviews/2026-09-09-exotica-model-codec.md) supersede
+the historical table below. Exotica now reproduces original geometry/state and
+all seven default cases pass on the separate candidate. Its future-section host
+renderer remains the next implementation step. Continuous work is still active.
+
 At this morning checkpoint the overnight queue was **PAUSED**. The maintainer
 has since [explicitly resumed it](OVERNIGHT-2026-09-09.md); see the
 [road-integration milestone](reviews/2026-09-09-host-road-integration.md) and the

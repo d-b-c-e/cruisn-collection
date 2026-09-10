@@ -58,6 +58,7 @@ def main(argv=None):
     ap.add_argument("--compare-gl", action="store_true", help="require identical completed GL pixels against the recorded case")
     ap.add_argument("--zeus-native", action="store_true", help="explicit Zeus diagnostic: also rasterize native CPU frames")
     ap.add_argument('--zeus-capture-frame',type=int,help='capture Zeus submission/resource records around one emulated frame')
+    ap.add_argument('--zeus-capture-models',action='store_true',help='also capture bounded original Zeus model operands/state; raw data stays local')
     ap.add_argument("--zeus-stop-frame", type=int, help="diagnostic Zeus consumer failure at this completed frame")
     ap.add_argument("--video", choices=("gdi", "d3d", "bgfx"), help="explicit underlying MAME video-backend experiment")
     ap.add_argument("--native-renderer", action="store_true", help="windowed control with replacement GL disabled")
@@ -82,6 +83,8 @@ def main(argv=None):
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
+    if args.zeus_capture_models and args.zeus_capture_frame is None:
+        ap.error('--zeus-capture-models requires --zeus-capture-frame')
     if args.timeout <= 0:
         ap.error("timeout must be positive")
     if args.headless and args.small_window:
@@ -244,6 +247,7 @@ def main(argv=None):
         if args.zeus_capture_frame is not None:
             zeus_capture_directory=runtime/'zeus-capture';zeus_capture_directory.mkdir()
             env.update(MIDZ_CAPTURE=str(zeus_capture_directory),MIDZ_CAPTURE_FRAME=str(args.zeus_capture_frame),MIDZ_CAPTURE_MINQUADS='0')
+            env['MIDZ_CAPTURE_MODELS']='1' if args.zeus_capture_models else '0'
         if args.compare_gl and gl_key == 'MIDZ':
             # Zeus covers its owner's monitor. MAME's automatic monitor choice
             # can land on a secondary 1080p display despite a 4K reference.
@@ -381,6 +385,10 @@ def main(argv=None):
             if f'MIDZ capture complete in {zeus_capture_directory}' not in (runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'):
                 raise ValueError('Zeus capture completion receipt missing')
             report['zeus_capture']=validate_zeus_capture(zeus_capture_directory,args.zeus_capture_frame)
+            if args.zeus_capture_models:
+                from zeus_models import validate as validate_zeus_models
+                report['zeus_models']=validate_zeus_models(zeus_capture_directory,args.zeus_capture_frame,
+                    sum(report['zeus_capture']['quad_frames'].values()))
     except (ValueError, OSError, KeyError, subprocess.SubprocessError) as exc:
         report["passed"] = False
         report["error"] = str(exc)

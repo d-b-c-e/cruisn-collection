@@ -1,5 +1,16 @@
 # Session Notes
 
+- **Continuous Exotica model codec:** review docs/reviews/2026-09-09-exotica-model-codec.md.
+  Nativeeb17/SHAee2bd4d0 separate/pushed,147patches.939models/8126entireorderedquads
+  across3windows pass independentPython/native, frame4700repeat exact inclclock.
+  Five6000drives/4191camera/12573actualADCtimes/21original4KGL pass; original8resources
+  equal4700control/prior. All7defaults,257Python/25native/32GPU/69commands pass,
+  384identity1f74e3a1. Public182file13MBproof verifies5traces/selectedpixels/7telemetry/
+  4softwareforce; geometry/state/rawresources/builds receipts. No Exoextra hostdrawyet.
+  Nextsection-probe.lua/trial are LOCAL in exotica-zeus-models-20260909; allocator
+  B7E8/B842/B8CB, section597,position599..59B,heading59C,materialE67C/D. Cached0FF9
+  isheading, legacyprevious_alpha name. Personalv0.5 unchanged; continue directly.
+
 - **Continuous Exotica foundation:** see docs/reviews/2026-09-09-exotica-transforms.md.
   Standalone native/Python40093 transforms,13693 matrix updates,39541 actual
   ordinary emissions and3051 far-model selections PASS. Four6000 drives preserve

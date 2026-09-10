@@ -65,6 +65,7 @@ def commands(group, output, cxx):
     compile_one('usa-model', 'native/analyze_usa_model.cpp')
     compile_one('offroad-model', 'native/analyze_offroad_model.cpp')
     compile_one('exotica-transform', 'native/analyze_exotica_transform.cpp')
+    compile_one('zeus-models', 'native/analyze_zeus_models.cpp')
     compile_one('offroad-future', 'native/analyze_offroad_future.cpp')
     compile_one('usa-host', 'native/analyze_usa_host.cpp')
     compile_one('usa-future', 'native/analyze_usa_future.cpp')

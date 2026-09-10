@@ -19,12 +19,18 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 The heartbeat now uses a one-minute recovery wakeup, not a work cadence. During active
 turns, continue directly into the next useful implementation or verification step.
 
+[Exotica's model codec](docs/reviews/2026-09-09-exotica-model-codec.md) now
+reproduces 8,126 complete original geometry/state records across three scenes in
+independent Python and native decoders. Model-local state is isolated; five drives
+preserve original inputs, motion and 4K captures. All seven defaults pass on the
+separate candidate. Future sections, material residency and scene insertion are
+next; it does not yet draw extra scenery.
+
 [Exotica's transform foundation](docs/reviews/2026-09-09-exotica-transforms.md)
 now reproduces40093 centers/scaled command packets,13693 matrix updates,
 39541 actual ordinary model emissions and3051 far-model selections. Four drives
 preserve inputs/camera/actualADC times and21 original4K captures. The helper is
-standalone; Zeus model geometry, material/state isolation and future-section
-host drawing are next.
+standalone; the model codec above follows it. Future-section host drawing is next.
 
 [Off Road host rendering](docs/reviews/2026-09-09-offroad-host-rendering.md) is now
 integrated in a separate candidate. Its future2x adds mountains/terrain in40/40
