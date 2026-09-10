@@ -1,0 +1,182 @@
+{
+  "scope": "LOCAL scalar depth envelope, both original stream and existing host snapshots. Endpoint envelopes after existing bias, excluding explicit geometry depth-clear; not per-fragment/game-wide bounds.",
+  "host": [
+    {
+      "source": "active-margin-seal-pages-full/run/exotica-host-6330-quads.bin",
+      "sha256": "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194",
+      "quads": 141,
+      "vertices": 572,
+      "flags": {
+        "30": 141
+      },
+      "explicit_depth_clear_quads": 0,
+      "minimum": 2047.0,
+      "maximum": 11112534.0,
+      "above_d24": 0,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    },
+    {
+      "source": "active-margin-seal-pages-full/run/exotica-host-7187-quads.bin",
+      "sha256": "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db",
+      "quads": 8283,
+      "vertices": 33132,
+      "flags": {
+        "28": 2089,
+        "30": 6194
+      },
+      "explicit_depth_clear_quads": 0,
+      "minimum": 10388261.0,
+      "maximum": 50310035.0,
+      "above_d24": 28760,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    },
+    {
+      "source": "active-margin-seal-pages-full/run/exotica-host-8760-quads.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "quads": 0,
+      "vertices": 0,
+      "flags": {},
+      "explicit_depth_clear_quads": 0,
+      "minimum": null,
+      "maximum": null,
+      "above_d24": 0,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    },
+    {
+      "source": "private-material5072-on3/run/exotica-host-5072-quads.bin",
+      "sha256": "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e",
+      "quads": 538,
+      "vertices": 2152,
+      "flags": {
+        "28": 61,
+        "30": 477
+      },
+      "explicit_depth_clear_quads": 0,
+      "minimum": 10954496.0,
+      "maximum": 24417419.0,
+      "above_d24": 266,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    },
+    {
+      "source": "private-material5000-on3/run/exotica-host-5000-quads.bin",
+      "sha256": "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531",
+      "quads": 4854,
+      "vertices": 19419,
+      "flags": {
+        "28": 4649,
+        "30": 205
+      },
+      "explicit_depth_clear_quads": 0,
+      "minimum": 0.0,
+      "maximum": 24394355.0,
+      "above_d24": 11317,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    },
+    {
+      "source": "written5990-on3/run/exotica-host-5990-quads.bin",
+      "sha256": "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026",
+      "quads": 880,
+      "vertices": 3520,
+      "flags": {
+        "28": 873,
+        "30": 7
+      },
+      "explicit_depth_clear_quads": 0,
+      "minimum": 0.0,
+      "maximum": 16231789.0,
+      "above_d24": 0,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    }
+  ],
+  "original": [
+    {
+      "source": "fence-full-on/run/zeus-capture/records.bin",
+      "sha256": "914b69f80059c29ff659eef7ea4313afeb947b2a5e9b6f03130de355a287e954",
+      "records": {
+        "1": 3459,
+        "2": 97,
+        "3": 1
+      },
+      "fast_clear_depths": {
+        "16776960": 1
+      },
+      "direct_depth_write_values": {},
+      "quads": 3459,
+      "vertices": 13724,
+      "flags": {
+        "20": 33,
+        "28": 2434,
+        "30": 964,
+        "52": 28
+      },
+      "explicit_depth_clear_quads": 28,
+      "minimum": 0.0,
+      "maximum": 11727011.0,
+      "above_d24": 0,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    },
+    {
+      "source": "fence5080-on/run/zeus-capture/records.bin",
+      "sha256": "ee511169cfb96eac5774948d6b9cb88619986b8063929c2c91fa0c43a6849242",
+      "records": {
+        "1": 3890,
+        "2": 188,
+        "3": 1
+      },
+      "fast_clear_depths": {
+        "16776960": 1
+      },
+      "direct_depth_write_values": {},
+      "quads": 3890,
+      "vertices": 15449,
+      "flags": {
+        "20": 27,
+        "28": 3133,
+        "29": 17,
+        "30": 685,
+        "52": 28
+      },
+      "explicit_depth_clear_quads": 28,
+      "minimum": 0.0,
+      "maximum": 15348642.0,
+      "above_d24": 0,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    },
+    {
+      "source": "fence5000-on/run/zeus-capture/records.bin",
+      "sha256": "d4ec3d6389bca0999124afc50e3ef66b8e02a8fad3e3b2eea48a010553841d98",
+      "records": {
+        "1": 2207,
+        "2": 158,
+        "3": 2
+      },
+      "fast_clear_depths": {
+        "16776960": 2
+      },
+      "direct_depth_write_values": {},
+      "quads": 2207,
+      "vertices": 8772,
+      "flags": {
+        "12": 39,
+        "20": 36,
+        "28": 1600,
+        "30": 518,
+        "52": 14
+      },
+      "explicit_depth_clear_quads": 14,
+      "minimum": 0.0,
+      "maximum": 14564794.0,
+      "above_d24": 0,
+      "at_or_above_2pow26": 0,
+      "at_or_above_2pow27": 0
+    }
+  ]
+}

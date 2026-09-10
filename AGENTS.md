@@ -1,6 +1,6 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September 10 live D32F mirror — ACTIVE serial acceptance
+## September 10 original-only D32F mirror checkpoint — ACTIVE wider-depth work
 
 Read docs/reviews/2026-09-10-zeus-live-depth-mirror.md. Native25228b19d59bf434817b998134a042637b16075b
 built SEPARATELY/pushed/frozen build/candidates/25228b19d59/vunit.exe SHA
@@ -8,24 +8,38 @@ built SEPARATELY/pushed/frozen build/candidates/25228b19d59/vunit.exe SHA
 177patches reconstruct2ec2d719b45267c9fece2bfeacd1f68420cd780c. Original-only
 privateRGBA/D32F mirrors alloriginalbatches/startup/pageclears; originalstilldisplayed.
 CLI --zeus-depth-mirror observe plusfirst/last/snapshots; FFB0/Exo/liveGL/noactivehost.
-No future drawing. First1..5990request FAIL because completedmarkersstart2; retained
-all6 independentrawpairs/25GL/routePASS aspartial evidence. Fresh2..5990aligned
-6000inputs PASS5989markers/6rawpairs/25GL/originalcameraADC/10resources. Different
-batchsplits are legitimate; compare orderedvertices/clears/rawpixels, not exact
-batchcount equality. Current4focused option/corruption/completion tests PASS.
+No future drawing. Alignedshort/disabled/fullAmazon/repeat/HongKong PASS305completed
+4K,29independentrawcomparisons,originalcamera/ADC/resources. Full8849markers and
+36rawfiles repeat exactly; batchsplits vary legitimately. Originalfull7060camera/
+21180ADCtimes/10resources exact. Initial1..5990markerFAIL and disabled3440x1440
+captureFAIL retained; fresh2..5990/4K runs pass without weakening comparisons.
 
-CURRENT exec21137 runs LOCAL depth-mirror-acceptance-series.py under
-results/diagnostics/exotica-amazon-20260909: disabledshort,fullAmazon8860/repeat,
-HongKong6000,finallocalchecks,7defaults serially. Read depth-mirror-acceptance-series.log;
-stoponfailure. Do notrun competing emulator/GPU/build orchange code during checks.
-Newactualshader fixture additionally covers blended-nondepthtest flags0x16;
-76cases expected but notyetclaimed (last72belongs preceding helpermilestone).
-Last7default acceptance still50a/a3d78 below. Personal87d/v0.5.0 unchanged.
-Next inspect full/repeatrawidentity/resources,performance,finalchecks/defaults;
-publishproof/commit. Then earlyfutureinsertion inprivatewide target, separate
-truepreclampdepth/clear semantics andhandover; compatmaxsentinel isnotfinal3xpolicy.
-Keepdirectcontinuouswork, no milestoneidle. No deploy/release/hostedworkflows/
-physicalFFB/Worldtuning/menu removal. Rawgamebyteslocal; rigcheck/serialemulators.
+Final336Python/no skips,46native,129commands,76actualshadercases/380steps PASS.
+492-file source6df14d2faa33e0c3e9172e396d6b18e9b73f776f37deb5b9f6433a13e2e86d35.
+Seven-default suite retains ONE FAILURE: USAwidescreen single6.1315s interval
+1857..1858 fails menu timing; input/pixels/telemetry and laterdriving pass. Other
+sixcases/4softwareforcechecks PASS. TargetedUSA retry passes both~100%windows,
+max29.59/28.68ms. Cause unresolved; do not erase initialFAIL or callfullsuitePASS.
+Lastsuccessfulfull7 remains50a. Proof results/proof/2026-09-10-zeus-live-depth-mirror
+recomputes identity/counters/coverage/stallclock; rawpixels/depth/resources/routes/
+GPU/build/defaults remain receipts. No emulator/build nowrunning; exec22438/55460done.
+Personal87d/v0.5.0 unchanged. No deploy/release/physicalFFB/Worldtuning/hostedCI.
+
+NEXT continue directly, no milestoneidle. LOCAL wide-depth-gl-draft.py under
+results/diagnostics/exotica-amazon-20260909 has initialFAIL: expectedblendalpha255,
+actual254 (RGBexact). Compare against actualoriginalmaterialshader with independent
+CPUdepth decisions; retainFAIL. This draft is NOT nativeintegrated. Originalraw
+captures clear0xffff00, not0xffffff: distinguish type3 rangeinitialization from
+ordinary type4 depthwrites; tag explicitly, never hardcodegameclearvalue. Proposed
+widegeometry q/2^26, taggedrangeinit q/2^24, explicitpolygonclear1 needsGPU/liveproof.
+Sixhostenvelopes: Amazon7187max50,310,035,28,760verticesaboveD24; below2^26 in all
+samples, not game-widebound. Three exacthook/modeljoins follow28/14/28background
+clearquads; type9 mustfinish_sky thenflush beforedrawing, unlike type7. Future
+sourcealpha8 mayremainfaint; fade/handoverOPEN. LOCAL zeus_wide_packet.h XWD1 draft
+notcompiled/integrated; XMD1 originalmargincontract unchanged. SeeLOCAL
+wide-depth-next-diagnostic.md. Also harden harness requestedZeusdisplaysize against
+actualcompletedcaptures (initialoutertrialcaughtwrongsize butreplayreportpassed).
+RawgamebytesLOCAL. Rigcheck/serialemulators; no competingGPU/builds duringtests.
 
 ## September 10 live margin acceptance — ACTIVE wider-depth work
 

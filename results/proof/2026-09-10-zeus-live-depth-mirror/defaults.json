@@ -1,0 +1,1232 @@
+{
+  "candidate_sha256": "2267c6502d17e6c8efe73d7a2daecda4e752267f26bcbf25af088bb3488f321f",
+  "cases": [
+    {
+      "coverage": "original human drive, native inputs and pixels",
+      "id": "usa-original",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-defaults\\usa-original\\report.json",
+      "telemetry": {
+        "coverage_passed": true,
+        "game_state_samples": 2483,
+        "gears": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 2483,
+          "sha256": "7931bcd9d4517c330e406c4336092675cbf134609489dbee2fc6a4c9596da9ce"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          7850.849
+        ],
+        "samples": 5012,
+        "trace_sha256": "3f12abc46173846de025c03dac25ce7a588fdc21f7ca7dab86f4709f4dbb045e",
+        "upshifts": [
+          {
+            "frame": 2715,
+            "from": 1,
+            "minimum_next_8_frames": 4735.147,
+            "rpm_before": 7205.685,
+            "to": 2
+          },
+          {
+            "frame": 2753,
+            "from": 2,
+            "minimum_next_8_frames": 3884.212,
+            "rpm_before": 6007.774,
+            "to": 3
+          },
+          {
+            "frame": 2819,
+            "from": 2,
+            "minimum_next_8_frames": 4748.617,
+            "rpm_before": 7140.103,
+            "to": 3
+          },
+          {
+            "frame": 2965,
+            "from": 3,
+            "minimum_next_8_frames": 5404.939,
+            "rpm_before": 7119.232,
+            "to": 4
+          },
+          {
+            "frame": 4729,
+            "from": 3,
+            "minimum_next_8_frames": 5081.969,
+            "rpm_before": 6857.351,
+            "to": 4
+          }
+        ],
+        "wire": {
+          "forza_packets": 5012,
+          "json_packets": 76613,
+          "maximum_speed_mph": 133.99999655393847,
+          "passed": true
+        }
+      },
+      "timings": [],
+      "visual_reference": {
+        "files": 83,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00004980.png"
+      }
+    },
+    {
+      "coverage": "derived widescreen human inputs, native pixels and live timing",
+      "id": "usa-widescreen",
+      "passed": false,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-defaults\\usa-widescreen\\report.json",
+      "telemetry": {
+        "coverage_passed": true,
+        "game_state_samples": 2483,
+        "gears": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 2483,
+          "sha256": "90349f304309846f180fc27ae03e435453521969e99e055f43ed4e0f89ae950a"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          7850.849
+        ],
+        "samples": 5012,
+        "trace_sha256": "f2b90e452b580c0a8043e98c48d18862c06e24ffb42d9bd7a28859f1b7ded1ad",
+        "upshifts": [
+          {
+            "frame": 2715,
+            "from": 1,
+            "minimum_next_8_frames": 4735.147,
+            "rpm_before": 7205.685,
+            "to": 2
+          },
+          {
+            "frame": 2753,
+            "from": 2,
+            "minimum_next_8_frames": 3905.773,
+            "rpm_before": 6007.774,
+            "to": 3
+          },
+          {
+            "frame": 2819,
+            "from": 2,
+            "minimum_next_8_frames": 4748.617,
+            "rpm_before": 7140.103,
+            "to": 3
+          },
+          {
+            "frame": 2965,
+            "from": 3,
+            "minimum_next_8_frames": 5404.939,
+            "rpm_before": 7119.232,
+            "to": 4
+          },
+          {
+            "frame": 4198,
+            "from": 2,
+            "minimum_next_8_frames": 4741.157,
+            "rpm_before": 7129.675,
+            "to": 3
+          },
+          {
+            "frame": 4291,
+            "from": 3,
+            "minimum_next_8_frames": 4812.044,
+            "rpm_before": 6458.909,
+            "to": 4
+          },
+          {
+            "frame": 4753,
+            "from": 2,
+            "minimum_next_8_frames": 4386.477,
+            "rpm_before": 7205.349,
+            "to": 3
+          }
+        ],
+        "wire": {
+          "forza_packets": 5012,
+          "json_packets": 76673,
+          "maximum_speed_mph": 133.99999655393847,
+          "passed": true
+        }
+      },
+      "timings": [
+        {
+          "emulated_seconds": 10.357632103575998,
+          "emulation_ratio": 0.6291322270791481,
+          "first_frame": 1680,
+          "host_frame_ms": {
+            "p50": 17.236000000000473,
+            "p95": 18.693604999998925,
+            "p99": 26.339167000000145,
+            "worst": 6131.543600000001
+          },
+          "host_seconds": 16.4633628,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 7,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 5,
+              "minimum": 5
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63870,
+              "minimum": 63870
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 50175,
+              "minimum": 50175
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 127,
+              "minimum": 127
+            },
+            ":MOTION": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":WHEEL": {
+              "distinct": 1,
+              "maximum": 128,
+              "minimum": 128
+            }
+          },
+          "last_frame": 2280,
+          "minimum_ratio": 0.95,
+          "passed": false,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        },
+        {
+          "emulated_seconds": 10.357632103577004,
+          "emulation_ratio": 0.9999605237686358,
+          "first_frame": 2700,
+          "host_frame_ms": {
+            "p50": 17.316749999999104,
+            "p95": 24.91135999999976,
+            "p99": 25.662091000000657,
+            "worst": 26.174299999993877
+          },
+          "host_seconds": 10.358041,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 91,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 5,
+              "minimum": 5
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63870,
+              "minimum": 63870
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 50175,
+              "minimum": 50175
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 127,
+              "minimum": 127
+            },
+            ":MOTION": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":WHEEL": {
+              "distinct": 73,
+              "maximum": 161,
+              "minimum": 85
+            }
+          },
+          "last_frame": 3300,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 83,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00004980.png"
+      }
+    },
+    {
+      "coverage": "synthetic race, native pixels and live timing",
+      "force_gate": {
+        "disabled_writes": 0,
+        "driving_samples": 2001,
+        "enabled_writes": 5534,
+        "game": "crusnwld24",
+        "independent_state_samples": 5000,
+        "lua_frame_offset": 1,
+        "memory_sha256": "11aad479907f644240d75befe8448c09e2f621f33003b25a9df0629ab345d759",
+        "non_driving_nonzero_requests": 1358,
+        "non_driving_samples": 2999,
+        "nonzero_raw_suppressed": 0,
+        "passed": true,
+        "physical_force": false,
+        "polarity": {
+          "corrected_nonzero_requests": 0,
+          "frames_sha256": "0bb94801ae068a929e70fc234ba4c4f52c0f63419222f9dd890c8d0083a6505f",
+          "matched_input_samples": 5534,
+          "passed": true,
+          "source_sha256": "d4c28f1850f86b239be4ac13a512222a22205582dfa3eee052edd28e0881128b"
+        },
+        "policy": "passthrough",
+        "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+        "source_writes": 5534,
+        "trace_sha256": "5e68623805da95f68014bed751e8ae7d7ca6eb1d19f83e31958d57ead820b360"
+      },
+      "id": "world24",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-defaults\\world24\\report.json",
+      "telemetry": {
+        "coverage_passed": true,
+        "game_state_samples": 2336,
+        "gears": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 2336,
+          "sha256": "11aad479907f644240d75befe8448c09e2f621f33003b25a9df0629ab345d759"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          7850.849
+        ],
+        "samples": 6000,
+        "trace_sha256": "bb5a41f4a5bfbbd4b1551f29fd6228fe547b0f2cf5129f4e936c446513689e4f",
+        "upshifts": [
+          {
+            "frame": 3807,
+            "from": 1,
+            "minimum_next_8_frames": 4047.722,
+            "rpm_before": 6238.953,
+            "to": 2
+          },
+          {
+            "frame": 3911,
+            "from": 1,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7305.65,
+            "to": 2
+          },
+          {
+            "frame": 3913,
+            "from": 2,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7850.849,
+            "to": 3
+          },
+          {
+            "frame": 3915,
+            "from": 3,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7850.849,
+            "to": 4
+          },
+          {
+            "frame": 4079,
+            "from": 1,
+            "minimum_next_8_frames": 4747.433,
+            "rpm_before": 7176.699,
+            "to": 2
+          },
+          {
+            "frame": 4141,
+            "from": 2,
+            "minimum_next_8_frames": 4741.518,
+            "rpm_before": 7114.549,
+            "to": 3
+          },
+          {
+            "frame": 4367,
+            "from": 3,
+            "minimum_next_8_frames": 5408.85,
+            "rpm_before": 7127.848,
+            "to": 4
+          },
+          {
+            "frame": 4987,
+            "from": 2,
+            "minimum_next_8_frames": 4757.601,
+            "rpm_before": 7144.977,
+            "to": 3
+          },
+          {
+            "frame": 5131,
+            "from": 3,
+            "minimum_next_8_frames": 4861.749,
+            "rpm_before": 7140.096,
+            "to": 4
+          }
+        ],
+        "wire": {
+          "forza_packets": 6000,
+          "json_packets": 90348,
+          "maximum_speed_mph": 141.99999800390572,
+          "passed": true
+        }
+      },
+      "timings": [
+        {
+          "emulated_seconds": 20.715264207152998,
+          "emulation_ratio": 0.9997031673345184,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 18.626599999997495,
+            "p95": 25.162585000006743,
+            "p99": 26.07828000001035,
+            "worst": 28.25939999999605
+          },
+          "host_seconds": 20.721415,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 3,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 5,
+              "minimum": 5
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63820,
+              "minimum": 63820
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 50175,
+              "minimum": 50175
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":WHEEL": {
+              "distinct": 4,
+              "maximum": 145,
+              "minimum": 106
+            },
+            ":serial_pic2:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 100,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00006000.png"
+      }
+    },
+    {
+      "coverage": "Germany Level: complete human race, 9269 input frames, 154 native images; FFB source trace retained, physical outputs disabled on replay",
+      "force_gate": {
+        "disabled_writes": 0,
+        "driving_samples": 6839,
+        "enabled_writes": 8803,
+        "game": "crusnwld24",
+        "independent_state_samples": 8269,
+        "lua_frame_offset": 1,
+        "memory_sha256": "0bb659161efb01bc7bbd7e4251e80d3637f455e15033792bfa6262c0fb553dc0",
+        "non_driving_nonzero_requests": 1332,
+        "non_driving_samples": 1430,
+        "nonzero_raw_suppressed": 0,
+        "passed": true,
+        "physical_force": false,
+        "polarity": {
+          "corrected_nonzero_requests": 0,
+          "frames_sha256": "cf8c57c9f17c8595c17f314d9b9fb576be30af72908c299a149a09924e986f40",
+          "matched_input_samples": 8803,
+          "passed": true,
+          "source_sha256": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44"
+        },
+        "policy": "passthrough",
+        "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+        "source_writes": 8803,
+        "trace_sha256": "09332e31a027b31ac727b1a82eb9cb79d8b613e751a27facca83f097c1309ae1"
+      },
+      "id": "world24-germany",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-defaults\\world24-germany\\report.json",
+      "telemetry": {
+        "coverage_passed": true,
+        "game_state_samples": 7516,
+        "gears": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 7516,
+          "sha256": "0bb659161efb01bc7bbd7e4251e80d3637f455e15033792bfa6262c0fb553dc0"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          8000.0
+        ],
+        "samples": 9269,
+        "trace_sha256": "5b468d4d2a60619614893edc2a3be47cc6341f9bad1f818f9a1bcdc8aa423e73",
+        "upshifts": [
+          {
+            "frame": 1831,
+            "from": 1,
+            "minimum_next_8_frames": 4051.556,
+            "rpm_before": 6243.9,
+            "to": 2
+          },
+          {
+            "frame": 1905,
+            "from": 1,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7407.178,
+            "to": 2
+          },
+          {
+            "frame": 1907,
+            "from": 2,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7850.849,
+            "to": 3
+          },
+          {
+            "frame": 1909,
+            "from": 3,
+            "minimum_next_8_frames": 7850.849,
+            "rpm_before": 7850.849,
+            "to": 4
+          },
+          {
+            "frame": 2089,
+            "from": 1,
+            "minimum_next_8_frames": 4782.51,
+            "rpm_before": 7223.825,
+            "to": 2
+          },
+          {
+            "frame": 2149,
+            "from": 2,
+            "minimum_next_8_frames": 4751.936,
+            "rpm_before": 7127.885,
+            "to": 3
+          },
+          {
+            "frame": 2337,
+            "from": 3,
+            "minimum_next_8_frames": 4840.252,
+            "rpm_before": 6502.303,
+            "to": 4
+          },
+          {
+            "frame": 3175,
+            "from": 2,
+            "minimum_next_8_frames": 8000.0,
+            "rpm_before": 8000.0,
+            "to": 3
+          },
+          {
+            "frame": 3177,
+            "from": 3,
+            "minimum_next_8_frames": 6160.142,
+            "rpm_before": 8000.0,
+            "to": 4
+          },
+          {
+            "frame": 4075,
+            "from": 1,
+            "minimum_next_8_frames": 4758.04,
+            "rpm_before": 7200.183,
+            "to": 2
+          },
+          {
+            "frame": 4145,
+            "from": 2,
+            "minimum_next_8_frames": 4738.288,
+            "rpm_before": 7117.754,
+            "to": 3
+          },
+          {
+            "frame": 4249,
+            "from": 3,
+            "minimum_next_8_frames": 5408.433,
+            "rpm_before": 7121.168,
+            "to": 4
+          },
+          {
+            "frame": 7263,
+            "from": 3,
+            "minimum_next_8_frames": 4176.489,
+            "rpm_before": 6016.701,
+            "to": 4
+          },
+          {
+            "frame": 7435,
+            "from": 2,
+            "minimum_next_8_frames": 4752.664,
+            "rpm_before": 7129.191,
+            "to": 3
+          },
+          {
+            "frame": 7545,
+            "from": 3,
+            "minimum_next_8_frames": 5440.253,
+            "rpm_before": 7147.65,
+            "to": 4
+          },
+          {
+            "frame": 8203,
+            "from": 2,
+            "minimum_next_8_frames": 4768.26,
+            "rpm_before": 7115.005,
+            "to": 3
+          },
+          {
+            "frame": 8311,
+            "from": 3,
+            "minimum_next_8_frames": 5409.093,
+            "rpm_before": 7122.179,
+            "to": 4
+          }
+        ],
+        "wire": {
+          "forza_packets": 9269,
+          "json_packets": 142786,
+          "maximum_speed_mph": 147.99999695807247,
+          "passed": true
+        }
+      },
+      "timings": [],
+      "visual_reference": {
+        "files": 154,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00009240.png"
+      }
+    },
+    {
+      "coverage": "synthetic race, native pixels and live timing",
+      "force_gate": {
+        "disabled_writes": 0,
+        "driving_samples": 2203,
+        "enabled_writes": 5534,
+        "game": "crusnwld",
+        "independent_state_samples": 5000,
+        "lua_frame_offset": 1,
+        "memory_sha256": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68",
+        "non_driving_nonzero_requests": 1059,
+        "non_driving_samples": 2797,
+        "nonzero_raw_suppressed": 0,
+        "passed": true,
+        "physical_force": false,
+        "polarity": {
+          "corrected_nonzero_requests": 0,
+          "frames_sha256": "496277884252d70f0eb7f5f4472c4742da90c930ebf38608b6e02395176c3e0b",
+          "matched_input_samples": 5534,
+          "passed": true,
+          "source_sha256": "23c72641c76a795faa7804147ab0d835cc49a1341246de28687f317737e1e2f7"
+        },
+        "policy": "passthrough",
+        "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+        "source_writes": 5534,
+        "trace_sha256": "46424fbb84458a13042f16270c625b038c0649a4cf01c82424051f5ec601adfa"
+      },
+      "id": "world25",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-defaults\\world25\\report.json",
+      "telemetry": {
+        "coverage_passed": true,
+        "game_state_samples": 2538,
+        "gears": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 2538,
+          "sha256": "04a3ab8bc493bcfcf241d874a1afb75e9c4bbc9803897ae294ddf6e875dbee68"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          7509.443
+        ],
+        "samples": 6000,
+        "trace_sha256": "bddac0d7fd9c3cdf1e8185e72937eff4515c29114ba1423a6a0c0ea918b196a3",
+        "upshifts": [
+          {
+            "frame": 3605,
+            "from": 1,
+            "minimum_next_8_frames": 4047.722,
+            "rpm_before": 6238.953,
+            "to": 2
+          },
+          {
+            "frame": 3931,
+            "from": 1,
+            "minimum_next_8_frames": 4752.161,
+            "rpm_before": 7190.23,
+            "to": 2
+          },
+          {
+            "frame": 3993,
+            "from": 2,
+            "minimum_next_8_frames": 4743.015,
+            "rpm_before": 7117.234,
+            "to": 3
+          },
+          {
+            "frame": 4123,
+            "from": 3,
+            "minimum_next_8_frames": 5401.105,
+            "rpm_before": 7116.596,
+            "to": 4
+          },
+          {
+            "frame": 4509,
+            "from": 2,
+            "minimum_next_8_frames": 4750.928,
+            "rpm_before": 7131.329,
+            "to": 3
+          },
+          {
+            "frame": 4619,
+            "from": 2,
+            "minimum_next_8_frames": 4741.636,
+            "rpm_before": 7114.762,
+            "to": 3
+          },
+          {
+            "frame": 4803,
+            "from": 3,
+            "minimum_next_8_frames": 4927.623,
+            "rpm_before": 7012.634,
+            "to": 4
+          },
+          {
+            "frame": 4991,
+            "from": 2,
+            "minimum_next_8_frames": 4749.867,
+            "rpm_before": 7130.743,
+            "to": 3
+          },
+          {
+            "frame": 5091,
+            "from": 3,
+            "minimum_next_8_frames": 4660.14,
+            "rpm_before": 7337.882,
+            "to": 4
+          }
+        ],
+        "wire": {
+          "forza_packets": 6000,
+          "json_packets": 90332,
+          "maximum_speed_mph": 145.0000017476065,
+          "passed": true
+        }
+      },
+      "timings": [
+        {
+          "emulated_seconds": 20.715264207152998,
+          "emulation_ratio": 1.0000069759265255,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.191699999997923,
+            "p95": 24.97695499999608,
+            "p99": 26.06284599999711,
+            "worst": 27.545000000003483
+          },
+          "host_seconds": 20.715119700000002,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 3,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 63948,
+              "minimum": 63948
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":WHEEL": {
+              "distinct": 4,
+              "maximum": 145,
+              "minimum": 106
+            },
+            ":serial_pic2:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 100,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00006000.png"
+      }
+    },
+    {
+      "coverage": "synthetic H-pattern driving onto terrain, native pixels and live timing",
+      "id": "offroad",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-defaults\\offroad\\report.json",
+      "telemetry": {
+        "coverage_passed": true,
+        "game_state_samples": 2090,
+        "gears": [
+          0,
+          1
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 2090,
+          "sha256": "aefd8e97387d4683fa0e025ebccd38bf04c8c32e077faa45ddcaa07bfed9d227"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          8000.0
+        ],
+        "samples": 6000,
+        "trace_sha256": "7ecb61032570522169af6c73c65088120650a1a926c94192ac56cd04fec5ef2d",
+        "upshifts": [],
+        "wire": {
+          "forza_packets": 6000,
+          "json_packets": 90280,
+          "maximum_speed_mph": 39.999998716601496,
+          "passed": true
+        }
+      },
+      "timings": [
+        {
+          "emulated_seconds": 20.715264207152998,
+          "emulation_ratio": 0.9999904133038727,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.265299999998263,
+            "p95": 24.49458000000888,
+            "p99": 26.08252800000102,
+            "worst": 30.536400000002573
+          },
+          "host_seconds": 20.715462799999997,
+          "inputs": {
+            ":ACCEL": {
+              "distinct": 3,
+              "maximum": 255,
+              "minimum": 0
+            },
+            ":BRAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":CONF": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":DSW": {
+              "distinct": 1,
+              "maximum": 65533,
+              "minimum": 65533
+            },
+            ":FAKE": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":IN0": {
+              "distinct": 1,
+              "maximum": 57343,
+              "minimum": 57343
+            },
+            ":IN1": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":WHEEL": {
+              "distinct": 4,
+              "maximum": 145,
+              "minimum": 106
+            },
+            ":serial_pic2:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 100,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "frame_00006000.png"
+      }
+    },
+    {
+      "coverage": "synthetic first-gear race, 21 completed GL frames, CPU rasterization disabled",
+      "force_gate": {
+        "disabled_writes": 2251,
+        "driving_samples": 2365,
+        "enabled_writes": 2365,
+        "game": "crusnexo",
+        "independent_state_samples": 4615,
+        "lua_frame_offset": 1,
+        "memory_sha256": "3e81331e28889ad7fd9ad8c6bf9840ee7996efeb35c58d1bbbfc34b2d8e7fae5",
+        "non_driving_nonzero_requests": 0,
+        "non_driving_samples": 2250,
+        "nonzero_raw_suppressed": 2072,
+        "passed": true,
+        "physical_force": false,
+        "polarity": {
+          "corrected_nonzero_requests": 2082,
+          "frames_sha256": "47a342c5d4cdc5dd177255201e7f1308a648aa95cf27f5da9183bd2472f330c1",
+          "matched_input_samples": 4616,
+          "passed": true,
+          "source_sha256": "9087fb7a9eb7a32feebc62f81648fe2b701ee74016d4a99939697e7e7350d40f"
+        },
+        "policy": "driving",
+        "scope": "Validate requested force gating against independent game-state samples.\n\nThis checks software requests with physical outputs disabled, not rim torque.\n",
+        "source_writes": 4616,
+        "trace_sha256": "dd03d743e03fdbf73f6f17763e47c7ba450d34e935efae9507f60f22389a75d8"
+      },
+      "id": "exotica",
+      "passed": true,
+      "report": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-defaults\\exotica\\report.json",
+      "telemetry": {
+        "coverage_passed": true,
+        "game_state_samples": 2684,
+        "gears": [
+          0,
+          1
+        ],
+        "memory": {
+          "lua_frame_offset": 1,
+          "mismatches": 0,
+          "samples": 2684,
+          "sha256": "3e81331e28889ad7fd9ad8c6bf9840ee7996efeb35c58d1bbbfc34b2d8e7fae5"
+        },
+        "passed": true,
+        "rpm_range": [
+          0.0,
+          8000.0
+        ],
+        "samples": 6000,
+        "trace_sha256": "de75e68ab57e35e4e95dea8a2468be935826252d4b83ff1407b92c12609b6cc2",
+        "upshifts": [],
+        "wire": {
+          "forza_packets": 6000,
+          "json_packets": 55825,
+          "maximum_speed_mph": 38.999997468701245,
+          "passed": true
+        }
+      },
+      "timings": [
+        {
+          "emulated_seconds": 21.002965498516993,
+          "emulation_ratio": 1.0000413957974885,
+          "first_frame": 3600,
+          "host_frame_ms": {
+            "p50": 17.49565000000075,
+            "p95": 18.077284999999677,
+            "p99": 18.743342999993757,
+            "worst": 20.838300000008303
+          },
+          "host_seconds": 21.002096100000003,
+          "inputs": {
+            ":ANALOG0": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":ANALOG1": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":ANALOG2": {
+              "distinct": 1,
+              "maximum": 255,
+              "minimum": 255
+            },
+            ":ANALOG3": {
+              "distinct": 3,
+              "maximum": 141,
+              "minimum": 115
+            },
+            ":DIPS": {
+              "distinct": 1,
+              "maximum": 62463,
+              "minimum": 62463
+            },
+            ":GEARS": {
+              "distinct": 2,
+              "maximum": 15,
+              "minimum": 14
+            },
+            ":IN1": {
+              "distinct": 2,
+              "maximum": 65535,
+              "minimum": 65279
+            },
+            ":IN2": {
+              "distinct": 1,
+              "maximum": 65535,
+              "minimum": 65535
+            },
+            ":KEYPAD": {
+              "distinct": 1,
+              "maximum": 30583,
+              "minimum": 30583
+            },
+            ":SEQ": {
+              "distinct": 1,
+              "maximum": 0,
+              "minimum": 0
+            },
+            ":SYSTEM": {
+              "distinct": 2,
+              "maximum": 65535,
+              "minimum": 65531
+            },
+            ":ioasic:SERIAL_DIGIT": {
+              "distinct": 1,
+              "maximum": 6,
+              "minimum": 6
+            }
+          },
+          "last_frame": 4800,
+          "minimum_ratio": 0.95,
+          "passed": true,
+          "schema": 1,
+          "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency"
+        }
+      ],
+      "visual_reference": {
+        "files": 21,
+        "last_extrema": [
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ],
+          [
+            0,
+            255
+          ]
+        ],
+        "last_image": "mzgl_020.bmp"
+      }
+    }
+  ],
+  "passed": false,
+  "physical_force": false,
+  "schema": 1,
+  "source_identity": "6df14d2faa33e0c3e9172e396d6b18e9b73f776f37deb5b9f6433a13e2e86d35",
+  "subset": null,
+  "suite_sha256": "a579d49409ee57aebd67acf44ffe27b145fc95a0ced39a2f06007c99201cea3e"
+}

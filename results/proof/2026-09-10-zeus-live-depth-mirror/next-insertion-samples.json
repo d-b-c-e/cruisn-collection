@@ -1,0 +1,83 @@
+{
+  "scope": "LOCAL join of future hook to actual original submission order; sample only. A preceding depth-clear primitive is not by itself semantic proof of sky/background completeness. No live extra geometry drawn.",
+  "results": [
+    {
+      "run": "private-material5072-on3",
+      "frame": 5072,
+      "time": 88.790162232445,
+      "model_id": 2,
+      "first_quad": 28,
+      "preceding_clear_present": true,
+      "following_clear_present": false,
+      "before": {
+        "quads": 28,
+        "depth_clear": 28,
+        "flags": {
+          "52": 28
+        }
+      },
+      "after": {
+        "quads": 3321,
+        "depth_clear": 0,
+        "flags": {
+          "28": 2633,
+          "29": 18,
+          "30": 640,
+          "22": 2,
+          "20": 28
+        }
+      }
+    },
+    {
+      "run": "private-material5000-on3",
+      "frame": 5000,
+      "time": 87.529965699125,
+      "model_id": 2,
+      "first_quad": 14,
+      "preceding_clear_present": true,
+      "following_clear_present": false,
+      "before": {
+        "quads": 14,
+        "depth_clear": 14,
+        "flags": {
+          "52": 14
+        }
+      },
+      "after": {
+        "quads": 2193,
+        "depth_clear": 0,
+        "flags": {
+          "28": 1600,
+          "30": 518,
+          "12": 39,
+          "20": 36
+        }
+      }
+    },
+    {
+      "run": "active-margin-seal-pages-full",
+      "frame": 7187,
+      "time": 125.807873465409,
+      "model_id": 2,
+      "first_quad": 28,
+      "preceding_clear_present": true,
+      "following_clear_present": false,
+      "before": {
+        "quads": 28,
+        "depth_clear": 28,
+        "flags": {
+          "52": 28
+        }
+      },
+      "after": {
+        "quads": 3431,
+        "depth_clear": 0,
+        "flags": {
+          "28": 2434,
+          "30": 964,
+          "20": 33
+        }
+      }
+    }
+  ]
+}

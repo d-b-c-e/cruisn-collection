@@ -11,20 +11,28 @@ now passes full Amazon/repeat/observe comparisons, Hong Kong and all seven defau
 cases on native50a. All117 Amazon images and970,889 added quads repeat, with
 original route/resources preserved. Independent dirty-page tracking reduces
 scene-sealing cost from1.354ms to0.200ms without changing saved rendering state.
-Normal-play overhead is being measured without heavy captures. The candidate
+Without heavy captures, the future observer and active-margin path reach94.90%
+and93.06% against99.99% stock; performance remains open. The candidate
 retains original far distance and remains separate from the Stream Deck build.
 The generated non-depth-tested primitive remains excluded; broader transparent
 ordering, material lifetime, other tracks and handover remain open.
 
 The [private original-scene renderer](docs/reviews/2026-09-10-zeus-live-depth-mirror.md)
-now passes a short live6000-input trial: six independent full color/depth pairs,
-25 completed4K images and original route/resources. Broader full/repeat/Hong Kong
-and default acceptance are running. It still displays the original target and
-adds no farther scenery. The initial requested frame1 interval remains a failure;
-actual completed markers start2. The prior synthetic GPU check exposed existing
-D24 quantization ties; a corrected diagnostic preserves all16,777,216 original
-depth inputs' comparisons on this GPU. Next prove full live original-only
-equivalence, then true wider depth/clear semantics and early future insertion.
+now passes short/full/repeat Amazon and Hong Kong:305completed4K comparisons and
+29 independent raw color/depth pairs. Full playback repeats all36raw files and
+8,849frame counters. It displays the original target and adds no farther scenery.
+The local336Python/46native/129command suite passes. Six default cases pass;
+USA widescreen has one retained6.13second menu-timing failure and a separate
+passing retry. That stall's cause remains unresolved; this is not a clean
+seven-case suite renewal. Personal v0.5.0 remains unchanged.
+
+Next prove true wider depth and explicit clear-command semantics, then insert
+future scenery before original foreground drawing. Real fast clears use0xffff00,
+so simply treating only0xffffff as empty would still block some farther scenery.
+Captured future vertices reach about3x the original depth range. Their initial
+fade values and handover into original objects also need validation. A standalone
+wider-depth diagnostic and separate packet draft are in preparation; neither
+is integrated or accepted yet. Preserve the initial frame-coverage/display failures.
 
 ### Earlier foundation checkpoints
 

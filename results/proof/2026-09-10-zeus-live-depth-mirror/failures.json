@@ -1,0 +1,735 @@
+{
+  "initial-marker-interval": {
+    "passed": false,
+    "reason": "Requested1..5990 but completed markers start2",
+    "report_sha256": "903c998ac8a799f125d1a1aeaf7109146eaa27bcbfd1c6139d089a6115124a76",
+    "receipt": {
+      "case": "E:\\Source\\cruisn-collection\\results\\diagnostics\\drive-crusnexo-20260909-203557",
+      "comparison_scope": {
+        "first_frame": 1,
+        "kind": "explicit-prefix",
+        "last_frame": 6000
+      },
+      "diagnostic_script_sha256": "02ee840a612e4842668b512ad850371242d2c14c9616a76eb267be3ca600c6eb",
+      "display_target": {
+        "available": [
+          {
+            "device": "\\\\.\\DISPLAY1",
+            "primary": true,
+            "size": [
+              3840,
+              2160
+            ]
+          }
+        ],
+        "reference_size": [
+          3840,
+          2160
+        ],
+        "selected": {
+          "device": "\\\\.\\DISPLAY1",
+          "primary": true,
+          "size": [
+            3840,
+            2160
+          ]
+        }
+      },
+      "error": "incomplete depth mirror",
+      "exotica_host_scene": {
+        "mode": "off",
+        "result": {
+          "disabled": true
+        }
+      },
+      "kind": "candidate-regression",
+      "passed": false,
+      "presentation": "explicit-gl-experiment",
+      "presentation_overrides": {
+        "MIDZ_CAPTURE_PACE": "1",
+        "MIDZ_GL_DRAIN_FRAME": "5088",
+        "MIDZ_GL_LOG": "1",
+        "MIDZ_GL_SNAP": "redirect-at-launch",
+        "MIDZ_GL_SNAP_EVERY": "1",
+        "MIDZ_GL_SNAP_FIRST": "5064",
+        "MIDZ_GL_SNAP_LAST": "5088",
+        "MIDZ_GL_SNAP_MAX": "25"
+      },
+      "probe_script": {
+        "environment": {
+          "CRUISN_EXOTICA_MOTION_FIRST": "1800",
+          "CRUISN_EXOTICA_MOTION_LAST": "5990"
+        },
+        "sha256": "ef4e8f2b0260c0ca658baa5767773d46cf9eefb7fa94ee21afd3a2e6c0908d76",
+        "source": "E:\\Source\\cruisn-collection\\lua\\exotica_motion_trace.lua"
+      },
+      "schema": 1,
+      "zeus_depth_mirror": {
+        "enabled": true,
+        "explicit": true,
+        "first": 1,
+        "last": 5990,
+        "snapshots": [
+          300,
+          1800,
+          3500,
+          5072,
+          5604,
+          5990
+        ]
+      },
+      "zeus_margin_clear": {
+        "explicit": true,
+        "page": 1,
+        "result": {
+          "clears": 4578,
+          "expanded": 2881,
+          "page": 1
+        }
+      },
+      "zeus_palette": {
+        "explicit": true,
+        "guard": 1,
+        "result": {
+          "conflicts": 0,
+          "flushes": 0,
+          "guard": 1
+        }
+      },
+      "zeus_sky": {
+        "enabled": 1,
+        "explicit": true,
+        "result": {
+          "accepted": 3030,
+          "budget_rejected": 0,
+          "copied": 124,
+          "enabled": 1,
+          "groups": 3030
+        }
+      }
+    }
+  },
+  "initial-disabled-display": {
+    "passed": false,
+    "reason": "Selected4K at preflight, actual25GL3440x1440; outer trial rejected and serial queue stopped",
+    "report_sha256": "fa1e43aa3ccb530727cf32a5257bf73ac694d9b45564300ad6c12876e9b25974",
+    "gl": {
+      "scope": "completed GL frame pixels",
+      "passed": false,
+      "frames": 25,
+      "different_frames": [
+        5064,
+        5065,
+        5066,
+        5067,
+        5068,
+        5069,
+        5070,
+        5071,
+        5072,
+        5073,
+        5074,
+        5075,
+        5076,
+        5077,
+        5078,
+        5079,
+        5080,
+        5081,
+        5082,
+        5083,
+        5084,
+        5085,
+        5086,
+        5087,
+        5088
+      ],
+      "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\fence5080-on\\run\\gl-snap",
+      "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\depth-mirror-disabled\\run\\gl-snap",
+      "size_mismatches": [
+        {
+          "frame": 5064,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5065,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5066,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5067,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5068,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5069,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5070,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5071,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5072,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5073,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5074,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5075,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5076,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5077,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5078,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5079,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5080,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5081,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5082,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5083,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5084,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5085,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5086,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5087,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        },
+        {
+          "frame": 5088,
+          "reference": [
+            3840,
+            2160
+          ],
+          "candidate": [
+            3440,
+            1440
+          ]
+        }
+      ],
+      "pixel_changes": [
+        {
+          "frame": 5064,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5065,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5066,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5067,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5068,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5069,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5070,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5071,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5072,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5073,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5074,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5075,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5076,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5077,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5078,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5079,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5080,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5081,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5082,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5083,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5084,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5085,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5086,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5087,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        },
+        {
+          "frame": 5088,
+          "reference_size": [
+            3840,
+            2160
+          ],
+          "candidate_size": [
+            3440,
+            1440
+          ],
+          "size_mismatch": true
+        }
+      ]
+    }
+  },
+  "default-usa-timing": {
+    "passed": false,
+    "reason": "One6.13second interval1857..1858 fails initial USA widescreen menu timing; targeted retry is separate evidence, cause unresolved",
+    "report_sha256": "608462176d5123134a339b79bfce561bdd765e7a02ae064e1f3c40070643e955"
+  }
+}

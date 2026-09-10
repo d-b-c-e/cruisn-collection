@@ -1,0 +1,73 @@
+{
+  "aligned": {
+    "name": "depth-mirror-aligned",
+    "first": 2,
+    "last": 5990,
+    "inputs": 6000,
+    "gl": 25,
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      5072,
+      5604,
+      5990
+    ]
+  },
+  "disabled": {
+    "name": "depth-mirror-disabled-4k",
+    "inputs": 6000,
+    "gl": 25,
+    "snapshots": []
+  },
+  "full": {
+    "name": "depth-mirror-full",
+    "first": 2,
+    "last": 8850,
+    "inputs": 8860,
+    "gl": 117,
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      5072,
+      5604,
+      6330,
+      7187,
+      8760,
+      8850
+    ]
+  },
+  "repeat": {
+    "name": "depth-mirror-repeat",
+    "first": 2,
+    "last": 8850,
+    "inputs": 8860,
+    "gl": 117,
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      5072,
+      5604,
+      6330,
+      7187,
+      8760,
+      8850
+    ]
+  },
+  "hong-kong": {
+    "name": "depth-mirror-hong-kong",
+    "first": 2,
+    "last": 5990,
+    "inputs": 6000,
+    "gl": 21,
+    "snapshots": [
+      300,
+      1800,
+      3500,
+      5000,
+      5990
+    ]
+  }
+}

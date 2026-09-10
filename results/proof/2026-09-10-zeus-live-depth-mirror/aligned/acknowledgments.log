@@ -1,0 +1,15 @@
+MIDZ_DEPTH_MIRROR=1 first=2 last=5990 snapshots=6
+MIDZ_SKY_REPEAT=1
+MIDZ_GL_MARGIN_PAGE_CLEAR=1
+MIDZ_PALETTE_GUARD=1
+MIDZ_CAPTURE_WRITER_BEGIN
+MIDZ_DEPTH_MIRROR_RESULT complete=1 frames=5989 batches=85608 vertices=73032699 clears=9157 snapshots=6 remaining=0
+MIDZ_DEPTH_MIRROR_WRITER submitted=24 written=24 failed=0 rejected=0 peak_bytes=179306496 write_total_us=6110022 write_max_us=679469 drain_us=389102 waits=0 wait_us=0
+MIDZ_CAPTURE_WRITER submitted=25 written=25 failed=0 rejected=0 peak_bytes=447898572 write_total_us=3162852 write_max_us=573213 drain_us=138 paced=1 waits=0 wait_us=0
+MIDZ_GL_TIMING phase=readback calls=25 total_ms=140 max_ms=16
+MIDZ_GL_TIMING phase=file calls=25 total_ms=204 max_ms=16
+MIDZ_GL_TIMING phase=swap calls=5998 total_ms=124 max_ms=16
+MIDZ_GL_TIMING phase=stall calls=0 total_ms=0 max_ms=0
+MIDZ_PALETTE_RESULT guard=1 conflicts=2 flushes=2
+MIDZ_MARGIN_RESULT page=1 clears=4578 expanded=2881
+MIDZ_SKY_REPEAT_RESULT enabled=1 groups=3030 accepted=3030 copied=124 budget_rejected=0

@@ -1,0 +1,12 @@
+MIDZ_SKY_REPEAT=1
+MIDZ_GL_MARGIN_PAGE_CLEAR=1
+MIDZ_PALETTE_GUARD=1
+MIDZ_CAPTURE_WRITER_BEGIN
+MIDZ_CAPTURE_WRITER submitted=25 written=25 failed=0 rejected=0 peak_bytes=472781826 write_total_us=2000945 write_max_us=186385 drain_us=8959 paced=1 waits=0 wait_us=0
+MIDZ_GL_TIMING phase=readback calls=25 total_ms=110 max_ms=16
+MIDZ_GL_TIMING phase=file calls=25 total_ms=250 max_ms=16
+MIDZ_GL_TIMING phase=swap calls=5998 total_ms=32 max_ms=16
+MIDZ_GL_TIMING phase=stall calls=0 total_ms=0 max_ms=0
+MIDZ_PALETTE_RESULT guard=1 conflicts=0 flushes=0
+MIDZ_MARGIN_RESULT page=1 clears=4578 expanded=2881
+MIDZ_SKY_REPEAT_RESULT enabled=1 groups=3030 accepted=3030 copied=124 budget_rejected=0
