@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Exotica private state and Amazon — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-exotica-private-state.md and zeus-upstream.md.
+Standalone CPU setup/private Zeus context, NOT extra host drawing. Native/Python
+40093 Hong Kong + 537/19445 Amazon setup calls and 278/170/164 consecutive hardware
+contexts PASS. Material loads are requests only: colors/WaveRAM/readiness open.
+Delayed FF4 invalidation and FIFO-register initial FAILs retained/fixed. Amazon
+probe must apply actual24-bit C32 bus mask to32-bit pointers; keep raw pointers,
+check mapped effective addresses, count aliases. Initial address FAIL retained.
+269Python/no skips,28native,10081C31/137yaw,32GPU/78commands PASS;404-file identity
+6c59e8c9e91a979571d2b00f4c98ce190d0b39e17aad65bc48e2b65bd03852f2.
+Proof results/proof/2026-09-09-exotica-private-state recomputes5traces/selectedpixels;
+full state/resources/native/GPU remain receipts. Raw operands stay LOCAL.
+
+Amazon attended case results/diagnostics/drive-crusnexo-20260909-203557 is full8860
+frames/155.071895s, finish4th at game1:30.52; archivedbinary87d04de4. Source checkout
+metadata eb17 is NOT its binary revision. No redo needed for collisions. Two
+archived replays preserve7051camera/21153actualADCtimes,58/59GL3840x2160 repeat.
+Frame3600 blacksky/materialcolor FAIL retained; motion equal. User bug times are
+GAMEelapsed0:35/0:45/0:57 leftground and1:12 tallrightartifact, nearframe7200.
+Local root results/diagnostics/exotica-amazon-20260909 contains controls,failures,
+state-dense-7200 (61GL7110..7290),upstream audit. Dense visual analysis still open.
+
+Upstream master17d29108 + all291openPRfilelists reviewed,4touchZeus. Open#16094
+head54b7ec07 depth FLOOR,alpha depth,blendfielddecode is highpriority A/B; missing
+both CPU/GL. Merged#16058 framebufferorigin/stride latching + timing missing.
+#16046 timer/SGRAM alreadybackported9f839. #16057 clarifies Wheel Invert means
+FFB/shifterpolarity; labelonly, preservedefaults/forcepolicy. #16021 wheeloutput
+alreadyours;13138/6515nonrendering. No blind merge or shader-only semantic update.
+Next isolated candidate with explicit legacy controls, defect windows, original
+motion/resources/repeat/4K and seven-default renewal; then material/futurehost.
+MAMEeb17/SHAee2bd4d0 unchanged; personalv0.5/SHA87d04de4 unchanged. No deploy,
+release,hostedworkflows,unattendedphysicalFFB,Worldtuning,menuremoval. Rigcheck,
+serialemulators. Keep working directly; oneminuteheartbeat recoveryonly, no cutoff.
+
 ## September 9 Exotica future sections — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-exotica-future-sections.md. Standalone native/Python

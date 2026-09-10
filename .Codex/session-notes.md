@@ -1,5 +1,15 @@
 # Session Notes
 
+- **Private Zeus state / Amazon / upstream:** see the September 9 private-state
+  and zeus-upstream reviews. 40093 Hong Kong + 537/19445 Amazon setup calls,
+  278/170/164 private-context pairs match independent native/Python. 269 Python,
+  28 native,32GPU pass at404-file identity6c59e8c9. No linked host extras/material
+  readiness claim. Amazon full8860 drive preserved;58/59baselineGL repeat,3600
+  sky/material FAIL retained. User times are game0:35/45/57 and1:12. Dense7200
+  run has61GL for analysis. Open upstream16094 depth/blend is next A/B candidate;
+  16058 missing,16046 alreadybackported. Master17d29108/all291openPRs checked.
+  Personal87d04de4/nativecandidateeb17 untouched. Continue directly, FFB0 serial.
+
 - **Continuous Exotica future sections:** docs/reviews/2026-09-09-exotica-future-sections.md.
   Native/Python42882source records/6474actual comparisons/2507laterallocations PASS.
   1079ordinary/2158initialbindings/9overrides;56customexcluded,18initialtypeFAILs retained.

@@ -1,6 +1,7 @@
 -- Bounded, read-only Exotica2.4 transform and actual model-command capture.
 -- CRUISN_EXOTICA_MODEL_WINDOWS=3500:3525,4650:4750,5400:5420 (max240 frames).
 -- Raw operands stay LOCAL. This does not capture/verify Zeus model geometry.
+-- CRUISN_EXOTICA_MODEL_STATE=1 additionally captures bounded object-setup packets.
 local cpu=manager.machine.devices[':maincpu'];local space=cpu.spaces.program
 local ram=manager.machine.memory.shares[':ram_base'];local screen=manager.machine.screens[':screen']
 assert(manager.machine.system.name=='crusnexo')
@@ -15,9 +16,20 @@ assert(#windows>0)
 local function selected(n)for _,w in ipairs(windows) do if n>=w[1] and n<=w[2] then return true end end;return false end
 local frame,busy,failure,serial,emitted,complete=0,false,nil,0,0,false
 local taps,out,emissions,previous={},nil,nil,nil
+local state_mode=os.getenv('CRUISN_EXOTICA_MODEL_STATE') or '0'
+assert(state_mode=='0' or state_mode=='1','Exotica state capture option')
+local capture_state=state_mode=='1'
+assert(space.address_mask==0xffffff,'Exotica C32 address width')
+local aliased_reads=0
 local function read(p)
- assert(p>=0 and p%1==0 and (p<0x40000 or p>=0x87fe00 and p<0x880000 or p>=0xa00000 and p<0x1000000),'unmapped Exotica operand')
- return p<0x40000 and ram:read_u32(p*4) or space:read_u32(p)
+ assert(p>=0 and p<=0xffffffff and p%1==0,'Exotica pointer word')
+ -- C32 address registers are 32-bit, but the program bus is 24-bit. Keep raw
+ -- pointers in the evidence and apply the actual bus mask before range checks.
+ local address=p&space.address_mask
+ if address~=p then aliased_reads=aliased_reads+1 end
+ assert(address<0x40000 or address>=0x87fe00 and address<0x880000 or address>=0xa00000,
+  string.format('unmapped Exotica operand %x pc=%x flags=%x object=%x descriptor=%x',p,cpu.state.PC.value,cpu.state.R6.value,cpu.state.AR7.value,cpu.state.AR0.value))
+ return address<0x40000 and ram:read_u32(address*4) or space:read_u32(address)
 end
 local function words(p,n)local a={};assert(n>=0 and n<=64);for i=0,n-1 do a[#a+1]=read(p+i) end;return a end
 local function emit(file,r)
@@ -33,12 +45,17 @@ local function ring_words(ring,n)
  assert(ring>=0x30000 and ring<0x32000);local result={}
  for i=-n,-1 do result[#result+1]=read(0x30000+((ring-0x30000+i)%0x2000)) end;return result
 end
+local function ring_between(first,last)
+ assert(first>=0x30000 and first<0x32000 and last>=0x30000 and last<0x32000)
+ local n=(last-first)%0x2000;assert(n<=128,'Exotica object state packet budget')
+ local r={};for i=0,n-1 do r[#r+1]=read(0x30000+((first-0x30000+i)%0x2000)) end;return r
+end
 local function close()
  for _,t in ipairs(taps) do t:remove() end;taps={}
  if out then
   out:close();emissions:close();out=nil;emissions=nil
   local f=assert(io.open('exotica-model-capture.json','w'))
-  f:write(string.format('{"schema":1,"first":%d,"last":%d,"window_frames":%d,"calls":%d,"emissions":%d,"complete":%s}\n',windows[1][1],windows[#windows][2],total,serial,emitted,tostring(complete)));f:close()
+  f:write(string.format('{"schema":1,"first":%d,"last":%d,"window_frames":%d,"calls":%d,"emissions":%d,"state_capture":%s,"aliased_reads":%d,"complete":%s}\n',windows[1][1],windows[#windows][2],total,serial,emitted,tostring(capture_state),aliased_reads,tostring(complete)));f:close()
  end
 end
 cruisn_exotica_model_stop=emu.add_machine_stop_notifier(close)
@@ -53,7 +70,17 @@ return function(n)
   out=assert(io.open('exotica-models.jsonl','w'));out:setvbuf('full',65536)
   emissions=assert(io.open('exotica-emissions.jsonl','w'));emissions:setvbuf('full',65536)
   taps[#taps+1]=space:install_read_tap(0xff9,0xff9,'exotica_transform_cache',guard(function(o,d,m)
-   if cpu.state.PC.value==0x689e then previous={object=cpu.state.AR7.value,alpha=d,frame=frame} end
+   if cpu.state.PC.value==0x689e then
+    previous={object=cpu.state.AR7.value,alpha=d,frame=frame}
+    if capture_state then
+     local defaults=read(0xe4);local n=read(defaults)+1;assert(n>0 and n<=16)
+     previous.ring=cpu.state.AR5.value;previous.cache=words(0xff2,3)
+     previous.constants=words(0x67d0,12);previous.commands=words(0xb479,46)
+     previous.programs={read(0xe7c1),read(0xe7c7),read(0xe7d3),read(0xe7d9)}
+     previous.bodies={};for i=1,4 do previous.bodies[i]=words(previous.programs[i],4) end
+     previous.defaults=words(defaults+1,n);previous.palette_setup=read(0x15f2)
+    end
+   end
   end))
   taps[#taps+1]=space:install_read_tap(0xb47d,0xb47d,'exotica_transform_ready',guard(function(o,d,m)
    if cpu.state.PC.value~=0x6964 then return end
@@ -66,12 +93,21 @@ return function(n)
    if depth>=0x80000000 then depth=depth-0x100000000 end
    if primary[1]~=0 and depth>25000 then chosen=primary[1] end
    local ring=cpu.state.AR5.value
-   emit(out,{schema=1,id=serial,frame=frame,native_frame=screen:frame_number(),time=emu.time(),pc=cpu.state.PC.value,
+   local row={schema=1,id=serial,frame=frame,native_frame=screen:frame_number(),time=emu.time(),pc=cpu.state.PC.value,
     object=object,object_words=obj,flags=flags,descriptor=descriptor,primary=primary,selected=chosen,
     metadata=words(chosen,5),view=words(read(0x67bf),9),camera=words(0xfeb,3),prepared=words(read(0x67c1),9),
     rotation=words(object+((flags&0x80)~=0 and 0x8b or 5),9),translation=words(read(0x67c3)-1,3),alternate=words(read(0x67c0),9),
     matrix_cursor=cpu.state.AR1.value,scale=read(0x67db),ring=ring,preceding=ring_words(ring,16),
-    previous_alpha=previous.alpha,matrix_update=read(0xffa)})
+    previous_alpha=previous.alpha,matrix_update=read(0xffa)}
+   if capture_state then
+    row.state_cache=previous.cache;row.state_after=words(0xff2,3)
+    row.state_constants=previous.constants;row.state_commands=previous.commands
+    row.programs=previous.programs
+    for i=1,4 do row['program'..(i-1)]=previous.bodies[i] end
+    row.default_state=previous.defaults;row.palette_setup=previous.palette_setup
+    row.state_packet=ring_between(previous.ring,ring)
+   end
+   emit(out,row)
    previous=nil
   end))
   taps[#taps+1]=space:install_write_tap(0x046e,0x046e,'exotica_model_emission',guard(function(o,d,m)
