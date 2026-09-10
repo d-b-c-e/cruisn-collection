@@ -71,8 +71,9 @@ full original21-image interval and passes:1,515 instances/9,595 quads/4,740
 viewport quads. Across the six control/observer replays, all55 sampled4K images
 per side and all three original resource pairs match. Hong Kong
 2,457scene/30,411,603quad/clock fingerprints repeat across its two observation
-windows. Seven-default renewal is running separately; it is not implied by
-these observations.
+windows. A separate complete seven-default suite now passes on this exact candidate,
+including actual UDP/memory telemetry, four software force-policy checks and
+Exotica's21 completed4K images. Automated physical force remainszero.
 
 ## Cost and conservative offscreen bounds
 
@@ -105,7 +106,7 @@ the complete native instance/quad files to count avoided offscreen work.
 
 ## Remaining work
 
-Renew default regressions on the exact candidate, then connect owned material data,
+Connect owned material data,
 separate host depth, sky/foreground ordering and source handover. Earlier
 unsubmitted sources still need eligibility checks to address the Amazon black
 ground patch without reviving removed or moving objects. Extra admitted
@@ -117,9 +118,9 @@ The upstream review covers master17d291 and all291 open PRs. A September10
 trials and the still-missing dot-clock/framebuffer-latching change.
 
 The [public proof](../../results/proof/2026-09-10-exotica-live-scenes/README.md)
-checks33 hash-bound receipts and their declared consistency. It does not
+checks34 hash-bound receipts and their declared consistency. It does not
 recompute the unarchived geometry, resources, motion or pixels.
 
-Personal Stream Deck remains v0.5.0/SHA87d04de4. The last seven-default acceptance
-belongs to b3d82b/SHAe7780a7a. No release, deployment, hosted workflow, menu removal,
+Personal Stream Deck remains v0.5.0/SHA87d04de4. Seven-default acceptance is now renewed on
+f49e8acc7d3/SHA9c7dcd27. No release, deployment, hosted workflow, menu removal,
 World force tuning or physical-force test occurred.

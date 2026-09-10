@@ -11,7 +11,7 @@ now passes three independent scene/geometry/context checks and six paired6000
 replays, preserving original motion/resources and55 completed4K images per side.
 It observes private future geometry; it does not draw it. The initial camera
 failure led to actual game-scene boundaries instead of native refresh boundaries.
-Next: finish exact-candidate defaults, owned materials, safe host depth/insertion,
+All seven defaults pass onf49. Next: owned materials, safe host depth/insertion,
 source handover and a validated offscreen model bound to reduce CPU cost.
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and

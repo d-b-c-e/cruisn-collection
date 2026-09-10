@@ -22,6 +22,14 @@ assert native['passed'] and native['patch_count'] == 161
 assert native['native_commit'] == 'f49e8acc7d3b2da5beb0c7815804fa0a79117ab0'
 assert native['candidate_sha256'] == '9c7dcd272ea609e1b28fa86c9cdd07f2dfca0b089edcbf198e3dfee8caa1d606'
 assert native['personal_sha256'] == '87d04de42d10a731f1d951a1fa378d784059d862063b224764ca6294fa5fe9d8'
+defaults = read('defaults.json')
+assert defaults['physical_force'] is False
+assert defaults['passed'] and len(defaults['cases']) == 7 and defaults['subset'] is None
+assert defaults['candidate_sha256'] == native['candidate_sha256']
+assert defaults['source_identity'] == identity['sha256']
+assert all(c['passed'] and c['telemetry']['passed'] for c in defaults['cases'])
+forces = [c['force_gate'] for c in defaults['cases'] if 'force_gate' in c]
+assert len(forces) == 4 and all(f['passed'] for f in forces)
 for frame, images, counts in ((5000, 21, (1515, 9595, 4740)),
                                (5072, 17, (1611, 16335, 401)),
                                (5990, 17, (818, 5478, 452))):

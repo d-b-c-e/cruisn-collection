@@ -35,6 +35,7 @@
     "bounds-native-draft.json": "7d4025aeb483a6cd024ec1032ae2eacca8ae244d2c961a4e89ad2c2ae39b2684",
     "retained-failures.json": "ce3a38e3ac2c5d3912b57a2d0366c2207cc6b116f79bbda66ad937a1f55d8c58",
     "boundary5072-repeat.json": "8a5888cc1391d5d2b96d9611dcc9fc59f4e06fa9d449a01c22d3e65b4f69e614",
-    "boundary-hongkong-repeat.json": "f1a491e85f950274a629e58d4dafb1ddd310e8605f6f26c18175f6ff04a5f345"
+    "boundary-hongkong-repeat.json": "f1a491e85f950274a629e58d4dafb1ddd310e8605f6f26c18175f6ff04a5f345",
+    "defaults.json": "1906b1c801effba5fbf9678b2bb969939f873da406c8c317cec15645113afb2c"
   }
 }

@@ -4434,3 +4434,13 @@ geometry/resources/motion/pixels are not recomputed by the public verifier.
 A LOCAL conservative model-bound draft agrees across3955instances and rejects
 3000offscreen instances without losing visible quads. No live extra drawing.
 Seven-default renewal is running separately; no deployment/release/physicalFFB.
+
+
+### Live-observer follow-up acceptance
+
+All7 default cases pass on nativef49/SHA9c7dcd27, including actualUDP/memory,
+four software force-policy checks and Exotica21 completed4K images. The public
+proof now checks34 receipts. Personal87d is unchanged; no physicalFFB/deploy.
+The local model-bound draft also passes5000 synthetic viewport-edge/near-plane/
+random-transform cases, with identical native/Python decisions and no dropped
+visible polygons. No native bounds integration or extra live rendering yet.

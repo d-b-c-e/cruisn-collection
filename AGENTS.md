@@ -18,23 +18,24 @@ retained; captureframe+1 aligns actual device scene. Initial5000 reference21 vs
 requested17 FAIL retained; corrected21-image pair now passes all original resources/motion and independent
 scene/geometry/context. Hong Kong2457scene/30411603quad fingerprints repeat
 between5000/5990 observations. All55GL per side match across the six runs.
-33public receipts are under results/proof/2026-09-10-exotica-live-scenes.
-Seven-default renewal runs in boundary-defaults (session19329 at checkpoint).
-Inspect current process/results state before launching more.
+34public receipts are under results/proof/2026-09-10-exotica-live-scenes.
+All7 defaults now PASS on f49: actualUDP/memory,4softwareforce checks and
+Exotica21GL. No emulator/helper remains running at this checkpoint.
 301Python/no skips,35native,99commands PASS at448-file identity
 64fe329411b7e8207c763258889829a9072a7aff268b6465743c6f8f05a4a1d3.
 
-NEXT finish seven defaults on f49, then guarded live drawing/materials/D32F/sky/
-handover. No milestone pause; continue directly. LOCAL conservative
+NEXT guarded live drawing/materials/D32F/sky/handover and bounds optimization. No milestone pause; continue directly. LOCAL conservative
 model-bounds draft under results/diagnostics/exotica-amazon-20260909 now agrees
 native/Python on3955objects; rejects3000 offscreen objects without losing any
-viewport quad across three original snapshots. NOT linked/promoted. See
+viewport quad across three original snapshots. Additional5000 synthetic random/
+viewport-edge/near-plane cases matchnative/Python,1210rejected/2903visible,
+zero false rejections. NOT linked/promoted. See bounds-next-plan.md locally. See
 zeus_model_bounds-draft.h, analyze-zeus-bounds-draft.cpp,
 verify-zeus-bounds-draft.py, scene-model-bounds-native-quads.json. Need synthetic
 boundary/rounding tests and broader validation before enabling. First broad
 Amazon source+assembly+hash avg6.21/p9911.61ms; snapshot separately336.5ms.
 Upstream refreshed09:17UTC September10: master17d291/all291PRs, no newZeus work.
-Personal StreamDeck remainsv0.5.0/SHA87d04de4; last7defaults belongb3d82b, notf49.
+Personal StreamDeck remainsv0.5.0/SHA87d04de4; last7defaults now belongf49e8acc7d3.
 No release/deploy/hostedworkflow/physicalFFB/World tuning/menu removal. Keepworking
 directly without heartbeat waits; checkrig and serialize emulator/GPU tests.
 

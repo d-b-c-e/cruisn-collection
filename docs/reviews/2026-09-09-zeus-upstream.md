@@ -151,6 +151,31 @@ changes; this is not an audit of every MAME change. Local API receipts are under
 
 ## Acceptance before adoption
 
+### Shared CPU and polygon paths
+
+The September10 follow-up also scans all open PR filenames for the TMS320C3x
+core and shared polygon renderer, and checks their master history since our
+February26 base. No open PR currently touches those paths. Two CPU commits
+are header cleanup and replacement of leading-bit helpers with C++20 functions;
+the old GCC/x86 helpers already handle zero/all-ones inputs. These are not new
+Zeus rendering algorithms.
+
+[Shared polygon clipping change cd0a41e](https://github.com/mamedev/mame/commit/cd0a41e0a21a9ad59fc2974d25b50ff62e82f3f1)
+is absent locally. It clips the starting X coordinate before calculating the
+interpolated parameters, avoiding a separate floating-point adjustment after
+left clipping. Our VUnit CPU renderer calls this `render_polygon` path.
+Exotica's CPU renderer calls `render_triangle_fan`, which delegates to
+`render_triangle`; its enhanced GL path uses a separate rasterizer. Consequently
+this change does not explain the current Exotica GL artifacts. Keep it as a
+separate VUnit CPU/reference comparison when refreshing shared MAME code, with
+explicit pixel baselines rather than silently changing the oracle.
+
+The inspected source diffs and paginated history receipts remain local under
+`upstream/shared-core-*`. This widens the direct Zeus audit; it is not a review
+of every shared MAME subsystem.
+
+### Candidate checks
+
 1. Preserve original recordings and legacy rendering controls. Test the three
    #16094 changes separately, then together. A shader-only implementation would
    leave CPU output and diagnostic oracles inconsistent.

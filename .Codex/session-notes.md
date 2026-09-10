@@ -6,12 +6,13 @@
   independent Lua scene checks pass; six6000 controls/observations preserve
   motion/resources and55GL per side. Amazon2457scene/20343986quad fingerprints
   repeat; HK2457scene/30411603 repeat. Capture-window and21/17 reference failures
-  retained.301Python/no skips,35native,99commands at448-file64fe3294.33public
-  receipts pass. Seven defaults now running separately (session19329,
-  boundary-defaults); last accepted defaults stillb3 until renewed. No deploy.
+  retained.301Python/no skips,35native,99commands at448-file64fe3294.34public
+  receipts pass. All7 defaults now PASS onf49 (boundary-defaults): actualUDP/
+  memory,4softwareforce andExotica21GL. No processes remain; no deploy.
   LOCAL native/Python conservative model-bound draft matches3955instances,
   rejects3000 offscreen without losing visible quads; not promoted/linked.
-  Next finish defaults, guarded materials/D32F/insertion/handover and bounds.
+  Next guarded materials/D32F/insertion/handover and bounds. Additional5000
+  local synthetic bounds cases pass; see bounds-next-plan.md.
   Upstream09:17UTC master17d291/all291PRs still no additional Zeus changes.
   Continue directly; preserve personal87d, no release/physicalFFB/World tuning.
 
