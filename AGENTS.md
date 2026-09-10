@@ -1,5 +1,38 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 wider margin acceptance — ACTIVE full drive
+
+d4d/SHA2a4faa53 broad6000 PASS2457scenes547883quads,31camera/8bindingadvances;
+4191camera/12573actualADCtimes/10originalresources exact,25completed4KGL.
+Five independentnative/Python scenes PASS3510,4131,5072,5080,5604.5604 final
+23instances435quads; generatedRAM modelquad flags0x16 lacks depthtest so remains
+excluded byprivatepass, notrendered.55excludedinstances acrossrun,ram_models0.
+332Python/no skips,46native,127localcommands PASS sourceidentity
+e012b5d525b3b67a32c690ee499b4b0b1294d30c4d9488ca994415c8706a7f9a.
+Current exec83803 runs active-margin-full-trial.py active-margin-generated-full
+draw: fullAmazon8860,3500..8850,writtenpages,6330/7187/8760rawshots,1174KGL.
+No competing emulator/GPU. Next assessfullrun, HongKong, repeat, all7defaults,
+performance/occlusion. Last7belongs2eac. Personal87d/v0.5.0 unchanged; no deploy,
+release,hostedworkflow,physicalFFB,Worldtuning,menu removal. Keepworkingdirectly.
+
+## September10 generated descriptor checkpoint — ACTIVE live renewal
+
+Native d4d696ed3612ba52ba4c2203427737718a9d5b5e builtSEPARATELY/pushed/frozen
+SHA2a4faa53,175patches/tree0d700ae80750c6cf08b005c09fc331489ec627f8.
+bb65 failure snapshot reproduces5604; instrumentednative rejects ROM-only model
+descriptor guard, while independentPython succeeds. Currentobject uses generated
+RAM modeldescriptor. d4d permits bounded6word descriptors inownedsealedRAM only
+for activeobjects, rejectsroot/alternate/ring/bounds, futureROMguardunchanged.
+Actual5604 offline24instances436orderedquads independentnative/Python PASS.
+NEW RAM_MODELS acknowledgment/ram_models counts. Localfullchecksexec98482 underway
+at active-generated-local-checks; noemulator. Do not overlapGPUtests.
+NEXT broad6000 draw3500..5990 snapshots3510/4131/5072/5080/5604, thenfullAmazon/HK,
+repeat,7defaults/performance. Last7still2eac. Fourb0elease snapshots/2078prefix
+scenes PASS butfullrunFAIL retained. No deploy/release/hostedworkflow/physicalFFB/
+Worldtuning/menu removal, personal87d/v0.5.0 unchanged. Continuousdirectwork.
+Upstream17:03UTC refresh607f9dc/293openheads,3newmain/3changedPRs noZeus/C3x/poly;
+4relevantheads unchanged. Publicproofafternoon verified/pushedcollection03fc6ca.
+
 ## September10 retained resource checkpoint — ACTIVE geometry investigation
 
 Read docs/reviews/2026-09-10-exotica-live-margins.md. Nativeb0e46125bfd built

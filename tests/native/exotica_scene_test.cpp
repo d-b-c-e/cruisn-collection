@@ -51,6 +51,24 @@ int main()
     assert(exotica_scene::build_active({active},p,read,models,result));
     assert(result.instances.size()==1 && result.instances[0].entry==active.entry && result.instances[0].source==active.source);
     assert(result.quads.size()==1 && !std::memcmp(result.quads.data(),one_quad.data(),sizeof(one_quad[0])));
+    // A generated descriptor belongs to the sealed current scene, not to the
+    // future ROM source path. Root and alternate pointers both need bounds.
+    auto generated=active;generated.words[17]=0x10000;
+    memory[0x10000]=0;memory[0x10003]=0x100;memory[0x10004]=6;
+    assert(exotica_scene::build_active({generated},p,read,models,result));
+    assert(result.instances[0].descriptor==0x10000 && result.quads.size()==1 &&
+        !std::memcmp(result.quads.data(),one_quad.data(),sizeof(one_quad[0])));
+    auto future_ram=source;future_ram.words[17]=0x10000;
+    assert(!exotica_scene::build({future_ram},p,read,models,selected,result));
+    generated.words[3]=f(30000);memory[0x10000]=0x10010;memory[0x10013]=0x100;memory[0x10014]=6;
+    assert(exotica_scene::build_active({generated},p,read,models,result) && result.instances[0].descriptor==0x10010);
+    for(auto address:{0u,0xfffu,0x2fffbu,0x30000u,0x31fffu,0x3fffbu,0x880000u,0xfffffbu,0xffffffffu}) {
+        assert(!exotica_active::model_descriptor(address));
+        generated.words[17]=address;assert(!exotica_scene::build_active({generated},p,read,models,result));
+        generated.words[17]=0x10000;memory[0x10000]=address;
+        if(address)assert(!exotica_scene::build_active({generated},p,read,models,result));
+    }
+    for(auto address:{0x1000u,0x2fffau,0x32000u,0x3fffau,0xa00000u,0xfffffau})assert(exotica_active::model_descriptor(address));
     auto duplicate=active;duplicate.entry=0xbbb8;
     assert(!exotica_scene::build_active({active,duplicate},p,read,models,result) && result.quads.empty());
     duplicate=active;duplicate.source=0xa00000;

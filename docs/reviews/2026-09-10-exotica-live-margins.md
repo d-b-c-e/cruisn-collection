@@ -2,6 +2,44 @@
 
 ## Current extension status
 
+The d4d **6,000-frame wider replay now passes**:2,457 completed active scenes,
+547,883 quads,31 camera advances and eight binding advances. All4,191 camera
+samples/12,573 actual ADC read times and ten original rendering-resource files
+match the control. All25 requested4K images complete. Five sampled scenes
+independently reconstruct, including frame5604 after its existing raster-policy
+filter:23 instances/435 quads.
+
+The generated descriptor's one quad is intentionally excluded by the current
+private-pass contract because it lacks depth testing. There are55 excluded
+instances across this run and **zero rendered RAM models**. The fix lets us
+correctly decode and classify the source instead of aborting; it is not evidence
+that this special primitive is now safely rendered. Its raw failure and decoded
+state remain local for the later ordering/occlusion work.
+
+Local checks pass **332 Python tests / no skips,46 native tests,127 commands**
+at source identity `e012b5d525b3b67a32c690ee499b4b0b1294d30c4d9488ca994415c8706a7f9a`.
+Excluding the five raw-snapshot scenes, the scene-end copy averages1.392ms
+(p99 2.192ms); assembly averages0.196ms and material processing1.385ms in full
+page-verification mode. The CPU byte checks average0.056ms. GPU callback mean
+is0.451ms, p99 0.820ms, max16.800ms. These are instrumented callback timings,
+not whole-game smoothness acceptance. Full Amazon, Hong Kong and seven-default
+acceptance remain pending.
+
+The frame5604 rejection is now isolated to a **generated RAM model descriptor**.
+The current-object native builder inherited a ROM-only descriptor guard from
+future scenery. An independent Python decoder reconstructs all28 candidates;
+an instrumented native analyzer identifies the precise rejected span check.
+The bounded failure capture is retained with exact scene-end and ready RAM/Wave.
+
+Native `d4d696ed3612ba52ba4c2203427737718a9d5b5e` permits bounded six-word model
+descriptors in the owned current-scene RAM image. It rejects command-ring spans,
+out-of-range roots/alternates and leaves future scenery's ROM-only checks intact.
+The former failed snapshot now matches independently:24 instances/436 ordered
+quads. It is separately built/pushed/frozen, SHA256
+`2a4faa534309c3763bb3e9269e340d61283a89906893b2d599a159e8aea8dfc3`;
+175 patches reconstruct tree `0d700ae80750c6cf08b005c09fc331489ec627f8`.
+This offline correction still needs the wider live replay and final acceptance.
+
 The resource-lease candidate `b0e46125bfdb3f67b78e1cf5bfa6045239de9891`
 seals WaveRAM at CPU scene end and compares the model spans, palettes and
 conservative texture pages needed by the old scene at actual FIFO completion.

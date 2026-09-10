@@ -23,6 +23,17 @@ constexpr size_t max_objects=4096;
 inline bool valid(const Source &s)
 {return s.entry>=0xbbb5 && s.entry<=0xbbb8 && s.source>=0x1000 && uint64_t(s.source)+31<=0x40000 && !s.words[31];}
 
+// Current objects can reference generated six-word descriptors in main RAM.
+// Read must supply the owned scene-end image, never a later animation state.
+// The command ring is not descriptor storage. Future ROM sources use their
+// separate ROM-only guard and must not inherit this current-object allowance.
+inline bool model_descriptor(uint32_t address)
+{
+    const uint64_t end=uint64_t(address)+6;
+    return (address>=0xa00000 && end<=0x1000000) ||
+        (address>=0x1000 && end<=0x40000 && (end<=0x30000 || address>=0x32000));
+}
+
 template<class Read> bool read_list(uint32_t entry,uint32_t head,Read read,std::vector<Source> &result)
 {
     result.clear();

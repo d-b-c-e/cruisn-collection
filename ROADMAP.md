@@ -11,9 +11,10 @@ now repairs the reported Amazon black-ground wedge in a short recorded4K/CRT
 comparison. All25 frames and the added geometry repeat; original route/resources
 remain unchanged. The full-scene expansion exposed a legitimate camera/animation
 advance before the original command queue finishes. Sealing scene operands and
-checking their retained resource bytes now passes2,078 active scenes, including
-those transitions; a later geometry rejection at frame5604 remains under study.
-Four snapshots reconstruct independently and preserve original depth and
+checking their retained resource bytes now passes2,457 active scenes, including
+those transitions. Generated RAM descriptors are supported for current objects;
+the associated non-depth-tested primitive remains excluded from this private pass.
+Five snapshots reconstruct independently and preserve original depth and
 outside-margin color. This is still an
 isolated diagnostic, with original far distance and no personal deployment.
 Broader Amazon/Hong Kong coverage, material lifetime, foreground ordering and

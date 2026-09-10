@@ -83,9 +83,9 @@ inline bool intersects(const zeus_model::Quad &q,float margin)
 // Select owns source eligibility; choosing every historical descriptor is not
 // safe for dynamic objects. Every call starts with a fresh, bounded model cache.
 namespace detail {
-template<class Source,class Read,class ModelRead,class Select,class Identity>
+template<class Source,class Read,class ModelRead,class Select,class Identity,class Descriptor>
 bool build_sources(const std::vector<Source> &sources,const Parameters &p,
-    Read read,ModelRead model_read,Select select,Identity valid_identity,Result &result)
+    Read read,ModelRead model_read,Select select,Identity valid_identity,Descriptor valid_descriptor,Result &result)
 {
     result=Result();
     if(sources.size()>max_sources || p.far_limit!=204800 || p.multiplier<1 || p.multiplier>3 ||
@@ -129,9 +129,9 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
         if(p.early_depth==1 &&
             (!exotica_transform::prepare(position,p.camera,p.view,rotation,p.alternate,flags,transform) ||
              depth!=transform.depth))return false;
-        if(out.instances.size()>=max_instances || !exotica_future::span(o[17],6))return false;
+        if(out.instances.size()>=max_instances || !valid_descriptor(o[17]))return false;
         const uint32_t descriptor=exotica_transform::select_model(o[17],read(o[17]),transform.depth);
-        if(!exotica_future::span(descriptor,6))return false;
+        if(!valid_descriptor(descriptor))return false;
         const uint32_t base=read(descriptor+3),count=read(descriptor+4);
         const uint64_t block=(base%1024)+((base>>16)%2048)*1024;
         const size_t size=2*(size_t(count)+1);
@@ -212,7 +212,7 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
 {
     return detail::build_sources(sources,p,read,model_read,select,[](const exotica_future::Source &s){
         return exotica_future::span(s.entry,4) && exotica_future::span(s.source,6);
-    },result);
+    },[](uint32_t address){return exotica_future::span(address,6);},result);
 }
 
 // Caller provides current, independently selected list members. Active identity
@@ -227,6 +227,6 @@ bool build_active(const std::vector<exotica_active::Source> &sources,const Param
     std::set<uint32_t> objects;
     for(const auto &s:sources)if(!exotica_active::valid(s) || !objects.insert(s.source).second)return false;
     return detail::build_sources(sources,p,read,model_read,[](const exotica_active::Source &){return true;},
-        [](const exotica_active::Source &s){return exotica_active::valid(s);},result);
+        [](const exotica_active::Source &s){return exotica_active::valid(s);},exotica_active::model_descriptor,result);
 }
 } }

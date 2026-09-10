@@ -85,5 +85,18 @@ class ActiveReceipts(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'disabled'):verify(temp, [source], text, 0, [])
             with self.assertRaisesRegex(ValueError, 'incomplete'):
                 verify(temp, [source], text.replace('complete=1', 'complete=0'), 2, [])
+            current = text+'MIDZ_HOST_ACTIVE_SEALED=1\nMIDZ_HOST_ACTIVE_RESOURCE_LEASE=1\nMIDZ_HOST_ACTIVE_RAM_MODELS=1\n'
+            owned = dict(sent, sealed_frame='5001', camera_advanced='0', binding_checks='1',
+                         changed_objects='0', bindings_advanced='0', model_checks='1', model_bytes='8',
+                         palette_checks='0', texture_pages='0', ram_models='0')
+            write('exotica-active-scenes.csv', owned)
+            write('exotica-host-fences.csv', dict(fence, end_frame='5001'))
+            self.assertTrue(verify(temp, [source], current, 2, [])['ram_models'])
+            with self.assertRaisesRegex(ValueError, 'acknowledgment'):
+                verify(temp, [source], current.replace('MIDZ_HOST_ACTIVE_RESOURCE_LEASE=1\n', ''), 2, [])
+            write('exotica-active-scenes.csv', dict(owned, ram_models='1'))
+            with self.assertRaisesRegex(ValueError, 'descriptor counts'):
+                verify(temp, [source], current, 2, [])
+            write('exotica-active-scenes.csv', sent)
             write('exotica-host-fences.csv', dict(fence, ready_frame='5000'))
             with self.assertRaisesRegex(ValueError, 'ownership'):verify(temp, [source], text, 2, [])
