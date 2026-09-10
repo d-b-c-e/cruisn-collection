@@ -1,5 +1,21 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 screenshot packing — ACTIVE next diagnostic work
+
+Read docs/reviews/2026-09-10-zeus-readback.md. Native6864d3c6cde/SHA84b0a06a
+separately built/frozen/pushed,154patches exacttree08bc48e10649281dc6aab1d009c8dda49a044b7f.
+Zeus now sets PACK_ALIGNMENT1 for its tightly packed screenshotbuffer. Real
+OpenGL guardedfixture8widths/16cases proveslegacyoverrun and correctedbytes.
+Native300input/49completed4K frames250..298 exactlymatch previousbuild.
+281Python/no skips,32native,92commands PASS at429-file
+c50cdc7b9607c2f9e7dd14d00dd667208124a0be43025b8386b25458e29bd14a.
+No renewed7defaults on6864 yet; latest7PASSbelongs to2b55. Next addconsumerphase/
+readback/file/swap timing and explicit acknowledged Zeus stall faulttests, then
+renew finalnative defaults. Preserve500wait threshold whilediagnosing. Earlier
+--gl-stall silent-noop assumption WRONG: replayearlyguardrejectsExo explicitly.
+No emulator/build running atcheckpoint. Directcontinuouswork; no deploy/release/
+physicalFFB/Worldtuning/menuremoval, personal87dunchanged.
+
 ## September 10 Zeus panorama validated — ACTIVE continuous work
 
 Read docs/reviews/2026-09-10-zeus-panorama.md and
@@ -32,7 +48,8 @@ originalcamera/ADC and21GL exact. No emulator remains; promote reusableprobe. LO
 readback-padding.py PASS proves Zeus tightcapture storage needs PACK_ALIGNMENT1
 at oddwidths; VUnit alreadyhandlesit. NOT fixed in2b55. Next follow LOCAL
 next-diagnostic-candidate.md: separate packingfix, consumerstage timing and
-acknowledged Exo stall test (existing --gl-stall silentlysetsMIDV vars onExo).
+acknowledged Exo stall test. Existing --gl-stall explicitlyrejectsExo; earlier
+note claiming silentMIDV-variable behavior missed the earlyvalidation guard.
 Do not guess stalled phase or simply raise timeout. Then exactscene/resources,
 widehostdepth/futuregeometry/fadehandover; other-game paritycontinues.
 No deploy/release/hostedworkflows/physicalFFB/Worldtuning/menu removal; personal
