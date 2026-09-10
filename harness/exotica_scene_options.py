@@ -31,6 +31,8 @@ def add_arguments(parser):
                         help='verify private GPU texture/palette uploads without extra drawing')
     parser.add_argument('--exotica-host-material-pages', choices=('scan', 'written', 'verify'),
                         help='full scan, actual write notifications, or exact comparison of both material updates')
+    parser.add_argument('--exotica-host-source-cache', choices=('off', 'on', 'verify'),
+                        help='checked immutable-ROM sources, or exact comparison against a fresh rebuild')
 
 
 def configure(args, rom, settings):
@@ -38,13 +40,14 @@ def configure(args, rom, settings):
     bounds_option = getattr(args, 'exotica_host_bounds', None)
     material_option = getattr(args, 'exotica_host_materials', None)
     page_option = getattr(args, 'exotica_host_material_pages', None)
+    cache_option = getattr(args, 'exotica_host_source_cache', None)
     values = [getattr(args, 'exotica_host_'+name, None) for name in ('first', 'last', 'multiplier', 'snapshots')]
     explicit = mode is not None
     if explicit:
         if not getattr(args, 'candidate', None):
             raise ValueError('Exotica host observation requires an explicit candidate')
     else:
-        if any(v is not None for v in values) or bounds_option is not None or material_option is not None or page_option is not None:
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option)):
             raise ValueError('Exotica host bounds require an explicit mode')
         inherited = settings.get('MIDZ_HOST_SCENE')
         if inherited in (None, '0'):
@@ -56,7 +59,7 @@ def configure(args, rom, settings):
     if rom != 'crusnexo' or mode not in ('off', 'observe'):
         raise ValueError('Exotica host observation supports Exotica2.4 only')
     if mode == 'off':
-        if any(v is not None for v in values) or bounds_option is not None or material_option is not None or page_option is not None:
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option)):
             raise ValueError('Exotica host off does not take bounds')
         settings['MIDZ_HOST_SCENE'] = '0'
         for key in KEYS:
@@ -64,6 +67,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_BOUNDS', None)
         settings.pop('MIDZ_HOST_MATERIALS', None)
         settings.pop('MIDZ_HOST_MATERIAL_PAGES', None)
+        settings.pop('MIDZ_HOST_SOURCE_CACHE', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier
@@ -89,6 +93,11 @@ def configure(args, rom, settings):
         raise ValueError('Exotica written pages require private material observation')
     if page_option is not None:
         settings['MIDZ_HOST_MATERIAL_PAGES'] = page_setting
+    cache_setting = settings.get('MIDZ_HOST_SOURCE_CACHE', '0') if cache_option is None else str(('off', 'on', 'verify').index(cache_option))
+    if cache_setting not in ('0', '1', '2'):
+        raise ValueError('invalid recorded Exotica source cache mode')
+    if cache_option is not None:
+        settings['MIDZ_HOST_SOURCE_CACHE'] = cache_setting
     settings.update(MIDZ_HOST_SCENE='1', MIDZ_HOST_FIRST=str(first), MIDZ_HOST_LAST=str(last),
                     MIDZ_HOST_MULTIPLIER=str(multiplier))
     if captured:
@@ -96,7 +105,8 @@ def configure(args, rom, settings):
     else:
         settings.pop('MIDZ_HOST_SNAPSHOTS', None)
     return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured,
-                bounds=bound_setting == '1', materials=material_setting == '1', material_pages=int(page_setting), explicit=explicit)
+                bounds=bound_setting == '1', materials=material_setting == '1', material_pages=int(page_setting),
+                source_cache=int(cache_setting), explicit=explicit)
 
 
 def verify_receipt(trial, text, directory):
@@ -120,6 +130,9 @@ def verify_receipt(trial, text, directory):
     pages = trial.get('material_pages', 0)
     if re.findall(r'^MIDZ_HOST_MATERIAL_PAGES=(\d+)$', text, re.M) != ([str(pages)] if pages else []):
         raise ValueError('missing or mismatched Exotica material page acknowledgment')
+    cache = trial.get('source_cache', 0)
+    if re.findall(r'^MIDZ_HOST_SOURCE_CACHE=(\d+)$', text, re.M) != ([str(cache)] if cache else []):
+        raise ValueError('missing or mismatched Exotica source cache acknowledgment')
     finals = re.findall(r'^MIDZ_HOST_SCENE_RESULT complete=(\d+) prepared=(\d+) matched=(\d+) quads=(\d+) snapshots=(\d+) pending=(\d+) remaining=(\d+)$', text, re.M)
     if len(finals) != 1:
         raise ValueError('missing Exotica host completion')
@@ -130,6 +143,15 @@ def verify_receipt(trial, text, directory):
     expected_pages = [(str(pages), str(matched if pages == 2 else 0))] if pages else []
     if page_result != expected_pages:
         raise ValueError('incomplete Exotica material page comparison')
+    cache_result = re.findall(r'^MIDZ_HOST_SOURCE_CACHE_RESULT mode=(\d+) verified=(\d+) hits=(\d+) misses=(\d+)$', text, re.M)
+    if cache:
+        if len(cache_result) != 1:
+            raise ValueError('missing Exotica source cache completion')
+        actual, verified, hits, misses = map(int, cache_result[0])
+        if actual != cache or verified != (matched if cache == 2 else 0) or hits+misses != matched:
+            raise ValueError('incomplete Exotica source cache comparison')
+    elif cache_result:
+        raise ValueError('disabled Exotica source cache ran')
     path = Path(directory)/'exotica-host-scenes.csv'
     if path.stat().st_size > 8*1024*1024:
         raise ValueError('Exotica host scene log budget')

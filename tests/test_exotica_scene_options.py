@@ -8,6 +8,36 @@ from exotica_scene_options import add_arguments, configure, snapshots, verify_re
 
 
 class ExoticaSceneOptions(unittest.TestCase):
+    def test_source_cache_is_explicit_and_preserves_recordings(self):
+        args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
+                '--exotica-host-first', '5000', '--exotica-host-last', '5002')
+        settings = {}
+        self.assertEqual(configure(self.args(*args), 'crusnexo', settings)['source_cache'], 0)
+        self.assertNotIn('MIDZ_HOST_SOURCE_CACHE', settings)
+        for mode, number in [('off', 0), ('on', 1), ('verify', 2)]:
+            trial = configure(self.args(*args, '--exotica-host-source-cache', mode), 'crusnexo', settings)
+            self.assertEqual(trial['source_cache'], number)
+            before = dict(settings)
+            self.assertEqual(configure(self.args(), 'crusnexo', settings)['source_cache'], number)
+            self.assertEqual(settings, before)
+        settings['MIDZ_HOST_SOURCE_CACHE'] = '3'
+        with self.assertRaisesRegex(ValueError, 'source cache mode'):
+            configure(self.args(), 'crusnexo', settings)
+        configure(self.args('--candidate', 'candidate.exe', '--exotica-host-scene', 'off'), 'crusnexo', settings)
+        self.assertEqual(settings, {'MIDZ_HOST_SCENE': '0'})
+        with self.assertRaisesRegex(ValueError, 'explicit mode'):
+            configure(self.args('--exotica-host-source-cache', 'on'), 'crusnexo', {})
+
+    def test_source_cache_verification_covers_every_scene(self):
+        text = ('MIDZ_HOST_SCENE=1 first=5000 last=5002 multiplier=3 snapshots=0\n'
+                'MIDZ_HOST_SOURCE_CACHE=2\n'
+                'MIDZ_HOST_SCENE_RESULT complete=1 prepared=1 matched=1 quads=5 snapshots=0 pending=0 remaining=0\n'
+                'MIDZ_HOST_SOURCE_CACHE_RESULT mode=2 verified=0 hits=0 misses=1\n')
+        with self.assertRaisesRegex(ValueError, 'source cache comparison'):
+            verify_receipt(dict(self.trial(), source_cache=2), text, 'unused')
+        with self.assertRaisesRegex(ValueError, 'source cache comparison'):
+            verify_receipt(dict(self.trial(), source_cache=2), text.replace('verified=0', 'verified=1').replace('misses=1', 'misses=0'), 'unused')
+
     def test_bounds_are_explicit_and_recorded(self):
         args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
                 '--exotica-host-first', '5000', '--exotica-host-last', '5002')
