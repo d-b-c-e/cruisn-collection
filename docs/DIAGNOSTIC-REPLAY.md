@@ -52,6 +52,14 @@ Use separate output directories and compare against `legacy`, then repeat the
 trial. Counts and changed pixels do not establish visual correctness. See the
 [upstream review](reviews/2026-09-09-zeus-upstream.md) and retained Amazon failure.
 
+The newer `f537f74ddbf` candidate also supports `--zeus-palette legacy|guard`.
+This independently traces pending GPU palette-row reuse or draws before an
+upload would overwrite a referenced row. Both explicit modes require a candidate,
+live Exotica GL and native startup/completion acknowledgment. Physical FFB stays0.
+Add `--gl-log` for bounded per-frame conflict messages; complete totals appear
+under `zeus_palette.result` in the replay report. Absent settings preserve old
+recordings. See [palette lifetime](reviews/2026-09-09-zeus-palette-lifetime.md).
+
 ## Record a drive
 
 For the next full Off Road and Exotica drives, use the ready

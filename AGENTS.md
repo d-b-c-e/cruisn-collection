@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Zeus palette guard — ACTIVE validation
+
+Read docs/reviews/2026-09-09-zeus-palette-lifetime.md. Nativef537f74ddbf5f93cfb0daa23c7a26c30b482cbbb
+is built separately/pushed, build/candidates/f537f74ddbf/vunit.exe,
+SHA37515ca7b6fe507a92be97cb56a64f31197e99f8ac1670bb43a60db7a97c122c.
+150patches reconstruct tree3dc2a349833e9ede18e21ca85fb82ad3a7fd53bf.
+--zeus-palette legacy|guard: explicitcandidate/liveGL/FFB0, native acknowledgment
+and completion counters. Absent behavior unchanged. Pendingused palette rows
+draw before overwrite in guardmode; noGPUidlewait. Bounded64frameeventlogs.
+275Python/no skips,30native,10081C31/137yaw,32GPU+25policy+3palette/84commands
+PASS at414-file identitya7803d6530e5b20e40b1232e412ce1b14d9658e0d0562336c0baf35b024971b9.
+First full8860 legacy trace preservescamera/ADC and catches46actual pending-row
+overwrites:29beforecompleted3601,8before4201,9before4202. This confirmsunsafe
+native behavior, NOT yet originaldisplayedblacksky rootcause. Guard/repeat/
+combined full drives are inprogress via localpalette-trials.py; inspectprocesses
+beforeanynewgame. Needdensepixelsnear3600/4200, resource/oracle checks and
+seven-default renewal onf537. Defaults lastPASS onedb517, personal87d04de4 unchanged.
+No deploy/release/hostedworkflow/physicalFFB/Worldtuning/menu removal. Continue
+directly,serialemulators; rawresourcesLOCAL. Upstream16058 and futurehost follow.
+
 ## September 9 Zeus upstream trials — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-zeus-upstream.md. Native edb517392f82b14646736c47f12519bf28900b9c

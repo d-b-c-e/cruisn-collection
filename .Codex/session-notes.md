@@ -1,5 +1,14 @@
 # Session Notes
 
+- **Palette guard in active validation:** nativef537f74ddbf/SHA37515ca7 built
+  separately/pushed,150patches. Explicit--zeus-palette legacy|guard requires
+  candidate/liveGL/FFB0 and native completion counters. First full Amazonlegacy
+  preservesmotion and observes46pending-row overwrites near3601/4201/4202.
+  Guard/repeat/combined runs via localpalette-trials.py may still be active;
+  checkprocesses. Needdensepixelcorrelation/resources/seven-default renewal.
+  275Python,30native,32GPU+25policy+3palette,84commands,414identitya7803d65 PASS.
+  Originalblacksky cause stillopen; personal87d04de4 untouched. No deploy.
+
 - **Zeus upstream trial checkpoint:** see zeus-upstream review and proof. Native
   edb517/cb65a787 is separate/pushed,149patches; personal87d04de4 unchanged.
   Six full Amazon policy runs preserve motion,all59combined images/resources

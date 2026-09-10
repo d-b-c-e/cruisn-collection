@@ -48,7 +48,8 @@ def commands(group, output, cxx):
     if group == 'gpu':
         return [('gpu-quality', [py, 'harness/verify_quality.py', '--report',
                                  str(output/'gpu-quality.json')]),
-                ('zeus-policy-pixels',[py,'harness/verify_zeus_policy.py','--report',str(output/'zeus-policy-pixels.json')])]
+                ('zeus-policy-pixels',[py,'harness/verify_zeus_policy.py','--report',str(output/'zeus-policy-pixels.json')]),
+                ('zeus-palette-pixels',[py,'harness/verify_zeus_palette.py','--report',str(output/'zeus-palette-pixels.json')])]
     steps = [('compiler-version', [cxx, '--version'])]
 
     def compile_one(name, source):
