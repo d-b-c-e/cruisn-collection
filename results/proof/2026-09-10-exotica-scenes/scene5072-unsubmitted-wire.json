@@ -1,0 +1,25 @@
+{
+  "scope": "LOCAL Amazon5072 exact camera/view/clock-joined private context and snapshot sources. Independent Python projection; No runtime eligibility or lifecycle claim for earlier-section sources.",
+  "counts": {
+    "instances": 2089,
+    "polygons": 18497,
+    "viewport_polygons": 1339,
+    "observed_original_excluded": 122,
+    "viewport_entirely_above_depth24": 25
+  },
+  "errors": {},
+  "additional_viewport_polygons": {
+    "1": 1251,
+    "2": 88,
+    "3": 0
+  },
+  "visible_instances_by_band": {
+    "1": 153,
+    "2": 16
+  },
+  "snapshot_time": "88.772534173733",
+  "original_device_time": [
+    88.77264449911227,
+    88.77413626577892
+  ]
+}

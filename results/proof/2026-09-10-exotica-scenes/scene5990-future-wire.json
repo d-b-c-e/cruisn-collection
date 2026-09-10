@@ -1,0 +1,22 @@
+{
+  "scope": "LOCAL Hong Kong5990 exact camera/view/clock-joined private context and snapshot sources. Independent Python projection; no live host drawing, ownership, occlusion or textured acceptance.",
+  "counts": {
+    "instances": 818,
+    "polygons": 5478,
+    "viewport_polygons": 457
+  },
+  "errors": {},
+  "additional_viewport_polygons": {
+    "1": 457,
+    "2": 0,
+    "3": 0
+  },
+  "visible_instances_by_band": {
+    "1": 46
+  },
+  "snapshot_time": "104.839802780099",
+  "original_device_time": [
+    104.84019913228494,
+    104.84191099895158
+  ]
+}

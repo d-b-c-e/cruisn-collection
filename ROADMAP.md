@@ -59,8 +59,20 @@ A standalone native fade step matches489 actual original updates/17 completions.
 Live resource ownership and fade handover still require implementation. The next
 source/geometry capture targets Hong Kong5000: the earlier3500 future candidates
 are all outside the view, while approximate5000 centers increase359 to775 at2x.
-These counts are not rendering acceptance. Actual future3x centers also exceed the
-current24-bit depth range; host depth representation is an integration requirement.
+These counts are not rendering acceptance. The [three-viewpoint scene-layer study](docs/reviews/2026-09-10-exotica-scene-layers.md)
+now matches original routes,55 real4K images and three resource snapshots. A
+separate D32F prototype solves tested far-depth ordering, but foreground hides
+almost all extra geometry in Hong Kong5000. Amazon5072 adds visible forest in
+the offline composition. Future-only drawing leaves the black left ground wedge;
+adding earlier unsubmitted sources covers the measured patch, with surface
+correctness and motion still unverified. All three
+viewpoints show no third-band gain. Earlier unsubmitted section sources need
+separate eligibility and handover checks. Broader Amazon captures also exposed
+an angle-rounding bug in the evidence verifier: its corrected arithmetic matches
+all2376 ordinary matrices, with291 Python/34native/96local checks passing.
+These prototypes remain local and are not a deployed extension. Actual future3x
+centers can exceed the current24-bit depth range; isolated host depth remains
+an integration requirement.
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 
 [The fresh Zeus upstream review](docs/reviews/2026-09-09-zeus-upstream.md) checks

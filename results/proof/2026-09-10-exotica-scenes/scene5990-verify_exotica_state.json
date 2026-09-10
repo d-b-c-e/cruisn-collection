@@ -1,0 +1,58 @@
+{
+  "branches": {
+    "cached": 2518,
+    "default": 102,
+    "flag200": 139,
+    "flag400": 426,
+    "light": 34
+  },
+  "calls": 3219,
+  "native_sha256": "83809cbf835c1ca931e75b492cbe1495b21dbf6cb69e382aa2bb3b98378b8c51",
+  "native_verified": true,
+  "palette_updates": 2145,
+  "passed": true,
+  "programs": {
+    "-1": 2518,
+    "0": 241,
+    "1": 72,
+    "2": 354,
+    "3": 34
+  },
+  "schema": 1,
+  "scope": "Verify Exotica's private CPU-side state packets against actual ring commands.\n\nIncludes complete setup, transform and three before/after CPU caches. Hardware\nstate inheritance, palette colors and WaveRAM readiness require separate checks.",
+  "sources": {
+    "exotica-emissions.jsonl": "8ab4f00a94f02a5865f0cf44027877977c23d6bee850c7edd8249925f6f0a9c4",
+    "exotica-model-capture.json": "528b399b87bbe1bab461f4091a0fc030fc583c8152435ac74fb9f369e0f79663",
+    "exotica-models.jsonl": "b2ca46805101e56184c9c36a14b45f3a8c748c6c36d027c358189c8ea3fafc56"
+  },
+  "transforms": {
+    "calls": 3219,
+    "emissions_crossing_native_frame": 0,
+    "far_model_selections": 17,
+    "first": 5982,
+    "frames": 17,
+    "last": 5998,
+    "matrix_updates": 730,
+    "models": 160,
+    "modes": {
+      "0": 3219
+    },
+    "native_frame_offsets": {
+      "0": 582,
+      "1": 2637
+    },
+    "native_sha256": null,
+    "native_verified": false,
+    "objects": 197,
+    "ordinary_emissions": 3185,
+    "passed": true,
+    "schema": 1,
+    "scope": "Verify bounded Exotica2.4 transforms and actual ordinary model emissions.\n\nPrivate captures are required; no ROM/model data is distributed. This verifies\ncamera/rotation math, matrix-cache decisions, scaled command words and model LOD\nselection. It does not verify Zeus model contents, rasterization or future scenery.",
+    "sources": {
+      "exotica-emissions.jsonl": "8ab4f00a94f02a5865f0cf44027877977c23d6bee850c7edd8249925f6f0a9c4",
+      "exotica-model-capture.json": "528b399b87bbe1bab461f4091a0fc030fc583c8152435ac74fb9f369e0f79663",
+      "exotica-models.jsonl": "b2ca46805101e56184c9c36a14b45f3a8c748c6c36d027c358189c8ea3fafc56"
+    },
+    "special_transforms_only": 34
+  }
+}

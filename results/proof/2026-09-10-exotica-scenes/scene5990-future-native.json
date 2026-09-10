@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "scope": "LOCAL independent native comparison of generated future geometry, not actual submissions.",
+  "native": {
+    "passed": true,
+    "models": 818,
+    "covered_quads": 5478,
+    "total_quads": 5478,
+    "polygons": 8674,
+    "near_rejected": 5,
+    "backfaces": 3191,
+    "near_clipped": 11,
+    "register_writes": 1594
+  },
+  "native_sha256": "fbd269577c7a6b52abc7d31c74534dd95980bcd56de7025f27c2ea53424503d0",
+  "sources": {
+    "models.bin": "b72164747aba83601cbc7d504cd2c674ba8286a709e68c26bc1d5e0b8961dc28",
+    "records.bin": "51e909171bd5f34586ec712cc870a9600f839c42491275b00ba9eea9f55e847c",
+    "scene5990-future-instances.json": "29aaf13baa352c1001b9396ba8234c3526f117acc50e2f1e31274296eb318665"
+  }
+}

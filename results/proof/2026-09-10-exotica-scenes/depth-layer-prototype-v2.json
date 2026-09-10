@@ -1,0 +1,391 @@
+{
+  "passed": true,
+  "scope": "LOCAL real-OpenGL depth-order trial; not integrated game rendering.",
+  "actual_future_vertices": 18960,
+  "maximum_depth": 24402564.0,
+  "power_of_two_exponent": 26,
+  "actual_float_roundtrip_exact": true,
+  "cases": [
+    {
+      "legacy": true,
+      "internal_format": 33190,
+      "pairs": [
+        {
+          "near": 0.0,
+          "far": 1.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.0,
+            0.0
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 1.0,
+          "far": 2.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            5.960465188081798e-08,
+            5.960465188081798e-08
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 16777214.0,
+          "far": 16777215.0,
+          "rgba_by_order": [
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            1.0,
+            1.0
+          ],
+          "order_independent": false
+        },
+        {
+          "near": 16777216.0,
+          "far": 16777218.0,
+          "rgba_by_order": [
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            1.0,
+            1.0
+          ],
+          "order_independent": false
+        },
+        {
+          "near": 20000000.0,
+          "far": 20000002.0,
+          "rgba_by_order": [
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            1.0,
+            1.0
+          ],
+          "order_independent": false
+        },
+        {
+          "near": 33554432.0,
+          "far": 33554436.0,
+          "rgba_by_order": [
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            1.0,
+            1.0
+          ],
+          "order_independent": false
+        },
+        {
+          "near": 50000000.0,
+          "far": 50000004.0,
+          "rgba_by_order": [
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            1.0,
+            1.0
+          ],
+          "order_independent": false
+        },
+        {
+          "near": 18271776.0,
+          "far": 24402564.0,
+          "rgba_by_order": [
+            [
+              255,
+              0,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            1.0,
+            1.0
+          ],
+          "order_independent": false
+        }
+      ]
+    },
+    {
+      "legacy": false,
+      "internal_format": 36012,
+      "pairs": [
+        {
+          "near": 0.0,
+          "far": 1.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.0,
+            0.0
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 1.0,
+          "far": 2.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            1.4901161193847656e-08,
+            1.4901161193847656e-08
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 16777214.0,
+          "far": 16777215.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.2499999701976776,
+            0.2499999701976776
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 16777216.0,
+          "far": 16777218.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.25,
+            0.25
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 20000000.0,
+          "far": 20000002.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.2980232238769531,
+            0.2980232238769531
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 33554432.0,
+          "far": 33554436.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.5,
+            0.5
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 50000000.0,
+          "far": 50000004.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.7450580596923828,
+            0.7450580596923828
+          ],
+          "order_independent": true
+        },
+        {
+          "near": 18271776.0,
+          "far": 24402564.0,
+          "rgba_by_order": [
+            [
+              0,
+              255,
+              0,
+              255
+            ],
+            [
+              0,
+              255,
+              0,
+              255
+            ]
+          ],
+          "depth_by_order": [
+            0.27227067947387695,
+            0.27227067947387695
+          ],
+          "order_independent": true
+        }
+      ]
+    }
+  ],
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2"
+}

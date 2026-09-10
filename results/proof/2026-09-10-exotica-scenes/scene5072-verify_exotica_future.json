@@ -1,0 +1,5 @@
+{
+  "error": "Exotica captured section placement mismatch",
+  "passed": false,
+  "scope": "Check bounded Exotica loader captures with independent descriptors and C++.\n\nRaw ROM, RAM, model and material operands stay local. No host drawing or GPU\nmaterial lifetime is implied by this descriptor/initial-binding verification.\n"
+}

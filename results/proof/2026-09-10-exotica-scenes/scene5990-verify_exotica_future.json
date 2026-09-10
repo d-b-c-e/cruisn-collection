@@ -1,0 +1,36 @@
+{
+  "allocations": 1135,
+  "custom_excluded": 56,
+  "initial_bindings": 2158,
+  "live_partial_samples": 0,
+  "loader_samples": 4191,
+  "native_sha256": "6903933cffc629cb61e79ca9de0794bf8c2f9bd568868014228efcbc3a8e7ef9",
+  "ordinary": 1079,
+  "overrides": 9,
+  "passed": true,
+  "schema": 1,
+  "scope": "Check bounded Exotica loader captures with independent descriptors and C++.\n\nRaw ROM, RAM, model and material operands stay local. No host drawing or GPU\nmaterial lifetime is implied by this descriptor/initial-binding verification.\n",
+  "section_angle_source": "unrounded original arithmetic before RAM storage",
+  "section_matrices": 1079,
+  "snapshots": [
+    {
+      "actual_allocations": 1079,
+      "descriptors": 7147,
+      "frame": 5990,
+      "future": 5244,
+      "later_allocations": 0,
+      "native_verified": true,
+      "ordinary": 6323,
+      "partial": false,
+      "sections": 54
+    }
+  ],
+  "sources": {
+    "exotica-banked-rom.bin": "c52563cc72334e44dc6fd941161018061b481510113db5e23d6c7c58272ccfb9",
+    "exotica-main-rom.bin": "0ceae1c09e36daab4bd4084a3a0f9c0f8f94ae2bdd18f668f5f7be233fe0f1ba",
+    "exotica-section-5990.bin": "48ccc24554e952c771fb3af03e4c118d289a599fbb6e1d081e085618800991fc",
+    "exotica-section-allocations.jsonl": "efe78cc57fd2e8c41b5c41e7d63ce6aa72a97f1d67a0870876441645817ae396",
+    "exotica-section-capture.json": "2ca174fe9fcf33a17ad393e65a5997699afacdcd15c35b13b49f753a60e08d90",
+    "exotica-section-progress.csv": "7bfdddfa63d702a9f2de9df9484b9b13393fe540f03ddae580b62accafc4cfd5"
+  }
+}

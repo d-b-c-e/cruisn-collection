@@ -1,0 +1,840 @@
+{
+  "consecutive_contexts": 132,
+  "cpu_setup": {
+    "branches": {
+      "cached": 2128,
+      "default": 124,
+      "fade": 17,
+      "flag400": 95
+    },
+    "calls": 2364,
+    "native_sha256": null,
+    "native_verified": false,
+    "palette_updates": 1971,
+    "passed": true,
+    "programs": {
+      "-1": 2128,
+      "0": 124,
+      "1": 112
+    },
+    "schema": 1,
+    "scope": "Verify Exotica's private CPU-side state packets against actual ring commands.\n\nIncludes complete setup, transform and three before/after CPU caches. Hardware\nstate inheritance, palette colors and WaveRAM readiness require separate checks.",
+    "sources": {
+      "exotica-emissions.jsonl": "7fda5c0951576ee889abf012d23b0e1a86befe5d29c41d6471a9b7e8ea131990",
+      "exotica-model-capture.json": "acb2ebfbbb5c9cd31eb362f3afe7250a02c08ea61360a35895124e74a311d2ec",
+      "exotica-models.jsonl": "92a6f83195c7ee7a09bcd55f565e39a09c4ac6dbffcd5b9da755e914feb3bc03"
+    },
+    "transforms": {
+      "calls": 2364,
+      "emissions_crossing_native_frame": 0,
+      "far_model_selections": 0,
+      "first": 5064,
+      "frames": 17,
+      "last": 5080,
+      "matrix_updates": 986,
+      "models": 150,
+      "modes": {
+        "0": 2364
+      },
+      "native_frame_offsets": {
+        "0": 117,
+        "1": 2247
+      },
+      "native_sha256": null,
+      "native_verified": false,
+      "objects": 216,
+      "ordinary_emissions": 2269,
+      "passed": true,
+      "schema": 1,
+      "scope": "Verify bounded Exotica2.4 transforms and actual ordinary model emissions.\n\nPrivate captures are required; no ROM/model data is distributed. This verifies\ncamera/rotation math, matrix-cache decisions, scaled command words and model LOD\nselection. It does not verify Zeus model contents, rasterization or future scenery.",
+      "sources": {
+        "exotica-emissions.jsonl": "7fda5c0951576ee889abf012d23b0e1a86befe5d29c41d6471a9b7e8ea131990",
+        "exotica-model-capture.json": "acb2ebfbbb5c9cd31eb362f3afe7250a02c08ea61360a35895124e74a311d2ec",
+        "exotica-models.jsonl": "92a6f83195c7ee7a09bcd55f565e39a09c4ac6dbffcd5b9da755e914feb3bc03"
+      },
+      "special_transforms_only": 95
+    }
+  },
+  "excluded_models": [
+    1,
+    126,
+    127,
+    128,
+    133,
+    134,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    220,
+    221,
+    222,
+    223,
+    224,
+    225,
+    226,
+    227,
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240
+  ],
+  "joined": 136,
+  "material_requests": {
+    "4": 116
+  },
+  "models": 240,
+  "native_sha256": "6e9231a1f840ecdd746daef475999b6ddac37219302cd2c02a4e2de8d6dd4aa0",
+  "native_verified": true,
+  "pairs": [
+    {
+      "frame": 5071,
+      "model": 3,
+      "object_call": 837
+    },
+    {
+      "frame": 5071,
+      "model": 4,
+      "object_call": 838
+    },
+    {
+      "frame": 5071,
+      "model": 5,
+      "object_call": 839
+    },
+    {
+      "frame": 5071,
+      "model": 6,
+      "object_call": 840
+    },
+    {
+      "frame": 5071,
+      "model": 7,
+      "object_call": 841
+    },
+    {
+      "frame": 5071,
+      "model": 8,
+      "object_call": 842
+    },
+    {
+      "frame": 5071,
+      "model": 9,
+      "object_call": 843
+    },
+    {
+      "frame": 5071,
+      "model": 10,
+      "object_call": 844
+    },
+    {
+      "frame": 5071,
+      "model": 11,
+      "object_call": 845
+    },
+    {
+      "frame": 5071,
+      "model": 12,
+      "object_call": 846
+    },
+    {
+      "frame": 5071,
+      "model": 13,
+      "object_call": 847
+    },
+    {
+      "frame": 5071,
+      "model": 14,
+      "object_call": 848
+    },
+    {
+      "frame": 5071,
+      "model": 15,
+      "object_call": 849
+    },
+    {
+      "frame": 5071,
+      "model": 16,
+      "object_call": 850
+    },
+    {
+      "frame": 5071,
+      "model": 17,
+      "object_call": 851
+    },
+    {
+      "frame": 5071,
+      "model": 18,
+      "object_call": 852
+    },
+    {
+      "frame": 5071,
+      "model": 19,
+      "object_call": 853
+    },
+    {
+      "frame": 5071,
+      "model": 20,
+      "object_call": 854
+    },
+    {
+      "frame": 5071,
+      "model": 21,
+      "object_call": 855
+    },
+    {
+      "frame": 5071,
+      "model": 22,
+      "object_call": 856
+    },
+    {
+      "frame": 5071,
+      "model": 23,
+      "object_call": 857
+    },
+    {
+      "frame": 5071,
+      "model": 24,
+      "object_call": 858
+    },
+    {
+      "frame": 5071,
+      "model": 25,
+      "object_call": 859
+    },
+    {
+      "frame": 5071,
+      "model": 26,
+      "object_call": 860
+    },
+    {
+      "frame": 5071,
+      "model": 27,
+      "object_call": 861
+    },
+    {
+      "frame": 5071,
+      "model": 28,
+      "object_call": 862
+    },
+    {
+      "frame": 5071,
+      "model": 29,
+      "object_call": 863
+    },
+    {
+      "frame": 5071,
+      "model": 30,
+      "object_call": 864
+    },
+    {
+      "frame": 5071,
+      "model": 31,
+      "object_call": 865
+    },
+    {
+      "frame": 5071,
+      "model": 32,
+      "object_call": 866
+    },
+    {
+      "frame": 5071,
+      "model": 33,
+      "object_call": 867
+    },
+    {
+      "frame": 5071,
+      "model": 34,
+      "object_call": 868
+    },
+    {
+      "frame": 5071,
+      "model": 35,
+      "object_call": 869
+    },
+    {
+      "frame": 5071,
+      "model": 36,
+      "object_call": 870
+    },
+    {
+      "frame": 5071,
+      "model": 37,
+      "object_call": 871
+    },
+    {
+      "frame": 5071,
+      "model": 38,
+      "object_call": 872
+    },
+    {
+      "frame": 5071,
+      "model": 39,
+      "object_call": 873
+    },
+    {
+      "frame": 5071,
+      "model": 40,
+      "object_call": 874
+    },
+    {
+      "frame": 5071,
+      "model": 41,
+      "object_call": 875
+    },
+    {
+      "frame": 5071,
+      "model": 42,
+      "object_call": 876
+    },
+    {
+      "frame": 5071,
+      "model": 43,
+      "object_call": 877
+    },
+    {
+      "frame": 5071,
+      "model": 44,
+      "object_call": 878
+    },
+    {
+      "frame": 5071,
+      "model": 45,
+      "object_call": 879
+    },
+    {
+      "frame": 5071,
+      "model": 46,
+      "object_call": 880
+    },
+    {
+      "frame": 5071,
+      "model": 47,
+      "object_call": 881
+    },
+    {
+      "frame": 5071,
+      "model": 48,
+      "object_call": 882
+    },
+    {
+      "frame": 5071,
+      "model": 49,
+      "object_call": 883
+    },
+    {
+      "frame": 5071,
+      "model": 50,
+      "object_call": 884
+    },
+    {
+      "frame": 5071,
+      "model": 51,
+      "object_call": 885
+    },
+    {
+      "frame": 5071,
+      "model": 52,
+      "object_call": 886
+    },
+    {
+      "frame": 5071,
+      "model": 53,
+      "object_call": 887
+    },
+    {
+      "frame": 5071,
+      "model": 54,
+      "object_call": 888
+    },
+    {
+      "frame": 5071,
+      "model": 55,
+      "object_call": 889
+    },
+    {
+      "frame": 5071,
+      "model": 56,
+      "object_call": 890
+    },
+    {
+      "frame": 5071,
+      "model": 57,
+      "object_call": 891
+    },
+    {
+      "frame": 5071,
+      "model": 58,
+      "object_call": 892
+    },
+    {
+      "frame": 5071,
+      "model": 59,
+      "object_call": 893
+    },
+    {
+      "frame": 5071,
+      "model": 60,
+      "object_call": 894
+    },
+    {
+      "frame": 5071,
+      "model": 61,
+      "object_call": 895
+    },
+    {
+      "frame": 5071,
+      "model": 62,
+      "object_call": 896
+    },
+    {
+      "frame": 5071,
+      "model": 63,
+      "object_call": 897
+    },
+    {
+      "frame": 5071,
+      "model": 64,
+      "object_call": 898
+    },
+    {
+      "frame": 5071,
+      "model": 65,
+      "object_call": 899
+    },
+    {
+      "frame": 5071,
+      "model": 66,
+      "object_call": 900
+    },
+    {
+      "frame": 5071,
+      "model": 67,
+      "object_call": 901
+    },
+    {
+      "frame": 5071,
+      "model": 68,
+      "object_call": 902
+    },
+    {
+      "frame": 5071,
+      "model": 69,
+      "object_call": 903
+    },
+    {
+      "frame": 5071,
+      "model": 70,
+      "object_call": 904
+    },
+    {
+      "frame": 5071,
+      "model": 71,
+      "object_call": 905
+    },
+    {
+      "frame": 5071,
+      "model": 72,
+      "object_call": 906
+    },
+    {
+      "frame": 5071,
+      "model": 73,
+      "object_call": 907
+    },
+    {
+      "frame": 5071,
+      "model": 74,
+      "object_call": 908
+    },
+    {
+      "frame": 5071,
+      "model": 75,
+      "object_call": 909
+    },
+    {
+      "frame": 5071,
+      "model": 76,
+      "object_call": 910
+    },
+    {
+      "frame": 5071,
+      "model": 77,
+      "object_call": 911
+    },
+    {
+      "frame": 5071,
+      "model": 78,
+      "object_call": 912
+    },
+    {
+      "frame": 5071,
+      "model": 79,
+      "object_call": 913
+    },
+    {
+      "frame": 5071,
+      "model": 80,
+      "object_call": 914
+    },
+    {
+      "frame": 5071,
+      "model": 81,
+      "object_call": 915
+    },
+    {
+      "frame": 5071,
+      "model": 82,
+      "object_call": 916
+    },
+    {
+      "frame": 5071,
+      "model": 83,
+      "object_call": 917
+    },
+    {
+      "frame": 5071,
+      "model": 84,
+      "object_call": 918
+    },
+    {
+      "frame": 5071,
+      "model": 85,
+      "object_call": 919
+    },
+    {
+      "frame": 5071,
+      "model": 86,
+      "object_call": 920
+    },
+    {
+      "frame": 5071,
+      "model": 87,
+      "object_call": 921
+    },
+    {
+      "frame": 5071,
+      "model": 88,
+      "object_call": 922
+    },
+    {
+      "frame": 5071,
+      "model": 89,
+      "object_call": 923
+    },
+    {
+      "frame": 5071,
+      "model": 90,
+      "object_call": 924
+    },
+    {
+      "frame": 5071,
+      "model": 91,
+      "object_call": 925
+    },
+    {
+      "frame": 5071,
+      "model": 92,
+      "object_call": 926
+    },
+    {
+      "frame": 5071,
+      "model": 93,
+      "object_call": 927
+    },
+    {
+      "frame": 5071,
+      "model": 94,
+      "object_call": 928
+    },
+    {
+      "frame": 5071,
+      "model": 95,
+      "object_call": 929
+    },
+    {
+      "frame": 5071,
+      "model": 96,
+      "object_call": 930
+    },
+    {
+      "frame": 5071,
+      "model": 97,
+      "object_call": 931
+    },
+    {
+      "frame": 5071,
+      "model": 98,
+      "object_call": 932
+    },
+    {
+      "frame": 5071,
+      "model": 99,
+      "object_call": 933
+    },
+    {
+      "frame": 5071,
+      "model": 100,
+      "object_call": 934
+    },
+    {
+      "frame": 5071,
+      "model": 101,
+      "object_call": 935
+    },
+    {
+      "frame": 5071,
+      "model": 102,
+      "object_call": 936
+    },
+    {
+      "frame": 5071,
+      "model": 103,
+      "object_call": 937
+    },
+    {
+      "frame": 5071,
+      "model": 104,
+      "object_call": 938
+    },
+    {
+      "frame": 5071,
+      "model": 105,
+      "object_call": 939
+    },
+    {
+      "frame": 5071,
+      "model": 106,
+      "object_call": 940
+    },
+    {
+      "frame": 5071,
+      "model": 107,
+      "object_call": 941
+    },
+    {
+      "frame": 5071,
+      "model": 108,
+      "object_call": 942
+    },
+    {
+      "frame": 5071,
+      "model": 109,
+      "object_call": 943
+    },
+    {
+      "frame": 5071,
+      "model": 110,
+      "object_call": 944
+    },
+    {
+      "frame": 5071,
+      "model": 111,
+      "object_call": 945
+    },
+    {
+      "frame": 5071,
+      "model": 112,
+      "object_call": 946
+    },
+    {
+      "frame": 5071,
+      "model": 113,
+      "object_call": 947
+    },
+    {
+      "frame": 5071,
+      "model": 114,
+      "object_call": 948
+    },
+    {
+      "frame": 5071,
+      "model": 115,
+      "object_call": 949
+    },
+    {
+      "frame": 5071,
+      "model": 116,
+      "object_call": 950
+    },
+    {
+      "frame": 5071,
+      "model": 117,
+      "object_call": 951
+    },
+    {
+      "frame": 5071,
+      "model": 118,
+      "object_call": 952
+    },
+    {
+      "frame": 5071,
+      "model": 119,
+      "object_call": 953
+    },
+    {
+      "frame": 5071,
+      "model": 120,
+      "object_call": 954
+    },
+    {
+      "frame": 5071,
+      "model": 121,
+      "object_call": 955
+    },
+    {
+      "frame": 5071,
+      "model": 122,
+      "object_call": 956
+    },
+    {
+      "frame": 5071,
+      "model": 123,
+      "object_call": 957
+    },
+    {
+      "frame": 5071,
+      "model": 124,
+      "object_call": 958
+    },
+    {
+      "frame": 5071,
+      "model": 125,
+      "object_call": 959
+    },
+    {
+      "frame": 5071,
+      "model": 130,
+      "object_call": 964
+    },
+    {
+      "frame": 5071,
+      "model": 131,
+      "object_call": 965
+    },
+    {
+      "frame": 5071,
+      "model": 132,
+      "object_call": 966
+    },
+    {
+      "frame": 5071,
+      "model": 136,
+      "object_call": 970
+    },
+    {
+      "frame": 5071,
+      "model": 137,
+      "object_call": 971
+    },
+    {
+      "frame": 5071,
+      "model": 138,
+      "object_call": 972
+    },
+    {
+      "frame": 5072,
+      "model": 149,
+      "object_call": 975
+    },
+    {
+      "frame": 5072,
+      "model": 150,
+      "object_call": 976
+    },
+    {
+      "frame": 5072,
+      "model": 151,
+      "object_call": 977
+    }
+  ],
+  "passed": true,
+  "schema": 1,
+  "scope": "Compare private Exotica state transitions with consecutive original models.\n\nObject/source/translation/time joins exclude nonordinary calls and unobserved\nintervening submissions. Each compared pair starts from the preceding original\ncontext, advances its model-local state, then applies independently reconstructed\nCPU setup. Complete registers, transforms and material-load metadata must match.\nPalette colors, ucode bytes and WaveRAM readiness are NOT verified here.",
+  "sources": {
+    "models.bin": "0791909fcb7d9eade04b0d6aea50c5abc189634c255167258cef0c8f6771b189",
+    "models.json": "b1c8f465f87f751988fb9a502394fffc3839f62d25054f6d7ba5bc201de4d069"
+  }
+}

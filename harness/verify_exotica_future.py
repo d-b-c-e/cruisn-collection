@@ -43,17 +43,37 @@ class Memory:
         return [self(address+i) for i in range(count)]
 
 
+def check_section_matrix(row, read):
+    """Verify the unrounded section-angle expression and its stored result.
+
+    The CPU computes the matrix before rounding the angle into RAM. Third-list
+    object placement may clear direction bit0 in row.flags; the section's ROM
+    flags still own the matrix direction.
+    """
+    flags = read(row['section']+3)
+    if row['flags'] not in (flags, flags & ~1):
+        raise ValueError('Exotica captured section direction mismatch')
+    angle = F.load(row['scalars'][14])
+    if flags & 1:
+        angle = angle-F.load(row['list_header'][3])+F.load(0x01491000)
+    if angle.store() != row['scalars'][15]:
+        raise ValueError('Exotica stored section angle mismatch')
+    if yaw_matrix(angle, row['trig']) != row['matrix']:
+        raise ValueError('Exotica unrounded section matrix mismatch')
+
+
 def check(directory, native=None):
     directory = Path(directory)
-    receipt = json.loads((directory/'exotica-section-capture.json').read_text())
+    receipt = json.loads((directory/'exotica-section-capture.json').read_text(encoding='utf-8'))
     if receipt.get('schema') != 1 or receipt.get('complete') is not True:
         raise ValueError('incomplete Exotica loader capture')
     if (not 1800 <= receipt['first'] <= receipt['last'] or receipt['last']-receipt['first'] > 20000 or
             not 1 <= receipt['allocations'] <= 10000 or not 1 <= receipt['sections'] <= 128 or
             not 1 <= receipt['snapshots'] <= 16):
         raise ValueError('Exotica loader capture budget')
-    rows = [json.loads(line) for line in (directory/'exotica-section-allocations.jsonl').read_text().splitlines()]
-    progress = list(csv.DictReader((directory/'exotica-section-progress.csv').open()))
+    rows = [json.loads(line) for line in (directory/'exotica-section-allocations.jsonl').read_text(encoding='utf-8').splitlines()]
+    with (directory/'exotica-section-progress.csv').open(encoding='utf-8', newline='') as stream:
+        progress = list(csv.DictReader(stream))
     if not rows or len(rows) != receipt['allocations'] or [r['id'] for r in rows] != list(range(1, len(rows)+1)):
         raise ValueError('Exotica allocation sequence')
     if [int(r['frame']) for r in progress] != list(range(receipt['first'], receipt['last']+1)):
@@ -132,13 +152,15 @@ def check(directory, native=None):
                        section_heading=s[15], gap=row['gap'], cursor=s[10], index=s[2] >> 8, initial=bool(s[8]))
         pal = row['override_binding'][3] if row['override_binding'] else row['palette_binding'][3]
         target = descriptor(d, model, context, row['matrix'], row['constants'], row['trig'], (pal, row['texture_binding'][3]))
-        if any(target[i] != row['actual'][i] for i in FIELDS) or yaw_matrix(F.load(s[15]), row['trig']) != row['matrix']:
+        if any(target[i] != row['actual'][i] for i in FIELDS):
             raise ValueError('Exotica captured section placement mismatch')
+        check_section_matrix(row, read)
     paths = [directory/name for name in ('exotica-section-capture.json', 'exotica-section-allocations.jsonl',
              'exotica-section-progress.csv', 'exotica-main-rom.bin', 'exotica-banked-rom.bin')]+snapshots
     return dict(schema=1, passed=True, allocations=len(rows), ordinary=ordinary, custom_excluded=len(rows)-ordinary,
                 initial_bindings=bindings, overrides=overrides, loader_samples=len(progress),
                 live_partial_samples=sum(bool(int(r['loading'])) for r in progress), snapshots=results,
+                section_matrices=ordinary, section_angle_source='unrounded original arithmetic before RAM storage',
                 native_sha256=sha256_file(native) if native else None,
                 sources={p.name: sha256_file(p) for p in paths}, scope=__doc__)
 

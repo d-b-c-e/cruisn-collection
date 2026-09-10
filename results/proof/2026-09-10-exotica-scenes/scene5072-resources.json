@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "files": {
+    "models.bin": [
+      "0791909fcb7d9eade04b0d6aea50c5abc189634c255167258cef0c8f6771b189",
+      "0791909fcb7d9eade04b0d6aea50c5abc189634c255167258cef0c8f6771b189"
+    ],
+    "models.json": [
+      "b1c8f465f87f751988fb9a502394fffc3839f62d25054f6d7ba5bc201de4d069",
+      "b1c8f465f87f751988fb9a502394fffc3839f62d25054f6d7ba5bc201de4d069"
+    ],
+    "pal_table.bin": [
+      "d72c4a1e2dd2fdc1e862f29d8fa71d5474a734015ab559d633af6d1eb187bece",
+      "d72c4a1e2dd2fdc1e862f29d8fa71d5474a734015ab559d633af6d1eb187bece"
+    ],
+    "post_color.bin": [
+      "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d",
+      "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d"
+    ],
+    "post_depth.bin": [
+      "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b",
+      "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b"
+    ],
+    "pre_color.bin": [
+      "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d",
+      "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d"
+    ],
+    "pre_depth.bin": [
+      "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b",
+      "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b"
+    ],
+    "records.bin": [
+      "9355df7d7f7e2ded3b82c306d4f7e0811b33bdd7621dc4a1eb4f3bbe821b0eeb",
+      "9355df7d7f7e2ded3b82c306d4f7e0811b33bdd7621dc4a1eb4f3bbe821b0eeb"
+    ],
+    "regs.txt": [
+      "04a241040dd68b4fd0c16f96923df465e782e97f249eb097fa9196fc42bf5b8a",
+      "04a241040dd68b4fd0c16f96923df465e782e97f249eb097fa9196fc42bf5b8a"
+    ],
+    "waveram.bin": [
+      "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+      "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0"
+    ]
+  }
+}

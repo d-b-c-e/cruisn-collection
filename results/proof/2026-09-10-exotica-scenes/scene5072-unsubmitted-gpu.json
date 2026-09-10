@@ -1,0 +1,52 @@
+{
+  "scope": "LOCAL textured future-layer feasibility; no live resource or occlusion claim.",
+  "passed": true,
+  "size": [
+    1368,
+    800
+  ],
+  "power_of_two_exponent": 25,
+  "maximum_depth_with_bias": 23885596.0,
+  "palettes": 17,
+  "cases": [
+    {
+      "legacy": true,
+      "multiplier": 1,
+      "polygons": 1251,
+      "colored_pixels": 67811
+    },
+    {
+      "legacy": true,
+      "multiplier": 2,
+      "polygons": 1339,
+      "colored_pixels": 88448
+    },
+    {
+      "legacy": true,
+      "multiplier": 3,
+      "polygons": 1339,
+      "colored_pixels": 88448
+    },
+    {
+      "legacy": false,
+      "multiplier": 1,
+      "polygons": 1251,
+      "colored_pixels": 67811
+    },
+    {
+      "legacy": false,
+      "multiplier": 2,
+      "polygons": 1339,
+      "colored_pixels": 88448
+    },
+    {
+      "legacy": false,
+      "multiplier": 3,
+      "polygons": 1339,
+      "colored_pixels": 88448
+    }
+  ],
+  "d32f_changed_1_to_2": 20739,
+  "d32f_changed_2_to_3": 0,
+  "d24_vs_d32f_2x": 6
+}

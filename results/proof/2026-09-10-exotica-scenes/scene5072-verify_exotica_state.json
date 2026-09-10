@@ -1,0 +1,55 @@
+{
+  "branches": {
+    "cached": 2128,
+    "default": 124,
+    "fade": 17,
+    "flag400": 95
+  },
+  "calls": 2364,
+  "native_sha256": "83809cbf835c1ca931e75b492cbe1495b21dbf6cb69e382aa2bb3b98378b8c51",
+  "native_verified": true,
+  "palette_updates": 1971,
+  "passed": true,
+  "programs": {
+    "-1": 2128,
+    "0": 124,
+    "1": 112
+  },
+  "schema": 1,
+  "scope": "Verify Exotica's private CPU-side state packets against actual ring commands.\n\nIncludes complete setup, transform and three before/after CPU caches. Hardware\nstate inheritance, palette colors and WaveRAM readiness require separate checks.",
+  "sources": {
+    "exotica-emissions.jsonl": "7fda5c0951576ee889abf012d23b0e1a86befe5d29c41d6471a9b7e8ea131990",
+    "exotica-model-capture.json": "acb2ebfbbb5c9cd31eb362f3afe7250a02c08ea61360a35895124e74a311d2ec",
+    "exotica-models.jsonl": "92a6f83195c7ee7a09bcd55f565e39a09c4ac6dbffcd5b9da755e914feb3bc03"
+  },
+  "transforms": {
+    "calls": 2364,
+    "emissions_crossing_native_frame": 0,
+    "far_model_selections": 0,
+    "first": 5064,
+    "frames": 17,
+    "last": 5080,
+    "matrix_updates": 986,
+    "models": 150,
+    "modes": {
+      "0": 2364
+    },
+    "native_frame_offsets": {
+      "0": 117,
+      "1": 2247
+    },
+    "native_sha256": null,
+    "native_verified": false,
+    "objects": 216,
+    "ordinary_emissions": 2269,
+    "passed": true,
+    "schema": 1,
+    "scope": "Verify bounded Exotica2.4 transforms and actual ordinary model emissions.\n\nPrivate captures are required; no ROM/model data is distributed. This verifies\ncamera/rotation math, matrix-cache decisions, scaled command words and model LOD\nselection. It does not verify Zeus model contents, rasterization or future scenery.",
+    "sources": {
+      "exotica-emissions.jsonl": "7fda5c0951576ee889abf012d23b0e1a86befe5d29c41d6471a9b7e8ea131990",
+      "exotica-model-capture.json": "acb2ebfbbb5c9cd31eb362f3afe7250a02c08ea61360a35895124e74a311d2ec",
+      "exotica-models.jsonl": "92a6f83195c7ee7a09bcd55f565e39a09c4ac6dbffcd5b9da755e914feb3bc03"
+    },
+    "special_transforms_only": 95
+  }
+}

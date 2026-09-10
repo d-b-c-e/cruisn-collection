@@ -1,0 +1,1 @@
+{"passed": false, "error": "Initial RGBA variable was replaced by prior output, contaminating subsequent composition baseline. Empty3x band changed10pixels. Original v2 positive receipt is invalidated by this failure; use explicit initialbytes/repeat-checked v3."}

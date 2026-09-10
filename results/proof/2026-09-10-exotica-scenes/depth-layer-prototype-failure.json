@@ -1,0 +1,1 @@
+{"passed":false,"phase":"fixture_bounds","error":"Synthetic 50000004 depth exceeds scale selected only from scene5000 vertices. No GPU depth verdict reached."}

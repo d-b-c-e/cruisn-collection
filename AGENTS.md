@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 Exotica scene layers — ACTIVE continuous work
+
+Read docs/reviews/2026-09-10-exotica-scene-layers.md. Collectione298067 and native
+b3d82b67257/SHAe7780a7a are pushed;159 patches and all7 defaults still accepted.
+No new native changes. Personal StreamDeckv0.5.0/SHA87d04de4 remains unchanged.
+Six6000 source/control replays for HongKong5000/5990 and Amazon5072 preserve
+4191camera/12573ADC each,55GL across three pairs and10resources per snapshot.
+Future geometry independently matches1515/1622/818instances and9596/16408/5478
+Python/native polygons. All original model/state/transform oracles PASS.
+Amazon future verifier initially FAIL243 matrices (all descriptors alreadyexact):
+rounded RAM angle loses precision. Correct original base/header/direction expression
+matches2376matrices; old sixHK snapshots and bothnewHK scenes PASS. Synthetic
+test checks precision/storage/direction.291Python/no skips,34native,96commands,
+437-file433424a28444d6b27c75f60710c060db07dceda0801e2b1cc92d7a8ba780c740 PASS.
+Only harness/verify_exotica_future.py and its test changed from prior437identity.
+Proof results/proof/2026-09-10-exotica-scenes verifies58 hash-boundreceipts, not
+unarchived execution/geometry/pixels/resources/routes; no raw game operands.
+
+LOCAL D32F/power-of-two depth fixture solves8order pairs; initialfixtureboundFAIL
+retained. Scene5000 future2x adds2927viewportquads but foregroundleaves1additional
+pixel over1x. Offlinev3compositions repeat2x/control, originaldepthsame. Amazon
+future1/2/3x changes2562/4352/4352RGB; earlierunsubmitted+future24063/32817/32817.
+Visibleforestadded. Future-only retains1951blackROI pixels; unsubmitted coversall,
+but replacementgeometrycorrectness/motion OPEN. HK5990 future3266all; unsubmitted7671all.
+1376x800HK/1368x800Amazon offline only, NOT new4K/livehost or3xparity acceptance.
+Page0-only AmazonFAIL and v2 reused-initial-RGBAFAIL(10fake3xpixels) retained; use
+*-occlusion-v3 only. Earlier-source eligibility/dynamicobjects/material lifetime/
+handover and runtime sky insertion remain OPEN. No fixedmodelallowlist.
+No emulator/build running atcheckpoint; local checks91923 and trials77969 complete.
+NEXT commit/push checked verifier/proof milestone, promote reusable scene/depth
+contracts then bounded native Exotica host integration; investigate left ground
+coverage separately and broaden viewpoints. Raw game operands/images stayLOCAL.
+No deploy/release/hostedworkflows/physicalFFB/Worldtuning/menuremoval. Continue
+directly, no cutoff or waitingforheartbeat milestones. Recovery heartbeatACTIVE.
+
 ## September10 capture pacing accepted — ACTIVE future scenery
 
 Read docs/reviews/2026-09-10-async-captures.md. Nativeb3d82b67257/SHAe7780a7a

@@ -1,0 +1,30 @@
+{
+  "calls": 4714,
+  "emissions_crossing_native_frame": 2,
+  "far_model_selections": 326,
+  "first": 4990,
+  "frames": 21,
+  "last": 5010,
+  "matrix_updates": 1039,
+  "models": 167,
+  "modes": {
+    "0": 4714
+  },
+  "native_frame_offsets": {
+    "0": 539,
+    "1": 4175
+  },
+  "native_sha256": "791f69578a37ea9ce7ac9009c77afdb70b128457b1a98c6d70c196464089598b",
+  "native_verified": true,
+  "objects": 231,
+  "ordinary_emissions": 4651,
+  "passed": true,
+  "schema": 1,
+  "scope": "Verify bounded Exotica2.4 transforms and actual ordinary model emissions.\n\nPrivate captures are required; no ROM/model data is distributed. This verifies\ncamera/rotation math, matrix-cache decisions, scaled command words and model LOD\nselection. It does not verify Zeus model contents, rasterization or future scenery.",
+  "sources": {
+    "exotica-emissions.jsonl": "3ecdcbc6b3e5587692e1f94e282b633f3d4508d9c6263e23eb9ccbc59ab9e95c",
+    "exotica-model-capture.json": "cb62399f129ab64f27973e53c854736837fcfbd0342a75a298f395a314e40d9f",
+    "exotica-models.jsonl": "6b8b8dc14a9999c339293280b583ed4ba621b953348c021ecccb4d9f3275b4bc"
+  },
+  "special_transforms_only": 63
+}

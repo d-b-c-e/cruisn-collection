@@ -1,0 +1,51 @@
+{
+  "counts": {
+    "backface": 1229,
+    "cmd0x22": 3477,
+    "cmd0x36": 478,
+    "cmd0x38": 3477,
+    "draw": 2202,
+    "near": 46,
+    "render0x14": 34,
+    "render0x15": 68,
+    "render0x40": 34,
+    "render0x5": 257,
+    "render0x6": 17,
+    "render0xc": 34,
+    "render0xd": 34
+  },
+  "covered_quads": 2202,
+  "models": 257,
+  "native": {
+    "backfaces": 1229,
+    "covered_quads": 2202,
+    "models": 257,
+    "near_clipped": 15,
+    "near_rejected": 46,
+    "passed": true,
+    "polygons": 3477,
+    "register_writes": 478,
+    "total_quads": 2202
+  },
+  "native_sha256": "fbd269577c7a6b52abc7d31c74534dd95980bcd56de7025f27c2ea53424503d0",
+  "passed": true,
+  "quad_sizes": {
+    "10": 58,
+    "12": 183,
+    "14": 16
+  },
+  "rendering_programs": {
+    "0x136": 16,
+    "0x22b": 182,
+    "0x324": 1,
+    "0xc0": 58
+  },
+  "schema": 1,
+  "scope": "Verify original Zeus models against exact ordered projected polygons and state.\n\nCopies of model state are decoded independently in Python and optionally C++.\nThis does not draw extra scenery or establish future-material residency.",
+  "sources": {
+    "models.bin": "4288afa1b0ebd09ea89bc76237951cf34e7e7b85215f48e97ffc6adca8105ed1",
+    "models.json": "37452da8d2d9018378af7980bdd714391c588ae3e9d8eeecae31ea48d9128fba",
+    "records.bin": "a0fcf9072d3ac6c68e8dfb531f32971b1b7c64615569d247036e0a59779d8b07"
+  },
+  "total_quads": 2202
+}

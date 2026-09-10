@@ -1,0 +1,23 @@
+{
+  "scope": "LOCAL offline Amazon5072 composition, left-margin ROI x0..171/y400..599. Removing black does not establish that replacement geometry is correct.",
+  "roi_xyxy": [
+    0,
+    400,
+    172,
+    600
+  ],
+  "cases": [
+    {
+      "source": "future",
+      "black_before": 1951,
+      "black_after": 1951,
+      "retained_black": 1951
+    },
+    {
+      "source": "unsubmitted-",
+      "black_before": 1951,
+      "black_after": 0,
+      "retained_black": 0
+    }
+  ]
+}
