@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 cached source/depth candidate — ACTIVE live acceptance
+
+Read docs/reviews/2026-09-10-exotica-source-cache-and-depth.md. Separate cache
+native d19f153 and depth7b432126ffed9c15fbdf7356a9ad8b6625d74231 are committed;
+combined7b432 built/frozen/pushed, SHA d16e8b7a7c4f4ed377402017c4a7814d2c87d953f9def0872ff95b37d0fd964e.
+166patches/tree0920fde0921f9791e881dbe5b5c532532919f9c1. Explicit CLI
+--exotica-host-source-cache off|on|verify and --exotica-host-early-depth off|on|verify.
+Absent controls preserve old algorithms. Cache checks all RAM dependencies and
+loader frontier; immutable ROM owner bound to machine/bank; direct ROM edits
+unsupported. Verify compares ALLsource/section fields. Early depth uses exact
+C31 arithmetic; verify compares every selected supported object including culled.
+No extra drawing. Canonical35,724descriptors/686syntheticfrontiers/693rejects/
+7material changes,70,000depth cases/14snapshotpairs45,340quads PASS.
+Final321Python/no skips,41native/115commands PASS at
+6f8fdd5380d255bbcf0a064e769d2b61b707fa3db57a6422a0a89a919655dbab.
+NEXT launch LOCAL cached-depth-acceptance.py:15serial trials isolateoff/cacheonly/
+depthonly/verify/both/repeat,1/2/3x,HongKong/fullAmazon,thenALL7defaults.
+Checkprocess/results first. Source frozen during gates; lastdefaultsac10.
+Meanwhile continue offline activeobject ownership/scene insertion work LOCAL;
+no concurrentGPUchecks/MAME. Actualactive membership is preferable to historical
+ROMsource guesses for the blackleftground. Do not draw allhistoricaldescriptors.
+Personalv0.5.0/SHA87d04de4 unchanged; no deploy/release/hostedworkflow/physicalFFB/
+Worldtuning/menu removal. Continue directly; no idle milestone/heartbeat gaps.
+
 ## September10 written material acceptance — ACTIVE CPU cost work
 
 All9 trials and ALL7defaults PASS on separately frozen nativeac10/SHA9daeb048.

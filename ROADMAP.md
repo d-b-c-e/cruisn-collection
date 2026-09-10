@@ -25,8 +25,10 @@ images; all seven defaults pass on99442. This still adds no live scenery.
 nine paired trials,10,204 complete live scan comparisons and all seven defaults.
 Steady staging falls1.412ms to0.026ms; no-GL measured speed returns82.54% to88.42%
 with regular raw snapshots still enabled. Initial full upload remains expensive.
-Next: checked source caching and exact early depth rejection, initialization cost,
-safe host depth/insertion, source eligibility and handover.
+[Checked source caching and exact early depth rejection](docs/reviews/2026-09-10-exotica-source-cache-and-depth.md)
+are now separately built at7b432, with standalone/captured comparisons and local
+checks passing. Live factorial/performance/full-drive/default acceptance is next.
+Then initialization cost, safe host depth/insertion, source eligibility and handover.
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
