@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "rom_sha256": "d57de7fd6c3ab199b0b30f78bdd358c085c58410122d39ebefb3fd99226db23c",
+  "scenes": {
+    "first": 8970,
+    "last": 9090,
+    "phases": {
+      "guard_us": {
+        "maximum": 1.9,
+        "p50": 1.0,
+        "p95": 1.6,
+        "p99": 1.9
+      },
+      "log_us": {
+        "maximum": 577.6,
+        "p50": 233.2,
+        "p95": 399.8,
+        "p99": 577.6
+      },
+      "microseconds": {
+        "maximum": 711.3,
+        "p50": 318.1,
+        "p95": 571.0,
+        "p99": 711.3
+      },
+      "pack_us": {
+        "maximum": 6.5,
+        "p50": 3.3,
+        "p95": 5.9,
+        "p99": 6.5
+      },
+      "prepare_us": {
+        "maximum": 187.9,
+        "p50": 70.1,
+        "p95": 121.5,
+        "p99": 187.9
+      },
+      "submit_us": {
+        "maximum": 5.3,
+        "p50": 2.4,
+        "p95": 4.4,
+        "p99": 5.3
+      }
+    },
+    "scenes": 61,
+    "signature_sha256": "1e794b67071565074d9f6fc399d5bba1d8cbe4e692912ac2d75926c4cb9c8a0c",
+    "sources": {
+      "quads": "b13aa0bf9a7278b603977619bafda6f0648d96d145b2b39210836a25b4c6eef2",
+      "scenes": "50e9ce3d063c918105694b5e646221178d0c199c90f8bdb2fe22633878dd0b38"
+    },
+    "totals": {
+      "decoded": 1669,
+      "deferred": 0,
+      "far": 0,
+      "future": 0,
+      "future_definitions": 0,
+      "material": 0,
+      "near": 2716,
+      "partial": 2,
+      "pending": 4385,
+      "pretrack": 0,
+      "projection": 0,
+      "quads": 4332,
+      "unsupported": 0
+    }
+  },
+  "snapshots": [
+    {
+      "native_frame": 8982,
+      "objects": 57,
+      "page": 513,
+      "quads": 131,
+      "sha256": "6c08029c595fc8c281632a5be8ff4a10ba2aebd3f588db5b140210049d5aecc6",
+      "snapshot": "offroad-scene-8983",
+      "time": "155.07151672"
+    },
+    {
+      "native_frame": 8984,
+      "objects": 56,
+      "page": 516,
+      "quads": 130,
+      "sha256": "26f1b706788598f714aef897eca7dc23a26030bdf527e0cc0e87706f1f4189e0",
+      "snapshot": "offroad-scene-8985",
+      "time": "155.10606668"
+    },
+    {
+      "native_frame": 8986,
+      "objects": 56,
+      "page": 513,
+      "quads": 132,
+      "sha256": "454f65fcbc4b73e0be6652bc99d99518837f95961069c319d7879bdb7311e046",
+      "snapshot": "offroad-scene-8987",
+      "time": "155.14048848"
+    },
+    {
+      "native_frame": 9086,
+      "objects": 0,
+      "page": 513,
+      "quads": 0,
+      "sha256": "640ba7d3bf391d3e204eeb286a50086d69b16dc41774513469e121481f0d4ce9",
+      "snapshot": "offroad-scene-9087",
+      "time": "156.86676128"
+    }
+  ]
+}

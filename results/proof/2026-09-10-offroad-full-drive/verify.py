@@ -37,6 +37,10 @@ assert [r['frame'] for r in trace['final_section_delays']]==[8987,9087]
 assert all(r['lead']==r['actual_lead']+1 and r['front']==r['sections']-1 for r in trace['final_section_delays'])
 oracle=read('scene-oracles.json');assert oracle['passed'] and len(oracle['results'])==18
 assert all(r['cold_warm_equal'] for r in oracle['results'])
+live=read('live-oracle.json');assert live['passed'] and live['scenes']['scenes']==61
+assert [r['native_frame'] for r in live['snapshots']]==[8982,8984,8986,9086]
+assert [r['quads'] for r in live['snapshots']]==[131,130,132,0]
+joined=read('live-full-join.json');assert joined['passed'] and joined['scenes']==61 and joined['quads']==4332
 build=read('native-build.json');assert build['passed'] and build['patch_count']==184
 assert sha(root/'patch/vunit-poc-patches.patch')==build['patch_sha256']
 assert all(runs[n]['native_sha256']==build['candidate_sha256'] for n in ('final-frontier-draw2','final-frontier-draw3','final-frontier-repeat3'))

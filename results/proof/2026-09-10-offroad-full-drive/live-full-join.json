@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "scenes": 61,
+  "quads": 4332,
+  "first": 8970,
+  "last": 9090,
+  "fields": [
+    "frame",
+    "time",
+    "page",
+    "mode",
+    "multiplier",
+    "future_enabled",
+    "pending",
+    "future",
+    "future_definitions",
+    "unsupported",
+    "near",
+    "far",
+    "projection",
+    "material",
+    "decoded",
+    "pretrack",
+    "partial",
+    "deferred",
+    "quads",
+    "quads_hash"
+  ],
+  "scope": "Late detailed diagnostic exactly matches the full corrected3x scene/count/geometry-fingerprint stream; timing fields intentionally excluded."
+}

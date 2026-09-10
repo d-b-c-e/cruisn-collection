@@ -98,9 +98,15 @@ consistency of the recorded test/build/route/geometry receipts. Raw native
 execution, original pixels, geometry and full material ownership remain separate
 local evidence; the public verifier does not rerun them.
 
-Independent integrated later-course geometry/material checks, original resource
-comparisons and runs without dense instrumentation remain necessary. A bounded
-live geometry probe around both repaired transitions is next. The existing short
+The bounded live geometry probe also passes: 61 actual scene submissions / 4,332
+polygons over native frames 8970–9090 exactly match the full 3× scene fingerprints.
+Four independent snapshots join by exact native frame, emulated time and page;
+their ordered geometry matches the emulator, including both repaired transitions.
+The original input/camera/ADC checks and 66 display captures remain complete.
+The fourth snapshot correctly has zero additional polygons.
+
+Broader material lifetime, original resource comparisons, other courses and runs
+without dense instrumentation remain necessary. The existing short
 Off Road evidence is documented in
 [the host-rendering review](2026-09-09-offroad-host-rendering.md).
 Local trials and evidence are under `results/diagnostics/offroad-full-20260910`.

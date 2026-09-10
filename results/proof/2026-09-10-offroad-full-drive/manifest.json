@@ -2,6 +2,8 @@
   ".gitattributes": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
   "checks.json": "bc1cdc26d6d72bd1bee16cebaf842e7bcb837c318c8d8b0aad34054bf807c59b",
   "distance-comparison.json": "5ebe6ebffc9e11a4b1f94368b8906907e4e3d5d54dedc597877870f1d1f0cf04",
+  "live-full-join.json": "634b87bde4e41aa4a6ac87e90bf95a3da58e4cfc81351d2c6c77e25f1d78fedc",
+  "live-oracle.json": "5a4fddd8167033c2aeb154a3fb006aeca8322107e59aca5faec37ba613834ef9",
   "native-build.json": "a9aa8ea01c0f0daa0245ac6572e575378398994fae36c7fab1548e12142cb0aa",
   "prefix.json": "83d0b942093e766f461ec5134580cd6b23077515e70353dd1b67ca9ad7fd4c04",
   "README.md": "0b64c55ec7b5ff99cec188818d5e652a8d0dd93735149d1c0683b1ec5313dded",
@@ -11,5 +13,5 @@
   "scene-oracles.json": "36e8cd155e44f22f81b79c710ab5053360e6c451a92ae0c218bb1d7560ce6d63",
   "section-trace.json": "14e89995cae8f39f8a1ed5252c3534275709ac03ca2c71d003ba271d006a106c",
   "source-identity.json": "4506a9c0dcd228dd762345980fabed546fa2cf47495483098faa0e4ad594280a",
-  "verify.py": "5f9ca1e4c2566f9ff73e675f7116c17b16753827fc6a40dfb8b77203eb299172"
+  "verify.py": "1bc2bf1ab0b3ed242117a603e82a65e0dc8b802da936e057424cce0b07243612"
 }

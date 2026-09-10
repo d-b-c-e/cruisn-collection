@@ -31,11 +31,15 @@ and3865ordered scenes/3675128quads exact; failed-run60GL/3542scene prefix exact.
 large mesa vsstock1:48.90. Not eliminatedpop-in/othertrack/occlusion acceptance.
 Code fix committed/pushed1ad1bd9. Publicproof2026-09-10-offroad-full-drive PASS
 source/coverage/hash pairs/receipt consistency; rawgame/native/GPU remainreceipts.
-CURRENT bounded late geometry exec67104 final-frontier-live-scenes: native
-8970..9090 draw3/detailedquads, originalLua snapshots8983/8985/8987/9087. WaitEXIT,
-then analyze_offroad_host.py RUN --rom RUN/offroad-section-rom.bin --reportNEW
-for independent actualframe/time/page/orderedgeometry. Original resource pair
-stillopen; Exotica packet live/performance renewal and fade-owner study next.
+Bounded late geometry PASS61scenes4332quads, four independent actualframe/time/
+page/ordered-geometry snapshots8982/8984/8986/9086; last legitimately0quads.
+All61 scene fingerprints match full3x; full input/route/66GL complete. Public
+proof extended with live-oracle/live-full-join receipts. Original resource pair
+stillopen. Exotica full dense3x packet-present3 on583candidate PASS original
+input/route/10resources/233completed4K. All233pixels/14private buffers/fivepackets/
+6953ordered scene/material streams equal9ed's future-present-extended3. CURRENT
+five independentGPUoracles exec30525; await EXIT before games. Then measure
+uncaptured performance and renew2x/repeat. No native/game process remains.
 
 Pending Exotica bounded fixed-size XWD1 serializer is promoted to native431f4810a86f2441fb2c3df7f3cbef69b9e9f55a,
 SEPARATELY built/frozen build/candidates/431f4810a86/vunit.exe SHA
@@ -44,8 +48,8 @@ a3c60475297fbb948e409ef26b31e2f39bcb14c3d801c419625ad7113b0e0ea6 and pushed.
 unchanged. Packet helper/test/export committed and pushed ascollection7282583.
 Earlier351Python/48native/136commands passed beforeexport atb314; currentcombined
 source is the renewed352/48/136 at6c2c above. Isolated five actual packets encode
-45–61% faster; no live Exotica speed/pixel acceptance on431 yet. Run full dense
-2x/3x/repeat packet/route/resource/pixel comparisons and uncaptured performance.
+45–61% faster; full3x pixels now renewed on583 above, no new uncaptured-speed
+claim yet. Complete2x/repeat packet/route/resource/pixel comparisons and timings.
 
 LOCAL fade-owner-probe.lua/trial.py and analyze-fade-owners.py in
 exotica-amazon-20260909 remain NOT RUN. Allocation-to-fade ownership/handover is
