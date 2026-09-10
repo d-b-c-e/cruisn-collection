@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "original_depth_values": 16777216,
+  "cases": [],
+  "scope": "Synthetic D24 versus D32F original-only depth mapping. No game shader/material/scene ordering, future insertion, original/future handover or emulator integration acceptance.",
+  "error": "AssertionError('original-only pixel ordering differs')"
+}

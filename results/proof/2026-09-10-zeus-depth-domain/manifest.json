@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "scope": "Recomputes clocks, interval timing and ordered fingerprints; GPU and local-suite outcomes remain hash-bound receipts. Synthetic fixture bytes are reproducible from source; no raw game resources are included. Performance remains open.",
+  "files": {
+    "fixture-blank-failure.json": "bf421f7fd1fd876ac3941abe38513e8cadcab1264240a54f8185e04b3e8771fa",
+    "fixture-restoration-failure.json": "02676bd6454d3a49ed51b0f0fde4a54fb9c4808e8f18a43cbbeab1a9071a3080",
+    "naive-diagnostic.json": "127efadf651ec76a9e98c59da3695f4bc0e548c08e886af095bed6922c01d5e0",
+    "naive-failure.json": "1c3f65e62b900406f1f3fa82a8634f8f3b8b715c24acbe815e5c194bc5a3520a",
+    "observer-cost.json": "57cdfca4722e34c4a9b92481d636df59c110e4ae29202de22b08f4f5e812ee9a",
+    "source-changes.json": "3fe9f1a3d4920758c3e78638e54af2685526223cb948f8f606d84fcc0eed9f44",
+    "checks/report.json": "e790dff1f0e5dfbf595d3a8b554370ed5ded8cc3683e9c454b79b10543aa89d6",
+    "checks/source-identity.json": "ebd24249c9444b34ff6d2c24fb28361b34d2705c2382721fde2ac0117b1ee8a8",
+    "checks/unit-tests.json": "01a2a8f327b003d8e2cd0bfeffa34aa602916595d1bf28ddc087cfa9219fc9d1",
+    "checks/zeus-depth-domain.json": "83f596fb1b883904f1b5c96febed8fb5b8ca239b8bd4fd39804be92b8e57b048",
+    "checks/zeus-depth-mirror.json": "68641764c866234a19940d1de1f7397a920e32556d6d7c8b28a0595ebabc27ca",
+    "draw/active.csv": "9094e71a4d95641791c83f8b51cbc9a705b1276a1cc569a03dc974d28194a5b9",
+    "draw/clock.csv": "dcdd0b86e337c105348a108f1bcce779e00ac5a7389ffa9d07076b74946a0262",
+    "draw/performance.json": "7c3e8ef22d8c8cc66b9310265cb8d049bf55a2c8be567faf588812af6cc92622",
+    "draw/scenes.csv": "616e1943cff551a5313e3f6966156bc6a89f5d95050804f95aaaedc94048e68a",
+    "draw/speed.json": "56ec135e4fa5788c533452cf0301cccc1de9348e71d371215c7f7272cecf7b1f",
+    "observe/clock.csv": "3b7e65a84cb43ad1c5cbe93119339d7c4cfb38392249b23f29aa7e6e1fbebeb5",
+    "observe/performance.json": "e8769da312f4942b5c53f8a4de94b6f70c011c0f7856413e6783a81675bd4832",
+    "observe/scenes.csv": "42f85d3d185c257afa42c0020a197d49f5d0cafcfbae859d6cba4089b16475c6",
+    "observe/speed.json": "73ea53f389cf2a2a82f0c0eee74e98d8622df02fd5b14a5162611b5760b4a4a2",
+    "stock/clock.csv": "6192a02bd614e22d751c19702a1dc617c50ef09c4afe197777be4539fb49e91d",
+    "stock/performance.json": "85bab6ecb5a6140021bb4bb269f913ed2a03ecca3c32a1918ac15895361216b1",
+    "stock/speed.json": "b3a333def21ef4bad6801f6ad7ae31d9671483683913a54d3e3d73be86a8177d"
+  }
+}

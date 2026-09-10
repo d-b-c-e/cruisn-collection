@@ -1,0 +1,365 @@
+{
+  "passed": true,
+  "mode": "draw",
+  "whole_run_speed_percent": 93.06,
+  "motion": {
+    "schema": 1,
+    "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+    "passed": true,
+    "camera_equal": true,
+    "same_camera_interval": true,
+    "camera_samples": [
+      7060,
+      7060
+    ],
+    "camera_intervals": [
+      [
+        1800,
+        8859
+      ],
+      [
+        1800,
+        8859
+      ]
+    ],
+    "first_camera_difference_frame": null,
+    "camera_equal_frame_intervals": [
+      [
+        1800,
+        8859
+      ]
+    ],
+    "camera_equal_frames": 7060,
+    "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+    "actual_adc_reads": [
+      21180,
+      21180
+    ],
+    "adc_frame_value_pc_equal": true,
+    "adc_address_compared": true,
+    "first_adc_frame_value_pc_difference": null,
+    "adc_times_equal": true,
+    "first_adc_time_difference_index": null,
+    "sources": [
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      },
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      }
+    ]
+  },
+  "intervals": [
+    {
+      "schema": 1,
+      "first_frame": 3500,
+      "last_frame": 5000,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 26.253706873146996,
+      "host_seconds": 28.779421499999998,
+      "emulation_ratio": 0.9122388673847039,
+      "host_frame_ms": {
+        "p50": 18.85725000000349,
+        "p95": 21.581154999997665,
+        "p99": 22.693188000013436,
+        "worst": 93.43479999999715
+      },
+      "inputs": {
+        ":ANALOG0": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG1": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG2": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 72
+        },
+        ":ANALOG3": {
+          "minimum": 34,
+          "maximum": 240,
+          "distinct": 164
+        },
+        ":DIPS": {
+          "minimum": 62463,
+          "maximum": 62463,
+          "distinct": 1
+        },
+        ":GEARS": {
+          "minimum": 15,
+          "maximum": 15,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65279,
+          "maximum": 65279,
+          "distinct": 1
+        },
+        ":IN2": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":ioasic:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":KEYPAD": {
+          "minimum": 30583,
+          "maximum": 30583,
+          "distinct": 1
+        },
+        ":SEQ": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":SYSTEM": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        }
+      }
+    },
+    {
+      "schema": 1,
+      "first_frame": 5000,
+      "last_frame": 6500,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 26.253706873146,
+      "host_seconds": 30.285160900000008,
+      "emulation_ratio": 0.8668835196165655,
+      "host_frame_ms": {
+        "p50": 20.17370000000085,
+        "p95": 22.98298999999986,
+        "p99": 24.22569200000751,
+        "worst": 43.513599999997155
+      },
+      "inputs": {
+        ":ANALOG0": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG1": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG2": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 67
+        },
+        ":ANALOG3": {
+          "minimum": 16,
+          "maximum": 234,
+          "distinct": 211
+        },
+        ":DIPS": {
+          "minimum": 62463,
+          "maximum": 62463,
+          "distinct": 1
+        },
+        ":GEARS": {
+          "minimum": 15,
+          "maximum": 15,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65279,
+          "maximum": 65279,
+          "distinct": 1
+        },
+        ":IN2": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":ioasic:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":KEYPAD": {
+          "minimum": 30583,
+          "maximum": 30583,
+          "distinct": 1
+        },
+        ":SEQ": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":SYSTEM": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        }
+      }
+    },
+    {
+      "schema": 1,
+      "first_frame": 6500,
+      "last_frame": 8000,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 26.25370687314701,
+      "host_seconds": 31.069363499999994,
+      "emulation_ratio": 0.8450030485222851,
+      "host_frame_ms": {
+        "p50": 21.395599999991077,
+        "p95": 23.195714999997108,
+        "p99": 24.015064999998685,
+        "worst": 35.68510000000913
+      },
+      "inputs": {
+        ":ANALOG0": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG1": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG2": {
+          "minimum": 215,
+          "maximum": 255,
+          "distinct": 9
+        },
+        ":ANALOG3": {
+          "minimum": 16,
+          "maximum": 240,
+          "distinct": 193
+        },
+        ":DIPS": {
+          "minimum": 62463,
+          "maximum": 62463,
+          "distinct": 1
+        },
+        ":GEARS": {
+          "minimum": 15,
+          "maximum": 15,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65279,
+          "maximum": 65279,
+          "distinct": 1
+        },
+        ":IN2": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":ioasic:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":KEYPAD": {
+          "minimum": 30583,
+          "maximum": 30583,
+          "distinct": 1
+        },
+        ":SEQ": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":SYSTEM": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        }
+      }
+    },
+    {
+      "schema": 1,
+      "first_frame": 8000,
+      "last_frame": 8750,
+      "scope": "MAME frame callback timing; not GPU present latency or physical FFB latency",
+      "emulated_seconds": 13.126853436572986,
+      "host_seconds": 13.248843800000003,
+      "emulation_ratio": 0.9907923766580283,
+      "host_frame_ms": {
+        "p50": 17.584400000004052,
+        "p95": 18.971335000014733,
+        "p99": 20.70484100000158,
+        "worst": 26.908200000008264
+      },
+      "inputs": {
+        ":ANALOG0": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG1": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":ANALOG2": {
+          "minimum": 0,
+          "maximum": 255,
+          "distinct": 8
+        },
+        ":ANALOG3": {
+          "minimum": 44,
+          "maximum": 137,
+          "distinct": 88
+        },
+        ":DIPS": {
+          "minimum": 62463,
+          "maximum": 62463,
+          "distinct": 1
+        },
+        ":GEARS": {
+          "minimum": 15,
+          "maximum": 15,
+          "distinct": 1
+        },
+        ":IN1": {
+          "minimum": 65279,
+          "maximum": 65279,
+          "distinct": 1
+        },
+        ":IN2": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        },
+        ":ioasic:SERIAL_DIGIT": {
+          "minimum": 6,
+          "maximum": 6,
+          "distinct": 1
+        },
+        ":KEYPAD": {
+          "minimum": 30583,
+          "maximum": 30583,
+          "distinct": 1
+        },
+        ":SEQ": {
+          "minimum": 0,
+          "maximum": 0,
+          "distinct": 1
+        },
+        ":SYSTEM": {
+          "minimum": 65535,
+          "maximum": 65535,
+          "distinct": 1
+        }
+      }
+    }
+  ],
+  "scope": "Performance under ordinary native session snapshots and motion logging. No GL/raw-resource capture or new visual verdict; draw geometry matches the separate accepted full rendering run."
+}

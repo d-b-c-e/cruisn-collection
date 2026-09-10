@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "cases": [],
+  "fragment_sha256": "43d9744abdece0dcaa7cbf9ce87c1efc10f944acf351bb425f9d2ed35da6c405",
+  "variant_sha256": "dbc45db5843e77c6121b2ec33f0e916893731caa517eb6cdec701e84d6d576e8",
+  "scope": "LOCAL original-only D24/D32F mirror check using the actual Zeus material shader. No future geometry, full command-stream replay, game-image or other-driver acceptance.",
+  "error": "AssertionError('blank or incomplete base fixture')"
+}

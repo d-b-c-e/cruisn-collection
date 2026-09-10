@@ -1,0 +1,23 @@
+{
+  "previous_identity": "a3d78d50fb5a045fa77c0b19657c3f209970eaac2ab08aa197c0c1e94bc541f2",
+  "current_identity": "9f38afb5a71c39b54602cca9aca3a7e848dc3002cf22588498f448c6dbd8235d",
+  "files": {
+    "harness/verify_zeus_depth_mirror.py": {
+      "before": null,
+      "after": "96814900d8171129bd9a7e07983bb59bad219920799dc56f92e4d9b4b848ef61"
+    },
+    "harness/local_checks.py": {
+      "before": "215da948db555fac6ad9c8ec04e35f79f576441d3cc8821510888e10968bb49e",
+      "after": "a4a368e9cc1891ecdd5a03e3fe99fe384ab8f3d4a92931cd2d10bbd0b4000337"
+    },
+    "harness/verify_zeus_depth_domain.py": {
+      "before": null,
+      "after": "7b286dca5a8224f6fc3db7744a69a33bd32eb7dd49204575b7a783be5a5141a2"
+    },
+    "gpu/zeus_depth.py": {
+      "before": null,
+      "after": "054625f37673e26b0268a58189ddecbe5efb420c49e185a137fef333d1ca8fd4"
+    }
+  },
+  "scope": "Only standalone Python/GL diagnostics and their local-suite registration changed; no native build or new seven-default claim."
+}

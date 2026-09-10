@@ -58,9 +58,11 @@ ordered geometry and 85 raw snapshot files remain identical to the prior build.
 In the full instrumented drive, average sealing cost falls from 1.354 ms to
 0.200 ms; repeat is 0.201 ms. Overall measured emulation speed rises from 89.29%
 to 92.37%, with 92.04% on repeat. The corresponding original control is 93.67%.
-These runs include expensive diagnostic captures. Serial runs without those
-captures are underway to distinguish ordinary rendering cost from instrumentation;
-**normal-play smoothness is not accepted yet**.
+These runs include expensive diagnostic captures. The subsequent
+[runs without heavy captures](2026-09-10-zeus-depth-domain.md#performance-without-heavy-captures)
+measure99.99% baseline,94.90% future observer and93.06% observer plus margins.
+**Normal-play smoothness is not accepted yet**; geometry assembly and diagnostic
+hashing still cost measurable CPU time.
 
 ## Remaining limits and retained failures
 

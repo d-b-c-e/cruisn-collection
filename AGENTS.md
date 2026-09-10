@@ -16,18 +16,31 @@ Independent final geometry6330/7187/8760/HK5000 passes. CPU seal pages6000verify
 No farther-distance claim: current1x margin pass excludes55instances, including
 5604 generatedRAM non-depthtestquad; renderedRAMmodels0. Originaldepth/outsidecolor
 protected in snapshots, not full transparent ordering/handover/material acceptance.
-Instrumented full speed89.29->92.37/92.04%, scene sealmean1.354->0.200ms. Current
-exec77659 runs LOCAL active-performance-series.py under
-results/diagnostics/exotica-amazon-20260909: serial no-heavy-capture stock/observe/draw.
-Read active-performance-series.log; no competing emulators/GPU work.
+Instrumented full speed89.29->92.37/92.04%, scene sealmean1.354->0.200ms. Three full
+no-heavy-capture stock/observe/draw runs now finish99.99/94.90/93.06%, original
+motion exact. Futureobserver builds15907490quads/5290scenes; meanassembly1.973ms,
+hash0.676ms, sources0.076ms, materials0.059ms. Performance remains OPEN. Current
+margin-only path should avoid unusedfutureassembly; futuredrawing needscheaper
+construction/hash orGPUmodelwork. LOCAL evidence under
+results/diagnostics/exotica-amazon-20260909. No emulator/build currently running.
 
 NEXT wider-depth private original-scene mirror before future insertion. LOCAL
 private-depth-gl.py initial FAIL: two adjacent-depth ties differ with naive D32F.
 Diagnostic reveals existing reciprocal-float/D24 quantization, not simply ideal
 integer mapping. private-depth-gl-quantized.py PASS all16777216original depths
-at biases+1/0/-1 using double-intermediate quantization and2^26 mapping. OnlyRTX5080
-synthetic proof, no game shader/mirror/future/handover/other-driver acceptance.
-Retain initial failure; do not hardcode exceptional depth values. Rawgamebyteslocal.
+at biases+1/0/-1 using double-intermediate quantization and2^26 mapping. Promoted
+gpu/zeus_depth.py plus harness/verify_zeus_depth_domain.py and
+verify_zeus_depth_mirror.py now also PASS72actualshader cases/360orderedsteps at
+1x/4x pages0/400. No livegame mirror/future/handover/otherdriveracceptance. Retain
+naiveGPUFAIL andinitialfixtureFAILs; do not hardcode exceptional depth values.
+Read docs/reviews/2026-09-10-zeus-depth-domain.md. New standalonechecks final332Python/
+no skips46native129commands PASS source9f38afb5a71c39b54602cca9aca3a7e848dc3002cf22588498f448c6dbd8235d.
+Publicproof2026-09-10-zeus-depth-domain recomputesclock/timing/order/identity;
+GPU/fulltests/route remain receipts. Native50a unchanged; seven-default acceptance
+belongs preceding a3d78source. Only4standalonehelper/checkfiles differ. NEXT bounded
+CLI original-only privateD32F native mirror, preserving originaltarget andfull
+commandorder (startup/pageclears, directwrites, textures/palettes/sky). Then actual
+earlyfutureinsertion withseparate truepreclampdepthpolicy/handover. Rawgamebyteslocal.
 Keep working directly, no cutoff or heartbeat idle gaps. No deploy/release/hosted
 workflows/physicalFFB/Worldtuning/menu removal. Rig check before visible tests.
 

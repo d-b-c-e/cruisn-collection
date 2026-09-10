@@ -1,0 +1,283 @@
+{
+  "passed": false,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "cases": [
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "low-depth",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "round-boundary",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "65a9624228a0a40546069c94b496592b951d546cc3ee212cf8bfecdb5dc59c62",
+        "65a9624228a0a40546069c94b496592b951d546cc3ee212cf8bfecdb5dc59c62"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "middle-tie",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "maximum-tie",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "beee899294b839b2ee536e75f9b039607cd71f2c6e334bc1790e53602b3b31a6",
+        "0ba7c304d530c8cae1e0b67ceb69474aeb14ed8132893c5a0458575b0e3306e8",
+        "48b22aeb00aa6e7164ee35fda400268609230e2ad255c52c54b469b9b15c90a2"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "negative-bias",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "depth-floor",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "65a9624228a0a40546069c94b496592b951d546cc3ee212cf8bfecdb5dc59c62",
+        "65a9624228a0a40546069c94b496592b951d546cc3ee212cf8bfecdb5dc59c62"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "depth-clear",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "c97f6e7901ff142775fbca6936fa7fb7f2ccd3ac3232e7c67c6e7b80c298572d",
+        "44dc643b985a68c4c3a88b6537c78aa33c9c73df4b262e8d1198bf74168a5632",
+        "44dc643b985a68c4c3a88b6537c78aa33c9c73df4b262e8d1198bf74168a5632"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "no-depth-test",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e",
+        "1aa8a4ab86163ffd0aab630732c31cbe33b5aadc2a3868a02ed6af002cf23d4e"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "no-depth-write",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "4b441cfcbc4a889ce688d10082bdd5f005ff30cb37be54f855aa8507cfbae88c",
+        "beee899294b839b2ee536e75f9b039607cd71f2c6e334bc1790e53602b3b31a6",
+        "0ba7c304d530c8cae1e0b67ceb69474aeb14ed8132893c5a0458575b0e3306e8",
+        "0ba7c304d530c8cae1e0b67ceb69474aeb14ed8132893c5a0458575b0e3306e8"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "blend",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "1bea5a29d434be7588a9555d5d84ef30097fb7286342d6d6a7e9f82ae8b46dae",
+        "1bea5a29d434be7588a9555d5d84ef30097fb7286342d6d6a7e9f82ae8b46dae",
+        "1d8c422092682c0663dab7f9b7df8701e8f65ae57b59bc344574caea508e300e",
+        "1d8c422092682c0663dab7f9b7df8701e8f65ae57b59bc344574caea508e300e"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "alpha-zero",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "c97f6e7901ff142775fbca6936fa7fb7f2ccd3ac3232e7c67c6e7b80c298572d",
+        "44dc643b985a68c4c3a88b6537c78aa33c9c73df4b262e8d1198bf74168a5632",
+        "44dc643b985a68c4c3a88b6537c78aa33c9c73df4b262e8d1198bf74168a5632"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "palette4",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "73a88bb6cd797e330b500de7515bd7626c1ceb6965e0c7688a97e10eec772a30",
+        "73a88bb6cd797e330b500de7515bd7626c1ceb6965e0c7688a97e10eec772a30",
+        "5610ae0669344958bcfb6bd11c4553d627e9c7940d2e7a24d78be426cfa0a27c",
+        "5610ae0669344958bcfb6bd11c4553d627e9c7940d2e7a24d78be426cfa0a27c"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "palette8",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "475c5a9401014cbd1067fee328c5a2f13f46901dd197c8785176c760b01f46f2",
+        "475c5a9401014cbd1067fee328c5a2f13f46901dd197c8785176c760b01f46f2",
+        "fc890acfd4715ef78ba7b744da3e4ba1f80416b1be2b6eb885b16a5027d0b748",
+        "fc890acfd4715ef78ba7b744da3e4ba1f80416b1be2b6eb885b16a5027d0b748"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "palette8-other",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "6d7b5af5b4705427a39130cf9a02a8e806f2ca4cb153ed5cbd73b27ac27de5a3",
+        "6d7b5af5b4705427a39130cf9a02a8e806f2ca4cb153ed5cbd73b27ac27de5a3",
+        "f2866b67336b275508668ddeffb9597b3f3a4b7021fdb9b0efe4a4094e567db6",
+        "f2866b67336b275508668ddeffb9597b3f3a4b7021fdb9b0efe4a4094e567db6"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "texture-alpha",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "492d6aecf2df7b864f23bfa607eaa2e08f712d990e7b6a956d75b39cfcc80ece",
+        "492d6aecf2df7b864f23bfa607eaa2e08f712d990e7b6a956d75b39cfcc80ece",
+        "34cb911c6408f6762f0ed78384f9ffab44daad2ec7234d07aabfbdd802114403",
+        "34cb911c6408f6762f0ed78384f9ffab44daad2ec7234d07aabfbdd802114403"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "rgb555",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "6f8d1976bca638b65d3a1b589d4785c823167ee2e3f557319cdbb0c78f726b4b",
+        "b9c6e891fecca8bee437206ae74fd1f6fa338ab04cfb789ef4f19282f5325dbd",
+        "c011ca4a86a9753a68f61d69790b24feb4964a610ec1805049d57adf646360ca",
+        "c011ca4a86a9753a68f61d69790b24feb4964a610ec1805049d57adf646360ca"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "raw-write",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "e3752480e318c81e5708827e0f4d80339ef991c39b4a3eda2bab3a2b8fbc275b",
+        "e3752480e318c81e5708827e0f4d80339ef991c39b4a3eda2bab3a2b8fbc275b",
+        "862bb56d49103dac34161cf8d2b432bea9b1e62408545bb3ec139b69d9c836e5",
+        "862bb56d49103dac34161cf8d2b432bea9b1e62408545bb3ec139b69d9c836e5"
+      ],
+      "passed": true
+    },
+    {
+      "scale": 1,
+      "page": 0,
+      "kind": "transparent-index",
+      "steps": 5,
+      "color_sha256": [
+        "f406425c17b6721c12b2b02477469d106ec4d32d8cee7f0630aa9f1b0fc4db75",
+        "6e3eda37df6d6817e2d63c9332174459832921e183a2004b5a0d097ae230b7ad",
+        "6bffb706c7063fb2db261a5235b6103f9b764a7636f5baac0cdcf522fe8af217",
+        "5170085600494cd8928606d399e81f613c99e0eb70e51908d15fa2f13e956ceb",
+        "5170085600494cd8928606d399e81f613c99e0eb70e51908d15fa2f13e956ceb"
+      ],
+      "passed": true
+    }
+  ],
+  "fragment_sha256": "43d9744abdece0dcaa7cbf9ce87c1efc10f944acf351bb425f9d2ed35da6c405",
+  "variant_sha256": "dbc45db5843e77c6121b2ec33f0e916893731caa517eb6cdec701e84d6d576e8",
+  "scope": "LOCAL original-only D24/D32F mirror check using the actual Zeus material shader. No future geometry, full command-stream replay, game-image or other-driver acceptance.",
+  "base_diagnostic": {
+    "lit": 1024,
+    "expected": 1024,
+    "scale": 1,
+    "page": 0,
+    "name": "transparent-index",
+    "rgba": [
+      [
+        0,
+        0,
+        0,
+        255
+      ],
+      [
+        0,
+        248,
+        0,
+        255
+      ]
+    ]
+  },
+  "error": "AssertionError('GL error')"
+}
