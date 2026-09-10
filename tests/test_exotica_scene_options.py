@@ -8,6 +8,24 @@ from exotica_scene_options import add_arguments, configure, snapshots, verify_re
 
 
 class ExoticaSceneOptions(unittest.TestCase):
+    def test_command_fence_is_explicit_and_recorded(self):
+        args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
+                '--exotica-host-first', '5000', '--exotica-host-last', '5002')
+        settings = {}
+        self.assertFalse(configure(self.args(*args), 'crusnexo', settings)['fence'])
+        self.assertNotIn('MIDZ_HOST_FENCE', settings)
+        self.assertTrue(configure(self.args(*args, '--exotica-host-fence', 'observe'), 'crusnexo', settings)['fence'])
+        saved = dict(settings)
+        self.assertTrue(configure(self.args(), 'crusnexo', settings)['fence'])
+        self.assertEqual(saved, settings)
+        settings['MIDZ_HOST_FENCE'] = '2'
+        with self.assertRaisesRegex(ValueError, 'command fence mode'):
+            configure(self.args(), 'crusnexo', settings)
+        configure(self.args('--candidate', 'candidate.exe', '--exotica-host-scene', 'off'), 'crusnexo', settings)
+        self.assertEqual(settings, {'MIDZ_HOST_SCENE': '0'})
+        with self.assertRaisesRegex(ValueError, 'explicit mode'):
+            configure(self.args('--exotica-host-fence', 'observe'), 'crusnexo', {})
+
     def test_early_depth_is_explicit_and_recorded(self):
         args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
                 '--exotica-host-first', '5000', '--exotica-host-last', '5002')

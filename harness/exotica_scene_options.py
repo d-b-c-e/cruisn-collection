@@ -35,6 +35,8 @@ def add_arguments(parser):
                         help='skip distant full transforms, or verify every depth against full preparation')
     parser.add_argument('--exotica-host-source-cache', choices=('off', 'on', 'verify'),
                         help='checked immutable-ROM sources, or exact comparison against a fresh rebuild')
+    parser.add_argument('--exotica-host-fence', choices=('off', 'observe'),
+                        help='verify the exact original command-ring completion point; no extra drawing')
 
 
 def configure(args, rom, settings):
@@ -44,13 +46,14 @@ def configure(args, rom, settings):
     page_option = getattr(args, 'exotica_host_material_pages', None)
     cache_option = getattr(args, 'exotica_host_source_cache', None)
     depth_option = getattr(args, 'exotica_host_early_depth', None)
+    fence_option = getattr(args, 'exotica_host_fence', None)
     values = [getattr(args, 'exotica_host_'+name, None) for name in ('first', 'last', 'multiplier', 'snapshots')]
     explicit = mode is not None
     if explicit:
         if not getattr(args, 'candidate', None):
             raise ValueError('Exotica host observation requires an explicit candidate')
     else:
-        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option)):
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option, fence_option)):
             raise ValueError('Exotica host bounds require an explicit mode')
         inherited = settings.get('MIDZ_HOST_SCENE')
         if inherited in (None, '0'):
@@ -62,7 +65,7 @@ def configure(args, rom, settings):
     if rom != 'crusnexo' or mode not in ('off', 'observe'):
         raise ValueError('Exotica host observation supports Exotica2.4 only')
     if mode == 'off':
-        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option)):
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option, fence_option)):
             raise ValueError('Exotica host off does not take bounds')
         settings['MIDZ_HOST_SCENE'] = '0'
         for key in KEYS:
@@ -72,6 +75,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_MATERIAL_PAGES', None)
         settings.pop('MIDZ_HOST_SOURCE_CACHE', None)
         settings.pop('MIDZ_HOST_EARLY_DEPTH', None)
+        settings.pop('MIDZ_HOST_FENCE', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier
@@ -107,6 +111,11 @@ def configure(args, rom, settings):
         raise ValueError('invalid recorded Exotica early depth mode')
     if depth_option is not None:
         settings['MIDZ_HOST_EARLY_DEPTH'] = depth_setting
+    fence_setting = settings.get('MIDZ_HOST_FENCE', '0') if fence_option is None else str(int(fence_option == 'observe'))
+    if fence_setting not in ('0', '1'):
+        raise ValueError('invalid recorded Exotica command fence mode')
+    if fence_option is not None:
+        settings['MIDZ_HOST_FENCE'] = fence_setting
     settings.update(MIDZ_HOST_SCENE='1', MIDZ_HOST_FIRST=str(first), MIDZ_HOST_LAST=str(last),
                     MIDZ_HOST_MULTIPLIER=str(multiplier))
     if captured:
@@ -115,7 +124,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_SNAPSHOTS', None)
     return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured,
                 bounds=bound_setting == '1', materials=material_setting == '1', material_pages=int(page_setting),
-                source_cache=int(cache_setting), early_depth=int(depth_setting), explicit=explicit)
+                source_cache=int(cache_setting), early_depth=int(depth_setting), fence=fence_setting == '1', explicit=explicit)
 
 
 def verify_receipt(trial, text, directory):
@@ -212,5 +221,8 @@ def verify_receipt(trial, text, directory):
     if materials:
         from zeus_host_materials import verify_live
         verify_live(directory, rows, trial['snapshots'], text)
+    from exotica_fence import verify as verify_fence
+    fence_result = verify_fence(directory, rows, text, trial.get('fence', False))
     return dict(passed=True, scenes=matched, quads=quads, snapshots=saved, guest_cycles_unchanged=True, game_scene_boundary=True,
+                command_fence=fence_result,
                 scope='Live source/geometry observation only; independent snapshot verification is separate.')

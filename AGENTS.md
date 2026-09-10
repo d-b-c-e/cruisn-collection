@@ -1,5 +1,24 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 command-fence candidate — ACTIVE live acceptance
+
+Read docs/reviews/2026-09-10-exotica-command-fence.md. Native664cc49982c current
+source helper and2eac1821916bf4f2f7975b48b45c2e48da993a15 FIFOcompletion arepushed.
+Separatefrozen build/candidates/2eac1821916/vunit.exe SHAcef7160a13440afaf8b865a9ee1421d10cfad1fe6143bdb89a21a8b9a0174b63.
+168patches/tree8ef72024cfc4a3c52426f9942b7fec2aca5f0643. --exotica-host-fence
+off|observe,absentunchanged. Observeexisting046dconsumer/046eproducer, postFIFO
+callbackafteroriginalcommandprocessing, exactwordorder/wrap/parserempty/zeroCPU
+cycles. No insertedcommands/consumerwait. Resetdiagnosticunsupported; relieson
+originalringnooverrun. Stillnoextra drawing. Final324Python/no skips,43native/
+120commands PASS at1d8f3f56d4e0ab85538b23c3187fb833a4150f5453ec27db294e23a7fc121b4a.
+NEXT LOCAL command-fence-acceptance.py (beingprepared): off/on/repeat/HK/full
+Amazon and7defaults. Independent command-fence-probe.lua brackets targetFIFO
+prewrite/firstfollowinginstruction and originalmodeltime. NOTYETRUN atthisedit.
+Sourcefrozenoncegatesstart; no concurrentGPUtests/emulators. Last7defaults7b432.
+Then privateD24copy/marginonlydraw, originalcenter/depth/resources exact.
+Personalv0.5.0/SHA87d04de4 unchanged; no release/deploy/hostedworkflow/physicalFFB/
+Worldtuning/menu removal. Continue directly, no milestone/heartbeat idle gaps.
+
 ## September10 current-object helper — ACTIVE fence integration
 
 Canonical native/exotica_active.h now provides distinctcurrentSource,boundedlists
