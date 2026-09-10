@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "files": {
+    ".gitattributes": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+    "README.md": "d51fc9ef75c72cb7f6cdb8c059d3d35b9cd571d405b21e520cdf669ac61fb16c",
+    "receipts/amazon-control.json": "96128ed5548ff971887482063a2a5bd3a72bfc4b9db96da71a2ad37244ca293c",
+    "receipts/amazon-final-native.json": "3f22b5b1cc1e5ee6f68d0f6f24ba711e0fb8acc4499a6d0d844ba9bd50ad16d6",
+    "receipts/amazon-probe.json": "810d1784458cf549c12f2357f574fa3c7f68afae92786ceea4b3652811299782",
+    "receipts/checks-report.json": "32dac5610f47297f527f7150cb3dbe268dca22fa0a6c4ed7343a7da38bdaf98e",
+    "receipts/checks-source-identity.json": "bc2fe0bc58a46c5fd723404d6289f4c19c9f7b81289f03fc2adf64212191abc2",
+    "receipts/checks-unit-tests.json": "1e3d1c0aa534a7e70b6ba6fc11b5020d21c88c4a5e01603bc41e9ad934bcbbc4",
+    "receipts/corrected-timings.json": "3de1e39adfcd92d06cec167525837194b4d0a9a808cc4e899153f0f1b3b324bc",
+    "receipts/hk-control.json": "ca16cc2dbed3f2f72195a87048b626ae04c4b9d1b4ce93abfb72ceace37c87c0",
+    "receipts/hk-final-native.json": "476e59e1e6bf6b7d1d7cbab9bdf86d6ddf7ae1e386dab1c11de94d58ad790627",
+    "receipts/hk-probe.json": "a0a42d8588f151223ea2bcb9b6710a4ecae1ffb6d6249fa98a70b423c428fd5d",
+    "receipts/native.json": "2c4ccc15fc78bd595f8857a2b711001e10aa02791ec8c69d235eaedb2c974a36",
+    "receipts/performance.json": "4efa3eae91c4286a9f25e323973ec72d2639e264ad9725f5fedb2832ee76e435",
+    "receipts/retained-failures.json": "2c5d4ee4b033914c8d2dcb83243de640f7f80ffa9154594e3cd72366be3dafaf",
+    "receipts/validation-cache-benchmark.json": "434e478d02add296e32a4ee1e05680ba2f625a238c5ba170a2404c5c0cbe22bf",
+    "verify_archive.py": "344d50606c0f899859edaa79a5fe2ff5be01e6ee89f9909097d93edf72db1b3e"
+  }
+}

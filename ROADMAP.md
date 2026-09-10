@@ -20,6 +20,10 @@ and the public package remain v0.5.0.
   now finds33 changed3×-over2× images in233 actual4K/CRT samples. Inspected changes
   are mostly small regions through foliage/at margins;3× repeats all233 exactly.
   Useful visual acceptance remains open. This expands coverage beyond the14 internal samples.
+  [Runs without heavy readbacks](docs/reviews/2026-09-10-exotica-fade-and-performance.md)
+  measure 94.69% game speed at 2× and 90.79% at 3×, versus 99.99% original.
+  Preparing/uploading 3× without drawing already costs enough to reach 90.77%.
+  Optimize measured CPU preparation/packet work and complete fade/handover.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.

@@ -18,7 +18,7 @@ The launcher's existing distance menus do not select these newer host renderers.
 | World 2.5 | 3× changes 10 additional images beyond 2× in a 30-image sample; ordered scenery and images repeat. | Road/ground rendering is still restricted to 2.4. Disconnected terrain remains visible in the 2.5 sample. |
 | USA | Earlier scenery at 1×/2×; 3× adds small changes in three of 16 sampled images. Independent geometry and original resources match. | Last measured 3× runs reached about 97.6%/97.0% emulation speed after caching; 2× reached 98.7%. Full-speed acceptance and broader visibility coverage remain open. |
 | Off Road | 2× changes all 40 sampled images relative to 1×; 3× adds changes in six. Quiet runs measure approximately 100% speed and repeat exactly. | Existing scripted El Paso recording spends too long near one hillside. An attended complete-track drive is needed for terrain, tunnels, finish and handover coverage. |
-| Exotica | Live future geometry/material insertion works through the private wide-depth renderer. Full Amazon drives preserve original route/resources; denser actual display sampling finds 33 of 233 frames differing at 3× versus 2×, and 3× repeats all 233 exactly. | The inspected changes are mostly small additions through foliage or at margins. Useful visibility, opacity/handover, performance and broader routes remain open. |
+| Exotica | Live future geometry/material insertion works through the private wide-depth renderer. Full Amazon drives preserve original route/resources; denser actual display sampling finds 33 of 233 frames differing at 3× versus 2×, and 3× repeats all 233 exactly. | The inspected changes are mostly small additions through foliage or at margins. Without heavy readbacks, 2× measures 94.69% game speed and 3× 90.79%. Useful visibility, opacity/handover, full speed and broader routes remain open. |
 
 Detailed evidence: [World 2.4 roads](2026-09-09-host-road-integration.md),
 [World 2.5](2026-09-09-world25-host-scenery.md),
@@ -60,10 +60,12 @@ combined with the new future-target presentation.
 
 ## Next acceptance work
 
-1. Finish dense Exotica original/2×/3×/repeat presentation comparisons. Inspect
-   driving visibility, opacity and the transition into original active objects.
-2. Measure the extended path without diagnostic readbacks and reduce verified
-   unnecessary work. Carry performance improvements to USA where applicable.
+1. Build on the completed dense Exotica comparisons: improve driving visibility,
+   opacity and the transition into original active objects. The original fade
+   update is now a standalone helper with independent verification.
+2. Reduce the [measured future-rendering cost](2026-09-10-exotica-fade-and-performance.md).
+   The 3× preparation/upload path alone reaches only 90.77% game speed, while
+   mirroring the original scene reaches 99.99%. Carry applicable improvements to USA.
 3. Complete World 2.5 roads/ground and obtain an attended Off Road drive.
 4. Validate original route/resources, materials, occlusion, handover and smooth
    4K output across more tracks. Renew the seven default regressions on the final

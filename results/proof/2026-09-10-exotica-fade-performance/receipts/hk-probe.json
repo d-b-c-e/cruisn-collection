@@ -1,0 +1,150 @@
+{
+  "passed": true,
+  "route": "hk",
+  "mode": "probe",
+  "motion": {
+    "schema": 1,
+    "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+    "passed": true,
+    "camera_equal": true,
+    "same_camera_interval": true,
+    "camera_samples": [
+      4191,
+      4191
+    ],
+    "camera_intervals": [
+      [
+        1800,
+        5990
+      ],
+      [
+        1800,
+        5990
+      ]
+    ],
+    "first_camera_difference_frame": null,
+    "camera_equal_frame_intervals": [
+      [
+        1800,
+        5990
+      ]
+    ],
+    "camera_equal_frames": 4191,
+    "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+    "actual_adc_reads": [
+      12573,
+      12573
+    ],
+    "adc_frame_value_pc_equal": true,
+    "adc_address_compared": true,
+    "first_adc_frame_value_pc_difference": null,
+    "adc_times_equal": true,
+    "first_adc_time_difference_index": null,
+    "sources": [
+      {
+        "exotica-camera.csv": "5841103c9c094281d7cf2e0b905c33a54133a475dc672ee72d07fd5ef207640e",
+        "exotica-adc.csv": "595de325a3ec844a01632cbdc7cbd71abbc11a732f87df5a4d5a36b4cfa73fd7"
+      },
+      {
+        "exotica-camera.csv": "5841103c9c094281d7cf2e0b905c33a54133a475dc672ee72d07fd5ef207640e",
+        "exotica-adc.csv": "595de325a3ec844a01632cbdc7cbd71abbc11a732f87df5a4d5a36b4cfa73fd7"
+      }
+    ]
+  },
+  "probe_sources": {
+    "lua\\exotica_motion_trace.lua": "ef4e8f2b0260c0ca658baa5767773d46cf9eefb7fa94ee21afd3a2e6c0908d76",
+    "lua\\exotica_fade_capture.lua": "c0152eb1995b0998277732c749ae982cf6de3769b6d21e87bae31d4962c185af"
+  },
+  "paired_motion": {
+    "schema": 1,
+    "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+    "passed": true,
+    "camera_equal": true,
+    "same_camera_interval": true,
+    "camera_samples": [
+      4191,
+      4191
+    ],
+    "camera_intervals": [
+      [
+        1800,
+        5990
+      ],
+      [
+        1800,
+        5990
+      ]
+    ],
+    "first_camera_difference_frame": null,
+    "camera_equal_frame_intervals": [
+      [
+        1800,
+        5990
+      ]
+    ],
+    "camera_equal_frames": 4191,
+    "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+    "actual_adc_reads": [
+      12573,
+      12573
+    ],
+    "adc_frame_value_pc_equal": true,
+    "adc_address_compared": true,
+    "first_adc_frame_value_pc_difference": null,
+    "adc_times_equal": true,
+    "first_adc_time_difference_index": null,
+    "sources": [
+      {
+        "exotica-camera.csv": "5841103c9c094281d7cf2e0b905c33a54133a475dc672ee72d07fd5ef207640e",
+        "exotica-adc.csv": "595de325a3ec844a01632cbdc7cbd71abbc11a732f87df5a4d5a36b4cfa73fd7"
+      },
+      {
+        "exotica-camera.csv": "5841103c9c094281d7cf2e0b905c33a54133a475dc672ee72d07fd5ef207640e",
+        "exotica-adc.csv": "595de325a3ec844a01632cbdc7cbd71abbc11a732f87df5a4d5a36b4cfa73fd7"
+      }
+    ]
+  },
+  "gl": {
+    "scope": "completed GL frame pixels",
+    "passed": true,
+    "frames": 21,
+    "different_frames": [],
+    "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\fade-canonical-hk-control\\run\\gl-snap",
+    "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\fade-canonical-hk-probe\\run\\gl-snap",
+    "size_mismatches": [],
+    "pixel_changes": []
+  },
+  "fade": {
+    "schema": 1,
+    "passed": true,
+    "events": 489,
+    "first_frame": 4650,
+    "last_frame": 4750,
+    "counts": {
+      "continuing": 472,
+      "increment_8": 489,
+      "completed": 17
+    },
+    "windows": [
+      [
+        3500,
+        3550
+      ],
+      [
+        4650,
+        4750
+      ],
+      [
+        5400,
+        5450
+      ]
+    ],
+    "native_verified": true,
+    "native_sha256": "6253d3d24a8a0ae9b9203c30b97efe33266aef6b70ca765b37c5471fe98d7adf",
+    "sources": {
+      "exotica-fade-capture.json": "d83252c08b2c2d88215a585c02a56e1812a6ff36c77534af7bc8b1fe21edf059",
+      "exotica-fade-events.jsonl": "42a42d882e761119c361bdf26d619540f50b8bebaedb4937953e7a435017c4ad"
+    },
+    "scope": "Check bounded actual Exotica fade writes; lifecycle membership stays outside scope. Original route/pixels, full lifecycle and a host handover policy require separate checks."
+  }
+}

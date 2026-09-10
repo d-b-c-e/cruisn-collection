@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "passed": true,
+  "events": 2539,
+  "first_frame": 3500,
+  "last_frame": 7150,
+  "counts": {
+    "continuing": 2453,
+    "increment_8": 2539,
+    "completed": 86
+  },
+  "windows": [
+    [
+      3500,
+      3550
+    ],
+    [
+      4650,
+      4750
+    ],
+    [
+      5400,
+      5430
+    ],
+    [
+      7100,
+      7150
+    ]
+  ],
+  "native_verified": true,
+  "native_sha256": "49d27930275ba2c44d3ccc0cdf4b1845113a89317cf52947f5a949bc65e09d29",
+  "sources": {
+    "exotica-fade-capture.json": "2b7cb475af021d194ba353467741f2d07aad11fcbbd24b8757560282c011626e",
+    "exotica-fade-events.jsonl": "300894577a606f6f5a25e1d96a9bb5e1378638d1dc82cbb5bca855a7e659f7c4"
+  },
+  "scope": "Check bounded actual Exotica fade writes; lifecycle membership stays outside scope. Original route/pixels, full lifecycle and a host handover policy require separate checks."
+}

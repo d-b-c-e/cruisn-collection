@@ -1,0 +1,248 @@
+[
+  {
+    "mode": "stock",
+    "speed_percent": 99.99,
+    "camera_samples": [
+      7060,
+      7060
+    ],
+    "actual_adc_reads": [
+      21180,
+      21180
+    ],
+    "adc_times_equal": true,
+    "motion_sources": [
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      },
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      }
+    ],
+    "geometry_identity": {},
+    "report_sha256": "de925310a119d8aa31c4205062bd6c77b8e6bd2734de39d60b05d203ca4a7dae",
+    "scope": "Performance with ordinary session snapshots, motion and summary timing logs; no GL/model/private readbacks. No new visual or full-speed acceptance by this passed field.",
+    "timing_qualification": null
+  },
+  {
+    "mode": "mirror",
+    "speed_percent": 99.99,
+    "camera_samples": [
+      7060,
+      7060
+    ],
+    "actual_adc_reads": [
+      21180,
+      21180
+    ],
+    "adc_times_equal": true,
+    "motion_sources": [
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      },
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      }
+    ],
+    "geometry_identity": {},
+    "report_sha256": "c356df0469b050a67d3b68d72d3798192f83bf1132c865d7c3a07967f7b6995b",
+    "scope": "Performance with ordinary session snapshots, motion and summary timing logs; no GL/model/private readbacks. No new visual or full-speed acceptance by this passed field.",
+    "timing_qualification": null
+  },
+  {
+    "mode": "observe3",
+    "speed_percent": 90.77,
+    "camera_samples": [
+      7060,
+      7060
+    ],
+    "actual_adc_reads": [
+      21180,
+      21180
+    ],
+    "adc_times_equal": true,
+    "motion_sources": [
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      },
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      }
+    ],
+    "geometry_identity": {},
+    "report_sha256": "7bc6d9d4233a304cc966fb6f4c1e9cc11f62a5d9ab9d4e78de101610e8de298c",
+    "scope": "Performance with ordinary session snapshots, motion and summary timing logs; no GL/model/private readbacks. No new visual or full-speed acceptance by this passed field.",
+    "timing_qualification": null
+  },
+  {
+    "mode": "draw2",
+    "speed_percent": 94.69,
+    "camera_samples": [
+      7060,
+      7060
+    ],
+    "actual_adc_reads": [
+      21180,
+      21180
+    ],
+    "adc_times_equal": true,
+    "motion_sources": [
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      },
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      }
+    ],
+    "geometry_identity": {
+      "exotica-host-scenes.csv": {
+        "rows": 6953,
+        "fields": [
+          "frame",
+          "scene",
+          "quads",
+          "instances",
+          "multiplier",
+          "hash",
+          "guest_cycles"
+        ],
+        "passed": true
+      },
+      "exotica-future-gpu.csv": {
+        "rows": 6953,
+        "fields": [
+          "scene",
+          "frame",
+          "mode",
+          "multiplier",
+          "page",
+          "quads",
+          "vertices",
+          "hash"
+        ],
+        "passed": true
+      }
+    },
+    "report_sha256": "924b7fbe3b957de47528c6fd9ddfb7750d3156a643cea84b66fbfd9f6cd9f2a9",
+    "scope": "Performance with ordinary session snapshots, motion and summary timing logs; no GL/model/private readbacks. No new visual or full-speed acceptance by this passed field.",
+    "timing_qualification": null
+  },
+  {
+    "mode": "draw3",
+    "speed_percent": 90.79,
+    "camera_samples": [
+      7060,
+      7060
+    ],
+    "actual_adc_reads": [
+      21180,
+      21180
+    ],
+    "adc_times_equal": true,
+    "motion_sources": [
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      },
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      }
+    ],
+    "geometry_identity": {
+      "exotica-host-scenes.csv": {
+        "rows": 6953,
+        "fields": [
+          "frame",
+          "scene",
+          "quads",
+          "instances",
+          "multiplier",
+          "hash",
+          "guest_cycles"
+        ],
+        "passed": true
+      },
+      "exotica-future-gpu.csv": {
+        "rows": 6953,
+        "fields": [
+          "scene",
+          "frame",
+          "mode",
+          "multiplier",
+          "page",
+          "quads",
+          "vertices",
+          "hash"
+        ],
+        "passed": true
+      }
+    },
+    "report_sha256": "1022d02fd10b83a82664091c894cff44ddc4248e64d5ab2f59d54102c9e658c1",
+    "scope": "Performance with ordinary session snapshots, motion and summary timing logs; no GL/model/private readbacks. No new visual or full-speed acceptance by this passed field.",
+    "timing_qualification": null
+  },
+  {
+    "mode": "draw3-repeat",
+    "speed_percent": 90.23,
+    "camera_samples": [
+      7060,
+      7060
+    ],
+    "actual_adc_reads": [
+      21180,
+      21180
+    ],
+    "adc_times_equal": true,
+    "motion_sources": [
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      },
+      {
+        "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+        "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+      }
+    ],
+    "geometry_identity": {
+      "exotica-host-scenes.csv": {
+        "rows": 6953,
+        "fields": [
+          "frame",
+          "scene",
+          "quads",
+          "instances",
+          "multiplier",
+          "hash",
+          "guest_cycles"
+        ],
+        "passed": true
+      },
+      "exotica-future-gpu.csv": {
+        "rows": 6953,
+        "fields": [
+          "scene",
+          "frame",
+          "mode",
+          "multiplier",
+          "page",
+          "quads",
+          "vertices",
+          "hash"
+        ],
+        "passed": true
+      }
+    },
+    "report_sha256": "c6280442948bf4ef9d01ff91cca5c7fdbafcc31b153d406c48ec6a6dfcafae8d",
+    "scope": "Performance with ordinary session snapshots, motion and summary timing logs; no GL/model/private readbacks. No new visual or full-speed acceptance by this passed field.",
+    "timing_qualification": "A bounded repository search overlapped this repeat"
+  }
+]

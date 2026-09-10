@@ -1,0 +1,6 @@
+{
+  "commit": "9edda839517fa8966bca33d998b999c7b0c3581b",
+  "candidate_sha256": "ca7e814bcb62efa15e2192c857bd4dd24a69fbe8660a895b1a2aafcc5917105c",
+  "personal_sha256": "87d04de42d10a731f1d951a1fa378d784059d862063b224764ca6294fa5fe9d8",
+  "scope": "Existing native candidate unchanged; new fade helper is standalone, not integrated"
+}

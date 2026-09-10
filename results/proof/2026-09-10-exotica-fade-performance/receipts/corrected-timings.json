@@ -1,0 +1,872 @@
+{
+  "scope": "Host phase durations; mirror submission time is cumulative in native CSV and is differenced here. Not GPU execution time.",
+  "runs": {
+    "future-performance-stock": {
+      "speed": 99.99,
+      "phases": {},
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.9997225707274159,
+          "host_frame_ms": {
+            "p50": 17.507650000002428,
+            "p95": 18.38743500000035,
+            "p99": 19.213621999999333,
+            "worst": 22.253700000000265
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9999911660168493,
+          "host_frame_ms": {
+            "p50": 17.48669999999919,
+            "p95": 18.35966000001008,
+            "p99": 19.30821600001167,
+            "worst": 33.39049999999588
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.9999887168881303,
+          "host_frame_ms": {
+            "p50": 17.482999999998583,
+            "p95": 18.39190500000285,
+            "p99": 19.3061339999943,
+            "worst": 29.742300000009436
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.9999851974769804,
+          "host_frame_ms": {
+            "p50": 17.482749999999214,
+            "p95": 18.348715000001903,
+            "p99": 19.143354999986855,
+            "worst": 20.792400000004818
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 1.0002145480405762,
+          "host_frame_ms": {
+            "p50": 17.494300000009844,
+            "p95": 18.398820000014382,
+            "p99": 19.164477999999576,
+            "worst": 20.648200000010775
+          }
+        }
+      ]
+    },
+    "future-performance-mirror": {
+      "speed": 99.99,
+      "phases": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "kind": "delta of cumulative submission timer",
+          "count": 8849,
+          "mean": 0.7786755565600633,
+          "p99": 3.8519999999999417,
+          "maximum": 33.70000000000073,
+          "total": 6890.5
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0,
+          "total": 0.0
+        }
+      },
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.9998337090563992,
+          "host_frame_ms": {
+            "p50": 17.481450000001786,
+            "p95": 18.446804999997468,
+            "p99": 19.356650999999516,
+            "worst": 20.89639999999804
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9998567787676781,
+          "host_frame_ms": {
+            "p50": 17.456599999995603,
+            "p95": 18.44509000000727,
+            "p99": 19.328906999992057,
+            "worst": 76.87549999999987
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 1.000044131835613,
+          "host_frame_ms": {
+            "p50": 17.466450000000577,
+            "p95": 18.412209999995355,
+            "p99": 19.315372000002355,
+            "worst": 79.5659999999998
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.9999117792197485,
+          "host_frame_ms": {
+            "p50": 17.496050000005425,
+            "p95": 18.382750000023407,
+            "p99": 19.260197999996933,
+            "worst": 19.968699999992623
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 1.0000543980641396,
+          "host_frame_ms": {
+            "p50": 17.495249999996076,
+            "p95": 18.498190000003945,
+            "p99": 19.1542569999973,
+            "worst": 20.846800000015264
+          }
+        }
+      ]
+    },
+    "future-performance-observe3": {
+      "speed": 90.77,
+      "phases": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "kind": "delta of cumulative submission timer",
+          "count": 8849,
+          "mean": 0.7781331223867104,
+          "p99": 3.5,
+          "maximum": 34.20000000000027,
+          "total": 6885.7
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0,
+          "total": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 65.33431612253703,
+          "p99": 151.94399999999987,
+          "maximum": 1250.0,
+          "total": 454269.5
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1840.9650654393786,
+          "p99": 5132.639999999996,
+          "maximum": 5561.8,
+          "total": 12800230.1
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 642.95991658277,
+          "p99": 2100.871999999996,
+          "maximum": 2611.2,
+          "total": 4470500.3
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.3358550266072199,
+          "p99": 1.1479999999999564,
+          "maximum": 6.8,
+          "total": 2335.2
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 764.7128289946785,
+          "p99": 2689.996,
+          "maximum": 57277.0,
+          "total": 5317048.3
+        },
+        "exotica-host-materials.csv:stage_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 28.480857183949368,
+          "p99": 54.0,
+          "maximum": 20263.5,
+          "total": 198027.39999999997
+        },
+        "exotica-host-materials.csv:encode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 6.927844096073637,
+          "p99": 16.647999999999957,
+          "maximum": 5431.5,
+          "total": 48169.3
+        },
+        "exotica-host-materials.csv:queue_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 708.841536027614,
+          "p99": 2608.6159999999995,
+          "maximum": 12469.7,
+          "total": 4928575.2
+        },
+        "exotica-host-materials.csv:commit_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 13.010081979001871,
+          "p99": 19.4,
+          "maximum": 18596.7,
+          "total": 90459.1
+        },
+        "exotica-host-materials-gpu.csv:decode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 35.876139795771614,
+          "p99": 73.89599999999992,
+          "maximum": 22348.7,
+          "total": 249446.80000000002
+        },
+        "exotica-host-materials-gpu.csv:upload_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 278.45706889112614,
+          "p99": 569.6799999999909,
+          "maximum": 126186.0,
+          "total": 1936112.0
+        },
+        "exotica-host-materials-gpu.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.24058679706601468,
+          "p99": 1.4,
+          "maximum": 11.0,
+          "total": 1672.8000000000002
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1236.1592981446859,
+          "p99": 3334.948,
+          "maximum": 127081.9,
+          "total": 8595015.600000001
+        }
+      },
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.8836193021402543,
+          "host_frame_ms": {
+            "p50": 17.75929999999981,
+            "p95": 25.526300000003843,
+            "p99": 26.653024999999673,
+            "worst": 75.38860000000014
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.944095867570553,
+          "host_frame_ms": {
+            "p50": 18.04524999999302,
+            "p95": 21.32651000000578,
+            "p99": 22.466222000002602,
+            "worst": 34.478900000010526
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.862588727826772,
+          "host_frame_ms": {
+            "p50": 20.068199999997205,
+            "p95": 23.816199999997423,
+            "p99": 25.295391999998742,
+            "worst": 29.591199999998707
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.8169773025601804,
+          "host_frame_ms": {
+            "p50": 22.30629999999678,
+            "p95": 24.92587000001123,
+            "p99": 26.03403299999485,
+            "worst": 27.665600000005952
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.9901933881704824,
+          "host_frame_ms": {
+            "p50": 17.510999999998944,
+            "p95": 18.708170000012103,
+            "p99": 20.298001000003296,
+            "worst": 87.24399999999832
+          }
+        }
+      ]
+    },
+    "future-performance-draw2": {
+      "speed": 94.69,
+      "phases": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "kind": "delta of cumulative submission timer",
+          "count": 8849,
+          "mean": 0.7864617470900667,
+          "p99": 3.599999999999909,
+          "maximum": 32.5,
+          "total": 6959.4
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0,
+          "total": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 63.74179490867251,
+          "p99": 151.1959999999999,
+          "maximum": 1276.7,
+          "total": 443196.69999999995
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1343.9433194304618,
+          "p99": 3671.411999999997,
+          "maximum": 4420.4,
+          "total": 9344437.9
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 391.448799079534,
+          "p99": 1346.323999999997,
+          "maximum": 1842.9,
+          "total": 2721743.5
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.34019847547821086,
+          "p99": 1.1,
+          "maximum": 23.7,
+          "total": 2365.4
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 462.2321875449446,
+          "p99": 1665.9279999999974,
+          "maximum": 58706.8,
+          "total": 3213900.4
+        },
+        "exotica-host-materials.csv:stage_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 26.065712642025023,
+          "p99": 45.4,
+          "maximum": 20678.5,
+          "total": 181234.9
+        },
+        "exotica-host-materials.csv:encode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 6.425715518481231,
+          "p99": 14.095999999999913,
+          "maximum": 5646.3,
+          "total": 44678.0
+        },
+        "exotica-host-materials.csv:queue_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 409.8990939162951,
+          "p99": 1591.9879999999998,
+          "maximum": 12777.7,
+          "total": 2850028.4
+        },
+        "exotica-host-materials.csv:commit_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 13.0118366172875,
+          "p99": 20.147999999999957,
+          "maximum": 19059.3,
+          "total": 90471.29999999999
+        },
+        "exotica-host-materials-gpu.csv:decode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 33.828548827844095,
+          "p99": 63.39599999999991,
+          "maximum": 23182.3,
+          "total": 235209.9
+        },
+        "exotica-host-materials-gpu.csv:upload_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 230.13851574859774,
+          "p99": 477.81599999999924,
+          "maximum": 78600.2,
+          "total": 1600153.1
+        },
+        "exotica-host-materials-gpu.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.24508845102833313,
+          "p99": 1.4,
+          "maximum": 23.6,
+          "total": 1704.1000000000001
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1207.5171724435493,
+          "p99": 4025.4079999999926,
+          "maximum": 79124.7,
+          "total": 8395866.899999999
+        }
+      },
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.9201984297018908,
+          "host_frame_ms": {
+            "p50": 17.778649999996787,
+            "p95": 22.76874500000261,
+            "p99": 23.725630000004685,
+            "worst": 76.85650000000166
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.944470965275177,
+          "host_frame_ms": {
+            "p50": 18.01269999999988,
+            "p95": 21.399185000005616,
+            "p99": 22.324899999999914,
+            "worst": 72.6390999999893
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.9347805364963863,
+          "host_frame_ms": {
+            "p50": 18.541899999995337,
+            "p95": 21.49850500000241,
+            "p99": 23.56763800000806,
+            "worst": 28.117399999999293
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.9079086648606525,
+          "host_frame_ms": {
+            "p50": 19.663500000000056,
+            "p95": 21.20120999998676,
+            "p99": 22.325297000003133,
+            "worst": 24.83430000000908
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.9981058539438746,
+          "host_frame_ms": {
+            "p50": 17.49670000000947,
+            "p95": 18.685595000006572,
+            "p99": 19.418230999989415,
+            "worst": 22.07519999998908
+          }
+        }
+      ]
+    },
+    "future-performance-draw3": {
+      "speed": 90.79,
+      "phases": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "kind": "delta of cumulative submission timer",
+          "count": 8849,
+          "mean": 0.7705616453836591,
+          "p99": 3.599999999999909,
+          "maximum": 14.900000000000546,
+          "total": 6818.7
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0,
+          "total": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 63.85366029052208,
+          "p99": 148.24799999999996,
+          "maximum": 1217.0,
+          "total": 443974.5
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1828.3539335538617,
+          "p99": 5106.532,
+          "maximum": 5723.8,
+          "total": 12712544.9
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 641.4837336401554,
+          "p99": 2085.4679999999994,
+          "maximum": 2544.1,
+          "total": 4460236.4
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.3918596289371495,
+          "p99": 1.4,
+          "maximum": 13.7,
+          "total": 2724.6000000000004
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 761.3352509708039,
+          "p99": 2662.2599999999993,
+          "maximum": 58394.9,
+          "total": 5293564.0
+        },
+        "exotica-host-materials.csv:stage_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 28.568114482956993,
+          "p99": 54.44799999999996,
+          "maximum": 21205.2,
+          "total": 198634.09999999998
+        },
+        "exotica-host-materials.csv:encode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 6.888968790450164,
+          "p99": 16.0,
+          "maximum": 5416.3,
+          "total": 47898.99999999999
+        },
+        "exotica-host-materials.csv:queue_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 705.3830289083849,
+          "p99": 2584.0879999999984,
+          "maximum": 12432.2,
+          "total": 4904528.2
+        },
+        "exotica-host-materials.csv:commit_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 13.147360851431038,
+          "p99": 19.447999999999954,
+          "maximum": 18858.8,
+          "total": 91413.6
+        },
+        "exotica-host-materials-gpu.csv:decode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 35.79788580468862,
+          "p99": 67.5,
+          "maximum": 22891.3,
+          "total": 248902.69999999998
+        },
+        "exotica-host-materials-gpu.csv:upload_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 238.90861498633686,
+          "p99": 501.7719999999994,
+          "maximum": 80466.3,
+          "total": 1661131.6
+        },
+        "exotica-host-materials-gpu.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.22895153171292967,
+          "p99": 1.3,
+          "maximum": 17.5,
+          "total": 1591.9
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1869.376873292104,
+          "p99": 5527.655999999999,
+          "maximum": 81885.9,
+          "total": 12997777.399999999
+        }
+      },
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.8829501808653976,
+          "host_frame_ms": {
+            "p50": 17.742399999999492,
+            "p95": 25.55718000000482,
+            "p99": 26.43675000000279,
+            "worst": 76.31529999999742
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9448679508775106,
+          "host_frame_ms": {
+            "p50": 17.999899999999514,
+            "p95": 21.447515000003392,
+            "p99": 22.662246000010953,
+            "worst": 33.517699999990214
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.8621598765086518,
+          "host_frame_ms": {
+            "p50": 19.97654999999554,
+            "p95": 23.793639999994554,
+            "p99": 25.428315000001618,
+            "worst": 83.24080000001288
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.8160558919155635,
+          "host_frame_ms": {
+            "p50": 22.30740000000253,
+            "p95": 24.90735000000086,
+            "p99": 25.90997700002191,
+            "worst": 27.396799999991117
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.997520194752659,
+          "host_frame_ms": {
+            "p50": 17.533999999997718,
+            "p95": 18.481804999996143,
+            "p99": 19.95143200000399,
+            "worst": 20.69529999999986
+          }
+        }
+      ]
+    },
+    "future-performance-draw3-repeat": {
+      "speed": 90.23,
+      "phases": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "kind": "delta of cumulative submission timer",
+          "count": 8849,
+          "mean": 0.7883715674087468,
+          "p99": 3.5,
+          "maximum": 61.10000000000002,
+          "total": 6976.3
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0,
+          "total": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 66.2757514741838,
+          "p99": 169.24399999999986,
+          "maximum": 1272.7,
+          "total": 460815.3
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1874.591629512441,
+          "p99": 5123.671999999996,
+          "maximum": 5973.3,
+          "total": 13034035.600000001
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 641.4170142384583,
+          "p99": 2086.263999999999,
+          "maximum": 2792.4,
+          "total": 4459772.5
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.4058104415360276,
+          "p99": 1.3,
+          "maximum": 22.1,
+          "total": 2821.6
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 829.7927944772041,
+          "p99": 3215.407999999999,
+          "maximum": 61481.2,
+          "total": 5769549.3
+        },
+        "exotica-host-materials.csv:stage_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 28.95272544225514,
+          "p99": 55.59199999999982,
+          "maximum": 21294.8,
+          "total": 201308.3
+        },
+        "exotica-host-materials.csv:encode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 7.031641018265497,
+          "p99": 16.59599999999991,
+          "maximum": 5924.5,
+          "total": 48891.0
+        },
+        "exotica-host-materials.csv:queue_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 772.9307205522796,
+          "p99": 3135.8,
+          "maximum": 13243.8,
+          "total": 5374187.3
+        },
+        "exotica-host-materials.csv:commit_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 13.362922479505249,
+          "p99": 21.995999999999913,
+          "maximum": 20490.4,
+          "total": 92912.4
+        },
+        "exotica-host-materials-gpu.csv:decode_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 36.27457212713937,
+          "p99": 69.78799999999974,
+          "maximum": 24531.2,
+          "total": 252217.10000000003
+        },
+        "exotica-host-materials-gpu.csv:upload_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 236.8414928807709,
+          "p99": 520.4879999999987,
+          "maximum": 79246.5,
+          "total": 1646758.9
+        },
+        "exotica-host-materials-gpu.csv:snapshot_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 0.24582194736085147,
+          "p99": 1.4,
+          "maximum": 18.2,
+          "total": 1709.2000000000003
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "kind": "event duration",
+          "count": 6953,
+          "mean": 1927.2523371206673,
+          "p99": 5902.083999999998,
+          "maximum": 81115.4,
+          "total": 13400185.5
+        }
+      },
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.8816792077994001,
+          "host_frame_ms": {
+            "p50": 17.785199999998724,
+            "p95": 25.68106999999884,
+            "p99": 26.69158199999977,
+            "worst": 79.50509999999866
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9436955004739213,
+          "host_frame_ms": {
+            "p50": 18.028250000000412,
+            "p95": 21.389340000009582,
+            "p99": 22.341460999993643,
+            "worst": 77.23500000000172
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.8621367199762132,
+          "host_frame_ms": {
+            "p50": 20.06619999999515,
+            "p95": 23.754620000002546,
+            "p99": 25.4017159999978,
+            "worst": 27.745400000000586
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.7934399030002393,
+          "host_frame_ms": {
+            "p50": 23.133550000011383,
+            "p95": 25.947870000010198,
+            "p99": 27.14762199998404,
+            "worst": 30.83809999998266
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.992528201519347,
+          "host_frame_ms": {
+            "p50": 17.553100000000654,
+            "p95": 18.72932500001241,
+            "p99": 20.214225999993687,
+            "worst": 22.941599999995788
+          }
+        }
+      ]
+    }
+  }
+}

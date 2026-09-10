@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 Exotica fade and measured cost — ACTIVE
+
+Read docs/reviews/2026-09-10-exotica-fade-and-performance.md. Native9ed remains
+unchanged and separate; personal87d/v0.5.0 unchanged. Six full Amazon performance
+runs without GL/model/private readbacks preserve7060camera/21180actualADCtimes.
+Stock/mirror99.99%, observe3=90.77%, draw2=94.69%, draw3=90.79%, repeat90.23%.
+Repeat had a bounded repository-search overlap; first draw/observe independently
+establish the gap. Three draws preserve6953ordered scene fingerprints each.
+mirror_us is CUMULATIVE submission time: initial four summaries misinterpreted it;
+corrected extraction retained separately. Assembly/hash/packet work are major
+costs; do not blame wide-depth GPU arithmetic or add overlapping phase timers.
+
+Canonical native/exotica_fade.h, analyzer, independent Python and bounded Lua
+probe remain STANDALONE. Fresh HK6000 and Amazon8860 control/probe pairs preserve
+original camera/ADCtimes and84completed4K (21 each). Final native/Python match
+489HK+2539Amazon actual writes, including103completions. No host-fade/handover
+policy yet. Missing analyzer DLL PATH failure and malformed trailing-operand
+acceptance failure retained; both corrected.633native fade vectors and10input
+rejection cases PASS.351Python/no skips,48native/136commands PASS at510-file
+f21d7e7834f14b1c67f750bdae9b0e6ce3edf41773f9a0f47a9e5519c0a7a5c9.
+Proof2026-09-10-exotica-fade-performance checks hashes/receipt consistency;
+actual raw fade/replays/pixels/builds remain receipts. Raw game bytes stayLOCAL.
+
+NEXT continue directly: LOCAL fade-owner-probe.lua maps actual allocation to
+fade, not yet run. LOCAL future-packet-bench exact five liveXWD comparisons show
+45–61% isolated encoding-cost reduction using bounded fixed-size serialization;
+not promoted, no live speed claim. Model-validation-bench gave no consistent
+benefit and is rejected. Both under results/diagnostics/exotica-amazon-20260909.
+Promote useful serialization separately, verify source/packet bounds, build native
+SEPARATELY and renew live/4K/original-route checks. Then host fade/identity/handover.
+USA fullspeed, World2.5roads, attended OffRoad still open. No deployment/release/
+hostedCI/physicalFFB/Worldtuning/menu removal. Rig check; serial emulators/GPU;
+wait for local_checks process to EXIT before launching a game. No builds/exports/
+broad scans during timed playback. Keep working; heartbeat recovery only.
+
 ## September 10 four-game status and dense Exotica presentation — ACTIVE
 
 Maintainer asked for an up-to-date parity assessment. Read

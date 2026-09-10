@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "failures": [
+    {
+      "case": "fade-canonical-hk-probe",
+      "stage": "post-replay native analyzer",
+      "exit_code": 3221225781,
+      "error": "native fade analyzer exit3221225781",
+      "cause": "Required MinGW runtime DLL directory absent from analyzer PATH",
+      "resolution": "Set the analyzer PATH after the completed replay, then verify the same retained recording; no replay output was replaced",
+      "replay_itself_passed": true
+    },
+    {
+      "case": "fade analyzer malformed trailing input",
+      "error": "Analyzer accepted one trailing operand after a valid row",
+      "initial_exit_code": 0,
+      "expected_exit_code": 2,
+      "retained_log": "fade-analyzer-truncated-input-initial-failure.log",
+      "resolution": "Check clean end-of-input before reading a complete three-operand row; add malformed/domain/budget process tests"
+    }
+  ]
+}

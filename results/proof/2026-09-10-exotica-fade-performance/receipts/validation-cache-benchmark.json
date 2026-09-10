@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "summary": [
+    {
+      "frame": 3900,
+      "before": 1679.305,
+      "after": 1697.03,
+      "change_percent": 1.05549617252374
+    },
+    {
+      "frame": 5072,
+      "before": 2900.335,
+      "after": 2907.065,
+      "change_percent": 0.23204216064696137
+    },
+    {
+      "frame": 5644,
+      "before": 3169.98,
+      "after": 3185.2700000000004,
+      "change_percent": 0.48233742799641544
+    },
+    {
+      "frame": 6330,
+      "before": 676.79,
+      "after": 663.565,
+      "change_percent": -1.954077335658022
+    },
+    {
+      "frame": 7187,
+      "before": 3910.3450000000003,
+      "after": 3856.02,
+      "change_percent": -1.3892636071753284
+    }
+  ],
+  "scope": "LOCAL exact captured-scene comparison and isolated 100-assembly batches. Not live performance acceptance; all model caches remain local to one scene.",
+  "raw_report_sha256": "838a6f45bd005dfcd4679bdbab973e94ebc27ad3eaad3040373c102604233370",
+  "decision": "No consistent benefit; keep experiment local and do not change the renderer"
+}

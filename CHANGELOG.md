@@ -12,8 +12,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - Exotica candidates address Amazon palette flicker, a stale margin rectangle
   and measured black ground wedges. Performance and broader coverage remain open.
 - Exotica private wider-depth rendering now accepts independently checked future
-  geometry and material packets. Dense presentation comparisons are in progress;
-  sampled 3× images currently match 2× despite additional geometry.
+  geometry and material packets. Dense Amazon presentation comparisons find 33
+  changed 3×-over-2× frames among 233 samples; the 3× repeat matches all 233.
+  Quiet performance remains about 95% at 2× and 91% at 3×. Useful visual gains,
+  fade transitions and full-speed acceptance remain unfinished.
 - Full recorded drives, original input/camera timing and graphics-resource checks,
   independent geometry/pixel comparisons and repeat runs support these candidates.
 - Explicit host coverage/vertex-batch trials, with a targeted tunnel-seam

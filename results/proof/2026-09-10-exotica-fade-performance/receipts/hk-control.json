@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "route": "hk",
+  "mode": "control",
+  "motion": {
+    "schema": 1,
+    "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+    "passed": true,
+    "camera_equal": true,
+    "same_camera_interval": true,
+    "camera_samples": [
+      4191,
+      4191
+    ],
+    "camera_intervals": [
+      [
+        1800,
+        5990
+      ],
+      [
+        1800,
+        5990
+      ]
+    ],
+    "first_camera_difference_frame": null,
+    "camera_equal_frame_intervals": [
+      [
+        1800,
+        5990
+      ]
+    ],
+    "camera_equal_frames": 4191,
+    "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+    "actual_adc_reads": [
+      12573,
+      12573
+    ],
+    "adc_frame_value_pc_equal": true,
+    "adc_address_compared": true,
+    "first_adc_frame_value_pc_difference": null,
+    "adc_times_equal": true,
+    "first_adc_time_difference_index": null,
+    "sources": [
+      {
+        "exotica-camera.csv": "5841103c9c094281d7cf2e0b905c33a54133a475dc672ee72d07fd5ef207640e",
+        "exotica-adc.csv": "595de325a3ec844a01632cbdc7cbd71abbc11a732f87df5a4d5a36b4cfa73fd7"
+      },
+      {
+        "exotica-camera.csv": "5841103c9c094281d7cf2e0b905c33a54133a475dc672ee72d07fd5ef207640e",
+        "exotica-adc.csv": "595de325a3ec844a01632cbdc7cbd71abbc11a732f87df5a4d5a36b4cfa73fd7"
+      }
+    ]
+  },
+  "probe_sources": {
+    "lua\\exotica_motion_trace.lua": "ef4e8f2b0260c0ca658baa5767773d46cf9eefb7fa94ee21afd3a2e6c0908d76",
+    "lua\\exotica_fade_capture.lua": "c0152eb1995b0998277732c749ae982cf6de3769b6d21e87bae31d4962c185af"
+  },
+  "old_gl": {
+    "scope": "completed GL frame pixels",
+    "passed": true,
+    "frames": 21,
+    "different_frames": [],
+    "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-zeus-models-20260909\\state-canonical\\run\\gl-snap",
+    "candidate": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\fade-canonical-hk-control\\run\\gl-snap",
+    "size_mismatches": [],
+    "pixel_changes": []
+  }
+}
