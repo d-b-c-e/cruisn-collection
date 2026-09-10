@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "returncode": 0,
+  "stderr": "",
+  "files": 3306,
+  "note": "Initial optional alternates reference contained CRLF and was ignored by Git; original warning log retained. Corrected LF reference; complete tree diff recomputed identically without warnings."
+}

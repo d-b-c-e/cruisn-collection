@@ -1,0 +1,29 @@
+{
+  "commits": [
+    {
+      "sha": "f935372aea834cab1ddf1402292a56940c49faa7",
+      "title": "acorn/riscpc: add quadrature mouse (#16095)"
+    },
+    {
+      "sha": "67e1caff6ad80cb5ccb0072ca9b0e6778ed01afa",
+      "title": "misc/3do_madam.cpp: mask woffset10 against 10 bits in packed CELs"
+    },
+    {
+      "sha": "7a8b22c8da43512787c0d841ca5439c16deb3224",
+      "title": "acorn/riscpc.cpp: fix quadrature mouse buttons handling"
+    }
+  ],
+  "files": [
+    "hash/3do.xml",
+    "src/devices/machine/arm_iomd.cpp",
+    "src/devices/machine/arm_iomd.h",
+    "src/devices/machine/cr560b.cpp",
+    "src/devices/machine/quadmouse.cpp",
+    "src/devices/machine/quadmouse.h",
+    "src/mame/acorn/riscpc.cpp",
+    "src/mame/acorn/riscpc_mouse.cpp",
+    "src/mame/acorn/riscpc_mouse.h",
+    "src/mame/misc/3do_madam.cpp"
+  ],
+  "status": "ahead"
+}

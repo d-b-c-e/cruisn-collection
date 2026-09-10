@@ -1,0 +1,11 @@
+{
+  "scope": "Recomputes archived PR path coverage and selection. Network/Git execution is a receipt, not repeated by this verifier.",
+  "files": {
+    "all-prs.json": "00e830c2a91c38004badd19eb2ec8bb2cd594e3343a938595d6b0e8908edbb11",
+    "summary.json": "52ff7faabe112b21510de21af7ef8f05df9baa752e0ab19205638dd9cc518479",
+    "large-pr-git.json": "ff1862653d2640b3b1f5cded6872e2ff5e71a541fe70b8c016bb36611fb25e66",
+    "large-pr-recheck.json": "3f4b9e7fa8939a95728e8e504331a0285ecddb73eb3934f718d4c929d412840b",
+    "large-pr-truncated-api.json": "985e4d34901cd013d30e9d4b1c901fadaeaf570ed420ad0fe7616da46fc101ec",
+    "main-changes.json": "6b47466bebbfd4395c0b42ea7e6a4fd13b3a1bef275475f2bdce4a6b21011591"
+  }
+}

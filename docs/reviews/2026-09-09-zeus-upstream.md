@@ -1,8 +1,8 @@
 # Zeus upstream review — September 9, 2026
 
 MAME's current development branch is named `master`. This review checked
-`17d29108c100ff26bf9f9bbe21553ab9034bd8d7` and all **291 open pull requests**,
-including every page of changed filenames. Four open PRs touch Zeus paths.
+`17d29108c100ff26bf9f9bbe21553ab9034bd8d7` and all **291 open pull requests**.
+The initial filename scan had one API truncation, corrected below. Four open PRs touch Zeus paths.
 This is a source review, not evidence that an upstream change fixes Amazon.
 The personal v0.5.0 executable and published releases remain unchanged.
 
@@ -15,6 +15,30 @@ PR heads below remain unchanged. Changed PR file lists were refetched with
 pagination; the comparison and refresh receipts remain local under the same
 upstream diagnostic directory. The first final comparison request failed with a
 TLS handshake timeout; a read-only retry succeeded.
+
+The **12:41UTC September10** refresh covers master
+`7a8b22c8da43512787c0d841ca5439c16deb3224` and **291 open PRs**. Since10:49,
+[#16095](https://github.com/mamedev/mame/pull/16095) merged and gained a mouse-button
+follow-up; a separate commit changes3DO packed CEL offsets. None touches Zeus,
+the shared C3x core or polygon renderer. The four Zeus PR heads remain unchanged.
+
+This refresh corrected an overstatement in the earlier audit. Both REST and
+GraphQL stopped at3000 files for [#13054](https://github.com/mamedev/mame/pull/13054),
+although its metadata reports3301 changed files. Following every API page did
+**not** cover that entire PR. A separate bare Git tree comparison from merge base
+`12401f1429b425e93e595369b5a52ae4c7e84cbf` to head
+`187390227b20990057d343b319fa1cfd0ad4a1b3` now covers3306 paths, including both
+ends of renames. All3000 API paths are present; the306 additional paths add no
+Zeus, C3x or shared polygon changes. They include compiled BGFX shaders, build
+configuration and BGFX/debugger integration. Our enhanced Zeus renderer uses
+its own OpenGL path; this broad BGFX update is not a demonstrated Amazon fix.
+
+The first complete-tree fetch ignored an optional object-store reference because
+its line ending was incompatible; the trees still fetched successfully. The
+reference was corrected and the full path diff recomputed identically without
+warnings. API truncation, GraphQL502 and initial fetch logs remain local.
+`results/proof/2026-09-10-upstream-refresh` verifies the archived complete path
+inventory and relevant-PR selection. Git execution remains a hash-bound receipt.
 
 ## Isolated candidate checkpoint
 

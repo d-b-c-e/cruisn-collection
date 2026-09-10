@@ -1,0 +1,84 @@
+{
+  "checked_utc": "2026-09-10T12:41:13.762854+00:00",
+  "head": "7a8b22c8da43512787c0d841ca5439c16deb3224",
+  "previous_head": "b64d67f5b51bc301602a75088873698dca8730d9",
+  "open_prs": 291,
+  "changed_prs": [
+    3735,
+    5995,
+    6072,
+    6515,
+    6519,
+    6718,
+    7225,
+    7239,
+    7247,
+    7438,
+    7577,
+    7670,
+    7788,
+    8491,
+    8805,
+    8924,
+    8929,
+    8963,
+    9368,
+    9387,
+    9661,
+    9685,
+    9765,
+    9774,
+    9908,
+    10017,
+    10097,
+    10148,
+    10168,
+    10169,
+    10222,
+    10329,
+    10418,
+    10533,
+    10632,
+    10714,
+    10727
+  ],
+  "matched": [
+    {
+      "number": 6515,
+      "title": "Allow embedded filesystems. [O. Galibert]",
+      "head": "24f7615cd676a4511582afc0177da3160a7c662d",
+      "url": "https://github.com/mamedev/mame/pull/6515",
+      "files": [
+        "src/mame/drivers/midzeus.cpp"
+      ]
+    },
+    {
+      "number": 13138,
+      "title": "DIP switch validation updates",
+      "head": "ac80ac9d18f714a2eb2de7ba72389eeaf6cc2b41",
+      "url": "https://github.com/mamedev/mame/pull/13138",
+      "files": [
+        "src/mame/midway/midzeus.cpp"
+      ]
+    },
+    {
+      "number": 16021,
+      "title": "itech/itech32: Drivers Edge wheel output",
+      "head": "67e1d2311f150e6b496001ab5366d6a603b5daca",
+      "url": "https://github.com/mamedev/mame/pull/16021",
+      "files": [
+        "src/mame/williams/midzeus.cpp"
+      ]
+    },
+    {
+      "number": 16094,
+      "title": "video/zeus2.cpp: improve depth and blending",
+      "head": "54b7ec0720e1d3a3d26a2e881b06628f78732837",
+      "url": "https://github.com/mamedev/mame/pull/16094",
+      "files": [
+        "src/devices/video/zeus2.cpp"
+      ]
+    }
+  ],
+  "file_pages_complete": true
+}
