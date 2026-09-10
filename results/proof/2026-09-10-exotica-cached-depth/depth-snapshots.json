@@ -1,0 +1,469 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "frame": 5000,
+      "mode": "on",
+      "passed": true,
+      "files": {
+        "quads": [
+          "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531",
+          "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531"
+        ],
+        "instances": [
+          "6dea3a218548b18516a0d955a076363fdb0c9f02123dc8adc87281daf5753066",
+          "6dea3a218548b18516a0d955a076363fdb0c9f02123dc8adc87281daf5753066"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 7147,
+        "instances": 790,
+        "quads": 4854,
+        "viewport_quads": 4740,
+        "model_words_read": 108830,
+        "selected": 5723,
+        "unsupported_transform": 0,
+        "culled_distance": 4208,
+        "culled_bounds": 725,
+        "depth_tests": 5723,
+        "depth_verified": 0,
+        "depth_skipped": 4208,
+        "maximum_depth": 24394356,
+        "source_microseconds": 1405,
+        "assembly_microseconds": 5606
+      }
+    },
+    {
+      "frame": 5000,
+      "mode": "verify",
+      "passed": true,
+      "files": {
+        "quads": [
+          "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531",
+          "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531"
+        ],
+        "instances": [
+          "6dea3a218548b18516a0d955a076363fdb0c9f02123dc8adc87281daf5753066",
+          "6dea3a218548b18516a0d955a076363fdb0c9f02123dc8adc87281daf5753066"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 7147,
+        "instances": 790,
+        "quads": 4854,
+        "viewport_quads": 4740,
+        "model_words_read": 108830,
+        "selected": 5723,
+        "unsupported_transform": 0,
+        "culled_distance": 4208,
+        "culled_bounds": 725,
+        "depth_tests": 5723,
+        "depth_verified": 5723,
+        "depth_skipped": 0,
+        "maximum_depth": 24394356,
+        "source_microseconds": 1362,
+        "assembly_microseconds": 5082
+      }
+    },
+    {
+      "frame": 5990,
+      "mode": "on",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026",
+          "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026"
+        ],
+        "instances": [
+          "c806737daf5ee0b02639430a68f28b82dfecd5457d8af6cbdde40738bfc6a57d",
+          "c806737daf5ee0b02639430a68f28b82dfecd5457d8af6cbdde40738bfc6a57d"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 7147,
+        "instances": 78,
+        "quads": 880,
+        "viewport_quads": 452,
+        "model_words_read": 76668,
+        "selected": 5244,
+        "unsupported_transform": 0,
+        "culled_distance": 4426,
+        "culled_bounds": 740,
+        "depth_tests": 5244,
+        "depth_verified": 0,
+        "depth_skipped": 4426,
+        "maximum_depth": 16231789,
+        "source_microseconds": 1313,
+        "assembly_microseconds": 2357
+      }
+    },
+    {
+      "frame": 5990,
+      "mode": "verify",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026",
+          "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026"
+        ],
+        "instances": [
+          "c806737daf5ee0b02639430a68f28b82dfecd5457d8af6cbdde40738bfc6a57d",
+          "c806737daf5ee0b02639430a68f28b82dfecd5457d8af6cbdde40738bfc6a57d"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 7147,
+        "instances": 78,
+        "quads": 880,
+        "viewport_quads": 452,
+        "model_words_read": 76668,
+        "selected": 5244,
+        "unsupported_transform": 0,
+        "culled_distance": 4426,
+        "culled_bounds": 740,
+        "depth_tests": 5244,
+        "depth_verified": 5244,
+        "depth_skipped": 0,
+        "maximum_depth": 16231789,
+        "source_microseconds": 1384,
+        "assembly_microseconds": 2731
+      }
+    },
+    {
+      "frame": 5072,
+      "mode": "on",
+      "passed": true,
+      "files": {
+        "quads": [
+          "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e",
+          "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e"
+        ],
+        "instances": [
+          "efba3aeeaf686241806750fef3757146be5b7ae58efc5caf66003b31709f5a13",
+          "efba3aeeaf686241806750fef3757146be5b7ae58efc5caf66003b31709f5a13"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 94,
+        "quads": 538,
+        "viewport_quads": 401,
+        "model_words_read": 155734,
+        "selected": 2465,
+        "unsupported_transform": 0,
+        "culled_distance": 854,
+        "culled_bounds": 1517,
+        "depth_tests": 2465,
+        "depth_verified": 0,
+        "depth_skipped": 854,
+        "maximum_depth": 24417420,
+        "source_microseconds": 966,
+        "assembly_microseconds": 3979
+      }
+    },
+    {
+      "frame": 5072,
+      "mode": "verify",
+      "passed": true,
+      "files": {
+        "quads": [
+          "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e",
+          "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e"
+        ],
+        "instances": [
+          "efba3aeeaf686241806750fef3757146be5b7ae58efc5caf66003b31709f5a13",
+          "efba3aeeaf686241806750fef3757146be5b7ae58efc5caf66003b31709f5a13"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 94,
+        "quads": 538,
+        "viewport_quads": 401,
+        "model_words_read": 155734,
+        "selected": 2465,
+        "unsupported_transform": 0,
+        "culled_distance": 854,
+        "culled_bounds": 1517,
+        "depth_tests": 2465,
+        "depth_verified": 2465,
+        "depth_skipped": 0,
+        "maximum_depth": 24417420,
+        "source_microseconds": 971,
+        "assembly_microseconds": 3977
+      }
+    },
+    {
+      "frame": 5978,
+      "mode": "on",
+      "passed": true,
+      "files": {
+        "quads": [
+          "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b",
+          "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b"
+        ],
+        "instances": [
+          "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4",
+          "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 589,
+        "quads": 7974,
+        "viewport_quads": 7941,
+        "model_words_read": 101170,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 957,
+        "culled_bounds": 278,
+        "depth_tests": 1824,
+        "depth_verified": 0,
+        "depth_skipped": 957,
+        "maximum_depth": 50286264,
+        "source_microseconds": 929,
+        "assembly_microseconds": 4663
+      }
+    },
+    {
+      "frame": 5978,
+      "mode": "verify",
+      "passed": true,
+      "files": {
+        "quads": [
+          "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b",
+          "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b"
+        ],
+        "instances": [
+          "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4",
+          "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 589,
+        "quads": 7974,
+        "viewport_quads": 7941,
+        "model_words_read": 101170,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 957,
+        "culled_bounds": 278,
+        "depth_tests": 1824,
+        "depth_verified": 1824,
+        "depth_skipped": 0,
+        "maximum_depth": 50286264,
+        "source_microseconds": 946,
+        "assembly_microseconds": 5050
+      }
+    },
+    {
+      "frame": 6330,
+      "mode": "on",
+      "passed": true,
+      "files": {
+        "quads": [
+          "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194",
+          "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194"
+        ],
+        "instances": [
+          "2770c479b2c948bcbe52c058dd97ce321057f22a99e611b909eca432cd2acbd3",
+          "2770c479b2c948bcbe52c058dd97ce321057f22a99e611b909eca432cd2acbd3"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 10,
+        "quads": 141,
+        "viewport_quads": 0,
+        "model_words_read": 21256,
+        "selected": 1722,
+        "unsupported_transform": 0,
+        "culled_distance": 1451,
+        "culled_bounds": 261,
+        "depth_tests": 1722,
+        "depth_verified": 0,
+        "depth_skipped": 1451,
+        "maximum_depth": 11112534,
+        "source_microseconds": 941,
+        "assembly_microseconds": 813
+      }
+    },
+    {
+      "frame": 6330,
+      "mode": "verify",
+      "passed": true,
+      "files": {
+        "quads": [
+          "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194",
+          "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194"
+        ],
+        "instances": [
+          "2770c479b2c948bcbe52c058dd97ce321057f22a99e611b909eca432cd2acbd3",
+          "2770c479b2c948bcbe52c058dd97ce321057f22a99e611b909eca432cd2acbd3"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 10,
+        "quads": 141,
+        "viewport_quads": 0,
+        "model_words_read": 21256,
+        "selected": 1722,
+        "unsupported_transform": 0,
+        "culled_distance": 1451,
+        "culled_bounds": 261,
+        "depth_tests": 1722,
+        "depth_verified": 1722,
+        "depth_skipped": 0,
+        "maximum_depth": 11112534,
+        "source_microseconds": 934,
+        "assembly_microseconds": 984
+      }
+    },
+    {
+      "frame": 7187,
+      "mode": "on",
+      "passed": true,
+      "files": {
+        "quads": [
+          "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db",
+          "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db"
+        ],
+        "instances": [
+          "e25f5ab20c8a74575f70326de80b618ed1186996819948993492f0735e854add",
+          "e25f5ab20c8a74575f70326de80b618ed1186996819948993492f0735e854add"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 809,
+        "quads": 8283,
+        "viewport_quads": 8280,
+        "model_words_read": 101394,
+        "selected": 1306,
+        "unsupported_transform": 0,
+        "culled_distance": 497,
+        "culled_bounds": 0,
+        "depth_tests": 1306,
+        "depth_verified": 0,
+        "depth_skipped": 497,
+        "maximum_depth": 50310036,
+        "source_microseconds": 954,
+        "assembly_microseconds": 4714
+      }
+    },
+    {
+      "frame": 7187,
+      "mode": "verify",
+      "passed": true,
+      "files": {
+        "quads": [
+          "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db",
+          "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db"
+        ],
+        "instances": [
+          "e25f5ab20c8a74575f70326de80b618ed1186996819948993492f0735e854add",
+          "e25f5ab20c8a74575f70326de80b618ed1186996819948993492f0735e854add"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 809,
+        "quads": 8283,
+        "viewport_quads": 8280,
+        "model_words_read": 101394,
+        "selected": 1306,
+        "unsupported_transform": 0,
+        "culled_distance": 497,
+        "culled_bounds": 0,
+        "depth_tests": 1306,
+        "depth_verified": 1306,
+        "depth_skipped": 0,
+        "maximum_depth": 50310036,
+        "source_microseconds": 954,
+        "assembly_microseconds": 5144
+      }
+    },
+    {
+      "frame": 8760,
+      "mode": "on",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "instances": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 0,
+        "selected": 268,
+        "unsupported_transform": 0,
+        "culled_distance": 268,
+        "culled_bounds": 0,
+        "depth_tests": 268,
+        "depth_verified": 0,
+        "depth_skipped": 268,
+        "maximum_depth": 0,
+        "source_microseconds": 930,
+        "assembly_microseconds": 131
+      }
+    },
+    {
+      "frame": 8760,
+      "mode": "verify",
+      "passed": true,
+      "files": {
+        "quads": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        "instances": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ]
+      },
+      "native": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 0,
+        "selected": 268,
+        "unsupported_transform": 0,
+        "culled_distance": 268,
+        "culled_bounds": 0,
+        "depth_tests": 268,
+        "depth_verified": 268,
+        "depth_skipped": 0,
+        "maximum_depth": 0,
+        "source_microseconds": 968,
+        "assembly_microseconds": 135
+      }
+    }
+  ],
+  "native_sha256": "51ee6a5c21bfa601cf82cdad6fedd7444177456d463809921b491717b72ec6ac",
+  "scope": "Canonical early-distance helper matches full ordered native geometry/instances at7 independently verified3x snapshots. No live integration or performance acceptance."
+}

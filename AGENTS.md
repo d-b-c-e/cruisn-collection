@@ -1,6 +1,6 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September10 cached source/depth candidate — ACTIVE live acceptance
+## September10 cached source/depth acceptance — ACTIVE margin work
 
 Read docs/reviews/2026-09-10-exotica-source-cache-and-depth.md. Separate cache
 native d19f153 and depth7b432126ffed9c15fbdf7356a9ad8b6625d74231 are committed;
@@ -15,12 +15,26 @@ No extra drawing. Canonical35,724descriptors/686syntheticfrontiers/693rejects/
 7material changes,70,000depth cases/14snapshotpairs45,340quads PASS.
 Final321Python/no skips,41native/115commands PASS at
 6f8fdd5380d255bbcf0a064e769d2b61b707fa3db57a6422a0a89a919655dbab.
-NEXT launch LOCAL cached-depth-acceptance.py:15serial trials isolateoff/cacheonly/
-depthonly/verify/both/repeat,1/2/3x,HongKong/fullAmazon,thenALL7defaults.
-Checkprocess/results first. Source frozen during gates; lastdefaultsac10.
-Meanwhile continue offline activeobject ownership/scene insertion work LOCAL;
-no concurrentGPUchecks/MAME. Actualactive membership is preferable to historical
-ROMsource guesses for the blackleftground. Do not draw allhistoricaldescriptors.
+ALL15trials and ALL7defaults PASS on7b432:542paired4K images,45,354scenes,
+10,204fullsource comparisons and29,794,639exactdepth decisions. Original camera/
+actualADCtimes/ordered geometry/materials/sampled resources unchanged.
+Samecandidate CPUscene3.448->2.585ms/repeat2.602; speed87.67->91.89%/repeat91.32.
+Noglboth92.45% vswritten88.42%; regular60frame rawsnapshots stillenabled.
+Initial49msCPU/25msGPU remainsOPEN; no full-speed/extra drawing claim.
+Proof results/proof/2026-09-10-exotica-cached-depth recomputes selectedcost/clocks;
+rawgeometry/resources/routes/pixels stayLOCAL receipts. Acceptance complete,
+sourcefreeze released. Continue directly into activeobject margin proof.
+
+LOCAL active-snapshot-study/geometry verifies2275members/1180stockpreparations
+across7snapshots,195horizontal-margin candidates,189instances/1238orderedquads.
+Allsampled added depths fitD24. This is NOT live emission/lifetime/render proof.
+Actual1455072model joins exposeTWO models afterCPUordinary-end; failure retained.
+CPUend is NOT completeddevice fence. active-object-probe.lua/combined prepared,
+NOT RUN at this edit: bounded5070..5082 list/currentfields/culls/actual6970emissions.
+NEXT paired6000 control/probe,25GL5064..5088,snapshots5072/5080,originalcapture5081.
+Check rig first, serial emulators/no concurrentGPUchecks. Verify list lifetime,
+actualemission/device ordering and later material use before private-depth margin
+drawing. Do not draw all historical descriptors or add model/track allowlists.
 Personalv0.5.0/SHA87d04de4 unchanged; no deploy/release/hostedworkflow/physicalFFB/
 Worldtuning/menu removal. Continue directly; no idle milestone/heartbeat gaps.
 

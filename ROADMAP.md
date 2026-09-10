@@ -26,9 +26,15 @@ nine paired trials,10,204 complete live scan comparisons and all seven defaults.
 Steady staging falls1.412ms to0.026ms; no-GL measured speed returns82.54% to88.42%
 with regular raw snapshots still enabled. Initial full upload remains expensive.
 [Checked source caching and exact early depth rejection](docs/reviews/2026-09-10-exotica-source-cache-and-depth.md)
-are now separately built at7b432, with standalone/captured comparisons and local
-checks passing. Live factorial/performance/full-drive/default acceptance is next.
-Then initialization cost, safe host depth/insertion, source eligibility and handover.
+pass fifteen live trials,542 paired4K images and all seven defaults on7b432.
+Mean scene CPU work falls3.448ms to2.585ms; measured diagnostic speed improves
+87.67% to91.89%, with raw snapshots still enabled. This still draws no extra scenery.
+Next, prove current active objects' lifetime, horizontal culling and actual device
+emission before drawing missing margin ground using private depth. Seven offline
+snapshots identify195 margin candidates with189 instances/1238 ordered quads.
+The CPU ordinary-end marker is not a completed device fence: two original models
+arrive later in the5072 sample. Keep this failure as an explicit insertion constraint.
+Initialization cost, general far depth, occlusion and handover remain open.
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.

@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "returncode": 0,
+  "stdout": "PASS snapshots=7 descriptors=35724 frontiers=686 negative=693 binding_changes=7 hits=686 misses=35\n",
+  "stderr": "",
+  "snapshots": [
+    {
+      "frame": 5000,
+      "bank": 0,
+      "partial": false,
+      "ram_sha256": "1c4887a18677b10164ae4b6378ee362f72ff9e0c1ba915fa8ab4dd222c6b4689"
+    },
+    {
+      "frame": 5990,
+      "bank": 0,
+      "partial": false,
+      "ram_sha256": "75a5087b59264c05a81b31f25569e3115f7a16318e83ddd716a416e5b0fc2e37"
+    },
+    {
+      "frame": 5072,
+      "bank": 0,
+      "partial": false,
+      "ram_sha256": "ca3cfef15d5de16ea935ff8757f5b7fcf3269aaf3f9a226662702013dbc54cb6"
+    },
+    {
+      "frame": 5978,
+      "bank": 0,
+      "partial": false,
+      "ram_sha256": "c6886ebf96c4a871e52ec6db0d40730384982c4775853b569a7dc25d378e034c"
+    },
+    {
+      "frame": 6330,
+      "bank": 0,
+      "partial": false,
+      "ram_sha256": "fa9ac2d5993dbbeb8b968ecfcfa6c53edf0b46cc5f91d5ef9a61b7984838af43"
+    },
+    {
+      "frame": 7187,
+      "bank": 0,
+      "partial": false,
+      "ram_sha256": "4cf82eb75df5128b404cf0fe81a92533a110f7742cebccf84284178f5579b6d0"
+    },
+    {
+      "frame": 8760,
+      "bank": 0,
+      "partial": false,
+      "ram_sha256": "129766e5571ff0cf6a1fe405a8d14bbf698e4273b127e64244eaba6b9109ef34"
+    }
+  ],
+  "native_sha256": "656aa615224fd4531606f58e7dae1a3ca5a3f150f807480fd425ad2d0f1691c2",
+  "scope": "LOCAL cache prototype compares ordinary source results across captured ROM/RAM and synthetic section frontiers. Not live integration, GPU or performance acceptance."
+}

@@ -34,16 +34,30 @@ Canonical helper checks pass35,724 descriptors across seven captured snapshots,
 changed material bindings. Actual snapshots are bank0 and not partial; synthetic
 coverage is not a live observation. Early depth matches70,000 arbitrary C31/flag
 cases. Both early modes match45,340 ordered quads and all instance bytes across
-14 checks at seven independently verified3x viewpoints. Runtime performance,
-full-route resource/image equality and seven defaults are still pending.
+14 checks at seven independently verified3x viewpoints.
 
-The previous local cache benchmark suggested useful savings, but is not a live
-runtime measurement. Fifteen planned serial trials isolate cache-only, depth-only,
-both, off, verify and repeat modes, cover1/2/3x, Hong Kong and full Amazon, then
-run all seven defaults. Source is frozen during these checks. Keep failures and
-separate reference intervals; all full original-context captures use7187–7188.
+All fifteen serial trials and all seven defaults now pass on this candidate.
+The trials isolate cache-only, depth-only, both, off, verify and repeat modes,
+cover 1/2/3x, Hong Kong and three full Amazon runs. Across 45,354 scenes, all
+542 paired 4K images, ordered geometry/material identities, sampled original
+resources and camera/actual ADC times match their declared controls. Verify mode
+compares 10,204 complete source results and 29,794,639 exact depth decisions.
+Full original-context captures cover 7187–7188; earlier failures remain retained.
 
-Last accepted defaults remain nativeac10/SHA9daeb048. Personal Stream Deck stays
+In the same-candidate Amazon comparison, mean scene CPU work falls from 3.448 ms
+with both strategies off to 2.585 ms with both on (repeat 2.602 ms). Measured
+emulation speed rises from 87.67% to 91.89% (repeat 91.32%). Without GL captures,
+the prior written-page control measures 88.42%, versus 92.45% with both strategies.
+Regular raw snapshots every 60 frames remain enabled in these measurements.
+The initial roughly 49 ms CPU/25 ms GPU material upload is still unresolved;
+these figures do not establish smooth or full-speed gameplay.
+
+The public proof at `results/proof/2026-09-10-exotica-cached-depth` recomputes
+selected CPU/clock measurements and validates the hash-bound build, coverage
+and seven-default receipts. Full raw geometry, resources, routes and images
+remain local; the published verifier does not independently reconstruct them.
+
+Accepted defaults now belong to native7b432/SHAd16e8b7a. Personal Stream Deck stays
 v0.5.0/SHA87d04de4. No deployment, release, hosted workflow, physical FFB, World
 tuning or experiment removal. Next work remains initialization, private depth and
 scene insertion, occlusion/handover, and active unsubmitted ground eligibility.
