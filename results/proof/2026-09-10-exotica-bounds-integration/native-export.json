@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "native_commit": "86deac56192a7692110d44d264b5d30b02c5f208",
+  "base": "ca48656c92325c821b85984952e96241d60c7aef",
+  "tree": "55f86667417c7895dd98aff50926c54a050238dd",
+  "patch_count": 162,
+  "patch_sha256": "04625c3a5b93f4bca7f77057c6193a51225ad735c291ebb44306e3da050452b8",
+  "candidate_sha256": "f25ecd8ea7cd9d2a0c13becb94c96d59aebffc8f1aabe92cd6431c2cfe18e471",
+  "personal_sha256": "87d04de42d10a731f1d951a1fa378d784059d862063b224764ca6294fa5fe9d8"
+}

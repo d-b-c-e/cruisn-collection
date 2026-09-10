@@ -1,0 +1,27 @@
+{
+  "scope": "Original captured palette rows versus RGB555 conversion from live scene WaveRAM. Snapshot/journal windows may span game scenes. This is not upload lifetime acceptance.",
+  "passed": true,
+  "cases": [
+    {
+      "frame": 5000,
+      "tested_models": 233,
+      "tested_quads": 2207,
+      "matched_quads": 2207,
+      "different": []
+    },
+    {
+      "frame": 5072,
+      "tested_models": 246,
+      "tested_quads": 3349,
+      "matched_quads": 3349,
+      "different": []
+    },
+    {
+      "frame": 5990,
+      "tested_models": 176,
+      "tested_quads": 2013,
+      "matched_quads": 2013,
+      "different": []
+    }
+  ]
+}

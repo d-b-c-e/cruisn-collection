@@ -1,0 +1,32 @@
+{
+  "scope": "Local snapshot byte comparison; not material lifetime or upload-order acceptance.",
+  "hong_kong": {
+    "bytes": 16777216,
+    "changed_bytes": 1910,
+    "changed_4096_byte_pages": 4,
+    "sha256": [
+      "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+      "1bf94f3a81c84d85cc4b654328a0948e166f655736ad7f65354d7819ad33425e"
+    ]
+  },
+  "5000": {
+    "instances": 1515,
+    "palettes": 19,
+    "all_palette_spans_in_waveram": true,
+    "models": 607,
+    "palette_spans_changed_over_hk_interval": 0
+  },
+  "5072": {
+    "instances": 1611,
+    "palettes": 31,
+    "all_palette_spans_in_waveram": true,
+    "models": 769
+  },
+  "5990": {
+    "instances": 818,
+    "palettes": 17,
+    "all_palette_spans_in_waveram": true,
+    "models": 409,
+    "palette_spans_changed_over_hk_interval": 0
+  }
+}

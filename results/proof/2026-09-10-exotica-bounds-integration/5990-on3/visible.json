@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "visible_quads": [
+    452,
+    452
+  ],
+  "original_sha256": "0a4d29e68ff3cbd288a65b803dbfbcf9e295b7b52e01f1d480c675a6cb08cb7a",
+  "candidate_sha256": "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026",
+  "visible_sha256": "e3e40d3554d5bd09677b15a2a9cb5540f31e0958457665509c1aa587323092b4"
+}

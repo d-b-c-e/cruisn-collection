@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+  "passed": true,
+  "camera_equal": true,
+  "same_camera_interval": true,
+  "camera_samples": [
+    4191,
+    4191
+  ],
+  "camera_intervals": [
+    [
+      1800,
+      5990
+    ],
+    [
+      1800,
+      5990
+    ]
+  ],
+  "first_camera_difference_frame": null,
+  "camera_equal_frame_intervals": [
+    [
+      1800,
+      5990
+    ]
+  ],
+  "camera_equal_frames": 4191,
+  "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+  "actual_adc_reads": [
+    12573,
+    12573
+  ],
+  "adc_frame_value_pc_equal": true,
+  "adc_address_compared": true,
+  "first_adc_frame_value_pc_difference": null,
+  "adc_times_equal": true,
+  "first_adc_time_difference_index": null,
+  "sources": [
+    {
+      "exotica-camera.csv": "8110cbfb74c1c66f0daaea75a74b3c9e81daa76b8cc9374069b026865bad94c3",
+      "exotica-adc.csv": "5d6c9758bc4ce3d57620a07ff3605cba1eb539d6946f1e6b2ce992a68b10f2b9"
+    },
+    {
+      "exotica-camera.csv": "8110cbfb74c1c66f0daaea75a74b3c9e81daa76b8cc9374069b026865bad94c3",
+      "exotica-adc.csv": "5d6c9758bc4ce3d57620a07ff3605cba1eb539d6946f1e6b2ce992a68b10f2b9"
+    }
+  ]
+}

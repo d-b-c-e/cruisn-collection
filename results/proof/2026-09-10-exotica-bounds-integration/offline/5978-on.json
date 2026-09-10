@@ -1,0 +1,191 @@
+{
+  "passed": true,
+  "frame": 5978,
+  "cases": [
+    {
+      "fade": 0,
+      "multiplier": 1,
+      "repeat": false,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 25954,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 1640,
+        "culled_bounds": 184,
+        "maximum_depth": 0,
+        "source_microseconds": 1278,
+        "assembly_microseconds": 729
+      },
+      "quad_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "instance_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "fade": 0,
+      "multiplier": 2,
+      "repeat": false,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 198,
+        "quads": 2832,
+        "viewport_quads": 2799,
+        "model_words_read": 40454,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 1348,
+        "culled_bounds": 278,
+        "maximum_depth": 33319416,
+        "source_microseconds": 1221,
+        "assembly_microseconds": 2224
+      },
+      "quad_sha256": "ca25c9d64da9fefeb9a9b0c4d0b70ff5da8885c812baab1bc26a8bc45ecdfc08",
+      "instance_sha256": "5cb423ccf54615a63185aa38cd80aaa5e986b2e2384d1bb11108b617d748c310"
+    },
+    {
+      "fade": 0,
+      "multiplier": 3,
+      "repeat": false,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 589,
+        "quads": 7974,
+        "viewport_quads": 7941,
+        "model_words_read": 101170,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 957,
+        "culled_bounds": 278,
+        "maximum_depth": 50286264,
+        "source_microseconds": 1346,
+        "assembly_microseconds": 5309
+      },
+      "quad_sha256": "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b",
+      "instance_sha256": "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4"
+    },
+    {
+      "fade": 0,
+      "multiplier": 3,
+      "repeat": true,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 589,
+        "quads": 7974,
+        "viewport_quads": 7941,
+        "model_words_read": 101170,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 957,
+        "culled_bounds": 278,
+        "maximum_depth": 50286264,
+        "source_microseconds": 1188,
+        "assembly_microseconds": 5337
+      },
+      "quad_sha256": "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b",
+      "instance_sha256": "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4"
+    },
+    {
+      "fade": 1,
+      "multiplier": 1,
+      "repeat": false,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 0,
+        "quads": 0,
+        "viewport_quads": 0,
+        "model_words_read": 25954,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 1640,
+        "culled_bounds": 184,
+        "maximum_depth": 0,
+        "source_microseconds": 1173,
+        "assembly_microseconds": 700
+      },
+      "quad_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "instance_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "fade": 1,
+      "multiplier": 2,
+      "repeat": false,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 198,
+        "quads": 2832,
+        "viewport_quads": 2799,
+        "model_words_read": 40454,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 1348,
+        "culled_bounds": 278,
+        "maximum_depth": 33319416,
+        "source_microseconds": 1121,
+        "assembly_microseconds": 2350
+      },
+      "quad_sha256": "422ea9d9fb04688ce5fa88f3bfb6cac2a223b4f1bf55d33a417c8a40c062a413",
+      "instance_sha256": "5cb423ccf54615a63185aa38cd80aaa5e986b2e2384d1bb11108b617d748c310"
+    },
+    {
+      "fade": 1,
+      "multiplier": 3,
+      "repeat": false,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 589,
+        "quads": 7974,
+        "viewport_quads": 7941,
+        "model_words_read": 101170,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 957,
+        "culled_bounds": 278,
+        "maximum_depth": 50284216,
+        "source_microseconds": 1177,
+        "assembly_microseconds": 6119
+      },
+      "quad_sha256": "7b045634f4c8ca5ab0e8731291d29ae7042d733f6d3950f167e09601c0643916",
+      "instance_sha256": "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4"
+    },
+    {
+      "fade": 1,
+      "multiplier": 3,
+      "repeat": true,
+      "counts": {
+        "passed": true,
+        "sources": 4286,
+        "instances": 589,
+        "quads": 7974,
+        "viewport_quads": 7941,
+        "model_words_read": 101170,
+        "selected": 1824,
+        "unsupported_transform": 0,
+        "culled_distance": 957,
+        "culled_bounds": 278,
+        "maximum_depth": 50284216,
+        "source_microseconds": 1163,
+        "assembly_microseconds": 5768
+      },
+      "quad_sha256": "7b045634f4c8ca5ab0e8731291d29ae7042d733f6d3950f167e09601c0643916",
+      "instance_sha256": "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4"
+    }
+  ],
+  "immutable_inputs": true,
+  "native_sha256": "c4a3f1054b27fe64cc96ea09d82c96f6d66b084b36694f2fa55b6103382bd0ce",
+  "input_sha256": [
+    "c6886ebf96c4a871e52ec6db0d40730384982c4775853b569a7dc25d378e034c",
+    "0ceae1c09e36daab4bd4084a3a0f9c0f8f94ae2bdd18f668f5f7be233fe0f1ba",
+    "c52563cc72334e44dc6fd941161018061b481510113db5e23d6c7c58272ccfb9",
+    "77487d4bc4a9b7982c35408f4ce4a0c1327d25dcfc06c03d9ebb571ac1b317ed"
+  ],
+  "scope": "New Amazon5978 standalone scene variants; full independent native/Python geometry. No live extra drawing or final pixel benefit yet."
+}

@@ -1,0 +1,45 @@
+{
+  "completed_fade": false,
+  "counts": {
+    "instances": 1515,
+    "quads": 9595,
+    "viewport_quads": 4740
+  },
+  "frame": 5000,
+  "frustum_bounds": false,
+  "game_scene_boundary": {
+    "camera_matches": true,
+    "cpu_frame": 5000,
+    "first_supported_model": true,
+    "game_scene": 3609,
+    "initial_special_models": 1,
+    "passed": true,
+    "scene_frame": 5000,
+    "supported_models": 222
+  },
+  "immutable_inputs": true,
+  "inputs": {
+    "exotica-host-5000-context.bin": "1b86580e3377de529d24904e3315d1342646c1be2f742f0588bcddb146b017c9",
+    "exotica-host-5000-instances.bin": "f3240613b595c32200c47e25d23ba3787b2219654f153ae6275bfa3e390b55e2",
+    "exotica-host-5000-quads.bin": "159bf04d8da23ccf46bd8586fb792ff94f5ee074a250ab28ba67226919d7acac",
+    "exotica-host-5000-ram.bin": "1c4887a18677b10164ae4b6378ee362f72ff9e0c1ba915fa8ab4dd222c6b4689",
+    "exotica-host-5000-wave.bin": "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+    "exotica-host-banked-rom.bin": "c52563cc72334e44dc6fd941161018061b481510113db5e23d6c7c58272ccfb9",
+    "exotica-host-main-rom.bin": "0ceae1c09e36daab4bd4084a3a0f9c0f8f94ae2bdd18f668f5f7be233fe0f1ba",
+    "exotica-host-scenes.csv": "721efedcb17b5e04f99d63b3a89e1142ec1516577536446fd089e3f65c3d388b",
+    "exotica-scene-events.json": "f20e5fb2a4d1f71238f9815efdd3adc97e9009bd6d49f23cb927a12da9641151",
+    "exotica-scene-events.jsonl": "12bf37c36e8842741f0f24813884aafc340ec7053a82939f4ed65340b981a437"
+  },
+  "multiplier": 3,
+  "ordered_hash": "df16f41090a0e49b",
+  "original_context": {
+    "exact_context": true,
+    "frame": 5000,
+    "model": 2,
+    "sha256": "1d7157e4b5438ff6e0b7275fd8431d346298ce2be002e11dbdf4a36f0ee4c8fb"
+  },
+  "passed": true,
+  "schema": 1,
+  "scope": "Independently reconstruct a bounded native Exotica scene-observer snapshot.\n\nChecks live generated instance/quad bytes against Python, snapshot operands and\nthe original device context journal when requested. It does not certify live\nmaterial ownership or submit/render future geometry. Raw resources stay local.\n",
+  "sources": 7147
+}

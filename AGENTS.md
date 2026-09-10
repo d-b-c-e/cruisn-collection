@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 Exotica bounds accepted — ACTIVE material work
+
+Read docs/reviews/2026-09-10-exotica-bounds-integration.md. Collection4019155
+source and native86deac/SHAf25ecd8e are pushed. ALL7defaults now PASS on86deac:
+actualUDP/memory,4softwareforce checks, fullGermany andExo21GL. No emulator remains.
+307Python/36native/103commands at454-file89674403 unchanged. Eight planned6000
+bounds trials and new5978 pair all pass original route/resources/4K and independent
+scene/context/geometry. Amazon2457scene/4848660filtered quads repeat; HongKong
+2457/2776927 repeat. Viewport counts unchanged across every3x scene. Average
+source+assembly+hash Amazon6.33->3.53ms, HK10.65->5.12ms; snapshot I/O separate.
+New5978 scene retains7941visible quads;56offline scene variants pass. 578Amazon
+scenes have3x>2x projected polygons, but local5978 composition adds only1110pixels
+over2x: most hidden behind trees. Separate D32F/current WaveRAM, original depth
+unchanged;1368x800 withoutCRT/live sky-repeat, NOT native4K/handover/material
+acceptance. Still NO extra live drawing. Public84-file proof now prepared/verifies
+sanitized scene clocks/counters/timing/fingerprints and receipt hashes.
+NEXT promote standalone private page/material ownership, then live D32F/sky/
+foreground/handover contracts. LOCAL materials-next-plan.md and page-image-draft.h
+now add generation/root integrity and atomic rejection. Integrity unit passes;
+old native page-image-native-draft.exe/receipt matches all five16MB snapshots.
+Rebuild the integrity analyzer separately and renew those comparisons before
+promotion. No benchmark claim. Earlier-source eligibility still needed for black
+Amazon ground. Upstream refresh10:49UTC found masterb64d67f/all292PRs, new16095;
+main adds only ioport Tab mapping and IBM fixed/diskette adapter; new16095 is
+Acorn quadrature mouse. None touches Zeus/shared C3x/poly. Four Zeus PRheads
+unchanged. First compare TLS timeout retained; read-only retry succeeded.
+Personalv0.5.0/SHA87d04de4 unchanged. No release/deploy/hostedworkflow/physicalFFB/
+World tuning/menu removal. Continue directly without heartbeat waits.
+
 ## September10 Exotica bounds integration — ACTIVE acceptance
 
 Read docs/reviews/2026-09-10-exotica-bounds-integration.md. Native86deac56192a7692110d44d264b5d30b02c5f208

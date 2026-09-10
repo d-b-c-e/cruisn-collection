@@ -51,9 +51,35 @@ The candidate windows are native3501–3534,5112–5137 and5463–5990; frame597
 not demonstrated final pixel benefit or relief from pop-in. Capture5978 for
 material, depth and foreground-composition testing next.
 
-Hong Kong comparisons and seven-default renewal are still running/pending at
-this source checkpoint. The last completed seven-default acceptance remains
-nativef49/SHA9c7dcd27. Do not describe it as renewed on86deac until it completes.
+All three Hong Kong runs now pass:5000 unfiltered/filtered and5990 filtered.
+Each preserves the original route, resources and independently checked scene;
+the5000 pair has21 completed4K images each and5990 has17. All2,457 viewport
+counts and clocks match, and2,776,927 filtered ordered-quad fingerprints repeat
+between the two windows. Average diagnostic source/assembly/hash cost falls
+10.65 to5.12ms and p99 falls20.06 to7.43ms at5000.
+
+The new5978 Amazon pair also passes original route/resources,17 paired4K images
+and independent scene/context/geometry. Its unfiltered control uses the prior
+accepted f49 binary; the filtered run uses86deac. All7,941 visible quad records
+are retained exactly. Eight additional offline variants compare native/Python
+at1/2/3/repeat with original/completed fade, bringing the total to56 variants.
+
+A local1368x800 composition uses separate current host/original WaveRAM textures,
+private D32F depth and completed fade. It draws the extra layer after the42
+initial sky quads, then the2,664 remaining original quads. The original depth
+and both GPU WaveRAM textures remain unchanged; control and2x repeat exactly.
+3x changes1,110 pixels beyond2x, mostly a small pale ground area through the
+left-side trees. This is a modest visible difference: most extra polygons are
+occluded. It excludes CRT and the live sky-repeat feature and is not native4K,
+general occlusion, handover, correct-material or pop-in acceptance.
+
+The complete seven-default suite now passes on86deac/SHAf25ecd8e, including
+actual UDP/memory telemetry, four software force-policy checks, full Germany
+and Exotica's21 completed4K images. Automated physical force remainszero.
+The [public proof](../../results/proof/2026-09-10-exotica-bounds-integration/README.md)
+checks84 evidence hashes, recomputes sanitized scene clock/counter/timing
+comparisons and compares ordered-geometry fingerprints. Raw geometry,
+resources, driving routes and GPU pixels remain hash-bound local receipts.
 
 ## Material follow-up
 

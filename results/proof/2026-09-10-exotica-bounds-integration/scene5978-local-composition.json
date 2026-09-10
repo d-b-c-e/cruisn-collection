@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "repeat_multipliers": [
+    2,
+    0
+  ],
+  "scope": "LOCAL Amazon5978 completed-fade future layer behind original foreground. Separate D32F/owned WaveRAM; 1368x800 without CRT or live sky-repeat. Not native4K, general occlusion or handover acceptance.",
+  "size": [
+    1368,
+    800
+  ],
+  "insertion_after_original_quads": 42,
+  "host_depth_scale": 4.656612873077393e-10,
+  "private_wave_gpu_exact": true,
+  "original_wave_gpu_exact": true,
+  "future_band_viewport_polygons": [
+    0,
+    2799,
+    5142
+  ],
+  "recorded_page": 400,
+  "initial_clear_count": 1,
+  "original_quads": 2706,
+  "original_depth_unchanged": true,
+  "color_changed_over_control": {
+    "1": 0,
+    "2": 400,
+    "3": 1510
+  },
+  "additional_color_changes_2_over_1": 400,
+  "additional_color_changes_3_over_2": 1110
+}

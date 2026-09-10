@@ -1,0 +1,46 @@
+{
+  "completed_fade": false,
+  "counts": {
+    "culled_bounds": 278,
+    "instances": 589,
+    "quads": 7974,
+    "viewport_quads": 7941
+  },
+  "frame": 5978,
+  "frustum_bounds": true,
+  "game_scene_boundary": {
+    "camera_matches": true,
+    "cpu_frame": 5978,
+    "first_supported_model": true,
+    "game_scene": 4557,
+    "initial_special_models": 1,
+    "passed": true,
+    "scene_frame": 5978,
+    "supported_models": 252
+  },
+  "immutable_inputs": true,
+  "inputs": {
+    "exotica-host-5978-context.bin": "95130616b2166fe51d0d90ec1f3548aecbcffae062851fe7f5d1fa14ef0488c3",
+    "exotica-host-5978-instances.bin": "3c9bb294dec1b88bf4fd228810411d733c1ba2f39b68f856879b5a6c9c18dbe4",
+    "exotica-host-5978-quads.bin": "4adb911cf36707dbaad3407e74f57514fbd2e14a0e5f07d2473a737eb5a6c77b",
+    "exotica-host-5978-ram.bin": "c6886ebf96c4a871e52ec6db0d40730384982c4775853b569a7dc25d378e034c",
+    "exotica-host-5978-wave.bin": "77487d4bc4a9b7982c35408f4ce4a0c1327d25dcfc06c03d9ebb571ac1b317ed",
+    "exotica-host-banked-rom.bin": "c52563cc72334e44dc6fd941161018061b481510113db5e23d6c7c58272ccfb9",
+    "exotica-host-main-rom.bin": "0ceae1c09e36daab4bd4084a3a0f9c0f8f94ae2bdd18f668f5f7be233fe0f1ba",
+    "exotica-host-scenes.csv": "f0e4101006caff740f940865acdd7d3634a6d67cec21ee154b44deec0b54ed82",
+    "exotica-scene-events.json": "c30508d9dd5bac01e4abdbd9626245735598730fbf4838500a99e5f8a236031e",
+    "exotica-scene-events.jsonl": "2036bbcbf044af63fc0f0ee607faff62feadfd5ae8ad6e213fff0bc611dffb70"
+  },
+  "multiplier": 3,
+  "ordered_hash": "524e01a14bbeea12",
+  "original_context": {
+    "exact_context": true,
+    "frame": 5978,
+    "model": 2,
+    "sha256": "c5a784a0ed049e8b07b308b1ed37a912b7c16450143b17db9e17db4c178f3ad5"
+  },
+  "passed": true,
+  "schema": 1,
+  "scope": "Independently reconstruct a bounded native Exotica scene-observer snapshot.\n\nChecks live generated instance/quad bytes against Python, snapshot operands and\nthe original device context journal when requested. It does not certify live\nmaterial ownership or submit/render future geometry. Raw resources stay local.\n",
+  "sources": 4286
+}

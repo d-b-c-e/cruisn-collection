@@ -6,10 +6,15 @@ including every page of changed filenames. Four open PRs touch Zeus paths.
 This is a source review, not evidence that an upstream change fixes Amazon.
 The personal v0.5.0 executable and published releases remain unchanged.
 
-A September10 **09:17UTC** refresh again finds master17d291 and291 open PRs.
-All four Zeus PR heads below remain unchanged. Changed PR file lists were
-refetched with pagination; none adds Zeus work. The refresh receipts remain
-local under the same upstream diagnostic directory.
+A September10 **10:49UTC** refresh finds master
+`b64d67f5b51bc301602a75088873698dca8730d9` and **292 open PRs**. The two new
+main-branch commits add an ioport Tab mapping and an IBM fixed/diskette adapter.
+New [#16095](https://github.com/mamedev/mame/pull/16095) adds an Acorn quadrature
+mouse. None changes Zeus, the shared C3x core or polygon renderer. All four Zeus
+PR heads below remain unchanged. Changed PR file lists were refetched with
+pagination; the comparison and refresh receipts remain local under the same
+upstream diagnostic directory. The first final comparison request failed with a
+TLS handshake timeout; a read-only retry succeeded.
 
 ## Isolated candidate checkpoint
 

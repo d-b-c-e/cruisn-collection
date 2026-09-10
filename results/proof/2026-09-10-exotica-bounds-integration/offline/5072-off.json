@@ -1,0 +1,232 @@
+{
+  "cases": [
+    {
+      "fade": "original",
+      "instance_sha256": "af38fad84d120ee45293b708c95ee4fd5557c269489822403eb2fa576cb9746e",
+      "multiplier": 1,
+      "native": {
+        "assembly_microseconds": 3990,
+        "culled_bounds": 0,
+        "culled_distance": 1833,
+        "instances": 632,
+        "maximum_depth": 16739370,
+        "model_words_read": 60710,
+        "passed": true,
+        "quads": 5656,
+        "selected": 2465,
+        "source_microseconds": 1089,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 330
+      },
+      "passed": true,
+      "quad_sha256": "a44fee55d8615ec058a37321ab9839ed8eae149169bc94ce6ae26d08754ffec5",
+      "repeat": false
+    },
+    {
+      "fade": "original",
+      "instance_sha256": "bb62b98c625e118be2f14f88ddbbd82fa260bbffefa5b992c8308cf1340db657",
+      "multiplier": 2,
+      "native": {
+        "assembly_microseconds": 7696,
+        "culled_bounds": 0,
+        "culled_distance": 1169,
+        "instances": 1296,
+        "maximum_depth": 33487100,
+        "model_words_read": 140848,
+        "passed": true,
+        "quads": 13345,
+        "selected": 2465,
+        "source_microseconds": 1168,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 382
+      },
+      "passed": true,
+      "quad_sha256": "a2cfd378e21950070c24534f0a359ba592884769022084d205877dfdf5a006b1",
+      "repeat": false
+    },
+    {
+      "fade": "original",
+      "instance_sha256": "e70fe3ae7aa8081c45d00c8a3c02fc9cca7db0a0fdedf519bdda24a86d81ee9f",
+      "multiplier": 3,
+      "native": {
+        "assembly_microseconds": 9059,
+        "culled_bounds": 0,
+        "culled_distance": 843,
+        "instances": 1622,
+        "maximum_depth": 50253976,
+        "model_words_read": 155734,
+        "passed": true,
+        "quads": 16408,
+        "selected": 2465,
+        "source_microseconds": 1164,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 382
+      },
+      "passed": true,
+      "quad_sha256": "d15dfddaabda932bb7d4fc0335861f91f34bb12db99761a9a4c882f47c38ec6e",
+      "repeat": false
+    },
+    {
+      "fade": "original",
+      "instance_sha256": "e70fe3ae7aa8081c45d00c8a3c02fc9cca7db0a0fdedf519bdda24a86d81ee9f",
+      "multiplier": 3,
+      "native": {
+        "assembly_microseconds": 9130,
+        "culled_bounds": 0,
+        "culled_distance": 843,
+        "instances": 1622,
+        "maximum_depth": 50253976,
+        "model_words_read": 155734,
+        "passed": true,
+        "quads": 16408,
+        "selected": 2465,
+        "source_microseconds": 1139,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 382
+      },
+      "passed": true,
+      "quad_sha256": "d15dfddaabda932bb7d4fc0335861f91f34bb12db99761a9a4c882f47c38ec6e",
+      "repeat": true
+    },
+    {
+      "fade": "completed",
+      "instance_sha256": "af38fad84d120ee45293b708c95ee4fd5557c269489822403eb2fa576cb9746e",
+      "multiplier": 1,
+      "native": {
+        "assembly_microseconds": 3718,
+        "culled_bounds": 0,
+        "culled_distance": 1833,
+        "instances": 632,
+        "maximum_depth": 16737323,
+        "model_words_read": 60710,
+        "passed": true,
+        "quads": 5656,
+        "selected": 2465,
+        "source_microseconds": 1282,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 330
+      },
+      "passed": true,
+      "quad_sha256": "860d1e4c02130cd6d2f06844ee862b0c65b1cd4ceb66bdab428b1f7de399685d",
+      "repeat": false
+    },
+    {
+      "fade": "completed",
+      "instance_sha256": "bb62b98c625e118be2f14f88ddbbd82fa260bbffefa5b992c8308cf1340db657",
+      "multiplier": 2,
+      "native": {
+        "assembly_microseconds": 8447,
+        "culled_bounds": 0,
+        "culled_distance": 1169,
+        "instances": 1296,
+        "maximum_depth": 33485052,
+        "model_words_read": 140848,
+        "passed": true,
+        "quads": 13345,
+        "selected": 2465,
+        "source_microseconds": 1114,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 382
+      },
+      "passed": true,
+      "quad_sha256": "e3d80aa00420a9cae76b20551339ff0853dfc7b7e55af4321dfcfe619070ff5b",
+      "repeat": false
+    },
+    {
+      "fade": "completed",
+      "instance_sha256": "e70fe3ae7aa8081c45d00c8a3c02fc9cca7db0a0fdedf519bdda24a86d81ee9f",
+      "multiplier": 3,
+      "native": {
+        "assembly_microseconds": 8941,
+        "culled_bounds": 0,
+        "culled_distance": 843,
+        "instances": 1622,
+        "maximum_depth": 50251928,
+        "model_words_read": 155734,
+        "passed": true,
+        "quads": 16408,
+        "selected": 2465,
+        "source_microseconds": 1131,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 382
+      },
+      "passed": true,
+      "quad_sha256": "78d7feae7549ac7637860bcf89640c1f06eea6451dcc80b5015d9060fa590358",
+      "repeat": false
+    },
+    {
+      "fade": "completed",
+      "instance_sha256": "e70fe3ae7aa8081c45d00c8a3c02fc9cca7db0a0fdedf519bdda24a86d81ee9f",
+      "multiplier": 3,
+      "native": {
+        "assembly_microseconds": 9873,
+        "culled_bounds": 0,
+        "culled_distance": 843,
+        "instances": 1622,
+        "maximum_depth": 50251928,
+        "model_words_read": 155734,
+        "passed": true,
+        "quads": 16408,
+        "selected": 2465,
+        "source_microseconds": 1146,
+        "sources": 4286,
+        "unsupported_transform": 0,
+        "viewport_quads": 382
+      },
+      "passed": true,
+      "quad_sha256": "78d7feae7549ac7637860bcf89640c1f06eea6451dcc80b5015d9060fa590358",
+      "repeat": true
+    }
+  ],
+  "frame": 5072,
+  "frustum_bounds": false,
+  "immutable_inputs": true,
+  "joins": {
+    "chosen_call": 836,
+    "chosen_model": 2,
+    "cpu_time": [
+      88.772640665779,
+      88.774122065779
+    ],
+    "device_time": [
+      88.77264449911227,
+      88.77413626577892
+    ],
+    "matching": 136
+  },
+  "margin": 86.0,
+  "native_sha256": "c3bc05fe2ffa5b9adeb682a2da8761ba2b04933530330b13320dae499e815800",
+  "original_context_pairs": 132,
+  "original_ordered_quads": 3255,
+  "passed": true,
+  "schema": 1,
+  "scope": "Verify private Exotica future-scene assembly from local original captures.\n\nReconstruct the camera/context join and all section sources independently in\nPython, then compare every native instance and projected quad at 1/2/3x, with\noriginal and completed fade flags, plus a repeat. This is generated geometry,\nNOT an original-hardware submission, material-residency or live-render verdict.\nRaw input resources and generated geometry must remain local.\n",
+  "sources": {
+    "exotica-banked-rom.bin": "c52563cc72334e44dc6fd941161018061b481510113db5e23d6c7c58272ccfb9",
+    "exotica-camera.csv": "8110cbfb74c1c66f0daaea75a74b3c9e81daa76b8cc9374069b026865bad94c3",
+    "exotica-emissions.jsonl": "7fda5c0951576ee889abf012d23b0e1a86befe5d29c41d6471a9b7e8ea131990",
+    "exotica-main-rom.bin": "0ceae1c09e36daab4bd4084a3a0f9c0f8f94ae2bdd18f668f5f7be233fe0f1ba",
+    "exotica-model-capture.json": "acb2ebfbbb5c9cd31eb362f3afe7250a02c08ea61360a35895124e74a311d2ec",
+    "exotica-models.jsonl": "92a6f83195c7ee7a09bcd55f565e39a09c4ac6dbffcd5b9da755e914feb3bc03",
+    "exotica-section-5072.bin": "d0f5ed5eeacb0cab49bf783aa6bf1ee8f40755e4970bb632acbfefcecae39b1e",
+    "exotica-section-capture.json": "ab250dbab5419a18830f3df06297d5f2a5ac775a59e5e631a2396f061d07f2fd",
+    "exotica-section-progress.csv": "7b3d9dcf0e2150c1c301894f3e6904c01227e148cb1bc1f89a9893b4a524a199",
+    "zeus-capture/models.bin": "0791909fcb7d9eade04b0d6aea50c5abc189634c255167258cef0c8f6771b189",
+    "zeus-capture/models.json": "b1c8f465f87f751988fb9a502394fffc3839f62d25054f6d7ba5bc201de4d069",
+    "zeus-capture/pal_table.bin": "d72c4a1e2dd2fdc1e862f29d8fa71d5474a734015ab559d633af6d1eb187bece",
+    "zeus-capture/post_color.bin": "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d",
+    "zeus-capture/post_depth.bin": "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b",
+    "zeus-capture/pre_color.bin": "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d",
+    "zeus-capture/pre_depth.bin": "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b",
+    "zeus-capture/records.bin": "9355df7d7f7e2ded3b82c306d4f7e0811b33bdd7621dc4a1eb4f3bbe821b0eeb",
+    "zeus-capture/regs.txt": "04a241040dd68b4fd0c16f96923df465e782e97f249eb097fa9196fc42bf5b8a",
+    "zeus-capture/waveram.bin": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "LOCAL standalone native page-delta ownership; five delayed outputs equal every original WaveRAM byte. Not linked into MAME or GPU.",
+  "page_counts": [
+    4096,
+    4,
+    4,
+    1376,
+    1376
+  ],
+  "input_sha256": [
+    "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+    "1bf94f3a81c84d85cc4b654328a0948e166f655736ad7f65354d7819ad33425e",
+    "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+    "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+    "1bf94f3a81c84d85cc4b654328a0948e166f655736ad7f65354d7819ad33425e"
+  ],
+  "output_sha256": [
+    "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+    "1bf94f3a81c84d85cc4b654328a0948e166f655736ad7f65354d7819ad33425e",
+    "6fc07a4496d13c98bc5d7198d4b2d9adcf6797095336b2280d2573ee97c0d320",
+    "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+    "1bf94f3a81c84d85cc4b654328a0948e166f655736ad7f65354d7819ad33425e"
+  ],
+  "native_sha256": "7776e80fd9fffc067403816c5c70cc4963fcf14e103e16f819ba3266c8451be7"
+}

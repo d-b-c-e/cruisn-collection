@@ -1,0 +1,2939 @@
+{
+  "passed": true,
+  "scenes": 2457,
+  "trace_fields_checked": [
+    "frame",
+    "cpu_frame",
+    "cpu_time",
+    "device_time",
+    "base",
+    "count",
+    "bank",
+    "page",
+    "partial",
+    "sources",
+    "guest_cycles",
+    "scene",
+    "scene_frame",
+    "scene_time"
+  ],
+  "all_scene_viewport_counts_unchanged": true,
+  "repeat_fields_checked": [
+    "frame",
+    "cpu_frame",
+    "cpu_time",
+    "device_time",
+    "base",
+    "count",
+    "bank",
+    "page",
+    "multiplier",
+    "partial",
+    "sources",
+    "instances",
+    "quads",
+    "viewport",
+    "hash",
+    "guest_cycles",
+    "scene",
+    "scene_frame",
+    "scene_time",
+    "bounds",
+    "culled_bounds"
+  ],
+  "repeat_ordered_quads": 4848660,
+  "third_band_viewport_scene_count": 578,
+  "third_band_viewport_candidates": [
+    {
+      "frame": 3501,
+      "scene": 2112,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3502,
+      "scene": 2113,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3503,
+      "scene": 2114,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3504,
+      "scene": 2115,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3505,
+      "scene": 2116,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3506,
+      "scene": 2117,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3507,
+      "scene": 2118,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3508,
+      "scene": 2119,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3509,
+      "scene": 2120,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3510,
+      "scene": 2121,
+      "extra_viewport_polygons": 36
+    },
+    {
+      "frame": 3512,
+      "scene": 2122,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3513,
+      "scene": 2123,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3514,
+      "scene": 2124,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3515,
+      "scene": 2125,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3516,
+      "scene": 2126,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3517,
+      "scene": 2127,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3518,
+      "scene": 2128,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3519,
+      "scene": 2129,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3520,
+      "scene": 2130,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3521,
+      "scene": 2131,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3522,
+      "scene": 2132,
+      "extra_viewport_polygons": 35
+    },
+    {
+      "frame": 3523,
+      "scene": 2133,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3524,
+      "scene": 2134,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3525,
+      "scene": 2135,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3526,
+      "scene": 2136,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3527,
+      "scene": 2137,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3528,
+      "scene": 2138,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3529,
+      "scene": 2139,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3530,
+      "scene": 2140,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3531,
+      "scene": 2141,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3532,
+      "scene": 2142,
+      "extra_viewport_polygons": 32
+    },
+    {
+      "frame": 3533,
+      "scene": 2143,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 3534,
+      "scene": 2144,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5112,
+      "scene": 3702,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5113,
+      "scene": 3703,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5114,
+      "scene": 3704,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5115,
+      "scene": 3705,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5116,
+      "scene": 3706,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5117,
+      "scene": 3707,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5118,
+      "scene": 3708,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5119,
+      "scene": 3709,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5120,
+      "scene": 3710,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5121,
+      "scene": 3711,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5122,
+      "scene": 3712,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5123,
+      "scene": 3713,
+      "extra_viewport_polygons": 11
+    },
+    {
+      "frame": 5124,
+      "scene": 3714,
+      "extra_viewport_polygons": 11
+    },
+    {
+      "frame": 5125,
+      "scene": 3715,
+      "extra_viewport_polygons": 11
+    },
+    {
+      "frame": 5126,
+      "scene": 3716,
+      "extra_viewport_polygons": 11
+    },
+    {
+      "frame": 5127,
+      "scene": 3717,
+      "extra_viewport_polygons": 11
+    },
+    {
+      "frame": 5128,
+      "scene": 3718,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5129,
+      "scene": 3719,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5130,
+      "scene": 3720,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5131,
+      "scene": 3721,
+      "extra_viewport_polygons": 7
+    },
+    {
+      "frame": 5132,
+      "scene": 3722,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5133,
+      "scene": 3723,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5134,
+      "scene": 3724,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5135,
+      "scene": 3725,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5136,
+      "scene": 3726,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5137,
+      "scene": 3727,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5463,
+      "scene": 4050,
+      "extra_viewport_polygons": 3
+    },
+    {
+      "frame": 5464,
+      "scene": 4051,
+      "extra_viewport_polygons": 55
+    },
+    {
+      "frame": 5465,
+      "scene": 4052,
+      "extra_viewport_polygons": 193
+    },
+    {
+      "frame": 5466,
+      "scene": 4053,
+      "extra_viewport_polygons": 248
+    },
+    {
+      "frame": 5467,
+      "scene": 4054,
+      "extra_viewport_polygons": 353
+    },
+    {
+      "frame": 5468,
+      "scene": 4055,
+      "extra_viewport_polygons": 309
+    },
+    {
+      "frame": 5469,
+      "scene": 4056,
+      "extra_viewport_polygons": 372
+    },
+    {
+      "frame": 5470,
+      "scene": 4057,
+      "extra_viewport_polygons": 369
+    },
+    {
+      "frame": 5471,
+      "scene": 4058,
+      "extra_viewport_polygons": 456
+    },
+    {
+      "frame": 5472,
+      "scene": 4059,
+      "extra_viewport_polygons": 449
+    },
+    {
+      "frame": 5473,
+      "scene": 4060,
+      "extra_viewport_polygons": 660
+    },
+    {
+      "frame": 5474,
+      "scene": 4061,
+      "extra_viewport_polygons": 864
+    },
+    {
+      "frame": 5475,
+      "scene": 4062,
+      "extra_viewport_polygons": 1142
+    },
+    {
+      "frame": 5476,
+      "scene": 4063,
+      "extra_viewport_polygons": 1326
+    },
+    {
+      "frame": 5477,
+      "scene": 4064,
+      "extra_viewport_polygons": 1581
+    },
+    {
+      "frame": 5478,
+      "scene": 4065,
+      "extra_viewport_polygons": 1852
+    },
+    {
+      "frame": 5479,
+      "scene": 4066,
+      "extra_viewport_polygons": 2198
+    },
+    {
+      "frame": 5480,
+      "scene": 4067,
+      "extra_viewport_polygons": 2357
+    },
+    {
+      "frame": 5481,
+      "scene": 4068,
+      "extra_viewport_polygons": 2472
+    },
+    {
+      "frame": 5482,
+      "scene": 4069,
+      "extra_viewport_polygons": 2648
+    },
+    {
+      "frame": 5483,
+      "scene": 4070,
+      "extra_viewport_polygons": 2744
+    },
+    {
+      "frame": 5484,
+      "scene": 4071,
+      "extra_viewport_polygons": 2965
+    },
+    {
+      "frame": 5485,
+      "scene": 4072,
+      "extra_viewport_polygons": 3160
+    },
+    {
+      "frame": 5486,
+      "scene": 4073,
+      "extra_viewport_polygons": 3406
+    },
+    {
+      "frame": 5487,
+      "scene": 4074,
+      "extra_viewport_polygons": 3494
+    },
+    {
+      "frame": 5488,
+      "scene": 4075,
+      "extra_viewport_polygons": 3437
+    },
+    {
+      "frame": 5489,
+      "scene": 4076,
+      "extra_viewport_polygons": 3483
+    },
+    {
+      "frame": 5490,
+      "scene": 4077,
+      "extra_viewport_polygons": 3500
+    },
+    {
+      "frame": 5491,
+      "scene": 4078,
+      "extra_viewport_polygons": 3418
+    },
+    {
+      "frame": 5492,
+      "scene": 4079,
+      "extra_viewport_polygons": 3458
+    },
+    {
+      "frame": 5493,
+      "scene": 4080,
+      "extra_viewport_polygons": 3225
+    },
+    {
+      "frame": 5494,
+      "scene": 4081,
+      "extra_viewport_polygons": 3132
+    },
+    {
+      "frame": 5496,
+      "scene": 4082,
+      "extra_viewport_polygons": 3171
+    },
+    {
+      "frame": 5497,
+      "scene": 4083,
+      "extra_viewport_polygons": 3117
+    },
+    {
+      "frame": 5498,
+      "scene": 4084,
+      "extra_viewport_polygons": 3160
+    },
+    {
+      "frame": 5499,
+      "scene": 4085,
+      "extra_viewport_polygons": 3161
+    },
+    {
+      "frame": 5500,
+      "scene": 4086,
+      "extra_viewport_polygons": 3185
+    },
+    {
+      "frame": 5501,
+      "scene": 4087,
+      "extra_viewport_polygons": 3193
+    },
+    {
+      "frame": 5502,
+      "scene": 4088,
+      "extra_viewport_polygons": 3121
+    },
+    {
+      "frame": 5503,
+      "scene": 4089,
+      "extra_viewport_polygons": 3152
+    },
+    {
+      "frame": 5504,
+      "scene": 4090,
+      "extra_viewport_polygons": 3211
+    },
+    {
+      "frame": 5505,
+      "scene": 4091,
+      "extra_viewport_polygons": 3246
+    },
+    {
+      "frame": 5506,
+      "scene": 4092,
+      "extra_viewport_polygons": 3172
+    },
+    {
+      "frame": 5507,
+      "scene": 4093,
+      "extra_viewport_polygons": 3225
+    },
+    {
+      "frame": 5508,
+      "scene": 4094,
+      "extra_viewport_polygons": 3313
+    },
+    {
+      "frame": 5509,
+      "scene": 4095,
+      "extra_viewport_polygons": 3393
+    },
+    {
+      "frame": 5510,
+      "scene": 4096,
+      "extra_viewport_polygons": 3028
+    },
+    {
+      "frame": 5511,
+      "scene": 4097,
+      "extra_viewport_polygons": 3029
+    },
+    {
+      "frame": 5512,
+      "scene": 4098,
+      "extra_viewport_polygons": 3081
+    },
+    {
+      "frame": 5513,
+      "scene": 4099,
+      "extra_viewport_polygons": 3105
+    },
+    {
+      "frame": 5514,
+      "scene": 4100,
+      "extra_viewport_polygons": 3011
+    },
+    {
+      "frame": 5515,
+      "scene": 4101,
+      "extra_viewport_polygons": 3010
+    },
+    {
+      "frame": 5516,
+      "scene": 4102,
+      "extra_viewport_polygons": 3077
+    },
+    {
+      "frame": 5517,
+      "scene": 4103,
+      "extra_viewport_polygons": 3091
+    },
+    {
+      "frame": 5518,
+      "scene": 4104,
+      "extra_viewport_polygons": 3090
+    },
+    {
+      "frame": 5519,
+      "scene": 4105,
+      "extra_viewport_polygons": 3123
+    },
+    {
+      "frame": 5520,
+      "scene": 4106,
+      "extra_viewport_polygons": 3141
+    },
+    {
+      "frame": 5521,
+      "scene": 4107,
+      "extra_viewport_polygons": 3175
+    },
+    {
+      "frame": 5522,
+      "scene": 4108,
+      "extra_viewport_polygons": 3146
+    },
+    {
+      "frame": 5523,
+      "scene": 4109,
+      "extra_viewport_polygons": 3180
+    },
+    {
+      "frame": 5524,
+      "scene": 4110,
+      "extra_viewport_polygons": 3306
+    },
+    {
+      "frame": 5525,
+      "scene": 4111,
+      "extra_viewport_polygons": 3321
+    },
+    {
+      "frame": 5526,
+      "scene": 4112,
+      "extra_viewport_polygons": 3338
+    },
+    {
+      "frame": 5527,
+      "scene": 4113,
+      "extra_viewport_polygons": 3377
+    },
+    {
+      "frame": 5528,
+      "scene": 4114,
+      "extra_viewport_polygons": 3391
+    },
+    {
+      "frame": 5529,
+      "scene": 4115,
+      "extra_viewport_polygons": 3437
+    },
+    {
+      "frame": 5530,
+      "scene": 4116,
+      "extra_viewport_polygons": 3559
+    },
+    {
+      "frame": 5531,
+      "scene": 4117,
+      "extra_viewport_polygons": 3590
+    },
+    {
+      "frame": 5532,
+      "scene": 4118,
+      "extra_viewport_polygons": 3599
+    },
+    {
+      "frame": 5533,
+      "scene": 4119,
+      "extra_viewport_polygons": 3701
+    },
+    {
+      "frame": 5534,
+      "scene": 4120,
+      "extra_viewport_polygons": 3716
+    },
+    {
+      "frame": 5535,
+      "scene": 4121,
+      "extra_viewport_polygons": 3841
+    },
+    {
+      "frame": 5536,
+      "scene": 4122,
+      "extra_viewport_polygons": 3857
+    },
+    {
+      "frame": 5537,
+      "scene": 4123,
+      "extra_viewport_polygons": 3865
+    },
+    {
+      "frame": 5538,
+      "scene": 4124,
+      "extra_viewport_polygons": 3968
+    },
+    {
+      "frame": 5539,
+      "scene": 4125,
+      "extra_viewport_polygons": 3975
+    },
+    {
+      "frame": 5540,
+      "scene": 4126,
+      "extra_viewport_polygons": 4005
+    },
+    {
+      "frame": 5541,
+      "scene": 4127,
+      "extra_viewport_polygons": 4096
+    },
+    {
+      "frame": 5542,
+      "scene": 4128,
+      "extra_viewport_polygons": 4104
+    },
+    {
+      "frame": 5543,
+      "scene": 4129,
+      "extra_viewport_polygons": 4104
+    },
+    {
+      "frame": 5544,
+      "scene": 4130,
+      "extra_viewport_polygons": 4104
+    },
+    {
+      "frame": 5545,
+      "scene": 4131,
+      "extra_viewport_polygons": 4094
+    },
+    {
+      "frame": 5546,
+      "scene": 4132,
+      "extra_viewport_polygons": 4083
+    },
+    {
+      "frame": 5547,
+      "scene": 4133,
+      "extra_viewport_polygons": 3970
+    },
+    {
+      "frame": 5548,
+      "scene": 4134,
+      "extra_viewport_polygons": 3957
+    },
+    {
+      "frame": 5549,
+      "scene": 4135,
+      "extra_viewport_polygons": 3940
+    },
+    {
+      "frame": 5550,
+      "scene": 4136,
+      "extra_viewport_polygons": 3828
+    },
+    {
+      "frame": 5551,
+      "scene": 4137,
+      "extra_viewport_polygons": 3791
+    },
+    {
+      "frame": 5552,
+      "scene": 4138,
+      "extra_viewport_polygons": 3726
+    },
+    {
+      "frame": 5553,
+      "scene": 4139,
+      "extra_viewport_polygons": 3594
+    },
+    {
+      "frame": 5554,
+      "scene": 4140,
+      "extra_viewport_polygons": 3552
+    },
+    {
+      "frame": 5555,
+      "scene": 4141,
+      "extra_viewport_polygons": 3515
+    },
+    {
+      "frame": 5556,
+      "scene": 4142,
+      "extra_viewport_polygons": 3364
+    },
+    {
+      "frame": 5557,
+      "scene": 4143,
+      "extra_viewport_polygons": 3297
+    },
+    {
+      "frame": 5558,
+      "scene": 4144,
+      "extra_viewport_polygons": 3244
+    },
+    {
+      "frame": 5559,
+      "scene": 4145,
+      "extra_viewport_polygons": 3205
+    },
+    {
+      "frame": 5560,
+      "scene": 4146,
+      "extra_viewport_polygons": 3249
+    },
+    {
+      "frame": 5561,
+      "scene": 4147,
+      "extra_viewport_polygons": 3231
+    },
+    {
+      "frame": 5562,
+      "scene": 4148,
+      "extra_viewport_polygons": 3119
+    },
+    {
+      "frame": 5563,
+      "scene": 4149,
+      "extra_viewport_polygons": 3206
+    },
+    {
+      "frame": 5564,
+      "scene": 4150,
+      "extra_viewport_polygons": 2955
+    },
+    {
+      "frame": 5565,
+      "scene": 4151,
+      "extra_viewport_polygons": 2910
+    },
+    {
+      "frame": 5566,
+      "scene": 4152,
+      "extra_viewport_polygons": 2905
+    },
+    {
+      "frame": 5567,
+      "scene": 4153,
+      "extra_viewport_polygons": 2918
+    },
+    {
+      "frame": 5568,
+      "scene": 4154,
+      "extra_viewport_polygons": 2988
+    },
+    {
+      "frame": 5569,
+      "scene": 4155,
+      "extra_viewport_polygons": 3062
+    },
+    {
+      "frame": 5570,
+      "scene": 4156,
+      "extra_viewport_polygons": 3106
+    },
+    {
+      "frame": 5571,
+      "scene": 4157,
+      "extra_viewport_polygons": 3160
+    },
+    {
+      "frame": 5572,
+      "scene": 4158,
+      "extra_viewport_polygons": 3189
+    },
+    {
+      "frame": 5573,
+      "scene": 4159,
+      "extra_viewport_polygons": 2873
+    },
+    {
+      "frame": 5574,
+      "scene": 4160,
+      "extra_viewport_polygons": 2895
+    },
+    {
+      "frame": 5575,
+      "scene": 4161,
+      "extra_viewport_polygons": 2755
+    },
+    {
+      "frame": 5576,
+      "scene": 4162,
+      "extra_viewport_polygons": 2156
+    },
+    {
+      "frame": 5577,
+      "scene": 4163,
+      "extra_viewport_polygons": 1774
+    },
+    {
+      "frame": 5578,
+      "scene": 4164,
+      "extra_viewport_polygons": 1417
+    },
+    {
+      "frame": 5579,
+      "scene": 4165,
+      "extra_viewport_polygons": 1121
+    },
+    {
+      "frame": 5580,
+      "scene": 4166,
+      "extra_viewport_polygons": 948
+    },
+    {
+      "frame": 5581,
+      "scene": 4167,
+      "extra_viewport_polygons": 967
+    },
+    {
+      "frame": 5582,
+      "scene": 4168,
+      "extra_viewport_polygons": 946
+    },
+    {
+      "frame": 5583,
+      "scene": 4169,
+      "extra_viewport_polygons": 992
+    },
+    {
+      "frame": 5584,
+      "scene": 4170,
+      "extra_viewport_polygons": 985
+    },
+    {
+      "frame": 5585,
+      "scene": 4171,
+      "extra_viewport_polygons": 937
+    },
+    {
+      "frame": 5586,
+      "scene": 4172,
+      "extra_viewport_polygons": 911
+    },
+    {
+      "frame": 5587,
+      "scene": 4173,
+      "extra_viewport_polygons": 941
+    },
+    {
+      "frame": 5588,
+      "scene": 4174,
+      "extra_viewport_polygons": 946
+    },
+    {
+      "frame": 5589,
+      "scene": 4175,
+      "extra_viewport_polygons": 949
+    },
+    {
+      "frame": 5590,
+      "scene": 4176,
+      "extra_viewport_polygons": 956
+    },
+    {
+      "frame": 5591,
+      "scene": 4177,
+      "extra_viewport_polygons": 1007
+    },
+    {
+      "frame": 5592,
+      "scene": 4178,
+      "extra_viewport_polygons": 1003
+    },
+    {
+      "frame": 5593,
+      "scene": 4179,
+      "extra_viewport_polygons": 1000
+    },
+    {
+      "frame": 5594,
+      "scene": 4180,
+      "extra_viewport_polygons": 1003
+    },
+    {
+      "frame": 5595,
+      "scene": 4181,
+      "extra_viewport_polygons": 1004
+    },
+    {
+      "frame": 5596,
+      "scene": 4182,
+      "extra_viewport_polygons": 1009
+    },
+    {
+      "frame": 5597,
+      "scene": 4183,
+      "extra_viewport_polygons": 1010
+    },
+    {
+      "frame": 5598,
+      "scene": 4184,
+      "extra_viewport_polygons": 1002
+    },
+    {
+      "frame": 5599,
+      "scene": 4185,
+      "extra_viewport_polygons": 1006
+    },
+    {
+      "frame": 5600,
+      "scene": 4186,
+      "extra_viewport_polygons": 1007
+    },
+    {
+      "frame": 5601,
+      "scene": 4187,
+      "extra_viewport_polygons": 1011
+    },
+    {
+      "frame": 5602,
+      "scene": 4188,
+      "extra_viewport_polygons": 1008
+    },
+    {
+      "frame": 5603,
+      "scene": 4189,
+      "extra_viewport_polygons": 1008
+    },
+    {
+      "frame": 5604,
+      "scene": 4190,
+      "extra_viewport_polygons": 1011
+    },
+    {
+      "frame": 5605,
+      "scene": 4191,
+      "extra_viewport_polygons": 1014
+    },
+    {
+      "frame": 5606,
+      "scene": 4192,
+      "extra_viewport_polygons": 1002
+    },
+    {
+      "frame": 5607,
+      "scene": 4193,
+      "extra_viewport_polygons": 997
+    },
+    {
+      "frame": 5608,
+      "scene": 4194,
+      "extra_viewport_polygons": 997
+    },
+    {
+      "frame": 5609,
+      "scene": 4195,
+      "extra_viewport_polygons": 998
+    },
+    {
+      "frame": 5610,
+      "scene": 4196,
+      "extra_viewport_polygons": 999
+    },
+    {
+      "frame": 5611,
+      "scene": 4197,
+      "extra_viewport_polygons": 997
+    },
+    {
+      "frame": 5612,
+      "scene": 4198,
+      "extra_viewport_polygons": 999
+    },
+    {
+      "frame": 5613,
+      "scene": 4199,
+      "extra_viewport_polygons": 999
+    },
+    {
+      "frame": 5614,
+      "scene": 4200,
+      "extra_viewport_polygons": 1000
+    },
+    {
+      "frame": 5615,
+      "scene": 4201,
+      "extra_viewport_polygons": 993
+    },
+    {
+      "frame": 5616,
+      "scene": 4202,
+      "extra_viewport_polygons": 997
+    },
+    {
+      "frame": 5617,
+      "scene": 4203,
+      "extra_viewport_polygons": 997
+    },
+    {
+      "frame": 5618,
+      "scene": 4204,
+      "extra_viewport_polygons": 2946
+    },
+    {
+      "frame": 5619,
+      "scene": 4205,
+      "extra_viewport_polygons": 3102
+    },
+    {
+      "frame": 5620,
+      "scene": 4206,
+      "extra_viewport_polygons": 2897
+    },
+    {
+      "frame": 5621,
+      "scene": 4207,
+      "extra_viewport_polygons": 3017
+    },
+    {
+      "frame": 5622,
+      "scene": 4208,
+      "extra_viewport_polygons": 3106
+    },
+    {
+      "frame": 5623,
+      "scene": 4209,
+      "extra_viewport_polygons": 3234
+    },
+    {
+      "frame": 5625,
+      "scene": 4210,
+      "extra_viewport_polygons": 3352
+    },
+    {
+      "frame": 5626,
+      "scene": 4211,
+      "extra_viewport_polygons": 3400
+    },
+    {
+      "frame": 5627,
+      "scene": 4212,
+      "extra_viewport_polygons": 3431
+    },
+    {
+      "frame": 5628,
+      "scene": 4213,
+      "extra_viewport_polygons": 3438
+    },
+    {
+      "frame": 5629,
+      "scene": 4214,
+      "extra_viewport_polygons": 3449
+    },
+    {
+      "frame": 5630,
+      "scene": 4215,
+      "extra_viewport_polygons": 3572
+    },
+    {
+      "frame": 5631,
+      "scene": 4216,
+      "extra_viewport_polygons": 3598
+    },
+    {
+      "frame": 5632,
+      "scene": 4217,
+      "extra_viewport_polygons": 3602
+    },
+    {
+      "frame": 5633,
+      "scene": 4218,
+      "extra_viewport_polygons": 3608
+    },
+    {
+      "frame": 5634,
+      "scene": 4219,
+      "extra_viewport_polygons": 3609
+    },
+    {
+      "frame": 5635,
+      "scene": 4220,
+      "extra_viewport_polygons": 3617
+    },
+    {
+      "frame": 5636,
+      "scene": 4221,
+      "extra_viewport_polygons": 3636
+    },
+    {
+      "frame": 5637,
+      "scene": 4222,
+      "extra_viewport_polygons": 3727
+    },
+    {
+      "frame": 5638,
+      "scene": 4223,
+      "extra_viewport_polygons": 3727
+    },
+    {
+      "frame": 5639,
+      "scene": 4224,
+      "extra_viewport_polygons": 3725
+    },
+    {
+      "frame": 5640,
+      "scene": 4225,
+      "extra_viewport_polygons": 3743
+    },
+    {
+      "frame": 5641,
+      "scene": 4226,
+      "extra_viewport_polygons": 3747
+    },
+    {
+      "frame": 5642,
+      "scene": 4227,
+      "extra_viewport_polygons": 3747
+    },
+    {
+      "frame": 5643,
+      "scene": 4228,
+      "extra_viewport_polygons": 3746
+    },
+    {
+      "frame": 5644,
+      "scene": 4229,
+      "extra_viewport_polygons": 3746
+    },
+    {
+      "frame": 5645,
+      "scene": 4230,
+      "extra_viewport_polygons": 3745
+    },
+    {
+      "frame": 5646,
+      "scene": 4231,
+      "extra_viewport_polygons": 3713
+    },
+    {
+      "frame": 5647,
+      "scene": 4232,
+      "extra_viewport_polygons": 3541
+    },
+    {
+      "frame": 5648,
+      "scene": 4233,
+      "extra_viewport_polygons": 3498
+    },
+    {
+      "frame": 5649,
+      "scene": 4234,
+      "extra_viewport_polygons": 3465
+    },
+    {
+      "frame": 5650,
+      "scene": 4235,
+      "extra_viewport_polygons": 3431
+    },
+    {
+      "frame": 5651,
+      "scene": 4236,
+      "extra_viewport_polygons": 3397
+    },
+    {
+      "frame": 5652,
+      "scene": 4237,
+      "extra_viewport_polygons": 3315
+    },
+    {
+      "frame": 5653,
+      "scene": 4238,
+      "extra_viewport_polygons": 3314
+    },
+    {
+      "frame": 5654,
+      "scene": 4239,
+      "extra_viewport_polygons": 3213
+    },
+    {
+      "frame": 5655,
+      "scene": 4240,
+      "extra_viewport_polygons": 3219
+    },
+    {
+      "frame": 5656,
+      "scene": 4241,
+      "extra_viewport_polygons": 3162
+    },
+    {
+      "frame": 5657,
+      "scene": 4242,
+      "extra_viewport_polygons": 3078
+    },
+    {
+      "frame": 5658,
+      "scene": 4243,
+      "extra_viewport_polygons": 3126
+    },
+    {
+      "frame": 5659,
+      "scene": 4244,
+      "extra_viewport_polygons": 3105
+    },
+    {
+      "frame": 5660,
+      "scene": 4245,
+      "extra_viewport_polygons": 3036
+    },
+    {
+      "frame": 5661,
+      "scene": 4246,
+      "extra_viewport_polygons": 3008
+    },
+    {
+      "frame": 5662,
+      "scene": 4247,
+      "extra_viewport_polygons": 2901
+    },
+    {
+      "frame": 5663,
+      "scene": 4248,
+      "extra_viewport_polygons": 2941
+    },
+    {
+      "frame": 5664,
+      "scene": 4249,
+      "extra_viewport_polygons": 2937
+    },
+    {
+      "frame": 5665,
+      "scene": 4250,
+      "extra_viewport_polygons": 2902
+    },
+    {
+      "frame": 5666,
+      "scene": 4251,
+      "extra_viewport_polygons": 2895
+    },
+    {
+      "frame": 5667,
+      "scene": 4252,
+      "extra_viewport_polygons": 2972
+    },
+    {
+      "frame": 5668,
+      "scene": 4253,
+      "extra_viewport_polygons": 2978
+    },
+    {
+      "frame": 5669,
+      "scene": 4254,
+      "extra_viewport_polygons": 3049
+    },
+    {
+      "frame": 5670,
+      "scene": 4255,
+      "extra_viewport_polygons": 3036
+    },
+    {
+      "frame": 5671,
+      "scene": 4256,
+      "extra_viewport_polygons": 3088
+    },
+    {
+      "frame": 5672,
+      "scene": 4257,
+      "extra_viewport_polygons": 3080
+    },
+    {
+      "frame": 5673,
+      "scene": 4258,
+      "extra_viewport_polygons": 3142
+    },
+    {
+      "frame": 5674,
+      "scene": 4259,
+      "extra_viewport_polygons": 3231
+    },
+    {
+      "frame": 5675,
+      "scene": 4260,
+      "extra_viewport_polygons": 3162
+    },
+    {
+      "frame": 5676,
+      "scene": 4261,
+      "extra_viewport_polygons": 3241
+    },
+    {
+      "frame": 5677,
+      "scene": 4262,
+      "extra_viewport_polygons": 3153
+    },
+    {
+      "frame": 5678,
+      "scene": 4263,
+      "extra_viewport_polygons": 3140
+    },
+    {
+      "frame": 5679,
+      "scene": 4264,
+      "extra_viewport_polygons": 3239
+    },
+    {
+      "frame": 5680,
+      "scene": 4265,
+      "extra_viewport_polygons": 3224
+    },
+    {
+      "frame": 5681,
+      "scene": 4266,
+      "extra_viewport_polygons": 3188
+    },
+    {
+      "frame": 5682,
+      "scene": 4267,
+      "extra_viewport_polygons": 3198
+    },
+    {
+      "frame": 5683,
+      "scene": 4268,
+      "extra_viewport_polygons": 3108
+    },
+    {
+      "frame": 5684,
+      "scene": 4269,
+      "extra_viewport_polygons": 3031
+    },
+    {
+      "frame": 5685,
+      "scene": 4270,
+      "extra_viewport_polygons": 2755
+    },
+    {
+      "frame": 5686,
+      "scene": 4271,
+      "extra_viewport_polygons": 2544
+    },
+    {
+      "frame": 5687,
+      "scene": 4272,
+      "extra_viewport_polygons": 2379
+    },
+    {
+      "frame": 5688,
+      "scene": 4273,
+      "extra_viewport_polygons": 2332
+    },
+    {
+      "frame": 5689,
+      "scene": 4274,
+      "extra_viewport_polygons": 2271
+    },
+    {
+      "frame": 5690,
+      "scene": 4275,
+      "extra_viewport_polygons": 2243
+    },
+    {
+      "frame": 5691,
+      "scene": 4276,
+      "extra_viewport_polygons": 2254
+    },
+    {
+      "frame": 5692,
+      "scene": 4277,
+      "extra_viewport_polygons": 2312
+    },
+    {
+      "frame": 5693,
+      "scene": 4278,
+      "extra_viewport_polygons": 2391
+    },
+    {
+      "frame": 5694,
+      "scene": 4279,
+      "extra_viewport_polygons": 2546
+    },
+    {
+      "frame": 5695,
+      "scene": 4280,
+      "extra_viewport_polygons": 2663
+    },
+    {
+      "frame": 5696,
+      "scene": 4281,
+      "extra_viewport_polygons": 2892
+    },
+    {
+      "frame": 5697,
+      "scene": 4282,
+      "extra_viewport_polygons": 3137
+    },
+    {
+      "frame": 5698,
+      "scene": 4283,
+      "extra_viewport_polygons": 3155
+    },
+    {
+      "frame": 5699,
+      "scene": 4284,
+      "extra_viewport_polygons": 3280
+    },
+    {
+      "frame": 5700,
+      "scene": 4285,
+      "extra_viewport_polygons": 3307
+    },
+    {
+      "frame": 5701,
+      "scene": 4286,
+      "extra_viewport_polygons": 3249
+    },
+    {
+      "frame": 5702,
+      "scene": 4287,
+      "extra_viewport_polygons": 3344
+    },
+    {
+      "frame": 5703,
+      "scene": 4288,
+      "extra_viewport_polygons": 3256
+    },
+    {
+      "frame": 5704,
+      "scene": 4289,
+      "extra_viewport_polygons": 3156
+    },
+    {
+      "frame": 5705,
+      "scene": 4290,
+      "extra_viewport_polygons": 3171
+    },
+    {
+      "frame": 5707,
+      "scene": 4291,
+      "extra_viewport_polygons": 3240
+    },
+    {
+      "frame": 5708,
+      "scene": 4292,
+      "extra_viewport_polygons": 3233
+    },
+    {
+      "frame": 5709,
+      "scene": 4293,
+      "extra_viewport_polygons": 3215
+    },
+    {
+      "frame": 5710,
+      "scene": 4294,
+      "extra_viewport_polygons": 3224
+    },
+    {
+      "frame": 5711,
+      "scene": 4295,
+      "extra_viewport_polygons": 3147
+    },
+    {
+      "frame": 5712,
+      "scene": 4296,
+      "extra_viewport_polygons": 3135
+    },
+    {
+      "frame": 5713,
+      "scene": 4297,
+      "extra_viewport_polygons": 3133
+    },
+    {
+      "frame": 5714,
+      "scene": 4298,
+      "extra_viewport_polygons": 3080
+    },
+    {
+      "frame": 5715,
+      "scene": 4299,
+      "extra_viewport_polygons": 3079
+    },
+    {
+      "frame": 5716,
+      "scene": 4300,
+      "extra_viewport_polygons": 3079
+    },
+    {
+      "frame": 5717,
+      "scene": 4301,
+      "extra_viewport_polygons": 3088
+    },
+    {
+      "frame": 5718,
+      "scene": 4302,
+      "extra_viewport_polygons": 2997
+    },
+    {
+      "frame": 5719,
+      "scene": 4303,
+      "extra_viewport_polygons": 3006
+    },
+    {
+      "frame": 5720,
+      "scene": 4304,
+      "extra_viewport_polygons": 3013
+    },
+    {
+      "frame": 5721,
+      "scene": 4305,
+      "extra_viewport_polygons": 3013
+    },
+    {
+      "frame": 5722,
+      "scene": 4306,
+      "extra_viewport_polygons": 3032
+    },
+    {
+      "frame": 5723,
+      "scene": 4307,
+      "extra_viewport_polygons": 3051
+    },
+    {
+      "frame": 5725,
+      "scene": 4308,
+      "extra_viewport_polygons": 3052
+    },
+    {
+      "frame": 5726,
+      "scene": 4309,
+      "extra_viewport_polygons": 3068
+    },
+    {
+      "frame": 5727,
+      "scene": 4310,
+      "extra_viewport_polygons": 3070
+    },
+    {
+      "frame": 5728,
+      "scene": 4311,
+      "extra_viewport_polygons": 3071
+    },
+    {
+      "frame": 5729,
+      "scene": 4312,
+      "extra_viewport_polygons": 3071
+    },
+    {
+      "frame": 5730,
+      "scene": 4313,
+      "extra_viewport_polygons": 3061
+    },
+    {
+      "frame": 5731,
+      "scene": 4314,
+      "extra_viewport_polygons": 3063
+    },
+    {
+      "frame": 5732,
+      "scene": 4315,
+      "extra_viewport_polygons": 3068
+    },
+    {
+      "frame": 5733,
+      "scene": 4316,
+      "extra_viewport_polygons": 3070
+    },
+    {
+      "frame": 5734,
+      "scene": 4317,
+      "extra_viewport_polygons": 3052
+    },
+    {
+      "frame": 5735,
+      "scene": 4318,
+      "extra_viewport_polygons": 3055
+    },
+    {
+      "frame": 5736,
+      "scene": 4319,
+      "extra_viewport_polygons": 3059
+    },
+    {
+      "frame": 5737,
+      "scene": 4320,
+      "extra_viewport_polygons": 3052
+    },
+    {
+      "frame": 5738,
+      "scene": 4321,
+      "extra_viewport_polygons": 3135
+    },
+    {
+      "frame": 5739,
+      "scene": 4322,
+      "extra_viewport_polygons": 3136
+    },
+    {
+      "frame": 5740,
+      "scene": 4323,
+      "extra_viewport_polygons": 3128
+    },
+    {
+      "frame": 5741,
+      "scene": 4324,
+      "extra_viewport_polygons": 3127
+    },
+    {
+      "frame": 5742,
+      "scene": 4325,
+      "extra_viewport_polygons": 3116
+    },
+    {
+      "frame": 5743,
+      "scene": 4326,
+      "extra_viewport_polygons": 3118
+    },
+    {
+      "frame": 5744,
+      "scene": 4327,
+      "extra_viewport_polygons": 3113
+    },
+    {
+      "frame": 5745,
+      "scene": 4328,
+      "extra_viewport_polygons": 3114
+    },
+    {
+      "frame": 5746,
+      "scene": 4329,
+      "extra_viewport_polygons": 3115
+    },
+    {
+      "frame": 5747,
+      "scene": 4330,
+      "extra_viewport_polygons": 3116
+    },
+    {
+      "frame": 5748,
+      "scene": 4331,
+      "extra_viewport_polygons": 3391
+    },
+    {
+      "frame": 5749,
+      "scene": 4332,
+      "extra_viewport_polygons": 3470
+    },
+    {
+      "frame": 5750,
+      "scene": 4333,
+      "extra_viewport_polygons": 3474
+    },
+    {
+      "frame": 5751,
+      "scene": 4334,
+      "extra_viewport_polygons": 3478
+    },
+    {
+      "frame": 5753,
+      "scene": 4335,
+      "extra_viewport_polygons": 3721
+    },
+    {
+      "frame": 5754,
+      "scene": 4336,
+      "extra_viewport_polygons": 3721
+    },
+    {
+      "frame": 5755,
+      "scene": 4337,
+      "extra_viewport_polygons": 3723
+    },
+    {
+      "frame": 5756,
+      "scene": 4338,
+      "extra_viewport_polygons": 3724
+    },
+    {
+      "frame": 5757,
+      "scene": 4339,
+      "extra_viewport_polygons": 3716
+    },
+    {
+      "frame": 5758,
+      "scene": 4340,
+      "extra_viewport_polygons": 3716
+    },
+    {
+      "frame": 5759,
+      "scene": 4341,
+      "extra_viewport_polygons": 3735
+    },
+    {
+      "frame": 5760,
+      "scene": 4342,
+      "extra_viewport_polygons": 3736
+    },
+    {
+      "frame": 5761,
+      "scene": 4343,
+      "extra_viewport_polygons": 3736
+    },
+    {
+      "frame": 5762,
+      "scene": 4344,
+      "extra_viewport_polygons": 3719
+    },
+    {
+      "frame": 5763,
+      "scene": 4345,
+      "extra_viewport_polygons": 3719
+    },
+    {
+      "frame": 5764,
+      "scene": 4346,
+      "extra_viewport_polygons": 3719
+    },
+    {
+      "frame": 5765,
+      "scene": 4347,
+      "extra_viewport_polygons": 3719
+    },
+    {
+      "frame": 5766,
+      "scene": 4348,
+      "extra_viewport_polygons": 3796
+    },
+    {
+      "frame": 5767,
+      "scene": 4349,
+      "extra_viewport_polygons": 3796
+    },
+    {
+      "frame": 5768,
+      "scene": 4350,
+      "extra_viewport_polygons": 3796
+    },
+    {
+      "frame": 5769,
+      "scene": 4351,
+      "extra_viewport_polygons": 3796
+    },
+    {
+      "frame": 5770,
+      "scene": 4352,
+      "extra_viewport_polygons": 3796
+    },
+    {
+      "frame": 5771,
+      "scene": 4353,
+      "extra_viewport_polygons": 3796
+    },
+    {
+      "frame": 5772,
+      "scene": 4354,
+      "extra_viewport_polygons": 3795
+    },
+    {
+      "frame": 5774,
+      "scene": 4355,
+      "extra_viewport_polygons": 3795
+    },
+    {
+      "frame": 5775,
+      "scene": 4356,
+      "extra_viewport_polygons": 3795
+    },
+    {
+      "frame": 5776,
+      "scene": 4357,
+      "extra_viewport_polygons": 3795
+    },
+    {
+      "frame": 5777,
+      "scene": 4358,
+      "extra_viewport_polygons": 3794
+    },
+    {
+      "frame": 5778,
+      "scene": 4359,
+      "extra_viewport_polygons": 3553
+    },
+    {
+      "frame": 5779,
+      "scene": 4360,
+      "extra_viewport_polygons": 3552
+    },
+    {
+      "frame": 5780,
+      "scene": 4361,
+      "extra_viewport_polygons": 3628
+    },
+    {
+      "frame": 5781,
+      "scene": 4362,
+      "extra_viewport_polygons": 3627
+    },
+    {
+      "frame": 5782,
+      "scene": 4363,
+      "extra_viewport_polygons": 3620
+    },
+    {
+      "frame": 5783,
+      "scene": 4364,
+      "extra_viewport_polygons": 3345
+    },
+    {
+      "frame": 5784,
+      "scene": 4365,
+      "extra_viewport_polygons": 3362
+    },
+    {
+      "frame": 5785,
+      "scene": 4366,
+      "extra_viewport_polygons": 3361
+    },
+    {
+      "frame": 5786,
+      "scene": 4367,
+      "extra_viewport_polygons": 3361
+    },
+    {
+      "frame": 5787,
+      "scene": 4368,
+      "extra_viewport_polygons": 3356
+    },
+    {
+      "frame": 5788,
+      "scene": 4369,
+      "extra_viewport_polygons": 3354
+    },
+    {
+      "frame": 5789,
+      "scene": 4370,
+      "extra_viewport_polygons": 3349
+    },
+    {
+      "frame": 5790,
+      "scene": 4371,
+      "extra_viewport_polygons": 3342
+    },
+    {
+      "frame": 5791,
+      "scene": 4372,
+      "extra_viewport_polygons": 3340
+    },
+    {
+      "frame": 5792,
+      "scene": 4373,
+      "extra_viewport_polygons": 3416
+    },
+    {
+      "frame": 5793,
+      "scene": 4374,
+      "extra_viewport_polygons": 3414
+    },
+    {
+      "frame": 5794,
+      "scene": 4375,
+      "extra_viewport_polygons": 3406
+    },
+    {
+      "frame": 5795,
+      "scene": 4376,
+      "extra_viewport_polygons": 3412
+    },
+    {
+      "frame": 5796,
+      "scene": 4377,
+      "extra_viewport_polygons": 3419
+    },
+    {
+      "frame": 5797,
+      "scene": 4378,
+      "extra_viewport_polygons": 3428
+    },
+    {
+      "frame": 5798,
+      "scene": 4379,
+      "extra_viewport_polygons": 3437
+    },
+    {
+      "frame": 5799,
+      "scene": 4380,
+      "extra_viewport_polygons": 3526
+    },
+    {
+      "frame": 5800,
+      "scene": 4381,
+      "extra_viewport_polygons": 3525
+    },
+    {
+      "frame": 5801,
+      "scene": 4382,
+      "extra_viewport_polygons": 3533
+    },
+    {
+      "frame": 5802,
+      "scene": 4383,
+      "extra_viewport_polygons": 3560
+    },
+    {
+      "frame": 5803,
+      "scene": 4384,
+      "extra_viewport_polygons": 3560
+    },
+    {
+      "frame": 5804,
+      "scene": 4385,
+      "extra_viewport_polygons": 3652
+    },
+    {
+      "frame": 5805,
+      "scene": 4386,
+      "extra_viewport_polygons": 3661
+    },
+    {
+      "frame": 5806,
+      "scene": 4387,
+      "extra_viewport_polygons": 3661
+    },
+    {
+      "frame": 5807,
+      "scene": 4388,
+      "extra_viewport_polygons": 3669
+    },
+    {
+      "frame": 5808,
+      "scene": 4389,
+      "extra_viewport_polygons": 3677
+    },
+    {
+      "frame": 5809,
+      "scene": 4390,
+      "extra_viewport_polygons": 3772
+    },
+    {
+      "frame": 5810,
+      "scene": 4391,
+      "extra_viewport_polygons": 3772
+    },
+    {
+      "frame": 5811,
+      "scene": 4392,
+      "extra_viewport_polygons": 3780
+    },
+    {
+      "frame": 5812,
+      "scene": 4393,
+      "extra_viewport_polygons": 3780
+    },
+    {
+      "frame": 5813,
+      "scene": 4394,
+      "extra_viewport_polygons": 3789
+    },
+    {
+      "frame": 5814,
+      "scene": 4395,
+      "extra_viewport_polygons": 3884
+    },
+    {
+      "frame": 5815,
+      "scene": 4396,
+      "extra_viewport_polygons": 3901
+    },
+    {
+      "frame": 5816,
+      "scene": 4397,
+      "extra_viewport_polygons": 3909
+    },
+    {
+      "frame": 5817,
+      "scene": 4398,
+      "extra_viewport_polygons": 3909
+    },
+    {
+      "frame": 5818,
+      "scene": 4399,
+      "extra_viewport_polygons": 3897
+    },
+    {
+      "frame": 5819,
+      "scene": 4400,
+      "extra_viewport_polygons": 3904
+    },
+    {
+      "frame": 5820,
+      "scene": 4401,
+      "extra_viewport_polygons": 3903
+    },
+    {
+      "frame": 5821,
+      "scene": 4402,
+      "extra_viewport_polygons": 3903
+    },
+    {
+      "frame": 5822,
+      "scene": 4403,
+      "extra_viewport_polygons": 3907
+    },
+    {
+      "frame": 5823,
+      "scene": 4404,
+      "extra_viewport_polygons": 3891
+    },
+    {
+      "frame": 5824,
+      "scene": 4405,
+      "extra_viewport_polygons": 3982
+    },
+    {
+      "frame": 5825,
+      "scene": 4406,
+      "extra_viewport_polygons": 3962
+    },
+    {
+      "frame": 5826,
+      "scene": 4407,
+      "extra_viewport_polygons": 3938
+    },
+    {
+      "frame": 5827,
+      "scene": 4408,
+      "extra_viewport_polygons": 3948
+    },
+    {
+      "frame": 5828,
+      "scene": 4409,
+      "extra_viewport_polygons": 3948
+    },
+    {
+      "frame": 5829,
+      "scene": 4410,
+      "extra_viewport_polygons": 3944
+    },
+    {
+      "frame": 5830,
+      "scene": 4411,
+      "extra_viewport_polygons": 3953
+    },
+    {
+      "frame": 5831,
+      "scene": 4412,
+      "extra_viewport_polygons": 3952
+    },
+    {
+      "frame": 5832,
+      "scene": 4413,
+      "extra_viewport_polygons": 3952
+    },
+    {
+      "frame": 5833,
+      "scene": 4414,
+      "extra_viewport_polygons": 3955
+    },
+    {
+      "frame": 5834,
+      "scene": 4415,
+      "extra_viewport_polygons": 3953
+    },
+    {
+      "frame": 5835,
+      "scene": 4416,
+      "extra_viewport_polygons": 3950
+    },
+    {
+      "frame": 5836,
+      "scene": 4417,
+      "extra_viewport_polygons": 3819
+    },
+    {
+      "frame": 5837,
+      "scene": 4418,
+      "extra_viewport_polygons": 3877
+    },
+    {
+      "frame": 5838,
+      "scene": 4419,
+      "extra_viewport_polygons": 3879
+    },
+    {
+      "frame": 5839,
+      "scene": 4420,
+      "extra_viewport_polygons": 3879
+    },
+    {
+      "frame": 5840,
+      "scene": 4421,
+      "extra_viewport_polygons": 3825
+    },
+    {
+      "frame": 5841,
+      "scene": 4422,
+      "extra_viewport_polygons": 3833
+    },
+    {
+      "frame": 5842,
+      "scene": 4423,
+      "extra_viewport_polygons": 3834
+    },
+    {
+      "frame": 5843,
+      "scene": 4424,
+      "extra_viewport_polygons": 4086
+    },
+    {
+      "frame": 5844,
+      "scene": 4425,
+      "extra_viewport_polygons": 4087
+    },
+    {
+      "frame": 5845,
+      "scene": 4426,
+      "extra_viewport_polygons": 4080
+    },
+    {
+      "frame": 5846,
+      "scene": 4427,
+      "extra_viewport_polygons": 4030
+    },
+    {
+      "frame": 5847,
+      "scene": 4428,
+      "extra_viewport_polygons": 4234
+    },
+    {
+      "frame": 5848,
+      "scene": 4429,
+      "extra_viewport_polygons": 4189
+    },
+    {
+      "frame": 5849,
+      "scene": 4430,
+      "extra_viewport_polygons": 4178
+    },
+    {
+      "frame": 5850,
+      "scene": 4431,
+      "extra_viewport_polygons": 4309
+    },
+    {
+      "frame": 5851,
+      "scene": 4432,
+      "extra_viewport_polygons": 4304
+    },
+    {
+      "frame": 5852,
+      "scene": 4433,
+      "extra_viewport_polygons": 4397
+    },
+    {
+      "frame": 5853,
+      "scene": 4434,
+      "extra_viewport_polygons": 4353
+    },
+    {
+      "frame": 5854,
+      "scene": 4435,
+      "extra_viewport_polygons": 4359
+    },
+    {
+      "frame": 5855,
+      "scene": 4436,
+      "extra_viewport_polygons": 4367
+    },
+    {
+      "frame": 5856,
+      "scene": 4437,
+      "extra_viewport_polygons": 4359
+    },
+    {
+      "frame": 5857,
+      "scene": 4438,
+      "extra_viewport_polygons": 4502
+    },
+    {
+      "frame": 5858,
+      "scene": 4439,
+      "extra_viewport_polygons": 4509
+    },
+    {
+      "frame": 5859,
+      "scene": 4440,
+      "extra_viewport_polygons": 4555
+    },
+    {
+      "frame": 5860,
+      "scene": 4441,
+      "extra_viewport_polygons": 4556
+    },
+    {
+      "frame": 5861,
+      "scene": 4442,
+      "extra_viewport_polygons": 4571
+    },
+    {
+      "frame": 5862,
+      "scene": 4443,
+      "extra_viewport_polygons": 4596
+    },
+    {
+      "frame": 5863,
+      "scene": 4444,
+      "extra_viewport_polygons": 4598
+    },
+    {
+      "frame": 5864,
+      "scene": 4445,
+      "extra_viewport_polygons": 4593
+    },
+    {
+      "frame": 5865,
+      "scene": 4446,
+      "extra_viewport_polygons": 4602
+    },
+    {
+      "frame": 5866,
+      "scene": 4447,
+      "extra_viewport_polygons": 4606
+    },
+    {
+      "frame": 5867,
+      "scene": 4448,
+      "extra_viewport_polygons": 4615
+    },
+    {
+      "frame": 5868,
+      "scene": 4449,
+      "extra_viewport_polygons": 4597
+    },
+    {
+      "frame": 5869,
+      "scene": 4450,
+      "extra_viewport_polygons": 4600
+    },
+    {
+      "frame": 5870,
+      "scene": 4451,
+      "extra_viewport_polygons": 4601
+    },
+    {
+      "frame": 5871,
+      "scene": 4452,
+      "extra_viewport_polygons": 4609
+    },
+    {
+      "frame": 5872,
+      "scene": 4453,
+      "extra_viewport_polygons": 4565
+    },
+    {
+      "frame": 5873,
+      "scene": 4454,
+      "extra_viewport_polygons": 4565
+    },
+    {
+      "frame": 5874,
+      "scene": 4455,
+      "extra_viewport_polygons": 4573
+    },
+    {
+      "frame": 5875,
+      "scene": 4456,
+      "extra_viewport_polygons": 4547
+    },
+    {
+      "frame": 5876,
+      "scene": 4457,
+      "extra_viewport_polygons": 4548
+    },
+    {
+      "frame": 5877,
+      "scene": 4458,
+      "extra_viewport_polygons": 4591
+    },
+    {
+      "frame": 5878,
+      "scene": 4459,
+      "extra_viewport_polygons": 4592
+    },
+    {
+      "frame": 5879,
+      "scene": 4460,
+      "extra_viewport_polygons": 4557
+    },
+    {
+      "frame": 5880,
+      "scene": 4461,
+      "extra_viewport_polygons": 4589
+    },
+    {
+      "frame": 5881,
+      "scene": 4462,
+      "extra_viewport_polygons": 4630
+    },
+    {
+      "frame": 5882,
+      "scene": 4463,
+      "extra_viewport_polygons": 4640
+    },
+    {
+      "frame": 5883,
+      "scene": 4464,
+      "extra_viewport_polygons": 4643
+    },
+    {
+      "frame": 5884,
+      "scene": 4465,
+      "extra_viewport_polygons": 4643
+    },
+    {
+      "frame": 5885,
+      "scene": 4466,
+      "extra_viewport_polygons": 4541
+    },
+    {
+      "frame": 5886,
+      "scene": 4467,
+      "extra_viewport_polygons": 4578
+    },
+    {
+      "frame": 5887,
+      "scene": 4468,
+      "extra_viewport_polygons": 4592
+    },
+    {
+      "frame": 5888,
+      "scene": 4469,
+      "extra_viewport_polygons": 4581
+    },
+    {
+      "frame": 5889,
+      "scene": 4470,
+      "extra_viewport_polygons": 4587
+    },
+    {
+      "frame": 5890,
+      "scene": 4471,
+      "extra_viewport_polygons": 4595
+    },
+    {
+      "frame": 5891,
+      "scene": 4472,
+      "extra_viewport_polygons": 4554
+    },
+    {
+      "frame": 5892,
+      "scene": 4473,
+      "extra_viewport_polygons": 4504
+    },
+    {
+      "frame": 5893,
+      "scene": 4474,
+      "extra_viewport_polygons": 4475
+    },
+    {
+      "frame": 5894,
+      "scene": 4475,
+      "extra_viewport_polygons": 4448
+    },
+    {
+      "frame": 5895,
+      "scene": 4476,
+      "extra_viewport_polygons": 4444
+    },
+    {
+      "frame": 5896,
+      "scene": 4477,
+      "extra_viewport_polygons": 4462
+    },
+    {
+      "frame": 5897,
+      "scene": 4478,
+      "extra_viewport_polygons": 4461
+    },
+    {
+      "frame": 5898,
+      "scene": 4479,
+      "extra_viewport_polygons": 4518
+    },
+    {
+      "frame": 5899,
+      "scene": 4480,
+      "extra_viewport_polygons": 4475
+    },
+    {
+      "frame": 5900,
+      "scene": 4481,
+      "extra_viewport_polygons": 4482
+    },
+    {
+      "frame": 5901,
+      "scene": 4482,
+      "extra_viewport_polygons": 4490
+    },
+    {
+      "frame": 5902,
+      "scene": 4483,
+      "extra_viewport_polygons": 4494
+    },
+    {
+      "frame": 5903,
+      "scene": 4484,
+      "extra_viewport_polygons": 4454
+    },
+    {
+      "frame": 5904,
+      "scene": 4485,
+      "extra_viewport_polygons": 4471
+    },
+    {
+      "frame": 5905,
+      "scene": 4486,
+      "extra_viewport_polygons": 4518
+    },
+    {
+      "frame": 5906,
+      "scene": 4487,
+      "extra_viewport_polygons": 4523
+    },
+    {
+      "frame": 5907,
+      "scene": 4488,
+      "extra_viewport_polygons": 4489
+    },
+    {
+      "frame": 5908,
+      "scene": 4489,
+      "extra_viewport_polygons": 4493
+    },
+    {
+      "frame": 5909,
+      "scene": 4490,
+      "extra_viewport_polygons": 4431
+    },
+    {
+      "frame": 5910,
+      "scene": 4491,
+      "extra_viewport_polygons": 4427
+    },
+    {
+      "frame": 5911,
+      "scene": 4492,
+      "extra_viewport_polygons": 4430
+    },
+    {
+      "frame": 5912,
+      "scene": 4493,
+      "extra_viewport_polygons": 4446
+    },
+    {
+      "frame": 5914,
+      "scene": 4494,
+      "extra_viewport_polygons": 4508
+    },
+    {
+      "frame": 5915,
+      "scene": 4495,
+      "extra_viewport_polygons": 4508
+    },
+    {
+      "frame": 5916,
+      "scene": 4496,
+      "extra_viewport_polygons": 4510
+    },
+    {
+      "frame": 5918,
+      "scene": 4497,
+      "extra_viewport_polygons": 4530
+    },
+    {
+      "frame": 5919,
+      "scene": 4498,
+      "extra_viewport_polygons": 4509
+    },
+    {
+      "frame": 5920,
+      "scene": 4499,
+      "extra_viewport_polygons": 4521
+    },
+    {
+      "frame": 5921,
+      "scene": 4500,
+      "extra_viewport_polygons": 4530
+    },
+    {
+      "frame": 5922,
+      "scene": 4501,
+      "extra_viewport_polygons": 4503
+    },
+    {
+      "frame": 5923,
+      "scene": 4502,
+      "extra_viewport_polygons": 4501
+    },
+    {
+      "frame": 5924,
+      "scene": 4503,
+      "extra_viewport_polygons": 4512
+    },
+    {
+      "frame": 5925,
+      "scene": 4504,
+      "extra_viewport_polygons": 4542
+    },
+    {
+      "frame": 5926,
+      "scene": 4505,
+      "extra_viewport_polygons": 4546
+    },
+    {
+      "frame": 5927,
+      "scene": 4506,
+      "extra_viewport_polygons": 4543
+    },
+    {
+      "frame": 5928,
+      "scene": 4507,
+      "extra_viewport_polygons": 4540
+    },
+    {
+      "frame": 5929,
+      "scene": 4508,
+      "extra_viewport_polygons": 4548
+    },
+    {
+      "frame": 5930,
+      "scene": 4509,
+      "extra_viewport_polygons": 4505
+    },
+    {
+      "frame": 5931,
+      "scene": 4510,
+      "extra_viewport_polygons": 4486
+    },
+    {
+      "frame": 5932,
+      "scene": 4511,
+      "extra_viewport_polygons": 4548
+    },
+    {
+      "frame": 5933,
+      "scene": 4512,
+      "extra_viewport_polygons": 4548
+    },
+    {
+      "frame": 5934,
+      "scene": 4513,
+      "extra_viewport_polygons": 4575
+    },
+    {
+      "frame": 5935,
+      "scene": 4514,
+      "extra_viewport_polygons": 4587
+    },
+    {
+      "frame": 5936,
+      "scene": 4515,
+      "extra_viewport_polygons": 4606
+    },
+    {
+      "frame": 5937,
+      "scene": 4516,
+      "extra_viewport_polygons": 4574
+    },
+    {
+      "frame": 5938,
+      "scene": 4517,
+      "extra_viewport_polygons": 4573
+    },
+    {
+      "frame": 5939,
+      "scene": 4518,
+      "extra_viewport_polygons": 4456
+    },
+    {
+      "frame": 5940,
+      "scene": 4519,
+      "extra_viewport_polygons": 4449
+    },
+    {
+      "frame": 5941,
+      "scene": 4520,
+      "extra_viewport_polygons": 4434
+    },
+    {
+      "frame": 5942,
+      "scene": 4521,
+      "extra_viewport_polygons": 4408
+    },
+    {
+      "frame": 5943,
+      "scene": 4522,
+      "extra_viewport_polygons": 4441
+    },
+    {
+      "frame": 5944,
+      "scene": 4523,
+      "extra_viewport_polygons": 4442
+    },
+    {
+      "frame": 5945,
+      "scene": 4524,
+      "extra_viewport_polygons": 4453
+    },
+    {
+      "frame": 5946,
+      "scene": 4525,
+      "extra_viewport_polygons": 4504
+    },
+    {
+      "frame": 5947,
+      "scene": 4526,
+      "extra_viewport_polygons": 4521
+    },
+    {
+      "frame": 5948,
+      "scene": 4527,
+      "extra_viewport_polygons": 4522
+    },
+    {
+      "frame": 5949,
+      "scene": 4528,
+      "extra_viewport_polygons": 4538
+    },
+    {
+      "frame": 5950,
+      "scene": 4529,
+      "extra_viewport_polygons": 4584
+    },
+    {
+      "frame": 5951,
+      "scene": 4530,
+      "extra_viewport_polygons": 4602
+    },
+    {
+      "frame": 5952,
+      "scene": 4531,
+      "extra_viewport_polygons": 4614
+    },
+    {
+      "frame": 5953,
+      "scene": 4532,
+      "extra_viewport_polygons": 4624
+    },
+    {
+      "frame": 5954,
+      "scene": 4533,
+      "extra_viewport_polygons": 4666
+    },
+    {
+      "frame": 5955,
+      "scene": 4534,
+      "extra_viewport_polygons": 4689
+    },
+    {
+      "frame": 5956,
+      "scene": 4535,
+      "extra_viewport_polygons": 4701
+    },
+    {
+      "frame": 5957,
+      "scene": 4536,
+      "extra_viewport_polygons": 4737
+    },
+    {
+      "frame": 5958,
+      "scene": 4537,
+      "extra_viewport_polygons": 4767
+    },
+    {
+      "frame": 5959,
+      "scene": 4538,
+      "extra_viewport_polygons": 4793
+    },
+    {
+      "frame": 5960,
+      "scene": 4539,
+      "extra_viewport_polygons": 4814
+    },
+    {
+      "frame": 5961,
+      "scene": 4540,
+      "extra_viewport_polygons": 4838
+    },
+    {
+      "frame": 5962,
+      "scene": 4541,
+      "extra_viewport_polygons": 4869
+    },
+    {
+      "frame": 5963,
+      "scene": 4542,
+      "extra_viewport_polygons": 4873
+    },
+    {
+      "frame": 5964,
+      "scene": 4543,
+      "extra_viewport_polygons": 4919
+    },
+    {
+      "frame": 5965,
+      "scene": 4544,
+      "extra_viewport_polygons": 4925
+    },
+    {
+      "frame": 5966,
+      "scene": 4545,
+      "extra_viewport_polygons": 4942
+    },
+    {
+      "frame": 5967,
+      "scene": 4546,
+      "extra_viewport_polygons": 4959
+    },
+    {
+      "frame": 5968,
+      "scene": 4547,
+      "extra_viewport_polygons": 5015
+    },
+    {
+      "frame": 5969,
+      "scene": 4548,
+      "extra_viewport_polygons": 5023
+    },
+    {
+      "frame": 5970,
+      "scene": 4549,
+      "extra_viewport_polygons": 5046
+    },
+    {
+      "frame": 5971,
+      "scene": 4550,
+      "extra_viewport_polygons": 5044
+    },
+    {
+      "frame": 5972,
+      "scene": 4551,
+      "extra_viewport_polygons": 5053
+    },
+    {
+      "frame": 5973,
+      "scene": 4552,
+      "extra_viewport_polygons": 5075
+    },
+    {
+      "frame": 5974,
+      "scene": 4553,
+      "extra_viewport_polygons": 5086
+    },
+    {
+      "frame": 5975,
+      "scene": 4554,
+      "extra_viewport_polygons": 5094
+    },
+    {
+      "frame": 5976,
+      "scene": 4555,
+      "extra_viewport_polygons": 5120
+    },
+    {
+      "frame": 5977,
+      "scene": 4556,
+      "extra_viewport_polygons": 5120
+    },
+    {
+      "frame": 5978,
+      "scene": 4557,
+      "extra_viewport_polygons": 5142
+    },
+    {
+      "frame": 5979,
+      "scene": 4558,
+      "extra_viewport_polygons": 5133
+    },
+    {
+      "frame": 5980,
+      "scene": 4559,
+      "extra_viewport_polygons": 5116
+    },
+    {
+      "frame": 5981,
+      "scene": 4560,
+      "extra_viewport_polygons": 5031
+    },
+    {
+      "frame": 5983,
+      "scene": 4561,
+      "extra_viewport_polygons": 5031
+    },
+    {
+      "frame": 5984,
+      "scene": 4562,
+      "extra_viewport_polygons": 5024
+    },
+    {
+      "frame": 5985,
+      "scene": 4563,
+      "extra_viewport_polygons": 5040
+    },
+    {
+      "frame": 5986,
+      "scene": 4564,
+      "extra_viewport_polygons": 5031
+    },
+    {
+      "frame": 5987,
+      "scene": 4565,
+      "extra_viewport_polygons": 5049
+    },
+    {
+      "frame": 5988,
+      "scene": 4566,
+      "extra_viewport_polygons": 5039
+    },
+    {
+      "frame": 5989,
+      "scene": 4567,
+      "extra_viewport_polygons": 5038
+    },
+    {
+      "frame": 5990,
+      "scene": 4568,
+      "extra_viewport_polygons": 5022
+    }
+  ],
+  "scope": "Recomputed scalar scene/clock/viewport counters and full ordered-quad fingerprints. Viewport intersection is not final visible pixel benefit."
+}
