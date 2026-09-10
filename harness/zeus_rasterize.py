@@ -362,6 +362,7 @@ class Replay:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("capture_dir")
+    ap.add_argument("--report", help="write exact full-buffer CPU color/depth verdict")
     ap.add_argument("--png", action="store_true",
                     help="write replay/reference/diff PNGs of the display window")
     args = ap.parse_args()
@@ -410,6 +411,21 @@ def main():
     print(f"display window: {100.0 * wc.sum() / wc.size:.4f}% "
           f"({(~wc).sum()} of {wc.size} differ)")
 
+    passed = bool(mc.all() and md.all())
+    if args.report:
+        from verification import write_json, sha256_file
+
+        def summary(matches):
+            return {"pixels": int(matches.size), "differing_pixels": int((~matches).sum()),
+                    "passed": bool(matches.all())}
+
+        write_json(args.report, {"schema": 1, "passed": passed,
+            "scope": "Exact full native CPU RGB24 and depth buffers; requires CPU rasterization at capture time.",
+            "color": summary(mc), "depth": summary(md), "display": summary(wc),
+            "sources": {name: sha256_file(os.path.join(cap, name)) for name in
+                ("records.bin", "regs.txt", "waveram.bin", "pal_table.bin", "pre_color.bin",
+                 "pre_depth.bin", "post_color.bin", "post_depth.bin")}})
+
     if args.png:
         from PIL import Image
 
@@ -426,7 +442,7 @@ def main():
         dm = (np.abs(d).sum(2) > 0).astype(np.uint8) * 255
         Image.fromarray(dm).save(os.path.join(cap, "diff.png"))
         print("wrote replay.png / reference.png / diff.png")
-    return 0
+    return 0 if passed else 1
 
 
 if __name__ == "__main__":
