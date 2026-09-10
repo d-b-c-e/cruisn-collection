@@ -8,6 +8,27 @@ from exotica_scene_options import add_arguments, configure, snapshots, verify_re
 
 
 class ExoticaSceneOptions(unittest.TestCase):
+    def test_active_margin_modes_require_fence_and_materials(self):
+        base = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
+                '--exotica-host-first', '5000', '--exotica-host-last', '5002')
+        settings = {}
+        self.assertEqual(configure(self.args(*base), 'crusnexo', settings)['active'], 0)
+        self.assertNotIn('MIDZ_HOST_ACTIVE', settings)
+        for extra in ((), ('--exotica-host-fence', 'observe'), ('--exotica-host-materials', 'observe')):
+            with self.assertRaisesRegex(ValueError, 'require command fence'):
+                configure(self.args(*base, *extra, '--exotica-host-active', 'draw'), 'crusnexo', {})
+        for mode, number in [('off', 0), ('observe', 1), ('draw', 2)]:
+            result = configure(self.args(*base, '--exotica-host-fence', 'observe',
+                '--exotica-host-materials', 'observe', '--exotica-host-active', mode), 'crusnexo', settings)
+            self.assertEqual(result['active'], number)
+            saved = dict(settings)
+            self.assertEqual(configure(self.args(), 'crusnexo', settings)['active'], number)
+            self.assertEqual(settings, saved)
+        with self.assertRaisesRegex(ValueError, 'explicit mode'):
+            configure(self.args('--exotica-host-active', 'draw'), 'crusnexo', {})
+        configure(self.args('--candidate', 'candidate.exe', '--exotica-host-scene', 'off'), 'crusnexo', settings)
+        self.assertEqual(settings, {'MIDZ_HOST_SCENE': '0'})
+
     def test_command_fence_is_explicit_and_recorded(self):
         args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
                 '--exotica-host-first', '5000', '--exotica-host-last', '5002')

@@ -10,6 +10,29 @@ from zeus_host_materials import parse, verify_live, palette_bytes
 
 
 class PrivateMaterials(unittest.TestCase):
+    def test_late_materials_require_one_ordered_pair_per_scene(self):
+        columns = ('scene', 'frame', 'generation', 'pages', 'palettes', 'bytes', 'hash')
+        scenes = [dict(scene='12', frame='5000'), dict(scene='13', frame='5001')]
+        rows = [dict(zip(columns, (str(12+i//2), str(5000+i//2), str(i+1), '0', '0', '96', '0000000000000009'))) for i in range(4)]
+        text = ('MIDZ_HOST_MATERIALS_RESULT queued=4 hash=0000000000000009\n'
+                'MIDZ_HOST_MATERIALS_GPU_RESULT complete=1 received=4 snapshots=0 hash=0000000000000009\n')
+        with tempfile.TemporaryDirectory() as temp:
+            def write(values):
+                for name in ('exotica-host-materials.csv', 'exotica-host-materials-gpu.csv'):
+                    with (Path(temp)/name).open('w', encoding='utf-8', newline='') as f:
+                        writer = csv.DictWriter(f, fieldnames=columns)
+                        writer.writeheader();writer.writerows(values)
+            write(rows)
+            self.assertTrue(verify_live(temp, scenes, [], text, active=True)['passed'])
+            with self.assertRaisesRegex(ValueError, 'drain'):
+                verify_live(temp, scenes, [], text)
+            write([rows[0], rows[2], rows[1], rows[3]])
+            with self.assertRaisesRegex(ValueError, 'contract'):
+                verify_live(temp, scenes, [], text, active=True)
+            write(rows[:-1])
+            with self.assertRaisesRegex(ValueError, 'drain'):
+                verify_live(temp, scenes, [], text, active=True)
+
     def test_typed_packet_lengths_and_modes(self):
         pim = HEADER.pack(0x314d4950, 16777216, 4096, 0, 1, 2, 9, 9, 0, 0, 0, 0)
         wire = struct.pack('<IIQ4I', 0x31544d48, 5000, 12, len(pim), 0, 0, 0) + pim

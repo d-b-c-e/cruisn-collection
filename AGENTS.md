@@ -1,5 +1,24 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 live margin candidate — ACTIVE validation
+
+Read docs/reviews/2026-09-10-exotica-live-margins.md. Native5ff1f9f8132 built
+SEPARATELY/pushed, frozen build/candidates/5ff1f9f8132/vunit.exe SHAa88a0f81.
+170patches/tree9cffd3235432005bfebeeda47812cbb9ff84d468. CLI
+--exotica-host-active off|observe|draw now links owned list capture, exact original
+FIFO fence, current private materials and margin-only privateD24 drawing. Requires
+fence/material observer and FFB0. Late HMT generation is explicitly same-scene;
+independent receipts protect original depth/center/other pages and triangle fans.
+329Python/no skips,45native/125commands PASS atfa537af0216bc8e6bb6535b8e3ebe346e121616c251c4e9a2decc083c40aff0c.
+First compile hex tokenization FAIL retained, separate spacing fix. Live trials
+IN PROGRESS: LOCAL active-margin-trial.py off/observe/draw, initially5070..5082,
+snapshot5072/5080 and25GL. Do not claim live acceptance yet. Independent late
+oracle prepared in active-live-geometry-oracle.py. Original route/resources and
+repeat required before fullAmazon/HK/all7defaults. Last7defaults belong2eac.
+Personal87d/v0.5.0 unchanged; no deploy/release/hostedworkflow/physicalFFB/World
+tuning/menu removal. Continue directly, rigcheck/serial emulators/GPU. Far3x,
+transparent ordering/handover and original texture timing remain open.
+
 ## September10 private margin helpers — ACTIVE live integration
 
 Read docs/reviews/2026-09-10-exotica-private-margins.md. Canonical ownedCapture
