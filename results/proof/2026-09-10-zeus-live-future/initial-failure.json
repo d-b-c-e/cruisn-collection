@@ -1,0 +1,7 @@
+{
+  "passed": false,
+  "error": "incomplete Exotica host observation",
+  "native": "b8a1825ed0bb4078ea61ed50b98dee9149a663b6",
+  "reason": "Wrong Windows compile guard made the new queue function return false; corrected to _WIN32 in e144.",
+  "stderr_sha256": "28b3ad1db6e5e5ced2a47c0932630a9f6c6156b95b449aeed74a45a6b3841f9d"
+}

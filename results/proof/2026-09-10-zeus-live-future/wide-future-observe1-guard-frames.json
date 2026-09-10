@@ -1,0 +1,100 @@
+{
+  "count": 5989,
+  "first": 2,
+  "last": 5990,
+  "exact_sequence": true,
+  "snapshots": [
+    {
+      "frame": "300",
+      "width": "2736",
+      "height": "4096",
+      "batches": "19",
+      "vertices": "3973248",
+      "clears": "5",
+      "snapshot": "1",
+      "color_differences": "0",
+      "depth_differences": "6553600",
+      "mirror_us": "5.900",
+      "snapshot_us": "111958.200"
+    },
+    {
+      "frame": "1800",
+      "width": "2736",
+      "height": "4096",
+      "batches": "3300",
+      "vertices": "7146366",
+      "clears": "837",
+      "snapshot": "1",
+      "color_differences": "0",
+      "depth_differences": "29152",
+      "mirror_us": "266.600",
+      "snapshot_us": "103231.500"
+    },
+    {
+      "frame": "3500",
+      "width": "2736",
+      "height": "4096",
+      "batches": "27516",
+      "vertices": "29425338",
+      "clears": "4227",
+      "snapshot": "1",
+      "color_differences": "0",
+      "depth_differences": "203",
+      "mirror_us": "1528.600",
+      "snapshot_us": "105257.200"
+    },
+    {
+      "frame": "5073",
+      "width": "2736",
+      "height": "4096",
+      "batches": "63552",
+      "vertices": "56825673",
+      "clears": "7329",
+      "snapshot": "1",
+      "color_differences": "0",
+      "depth_differences": "66",
+      "mirror_us": "3406.700",
+      "snapshot_us": "98685.300"
+    },
+    {
+      "frame": "5080",
+      "width": "2736",
+      "height": "4096",
+      "batches": "63667",
+      "vertices": "56985990",
+      "clears": "7343",
+      "snapshot": "1",
+      "color_differences": "0",
+      "depth_differences": "70",
+      "mirror_us": "3411.400",
+      "snapshot_us": "89564.300"
+    },
+    {
+      "frame": "5604",
+      "width": "2736",
+      "height": "4096",
+      "batches": "77981",
+      "vertices": "67072647",
+      "clears": "8383",
+      "snapshot": "1",
+      "color_differences": "0",
+      "depth_differences": "89",
+      "mirror_us": "4056.100",
+      "snapshot_us": "103598.900"
+    },
+    {
+      "frame": "5990",
+      "width": "2736",
+      "height": "4096",
+      "batches": "85445",
+      "vertices": "72892569",
+      "clears": "9139",
+      "snapshot": "1",
+      "color_differences": "0",
+      "depth_differences": "0",
+      "mirror_us": "4491.500",
+      "snapshot_us": "103505.800"
+    }
+  ],
+  "csv_sha256": "52a9f533659af6b10168149c9bc0260f3b5dc2ea91debc31f8044b6e5d46467d"
+}

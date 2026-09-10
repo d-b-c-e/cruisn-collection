@@ -1,4 +1,4 @@
-// Standalone future-geometry contract; not linked into MAME yet.
+// Owned future-geometry contract; separate from the legacy XMD1 margin path.
 // SPDX-License-Identifier: BSD-3-Clause
 #pragma once
 #include "zeus_host_materials.h"

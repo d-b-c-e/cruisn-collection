@@ -1,5 +1,51 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 live private Zeus future — ACTIVE continuous comparisons
+
+Read `docs/reviews/2026-09-10-zeus-live-future.md` and LOCAL
+`results/diagnostics/exotica-amazon-20260909/future-wide-next.md` for current runs.
+Native `e144228a8953e49d36f255826202b8fa8bdf21ca` is separately built,
+frozen at `build/candidates/e144228a895/vunit.exe`, SHA256 `24b18ba8bc22981fedfcfdcec614d0d32dc5adbf1b73fa726513a4d40843e7f4`,
+and pushed. 181 patches reconstruct `ce147a70f5cc3323af5e56ba8d4312aa7033453b`.
+Explicit `--exotica-host-future observe|draw` validates owned XWD1 packets or
+draws into the PRIVATE wide-depth target. The original target stays displayed.
+Requires live Exotica, materials, wide mirror, physical FFB0; excludes late active
+margins and command-journal capture. Original recording behavior stays unchanged.
+
+Initial b8a trial failed at the first scene: wrong Windows compile guard disabled
+the queue function. Failure retained; `_WIN32` correction is in e144. Corrected
+6000 observe1 passes 4120 scenes/835720 quads, original route/resources/25 4K.
+Full8860 draw1 passes 6953 scenes/2312876 quads, original route/ADC/10 resources,
+117 completed 4K. Five independent Python geometry/material/immediate GPU
+insertion oracles pass exactly at3900/5072/5644/6330/7187. Other pages preserved.
+Full3x observation also passes6953 scenes/19945019 quads,117completed4K/original
+route/resources and all14 private colors equal original. Five independent
+observation oracles pass; draw1 rechecked with strict packet ownership. Final
+348 Python/no skips,47 native,132 commands PASS at503-file source identity
+204f28ce496fb6f4eb171aba54852ffc3e53e13b549880f49f9ef7e01b1f217a.
+Public proof results/proof/2026-09-10-zeus-live-future recomputes identity/selected
+receipt consistency; raw game geometry, pixels, native/GPU execution stay receipts.
+
+CURRENT full2x draw exec78129, `wide-future-full2`, same14 private completed
+snapshots and5 immediate snapshots. Check before any GPU work. Then full3x/repeat,
+independent insertions, private visible benefit and temporal
+handover. LOCAL runner `wide-future-trial.py` accepts name, observe|draw,
+--multiplier1|2|3, --full. Canonical verifier `harness/verify_exotica_future_gpu.py`.
+
+Earlier exact joins CPU5072/GPU5073 and CPU7187/GPU7188 reproduce original commands
+and private pixels; latter includes one real sky copy. Offline early1->2 has a
+faint benefit,3 equals2. Late3x8283 quads changes131707 pixels immediately but all
+are covered by nearer original depth; final1/2/3 pixels equal. Preserve correct
+occlusion. No useful all-game3x, temporal/material-lifetime or performance claim.
+USA6.13second timing failure remains; last clean seven-default suite belongs to50a.
+Personal87d/v0.5.0 unchanged. No release/deploy/physicalFFB/World tuning/hosted CI/
+menu removal. Raw game bytes/images LOCAL only. Check rig; serial emulators/GPU;
+no builds/exports during timed playback. Keep working directly; heartbeat is
+one-minute recovery only, never a work cadence or milestone pause.
+Upstream refreshed21:02UTC: main999a6334,292open heads; one unrelated mergedCPU
+fix and four unrelated new/changed PR heads. Same four Zeus heads unchanged.
+Public audit56919d6 and results/proof/2026-09-10-upstream-evening.
+
 ## September10 Zeus consumer journal — ACTIVE matched future insertion next
 
 Read docs/reviews/2026-09-10-zeus-command-stream.md. Native24519f861ba59d0fffe4eedcc059531e6835224e

@@ -1,4 +1,4 @@
-"""Bounded original-only Zeus depth mirror controls and independent readback checks."""
+"""Bounded private Zeus depth controls and independent readback integrity checks."""
 import csv
 import hashlib
 import math
@@ -11,7 +11,7 @@ KEYS=('MIDZ_DEPTH_MIRROR','MIDZ_DEPTH_FIRST','MIDZ_DEPTH_LAST','MIDZ_DEPTH_SNAPS
 
 
 def add_arguments(parser):
-    parser.add_argument('--zeus-depth-mirror',choices=('off','observe','wide'),help='private original-only D32F: strict compatibility mirror or wider-depth observation; displayed target stays original')
+    parser.add_argument('--zeus-depth-mirror',choices=('off','observe','wide'),help='private D32F: strict compatibility or wider-depth observation; displayed target stays original')
     parser.add_argument('--zeus-depth-first',type=int)
     parser.add_argument('--zeus-depth-last',type=int)
     parser.add_argument('--zeus-depth-snapshots',help='up to16 comma-separated completed frames; omit for timing-only observation')
@@ -125,5 +125,5 @@ def verify_receipt(trial,text,directory):
     return dict(passed=True,frames=count,batches=batches,vertices=vertices,clears=clears,snapshots=results,
         **({'command_stream':stream} if stream is not None else {}),
         pixel_depth_policy_verified=not wide,
-        scope=('Wide original-only readback integrity; pixel depth policy needs a separate oracle. No future drawing or handover acceptance.' if wide else
+        scope=('Private wide readback integrity and original-command counters; pixel depth policy and any future drawing need separate oracles. No handover acceptance.' if wide else
                'Original-only private color/D32F comparison at requested frames. No farther scenery, general handover or full visual acceptance.'))

@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "samples": [
+    {
+      "passed": true,
+      "frame": 5072,
+      "multiplier": 1,
+      "draw": false,
+      "sources": {
+        "selected": 2465,
+        "unsupported_transform": 0,
+        "culled_distance": 854
+      },
+      "geometry": {
+        "instances": 79,
+        "quads": 386,
+        "viewport_quads": 340,
+        "culled_bounds": 530
+      },
+      "materials": {
+        "frame": 5072,
+        "phase": "host",
+        "scene": 3662,
+        "generation": 3216,
+        "pages": 3,
+        "palettes": 11,
+        "root": "602acf5f05372eb9",
+        "wave_sha256": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+        "palette_sha256": "34148a8911058a04085767af4d554da627ba56ad347a6b563c0d9d732f6363f4",
+        "packet_sha256": "d8fe68900064d92c41b73f99bd564d907138b07fd56585f933f7292a6e1b981a"
+      },
+      "integrity": {
+        "width": 2736,
+        "height": 4096,
+        "color_differences": 0,
+        "depth_differences": 0,
+        "other_page_unchanged": true,
+        "sha256": [
+          "47d5a64ea610e98fa3dec94d657c56f026dc8498e26c07cc830f71d52d2cdd52",
+          "612ef12b25377b5e3b4d906ef37d60809c32dd4bba873477c9557ec06e328e12",
+          "47d5a64ea610e98fa3dec94d657c56f026dc8498e26c07cc830f71d52d2cdd52",
+          "612ef12b25377b5e3b4d906ef37d60809c32dd4bba873477c9557ec06e328e12"
+        ]
+      },
+      "color_differences": 0,
+      "depth_differences": 0,
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "47d5a64ea610e98fa3dec94d657c56f026dc8498e26c07cc830f71d52d2cdd52",
+        "612ef12b25377b5e3b4d906ef37d60809c32dd4bba873477c9557ec06e328e12"
+      ],
+      "scope": "Independent geometry preparation and immediate insertion on captured private state; shared material/vertex shader. No complete temporal/occlusion/handover acceptance."
+    }
+  ]
+}
