@@ -27,7 +27,9 @@ def frontier(read):
     current, front, back = [(p-base)//4 for p in pointers]
     numbers = [read(a) for a in (0x1b4b6, 0x1b4b8, 0x1b4bb)]
     lead = read(0x1b4b9)
-    partial = lead == front-current+1 and front+1 < count
+    # The one-scene counter delay also occurs with front at the final section.
+    # Excluding a following section there naturally leaves an empty future range.
+    partial = lead == front-current+1
     if (not back <= current <= front or numbers != [current, front, back] or
             not (partial or lead == front-current) or read(0x1b4bc) != current-back):
         raise ValueError('Off Road incomplete loader frontier')

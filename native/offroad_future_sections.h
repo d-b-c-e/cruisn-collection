@@ -39,7 +39,9 @@ template<class Read> bool code_matches(Read read)
 }
 
 // The current section can advance one scene before the front entry/lead settle.
-// Exclude that entire uncertain section. Larger mismatches remain unsupported.
+// Exclude that entire uncertain section. This also occurs at the final entry,
+// where no following section exists; the future range must remain empty.
+// Larger mismatches remain unsupported.
 template<class Read> bool frontier(Read read,Frontier &result)
 {
     result=Frontier{};Frontier f;
@@ -61,7 +63,7 @@ template<class Read> bool frontier(Read read,Frontier &result)
         read(0x1b4b8)!=f.front || read(0x1b4bb)!=f.back ||
         read(0x1b4bc)!=f.current-f.back)return false;
     const uint32_t lead=read(0x1b4b9),loaded_lead=f.front-f.current;
-    if(lead==loaded_lead+1 && f.front+1<f.count)f.partial=true;
+    if(lead==loaded_lead+1)f.partial=true;
     else if(lead!=loaded_lead)return false;
     result=f;return true;
 }

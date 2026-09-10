@@ -20,6 +20,22 @@ def fixture():
 
 
 class OffroadSectionsTests(unittest.TestCase):
+    def test_final_section_counter_delay_does_not_invent_future_sources(self):
+        m = fixture(); read = lambda p: m.get(p, 0)
+        m.update({0x1b4b5: 0xc00004, 0x1b4b6: 1,
+                  0x1b4b7: 0xc00008, 0x1b4b8: 2, 0x1b4bc: 1, 0x1b4b9: 2})
+        result = sections(read)
+        self.assertTrue(result['frontier']['partial'])
+        self.assertEqual(result['sources'], [])
+        self.assertEqual([s['number'] for s in sections(read, True)['sources']], [0, 1, 2])
+        m[0x1b4b9] = 1
+        self.assertFalse(sections(read)['frontier']['partial'])
+        self.assertEqual(sections(read)['sources'], [])
+        for address, value in [(0x1b4b9, 3), (0xc00008, 0), (0x1b4b7, 0xc0000c)]:
+            bad = dict(m); bad[address] = value
+            with self.subTest(address=address), self.assertRaises(ValueError):
+                sections(lambda p: bad.get(p, 0))
+
     def test_future_excludes_loaded_and_refreshes_binding(self):
         m = fixture(); read = lambda p: m.get(p, 0)
         a = sections(read); self.assertEqual([s['number'] for s in a['sources']], [1, 2])

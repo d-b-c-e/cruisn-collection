@@ -32,4 +32,14 @@ int main()
     words[1]=0xc02000;std::array<uint32_t,3> binding={{0xc03000,0x100,0x200}};
     assert(descriptor(words,255,0,256,binding,source) && source.words[6]==0xffff8000);
     assert(!descriptor(words,256,0,256,binding,source));
+    // Full El Paso reaches the final front entry before the current section.
+    // The lead counter still takes one scene to catch up at that boundary.
+    m[0x1b4b5]=base+4;m[0x1b4b6]=1;m[0x1b4b7]=base+8;m[0x1b4b8]=2;
+    m[0x1b4bc]=1;m[0x1b4b9]=2;
+    assert(collect(read,r,cache) && r.frontier.partial && r.sources.empty());
+    m[0x1b4b9]=1;
+    assert(collect(read,r,cache) && !r.frontier.partial && r.sources.empty());
+    m[0x1b4b9]=3;assert(!collect(read,r,cache) && r.sources.empty());
+    m[0x1b4b9]=2;m[base+8]=0;assert(!collect(read,r,cache));
+    m[base+8]=0x80000000;m[0x1b4b7]=base+12;assert(!collect(read,r,cache));
 }
