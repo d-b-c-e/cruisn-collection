@@ -1,5 +1,37 @@
 # Exotica live margin candidate — September 10, 2026
 
+## Current extension status
+
+Short c998 drawing and repeat both complete6000 inputs,25 completed4K frames and
+13 active scenes/4,435 ordered quads. All25 frames and both raw snapshots repeat
+exactly. Compared with the no-draw control,13 displayed frames change; inspection
+at5072 and5082 confirms textured ground replaces the black left wedge with CRT
+enabled. Raw5072 repairs6,459 black pixels,5080 repairs4,231, with no newly black
+pixels among the changes. Original depth, outside-margin color, route, ADC timing
+and ten original rendering resources remain unchanged. This covers a short
+window, not the full track or farther drawing distance.
+
+The wider c998 run fails at scene3510 because camera memory advances during the
+16.58ms old-command drain. A separate read-only3550-frame control captures four
+scene-end/after-target pairs and2,817 FIFO events. One pair changes camera, view,
+positions, animation and list links before the old target completes. Six of44
+margin candidates change fade/link fields. All1,741 camera samples/5,223 actual
+ADC read times match the original control. This is a legitimate game transition,
+not playback drift; both the failure and raw diagnostic pairs remain local.
+
+Native`b908fbd57d51ebab9f4b6fa5592d60f8a5843fbb` now seals the scene's main/internal
+RAM and selected render operands at CPU ordinary_end. It uses those owned camera,
+pose and state values after the original FIFO completes. The first affected scene
+now reconstructs independently as41 instances/476 quads. Candidate SHA256 is
+`bcd5aec8cf205e387ef0e3e58a5c96656f7f7c75bb93a4205a61626b8d5d90a2`, with172patches
+reconstructing tree`043f3a5ff6e03a6d644cd1514e5458fa0d3cf16a`.
+
+The wider b908 run then reaches a changed model pointer at scene4131 and stops
+under the retained material-binding guard. Full acceptance is still **open**.
+Next distinguish animation pointer advancement from actual model/texture/palette
+reuse by checking the bytes needed by the owned old scene across the device
+fence. Do not simply discard the binding guard or label this whole-track success.
+
 The separate native candidate now connects the owned current-object capture to
 the original command fence and a private depth buffer. This is a CLI-only
 diagnostic. It keeps original far distance and does not change product defaults.

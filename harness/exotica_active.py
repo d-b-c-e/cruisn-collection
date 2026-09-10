@@ -83,6 +83,30 @@ def framebuffer(before, after, depth_before, depth_after, width, height, page, m
                 color_sha256=[hashlib.sha256(b).hexdigest() for b in (before, after)])
 
 
+def sealed_snapshot(cpu, context, ram, ready, internal, instances):
+    if len(ram) != 0x100000 or len(ready) != 0x100000 or len(internal) != 2048 or len(instances) % 44:
+        raise ValueError('sealed scene snapshot size')
+    camera = struct.unpack_from('<3I', ram, 0xfeb*4)
+    advanced = camera != struct.unpack_from('<3I', ready, 0xfeb*4)
+    if list(camera) != context['position'] or int(cpu['camera_advanced']) != int(advanced):
+        raise ValueError('sealed scene camera ownership')
+    for address, key in ((0x67bf, 'view'), (0x67c0, 'alternate')):
+        pointer, = struct.unpack_from('<I', ram, address*4)
+        if not 0x87fe00 <= pointer <= 0x880000-9:
+            raise ValueError('sealed scene matrix pointer')
+        if list(struct.unpack_from('<9I', internal, (pointer-0x87fe00)*4)) != context[key]:
+            raise ValueError('sealed scene matrix ownership')
+    seen = set()
+    for instance in struct.iter_unpack('<11I', instances):
+        slot = instance[1]
+        if not 0x1000 <= slot <= 0x40000-31 or 0x30000 <= slot < 0x32000 or slot in seen:
+            raise ValueError('sealed instance slot ownership')
+        seen.add(slot)
+        if ram[(slot+17)*4:(slot+19)*4] != ready[(slot+17)*4:(slot+19)*4]:
+            raise ValueError('sealed instance material binding changed')
+    return dict(camera_advanced=advanced, instance_bindings_checked=len(seen))
+
+
 def snapshot(directory, frame, cpu, gpu, mode):
     prefix = Path(directory)/f'exotica-active-{frame}'
     read = lambda suffix: Path(str(prefix)+suffix).read_bytes()
@@ -114,20 +138,27 @@ def snapshot(directory, frame, cpu, gpu, mode):
     result = framebuffer(read('-gpu-before-color.bin'), read('-gpu-after-color.bin'),
                          read('-gpu-before-depth.bin'), read('-gpu-after-depth.bin'),
                          int(gpu['width']), int(gpu['height']), packet['page'], packet['margin'], mode == 2)
+    if 'sealed_frame' in cpu:
+        from verify_exotica_live_scene import decode_context
+        result['sealed'] = sealed_snapshot(cpu, decode_context(read('-context.bin')), read('-ram.bin'),
+            read('-ready-ram.bin'), read('-end-internal.bin'), instances)
     return dict(frame=frame, quads=quad, vertices=vertices, **result)
 
 
 def verify(directory, scenes, text, mode, captures):
     initial = re.findall(r'^MIDZ_HOST_ACTIVE=(\d+)$', text, re.M)
+    sealed = re.findall(r'^MIDZ_HOST_ACTIVE_SEALED=(\d+)$', text, re.M)
     final = re.findall(r'^MIDZ_HOST_ACTIVE_RESULT complete=(\d+) scenes=(\d+) quads=(\d+) remaining=(\d+)$', text, re.M)
     gpu_final = re.findall(r'^MIDZ_HOST_ACTIVE_GPU_RESULT complete=(\d+) scenes=(\d+) quads=(\d+)$', text, re.M)
     writer = re.findall(r'^MIDZ_HOST_ACTIVE_WRITER submitted=(\d+) written=(\d+) failed=(\d+) rejected=(\d+) peak_bytes=(\d+) write_total_us=(\d+) write_max_us=(\d+) drain_us=(\d+) waits=(\d+) wait_us=(\d+)$', text, re.M)
     if not mode:
-        if initial or final or gpu_final or writer:
+        if initial or final or gpu_final or writer or sealed:
             raise ValueError('disabled Exotica active margins ran')
         return None
     if mode not in (1, 2) or initial != [str(mode)] or len(final) != 1 or len(gpu_final) != 1:
         raise ValueError('active margin acknowledgment')
+    if sealed not in ([], ['1']):
+        raise ValueError('active sealed scene acknowledgment')
     if len(writer) != 1:
         raise ValueError('missing active margin writer completion')
     submitted, written, failed, rejected, peak, total_us, max_us, drain_us, waits, wait_us = map(int, writer[0])
@@ -159,6 +190,13 @@ def verify(directory, scenes, text, mode, captures):
         if (not 0 <= submitted <= candidates <= objects <= 4096 or
                 not 0 <= instances+excluded <= candidates-submitted or not 0 <= quads <= 131072):
             raise ValueError('active margin object budget')
+        if bool(sealed) != ('sealed_frame' in sent):
+            raise ValueError('active sealed scene schema mismatch')
+        if sealed and (sent['sealed_frame'] != fence['end_frame'] or
+                int(sent['camera_advanced']) not in (0, 1) or
+                int(sent['binding_checks']) != candidates-submitted or
+                not 0 <= int(sent['changed_objects']) <= int(sent['binding_checks'])):
+            raise ValueError('active sealed scene boundary or binding counts')
         margin, width, height, page, vertices, saved = (int(received[k]) for k in
             ('margin', 'width', 'height', 'page', 'vertices', 'snapshot'))
         scale = height//1024
@@ -175,5 +213,5 @@ def verify(directory, scenes, text, mode, captures):
             sampled.append(snapshot(directory, int(sent['frame']), sent, received, mode))
     if sorted(s['frame'] for s in sampled) != sorted(captures):
         raise ValueError('active margin snapshot completion')
-    return dict(passed=True, mode=mode, scenes=len(scenes), quads=total, snapshots=sampled,
+    return dict(passed=True, mode=mode, scenes=len(scenes), quads=total, snapshots=sampled, sealed_at_scene_end=bool(sealed),
                 scope='Current margin geometry and private D24 preservation; far distance and full occlusion remain unproven.')

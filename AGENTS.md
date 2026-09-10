@@ -1,5 +1,28 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 sealed-scene checkpoint — ACTIVE resource lifetime work
+
+Read docs/reviews/2026-09-10-exotica-live-margins.md. Nativeb908fbd57d5 built
+SEPARATELY/pushed/frozen SHAbcd5aec8,172patches/tree043f3a5ff6e03a6d644cd1514e5458fa0d3cf16a.
+c998short observe/draw/repeat6000/25GL PASS, draw13scenes4435quads repeats;
+CRT4Kblack wedge fixed,5072/5080 repair6459/4231black pixels, no newlyblack.
+13displayframeschange,25repeat; originalroute/ADC/resources/depth/center exact.
+Broadc998 FAIL3510 camera advances during16.58msFIFOdrain. Independent3550
+control4pairs/2817events showscamera/view/position/animation/link changes;
+1741camera/5223ADCtimesexact. Sealedb908 fixes this: CPUendownedRAM/internal/
+render inputs, currentresources atactualdevicefence. Scene3510 independent
+Python/native41instances476quadsPASS. Broadb908 then FAIL4131 model binding
+changes (slot22734 field17). Runactive-margin-sealed-broad retainsfailure.
+NEXT examine old scene model/texture/palette bytes acrossseal/fence; distinguish
+animation pointer advancement from actual material reuse. Do not removeguard
+without resource proof. Suggested bounded ownedWave/end snapshot + actual model
+span/palette/texture-footprint identity, no model allowlist. FullAmazon/HK/7defaults
+stillOPEN; no deployment. Latestlocal329/45/125 belong5ffsourcefa537af0; renewafter
+final changes. Personal87d/v0.5.0 unchanged; no release/hostedworkflow/physicalFFB/
+World tuning/menu removal. No processesrunning. Continuous direct work, no idle
+milestone waits. LOCAL active-live-geometry-oracle.py accepts frame args; raw
+resources staylocal. D32F proposal remainsUNIMPLEMENTED, notglobal3xproof.
+
 ## September10 live margin capture fix — ACTIVE drawing tests
 
 Read docs/reviews/2026-09-10-exotica-live-margins.md. Latestnativec9982f3e662

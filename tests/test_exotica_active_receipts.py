@@ -5,11 +5,29 @@ import sys
 import tempfile
 import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
-from exotica_active import parse, framebuffer, verify
+from exotica_active import parse, framebuffer, verify, sealed_snapshot
 from page_image import HEADER
 
 
 class ActiveReceipts(unittest.TestCase):
+    def test_sealed_scene_keeps_old_camera_but_rejects_changed_material_binding(self):
+        ram = bytearray(0x100000);internal = bytearray(2048)
+        struct.pack_into('<3I', ram, 0xfeb*4, 1, 2, 3)
+        struct.pack_into('<2I', ram, 0x67bf*4, 0x87ff35, 0x87ff3e)
+        context = dict(position=[1, 2, 3], view=[0]*9, alternate=[0]*9)
+        instance = struct.pack('<11I', 0xbbb5, 0x1000, *([0]*9))
+        ready = bytearray(ram);struct.pack_into('<I', ready, 0xfeb*4, 9)
+        cpu = dict(camera_advanced='1')
+        self.assertTrue(sealed_snapshot(cpu, context, ram, ready, internal, instance)['camera_advanced'])
+        with self.assertRaisesRegex(ValueError, 'camera'):
+            sealed_snapshot(dict(camera_advanced='0'), context, ram, ready, internal, instance)
+        # Animation/position can advance; retained material bindings may not.
+        struct.pack_into('<I', ready, (0x1000+1)*4, 99)
+        self.assertTrue(sealed_snapshot(cpu, context, ram, ready, internal, instance)['camera_advanced'])
+        struct.pack_into('<I', ready, (0x1000+17)*4, 0xa00010)
+        with self.assertRaisesRegex(ValueError, 'binding'):
+            sealed_snapshot(cpu, context, ram, ready, internal, instance)
+
     def packet(self):
         pim = HEADER.pack(0x314d4950, 16777216, 4096, 0, 1, 2, 9, 9, 0, 0, 0, 0)
         material = (struct.pack('<IIQ4I', 0x31544d48, 5000, 12, len(pim), 1, 0, 0)+pim+

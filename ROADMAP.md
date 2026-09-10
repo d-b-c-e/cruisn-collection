@@ -6,6 +6,16 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 
 ## Current priorities (2026-09-10, after v0.5.0)
 
+The [live Exotica margin candidate](docs/reviews/2026-09-10-exotica-live-margins.md)
+now repairs the reported Amazon black-ground wedge in a short recorded4K/CRT
+comparison. All25 frames and the added geometry repeat; original route/resources
+remain unchanged. The full-scene expansion exposed a legitimate camera/animation
+advance before the original command queue finishes. The next candidate seals
+scene operands before that advance and is being validated. This is still an
+isolated diagnostic, with original far distance and no personal deployment.
+Broader Amazon/Hong Kong coverage, material lifetime, foreground ordering and
+all seven defaults are required before integration into normal play.
+
 The [Exotica live scene observer](docs/reviews/2026-09-10-exotica-live-scenes.md)
 now passes three independent scene/geometry/context checks and six paired6000
 replays, preserving original motion/resources and55 completed4K images per side.
