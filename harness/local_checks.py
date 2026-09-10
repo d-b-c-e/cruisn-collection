@@ -50,7 +50,8 @@ def commands(group, output, cxx):
                                  str(output/'gpu-quality.json')]),
                 ('zeus-policy-pixels',[py,'harness/verify_zeus_policy.py','--report',str(output/'zeus-policy-pixels.json')]),
                 ('zeus-palette-pixels',[py,'harness/verify_zeus_palette.py','--report',str(output/'zeus-palette-pixels.json')]),
-                ('zeus-margin-pixels',[py,'harness/verify_zeus_margin_clear.py','--report',str(output/'zeus-margin-pixels.json')])]
+                ('zeus-margin-pixels',[py,'harness/verify_zeus_margin_clear.py','--report',str(output/'zeus-margin-pixels.json')]),
+                ('zeus-sky-pixels',[py,'harness/verify_zeus_sky_pixels.py','--report',str(output/'zeus-sky-pixels.json')])]
     steps = [('compiler-version', [cxx, '--version'])]
 
     def compile_one(name, source):
@@ -72,6 +73,7 @@ def commands(group, output, cxx):
     compile_one('exotica-future', 'native/analyze_exotica_future.cpp')
     compile_one('zeus-models', 'native/analyze_zeus_models.cpp')
     compile_one('zeus-state', 'native/analyze_zeus_state.cpp')
+    compile_one('zeus-sky', 'native/analyze_zeus_sky.cpp')
     compile_one('offroad-future', 'native/analyze_offroad_future.cpp')
     compile_one('usa-host', 'native/analyze_usa_host.cpp')
     compile_one('usa-future', 'native/analyze_usa_future.cpp')

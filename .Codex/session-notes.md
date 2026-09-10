@@ -1,5 +1,17 @@
 # Session Notes
 
+- **September10 panorama candidate:** native2b55a1d7947/SHAe0ba3bf0 separate,
+  built/pushed;153patches. Structuralperiodic tile copies outside512, sameUVs,
+  bounded64tiles beforeforeground/palette/upload; no addressallowlist. Four
+  Amazon native/Python/offlineCPU plans pass,7216fills2495sky pixels/fullcenter
+  exact; HongKong threeperiodFAIL retained.281Python/32native/91commands pass,
+  428identity49343cca. Local sky-trials.py ACTIVE with off/repeat/repeat-again
+  7290/31GL/nativeCPU7216; checkprocesses, thenfullAmazon/7defaults. Last7PASS5a80.
+  c527 pageclears removeoldpost/all31repeat but uncover skyhole; notacceptedalone.
+  1600palette snapshots match;1680/1686models matchfinalWaveRAM,6volatilefailures
+  retained. FutureHongKong3x depthoverflow remains. Read September10review.
+  No deployment/release/physicalFFB. Keepdirectcontinuouswork, personal87d intact.
+
 - **Amazon page-clear trial active:** marked realCPU captures preserve original
   motion and full1048576RGB24/depth. WideCPU explains35/45s holes as missing
   geometry. Exact57s center clear; broaderwindow pending. Odd7215 keeps oldpost

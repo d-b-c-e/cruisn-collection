@@ -32,7 +32,13 @@ and resources. The [marked-window CPU analysis and page-clear trial](docs/review
 separate missing submitted ground from stale margin depth: most35/45s black
 wedges lack geometry, while the1:12 checkpoint rectangle persists on alternating
 pages after its model disappears. A separate page-clear candidate is under
-native legacy/page/repeat validation. Actual future3x centers also exceed the
+native legacy/page/repeat validation. All31 page-cleared images now repeat and
+the old rectangle is removed, but it exposes an uncovered sky strip. The separate
+[panorama continuation candidate](docs/reviews/2026-09-10-zeus-panorama.md)
+copies structurally verified original tiles into that strip at unchanged scale;
+four offline Amazon plans/CPU and two GPU fixtures pass. Native gameplay tests
+are active. Hong Kong's strict period checks reject its pattern, so broader
+coverage remains open. Actual future3x centers also exceed the
 current24-bit depth range; host depth representation is an integration requirement.
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 
