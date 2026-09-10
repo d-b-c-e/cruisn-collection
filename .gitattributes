@@ -1,4 +1,5 @@
 # Preserve diagnostic source hashes across Windows and Linux checkouts.
+results/proof/** -text whitespace=cr-at-eol
 results/proof/2026-09-06-global-distance/** -text whitespace=cr-at-eol
 results/proof/2026-09-06-global-distance-trial/** -text whitespace=cr-at-eol
 results/proof/2026-09-07-world-3x/** -text whitespace=cr-at-eol
