@@ -97,6 +97,16 @@ class ActiveReceipts(unittest.TestCase):
             write('exotica-active-scenes.csv', dict(owned, ram_models='1'))
             with self.assertRaisesRegex(ValueError, 'descriptor counts'):
                 verify(temp, [source], current, 2, [])
+            tracked = current+'MIDZ_HOST_ACTIVE_SEAL_PAGES=1\nMIDZ_HOST_MATERIAL_PAGES=2\n'
+            page_owned = dict(owned, seal_pages='4096', seal_verified='1')
+            write('exotica-active-scenes.csv', page_owned)
+            self.assertTrue(verify(temp, [source], tracked, 2, [])['seal_pages'])
+            for change in (dict(seal_pages='0'), dict(seal_verified='0')):
+                write('exotica-active-scenes.csv', dict(page_owned, **change))
+                with self.assertRaisesRegex(ValueError, 'sealed pages'):
+                    verify(temp, [source], tracked, 2, [])
+            write('exotica-active-scenes.csv', dict(page_owned, seal_verified='0'))
+            self.assertTrue(verify(temp, [source], tracked.replace('MIDZ_HOST_MATERIAL_PAGES=2\n', ''), 2, [])['seal_pages'])
             write('exotica-active-scenes.csv', sent)
             write('exotica-host-fences.csv', dict(fence, ready_frame='5000'))
             with self.assertRaisesRegex(ValueError, 'ownership'):verify(temp, [source], text, 2, [])

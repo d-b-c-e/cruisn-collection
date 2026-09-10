@@ -165,11 +165,12 @@ def verify(directory, scenes, text, mode, captures):
     sealed = re.findall(r'^MIDZ_HOST_ACTIVE_SEALED=(\d+)$', text, re.M)
     lease = re.findall(r'^MIDZ_HOST_ACTIVE_RESOURCE_LEASE=(\d+)$', text, re.M)
     ram_models = re.findall(r'^MIDZ_HOST_ACTIVE_RAM_MODELS=(\d+)$', text, re.M)
+    seal_pages = re.findall(r'^MIDZ_HOST_ACTIVE_SEAL_PAGES=(\d+)$', text, re.M)
     final = re.findall(r'^MIDZ_HOST_ACTIVE_RESULT complete=(\d+) scenes=(\d+) quads=(\d+) remaining=(\d+)$', text, re.M)
     gpu_final = re.findall(r'^MIDZ_HOST_ACTIVE_GPU_RESULT complete=(\d+) scenes=(\d+) quads=(\d+)$', text, re.M)
     writer = re.findall(r'^MIDZ_HOST_ACTIVE_WRITER submitted=(\d+) written=(\d+) failed=(\d+) rejected=(\d+) peak_bytes=(\d+) write_total_us=(\d+) write_max_us=(\d+) drain_us=(\d+) waits=(\d+) wait_us=(\d+)$', text, re.M)
     if not mode:
-        if initial or final or gpu_final or writer or sealed or lease or ram_models:
+        if initial or final or gpu_final or writer or sealed or lease or ram_models or seal_pages:
             raise ValueError('disabled Exotica active margins ran')
         return None
     if mode not in (1, 2) or initial != [str(mode)] or len(final) != 1 or len(gpu_final) != 1:
@@ -180,6 +181,12 @@ def verify(directory, scenes, text, mode, captures):
         raise ValueError('active resource lease acknowledgment')
     if ram_models not in ([], ['1']) or ram_models and not lease:
         raise ValueError('active generated descriptor acknowledgment')
+    if seal_pages not in ([], ['1']) or seal_pages and not lease:
+        raise ValueError('active sealed pages acknowledgment')
+    page_mode = re.findall(r'^MIDZ_HOST_MATERIAL_PAGES=(\d+)$', text, re.M)
+    # Legacy full material scans have no written-pages acknowledgment.
+    if seal_pages and page_mode not in ([], ['1'], ['2']):
+        raise ValueError('active sealed pages verification mode')
     if len(writer) != 1:
         raise ValueError('missing active margin writer completion')
     submitted, written, failed, rejected, peak, total_us, max_us, drain_us, waits, wait_us = map(int, writer[0])
@@ -227,6 +234,12 @@ def verify(directory, scenes, text, mode, captures):
             raise ValueError('active resource lease counts')
         if bool(ram_models) != ('ram_models' in sent) or ram_models and not 0 <= int(sent['ram_models']) <= instances:
             raise ValueError('active generated descriptor counts')
+        if bool(seal_pages) != ('seal_pages' in sent):
+            raise ValueError('active sealed pages schema mismatch')
+        if seal_pages and (not 0 <= int(sent['seal_pages']) <= 4096 or
+                sent is cpu[0] and int(sent['seal_pages']) != 4096 or
+                int(sent['seal_verified']) != int(page_mode == ['2'] or int(sent['frame']) in captures)):
+            raise ValueError('active sealed pages coverage or verification')
         margin, width, height, page, vertices, saved = (int(received[k]) for k in
             ('margin', 'width', 'height', 'page', 'vertices', 'snapshot'))
         scale = height//1024
@@ -243,5 +256,5 @@ def verify(directory, scenes, text, mode, captures):
             sampled.append(snapshot(directory, int(sent['frame']), sent, received, mode))
     if sorted(s['frame'] for s in sampled) != sorted(captures):
         raise ValueError('active margin snapshot completion')
-    return dict(passed=True, mode=mode, scenes=len(scenes), quads=total, snapshots=sampled, sealed_at_scene_end=bool(sealed), resource_lease=bool(lease), ram_models=bool(ram_models),
+    return dict(passed=True, mode=mode, scenes=len(scenes), quads=total, snapshots=sampled, sealed_at_scene_end=bool(sealed), resource_lease=bool(lease), ram_models=bool(ram_models), seal_pages=bool(seal_pages),
                 scope='Current margin geometry and private D24 preservation; far distance and full occlusion remain unproven.')

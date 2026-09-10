@@ -1,6 +1,15 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September10 wider margin acceptance — ACTIVE full drive
+## September10 full margin acceptance — ACTIVE copy-cost reduction
+
+50a/SHAa4e4cd4d6000verify PASS2457fullWavecomparisons;11499copiedpages including
+4096initial, latermax4. All25GL/orderedgeometry/counters/85rawfilesexacttod4d;
+route4191camera12573ADCtimes/10resourcesexact. Serialacceptance script
+results/diagnostics/exotica-amazon-20260909/active-seal-pages-acceptance.py NOW
+running; read active-seal-pages-acceptance.log. It stops on any failure. Scheduled:
+fullwritten(d4d117GLequality),fullrepeat,HongKong(d4d21GLequality),fullobserve,
+7defaults,finallocalchecks. No competingemulator/GPU, inspectactualresultsbefore
+claiming anyscheduledtestpassed. Liveperformancecomparison stillpending.
 
 d4d/SHA2a4faa53 broad6000 PASS2457scenes547883quads,31camera/8bindingadvances;
 4191camera/12573actualADCtimes/10originalresources exact,25completed4KGL.
@@ -9,10 +18,19 @@ Five independentnative/Python scenes PASS3510,4131,5072,5080,5604.5604 final
 excluded byprivatepass, notrendered.55excludedinstances acrossrun,ram_models0.
 332Python/no skips,46native,127localcommands PASS sourceidentity
 e012b5d525b3b67a32c690ee499b4b0b1294d30c4d9488ca994415c8706a7f9a.
-Current exec83803 runs active-margin-full-trial.py active-margin-generated-full
-draw: fullAmazon8860,3500..8850,writtenpages,6330/7187/8760rawshots,1174KGL.
-No competing emulator/GPU. Next assessfullrun, HongKong, repeat, all7defaults,
-performance/occlusion. Last7belongs2eac. Personal87d/v0.5.0 unchanged; no deploy,
+d4d fullAmazon8860 draw PASS5290scenes970889quads,57camera/45bindingadvances,
+7060camera/21180ADCtimes/10resources exact,1174KGLcomplete/48changed. Fullobserve
+matchesall117originalGL. HongKong6000draw PASSroute/resources21GL; native/Python
+5000(4/9),Amazon6330(24/165),7187/8760(0/0) match. Viewed44.89s/57.50s edgeground
+repairs. Copy16MB/scene averages1.392ms; instrumentedfullspeed89.29%vs93.67%
+control, notsmoothnessacceptance. Newnative50a6eaa3d1f builtSEPARATELY/pushed/frozen
+SHAa4e4cd4d,176patches/tree0bf35ca188db56a9a90166f13763af39df28fbfd. Independent
+CPU-seal dirtybitmap, GPUcommits cannotclear it; firstseal/postloadfull. Copyonly
+writtenpages, verifyfullimagewhenmaterialpages2 orrawsnapshot. NewSEAL_PAGESack,
+seal_pages/seal_verified counts;1000dualconsumerfixturePASS. Currentexec44272
+runs active-margin-seal-pages-verify6000draw3500..5990, fullcompareeveryseal.
+No competing emulator/GPU. Next compareoldraw/geometry/GL, full/repeat/HK/observe,
+all7defaults/newlocalchecks andperformance. Last7belongs2eac. Personal87d unchanged; no deploy,
 release,hostedworkflow,physicalFFB,Worldtuning,menu removal. Keepworkingdirectly.
 
 ## September10 generated descriptor checkpoint — ACTIVE live renewal

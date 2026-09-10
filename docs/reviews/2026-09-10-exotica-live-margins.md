@@ -2,6 +2,40 @@
 
 ## Current extension status
 
+The separate write-tracking optimization now passes the6,000-frame verification
+run. **All2,457 CPU seals equal an independent full16MiB comparison.** It copies
+11,499 pages in total, including4,096 at initialization; no later scene requires
+more than four pages. All25 displayed frames, ordered geometry/counters and
+85 files from five raw snapshots are byte-identical to d4d. Input/camera/ADC
+timing and original rendering resources also match. Full written-mode, repeated,
+Hong Kong, observe-only, seven-default and final local runs are now underway
+serially; performance and complete acceptance remain pending.
+
+The d4d full Amazon drive completes8,860 inputs,5,290 active scenes/970,889 quads,
+57 camera advances and45 binding advances. All7,060 camera samples and21,180
+actual ADC read times, plus ten original rendering resources, match the control.
+All1174K frames complete;48 change. A full observe-only run matches all117
+original images. Hong Kong's6,000-frame drive also passes route/resources and
+21 completed images. Independent snapshots match there at5000 (4/9), and in
+Amazon at6330 (24/165),7187 (0/0) and8760 (0/0). Inspected Amazon frames at game
+44.89s and57.50s replace black edge ground with textured geometry.
+
+Performance is still open: the fully instrumented Amazon run averages89.29%
+emulation speed versus93.67% for the corresponding original control. Its full
+16MiB scene-end texture copy is measurable. A separate candidate
+`50a6eaa3d1f233f51d1c0174b6858a09487e9120` now gives CPU sealing an independent
+write bitmap, copying only pages changed since the previous seal. GPU material
+commits cannot consume that bitmap; first use and save-state restoration require
+all pages. Verification mode compares the entire resulting image every scene,
+and every raw snapshot always requests that comparison. The dual-reader fixture
+passes1,000 writes/reset/independently scheduled commits.
+
+This optimization is built/pushed/frozen, SHA256
+`a4e4cd4dc060e068ae4e4f3c29f9c8abc853bdc28420958ee797f924742581de`, with176patches
+reconstructing tree `0bf35ca188db56a9a90166f13763af39df28fbfd`. Its live full-image
+verification is underway. The d4d results above are not automatically renewed
+by this implementation change; repeat, default-game and final local checks remain.
+
 The d4d **6,000-frame wider replay now passes**:2,457 completed active scenes,
 547,883 quads,31 camera advances and eight binding advances. All4,191 camera
 samples/12,573 actual ADC read times and ten original rendering-resource files
