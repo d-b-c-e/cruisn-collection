@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 active margin proof — ACTIVE implementation
+
+Read docs/reviews/2026-09-10-exotica-active-margins.md. Paired6000 control/probe
+DONE on7b432/SHAd16e8b7a:4191camera/12573actualADCtimes,25paired4K plus17shared
+priorframes, tenoriginalresources and5072/5080host/GPU/oracles exact.
+Bounded13scenes5070..5082:4591currentobject/cull decisions,4019actualdepths,
+2238standardemissions/2206ROMselections PASS. Onlyword20scratch4318andword31one
+change withinlists; membershipchanges BETWEENscenes.201actual5080models join
+uniquely/inorder; ONEafterCPUend, confirming previous5072TWOlate. CPUend NOTfence.
+58of67earlymargin candidates laterused: models/palettebindings/499paletteuses
+exact;9unobserved. All522earlyquads texturefootprints463610bytes unchanged
+between5072/5080 despite1338otherWavebyteschanges. Transientwrites OPEN.
+Broad currentgeometry FAIL retained:198/201exact3224quads;2nonpositivecenter
+objects excludedbyexistingassembler,1matrixreuse differs4floatcoefficients/23quads.
+These3areoutside58laterusedcandidates. Do NOT relabel asallobjectPASS.
+Initial17/25imageinterval andnext-game-scene5081deviceinterval FAILs retained;
+corrected common17/full25 andcomplete5080scene checks PASS. Publicproof
+results/proof/2026-09-10-exotica-active-margins recomputes201orderedtimes/counts;
+rawculls/geometry/materials/routes/pixels stayLOCAL receipts. No emulatorrunning.
+NEXT distinctcurrentSource/boundedculling helper, then post-modelownedfence and
+private originalD24copy withmargin-onlydraw. General3xfar/occlusion/handover OPEN.
+No liveextra drawing yet. Last7defaults7b432;321Python/41native115commands same
+sourceidentity6f8fdd53. Personalv0.5.0/SHA87d04de4 unchanged. No release/deploy/
+hostedworkflow/physicalFFB/Worldtuning/menu removal. Continue directly/noidle gaps.
+
 ## September10 cached source/depth acceptance — ACTIVE margin work
 
 Read docs/reviews/2026-09-10-exotica-source-cache-and-depth.md. Separate cache

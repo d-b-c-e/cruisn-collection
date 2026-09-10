@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\verify-active-object-probe.py", line 92, in <module>
+    assert len(found)==1,(scene,hex(pointer),'device ambiguity',len(found))
+           ^^^^^^^^^^^^^
+AssertionError: (12, '0x1c78a', 'device ambiguity', 0)

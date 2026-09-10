@@ -1,0 +1,10 @@
+{
+  "files": {
+    "active-summary.json": "ae60bf2877cf192a0030004687438371fb97715946566685a2efb5310de0c0ce",
+    "current-geometry-failure.txt": "f4ad3b3f56d64092e7fa8d063eb3b2cfc6fd87a3d261d71b888672f1a165b128",
+    "device-joins.csv": "096719656fece45584da9ddb8db095bc05fb804eb298f2263bd9b12ba74eb02d",
+    "initial-device-interval-failure.txt": "4e560e7daea1ac2e284697c93e1fcedc080e60f720655a2acecf6f08f7cf4cd1",
+    "initial-image-interval-failure.txt": "c3a7103eff1a8a51027a8e5c1a747365f01b3d62aab6357ff82e8c0697aa981c",
+    "receipts.json": "66807deadb582e78d0c8edb7c023064d5c68423477c5f6c814a3d1a76ed6a56e"
+  }
+}

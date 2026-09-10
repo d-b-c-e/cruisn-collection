@@ -36,6 +36,14 @@ The CPU ordinary-end marker is not a completed device fence: two original models
 arrive later in the5072 sample. Keep this failure as an explicit insertion constraint.
 Initialization cost, general far depth, occlusion and handover remain open.
 
+The [active-margin probe](docs/reviews/2026-09-10-exotica-active-margins.md) now
+matches4,591 actual visibility decisions across13 scenes, preserves25 paired4K
+images and uniquely joins201 actual5080 model emissions.58 early candidates'
+models/palettes match later use; their conservative texture footprints also remain
+unchanged. Nine candidates lack later-use coverage, and broader geometry retains
+three explicit near-plane/matrix-reuse failures. Next is the distinct current-object
+adapter and post-model margin drawing with a private copy of original depth.
+
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
 The ordered, actionable queue

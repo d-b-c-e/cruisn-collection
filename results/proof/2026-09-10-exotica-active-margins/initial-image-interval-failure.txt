@@ -1,0 +1,10 @@
+active-control5081 0 None
+Traceback (most recent call last):
+  File "E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\active-object-acceptance.py", line 32, in <module>
+    gl=compare_completed_frames(a/'gl-snap',b/'gl-snap',frames,details=True);write(root/(name+'-gl.json'),gl);assert gl['passed'],gl
+  File "E:\Source\cruisn-collection\harness\gl_frames.py", line 73, in compare_completed_frames
+    a, b = read_completed_frames(reference, expected), read_completed_frames(candidate, expected)
+                                                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "E:\Source\cruisn-collection\harness\gl_frames.py", line 66, in read_completed_frames
+    raise IncompleteCaptureError(directory, rows, expected, list(frames))
+gl_frames.IncompleteCaptureError: completed GL capture interval is incomplete or unexpected: 25/17 images; 0 missing, 8 unexpected

@@ -1,0 +1,271 @@
+{
+  "passed": true,
+  "scenes": [
+    {
+      "scene": 1,
+      "frame": 5070,
+      "counts": {
+        "objects": 361,
+        "classified": 361,
+        "distance": 47,
+        "exact_cull_operands": 315,
+        "admitted": 135,
+        "exact_rom_selection": 125,
+        "emissions": 129,
+        "left": 176,
+        "right": 2,
+        "vertical-low": 1,
+        "special": 11
+      },
+      "margin_candidates": 66,
+      "joined_models": 0
+    },
+    {
+      "scene": 2,
+      "frame": 5071,
+      "counts": {
+        "objects": 355,
+        "classified": 355,
+        "distance": 42,
+        "exact_cull_operands": 314,
+        "admitted": 142,
+        "exact_rom_selection": 132,
+        "emissions": 136,
+        "left": 168,
+        "right": 2,
+        "vertical-low": 1,
+        "special": 11
+      },
+      "margin_candidates": 69,
+      "joined_models": 0
+    },
+    {
+      "scene": 3,
+      "frame": 5072,
+      "counts": {
+        "objects": 355,
+        "classified": 355,
+        "distance": 43,
+        "exact_cull_operands": 313,
+        "left": 158,
+        "admitted": 151,
+        "exact_rom_selection": 141,
+        "emissions": 145,
+        "right": 2,
+        "vertical-low": 1,
+        "special": 11
+      },
+      "margin_candidates": 67,
+      "joined_models": 0
+    },
+    {
+      "scene": 4,
+      "frame": 5073,
+      "counts": {
+        "objects": 355,
+        "classified": 355,
+        "distance": 43,
+        "exact_cull_operands": 313,
+        "left": 149,
+        "admitted": 160,
+        "exact_rom_selection": 150,
+        "emissions": 154,
+        "right": 2,
+        "vertical-low": 1,
+        "special": 11
+      },
+      "margin_candidates": 63,
+      "joined_models": 0
+    },
+    {
+      "scene": 5,
+      "frame": 5074,
+      "counts": {
+        "objects": 355,
+        "classified": 355,
+        "distance": 43,
+        "exact_cull_operands": 313,
+        "left": 146,
+        "admitted": 163,
+        "exact_rom_selection": 153,
+        "emissions": 157,
+        "right": 2,
+        "vertical-low": 1,
+        "special": 11
+      },
+      "margin_candidates": 68,
+      "joined_models": 0
+    },
+    {
+      "scene": 6,
+      "frame": 5075,
+      "counts": {
+        "objects": 355,
+        "classified": 355,
+        "distance": 43,
+        "exact_cull_operands": 313,
+        "left": 140,
+        "admitted": 169,
+        "exact_rom_selection": 159,
+        "emissions": 163,
+        "right": 2,
+        "vertical-low": 1,
+        "special": 11
+      },
+      "margin_candidates": 69,
+      "joined_models": 0
+    },
+    {
+      "scene": 7,
+      "frame": 5076,
+      "counts": {
+        "objects": 355,
+        "classified": 355,
+        "distance": 44,
+        "exact_cull_operands": 312,
+        "left": 131,
+        "admitted": 177,
+        "exact_rom_selection": 167,
+        "emissions": 171,
+        "right": 2,
+        "vertical-low": 1,
+        "special": 11
+      },
+      "margin_candidates": 67,
+      "joined_models": 0
+    },
+    {
+      "scene": 8,
+      "frame": 5077,
+      "counts": {
+        "objects": 350,
+        "classified": 350,
+        "distance": 44,
+        "exact_cull_operands": 307,
+        "left": 121,
+        "admitted": 181,
+        "exact_rom_selection": 173,
+        "emissions": 175,
+        "right": 2,
+        "vertical-low": 2,
+        "special": 11
+      },
+      "margin_candidates": 68,
+      "joined_models": 0
+    },
+    {
+      "scene": 9,
+      "frame": 5078,
+      "counts": {
+        "objects": 350,
+        "classified": 350,
+        "distance": 45,
+        "exact_cull_operands": 306,
+        "left": 112,
+        "admitted": 190,
+        "exact_rom_selection": 182,
+        "emissions": 184,
+        "right": 1,
+        "vertical-low": 2,
+        "special": 11
+      },
+      "margin_candidates": 64,
+      "joined_models": 0
+    },
+    {
+      "scene": 10,
+      "frame": 5079,
+      "counts": {
+        "objects": 350,
+        "classified": 350,
+        "distance": 47,
+        "exact_cull_operands": 304,
+        "admitted": 196,
+        "exact_rom_selection": 190,
+        "emissions": 190,
+        "left": 104,
+        "right": 1,
+        "vertical-low": 2,
+        "special": 11
+      },
+      "margin_candidates": 62,
+      "joined_models": 0
+    },
+    {
+      "scene": 11,
+      "frame": 5080,
+      "counts": {
+        "objects": 350,
+        "classified": 350,
+        "distance": 47,
+        "exact_cull_operands": 304,
+        "admitted": 207,
+        "exact_rom_selection": 201,
+        "emissions": 201,
+        "left": 93,
+        "right": 1,
+        "vertical-low": 2,
+        "special": 11
+      },
+      "margin_candidates": 57,
+      "joined_models": 201
+    },
+    {
+      "scene": 12,
+      "frame": 5081,
+      "counts": {
+        "objects": 350,
+        "classified": 350,
+        "distance": 48,
+        "exact_cull_operands": 303,
+        "admitted": 218,
+        "exact_rom_selection": 212,
+        "emissions": 212,
+        "left": 81,
+        "right": 1,
+        "vertical-low": 2,
+        "special": 11
+      },
+      "margin_candidates": 49,
+      "joined_models": 0
+    },
+    {
+      "scene": 13,
+      "frame": 5082,
+      "counts": {
+        "objects": 350,
+        "classified": 350,
+        "distance": 49,
+        "exact_cull_operands": 302,
+        "admitted": 227,
+        "exact_rom_selection": 221,
+        "emissions": 221,
+        "left": 71,
+        "right": 1,
+        "vertical-low": 2,
+        "special": 11
+      },
+      "margin_candidates": 45,
+      "joined_models": 0
+    }
+  ],
+  "counts": {
+    "objects": 4591,
+    "classified": 4591,
+    "distance": 585,
+    "exact_cull_operands": 4019,
+    "admitted": 2316,
+    "exact_rom_selection": 2206,
+    "emissions": 2238,
+    "left": 1650,
+    "right": 21,
+    "vertical-low": 19,
+    "special": 143
+  },
+  "end_field_changes": {
+    "20": 4318,
+    "31": 1
+  },
+  "after_cpu_end": 1,
+  "scope": "LOCAL exact current list/iteration/cull/admission/standard-emission checks across13 scenes. Device joins require the complete5080 game scene only; capture closes before the next game scene starts late in refresh5081. Current material readiness and live drawing remain unproven."
+}
