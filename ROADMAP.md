@@ -19,6 +19,13 @@ tracked in [PUBLIC-READINESS.md](docs/PUBLIC-READINESS.md):
 The heartbeat now uses a one-minute recovery wakeup, not a work cadence. During active
 turns, continue directly into the next useful implementation or verification step.
 
+[Exotica's transform foundation](docs/reviews/2026-09-09-exotica-transforms.md)
+now reproduces40093 centers/scaled command packets,13693 matrix updates,
+39541 actual ordinary model emissions and3051 far-model selections. Four drives
+preserve inputs/camera/actualADC times and21 original4K captures. The helper is
+standalone; Zeus model geometry, material/state isolation and future-section
+host drawing are next.
+
 [Off Road host rendering](docs/reviews/2026-09-09-offroad-host-rendering.md) is now
 integrated in a separate candidate. Its future2x adds mountains/terrain in40/40
 sampled4K images over1x;3x adds six further changes. Original inputs/camera/ADC
@@ -42,9 +49,9 @@ also matches1,399 matrices/decisions in three further runs. Its
 matches2,424 loaded objects and703 later allocations/bindings across12 snapshots,
 including seven real partial loader boundaries. The
 [host scene foundation](docs/reviews/2026-09-09-offroad-host-foundation.md) matches
-72 scenes/50,736 ordered quads and five material snapshots remain stable. Next
-integrate the opt-in MAME adapter and qualify its actual visual/performance result,
-with World2.5 roads and Zeus adapters alongside.
+72 scenes/50,736 ordered quads and five material snapshots remain stable. Its
+integrated candidate and qualified limitations are described above; continue
+broader visual acceptance alongside World2.5 roads and the Zeus adapter.
 
 The earlier [USA pending-object adapter](docs/reviews/2026-09-09-usa-host-scenery.md)
 was the foundation for the current future-section renderer above. World2.4/2.5

@@ -26,8 +26,11 @@ now passes independent/live projection and ordered-DMA checks. Its
 [transform/LOD reconstruction](reviews/2026-09-09-offroad-transform-and-lod.md)
 also passes. Its [future-section source](reviews/2026-09-09-offroad-future-sections.md)
 now matches actual loaded/later objects and seven partial loader boundaries.
-Scene insertion, live materials and native host integration are next. Stream Deck
-is unchanged.
+Its [integrated host candidate](reviews/2026-09-09-offroad-host-rendering.md) now
+passes bounded4K/repeat/original-resource/default gates, with broader visual
+acceptance still open. [Exotica transforms](reviews/2026-09-09-exotica-transforms.md)
+now match40093 calls and39541 ordinary emissions; independent Zeus model geometry,
+material state and future-section host integration are next. Stream Deck is unchanged.
 
 v0.5.0 is the published and deployed baseline. The repository is now public.
 Preserve released tags/ZIPs, personal settings, original recordings and default

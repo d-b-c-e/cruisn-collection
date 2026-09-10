@@ -1,4 +1,13 @@
 # Session Notes
+
+- **Continuous Exotica foundation:** see docs/reviews/2026-09-09-exotica-transforms.md.
+  Standalone native/Python40093 transforms,13693 matrix updates,39541 actual
+  ordinary emissions and3051 far-model selections PASS. Four6000 drives preserve
+  inputs/4191camera/12573ADC times/21 original4K captures and Zeus resources.
+  253Python/24native/32GPU pass,376-file79f84eb1 identity. Public123-file proof
+  recomputes4traces/3selectedGL; full transform/resource/build checks are receipts.
+  Native4a507 and personalv0.5.0 unchanged. Continue Zeus model decoding/state
+  isolation/future sections directly; one-minute heartbeat recovery only.
 <!-- Written by wrapup; previous history is in git. -->
 
 - **Date:** 2026-09-09

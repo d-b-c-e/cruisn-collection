@@ -14,6 +14,7 @@ from verification import sha256_file, write_json
 
 CAMERA = ['frame', 'x', 'y', 'z', *[f'm{i}' for i in range(9)]]
 ADC = ['frame', 'time', 'pc', 'value']
+EXOTICA_ADC = ['frame', 'time', 'pc', 'address', 'value']
 
 
 def read_trace(path, fields):
@@ -51,11 +52,14 @@ def read_trace(path, fields):
 
 
 def compare(reference, candidate, prefix="world"):
-    if prefix not in ("world", "usa", "offroad"):
+    if prefix not in ("world", "usa", "offroad", "exotica"):
         raise ValueError("unsupported motion trace profile")
     reference, candidate = Path(reference), Path(candidate)
     camera = [read_trace(p / f'{prefix}-camera.csv', CAMERA) for p in (reference, candidate)]
-    adc = [read_trace(p / f'{prefix}-adc.csv', ADC) for p in (reference, candidate)]
+    adc = [read_trace(p / f'{prefix}-adc.csv', EXOTICA_ADC if prefix=='exotica' else ADC)
+           for p in (reference, candidate)]
+    if prefix=='exotica' and any(not 0x9c0000 <= row[3] <= 0x9c000f for rows in adc for row in rows):
+        raise ValueError('Exotica ADC address outside analog ports')
     for poses, reads in zip(camera, adc):
         if not poses[0][0] <= reads[0][0] <= reads[-1][0] <= poses[-1][0]:
             raise ValueError('ADC events fall outside camera interval')
@@ -71,13 +75,14 @@ def compare(reference, candidate, prefix="world"):
                 equal_intervals[-1][1] = a[0]
             else:
                 equal_intervals.append([a[0], a[0]])
-    values = [[(r[0], r[2], r[3]) for r in rows] for rows in adc]
+    values = [[(r[0], *r[2:]) for r in rows] for rows in adc]
     times = [[r[1] for r in rows] for rows in adc]
     first_adc_difference = next((i for i, (a, b) in enumerate(zip(*values)) if a != b), None)
     return {
-        'schema': 1, 'scope': (__doc__.strip() if prefix=='world' else
-            __doc__.strip().replace('World','USA' if prefix=='usa' else 'Off Road')
-            .replace('world_motion_trace.lua','usa_motion_trace.lua' if prefix=='usa' else 'offroad_distance.lua')),
+        'schema': 1, 'scope': __doc__.strip().replace('World',
+            {'world':'World','usa':'USA','offroad':'Off Road','exotica':'Exotica'}[prefix])
+            .replace('world_motion_trace.lua', {'world':'world_motion_trace.lua','usa':'usa_motion_trace.lua',
+                'offroad':'offroad_distance.lua','exotica':'exotica_motion_trace.lua'}[prefix]),
         'passed': camera_equal and adc[0] == adc[1],
         'camera_equal': camera_equal, 'same_camera_interval': same_interval,
         'camera_samples': [len(rows) for rows in camera],
@@ -88,6 +93,7 @@ def compare(reference, candidate, prefix="world"):
         'camera_match_scope': 'Camera words only; traffic, object state and rendering phase can still differ.',
         'actual_adc_reads': [len(rows) for rows in adc],
         'adc_frame_value_pc_equal': values[0] == values[1],
+        'adc_address_compared': prefix=='exotica',
         'first_adc_frame_value_pc_difference': None if first_adc_difference is None else {
             'index': first_adc_difference,
             'reference': list(values[0][first_adc_difference]),
@@ -105,7 +111,7 @@ def main(argv=None):
     parser.add_argument('reference', type=Path, help='reference replay run directory')
     parser.add_argument('candidate', type=Path, help='candidate replay run directory')
     parser.add_argument('--report', type=Path, required=True)
-    parser.add_argument("--profile", choices=("world", "usa", "offroad"), default="world")
+    parser.add_argument("--profile", choices=("world", "usa", "offroad", "exotica"), default="world")
     args = parser.parse_args(argv)
     try:
         result = compare(args.reference, args.candidate, args.profile)

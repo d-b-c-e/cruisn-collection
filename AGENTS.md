@@ -1,5 +1,31 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 9 Exotica transform foundation — ACTIVE continuous work
+
+Read docs/reviews/2026-09-09-exotica-transforms.md. Standalone native/Python
+transforms/cache/LOD and bounded Lua model/motion probes are now qualified.
+40093centers/command packets,13693matrix updates,39541ordinary emissions,
+3051far selections across148frames/487objects/384ordinary models PASS.
+552specialflag80 transforms PASS but their model path excluded; rotation+8B,
+not+5. B47DreadPC6964 is delayedbranchslot; actualordinary postPC6970 checked.
+Mode0=40067,mode3=26;1/2rejected. Native-frame offsets1=28451/0=11642;2emissions
+crossnativeframe. Initialspecialmatrix/clock/DLLpathFAILs retained.
+Four6000control/probe/expanded/canonical drives preserve4191camera/12573actual
+ADCaddresses/values/times1800..5990,21GL3840x2160 and originalZeusresources.
+253Python/noskips,24native,10081C31/137yaw,32GPU/66commands PASS,376fileidentity
+79f84eb16e15b9a7d9fb9863e4f9f34bef614b04f85b2f049c0f5474378b88a2.
+123fileproof results/proof/2026-09-09-exotica-transforms recomputes4traces/3GL;
+fulltransforms/resources/otherGL/native/GPU are receipts. RawoperandsLOCAL in
+results/diagnostics/exotica-model-20260909. Nativeunchanged4a507/SHA c88ae4f2;
+all7defaults last passed at preceding OffRoad milestone, not newly renewed.
+NEXT Zeusmodelpacket decoding/projection/materialstate, independent original
+quad oracle; then pending/future sections/residency/scene insertion/hostdrawing.
+No direct zeus2_draw_model calls for extras: state/counters are mutable. Preserve
+originalbias/order (olderguestadmission changed2047->0), not cosmetic3x.
+USAperformance/World25roads/OffRoadvisualcoverage remain. Personalv0.5.0/SHA87d04de4
+unchanged. No release/deploy/hostedworkflow/physicalFFB/Worldtuning/menu removal.
+Continuouswork/no cutoff; one-minute heartbeat recovery only. Checkrig, serialemulators.
+
 ## September 9 Off Road native acceptance — ACTIVE continuous work
 
 Read docs/reviews/2026-09-09-offroad-host-rendering.md. Collection32750f7 implements

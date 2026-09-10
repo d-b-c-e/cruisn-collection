@@ -58,3 +58,18 @@ class MotionTests(unittest.TestCase):
                 path.write_text(data)
                 with self.assertRaises(ValueError): read_trace(path, CAMERA)
 
+    def test_exotica_compares_actual_analog_address(self):
+        with tempfile.TemporaryDirectory() as directory:
+            paths=[Path(directory)/name for name in ('a','b')]
+            for p in paths:
+                p.mkdir()
+                (p/'exotica-camera.csv').write_text(','.join(CAMERA)+'\n100,'+','.join(['0']*12)+'\n')
+                (p/'exotica-adc.csv').write_text('frame,time,pc,address,value\n100,1.0,123,9c0000,80\n')
+            self.assertTrue(compare(*paths,prefix='exotica')['passed'])
+            (paths[1]/'exotica-adc.csv').write_text('frame,time,pc,address,value\n100,1.0,123,9c0001,80\n')
+            result=compare(*paths,prefix='exotica')
+            self.assertFalse(result['passed']);self.assertTrue(result['adc_times_equal'])
+            self.assertTrue(result['adc_address_compared'])
+            (paths[1]/'exotica-adc.csv').write_text('frame,time,pc,address,value\n100,1.0,123,808000,80\n')
+            with self.assertRaises(ValueError):compare(*paths,prefix='exotica')
+
