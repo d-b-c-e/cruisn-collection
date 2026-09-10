@@ -4,7 +4,7 @@ Current work and acceptance criteria, with relevant legacy IDs retained.
 Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 (handoff). Update status here as items move.
 
-## Current priorities (2026-09-09, after v0.5.0)
+## Current priorities (2026-09-10, after v0.5.0)
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
@@ -31,27 +31,41 @@ dense windows repeat all49+21 guarded images while preserving original motion
 and resources. The [marked-window CPU analysis and page-clear trial](docs/reviews/2026-09-09-amazon-margin-depth.md)
 separate missing submitted ground from stale margin depth: most35/45s black
 wedges lack geometry, while the1:12 checkpoint rectangle persists on alternating
-pages after its model disappears. A separate page-clear candidate is under
-native legacy/page/repeat validation. All31 page-cleared images now repeat and
+pages after its model disappears. The native legacy/page/repeat validation
+passes: all31 page-cleared images repeat and
 the old rectangle is removed, but it exposes an uncovered sky strip. The separate
 [panorama continuation candidate](docs/reviews/2026-09-10-zeus-panorama.md)
 copies structurally verified original tiles into that strip at unchanged scale;
 all31 dense real4K images repeat with original motion/resources/fullCPU exact.
 Two fullAmazon8860 drives repeat all117GL/fullmotion; enabledHongKong preserves
 all21GL and originals. All7 defaults pass on final2b55/SHAe0ba. The first full
-repeat's consumer timeout8460 is retained despite the successful retry; diagnose
-its stage before deployment. A separate guardedGPU reproduction proves an odd-
-width screenshot packing bug, with the fix next. Hong Kong's unsupported
+repeat's consumer timeout8460 remains an unmeasured failure. Later instrumented
+replays directly identify screenshot file I/O as another timeout cause. The
+[checked background writer and explicit offline pacing](docs/reviews/2026-09-10-async-captures.md)
+now preserve all49 dense V-Unit BMPs, two21-image Hong Kong runs and the full
+117-image Amazon drive, including original motion/resources. Real menu/action
+replays pass in both renderers; all seven defaults pass on finalb3d82b/SHAe7780a7a,
+including actual UDP/memory telemetry and four software force checks. The
+[capture proof](results/proof/2026-09-10-capture-writer/README.md) verifies42
+hash-bound receipts. Personal Stream Deck remains on v0.5.0/SHA87d04de4.
+Ordinary capture stays nonblocking; explicit offline pacing reports bounded
+storage waits instead of silently losing frames. The separate odd-width packing
+fix also passes guarded real-OpenGL fixtures. Hong Kong's unsupported
 panorama is left alone; broader coverage remains open. The
 [future-model/fade study](docs/reviews/2026-09-10-exotica-future-materials.md)
 finds970model buffers already present and unchanged across later snapshots,
 401later actual submissions matching earlier bytes, and a time-based fade ramp.
-Live resource ownership and fade handover still require implementation. Actual future3x centers also exceed the
+A standalone native fade step matches489 actual original updates/17 completions.
+Live resource ownership and fade handover still require implementation. The next
+source/geometry capture targets Hong Kong5000: the earlier3500 future candidates
+are all outside the view, while approximate5000 centers increase359 to775 at2x.
+These counts are not rendering acceptance. Actual future3x centers also exceed the
 current24-bit depth range; host depth representation is an integration requirement.
 Off Road is pending; limited scripted routes cannot certify cross-track behavior.
 
 [The fresh Zeus upstream review](docs/reviews/2026-09-09-zeus-upstream.md) checks
-current master and all 291 open PRs. A separate default-off candidate now carries
+master and all291 open PRs; the September10 06:59UTC refresh finds no new Zeus
+work. A separate default-off candidate now carries
 #16094 in CPU, GPU and independent geometry oracles. Amazon's six full policy
 trials preserve motion; the combined59-frame4K result repeats, and blend decoding
 restores car-selection reflections. It does not fix the marked1:12 artifact.

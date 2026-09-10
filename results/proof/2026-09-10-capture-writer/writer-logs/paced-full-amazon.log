@@ -1,0 +1,6 @@
+MIDZ_CAPTURE_WRITER_BEGIN
+MIDZ_CAPTURE_WRITER submitted=117 written=117 failed=0 rejected=0 peak_bytes=24883254 write_total_us=8193875 write_max_us=264363 drain_us=4669 paced=0 waits=0 wait_us=0
+MIDZ_GL_TIMING phase=readback calls=117 total_ms=424 max_ms=16
+MIDZ_GL_TIMING phase=file calls=117 total_ms=972 max_ms=16
+MIDZ_GL_TIMING phase=swap calls=8858 total_ms=62 max_ms=16
+MIDZ_GL_TIMING phase=stall calls=0 total_ms=0 max_ms=0

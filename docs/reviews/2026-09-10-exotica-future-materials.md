@@ -78,3 +78,21 @@ Local evidence is under `results/diagnostics/exotica-amazon-20260909`:
 `future-readiness-coverage`, `future-model-format`, `future-model-lifetime`, and
 `fade-call-transitions` / `fade-render-transitions`. Raw game resources remain
 local. No new native host drawing, deployment or release is claimed here.
+
+## Choosing a useful scene for the next prototype
+
+A local wireframe feasibility study uses the actual3500 camera, view and
+alternate matrix from241 original CPU submissions. It decodes2719 future
+instances into20535 polygons, but none intersects the expanded viewport.
+The first version passed a Boolean where the strict transform API requires an
+integer update flag; its2719 rejected cases and blank outputs are retained.
+The corrected study's lack of visible polygons is a real selection result,
+not evidence that the geometry was successfully added to gameplay.
+
+An approximate sphere/center study across six source snapshots identifies5000
+as a better next scene:359 centers intersect at1x and775 at2x/3x. At3500 and4000,
+all tested future candidates lie outside the view. These counts use the observed
+projection scale and do not establish exact vertex coverage, materials or
+occlusion. They explain why an admission count alone can exaggerate usefulness.
+Capture source descriptors, actual alternate matrix and private Zeus resources
+around5000 before attempting the next full geometry prototype.

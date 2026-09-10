@@ -1,0 +1,120 @@
+{
+  "candidate_sha256": "e153d0147e3989a56e7b058872fec125bf9c6f40c4e4fa7e778fbc6f871040aa",
+  "expected_timeout": true,
+  "passed": true,
+  "scope": "Acknowledged Zeus consumer stalls and host timing analysis.\n\nAn expected timeout is a successful fault test, not a passing gameplay replay.\nOriginal route, resources and pixels require their separate replay comparisons.",
+  "slow_phases": [
+    {
+      "elapsed_ms": 110,
+      "frame": 5400,
+      "phase": "stall"
+    },
+    {
+      "elapsed_ms": 62,
+      "frame": 5400,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 62,
+      "frame": 5401,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 62,
+      "frame": 5402,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 78,
+      "frame": 5403,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 63,
+      "frame": 5404,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 125,
+      "frame": 5405,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 62,
+      "frame": 5407,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 1031,
+      "frame": 5408,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 703,
+      "frame": 5409,
+      "phase": "file"
+    },
+    {
+      "elapsed_ms": 797,
+      "frame": 5410,
+      "phase": "file"
+    }
+  ],
+  "sources": {
+    "invocation.json": "46823f546b5ee68396c31c802664a93307edf71976c83fc66892aae35e62d68c",
+    "midz_gl.log": "910ea8d3537515e60ebf046d39fc5e68a1c8218eaf2ac9068549d5f43ad4243d",
+    "stderr.log": "0ff28125fb0c3f4cf0eb054d8ea875f474da8582504f20f5dfd4a47036fed483",
+    "stdout.log": "fa813a3169707b597765b82e124d01700e363ced77de4366d137f528298c1b18"
+  },
+  "timeout_lines": [
+    "MIDZ render stream failed: consumer timeout; native presentation fallback; presented=5409 type=2 need=1032 queued=67107888 capacity=67108864 consumer_bytes=0 wait_ms=797 phase=file phase_ms=782"
+  ],
+  "timings": {
+    "file": {
+      "calls": 11,
+      "max_ms": 1031,
+      "mean_ms": 281.09090909090907,
+      "total_ms": 3092
+    },
+    "readback": {
+      "calls": 11,
+      "max_ms": 16,
+      "mean_ms": 5.636363636363637,
+      "total_ms": 62
+    },
+    "stall": {
+      "calls": 1,
+      "max_ms": 110,
+      "mean_ms": 110.0,
+      "total_ms": 110
+    },
+    "swap": {
+      "calls": 5409,
+      "max_ms": 16,
+      "mean_ms": 0.008689221667591052,
+      "total_ms": 47
+    }
+  },
+  "waits": [
+    {
+      "consumer_bytes": 705712,
+      "need": 272,
+      "phase": "other",
+      "phase_ms": 0,
+      "presented": 5409,
+      "queued": 66402920,
+      "type": 1,
+      "wait_ms": 422
+    },
+    {
+      "consumer_bytes": 0,
+      "need": 1032,
+      "phase": "file",
+      "phase_ms": 782,
+      "presented": 5409,
+      "queued": 67107888,
+      "type": 2,
+      "wait_ms": 797
+    }
+  ]
+}

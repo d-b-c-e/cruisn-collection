@@ -1,0 +1,44 @@
+{
+  "case": "E:\\Source\\cruisn-collection\\results\\diagnostics\\next-exotica-fenced-gameplay\\case",
+  "comparison_scope": {
+    "first_frame": 1,
+    "kind": "explicit-prefix",
+    "last_frame": 6000
+  },
+  "diagnostic_script_sha256": "02ee840a612e4842668b512ad850371242d2c14c9616a76eb267be3ca600c6eb",
+  "error": "renderer fell back after losing its stream",
+  "kind": "candidate-regression",
+  "passed": false,
+  "presentation": "explicit-gl-experiment",
+  "presentation_overrides": {
+    "MIDZ_CAPTURE_PACE": "1",
+    "MIDZ_GL_DRAIN_FRAME": "5420",
+    "MIDZ_GL_LOG": "1",
+    "MIDZ_GL_SNAP": "redirect-at-launch",
+    "MIDZ_GL_SNAP_EVERY": "1",
+    "MIDZ_GL_SNAP_FIRST": "5400",
+    "MIDZ_GL_SNAP_LAST": "5420",
+    "MIDZ_GL_SNAP_MAX": "21",
+    "MIDZ_GL_STALL_FRAME": "5400",
+    "MIDZ_GL_STALL_MS": "5000"
+  },
+  "probe_script": {
+    "environment": {
+      "CRUISN_EXOTICA_MOTION_FIRST": "1800",
+      "CRUISN_EXOTICA_MOTION_LAST": "5990"
+    },
+    "sha256": "ef4e8f2b0260c0ca658baa5767773d46cf9eefb7fa94ee21afd3a2e6c0908d76",
+    "source": "E:\\Source\\cruisn-collection\\lua\\exotica_motion_trace.lua"
+  },
+  "schema": 1,
+  "zeus_stall": {
+    "explicit": true,
+    "frame": 5400,
+    "milliseconds": 5000,
+    "result": {
+      "elapsed_ms": 5000,
+      "frame": 5400,
+      "milliseconds": 5000
+    }
+  }
+}

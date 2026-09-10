@@ -158,3 +158,16 @@ changes; this is not an audit of every MAME change. Local API receipts are under
 4. Renew all seven default cases on any changed native candidate. Then evaluate
    future scenery against the corrected baseline. Neither this review nor extra
    submissions establish four-game 3x acceptance.
+
+## September10 refresh
+
+At06:59:55UTC on September10, upstream master is still
+`17d29108c100ff26bf9f9bbe21553ab9034bd8d7`, with291 open PRs. Three other PRs
+have changed update timestamps since the first audit; their complete changed-file
+pages were fetched again. None changes Zeus. All other PR head/update identities
+are unchanged, so their previously fully paginated filename lists remain valid.
+The same four open Zeus PRs remain, including16094 at
+`54b7ec0720e1d3a3d26a2e881b06628f78732837`. There is no newly detected Zeus work
+in master or the open-PR inventory since the first review. This remains a dated
+snapshot; upstream work may change later. Local refresh receipts are in
+`upstream/refresh-summary.json` and `upstream/refresh-all-open-pr-files.json`.

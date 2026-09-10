@@ -51,6 +51,7 @@ def main(argv=None):
     ap.add_argument("--gl-max", type=int, default=120, help="maximum GL BMPs retained")
     ap.add_argument("--gl-log", action="store_true", help="enable live renderer diagnostic log")
     ap.add_argument("--gl-stall", help="explicit consumer stall FRAME:MILLISECONDS, for recovery tests")
+    ap.add_argument("--gl-capture-pacing", action="store_true", help="explicit offline wait for bounded screenshot storage; requires candidate and capture range")
     ap.add_argument("--gl-queue-mb", type=int, help="explicit stream capacity experiment, 16..128 MiB")
     ap.add_argument("--gl-scale", type=int, help="explicit internal-scale experiment, 1..6")
     ap.add_argument("--gl-crt", choices=('on','off'), help="explicit CRT override for completed-frame testing")
@@ -125,6 +126,8 @@ def main(argv=None):
         case = args.case.resolve()
         manifest = json.loads((case / "case.json").read_text(encoding="utf-8"))
         gl_key = "MIDZ" if manifest.get('rom') == 'crusnexo' else 'MIDV'
+        if args.gl_capture_pacing and (not args.candidate or not args.gl_capture or args.headless or args.native_renderer):
+            raise ValueError('screenshot pacing requires a candidate, live GL and explicit capture range')
         if gl_key == 'MIDZ' and (args.gl_queue_mb or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions):
             raise ValueError('requested renderer experiment is V-Unit-only')
         if (args.zeus_native or args.zeus_stop_frame is not None) and gl_key != 'MIDZ':
@@ -183,6 +186,8 @@ def main(argv=None):
                 # Old binaries ignore this request; strict image validation
                 # still applies equally to both.
                 overrides[gl_key+'_GL_DRAIN_FRAME']=str(expected_gl[-1])
+                if args.gl_capture_pacing:
+                    overrides[gl_key+'_CAPTURE_PACE'] = '1'
             if args.gl_log:
                 overrides[gl_key+"_GL_LOG"] = "1"
             if args.gl_scale is not None:
@@ -366,6 +371,9 @@ def main(argv=None):
             (runtime / "launch.log").write_bytes((runtime / "stdout.log").read_bytes())
         if invocation["error"]:
             raise ValueError(invocation["error"])
+        if env.get(gl_key+'_CAPTURE_PACE') == '1':
+            from capture_writer import verify as verify_writer
+            verify_writer((runtime/'stderr.log').read_text(encoding='utf-8', errors='replace'), require_pacing=True)
         zeus_render_policy.verify_receipt(zeus_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         palette_result=zeus_palette.verify_receipt(palette_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if palette_result:report['zeus_palette']['result']=palette_result

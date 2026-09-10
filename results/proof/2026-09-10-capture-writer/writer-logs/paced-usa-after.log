@@ -1,0 +1,2 @@
+MIDV_CAPTURE_WRITER_BEGIN
+MIDV_CAPTURE_WRITER submitted=49 written=49 failed=0 rejected=0 peak_bytes=523193220 write_total_us=3883413 write_max_us=404917 drain_us=1764125 paced=1 waits=21 wait_us=1391123

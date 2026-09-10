@@ -18,6 +18,7 @@ import subprocess
 from diagnostic_runtime import ROOT, diagnostic_env, new_run
 from verification import image_signature, required_files, sha256_file, write_json
 from raw_snapshots import convert_raw_snapshots
+from capture_writer import verify as verify_capture_writer
 
 STATE_DIRS = ("ini", "cfg", "nvram", "ctrlr")
 WRITABLE_DIRS = {"-inipath": "ini", "-cfg_directory": "cfg",
@@ -95,6 +96,7 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
     stderr = stderr_path.read_text(encoding="utf-8", errors="replace") if stderr_path.exists() else ""
     if "render stream failed" in stdout + stderr:
         raise ValueError("renderer fell back after losing its stream")
+    capture_writer = verify_capture_writer(stdout + '\n' + stderr)
     if any(marker in stdout + stderr for marker in
            ("session.lua: probe failed:", "[LUA ERROR]", "session.lua: snapshot failed:")):
         raise ValueError("Lua diagnostic or snapshot failed; see launch.log/stderr.log")
@@ -117,6 +119,8 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
     evidence = {"frames": len(rows), "columns": fields, "snapshots": shots,
             "input_coverage": coverage,
             "trace_sha256": sha256_file(directory / "frames.csv")}
+    if capture_writer is not None:
+        evidence['capture_writer'] = capture_writer
     if (directory/'cheats').exists():
         required_files(directory/'cheats', ['settings.lua','selection.json','events.csv'])
         evidence['cheats'] = {name:sha256_file(directory/'cheats'/name)

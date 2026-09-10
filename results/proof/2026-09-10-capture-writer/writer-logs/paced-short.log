@@ -1,0 +1,8 @@
+MIDZ_GL_STALL frame=5400 milliseconds=100
+MIDZ_CAPTURE_WRITER_BEGIN
+MIDZ_GL_STALL_APPLIED frame=5400 milliseconds=100 elapsed_ms=94
+MIDZ_CAPTURE_WRITER submitted=21 written=21 failed=0 rejected=0 peak_bytes=373248810 write_total_us=1741446 write_max_us=262025 drain_us=6475 paced=0 waits=0 wait_us=0
+MIDZ_GL_TIMING phase=readback calls=21 total_ms=155 max_ms=16
+MIDZ_GL_TIMING phase=file calls=21 total_ms=173 max_ms=16
+MIDZ_GL_TIMING phase=swap calls=5998 total_ms=15 max_ms=15
+MIDZ_GL_TIMING phase=stall calls=1 total_ms=94 max_ms=94

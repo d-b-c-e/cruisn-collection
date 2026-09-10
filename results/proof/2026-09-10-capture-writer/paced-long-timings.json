@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "scope": "Acknowledged Zeus consumer stalls and host timing analysis.\n\nAn expected timeout is a successful fault test, not a passing gameplay replay.\nOriginal route, resources and pixels require their separate replay comparisons.",
+  "expected_timeout": true,
+  "candidate_sha256": "e7780a7a3f1ff0b5d0efdff6f713c813fb9d2267a5ab7062108703ba5b1e02bb",
+  "timings": {
+    "readback": {
+      "calls": 1,
+      "total_ms": 0,
+      "max_ms": 0,
+      "mean_ms": 0.0
+    },
+    "file": {
+      "calls": 1,
+      "total_ms": 16,
+      "max_ms": 16,
+      "mean_ms": 16.0
+    },
+    "swap": {
+      "calls": 5399,
+      "total_ms": 32,
+      "max_ms": 16,
+      "mean_ms": 0.0059270235228746065
+    },
+    "stall": {
+      "calls": 1,
+      "total_ms": 5000,
+      "max_ms": 5000,
+      "mean_ms": 5000.0
+    }
+  },
+  "waits": [
+    {
+      "presented": 5399,
+      "type": 1,
+      "need": 272,
+      "queued": 67108800,
+      "consumer_bytes": 0,
+      "wait_ms": 782,
+      "phase": "stall",
+      "phase_ms": 2672
+    }
+  ],
+  "slow_phases": [
+    {
+      "frame": 5400,
+      "phase": "stall",
+      "elapsed_ms": 5000
+    }
+  ],
+  "timeout_lines": [
+    "MIDZ render stream failed: consumer timeout; native presentation fallback; presented=5399 type=1 need=272 queued=67108800 capacity=67108864 consumer_bytes=0 wait_ms=782 phase=stall phase_ms=2672"
+  ],
+  "sources": {
+    "invocation.json": "a66d4358b1c6851854f3d4f7537b2499438e5f6066a5b1f0d01dbab42808a979",
+    "stderr.log": "aedf9a6817e2160248ee058bdd6381cd66cc2332e8847851aef52aceb4b50067",
+    "stdout.log": "2307ae4bcabcfcbdb29ddda6664a15c41d839c318f3c9e9a892aa5d734fde491",
+    "midz_gl.log": "45d18b14734095a5265862f775cd30fb87b9104d54100daec599f0ad3e398a62"
+  }
+}

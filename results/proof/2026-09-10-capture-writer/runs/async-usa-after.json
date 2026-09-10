@@ -1,0 +1,21 @@
+{
+  "case": "E:\\Source\\cruisn-collection\\results\\diagnostics\\usa-widescreen-candidate-case",
+  "comparison_scope": {
+    "first_frame": 1,
+    "kind": "explicit-prefix",
+    "last_frame": 300
+  },
+  "error": "screenshot writer failed or rejected a requested capture",
+  "kind": "candidate-regression",
+  "passed": false,
+  "presentation": "explicit-gl-experiment",
+  "presentation_overrides": {
+    "MIDV_GL_DRAIN_FRAME": "298",
+    "MIDV_GL_SNAP": "redirect-at-launch",
+    "MIDV_GL_SNAP_EVERY": "1",
+    "MIDV_GL_SNAP_FIRST": "250",
+    "MIDV_GL_SNAP_LAST": "298",
+    "MIDV_GL_SNAP_MAX": "49"
+  },
+  "schema": 1
+}

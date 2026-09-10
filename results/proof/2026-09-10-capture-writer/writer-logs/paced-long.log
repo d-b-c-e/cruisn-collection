@@ -1,0 +1,10 @@
+MIDZ_GL_STALL frame=5400 milliseconds=5000
+MIDZ_CAPTURE_WRITER_BEGIN
+MIDZ render stream failed: consumer timeout; native presentation fallback; presented=5399 type=1 need=272 queued=67108800 capacity=67108864 consumer_bytes=0 wait_ms=782 phase=stall phase_ms=2672
+MIDZ render stream failed: GL stopped; restoring CPU polygon rasterization
+MIDZ_GL_STALL_APPLIED frame=5400 milliseconds=5000 elapsed_ms=5000
+MIDZ_CAPTURE_WRITER submitted=1 written=1 failed=0 rejected=0 peak_bytes=24883254 write_total_us=47249 write_max_us=47249 drain_us=55288 paced=1 waits=0 wait_us=0
+MIDZ_GL_TIMING phase=readback calls=1 total_ms=0 max_ms=0
+MIDZ_GL_TIMING phase=file calls=1 total_ms=16 max_ms=16
+MIDZ_GL_TIMING phase=swap calls=5399 total_ms=32 max_ms=16
+MIDZ_GL_TIMING phase=stall calls=1 total_ms=5000 max_ms=5000

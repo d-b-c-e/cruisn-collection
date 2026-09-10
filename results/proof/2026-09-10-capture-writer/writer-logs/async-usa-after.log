@@ -1,0 +1,21 @@
+MIDV_CAPTURE_WRITER_BEGIN
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_028.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_029.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_030.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_031.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_032.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_033.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_034.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_035.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_036.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_037.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_038.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_039.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_040.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_041.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_042.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_044.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_046.bmp
+MIDV screenshot writer rejected: E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\async-usa-after\run\gl-snap\mvgl_047.bmp
+MIDV_CAPTURE_WRITER submitted=31 written=31 failed=0 rejected=18 peak_bytes=523193220 write_total_us=2736067 write_max_us=549578 drain_us=1821174
+MIDV screenshot writer failed: captures incomplete

@@ -1,0 +1,554 @@
+{
+  "case": "E:\\Source\\cruisn-collection\\results\\diagnostics\\usa-widescreen-candidate-case",
+  "comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "comparison_scope": {
+    "first_frame": 1,
+    "kind": "explicit-prefix",
+    "last_frame": 300
+  },
+  "evidence": {
+    "capture_writer": {
+      "drain_us": 1764125,
+      "failed": 0,
+      "paced": 1,
+      "peak_bytes": 523193220,
+      "rejected": 0,
+      "renderer": "MIDV",
+      "submitted": 49,
+      "wait_us": 1391123,
+      "waits": 21,
+      "write_max_us": 404917,
+      "write_total_us": 3883413,
+      "written": 49
+    },
+    "columns": [
+      "frame",
+      "emulated_seconds",
+      "host_seconds",
+      "speed_percent",
+      ":ACCEL",
+      ":BRAKE",
+      ":CONF",
+      ":DSW",
+      ":FAKE",
+      ":IN0",
+      ":IN1",
+      ":MOTION",
+      ":WHEEL"
+    ],
+    "frames": 300,
+    "gl_captures": {
+      "completed_frames": [
+        250,
+        251,
+        252,
+        253,
+        254,
+        255,
+        256,
+        257,
+        258,
+        259,
+        260,
+        261,
+        262,
+        263,
+        264,
+        265,
+        266,
+        267,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275,
+        276,
+        277,
+        278,
+        279,
+        280,
+        281,
+        282,
+        283,
+        284,
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298
+      ],
+      "count": 49,
+      "dropped_messages": 0,
+      "files": {
+        "mvgl_000.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_001.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_002.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_003.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_004.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_005.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_006.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_007.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_008.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_009.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_010.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_011.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_012.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_013.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_014.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_015.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_016.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_017.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_018.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_019.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_020.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_021.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_022.bmp": {
+          "sha256": "c0e9ead2ce7208b3c5d13ec9e3b58af80c85ef21415672bbbfe3e230c934f639",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_023.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_024.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_025.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_026.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_027.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_028.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_029.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_030.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_031.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_032.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_033.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_034.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_035.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_036.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_037.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_038.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_039.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_040.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_041.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_042.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_043.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_044.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_045.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_046.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_047.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        },
+        "mvgl_048.bmp": {
+          "sha256": "81d4bc061e202acdc0aceb72df22873fdeb31f2a7cc6c3bb4c250759e043a75d",
+          "size": [
+            3824,
+            2073
+          ]
+        }
+      },
+      "index_sha256": "f9096630781844b4f32c3e9df0cbbcee0951da5c3a840d09fab1eca69dcf2577",
+      "scope": "completed GL frame pixels"
+    },
+    "input_coverage": {
+      ":ACCEL": {
+        "distinct": 1,
+        "max": 0,
+        "min": 0
+      },
+      ":BRAKE": {
+        "distinct": 1,
+        "max": 0,
+        "min": 0
+      },
+      ":CONF": {
+        "distinct": 1,
+        "max": 5,
+        "min": 5
+      },
+      ":DSW": {
+        "distinct": 1,
+        "max": 63870,
+        "min": 63870
+      },
+      ":FAKE": {
+        "distinct": 1,
+        "max": 6,
+        "min": 6
+      },
+      ":IN0": {
+        "distinct": 1,
+        "max": 50175,
+        "min": 50175
+      },
+      ":IN1": {
+        "distinct": 1,
+        "max": 127,
+        "min": 127
+      },
+      ":MOTION": {
+        "distinct": 1,
+        "max": 0,
+        "min": 0
+      },
+      ":WHEEL": {
+        "distinct": 1,
+        "max": 128,
+        "min": 128
+      }
+    },
+    "raw_sha256": {
+      "frame_00000060.raw": "6f07bb1974f13c20ce715eed155dcf7fed2fd9a54bc97184d62a338d2128621e",
+      "frame_00000120.raw": "8c87984b16e6a2fdcb64a177b44e6cb10c80d0a6f8ad0e98f72dab5cd28d7faf",
+      "frame_00000180.raw": "73d8831fafa13cef207728ff64670e8bf42cc0df8c6e047adf2e480717d69f02",
+      "frame_00000240.raw": "e7c73606e7a254dbe41e7e3f714ebdafe6ef2863608fed412a34564c26aaf846",
+      "frame_00000300.raw": "f0db34558dd53f032522089d113a8a4cfe4ebd03dad02dbae165fd2773a1c40c"
+    },
+    "snapshots": {
+      "120": {
+        "sha256": "24ecbf547944f12a45f81a33516b4f022a6eac69fe0a42c0842ffcd84eed6ccb",
+        "size": [
+          512,
+          400
+        ]
+      },
+      "180": {
+        "sha256": "15b7b294dcf8cebd3a96bde2ddb98613a68d6861c9631b593c2ffe6afdf37766",
+        "size": [
+          512,
+          400
+        ]
+      },
+      "240": {
+        "sha256": "a57591be365bbb747a0ad8fd5cd5e86cefe6ef703c02cc1658e84b57af717d60",
+        "size": [
+          512,
+          400
+        ]
+      },
+      "300": {
+        "sha256": "902c4bc3d3e96fbee21338a0fff8e6bba448c158ff6b5031c84ef204936c6f9b",
+        "size": [
+          512,
+          400
+        ]
+      },
+      "60": {
+        "sha256": "904b314efc8760fc01cddbc7e000122ea4418ca3a8690969c01b213f022c349a",
+        "size": [
+          512,
+          400
+        ]
+      }
+    },
+    "trace_sha256": "ecfa9be17535c70998da0e0130da28c47b5beef8b8bb0a6f65b3455a3281e12d"
+  },
+  "kind": "candidate-regression",
+  "passed": true,
+  "presentation": "explicit-gl-experiment",
+  "presentation_overrides": {
+    "MIDV_CAPTURE_PACE": "1",
+    "MIDV_GL_DRAIN_FRAME": "298",
+    "MIDV_GL_SNAP": "redirect-at-launch",
+    "MIDV_GL_SNAP_EVERY": "1",
+    "MIDV_GL_SNAP_FIRST": "250",
+    "MIDV_GL_SNAP_LAST": "298",
+    "MIDV_GL_SNAP_MAX": "49"
+  },
+  "schema": 1
+}

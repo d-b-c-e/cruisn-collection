@@ -1,5 +1,51 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 capture pacing accepted — ACTIVE future scenery
+
+Read docs/reviews/2026-09-10-async-captures.md. Nativeb3d82b67257/SHAe7780a7a
+builtSEPARATELY/frozen,159patches exactc6ce30f836bf107233714792d9c003082d3d21bc.
+437-file6f98b85c5be1cc37d4e2427bf4509d162da7535080caad731137329d94ab8021
+PASS290Python/no skips,34native,96commands. Finalsourcefrozen for acceptance.
+49USA GL3824x2073 with explicitpacing allwholeBMPbyteequal34b; peak523193220,
+21waits1391123us. Initialunpaced515 run31written/18rejected FAILretained.
+Two6000HongKong runs WITHOUTpacing preserve4191camera/12573ADC and21whole4KBMP
+bytes; rendercaptureprepmax16ms both, writermax262025/169113us. FullAmazon8860
+preserves7060camera/21180ADC/all117whole4KBMP and10originalresources7200,99.96%
+speed; renderprepmax16ms,writermax264363us,peakoneframe24883254bytes. AllPASS.
+All7defaults onb3 PASS, actualUDP-memory/4softwareforce/Exo21GL included.
+5000ms actualconsumerstall withpacing correctlyFAILs rawreplay; predeclaredfault
+verdictPASS, motionexact. NineEscCheats/menu/actionreplays USA+Exo PASS. No tests
+running atcheckpoint. Proof results/proof/2026-09-10-capture-writer verifies42
+hash-boundreceipts, not unarchived pixels/resources/routes. Continueexact5000
+futureprototype directly aftercommit/push; LOCAL scene5000-trials.py prepared.
+RawresourcesLOCAL; no deploy/release/physicalFFB/Worldtuning/menuremoval. Personal87d.
+Upstreamrefresh06:59:55UTCSept10: same17d291master,291openPRs;3otherupdatedPRs
+refetchedfilenamepages, no newZeus; same4ZeusPRheads. FutureLOCAL 5000probe prepared
+butNOTRUN; old3500wirealloffscreen, sixsnapshotcenters5000=359/775/7751/2/3x.
+Keepcontinuouswork; no waitingforheartbeat milestones.
+
+## September10 asynchronous capture validation — ACTIVE
+
+Collection3dfd042 bulkhelper/native77a33/SHAe153 pushed; its HongKongrepeat FAIL
+file1031/703/797ms directly causesconsumer timeout5409. Fullbulk/defaultsnotrun.
+Native515ba93691d/SHA2f384662 separatebuild158patches addsbounded512MiB/32job
+backgroundwriter bothrenderers and explicitfinishreceipt. Unpaced49USA250..298
+trial FAIL correctly:31written/18rejected,peak523193220, no rendererfallback.
+Previous34b baseline49PASS. Failurepreserved underasync-usa-after. This is expected
+capacitypolicy under a new stresscase, NOT successful49captureacceptance.
+CURRENT nextnativecommit adds explicit offline --gl-capture-pacing: FFB0 only,
+up to10s waiting for storage with producer signal; ordinary consumerstalls keep
+500iterations, shared ring wait capped10s. Defaults/unpaced nochange. Candidate
+building in paced-native-build.log, sourceharness/tests modified. Nextfreeze/export/
+localchecks, rerun49VUnit withpacing and comparewholeBMP, HongKong21/repeatunpaced,
+fullAmazon117 and final7defaults (lastPASS2b55). No emulatorrunning atcheckpoint.
+Do not startGPUsuite duringMAME. No deploy/release/physicalFFB/Worldtuning; personal87d.
+LOCAL future-wire initialboolupdateFAIL retained; v2 decodes2719instances20535
+polygons but0viewport atHongKong3500 (alloffscreen). Approx sixsnapshotcenterstudy
+findsframe5000 promising:359/775/775viewportcenters at1/2/3x. NOT texture/ownership/
+scene/occlusion proof. Need actual5000camera/privateZeus/resources beforehostclaim.
+Continue directly; one-minuteheartbeat recovery only, no cutoff.
+
 ## September 10 measured capture stalls — ACTIVE continuous work
 
 Read docs/reviews/2026-09-10-zeus-stream-timing.md. Native34b24a2fef3/SHA2ebe8aeb

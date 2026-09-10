@@ -1,0 +1,124 @@
+{
+  "actions": [
+    {
+      "activate": 0,
+      "frame": 2702,
+      "index": 1,
+      "steps": 1
+    }
+  ],
+  "candidate_sha256": "e7780a7a3f1ff0b5d0efdff6f713c813fb9d2267a5ab7062108703ba5b1e02bb",
+  "display_target": {
+    "available": [
+      {
+        "device": "\\\\.\\DISPLAY1",
+        "primary": true,
+        "size": [
+          3840,
+          2160
+        ]
+      }
+    ],
+    "reference_size": [
+      3840,
+      2160
+    ],
+    "selected": {
+      "device": "\\\\.\\DISPLAY1",
+      "primary": true,
+      "size": [
+        3840,
+        2160
+      ]
+    }
+  },
+  "frames": 2723,
+  "menu": [
+    {
+      "crt": 0,
+      "frame": 2700,
+      "image_sha256": "5f43ab1bd7b1c6b9718e412605e0b6a3a6d51ddad06efa2d66b54a66b635123b",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 0,
+      "step": 0
+    },
+    {
+      "crt": 0,
+      "frame": 2700,
+      "image_sha256": "38031dab90d93628d2822394988ebdcfdf9dec8710d5c0431d593f3d2d0f3b7a",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 1,
+      "step": 1
+    },
+    {
+      "crt": 0,
+      "frame": 2700,
+      "image_sha256": "681f0822fa9a4a67b3b0606ce6b11a6136106e08125f08dd25acad9912d19d3d",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 2,
+      "step": 2
+    },
+    {
+      "crt": 0,
+      "frame": 2700,
+      "image_sha256": "f237c5f03b53286fd6ed88de37c4964687664b1cff78438377f2ba1d7796d973",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 2,
+      "step": 3
+    },
+    {
+      "crt": 0,
+      "frame": 2700,
+      "image_sha256": "c3518f488b885bc2dd11702472b82443545741367e5f7be527ee024dbd840dcb",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 2,
+      "step": 4
+    },
+    {
+      "crt": 0,
+      "frame": 2700,
+      "image_sha256": "681f0822fa9a4a67b3b0606ce6b11a6136106e08125f08dd25acad9912d19d3d",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 2,
+      "step": 5
+    },
+    {
+      "crt": 0,
+      "frame": 2700,
+      "image_sha256": "0d7238aa14c21af7bc7adfaca0819988595304706780b3353f07e6760f345d03",
+      "new_frame": 0,
+      "open": 0,
+      "selected": 2,
+      "step": 6
+    },
+    {
+      "crt": 0,
+      "frame": 2721,
+      "image_sha256": "027c868ec004e0f760fae8cf665f774f10aa40e3b0aa43da3809ff23e5777523",
+      "new_frame": 1,
+      "open": 1,
+      "selected": 2,
+      "step": 7
+    },
+    {
+      "crt": 0,
+      "frame": 2721,
+      "image_sha256": "2cf996874086dfb055b151702e0b9837344fc3cf8044300023109bd2cd945ce8",
+      "new_frame": 0,
+      "open": 1,
+      "selected": 3,
+      "step": 8
+    }
+  ],
+  "passed": true,
+  "physical_force": false,
+  "replay_passed": true,
+  "rom": "crusnusa",
+  "xml_sha256": "1d7a2191281278fd394c5aa3b8a7d02b8b0518555c1378ab123a93355051b8e1"
+}

@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "reference": "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\sky-full-amazon\\run",
+  "capture_frame": 7200,
+  "files": {
+    "models.bin": {
+      "reference": "00de2c9783e3de0a54f916b28c1879653741ab1e664f40f392dd7569716e7f70",
+      "candidate": "00de2c9783e3de0a54f916b28c1879653741ab1e664f40f392dd7569716e7f70"
+    },
+    "models.json": {
+      "reference": "b9b03763553a5fc2654ce9a676e43d8c85e35e4e76743481a3703cd8c3e20777",
+      "candidate": "b9b03763553a5fc2654ce9a676e43d8c85e35e4e76743481a3703cd8c3e20777"
+    },
+    "pal_table.bin": {
+      "reference": "d72c4a1e2dd2fdc1e862f29d8fa71d5474a734015ab559d633af6d1eb187bece",
+      "candidate": "d72c4a1e2dd2fdc1e862f29d8fa71d5474a734015ab559d633af6d1eb187bece"
+    },
+    "post_color.bin": {
+      "reference": "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d",
+      "candidate": "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d"
+    },
+    "post_depth.bin": {
+      "reference": "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b",
+      "candidate": "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b"
+    },
+    "pre_color.bin": {
+      "reference": "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d",
+      "candidate": "3642c77429f81afb22680492b516fbca4ed41251b5b70a2f757b2c195efb930d"
+    },
+    "pre_depth.bin": {
+      "reference": "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b",
+      "candidate": "8a1db7a62e9db601dbd2ab4dd9acfd75e7393d80aa0c8f91f7c4825e5b092e1b"
+    },
+    "records.bin": {
+      "reference": "07c035bf680f30e56a7ef6dbc8d8c61e7378ed700f354513ba4da3b835e35dce",
+      "candidate": "07c035bf680f30e56a7ef6dbc8d8c61e7378ed700f354513ba4da3b835e35dce"
+    },
+    "regs.txt": {
+      "reference": "58f7791cdd4a049e8017bdd499df08ac71b00dbb58eed774ccf0518b12fd56d2",
+      "candidate": "58f7791cdd4a049e8017bdd499df08ac71b00dbb58eed774ccf0518b12fd56d2"
+    },
+    "waveram.bin": {
+      "reference": "c680ab18c730d529c7b3c30a058e9c5bd78f6b89fe27a9c83c124528d4fb5ef5",
+      "candidate": "c680ab18c730d529c7b3c30a058e9c5bd78f6b89fe27a9c83c124528d4fb5ef5"
+    }
+  }
+}

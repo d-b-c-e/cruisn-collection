@@ -166,6 +166,19 @@ the original case is never edited. `--until-frame` explicitly compares only the
 requested prefix, still checking every input/time and sampled image in that
 prefix. `--capture-state` retains quads and native RAM at stop-minus-two, matching
 the offline renderer's completed-scene convention. Missing dump files fail.
+New native candidates use a bounded background writer for enhanced-renderer BMPs.
+The ordinary path rejects an overflowing capture queue and the harness marks the
+run incomplete. For dense offline ranges, explicitly add `--gl-capture-pacing`
+together with `--candidate` and `--gl-capture`. It requires physical force zero
+and waits at most ten seconds for storage without changing emulated inputs or time.
+Older binaries must acknowledge this option; a missing acknowledgment fails.
+
+The writer's512MiB encoded-image budget is separate from the renderer's command
+ring. `evidence.capture_writer` reports completed writes, failures, rejected
+requests, peak storage and file/drain/pacing times. A started writer without a
+final completion receipt fails. Paced wall-clock playback can slow, so benchmark
+normal gameplay separately. See [the measured failures and validation](reviews/2026-09-10-async-captures.md).
+
 For live GL capture, leave playback time after the final requested capture so the
 consumer can finish before emulator exit. Two frames is a minimum, not a guarantee:
 dense near-4K BMP capture can build a much larger backlog. Extend `--until-frame`

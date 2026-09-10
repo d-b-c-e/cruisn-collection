@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "scope": "Acknowledged Zeus consumer stalls and host timing analysis.\n\nAn expected timeout is a successful fault test, not a passing gameplay replay.\nOriginal route, resources and pixels require their separate replay comparisons.",
+  "expected_timeout": false,
+  "candidate_sha256": "e7780a7a3f1ff0b5d0efdff6f713c813fb9d2267a5ab7062108703ba5b1e02bb",
+  "timings": {
+    "readback": {
+      "calls": 117,
+      "total_ms": 424,
+      "max_ms": 16,
+      "mean_ms": 3.623931623931624
+    },
+    "file": {
+      "calls": 117,
+      "total_ms": 972,
+      "max_ms": 16,
+      "mean_ms": 8.307692307692308
+    },
+    "swap": {
+      "calls": 8858,
+      "total_ms": 62,
+      "max_ms": 16,
+      "mean_ms": 0.006999322646195529
+    },
+    "stall": {
+      "calls": 0,
+      "total_ms": 0,
+      "max_ms": 0,
+      "mean_ms": null
+    }
+  },
+  "waits": [],
+  "slow_phases": [],
+  "timeout_lines": [],
+  "sources": {
+    "invocation.json": "3c79d287dca9085963fb394f10528aee8167c1fbc68c4fd9ec4aba3388a3c711",
+    "stderr.log": "730603794e39a3df5a94c007b55442f9e7c62a61db119cdcacf469ecb8fe8287",
+    "stdout.log": "4832c217cbecf7c28a3fc70d35ed180e1789c4cf5f4c8628a9d21c476659d37b",
+    "midz_gl.log": "a13ab74b4c087bceba44331bcf969cef7a657c9b8a0f072087b29eab2ddecad3"
+  }
+}
