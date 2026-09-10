@@ -1,0 +1,242 @@
+{
+  "passed": false,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "cases": [
+    {
+      "name": "far-order-18000000,34000000,50000000",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54"
+      ],
+      "passed": true
+    },
+    {
+      "name": "far-order-18000000,50000000,34000000",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54"
+      ],
+      "passed": true
+    },
+    {
+      "name": "far-order-34000000,18000000,50000000",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "8a8a7a012df96cef1bce45d4bd3e49d11f3b2a648e7e0c466e8899df7830277f",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54"
+      ],
+      "passed": true
+    },
+    {
+      "name": "far-order-34000000,50000000,18000000",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "8a8a7a012df96cef1bce45d4bd3e49d11f3b2a648e7e0c466e8899df7830277f",
+        "8a8a7a012df96cef1bce45d4bd3e49d11f3b2a648e7e0c466e8899df7830277f",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54"
+      ],
+      "passed": true
+    },
+    {
+      "name": "far-order-50000000,18000000,34000000",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "d600caf3efd396dc79163be20d679311cc8090b5b85f995d1dabe660a37e27bf",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54"
+      ],
+      "passed": true
+    },
+    {
+      "name": "far-order-50000000,34000000,18000000",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "d600caf3efd396dc79163be20d679311cc8090b5b85f995d1dabe660a37e27bf",
+        "8a8a7a012df96cef1bce45d4bd3e49d11f3b2a648e7e0c466e8899df7830277f",
+        "29a9a1ea8621df356fe96ed7340b8aac83bff1ff5c7d2f3ad918044eebc1bb54"
+      ],
+      "passed": true
+    },
+    {
+      "name": "near-original-occludes-future",
+      "scale": 1,
+      "page": 0,
+      "steps": 2,
+      "hashes": [
+        "6176c7345b38eb1f42cf6d0dd543b39459c055fe181d2a064e917b92405e25f0",
+        "6176c7345b38eb1f42cf6d0dd543b39459c055fe181d2a064e917b92405e25f0"
+      ],
+      "passed": true
+    },
+    {
+      "name": "future-front-of-far-original",
+      "scale": 1,
+      "page": 0,
+      "steps": 2,
+      "hashes": [
+        "d600caf3efd396dc79163be20d679311cc8090b5b85f995d1dabe660a37e27bf",
+        "c6b2aa079a2d9eb89f11e15482bcc0040f07e4a9be66e279ca923d48ea2d68a0"
+      ],
+      "passed": true
+    },
+    {
+      "name": "raw-clear",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "eb81fc46ec3aead61d390ea71e4229dc011b5da755cef7611f525ec957ff5f1d",
+        "b5f6f206c7962bd23b19634f48b7a3ddde321970dfaff0e6acd3232cb1beaca0",
+        "b1a8446a1af37fbf6670f222aaa70588a950912710c65394fc2f636ac2dd380d"
+      ],
+      "passed": true
+    },
+    {
+      "name": "actual-range-clear",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "eb81fc46ec3aead61d390ea71e4229dc011b5da755cef7611f525ec957ff5f1d",
+        "2d0a2732be0a373f9857f52e568af1feb87ea12b2f533d92a05b0dc2441edb8a",
+        "b1a8446a1af37fbf6670f222aaa70588a950912710c65394fc2f636ac2dd380d"
+      ],
+      "passed": true
+    },
+    {
+      "name": "untagged-range-clear-control",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "eb81fc46ec3aead61d390ea71e4229dc011b5da755cef7611f525ec957ff5f1d",
+        "442f78513ec38187dd21e00d398c6443d1d4b310070a744849992e46f5996139",
+        "442f78513ec38187dd21e00d398c6443d1d4b310070a744849992e46f5996139"
+      ],
+      "passed": true
+    },
+    {
+      "name": "range-clear-zero",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "eb81fc46ec3aead61d390ea71e4229dc011b5da755cef7611f525ec957ff5f1d",
+        "ee3aef9c57ad5a0570ac85f82186786e6677f6c62ed87de3b5a2998aabbcc294",
+        "ee3aef9c57ad5a0570ac85f82186786e6677f6c62ed87de3b5a2998aabbcc294"
+      ],
+      "passed": true
+    },
+    {
+      "name": "range-clear-half-blocks-third-band",
+      "scale": 1,
+      "page": 0,
+      "steps": 2,
+      "hashes": [
+        "37de792acd7c1bc0b2ed033560a2453f2953053fb6dedae15f04fe6dc83aeed4",
+        "37de792acd7c1bc0b2ed033560a2453f2953053fb6dedae15f04fe6dc83aeed4"
+      ],
+      "passed": true
+    },
+    {
+      "name": "range-clear-half-admits-first-band",
+      "scale": 1,
+      "page": 0,
+      "steps": 2,
+      "hashes": [
+        "37de792acd7c1bc0b2ed033560a2453f2953053fb6dedae15f04fe6dc83aeed4",
+        "9439db17389102fb36cf1afb6bf4e8393145f6ca48d48ad2bb23f6123753d73f"
+      ],
+      "passed": true
+    },
+    {
+      "name": "range-clear-max",
+      "scale": 1,
+      "page": 0,
+      "steps": 2,
+      "hashes": [
+        "865ff4f1d7c2f2c11b7b7a47327b8582d2c48d4036f4b8eea24825eb333596dc",
+        "e93cca822102eb96e85ab33bf21b2094e604fbc944e8d038041c5f838ee3fad0"
+      ],
+      "passed": true
+    },
+    {
+      "name": "polygon-clear",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "eb81fc46ec3aead61d390ea71e4229dc011b5da755cef7611f525ec957ff5f1d",
+        "97e854b67432a72a16a33a27f9c066d29c1232d87eadd8407f7af6e41192e767",
+        "b1a8446a1af37fbf6670f222aaa70588a950912710c65394fc2f636ac2dd380d"
+      ],
+      "passed": true
+    },
+    {
+      "name": "raw-nonmax-depth",
+      "scale": 1,
+      "page": 0,
+      "steps": 2,
+      "hashes": [
+        "fe92fbd53fbdeb0a761dbf9487c5241bcb803483becd8f6fd3d5e8d3df7d0a9b",
+        "fe92fbd53fbdeb0a761dbf9487c5241bcb803483becd8f6fd3d5e8d3df7d0a9b"
+      ],
+      "passed": true
+    },
+    {
+      "name": "raw-max-versus-geometry-max",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "3d663bd1ec1e5b24800123a04c937a1f1c47abddf1d6bd4be40f346d63ef9565",
+        "ccbdd4f6d0b064b716934294d07b15ca01de6450924c31dde5b1cd4d58a9a233",
+        "ccbdd4f6d0b064b716934294d07b15ca01de6450924c31dde5b1cd4d58a9a233"
+      ],
+      "passed": true
+    },
+    {
+      "name": "no-depth-write",
+      "scale": 1,
+      "page": 0,
+      "steps": 3,
+      "hashes": [
+        "d600caf3efd396dc79163be20d679311cc8090b5b85f995d1dabe660a37e27bf",
+        "b1a8446a1af37fbf6670f222aaa70588a950912710c65394fc2f636ac2dd380d",
+        "468f5062741e91660025890115d7039a4ea9d175d13e0de918338a13cb67e12a"
+      ],
+      "passed": true
+    },
+    {
+      "name": "nondepthtest-foreground",
+      "scale": 1,
+      "page": 0,
+      "steps": 2,
+      "hashes": [
+        "fc36e097128163dab9d4ee3be11b4db7784916848d9e72f8dc9eec7697b2da82",
+        "b1a8446a1af37fbf6670f222aaa70588a950912710c65394fc2f636ac2dd380d"
+      ],
+      "passed": true
+    }
+  ],
+  "source_sha256": "c5994bfc3f413ebddaafdb6c1021f27604a1403fc377bcb213ca7726de214b3f",
+  "scope": "LOCAL synthetic wider-original/future depth policy, not integrated in MAME. Constant-depth synthetic solids/raw writes; no game or future insertion acceptance.",
+  "error": "AssertionError(('blended-nondepthtest-foreground', 1, 0, 1, 'color', [124, 124, 0, 255], [[124, 124, 0, 254]]))"
+}

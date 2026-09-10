@@ -30,9 +30,10 @@ Next prove true wider depth and explicit clear-command semantics, then insert
 future scenery before original foreground drawing. Real fast clears use0xffff00,
 so simply treating only0xffffff as empty would still block some farther scenery.
 Captured future vertices reach about3x the original depth range. Their initial
-fade values and handover into original objects also need validation. A standalone
-wider-depth diagnostic and separate packet draft are in preparation; neither
-is integrated or accepted yet. Preserve the initial frame-coverage/display failures.
+fade values and handover into original objects also need validation. The [standalone wider-depth and packet contracts](docs/reviews/2026-09-10-zeus-wide-depth-contract.md)
+now pass292GPUcases/636steps and independent native/Python bounds checks on
+14,696captured polygons. They are not integrated in MAME. Next is a private
+wide-original native control before actual future insertion. Preserve the initial frame-coverage/display failures.
 
 ### Earlier foundation checkpoints
 

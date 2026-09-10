@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "native_packet_sha256": "1ff9561e2098560eb3f5c87eed8f5d701594c73b1a32c4442fdea429d0b0dbb3",
+  "native_packet": {
+    "frame": 5000,
+    "multiplier": 3,
+    "page": 400,
+    "quads": 1
+  },
+  "captured": [
+    {
+      "file": "active-margin-seal-pages-full/run/exotica-host-6330-quads.bin",
+      "sha256": "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194",
+      "quads": 141
+    },
+    {
+      "file": "active-margin-seal-pages-full/run/exotica-host-7187-quads.bin",
+      "sha256": "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db",
+      "quads": 8283
+    },
+    {
+      "file": "private-material5072-on3/run/exotica-host-5072-quads.bin",
+      "sha256": "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e",
+      "quads": 538
+    },
+    {
+      "file": "private-material5000-on3/run/exotica-host-5000-quads.bin",
+      "sha256": "1b2dcfb290fe6b31a8e8d1a2865de66c14039b2e491625fdd41bcc797489e531",
+      "quads": 4854
+    },
+    {
+      "file": "written5990-on3/run/exotica-host-5990-quads.bin",
+      "sha256": "e4bab99a4a4e16042ce0797dda28890bbca387e52a1f187fff6c9d82efc53026",
+      "quads": 880
+    }
+  ],
+  "scope": "Independent decoder validates native synthetic packet and captured vertex bounds; no live wider drawing or real material binding claim"
+}

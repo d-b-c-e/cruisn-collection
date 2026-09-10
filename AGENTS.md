@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 wider-depth contracts — ACTIVE native integration next
+
+Read docs/reviews/2026-09-10-zeus-wide-depth-contract.md. Standalone wide_fragment,
+XWD1 zeus_wide_packet.h, independentPython decoder and actualshaderGPUcheck now
+PASS340Python/no skips,47native,132commands at497-file source
+ed1d0b8cac743339a8aab483b37abab4d6b758c0a0087bef8c250e50ce319287.
+292GPUcases/636orderedsteps reproduceLOCALreference; independentCPU RGB/depth,
+originalshaderRGBA withCPUdepthadmission. Initialalpha255vs254FAIL retained;
+no toleranceadded. Native/Python check14,696capturedquads andnative synthetic
+packet. XMD1unchanged. Newhelpers areNOTlinked intoMAME; native25228/personal87d
+unchanged. No newnativebuild/GPUgame/default/physicalFFB/deploy acceptance.
+Proof results/proof/2026-09-10-zeus-wide-depth-contract hasidentity+hash-bound
+receipts, notrawgamegeometry. Fullsuite exec3391done. No emulator/buildrunning.
+
+NEXT keepworkingdirectly: nativeprivatewide-original mode first, sourcecase3
+range-cleartag1024, geometryq/2^26/taggedclearq/2^24/explicitclear1. Preserveold
+compatibilitymode strict. Newwide mode mustlabel readback-integrity separately
+fromverifiedperpixeldepth; D24cannotrecover originalpreclampdepth. Originaltarget
+continuesdisplayed. Then XWD1earlyfuture type9 afterfinish_sky+flush,1/2/3x/repeat,
+independentcompletepageclear+originalstream oracle/resources/routes/materials/
+handover/defaults. LOCAL plan underexotica-amazon-20260909/wide-depth-next-diagnostic.md.
+No per-modelallowlists/nominal3xclaim/menu cleanup. Worldforce deferred. Rigcheck,
+serialemulators/GPU, no builds duringtimedvisible tests. RawgamebytesLOCAL.
+
 ## September10 completed-display guard — ACTIVE wider-depth prototype
 
 Collection follow-up hardens actualZeus completedsize after preflight. Archived

@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+  "original_depth_values": 16777216,
+  "cases": [
+    {
+      "bias": 1,
+      "red_pixels": 3,
+      "original_color_equal": true,
+      "private_depth_sha256": "629a4986b3d809835925525d23afa185b8966f5ea6069fc7dcae9a600913f111",
+      "color_sha256": "86d844e090b5d6fe9e95d0db10f9f8e395d7d519887e2b402e1fc052cc03614e"
+    },
+    {
+      "bias": 0,
+      "red_pixels": 16777216,
+      "original_color_equal": true,
+      "private_depth_sha256": "629a4986b3d809835925525d23afa185b8966f5ea6069fc7dcae9a600913f111",
+      "color_sha256": "ccb8c067c5283f81fad3b363304db7c94217b63e9df051b49ac986ae3f980cbe"
+    },
+    {
+      "bias": -1,
+      "red_pixels": 16777216,
+      "original_color_equal": true,
+      "private_depth_sha256": "629a4986b3d809835925525d23afa185b8966f5ea6069fc7dcae9a600913f111",
+      "color_sha256": "ccb8c067c5283f81fad3b363304db7c94217b63e9df051b49ac986ae3f980cbe"
+    }
+  ],
+  "scope": "Synthetic D24 versus D32F original-only depth mapping, preserving measured reciprocal-float/D24 quantization using double intermediate. Diagnostic only; this result applies to the measured driver. No game shader/material/scene ordering, future insertion, original/future handover or emulator integration acceptance.",
+  "original_depth_sha256": "147583ef506dfa623754fdab1daa0fdcef78f630485589300877f07e4cd255e3",
+  "adjacent_ties": 2
+}

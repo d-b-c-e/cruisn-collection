@@ -55,7 +55,8 @@ def commands(group, output, cxx):
                 ('gl-readback',[py,'harness/verify_gl_readback.py','--report',str(output/'gl-readback.json')]),
                 ('zeus-private-margin-depth',[py,'harness/verify_zeus_margin_depth.py','--report',str(output/'zeus-private-margin-depth.json')]),
                 ('zeus-depth-domain',[py,'harness/verify_zeus_depth_domain.py','--report',str(output/'zeus-depth-domain.json')]),
-                ('zeus-depth-mirror',[py,'harness/verify_zeus_depth_mirror.py','--report',str(output/'zeus-depth-mirror.json')])]
+                ('zeus-depth-mirror',[py,'harness/verify_zeus_depth_mirror.py','--report',str(output/'zeus-depth-mirror.json')]),
+                ('zeus-wide-depth',[py,'harness/verify_zeus_wide_depth.py','--report',str(output/'zeus-wide-depth.json')])]
     steps = [('compiler-version', [cxx, '--version'])]
 
     def compile_one(name, source):
