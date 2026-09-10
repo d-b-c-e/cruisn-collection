@@ -4444,3 +4444,20 @@ proof now checks34 receipts. Personal87d is unchanged; no physicalFFB/deploy.
 The local model-bound draft also passes5000 synthetic viewport-edge/near-plane/
 random-transform cases, with identical native/Python decisions and no dropped
 visible polygons. No native bounds integration or extra live rendering yet.
+
+
+## September10, 2026 — Exotica command completion accepted
+
+Native2eac1821916/SHAcef7160a passes six comparisons with330 paired4K images,
+original motion/actual ADC times, resources and host geometry/materials preserved.
+17,951 native scene completions include5,771 already-drained cases;69 independent
+Lua scenes verify1,101 pending FIFO words. The initial Hong Kong verifier error
+is retained: a drained ring's final model precedes CPUend and should not execute
+again at that timestamp. No runtime fix was needed for this postcheck correction.
+All seven defaults now pass on this candidate, with actualUDP/memory telemetry,
+four software force-policy/polarity checks and21 ExoticaGL captures. Local gates:
+324Python/no skips,43native/120commands, sourceidentity1d8f3f56. Public proof
+results/proof/2026-09-10-exotica-command-fence recomputes native completion clocks
+and sanitized cursor ordering; raw game resources remain local. Details in
+[the review](../docs/reviews/2026-09-10-exotica-command-fence.md). No deployment,
+release, physical FFB or World force tuning; personalv0.5.0/SHA87d04de4 remains.

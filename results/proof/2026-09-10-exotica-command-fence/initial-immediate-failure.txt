@@ -1,0 +1,29 @@
+fence5080-off 0 None
+PASS E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\fence5080-off-5072-oracle.json
+PASS E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\fence5080-off-5080-oracle.json
+fence5080-off PASS original motion/resources/images and exact completion probe
+fence5080-on 0 None
+PASS E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\fence5080-on-5072-oracle.json
+PASS E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\fence5080-on-5080-oracle.json
+fence5080-on PASS 13 independent FIFO brackets 1 actual last-model boundaries
+fence5080-on PASS original motion/resources/images and exact completion probe
+fence5080-repeat 0 None
+PASS E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\fence5080-repeat-5072-oracle.json
+PASS E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\fence5080-repeat-5080-oracle.json
+fence5080-repeat PASS 13 independent FIFO brackets 1 actual last-model boundaries
+fence5080-repeat PASS original motion/resources/images and exact completion probe
+fence5000-on 0 None
+PASS E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\fence5000-on-5000-oracle.json
+Traceback (most recent call last):
+  File "E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\verify-command-fence-probe.py", line 31, in <module>
+    assert len(found)==1,('last actual model',scene,len(found));m=found[0]
+           ^^^^^^^^^^^^^
+AssertionError: ('last actual model', 11, 0)
+Traceback (most recent call last):
+  File "E:\Source\cruisn-collection\results\diagnostics\exotica-amazon-20260909\command-fence-acceptance.py", line 53, in <module>
+    if mode=='observe':subprocess.run([sys.executable,str(root/'verify-command-fence-probe.py'),name],check=True)
+                       ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\antho\AppData\Local\Programs\Python\Python314\Lib\subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe', 'E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\verify-command-fence-probe.py', 'fence5000-on']' returned non-zero exit status 1.

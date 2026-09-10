@@ -1,6 +1,6 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September10 command-fence candidate — ACTIVE live acceptance
+## September10 command-fence acceptance — ACTIVE margin implementation
 
 Read docs/reviews/2026-09-10-exotica-command-fence.md. Native664cc49982c current
 source helper and2eac1821916bf4f2f7975b48b45c2e48da993a15 FIFOcompletion arepushed.
@@ -11,11 +11,25 @@ callbackafteroriginalcommandprocessing, exactwordorder/wrap/parserempty/zeroCPU
 cycles. No insertedcommands/consumerwait. Resetdiagnosticunsupported; relieson
 originalringnooverrun. Stillnoextra drawing. Final324Python/no skips,43native/
 120commands PASS at1d8f3f56d4e0ab85538b23c3187fb833a4150f5453ec27db294e23a7fc121b4a.
-NEXT LOCAL command-fence-acceptance.py (beingprepared): off/on/repeat/HK/full
-Amazon and7defaults. Independent command-fence-probe.lua brackets targetFIFO
-prewrite/firstfollowinginstruction and originalmodeltime. NOTYETRUN atthisedit.
-Sourcefrozenoncegatesstart; no concurrentGPUtests/emulators. Last7defaults7b432.
-Then privateD24copy/marginonlydraw, originalcenter/depth/resources exact.
+ALL6comparisons PASS330paired4K/originalroute/actualADCtimes/resources/hostgeometry/
+GPUmaterials.17,951native completions/5,771alreadydrained;69independentLuascenes/
+1,101pendingwords/fiveactualmodel joins. InitialHKpostcheck wronglyexpectedmodel
+atCPUenddespitealreadydrainedring; FAILretained, finalchecksactual lastmodel BEFORE
+drainedend. No runtimechange; completedruns reusedwithsameplan/probe hashes.
+ALL7defaults NOWPASS on2eac, actualUDP/memory/4softwareforce/Exo21GL. exec16890DONE.
+Publicproof2026-09-10-exotica-command-fence recomputes nativeclocks/cursorjournal;
+rawgeometry/resources/images/build/GPU/defaultchecks remainhash-boundreceipts.
+NEXT preparedLOCAL private-margin-depth-prototype.py andactive5072-private-depth-gpu.py
+underexotica-amazon-20260909: privateD24copy/sharedcolor/marginonly atverified3219th
+originalquadboundary. Synthetic16GPUcasesPASS; actual5072offline4xcomposition
+PASS8416changedmarginpixels/6459black->0, originalcenter/depth/materialtextures
+exact andrepeat.2736x1600pageimage, NOTlive4K/CRT/finalmateriallifetimeacceptance.
+exec49043DONE; no game/GPU remains. Next promote helpers thenliveintegration.
+LOCAL ownedCapture andXMD1packetdraft compile/testsPASS4591objects/814candidates/
+4318scratchchanges and1238quads. NOTcanonical/linked; preserveoriginalcenter/depth.
+ReadLOCAL active-object-next-plan.md forliveintegration andoriginalWaveupload
+timing concern (unproven; screen-hookupload maylagmodelconsumer). General3xfar/
+transparentocclusion/handover/materiallifetime remainopen. No concurrentGPU/emulators.
 Personalv0.5.0/SHA87d04de4 unchanged; no release/deploy/hostedworkflow/physicalFFB/
 Worldtuning/menu removal. Continue directly, no milestone/heartbeat idle gaps.
 

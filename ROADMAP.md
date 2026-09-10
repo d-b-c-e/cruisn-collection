@@ -43,9 +43,15 @@ models/palettes match later use; their conservative texture footprints also rema
 unchanged. Nine candidates lack later-use coverage, and broader geometry retains
 three explicit near-plane/matrix-reuse failures. The distinct current-object
 adapter now passes4,591 live decisions and seven snapshot geometry controls,
-with321Python/42native/118local checks. It is not integrated into live MAME yet.
-Next is an exact command-completion fence and margin drawing with a private
-copy of original depth.
+with321Python/42native/118local checks. The helper is synced into the native tree,
+but not yet called by the live renderer.
+The [command-completion fence](docs/reviews/2026-09-10-exotica-command-fence.md)
+now passes17,951 native completions,69 independent scenes,330 paired4K images and
+all seven defaults on2eac. It covers pending commands and already-drained scenes;
+the initial verifier's incorrect already-drained assumption remains documented.
+Next is margin drawing with a private copy of original depth, followed by general
+far-depth, material lifetime, transparency and handover work. This is still a
+foundation for added scenery, not a completed live rendering-distance feature.
 
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.

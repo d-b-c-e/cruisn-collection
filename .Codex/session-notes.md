@@ -1,5 +1,20 @@
 # Session Notes
 
+- **September10 command completion accepted:** native2eac/SHAcef7160a now owns
+  six comparisons/330 paired4K images and all seven defaults.17,951 native
+  completions,5,771 already drained;69 independent scenes/1,101 pending words.
+  Initial Hong Kong postcheck wrongly required execution at CPUend despite an
+  already-drained ring; failure retained, corrected earlier-last-model branch
+  needs no runtime change. Source324Python/43native/120commands identity1d8f3f56.
+  Public2026-09-10-exotica-command-fence proof recomputes clocks/cursor ordering;
+  geometry/resources/images/build/defaults remain hash-bound receipts.
+  LOCAL private-D24/shared-color synthetic16GPU cases pass. Actual Amazon5072
+  captured scene at verified original-quad3219 boundary:522current margin quads,
+  8,416 changedmargin pixels,6,459 black->0, center/depth/material textures exact,
+  repeat exact. This is2736x1600offline native4x, noCRT/live-sky/lifetime claim.
+  Next promote owned capture/packet/GPU helpers then integrate live margin
+  drawing. No process remains; personal87d unchanged. Continue directly.
+
 - **September10 live Exotica observer:** nativef49e8acc7d3 separately built/pushed,
   SHA9c7dcd27,161patches exact. Actual scene/list boundaries fix retained a561
   camera-queue failure. Three live native/Python geometry, original context and

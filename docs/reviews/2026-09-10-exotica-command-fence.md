@@ -1,4 +1,4 @@
-# Exotica command completion candidate — September 10, 2026
+# Exotica command completion acceptance — September 10, 2026
 
 `--exotica-host-fence observe|off` adds an explicit diagnostic to the existing
 host-scene observer. It watches the original ring consumer after Zeus processes
@@ -24,14 +24,33 @@ The168-patch export reconstructs tree`8ef72024cfc4a3c52426f9942b7fec2aca5f0643`.
 All324Python tests/no skips,43native tests and120local commands pass at source
 identity`1d8f3f56d4e0ab85538b23c3187fb833a4150f5453ec27db294e23a7fc121b4a`.
 
-Live acceptance is next: compare off/on/repeat, Hong Kong and full Amazon with
-the original route, ordered geometry/materials/resources and completed4K images.
-An independent Lua journal will bracket the target FIFO write with the first
-following CPU instruction, and compare the native completion time with captured
-original model execution. Then renew all seven defaults on the candidate.
+Six comparisons now pass: Amazon off/on/repeat, Hong Kong, and full Amazon with
+a repeat. They preserve330 paired completed4K images, original motion/actual ADC
+times, ten original capture resources, ordered host geometry and sampled private
+GPU materials. Short drives preserve4,191 camera samples/12,573 actual ADC times;
+each full Amazon drive preserves7,060/21,180. Native17,951 scene completions pass
+word order, ring wrap, parser completion, timing and zero guest-cycle checks.
+Of those,5,771 were already drained at CPU ordinary_end.
 
-This does not draw extra scenery. No new live completion or seven-default pass
-is claimed yet. Personal Stream Deck stays v0.5.0/SHA87d04de4; last accepted live
-defaults belong to7b432. No release, deployment, hosted workflow, physical FFB,
-World force tuning or experiment removal. After acceptance, implement the private
-depth target and margin drawing at the verified completion point.
+The independent Lua journal checks69 scenes and1,101 pending FIFO words. Native
+completion falls at the target write, bracketed by the first following CPU
+instruction. Five captured last-model identities match the pending completion
+or the last actual model before an already-drained CPU end. The initial Hong Kong
+postcheck wrongly demanded that an already-completed model execute again at CPU
+end; this failed result is retained. Its corrected branch separately verifies
+the drained case. Completed emulator runs were reused with unchanged plan/probe
+hashes; this required no emulator or runtime-source change.
+
+All seven defaults now pass on2eac, including actual UDP/memory telemetry,
+four software force-policy/polarity checks and21 completed Exotica4K captures.
+The test source identity remains the324Python/43native/120command identity above.
+The public proof at `results/proof/2026-09-10-exotica-command-fence` recomputes
+all native completion clocks and sanitized independent cursor ordering. Raw game
+commands, geometry, textures and images remain local; their comparisons, native
+build, GPU tests and default checks are hash-bound receipts.
+
+This does not draw extra scenery. Personal Stream Deck stays v0.5.0/SHA87d04de4.
+No release, deployment, hosted workflow, physical FFB, World force tuning or
+experiment removal. Next, test a separate original-D24 depth copy and margin-only
+drawing at this verified completion point. This first diagnostic retains original
+depth range; general3x far depth, transparent occlusion and handover remain open.
