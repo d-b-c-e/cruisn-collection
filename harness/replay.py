@@ -407,6 +407,12 @@ def main(argv=None):
             # A legacy receipt cannot validate a requested completed-frame range.
             # Preserve the independent input/native comparison even if GL is incomplete.
             read_completed_frames(runtime / "gl-snap", expected_gl)
+        if args.display_size and gl_key=='MIDZ' and report['evidence'].get('gl_captures'):
+            # A selected monitor can change size after launch. Zeus covers that
+            # monitor exactly; unlike V-Unit there is no caption/client inset.
+            from display_target import verify_completed_size
+            report['display_target']['completed']=verify_completed_size(
+                args.display_size,report['evidence']['gl_captures']['files'])
         report["passed"] = report["comparison"]["passed"]
         if telemetry and not report['telemetry_loopback']['passed']:
             # Keep independent input/image evidence when a telemetry producer

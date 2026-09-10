@@ -1,5 +1,18 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 completed-display guard — ACTIVE wider-depth prototype
+
+Collection follow-up hardens actualZeus completedsize after preflight. Archived
+25x3440x1440 nowrejected;25/117x4Kcontrols accepted.337Python/no skips PASS;
+onlydisplay_target.py,replay.py,test_display_target.py differ from6df14below.
+Proof results/proof/2026-09-10-completed-display. Native25228/personal87d unchanged;
+no new native/GPU/default renewal. LOCAL wide-depth-gl-draft-reference nowPASS
+292cases/636steps: independentCPU RGB/depth, exactRGBA against originalshader with
+CPU-decided depthadmission. Retainsinitialalpha255vs254FAIL; no tolerance relaxation.
+This is still LOCAL synthetic, not nativeintegration. XWD1packetdraft uncompiled.
+NEXT promote widerhelper+GPUproof and boundedpacket afterindependenttests, then
+nativewide-original control/earlyfuture1/2/3x. Continue directly, rigcheck, serial.
+
 ## September 10 original-only D32F mirror checkpoint — ACTIVE wider-depth work
 
 Read docs/reviews/2026-09-10-zeus-live-depth-mirror.md. Native25228b19d59bf434817b998134a042637b16075b

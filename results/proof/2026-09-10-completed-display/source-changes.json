@@ -1,0 +1,9 @@
+{
+  "previous_identity": "6df14d2faa33e0c3e9172e396d6b18e9b73f776f37deb5b9f6433a13e2e86d35",
+  "current_identity": "a6b00dfacdb8d084ac89a9ce68ac258371e82ceb54faedf499af107d902b800d",
+  "files": [
+    "harness/display_target.py",
+    "harness/replay.py",
+    "tests/test_display_target.py"
+  ]
+}

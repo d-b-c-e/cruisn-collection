@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'harness'))
-from display_target import choose,choose_size,parse_size
+from display_target import choose,choose_size,parse_size,verify_completed_size
 import argparse
 
 
@@ -25,3 +25,14 @@ class CaptureDisplayTests(unittest.TestCase):
     def test_variable_reference_size_fails_before_launch(self):
         with self.assertRaisesRegex(ValueError,'fixed presentation size'):
             choose({1:{'size':[1920,1080]},2:{'size':[3840,2160]}},[])
+
+    def test_monitor_selection_does_not_certify_completed_capture_size(self):
+        good={5064:{'size':[3840,2160]},5065:{'size':[3840,2160]}}
+        self.assertEqual(verify_completed_size((3840,2160),good),
+                         dict(requested_size=[3840,2160],frames=2,passed=True))
+        for actual in ({5064:{'size':[3440,1440]}},
+                       {**good,5066:{'size':[3440,1440]}}):
+            with self.assertRaisesRegex(ValueError,'Completed Zeus captures differ'):
+                verify_completed_size((3840,2160),actual)
+        with self.assertRaisesRegex(ValueError,'No completed Zeus captures'):
+            verify_completed_size((3840,2160),{})

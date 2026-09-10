@@ -1,0 +1,31 @@
+[
+  {
+    "case": "depth-mirror-disabled",
+    "accepted": false,
+    "error": "Completed Zeus captures differ from requested 3840x2160: 25 frames; first [('mzgl_000.bmp', [3440, 1440]), ('mzgl_001.bmp', [3440, 1440]), ('mzgl_002.bmp', [3440, 1440])]"
+  },
+  {
+    "case": "depth-mirror-disabled-4k",
+    "accepted": true,
+    "result": {
+      "requested_size": [
+        3840,
+        2160
+      ],
+      "frames": 25,
+      "passed": true
+    }
+  },
+  {
+    "case": "depth-mirror-full",
+    "accepted": true,
+    "result": {
+      "requested_size": [
+        3840,
+        2160
+      ],
+      "frames": 117,
+      "passed": true
+    }
+  }
+]

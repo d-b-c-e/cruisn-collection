@@ -96,3 +96,13 @@ from ordinary direct depth writes; a LOCAL synthetic draft explores that policy.
 The first synthetic GPU run finds exact RGB but alpha254 against a scalar
 prediction255 in a blended case. That failure is retained; comparison against the
 actual original material shader is next. No wider policy is linked into MAME.
+
+## Completed display validation follow-up
+
+The replay harness now checks requested Zeus monitor dimensions against completed
+captures. It directly rejects the retained25-frame3440x1440 set and accepts the
+25/117-frame4K controls. All337Python tests pass. This changes only
+harness/display_target.py, harness/replay.py and tests/test_display_target.py;
+the prior native/GPU/default evidence is not relabeled as a fresh run.
+[Proof](../../results/proof/2026-09-10-completed-display/README.md) includes the
+archived validator and captured dimensions. V-Unit client-border sizing is unchanged.
