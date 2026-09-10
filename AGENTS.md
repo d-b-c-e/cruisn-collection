@@ -1,5 +1,22 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 retained resource checkpoint — ACTIVE geometry investigation
+
+Read docs/reviews/2026-09-10-exotica-live-margins.md. Nativeb0e46125bfd built
+SEPARATELY/pushed/frozen SHA56c1121a,173patches/treed66336f1d1b705174dfe6e8813d7c838f7181cab.
+Own16MBWave atCPUend; modelspan/palette/texturepage bytes mustmatch atFIFOready,
+then normal RAM animation pointer changes are allowed. Synthetic1,688,400texel
+addresses andindependent3actualsnapshots1158quads/11,488,877texels PASS coverage.
+Broad6000 trialFAIL5604 currentgeometry; completed2078scenes521404quads checks
+58527modelspans61885palettes,24camera/8bindingadvances. Four sealed/ready resources
+and independentnative/Pythongeometry PASS3510(41/476),4131(42/364),5072(63/522),
+5080(56/160). Originaldepth/outsidecolorunchanged. This is PARTIAL, notfullpass.
+Next nativebb65eb8b507 adds bounded raw failure operands; buildexec76344 underway,
+notyetfrozen/exported. Capture5604 tolocate geometry rejection, then repeatbroader
+Amazon/HK, all7defaults/finalchecks. Lastall7belongs2eac; local329/45/125belongs5ff.
+No deploy/release/hostedworkflow/physicalFFB/Worldtuning/menu removal;personal87d
+unchanged. Rawgamebyteslocal. Directcontinuouswork, noheartbeatidle gaps.
+
 ## September10 sealed-scene checkpoint — ACTIVE resource lifetime work
 
 Read docs/reviews/2026-09-10-exotica-live-margins.md. Nativeb908fbd57d5 built

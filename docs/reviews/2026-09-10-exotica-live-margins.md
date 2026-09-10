@@ -2,6 +2,33 @@
 
 ## Current extension status
 
+The resource-lease candidate `b0e46125bfdb3f67b78e1cf5bfa6045239de9891`
+seals WaveRAM at CPU scene end and compares the model spans, palettes and
+conservative texture pages needed by the old scene at actual FIFO completion.
+This permits normal animation-pointer advancement only when those resources
+remain byte-identical. It is separately built/pushed/frozen, SHA256
+`56c1121ac798354c6687e79547065bc4d7eae77c3319317d160d11639d1ad47b`;
+173 exported patches reconstruct tree `d66336f1d1b705174dfe6e8813d7c838f7181cab`.
+
+Its wider Amazon run completes **2,078 active scenes / 521,404 quads**, including
+24 camera advances and eight binding advances, before a new geometry rejection
+at frame5604. The completed prefix checks58,527 model spans and61,885 palettes.
+Four exact sealed/ready snapshots independently pass resource, native/Python
+geometry, original depth and outside-margin color checks:3510 (41/476),4131
+(42/364),5072 (63/522),5080 (56/160), expressed as instances/quads. This is a
+**partial-run result**, not full replay acceptance. The retained failure now
+needs a bounded operand snapshot to identify the unsupported geometry case.
+
+The standalone coverage helper passes1,688,400 synthetic texel addresses.
+Independent brute-force UV/swizzle enumeration on1,158 actual quads covers
+11,488,877 bounding texels; all required pages are present. The Python reference
+uses row-block spans instead of the native rectangle span. Texture coverage is
+conservative, including negative-coordinate clamping and bilinear padding;
+these checks do not establish general GPU interpolation or occlusion correctness.
+The16MiB scene-end copy and resource checks still need performance acceptance.
+All seven defaults and the complete local suite have **not** been renewed on
+this candidate. Personal v0.5.0 remains unchanged.
+
 Short c998 drawing and repeat both complete6000 inputs,25 completed4K frames and
 13 active scenes/4,435 ordered quads. All25 frames and both raw snapshots repeat
 exactly. Compared with the no-draw control,13 displayed frames change; inspection
