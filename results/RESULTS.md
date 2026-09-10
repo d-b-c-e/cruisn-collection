@@ -4461,3 +4461,20 @@ results/proof/2026-09-10-exotica-command-fence recomputes native completion cloc
 and sanitized cursor ordering; raw game resources remain local. Details in
 [the review](../docs/reviews/2026-09-10-exotica-command-fence.md). No deployment,
 release, physical FFB or World force tuning; personalv0.5.0/SHA87d04de4 remains.
+
+
+## September10, 2026 — Private margin drawing helpers and offline ground repair
+
+The actual Amazon5072 scene (game0:34.96) fills6,459 black margin pixels to zero
+using63 current objects/522 quads at the verified command fence after original
+quad3219.8,416 pixels change; original center/depth/material textures and repeat
+remain exact. This is an offline2736x1600 page at native4x, without CRT/live sky
+or end-fence material-lifetime acceptance. The live renderer is unchanged.
+Canonical ownedCapture/XMD1 helpers and16realGPU isolation cases now pass with
+324Python/45native/125commands at412c67e1. Details and limits:
+[private margin review](../docs/reviews/2026-09-10-exotica-private-margins.md).
+Six recent public direct-file proof packages also now retain exact Git bytes,
+fixing checksum failures caused by automatic line-ending conversion. Git-index
+hashes and all six verification scripts pass. Older archived proof layouts were
+excluded from the direct-file audit. No release/deployment/physicalFFB; continue
+with live guarded margin integration and then farther-distance composition.

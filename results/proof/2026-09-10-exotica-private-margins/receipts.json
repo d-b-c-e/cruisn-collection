@@ -1,0 +1,11 @@
+{
+  "scope": "External raw-input/GL/model observations are hash-bound receipts. No raw game resources included.",
+  "inputs": {
+    "active-live-native-input.bin": "670b09494f5b2d83210c01f9b974de914e3af38b99a2ca4e7d063f84c67ac764",
+    "active-final-list-input.bin": "4d18f4de3bd6579eeab7d3be96451d20922e469d638bd8b59813782fcbbd537f",
+    "check-active-capture-canonical.exe": "3ed3e42f3115b752e9a6cdf7750cad1eadf08adf0942b46d628ed7184f018409",
+    "active5072-private-depth-0.png": "2089272d59fce8d21683326f9da10febe0bd6b0e7170b5c5d57c69b8625d46fb",
+    "active5072-private-depth-1.png": "2d9b1f952e4d8534af5a1bf12940d4ea60c21f4e03fabe9a8beaf40b456f81de",
+    "active5072-private-depth-gpu.py": "81919c7337a01f28f16bf68878f3435d2295c5dde8192c1024e2bfa0c47e4bcc"
+  }
+}

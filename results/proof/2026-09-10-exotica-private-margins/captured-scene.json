@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "scope": "LOCAL captured Amazon scene at the measured command fence, native4x target.\n\nDraws only current margin candidates into shared color/private original-D24 copy.\nOffline page composition: no CRT, live sky-repeat or earlier margin retention.\nCaptured first-model materials are used; live end-fence residency is not proven.",
+  "target": [
+    2736,
+    4096
+  ],
+  "page_image": [
+    2736,
+    1600
+  ],
+  "page": 0,
+  "scale": 4,
+  "command_fence_time": 88.791700732445,
+  "insertion_after_original_quads": 3219,
+  "original_quads": 3349,
+  "host_instances": 63,
+  "host_quads": 522,
+  "original_center_and_depth_unchanged": true,
+  "original_material_textures_unchanged": true,
+  "repeat": true,
+  "changed_margin_pixels": 8416,
+  "black_margin_pixels_before": 6459,
+  "black_margin_pixels_after": 0,
+  "baseline_sha256": "29d321281e7581b900abc96c88b2ecb8e7992fbe83e1271094a3a9ce527fe324",
+  "drawn_sha256": "45137e2bb76068a7a4b9825e96a52f96694356c1b5a6860a7995083cf9d5aafd",
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2"
+}

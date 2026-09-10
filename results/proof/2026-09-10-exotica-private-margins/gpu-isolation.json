@@ -1,0 +1,279 @@
+{
+  "passed": true,
+  "scope": "Synthetic GL proof: shared color, private D24, depth-only margin blits.\n\nNo game resources; requires an idle emulator rig.\nThis proves target isolation and ordering, not game geometry/material lifetime.",
+  "cases": [
+    {
+      "scale": 1,
+      "margin": 0,
+      "page": 0,
+      "size": [
+        512,
+        1024
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 0,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "d81086960c3aa118de9a89794550712484ab2d110ccda3d353c52ba9ec4749e0"
+    },
+    {
+      "scale": 1,
+      "margin": 0,
+      "page": 400,
+      "size": [
+        512,
+        1024
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 0,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "d81086960c3aa118de9a89794550712484ab2d110ccda3d353c52ba9ec4749e0"
+    },
+    {
+      "scale": 1,
+      "margin": 86,
+      "page": 0,
+      "size": [
+        684,
+        1024
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 68800,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "f8ef77880379661de0b55028cf49c8d483f5a60049105432afcb2c7f985ee2e4"
+    },
+    {
+      "scale": 1,
+      "margin": 86,
+      "page": 400,
+      "size": [
+        684,
+        1024
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 68800,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "179723bdd6d14bc5eb1be8e30be00adb850911007905af6157a64f5f6251433e"
+    },
+    {
+      "scale": 1,
+      "margin": 88,
+      "page": 0,
+      "size": [
+        688,
+        1024
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 70400,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "404506c04fbcaff382abf7a75471401e7924fb8ce8761118058cac2273c75332"
+    },
+    {
+      "scale": 1,
+      "margin": 88,
+      "page": 400,
+      "size": [
+        688,
+        1024
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 70400,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "6e781f1fa5ea3b442057efbf0aa335ea52244e0e5b6c77f68aa97fd1abb58091"
+    },
+    {
+      "scale": 3,
+      "margin": 86,
+      "page": 0,
+      "size": [
+        2052,
+        3072
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 619200,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "c094f2f2f953c3a5538b675705b06cd2f92f5b2d2fe8342b2c9dd1d9bf9de633"
+    },
+    {
+      "scale": 3,
+      "margin": 86,
+      "page": 400,
+      "size": [
+        2052,
+        3072
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 619200,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "9b3d12d551839c833b861881cef9ecfcf1e2b32802378ce1d276ed4e0b9f3084"
+    },
+    {
+      "scale": 4,
+      "margin": 0,
+      "page": 0,
+      "size": [
+        2048,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 0,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "d762cc9f9ced0b33492b7f822b61a5516563f83e68f087fc520b83eb134904b9"
+    },
+    {
+      "scale": 4,
+      "margin": 0,
+      "page": 400,
+      "size": [
+        2048,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 0,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "d762cc9f9ced0b33492b7f822b61a5516563f83e68f087fc520b83eb134904b9"
+    },
+    {
+      "scale": 4,
+      "margin": 86,
+      "page": 0,
+      "size": [
+        2736,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 1100800,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "0e0c09a748767af6bf3ba7b9b691cde94ed6770aa90dc676381b3b445188dea3"
+    },
+    {
+      "scale": 4,
+      "margin": 86,
+      "page": 400,
+      "size": [
+        2736,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 1100800,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "ef5ef83b47a65ae5e3acbf19872470c6b2b900954dfc044c0ad1973928325dca"
+    },
+    {
+      "scale": 4,
+      "margin": 88,
+      "page": 0,
+      "size": [
+        2752,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 1126400,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "f8d630f4cc1cebcfc131bad1d88299549cbd0a8fa89bcb60bc159ef35f6fed75"
+    },
+    {
+      "scale": 4,
+      "margin": 88,
+      "page": 400,
+      "size": [
+        2752,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 1126400,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "179932c604353de931b75d82d1476f2604b3298a3b78fa4afacde03f0381d478"
+    },
+    {
+      "scale": 4,
+      "margin": 120,
+      "page": 0,
+      "size": [
+        3008,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 1536000,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "45b22bc4477b7690791e0a3925f35a4173bce0cb7031e1b94abbfa2134ea1731"
+    },
+    {
+      "scale": 4,
+      "margin": 120,
+      "page": 400,
+      "size": [
+        3008,
+        4096
+      ],
+      "depth_bits": 24,
+      "copied_pixels": 1536000,
+      "center_and_other_page_unchanged": true,
+      "original_depth_unchanged": true,
+      "foreground_occlusion": true,
+      "private_depth_order": true,
+      "original_continuation": true,
+      "repeat_sha256": "5fe92f643a2b30994a75c9576238beebf3db97b2081d386527790a393b1f4b93"
+    }
+  ],
+  "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2"
+}

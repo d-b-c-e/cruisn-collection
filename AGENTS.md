@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 private margin helpers — ACTIVE live integration
+
+Read docs/reviews/2026-09-10-exotica-private-margins.md. Canonical ownedCapture
+native/exotica_active_capture.h, XMD1native/zeus_margin_packet.h and realGL
+harness/verify_zeus_margin_depth.py are now tested, NOTsynced/linked into MAME.
+324Python/no skips,45native/125commands PASS at412c67e1db0662d41592a9200eba51ab34d8036744447780982eadd994df8496.
+16GPUisolation cases coverbothpages/0,86,88,120margins/1,3,4scale; unchanged
+center/otherpage/originalD24, foregrounddepth/privateorder/originalcontinuation.
+CanonicalCapture13actualjournals4591objects/814candidates/4318scratch changes;
+31ownedwords, word20scratchignored/word31padding. CPUendownership only, NOTlive
+fenceownership. Canonicalpacket1238snapshotquadsPASS, rejectsout-of-D24range,
+wrongpage/palette/malformedwire; up to8vertices/18triangle vertices.
+Actual5072offlineGPU: measuredfence88.791700732445/afteroriginalquad3219of3349,
+63currentobjects/522quads,8416changedmarginpixels,6459black->0. Center/original
+depth/materialtextures exact and repeat. Native4xtarget2736x4096/page2736x1600,
+NOTlive4K/CRT/sky-repeat/end-fencematerial lifetime acceptance. PNGs inspected.
+Publicproof2026-09-10-exotica-private-margins ishash-boundreceipts; rawstaysLOCAL.
+All6recentdirectproofs now preserveGitbytes via.gitattributes; eachGit-indexhash
+and verifierPASS. Earlierbroadmanifest-format audit falsemissingentries retained
+LOCAL; mostolderproofsarearchives, notmissingfileclaims.
+No processesremain. LASTnative2eac/SHAcef7160a owns7defaults;personal87dunchanged.
+NEXT sync/integratecapturedcurrentlists, original6970submissionexclusion, strict
+fence/camera/page/setup/ownership guards, explicitlate HMTphase sharingWaveImage,
+privateD24copy+margin-onlydraw. Observer/draw comparethenfullAmazon/HK/7defaults.
+SeeLOCALactive-object-next-plan.md. General3xfar/transparency/handover remainopen;
+originalWaveuploadconsumer timing concerns unproven/separate. No release/deploy/
+hostedworkflows/physicalFFB/Worldtuning/menu removal. Continue directly; rigcheck
+and serialemulators/GPU, no milestone waits.
+
 ## September10 command-fence acceptance — ACTIVE margin implementation
 
 Read docs/reviews/2026-09-10-exotica-command-fence.md. Native664cc49982c current

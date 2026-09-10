@@ -1,5 +1,18 @@
 # Session Notes
 
+- **September10 private margin helpers:** canonicalCapture/XMD1/GPUfixture pass
+  324Python/45native/125commands at412c67e1.16syntheticGL cases and actual offline
+  Amazon5072/ET0:34.96 fills6459black marginpixels->0,8416pixelschange, original
+  center/depth/materials and repeat exact. Page2736x1600/native4x, noCRT/liveclaim.
+  CurrentCapture13journals/4591objects/814candidates;1238actualquads packetchecked.
+  Publicprivate-margins proof is receipts; rawresources/images LOCAL. NotMAMEsynced
+  orlinked. Native2eac remainslast7defaultcandidate, personal87dunchanged.
+  Fencebaseline1061605 andproof-byteportability5de262e pushed. .gitattributes now
+  preservesexactproofbytes;6directpackages verified againstGitindex andtheir
+  scripts. Mostolderproofsarearchives; initialbroadmissing-file audit wasinvalid.
+  Next continuousliveprivate-margin integration; seeAGENTS/latestreview/LOCALplan.
+  Noemulator/GPU/build running atthisnote.
+
 - **September10 command completion accepted:** native2eac/SHAcef7160a now owns
   six comparisons/330 paired4K images and all seven defaults.17,951 native
   completions,5,771 already drained;69 independent scenes/1,101 pending words.

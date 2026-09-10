@@ -53,6 +53,14 @@ Next is margin drawing with a private copy of original depth, followed by genera
 far-depth, material lifetime, transparency and handover work. This is still a
 foundation for added scenery, not a completed live rendering-distance feature.
 
+[Private margin drawing helpers](docs/reviews/2026-09-10-exotica-private-margins.md)
+now pass16 realGPU isolation cases and an offline Amazon0:34.96 composition:
+the black ground patch disappears (6,459 black margin pixels to zero) while the
+original center/depth/materials remain exact.324Python/45native/125local commands
+pass. These helpers still need live integration, current material/ownership checks,
+temporal coverage and cross-game acceptance. The experiment retains original
+distance; it is not yet the general3x scenery layer.
+
 v0.5.0 is published, downloaded and hash-verified, with Stream Deck deployed and
 evidence in results/proof/2026-09-08-v0.5.0-release. v0.4.0 remains the rollback release.
 The ordered, actionable queue
