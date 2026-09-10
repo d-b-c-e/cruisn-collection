@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September10 private material acceptance — ACTIVE cost/late-drive work
+
+Collectiond3aff61/native99442/SHA70a190d7 are pushed. ALL7defaults now PASS on99442:
+actualUDP/memory,4softwareforce checks, fullGermany/Exo21GL. Final315Python/no
+skips,38native/109commands at c663201f86c493c380235b37476d3d58e55e22149ec701617af16ad8ac5aa3d2.
+Seven6000material runs preserve4191camera/12573ADCtimes each,123total4KGL,
+tenoriginal resources and independent scene/context/geometry. All17199queued
+updates agree;5072repeat2457identities and complete sampled GPU bytes match.
+87-file publicproof recomputes sanitized queues/clocks; rawgeometry/resources/
+pixels/builds remainreceipts. InitialLOCALpostcheckNameError retained; corrected
+postcheck verifies same immutable run. STILL no extra live drawing.
+
+PerformanceOPEN: Amazonmaterials81.66/81.51% vsbounds87.05% over3501..5990 WITH
+diagnostics. Steadystage1.411ms; initialproducer49ms/GPU25ms; GPUupload88.357ms
+at5064(firstGLcapture) unresolved. LOCALdirty-page prototype1000synthetic and
+401capturedimagegenerations matchfullscan; selected0.030ms vs1.332ms, benchmark
+alongsideMAME and NOTlivewritetracking. See dirty-page-next-plan.md LOCAL.
+NEXT running private-material-extended.py(session7146):6000no-GLbounds/material
+controls (regularraw60frame snapshots STILLon), then fullAmazon8860 with6330/
+7187/8760materials and117GL vs paced-full-amazon. Check results before repeating.
+Keep source frozen until runs finish. Then guarded live dirty-page tracking,
+private depth/sky/foreground/handover and earlier-source blackground eligibility.
+Personalv0.5.0/SHA87d04de4 unchanged. No deploy/release/hostedworkflow/physicalFFB/
+World tuning/menu removal. Continuous work; heartbeat recovery only, no idle gaps.
+
 ## September10 live private GPU materials — ACTIVE acceptance
 
 Read docs/reviews/2026-09-10-private-gpu-materials.md. Native99442f1a7b6ed6079a40d315feb067c03c89ddfa

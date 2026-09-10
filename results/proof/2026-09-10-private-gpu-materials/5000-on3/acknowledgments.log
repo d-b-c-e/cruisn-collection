@@ -1,0 +1,6 @@
+MIDZ_HOST_MATERIALS=1
+MIDZ_HOST_SCENE=1 first=3500 last=5990 multiplier=3 snapshots=1
+MIDZ_HOST_BOUNDS=1
+MIDZ_HOST_MATERIALS_RESULT queued=2457 hash=8aa34ad7bb9c6765
+MIDZ_HOST_SCENE_RESULT complete=1 prepared=2457 matched=2457 quads=2776927 snapshots=1 pending=0 remaining=0
+MIDZ_HOST_MATERIALS_GPU_RESULT complete=1 received=2457 snapshots=1 hash=8aa34ad7bb9c6765

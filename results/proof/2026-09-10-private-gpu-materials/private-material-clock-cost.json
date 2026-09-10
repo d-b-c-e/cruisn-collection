@@ -1,0 +1,90 @@
+{
+  "scope": "Same explicit frame intervals from recorded host/emulated clocks; includes observer and diagnostic costs. Not isolated added-drawing performance.",
+  "runs": {
+    "bounds-live5072-on3": {
+      "3501:5000": {
+        "emulated_seconds": 26.236204401898,
+        "host_seconds": 28.830586700000005,
+        "speed_percent": 91.00128511050383
+      },
+      "5100:5990": {
+        "emulated_seconds": 15.577199411401011,
+        "host_seconds": 18.330158300000008,
+        "speed_percent": 84.98125960756708
+      },
+      "3501:5990": {
+        "emulated_seconds": 43.56365093817501,
+        "host_seconds": 50.045926400000006,
+        "speed_percent": 87.04734645130878
+      }
+    },
+    "private-material5072-on3": {
+      "3501:5000": {
+        "emulated_seconds": 26.236204401898,
+        "host_seconds": 31.127540100000004,
+        "speed_percent": 84.28614762879381
+      },
+      "5100:5990": {
+        "emulated_seconds": 15.577199411401011,
+        "host_seconds": 19.5506503,
+        "speed_percent": 79.67611906700111
+      },
+      "3501:5990": {
+        "emulated_seconds": 43.56365093817501,
+        "host_seconds": 53.347746599999994,
+        "speed_percent": 81.65977705640339
+      }
+    },
+    "private-material5072-repeat3": {
+      "3501:5000": {
+        "emulated_seconds": 26.236204401898,
+        "host_seconds": 30.991900900000005,
+        "speed_percent": 84.65503450902554
+      },
+      "5100:5990": {
+        "emulated_seconds": 15.577199411401011,
+        "host_seconds": 19.518331500000002,
+        "speed_percent": 79.80804820023172
+      },
+      "3501:5990": {
+        "emulated_seconds": 43.56365093817501,
+        "host_seconds": 53.447993999999994,
+        "speed_percent": 81.50661545534341
+      }
+    },
+    "private-material5000-on3": {
+      "3501:5000": {
+        "emulated_seconds": 26.236204401898,
+        "host_seconds": 26.2485104,
+        "speed_percent": 99.95311734679618
+      },
+      "5100:5990": {
+        "emulated_seconds": 15.577199411401011,
+        "host_seconds": 15.575167199999996,
+        "speed_percent": 100.01304776619679
+      },
+      "3501:5990": {
+        "emulated_seconds": 43.56365093817501,
+        "host_seconds": 44.3691046,
+        "speed_percent": 98.18465198005147
+      }
+    },
+    "private-material5990-on3": {
+      "3501:5000": {
+        "emulated_seconds": 26.236204401898,
+        "host_seconds": 26.243160099999997,
+        "speed_percent": 99.97349519617495
+      },
+      "5100:5990": {
+        "emulated_seconds": 15.577199411401011,
+        "host_seconds": 15.576582699999989,
+        "speed_percent": 100.0039592214345
+      },
+      "3501:5990": {
+        "emulated_seconds": 43.56365093817501,
+        "host_seconds": 43.569386699999995,
+        "speed_percent": 99.98683533953673
+      }
+    }
+  }
+}

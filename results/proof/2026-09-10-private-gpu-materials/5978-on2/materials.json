@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "scenes": 2457,
+  "snapshots": [
+    {
+      "frame": 5978,
+      "scene": 4557,
+      "generation": 2446,
+      "pages": 3,
+      "palettes": 11,
+      "root": "60d6ac501c399624",
+      "wave_sha256": "77487d4bc4a9b7982c35408f4ce4a0c1327d25dcfc06c03d9ebb571ac1b317ed",
+      "palette_sha256": "ca0ffccc22b3c7eddca076e771fb2a0b501abe88483f475f737216645226e9aa",
+      "packet_sha256": "360647687c5a5c4561273a7210fce7f0bd11e01ff10a55764c4a1f53a2471a78"
+    }
+  ],
+  "scope": "Private material upload/ownership; no added drawing or general lifetime/handover acceptance."
+}

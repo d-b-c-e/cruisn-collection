@@ -1,0 +1,204 @@
+{
+  "passed": true,
+  "scope": "Live private upload observer cost; no extra drawing. Steady excludes first generation and sampled5072. Source assembly/hash cost is separate.",
+  "groups": {
+    "exotica-host-materials.csv": {
+      "initial": {
+        "count": 1,
+        "min_palettes": 26,
+        "max_palettes": 26,
+        "total_pages": 4096,
+        "timing": {
+          "stage_us": {
+            "mean": 20823.9,
+            "p99": 20823.9,
+            "max": 20823.9
+          },
+          "encode_us": {
+            "mean": 7169.5,
+            "p99": 7169.5,
+            "max": 7169.5
+          },
+          "queue_us": {
+            "mean": 1193.6,
+            "p99": 1193.6,
+            "max": 1193.6
+          },
+          "commit_us": {
+            "mean": 20012.9,
+            "p99": 20012.9,
+            "max": 20012.9
+          }
+        }
+      },
+      "snapshot": {
+        "count": 1,
+        "min_palettes": 13,
+        "max_palettes": 13,
+        "total_pages": 3,
+        "timing": {
+          "stage_us": {
+            "mean": 2666.9,
+            "p99": 2666.9,
+            "max": 2666.9
+          },
+          "encode_us": {
+            "mean": 10.6,
+            "p99": 10.6,
+            "max": 10.6
+          },
+          "queue_us": {
+            "mean": 16.8,
+            "p99": 16.8,
+            "max": 16.8
+          },
+          "commit_us": {
+            "mean": 12.1,
+            "p99": 12.1,
+            "max": 12.1
+          }
+        }
+      },
+      "steady": {
+        "count": 2455,
+        "min_palettes": 1,
+        "max_palettes": 27,
+        "total_pages": 7400,
+        "timing": {
+          "stage_us": {
+            "mean": 1411.0970264765783,
+            "p99": 2116.9,
+            "max": 2939.4
+          },
+          "encode_us": {
+            "mean": 7.769735234215886,
+            "p99": 17.3,
+            "max": 31.2
+          },
+          "queue_us": {
+            "mean": 11.223625254582485,
+            "p99": 17.8,
+            "max": 68.0
+          },
+          "commit_us": {
+            "mean": 11.952668024439918,
+            "p99": 18.1,
+            "max": 72.5
+          }
+        }
+      }
+    },
+    "exotica-host-materials-gpu.csv": {
+      "initial": {
+        "count": 1,
+        "min_palettes": 26,
+        "max_palettes": 26,
+        "total_pages": 4096,
+        "timing": {
+          "decode_us": {
+            "mean": 23199.8,
+            "p99": 23199.8,
+            "max": 23199.8
+          },
+          "upload_us": {
+            "mean": 2350.4,
+            "p99": 2350.4,
+            "max": 2350.4
+          },
+          "snapshot_us": {
+            "mean": 0.2,
+            "p99": 0.2,
+            "max": 0.2
+          }
+        }
+      },
+      "snapshot": {
+        "count": 1,
+        "min_palettes": 13,
+        "max_palettes": 13,
+        "total_pages": 3,
+        "timing": {
+          "decode_us": {
+            "mean": 44.3,
+            "p99": 44.3,
+            "max": 44.3
+          },
+          "upload_us": {
+            "mean": 9736.6,
+            "p99": 9736.6,
+            "max": 9736.6
+          },
+          "snapshot_us": {
+            "mean": 23381.8,
+            "p99": 23381.8,
+            "max": 23381.8
+          }
+        }
+      },
+      "steady": {
+        "count": 2455,
+        "min_palettes": 1,
+        "max_palettes": 27,
+        "total_pages": 7400,
+        "timing": {
+          "decode_us": {
+            "mean": 37.00586558044807,
+            "p99": 74.8,
+            "max": 290.0
+          },
+          "upload_us": {
+            "mean": 207.81987780040734,
+            "p99": 339.9,
+            "max": 88357.3
+          },
+          "snapshot_us": {
+            "mean": 0.20985743380855398,
+            "p99": 1.1,
+            "max": 1.7
+          }
+        }
+      }
+    }
+  },
+  "stream": {
+    "passed": true,
+    "scope": "Acknowledged Zeus consumer stalls and host timing analysis.\n\nAn expected timeout is a successful fault test, not a passing gameplay replay.\nOriginal route, resources and pixels require their separate replay comparisons.",
+    "expected_timeout": false,
+    "candidate_sha256": "70a190d7bc732a42848644cfaf5becb777a749b3468699712d7f4219bf6a8c40",
+    "timings": {
+      "readback": {
+        "calls": 17,
+        "total_ms": 30,
+        "max_ms": 15,
+        "mean_ms": 1.7647058823529411
+      },
+      "file": {
+        "calls": 17,
+        "total_ms": 188,
+        "max_ms": 16,
+        "mean_ms": 11.058823529411764
+      },
+      "swap": {
+        "calls": 5998,
+        "total_ms": 64,
+        "max_ms": 16,
+        "mean_ms": 0.0106702234078026
+      },
+      "stall": {
+        "calls": 0,
+        "total_ms": 0,
+        "max_ms": 0,
+        "mean_ms": null
+      }
+    },
+    "waits": [],
+    "slow_phases": [],
+    "timeout_lines": [],
+    "sources": {
+      "invocation.json": "5969635fe162055f7fb7594f5b0344206db54ad6f844f2559e251204eaff5314",
+      "stderr.log": "17d3356f5f2fcf84e45f3013c0910d4d916a88cd76974a7af8c0089d7d10da84",
+      "stdout.log": "8349e7e5f33c98bb61361e1507777440457b1fbd428dd16950de8dfaafbe92e0",
+      "midz_gl.log": "23d67aa2281bb2ee2398c7a5f45c7ee27d5427314f4e04b7124e433daf24cfac"
+    }
+  }
+}

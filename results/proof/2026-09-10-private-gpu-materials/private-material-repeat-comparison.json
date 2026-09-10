@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "scope": "Two full6000 runs reproduce every2457 material queue identity/hash and selected packet/GPU bytes. Full WaveRAM not captured every scene.",
+  "checks": {
+    "exotica-host-materials.csv": {
+      "scenes": 2457,
+      "fields": [
+        "scene",
+        "frame",
+        "generation",
+        "pages",
+        "palettes",
+        "bytes",
+        "hash"
+      ]
+    },
+    "exotica-host-materials-gpu.csv": {
+      "scenes": 2457,
+      "fields": [
+        "scene",
+        "frame",
+        "generation",
+        "pages",
+        "palettes",
+        "bytes",
+        "hash"
+      ]
+    }
+  },
+  "files": {
+    "exotica-host-5072-materials.bin": {
+      "bytes": 25812,
+      "sha256": "d6dd3ef622539ca50d80091ea209806809869d42f16af01d44477cf2fc8245e9"
+    },
+    "exotica-host-5072-gpu-wave.bin": {
+      "bytes": 16777216,
+      "sha256": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0"
+    },
+    "exotica-host-5072-gpu-palettes.bin": {
+      "bytes": 13312,
+      "sha256": "f771c7d6160d777e37f56b84cdc6849afef7ede2e58fdd280958fd17eeabb063"
+    }
+  }
+}

@@ -1,0 +1,1 @@
+Replay returned0/passed. Motion and17GL comparison passed. Initial LOCAL postcheck then failed with NameError: name y is not defined at all(x==y for x in resources.values()). Preserve this failure; corrected independent postcheck uses tuple unpacking and the same immutable completed run.

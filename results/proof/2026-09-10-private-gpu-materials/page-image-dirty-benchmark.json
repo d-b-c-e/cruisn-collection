@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "scope": "LOCAL selected-page prototype; benchmark ran alongside an emulator default regression. Derived captured differences, not live writer tracking. Full/native packet bytes and images match every generation.",
+  "samples": 401,
+  "steady": {
+    "full_scan_us": {
+      "mean": 1332.4425,
+      "p99": 1849.9,
+      "max": 2274.1
+    },
+    "selected_pages_us": {
+      "mean": 29.5745,
+      "p99": 53.5,
+      "max": 73.3
+    }
+  }
+}
