@@ -58,6 +58,26 @@ int main()
     }
     auto outside=source;outside.words[3]=f(614401);
     assert(exotica_scene::build({outside},p,read,models,selected,result) && result.instances.empty() && result.culled_distance==1);
+    outside.source+=6;
+    assert(exotica_scene::build({source,outside},p,read,models,selected,result));
+    const auto expected_quads=result.quads;
+    const auto expected_instances=exotica_scene::instance_words(result);
+    const auto expected_context=exotica_scene::parameter_words(p,0,false);
+    for(unsigned mode=1;mode<=2;++mode)
+    {
+        p.early_depth=mode;
+        assert(exotica_scene::build({source,outside},p,read,models,selected,result));
+        assert(result.depth_tests==2 && result.depth_verified==(mode==2?2U:0U) && result.depth_skipped==(mode==1?1U:0U));
+        assert(result.quads.size()==expected_quads.size() &&
+            !std::memcmp(result.quads.data(),expected_quads.data(),expected_quads.size()*sizeof(expected_quads[0])));
+        assert(exotica_scene::instance_words(result)==expected_instances &&
+            exotica_scene::parameter_words(p,0,false)==expected_context);
+        outside.words[21]=UINT32_MAX;
+        assert(!exotica_scene::build({outside},p,read,models,selected,result));outside.words[21]=0;
+        auto behind=outside;behind.words[3]=f(-100);
+        assert(exotica_scene::build({behind},p,read,models,selected,result) && result.culled_distance==1);
+    }
+    p.early_depth=3;assert(!exotica_scene::build({source},p,read,models,selected,result));p.early_depth=0;
     auto invalid=source;invalid.source+=6;invalid.words[21]=UINT32_MAX;
     assert(!exotica_scene::build({source,invalid},p,read,models,selected,result) && result.quads.empty());
     invalid=source;invalid.words[15]=0x80;

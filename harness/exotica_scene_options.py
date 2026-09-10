@@ -31,6 +31,8 @@ def add_arguments(parser):
                         help='verify private GPU texture/palette uploads without extra drawing')
     parser.add_argument('--exotica-host-material-pages', choices=('scan', 'written', 'verify'),
                         help='full scan, actual write notifications, or exact comparison of both material updates')
+    parser.add_argument('--exotica-host-early-depth', choices=('off', 'on', 'verify'),
+                        help='skip distant full transforms, or verify every depth against full preparation')
     parser.add_argument('--exotica-host-source-cache', choices=('off', 'on', 'verify'),
                         help='checked immutable-ROM sources, or exact comparison against a fresh rebuild')
 
@@ -41,13 +43,14 @@ def configure(args, rom, settings):
     material_option = getattr(args, 'exotica_host_materials', None)
     page_option = getattr(args, 'exotica_host_material_pages', None)
     cache_option = getattr(args, 'exotica_host_source_cache', None)
+    depth_option = getattr(args, 'exotica_host_early_depth', None)
     values = [getattr(args, 'exotica_host_'+name, None) for name in ('first', 'last', 'multiplier', 'snapshots')]
     explicit = mode is not None
     if explicit:
         if not getattr(args, 'candidate', None):
             raise ValueError('Exotica host observation requires an explicit candidate')
     else:
-        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option)):
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option)):
             raise ValueError('Exotica host bounds require an explicit mode')
         inherited = settings.get('MIDZ_HOST_SCENE')
         if inherited in (None, '0'):
@@ -59,7 +62,7 @@ def configure(args, rom, settings):
     if rom != 'crusnexo' or mode not in ('off', 'observe'):
         raise ValueError('Exotica host observation supports Exotica2.4 only')
     if mode == 'off':
-        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option)):
+        if any(v is not None for v in values) or any(v is not None for v in (bounds_option, material_option, page_option, cache_option, depth_option)):
             raise ValueError('Exotica host off does not take bounds')
         settings['MIDZ_HOST_SCENE'] = '0'
         for key in KEYS:
@@ -68,6 +71,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_MATERIALS', None)
         settings.pop('MIDZ_HOST_MATERIAL_PAGES', None)
         settings.pop('MIDZ_HOST_SOURCE_CACHE', None)
+        settings.pop('MIDZ_HOST_EARLY_DEPTH', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier
@@ -98,6 +102,11 @@ def configure(args, rom, settings):
         raise ValueError('invalid recorded Exotica source cache mode')
     if cache_option is not None:
         settings['MIDZ_HOST_SOURCE_CACHE'] = cache_setting
+    depth_setting = settings.get('MIDZ_HOST_EARLY_DEPTH', '0') if depth_option is None else str(('off', 'on', 'verify').index(depth_option))
+    if depth_setting not in ('0', '1', '2'):
+        raise ValueError('invalid recorded Exotica early depth mode')
+    if depth_option is not None:
+        settings['MIDZ_HOST_EARLY_DEPTH'] = depth_setting
     settings.update(MIDZ_HOST_SCENE='1', MIDZ_HOST_FIRST=str(first), MIDZ_HOST_LAST=str(last),
                     MIDZ_HOST_MULTIPLIER=str(multiplier))
     if captured:
@@ -106,7 +115,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_SNAPSHOTS', None)
     return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured,
                 bounds=bound_setting == '1', materials=material_setting == '1', material_pages=int(page_setting),
-                source_cache=int(cache_setting), explicit=explicit)
+                source_cache=int(cache_setting), early_depth=int(depth_setting), explicit=explicit)
 
 
 def verify_receipt(trial, text, directory):
@@ -130,6 +139,9 @@ def verify_receipt(trial, text, directory):
     pages = trial.get('material_pages', 0)
     if re.findall(r'^MIDZ_HOST_MATERIAL_PAGES=(\d+)$', text, re.M) != ([str(pages)] if pages else []):
         raise ValueError('missing or mismatched Exotica material page acknowledgment')
+    depth = trial.get('early_depth', 0)
+    if re.findall(r'^MIDZ_HOST_EARLY_DEPTH=(\d+)$', text, re.M) != ([str(depth)] if depth else []):
+        raise ValueError('missing or mismatched Exotica early depth acknowledgment')
     cache = trial.get('source_cache', 0)
     if re.findall(r'^MIDZ_HOST_SOURCE_CACHE=(\d+)$', text, re.M) != ([str(cache)] if cache else []):
         raise ValueError('missing or mismatched Exotica source cache acknowledgment')
@@ -152,6 +164,16 @@ def verify_receipt(trial, text, directory):
             raise ValueError('incomplete Exotica source cache comparison')
     elif cache_result:
         raise ValueError('disabled Exotica source cache ran')
+    depth_result = re.findall(r'^MIDZ_HOST_EARLY_DEPTH_RESULT mode=(\d+) tested=(\d+) verified=(\d+) skipped=(\d+)$', text, re.M)
+    if depth:
+        if len(depth_result) != 1:
+            raise ValueError('missing Exotica early depth completion')
+        actual, tested, verified, skipped = map(int, depth_result[0])
+        if (actual != depth or verified != (tested if depth == 2 else 0) or
+                not 0 <= skipped <= tested or (depth == 2 and skipped)):
+            raise ValueError('incomplete Exotica early depth comparison')
+    elif depth_result:
+        raise ValueError('disabled Exotica early depth ran')
     path = Path(directory)/'exotica-host-scenes.csv'
     if path.stat().st_size > 8*1024*1024:
         raise ValueError('Exotica host scene log budget')
@@ -159,6 +181,10 @@ def verify_receipt(trial, text, directory):
         rows = list(csv.DictReader(stream))
     if len(rows) != matched or len(rows) > 10002 or sum(int(r['quads']) for r in rows) != quads:
         raise ValueError('Exotica host scene counts disagree')
+    if depth:
+        totals = tuple(sum(int(r[k]) for r in rows) for k in ('depth_tests', 'depth_verified', 'depth_skipped'))
+        if totals != (tested, verified, skipped):
+            raise ValueError('Exotica early depth totals disagree')
     previous = previous_scene = -1
     for row in rows:
         frame, cpu_frame = int(row['frame']), int(row['cpu_frame'])
@@ -170,6 +196,7 @@ def verify_receipt(trial, text, directory):
                 not 0 <= preparation < .0176 or
                 not 0 <= delay < .0176 or int(row['guest_cycles']) != 0 or
                 int(row.get('bounds', '0')) != int(bounds) or
+                int(row.get('source_cache', '0')) != cache or int(row.get('depth_mode', '0')) != depth or
                 (bounds and not 0 <= int(row['culled_bounds']) <= 32768) or
                 int(row['multiplier']) != trial['multiplier'] or int(row['viewport']) > int(row['quads'])):
             raise ValueError('Exotica host clock/frame/cycle contract')

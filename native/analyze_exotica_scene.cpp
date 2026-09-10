@@ -25,12 +25,19 @@ int main(int argc,char **argv)
 {
     try
     {
-        if(argc!=7)return 2;
+        if(argc!=7 && argc!=8)return 2;
         std::ifstream input(argv[5],std::ios::binary);
         auto word=[&](){uint32_t w;if(!input.read(reinterpret_cast<char *>(&w),4))throw std::runtime_error("context truncated");return w;};
         const auto magic=word();
         if(magic!=0x31534358 && magic!=0x32534358)throw std::runtime_error("context magic");
         cruisn::exotica_scene::Parameters p;
+        if(argc==8)
+        {
+            const std::string mode=argv[7];
+            if(mode=="early-depth=on")p.early_depth=1;
+            else if(mode=="early-depth=verify")p.early_depth=2;
+            else if(mode!="early-depth=off")return 2;
+        }
         p.frame=word();p.multiplier=word();p.margin=cruisn::zeus_model::word_float(word());
         const auto fade=word(),bank=word(),partial=word();
         if(fade>1 || bank>2 || partial>1)throw std::runtime_error("context switches");
@@ -85,6 +92,8 @@ int main(int argc,char **argv)
             <<",\"model_words_read\":"<<scene.model_words_read<<",\"selected\":"<<scene.selected
             <<",\"unsupported_transform\":"<<scene.unsupported_transform<<",\"culled_distance\":"<<scene.culled_distance
             <<",\"culled_bounds\":"<<scene.culled_bounds
+            <<",\"depth_tests\":"<<scene.depth_tests<<",\"depth_verified\":"<<scene.depth_verified
+            <<",\"depth_skipped\":"<<scene.depth_skipped
             <<",\"maximum_depth\":"<<scene.maximum_depth
             <<",\"source_microseconds\":"<<std::chrono::duration_cast<std::chrono::microseconds>(ready-start).count()
             <<",\"assembly_microseconds\":"<<std::chrono::duration_cast<std::chrono::microseconds>(end-ready).count()<<"}\n";

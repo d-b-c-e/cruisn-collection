@@ -8,6 +8,41 @@ from exotica_scene_options import add_arguments, configure, snapshots, verify_re
 
 
 class ExoticaSceneOptions(unittest.TestCase):
+    def test_early_depth_is_explicit_and_recorded(self):
+        args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
+                '--exotica-host-first', '5000', '--exotica-host-last', '5002')
+        settings = {}
+        self.assertEqual(configure(self.args(*args), 'crusnexo', settings)['early_depth'], 0)
+        self.assertNotIn('MIDZ_HOST_EARLY_DEPTH', settings)
+        for mode, number in [('off', 0), ('on', 1), ('verify', 2)]:
+            self.assertEqual(configure(self.args(*args, '--exotica-host-early-depth', mode), 'crusnexo', settings)['early_depth'], number)
+            before = dict(settings)
+            self.assertEqual(configure(self.args(), 'crusnexo', settings)['early_depth'], number)
+            self.assertEqual(settings, before)
+        configure(self.args('--candidate', 'candidate.exe', '--exotica-host-scene', 'off'), 'crusnexo', settings)
+        self.assertEqual(settings, {'MIDZ_HOST_SCENE': '0'})
+        with self.assertRaisesRegex(ValueError, 'explicit mode'):
+            configure(self.args('--exotica-host-early-depth', 'on'), 'crusnexo', {})
+
+    def test_early_depth_requires_full_comparison_and_log_counts(self):
+        text = ('MIDZ_HOST_SCENE=1 first=5000 last=5002 multiplier=3 snapshots=0\n'
+                'MIDZ_HOST_EARLY_DEPTH=2\n'
+                'MIDZ_HOST_SCENE_RESULT complete=1 prepared=1 matched=1 quads=5 snapshots=0 pending=0 remaining=0\n'
+                'MIDZ_HOST_EARLY_DEPTH_RESULT mode=2 tested=4 verified=3 skipped=0\n')
+        trial = dict(self.trial(), early_depth=2)
+        with self.assertRaisesRegex(ValueError, 'early depth comparison'):
+            verify_receipt(trial, text, 'unused')
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp)/'exotica-host-scenes.csv'
+            columns = 'frame,cpu_frame,cpu_time,device_time,quads,viewport,guest_cycles,multiplier,scene,scene_frame,scene_time,depth_mode,depth_tests,depth_verified,depth_skipped\n'
+            row = '5001,5000,1.0,1.001,5,4,0,3,170,5000,0.999,2,4,4,0\n'
+            path.write_text(columns+row, encoding='utf-8')
+            text = text.replace('verified=3', 'verified=4')
+            self.assertTrue(verify_receipt(trial, text, temp)['passed'])
+            path.write_text(columns+row.replace(',2,4,4,0', ',2,3,3,0'), encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'totals disagree'):
+                verify_receipt(trial, text, temp)
+
     def test_source_cache_is_explicit_and_preserves_recordings(self):
         args = ('--candidate', 'candidate.exe', '--exotica-host-scene', 'observe',
                 '--exotica-host-first', '5000', '--exotica-host-last', '5002')

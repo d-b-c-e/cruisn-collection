@@ -18,6 +18,9 @@ struct Parameters
     uint32_t frame=0,far_limit=204800,multiplier=1,scale=0,render_policy=0;
     float margin=0;
     bool complete_fade=false,frustum_bounds=false;
+    // Optimization strategy only; context serialization still describes the
+    // same geometry inputs. Runtime mode is separately frozen in recording env.
+    uint32_t early_depth=0; //0 full transform,1 early reject,2 compare all depths
     std::array<uint32_t,3> camera{};
     std::array<uint32_t,9> view{},alternate{};
     exotica_state::Operands setup;
@@ -36,6 +39,7 @@ struct Result
     std::vector<zeus_model::Quad> quads;
     size_t selected=0,unsupported_transform=0,culled_distance=0,culled_bounds=0;
     size_t model_words_read=0,decoded_polygons=0,viewport_polygons=0;
+    size_t depth_tests=0,depth_verified=0,depth_skipped=0;
     float maximum_depth=0;
 };
 constexpr size_t max_sources=32768,max_instances=4096,max_quads=131072,max_model_words=4*1024*1024;
@@ -83,7 +87,7 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
 {
     result=Result();
     if(sources.size()>max_sources || p.far_limit!=204800 || p.multiplier<1 || p.multiplier>3 ||
-        !std::isfinite(p.margin) || p.margin<0 || p.margin>256 || p.render_policy || !zeus_state::valid(p.context))return false;
+        !std::isfinite(p.margin) || p.margin<0 || p.margin>256 || p.render_policy || p.early_depth>2 || !zeus_state::valid(p.context))return false;
     if(read(0x67da)!=p.far_limit || read(0x67db)!=p.scale)return false;
     Result out;
     struct CachedModel
@@ -104,11 +108,26 @@ bool build(const std::vector<exotica_future::Source> &sources,const Parameters &
         std::array<uint32_t,3> position;std::array<uint32_t,9> rotation;
         std::copy_n(o.begin()+1,3,position.begin());std::copy_n(o.begin()+5,9,rotation.begin());
         exotica_transform::Prepared transform;
-        if(!exotica_transform::prepare(position,p.camera,p.view,rotation,p.alternate,flags,transform))return false;
-        const int32_t radius=int32_t(o[21]);const int64_t distance=int64_t(transform.depth)+radius;
+        int32_t depth=0;
+        if(p.early_depth)
+        {
+            if(!exotica_transform::camera_depth(position,p.camera,p.view,flags,depth))return false;
+            ++out.depth_tests;
+        }
+        if(p.early_depth!=1)
+        {
+            if(!exotica_transform::prepare(position,p.camera,p.view,rotation,p.alternate,flags,transform))return false;
+            if(p.early_depth==2)
+            {if(depth!=transform.depth)return false;++out.depth_verified;}
+            else depth=transform.depth;
+        }
+        const int32_t radius=int32_t(o[21]);const int64_t distance=int64_t(depth)+radius;
         if(radius<0 || radius>=10000000)return false;
-        if(transform.depth<=0 || distance>int64_t(p.far_limit)*p.multiplier)
-        {++out.culled_distance;continue;}
+        if(depth<=0 || distance>int64_t(p.far_limit)*p.multiplier)
+        {++out.culled_distance;if(p.early_depth==1)++out.depth_skipped;continue;}
+        if(p.early_depth==1 &&
+            (!exotica_transform::prepare(position,p.camera,p.view,rotation,p.alternate,flags,transform) ||
+             depth!=transform.depth))return false;
         if(out.instances.size()>=max_instances || !exotica_future::span(o[17],6))return false;
         const uint32_t descriptor=exotica_transform::select_model(o[17],read(o[17]),transform.depth);
         if(!exotica_future::span(descriptor,6))return false;

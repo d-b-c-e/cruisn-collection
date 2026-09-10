@@ -13,6 +13,21 @@ struct Prepared
     std::array<uint32_t,3> translation{};
     int32_t depth=0;
 };
+// Same C31 row-two evaluation as prepare(), without building the other rows
+// or rotation matrix. Reload placement matters for extended intermediate bits.
+inline bool camera_depth(const std::array<uint32_t,3> &position,
+    const std::array<uint32_t,3> &camera,const std::array<uint32_t,9> &view,
+    uint32_t flags,int32_t &depth)
+{
+    depth=0;
+    if((flags&3)==3){depth=Float::load(position[2]).fix();return true;}
+    if(flags&3)return false;
+    std::array<Float,3> delta;
+    for(unsigned i=0;i<3;++i)delta[i]=Float::load(position[i])-Float::load(camera[i]);
+    const auto z=(delta[1]*Float::load(view[7])+delta[0].reload()*Float::load(view[6]))+
+        delta[2].reload()*Float::load(view[8]);
+    depth=z.fix();return true;
+}
 inline bool prepare(const std::array<uint32_t,3> &position,
     const std::array<uint32_t,3> &camera,const std::array<uint32_t,9> &view,
     const std::array<uint32_t,9> &rotation,const std::array<uint32_t,9> &alternate,
