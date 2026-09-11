@@ -1,0 +1,230 @@
+{
+  "cases": [
+    {
+      "actual_sha256": [
+        "7e71b80b6f3db6eed85f875b63cde303a7c80e3b85deef799c361c67f57ad5a3",
+        "9473f57f453e2ce50a318a51e6ba089232b995341f3b3f85937ec9715ff167ef"
+      ],
+      "header": {
+        "flags": 13,
+        "frame": 5073,
+        "height": 4096,
+        "margin": 86,
+        "palette": 154,
+        "scale": 4,
+        "width": 2736
+      },
+      "insertion": {
+        "future_packet_sha256": "67fce3c5e0c85cf3f38bd7dec5a5ac865e7660516b89943f9cb52e57c8f51c56",
+        "future_quads": 538,
+        "future_visibility_accepted": false,
+        "integrity": true,
+        "multiplier": 3,
+        "other_page_exact": true,
+        "page": 0,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "name": "future-control",
+      "packets": [
+        {
+          "command_index": 32,
+          "quads": 538,
+          "sha256": "67fce3c5e0c85cf3f38bd7dec5a5ac865e7660516b89943f9cb52e57c8f51c56"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "actual_sha256": [
+        "8cb403e525ce6046125aae3e177c2bbe0ca60453a457235fe2b326eeb54487d9",
+        "35e49d30ad8cb8c477ac97d0b38e9c4145fc85d71e44f940c9ce5349e8df8662"
+      ],
+      "header": {
+        "flags": 13,
+        "frame": 5073,
+        "height": 4096,
+        "margin": 86,
+        "palette": 154,
+        "scale": 4,
+        "width": 2736
+      },
+      "insertion": {
+        "future_packet_sha256": "356193f3b7027ba982fcfe50db32de43d91dbdeae0847d94a3fec6a822895de8",
+        "future_quads": 1387,
+        "future_visibility_accepted": false,
+        "integrity": true,
+        "multiplier": 3,
+        "other_page_exact": true,
+        "page": 0,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "name": "early-control",
+      "packets": [
+        {
+          "command_index": 32,
+          "quads": 1387,
+          "sha256": "356193f3b7027ba982fcfe50db32de43d91dbdeae0847d94a3fec6a822895de8"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "actual_sha256": [
+        "63e75eb62e38e05ea7d5c740ac711bd483e583fa2c10551beb5e44f4c3234579",
+        "7f1788f9269f1ccecf0548ebae1a8565a54f02038d99001bd37fc2042e219842"
+      ],
+      "header": {
+        "flags": 13,
+        "frame": 5073,
+        "height": 4096,
+        "margin": 86,
+        "palette": 154,
+        "scale": 4,
+        "width": 2736
+      },
+      "insertion": {
+        "future_packet_sha256": "f6010b9a484aafce052d3fd1bf282a930cffa2158ef19c5bc7f577e49b3d9609",
+        "future_quads": 813,
+        "future_visibility_accepted": false,
+        "integrity": true,
+        "multiplier": 1,
+        "other_page_exact": true,
+        "page": 0,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "name": "0-1x",
+      "packets": [
+        {
+          "command_index": 32,
+          "quads": 386,
+          "sha256": "25cbbf15dba7d0f83a7354cad91cc4de652e79bf29ad925a627d45f2cbce2ce7"
+        },
+        {
+          "command_index": 3358,
+          "quads": 813,
+          "sha256": "f6010b9a484aafce052d3fd1bf282a930cffa2158ef19c5bc7f577e49b3d9609"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "actual_sha256": [
+        "dacf5651458415f5e65aa76a79f40582069a87b0de172b2bd117b0609a37a7f6",
+        "35e49d30ad8cb8c477ac97d0b38e9c4145fc85d71e44f940c9ce5349e8df8662"
+      ],
+      "header": {
+        "flags": 13,
+        "frame": 5073,
+        "height": 4096,
+        "margin": 86,
+        "palette": 154,
+        "scale": 4,
+        "width": 2736
+      },
+      "insertion": {
+        "future_packet_sha256": "942ef51dec108d7a21b40c41be45dbc9a422b7a493de4c226e73613ffbb2a640",
+        "future_quads": 849,
+        "future_visibility_accepted": false,
+        "integrity": true,
+        "multiplier": 2,
+        "other_page_exact": true,
+        "page": 0,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "name": "1-2x",
+      "packets": [
+        {
+          "command_index": 32,
+          "quads": 538,
+          "sha256": "7b03fee14c0f8cc956ae5c35ff76681c72def2cd82c15649b3d755890b4d03da"
+        },
+        {
+          "command_index": 3358,
+          "quads": 849,
+          "sha256": "942ef51dec108d7a21b40c41be45dbc9a422b7a493de4c226e73613ffbb2a640"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "actual_sha256": [
+        "dacf5651458415f5e65aa76a79f40582069a87b0de172b2bd117b0609a37a7f6",
+        "35e49d30ad8cb8c477ac97d0b38e9c4145fc85d71e44f940c9ce5349e8df8662"
+      ],
+      "header": {
+        "flags": 13,
+        "frame": 5073,
+        "height": 4096,
+        "margin": 86,
+        "palette": 154,
+        "scale": 4,
+        "width": 2736
+      },
+      "insertion": {
+        "future_packet_sha256": "550ae5e74a0c776c0f7bd9a8024e3e3e2708e4e402484daf4083061d22775ae0",
+        "future_quads": 849,
+        "future_visibility_accepted": false,
+        "integrity": true,
+        "multiplier": 3,
+        "other_page_exact": true,
+        "page": 0,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "name": "2-3x",
+      "packets": [
+        {
+          "command_index": 32,
+          "quads": 538,
+          "sha256": "67fce3c5e0c85cf3f38bd7dec5a5ac865e7660516b89943f9cb52e57c8f51c56"
+        },
+        {
+          "command_index": 3358,
+          "quads": 849,
+          "sha256": "550ae5e74a0c776c0f7bd9a8024e3e3e2708e4e402484daf4083061d22775ae0"
+        }
+      ],
+      "passed": true
+    },
+    {
+      "actual_sha256": [
+        "dacf5651458415f5e65aa76a79f40582069a87b0de172b2bd117b0609a37a7f6",
+        "35e49d30ad8cb8c477ac97d0b38e9c4145fc85d71e44f940c9ce5349e8df8662"
+      ],
+      "header": {
+        "flags": 13,
+        "frame": 5073,
+        "height": 4096,
+        "margin": 86,
+        "palette": 154,
+        "scale": 4,
+        "width": 2736
+      },
+      "insertion": {
+        "future_packet_sha256": "550ae5e74a0c776c0f7bd9a8024e3e3e2708e4e402484daf4083061d22775ae0",
+        "future_quads": 849,
+        "future_visibility_accepted": false,
+        "integrity": true,
+        "multiplier": 3,
+        "other_page_exact": true,
+        "page": 0,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "name": "3-3x",
+      "packets": [
+        {
+          "command_index": 32,
+          "quads": 538,
+          "sha256": "67fce3c5e0c85cf3f38bd7dec5a5ac865e7660516b89943f9cb52e57c8f51c56"
+        },
+        {
+          "command_index": 3358,
+          "quads": 849,
+          "sha256": "550ae5e74a0c776c0f7bd9a8024e3e3e2708e4e402484daf4083061d22775ae0"
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "scope": "Aggregate GPU execution receipts; raw command/resources/pixels stay LOCAL."
+}

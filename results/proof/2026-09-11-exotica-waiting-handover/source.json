@@ -1,0 +1,8 @@
+{
+  "native/exotica_future_sections.h": "83a3d26b075c3059017326795b17a2f279028afff77a0bd6a5def95b75e3b527",
+  "native/exotica_scene.h": "1651f99249630a85d929ee107ed4c36cb25a5bf89288feac46cd1fb6b5fbdb9c",
+  "native/exotica_waiting.h": "31db3b8d900f163c707118f0f85ae387f4ac1b47143302645fafbb50ea256df7",
+  "native/exotica_waiting_handover.h": "a5907b7f5aa0e41b2a3a21b89263608dafc2837b67a19f3130745e2fe71b4bd8",
+  "native/scenery_lifetimes.h": "4f3f92c78637e20b945c9b12fae259f0bb64d664047d9b3f7146780d10e7fa4a",
+  "tests/native/exotica_waiting_handover_test.cpp": "06f13146fdd84d599e28450766a514ee6cf7b02166c05f8089de93887b93d995"
+}

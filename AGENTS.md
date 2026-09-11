@@ -1,5 +1,35 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 waiting completion — ACTIVE native observation next
+
+Read docs/reviews/2026-09-11-exotica-waiting-handover.md. Native9ad/personal87d
+unchanged. LOCALwaiting-fence-full on9adPASS8860inputs/7060camera/21180actualADC/
+21completed4K,all6953future scenes/five originalresources.17waiting/lifetimefiles
+byteexactold. All6953actual fencesjoined;2692firstoriginalcommits P->CPUend,
+zeroCPUend->ready;5514nonimmediate,max16.976ms. Pcounts native; E/Rprefixes inferred
+onlyafterroundedtime-tie rejection. Fivecohorts252/155/298/52/1 ->252/145/298/52/1.
+ExactCPU5072/GPU5073join3349quads: tiedmodel160 completesbeforefencecallback;
+3219quadsbeforefence, insertionindex3358,nextpolygon3359 (onepalettebetween).
+LOCALwaiting-separated5072-render controls+1/2/3/repeatPASS. Future staysindex32,
+filteredwaitingindex3358;split3 changes73346RGBvsfutureonly,zero newlyblack,
+samecompleteddepthbutdifferentcolorvsearlycombined. Visibleextradistanttrees;
+oldblackwedge remains. Singleoffline2736x1600page,notnewlive4K/temporalacceptance.
+
+Canonicalexotica_waiting_handover.h/test STANDALONE,notMAMElinked/synced. Captures
+derivedregistrycohort,requires actualrecordwatermark (poolsequence missesB/D),
+excludeslaterdraw/free/reuse;reset/backwardswatermarkfailtransactionally;keeps
+proposalDTOs/sourceorder/noopacityoverride. LOCALwaiting-handover-actual30native/
+independentPythonorderedgeometry comparisonsPASS,5snapshots*1/2/3*fade0/1. First
+localanalyzercompilemissingsstreamFAILretained;correctedPASS. Full390Python/no
+skips51native144commandsPASS source0f503b9717510a44bc5722d01f07106b02a42b9e978177dc463624fb93eef0e2.
+No game/build/test remains. NEXT boundednative completionOBSERVATION with actual
+P/E/Rrecordcounts and fullcohort identities;requirefence observer+waiting+lifetimes,
+serializephysicalFFB0/originalroute/geometry/4Kchecks. Preservefuturepacketorder;
+do not blindlymakewaitingopaque or claimcolororderirrelevant. Ownedmaterials/
+camera/page/alpha/temporalhandover remainOPEN. FFBnear-term53d17c3 below.
+No deployment/release/hostedCI/physicalFFB/menu removal. Continuouswork;heartbeat
+recoveryonly. Keep serialrig/GPU/build and no builds/exportsduringtimedgame.
+
 ## September 11 steering reconstruction — NEAR-TERM strength-50 candidate
 
 Read docs/reviews/2026-09-11-ffb-steering-reconstruction.md and first candidate
@@ -17,9 +47,9 @@ Next verifyVUnit40us ADCconversion/channel joins, labelbothdirection clean/conta
 windows, reconstructconditioning and compare versioned50candidate. If coverage
 is inadequate request shorttargetedrecordings ratherthan tunewhole-raceRMS.
 No physicalFFB/deployment/gains/menu suppression change. Native9ad/personal87d
-unchanged. Separate waiting_handover header/test remain LOCALuncommitted work;
-this Python suite does not validate that native integration. Rendering work
-continues independently from its retained local fence/handover evidence.
+unchanged. This Python-only checkpoint did not validate native handover; see the
+newer completion checkpoint above for the standalone helper and full checks.
+Rendering work continues independently from its retained local fence evidence.
 
 ## September 11 World memory speed — ACTIVE FFB matched segments next
 

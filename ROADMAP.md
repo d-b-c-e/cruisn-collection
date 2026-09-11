@@ -41,9 +41,12 @@ and the public package remain v0.5.0.
   The [first-draw trace](docs/reviews/2026-09-10-exotica-drawing-admission.md)
   measures a median 4.16-second allocation-to-draw delay. An offline continuation
   adds visible distant trees by retaining eligible allocated-but-undrawn objects.
-  A standalone shared lifetime tracker matches the recorded events. Integrate
-  its native observer, then verify live continuation, material ownership and
-  fade handover before exposing the change to users.
+  Live lifetime/waiting observation now reproduces the recorded identities and
+  proposed geometry. The [completion study](docs/reviews/2026-09-11-exotica-waiting-handover.md)
+  identifies original submissions to exclude and verifies a standalone cohort
+  reconciliation helper. Offline filtered drawing still adds distant trees, but
+  transparency depends on placement. Integrate completion observation, then
+  verify live continuation, materials and fade handover before exposing it.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.

@@ -1,0 +1,24 @@
+{
+  "all_original_quads_exact": 3349,
+  "command_index": 3358,
+  "completed_frame": 5073,
+  "fence_ready_time": "88.791700732445",
+  "intervening_types": [
+    2
+  ],
+  "last_model_time": 88.79170073244542,
+  "last_original_model": 160,
+  "next_model_time": 88.7921244324454,
+  "next_polygon_command": 3359,
+  "original_quads_before_fence": 3219,
+  "passed": true,
+  "scene": 3662,
+  "scope": "One exact original CPU/GPU geometry sequence and callback-order fence join. The tied final model completes before the FIFO observer. Resource-only intervening commands do not affect the owned insertion packet. No live insertion or general handover acceptance.",
+  "source_frame": 5072,
+  "sources": {
+    "depth-stream-5073\\run\\zeus-capture\\models.bin": "f34b405cd0d5b25e742c208e33b8fa9dc2106bccc8d6b890002201b07f988ff4",
+    "depth-stream-5073\\run\\zeus-capture\\records.bin": "ee29b427c618e783fd8e2d5dcc48bab04bb865d5a9b3187681c5ee10732e724c",
+    "depth-stream-5073\\run\\zeus-stream-5073-records.bin": "c1707b4ec130174cfe292ca1261897e7286d52152f032a47a4071ac699f833be",
+    "waiting-fence-full\\fence-joins.json": "50d31f739ce98dc8741f1bae2721a7f61fee00c656ede77e5812a8538e5769c3"
+  }
+}

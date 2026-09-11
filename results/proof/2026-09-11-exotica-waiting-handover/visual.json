@@ -1,0 +1,57 @@
+{
+  "checks": [
+    {
+      "bounds": [
+        79,
+        645,
+        496,
+        828
+      ],
+      "changed_center_rgb": 10184,
+      "changed_margin_rgb": 6608,
+      "changed_rgb_vs_future_only": 16792,
+      "name": "Original scene",
+      "newly_black": 0,
+      "raw_sha256": "9246387d19726bc4701354772dd70f70309db7270a006c6fd64b74fd73af8a9b"
+    },
+    {
+      "bounds": null,
+      "changed_center_rgb": 0,
+      "changed_margin_rgb": 0,
+      "changed_rgb_vs_future_only": 0,
+      "name": "Earlier future-only 3x",
+      "newly_black": 0,
+      "raw_sha256": "7e71b80b6f3db6eed85f875b63cde303a7c80e3b85deef799c361c67f57ad5a3"
+    },
+    {
+      "bounds": [
+        0,
+        297,
+        1068,
+        859
+      ],
+      "changed_center_rgb": 92931,
+      "changed_margin_rgb": 24431,
+      "changed_rgb_vs_future_only": 117362,
+      "name": "Filtered future and waiting before originals",
+      "newly_black": 0,
+      "raw_sha256": "8cb403e525ce6046125aae3e177c2bbe0ca60453a457235fe2b326eeb54487d9"
+    },
+    {
+      "bounds": [
+        0,
+        496,
+        1068,
+        859
+      ],
+      "changed_center_rgb": 72385,
+      "changed_margin_rgb": 961,
+      "changed_rgb_vs_future_only": 73346,
+      "name": "Existing future early + filtered waiting at exact fence",
+      "newly_black": 0,
+      "raw_sha256": "dacf5651458415f5e65aa76a79f40582069a87b0de172b2bd117b0609a37a7f6"
+    }
+  ],
+  "passed": true,
+  "scope": "Completed offline original-command interval; filtered combined early pass versus original early future pass with waiting inserted at the exact device fence. RGB difference is measured, not automatically a visual quality verdict. Single-scene diagnostic uses future knowledge; no live temporal handover."
+}

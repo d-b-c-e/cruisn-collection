@@ -1,0 +1,13 @@
+{
+  "files": {
+    "checks.json": "63a183c8bd47613212defe0eb73add3dddcac9e75ee758eded2c42de8adabb89",
+    "cohorts.json": "2482dbce8148f0edf2bb49de9c9bf7d8d10a84dab49aefc7b84af2e1dfd16483",
+    "command-join.json": "122e150d818c8d378c7779d6c0ccfdc034c07bd7d84af6b49676488779fd1b57",
+    "fences.json": "fc60d1c352b3794540fd542473f019e5b94444c303f420118a8c24d5067e9131",
+    "placement.json": "8e4eafee0a648bcd86a8d58adddcdd54f562d42584b2a863a914e8ca922f6872",
+    "replay.json": "27ce87cdca79b9b1891630a5a76225103eed685a49d561354d52326c3a7b7abd",
+    "source.json": "2a1b02bd06c9c7c2d3b419cbaf7791d41379bf56c862621a32e95c8bfa8f57a8",
+    "visual.json": "60570778270bfb6d87d8a6ce4f82e03ae3adc33029b418aefbb531fc8ca0bc66"
+  },
+  "schema": 1
+}

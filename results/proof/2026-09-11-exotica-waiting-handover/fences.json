@@ -1,0 +1,92 @@
+{
+  "inputs": {
+    "exotica-host-fences.csv": "c0b7426b25eec6c72f4f53c8bd678159e6bc90c2248c7fdae766147bc3db88d1",
+    "exotica-host-scenes.csv": "78c90770b15aa00638ce5c7891f0be7323e642a71b0e5dfe95b7c7466ea74320",
+    "exotica-lifetime-events.csv": "5a1f9004fa1d5cb7aa6e3832d911e1eca90f105bfc802a851d10c08eb182cd8b",
+    "exotica-waiting-scenes.csv": "f9073226dcd1eeb3dc75a5dce7eb33a5ade55ccddb8056ef8245fd92dfa36c2a"
+  },
+  "maximum_end_to_ready_ps": 16975900000,
+  "nonimmediate_scenes": 5514,
+  "passed": true,
+  "scenes": 6953,
+  "scope": "Actual CPU scene end and device command-ring completion. Proposal record counts are native; end/ready prefixes inferred only after rejecting timestamp ties at picosecond precision. Five candidate sets only. No live drawing or handover policy accepted.",
+  "snapshots": [
+    {
+      "between_cpu_end_and_device_ready": 0,
+      "between_device_ready_and_next_proposal": 0,
+      "candidate_count": 252,
+      "end_records": 39306,
+      "end_time": "68.280356465984",
+      "frame": 3900,
+      "proposal_records": 39306,
+      "ready_records": 39306,
+      "ready_time": "68.280356465984",
+      "removed_at_cpu_end": 0,
+      "ring_words": 0,
+      "same_device_frame": false,
+      "scene": 2504
+    },
+    {
+      "between_cpu_end_and_device_ready": 0,
+      "between_device_ready_and_next_proposal": 0,
+      "candidate_count": 155,
+      "end_records": 47344,
+      "end_time": "88.791694499112",
+      "frame": 5072,
+      "proposal_records": 47334,
+      "ready_records": 47344,
+      "ready_time": "88.791700732445",
+      "removed_at_cpu_end": 10,
+      "ring_words": 38,
+      "same_device_frame": false,
+      "scene": 3662
+    },
+    {
+      "between_cpu_end_and_device_ready": 0,
+      "between_device_ready_and_next_proposal": 0,
+      "candidate_count": 298,
+      "end_records": 53432,
+      "end_time": "98.802909199012",
+      "frame": 5644,
+      "proposal_records": 53432,
+      "ready_records": 53432,
+      "ready_time": "98.802924865679",
+      "removed_at_cpu_end": 0,
+      "ring_words": 15,
+      "same_device_frame": true,
+      "scene": 4229
+    },
+    {
+      "between_cpu_end_and_device_ready": 0,
+      "between_device_ready_and_next_proposal": 0,
+      "candidate_count": 52,
+      "end_records": 63395,
+      "end_time": "110.809891932225",
+      "frame": 6330,
+      "proposal_records": 63395,
+      "ready_records": 63395,
+      "ready_time": "110.809907598892",
+      "removed_at_cpu_end": 0,
+      "ring_words": 21,
+      "same_device_frame": false,
+      "scene": 4901
+    },
+    {
+      "between_cpu_end_and_device_ready": 0,
+      "between_device_ready_and_next_proposal": 0,
+      "candidate_count": 1,
+      "end_records": 72883,
+      "end_time": "125.809306332075",
+      "frame": 7187,
+      "proposal_records": 72872,
+      "ready_records": 72883,
+      "ready_time": "125.809321498742",
+      "removed_at_cpu_end": 0,
+      "ring_words": 24,
+      "same_device_frame": false,
+      "scene": 5748
+    }
+  ],
+  "total_first_commits_after_proposal_before_end": 2692,
+  "total_first_commits_end_to_ready": 0
+}

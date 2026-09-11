@@ -1,0 +1,19 @@
+{
+  "commands": 144,
+  "groups": [
+    "python",
+    "native",
+    "gpu"
+  ],
+  "native_tests": 51,
+  "passed": true,
+  "source_identity": "0f503b9717510a44bc5722d01f07106b02a42b9e978177dc463624fb93eef0e2",
+  "source_identity_after": "0f503b9717510a44bc5722d01f07106b02a42b9e978177dc463624fb93eef0e2",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests": 390
+  }
+}

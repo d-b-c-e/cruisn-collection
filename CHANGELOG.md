@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Add a standalone Exotica waiting-object reconciliation helper and actual
+  command-fence evidence. Filtered offline drawing adds distant trees; live
+  integration and transparent handover remain under investigation.
+
 - Verify four-game recorded steering and Exotica's actual wheel reads without
   applying steering curves twice. This supports the near-term strength-50
   normalization candidate; deployed force settings are unchanged.
