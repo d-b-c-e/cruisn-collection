@@ -20,6 +20,14 @@ The launcher's existing distance menus do not select these newer host renderers.
 | Off Road | New attended El Paso drive exposed and helped fix a final-section stop. Full 2×/3×/repeat preserve the route at approximately 100% average speed; 3× differs from 2× in 22/66 images and repeats all 66 plus 3,865 scene fingerprints. Inspected late-course terrain appears earlier. | Integrated later-course geometry/resources, material lifetime, foreground occlusion and handover still need broader checks. Other courses remain untested. |
 | Exotica | Live future geometry/material insertion works through the private wide-depth renderer. Full Amazon drives preserve original route/resources; denser actual display sampling finds 33 of 233 frames differing at 3× versus 2×, and 3× repeats all 233 exactly. | The inspected changes are mostly small additions through foliage or at margins. Without heavy readbacks, 2× measures 94.69% game speed and 3× 90.79%. Useful visibility, opacity/handover, full speed and broader routes remain open. |
 
+The latest [Exotica packet and identity checks](2026-09-10-exotica-packet-and-identity.md)
+renew all 233 displayed images at 2×/3×/repeat after the serializer change. New
+3× timing samples measure 89.31%/89.41%, versus a fresh previous-build 88.90%;
+the earlier performance figures above are separate measurements. This is a
+small difference, not a full-speed result. Original allocation/fade joins now
+match 3,932 ordinary allocations and all 2,539 sampled fades; a safe host fade
+transition still needs allocation/removal lifetime and pixel checks.
+
 Detailed evidence: [World 2.4 roads](2026-09-09-host-road-integration.md),
 [World 2.5](2026-09-09-world25-host-scenery.md),
 [USA](2026-09-09-usa-future-rendering.md),
@@ -66,8 +74,9 @@ combined with the new future-target presentation.
 2. Reduce the [measured future-rendering cost](2026-09-10-exotica-fade-and-performance.md).
    The 3× preparation/upload path alone reaches only 90.77% game speed, while
    mirroring the original scene reaches 99.99%. Carry applicable improvements to USA.
-3. Complete World 2.5 roads/ground and validate extended scenery against the new
-   attended Off Road full-course recording.
+3. Complete World 2.5 roads/ground. Off Road's full-course/repeat and four late
+   live geometry joins now pass; continue material/resource and handover checks
+   and broaden to other courses.
 4. Validate original route/resources, materials, occlusion, handover and smooth
    4K output across more tracks. Renew the seven default regressions on the final
    combined binary before deployment or simplifying experiment options.

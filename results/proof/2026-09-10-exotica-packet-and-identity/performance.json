@@ -1,0 +1,1081 @@
+{
+  "passed": true,
+  "runs": {
+    "packet-performance3": {
+      "native_sha256": "eb4d790ddb8c84a6488cc43b89fe7f7528f1fb78e74004c677d302e87f31b850",
+      "multiplier": 3,
+      "speed_percent": 89.31,
+      "timings": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "count": 8849,
+          "mean": 0.7958865408520736,
+          "p99": 3.5,
+          "maximum": 41.599999999999454,
+          "kind": "delta of cumulative mirror submission timer",
+          "total": 7042.8
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "count": 6953,
+          "mean": 70.8020279016252,
+          "p99": 184.7,
+          "maximum": 1355.2
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "count": 6953,
+          "mean": 1929.1317560765135,
+          "p99": 5602.427999999999,
+          "maximum": 6265.7
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "count": 6953,
+          "mean": 641.2978426578454,
+          "p99": 2082.336,
+          "maximum": 2641.5
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "count": 6953,
+          "mean": 0.38599165827700277,
+          "p99": 1.3,
+          "maximum": 12.0
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "count": 6953,
+          "mean": 873.2687904501654,
+          "p99": 3306.547999999999,
+          "maximum": 75172.8
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "count": 6953,
+          "mean": 2112.9479505249533,
+          "p99": 6666.219999999989,
+          "maximum": 79376.4
+        }
+      },
+      "material_detail": {
+        "stage_us": {
+          "mean": 30.009880627067453,
+          "p99": 61.747999999999955,
+          "maximum": 23005.2
+        },
+        "encode_us": {
+          "mean": 7.669437652811735,
+          "p99": 18.847999999999956,
+          "maximum": 8874.9
+        },
+        "queue_us": {
+          "mean": 813.6862217747735,
+          "p99": 3221.407999999999,
+          "maximum": 20762.0
+        },
+        "commit_us": {
+          "mean": 13.506658996116785,
+          "p99": 20.0,
+          "maximum": 21384.8
+        }
+      },
+      "motion": {
+        "schema": 1,
+        "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "passed": true,
+        "camera_equal": true,
+        "same_camera_interval": true,
+        "camera_samples": [
+          7060,
+          7060
+        ],
+        "camera_intervals": [
+          [
+            1800,
+            8859
+          ],
+          [
+            1800,
+            8859
+          ]
+        ],
+        "first_camera_difference_frame": null,
+        "camera_equal_frame_intervals": [
+          [
+            1800,
+            8859
+          ]
+        ],
+        "camera_equal_frames": 7060,
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "actual_adc_reads": [
+          21180,
+          21180
+        ],
+        "adc_frame_value_pc_equal": true,
+        "adc_address_compared": true,
+        "first_adc_frame_value_pc_difference": null,
+        "adc_times_equal": true,
+        "first_adc_time_difference_index": null,
+        "sources": [
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          },
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          }
+        ]
+      },
+      "geometry": {
+        "exotica-host-scenes.csv": {
+          "rows": 6953,
+          "fields": [
+            "frame",
+            "scene",
+            "quads",
+            "instances",
+            "multiplier",
+            "hash",
+            "guest_cycles"
+          ],
+          "passed": true
+        },
+        "exotica-future-gpu.csv": {
+          "rows": 6953,
+          "fields": [
+            "scene",
+            "frame",
+            "mode",
+            "multiplier",
+            "page",
+            "quads",
+            "vertices",
+            "hash"
+          ],
+          "passed": true
+        }
+      },
+      "report_sha256": "cb37a5fec5c90505a7f1ea9e2986448a52d3b35808fc35acdbaf02e59171c29f",
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.8665914824727525,
+          "frame_ms": {
+            "p50": 17.837899999999962,
+            "p95": 26.983650000000026,
+            "p99": 28.02663500000051,
+            "worst": 94.05860000000033
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9311908325089379,
+          "frame_ms": {
+            "p50": 18.31269999999563,
+            "p95": 22.201204999987567,
+            "p99": 23.27734300000131,
+            "worst": 27.39259999999888
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.8511324453720878,
+          "frame_ms": {
+            "p50": 20.360799999998846,
+            "p95": 24.192029999998965,
+            "p99": 25.808437000002442,
+            "worst": 31.715500000004226
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.7836138384163363,
+          "frame_ms": {
+            "p50": 23.32249999999192,
+            "p95": 26.461494999993818,
+            "p99": 27.48280600001891,
+            "worst": 74.43790000000661
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.9929622672450049,
+          "frame_ms": {
+            "p50": 17.545699999999442,
+            "p95": 18.77321000000478,
+            "p99": 20.063088000002836,
+            "worst": 45.782599999995455
+          }
+        }
+      ]
+    },
+    "packet-performance3-old": {
+      "native_sha256": "ca7e814bcb62efa15e2192c857bd4dd24a69fbe8660a895b1a2aafcc5917105c",
+      "multiplier": 3,
+      "speed_percent": 88.9,
+      "timings": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "count": 8849,
+          "mean": 0.7929144536105774,
+          "p99": 3.5,
+          "maximum": 36.0,
+          "kind": "delta of cumulative mirror submission timer",
+          "total": 7016.5
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "count": 6953,
+          "mean": 72.48639436214583,
+          "p99": 193.24799999999996,
+          "maximum": 1539.2
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "count": 6953,
+          "mean": 1934.3830576729472,
+          "p99": 5553.084,
+          "maximum": 6197.0
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "count": 6953,
+          "mean": 640.8945922623327,
+          "p99": 2074.1919999999986,
+          "maximum": 2525.5
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "count": 6953,
+          "mean": 0.41725873723572554,
+          "p99": 1.5479999999999563,
+          "maximum": 2.8
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "count": 6953,
+          "mean": 927.8737523371205,
+          "p99": 3463.147999999999,
+          "maximum": 76570.6
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "count": 6953,
+          "mean": 2114.4901337552137,
+          "p99": 6551.603999999998,
+          "maximum": 82185.4
+        }
+      },
+      "material_detail": {
+        "stage_us": {
+          "mean": 29.810973680425718,
+          "p99": 56.747999999999955,
+          "maximum": 24484.0
+        },
+        "encode_us": {
+          "mean": 7.620839925212138,
+          "p99": 18.5,
+          "maximum": 8678.0
+        },
+        "queue_us": {
+          "mean": 868.7086437508989,
+          "p99": 3379.932,
+          "maximum": 20441.8
+        },
+        "commit_us": {
+          "mean": 13.613375521357685,
+          "p99": 20.079999999999565,
+          "maximum": 21731.5
+        }
+      },
+      "motion": {
+        "schema": 1,
+        "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "passed": true,
+        "camera_equal": true,
+        "same_camera_interval": true,
+        "camera_samples": [
+          7060,
+          7060
+        ],
+        "camera_intervals": [
+          [
+            1800,
+            8859
+          ],
+          [
+            1800,
+            8859
+          ]
+        ],
+        "first_camera_difference_frame": null,
+        "camera_equal_frame_intervals": [
+          [
+            1800,
+            8859
+          ]
+        ],
+        "camera_equal_frames": 7060,
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "actual_adc_reads": [
+          21180,
+          21180
+        ],
+        "adc_frame_value_pc_equal": true,
+        "adc_address_compared": true,
+        "first_adc_frame_value_pc_difference": null,
+        "adc_times_equal": true,
+        "first_adc_time_difference_index": null,
+        "sources": [
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          },
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          }
+        ]
+      },
+      "geometry": {
+        "exotica-host-scenes.csv": {
+          "rows": 6953,
+          "fields": [
+            "frame",
+            "scene",
+            "quads",
+            "instances",
+            "multiplier",
+            "hash",
+            "guest_cycles"
+          ],
+          "passed": true
+        },
+        "exotica-future-gpu.csv": {
+          "rows": 6953,
+          "fields": [
+            "scene",
+            "frame",
+            "mode",
+            "multiplier",
+            "page",
+            "quads",
+            "vertices",
+            "hash"
+          ],
+          "passed": true
+        }
+      },
+      "report_sha256": "8552f99ea2489bc5afff70b4d74131e948575b47fbb89f662df86618e1f21d78",
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.8672140196430954,
+          "frame_ms": {
+            "p50": 17.814850000000604,
+            "p95": 26.840864999998715,
+            "p99": 27.82091799999833,
+            "worst": 96.31720000000144
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9303306714388431,
+          "frame_ms": {
+            "p50": 18.310800000008953,
+            "p95": 22.05420000000302,
+            "p99": 23.380542000001725,
+            "worst": 26.607400000003167
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.8360371880507305,
+          "frame_ms": {
+            "p50": 20.53875000000005,
+            "p95": 24.992239999999555,
+            "p99": 26.89605000000313,
+            "worst": 80.06149999999934
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.7791089052405296,
+          "frame_ms": {
+            "p50": 23.483650000002854,
+            "p95": 26.82645499999694,
+            "p99": 27.8542709999968,
+            "worst": 89.77540000000772
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.9912593641582764,
+          "frame_ms": {
+            "p50": 17.56990000001224,
+            "p95": 18.911829999993298,
+            "p99": 20.313369000006386,
+            "worst": 45.13000000000034
+          }
+        }
+      ]
+    },
+    "packet-performance3-repeat": {
+      "native_sha256": "eb4d790ddb8c84a6488cc43b89fe7f7528f1fb78e74004c677d302e87f31b850",
+      "multiplier": 3,
+      "speed_percent": 89.41,
+      "timings": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "count": 8849,
+          "mean": 0.7981353825290994,
+          "p99": 3.7000000000000455,
+          "maximum": 24.700000000000045,
+          "kind": "delta of cumulative mirror submission timer",
+          "total": 7062.7
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "count": 6953,
+          "mean": 69.12866388609233,
+          "p99": 181.44399999999987,
+          "maximum": 1599.2
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "count": 6953,
+          "mean": 1917.855184812311,
+          "p99": 5648.6879999999965,
+          "maximum": 6813.6
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "count": 6953,
+          "mean": 642.2924061556163,
+          "p99": 2111.0879999999975,
+          "maximum": 2554.5
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "count": 6953,
+          "mean": 0.3884366460520639,
+          "p99": 1.3,
+          "maximum": 15.4
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "count": 6953,
+          "mean": 850.5415935567381,
+          "p99": 3001.9679999999994,
+          "maximum": 71112.5
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "count": 6953,
+          "mean": 2045.6570832734071,
+          "p99": 6454.443999999996,
+          "maximum": 127721.0
+        }
+      },
+      "material_detail": {
+        "stage_us": {
+          "mean": 29.606414497339276,
+          "p99": 58.295999999999914,
+          "maximum": 21566.0
+        },
+        "encode_us": {
+          "mean": 7.4398820652955555,
+          "p99": 18.3,
+          "maximum": 7559.8
+        },
+        "queue_us": {
+          "mean": 791.6839925212138,
+          "p99": 2919.792,
+          "maximum": 20484.0
+        },
+        "commit_us": {
+          "mean": 13.485905364590824,
+          "p99": 20.647999999999957,
+          "maximum": 20967.2
+        }
+      },
+      "motion": {
+        "schema": 1,
+        "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "passed": true,
+        "camera_equal": true,
+        "same_camera_interval": true,
+        "camera_samples": [
+          7060,
+          7060
+        ],
+        "camera_intervals": [
+          [
+            1800,
+            8859
+          ],
+          [
+            1800,
+            8859
+          ]
+        ],
+        "first_camera_difference_frame": null,
+        "camera_equal_frame_intervals": [
+          [
+            1800,
+            8859
+          ]
+        ],
+        "camera_equal_frames": 7060,
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "actual_adc_reads": [
+          21180,
+          21180
+        ],
+        "adc_frame_value_pc_equal": true,
+        "adc_address_compared": true,
+        "first_adc_frame_value_pc_difference": null,
+        "adc_times_equal": true,
+        "first_adc_time_difference_index": null,
+        "sources": [
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          },
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          }
+        ]
+      },
+      "geometry": {
+        "exotica-host-scenes.csv": {
+          "rows": 6953,
+          "fields": [
+            "frame",
+            "scene",
+            "quads",
+            "instances",
+            "multiplier",
+            "hash",
+            "guest_cycles"
+          ],
+          "passed": true
+        },
+        "exotica-future-gpu.csv": {
+          "rows": 6953,
+          "fields": [
+            "scene",
+            "frame",
+            "mode",
+            "multiplier",
+            "page",
+            "quads",
+            "vertices",
+            "hash"
+          ],
+          "passed": true
+        }
+      },
+      "report_sha256": "f630fcfdc0032cf98708445f20686e04f42b40e28ba979b9a9cfecff46dba0ab",
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.8652022098122054,
+          "frame_ms": {
+            "p50": 17.800749999999255,
+            "p95": 26.929135000002447,
+            "p99": 28.005879999998058,
+            "worst": 89.73220000000026
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9345590441819338,
+          "frame_ms": {
+            "p50": 18.255550000006338,
+            "p95": 21.664130000002046,
+            "p99": 22.902906999999573,
+            "worst": 50.44259999999667
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.839250327523415,
+          "frame_ms": {
+            "p50": 20.36954999999807,
+            "p95": 25.01517000000817,
+            "p99": 26.629244999999884,
+            "worst": 77.07639999999572
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.7986367013175967,
+          "frame_ms": {
+            "p50": 22.708949999994843,
+            "p95": 25.618200000013758,
+            "p99": 27.211598999982414,
+            "worst": 99.45349999998143
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.990813824975277,
+          "frame_ms": {
+            "p50": 17.587599999998815,
+            "p95": 19.09157499999168,
+            "p99": 20.47380199999935,
+            "worst": 21.705099999991262
+          }
+        }
+      ]
+    },
+    "packet-performance2": {
+      "native_sha256": "eb4d790ddb8c84a6488cc43b89fe7f7528f1fb78e74004c677d302e87f31b850",
+      "multiplier": 2,
+      "speed_percent": 94.03,
+      "timings": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "count": 8849,
+          "mean": 0.8078765962255623,
+          "p99": 3.5999999999996906,
+          "maximum": 50.0,
+          "kind": "delta of cumulative mirror submission timer",
+          "total": 7148.9
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "count": 6953,
+          "mean": 66.03356824392348,
+          "p99": 155.84799999999996,
+          "maximum": 1290.8
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "count": 6953,
+          "mean": 1367.0454192434922,
+          "p99": 3765.811999999997,
+          "maximum": 4548.8
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "count": 6953,
+          "mean": 390.208226664749,
+          "p99": 1330.9079999999992,
+          "maximum": 1814.4
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "count": 6953,
+          "mean": 0.331382137206961,
+          "p99": 1.1479999999999564,
+          "maximum": 10.9
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "count": 6953,
+          "mean": 468.0706889112613,
+          "p99": 1764.551999999999,
+          "maximum": 68572.6
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "count": 6953,
+          "mean": 1275.3482813174169,
+          "p99": 4252.655999999994,
+          "maximum": 83392.3
+        }
+      },
+      "material_detail": {
+        "stage_us": {
+          "mean": 26.578095785991657,
+          "p99": 48.391999999999825,
+          "maximum": 20992.0
+        },
+        "encode_us": {
+          "mean": 6.757414065870847,
+          "p99": 14.247999999999957,
+          "maximum": 6867.8
+        },
+        "queue_us": {
+          "mean": 413.7841507263052,
+          "p99": 1694.5919999999976,
+          "maximum": 19189.8
+        },
+        "commit_us": {
+          "mean": 13.380195599022004,
+          "p99": 19.3,
+          "maximum": 20938.2
+        }
+      },
+      "motion": {
+        "schema": 1,
+        "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "passed": true,
+        "camera_equal": true,
+        "same_camera_interval": true,
+        "camera_samples": [
+          7060,
+          7060
+        ],
+        "camera_intervals": [
+          [
+            1800,
+            8859
+          ],
+          [
+            1800,
+            8859
+          ]
+        ],
+        "first_camera_difference_frame": null,
+        "camera_equal_frame_intervals": [
+          [
+            1800,
+            8859
+          ]
+        ],
+        "camera_equal_frames": 7060,
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "actual_adc_reads": [
+          21180,
+          21180
+        ],
+        "adc_frame_value_pc_equal": true,
+        "adc_address_compared": true,
+        "first_adc_frame_value_pc_difference": null,
+        "adc_times_equal": true,
+        "first_adc_time_difference_index": null,
+        "sources": [
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          },
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          }
+        ]
+      },
+      "geometry": {
+        "exotica-host-scenes.csv": {
+          "rows": 6953,
+          "fields": [
+            "frame",
+            "scene",
+            "quads",
+            "instances",
+            "multiplier",
+            "hash",
+            "guest_cycles"
+          ],
+          "passed": true
+        },
+        "exotica-future-gpu.csv": {
+          "rows": 6953,
+          "fields": [
+            "scene",
+            "frame",
+            "mode",
+            "multiplier",
+            "page",
+            "quads",
+            "vertices",
+            "hash"
+          ],
+          "passed": true
+        }
+      },
+      "report_sha256": "1dd869adbc32323a6f0a055148b011e5e92468f62479967f1c7e2edcc68736f0",
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.9156964198552098,
+          "frame_ms": {
+            "p50": 17.805799999997873,
+            "p95": 23.127789999996295,
+            "p99": 24.13139900000523,
+            "worst": 87.4258999999995
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9364889520392554,
+          "frame_ms": {
+            "p50": 18.258400000000563,
+            "p95": 21.708109999999436,
+            "p99": 22.564532000001662,
+            "worst": 26.17659999999944
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.9231896403176575,
+          "frame_ms": {
+            "p50": 18.790500000001487,
+            "p95": 21.840724999999136,
+            "p99": 23.890930999989592,
+            "worst": 40.74939999999572
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.8966768034268444,
+          "frame_ms": {
+            "p50": 19.863700000001927,
+            "p95": 21.57344999999964,
+            "p99": 22.661535000001578,
+            "worst": 71.31820000000744
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.9971175587285391,
+          "frame_ms": {
+            "p50": 17.520099999984495,
+            "p95": 18.576384999990125,
+            "p99": 19.697482999995373,
+            "worst": 21.561699999978146
+          }
+        }
+      ]
+    },
+    "packet-performance2-old": {
+      "native_sha256": "ca7e814bcb62efa15e2192c857bd4dd24a69fbe8660a895b1a2aafcc5917105c",
+      "multiplier": 2,
+      "speed_percent": 93.8,
+      "timings": {
+        "zeus-depth-mirror.csv:mirror_us": {
+          "count": 8849,
+          "mean": 0.8038648434851395,
+          "p99": 3.599999999999968,
+          "maximum": 40.90000000000009,
+          "kind": "delta of cumulative mirror submission timer",
+          "total": 7113.4
+        },
+        "zeus-depth-mirror.csv:snapshot_us": {
+          "count": 8849,
+          "mean": 0.0,
+          "p99": 0.0,
+          "maximum": 0.0
+        },
+        "exotica-host-scenes.csv:source_us": {
+          "count": 6953,
+          "mean": 71.18095785991659,
+          "p99": 188.84399999999985,
+          "maximum": 1445.7
+        },
+        "exotica-host-scenes.csv:assembly_us": {
+          "count": 6953,
+          "mean": 1375.7578311520206,
+          "p99": 3914.496,
+          "maximum": 5014.0
+        },
+        "exotica-host-scenes.csv:hash_us": {
+          "count": 6953,
+          "mean": 390.13161225370345,
+          "p99": 1332.196,
+          "maximum": 1808.3
+        },
+        "exotica-host-scenes.csv:snapshot_us": {
+          "count": 6953,
+          "mean": 0.3908960161081548,
+          "p99": 1.3,
+          "maximum": 3.3
+        },
+        "exotica-host-scenes.csv:materials_us": {
+          "count": 6953,
+          "mean": 523.1209262188983,
+          "p99": 2133.415999999995,
+          "maximum": 82957.4
+        },
+        "exotica-future-gpu.csv:host_us": {
+          "count": 6953,
+          "mean": 1338.7327628361859,
+          "p99": 4844.44,
+          "maximum": 89788.3
+        }
+      },
+      "material_detail": {
+        "stage_us": {
+          "mean": 27.215374658420824,
+          "p99": 49.69199999999982,
+          "maximum": 24064.1
+        },
+        "encode_us": {
+          "mean": 7.17163814180929,
+          "p99": 16.3,
+          "maximum": 9078.9
+        },
+        "queue_us": {
+          "mean": 467.3209693657414,
+          "p99": 2065.8039999999955,
+          "maximum": 23749.7
+        },
+        "commit_us": {
+          "mean": 13.98423701999137,
+          "p99": 20.695999999999913,
+          "maximum": 25062.2
+        }
+      },
+      "motion": {
+        "schema": 1,
+        "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+        "passed": true,
+        "camera_equal": true,
+        "same_camera_interval": true,
+        "camera_samples": [
+          7060,
+          7060
+        ],
+        "camera_intervals": [
+          [
+            1800,
+            8859
+          ],
+          [
+            1800,
+            8859
+          ]
+        ],
+        "first_camera_difference_frame": null,
+        "camera_equal_frame_intervals": [
+          [
+            1800,
+            8859
+          ]
+        ],
+        "camera_equal_frames": 7060,
+        "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+        "actual_adc_reads": [
+          21180,
+          21180
+        ],
+        "adc_frame_value_pc_equal": true,
+        "adc_address_compared": true,
+        "first_adc_frame_value_pc_difference": null,
+        "adc_times_equal": true,
+        "first_adc_time_difference_index": null,
+        "sources": [
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          },
+          {
+            "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+            "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+          }
+        ]
+      },
+      "geometry": {
+        "exotica-host-scenes.csv": {
+          "rows": 6953,
+          "fields": [
+            "frame",
+            "scene",
+            "quads",
+            "instances",
+            "multiplier",
+            "hash",
+            "guest_cycles"
+          ],
+          "passed": true
+        },
+        "exotica-future-gpu.csv": {
+          "rows": 6953,
+          "fields": [
+            "scene",
+            "frame",
+            "mode",
+            "multiplier",
+            "page",
+            "quads",
+            "vertices",
+            "hash"
+          ],
+          "passed": true
+        }
+      },
+      "report_sha256": "f36bdd63ffd02bf47efe5eb616774580570b2de38cfac81277bb96b321d8571c",
+      "intervals": [
+        {
+          "first": 1800,
+          "last": 3500,
+          "ratio": 0.910736721919297,
+          "frame_ms": {
+            "p50": 17.785099999997556,
+            "p95": 23.554099999998712,
+            "p99": 24.55021200000857,
+            "worst": 100.87100000000149
+          }
+        },
+        {
+          "first": 3500,
+          "last": 5000,
+          "ratio": 0.9356495597795937,
+          "frame_ms": {
+            "p50": 18.195099999999798,
+            "p95": 21.93263000000556,
+            "p99": 22.952479999989492,
+            "worst": 25.66639999999154
+          }
+        },
+        {
+          "first": 5000,
+          "last": 6500,
+          "ratio": 0.9156455892322055,
+          "frame_ms": {
+            "p50": 18.84994999999634,
+            "p95": 22.41106500000285,
+            "p99": 24.9847000000058,
+            "worst": 76.84639999999376
+          }
+        },
+        {
+          "first": 6500,
+          "last": 8000,
+          "ratio": 0.8967827184394987,
+          "frame_ms": {
+            "p50": 19.72200000000157,
+            "p95": 21.80500499998459,
+            "p99": 23.11347000000694,
+            "worst": 26.397099999996954
+          }
+        },
+        {
+          "first": 8000,
+          "last": 8750,
+          "ratio": 0.9979013761069181,
+          "frame_ms": {
+            "p50": 17.493700000002832,
+            "p95": 18.5964849999948,
+            "p99": 19.853410999999426,
+            "worst": 21.108200000014676
+          }
+        }
+      ]
+    }
+  },
+  "scope": "Exact route and geometry receipts with observed timing samples. No significance estimate, pixel comparison or full-speed acceptance. Material queue timing includes packet construction and submission; it overlaps total material time. GPU host time is not GPU execution time."
+}

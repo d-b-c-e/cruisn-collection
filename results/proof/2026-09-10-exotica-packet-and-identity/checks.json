@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "unit": {
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests": 352
+  },
+  "native_programs": 48,
+  "commands": 136,
+  "source_identity": "6c2c6e3f99c291f00912158a028ccda89f4272b05c86941b14f7f73a886cd315",
+  "report_sha256": "cc0562e87096353d83505dda9a1d20088fc288897b02f8b432751d120ec1239e"
+}

@@ -1,5 +1,51 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 Exotica packet renewal and source identity — ACTIVE
+
+Continue the user's autonomous rendering work directly. Native583/personal87d
+remain unchanged. New LOCAL packet-present2/packet-present3/packet-present3-repeat
+are COMPLETE: each8860inputs,7060camera/21180actualADCtimes,10original resources,
+233completed3840x2160/CRT. Each matches reference14internal buffers/five immediate
+packets/6953ordered scene/material records and all233displayed pixels. Fifteen
+independent GPU insertion samples PASS in total. Sessions33908/30196 are DONE.
+Read docs/reviews/2026-09-10-exotica-packet-and-identity.md.
+
+Uncaptured new3x89.31%, previous9ed fresh88.90%, newrepeat89.41%. Earlier9ed90.79%
+is a different run; no large-regression or substantial speed-gain claim. New2x
+94.03% versus fresh9ed93.80%. Exec93327 DONE. All five new performance runs
+preserve original motion and6953ordered scene/geometry records. No timed game
+remains. No builds/exports/broad scans during timed games. LOCAL
+packet-performance-final-comparison.json retains five samples and detailed costs.
+
+LOCAL fade-owner-amazon COMPLETE on unchanged9ed:4018allocations,3221reusedslots,
+2539fades/116distinct allocations/0unowned,86completions. Originalmotion and21GL
+equal control; native/Python allwrites exact. Three independent source snapshots
+3900/5072/7187 each reconstruct4286descriptors exactly native/Python, match3932
+ordinary actual allocations (86custom excluded), and all2539faded geometry/
+material/progress operands. Earliest predicts2846later allocations. Sourcekey
+must include track/bank/section/source and allocation lifetime. Arbitrary allocator
+reuse/material pixels/hostfade/handover remain OPEN. Address67C4 supplies section
+matrix pointer at B85A, NOT a common free-list allocator hook. LOCAL ownership
+probe/analyzers remain standalone; no fade policy linked into MAME.
+
+Public proof2026-09-10-exotica-packet-and-identity now PASS source/hash/receipt
+consistency (raw execution/pixels/fade remain receipts). All352Python/no skips,48native,
+136commands at510-file6c2c remain current source checks; docs/LOCAL only changed.
+Then trace common allocation/removal before private host fade/handover. LOCAL
+allocator-disasm/{emu.h,main.cpp} is a thin adapter to unchanged MAME
+tms320c3x_dasm.cpp, util/disasmintf.cpp and strformat.cpp. Compile only when rig
+idle. Initial compiler runtime-PATH failure retained (empty build.log, exit1);
+retry with MinGW PATH passes build-with-runtime.log. LOCAL disassembly identifies
+pool head10A8/count10A9: allocate writes atBBF6/BBF9 (callbacksPCBBF7/BBFA,
+objectAR0), free atBC64/BC67 (callbacksBC65/BC68, objectAR2). All calls shareBBF0;
+typed constructorBC20 calls it. NEXT bounded read-only pool transition probe,
+track every head/count change and join generations to section allocation/fades.
+No live pool-lifetime evidence yet; no hostfade policy. Do not repeat a broad results/diagnostics inventory:
+rg session36438 was cancelled after unproductive traversal; no existing tool found.
+No deploy/release/hostedCI/physicalFFB/Worldtuning/menu removal. Latest OffRoad
+full-drive proof/late geometry is committed b38f890; last clean7defaults50a,
+laterUSA6.13second failure retained. Keep working; heartbeat recovery only.
+
 ## September 10 attended Off Road and packet optimization — ACTIVE
 
 User finished the attended drive and stepped away; continue directly. Read

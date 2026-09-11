@@ -24,6 +24,11 @@ and the public package remain v0.5.0.
   measure 94.69% game speed at 2× and 90.79% at 3×, versus 99.99% original.
   Preparing/uploading 3× without drawing already costs enough to reach 90.77%.
   Optimize measured CPU preparation/packet work and complete fade/handover.
+  The [packet/identity renewal](docs/reviews/2026-09-10-exotica-packet-and-identity.md)
+  preserves all233 displayed frames at2×/3×/repeat. New3× timings89.31/89.41%
+  versus a fresh previous-build88.90% show only a small difference. Original
+  allocation/fade joins now match3932ordinary allocations and2539sampled fades.
+  Trace other allocation/removal paths before implementing the host transition.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.
@@ -33,7 +38,8 @@ and the public package remain v0.5.0.
 - **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
   exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
   3× adds differences in22/66 images over2× and repeats all66 exactly. Complete
-  later-course resource/geometry checks, materials and handover; other courses
+  later-course resource checks, materials and handover; four late live geometry
+  joins already pass. Other courses
   and broader foreground-occlusion acceptance remain open.
 
 Shared acceptance still requires useful visible benefit, stable materials,
