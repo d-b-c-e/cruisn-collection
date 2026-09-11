@@ -75,6 +75,35 @@ an independently rerunnable claim without those traces.
 
 ## Next
 
+An initial offline sweep now executes 20 cases: four game traces at nominal
+0/25/50/80/100. Exotica's current trim is applied explicitly (nominal50 becomes
+effective40); other games use effective50. Zero strength produces zero output
+and every case stays within its effective strength ceiling. The USA input comes
+from the accepted current-candidate replay of `my-drive`, World and Off Road
+from their human recordings, and Exotica from the current Amazon control.
+Thus source builds are not yet common across all four.
+
+These runs include menus/boot and simulate the shaper without the full game
+gate, worker timeout or device. They are algorithm baselines, not normalized
+wheel-force acceptance. Between the first and last captured Exotica writes,
+the held adapted command is at magnitude127 for23.77% of elapsed emulated time.
+That whole-trace time statistic has a different denominator from the earlier
+driving-event45.29%; neither measures time at physical full force. The other
+traces reach no magnitude127, but can reach the output ceiling at126, so this
+comparison alone does not establish their headroom.
+
+Local command/receipt:
+`results/diagnostics/exotica-amazon-20260909/ffb-four-game-baseline.py` and
+`ffb-four-game-baseline/report.json`. The latter explicitly marks normalization
+and matched-segment/common-source acceptance false. Raw stage traces stay local.
+
+The sweep preparation also exposed an offline-analyzer compatibility bug:
+`wheel_motor` rows were ignored while the older `wheel` name worked. The new
+native regression fails on the previous executable and passes after accepting
+both names, with identical output stages and reserved-neutral behavior. Existing
+raw-versus-adapted impact tests still pass. This changes analysis only, not the
+game or SDL output.
+
 Build a common, current-candidate baseline from the four existing human drives,
 then compare matched segments at nominal strength 50. Retain source, adapter,
 shaper and output metrics separately; label actual contacts and measure recovery.

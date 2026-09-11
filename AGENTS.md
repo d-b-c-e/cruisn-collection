@@ -32,6 +32,16 @@ no builds/exports/broadscans during timed playback. Continue directly.
 
 ## September 10 FFB normalization — NEAR-TERM maintainer priority
 
+Initial LOCAL ffb-four-game-baseline script/report now PASS20 algorithm runs at
+0/25/50/80/100, explicit Exo0.8trim. Different source builds/routes, unsegmented
+boot/menus, no gate/worker/device simulation: NOT normalized acceptance. USA now
+has current795fc source via accepted native-lifetime-defaults-quiet/usa-original.
+Time-held Exo abs127 is23.77% over first..last writes, not physical saturation.
+Offline analyze_ffb now accepts wheel_motor as well as wheel; alias test fails
+old executable and passes exactstages/neutral onnew. Current targeted native
+adapter and2timeline Python tests PASS. This changes only offline analysis and
+tests, so earlier fullchecks/native observer proof bind their earlier source.
+
 The maintainer now explicitly requests data-driven normalization across USA,
 World, Off Road and Exotica: strength50 should give comparable force on the same
 wheel. This supersedes the earlier blanket deferral of World/cross-game tuning;

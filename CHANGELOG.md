@@ -8,6 +8,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - Make four-game force normalization a near-term roadmap milestone, with a
   strength-50 comparison protocol, contact/headroom checks and an upstream
   Exotica plugin audit. This documents planned calibration; tuning is unchanged.
+- Fix offline force analysis ignoring the current `wheel_motor` output name.
+  Initial four-game strength sweeps establish algorithm baselines; they do not
+  yet establish matched driving or physical force normalization.
 - Add read-only native Exotica allocation/first-draw diagnostics. Complete Amazon
   runs reproduce the earlier trace and sampled display frames. Waiting-object
   drawing remains pending; the default suite retains a World renderer timeout.

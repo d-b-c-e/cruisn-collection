@@ -34,6 +34,25 @@ def main():
                 assert abs(float(hit["detector_input"])) > (0.99 if enhanced else 0.15), hit
                 if not enhanced:
                     assert abs(float(hit["detector_input"])) < 0.16, hit
+        # Current recordings name this output wheel_motor. Both names must
+        # reproduce the same stages, including signed bytes and neutral 0x80.
+        reference = None
+        for output_name in ("wheel", "wheel_motor"):
+            fixture = directory / (output_name + ".csv")
+            fixture.write_text("ms,output,value\n# game crusnusa\n"
+                + "\n".join(f"{ms},{output_name},{value}" for ms, value in
+                    ((0, 0), (100, 126), (200, 130), (300, 128), (500, 0))) + "\n")
+            stages = directory / (output_name + "-stages.csv")
+            result = subprocess.run([exe, str(fixture), str(ROOT / "lib/toolkit/profiles"),
+                "cruisn-vunit@2", "50", str(stages)], check=True, capture_output=True, text=True)
+            current = (json.loads(result.stdout), stages.read_bytes())
+            if reference is None:
+                reference = current
+                rows = list(csv.DictReader(io.StringIO(stages.read_text())))
+                neutral = next(row for row in rows if row["ms"] == "300")
+                assert neutral["motor_byte"] == "-128" and float(neutral["normalised"]) == 0
+            else:
+                assert current == reference, "motor aliases differ"
     print("PASS: raw collision detection survives adapter clamping; both trace formats agree")
 
 

@@ -14,6 +14,8 @@ The games can retain different textures and force character.
 - [x] Reopen B4 as near-term work and define the comparison criteria.
 - [x] Audit the new Endprodukt Exotica plugin and our existing gain/polarity path.
 - [x] Identify recordings for all four games and the gaps in their force evidence.
+- [x] Run a preliminary offline algorithm sweep at 0, 25, 50, 80 and 100 with
+  physical output disabled; retain its different-source/whole-drive limitations.
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -89,7 +91,7 @@ close those items.
 
 | Recording | Available evidence | Gap |
 |---|---|---|
-| USA `my-drive` | Human inputs and host-time output trace; physical FFB was off | No original emulated-time force-source trace or attended force acceptance; renew derived replay on the current candidate |
+| USA `my-drive` | Human inputs and host-time output trace; current 795fc default replay now supplies an emulated-time source trace with original input/pixel acceptance | No attended force acceptance in the original recording |
 | World Germany, September 6 | Human drive, emulated raw/adapted trace, host output, strength 80 | Older candidate; no current gate trace; requires current replay and independent state labels |
 | Off Road El Paso, September 10 | Human drive, source/gate/host output, strength 80 | Contacts and matched driving segments not labeled |
 | Exotica Amazon, September 9 | Human drive, source/gate/host output; requested 80, effective 64, gain 800 | Contacts not labeled; current gain clips much of the motor range |
@@ -97,7 +99,9 @@ close those items.
 The existing `harness/analyze_ffb.py` executes the actual vendored shaper and
 impact algorithms offline. It is a useful starting point, but its whole-trace
 summary does not establish cross-game normalization or reproduce the full device
-worker/gating contract. Extend that evidence with segmentation, source identity,
+worker/gating contract. The analyzer now accepts both `wheel` and `wheel_motor`
+host-output names; the two produce identical tested stages, including neutral.
+Extend that evidence with segmentation, source identity,
 time weighting and explicit coverage before choosing defaults. Legacy
 `ffb_compare.py` is a USA/plugin transfer comparison with permissive parsing;
 it is not a four-game acceptance gate.

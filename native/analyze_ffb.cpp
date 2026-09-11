@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
         if (!std::getline(row, t, ',') || !std::getline(row, name, ',') || !std::getline(row, value)) continue;
         try {
             long long ms = source_columns ? std::llround(std::stod(t) * 1000) : std::stoll(t); end_ms = std::max(end_ms, ms);
-            if (!source_columns && !motor_columns && name != "wheel") continue;
+            if (!source_columns && !motor_columns && name != "wheel" && name != "wheel_motor") continue;
             int raw = std::stoi(source_columns ? value.substr(value.find(',') + 1) : value);
             if (!motor_columns && !source_columns) { raw &= 255; if (raw >= 128) raw -= 256; }
             if (raw < -128 || raw > 127 || ms < 0) throw std::runtime_error("range");
