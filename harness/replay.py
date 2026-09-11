@@ -24,6 +24,7 @@ import world_distance
 import usa_distance
 import exotica_visibility
 import exotica_scene_options
+import exotica_lifetimes
 import zeus_render_policy
 import zeus_palette
 import zeus_margin_clear
@@ -87,6 +88,7 @@ def main(argv=None):
     usa_distance.add_arguments(ap)
     exotica_visibility.add_arguments(ap)
     exotica_scene_options.add_arguments(ap)
+    exotica_lifetimes.add_arguments(ap)
     zeus_render_policy.add_arguments(ap)
     zeus_palette.add_arguments(ap)
     zeus_margin_clear.add_arguments(ap)
@@ -253,6 +255,8 @@ def main(argv=None):
         if sky_trial:report['zeus_sky']=sky_trial
         scene_trial=exotica_scene_options.configure(args,manifest['rom'],manifest['settings'])
         if scene_trial:report['exotica_host_scene']=scene_trial
+        lifetime_trial=exotica_lifetimes.configure(args,manifest['rom'],manifest['settings'])
+        if lifetime_trial:report['exotica_lifetimes']=lifetime_trial
         depth_trial=zeus_depth_mirror.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
         if depth_trial:report['zeus_depth_mirror']=depth_trial
         exotica_scene_options.validate_runtime(scene_trial,args,manifest['settings'])
@@ -394,6 +398,8 @@ def main(argv=None):
         if sky_result:report['zeus_sky']['result']=sky_result
         scene_result=exotica_scene_options.verify_receipt(scene_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if scene_result:report['exotica_host_scene']['result']=scene_result
+        lifetime_result=exotica_lifetimes.verify_receipt(lifetime_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+        if lifetime_result:report['exotica_lifetimes']['result']=lifetime_result
         depth_result=zeus_depth_mirror.verify_receipt(depth_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if depth_result:report['zeus_depth_mirror']['result']=depth_result
         stall_result=zeus_stream.verify_stall(stall_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))

@@ -19,6 +19,7 @@ assuming that a source feature is present in a downloaded package.
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |
 | [Exotica packet and identity checks](reviews/2026-09-10-exotica-packet-and-identity.md) | Exact serializer comparisons, paired timing and original allocation/fade joins |
 | [Exotica drawing admission](reviews/2026-09-10-exotica-drawing-admission.md) | Measured allocation-to-draw delay, reusable lifetime tracking and offline waiting-scenery continuation |
+| [Native Exotica lifetimes](reviews/2026-09-10-exotica-native-lifetimes.md) | Exact live event observation, full-drive repeat and the retained World renderer regression |
 | [Exotica pool lifetimes](reviews/2026-09-10-exotica-pool-lifetimes.md) | Allocation/removal generations, slot reuse and the post-race reset |
 | [September 9 handoff](OVERNIGHT-RESULTS-2026-09-09.md) | Measured 3x progress, undeployed candidates and remaining cross-game work |
 | [Local builds](LOCAL-BUILDS.md) | Local checks, packaging and exact-ZIP upload; Actions disabled |

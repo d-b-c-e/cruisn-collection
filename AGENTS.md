@@ -1,5 +1,35 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 native lifetimes — ACTIVE waiting-selection validation
+
+Read docs/reviews/2026-09-10-exotica-native-lifetimes.md. Native795fc77b68e is
+separately built/frozen/pushed, SHA97cd738c;185patches reconstruct27098b964ce2.
+Explicit --exotica-lifetimes observe with physicalFFB0 now links the registry.
+Full Amazon/repeat/disabled each preserve8860inputs,7060camera,21180actualADCtimes
+and21completed4K/CRT. Observe/repeat match86375 original Lua events including real
+times;86376CSVrecords repeat SHA5a1f9004. Counts48481transitions4018bindings,
+1010130emissions948739owned33876drawrecords3573first30308fading1126opaque,
+2epochs26initialunknownfrees. Disabled has no observer output. Not a handover
+or waiting-drawing claim. Localchecks358Python/no skips49native140commands PASS
+source4e41ca4409521afad76b3fa495c79f882d7ff58310b78df43cadb56ea12b9c8a.
+
+Seven-default exec86830 EXIT1: sixPASS, WorldGermanyFAIL consumer timeout875,
+128859568queued/134217728capacity,consumerbytes0,wait781ms; preserve report.
+Earlier attempt interrupted due another session's MAME build; interruption
+receipt retained. Fresh suite used blocking preflight. Last full7PASS remains50a;
+older USAstall unresolved even though both USA cases pass now. No game/build
+remains at this checkpoint. Proof2026-09-10-exotica-native-lifetimes verifies
+hash/receipt consistency; actualnative/raw/GPU/tests remain receipts.
+
+NEXT investigate targeted World stream failure and validate LOCAL exotica_waiting.h
+and test before promotion. Both are uncompiled drafts under results/diagnostics/
+exotica-amazon-20260909. Independent five-snapshot geometry joins already exist;
+new helper must derive candidates from actual registry, not trust supplied lists.
+Then live waiting observation/draw, fade/handover/materials, original route/4K.
+Personal87d/v0.5.0 unchanged. FFB normalization is now a separate near-term priority
+below. No deploy/release/hostedCI/physicalFFB/menu removal. Serial rig/build/GPU;
+no builds/exports/broadscans during timed playback. Continue directly.
+
 ## September 10 FFB normalization — NEAR-TERM maintainer priority
 
 The maintainer now explicitly requests data-driven normalization across USA,

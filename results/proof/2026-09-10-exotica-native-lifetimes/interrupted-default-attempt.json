@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "scope": "Interrupted first default-suite attempt; not clean timing evidence.",
+  "reason": "Preflight reported a separate full MAME build linking while the command incorrectly continued to launch the suite. Stopped only our Python runner41860 and candidate game47480. Other build was not terminated; it had exited by the follow-up process snapshot.",
+  "first_attempt": "native-lifetime-defaults",
+  "fresh_attempt": "native-lifetime-defaults-quiet",
+  "physical_force": false,
+  "native_candidate": "795fc77b68e40c88ec328be49a03bedd27300c04"
+}

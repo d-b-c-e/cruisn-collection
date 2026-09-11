@@ -8,6 +8,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - Make four-game force normalization a near-term roadmap milestone, with a
   strength-50 comparison protocol, contact/headroom checks and an upstream
   Exotica plugin audit. This documents planned calibration; tuning is unchanged.
+- Add read-only native Exotica allocation/first-draw diagnostics. Complete Amazon
+  runs reproduce the earlier trace and sampled display frames. Waiting-object
+  drawing remains pending; the default suite retains a World renderer timeout.
 
 - Add a complete attended Off Road El Paso recording: archived replays and a
   candidate control preserve the full route and all 66 sampled display images.
