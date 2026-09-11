@@ -1,0 +1,10 @@
+{
+  "files": {
+    "exploratory-ocr.json": "8ec16dee9ec031ecad4ee523f7acaced793b4966c70ee65cc1ed83cb802630fe",
+    "python-checks.json": "fe4f4b313cee996b86287ddf1ed6116456544de751ab37bceeea52715cae6b7c",
+    "source.json": "866769884d6510718d3275f2ab784f6862c6b4f43c9e5483d10bb6b833f413eb",
+    "strict.json": "33be1e3b3162ea42e6b658bcb496de09ac71abdec72c894371e7cc3eb2398ef9"
+  },
+  "schema": 1,
+  "scope": "Source/hash/receipt consistency only. Raw input/game/force execution and test execution are receipts."
+}

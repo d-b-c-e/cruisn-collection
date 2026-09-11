@@ -37,6 +37,12 @@ small gaps and can smear them; its saved setting and existing default are preser
 **Impact Cues** are available under Force Feedback, with physical feel still
 awaiting validation.
 
+Cross-game FFB normalization is near-term work: strength 50 should have comparable
+weight on the same wheel while retaining distinct impacts. Recorded force
+comparisons now flag differences in speed provenance and driving coverage before
+calibration. The current release is not yet normalized across games; see the
+[measurement and acceptance plan](docs/FFB-NORMALIZATION.md).
+
 Separate **host scenery prototypes for all four games** now decode upcoming
 sections without changing guest simulation. World, USA and Off Road have measured
 earlier scenery; Exotica's private renderer has repeatable display comparisons

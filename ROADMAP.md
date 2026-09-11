@@ -353,6 +353,8 @@ host scenery still has ground/occlusion work open. Stream Deck stays on v0.5.0.
    strength 50 should have comparable steering weight on the same wheel, with
    distinguishable impacts. Start from recorded data and preserve World menu
    passthrough. Broaden attended drives, shifter and second-wheel coverage.
+   Common-build traces and interval analysis now exist; World speed provenance,
+   equivalent steering and reviewed contacts remain prerequisites for calibration.
 
 Current automated suite has seven cases, including completed Exotica GL frames.
 All games now have guarded gear/rev telemetry with estimated RPM; World speed

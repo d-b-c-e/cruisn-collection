@@ -118,8 +118,10 @@ both names, with identical output stages and reserved-neutral behavior. Existing
 raw-versus-adapted impact tests still pass. This changes analysis only, not the
 game or SDL output.
 
-Build a common, current-candidate baseline from the four existing human drives,
-then compare matched segments at nominal strength 50. Retain source, adapter,
+Use the completed common-candidate baseline to compare matched segments at
+nominal strength 50. The [new interval analysis](2026-09-10-ffb-condition-coverage.md)
+identifies OCR speed and sparse turn coverage that must be resolved first.
+Retain source, adapter,
 shaper and output metrics separately; label actual contacts and measure recovery.
 Choose a versioned per-game calibration from those results and validate it with
 attended wheel checks. Keep menu-policy changes and persistent-effect experiments

@@ -1,0 +1,283 @@
+{
+  "calibration_blockers": [
+    "Contacts and contact-free windows have not been reviewed.",
+    "Recorded game-port steering is not verified physical rim angle; steering gain/curves differ.",
+    "Post-shaper output, host timing, asynchronous gate changes and device effects remain unmeasured.",
+    "Attended force acceptance remains outstanding.",
+    "Exploratory report permits OCR speed; this is not independent speed verification."
+  ],
+  "common_bins": {
+    "40-60mps/center/steady": {
+      "exotica": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 1.715242183,
+        "raw_rms_byte": 1.320132674107618,
+        "requested_abs_p50": 0.0,
+        "requested_abs_p90": 0.06347849971007416,
+        "requested_rms": 0.08381466871969694,
+        "seconds": 15.437179642
+      },
+      "offroad": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 3.538857635,
+        "raw_rms_byte": 10.519537308142924,
+        "requested_abs_p50": 0.02380443739127781,
+        "requested_abs_p90": 0.0793786431470687,
+        "requested_rms": 0.08348813177487717,
+        "seconds": 21.751027415
+      },
+      "usa": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 1.139339532,
+        "raw_rms_byte": 3.3886170844340535,
+        "requested_abs_p50": 0.00793481246375927,
+        "requested_abs_p90": 0.03967406231879635,
+        "requested_rms": 0.02689027399204717,
+        "seconds": 7.664647759
+      },
+      "world": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 1.964373778,
+        "raw_rms_byte": 4.275627376414285,
+        "requested_abs_p50": 0.01586962492751854,
+        "requested_abs_p90": 0.05554368724631489,
+        "requested_rms": 0.03392981920281062,
+        "seconds": 18.660244636
+      }
+    },
+    "40-60mps/negative-medium/slow": {
+      "exotica": {
+        "adapter_ceiling_fraction": 0.7825946757038124,
+        "adapter_longest_ceiling_seconds": 0.157522241,
+        "longest_contiguous_seconds": 0.192527184,
+        "raw_rms_byte": 19.738636996417743,
+        "requested_abs_p50": 1.0,
+        "requested_abs_p90": 1.0,
+        "requested_rms": 0.9777415956270316,
+        "seconds": 2.012784192
+      },
+      "offroad": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 0.172627202,
+        "raw_rms_byte": 104.41249916755989,
+        "requested_abs_p50": 0.8968169194616535,
+        "requested_abs_p90": 0.9206213568529313,
+        "requested_rms": 0.8286673672712062,
+        "seconds": 2.278679067
+      },
+      "usa": {
+        "adapter_ceiling_fraction": 0.06962172713158571,
+        "adapter_longest_ceiling_seconds": 0.069066372,
+        "longest_contiguous_seconds": 0.103576321,
+        "raw_rms_byte": 89.90857865442278,
+        "requested_abs_p50": 0.6666768395031587,
+        "requested_abs_p90": 0.9682607501449629,
+        "requested_rms": 0.7135621017716504,
+        "seconds": 2.727509785
+      },
+      "world": {
+        "adapter_ceiling_fraction": 0.06455824473650124,
+        "adapter_longest_ceiling_seconds": 0.051788161,
+        "longest_contiguous_seconds": 0.207152643,
+        "raw_rms_byte": 88.83307918299903,
+        "requested_abs_p50": 0.6508072145756402,
+        "requested_abs_p90": 0.9682607501449629,
+        "requested_rms": 0.7050242521212448,
+        "seconds": 2.9405773
+      }
+    }
+  },
+  "contacts_reviewed": false,
+  "games": {
+    "exotica": {
+      "bin_count": 82,
+      "coverage": {
+        "end_seconds": 155.054412632,
+        "excluded_seconds": {
+          "gate_disabled_at_last_motor_write": 40.985379133,
+          "motor_age_exceeds_selection_limit": 23.712814933,
+          "outside_driving_speed_bands": 1.015122313
+        },
+        "seconds": 155.010945765,
+        "start_seconds": 0.043466867
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "10bc08c39d30e4e147e5f91686495b8d507ac92b3a0e80774dc6fe00f31374bb",
+        "force-source.csv": "6bfbdf05d16252bb655a39259429225828993b3fc5b73d054b63086f83636336",
+        "frames.csv": "0313b3e0ce03ee2d0b305a1b0d7add05ae0a6f37e6adbd363cf6669e711c46e0",
+        "invocation.json": "c129a7ba0ca0c9c6f59c05faffeea5868cc2b1351a845c9be05d5604cc9d60a5",
+        "replay-report.json": "c24c2741b3ca674dc2460d0074b162a701655e8f541b501fd495a47045e974b1",
+        "signals.csv": "a8624deead06e885cc4e385c6c6ed6966344944cfe7ff3b0cdeaf5ea74180b8a"
+      },
+      "intervals_sha256": "aa05fa74dcb6a6b55d7ce6825fdb71b973f1d687ae2e010a616abe45e796c6b6",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_GAME_GATE": "1",
+        "MIDV_FFB_IMPACT": "0",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_REQUESTED_STRENGTH": "80",
+        "MIDV_FFB_RUMBLE": "100",
+        "MIDV_FFB_STRENGTH": "64",
+        "MIDV_STEER_CURVE": "110",
+        "MIDZ_FFB_GAIN": "800"
+      },
+      "rom": "crusnexo",
+      "selected": {
+        "adapter_ceiling_fraction": 0.36946301178262275,
+        "adapter_longest_ceiling_seconds": 1.750247033,
+        "longest_contiguous_seconds": 89.297629386,
+        "raw_rms_byte": 22.34351114751599,
+        "requested_abs_p50": 0.38096255378887295,
+        "requested_abs_p90": 1.0,
+        "requested_rms": 0.6593991526695129,
+        "seconds": 89.297629386
+      }
+    },
+    "offroad": {
+      "bin_count": 89,
+      "coverage": {
+        "end_seconds": 166.4644266,
+        "excluded_seconds": {
+          "outside_driving_speed_bands": 11.859504735,
+          "speed_unavailable": 23.304656495
+        },
+        "seconds": 152.23992944,
+        "start_seconds": 14.22449716
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "effcb54aa67d876dae368377201579f7ca8c35a08cdde3358e50407f115487da",
+        "force-source.csv": "58e9599573c105e7f53b1190f1e8b57bfc5276ae4898ec7c5c7d1e3ff128719e",
+        "frames.csv": "99183d7b92c9b5b7ec3969876e8f0c77050a269bb079687e5d43383a8b760e6f",
+        "invocation.json": "2c21245e04f1f88458afb1ff790300181e7465b7a82f51de71edc2d1e0e1a360",
+        "replay-report.json": "086e8bab14ff5cacb0201997326ebb31c93f3fde7db5183049100614fa0b7a2b",
+        "signals.csv": "8b92bec4217e8724d7fea9390d85891b24996c873a931231e7b020432be4eb5f"
+      },
+      "intervals_sha256": "01136491880ec5e44a01dae9085f8c622e0a8da1e6234c2f1851dea8c0e5a0af",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_IMPACT": "0",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_RUMBLE": "100",
+        "MIDV_FFB_STRENGTH": "80",
+        "MIDV_STEER_CURVE": "110"
+      },
+      "rom": "offroadc",
+      "selected": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 116.385259403,
+        "raw_rms_byte": 74.06740767605233,
+        "requested_abs_p50": 0.3412579729606006,
+        "requested_abs_p90": 0.9206213568529313,
+        "requested_rms": 0.5878351844327503,
+        "seconds": 117.07576821
+      }
+    },
+    "usa": {
+      "bin_count": 44,
+      "coverage": {
+        "end_seconds": 86.5035022,
+        "excluded_seconds": {
+          "outside_driving_speed_bands": 2.692984347,
+          "speed_unavailable": 36.013337517
+        },
+        "seconds": 78.84215768,
+        "start_seconds": 7.66134452
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "419c81dd6cc50319346b07853179070a4afa5e03df351e2e966562e799a9d611",
+        "force-source.csv": "677b00dfc3f2e06e2bcc2d754f4c02e38eb9f3db78589c083a68aa33e2e06bdf",
+        "frames.csv": "63d3c06cca9c6738450f7a59c791955c33726cf049abda4186c22cc570a55357",
+        "invocation.json": "811cb5fc55ba94cd08a39d7ce1c3eaf31945a83142fa512d36a41025b85301b9",
+        "replay-report.json": "a0446f80d7838bead62d4c7acc4aa09a0e0d3721d81c8d9cf1f03b8196e081dd",
+        "signals.csv": "d27571479ed5c47d6306de08e5807222dd6f4a6eed07f39d75aca58cbfd33cab"
+      },
+      "intervals_sha256": "c32c633a1ea4e43dc4e5033afb1e67dfb81b4b7afd2b024d6a6fb6d64e2da232",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_RUMBLE": "100"
+      },
+      "rom": "crusnusa",
+      "selected": {
+        "adapter_ceiling_fraction": 0.02709686388457993,
+        "adapter_longest_ceiling_seconds": 0.5006148,
+        "longest_contiguous_seconds": 40.135835816,
+        "raw_rms_byte": 52.993009674958095,
+        "requested_abs_p50": 0.2381054109317301,
+        "requested_abs_p90": 0.7380901516769921,
+        "requested_rms": 0.4205805536681253,
+        "seconds": 40.135835816
+      }
+    },
+    "world": {
+      "bin_count": 98,
+      "coverage": {
+        "end_seconds": 159.99090388,
+        "excluded_seconds": {
+          "outside_driving_speed_bands": 0.510728963,
+          "speed_stale": 36.3931116,
+          "speed_unavailable": 30.202746623
+        },
+        "seconds": 151.93944928,
+        "start_seconds": 8.0514546
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "09332e31a027b31ac727b1a82eb9cb79d8b613e751a27facca83f097c1309ae1",
+        "force-source.csv": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+        "frames.csv": "6145129598d6d45879f03607f6281d4098987e56c0c3410bb0f4b5af22c12b32",
+        "invocation.json": "c78530272fb21f27dbc01e28ad8bff495e18eac6124eebfb01eeb67ab2b2d55c",
+        "replay-report.json": "e79c7bb2b1484396f3ba667b300dfb3bdc7b6845f2bb69bdcf8bf3132b646506",
+        "signals.csv": "aab6db84bf9f13c9f2286a2349f621ba876b4b957fb5e7b622ad6fa84dabe8f9"
+      },
+      "intervals_sha256": "9d22de005af53b0532dc6d6f6a2e4b2da1b57e1a5cd0a83da5d5b2540bf574df",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_IMPACT": "0",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_RUMBLE": "100",
+        "MIDV_FFB_STRENGTH": "80",
+        "MIDV_STEER_CURVE": "120",
+        "MIDV_STEER_GAIN": "90"
+      },
+      "rom": "crusnwld24",
+      "selected": {
+        "adapter_ceiling_fraction": 0.0868269794768714,
+        "adapter_longest_ceiling_seconds": 0.7422924,
+        "longest_contiguous_seconds": 3.259077791,
+        "raw_rms_byte": 58.88947613155792,
+        "requested_abs_p50": 0.1587267677846614,
+        "requested_abs_p90": 0.9603259376812037,
+        "requested_rms": 0.4673769969870189,
+        "seconds": 84.832862094
+      }
+    }
+  },
+  "kind": "force-source-condition-coverage",
+  "local_report_sha256": "3cb7b55cb90279a386ce1b9c16e061c36638c0d3bd06ea9dd797a3a0cefc8b43",
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_force": false,
+  "schema": 1,
+  "scope": "Unshaped requests at motor writes; emulated-time held source and recorded game-input bins. No host worker, asynchronous gate transitions, physical angle, shaper or device simulation.",
+  "selection": {
+    "allow_ocr": true,
+    "minimum_seconds_per_game_per_bin": 2.0,
+    "motor_max_age_seconds": 0.5,
+    "speed_max_age_seconds": 0.1
+  },
+  "shared_condition_coverage": true
+}

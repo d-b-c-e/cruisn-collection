@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 FFB condition coverage — ACTIVE evidence gaps
+
+Read docs/reviews/2026-09-10-ffb-condition-coverage.md. New canonical
+harness/force_segments.py validates four accepted same-native795fc source/gate/
+input/speed traces and joins exact emulated-time intervals. Default numeric/memory
+speed selects USA40.136s/OffRoad117.076s/Exo89.298s/World0; Germany speed is OCR.
+Explicit exploratory OCR permits only two common bins with >=2s/game, center and
+negative-medium slow input at40..60m/s. Turn fragments max0.104..0.207s; no positive
+turn bin qualifies. NOT clean-contact or physical/ADC angle acceptance. Exo selected
+adapter ceiling>=126 time36.95%, not torque; don't tune from these aggregates.
+Source requests only: gate at writes, no asynchronous transitions/host watchdog/
+shaper/device simulation. World menu passthrough preserved. No settings/native
+changes. Full Python group368/no skips PASS sourceb3110f9b2e2b944aaec696562f8bd181c80d896b295b72497ca3354ee2ee8652.
+LOCAL ffb-condition-final/-ocr and ffb-condition-python-checks under Amazon root.
+Native/GPU checks remain earlier checkpoint. Next validate existing World
+speed_raw probe units/lifetime, relate differing steering curves to actual ADC,
+review clean/contact windows, reconstruct conditioning then versioned50 candidate.
+Attended common-wheel acceptance stays required; no automatic physical force.
+Rendering continues from waiting-selector checkpoint below. LOCAL
+install-waiting-observer.py is drafted but NOT applied/built; inspect before use.
+
 ## September 10 waiting selector — ACTIVE native observation next
 
 Read docs/reviews/2026-09-10-exotica-waiting-selection.md. Canonical

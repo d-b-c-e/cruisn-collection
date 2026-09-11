@@ -18,6 +18,9 @@ The games can retain different textures and force character.
   physical output disabled; retain its different-source/whole-drive limitations.
 - [x] Renew all four source traces on native795fc and repeat those 20 algorithm
   cases; all underlying replays pass. Matched segments remain the next gate.
+- [x] Add time-weighted source/input/speed interval analysis with explicit clock,
+  provenance, freshness, polarity and replay-identity checks; quantify coverage
+  before fitting gains. The first pass exposes insufficient matched evidence.
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -107,6 +110,39 @@ Extend that evidence with segmentation, source identity,
 time weighting and explicit coverage before choosing defaults. Legacy
 `ffb_compare.py` is a USA/plugin transfer comparison with permissive parsing;
 it is not a four-game acceptance gate.
+
+### Condition coverage tool
+
+`harness/force_segments.py` reads the accepted replay `run` directories. Supply
+`--usa`, `--world`, `--offroad`, `--exotica` and a new `--output` directory. All four
+must identify the same native executable and physical FFB off. It joins motor
+and polarity/gate writes, input frames and versioned speed samples in emulated
+time. Output includes explicit selected intervals, time-weighted force percentiles,
+RMS, adapter-ceiling duration and speed/steering/motion bins. Repeated writes do
+not gain extra statistical weight.
+
+This measures **unshaped requested force at motor writes**, not the full output
+worker. The 500 ms motor and 100 ms speed age caps select evidence; they do not
+simulate a host watchdog. Gate changes between motor writes, rumble, damping,
+shaper timing, actual ADC interpolation and physical rim angle remain separate.
+Unreviewed intervals can include contacts and must not be called clean cornering.
+
+OCR speed is excluded by default. `--allow-ocr` creates an explicitly exploratory
+report while retaining its provenance and age limit. The first common-build run
+selects 40.14 seconds in USA, 117.08 in Off Road and 89.30 in Exotica; World has
+no eligible non-OCR speed samples. Allowing OCR yields only two shared bins with
+at least two seconds per game: center/steady and negative-medium/slow steering
+at 40–60 m/s. The latter consists of short fragments, not sustained matched turns.
+No positive-direction turn bin reaches that coverage.
+
+Therefore the next evidence work is to validate World's speed against its
+existing read-only memory probe, map the different steering curves to comparable
+inputs, and label contact/clean windows. Then reconstruct and compare the shaped
+output at strength 50. A new attended drive may fill any remaining coverage gaps;
+the current evidence does not justify selecting calibration gains yet.
+
+See the [condition-coverage findings](reviews/2026-09-10-ffb-condition-coverage.md)
+and [public receipts](../results/proof/2026-09-10-ffb-condition-coverage/README.md).
 
 See the [upstream audit and initial clipping measurement](reviews/2026-09-10-ffb-plugin-and-normalization.md).
 The [initial common-candidate baseline receipts](../results/proof/2026-09-10-ffb-baseline/README.md)

@@ -11,6 +11,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - Fix offline force analysis ignoring the current `wheel_motor` output name.
   Initial four-game strength sweeps establish algorithm baselines; they do not
   yet establish matched driving or physical force normalization.
+- Add time-weighted four-game force coverage analysis with strict trace/clock
+  checks, stale-sample exclusion and explicit OCR provenance. Existing recordings
+  lack sufficient matched turn/contact coverage for calibration; tuning is unchanged.
 - Add read-only native Exotica allocation/first-draw diagnostics. Complete Amazon
   runs reproduce the earlier trace and sampled display frames. Waiting-object
   drawing remains pending; the default suite retains a World renderer timeout.
