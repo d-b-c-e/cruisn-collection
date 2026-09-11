@@ -59,6 +59,10 @@ acceptance delivers a candidate; attended drives accept its feel and stability.
 - [x] Renew the four full drives through that worker at nominal50 on one candidate:
   all 61,713 updates verify, original game-source traces remain unchanged, and
   separate zero/disabled/enhanced controls pass. Matched-window calibration is open.
+- [x] Measure actual held output inside conservatively joined game/host windows.
+  After excluding uncertain edges, only a centered-input bin has two seconds in
+  all four games; turn/contact calibration still needs controlled coverage.
+  [Window measurements and recording needs](reviews/2026-09-11-ffb-worker-windows.md).
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and

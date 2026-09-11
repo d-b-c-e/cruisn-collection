@@ -19,6 +19,7 @@ assuming that a source feature is present in a downloaded package.
 | [V-Unit ADC verification](reviews/2026-09-11-ffb-vunit-adc.md) | Actual USA, World and Off Road steering reads, conversion timing and unchanged force baselines |
 | [Impact detector reachability](reviews/2026-09-11-ffb-impact-reachability.md) | Exotica enhanced-impact threshold cannot be reached on the Amazon source; calibration implications |
 | [Actual force worker](reviews/2026-09-11-ffb-actual-worker.md) | Device-free worker timing, gates, conditioning and independent stage verification |
+| [Worker window measurements](reviews/2026-09-11-ffb-worker-windows.md) | Conservative host/game clock joins, time-weighted output and remaining calibration-drive coverage |
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |

@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Add time-weighted actual force-output measurements with conservative host/game
+  clock boundaries. Existing drives still need comparable turn/contact coverage
+  before selecting normalization gains.
+
 - Add explicit device-free observation of the actual force worker, with source/
   host clocks and independent stage verification for strength-50 calibration.
   This does not enable physical feedback or change the deployed tune.

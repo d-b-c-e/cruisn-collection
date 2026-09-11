@@ -1,0 +1,7 @@
+{
+  "harness/ffb_worker.py": "ac1e4f7228f3c4df551466973f7c2355ab748e8997547d03b096862f85c05f9d",
+  "harness/ffb_worker_windows.py": "6193f88533d5ffddcf074ffcd07f33bedc0c88b8ce15e37c45d1b4e902c36ece",
+  "harness/force_segments.py": "aa485ebf2048aa094ea736670fff6f711a702ee75ebb8a6e1e8b10bf1cab9c33",
+  "harness/verification.py": "9a77212c99e9b38ccc1ea8cb2afbd3be801c40c421edc19ef930b19478e3327c",
+  "tests/test_ffb_worker_windows.py": "b89a6fec5f426846cbf02f4c93d57734d45d8de3ad964fcf13312b61b190ec28"
+}

@@ -1,0 +1,280 @@
+{
+  "common_2second_bins": [
+    "40-60mps/center/steady"
+  ],
+  "full_summary_sha256": "0607a04d0c5471d80132df33fff9009ba73525990c70340db6b4c7a799663bcd",
+  "games": {
+    "exotica": {
+      "emulated_selected_seconds": 89.297629386,
+      "groups": {
+        "40-60mps/center/steady": {
+          "absolute_impulse_normalized_seconds": 0.20637258472746972,
+          "absolute_p50": 0.0050050355540635395,
+          "absolute_p90": 0.02957243568224128,
+          "intervals": 61,
+          "negative_seconds": 2.577684052,
+          "peak_abs": 0.31595812860499894,
+          "positive_seconds": 4.775119449,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.029066301562587007,
+          "seconds": 14.069765378,
+          "signed_impulse_normalized_seconds": 0.052719014835322126,
+          "within_one_percent_of_ceiling_fraction": 0.0,
+          "zero_seconds": 6.716961877
+        },
+        "40-60mps/negative-medium/slow": {
+          "absolute_impulse_normalized_seconds": 0.38466626043006685,
+          "absolute_p50": 0.39915158543656726,
+          "absolute_p90": 0.3999145481734672,
+          "intervals": 24,
+          "negative_seconds": 0.992386552,
+          "peak_abs": 0.3999755851924192,
+          "positive_seconds": 0.0,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.3884331351560301,
+          "seconds": 0.992386552,
+          "signed_impulse_normalized_seconds": -0.38466626043006685,
+          "within_one_percent_of_ceiling_fraction": 0.6705699192102716,
+          "zero_seconds": 0.0
+        }
+      },
+      "input_hashes": {
+        "ffb-worker-receipt.json": "3c0da8b4d6b55c54998262933c78a0692f145d264a2c73dff4b3239a5e6a6778",
+        "ffb-worker-sources.csv": "3a84c2060a1cbaacc8905ed2a05bc90609515788e8ac3d06975fce682acf1367",
+        "ffb-worker-ticks.csv": "018be23a83355524f9c38eb2a07416043ff1bebd0c56ae82cba8b3d550a109c9",
+        "force-source.csv": "6bfbdf05d16252bb655a39259429225828993b3fc5b73d054b63086f83636336",
+        "frames.csv": "bcbce0270d82aac5f45a4595a895392de2745f7cbb5df33d8cb295deab5946ec",
+        "invocation.json": "d03fc9144f874dfaaf64b54ff55153538dd603766326ea7306449bf103ed26e6"
+      },
+      "input_join_fields": [
+        "frame",
+        "emulated_seconds",
+        ":ANALOG0",
+        ":ANALOG1",
+        ":ANALOG2",
+        ":ANALOG3",
+        ":DIPS",
+        ":GEARS",
+        ":IN1",
+        ":IN2",
+        ":ioasic:SERIAL_DIGIT",
+        ":KEYPAD",
+        ":SEQ",
+        ":SYSTEM"
+      ],
+      "input_join_frames": 8860,
+      "known_host_seconds": 61.681408822,
+      "known_interiors": 789,
+      "largest_internal_anchor_gap_seconds": 0.0461885,
+      "merged_windows": 1587,
+      "reference_frames_sha256": "0313b3e0ce03ee2d0b305a1b0d7add05ae0a6f37e6adbd363cf6669e711c46e0",
+      "replay_report_sha256": "51b19d94fb3c66b0a3ddfbbbe0c75686fa122f853c8be9d35579d8c8b5707b6c",
+      "report_sha256": "9639fd93bde8c157af4944f47dc0c1894555214b1447e6b03a34b3c3214959af",
+      "source_fragments": 20409,
+      "windows_sha256": "fd658e2cad8e70b18f6d00887b7e04e20e81df8d22874e9df4dea231301646c5"
+    },
+    "offroad": {
+      "emulated_selected_seconds": 117.07576821,
+      "groups": {
+        "40-60mps/center/steady": {
+          "absolute_impulse_normalized_seconds": 0.4249873184484695,
+          "absolute_p50": 0.011261329996642965,
+          "absolute_p90": 0.04336680196539201,
+          "intervals": 61,
+          "negative_seconds": 1.519894176,
+          "peak_abs": 0.41508224738303784,
+          "positive_seconds": 17.851337904,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.04421183128403748,
+          "seconds": 20.406528578,
+          "signed_impulse_normalized_seconds": 0.19339591886797694,
+          "within_one_percent_of_ceiling_fraction": 0.0,
+          "zero_seconds": 1.035296498
+        },
+        "40-60mps/negative-medium/slow": {
+          "absolute_impulse_normalized_seconds": 0.5030485969968871,
+          "absolute_p50": 0.4441053498947111,
+          "absolute_p90": 0.4521317178868984,
+          "intervals": 26,
+          "negative_seconds": 1.244023548,
+          "peak_abs": 0.4714804528946806,
+          "positive_seconds": 0.0,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.41225074711352877,
+          "seconds": 1.244023548,
+          "signed_impulse_normalized_seconds": -0.5030485969968871,
+          "within_one_percent_of_ceiling_fraction": 0.0,
+          "zero_seconds": 0.0
+        }
+      },
+      "input_hashes": {
+        "ffb-worker-receipt.json": "33884185d6a04099cd73c9bbba1d46a899e053c07e33bbfa8f8a3e42926dbad5",
+        "ffb-worker-sources.csv": "0e7a76afba17e3c3f21092584351dd1fc1ba3b2a66f9231b72263399ab4a4e30",
+        "ffb-worker-ticks.csv": "60d9bc3cc17ba9a557d17a7c4c12a0b215be95156c47ecf4089f902ab4e74b84",
+        "force-source.csv": "58e9599573c105e7f53b1190f1e8b57bfc5276ae4898ec7c5c7d1e3ff128719e",
+        "frames.csv": "41d27ed42bf60cb397886d3a950d6a7770b26ec377368d8666d2cf3fe093d697",
+        "invocation.json": "5ebc85b5d25852bb18a6491198d9d59eeff0ce1261b54bc071c82a67e2e8f6fc"
+      },
+      "input_join_fields": [
+        "frame",
+        "emulated_seconds",
+        ":ACCEL",
+        ":BRAKE",
+        ":CONF",
+        ":DSW",
+        ":FAKE",
+        ":IN0",
+        ":IN1",
+        ":serial_pic2:SERIAL_DIGIT",
+        ":WHEEL"
+      ],
+      "input_join_frames": 9644,
+      "known_host_seconds": 84.185635192,
+      "known_interiors": 904,
+      "largest_internal_anchor_gap_seconds": 0.0699133,
+      "merged_windows": 1907,
+      "reference_frames_sha256": "99183d7b92c9b5b7ec3969876e8f0c77050a269bb079687e5d43383a8b760e6f",
+      "replay_report_sha256": "96339efbd576138a3bf6975d6f2ccf4bb7f8551557965947bbabd5dfd8f4a286",
+      "report_sha256": "bd53270142d5f53f2a4c7ffa129d3b6bbc511539c73b7945152b357b8b003a95",
+      "source_fragments": 23741,
+      "windows_sha256": "e70182b1b825f02e1e4b23d78fda89936d2dca51e8777c201c4bd5c28fd28fa0"
+    },
+    "usa": {
+      "emulated_selected_seconds": 40.135835816,
+      "groups": {
+        "40-60mps/center/steady": {
+          "absolute_impulse_normalized_seconds": 0.07094132790813928,
+          "absolute_p50": 0.0045167394024475845,
+          "absolute_p90": 0.0195623645741142,
+          "intervals": 19,
+          "negative_seconds": 0.181793289,
+          "peak_abs": 0.0640888698995941,
+          "positive_seconds": 7.746968375,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.012452507799075821,
+          "seconds": 7.989129062,
+          "signed_impulse_normalized_seconds": 0.0658653445129551,
+          "within_one_percent_of_ceiling_fraction": 0.0,
+          "zero_seconds": 0.060367398
+        },
+        "40-60mps/negative-medium/slow": {
+          "absolute_impulse_normalized_seconds": 0.501314046520066,
+          "absolute_p50": 0.3680227057710501,
+          "absolute_p90": 0.49491866817224645,
+          "intervals": 30,
+          "negative_seconds": 1.33728274,
+          "peak_abs": 0.49967955565050204,
+          "positive_seconds": 0.0,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.38406336971619437,
+          "seconds": 1.33728274,
+          "signed_impulse_normalized_seconds": -0.501314046520066,
+          "within_one_percent_of_ceiling_fraction": 0.09834277379516616,
+          "zero_seconds": 0.0
+        }
+      },
+      "input_hashes": {
+        "ffb-worker-receipt.json": "54d74961b9dd91652ae6adf4a34e321b6d806feebd98264e491b48f05d3d457e",
+        "ffb-worker-sources.csv": "d4ef22c8877bf0eab9c2a5ce977b30fc3659a4880c01ee1f496e905fb174eebf",
+        "ffb-worker-ticks.csv": "8d28ce145028f01b648c64c357d2d756fafd173d7aa953a0ba6ba4e9f7a2cd91",
+        "force-source.csv": "677b00dfc3f2e06e2bcc2d754f4c02e38eb9f3db78589c083a68aa33e2e06bdf",
+        "frames.csv": "ad2e7ab416a73ef5998097ba4444e6b93ad77519e1a371a94d410531c64f309b",
+        "invocation.json": "b7a3b63545e4b67f01496fb17c188274425d3c822c00bb69e2468190bc892ea2"
+      },
+      "input_join_fields": [
+        "frame",
+        "emulated_seconds",
+        ":ACCEL",
+        ":BRAKE",
+        ":CONF",
+        ":DSW",
+        ":FAKE",
+        ":IN0",
+        ":IN1",
+        ":MOTION",
+        ":WHEEL"
+      ],
+      "input_join_frames": 5012,
+      "known_host_seconds": 28.755855168,
+      "known_interiors": 316,
+      "largest_internal_anchor_gap_seconds": 0.0249807,
+      "merged_windows": 840,
+      "reference_frames_sha256": "63d3c06cca9c6738450f7a59c791955c33726cf049abda4186c22cc570a55357",
+      "replay_report_sha256": "dfffdb6575e9098e412a0dd23d0c1a0a0d4115e85b23a1fc040b474d2c76ee3b",
+      "report_sha256": "81ae8c5c56ad887f2e4d5c9282645eed0b17b35bbd59c1cf8d38728d9ae033d3",
+      "source_fragments": 8140,
+      "windows_sha256": "1902e947f1220861c8a009a7396f3c52e05df3edff2e27abd1ee0d0cadcb37b7"
+    },
+    "world": {
+      "emulated_selected_seconds": 117.248395412,
+      "groups": {
+        "40-60mps/center/steady": {
+          "absolute_impulse_normalized_seconds": 0.24849987638312937,
+          "absolute_p50": 0.005279702139347514,
+          "absolute_p90": 0.02414014099551378,
+          "intervals": 89,
+          "negative_seconds": 2.193856433,
+          "peak_abs": 0.10907315286721396,
+          "positive_seconds": 17.224599498,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.015669411187912863,
+          "seconds": 21.268695522,
+          "signed_impulse_normalized_seconds": 0.16346602258290352,
+          "within_one_percent_of_ceiling_fraction": 0.0,
+          "zero_seconds": 1.850239591
+        },
+        "40-60mps/negative-medium/slow": {
+          "absolute_impulse_normalized_seconds": 0.7350381164321116,
+          "absolute_p50": 0.33411664174321726,
+          "absolute_p90": 0.48423718985564745,
+          "intervals": 55,
+          "negative_seconds": 2.10677739,
+          "peak_abs": 0.499862666707358,
+          "positive_seconds": 0.0,
+          "requested_ceiling_fraction": 0.0,
+          "rms": 0.35933540452337226,
+          "seconds": 2.10677739,
+          "signed_impulse_normalized_seconds": -0.7350381164321116,
+          "within_one_percent_of_ceiling_fraction": 0.07977207027079401,
+          "zero_seconds": 0.0
+        }
+      },
+      "input_hashes": {
+        "ffb-worker-receipt.json": "efcec850fe9c7da322e0a65e5a2f6a8c284e971bd7ad8d837fe73d69a88f44e9",
+        "ffb-worker-sources.csv": "533f0962539e9e9ce4821bbcb94548f391c2ea5ce08ef339a589d4f6ab74dd0e",
+        "ffb-worker-ticks.csv": "fe63825faccce349cc5a48c9a010e6134fef79e5f8c015a920705bc2ed209ec4",
+        "force-source.csv": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+        "frames.csv": "ee590461c83adc346f79db8b2603fa6ae4a79bb881a4434a8d4ba785183b45f1",
+        "invocation.json": "7ec42fc289b51ad644ab36df8e964dd426ad932b8b48f1a233684376858f7289"
+      },
+      "input_join_fields": [
+        "frame",
+        "emulated_seconds",
+        ":ACCEL",
+        ":BRAKE",
+        ":CONF",
+        ":DSW",
+        ":FAKE",
+        ":IN0",
+        ":IN1",
+        ":serial_pic2:SERIAL_DIGIT",
+        ":WHEEL"
+      ],
+      "input_join_frames": 9269,
+      "known_host_seconds": 77.744785092,
+      "known_interiors": 1004,
+      "largest_internal_anchor_gap_seconds": 0.0685276,
+      "merged_windows": 2290,
+      "reference_frames_sha256": "08a1127644d1764d81f45a98160ae6dcf5aa16dfd917bd4dfcee64a7ceb062b9",
+      "replay_report_sha256": "8e96d9dc242c704020a21b9589e44416a8227278fdf9feb6ec1a78f0f6b447d8",
+      "report_sha256": "952bcbc251eac5422e07d38c3b07d7bf2b7ae33d03093bb2d29a2947620f6fc5",
+      "source_fragments": 23772,
+      "windows_sha256": "9c345d7dc7d39eadc991812674a94d5fec5aab41a8f038d431eb0e1716330d34"
+    }
+  },
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_acceptance": false,
+  "schema": 1,
+  "windows_reviewed": false
+}

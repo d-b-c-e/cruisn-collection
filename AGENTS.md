@@ -1,5 +1,50 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 force-window evidence — CALIBRATION DRIVE COVERAGE NEEDED
+
+Read docs/reviews/2026-09-11-ffb-worker-windows.md. New canonical
+harness/ffb_worker_windows.py measures actual held sink output only within
+conservatively bounded host interiors of game-time windows. No linear clock
+interpolation, duplicate emulated anchors preserved, 1ns representation guards,
+unknown edges explicit. Delayed sink acceptance and finalstop are respected.
+Prior worker receipt/journal hashes bind stage verification; this analyzer does
+not re-execute nativeMAME/worker or classify contacts. Source/raw join and frame
+identity are rechecked. Reviewed-window declarations are not normalization or
+physical acceptance. Exact-ceiling and within1%-of-ceiling are separate metrics.
+
+LOCAL ffb-worker-condition-windows-ceiling applies old verified World-memory
+speed/recorded-input bins to936840worker traces. All source/gate/speed bytes and
+32785deterministic input fields match old795fc analysis. Initial wholeframesCSV
+hash fails because host_seconds/speed_percent differ; failure retained. Revised
+join excludes exactly those2 fields and binds both fullfilehashes. No acceptance
+constraint silently removed. Mergedwindows840/2290/1907/1587; known316/1004/904/789,
+hostseconds28.755855168/77.744785092/84.185635192/61.681408822. Hostseconds and old
+emulatedseconds are different clocks, not directly subtractable. Largest retained
+internalanchor gaps25..70ms. Only40-60mps/center/steady has2s each. Negative-medium/
+slow hasUSA1.337s/30fragments,World2.107/55,Off1.244/26,Exo0.992/24. No turn bin
+qualifies; contacts remainunreviewed. No gains chosen. Exo near40%-ceiling67.1%
+in that tiny0.992s sample vsUSA9.8%; exactceiling0 duefilter/hysteresis. This is
+screening evidence of flattened detail, not a normalization fit or torque claim.
+
+13newtests and424Python/no skips PASS source724bee68fcf99235d1b2f8fa995f2a02927f614d01a9ea81585c562d84a6175b.
+Publicproof2026-09-11-ffb-worker-windows verifies source/hash/aggregate receipts.
+No native/GPU/sourceforce changes. Native936840/personal87d/publicv0.5.0 unchanged.
+No game/build/test running. A concise async question now asks whether maintainer
+is available for guided calibration recordings in allfour games. DO NOT launch
+an attended recording or physicalFFB until an actual availability reply; elapsed
+time/preselected option is not an answer. Continue independent rendering meanwhile.
+Need straight, sustained gentleleft/right and clearly labeledcar/wallcontacts,
+samewheel/referenceclass/transmission, documentedgamesteeringsettings, USA50reference.
+
+NEXT rendering: actual waiting-cohort observation is accepted in42ab4a7/bc384,
+no waitingdraw yet. Implement explicitly gated PRIVATE draw at actualR, with
+original command placement/depth/page/owned materials and intrinsic alpha; keep
+earlyfutureinsertion. Then temporal fade/handover and speed. Raw gamebytes LOCAL.
+No deploy/release/hostedCI/menu removal/automaticphysicalFFB/Worldmenusuppression.
+Serialrig/games/GPU/builds; no builds/exports/broadscans duringtimedplayback.
+Continue directly; heartbeat is recovery only, not milestone waiting.
+
+
 ## September 11 actual force worker — NEAR-TERM matched calibration next
 
 Read docs/reviews/2026-09-11-ffb-actual-worker.md. Native93684035c6c1995b01ee67aef5537f5b751a8a10
