@@ -1,5 +1,54 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 actual force worker — NEAR-TERM matched calibration next
+
+Read docs/reviews/2026-09-11-ffb-actual-worker.md. Native93684035c6c1995b01ee67aef5537f5b751a8a10
+is separately built/frozen/pushed at build/candidates/93684035c6c/vunit.exe, SHA
+11752d0369e84a432a3076307704709ec4f2fcb0ea563cd0ef7027ac64a87fef. Its immutable
+profile file is beside the executable.188patches reconstruct285372a058114033c2ff41864bea0dfbfaa92a41.
+New explicit --ffb-worker observe requires candidate and literal physicalFFB0;
+actual worker uses a software sink, skips SDL haptic loading/APIs and rejects
+native sign-test mode. No gain/menu/polarity policy changed. Ordinary replay is
+observer-off. Profile@2/smoothing20, nominal50/effectiveExo40, current conditions
+and gate settings; no user-profile override. Bound131072records/64MiB perjournal.
+
+Full USA/WorldGermany/OffRoadElPaso/ExoAmazon all PASS32785originalinputs and
+original native-image comparisons (Exo CPU polygons disabled). All source/gate/
+speed/drivetrain CSVs byteexact native795fc. Exo21completed4K/CRT4650..4750 match
+reference BMP AND decodedRGB. Actual61713worker ticks independently reproduce
+all detector/shaper/mixer/quantization stages. Counts USA9947/World17565/Off18006/
+Exo16195; source4569/8803/8820/7476. Legacy waveform events2/29/45/46 are NOT
+collisions. Exo2gate cancellations;0watchdogs inthese4, allstopzero.
+
+Separate USA controls PASS: off1200inputs/20images/noobserver; zero2400/40,
+4458ticks2352nonzeroinputs/allzerooutputs/nosinkchanges; enhancedfull5012/83,
+9943ticks2events22nonzero-envelope ticks. Earlier ideal4-event USA differs;
+do not assume host/emulated clocks or atomic reads are interchangeable. No
+mailbox-causality, hardware condition/rumble response or physical acceptance.
+Logging/software-sink timing is not uninstrumented driver performance.
+
+411Python/no skips and135nativecommands/51native tests PASS same source
+135ee3fbb11a4dd5f6d68718303f65b2ce4945f96080c07d37d534809fce952b. New15hand-calculated
+worker schedules+14corrupt-input rejections. GPUgroup notrerun; notreleasegate.
+LOCAL ffb-worker-*; publicproof2026-09-11-ffb-actual-worker verifies hashes and
+receipt consistency only. Initial redundant-cancel rejection expectation failed
+and was corrected; initial BMP-vs-RGBhash assertion failed, corrected with BOTH
+comparisons. Failed expectations/scripts retained. No game/build/test remains.
+
+NEXT time-weighted matched clean left/right turns and labeled car/wall contacts,
+source-to-host uncertainty, then versioned strength50 candidate and0/25/80/100
+sweeps. Do NOT tune unsegmented whole-drive RMS, rescale to observed maxima or
+lower Exo impact thresholds merely to create events. Actual enhanced Amazon
+arrival remains unreachable from its captured raw source; calibrate those units
+separately. Existing drives still lack matched/contact labels; request short
+attended calibration drives if footage cannot fill them. No automatic physical
+FFB, deploy/release/hostedCI/Worldmenu suppression/menu removal. Personal87d and
+publicv0.5.0 unchanged. Rendering checkpoint42ab4a7 is complete; next gatedPRIVATE
+waiting draw at actualR, with materials/alpha/depth/fade/handover proofs. Keep
+working directly; serial rig/games/GPU/builds, no builds/exports/broad scans during
+timed playback. Recovery heartbeat is not a work cadence.
+
+
 ## September 11 FFB impact reachability — NEAR-TERM source calibration
 
 Read docs/reviews/2026-09-11-ffb-impact-reachability.md. Actual ExoAmazon7476raw

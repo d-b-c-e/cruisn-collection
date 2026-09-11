@@ -97,6 +97,8 @@ def commands(group, output, cxx):
     steps.append(('world-host-math', [py, 'harness/verify_world_host_native.py', host,
                                     '--report', str(output/'world-host-math.json')]))
     ffb = compile_one('ffb-analyzer', 'native/analyze_ffb.cpp')
+    worker = compile_one('ffb-worker-verifier', 'native/verify_ffb_worker.cpp')
+    steps.append(('ffb-worker-schedules', [py, 'tests/native/check_ffb_worker.py', worker]))
     base = [ffb, 'fixtures/signals/idle-hit.csv', 'lib/toolkit/profiles', 'cruisn-vunit@2', '50']
     steps += [('ffb-stages', base+[str(output/'stages.csv')]),
               ('ffb-impacts', base+[str(output/'impacts.csv'), '--impacts']),

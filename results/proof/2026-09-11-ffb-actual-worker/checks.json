@@ -1,0 +1,29 @@
+{
+  "ffb-worker-local-checks": {
+    "commands": 135,
+    "groups": [
+      "native"
+    ],
+    "native_tests": 51,
+    "passed": true,
+    "report_sha256": "6ad8ee223d408e549b94015add3f634bec49626b19d7f8a3552c1a3db6ace795",
+    "source_identity": "135ee3fbb11a4dd5f6d68718303f65b2ce4945f96080c07d37d534809fce952b"
+  },
+  "ffb-worker-python-checks": {
+    "commands": 1,
+    "groups": [
+      "python"
+    ],
+    "native_tests": 0,
+    "passed": true,
+    "python": {
+      "errors": 0,
+      "failures": 0,
+      "passed": true,
+      "skipped": 0,
+      "tests": 411
+    },
+    "report_sha256": "af4d2bd9829b534e533572820478e64792f6c84e3b7e2a7e3eee9d02b016908d",
+    "source_identity": "135ee3fbb11a4dd5f6d68718303f65b2ce4945f96080c07d37d534809fce952b"
+  }
+}

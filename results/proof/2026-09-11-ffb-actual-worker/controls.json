@@ -1,0 +1,135 @@
+{
+  "disabled": {
+    "candidate_sha256": "11752d0369e84a432a3076307704709ec4f2fcb0ea563cd0ef7027ac64a87fef",
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 1200,
+    "invocation_sha256": "720d2a93c7a2b4cd7f522ee7b6fd8027506c32b1bf1388c855e7f3c873192733",
+    "native_images": 20,
+    "observer_artifacts": false,
+    "report_sha256": "4159a53421c03b52f4c9a4f5db22c4461dc7d9a80742bd25281da3fca0d3c6ff"
+  },
+  "enhanced": {
+    "candidate_sha256": "11752d0369e84a432a3076307704709ec4f2fcb0ea563cd0ef7027ac64a87fef",
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 5012,
+    "invocation_sha256": "482867bbbb08200f4c3ace407b2f0c659d3d36c4e899e014f1c30e8aca9b7c60",
+    "native_images": 83,
+    "nonzero_envelope_ticks": 22,
+    "nonzero_input_ticks": 7040,
+    "nonzero_output_ticks": 7068,
+    "report_sha256": "c9c5f39fc1421d6ed720d33ff8a1ab1490dd283858e9f261ce1bddd838bbd880",
+    "worker": {
+      "cancels": 0,
+      "events": 2,
+      "hashes": {
+        "ffb-worker-receipt.json": "91e2ea4cd4f1415206ffaa01fc8483a661e344c3b6b4b1a3f0d3b78c99bc3d75",
+        "ffb-worker-sources.csv": "8a382b19051a16e204381a50fe9646ae1737afdff063b1a0109dc4f3b4c25392",
+        "ffb-worker-ticks.csv": "54721c18fa05b4898f92af53cb39629ecee56efd2012527827795eaff6e22659"
+      },
+      "last_host_seconds": 94.5184159,
+      "last_output": 866,
+      "mailbox_causality_verified": false,
+      "passed": true,
+      "physical_acceptance": false,
+      "receipt": {
+        "complete": true,
+        "damper": 0,
+        "device_free": true,
+        "friction": 0,
+        "hold_ms": 500,
+        "impact_axis": true,
+        "invert": false,
+        "physical_output": false,
+        "profile": "cruisn-vunit@2",
+        "profile_loaded": true,
+        "rumble": 100,
+        "schema": 1,
+        "sink_final_level": 0,
+        "smoothing_ms": 20,
+        "source_bytes": 258220,
+        "sources": 4569,
+        "spring": 0,
+        "stop_host_seconds": 94.5197225,
+        "strength": 50,
+        "tick_bytes": 1256640,
+        "ticks": 9943
+      },
+      "scope": "Actual observed conditioning inputs/clocks; sink acceptance is not physical delivery",
+      "sink_changes": 2961,
+      "source_join_rows": 4569,
+      "ticks": 9943,
+      "timeouts": 0
+    }
+  },
+  "zero": {
+    "candidate_sha256": "11752d0369e84a432a3076307704709ec4f2fcb0ea563cd0ef7027ac64a87fef",
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 2400,
+    "invocation_sha256": "d063e9338ca1df55a22fe86174c1006874a5b813a567736846c2e36ccba2b1f9",
+    "native_images": 40,
+    "nonzero_envelope_ticks": 0,
+    "nonzero_input_ticks": 2352,
+    "nonzero_output_ticks": 0,
+    "report_sha256": "4805f43ac4709fcfeef4194bcee11879b420094df7732469679d976549a6bb5b",
+    "worker": {
+      "cancels": 0,
+      "events": 0,
+      "hashes": {
+        "ffb-worker-receipt.json": "93d2ef9c8547f7a82135899454610bdbecaf805d1d394a995700694b4e636a7f",
+        "ffb-worker-sources.csv": "f15963ce062242c43d55b06404c9dbaa0577fbab0df2e44335aa8d4664729d52",
+        "ffb-worker-ticks.csv": "14ef94d5887f46a7b887fe4357ace665648620da32650ca49d90918bc309bccd"
+      },
+      "last_host_seconds": 43.7887426,
+      "last_output": 0,
+      "mailbox_causality_verified": false,
+      "passed": true,
+      "physical_acceptance": false,
+      "receipt": {
+        "complete": true,
+        "damper": 0,
+        "device_free": true,
+        "friction": 0,
+        "hold_ms": 500,
+        "impact_axis": false,
+        "invert": false,
+        "physical_output": false,
+        "profile": "cruisn-vunit@2",
+        "profile_loaded": true,
+        "rumble": 100,
+        "schema": 1,
+        "sink_final_level": 0,
+        "smoothing_ms": 20,
+        "source_bytes": 105255,
+        "sources": 1957,
+        "spring": 0,
+        "stop_host_seconds": 43.7892506,
+        "strength": 0,
+        "tick_bytes": 414096,
+        "ticks": 4458
+      },
+      "scope": "Actual observed conditioning inputs/clocks; sink acceptance is not physical delivery",
+      "sink_changes": 0,
+      "source_join_rows": 1957,
+      "ticks": 4458,
+      "timeouts": 0
+    }
+  }
+}

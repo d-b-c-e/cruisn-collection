@@ -52,6 +52,13 @@ acceptance delivers a candidate; attended drives accept its feel and stability.
 - [x] Check impact-detector reachability separately from force gain: Exotica's
   enhanced path cannot reach the shared arrival threshold on the Amazon source
   trace. [Evidence and implications](reviews/2026-09-11-ffb-impact-reachability.md).
+- [x] Implement explicit device-free observation of the real native worker,
+  recording its actual atomic inputs, watchdog/cancel decisions and stage clocks.
+  An independent verifier reproduces the recorded conditioning; full-game
+  validation is recorded in [the worker review](reviews/2026-09-11-ffb-actual-worker.md).
+- [x] Renew the four full drives through that worker at nominal50 on one candidate:
+  all 61,713 updates verify, original game-source traces remain unchanged, and
+  separate zero/disabled/enhanced controls pass. Matched-window calibration is open.
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -192,9 +199,14 @@ frame snapshots are one byte. Off Road reads each conversion twice; repeated
 reads must not increase a segment's statistical weight. This closes the sampling
 check for these recordings, while physical rim angle remains a separate measure.
 
-Next label contact/clean windows and reconstruct final output conditioning at
-strength 50, including host timing, coalesced writes, gates and effect lifetimes.
-An idealized 4 ms loop is not an exact worker trace. A short attended comparison
+The [actual worker diagnostic](reviews/2026-09-11-ffb-actual-worker.md) now captures
+host timing, consumed inputs, gates, watchdogs and force stages at strength50.
+It replays each actual observed update independently, without a physical wheel.
+This closes the fixed-4ms conditioning assumption; source-to-worker mailbox
+causality and mechanical condition/rumble response remain separate.
+
+Next label contact/clean windows and compare time-weighted final output within
+them, with source-to-host clock uncertainty shown. A short attended comparison
 drive may fill remaining coverage gaps; the current evidence does not justify
 selecting calibration gains yet. Prioritize the versioned calibration candidate
 over further signal-discovery work that does not affect the comparison.

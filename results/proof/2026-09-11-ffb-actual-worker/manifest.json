@@ -1,0 +1,10 @@
+{
+  "files": {
+    "build.json": "350533c7ff408cebd496d14bf42f96be025904f9a9463bbfff563683ccaa12b7",
+    "checks.json": "e8c18700030758f7af29c182629050bb66a581518424474641c103639e222e81",
+    "controls.json": "7a2cb28ba860b02f11278c265509f4f5af2023ff20853c7b3342bf386c83ec08",
+    "four-games.json": "d0c86d3c504455fec08df782cb7a9087466eac7f207344702ba2066f55c2ae5d",
+    "source.json": "61d3267a7dff8f66aad32087ea1f97d243493e2bec7511f866683d51106a0b06"
+  },
+  "schema": 1
+}

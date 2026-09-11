@@ -27,6 +27,7 @@ import exotica_scene_options
 import exotica_lifetimes
 import exotica_waiting
 import exotica_handover
+import ffb_worker
 import zeus_render_policy
 import zeus_palette
 import zeus_margin_clear
@@ -93,6 +94,7 @@ def main(argv=None):
     exotica_lifetimes.add_arguments(ap)
     exotica_waiting.add_arguments(ap)
     exotica_handover.add_arguments(ap)
+    ffb_worker.add_arguments(ap)
     zeus_render_policy.add_arguments(ap)
     zeus_palette.add_arguments(ap)
     zeus_margin_clear.add_arguments(ap)
@@ -281,6 +283,9 @@ def main(argv=None):
         if usa_host_trial:report['usa_host_scenery']=usa_host_trial
         offroad_host_trial=offroad_host_options.configure(args,manifest['rom'],manifest['settings'])
         if offroad_host_trial:report['offroad_host_scenery']=offroad_host_trial
+        worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
+        if worker_trial:report['ffb_worker']=worker_trial
+        ffb_worker.prepare(worker_trial,work)
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
         if args.display_size:
@@ -420,6 +425,8 @@ def main(argv=None):
             receipt = f"session.lua: game patch {len(patch_entries)} words at frame {args.patch_at_frame}"
             if receipt not in (runtime / "launch.log").read_text(encoding="utf-8", errors="replace"):
                 raise ValueError("late game patch application receipt missing")
+        worker_result=ffb_worker.verify_receipt(worker_trial,runtime)
+        if worker_result:report['ffb_worker']['result']=worker_result
         convert_raw_snapshots(runtime)
         report["evidence"] = session_evidence(runtime, manifest["every"], invocation["returncode"],
             require_gl=not (args.headless or args.native_renderer) and bool(manifest["settings"].get(gl_key+"_GL_SNAP")))

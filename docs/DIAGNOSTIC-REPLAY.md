@@ -31,6 +31,17 @@ capture ran at 78% during car selection and 84% while racing with GDI; D3D held
 provides a compatibility fallback. This measurement covers USA on this rig;
 World/Off Road and physical wheel/menu behavior need their own acceptance.
 
+## Device-free force-worker diagnostics
+
+An explicit `--candidate` can run the actual native worker with
+`--ffb-worker observe --ffb-worker-strength 50`. Physical output stays disabled.
+`--ffb-worker-impacts on` selects the enhanced steering-axis mix; default observation
+uses the legacy path. The frozen executable needs the shipped `force-profiles.ini`
+beside it and no user profile override. See [the worker contract and validation](reviews/2026-09-11-ffb-actual-worker.md)
+for required receipts, the current Exotica trim and remaining calibration limits.
+Ordinary playback does not enable this observer. Software sink acceptance does
+not certify delivered wheel force.
+
 ## Isolated Zeus upstream rendering trials
 
 The separate native completion observer is documented in

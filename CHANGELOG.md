@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Add explicit device-free observation of the actual force worker, with source/
+  host clocks and independent stage verification for strength-50 calibration.
+  This does not enable physical feedback or change the deployed tune.
+
 - Add offline impact-detector reachability metrics. Exotica's raw Amazon signal
   cannot reach the enhanced detector's arrival threshold; calibration remains
   pending. Existing force stages and production settings are unchanged.
