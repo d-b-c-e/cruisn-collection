@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Add offline impact-detector reachability metrics. Exotica's raw Amazon signal
+  cannot reach the enhanced detector's arrival threshold; calibration remains
+  pending. Existing force stages and production settings are unchanged.
+
 - Integrate native Exotica waiting-cohort completion observation. Full/repeat/
   disabled runs preserve original drives and sampled 4K output while verifying
   which proposed copies must be omitted. Extra waiting drawing remains pending.

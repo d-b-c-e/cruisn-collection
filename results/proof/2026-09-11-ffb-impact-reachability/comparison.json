@@ -1,0 +1,179 @@
+{
+  "games": {
+    "exotica": {
+      "modes": {
+        "enhanced": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "raw_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 0,
+            "sampled_peak_abs": 0.492049932,
+            "source_arrival_reachable": false,
+            "source_peak_abs": 0.492049932
+          },
+          "effective_strength": 40,
+          "idealized_event_count": 0,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "19ed390611c1dff4454eae18573c467d9ef0dc9e40fb46a8014a2722ed57e237"
+        },
+        "legacy": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "adapted_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 10051,
+            "sampled_peak_abs": 1.0,
+            "source_arrival_reachable": true,
+            "source_peak_abs": 1.0
+          },
+          "effective_strength": 40,
+          "idealized_event_count": 50,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "c6e506ce249df4a12f63a2254821a21b2e49c5a4ceb3eac78f12202a7488ad5a"
+        }
+      },
+      "raw_max": 62,
+      "raw_min": -60,
+      "source_rows": 7476,
+      "source_sha256": "6bfbdf05d16252bb655a39259429225828993b3fc5b73d054b63086f83636336"
+    },
+    "offroad": {
+      "modes": {
+        "enhanced": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "raw_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 10200,
+            "sampled_peak_abs": 0.984130383,
+            "source_arrival_reachable": true,
+            "source_peak_abs": 0.984130383
+          },
+          "effective_strength": 50,
+          "idealized_event_count": 45,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "66bdcad04aff7460b4f9fb98d0e903709bde118c376f318c1a30dc92cacda257"
+        },
+        "legacy": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "adapted_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 10200,
+            "sampled_peak_abs": 0.984130383,
+            "source_arrival_reachable": true,
+            "source_peak_abs": 0.984130383
+          },
+          "effective_strength": 50,
+          "idealized_event_count": 45,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "07fac3ab23178413dc9720129ef69cd69447689d61e4ca153c351e7af0e026c7"
+        }
+      },
+      "raw_max": 124,
+      "raw_min": -124,
+      "source_rows": 8820,
+      "source_sha256": "58e9599573c105e7f53b1190f1e8b57bfc5276ae4898ec7c5c7d1e3ff128719e"
+    },
+    "usa": {
+      "modes": {
+        "enhanced": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "raw_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 711,
+            "sampled_peak_abs": 1.0,
+            "source_arrival_reachable": true,
+            "source_peak_abs": 1.0
+          },
+          "effective_strength": 50,
+          "idealized_event_count": 4,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "88809633fe6073aa3618678774e5d76f18862e4ddde0be80812c9beb65720c45"
+        },
+        "legacy": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "adapted_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 711,
+            "sampled_peak_abs": 1.0,
+            "source_arrival_reachable": true,
+            "source_peak_abs": 1.0
+          },
+          "effective_strength": 50,
+          "idealized_event_count": 4,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "e7966cb1547fd3de68aafadd60cd35ac49f63501f05928af8ee8fec9d6fff35b"
+        }
+      },
+      "raw_max": 126,
+      "raw_min": -110,
+      "source_rows": 4569,
+      "source_sha256": "677b00dfc3f2e06e2bcc2d754f4c02e38eb9f3db78589c083a68aa33e2e06bdf"
+    },
+    "world": {
+      "modes": {
+        "enhanced": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "raw_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 4835,
+            "sampled_peak_abs": 1.0,
+            "source_arrival_reachable": true,
+            "source_peak_abs": 1.0
+          },
+          "effective_strength": 50,
+          "idealized_event_count": 29,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "b0c9de8a5de7415658c1c82123c79e79925937590d91a64dd1019889d7678088"
+        },
+        "legacy": {
+          "detector": {
+            "arrival": 0.800000012,
+            "input": "adapted_motor",
+            "rise": 0.400000006,
+            "sampled_arrival_ticks": 4835,
+            "sampled_peak_abs": 1.0,
+            "source_arrival_reachable": true,
+            "source_peak_abs": 1.0
+          },
+          "effective_strength": 50,
+          "idealized_event_count": 29,
+          "requested_strength": 50,
+          "unchanged_old_metrics": true,
+          "unchanged_stages_sha256": "d0e321f524a61ea88a656857daf66d541c589cca7ac39c208d2330307d10848f"
+        }
+      },
+      "raw_max": 126,
+      "raw_min": -126,
+      "source_rows": 8803,
+      "source_sha256": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44"
+    }
+  },
+  "native_tests": {
+    "exit_code": 0,
+    "log_sha256": "f27b0b4dc8143cede2f6670da71098b81ccd73cdf6cc859461c7131c70d0e9e6",
+    "new_cases": 35,
+    "old_adapter_and_alias_cases": 6,
+    "passed": true
+  },
+  "new_analyzer_sha256": "1c932c90fde27245e28b5b9086c78fc93325f8b8be12ca4a9f4f088be1e0ef3c",
+  "normalization_accepted": false,
+  "old_analyzer_sha256": "fc5751e378781230f7736065f1546d8bd01d9765bcd955ffbf03ab40c4f8cb5e",
+  "old_baseline_report_sha256": "aba4af747bf36a21c13a1b61d5bbd181d8a88adec227405e0bcd576bd070bc68",
+  "passed": true,
+  "physical_output": false,
+  "scope": "All source writes through the current detector mapping; actual algorithm stages unchanged. Idealized 4ms loop is not the host worker. Reachability is necessary but not collision recognition or device delivery.",
+  "source_native": "795fc77b68e40c88ec328be49a03bedd27300c04"
+}

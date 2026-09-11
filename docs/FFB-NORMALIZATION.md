@@ -49,6 +49,9 @@ acceptance delivers a candidate; attended drives accept its feel and stability.
 - [x] Verify the V-Unit conversion/channel sequence: 31,012 actual steering reads
   match INP at reconstructed conversion time across USA, World and Off Road.
   Original full inputs/native images and common-build force/telemetry are unchanged.
+- [x] Check impact-detector reachability separately from force gain: Exotica's
+  enhanced path cannot reach the shared arrival threshold on the Amazon source
+  trace. [Evidence and implications](reviews/2026-09-11-ffb-impact-reachability.md).
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -115,6 +118,12 @@ polarity correction. A late strength multiplier cannot recover details already
 lost to its early signed-byte clamp. Test an alternative mapping with sufficient
 intermediate precision before selecting a new calibration. The impact detector's
 raw input is separate from the constant-force path and needs separate evaluation.
+
+That evaluation now finds an unreachable arrival threshold for the enhanced
+Exotica path on Amazon: maximum raw-normalized input0.49205 versus threshold0.8.
+With no event, its reserved impact budget only reduces structural force. Add
+game-specific detector calibration to the candidate, using labeled contacts and
+clean turns; do not lower a threshold merely to generate more waveform events.
 
 Automated replays and algorithm comparisons use physical FFB off. Attended wheel
 checks are necessary to accept feel and stability; software output alone cannot

@@ -20,6 +20,9 @@ and the public package remain v0.5.0.
   and [actual V-Unit steering reads](docs/reviews/2026-09-11-ffb-vunit-adc.md)
   are verified. Matched contacts and final conditioning remain open; no new
   gains have been selected. [Milestone and acceptance](docs/FFB-NORMALIZATION.md).
+  The [impact reachability check](docs/reviews/2026-09-11-ffb-impact-reachability.md)
+  also finds that Exotica's enhanced detector cannot trigger on the Amazon source;
+  event-source calibration must be measured separately from force strength.
 
 - **Exotica:** live 1×/2×/3× and repeat runs preserve the original Amazon route
   and resources. The 3× repeat is exact across 14 completed internal snapshots

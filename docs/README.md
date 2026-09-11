@@ -17,6 +17,7 @@ assuming that a source feature is present in a downloaded package.
 | [FFB condition coverage](reviews/2026-09-10-ffb-condition-coverage.md) | Time-weighted source comparisons, OCR/steering provenance and remaining matched-drive gaps |
 | [FFB steering reconstruction](reviews/2026-09-11-ffb-steering-reconstruction.md) | Exact four-game recorded steering and Exotica actual ADC timing; next strength-50 candidate |
 | [V-Unit ADC verification](reviews/2026-09-11-ffb-vunit-adc.md) | Actual USA, World and Off Road steering reads, conversion timing and unchanged force baselines |
+| [Impact detector reachability](reviews/2026-09-11-ffb-impact-reachability.md) | Exotica enhanced-impact threshold cannot be reached on the Amazon source; calibration implications |
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |

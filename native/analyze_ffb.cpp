@@ -55,6 +55,14 @@ int main(int argc, char **argv) {
     dbce::force::Shaper shaper(profile.shaper);
     dbce::force::RiseDetector detector;
     dbce::force::ImpactMixer mixer;
+    // Arrival reachability is a necessary condition, not a collision label.
+    // Measure every source write as well as sampled ticks: a short source peak
+    // can fall entirely between this analyzer's idealized 4 ms observations.
+    float source_peak = 0.f, sampled_peak = 0.f;
+    for (const auto &sample : samples)
+        source_peak = std::max(source_peak,
+            std::abs(float(cruisn::motor_level(enhanced ? sample.raw : sample.byte)) / 32767.f));
+    long long eligible_ticks = 0;
     std::ofstream csv(argv[5]);
     if (!csv) return 1;
     csv << "ms,motor_byte,normalised,shaped,impact_candidate,arrival,rise,rumble_request,mixed,raw_byte,detector_input\n";
@@ -65,6 +73,8 @@ int main(int argc, char **argv) {
         while (next < samples.size() && samples[next].ms <= ms) { current = samples[next].byte; raw = samples[next++].raw; }
         float normal = float(cruisn::motor_level(current)) / 32767.f;
         float candidate = enhanced ? float(cruisn::motor_level(raw)) / 32767.f : normal;
+        sampled_peak = std::max(sampled_peak, std::abs(candidate));
+        if (std::abs(candidate) >= detector.arrival) ++eligible_ticks;
         bool event = detector.observe(candidate, double(ms) / 1000.0);
         float shaped = shaper.shape(normal, 0.f, .004f, false);
         float rumble = event ? detector.last_arrival * strength / 100.f : 0.f;
@@ -82,6 +92,10 @@ int main(int argc, char **argv) {
                 "\"peak_abs\":%.9f,\"rms\":%.9f,\"full_strength_fraction\":%.9f,\"events_ms\":[",
                 ticks, samples.size(), strength, peak, std::sqrt(sum_squares/ticks), double(full_ticks)/ticks);
     for (size_t n=0; n<events.size(); ++n) std::printf("%s%lld", n ? "," : "", events[n]);
-    std::puts("]}");
+    std::printf("],\"detector\":{\"input\":\"%s\",\"arrival\":%.9f,\"rise\":%.9f,"
+                "\"source_peak_abs\":%.9f,\"sampled_peak_abs\":%.9f,"
+                "\"source_arrival_reachable\":%s,\"sampled_arrival_ticks\":%lld}}\n",
+                enhanced ? "raw_motor" : "adapted_motor", detector.arrival, detector.rise,
+                source_peak, sampled_peak, source_peak >= detector.arrival ? "true" : "false", eligible_ticks);
     return 0;
 }

@@ -1,0 +1,9 @@
+{
+  "lib/toolkit/include/force_model.h": "eae373e5bdaac97ad8c83b1f0a0ae4a1ccd55b0db5caa835581264b370f42842",
+  "lib/toolkit/include/force_profile.h": "fec9bdc952a27b4353e1b98ae87395c424f0b076c8cbb148e3619ce5977865e4",
+  "lib/toolkit/include/impact_mixer.h": "c8b8d9dbc8160144d21ad4b2b6755023f9f964c84ccb800defcfa3630796f784",
+  "lib/toolkit/profiles/force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52",
+  "native/analyze_ffb.cpp": "ddcab3c1514c6cecd99c2678b8ff3803fa58e048d67afba270610c156ec702b8",
+  "native/motor_signal.h": "27c965242ff180d2deb3d7a1c9581ecd8072896fcdcd2932d239325e406b05b9",
+  "tests/native/check_motor_adapter.py": "60f6a5b48b018a0ad7aa9b1bcdb0c6d3faea9cedecacaefcd7bea7861a74b16e"
+}

@@ -1,5 +1,36 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 FFB impact reachability — NEAR-TERM source calibration
+
+Read docs/reviews/2026-09-11-ffb-impact-reachability.md. Actual ExoAmazon7476raw
+motor writes range-60..62; enhanced detector max0.492049932 is belowarrival0.8.
+It cannot trigger on this whole captured source irrespective of host sampling
+or strength. This applies to optional steering-axis Impact Cues, not absence of
+all FFB/legacyrumble or proof of everytrack/hardware range. Enhanced mode reserves
+25% structural headroom despite0events; nominal50/effective40 peaks0.30offline.
+Do not blindly rescale to observedmax or lowerthreshold without clean/contact
+labels. Calibrate event-source units separately from constant gain and strength.
+
+native/analyze_ffb.cpp now reports per-source and per-4ms-sample reachability,
+without changing algorithms. Eight old/new fullstage comparisons (fourgames,
+legacy/enhanced50, explicitExo.8trim) are byteexact and alloldmetrics equal.
+New35compiled cases at0/25/50/80/100 plus6existing adapter/alias casesPASS. Tests
+distinguish unreachablearrival, between-tick peaks and highplateau without rise.
+Raw enhanced ideal-event countsUSA4/World29/OffRoad45/Exo0 are NOT contacts or
+fullworker/physical acceptance. LOCAL ffb-exotica-impact-reachability and
+ffb-impact-reachability-comparison; public proof2026-09-11-ffb-impact-reachability
+verifies source/receipt consistency. Earlier baseline receipts bind oldanalyzer;
+current reporting change is standalone, no nativeMAME/runtimeFFB change.
+
+NEXT actual device-free worker capture and matched clean/contact windows, then
+versioned50candidate. LOCAL ffb-worker-observation-next.md has exact inspected
+worker constraints, timing/atomic ordering and no-SDL boundary; no worker code
+changed yet. Keep Worldmenus/ExoDIPpolarity, noautomaticphysicalFFB/gainchange.
+Rendering completion checkpoint42ab4a7 is committed/pushed and allfull/repeat/
+disabled checks DONE below; next gated private waiting draw/material/fade.
+Nativebc384/personal87d/v0.5.0 unchanged. No current game/build/test. Serialrig;
+no hostedCI/release/deploy/menu removal or milestone waiting.
+
 ## September 11 native completion — ACTIVE private waiting draw next
 
 Read docs/reviews/2026-09-11-exotica-native-completion.md. Nativebc384 is separately
