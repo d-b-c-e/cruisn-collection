@@ -1,5 +1,41 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 pool lifetime acceptance — ACTIVE first original draw
+
+Read docs/reviews/2026-09-10-exotica-pool-lifetimes.md. All earlier pool sessions
+are DONE. Initial40k budget failure and second48430-transition unmapped-reset
+failure are retained. Corrected full Amazon/repeat on unchanged9ed PASS48481
+transitions:24693allocations23787frees1reset,23757reuses. Independent generation
+fold joins4018sectionallocations/2539fades/116faded generations; reset invalidates
+882known live generations. Both old prefixes and six trace/receipt files repeat
+exactly. Original8860inputs/7060camera/21180actualADCtimes and21completed4K/CRT
+equal control. Exact reset1201nodes/counter1200 follows originalRC1199 semantics.
+Public proof2026-09-10-exotica-pool-lifetimes generated/verified; commit pending.
+Native583/personal87d unchanged; current352Python48native136commands/6c2c source.
+
+New pool-owner-amazon-submissions fullrun DONE/PASS, identical pool/fade traces.
+Independent join:30308fading model commits,29833ordinary/475custom. Allordinary
+immutable geometry/material/progress match sources;24525fade-branch/5308light.
+1009ordinary commits startsource8/dest240; these fields are NOT final per-quad
+alpha proof, especially light branch/model overrides. First captured fading
+draw delay2..692frames, median214; not necessarily first actual draw because
+initial probe excludedopaque commits. Do NOT assume allocation==draw admission.
+Full exec22267 first-draw-amazon on unchanged9ed DONE/PASS. LOCAL first-draw-trial.py
+uses read-only pool-generation and section-owner queries; records true first,
+allfading andfirstopaque model commits, includingoriginalopaque first draws.
+Independent merge verifiesall33876query annotations againstrawpool/ownertrace,
+and reproducesall30308oldfade commits. Of3932ordinaryallocations,3487eventually
+submit/445never;1115firstdrawsfading/2372opaque. Allocation-to-firstdrawdelay
+median238frames/4.1617s,max726frames/12.7039s;2801waitover60frames. Allobserved
+ordinaryimmutablefields matchsource. Fade-branchinitialS8/D240 occurs832times;
+5308lightbranchrecords mustnotbe treatedasfadequads. This provesallocationis
+notdrawadmission; futurepasscurrentlyselectss.future only,so mayremovehostcopy
+early. Needjoinsatexactsnapshotboundaryandactualviewport/pixelproof, notcounts.
+Fresh first-draw repeat is next, then designprivate fade/handover,
+preservingintrinsictransparency and originaldepth/resources; no host policyyet.
+No competinggames/GPU/build, no builds/exports/broadscansduringtimedplayback.
+No deploy/release/hostedCI/physicalFFB/Worldtuning/menu removal. Continue directly.
+
 ## September 10 Exotica packet renewal and source identity — ACTIVE
 
 Continue the user's autonomous rendering work directly. Native583/personal87d
@@ -40,7 +76,23 @@ pool head10A8/count10A9: allocate writes atBBF6/BBF9 (callbacksPCBBF7/BBFA,
 objectAR0), free atBC64/BC67 (callbacksBC65/BC68, objectAR2). All calls shareBBF0;
 typed constructorBC20 calls it. NEXT bounded read-only pool transition probe,
 track every head/count change and join generations to section allocation/fades.
-No live pool-lifetime evidence yet; no hostfade policy. Do not repeat a broad results/diagnostics inventory:
+First LOCAL pool-owner-amazon FAIL atframe5888:40,000 completed pool transitions
+exhaust the diagnostic budget; guard says40001, full run did not finish. Initial
+40k probe saved separately, failed replay/combined source retained. Actual9.36MB
+log and20373allocations/19627frees justify explicit131072event/64MB bounds for
+the full attempt; no pool head/count guard removed. Second attempt45508 FAIL
+at8443 after48430transitions: count without head because post-race pool reset
+stores count FIRST. Failure retained. Disassembly BBC7..BBD4 proves capacity1200,
+head pointer10A8 viaBBBA, base viaBBBC, stride31; resetcount atBBC8/PCBBC9,
+head atBBCC/PCBBCD, finalnull atBBD4/PCBBD5. C3x RC1199 repeats1200linkwrites,
+so expected1201nodes includingtail, capacitycounter1200. New bounded reset probe
+checks every rebuilt link and actual head/count; independent analyzer requires
+exact1201nodes. CURRENT exec50783 pool-owner-amazon-reset on unchanged9ed.
+Await EXIT, verify original owner/fade bytes/motion/21GL then run LOCAL
+join-pool-owners.py RUN OUTPUT for independent generations and section/fade
+joins. Check old40k/48430prefixes exact. Full reset/lifetime not yet passed;
+no hostfade policy. After success repeat with exactreset collector guard.
+Collection29de3bf is committed/pushed with packet/identity proof. Do not repeat a broad results/diagnostics inventory:
 rg session36438 was cancelled after unproductive traversal; no existing tool found.
 No deploy/release/hostedCI/physicalFFB/Worldtuning/menu removal. Latest OffRoad
 full-drive proof/late geometry is committed b38f890; last clean7defaults50a,

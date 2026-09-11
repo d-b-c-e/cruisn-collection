@@ -1,0 +1,16 @@
+{
+  "pool-owner-amazon": {
+    "stopped_frame": 5888,
+    "completed_events": 40000,
+    "reason": "Initial explicit event budget exhausted",
+    "report_sha256": "83a4c2ff516de706d6e92b7174a86ca30dc4a6c7708af883473466f2d53d4202",
+    "capture_sha256": "347339d7588130d79cd63e50a1c967413cf1747718ae8561ce9a9f7c789e34c2"
+  },
+  "pool-owner-amazon-full": {
+    "stopped_frame": 8443,
+    "completed_events": 48430,
+    "reason": "Unmapped post-race pool reset writes count before head",
+    "report_sha256": "a7506ec0f7d0774d0cb6fd9b3fb225418cc85fdaa5e0e233d77fd7c260b69bc6",
+    "capture_sha256": "3ffb89129f54b53f258ee99359da122ac8c8fa71265c26d15ed1dbf3db305aa8"
+  }
+}

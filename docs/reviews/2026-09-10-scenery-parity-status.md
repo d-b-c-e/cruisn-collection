@@ -26,7 +26,9 @@ renew all 233 displayed images at 2×/3×/repeat after the serializer change. Ne
 the earlier performance figures above are separate measurements. This is a
 small difference, not a full-speed result. Original allocation/fade joins now
 match 3,932 ordinary allocations and all 2,539 sampled fades; a safe host fade
-transition still needs allocation/removal lifetime and pixel checks.
+transition still needs actual drawing admission and pixel checks. The new
+[pool lifetime study](2026-09-10-exotica-pool-lifetimes.md) verifies allocation,
+removal, slot reuse and the post-race reset across 48,481 Amazon transitions.
 
 Detailed evidence: [World 2.4 roads](2026-09-09-host-road-integration.md),
 [World 2.5](2026-09-09-world25-host-scenery.md),

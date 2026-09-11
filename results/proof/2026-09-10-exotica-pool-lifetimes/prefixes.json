@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "run": "pool-owner-amazon",
+      "events": 40000,
+      "equal": true,
+      "sha256": "e8e331e2c9de1fa66dfc93d48b5f0dc94dc64961b521f5301d262d7b04696cdf"
+    },
+    {
+      "run": "pool-owner-amazon-full",
+      "events": 48430,
+      "equal": true,
+      "sha256": "88849e30e17e563a0298358e329987271f746f47612c3461c0a1fd31a1b14820"
+    }
+  ],
+  "scope": "Raw original successful event prefix equality; retained full runs failed."
+}

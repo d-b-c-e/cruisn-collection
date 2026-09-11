@@ -28,7 +28,10 @@ and the public package remain v0.5.0.
   preserves all233 displayed frames at2×/3×/repeat. New3× timings89.31/89.41%
   versus a fresh previous-build88.90% show only a small difference. Original
   allocation/fade joins now match3932ordinary allocations and2539sampled fades.
-  Trace other allocation/removal paths before implementing the host transition.
+  The [common-pool lifetime check](docs/reviews/2026-09-10-exotica-pool-lifetimes.md)
+  now covers 48,481 transitions, slot reuse and the post-race reset on Amazon.
+  Verify actual first drawing and fade completion before implementing the host
+  transition; allocation alone does not establish drawing admission.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.
