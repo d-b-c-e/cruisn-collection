@@ -1,5 +1,33 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 live waiting observation — ACTIVE handover overlap
+
+Read docs/reviews/2026-09-10-exotica-waiting-observation.md. Native9ad781f7f39
+separately built/frozen/pushed SHA20004be3;186patches reconstructba88fcb40a9c.
+Explicit --exotica-host-waiting observe links canonical selector; requires
+lifetimes1799..hostlast+1 and existing privatewidefuture, physicalFFB0. Exact
+journal record count disambiguates same-time events. Full Amazon/repeat PASS
+8860inputs/7060camera/21180actualADCtimes/21completed4K originaltarget. All6953
+future scene fingerprints/19945019quads and five original resources match prior.
+Waiting6953proposals/1021808candidatevisits/5552865quads; five252/155/298/52/1
+handles/ordered geometry match independentLua/Python.17waiting/lifetime files
+byteexactrepeat, including prior86376lifetimejournal. Short6000 alsoPASS.
+Full localchecks375Python/no skips50native142commands PASS source4ee7aac74d5981871af3e72d1f733c957419506202ccd7f4833fdd6259dc7c4f.
+Disabled-control exec25656 nowEXIT0/PASS same original motion/21GL/futuregeometry;
+no waiting log or snapshots. No game/build/GPU remains at this checkpoint.
+Personal87d/v0.5.0 unchanged; no new waiting drawing or renewed7defaults claim.
+
+NEW actualhandover overlap: at5072,10/155waiting owners receive first original
+draw AFTER proposal but BEFORE next consecutive game scene. Earliest+4.6us;
+somecrossnativeframe5072->5073. Otherfoursamples0. Do not blindly draw allwaiting
+early or forceopaque: original translucent copies couldblendtwice. NEXT exact
+scene/command-boundary admission ledger and filtered5072 offline geometry/pixels,
+then boundednativehandover observation. Preserve original commandorder, intrinsic
+transparency/material ownership/foregrounddepth; partial scenes matter.
+LOCAL waiting-handover-window.py/JSON and check-live-waiting.py retainactualjoins.
+No release/deploy/hostedCI/physicalFFB/menu removal. Serialrig/GPU/builds; no builds,
+exports/broadscansduringtimedplayback. FFBnormalization remainsnear-term below.
+
 ## September 10 FFB condition coverage — ACTIVE evidence gaps
 
 Read docs/reviews/2026-09-10-ffb-condition-coverage.md. New canonical

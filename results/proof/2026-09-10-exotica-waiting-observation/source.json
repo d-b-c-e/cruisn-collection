@@ -1,0 +1,12 @@
+{
+  "harness/exotica_lifetimes.py": "f9cf52244a1ac5f28335bc57bc1d00091bf21dad8682e307a559fd63eb013249",
+  "harness/exotica_scene_options.py": "898281c983cf56b53f63bcfa7af7800c25faad31d61c42f1bb4e34ecc8eae8fc",
+  "harness/exotica_waiting.py": "28a590297a5bbf4b4aeb537f01f73777c43a8efa841c8b7c5070b57cac9c3696",
+  "harness/replay.py": "f2a188f25160dff1580cd0007a797b498ee902b153a2b12e4a66e20aab4d5392",
+  "harness/sync_native.py": "4be553cf9c8d534bfe7a10b7ab85107aab638eb910c1d661f08e8272152e5762",
+  "native/exotica_waiting.h": "31db3b8d900f163c707118f0f85ae387f4ac1b47143302645fafbb50ea256df7",
+  "native/scenery_lifetimes.h": "4f3f92c78637e20b945c9b12fae259f0bb64d664047d9b3f7146780d10e7fa4a",
+  "patch/vunit-poc-patches.patch": "02acf149f136b61f28b100630d35becf27585d28b8f38d593e0fa19ae6c6b4e8",
+  "tests/native/exotica_waiting_test.cpp": "8c27e24fa424eaa7974f2970debe6e3a0a66b53182f270fb7637c3821a7faec4",
+  "tests/test_exotica_waiting.py": "9800a58fe01e53a7d8d68dad1ec33768eaeba248da6dc7179e295c36f1b01020"
+}

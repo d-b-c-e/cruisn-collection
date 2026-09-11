@@ -90,6 +90,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_ACTIVE', None)
         settings.pop('MIDZ_HOST_FUTURE', None)
         settings.pop('MIDZ_HOST_FUTURE_PRESENT', None)
+        settings.pop('MIDZ_HOST_WAITING', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier

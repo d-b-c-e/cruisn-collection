@@ -1,0 +1,51 @@
+{
+  "local_receipt_sha256": "635fe20f61c87965d5e4b9a596e571f0989c92afd2b0bc81fb00d5a79e1fe5f1",
+  "samples": [
+    {
+      "consecutive_scene": true,
+      "device_time": 68.277293099317,
+      "frame": 3900,
+      "later_in_scene": 0,
+      "next_scene_time": 68.294705699317,
+      "scene": 2504,
+      "waiting_candidates": 252
+    },
+    {
+      "consecutive_scene": true,
+      "device_time": 88.790162232445,
+      "frame": 5072,
+      "later_in_scene": 10,
+      "next_scene_time": 88.807602032445,
+      "scene": 3662,
+      "waiting_candidates": 155
+    },
+    {
+      "consecutive_scene": true,
+      "device_time": 98.801559065679,
+      "frame": 5644,
+      "later_in_scene": 0,
+      "next_scene_time": 98.819015599012,
+      "scene": 4229,
+      "waiting_candidates": 298
+    },
+    {
+      "consecutive_scene": true,
+      "device_time": 110.808380532225,
+      "frame": 6330,
+      "later_in_scene": 0,
+      "next_scene_time": 110.825710798892,
+      "scene": 4901,
+      "waiting_candidates": 52
+    },
+    {
+      "consecutive_scene": true,
+      "device_time": 125.807873465409,
+      "frame": 7187,
+      "later_in_scene": 0,
+      "next_scene_time": 125.825328765408,
+      "scene": 5748,
+      "waiting_candidates": 1
+    }
+  ],
+  "scope": "Five snapshots only. Strictly-before-next-matched-scene bound; gaps/same-time scene ties do not prove final admission. Any current-scene first draw motivates an explicit end-of-scene ownership filter. No fade or blend policy acceptance."
+}

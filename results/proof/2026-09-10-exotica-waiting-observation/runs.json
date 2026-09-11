@@ -1,0 +1,139 @@
+{
+  "waiting-observer-disabled": {
+    "acceptance_sha256": "c26507863d1bbeac44db65e299eb0f21eb9d63e8d3cf43fa63e1517b3e8e1c78",
+    "candidate_sha256": "20004be372ba31e9f0d781d2503be10846db853900b5528f65468ac5e5f11daa",
+    "completed_original_4k": 21,
+    "input_frames": 8860,
+    "motion_samples": {
+      "exotica-adc.csv": 21180,
+      "exotica-camera.csv": 7060
+    },
+    "passed": true,
+    "replay_report_sha256": "ba01f12db3de3288c5a9334dcd2120f4fc2027f6fdd48157f453a7affd662c2c",
+    "unchanged_future_scenes": 6953,
+    "waiting": {
+      "mode": "off"
+    }
+  },
+  "waiting-observer-full": {
+    "acceptance_sha256": "715b5ce915becbbaad6c1b159632db893e0abca98c12cabd53d07067dc637853",
+    "candidate_sha256": "20004be372ba31e9f0d781d2503be10846db853900b5528f65468ac5e5f11daa",
+    "completed_original_4k": 21,
+    "input_frames": 8860,
+    "motion_samples": {
+      "exotica-adc.csv": 21180,
+      "exotica-camera.csv": 7060
+    },
+    "passed": true,
+    "replay_report_sha256": "a60c030adbd0da81a489905a905b35adc42aac2eafd503ea8f5914893e80a772",
+    "unchanged_future_scenes": 6953,
+    "waiting": {
+      "first": 1800,
+      "last": 8849,
+      "lifetime": {
+        "first": 1799,
+        "last": 8858,
+        "mode": "observe"
+      },
+      "mode": "observe",
+      "result": {
+        "candidates": 1021808,
+        "complete": 1,
+        "passed": true,
+        "quads": 5552865,
+        "remaining": 0,
+        "scenes": 6953,
+        "scope": "Read-only proposal counts, exact lifecycle prefixes and captured owner/instance structure. Independent source/geometry, original packet/route/pixel and fade/handover acceptance remain separate.",
+        "snapshot_owners_verified": 758,
+        "snapshots": 5
+      },
+      "snapshots": [
+        3900,
+        5072,
+        5644,
+        6330,
+        7187
+      ]
+    }
+  },
+  "waiting-observer-repeat": {
+    "acceptance_sha256": "3da663b558b3d08fe92576325c5f3e86e929f345b9b6d104ae474eae192e251a",
+    "candidate_sha256": "20004be372ba31e9f0d781d2503be10846db853900b5528f65468ac5e5f11daa",
+    "completed_original_4k": 21,
+    "input_frames": 8860,
+    "motion_samples": {
+      "exotica-adc.csv": 21180,
+      "exotica-camera.csv": 7060
+    },
+    "passed": true,
+    "replay_report_sha256": "30cea1cbe9acd08e9d58a277496daca42ef5059bd7b8d8462ae851d7704b9f04",
+    "unchanged_future_scenes": 6953,
+    "waiting": {
+      "first": 1800,
+      "last": 8849,
+      "lifetime": {
+        "first": 1799,
+        "last": 8858,
+        "mode": "observe"
+      },
+      "mode": "observe",
+      "result": {
+        "candidates": 1021808,
+        "complete": 1,
+        "passed": true,
+        "quads": 5552865,
+        "remaining": 0,
+        "scenes": 6953,
+        "scope": "Read-only proposal counts, exact lifecycle prefixes and captured owner/instance structure. Independent source/geometry, original packet/route/pixel and fade/handover acceptance remain separate.",
+        "snapshot_owners_verified": 758,
+        "snapshots": 5
+      },
+      "snapshots": [
+        3900,
+        5072,
+        5644,
+        6330,
+        7187
+      ]
+    }
+  },
+  "waiting-observer-short": {
+    "acceptance_sha256": "7c21a6aa86d63c8fbb9aaf9e51d91853304618692647abbd1d3719580a2821f2",
+    "candidate_sha256": "20004be372ba31e9f0d781d2503be10846db853900b5528f65468ac5e5f11daa",
+    "completed_original_4k": 21,
+    "input_frames": 6000,
+    "motion_samples": {
+      "exotica-adc.csv": 12600,
+      "exotica-camera.csv": 4200
+    },
+    "passed": true,
+    "replay_report_sha256": "7da53ab89c9ff61bea72a7435f8ea9214cfd5042c3ddca6722045ac10f8a42e3",
+    "unchanged_future_scenes": 4120,
+    "waiting": {
+      "first": 1800,
+      "last": 5989,
+      "lifetime": {
+        "first": 1799,
+        "last": 5998,
+        "mode": "observe"
+      },
+      "mode": "observe",
+      "result": {
+        "candidates": 709260,
+        "complete": 1,
+        "passed": true,
+        "quads": 4133532,
+        "remaining": 0,
+        "scenes": 4120,
+        "scope": "Read-only proposal counts, exact lifecycle prefixes and captured owner/instance structure. Independent source/geometry, original packet/route/pixel and fade/handover acceptance remain separate.",
+        "snapshot_owners_verified": 705,
+        "snapshots": 3
+      },
+      "snapshots": [
+        3900,
+        5072,
+        5644
+      ]
+    }
+  }
+}

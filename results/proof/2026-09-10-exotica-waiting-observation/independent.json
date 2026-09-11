@@ -1,0 +1,94 @@
+{
+  "lifetime_sha256": "5a1f9004fa1d5cb7aa6e3832d911e1eca90f105bfc802a851d10c08eb182cd8b",
+  "original_lifetime_prefix_records": 86376,
+  "passed": true,
+  "reference_lifetime_sha256": "5a1f9004fa1d5cb7aa6e3832d911e1eca90f105bfc802a851d10c08eb182cd8b",
+  "samples": [
+    {
+      "device_time": "68.277293099317",
+      "frame": 3900,
+      "hashes": {
+        "instances": [
+          "c4af3154f97dce6a5fb54980d51e76845172f7890619e1b2274756618c2d27e7",
+          "c4af3154f97dce6a5fb54980d51e76845172f7890619e1b2274756618c2d27e7"
+        ],
+        "quads": [
+          "a0bec75418d69f6da1475205a7e8d3c01077b173f918c3f2b2a7d7aeaf2d2776",
+          "a0bec75418d69f6da1475205a7e8d3c01077b173f918c3f2b2a7d7aeaf2d2776"
+        ]
+      },
+      "owners": 252,
+      "owners_sha256": "9c82a070aa89136e115c717a7b67a43a194269737d91a781a05a081f64c716ff",
+      "records": 39306
+    },
+    {
+      "device_time": "88.790162232445",
+      "frame": 5072,
+      "hashes": {
+        "instances": [
+          "e64994d19a54a4b48515e0da9eddd95245dadaac34b3b84fe5b6b7eb96454196",
+          "e64994d19a54a4b48515e0da9eddd95245dadaac34b3b84fe5b6b7eb96454196"
+        ],
+        "quads": [
+          "135656c2c74e4f3bdf79e22c5b39bb3cfe8640b5ed488dc75a2fbe00fed30547",
+          "135656c2c74e4f3bdf79e22c5b39bb3cfe8640b5ed488dc75a2fbe00fed30547"
+        ]
+      },
+      "owners": 155,
+      "owners_sha256": "965007d3821d852700c48a0847eb49b20e6f0c9779222322d88d88c30774f247",
+      "records": 47334
+    },
+    {
+      "device_time": "98.801559065679",
+      "frame": 5644,
+      "hashes": {
+        "instances": [
+          "f6a9bc79b5895e59e56ae7284ef94a6b6fddd0e281349089dd75bd2a279e1c64",
+          "f6a9bc79b5895e59e56ae7284ef94a6b6fddd0e281349089dd75bd2a279e1c64"
+        ],
+        "quads": [
+          "485d0eaf124ee24f93040e7d1e2a42803a77dd84476722418c99d0ac6e129585",
+          "485d0eaf124ee24f93040e7d1e2a42803a77dd84476722418c99d0ac6e129585"
+        ]
+      },
+      "owners": 298,
+      "owners_sha256": "e408d456398ad89344cd7824ec9d3f5e5be0da17e75a851881cb44ccea4b2bf1",
+      "records": 53432
+    },
+    {
+      "device_time": "110.808380532225",
+      "frame": 6330,
+      "hashes": {
+        "instances": [
+          "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b",
+          "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b"
+        ],
+        "quads": [
+          "e4507aaa87d07b7032b2c7f4ac76b22ce5c98e26e6546fda039714a31aa0ddbe",
+          "e4507aaa87d07b7032b2c7f4ac76b22ce5c98e26e6546fda039714a31aa0ddbe"
+        ]
+      },
+      "owners": 52,
+      "owners_sha256": "1e69424eed6c5476fc34c5e6d85b8812c3458e6244466ad92c1c4b51d034760e",
+      "records": 63395
+    },
+    {
+      "device_time": "125.807873465409",
+      "frame": 7187,
+      "hashes": {
+        "instances": [
+          "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7",
+          "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7"
+        ],
+        "quads": [
+          "9d6d81d8229bf666e777b4bec863a2b6ac4272fcb5fe252dd1ec449fafe6af57",
+          "9d6d81d8229bf666e777b4bec863a2b6ac4272fcb5fe252dd1ec449fafe6af57"
+        ]
+      },
+      "owners": 1,
+      "owners_sha256": "5462e707a1f0774b055bb543a21d60d2b7866bf038464eb419cb98542883c3bc",
+      "records": 72872
+    }
+  ],
+  "scope": "Live native waiting handles match independent original Lua ownership, proposed geometry matches Python on exact previously checked snapshots. No waiting draw/fade/handover acceptance."
+}

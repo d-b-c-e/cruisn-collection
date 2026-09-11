@@ -1,0 +1,13 @@
+{
+  "files": {
+    "checks.json": "b346e153b641067315835a7ce9fe264bc6177f7176cdeee15e4144de7a226943",
+    "handover.json": "ffa950bbf1c9151ed81935a38705450d4594c75f560d30af662b8990e3fe2a93",
+    "independent.json": "d1aa44db7e94abd2c80775d3f569225704046aefac1b4434e543f0f4ad40d8f1",
+    "native.json": "fe86687647291af1176362154efa359a9cc41d268c85b14ebe4f1388db162c10",
+    "repeat.json": "973d9e9d5da9c9f6c2405b9532dd773dbaa30cb2aaf7012155f623c1d0eafb3f",
+    "runs.json": "6d174b782c7c3a0d5a65666b08f9d3af08a8e0c41616d2ebb4ded6af79f37fe2",
+    "source.json": "e3280aeebe164e23b70e7baa83bfa7ba5edace8b49bbda3a4d8e86f5ca0a49f0"
+  },
+  "schema": 1,
+  "scope": "Source/hash/receipt consistency. Native execution, raw game resources, geometry, replay pixels and test execution remain receipts."
+}

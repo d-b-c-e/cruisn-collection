@@ -20,6 +20,9 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 - Add a standalone Exotica selector for allocated scenery awaiting its first
   original submission. Five real scenes and 30 geometry variants match independent
   checks; live rendering and transition acceptance remain pending.
+- Integrate explicit native waiting-scenery observation. Full Amazon/repeat
+  preserve original routes, future geometry and sampled 4K output. A measured
+  same-scene submission overlap now guides handover work before extra drawing.
 
 - Add a complete attended Off Road El Paso recording: archived replays and a
   candidate control preserve the full route and all 66 sampled display images.

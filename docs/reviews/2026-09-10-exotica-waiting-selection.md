@@ -6,6 +6,10 @@ snapshots. It is **standalone**, not yet linked into the live renderer. This
 closes the selection gap before trying live continuation; it does not establish
 fade/handover or eliminate pop-in.
 
+The subsequent [live native observation](2026-09-10-exotica-waiting-observation.md)
+integrates this helper and reproduces the selections during a full drive. The
+standalone results below remain the evidence for this earlier checkpoint.
+
 ## Why this matters
 
 The existing future-only pass excludes a source as soon as it becomes allocated,
