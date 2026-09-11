@@ -1,0 +1,20 @@
+{
+  "commands": 144,
+  "groups": [
+    "python",
+    "native",
+    "gpu"
+  ],
+  "native_tests": 51,
+  "passed": true,
+  "python": {
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests": 397
+  },
+  "report_sha256": "ff31c2c3ffc2b9fa1ef421abc2356cc1c89c37adef935268733d610e9e08f072",
+  "source_identity": "3c6991a18ba8cb689a5cb590d02d25125d4c3a7f999e25f3240b577cbab41d0d",
+  "source_identity_after": "3c6991a18ba8cb689a5cb590d02d25125d4c3a7f999e25f3240b577cbab41d0d"
+}

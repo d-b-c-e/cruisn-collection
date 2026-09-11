@@ -26,6 +26,7 @@ import exotica_visibility
 import exotica_scene_options
 import exotica_lifetimes
 import exotica_waiting
+import exotica_handover
 import zeus_render_policy
 import zeus_palette
 import zeus_margin_clear
@@ -91,6 +92,7 @@ def main(argv=None):
     exotica_scene_options.add_arguments(ap)
     exotica_lifetimes.add_arguments(ap)
     exotica_waiting.add_arguments(ap)
+    exotica_handover.add_arguments(ap)
     zeus_render_policy.add_arguments(ap)
     zeus_palette.add_arguments(ap)
     zeus_margin_clear.add_arguments(ap)
@@ -264,6 +266,8 @@ def main(argv=None):
         exotica_scene_options.validate_runtime(scene_trial,args,manifest['settings'])
         waiting_trial=exotica_waiting.configure(args,manifest['rom'],manifest['settings'],scene_trial,lifetime_trial)
         if waiting_trial:report['exotica_waiting']=waiting_trial
+        handover_trial=exotica_handover.configure(args,manifest['rom'],manifest['settings'],scene_trial,waiting_trial)
+        if handover_trial:report['exotica_handover']=handover_trial
         if scene_trial and scene_trial.get('future_present'):
             report['presentation']='explicit-extended-target'
         stall_trial=zeus_stream.configure_stall(args,manifest['rom'],manifest['settings'],reference['frames'])
@@ -406,6 +410,8 @@ def main(argv=None):
         if lifetime_result:report['exotica_lifetimes']['result']=lifetime_result
         waiting_result=exotica_waiting.verify_receipt(waiting_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if waiting_result:report['exotica_waiting']['result']=waiting_result
+        handover_result=exotica_handover.verify_receipt(handover_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+        if handover_result:report['exotica_handover']['result']=handover_result
         depth_result=zeus_depth_mirror.verify_receipt(depth_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if depth_result:report['zeus_depth_mirror']['result']=depth_result
         stall_result=zeus_stream.verify_stall(stall_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))

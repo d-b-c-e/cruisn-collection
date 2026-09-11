@@ -50,9 +50,9 @@ earlier scenery; Exotica's private renderer has repeatable display comparisons
 but still needs faster preparation and smooth fade transitions. A new Exotica
 study finds a several-second gap between scenery allocation and drawing; an
 offline continuation prototype adds visible distant trees through that gap.
-Live observation now reproduces those waiting selections and geometry, while
-also identifying objects that the original game draws later in the same scene;
-that overlap must be resolved before enabling their extra drawing.
+Live observation now reproduces those waiting selections and geometry and
+filters copies the original game starts drawing later in the same scene.
+Private extra drawing and its fade transitions remain the next integration step.
 The attended Off Road full-course recording has also exposed and helped fix a
 final-section stop in its host renderer.
 These are **undeployed CLI candidates**. The launcher

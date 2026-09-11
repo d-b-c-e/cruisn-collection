@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Integrate native Exotica waiting-cohort completion observation. Full/repeat/
+  disabled runs preserve original drives and sampled 4K output while verifying
+  which proposed copies must be omitted. Extra waiting drawing remains pending.
+
 - Verify actual steering reads in USA, World and Off Road against recorded ADC
   conversion timing. Full replays preserve original force and telemetry data;
   the strength-50 calibration still needs matched contacts and output conditioning.

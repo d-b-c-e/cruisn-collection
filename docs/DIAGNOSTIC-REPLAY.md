@@ -33,6 +33,14 @@ World/Off Road and physical wheel/menu behavior need their own acceptance.
 
 ## Isolated Zeus upstream rendering trials
 
+The separate native completion observer is documented in
+[the waiting-cohort review](reviews/2026-09-11-exotica-native-completion.md).
+`--exotica-host-handover observe` requires the explicit candidate, waiting/lifetime
+observers and actual command-fence observation. It records bounded cohorts and
+filtered proposal geometry; it does not enable another draw pass. Explicit `off`
+verifies that no completion artifacts are produced. This mode is not a launcher
+default or a recording requirement.
+
 The separate development candidate supports `replay.py --zeus-upstream
 legacy|depth|alpha|blend|all`. This is an Exotica 2.4 diagnostic control for the
 three changes in [upstream #16094](https://github.com/mamedev/mame/pull/16094),

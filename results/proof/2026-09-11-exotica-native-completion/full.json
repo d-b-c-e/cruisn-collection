@@ -1,0 +1,133 @@
+{
+  "candidate_sha256": "6b26731ee61a3a14c33acd2de63cd31334ed5e88e8bbf919205d00142f48ca9c",
+  "completed_images": 21,
+  "completion": {
+    "mode": "observe",
+    "result": {
+      "bytes": 49324904,
+      "captured": 1021808,
+      "complete": 1,
+      "owners_changed_after_cpu_end": 0,
+      "passed": true,
+      "remaining": 0,
+      "retired": 0,
+      "scenes": 6953,
+      "scope": "Actual event-watermark/owner reconciliation for every cohort and filtered proposal geometry for snapshots. No waiting draw, material residency, alpha-order, performance or temporal visual acceptance.",
+      "snapshots": 5,
+      "submitted": 2621
+    },
+    "snapshots": [
+      3900,
+      5072,
+      5644,
+      6330,
+      7187
+    ],
+    "waiting": {
+      "first": 1800,
+      "last": 8849,
+      "lifetime": {
+        "first": 1799,
+        "last": 8858,
+        "mode": "observe"
+      },
+      "mode": "observe",
+      "result": {
+        "candidates": 1021808,
+        "complete": 1,
+        "passed": true,
+        "quads": 5552865,
+        "remaining": 0,
+        "scenes": 6953,
+        "scope": "Read-only proposal counts, exact lifecycle prefixes and captured owner/instance structure. Independent source/geometry, original packet/route/pixel and fade/handover acceptance remain separate.",
+        "snapshot_owners_verified": 758,
+        "snapshots": 5
+      },
+      "snapshots": [
+        3900,
+        5072,
+        5644,
+        6330,
+        7187
+      ]
+    }
+  },
+  "crt": "1",
+  "dimensions": [
+    [
+      3840,
+      2160
+    ]
+  ],
+  "frames": 8860,
+  "invocation_sha256": "d5d6a34390ea45d18a42f7a1a203fabfe1ec2130d3a7a0544906729e75947e28",
+  "motion": {
+    "exotica-adc.csv": {
+      "candidate_sha256": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651",
+      "compared_interval": [
+        1800,
+        8859
+      ],
+      "samples": 21180,
+      "source_interval": [
+        1800,
+        8859
+      ],
+      "source_sha256": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+    },
+    "exotica-camera.csv": {
+      "candidate_sha256": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+      "compared_interval": [
+        1800,
+        8859
+      ],
+      "samples": 7060,
+      "source_interval": [
+        1800,
+        8859
+      ],
+      "source_sha256": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900"
+    }
+  },
+  "original_future_resource_hashes": {
+    "exotica-host-3900-context.bin": "073b8fd734c393cbd257c37cd30d50996b17269e949eba93ccb7b95c29c46cc8",
+    "exotica-host-3900-instances.bin": "acf2111a1accfe9e67e5ef861170e13e91038ab5212411cbe59af91859aad471",
+    "exotica-host-3900-quads.bin": "0458b1e6d13cf58532610035be14aaaea6c596ff9f74b6adf0018de8d0b38b18",
+    "exotica-host-3900-ram.bin": "707c340a0314cf454c7fb4c478fd658426001546b68ac8c79408ed1b60ba4e12",
+    "exotica-host-3900-wave.bin": "0f7f22505cae2350b85c71d88a73a27f6314e7d6015021e17e79482bb9528288",
+    "exotica-host-5072-context.bin": "31051255977284ac4904b88715614db85caf149f798f6c1efef4f7d23a52a163",
+    "exotica-host-5072-instances.bin": "efba3aeeaf686241806750fef3757146be5b7ae58efc5caf66003b31709f5a13",
+    "exotica-host-5072-quads.bin": "25bf32878f0461b445033e0dd6fc925d1ecaf1b36f372afd0dd5c9d57312617e",
+    "exotica-host-5072-ram.bin": "ca3cfef15d5de16ea935ff8757f5b7fcf3269aaf3f9a226662702013dbc54cb6",
+    "exotica-host-5072-wave.bin": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+    "exotica-host-5644-context.bin": "abbc7926162c6fa2356965a4722a57bd400a22218f2fc5394a245cd887f9ac60",
+    "exotica-host-5644-instances.bin": "ca449b9acb935b5518071d7bca538ea5b8f24a16dfd822dc591ce55a53387f2e",
+    "exotica-host-5644-quads.bin": "695e3766819b06837bcdb37d456d491f974c1a247e631fb4a66df5d6b6066499",
+    "exotica-host-5644-ram.bin": "2bcba92d995ce0c8f6fdb63621a316fb539a67b8d859cca8c64ab4c435773b94",
+    "exotica-host-5644-wave.bin": "99e38290259ae70fe64d6faf55e14bd5d211d17ddc0919a95c3890797588c810",
+    "exotica-host-6330-context.bin": "2d45bd3f673d7e5ccb750fbd553219e4c9dad589df562f06551cc9353b34d79f",
+    "exotica-host-6330-instances.bin": "2770c479b2c948bcbe52c058dd97ce321057f22a99e611b909eca432cd2acbd3",
+    "exotica-host-6330-quads.bin": "0fcea5fd1d5952cd57647334b6780f7b626b9f7c3f2850e18cb4f2f5d52f0194",
+    "exotica-host-6330-ram.bin": "fa9ac2d5993dbbeb8b968ecfcfa6c53edf0b46cc5f91d5ef9a61b7984838af43",
+    "exotica-host-6330-wave.bin": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6",
+    "exotica-host-7187-context.bin": "eb9eada8e5971e868a411dfc016a9b816e037925a2055fa79db78632c4575df5",
+    "exotica-host-7187-instances.bin": "e25f5ab20c8a74575f70326de80b618ed1186996819948993492f0735e854add",
+    "exotica-host-7187-quads.bin": "5d2ba67bbc14b9d20c9986c9837d5b78220d96f6dcbdbc9ec99390416ec2c9db",
+    "exotica-host-7187-ram.bin": "4cf82eb75df5128b404cf0fe81a92533a110f7742cebccf84284178f5579b6d0",
+    "exotica-host-7187-wave.bin": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070",
+    "exotica-host-banked-rom.bin": "c52563cc72334e44dc6fd941161018061b481510113db5e23d6c7c58272ccfb9",
+    "exotica-host-main-rom.bin": "0ceae1c09e36daab4bd4084a3a0f9c0f8f94ae2bdd18f668f5f7be233fe0f1ba"
+  },
+  "passed": true,
+  "physical_ffb": "0",
+  "pixels": {
+    "different_frames": [],
+    "frames": 21,
+    "passed": true,
+    "pixel_changes": [],
+    "scope": "completed GL frame pixels",
+    "size_mismatches": []
+  },
+  "report_sha256": "1570a794431b8c6c625a49d73dd4e0555bbff0feb49e16cec740158ca292b324",
+  "unchanged_future_scenes": 6953
+}

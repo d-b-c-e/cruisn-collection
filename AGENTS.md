@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 native completion — ACTIVE private waiting draw next
+
+Read docs/reviews/2026-09-11-exotica-native-completion.md. Nativebc384 is separately
+built/frozen/pushed at build/candidates/bc384056fd1/vunit.exe, SHA6b26731ee61a3a14c33acd2de63cd31334ed5e88e8bbf919205d00142f48ca9c.
+187patches reconstructbc506377e0bbfc1d74b172bbb11e008e7587b2fe. New full/repeat/
+disabled COMPLETE. Each8860inputs/7060camera/21180actualADCtimes/21completed4K/CRT
+and6953ordered future scenes/original resources unchanged. Full6953cohorts capture
+1021808candidatevisits;2621submitted removed,0retired,1019187retained,0owner changes
+CPUend->ready.49,324,904-byte bounded cohort journal. All17new files byteexactrepeat.
+Independent all6953actualP/E/R triples match old inferred ledger;15filteredgeometry
+files match old independent Python/Lua reconstruction. Old lifetime/waiting/fence
+logs and sampled proposal geometry unchanged. Disabled no waiting/completion
+artifacts; original86376-record lifetime journal byteexact. No new waiting draw.
+
+Observer CLI --exotica-host-handover off|observe requires waiting+actualfence+
+lifetimes and physicalFFB0. Native derives whole cohorts, records realwatermarks,
+filters storedPgeometry without laterWave rebuild or alpha changes. Fullchecks
+397Python51native144commands at3c6991a18ba8cb689a5cb590d02d25125d4c3a7f999e25f3240b577cbab41d0d;
+newer FFBonline-independent analysis405Python PASS. Published completion proof
+checks exact relevant hashes against original fullcheck source inventory plus
+build/runtime receipt consistency; raw native/GPU/game execution remains receipts.
+Native/library/harness completion integration now ready for this checkpoint commit.
+
+NEXT gatedPRIVATE waiting draw at actual device completion, existingfuturepass
+stays early. Renew exact original command placement, owned materials and immediate
+GPU insertion comparisons; then live temporal/fade/handover. Preserve original
+depth, intrinsic transparency, current camera/page and resource ownership.
+Same depth does NOT imply same color order. Old left blackwedge/performance/
+World2.5roads/USAstall/default-suiteWorldtimeout remainOPEN. No deploy/release/
+hostedCI/physicalFFB/menu removal. Personal87d/v0.5.0 unchanged. Serialrig/GPU/build;
+no builds/exports/broadscans during timedplayback. No game/build/test remains.
+FFB strength50 stays near-term; read below and LOCAL ffb-worker-observation-next.md
+under Amazon diagnostic root. That note proposes the actual device-free worker,
+not a duplicated ideal4ms loop; no worker implementation change yet.
+
 ## September 11 V-Unit ADC — NEAR-TERM normalization sampling complete
 
 Read docs/reviews/2026-09-11-ffb-vunit-adc.md and docs/FFB-NORMALIZATION.md.

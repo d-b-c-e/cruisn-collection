@@ -44,9 +44,10 @@ and the public package remain v0.5.0.
   adds visible distant trees by retaining eligible allocated-but-undrawn objects.
   Live lifetime/waiting observation now reproduces the recorded identities and
   proposed geometry. The [completion study](docs/reviews/2026-09-11-exotica-waiting-handover.md)
-  identifies original submissions to exclude and verifies a standalone cohort
-  reconciliation helper. Offline filtered drawing still adds distant trees, but
-  transparency depends on placement. Integrate completion observation, then
+  identifies original submissions to exclude. [Native completion observation](docs/reviews/2026-09-11-exotica-native-completion.md)
+  now passes full/repeat/disabled runs and reconciles all6,953cohorts at actual
+  native event watermarks. Offline filtered drawing still adds distant trees, but
+  transparency depends on placement. Next add the gated private waiting draw and
   verify live continuation, materials and fade handover before exposing it.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection

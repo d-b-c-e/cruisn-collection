@@ -1,5 +1,9 @@
 # Exotica waiting scenery: completion boundaries and draw order
 
+Follow-up: [native completion observation](2026-09-11-exotica-native-completion.md)
+now passes full/repeat/disabled runs. The standalone results below describe the
+earlier checkpoint; private waiting drawing and transparent handover remain open.
+
 The next scenery step now has an actual completion boundary and a tested way to
 remove objects that the original game has started drawing. In a completed
 offline Amazon sample, the remaining waiting geometry still adds visible distant
