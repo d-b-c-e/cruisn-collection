@@ -1,0 +1,45 @@
+{
+  "artifacts": {
+    "python-tests.log": "6ee64807e33b27ec1073bf9d35eed325e579cbc3307b347de04ca621210bffa2",
+    "source-identity.json": "e883160349cb610017068ca7d86298aa76dbbb465b087136a6d59ddc5983d881",
+    "unit-tests.json": "cea45acf35199ebd162f94570266ed8867233a076b953d81eef2892335846761"
+  },
+  "executable": "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+  "groups": [
+    "python"
+  ],
+  "host": "Windows-11-10.0.26200-SP0",
+  "packages": {
+    "Pillow": "12.3.0",
+    "lupa": "2.8",
+    "moderngl": "5.12.0",
+    "numpy": "2.5.2"
+  },
+  "passed": true,
+  "platform": "win32",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "schema": 1,
+  "source_identity": "cfbe0d71921f12fe155ddffb9673e86ae9168331556205546bf6f1f87be24169",
+  "source_identity_after": "cfbe0d71921f12fe155ddffb9673e86ae9168331556205546bf6f1f87be24169",
+  "steps": [
+    {
+      "command": [
+        "C:\\Users\\antho\\AppData\\Local\\Programs\\Python\\Python314\\python.exe",
+        "E:\\Source\\cruisn-collection\\harness\\local_checks.py",
+        "--unit-worker",
+        "E:\\Source\\cruisn-collection\\results\\diagnostics\\exotica-amazon-20260909\\ffb-world-speed-python-checks\\unit-tests.json"
+      ],
+      "log": "python-tests.log",
+      "name": "python-tests",
+      "returncode": 0,
+      "seconds": 16.572
+    }
+  ],
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests": 383
+  }
+}

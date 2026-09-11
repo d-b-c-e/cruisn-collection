@@ -252,18 +252,22 @@ def metrics(rows):
                                          (r['end_ns']-r['start_ns']) for r in rows)/total)}
 
 
-def compare(runs, allow_ocr=False, minimum_seconds=2.0):
+def compare(runs, allow_ocr=False, minimum_seconds=2.0, world_speed_probe=False):
     if set(runs) != set(GAMES) or not math.isfinite(minimum_seconds) or minimum_seconds <= 0:
         raise ValueError('four games and a positive minimum coverage are required')
     output = {'schema': 1, 'kind': 'force-source-condition-coverage', 'passed': False,
               'normalization_accepted': False, 'physical_force': False, 'contacts_reviewed': False,
               'scope': 'Unshaped requests at motor writes; emulated-time held source and recorded game-input bins. '
                        'No host worker, asynchronous gate transitions, physical angle, shaper or device simulation.',
-              'selection': {'allow_ocr': allow_ocr, 'motor_max_age_seconds': .5, 'speed_max_age_seconds': .1,
+              'selection': {'allow_ocr': allow_ocr, 'world_speed_probe': world_speed_probe,
+                            'motor_max_age_seconds': .5, 'speed_max_age_seconds': .1,
                             'minimum_seconds_per_game_per_bin': minimum_seconds}, 'games': {}}
     builds = set()
     for game, directory in runs.items():
         force, frames, speeds, identity = parse_run(directory, game)
+        if game == 'world' and world_speed_probe:
+            from world_speed_evidence import analyze
+            speeds, identity['world_memory_speed_evidence'] = analyze(directory)
         builds.add(identity['executable_sha256'])
         rows, coverage = segments(force, frames, speeds, allow_ocr)
         groups = {}
@@ -299,10 +303,13 @@ def main(argv=None):
         parser.add_argument('--'+game, type=Path, required=True, help='accepted replay run directory')
     parser.add_argument('--output', type=Path, required=True, help='new report directory')
     parser.add_argument('--allow-ocr', action='store_true', help='exploratory only; retain OCR provenance')
+    parser.add_argument('--world-speed-probe', action='store_true',
+                        help='require verified World 2.4 producer/HUD capture for analysis-only memory speed')
     args = parser.parse_args(argv)
     args.output.mkdir(parents=True, exist_ok=False)
     try:
-        report = compare({game: getattr(args, game) for game in GAMES}, args.allow_ocr)
+        report = compare({game: getattr(args, game) for game in GAMES}, args.allow_ocr,
+                         world_speed_probe=args.world_speed_probe)
         for game, item in report['games'].items():
             path = args.output / (game+'-intervals.json')
             write_json(path, {'clock': 'emulated_nanoseconds', 'intervals': item.pop('intervals')})

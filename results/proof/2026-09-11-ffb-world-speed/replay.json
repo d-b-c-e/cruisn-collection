@@ -1,0 +1,33 @@
+{
+  "comparison": {
+    "first_input_mismatches": [],
+    "first_pixel_mismatches": [],
+    "input_or_time_mismatches": 0,
+    "passed": true,
+    "pixel_mismatches": 0
+  },
+  "frames": 9269,
+  "passed": true,
+  "physical_ffb": "0",
+  "snapshots": 154,
+  "source_invocation_sha256": "d141ba5601f649b8cb6ec348393249adec81b3e257c3dcf7a460fb7ab397de86",
+  "source_report_sha256": "0607df7567d76e585f9a9f52f2d9c32764e3b8dff32587b1df35b08a24ddd488",
+  "unchanged_traces": {
+    "drivetrain.csv": [
+      "5b468d4d2a60619614893edc2a3be47cc6341f9bad1f818f9a1bcdc8aa423e73",
+      "5b468d4d2a60619614893edc2a3be47cc6341f9bad1f818f9a1bcdc8aa423e73"
+    ],
+    "force-gate.csv": [
+      "09332e31a027b31ac727b1a82eb9cb79d8b613e751a27facca83f097c1309ae1",
+      "09332e31a027b31ac727b1a82eb9cb79d8b613e751a27facca83f097c1309ae1"
+    ],
+    "force-source.csv": [
+      "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+      "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44"
+    ],
+    "signals.csv": [
+      "aab6db84bf9f13c9f2286a2349f621ba876b4b957fb5e7b622ad6fa84dabe8f9",
+      "aab6db84bf9f13c9f2286a2349f621ba876b4b957fb5e7b622ad6fa84dabe8f9"
+    ]
+  }
+}

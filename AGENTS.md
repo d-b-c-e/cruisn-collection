@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 World memory speed — ACTIVE FFB matched segments next
+
+Read docs/reviews/2026-09-11-ffb-world-speed.md. On unchanged common native795fc,
+new LOCAL ffb-world-speed-producer PASS9269inputs/154native snapshots. All3486
+actual producer conversions match C31 speed*0.489990234375 truncation;3656actual
+MPH HUD reads match latest writer,126prewriter reads excluded. Original8270
+state/flags/player/rawspeed samples exact; oldforce-source/gate/signals/drivetrain
+files byteexact. No runtime telemetry or FFB tune change. Canonical bounded
+harness/probes/world24_speed.lua + world_speed_evidence.py verify source/hash,
+counts, clocks, actual arithmetic/consumer/owner; retain producer age and clear
+inactive state. force_segments --world-speed-probe explicitly requires this data.
+Final LOCAL ffb-condition-world-memory-final selects World117.248s withoutOCR;
+othersunchanged. Still only2sharedbins at40..60m/s, no positive sustainedturn;
+Worldnegative-turn4.471s,maxfragment0.259s. No calibration accepted. 383Python/no
+skips PASS sourcecfbe0d71921f12fe155ddffb9673e86ae9168331556205546bf6f1f87be24169.
+Next actualADC/steeringcurve comparability, clean/contact labels, fullconditioning
+then versioned50 candidate and attendedwheel. No automaticphysicalFFB. Rendering
+native9ad/personal87d unchanged. Filtered5072offline GPU1/2/3/repeat nowPASS;
+visual inspection and live admission ledger stillopen. No game/build/GPU remains.
+Preserve Worldmenu passthrough; no deploy/release/hostedCI. Serialrig remains.
+
 ## September 10 live waiting observation — ACTIVE handover overlap
 
 Read docs/reviews/2026-09-10-exotica-waiting-observation.md. Native9ad781f7f39

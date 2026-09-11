@@ -21,6 +21,9 @@ The games can retain different textures and force character.
 - [x] Add time-weighted source/input/speed interval analysis with explicit clock,
   provenance, freshness, polarity and replay-identity checks; quantify coverage
   before fitting gains. The first pass exposes insufficient matched evidence.
+- [x] Verify World's actual memory-speed producer and MPH HUD consumer; use that
+  evidence to remove OCR from the common-build comparison. Matched turn/contact
+  coverage remains insufficient for fitting gains.
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -135,10 +138,17 @@ at least two seconds per game: center/steady and negative-medium/slow steering
 at 40–60 m/s. The latter consists of short fragments, not sustained matched turns.
 No positive-direction turn bin reaches that coverage.
 
-Therefore the next evidence work is to validate World's speed against its
-existing read-only memory probe, map the different steering curves to comparable
-inputs, and label contact/clean windows. Then reconstruct and compare the shaped
-output at strength 50. A new attended drive may fill any remaining coverage gaps;
+The September 11 follow-up verifies World's producer conversion and actual MPH
+HUD reads on a full original Germany replay. `--world-speed-probe` now requires
+that guarded capture and supplies analysis-only memory speed, retaining the
+actual write time and excluding inactive states. World coverage grows to 117.248
+seconds without OCR; the remaining three games' coverage is unchanged. The same
+two shared bins qualify and both-direction sustained turn coverage is still
+missing. See [the verified World speed results](reviews/2026-09-11-ffb-world-speed.md).
+
+Next map the different steering curves to comparable inputs and label
+contact/clean windows. Then reconstruct and compare the shaped output at strength
+50. A short attended comparison drive may fill the remaining coverage gaps;
 the current evidence does not justify selecting calibration gains yet.
 
 See the [condition-coverage findings](reviews/2026-09-10-ffb-condition-coverage.md)

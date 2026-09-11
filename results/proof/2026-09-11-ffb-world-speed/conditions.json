@@ -1,0 +1,3568 @@
+{
+  "calibration_blockers": [
+    "Contacts and contact-free windows have not been reviewed.",
+    "Recorded game-port steering is not verified physical rim angle; steering gain/curves differ.",
+    "Post-shaper output, host timing, asynchronous gate changes and device effects remain unmeasured.",
+    "Attended force acceptance remains outstanding."
+  ],
+  "common_bins": {
+    "40-60mps/center/steady": {
+      "exotica": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 1.715242183,
+        "raw_rms_byte": 1.320132674107618,
+        "requested_abs_p50": 0.0,
+        "requested_abs_p90": 0.06347849971007416,
+        "requested_rms": 0.08381466871969694,
+        "seconds": 15.437179642
+      },
+      "offroad": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 3.538857635,
+        "raw_rms_byte": 10.519537308142924,
+        "requested_abs_p50": 0.02380443739127781,
+        "requested_abs_p90": 0.0793786431470687,
+        "requested_rms": 0.08348813177487717,
+        "seconds": 21.751027415
+      },
+      "usa": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 1.139339532,
+        "raw_rms_byte": 3.3886170844340535,
+        "requested_abs_p50": 0.00793481246375927,
+        "requested_abs_p90": 0.03967406231879635,
+        "requested_rms": 0.02689027399204717,
+        "seconds": 7.664647759
+      },
+      "world": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 3.314442273,
+        "raw_rms_byte": 4.322316782525782,
+        "requested_abs_p50": 0.01586962492751854,
+        "requested_abs_p90": 0.05554368724631489,
+        "requested_rms": 0.034300775312922166,
+        "seconds": 23.54635032
+      }
+    },
+    "40-60mps/negative-medium/slow": {
+      "exotica": {
+        "adapter_ceiling_fraction": 0.7825946757038124,
+        "adapter_longest_ceiling_seconds": 0.157522241,
+        "longest_contiguous_seconds": 0.192527184,
+        "raw_rms_byte": 19.738636996417743,
+        "requested_abs_p50": 1.0,
+        "requested_abs_p90": 1.0,
+        "requested_rms": 0.9777415956270316,
+        "seconds": 2.012784192
+      },
+      "offroad": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 0.172627202,
+        "raw_rms_byte": 104.41249916755989,
+        "requested_abs_p50": 0.8968169194616535,
+        "requested_abs_p90": 0.9206213568529313,
+        "requested_rms": 0.8286673672712062,
+        "seconds": 2.278679067
+      },
+      "usa": {
+        "adapter_ceiling_fraction": 0.06962172713158571,
+        "adapter_longest_ceiling_seconds": 0.069066372,
+        "longest_contiguous_seconds": 0.103576321,
+        "raw_rms_byte": 89.90857865442278,
+        "requested_abs_p50": 0.6666768395031587,
+        "requested_abs_p90": 0.9682607501449629,
+        "requested_rms": 0.7135621017716504,
+        "seconds": 2.727509785
+      },
+      "world": {
+        "adapter_ceiling_fraction": 0.07721170658661691,
+        "adapter_longest_ceiling_seconds": 0.06905088,
+        "longest_contiguous_seconds": 0.258940803,
+        "raw_rms_byte": 90.7939958238204,
+        "requested_abs_p50": 0.674611651966918,
+        "requested_abs_p90": 0.9761955626087222,
+        "requested_rms": 0.72058764788023,
+        "seconds": 4.471044525
+      }
+    }
+  },
+  "contacts_reviewed": false,
+  "games": {
+    "exotica": {
+      "bins": {
+        "10-20mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.857621091,
+          "raw_rms_byte": 1.491356176314083,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.06347849971007416,
+          "requested_rms": 0.09468241346721444,
+          "seconds": 0.857621091
+        },
+        "20-30mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 1.2058657284976313,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.12698751792962432,
+          "requested_rms": 0.07656034670481053,
+          "seconds": 0.192527183
+        },
+        "20-30mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.210029655,
+          "raw_rms_byte": 0.9823082715098117,
+          "requested_abs_p50": 0.0,
+          "requested_abs_p90": 0.12698751792962432,
+          "requested_rms": 0.06236656144626415,
+          "seconds": 0.490069196
+        },
+        "20-30mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017502472,
+          "raw_rms_byte": 3.251595558643304,
+          "requested_abs_p50": 0.19046601763969848,
+          "requested_abs_p90": 0.25397503585924863,
+          "requested_rms": 0.206451998561755,
+          "seconds": 0.122517298
+        },
+        "20-30mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.122517299,
+          "raw_rms_byte": 4.075442660734238,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.3174535355693228,
+          "requested_rms": 0.2587524877174944,
+          "seconds": 0.315044483
+        },
+        "30-40mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 2.673966348291503,
+          "requested_abs_p50": 0.12698751792962432,
+          "requested_abs_p90": 0.3174535355693228,
+          "requested_rms": 0.1697723300852751,
+          "seconds": 0.140019771
+        },
+        "30-40mps/center/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017502472,
+          "raw_rms_byte": 6.0079871975803725,
+          "requested_abs_p50": 0.38096255378887295,
+          "requested_abs_p90": 0.38096255378887295,
+          "requested_rms": 0.3814696594630862,
+          "seconds": 0.017502472
+        },
+        "30-40mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 1.247519763534224,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.12698751792962432,
+          "requested_rms": 0.0792015591636544,
+          "seconds": 0.15752224
+        },
+        "30-40mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.595084022,
+          "raw_rms_byte": 1.5746028110892216,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.12698751792962432,
+          "requested_rms": 0.09997043133933993,
+          "seconds": 1.715242183
+        },
+        "30-40mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.192527184,
+          "longest_contiguous_seconds": 0.192527184,
+          "raw_rms_byte": 42.645757257003446,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.787611207
+        },
+        "30-40mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.105014827,
+          "longest_contiguous_seconds": 0.105014827,
+          "raw_rms_byte": 45.4802436535115,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.332546952
+        },
+        "30-40mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.035004942,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 48.45168525653542,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.087512357
+        },
+        "30-40mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.087512356,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 25.17027260494437,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.210029655
+        },
+        "30-40mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.7141251270494066,
+          "adapter_longest_ceiling_seconds": 0.052507413,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 17.86665697037154,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9011309950807639,
+          "seconds": 0.122517298
+        },
+        "30-40mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0003747661235040065,
+          "adapter_longest_ceiling_seconds": 1.9678e-05,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 10.235433248800009,
+          "requested_abs_p50": 0.5714285714285714,
+          "requested_abs_p90": 0.82540360728782,
+          "requested_rms": 0.6497869063645347,
+          "seconds": 0.052507414
+        },
+        "30-40mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.00037522320538603565,
+          "adapter_longest_ceiling_seconds": 1.9732e-05,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 8.99567644806491,
+          "requested_abs_p50": 0.5079500717184973,
+          "requested_abs_p90": 0.8888821069978943,
+          "requested_rms": 0.5710768846633131,
+          "seconds": 0.105014827
+        },
+        "30-40mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 4.301277501232635,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.3174535355693228,
+          "requested_rms": 0.2730962963806565,
+          "seconds": 0.140019769
+        },
+        "30-40mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.14001977,
+          "raw_rms_byte": 4.203201381482413,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.3174535355693228,
+          "requested_rms": 0.2668716087564011,
+          "seconds": 0.420059311
+        },
+        "30-40mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.157522241,
+          "longest_contiguous_seconds": 0.157522241,
+          "raw_rms_byte": 38.2312004653377,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.227532126
+        },
+        "30-40mps/positive-large/rapid": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.017502471,
+          "longest_contiguous_seconds": 0.017502471,
+          "raw_rms_byte": 34.00353905388497,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.017502471
+        },
+        "30-40mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.035004943,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 44.66803951819411,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.052507414
+        },
+        "30-40mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.017502471,
+          "longest_contiguous_seconds": 0.017502471,
+          "raw_rms_byte": 44.00114457154948,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.017502471
+        },
+        "30-40mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.37485906454495677,
+          "adapter_longest_ceiling_seconds": 0.05248768,
+          "longest_contiguous_seconds": 0.14001977,
+          "raw_rms_byte": 16.01322551173476,
+          "requested_abs_p50": 0.6349070711386456,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.7482226110377529,
+          "seconds": 0.14001977
+        },
+        "30-40mps/positive-medium/rapid": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.052507414,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 26.544040926297463,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.052507414
+        },
+        "30-40mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 5.548127421642926,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.5714285714285714,
+          "requested_rms": 0.35226266972512416,
+          "seconds": 0.087512356
+        },
+        "30-40mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.5005662057660315,
+          "adapter_longest_ceiling_seconds": 0.017522291,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 14.324978112075346,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8626601509310985,
+          "seconds": 0.035004942
+        },
+        "40-60mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 3.133658053088257,
+          "requested_abs_p50": 0.12698751792962432,
+          "requested_abs_p90": 0.3174535355693228,
+          "requested_rms": 0.19896172629288258,
+          "seconds": 1.890266895
+        },
+        "40-60mps/center/rapid": {
+          "adapter_ceiling_fraction": 0.00016094053787457394,
+          "adapter_longest_ceiling_seconds": 1.9718e-05,
+          "longest_contiguous_seconds": 0.017502472,
+          "raw_rms_byte": 7.999154442571886,
+          "requested_abs_p50": 0.44444105349894714,
+          "requested_abs_p90": 0.8888821069978943,
+          "requested_rms": 0.5078345001026832,
+          "seconds": 0.122517299
+        },
+        "40-60mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.105014828,
+          "raw_rms_byte": 1.7285447566682572,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.19046601763969848,
+          "requested_rms": 0.10974511787085724,
+          "seconds": 2.450345975
+        },
+        "40-60mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.715242183,
+          "raw_rms_byte": 1.320132674107618,
+          "requested_abs_p50": 0.0,
+          "requested_abs_p90": 0.06347849971007416,
+          "requested_rms": 0.08381466871969694,
+          "seconds": 15.437179642
+        },
+        "40-60mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.332546954,
+          "longest_contiguous_seconds": 0.332546954,
+          "raw_rms_byte": 41.55780635166293,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 3.605509079
+        },
+        "40-60mps/negative-large/rapid": {
+          "adapter_ceiling_fraction": 0.9998751414419305,
+          "adapter_longest_ceiling_seconds": 0.052487746,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 33.12369751283558,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9999738095359544,
+          "seconds": 0.157522242
+        },
+        "40-60mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.157522241,
+          "longest_contiguous_seconds": 0.157522241,
+          "raw_rms_byte": 39.143817757471425,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 3.307967067
+        },
+        "40-60mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.595084022,
+          "longest_contiguous_seconds": 0.595084022,
+          "raw_rms_byte": 41.90667119456178,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 4.113080742
+        },
+        "40-60mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.7999859065762661,
+          "adapter_longest_ceiling_seconds": 0.175024712,
+          "longest_contiguous_seconds": 0.192527184,
+          "raw_rms_byte": 20.929053429172882,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9609829775045863,
+          "seconds": 3.412981892
+        },
+        "40-60mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.5598198808858943,
+          "adapter_longest_ceiling_seconds": 0.052507414,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 17.77587630005323,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8351712368017007,
+          "seconds": 0.437561779
+        },
+        "40-60mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.7825946757038124,
+          "adapter_longest_ceiling_seconds": 0.157522241,
+          "longest_contiguous_seconds": 0.192527184,
+          "raw_rms_byte": 19.738636996417743,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9777415956270316,
+          "seconds": 2.012784192
+        },
+        "40-60mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.567582763167711,
+          "adapter_longest_ceiling_seconds": 0.070009885,
+          "longest_contiguous_seconds": 0.227532126,
+          "raw_rms_byte": 18.407491851572104,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9449670930326977,
+          "seconds": 1.295182875
+        },
+        "40-60mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 8.389039673840249e-05,
+          "adapter_longest_ceiling_seconds": 1.9796e-05,
+          "longest_contiguous_seconds": 0.122517299,
+          "raw_rms_byte": 7.69494270774786,
+          "requested_abs_p50": 0.44444105349894714,
+          "requested_abs_p90": 0.7618945890682699,
+          "requested_rms": 0.4885574779175422,
+          "seconds": 2.11779902
+        },
+        "40-60mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.06689204283839977,
+          "adapter_longest_ceiling_seconds": 0.017522223,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 8.996237015114835,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.9523911252174444,
+          "requested_rms": 0.5692082750807813,
+          "seconds": 0.262537071
+        },
+        "40-60mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.105014828,
+          "raw_rms_byte": 5.911202048055991,
+          "requested_abs_p50": 0.3174535355693228,
+          "requested_abs_p90": 0.5714285714285714,
+          "requested_rms": 0.3753140399791908,
+          "seconds": 1.22517299
+        },
+        "40-60mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.157522241,
+          "raw_rms_byte": 5.9813621789456795,
+          "requested_abs_p50": 0.3174535355693228,
+          "requested_abs_p90": 0.5714285714285714,
+          "requested_rms": 0.3797683969199421,
+          "seconds": 0.945133446
+        },
+        "40-60mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.262537069,
+          "longest_contiguous_seconds": 0.262537069,
+          "raw_rms_byte": 42.393930958918205,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 1.837759482
+        },
+        "40-60mps/positive-large/rapid": {
+          "adapter_ceiling_fraction": 0.9523275427542007,
+          "adapter_longest_ceiling_seconds": 0.087512356,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 38.904197910536695,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9977758712103135,
+          "seconds": 0.367551895
+        },
+        "40-60mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.105014827,
+          "longest_contiguous_seconds": 0.105014827,
+          "raw_rms_byte": 42.5670708175669,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 1.750247124
+        },
+        "40-60mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.735103793,
+          "longest_contiguous_seconds": 0.735103793,
+          "raw_rms_byte": 47.84189077105526,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 2.432843506
+        },
+        "40-60mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.7154380518411197,
+          "adapter_longest_ceiling_seconds": 0.122537042,
+          "longest_contiguous_seconds": 0.157522242,
+          "raw_rms_byte": 20.434738084426893,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9494983922432396,
+          "seconds": 2.152803964
+        },
+        "40-60mps/positive-medium/rapid": {
+          "adapter_ceiling_fraction": 0.7198644984032552,
+          "adapter_longest_ceiling_seconds": 0.070009885,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 22.59682177359169,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.91032487336463,
+          "seconds": 0.437561781
+        },
+        "40-60mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.8510397943791405,
+          "adapter_longest_ceiling_seconds": 0.070009885,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 22.834440175628167,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9834153783327927,
+          "seconds": 0.822616151
+        },
+        "40-60mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.9999316183142132,
+          "adapter_longest_ceiling_seconds": 0.175024712,
+          "longest_contiguous_seconds": 0.175024712,
+          "raw_rms_byte": 25.80196422487027,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9999968219169678,
+          "seconds": 0.577581549
+        },
+        "40-60mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.04814208788673085,
+          "adapter_longest_ceiling_seconds": 0.035024754,
+          "longest_contiguous_seconds": 0.122517298,
+          "raw_rms_byte": 8.893877350379102,
+          "requested_abs_p50": 0.44444105349894714,
+          "requested_abs_p90": 0.82540360728782,
+          "requested_rms": 0.5413723665354951,
+          "seconds": 1.820257011
+        },
+        "40-60mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.11161273410273537,
+          "adapter_longest_ceiling_seconds": 0.017522183,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 11.06125969749867,
+          "requested_abs_p50": 0.6984160893581958,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.6773771970945967,
+          "seconds": 0.157522241
+        },
+        "40-60mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 5.684951932932877,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.5714285714285714,
+          "requested_rms": 0.36094774817521125,
+          "seconds": 1.260177927
+        },
+        "40-60mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.210029655,
+          "raw_rms_byte": 5.004395526314581,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.38096255378887295,
+          "requested_rms": 0.3177371769634739,
+          "seconds": 1.575222413
+        },
+        "60-90mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 2.754427185357905,
+          "requested_abs_p50": 0.12698751792962432,
+          "requested_abs_p90": 0.25397503585924863,
+          "requested_rms": 0.17488322068764173,
+          "seconds": 0.577581554
+        },
+        "60-90mps/center/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017502471,
+          "raw_rms_byte": 7.005793812413535,
+          "requested_abs_p50": 0.44444105349894714,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.44480892722817567,
+          "seconds": 0.017502471
+        },
+        "60-90mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 1.542879013132856,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.12698751792962432,
+          "requested_rms": 0.0979567080734734,
+          "seconds": 1.015143334
+        },
+        "60-90mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.837759481,
+          "raw_rms_byte": 1.1307047098695133,
+          "requested_abs_p50": 0.0,
+          "requested_abs_p90": 0.06347849971007416,
+          "requested_rms": 0.07178532945361003,
+          "seconds": 10.939044527
+        },
+        "60-90mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.14001977,
+          "longest_contiguous_seconds": 0.14001977,
+          "raw_rms_byte": 34.31744406674057,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.367551896
+        },
+        "60-90mps/negative-large/rapid": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.035004942,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 27.71535858827093,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.035004942
+        },
+        "60-90mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.087512356,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 32.325374261157165,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.297542012
+        },
+        "60-90mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.070009885,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 33.37120715666575,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.210029654
+        },
+        "60-90mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.6609473511922838,
+          "adapter_longest_ceiling_seconds": 0.14001977,
+          "longest_contiguous_seconds": 0.210029655,
+          "raw_rms_byte": 19.458183002466267,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.942338016388443,
+          "seconds": 1.03266688
+        },
+        "60-90mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.5997750123448281,
+          "adapter_longest_ceiling_seconds": 0.035004943,
+          "longest_contiguous_seconds": 0.052507414,
+          "raw_rms_byte": 16.492393676999473,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8470483260068679,
+          "seconds": 0.087512357
+        },
+        "60-90mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.6175806941467827,
+          "adapter_longest_ceiling_seconds": 0.070009885,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 17.718912679528668,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.953315134822021,
+          "seconds": 0.595084023
+        },
+        "60-90mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.4666236578828556,
+          "adapter_longest_ceiling_seconds": 0.035004943,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 17.353103084681518,
+          "requested_abs_p50": 0.9523911252174444,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9511772483866145,
+          "seconds": 0.262537068
+        },
+        "60-90mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.122517299,
+          "raw_rms_byte": 6.145281129089581,
+          "requested_abs_p50": 0.3174535355693228,
+          "requested_abs_p90": 0.6349070711386456,
+          "requested_rms": 0.3901764984824951,
+          "seconds": 0.840118617
+        },
+        "60-90mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.0003756421974169628,
+          "adapter_longest_ceiling_seconds": 1.9724e-05,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 9.683593458644038,
+          "requested_abs_p50": 0.5714285714285714,
+          "requested_abs_p90": 0.8888821069978943,
+          "requested_rms": 0.6146891991965261,
+          "seconds": 0.052507413
+        },
+        "60-90mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 6.013502689680185,
+          "requested_abs_p50": 0.38096255378887295,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.38180991864065844,
+          "seconds": 0.752606263
+        },
+        "60-90mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.245034597,
+          "raw_rms_byte": 6.566031416709602,
+          "requested_abs_p50": 0.44444105349894714,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.4168911943964538,
+          "seconds": 0.612586494
+        },
+        "60-90mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.227532126,
+          "longest_contiguous_seconds": 0.227532126,
+          "raw_rms_byte": 37.292552769753144,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.875123564
+        },
+        "60-90mps/positive-large/rapid": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.035004942,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 29.064259147918715,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.035004942
+        },
+        "60-90mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.087512356,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 39.770615832921045,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.332546952
+        },
+        "60-90mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.087512356,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 38.75760176484668,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.315044483
+        },
+        "60-90mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.7466216245040974,
+          "adapter_longest_ceiling_seconds": 0.157522242,
+          "longest_contiguous_seconds": 0.157522242,
+          "raw_rms_byte": 19.908969034556634,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9550690074720144,
+          "seconds": 1.312685344
+        },
+        "60-90mps/positive-medium/rapid": {
+          "adapter_ceiling_fraction": 0.4542372104710159,
+          "adapter_longest_ceiling_seconds": 0.034985115,
+          "longest_contiguous_seconds": 0.070009885,
+          "raw_rms_byte": 17.256479802917834,
+          "requested_abs_p50": 0.9523911252174444,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9093976920861235,
+          "seconds": 0.192527184
+        },
+        "60-90mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.6999994777880281,
+          "adapter_longest_ceiling_seconds": 0.017502472,
+          "longest_contiguous_seconds": 0.035004942,
+          "raw_rms_byte": 20.894906663157386,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9684308602214725,
+          "seconds": 0.175024712
+        },
+        "60-90mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.5999999931438253,
+          "adapter_longest_ceiling_seconds": 0.017502471,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 18.05467747281508,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9340990099185703,
+          "seconds": 0.087512356
+        },
+        "60-90mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 5.016434460156177e-05,
+          "adapter_longest_ceiling_seconds": 1.9764e-05,
+          "longest_contiguous_seconds": 0.105014828,
+          "raw_rms_byte": 7.694805488101492,
+          "requested_abs_p50": 0.44444105349894714,
+          "requested_abs_p90": 0.6984160893581958,
+          "requested_rms": 0.48856025721914675,
+          "seconds": 0.787611207
+        },
+        "60-90mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.25028231012974367,
+          "adapter_longest_ceiling_seconds": 0.017522236,
+          "longest_contiguous_seconds": 0.035004943,
+          "raw_rms_byte": 10.21376522471607,
+          "requested_abs_p50": 0.38096255378887295,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.6421640372504593,
+          "seconds": 0.070009886
+        },
+        "60-90mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.087512356,
+          "raw_rms_byte": 5.93644524326539,
+          "requested_abs_p50": 0.3174535355693228,
+          "requested_abs_p90": 0.5714285714285714,
+          "requested_rms": 0.37691765081222794,
+          "seconds": 1.015143328
+        },
+        "60-90mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.245034598,
+          "raw_rms_byte": 5.344476250262688,
+          "requested_abs_p50": 0.3174535355693228,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.33933409349966237,
+          "seconds": 1.522715002
+        }
+      },
+      "coverage": {
+        "end_seconds": 155.054412632,
+        "excluded_seconds": {
+          "gate_disabled_at_last_motor_write": 40.985379133,
+          "motor_age_exceeds_selection_limit": 23.712814933,
+          "outside_driving_speed_bands": 1.015122313
+        },
+        "seconds": 155.010945765,
+        "start_seconds": 0.043466867
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "10bc08c39d30e4e147e5f91686495b8d507ac92b3a0e80774dc6fe00f31374bb",
+        "force-source.csv": "6bfbdf05d16252bb655a39259429225828993b3fc5b73d054b63086f83636336",
+        "frames.csv": "0313b3e0ce03ee2d0b305a1b0d7add05ae0a6f37e6adbd363cf6669e711c46e0",
+        "invocation.json": "c129a7ba0ca0c9c6f59c05faffeea5868cc2b1351a845c9be05d5604cc9d60a5",
+        "replay-report.json": "c24c2741b3ca674dc2460d0074b162a701655e8f541b501fd495a47045e974b1",
+        "signals.csv": "a8624deead06e885cc4e385c6c6ed6966344944cfe7ff3b0cdeaf5ea74180b8a"
+      },
+      "intervals_sha256": "aa05fa74dcb6a6b55d7ce6825fdb71b973f1d687ae2e010a616abe45e796c6b6",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_DEVICE": "MOZA R12 Base",
+        "MIDV_FFB_GAME_GATE": "1",
+        "MIDV_FFB_IMPACT": "0",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_REQUESTED_STRENGTH": "80",
+        "MIDV_FFB_RUMBLE": "100",
+        "MIDV_FFB_STRENGTH": "64",
+        "MIDV_STEER_CURVE": "110",
+        "MIDZ_FFB_GAIN": "800"
+      },
+      "rom": "crusnexo",
+      "selected": {
+        "adapter_ceiling_fraction": 0.36946301178262275,
+        "adapter_longest_ceiling_seconds": 1.750247033,
+        "longest_contiguous_seconds": 89.297629386,
+        "raw_rms_byte": 22.34351114751599,
+        "requested_abs_p50": 0.38096255378887295,
+        "requested_abs_p90": 1.0,
+        "requested_rms": 0.6593991526695129,
+        "seconds": 89.297629386
+      }
+    },
+    "offroad": {
+      "bins": {
+        "10-20mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 5.935290123518485,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.07144383068330942,
+          "requested_rms": 0.04711084100531885,
+          "seconds": 0.155364482
+        },
+        "10-20mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.897661449,
+          "raw_rms_byte": 3.3676476591464533,
+          "requested_abs_p50": 0.00793481246375927,
+          "requested_abs_p90": 0.06347849971007416,
+          "requested_rms": 0.026729901253476875,
+          "seconds": 2.882874268
+        },
+        "20-30mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 14.793246917709471,
+          "requested_abs_p50": 0.1031830805383465,
+          "requested_abs_p90": 0.206335642567217,
+          "requested_rms": 0.11740608560511352,
+          "seconds": 0.120839042
+        },
+        "20-30mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 6.480361205340137,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.06347849971007416,
+          "requested_rms": 0.051425944417154354,
+          "seconds": 0.207152643
+        },
+        "20-30mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 2.969187869,
+          "raw_rms_byte": 3.418895731671239,
+          "requested_abs_p50": 0.02380443739127781,
+          "requested_abs_p90": 0.02380443739127781,
+          "requested_rms": 0.02713096238827913,
+          "seconds": 5.955638457
+        },
+        "20-30mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101761,
+          "raw_rms_byte": 110.59670867843622,
+          "requested_abs_p50": 0.880947294534135,
+          "requested_abs_p90": 0.8888821069978943,
+          "requested_rms": 0.8777472435522518,
+          "seconds": 0.379779844
+        },
+        "20-30mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 110.88933422382198,
+          "requested_abs_p50": 0.880947294534135,
+          "requested_abs_p90": 0.880947294534135,
+          "requested_rms": 0.8800691816187807,
+          "seconds": 0.155364481
+        },
+        "20-30mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.00123777,
+          "raw_rms_byte": 110.06917829220154,
+          "requested_abs_p50": 0.8650776696066164,
+          "requested_abs_p90": 0.9126865443891721,
+          "requested_rms": 0.873563233517079,
+          "seconds": 1.173864972
+        },
+        "20-30mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 97.98126925242677,
+          "requested_abs_p50": 0.8412732322153386,
+          "requested_abs_p90": 0.8968169194616535,
+          "requested_rms": 0.7776285227742326,
+          "seconds": 0.293466241
+        },
+        "20-30mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 90.59394147002628,
+          "requested_abs_p50": 0.7618945890682699,
+          "requested_abs_p90": 0.9126865443891721,
+          "requested_rms": 0.7189969916823138,
+          "seconds": 0.327991685
+        },
+        "20-30mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 79.15292484913205,
+          "requested_abs_p50": 0.5396893215735343,
+          "requested_abs_p90": 0.9285866878261666,
+          "requested_rms": 0.6282036957575611,
+          "seconds": 0.241678082
+        },
+        "20-30mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 59.51748315990607,
+          "requested_abs_p50": 0.46824549089022494,
+          "requested_abs_p90": 0.5714285714285714,
+          "requested_rms": 0.4723640496121008,
+          "seconds": 0.103576321
+        },
+        "20-30mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 63.50728289193267,
+          "requested_abs_p50": 0.4523758659627064,
+          "requested_abs_p90": 0.6111026337473677,
+          "requested_rms": 0.5040231369056489,
+          "seconds": 0.0863136
+        },
+        "20-30mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 51.001002673904864,
+          "requested_abs_p50": 0.40476699118015075,
+          "requested_abs_p90": 0.40476699118015075,
+          "requested_rms": 0.40477494719209417,
+          "seconds": 0.01726272
+        },
+        "20-30mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 108.0837685111814,
+          "requested_abs_p50": 0.8571428571428571,
+          "requested_abs_p90": 0.8571428571428571,
+          "requested_rms": 0.8578075439703661,
+          "seconds": 0.207152642
+        },
+        "20-30mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 109.00032743788778,
+          "requested_abs_p50": 0.8650776696066164,
+          "requested_abs_p90": 0.8650776696066164,
+          "requested_rms": 0.865080267762339,
+          "seconds": 0.05178816
+        },
+        "20-30mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 92.39051512394853,
+          "requested_abs_p50": 0.7539597766045106,
+          "requested_abs_p90": 0.8650776696066164,
+          "requested_rms": 0.7332598248446148,
+          "seconds": 0.293466242
+        },
+        "20-30mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 104.82593374296856,
+          "requested_abs_p50": 0.8492080446790978,
+          "requested_abs_p90": 0.8650776696066164,
+          "requested_rms": 0.831954020230587,
+          "seconds": 0.155364482
+        },
+        "20-30mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 106.99901566482811,
+          "requested_abs_p50": 0.8492080446790978,
+          "requested_abs_p90": 0.8492080446790978,
+          "requested_rms": 0.8492002341562084,
+          "seconds": 0.01726272
+        },
+        "20-30mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 41.63719431065347,
+          "requested_abs_p50": 0.21430097354045227,
+          "requested_abs_p90": 0.5396893215735343,
+          "requested_rms": 0.3304560122650387,
+          "seconds": 0.276203524
+        },
+        "20-30mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 35.79001970426938,
+          "requested_abs_p50": 0.2857142857142857,
+          "requested_abs_p90": 0.3491927854243599,
+          "requested_rms": 0.2840484863565894,
+          "seconds": 0.241678083
+        },
+        "20-30mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 33.02141816446924,
+          "requested_abs_p50": 0.24604022339548937,
+          "requested_abs_p90": 0.35715811639759515,
+          "requested_rms": 0.26208375750023505,
+          "seconds": 0.155364481
+        },
+        "30-40mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 21.479241547543772,
+          "requested_abs_p50": 0.04760887478255562,
+          "requested_abs_p90": 0.15079195532090212,
+          "requested_rms": 0.1704740908450057,
+          "seconds": 0.293466243
+        },
+        "30-40mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 8.35351849150998,
+          "requested_abs_p50": 0.02380443739127781,
+          "requested_abs_p90": 0.1031830805383465,
+          "requested_rms": 0.06630016051355361,
+          "seconds": 0.258940802
+        },
+        "30-40mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.639958416,
+          "raw_rms_byte": 9.184089882716222,
+          "requested_abs_p50": 0.02380443739127781,
+          "requested_abs_p90": 0.03173924985503708,
+          "requested_rms": 0.07288866014860773,
+          "seconds": 4.919875251
+        },
+        "30-40mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.293466243,
+          "raw_rms_byte": 116.72456795928514,
+          "requested_abs_p50": 0.9047517319254128,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.9263814588496371,
+          "seconds": 1.467331215
+        },
+        "30-40mps/negative-large/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 124.0,
+          "requested_abs_p50": 0.9841303750724815,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.9841303750724815,
+          "seconds": 0.207152642
+        },
+        "30-40mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 114.23031370888809,
+          "requested_abs_p50": 0.9126865443891721,
+          "requested_abs_p90": 0.9126865443891721,
+          "requested_rms": 0.9065807829196231,
+          "seconds": 0.345254403
+        },
+        "30-40mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.794085128,
+          "raw_rms_byte": 123.3353511568351,
+          "requested_abs_p50": 0.9841303750724815,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.9788557772828992,
+          "seconds": 2.071526421
+        },
+        "30-40mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 106.10469812922682,
+          "requested_abs_p50": 0.8888821069978943,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.8421002434402626,
+          "seconds": 1.294704012
+        },
+        "30-40mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 107.14713008319954,
+          "requested_abs_p50": 0.9206213568529313,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.8503726479003061,
+          "seconds": 0.0863136
+        },
+        "30-40mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.155364481,
+          "raw_rms_byte": 109.00297003171777,
+          "requested_abs_p50": 0.8888821069978943,
+          "requested_abs_p90": 0.9523911252174444,
+          "requested_rms": 0.8651024883966221,
+          "seconds": 0.880398728
+        },
+        "30-40mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 101.8388037742158,
+          "requested_abs_p50": 0.706350901821955,
+          "requested_abs_p90": 0.9523911252174444,
+          "requested_rms": 0.8082453097880177,
+          "seconds": 0.448830725
+        },
+        "30-40mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 41.73901327654033,
+          "requested_abs_p50": 0.2619098483230079,
+          "requested_abs_p90": 0.500015259254738,
+          "requested_rms": 0.33126342330427444,
+          "seconds": 0.863136011
+        },
+        "30-40mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 10.042523866984448,
+          "requested_abs_p50": 0.0793786431470687,
+          "requested_abs_p90": 0.0793786431470687,
+          "requested_rms": 0.07971608926164321,
+          "seconds": 0.01726272
+        },
+        "30-40mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 39.12384920824098,
+          "requested_abs_p50": 0.29364909817804496,
+          "requested_abs_p90": 0.4365062410351878,
+          "requested_rms": 0.31050865170874886,
+          "seconds": 0.552407048
+        },
+        "30-40mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.06905088,
+          "raw_rms_byte": 44.687747624414556,
+          "requested_abs_p50": 0.33332316049684135,
+          "requested_abs_p90": 0.5079500717184973,
+          "requested_rms": 0.35466653699206907,
+          "seconds": 0.379779842
+        },
+        "30-40mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 111.00349059685344,
+          "requested_abs_p50": 0.880947294534135,
+          "requested_abs_p90": 0.8888821069978943,
+          "requested_rms": 0.8809749868093159,
+          "seconds": 0.103576321
+        },
+        "30-40mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 96.91257145425594,
+          "requested_abs_p50": 0.7857295449690237,
+          "requested_abs_p90": 0.8968169194616535,
+          "requested_rms": 0.7691469099376835,
+          "seconds": 0.483356165
+        },
+        "30-40mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 99.60826466621442,
+          "requested_abs_p50": 0.8730124820703756,
+          "requested_abs_p90": 0.8888821069978943,
+          "requested_rms": 0.7905387883986902,
+          "seconds": 1.311966731
+        },
+        "30-40mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 101.9979937009352,
+          "requested_abs_p50": 0.880947294534135,
+          "requested_abs_p90": 0.8888821069978943,
+          "requested_rms": 0.8095039799408396,
+          "seconds": 1.294704012
+        },
+        "30-40mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576322,
+          "raw_rms_byte": 47.230962039478364,
+          "requested_abs_p50": 0.35715811639759515,
+          "requested_abs_p90": 0.5476241340372936,
+          "requested_rms": 0.37484982472163314,
+          "seconds": 0.293466243
+        },
+        "30-40mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 26.64140560079187,
+          "requested_abs_p50": 0.2857142857142857,
+          "requested_abs_p90": 0.2857142857142857,
+          "requested_rms": 0.21144216166025778,
+          "seconds": 0.03452544
+        },
+        "30-40mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 39.82658302393359,
+          "requested_abs_p50": 0.26984466078676717,
+          "requested_abs_p90": 0.46824549089022494,
+          "requested_rms": 0.31608429898241563,
+          "seconds": 1.035763212
+        },
+        "30-40mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.172627202,
+          "raw_rms_byte": 38.743241331794636,
+          "requested_abs_p50": 0.29364909817804496,
+          "requested_abs_p90": 0.46824549089022494,
+          "requested_rms": 0.307486438680212,
+          "seconds": 1.622695696
+        },
+        "40-60mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 30.81319209190719,
+          "requested_abs_p50": 0.0793786431470687,
+          "requested_abs_p90": 0.38096255378887295,
+          "requested_rms": 0.24454985526422696,
+          "seconds": 1.536382096
+        },
+        "40-60mps/center/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 49.63874541573873,
+          "requested_abs_p50": 0.3253883480330821,
+          "requested_abs_p90": 0.6587420270393994,
+          "requested_rms": 0.3939653075075491,
+          "seconds": 0.120839041
+        },
+        "40-60mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 15.894788979522065,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.13492233039338358,
+          "requested_rms": 0.12614954489283492,
+          "seconds": 1.588170256
+        },
+        "40-60mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 3.538857635,
+          "raw_rms_byte": 10.519537308142924,
+          "requested_abs_p50": 0.02380443739127781,
+          "requested_abs_p90": 0.0793786431470687,
+          "requested_rms": 0.08348813177487717,
+          "seconds": 21.751027415
+        },
+        "40-60mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.258940802,
+          "raw_rms_byte": 115.01356542754132,
+          "requested_abs_p50": 0.9047517319254128,
+          "requested_abs_p90": 0.9444563127536851,
+          "requested_rms": 0.9128016812083823,
+          "seconds": 2.606670743
+        },
+        "40-60mps/negative-large/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 121.69469999372248,
+          "requested_abs_p50": 0.9841303750724815,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.9658324681609253,
+          "seconds": 0.086313601
+        },
+        "40-60mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 114.21904508981282,
+          "requested_abs_p50": 0.9047517319254128,
+          "requested_abs_p90": 0.9365215002899259,
+          "requested_rms": 0.9064956069097725,
+          "seconds": 2.623933471
+        },
+        "40-60mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.242915853,
+          "raw_rms_byte": 116.84846920042995,
+          "requested_abs_p50": 0.9126865443891721,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.9273660876458175,
+          "seconds": 5.575858615
+        },
+        "40-60mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.189889922,
+          "raw_rms_byte": 106.88308188932693,
+          "requested_abs_p50": 0.8968169194616535,
+          "requested_abs_p90": 0.9365215002899259,
+          "requested_rms": 0.8482754972801996,
+          "seconds": 3.435281309
+        },
+        "40-60mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 105.21519398560542,
+          "requested_abs_p50": 0.8888821069978943,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.8350381587743994,
+          "seconds": 0.241678084
+        },
+        "40-60mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.172627202,
+          "raw_rms_byte": 104.41249916755989,
+          "requested_abs_p50": 0.8968169194616535,
+          "requested_abs_p90": 0.9206213568529313,
+          "requested_rms": 0.8286673672712062,
+          "seconds": 2.278679067
+        },
+        "40-60mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101761,
+          "raw_rms_byte": 104.40522528979054,
+          "requested_abs_p50": 0.9047517319254128,
+          "requested_abs_p90": 0.9206213568529313,
+          "requested_rms": 0.8286074882445628,
+          "seconds": 1.260178574
+        },
+        "40-60mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 42.98919629612789,
+          "requested_abs_p50": 0.27777947325052643,
+          "requested_abs_p90": 0.5555589465010529,
+          "requested_rms": 0.34118605957967124,
+          "seconds": 1.691746579
+        },
+        "40-60mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 31.90882078503286,
+          "requested_abs_p50": 0.21430097354045227,
+          "requested_abs_p90": 0.5079500717184973,
+          "requested_rms": 0.2532501772918438,
+          "seconds": 0.1726272
+        },
+        "40-60mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.172627202,
+          "raw_rms_byte": 42.90032555283709,
+          "requested_abs_p50": 0.29364909817804496,
+          "requested_abs_p90": 0.5079500717184973,
+          "requested_rms": 0.34047940183453856,
+          "seconds": 2.054263696
+        },
+        "40-60mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.379779844,
+          "raw_rms_byte": 39.753427640998346,
+          "requested_abs_p50": 0.27777947325052643,
+          "requested_abs_p90": 0.49204992828150274,
+          "requested_rms": 0.31550734913883705,
+          "seconds": 2.382255385
+        },
+        "40-60mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 111.10829493256762,
+          "requested_abs_p50": 0.9047517319254128,
+          "requested_abs_p90": 0.9365215002899259,
+          "requested_rms": 0.881808231097354,
+          "seconds": 3.573383071
+        },
+        "40-60mps/positive-large/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 111.27860360775648,
+          "requested_abs_p50": 0.9603259376812037,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.883165307661268,
+          "seconds": 0.362517124
+        },
+        "40-60mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.155364482,
+          "raw_rms_byte": 113.15455484311917,
+          "requested_abs_p50": 0.9047517319254128,
+          "requested_abs_p90": 0.9682607501449629,
+          "requested_rms": 0.898048279570918,
+          "seconds": 2.485831709
+        },
+        "40-60mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.759559688,
+          "raw_rms_byte": 114.7341536476,
+          "requested_abs_p50": 0.9126865443891721,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.9105876514875139,
+          "seconds": 2.623933466
+        },
+        "40-60mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.207152643,
+          "raw_rms_byte": 101.95601936480973,
+          "requested_abs_p50": 0.880947294534135,
+          "requested_abs_p90": 0.9285866878261666,
+          "requested_rms": 0.8091727515916164,
+          "seconds": 4.09126468
+        },
+        "40-60mps/positive-medium/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 99.03884925982672,
+          "requested_abs_p50": 0.8571428571428571,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.7860232756561126,
+          "seconds": 0.293466245
+        },
+        "40-60mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 99.76940424980376,
+          "requested_abs_p50": 0.8492080446790978,
+          "requested_abs_p90": 0.9047517319254128,
+          "requested_rms": 0.7918186407650235,
+          "seconds": 2.727509791
+        },
+        "40-60mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.241678082,
+          "raw_rms_byte": 101.63786411101876,
+          "requested_abs_p50": 0.8888821069978943,
+          "requested_abs_p90": 0.9047517319254128,
+          "requested_rms": 0.8066463402408303,
+          "seconds": 2.106051859
+        },
+        "40-60mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 50.746305566159876,
+          "requested_abs_p50": 0.35715811639759515,
+          "requested_abs_p90": 0.5872981963560899,
+          "requested_rms": 0.4027487907991856,
+          "seconds": 2.364992661
+        },
+        "40-60mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 34.93900080747586,
+          "requested_abs_p50": 0.24604022339548937,
+          "requested_abs_p90": 0.5952330088198492,
+          "requested_rms": 0.2772940549649826,
+          "seconds": 0.172627201
+        },
+        "40-60mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 44.12407977541006,
+          "requested_abs_p50": 0.30158391064180423,
+          "requested_abs_p90": 0.5317545091097751,
+          "requested_rms": 0.3501921280349589,
+          "seconds": 2.675721633
+        },
+        "40-60mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.362517123,
+          "raw_rms_byte": 44.916533079974364,
+          "requested_abs_p50": 0.35715811639759515,
+          "requested_abs_p90": 0.46031067842646567,
+          "requested_rms": 0.3564816547574255,
+          "seconds": 4.108527398
+        },
+        "60-90mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 9.80105074879123,
+          "requested_abs_p50": 0.03173924985503708,
+          "requested_abs_p90": 0.16666158024842068,
+          "requested_rms": 0.07778507534617723,
+          "seconds": 0.103576321
+        },
+        "60-90mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 3.0613210095670267,
+          "requested_abs_p50": 0.02380443739127781,
+          "requested_abs_p90": 0.03173924985503708,
+          "requested_rms": 0.024291016266806072,
+          "seconds": 0.189889922
+        },
+        "60-90mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.725034247,
+          "raw_rms_byte": 3.4273026011559296,
+          "requested_abs_p50": 0.00793481246375927,
+          "requested_abs_p90": 0.03173924985503708,
+          "requested_rms": 0.027198746032297813,
+          "seconds": 3.245391393
+        },
+        "60-90mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 33.29293172795371,
+          "requested_abs_p50": 0.23017059846797083,
+          "requested_abs_p90": 0.24604022339548937,
+          "requested_rms": 0.26424072199183857,
+          "seconds": 0.224415362
+        },
+        "60-90mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 33.289192698825694,
+          "requested_abs_p50": 0.23017059846797083,
+          "requested_abs_p90": 0.2381054109317301,
+          "requested_rms": 0.26421103682277475,
+          "seconds": 0.224415362
+        },
+        "60-90mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 23.905212182852356,
+          "requested_abs_p50": 0.14285714285714285,
+          "requested_abs_p90": 0.27777947325052643,
+          "requested_rms": 0.18972357243172308,
+          "seconds": 0.069050881
+        },
+        "60-90mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 33.54665304305774,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.3253883480330821,
+          "requested_rms": 0.2662422580433962,
+          "seconds": 0.086313601
+        },
+        "60-90mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 38.58306182832787,
+          "requested_abs_p50": 0.3253883480330821,
+          "requested_abs_p90": 0.3253883480330821,
+          "requested_rms": 0.3062102687064911,
+          "seconds": 0.034525441
+        },
+        "60-90mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 54.33819789293442,
+          "requested_abs_p50": 0.3650929288613544,
+          "requested_abs_p90": 0.7222205267494736,
+          "requested_rms": 0.43125513206672633,
+          "seconds": 0.138101762
+        },
+        "60-90mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 63.88033225953655,
+          "requested_abs_p50": 0.35715811639759515,
+          "requested_abs_p90": 0.7222205267494736,
+          "requested_rms": 0.5069864276020312,
+          "seconds": 0.05178816
+        },
+        "60-90mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.172627202,
+          "raw_rms_byte": 33.848034564250476,
+          "requested_abs_p50": 0.23017059846797083,
+          "requested_abs_p90": 0.3412579729606006,
+          "requested_rms": 0.2686346515167009,
+          "seconds": 0.379779846
+        },
+        "60-90mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 42.19082890922728,
+          "requested_abs_p50": 0.3095187231055635,
+          "requested_abs_p90": 0.42857142857142855,
+          "requested_rms": 0.3348480725123125,
+          "seconds": 0.414305285
+        },
+        "60-90mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.189889922,
+          "raw_rms_byte": 24.457454591353716,
+          "requested_abs_p50": 0.14285714285714285,
+          "requested_abs_p90": 0.30158391064180423,
+          "requested_rms": 0.19410781074322284,
+          "seconds": 0.310728962
+        },
+        "60-90mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 38.54612043047233,
+          "requested_abs_p50": 0.12698751792962432,
+          "requested_abs_p90": 0.5476241340372936,
+          "requested_rms": 0.30592092844356505,
+          "seconds": 0.241678083
+        },
+        "60-90mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 40.279873653920504,
+          "requested_abs_p50": 0.07144383068330942,
+          "requested_abs_p90": 0.6349070711386456,
+          "requested_rms": 0.3196816868236335,
+          "seconds": 0.207152641
+        },
+        "60-90mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 8.57392195937434,
+          "requested_abs_p50": 0.05554368724631489,
+          "requested_abs_p90": 0.09524826807458724,
+          "requested_rms": 0.06805103157379688,
+          "seconds": 0.397042563
+        }
+      },
+      "coverage": {
+        "end_seconds": 166.4644266,
+        "excluded_seconds": {
+          "outside_driving_speed_bands": 11.859504735,
+          "speed_unavailable": 23.304656495
+        },
+        "seconds": 152.23992944,
+        "start_seconds": 14.22449716
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "effcb54aa67d876dae368377201579f7ca8c35a08cdde3358e50407f115487da",
+        "force-source.csv": "58e9599573c105e7f53b1190f1e8b57bfc5276ae4898ec7c5c7d1e3ff128719e",
+        "frames.csv": "99183d7b92c9b5b7ec3969876e8f0c77050a269bb079687e5d43383a8b760e6f",
+        "invocation.json": "2c21245e04f1f88458afb1ff790300181e7465b7a82f51de71edc2d1e0e1a360",
+        "replay-report.json": "086e8bab14ff5cacb0201997326ebb31c93f3fde7db5183049100614fa0b7a2b",
+        "signals.csv": "8b92bec4217e8724d7fea9390d85891b24996c873a931231e7b020432be4eb5f"
+      },
+      "intervals_sha256": "01136491880ec5e44a01dae9085f8c622e0a8da1e6234c2f1851dea8c0e5a0af",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_DEVICE": "MOZA R12 Base",
+        "MIDV_FFB_IMPACT": "0",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_RUMBLE": "100",
+        "MIDV_FFB_STRENGTH": "80",
+        "MIDV_STEER_CURVE": "110"
+      },
+      "rom": "offroadc",
+      "selected": {
+        "adapter_ceiling_fraction": 0.0,
+        "adapter_longest_ceiling_seconds": 0.0,
+        "longest_contiguous_seconds": 116.385259403,
+        "raw_rms_byte": 74.06740767605233,
+        "requested_abs_p50": 0.3412579729606006,
+        "requested_abs_p90": 0.9206213568529313,
+        "requested_rms": 0.5878351844327503,
+        "seconds": 117.07576821
+      }
+    },
+    "usa": {
+      "bins": {
+        "10-20mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.00123777,
+          "raw_rms_byte": 0.0,
+          "requested_abs_p50": 0.0,
+          "requested_abs_p90": 0.0,
+          "requested_rms": 0.0,
+          "seconds": 1.00123777
+        },
+        "20-30mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 3.998650436904007,
+          "requested_abs_p50": 0.0,
+          "requested_abs_p90": 0.06347849971007416,
+          "requested_rms": 0.03172854132496236,
+          "seconds": 0.086313601
+        },
+        "20-30mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.690508807,
+          "raw_rms_byte": 1.7253443913490616,
+          "requested_abs_p50": 0.0,
+          "requested_abs_p90": 0.0,
+          "requested_rms": 0.013693901639457363,
+          "seconds": 0.759571102
+        },
+        "20-30mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 58.901248366678246,
+          "requested_abs_p50": 0.4761803033539842,
+          "requested_abs_p90": 0.48411511581774347,
+          "requested_rms": 0.46746184556284703,
+          "seconds": 0.120839042
+        },
+        "20-30mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 62.015425290562504,
+          "requested_abs_p50": 0.49204992828150274,
+          "requested_abs_p90": 0.5079500717184973,
+          "requested_rms": 0.4921801756891628,
+          "seconds": 0.06905088
+        },
+        "20-30mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 22.636606824604414,
+          "requested_abs_p50": 0.17459639271217994,
+          "requested_abs_p90": 0.19840083010345774,
+          "requested_rms": 0.17964756163936316,
+          "seconds": 0.034525441
+        },
+        "20-30mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 36.886583547060816,
+          "requested_abs_p50": 0.27777947325052643,
+          "requested_abs_p90": 0.3968321787163915,
+          "requested_rms": 0.2927533022903613,
+          "seconds": 0.466093445
+        },
+        "20-30mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.06905088,
+          "raw_rms_byte": 34.6904452248319,
+          "requested_abs_p50": 0.2619098483230079,
+          "requested_abs_p90": 0.40476699118015075,
+          "requested_rms": 0.27532342740053983,
+          "seconds": 0.276203521
+        },
+        "30-40mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 8.30448427610827,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.09524826807458724,
+          "requested_rms": 0.06591062365107171,
+          "seconds": 0.138101762
+        },
+        "30-40mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 8.071633796619576,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.08731345561082797,
+          "requested_rms": 0.06405989089948765,
+          "seconds": 0.397042564
+        },
+        "30-40mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.087551371,
+          "raw_rms_byte": 11.43559724350341,
+          "requested_abs_p50": 0.02380443739127781,
+          "requested_abs_p90": 0.09524826807458724,
+          "requested_rms": 0.09075732643982672,
+          "seconds": 3.279916832
+        },
+        "30-40mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.01726272,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.01726272
+        },
+        "30-40mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.069050881,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.155364483
+        },
+        "30-40mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.0863136,
+          "longest_contiguous_seconds": 0.0863136,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.224415361
+        },
+        "30-40mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.13335536436625386,
+          "adapter_longest_ceiling_seconds": 0.03453685,
+          "longest_contiguous_seconds": 0.172627202,
+          "raw_rms_byte": 96.18520202696399,
+          "requested_abs_p50": 0.7380901516769921,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.7633750013995536,
+          "seconds": 0.517881604
+        },
+        "30-40mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 59.98601203827357,
+          "requested_abs_p50": 0.4761803033539842,
+          "requested_abs_p90": 0.4761803033539842,
+          "requested_rms": 0.476069309978925,
+          "seconds": 0.017262721
+        },
+        "30-40mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.09300771520866565,
+          "adapter_longest_ceiling_seconds": 0.03452544,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 88.65847125908232,
+          "requested_abs_p50": 0.5555589465010529,
+          "requested_abs_p90": 0.9761955626087222,
+          "requested_rms": 0.7036403115442562,
+          "seconds": 0.742296968
+        },
+        "30-40mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.047619048056903236,
+          "adapter_longest_ceiling_seconds": 0.051788161,
+          "longest_contiguous_seconds": 0.241678083,
+          "raw_rms_byte": 66.61145148366619,
+          "requested_abs_p50": 0.49204992828150274,
+          "requested_abs_p90": 0.5714285714285714,
+          "requested_rms": 0.5286582273914963,
+          "seconds": 1.087551371
+        },
+        "30-40mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 37.46410236689784,
+          "requested_abs_p50": 0.2857142857142857,
+          "requested_abs_p90": 0.42857142857142855,
+          "requested_rms": 0.29733425560293925,
+          "seconds": 0.535144325
+        },
+        "30-40mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.258940803,
+          "raw_rms_byte": 31.628095887418198,
+          "requested_abs_p50": 0.21430097354045227,
+          "requested_abs_p90": 0.3730277413251137,
+          "requested_rms": 0.2510189369295391,
+          "seconds": 0.96671233
+        },
+        "30-40mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.362517124,
+          "raw_rms_byte": 22.486889648711035,
+          "requested_abs_p50": 0.1587267677846614,
+          "requested_abs_p90": 0.17459639271217994,
+          "requested_rms": 0.17846629296077468,
+          "seconds": 1.122076812
+        },
+        "30-40mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 18.21017742630267,
+          "requested_abs_p50": 0.14285714285714285,
+          "requested_abs_p90": 0.16666158024842068,
+          "requested_rms": 0.144524509682212,
+          "seconds": 0.086313601
+        },
+        "30-40mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.155364481,
+          "raw_rms_byte": 20.096698953961727,
+          "requested_abs_p50": 0.16666158024842068,
+          "requested_abs_p90": 0.17459639271217994,
+          "requested_rms": 0.1594939085279825,
+          "seconds": 0.310728963
+        },
+        "40-60mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 11.82343553048211,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.16666158024842068,
+          "requested_rms": 0.0938383643705869,
+          "seconds": 0.466093445
+        },
+        "40-60mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 7.535563678598171,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.1031830805383465,
+          "requested_rms": 0.059808624720154774,
+          "seconds": 1.053025928
+        },
+        "40-60mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.139339532,
+          "raw_rms_byte": 3.3886170844340535,
+          "requested_abs_p50": 0.00793481246375927,
+          "requested_abs_p90": 0.03967406231879635,
+          "requested_rms": 0.02689027399204717,
+          "seconds": 7.664647759
+        },
+        "40-60mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.017262721,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.017262721
+        },
+        "40-60mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.01726272,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.06905088
+        },
+        "40-60mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.120839041,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.207152642
+        },
+        "40-60mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 79.35888642214873,
+          "requested_abs_p50": 0.5714285714285714,
+          "requested_abs_p90": 0.8650776696066164,
+          "requested_rms": 0.6298334282048793,
+          "seconds": 0.932186887
+        },
+        "40-60mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 50.99457939541482,
+          "requested_abs_p50": 0.40476699118015075,
+          "requested_abs_p90": 0.40476699118015075,
+          "requested_rms": 0.40472395709061854,
+          "seconds": 0.017262721
+        },
+        "40-60mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.06962172713158571,
+          "adapter_longest_ceiling_seconds": 0.069066372,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 89.90857865442278,
+          "requested_abs_p50": 0.6666768395031587,
+          "requested_abs_p90": 0.9682607501449629,
+          "requested_rms": 0.7135621017716504,
+          "seconds": 2.727509785
+        },
+        "40-60mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.006622522242161795,
+          "adapter_longest_ceiling_seconds": 0.017247227,
+          "longest_contiguous_seconds": 0.345254403,
+          "raw_rms_byte": 78.88450610187785,
+          "requested_abs_p50": 0.5714285714285714,
+          "requested_abs_p90": 0.8095339823603015,
+          "requested_rms": 0.6260701859161821,
+          "seconds": 2.606670747
+        },
+        "40-60mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 35.683596600306295,
+          "requested_abs_p50": 0.26984466078676717,
+          "requested_abs_p90": 0.38096255378887295,
+          "requested_rms": 0.2832038358671251,
+          "seconds": 1.08755137
+        },
+        "40-60mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 1.0,
+          "requested_abs_p50": 0.00793481246375927,
+          "requested_abs_p90": 0.00793481246375927,
+          "requested_rms": 0.00793481246375927,
+          "seconds": 0.01726272
+        },
+        "40-60mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.155364482,
+          "raw_rms_byte": 33.59710332455689,
+          "requested_abs_p50": 0.24604022339548937,
+          "requested_abs_p90": 0.38096255378887295,
+          "requested_rms": 0.2666461065526437,
+          "seconds": 2.60667075
+        },
+        "40-60mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.189889922,
+          "raw_rms_byte": 38.886353089927205,
+          "requested_abs_p50": 0.27777947325052643,
+          "requested_abs_p90": 0.41270180364391,
+          "requested_rms": 0.3086269905295075,
+          "seconds": 2.503094424
+        },
+        "40-60mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 71.07550316619384,
+          "requested_abs_p50": 0.5634937589648121,
+          "requested_abs_p90": 0.6508072145756402,
+          "requested_rms": 0.5640930142184494,
+          "seconds": 0.414305284
+        },
+        "40-60mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 82.04401784754597,
+          "requested_abs_p50": 0.6508072145756402,
+          "requested_abs_p90": 0.7698294015320292,
+          "requested_rms": 0.6511448997616825,
+          "seconds": 1.570907536
+        },
+        "40-60mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.189889922,
+          "raw_rms_byte": 82.58486573895493,
+          "requested_abs_p50": 0.6428724021118809,
+          "requested_abs_p90": 0.793664357432783,
+          "requested_rms": 0.6554384500667548,
+          "seconds": 1.985212819
+        },
+        "40-60mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 41.622679226856725,
+          "requested_abs_p50": 0.3174535355693228,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.33033929890873626,
+          "seconds": 0.621457927
+        },
+        "40-60mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 43.001697378713835,
+          "requested_abs_p50": 0.3412579729606006,
+          "requested_abs_p90": 0.3412579729606006,
+          "requested_rms": 0.3412714677774597,
+          "seconds": 0.017262721
+        },
+        "40-60mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 42.070643814617306,
+          "requested_abs_p50": 0.3412579729606006,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.33389418582443586,
+          "seconds": 0.88039873
+        },
+        "40-60mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.0863136,
+          "raw_rms_byte": 32.64822213992187,
+          "requested_abs_p50": 0.26984466078676717,
+          "requested_abs_p90": 0.35715811639759515,
+          "requested_rms": 0.2591141056012554,
+          "seconds": 0.258940801
+        }
+      },
+      "coverage": {
+        "end_seconds": 86.5035022,
+        "excluded_seconds": {
+          "outside_driving_speed_bands": 2.692984347,
+          "speed_unavailable": 36.013337517
+        },
+        "seconds": 78.84215768,
+        "start_seconds": 7.66134452
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "419c81dd6cc50319346b07853179070a4afa5e03df351e2e966562e799a9d611",
+        "force-source.csv": "677b00dfc3f2e06e2bcc2d754f4c02e38eb9f3db78589c083a68aa33e2e06bdf",
+        "frames.csv": "63d3c06cca9c6738450f7a59c791955c33726cf049abda4186c22cc570a55357",
+        "invocation.json": "811cb5fc55ba94cd08a39d7ce1c3eaf31945a83142fa512d36a41025b85301b9",
+        "replay-report.json": "a0446f80d7838bead62d4c7acc4aa09a0e0d3721d81c8d9cf1f03b8196e081dd",
+        "signals.csv": "d27571479ed5c47d6306de08e5807222dd6f4a6eed07f39d75aca58cbfd33cab"
+      },
+      "intervals_sha256": "c32c633a1ea4e43dc4e5033afb1e67dfb81b4b7afd2b024d6a6fb6d64e2da232",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_DEVICE": "MOZA R12 Base",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_RUMBLE": "100"
+      },
+      "rom": "crusnusa",
+      "selected": {
+        "adapter_ceiling_fraction": 0.02709686388457993,
+        "adapter_longest_ceiling_seconds": 0.5006148,
+        "longest_contiguous_seconds": 40.135835816,
+        "raw_rms_byte": 52.993009674958095,
+        "requested_abs_p50": 0.2381054109317301,
+        "requested_abs_p90": 0.7380901516769921,
+        "requested_rms": 0.4205805536681253,
+        "seconds": 40.135835816
+      }
+    },
+    "world": {
+      "bins": {
+        "10-20mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 6.436606070495195,
+          "requested_abs_p50": 0.03173924985503708,
+          "requested_abs_p90": 0.0793786431470687,
+          "requested_rms": 0.051087505435863094,
+          "seconds": 0.189889922
+        },
+        "10-20mps/center/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 29.028865013931437,
+          "requested_abs_p50": 0.23017059846797083,
+          "requested_abs_p90": 0.23017059846797083,
+          "requested_rms": 0.23039966450871988,
+          "seconds": 0.01726272
+        },
+        "10-20mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 3.5214327034000266,
+          "requested_abs_p50": 0.01586962492751854,
+          "requested_abs_p90": 0.05554368724631489,
+          "requested_rms": 0.027941908105228033,
+          "seconds": 0.086313601
+        },
+        "10-20mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.828610568,
+          "raw_rms_byte": 5.803998991740952,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.03967406231879635,
+          "requested_rms": 0.04605929457885389,
+          "seconds": 1.156602251
+        },
+        "10-20mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 0.5833222271912902,
+          "adapter_longest_ceiling_seconds": 0.189889922,
+          "longest_contiguous_seconds": 0.189889922,
+          "raw_rms_byte": 110.2530277385295,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8750244001391994,
+          "seconds": 0.414305284
+        },
+        "10-20mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 0.23529411945105427,
+          "adapter_longest_ceiling_seconds": 0.034525441,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 106.33086517608045,
+          "requested_abs_p50": 0.9047517319254128,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8438978468980182,
+          "seconds": 0.293466242
+        },
+        "10-20mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 106.65165146620132,
+          "requested_abs_p50": 0.8968169194616535,
+          "requested_abs_p90": 0.9682607501449629,
+          "requested_rms": 0.8464466199591512,
+          "seconds": 0.172627203
+        },
+        "10-20mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.21422740354253555,
+          "adapter_longest_ceiling_seconds": 0.0345254,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 101.0269148945911,
+          "requested_abs_p50": 0.8650776696066164,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8018002911183445,
+          "seconds": 0.241678082
+        },
+        "10-20mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.00011603038031367378,
+          "adapter_longest_ceiling_seconds": 1.4021e-05,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 65.61004409218157,
+          "requested_abs_p50": 0.2381054109317301,
+          "requested_abs_p90": 0.8412732322153386,
+          "requested_rms": 0.5207207734333658,
+          "seconds": 0.120839042
+        },
+        "10-20mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.06905088,
+          "raw_rms_byte": 73.79982589601087,
+          "requested_abs_p50": 0.5555589465010529,
+          "requested_abs_p90": 0.7618945890682699,
+          "requested_rms": 0.5857102655147143,
+          "seconds": 0.327991684
+        },
+        "10-20mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101761,
+          "raw_rms_byte": 68.59574483471656,
+          "requested_abs_p50": 0.5158848841822565,
+          "requested_abs_p90": 0.6349070711386456,
+          "requested_rms": 0.5444085970016469,
+          "seconds": 0.345254403
+        },
+        "10-20mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 25.715104525962804,
+          "requested_abs_p50": 0.14285714285714285,
+          "requested_abs_p90": 0.3491927854243599,
+          "requested_rms": 0.20408933947538527,
+          "seconds": 0.276203523
+        },
+        "10-20mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 66.98223847633791,
+          "requested_abs_p50": 0.5476241340372936,
+          "requested_abs_p90": 0.6031678212836085,
+          "requested_rms": 0.531604256919597,
+          "seconds": 0.051788161
+        },
+        "10-20mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 24.120221879474514,
+          "requested_abs_p50": 0.05554368724631489,
+          "requested_abs_p90": 0.40476699118015075,
+          "requested_rms": 0.19142849553726274,
+          "seconds": 0.138101761
+        },
+        "10-20mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 0.5,
+          "adapter_longest_ceiling_seconds": 0.01726272,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 96.6567604453273,
+          "requested_abs_p50": 0.42857142857142855,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.7671176109783874,
+          "seconds": 0.03452544
+        },
+        "10-20mps/positive-large/rapid": {
+          "adapter_ceiling_fraction": 0.9997309423673105,
+          "adapter_longest_ceiling_seconds": 0.051774227,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 125.99596834176467,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9999680019158895,
+          "seconds": 0.051788161
+        },
+        "10-20mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 0.0008148773773773774,
+          "adapter_longest_ceiling_seconds": 1.4067e-05,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 54.09769690856359,
+          "requested_abs_p50": 0.42857142857142855,
+          "requested_abs_p90": 0.42857142857142855,
+          "requested_rms": 0.4293468008616158,
+          "seconds": 0.01726272
+        },
+        "10-20mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 41.68829973224024,
+          "requested_abs_p50": 0.3253883480330821,
+          "requested_abs_p90": 0.41270180364391,
+          "requested_rms": 0.33086404071171155,
+          "seconds": 0.120839041
+        },
+        "10-20mps/positive-medium/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.06905088,
+          "raw_rms_byte": 75.78981316875742,
+          "requested_abs_p50": 0.44444105349894714,
+          "requested_abs_p90": 0.8730124820703756,
+          "requested_rms": 0.6015089811768188,
+          "seconds": 0.06905088
+        },
+        "10-20mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 19.239508796755825,
+          "requested_abs_p50": 0.17459639271217994,
+          "requested_abs_p90": 0.17459639271217994,
+          "requested_rms": 0.1526920505059229,
+          "seconds": 0.034525441
+        },
+        "10-20mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 15.99851099603339,
+          "requested_abs_p50": 0.12698751792962432,
+          "requested_abs_p90": 0.12698751792962432,
+          "requested_rms": 0.12697570266877337,
+          "seconds": 0.01726272
+        },
+        "20-30mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 16.71282638808906,
+          "requested_abs_p50": 0.11111789300210578,
+          "requested_abs_p90": 0.19840083010345774,
+          "requested_rms": 0.13263690695292557,
+          "seconds": 0.051788161
+        },
+        "20-30mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 4.566592757502041,
+          "requested_abs_p50": 0.01586962492751854,
+          "requested_abs_p90": 0.07144383068330942,
+          "requested_rms": 0.03624482527166606,
+          "seconds": 0.224415361
+        },
+        "20-30mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.845873288,
+          "raw_rms_byte": 3.5228608918724524,
+          "requested_abs_p50": 0.00793481246375927,
+          "requested_abs_p90": 0.03967406231879635,
+          "requested_rms": 0.027954129790757908,
+          "seconds": 2.019738262
+        },
+        "20-30mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 0.5517521874878843,
+          "adapter_longest_ceiling_seconds": 0.069050881,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 101.52652062805814,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8057666985849868,
+          "seconds": 0.500618887
+        },
+        "20-30mps/negative-large/rapid": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.03452544,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.03452544
+        },
+        "20-30mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 0.9333333341057106,
+          "adapter_longest_ceiling_seconds": 0.051788161,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 123.0620133852888,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9766827745543513,
+          "seconds": 0.258940803
+        },
+        "20-30mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 0.8888888896040531,
+          "adapter_longest_ceiling_seconds": 0.207152642,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 120.96850272619241,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9600678549999223,
+          "seconds": 0.310728962
+        },
+        "20-30mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.11540565989549846,
+          "adapter_longest_ceiling_seconds": 0.034534886,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 86.4133107035201,
+          "requested_abs_p50": 0.674611651966918,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.6858211625022521,
+          "seconds": 0.448830725
+        },
+        "20-30mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.03452544,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.03452544
+        },
+        "20-30mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.12493205644206086,
+          "adapter_longest_ceiling_seconds": 0.017253337,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 90.81328818124867,
+          "requested_abs_p50": 0.5634937589648121,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.7207388146363409,
+          "seconds": 0.138101761
+        },
+        "20-30mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.01726272,
+          "raw_rms_byte": 71.00163870901876,
+          "requested_abs_p50": 0.5634937589648121,
+          "requested_abs_p90": 0.5634937589648121,
+          "requested_rms": 0.5635067617744679,
+          "seconds": 0.01726272
+        },
+        "20-30mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 49.98401703177743,
+          "requested_abs_p50": 0.41270180364391,
+          "requested_abs_p90": 0.4365062410351878,
+          "requested_rms": 0.396696254761345,
+          "seconds": 0.05178816
+        },
+        "20-30mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 35.34846710297463,
+          "requested_abs_p50": 0.17459639271217994,
+          "requested_abs_p90": 0.41270180364391,
+          "requested_rms": 0.2805475397015459,
+          "seconds": 0.15536448
+        },
+        "20-30mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 38.26794371791513,
+          "requested_abs_p50": 0.3491927854243599,
+          "requested_abs_p90": 0.3730277413251137,
+          "requested_rms": 0.3037149923519099,
+          "seconds": 0.086313602
+        },
+        "20-30mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.310728963,
+          "longest_contiguous_seconds": 0.310728963,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.500618885
+        },
+        "20-30mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.0863136,
+          "longest_contiguous_seconds": 0.0863136,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.293466241
+        },
+        "20-30mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.138101762,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.224415364
+        },
+        "20-30mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.29998691428708585,
+          "adapter_longest_ceiling_seconds": 0.051797568,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 110.06466013880052,
+          "requested_abs_p50": 0.9285866878261666,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8735305523052899,
+          "seconds": 0.345254403
+        },
+        "20-30mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.17645444568327517,
+          "adapter_longest_ceiling_seconds": 0.069041406,
+          "longest_contiguous_seconds": 0.120839042,
+          "raw_rms_byte": 95.33374694410128,
+          "requested_abs_p50": 0.6666768395031587,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.756618137372555,
+          "seconds": 0.586932489
+        },
+        "20-30mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.4117647058823529,
+          "adapter_longest_ceiling_seconds": 0.0863136,
+          "longest_contiguous_seconds": 0.0863136,
+          "raw_rms_byte": 99.2919626517048,
+          "requested_abs_p50": 0.674611651966918,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.7880339402147677,
+          "seconds": 0.29346624
+        },
+        "20-30mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 42.163861446397064,
+          "requested_abs_p50": 0.3253883480330821,
+          "requested_abs_p90": 0.46031067842646567,
+          "requested_rms": 0.33463281558275637,
+          "seconds": 0.086313601
+        },
+        "30-40mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 21.133665761402366,
+          "requested_abs_p50": 0.13492233039338358,
+          "requested_abs_p90": 0.26984466078676717,
+          "requested_rms": 0.16772413121072707,
+          "seconds": 0.189889923
+        },
+        "30-40mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 5.602529599409206,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.07144383068330942,
+          "requested_rms": 0.04446481985125335,
+          "seconds": 0.086313602
+        },
+        "30-40mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.484593935,
+          "raw_rms_byte": 3.8438282217946065,
+          "requested_abs_p50": 0.00793481246375927,
+          "requested_abs_p90": 0.03967406231879635,
+          "requested_rms": 0.030504667746584453,
+          "seconds": 2.796560668
+        },
+        "30-40mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 0.7498631480168949,
+          "adapter_longest_ceiling_seconds": 0.034525441,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 125.25292591908551,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9940720879953714,
+          "seconds": 0.069050881
+        },
+        "30-40mps/negative-large/rapid": {
+          "adapter_ceiling_fraction": 0.9997291079659907,
+          "adapter_longest_ceiling_seconds": 0.051774131,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 125.99919699605468,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9999936282978907,
+          "seconds": 0.05178816
+        },
+        "30-40mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.431568004,
+          "longest_contiguous_seconds": 0.431568004,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.431568004
+        },
+        "30-40mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.04545454497579919,
+          "adapter_longest_ceiling_seconds": 0.01726272,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 84.14123622401297,
+          "requested_abs_p50": 0.6031678212836085,
+          "requested_abs_p90": 0.8730124820703756,
+          "requested_rms": 0.6677872381914225,
+          "seconds": 0.379779844
+        },
+        "30-40mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 76.45110696850905,
+          "requested_abs_p50": 0.3968321787163915,
+          "requested_abs_p90": 0.8333384197515793,
+          "requested_rms": 0.6067562969157941,
+          "seconds": 0.06905088
+        },
+        "30-40mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.18749999796345826,
+          "adapter_longest_ceiling_seconds": 0.05178816,
+          "longest_contiguous_seconds": 0.05178816,
+          "raw_rms_byte": 103.03863070810127,
+          "requested_abs_p50": 0.7301553392132328,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8177690353668868,
+          "seconds": 0.276203523
+        },
+        "30-40mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 6.265613820743636e-05,
+          "adapter_longest_ceiling_seconds": 1.4061e-05,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 113.87546426583883,
+          "requested_abs_p50": 0.9603259376812037,
+          "requested_abs_p90": 0.9841303750724815,
+          "requested_rms": 0.9037786913393608,
+          "seconds": 0.224415363
+        },
+        "30-40mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.06905088,
+          "raw_rms_byte": 30.95312032242843,
+          "requested_abs_p50": 0.1587267677846614,
+          "requested_abs_p90": 0.46824549089022494,
+          "requested_rms": 0.24566122327487702,
+          "seconds": 0.15536448
+        },
+        "30-40mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 15.906275776297369,
+          "requested_abs_p50": 0.11905270546586505,
+          "requested_abs_p90": 0.1825312051759392,
+          "requested_rms": 0.12624017684847516,
+          "seconds": 0.120839041
+        },
+        "30-40mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 17.24040951944796,
+          "requested_abs_p50": 0.11905270546586505,
+          "requested_abs_p90": 0.17459639271217994,
+          "requested_rms": 0.13682888865631745,
+          "seconds": 0.345254404
+        },
+        "30-40mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.120839041,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.120839041
+        },
+        "30-40mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.172627202,
+          "longest_contiguous_seconds": 0.172627202,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.172627202
+        },
+        "30-40mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.10259210329816905,
+          "adapter_longest_ceiling_seconds": 0.034534893,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 100.1543570277867,
+          "requested_abs_p50": 0.7777642139957884,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.79487370008971,
+          "seconds": 0.673246086
+        },
+        "30-40mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.13579499206788173,
+          "adapter_longest_ceiling_seconds": 0.051796149,
+          "longest_contiguous_seconds": 0.155364482,
+          "raw_rms_byte": 100.05711294273061,
+          "requested_abs_p50": 0.7698294015320292,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.7941068462712824,
+          "seconds": 1.398280335
+        },
+        "30-40mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.22414262648122035,
+          "adapter_longest_ceiling_seconds": 0.189889922,
+          "longest_contiguous_seconds": 0.189889922,
+          "raw_rms_byte": 102.01670993335028,
+          "requested_abs_p50": 0.793664357432783,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.8096594136391473,
+          "seconds": 2.00247554
+        },
+        "30-40mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 45.228564411154956,
+          "requested_abs_p50": 0.3412579729606006,
+          "requested_abs_p90": 0.5396893215735343,
+          "requested_rms": 0.35895909903565637,
+          "seconds": 0.276203521
+        },
+        "30-40mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.086313601,
+          "raw_rms_byte": 38.71303585289582,
+          "requested_abs_p50": 0.2857142857142857,
+          "requested_abs_p90": 0.41270180364391,
+          "requested_rms": 0.3072466226581064,
+          "seconds": 0.397042566
+        },
+        "30-40mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.06905088,
+          "raw_rms_byte": 38.382530448986394,
+          "requested_abs_p50": 0.3095187231055635,
+          "requested_abs_p90": 0.3650929288613544,
+          "requested_rms": 0.304623210713798,
+          "seconds": 0.327991681
+        },
+        "40-60mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 11.094152288387507,
+          "requested_abs_p50": 0.05554368724631489,
+          "requested_abs_p90": 0.14285714285714285,
+          "requested_rms": 0.08804972392252566,
+          "seconds": 1.657221136
+        },
+        "40-60mps/center/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 44.576122005922734,
+          "requested_abs_p50": 0.2619098483230079,
+          "requested_abs_p90": 0.49204992828150274,
+          "requested_rms": 0.35377534574680464,
+          "seconds": 0.051788161
+        },
+        "40-60mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 7.817111607024969,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.1031830805383465,
+          "requested_rms": 0.06204125280414967,
+          "seconds": 3.849586593
+        },
+        "40-60mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 3.314442273,
+          "raw_rms_byte": 4.322316782525782,
+          "requested_abs_p50": 0.01586962492751854,
+          "requested_abs_p90": 0.05554368724631489,
+          "requested_rms": 0.034300775312922166,
+          "seconds": 23.54635032
+        },
+        "40-60mps/negative-large/fast": {
+          "adapter_ceiling_fraction": 0.9999673114476284,
+          "adapter_longest_ceiling_seconds": 0.189889922,
+          "longest_contiguous_seconds": 0.189889922,
+          "raw_rms_byte": 125.99976920753397,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9999981684926041,
+          "seconds": 1.294704015
+        },
+        "40-60mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 0.975308642275501,
+          "adapter_longest_ceiling_seconds": 0.103576321,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 125.97539090451923,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9998047312800457,
+          "seconds": 1.398280337
+        },
+        "40-60mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 0.9999692532391316,
+          "adapter_longest_ceiling_seconds": 0.120825108,
+          "longest_contiguous_seconds": 0.120839042,
+          "raw_rms_byte": 125.9999332679306,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9999994704923499,
+          "seconds": 0.759559685
+        },
+        "40-60mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.10902991848978077,
+          "adapter_longest_ceiling_seconds": 0.069064888,
+          "longest_contiguous_seconds": 0.224415362,
+          "raw_rms_byte": 95.66110774765933,
+          "requested_abs_p50": 0.7539597766045106,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.7592157141003555,
+          "seconds": 3.642433953
+        },
+        "40-60mps/negative-medium/rapid": {
+          "adapter_ceiling_fraction": 4.22929240146453e-05,
+          "adapter_longest_ceiling_seconds": 8.031e-06,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 77.99474036844941,
+          "requested_abs_p50": 0.6269722586748864,
+          "requested_abs_p90": 0.8412732322153386,
+          "requested_rms": 0.6190088025070819,
+          "seconds": 0.189889921
+        },
+        "40-60mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.07721170658661691,
+          "adapter_longest_ceiling_seconds": 0.06905088,
+          "longest_contiguous_seconds": 0.258940803,
+          "raw_rms_byte": 90.7939958238204,
+          "requested_abs_p50": 0.674611651966918,
+          "requested_abs_p90": 0.9761955626087222,
+          "requested_rms": 0.72058764788023,
+          "seconds": 4.471044525
+        },
+        "40-60mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.05419513631469519,
+          "adapter_longest_ceiling_seconds": 0.069036919,
+          "longest_contiguous_seconds": 0.310728963,
+          "raw_rms_byte": 84.54999257486067,
+          "requested_abs_p50": 0.5793633838923307,
+          "requested_abs_p90": 0.9285866878261666,
+          "requested_rms": 0.6710318089139912,
+          "seconds": 3.504332195
+        },
+        "40-60mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 34.32827335905085,
+          "requested_abs_p50": 0.25397503585924863,
+          "requested_abs_p90": 0.41270180364391,
+          "requested_rms": 0.2724485799830153,
+          "seconds": 2.002475541
+        },
+        "40-60mps/negative-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 65.36948229870673,
+          "requested_abs_p50": 0.46824549089022494,
+          "requested_abs_p90": 0.82540360728782,
+          "requested_rms": 0.518808547044551,
+          "seconds": 0.103576322
+        },
+        "40-60mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 28.532149489648805,
+          "requested_abs_p50": 0.19046601763969848,
+          "requested_abs_p90": 0.3491927854243599,
+          "requested_rms": 0.2264461672451879,
+          "seconds": 3.176340509
+        },
+        "40-60mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.448830724,
+          "raw_rms_byte": 30.24508167720298,
+          "requested_abs_p50": 0.21430097354045227,
+          "requested_abs_p90": 0.3491927854243599,
+          "requested_rms": 0.2400418322071418,
+          "seconds": 4.074001964
+        },
+        "40-60mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.293466243,
+          "longest_contiguous_seconds": 0.293466243,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.725034248
+        },
+        "40-60mps/positive-large/rapid": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.034525441,
+          "longest_contiguous_seconds": 0.034525441,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.069050881
+        },
+        "40-60mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.03452544,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.172627202
+        },
+        "40-60mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 1.0,
+          "adapter_longest_ceiling_seconds": 0.362517123,
+          "longest_contiguous_seconds": 0.362517123,
+          "raw_rms_byte": 126.0,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 1.0,
+          "seconds": 0.897661448
+        },
+        "40-60mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.03225153742555589,
+          "adapter_longest_ceiling_seconds": 0.034511497,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 90.61246838273313,
+          "requested_abs_p50": 0.6904812768944365,
+          "requested_abs_p90": 0.9206213568529313,
+          "requested_rms": 0.7191467015710891,
+          "seconds": 2.140577303
+        },
+        "40-60mps/positive-medium/rapid": {
+          "adapter_ceiling_fraction": 0.00022570795886832088,
+          "adapter_longest_ceiling_seconds": 1.3963e-05,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 97.06110992295304,
+          "requested_abs_p50": 0.8095339823603015,
+          "requested_abs_p90": 0.9047517319254128,
+          "requested_rms": 0.7703215767996053,
+          "seconds": 0.103576321
+        },
+        "40-60mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.0731674302336938,
+          "adapter_longest_ceiling_seconds": 0.051788161,
+          "longest_contiguous_seconds": 0.138101761,
+          "raw_rms_byte": 90.30913691069847,
+          "requested_abs_p50": 0.6508072145756402,
+          "requested_abs_p90": 0.9603259376812037,
+          "requested_rms": 0.7167399867110605,
+          "seconds": 2.831086104
+        },
+        "40-60mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.07894170981320019,
+          "adapter_longest_ceiling_seconds": 0.086313601,
+          "longest_contiguous_seconds": 0.172627202,
+          "raw_rms_byte": 93.7035052163434,
+          "requested_abs_p50": 0.674611651966918,
+          "requested_abs_p90": 0.9761955626087222,
+          "requested_rms": 0.7436800661098611,
+          "seconds": 3.279916835
+        },
+        "40-60mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101761,
+          "raw_rms_byte": 39.55354826467535,
+          "requested_abs_p50": 0.2857142857142857,
+          "requested_abs_p90": 0.46031067842646567,
+          "requested_rms": 0.3139178781739017,
+          "seconds": 2.226890902
+        },
+        "40-60mps/positive-small/rapid": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 56.675658867682024,
+          "requested_abs_p50": 0.4761803033539842,
+          "requested_abs_p90": 0.5079500717184973,
+          "requested_rms": 0.44980481319026294,
+          "seconds": 0.05178816
+        },
+        "40-60mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 39.95082710877795,
+          "requested_abs_p50": 0.30158391064180423,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.3170698000738944,
+          "seconds": 2.589408027
+        },
+        "40-60mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.224415363,
+          "raw_rms_byte": 37.01264301959628,
+          "requested_abs_p50": 0.24604022339548937,
+          "requested_abs_p90": 0.44444105349894714,
+          "requested_rms": 0.29374869309255436,
+          "seconds": 2.140577303
+        },
+        "60-90mps/center/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.051788161,
+          "raw_rms_byte": 10.924167329435539,
+          "requested_abs_p50": 0.06347849971007416,
+          "requested_abs_p90": 0.14285714285714285,
+          "requested_rms": 0.08670044574783674,
+          "seconds": 0.431568006
+        },
+        "60-90mps/center/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 7.053940000730999,
+          "requested_abs_p50": 0.03967406231879635,
+          "requested_abs_p90": 0.1031830805383465,
+          "requested_rms": 0.05598304553430967,
+          "seconds": 1.881636494
+        },
+        "60-90mps/center/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 1.709009297,
+          "raw_rms_byte": 4.162292490189535,
+          "requested_abs_p50": 0.01586962492751854,
+          "requested_abs_p90": 0.04760887478255562,
+          "requested_rms": 0.03302949947921444,
+          "seconds": 10.374894825
+        },
+        "60-90mps/negative-large/slow": {
+          "adapter_ceiling_fraction": 0.20000023055462737,
+          "adapter_longest_ceiling_seconds": 0.03452548,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 119.34235454050382,
+          "requested_abs_p50": 0.9682607501449629,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9471610422829838,
+          "seconds": 0.172627201
+        },
+        "60-90mps/negative-large/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 119.69719694067709,
+          "requested_abs_p50": 0.9285866878261666,
+          "requested_abs_p90": 0.9920651875362407,
+          "requested_rms": 0.9499765906946658,
+          "seconds": 0.172627202
+        },
+        "60-90mps/negative-medium/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.155364482,
+          "raw_rms_byte": 87.1490481524741,
+          "requested_abs_p50": 0.6508072145756402,
+          "requested_abs_p90": 0.9126865443891721,
+          "requested_rms": 0.6916606287929375,
+          "seconds": 0.310728964
+        },
+        "60-90mps/negative-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 77.80845830863991,
+          "requested_abs_p50": 0.500015259254738,
+          "requested_abs_p90": 0.9126865443891721,
+          "requested_rms": 0.6175269419470032,
+          "seconds": 0.535144326
+        },
+        "60-90mps/negative-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 72.25454784884543,
+          "requested_abs_p50": 0.5158848841822565,
+          "requested_abs_p90": 0.7777642139957884,
+          "requested_rms": 0.573447731730037,
+          "seconds": 0.621457925
+        },
+        "60-90mps/negative-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 31.942384061610905,
+          "requested_abs_p50": 0.21430097354045227,
+          "requested_abs_p90": 0.35715811639759515,
+          "requested_rms": 0.25351022171459847,
+          "seconds": 0.604195205
+        },
+        "60-90mps/negative-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.138101762,
+          "raw_rms_byte": 28.174035985779515,
+          "requested_abs_p50": 0.17459639271217994,
+          "requested_abs_p90": 0.3491927854243599,
+          "requested_rms": 0.2236055651412113,
+          "seconds": 2.520357143
+        },
+        "60-90mps/negative-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.224415363,
+          "raw_rms_byte": 24.20346737268857,
+          "requested_abs_p50": 0.14285714285714285,
+          "requested_abs_p90": 0.27777947325052643,
+          "requested_rms": 0.192093055552578,
+          "seconds": 3.400755877
+        },
+        "60-90mps/positive-large/fast": {
+          "adapter_ceiling_fraction": 0.8666303273440854,
+          "adapter_longest_ceiling_seconds": 0.172617792,
+          "longest_contiguous_seconds": 0.207152642,
+          "raw_rms_byte": 125.34666907056634,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9948159183224031,
+          "seconds": 0.258940802
+        },
+        "60-90mps/positive-large/slow": {
+          "adapter_ceiling_fraction": 0.6001090372767555,
+          "adapter_longest_ceiling_seconds": 0.017262721,
+          "longest_contiguous_seconds": 0.017262721,
+          "raw_rms_byte": 124.23020583714447,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9859569643056946,
+          "seconds": 0.086313601
+        },
+        "60-90mps/positive-large/steady": {
+          "adapter_ceiling_fraction": 0.7499999963794813,
+          "adapter_longest_ceiling_seconds": 0.069050881,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 124.64836822001581,
+          "requested_abs_p50": 1.0,
+          "requested_abs_p90": 1.0,
+          "requested_rms": 0.9892750159008744,
+          "seconds": 0.138101762
+        },
+        "60-90mps/positive-medium/fast": {
+          "adapter_ceiling_fraction": 0.034464037517210395,
+          "adapter_longest_ceiling_seconds": 0.017253348,
+          "longest_contiguous_seconds": 0.138101761,
+          "raw_rms_byte": 87.9831534757099,
+          "requested_abs_p50": 0.6428724021118809,
+          "requested_abs_p90": 0.9047517319254128,
+          "requested_rms": 0.6982777774546072,
+          "seconds": 0.500618884
+        },
+        "60-90mps/positive-medium/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.069050881,
+          "raw_rms_byte": 80.35215428224936,
+          "requested_abs_p50": 0.6111026337473677,
+          "requested_abs_p90": 0.9206213568529313,
+          "requested_rms": 0.6377154645726475,
+          "seconds": 0.293466243
+        },
+        "60-90mps/positive-medium/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.03452544,
+          "raw_rms_byte": 68.37311259005894,
+          "requested_abs_p50": 0.46824549089022494,
+          "requested_abs_p90": 0.6825464644306772,
+          "requested_rms": 0.542642980272861,
+          "seconds": 0.10357632
+        },
+        "60-90mps/positive-small/fast": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 31.564424580608982,
+          "requested_abs_p50": 0.206335642567217,
+          "requested_abs_p90": 0.40476699118015075,
+          "requested_rms": 0.25051174979233215,
+          "seconds": 0.535144324
+        },
+        "60-90mps/positive-small/slow": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.103576321,
+          "raw_rms_byte": 36.01433693611668,
+          "requested_abs_p50": 0.26984466078676717,
+          "requested_abs_p90": 0.3968321787163915,
+          "requested_rms": 0.2858260878422872,
+          "seconds": 0.983975051
+        },
+        "60-90mps/positive-small/steady": {
+          "adapter_ceiling_fraction": 0.0,
+          "adapter_longest_ceiling_seconds": 0.0,
+          "longest_contiguous_seconds": 0.120839041,
+          "raw_rms_byte": 42.5922762931077,
+          "requested_abs_p50": 0.3412579729606006,
+          "requested_abs_p90": 0.4523758659627064,
+          "requested_rms": 0.33803109850146107,
+          "seconds": 0.966712332
+        }
+      },
+      "coverage": {
+        "end_seconds": 159.99090388,
+        "excluded_seconds": {
+          "outside_driving_speed_bands": 0.794085128,
+          "speed_unavailable": 33.89696874
+        },
+        "seconds": 151.93944928,
+        "start_seconds": 8.0514546
+      },
+      "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "inputs": {
+        "force-gate.csv": "09332e31a027b31ac727b1a82eb9cb79d8b613e751a27facca83f097c1309ae1",
+        "force-source.csv": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+        "frames.csv": "08a1127644d1764d81f45a98160ae6dcf5aa16dfd917bd4dfcee64a7ceb062b9",
+        "invocation.json": "d141ba5601f649b8cb6ec348393249adec81b3e257c3dcf7a460fb7ab397de86",
+        "replay-report.json": "0607df7567d76e585f9a9f52f2d9c32764e3b8dff32587b1df35b08a24ddd488",
+        "signals.csv": "aab6db84bf9f13c9f2286a2349f621ba876b4b957fb5e7b622ad6fa84dabe8f9"
+      },
+      "intervals_sha256": "1327cff9feff557919642225a33f3228244245862cdd3a543816ba6be5d744c3",
+      "recorded_settings": {
+        "MIDV_FFB": "0",
+        "MIDV_FFB_DEVICE": "MOZA R12 Base",
+        "MIDV_FFB_IMPACT": "0",
+        "MIDV_FFB_LOG": "2",
+        "MIDV_FFB_PROFILE": "cruisn-vunit@2",
+        "MIDV_FFB_RUMBLE": "100",
+        "MIDV_FFB_STRENGTH": "80",
+        "MIDV_STEER_CURVE": "120",
+        "MIDV_STEER_GAIN": "90"
+      },
+      "rom": "crusnwld24",
+      "selected": {
+        "adapter_ceiling_fraction": 0.09805654226312185,
+        "adapter_longest_ceiling_seconds": 1.018496,
+        "longest_contiguous_seconds": 117.248395412,
+        "raw_rms_byte": 61.38075661366196,
+        "requested_abs_p50": 0.17459639271217994,
+        "requested_abs_p90": 0.9920651875362407,
+        "requested_rms": 0.48714918514455885,
+        "seconds": 117.248395412
+      },
+      "world_memory_speed_evidence": {
+        "available_speed_samples": 6838,
+        "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+        "hud_reads": 3782,
+        "inputs": {
+          "force-gate.csv": "09332e31a027b31ac727b1a82eb9cb79d8b613e751a27facca83f097c1309ae1",
+          "force-source.csv": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+          "frames.csv": "08a1127644d1764d81f45a98160ae6dcf5aa16dfd917bd4dfcee64a7ceb062b9",
+          "invocation.json": "d141ba5601f649b8cb6ec348393249adec81b3e257c3dcf7a460fb7ab397de86",
+          "probe.lua": "3d7a1708d88d2e293fde79c11daeecb71f6fbf7bc610cf8878a58d5c17f9ba32",
+          "replay-report.json": "0607df7567d76e585f9a9f52f2d9c32764e3b8dff32587b1df35b08a24ddd488",
+          "signals.csv": "aab6db84bf9f13c9f2286a2349f621ba876b4b957fb5e7b622ad6fa84dabe8f9",
+          "world-speed-frames.csv": "0fb6da907b5aade556f99e8395b99dbd8debdc6256827b4a4cc8182771102450",
+          "world-speed-hud.csv": "ee32f6106727da518e44d848bb32b631d70819745e86ba2249d608e1f707d44a",
+          "world-speed-receipt.json": "a086c3ac9e7ae2f96e7f7fe8634bc658b435944f809a6545fd1749b7e582b826",
+          "world-speed-writes.csv": "4f96dc44c96c609e5cd7d3b1b6addb8449fdd03cb9b646c9cb7780f4be5e54a1"
+        },
+        "kind": "world24-speed-producer-evidence",
+        "matched_hud_reads": 3656,
+        "mph_factor": 0.489990234375,
+        "normalization_accepted": false,
+        "passed": true,
+        "physical_force": false,
+        "producer_events": 3486,
+        "schema": 1,
+        "scope": "Observed producer and MPH HUD branch; analysis-only memory speed samples at input boundaries. Retains actual producer age, excludes unknown writers and non-driving states. No runtime telemetry, force tuning, physical speed or World 2.5 acceptance.",
+        "snapshot_samples": 8270,
+        "uncaptured_writer_reads": 126
+      }
+    }
+  },
+  "kind": "force-source-condition-coverage",
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_force": false,
+  "schema": 1,
+  "scope": "Unshaped requests at motor writes; emulated-time held source and recorded game-input bins. No host worker, asynchronous gate transitions, physical angle, shaper or device simulation.",
+  "selection": {
+    "allow_ocr": false,
+    "minimum_seconds_per_game_per_bin": 2.0,
+    "motor_max_age_seconds": 0.5,
+    "speed_max_age_seconds": 0.1,
+    "world_speed_probe": true
+  },
+  "shared_condition_coverage": true
+}

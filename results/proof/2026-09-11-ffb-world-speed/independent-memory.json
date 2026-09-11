@@ -1,0 +1,34 @@
+{
+  "actual_hud_consumer_accepted": true,
+  "conversion_multiplier": 0.489990234375,
+  "fresh_ocr_comparison": {
+    "exact": 1970,
+    "over_5": 64,
+    "samples": 3354,
+    "within_1": 3201
+  },
+  "hud_read_pcs": {
+    "9a5d": 3782
+  },
+  "hud_reads_matching_observed_write": 3656,
+  "independent_original_memory_matches": 8270,
+  "inputs": {
+    "invocation.json": "d141ba5601f649b8cb6ec348393249adec81b3e257c3dcf7a460fb7ab397de86",
+    "probe.lua": "3d7a1708d88d2e293fde79c11daeecb71f6fbf7bc610cf8878a58d5c17f9ba32",
+    "world-speed-frames.csv": "0fb6da907b5aade556f99e8395b99dbd8debdc6256827b4a4cc8182771102450",
+    "world-speed-hud.csv": "ee32f6106727da518e44d848bb32b631d70819745e86ba2249d608e1f707d44a",
+    "world-speed-receipt.json": "a086c3ac9e7ae2f96e7f7fe8634bc658b435944f809a6545fd1749b7e582b826",
+    "world-speed-writes.csv": "4f96dc44c96c609e5cd7d3b1b6addb8449fdd03cb9b646c9cb7780f4be5e54a1"
+  },
+  "nonproducer_pcs": {},
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_force": false,
+  "producer_conversion_mismatches": 0,
+  "producer_events": 3486,
+  "producer_states": {
+    "4": 3486
+  },
+  "recorded_inputs": 9269,
+  "scope": "Observed World 2.4 producer conversion and original frame-memory identity. HUD read coverage separately stated; no runtime telemetry or calibration change."
+}

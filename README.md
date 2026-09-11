@@ -158,6 +158,8 @@ on SETTINGS → SUPPORT → FFB DIAGNOSTICS first and drive a minute.
 the same strength setting should give comparable steering weight on the same
 wheel while keeping impacts distinct. Current per-game tuning is not yet a
 measured cross-game calibration.
+The [latest measurement work](docs/reviews/2026-09-11-ffb-world-speed.md) verifies
+World's memory speed for offline comparisons; matched turns and contacts are next.
 
 ## What it is, technically
 

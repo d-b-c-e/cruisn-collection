@@ -1,0 +1,12 @@
+{
+  "files": {
+    "conditions.json": "c1692ee8d2c3488cee4eea8eb5b270037806b5cfb22f5319ab6402cba693769a",
+    "independent-memory.json": "b1cd7571e8c2696d34b45de4189e5d630fd0217d561ab5ae6c8065b202ab455b",
+    "python-checks.json": "3730ff7e0295dd10e4648f99c20892c0136ff2f342357577fbdb685c28a102f6",
+    "replay.json": "16b5860eb8ef796e25e21d0882af7e2e23199a35efddec6b5d1a30d163295664",
+    "source.json": "3a179e55b67c4dd47a0e5258cd87c9a9e12a1be68eb4fae4713255dc704d86f3",
+    "speed.json": "097e59e25e7fd87e02ad0c0794a333bb891cce1d098f78944aeda4ff398eeb53"
+  },
+  "schema": 1,
+  "scope": "Source hashes and recorded receipt consistency only; raw game execution is not reproduced."
+}

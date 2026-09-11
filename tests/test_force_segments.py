@@ -141,5 +141,11 @@ class ForceSegmentTests(unittest.TestCase):
                 text=path.read_text();self.assertIn(old,text);path.write_text(text.replace(old,new))
                 with self.assertRaises(ValueError):f.parse_run(run,'usa')
 
+    def test_world_memory_opt_in_requires_the_actual_collector_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            runs={game:self.fixture(Path(tmp),game) for game in f.GAMES}
+            with self.assertRaises((ValueError,OSError)):
+                f.compare(runs,world_speed_probe=True)
+
 
 if __name__=='__main__':unittest.main()
