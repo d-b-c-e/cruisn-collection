@@ -9,6 +9,25 @@ Off Road and Exotica on the same wheel and driver settings**. Normal cornering
 should have comparable weight, with stronger, distinguishable collision cues.
 The games can retain different textures and force character.
 
+## First candidate milestone
+
+Deliver a separately selectable, versioned four-game calibration at strength 50
+without waiting for extended-drawing parity. Use the current USA strength-50
+response as the initial reference, since its feel has received positive user
+feedback. That reference is provisional until the same-wheel comparison.
+
+The first candidate must cover sustained turns in both directions, straight
+driving and identifiable car/wall contacts. Review the existing drives first;
+if they cannot supply comparable windows, request a short targeted recording
+instead of fitting gains to unrelated sections. Keep the reference vehicle and
+wheel settings fixed within each comparison and record unavoidable differences.
+
+Aim for the provisional 15% sustained-output band below, with a separate impact
+contrast check. Compare 25/50/80/100 as well as zero so matching at 50 does not
+hide clipping or an uneven strength slider elsewhere. Publish the measured
+before/after results and retain the existing calibration for rollback. Software
+acceptance delivers a candidate; attended drives accept its feel and stability.
+
 ## Delivery checklist
 
 - [x] Reopen B4 as near-term work and define the comparison criteria.
@@ -24,6 +43,9 @@ The games can retain different textures and force character.
 - [x] Verify World's actual memory-speed producer and MPH HUD consumer; use that
   evidence to remove OCR from the common-build comparison. Matched turn/contact
   coverage remains insufficient for fitting gains.
+- [x] Reconstruct recorded steering from INP without applying gain/curve twice:
+  all 32,785 frame samples match, plus all 7,060 captured Exotica steering ADC
+  reads. V-Unit conversion-time reads and physical rim angle remain separate.
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -146,8 +168,14 @@ seconds without OCR; the remaining three games' coverage is unchanged. The same
 two shared bins qualify and both-direction sustained turn coverage is still
 missing. See [the verified World speed results](reviews/2026-09-11-ffb-world-speed.md).
 
-Next map the different steering curves to comparable inputs and label
-contact/clean windows. Then reconstruct and compare the shaped output at strength
+The [steering reconstruction](reviews/2026-09-11-ffb-steering-reconstruction.md)
+now verifies the stored analog state, sensitivity and sub-frame interpolation.
+INP already contains the live steering curve's effect; applying it again would
+distort the comparison. This resolves recorded-input timing for the checked
+samples, not equivalent physical rim angle or game-internal steering response.
+
+Next verify the V-Unit ADC conversion-time joins and label contact/clean windows.
+Then reconstruct and compare the shaped output at strength
 50. A short attended comparison drive may fill the remaining coverage gaps;
 the current evidence does not justify selecting calibration gains yet.
 

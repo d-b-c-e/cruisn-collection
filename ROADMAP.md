@@ -12,6 +12,14 @@ implementation progress, **not accepted four-game 3× parity**. The
 distinguishes visible benefit, performance and coverage. Personal Stream Deck
 and the public package remain v0.5.0.
 
+- **FFB normalization, near-term:** deliver a versioned four-game strength-50
+  candidate without waiting for drawing parity. Use USA as the initial reference,
+  measure both turn directions and contact contrast, then validate on the same
+  wheel. Common-build force traces, World memory speed and
+  [recorded steering reconstruction](docs/reviews/2026-09-11-ffb-steering-reconstruction.md)
+  are available. Matched contacts and final conditioning remain open; no new
+  gains have been selected. [Milestone and acceptance](docs/FFB-NORMALIZATION.md).
+
 - **Exotica:** live 1×/2×/3× and repeat runs preserve the original Amazon route
   and resources. The 3× repeat is exact across 14 completed internal snapshots
   and the ordered scene/material stream. However, all 14 completed 2×/3× color
@@ -354,8 +362,9 @@ host scenery still has ground/occlusion work open. Stream Deck stays on v0.5.0.
    distinguishable impacts. Start from recorded data and preserve World menu
    passthrough. Broaden attended drives, shifter and second-wheel coverage.
    Common-build traces, interval analysis and verified World memory-speed evidence
-   now exist. Equivalent steering and reviewed contacts remain prerequisites for
-   calibration; see the [World speed validation](docs/reviews/2026-09-11-ffb-world-speed.md).
+   now exist. Recorded steering matches all four frame traces and Exotica's actual
+   ADC reads; V-Unit sampling joins, reviewed contacts and full conditioning are
+   next. See the [steering evidence](docs/reviews/2026-09-11-ffb-steering-reconstruction.md).
 
 Current automated suite has seven cases, including completed Exotica GL frames.
 All games now have guarded gear/rev telemetry with estimated RPM; World speed

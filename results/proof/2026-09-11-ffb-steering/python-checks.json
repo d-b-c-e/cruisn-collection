@@ -1,0 +1,15 @@
+{
+  "groups": [
+    "python"
+  ],
+  "passed": true,
+  "source_identity": "d766498d9845626944f036554d1cefdbb7fc29aa8840d462aef882293cdf7e9e",
+  "source_identity_after": "d766498d9845626944f036554d1cefdbb7fc29aa8840d462aef882293cdf7e9e",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests": 390
+  }
+}

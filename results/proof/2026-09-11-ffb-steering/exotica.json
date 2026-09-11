@@ -1,0 +1,32 @@
+{
+  "actual_adc": {
+    "all_matched": true,
+    "coverage": "Captured contiguous interval only; this does not assert full-drive ADC coverage.",
+    "first_frame": 1800,
+    "frame_snapshot_differences": 25,
+    "last_frame": 8859,
+    "max_frame_snapshot_difference": 1,
+    "steering_reads": 7060
+  },
+  "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+  "frames": 8860,
+  "inp_frames": 8861,
+  "inputs": {
+    "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651",
+    "frames.csv": "0313b3e0ce03ee2d0b305a1b0d7add05ae0a6f37e6adbd363cf6669e711c46e0",
+    "input/session.inp": "1f1cd4151b3e4415091334583c847ecde429e38f77b813e77109e216ee449855",
+    "invocation.json": "c129a7ba0ca0c9c6f59c05faffeea5868cc2b1351a845c9be05d5604cc9d60a5",
+    "replay-report.json": "c24c2741b3ca674dc2460d0074b162a701655e8f541b501fd495a47045e974b1"
+  },
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_angle_verified": false,
+  "recorded_reverse": [
+    0
+  ],
+  "recorded_sensitivity": [
+    25
+  ],
+  "rom": "crusnexo",
+  "scope": "Post-curve recorded input and interpolation; no game physics, host worker or device simulation."
+}

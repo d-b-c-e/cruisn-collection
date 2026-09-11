@@ -1,0 +1,22 @@
+{
+  "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+  "frames": 9644,
+  "inp_frames": 9645,
+  "inputs": {
+    "frames.csv": "99183d7b92c9b5b7ec3969876e8f0c77050a269bb079687e5d43383a8b760e6f",
+    "input/session.inp": "7618b9fd29d4a145264850c5e460801e6240bf1a15659ee9db9dd6e58ce86831",
+    "invocation.json": "2c21245e04f1f88458afb1ff790300181e7465b7a82f51de71edc2d1e0e1a360",
+    "replay-report.json": "086e8bab14ff5cacb0201997326ebb31c93f3fde7db5183049100614fa0b7a2b"
+  },
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_angle_verified": false,
+  "recorded_reverse": [
+    0
+  ],
+  "recorded_sensitivity": [
+    25
+  ],
+  "rom": "offroadc",
+  "scope": "Post-curve recorded input and interpolation; no game physics, host worker or device simulation."
+}

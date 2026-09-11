@@ -1,0 +1,11 @@
+{
+  "files": {
+    "exotica.json": "0178d9c4c289a706f241eb055a4516227d0291d1a6f930c09c5a1701864486b5",
+    "offroad.json": "e1e1111c1147c6d81964e4ebe737338490b3b971f4a61cac932ad2f2fb8435f1",
+    "python-checks.json": "077b9ccb71f12c69679b7d1c229b104dc499dbf1527ae8e91b743ded8b8a33b5",
+    "source.json": "805a50e41bb18f5a3e97b5d500d5d0a0439811ab0c039b22e1ca7205da6aa804",
+    "usa.json": "87e3b73f4229774b26e1fa37ed57a56e8a174270492c7f652dbea322ac40be00",
+    "world.json": "a3df9fa96ad971192ac8b90c23188950dc5e62532bb297c4b168173bd72f4da7"
+  },
+  "schema": 1
+}

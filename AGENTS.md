@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 steering reconstruction — NEAR-TERM strength-50 candidate
+
+Read docs/reviews/2026-09-11-ffb-steering-reconstruction.md and first candidate
+milestone in docs/FFB-NORMALIZATION.md. User reiterates50 should feel comparable
+across all4games. This milestone does not wait for drawing parity. Initial
+reference=currentUSA50; no gain chosen yet. Canonical steering_reconstruction.py
+reconstructs postcurve INP accumulators/previous/sensitivity/reversal with exact
+nanosecond interpolation/fixedpoint rounding. Never apply livegain/curve again.
+All32785frames match common795fc recordings (5012/9269/9644/8860); Exo7060actual
+steeringADCreads1800..8859 allmatch.25differfrompriorframe by1byte. Worldrecorded
+MAMEsensitivity20,others25; notphysicalrimangle or gain calibration. Bounded
+parser/timeuncertainty rejects ambiguous timestamps. Full390Python/no skips PASS.
+LOCAL ffb-steering-reconstruction/ffb-steering-python-checks under Amazon root.
+Next verifyVUnit40us ADCconversion/channel joins, labelbothdirection clean/contact
+windows, reconstructconditioning and compare versioned50candidate. If coverage
+is inadequate request shorttargetedrecordings ratherthan tunewhole-raceRMS.
+No physicalFFB/deployment/gains/menu suppression change. Native9ad/personal87d
+unchanged. Separate waiting_handover header/test remain LOCALuncommitted work;
+this Python suite does not validate that native integration. Rendering work
+continues independently from its retained local fence/handover evidence.
+
 ## September 11 World memory speed — ACTIVE FFB matched segments next
 
 Read docs/reviews/2026-09-11-ffb-world-speed.md. On unchanged common native795fc,

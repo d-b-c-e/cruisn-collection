@@ -3,7 +3,11 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased — September 9–10 diagnostics
+## Unreleased — September 9–11 diagnostics
+
+- Verify four-game recorded steering and Exotica's actual wheel reads without
+  applying steering curves twice. This supports the near-term strength-50
+  normalization candidate; deployed force settings are unchanged.
 
 - Make four-game force normalization a near-term roadmap milestone, with a
   strength-50 comparison protocol, contact/headroom checks and an upstream

@@ -1,0 +1,22 @@
+{
+  "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+  "frames": 5012,
+  "inp_frames": 5013,
+  "inputs": {
+    "frames.csv": "63d3c06cca9c6738450f7a59c791955c33726cf049abda4186c22cc570a55357",
+    "input/session.inp": "7a93d09587e1ad26698ee0fd666c42166a1c92caeece9901d598ae2ef99e7d79",
+    "invocation.json": "811cb5fc55ba94cd08a39d7ce1c3eaf31945a83142fa512d36a41025b85301b9",
+    "replay-report.json": "a0446f80d7838bead62d4c7acc4aa09a0e0d3721d81c8d9cf1f03b8196e081dd"
+  },
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_angle_verified": false,
+  "recorded_reverse": [
+    0
+  ],
+  "recorded_sensitivity": [
+    25
+  ],
+  "rom": "crusnusa",
+  "scope": "Post-curve recorded input and interpolation; no game physics, host worker or device simulation."
+}
