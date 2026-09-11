@@ -84,6 +84,7 @@ def commands(group, output, cxx):
     compile_one('exotica-active', 'native/analyze_exotica_active.cpp')
     compile_one('zeus-models', 'native/analyze_zeus_models.cpp')
     compile_one('zeus-state', 'native/analyze_zeus_state.cpp')
+    compile_one('zeus-retained', 'native/analyze_zeus_retained.cpp')
     compile_one('zeus-sky', 'native/analyze_zeus_sky.cpp')
     pages = compile_one('page-image', 'native/analyze_page_image.cpp')
     steps.append(('page-image-ownership', [py, 'harness/verify_page_image.py', '--native', pages,

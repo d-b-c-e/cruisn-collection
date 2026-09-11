@@ -18,8 +18,11 @@ and the public package remain v0.5.0.
   wheel. Common-build force traces, World memory speed and
   [recorded steering reconstruction](docs/reviews/2026-09-11-ffb-steering-reconstruction.md)
   and [actual V-Unit steering reads](docs/reviews/2026-09-11-ffb-vunit-adc.md)
-  are verified. Matched contacts and final conditioning remain open; no new
-  gains have been selected. [Milestone and acceptance](docs/FFB-NORMALIZATION.md).
+  are verified. All61,713actual worker updates now reproduce their conditioning.
+  [Conservative output windows](docs/reviews/2026-09-11-ffb-worker-windows.md)
+  expose insufficient sustained turns and labeled contacts; short controlled
+  recordings are the next calibration input. No new gains have been selected.
+  [Milestone and acceptance](docs/FFB-NORMALIZATION.md).
   The [impact reachability check](docs/reviews/2026-09-11-ffb-impact-reachability.md)
   also finds that Exotica's enhanced detector cannot trigger on the Amazon source;
   event-source calibration must be measured separately from force strength.
@@ -50,7 +53,8 @@ and the public package remain v0.5.0.
   identifies original submissions to exclude. [Native completion observation](docs/reviews/2026-09-11-exotica-native-completion.md)
   now passes full/repeat/disabled runs and reconciles all6,953cohorts at actual
   native event watermarks. Offline filtered drawing still adds distant trees, but
-  transparency depends on placement. Next add the gated private waiting draw and
+  transparency depends on placement. A [retained-material continuation](docs/reviews/2026-09-11-exotica-retained-materials.md)
+  now preserves proposal resources in standalone packet/GPU comparisons. Next add the gated private waiting draw and
   verify live continuation, materials and fade handover before exposing it.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection

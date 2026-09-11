@@ -1,5 +1,53 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 retained waiting materials — NEXT native private draw
+
+Read docs/reviews/2026-09-11-exotica-retained-materials.md. New standalone
+native/zeus_retained_materials.h/analyze_zeus_retained.cpp preserve proposal P's
+owned image for the later R draw: empty page delta, exact generation/hash,
+owned palette validation, fail-before-mutation. No new wire format. Helper
+cannot establish scene/frame/page/device-fence order; caller must do so. It is
+NOT linked or added to MAME sync manifest. Native936840/personal87d/v0.5.0 unchanged.
+
+Five actual completed cohorts3900/5072/5644/6330/7187 pass compiled versus independent
+Python full packet bytes:4801ordered quads53palettes. Late packets465896/238712/
+517760/94520/5912bytes each avoid16793600bytes of duplicate full-image data versus
+the old standalone full-copy prototype. NOT a measured live speed gain. Six input
+rejections plus synthetic mutation/stale/duplicate/empty-cohort checks PASS.
+Initial old-future packet byte comparison FAIL retained: older offline preparation
+sorts source addresses, while native instance order differs. Primitive/material
+multisets match. New actual-native-order early packet and late geometry are checked
+explicitly. Four fresh GPU5073 replays: future-only, full-copy waiting, retained,
+repeat; last3completed color/depth exact, otherpage/depthbounds PASS. Old sorted
+results also pixel-exact THIS sample only. Preserve native order; no general
+transparency equivalence. Future insertion32/waiting3358; internal2736x4096,
+NOT newlive4K/temporal acceptance. Oldblackwedge remains.
+
+All424Python/no skips52native149commands includingGPU PASS source
+7903ebdf48ccb279eb2a83477c78e4a17db45b873707f3d9edd677139a612d4b.
+Final compiled analyzer renews five actual checks with byteexact GPU-tested packets.
+LOCAL waiting-retained-materials-final/ordered,waiting-retained5072-render,
+retained-materials-local-checks. Publicproof2026-09-11-exotica-retained-materials
+checks source/hash/aggregate consistency; raw execution stays receipts.
+
+NEXT link explicitly gated private waiting draw at actual R. Capture palettes
+for proposed waiting instances at P; filter bindings alongside completed cohort.
+Use retained empty delta against already-applied early future image, queue before
+next future scene, then advance producer without clearing guest dirty-page marks.
+Consumer must enforce one late completion with matching scene/frame/page plus
+retained image generation/hash; original WaveRAM/palette uploads remain separate.
+Reuse private draw code with distinct late receipts/snapshots; existing active
+margin path stays excluded. Preserve early future placement and intrinsic alpha.
+Then separately build/freeze and renew live original route/resources/4K before
+fade policy/performance. No deployment/release/hostedCI/menu removal/physicalFFB.
+
+FFB1098bba window milestone below remains next calibration task. Pending async
+availability question for short guided four-game drives has NO reply yet. Do not
+launch an attended recording or physicalFFB without actual response. Strength50
+normalization remains independent of drawing parity; continue rendering meanwhile.
+No game/build/test running. Serial rig; no builds/exports/broadscans during timed
+games. Keep working directly; heartbeat is recovery only, not milestone waiting.
+
 ## September 11 force-window evidence — CALIBRATION DRIVE COVERAGE NEEDED
 
 Read docs/reviews/2026-09-11-ffb-worker-windows.md. New canonical

@@ -1,0 +1,143 @@
+{
+  "binary_sha256": "01af453a3abc66679a558349ce065de7bb62c6081660d1e7ea234afa59385eb7",
+  "final_binary_same_packet_bytes": true,
+  "live_waiting_draw_accepted": false,
+  "passed": true,
+  "rejections": [
+    {
+      "error": "early/waiting scene boundary",
+      "input_sha256": "e649e50581b5f709d461fdf011df15e7ef6ea38d71f8d79ab97cf4dfa5b1d474",
+      "kind": "scene",
+      "returncode": 1
+    },
+    {
+      "error": "packet shape",
+      "input_sha256": "eb94087144268ca5032f38cb8765015f25ecf5a3f7dfe49458aa250265363f0c",
+      "kind": "page",
+      "returncode": 1
+    },
+    {
+      "error": "early/waiting scene boundary",
+      "input_sha256": "63b4ddd8d2515498db8a4042cbfb7798f3b5d58b3683fe068557754851da41fc",
+      "kind": "snapshot",
+      "returncode": 1
+    },
+    {
+      "error": "proposal image identity",
+      "input_sha256": "ec56c1b6788681b7ed433a99f34bfad557064afd0724c83acf84381f7e614ed6",
+      "kind": "image",
+      "returncode": 1
+    },
+    {
+      "error": "packet shape",
+      "input_sha256": "0115da75549a892583deb16e39780d36044bea265bf1cd2cec17c38c4bf5fd72",
+      "kind": "trailing",
+      "returncode": 1
+    },
+    {
+      "error": "packet shape",
+      "input_sha256": "56f1bf97514b71383b261e745aa38e1a016d4e3e6dcd3d5dab62946feb1e77ee",
+      "kind": "truncate",
+      "returncode": 1
+    }
+  ],
+  "report_sha256": "929441627249803a4f2aa699e8b77b13c65ddc4ba700bf6335732fe14df329c2",
+  "samples": [
+    {
+      "early_sha256": "6ed02aa8e198b654f163efcc349b981db13ae21edbdb03dfd5e90a7076e2559b",
+      "expected_sha256": "2c37e5daa38ae26ca236d92f223e89288c29822ce67a60ad8fa46616819b5fec",
+      "frame": 3900,
+      "full_waiting_sha256": "3514e1731a0e3aae096ab875b2f6c4c10a3286dcc97f7e45a675225e3d21055e",
+      "generation": 2,
+      "instances": 249,
+      "instances_sha256": "c4af3154f97dce6a5fb54980d51e76845172f7890619e1b2274756618c2d27e7",
+      "old_bytes": 17259496,
+      "pages": 0,
+      "palettes": 19,
+      "passed": true,
+      "quads": 1690,
+      "quads_sha256": "a0bec75418d69f6da1475205a7e8d3c01077b173f918c3f2b2a7d7aeaf2d2776",
+      "retained_bytes": 465896,
+      "retained_sha256": "2c37e5daa38ae26ca236d92f223e89288c29822ce67a60ad8fa46616819b5fec",
+      "scene": 2504,
+      "wave_sha256": "0f7f22505cae2350b85c71d88a73a27f6314e7d6015021e17e79482bb9528288"
+    },
+    {
+      "early_sha256": "56ebc1de1aa540afd0a223ce64598c772938277ec37c66ff137500652afc4702",
+      "expected_sha256": "5c6d5038aa063a7c0d9e693ab81dd50a812369ee01a0b7aee1d2f711d421aa3b",
+      "frame": 5072,
+      "full_waiting_sha256": "550ae5e74a0c776c0f7bd9a8024e3e3e2708e4e402484daf4083061d22775ae0",
+      "generation": 2,
+      "instances": 139,
+      "instances_sha256": "6cde0f88e02883b0a101ea207fbe387c0ebb84b42cedf1946ccfa8a2324fdf75",
+      "old_bytes": 17032312,
+      "pages": 0,
+      "palettes": 14,
+      "passed": true,
+      "quads": 849,
+      "quads_sha256": "99bdecd3d89a2f8b26f1e00e9c668315300ddf8acf1116f9d3ca243d6eb73625",
+      "retained_bytes": 238712,
+      "retained_sha256": "5c6d5038aa063a7c0d9e693ab81dd50a812369ee01a0b7aee1d2f711d421aa3b",
+      "scene": 3662,
+      "wave_sha256": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0"
+    },
+    {
+      "early_sha256": "0ea707e7978cec79bfd2e31d949df727c14afa49bf6d1a23255aa877dcd9c451",
+      "expected_sha256": "50eaddad46db16a7e0d8de94a675c12e2adaee9b04c5f2503f04cefa63099d9f",
+      "frame": 5644,
+      "full_waiting_sha256": "3c68ab96d059426f9c3db8eeed8d26f93ae246dadedd132de78cc875815bdaf4",
+      "generation": 2,
+      "instances": 298,
+      "instances_sha256": "f6a9bc79b5895e59e56ae7284ef94a6b6fddd0e281349089dd75bd2a279e1c64",
+      "old_bytes": 17311360,
+      "pages": 0,
+      "palettes": 14,
+      "passed": true,
+      "quads": 1906,
+      "quads_sha256": "485d0eaf124ee24f93040e7d1e2a42803a77dd84476722418c99d0ac6e129585",
+      "retained_bytes": 517760,
+      "retained_sha256": "50eaddad46db16a7e0d8de94a675c12e2adaee9b04c5f2503f04cefa63099d9f",
+      "scene": 4229,
+      "wave_sha256": "99e38290259ae70fe64d6faf55e14bd5d211d17ddc0919a95c3890797588c810"
+    },
+    {
+      "early_sha256": "fde95e80d32fd26241e95a4ad672badb53fd0e1100beac1c2a4576800c96847e",
+      "expected_sha256": "4ee6b83640221a8ed6be80761c4858445e15884df5b0bc159d2877129c79aefe",
+      "frame": 6330,
+      "full_waiting_sha256": "568889435f50881b5f2b1a1ce2b49081dd879667457a7cd7c896196048a8cc5d",
+      "generation": 2,
+      "instances": 35,
+      "instances_sha256": "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b",
+      "old_bytes": 16888120,
+      "pages": 0,
+      "palettes": 5,
+      "passed": true,
+      "quads": 338,
+      "quads_sha256": "e4507aaa87d07b7032b2c7f4ac76b22ce5c98e26e6546fda039714a31aa0ddbe",
+      "retained_bytes": 94520,
+      "retained_sha256": "4ee6b83640221a8ed6be80761c4858445e15884df5b0bc159d2877129c79aefe",
+      "scene": 4901,
+      "wave_sha256": "1d610d65d3d01b58319a8754d91acf6a00d7b12fb60f3360570c979c277a6ae6"
+    },
+    {
+      "early_sha256": "b8b91c227dbb40b8200f232e789df7b739dc7012c7f35c05184951b6c3bbfd98",
+      "expected_sha256": "755036fb4603a0c71aad4906ebba506a7de1e9e39fcbdad05b3afa36773fc9b4",
+      "frame": 7187,
+      "full_waiting_sha256": "567d795ee7a415c0bfd376e739de2b0358b6950b2684bc51a369fa6b8e904356",
+      "generation": 2,
+      "instances": 1,
+      "instances_sha256": "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7",
+      "old_bytes": 16799512,
+      "pages": 0,
+      "palettes": 1,
+      "passed": true,
+      "quads": 18,
+      "quads_sha256": "9d6d81d8229bf666e777b4bec863a2b6ac4272fcb5fe252dd1ec449fafe6af57",
+      "retained_bytes": 5912,
+      "retained_sha256": "755036fb4603a0c71aad4906ebba506a7de1e9e39fcbdad05b3afa36773fc9b4",
+      "scene": 5748,
+      "wave_sha256": "0429314ace2a15b640980fa03d6e2c5a0eb487ad2a79f4ba2265a9c9dce50070"
+    }
+  ],
+  "scope": "Standalone compiled retained-material construction on five actual previously verified completed cohorts; independent packet/geometry/palette bytes. No live drawing or performance acceptance."
+}

@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Add a standalone retained-material continuation for later Exotica scenery
+  drawing. Captured packet/GPU comparisons preserve textures and ordered pixels;
+  live integration remains pending.
+
 - Add time-weighted actual force-output measurements with conservative host/game
   clock boundaries. Existing drives still need comparable turn/contact coverage
   before selecting normalization gains.

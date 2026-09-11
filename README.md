@@ -54,6 +54,7 @@ study finds a several-second gap between scenery allocation and drawing; an
 offline continuation prototype adds visible distant trees through that gap.
 Live observation now reproduces those waiting selections and geometry and
 filters copies the original game starts drawing later in the same scene.
+Standalone packet/GPU checks also preserve proposal textures for that later draw.
 Private extra drawing and its fade transitions remain the next integration step.
 The attended Off Road full-course recording has also exposed and helped fix a
 final-section stop in its host renderer.
