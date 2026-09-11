@@ -1,0 +1,24 @@
+{
+  "offroad_capture": {
+    "complete": false,
+    "control": 73779,
+    "error": "...cs\\exotica-amazon-20260909\\ffb-offroad-adc\\run\\probe.lua:22: ADC event budget",
+    "first": 1,
+    "first_seconds": 0.017262720173,
+    "game": "offroadc",
+    "last": 9644,
+    "last_seconds": 155.519846035198,
+    "reads": 32738,
+    "rows": 131073,
+    "schema": 1,
+    "writes": 24555
+  },
+  "offroad_failed_csv_bytes": 6826795,
+  "offroad_failed_csv_sha256": "931f04cc38bb563fc80a029553a8fc62a97e606ef4cdab83acb79b0a13871ef6",
+  "offroad_failed_report_sha256": "7f3c7d0bf542a766a12f20ec42412cead9b54c9e3e33475a65d748a82d5f6115",
+  "usa_analysis": {
+    "error": "ambiguous ADC completion/event order",
+    "passed": false
+  },
+  "usa_first_analyzer_sha256": "e93338bad3c98e6b6694fb216209943ebcbf9126489512a7e9554b3b2ba3f8f3"
+}

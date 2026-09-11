@@ -1,0 +1,78 @@
+{
+  "collector_event_limit": 196608,
+  "conversion_callback_observed": false,
+  "conversion_delay_microseconds": 40,
+  "conversion_schedule_reconstructed": true,
+  "counts": {
+    "C": 79496,
+    "R": 35280,
+    "W": 26460,
+    "channel_4_commands": 8820,
+    "channel_5_commands": 8820,
+    "channel_6_commands": 8820,
+    "conversions_completed": 26460,
+    "nonsteering_latched_reads": 17640,
+    "steering_reads": 17640
+  },
+  "evidence_sha256": {
+    "probe.lua": "8dfb16d3902d7d617da725d315e28a20340632127b8a68c1a9383d3339ebad8d",
+    "vunit-adc-receipt.json": "ace951df0d869969aea9b0827ffd3e0ab4e44b0fea026e2154e96f24c6d31be8",
+    "vunit-adc.csv": "c6a0311420e0f3ab7986a1c06d5e9be1edab4a13f3d53bc5534c1fe8bec64aa3"
+  },
+  "input_verification": {
+    "executable_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+    "frames": 9644,
+    "inp_frames": 9645,
+    "inputs": {
+      "frames.csv": "0fe68f858ed3f4fc8700801c44ef2321f75ec6ef84c0313e7de2e4542123b583",
+      "input/session.inp": "7618b9fd29d4a145264850c5e460801e6240bf1a15659ee9db9dd6e58ce86831",
+      "invocation.json": "69f36ce57e2e0b31289ecbabeca0222ff7031bbf448e796b35ae2c8e7005e671",
+      "replay-report.json": "950ef7e81057e36be4d3994dd891f3f5eb6f791c75a50fc0debf3923aef6afe4"
+    },
+    "normalization_accepted": false,
+    "passed": true,
+    "physical_angle_verified": false,
+    "recorded_reverse": [
+      0
+    ],
+    "recorded_sensitivity": [
+      25
+    ],
+    "rom": "offroadc",
+    "scope": "Post-curve recorded input and interpolation; no game physics, host worker or device simulation."
+  },
+  "maximum_frame_difference": 1,
+  "normalization_accepted": false,
+  "passed": true,
+  "pending_at_end": false,
+  "physical_angle_verified": false,
+  "preceding_frame_differences": 122,
+  "replay": {
+    "baseline_report_sha256": "086e8bab14ff5cacb0201997326ebb31c93f3fde7db5183049100614fa0b7a2b",
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "frames": 9644,
+    "native_pixel_count": 160,
+    "report_sha256": "950ef7e81057e36be4d3994dd891f3f5eb6f791c75a50fc0debf3923aef6afe4",
+    "unchanged_force_and_telemetry": {
+      "drivetrain.csv": "95f9a345af6850381ead843addf90756a09bfd0a42ba03d4f636b06b47433380",
+      "force-gate.csv": "effcb54aa67d876dae368377201579f7ca8c35a08cdde3358e50407f115487da",
+      "force-source.csv": "58e9599573c105e7f53b1190f1e8b57bfc5276ae4898ec7c5c7d1e3ff128719e",
+      "signals.csv": "8b92bec4217e8724d7fea9390d85891b24996c873a931231e7b020432be4eb5f"
+    }
+  },
+  "rom": "offroadc",
+  "schema": 1,
+  "scope": "Observed ADC bus reads match INP at reconstructed conversion time. Non-steering channels only have latch-consistency checks. No host worker or wheel force validation.",
+  "steering_consumer_pcs": {
+    "eb6a": 8820,
+    "eb88": 8820
+  },
+  "steering_conversions_read": 8820,
+  "steering_read_rows_sha256": "9fb13b25655ad4cd3dca7606a5591afd1c1f4a719148ffce42dc7284d2f6fcae"
+}

@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Verify actual steering reads in USA, World and Off Road against recorded ADC
+  conversion timing. Full replays preserve original force and telemetry data;
+  the strength-50 calibration still needs matched contacts and output conditioning.
+
 - Add a standalone Exotica waiting-object reconciliation helper and actual
   command-fence evidence. Filtered offline drawing adds distant trees; live
   integration and transparent handover remain under investigation.

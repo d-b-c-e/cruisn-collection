@@ -4,7 +4,7 @@ Current work and acceptance criteria, with relevant legacy IDs retained.
 Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 (handoff). Update status here as items move.
 
-## Current priorities (2026-09-10, after v0.5.0)
+## Current priorities (2026-09-11, after v0.5.0)
 
 All four games now have native host future-scenery implementations. This is
 implementation progress, **not accepted four-game 3× parity**. The
@@ -17,7 +17,8 @@ and the public package remain v0.5.0.
   measure both turn directions and contact contrast, then validate on the same
   wheel. Common-build force traces, World memory speed and
   [recorded steering reconstruction](docs/reviews/2026-09-11-ffb-steering-reconstruction.md)
-  are available. Matched contacts and final conditioning remain open; no new
+  and [actual V-Unit steering reads](docs/reviews/2026-09-11-ffb-vunit-adc.md)
+  are verified. Matched contacts and final conditioning remain open; no new
   gains have been selected. [Milestone and acceptance](docs/FFB-NORMALIZATION.md).
 
 - **Exotica:** live 1×/2×/3× and repeat runs preserve the original Amazon route

@@ -39,8 +39,9 @@ awaiting validation.
 
 Cross-game FFB normalization is near-term work: strength 50 should have comparable
 weight on the same wheel while retaining distinct impacts. Recorded force
-comparisons now flag differences in speed provenance and driving coverage before
-calibration. The current release is not yet normalized across games; see the
+comparisons now verify steering samples in all four games and flag differences
+in speed provenance and driving coverage before calibration. The current release
+is not yet normalized across games; see the
 [measurement and acceptance plan](docs/FFB-NORMALIZATION.md).
 
 Separate **host scenery prototypes for all four games** now decode upcoming

@@ -1,0 +1,13 @@
+{
+  "normalization_accepted": false,
+  "passed": true,
+  "physical_output": false,
+  "schema": 1,
+  "source_native": "795fc77b68e40c88ec328be49a03bedd27300c04",
+  "source_scope": "Native source digests are receipts, not a rerun of the frozen binary build.",
+  "source_sha256": {
+    "src/devices/machine/adc0844.cpp": "c031040c1501920cb81aab3f5b1a87c2dab7af754db388e09f1d5073fe02f0d6",
+    "src/emu/ioport.cpp": "2476fa252761e5afb49dab9e005b70cf27b7547cc8c7b4fabae607576677936c",
+    "src/mame/midway/midvunit.cpp": "8852e41be534d8ddab450df7662806e2774d9e347605ebc35c7ecf03f35b2f80"
+  }
+}

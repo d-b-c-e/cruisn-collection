@@ -46,6 +46,9 @@ acceptance delivers a candidate; attended drives accept its feel and stability.
 - [x] Reconstruct recorded steering from INP without applying gain/curve twice:
   all 32,785 frame samples match, plus all 7,060 captured Exotica steering ADC
   reads. V-Unit conversion-time reads and physical rim angle remain separate.
+- [x] Verify the V-Unit conversion/channel sequence: 31,012 actual steering reads
+  match INP at reconstructed conversion time across USA, World and Off Road.
+  Original full inputs/native images and common-build force/telemetry are unchanged.
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -174,10 +177,18 @@ INP already contains the live steering curve's effect; applying it again would
 distort the comparison. This resolves recorded-input timing for the checked
 samples, not equivalent physical rim angle or game-internal steering response.
 
-Next verify the V-Unit ADC conversion-time joins and label contact/clean windows.
-Then reconstruct and compare the shaped output at strength
-50. A short attended comparison drive may fill the remaining coverage gaps;
-the current evidence does not justify selecting calibration gains yet.
+The [V-Unit ADC follow-up](reviews/2026-09-11-ffb-vunit-adc.md) verifies 31,012 actual
+steering reads at reconstructed conversion times. All observed differences from
+frame snapshots are one byte. Off Road reads each conversion twice; repeated
+reads must not increase a segment's statistical weight. This closes the sampling
+check for these recordings, while physical rim angle remains a separate measure.
+
+Next label contact/clean windows and reconstruct final output conditioning at
+strength 50, including host timing, coalesced writes, gates and effect lifetimes.
+An idealized 4 ms loop is not an exact worker trace. A short attended comparison
+drive may fill remaining coverage gaps; the current evidence does not justify
+selecting calibration gains yet. Prioritize the versioned calibration candidate
+over further signal-discovery work that does not affect the comparison.
 
 See the [condition-coverage findings](reviews/2026-09-10-ffb-condition-coverage.md)
 and [public receipts](../results/proof/2026-09-10-ffb-condition-coverage/README.md).

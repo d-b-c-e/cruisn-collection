@@ -1,5 +1,50 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 11 V-Unit ADC — NEAR-TERM normalization sampling complete
+
+Read docs/reviews/2026-09-11-ffb-vunit-adc.md and docs/FFB-NORMALIZATION.md.
+Strength50 comparable across all four games remains an independent near-term
+deliverable. Common795fc full USA5012/World9269/OffRoad9644 replays PASS original
+inputs/times and83/154/160native images. All force-source/gate/signals/drivetrain
+files byteexact prior common-build baselines. New read-only vunit_adc.lua and
+vunit_adc_evidence.py verify4569/8803/17640actual steering reads, representing
+4569/8803/8820conversions; OffRoad reads each twice. Sampling is reconstructed at
+enabled command+40us, not CPU read; actual callback itself is not instrumented.
+Only3/22/122reads differ from frame snapshots, all by1byte. Prior Exo7060reads
+and32785four-game input reconstruction still apply. No physical-angle/force or
+normalized acceptance. Native795fc contract pinned; no repeated steering curve.
+
+First USA analyzer rejected a control-only event tied at deadline. Correct fold
+commutes permission-only writes with conversion; actual ambiguous ADC accesses
+still fail. First analyzer/rejection retained. OffRoad initial131072-event limit
+fails atframe9008, CSV6826795bytes; retained. Fresh196608-bound run completes
+141236events. Exact previous collector accepted for USA/World; arbitrary probes
+rejected. LOCAL ffb-vunit-adc-final/ffb-vunit-adc-python-checks-final under Amazon root.
+All405Python/no skips PASS source d71c28101e0e38e8a15a4a28f089bd3f381b80f1c530c43f05bfcd78667b7b07.
+Public proof2026-09-11-ffb-vunit-adc verifies code/receipt consistency; raw native
+execution/pixels remain receipts. No force gains, personal87d or publicv0.5.0 changed.
+
+NEXT FFB: prioritize matched both-direction clean turns/contact labels and final
+conditioning, then a separately versioned50candidate and attended same-wheel
+acceptance. CurrentUSA50 initial reference. Do not extend input discovery without
+a material reason. Ideal4ms analyzer is not actual host-worker timing/coalescing/
+gates/device delivery; expose a device-free conditioning path with explicit timing
+evidence. Obtain targeted drives if current footage cannot supply matched windows.
+Preserve World menu passthrough and Exotica DIP polarity; no automaticphysicalFFB.
+
+Rendering continuation retained separately: nativebc384056fd1e9cf4adf9ab6d8208bcc6d1da9463
+is frozen/pushed, SHA6b26731ee61a3a14c33acd2de63cd31334ed5e88e8bbf919205d00142f48ca9c;
+187patches reconstructbc506377e0bbfc1d74b172bbb11e008e7587b2fe. Completion observer
+integration in replay/sync/patch +exotica_handover.py/test remains LOCAL uncommitted.
+Earlier fullchecks13380 EXIT0/397Python51native144commands. Short6000 exec80746
+EXIT0/accepted originalroute/21GL/futuregeometry. New independent checker PASS
+4120actual P/E/R watermarks and9geometry files against older independent results.
+NEXT full completion observation/repeat/disabled, not another short replay.
+No waiting drawing yet; preserve owned materials, alpha and actual command order.
+No game/build/test remains. No deploy/release/hostedCI/menu removal. Keep serial
+rig/GPU/build; no builds/exports/broad scans during timed playback. Heartbeat is
+recovery only; keep making progress directly.
+
 ## September 11 waiting completion — ACTIVE native observation next
 
 Read docs/reviews/2026-09-11-exotica-waiting-handover.md. Native9ad/personal87d
