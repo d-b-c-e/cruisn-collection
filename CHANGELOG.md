@@ -5,6 +5,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–10 diagnostics
 
+- Make four-game force normalization a near-term roadmap milestone, with a
+  strength-50 comparison protocol, contact/headroom checks and an upstream
+  Exotica plugin audit. This documents planned calibration; tuning is unchanged.
+
 - Add a complete attended Off Road El Paso recording: archived replays and a
   candidate control preserve the full route and all 66 sampled display images.
 - Fix Off Road host scenery stopping near the final section. Full 2×/3× runs

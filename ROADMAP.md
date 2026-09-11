@@ -349,8 +349,10 @@ host scenery still has ground/occlusion work open. Stream Deck stays on v0.5.0.
    USA has a different two-word/interleaved model format, so verify its
    codec before reusing the shared math. Off Road/Zeus adapters remain unfinished.
    Keep the candidate undeployed; no experiment menu cleanup is justified.
-4. Broaden attended drives, shifter and second-wheel coverage. World oscillation
-   and cross-game force normalization remain known issues, with tuning deferred.
+4. Make [four-game force normalization](docs/FFB-NORMALIZATION.md) near-term work:
+   strength 50 should have comparable steering weight on the same wheel, with
+   distinguishable impacts. Start from recorded data and preserve World menu
+   passthrough. Broaden attended drives, shifter and second-wheel coverage.
 
 Current automated suite has seven cases, including completed Exotica GL frames.
 All games now have guarded gear/rev telemetry with estimated RPM; World speed
@@ -376,7 +378,7 @@ Relevant legacy IDs are retained below.
 | B1 | Speed telemetry | Replace World's remaining OCR only after finding and guarding a real producer; retain validity/lifetime checks. | Actual outgoing packets versus independent memory/HUD evidence in both revisions. |
 | B2 | Gear / estimated RPM coverage | Existing guarded gear/rev producers work across all four games. Broaden automatic/manual drives and higher-gear Off Road/Exotica coverage. | Real gauges/SimHub/Buttkicker plus independent traces; RPM remains an estimate from the game's rev signal. Never use E632. |
 | B4 / B9 | Per-game menu force controls | **Post-release.** Extend the Exotica Menu Force Feedback experiment to USA, World and Off Road after verifying each game's menu/driving/race-end states. Preserve current World passthrough until that work is requested. | Correct transitions, no stuck effects, recorded gate/source traces and attended wheel checks. Do not conflate this with force normalization or alter defaults without testing. |
-| B4 | Force normalization and impacts | **Deferred by maintainer.** Preserve World passthrough and existing Exotica polarity/trim. Prepare per-device measurements for a later attended tuning session. | Comparable steering weight, distinguishable impacts, correct centering and no sustained oscillation across games/wheels. |
+| B4 | Force normalization and impacts | **Near-term priority, requested September 10.** Build a common four-game baseline, measure clipping and matched driving/contact segments, then test versioned calibration at strength 50. [Plan and checklist](docs/FFB-NORMALIZATION.md). Preserve World menu passthrough and Exotica DIP-aware polarity; assess gain/trim from data. | Comparable sustained force on the same wheel, impact headroom and contrast, correct centering, monotonic strength and attended stability checks. Software measurements and physical feel are separate acceptance items. |
 | B7 / G7 | Shifter coverage | Verify H-pattern and paddles with current bindings in every game. World 2.5 is automatic-only; use 2.4 for manual acceptance. | Gear engagement, neutral/downshift, one action per press, persistence and reconnect. |
 | F2 | Next release baseline | Freeze a new candidate only when requested; renew all automated gates and explicitly record attended acceptance or maintainer waivers. | Exact ZIP promotion, clean install/upgrade, default CRT/widescreen/scale4/free play, seven driving regressions and wheel checks. |
 

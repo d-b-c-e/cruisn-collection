@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 FFB normalization — NEAR-TERM maintainer priority
+
+The maintainer now explicitly requests data-driven normalization across USA,
+World, Off Road and Exotica: strength50 should give comparable force on the same
+wheel. This supersedes the earlier blanket deferral of World/cross-game tuning;
+it does not reinstate World menu suppression. Read docs/FFB-NORMALIZATION.md and
+docs/reviews/2026-09-10-ffb-plugin-and-normalization.md. Begin with same-candidate
+recorded baselines, time-weighted matched driving/contact segments, clipping at
+each stage, and separate physical acceptance. No automatic physical FFB.
+
+Endprodukt FFBPluginRacerMAME1.996 (7e95f65) adds Exotica signed motor/gain/polarity
+support. Our DIP-aware polarity is already corrected. Upstream400 gain versus
+our800 is useful evidence, not a replacement tune. Amazon observed800 adapter
+matches all7476 events; among4162 nonzero driving-gate events,1885clip(45.29%);
+offline400 clips1103(26.50%). Event-weighted only, not torque or contact proof.
+Raw impact input is separate. Existing human USA lacks force-source/physical
+acceptance; World has older source/host traces, OffRoad/Exo source+gate+host.
+See checklist for common50 baseline and matched coverage. Preserve deployed
+settings until a separately validated candidate; keep rendering work moving.
+
 ## September 10 actual drawing admission — ACTIVE native lifecycle integration
 
 Continue directly. Read docs/reviews/2026-09-10-exotica-drawing-admission.md.

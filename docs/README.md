@@ -12,6 +12,8 @@ assuming that a source feature is present in a downloaded package.
 | [Cheats](CHEATS.md) | Importing exact-revision cheats and supported actions |
 | [Recorded gameplay](DIAGNOSTIC-REPLAY.md) | Attended recording, playback, captures and diagnostic evidence |
 | [Roadmap](../ROADMAP.md) | Current work and acceptance criteria |
+| [Four-game FFB normalization](FFB-NORMALIZATION.md) | Near-term strength-50 calibration, measurements and attended acceptance |
+| [Exotica FFB plugin audit](reviews/2026-09-10-ffb-plugin-and-normalization.md) | Upstream comparison and measured adapter clipping |
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |

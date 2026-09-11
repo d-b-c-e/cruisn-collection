@@ -145,6 +145,11 @@ report is *what you expected vs what you saw*, plus a **support bundle**
 force-feedback trace, never your ROMs). For force-feedback complaints turn
 on SETTINGS → SUPPORT → FFB DIAGNOSTICS first and drive a minute.
 
+[Four-game FFB normalization](docs/FFB-NORMALIZATION.md) is a near-term priority:
+the same strength setting should give comparable steering weight on the same
+wheel while keeping impacts distinct. Current per-game tuning is not yet a
+measured cross-game calibration.
+
 ## What it is, technically
 
 - The V-Unit games' polygon stream is intercepted from the emulated hardware and
