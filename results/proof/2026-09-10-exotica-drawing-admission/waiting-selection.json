@@ -1,0 +1,370 @@
+{
+  "passed": true,
+  "samples": [
+    {
+      "frame": 3900,
+      "scene": 2504,
+      "time": 68.277293099317,
+      "waiting": 252,
+      "other_counts": {
+        "already_submitted": 448,
+        "custom": 9
+      },
+      "immutable_fields_equal": true,
+      "variants": [
+        {
+          "multiplier": 1,
+          "complete_fade": 0,
+          "instances": 184,
+          "quads": 1245,
+          "viewport_quads": 1236,
+          "culled_bounds": 3,
+          "geometry_sha256": "bfdab78c372dceb0c5b04e3dc5ab5966af750c3aaf0bd70999df3747cb1bb97c",
+          "instances_sha256": "6e7b2b7db6393c7ed8cb41d37e086e153bca0466547790d2694528189bb25087"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 0,
+          "instances": 249,
+          "quads": 1690,
+          "viewport_quads": 1679,
+          "culled_bounds": 3,
+          "geometry_sha256": "a0bec75418d69f6da1475205a7e8d3c01077b173f918c3f2b2a7d7aeaf2d2776",
+          "instances_sha256": "c4af3154f97dce6a5fb54980d51e76845172f7890619e1b2274756618c2d27e7"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 0,
+          "instances": 249,
+          "quads": 1690,
+          "viewport_quads": 1679,
+          "culled_bounds": 3,
+          "geometry_sha256": "a0bec75418d69f6da1475205a7e8d3c01077b173f918c3f2b2a7d7aeaf2d2776",
+          "instances_sha256": "c4af3154f97dce6a5fb54980d51e76845172f7890619e1b2274756618c2d27e7"
+        },
+        {
+          "multiplier": 1,
+          "complete_fade": 1,
+          "instances": 184,
+          "quads": 1245,
+          "viewport_quads": 1236,
+          "culled_bounds": 3,
+          "geometry_sha256": "07651dc42fe6f4487925f59749b716c4c86fa2e03d82246e27e57951ea4c196e",
+          "instances_sha256": "6e7b2b7db6393c7ed8cb41d37e086e153bca0466547790d2694528189bb25087"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 1,
+          "instances": 249,
+          "quads": 1690,
+          "viewport_quads": 1679,
+          "culled_bounds": 3,
+          "geometry_sha256": "34a24efbc50673ef4f1d527cb003010f837165cd0769e27a9275e274f14e76f5",
+          "instances_sha256": "c4af3154f97dce6a5fb54980d51e76845172f7890619e1b2274756618c2d27e7"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 1,
+          "instances": 249,
+          "quads": 1690,
+          "viewport_quads": 1679,
+          "culled_bounds": 3,
+          "geometry_sha256": "34a24efbc50673ef4f1d527cb003010f837165cd0769e27a9275e274f14e76f5",
+          "instances_sha256": "c4af3154f97dce6a5fb54980d51e76845172f7890619e1b2274756618c2d27e7"
+        }
+      ]
+    },
+    {
+      "frame": 5072,
+      "scene": 3662,
+      "time": 88.790162232445,
+      "waiting": 155,
+      "other_counts": {
+        "already_submitted": 173,
+        "custom": 6
+      },
+      "immutable_fields_equal": true,
+      "variants": [
+        {
+          "multiplier": 1,
+          "complete_fade": 0,
+          "instances": 144,
+          "quads": 913,
+          "viewport_quads": 897,
+          "culled_bounds": 6,
+          "geometry_sha256": "b55469c1bd1342896046af54fa66725ef6d48d4b8032d8ab15bcde3570f254e1",
+          "instances_sha256": "e2703f81b7d02299effc0b5318ad4eb0f94af7ab6c398fbf27d7127d33f8ea6a"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 0,
+          "instances": 149,
+          "quads": 949,
+          "viewport_quads": 933,
+          "culled_bounds": 6,
+          "geometry_sha256": "135656c2c74e4f3bdf79e22c5b39bb3cfe8640b5ed488dc75a2fbe00fed30547",
+          "instances_sha256": "e64994d19a54a4b48515e0da9eddd95245dadaac34b3b84fe5b6b7eb96454196"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 0,
+          "instances": 149,
+          "quads": 949,
+          "viewport_quads": 933,
+          "culled_bounds": 6,
+          "geometry_sha256": "135656c2c74e4f3bdf79e22c5b39bb3cfe8640b5ed488dc75a2fbe00fed30547",
+          "instances_sha256": "e64994d19a54a4b48515e0da9eddd95245dadaac34b3b84fe5b6b7eb96454196"
+        },
+        {
+          "multiplier": 1,
+          "complete_fade": 1,
+          "instances": 144,
+          "quads": 913,
+          "viewport_quads": 897,
+          "culled_bounds": 6,
+          "geometry_sha256": "eea199cfbac8098a4d8b88102312b7e294e58522c986602962219e975710c266",
+          "instances_sha256": "e2703f81b7d02299effc0b5318ad4eb0f94af7ab6c398fbf27d7127d33f8ea6a"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 1,
+          "instances": 149,
+          "quads": 949,
+          "viewport_quads": 933,
+          "culled_bounds": 6,
+          "geometry_sha256": "5243d5d26816c5f7afc2bac2c53e4c7c63dcdfa61dc6698b16d2cec8a4453e05",
+          "instances_sha256": "e64994d19a54a4b48515e0da9eddd95245dadaac34b3b84fe5b6b7eb96454196"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 1,
+          "instances": 149,
+          "quads": 949,
+          "viewport_quads": 933,
+          "culled_bounds": 6,
+          "geometry_sha256": "5243d5d26816c5f7afc2bac2c53e4c7c63dcdfa61dc6698b16d2cec8a4453e05",
+          "instances_sha256": "e64994d19a54a4b48515e0da9eddd95245dadaac34b3b84fe5b6b7eb96454196"
+        }
+      ]
+    },
+    {
+      "frame": 5644,
+      "scene": 4229,
+      "time": 98.801559065679,
+      "waiting": 298,
+      "other_counts": {
+        "already_submitted": 207,
+        "custom": 3
+      },
+      "immutable_fields_equal": true,
+      "variants": [
+        {
+          "multiplier": 1,
+          "complete_fade": 0,
+          "instances": 143,
+          "quads": 881,
+          "viewport_quads": 868,
+          "culled_bounds": 0,
+          "geometry_sha256": "1e538e334bb2b95881a609b8c944cae19fe141336bea005bb850bed9588ae78a",
+          "instances_sha256": "34265fc96d7c28b2665665d791c0962a96a4c0c77e63e24f85ef03aceb2d113b"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 0,
+          "instances": 298,
+          "quads": 1906,
+          "viewport_quads": 1893,
+          "culled_bounds": 0,
+          "geometry_sha256": "485d0eaf124ee24f93040e7d1e2a42803a77dd84476722418c99d0ac6e129585",
+          "instances_sha256": "f6a9bc79b5895e59e56ae7284ef94a6b6fddd0e281349089dd75bd2a279e1c64"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 0,
+          "instances": 298,
+          "quads": 1906,
+          "viewport_quads": 1893,
+          "culled_bounds": 0,
+          "geometry_sha256": "485d0eaf124ee24f93040e7d1e2a42803a77dd84476722418c99d0ac6e129585",
+          "instances_sha256": "f6a9bc79b5895e59e56ae7284ef94a6b6fddd0e281349089dd75bd2a279e1c64"
+        },
+        {
+          "multiplier": 1,
+          "complete_fade": 1,
+          "instances": 143,
+          "quads": 881,
+          "viewport_quads": 868,
+          "culled_bounds": 0,
+          "geometry_sha256": "26a409a3b1bad31f4a2c586c9dd89f5d573badc8f57a423c3e46c73681958f51",
+          "instances_sha256": "34265fc96d7c28b2665665d791c0962a96a4c0c77e63e24f85ef03aceb2d113b"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 1,
+          "instances": 298,
+          "quads": 1906,
+          "viewport_quads": 1893,
+          "culled_bounds": 0,
+          "geometry_sha256": "32d166f7b7f20ca5b5be5ebe65b8584242af08d0857acdeceb9fc15fb4fb7115",
+          "instances_sha256": "f6a9bc79b5895e59e56ae7284ef94a6b6fddd0e281349089dd75bd2a279e1c64"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 1,
+          "instances": 298,
+          "quads": 1906,
+          "viewport_quads": 1893,
+          "culled_bounds": 0,
+          "geometry_sha256": "32d166f7b7f20ca5b5be5ebe65b8584242af08d0857acdeceb9fc15fb4fb7115",
+          "instances_sha256": "f6a9bc79b5895e59e56ae7284ef94a6b6fddd0e281349089dd75bd2a279e1c64"
+        }
+      ]
+    },
+    {
+      "frame": 6330,
+      "scene": 4901,
+      "time": 110.808380532225,
+      "waiting": 52,
+      "other_counts": {
+        "already_submitted": 254
+      },
+      "immutable_fields_equal": true,
+      "variants": [
+        {
+          "multiplier": 1,
+          "complete_fade": 0,
+          "instances": 35,
+          "quads": 338,
+          "viewport_quads": 240,
+          "culled_bounds": 17,
+          "geometry_sha256": "e4507aaa87d07b7032b2c7f4ac76b22ce5c98e26e6546fda039714a31aa0ddbe",
+          "instances_sha256": "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 0,
+          "instances": 35,
+          "quads": 338,
+          "viewport_quads": 240,
+          "culled_bounds": 17,
+          "geometry_sha256": "e4507aaa87d07b7032b2c7f4ac76b22ce5c98e26e6546fda039714a31aa0ddbe",
+          "instances_sha256": "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 0,
+          "instances": 35,
+          "quads": 338,
+          "viewport_quads": 240,
+          "culled_bounds": 17,
+          "geometry_sha256": "e4507aaa87d07b7032b2c7f4ac76b22ce5c98e26e6546fda039714a31aa0ddbe",
+          "instances_sha256": "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b"
+        },
+        {
+          "multiplier": 1,
+          "complete_fade": 1,
+          "instances": 35,
+          "quads": 338,
+          "viewport_quads": 240,
+          "culled_bounds": 17,
+          "geometry_sha256": "9d0fd44f08165be4594b61e087425592ebd1b2505096f8c7bcbdda5f4200d576",
+          "instances_sha256": "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 1,
+          "instances": 35,
+          "quads": 338,
+          "viewport_quads": 240,
+          "culled_bounds": 17,
+          "geometry_sha256": "9d0fd44f08165be4594b61e087425592ebd1b2505096f8c7bcbdda5f4200d576",
+          "instances_sha256": "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 1,
+          "instances": 35,
+          "quads": 338,
+          "viewport_quads": 240,
+          "culled_bounds": 17,
+          "geometry_sha256": "9d0fd44f08165be4594b61e087425592ebd1b2505096f8c7bcbdda5f4200d576",
+          "instances_sha256": "a97e4c67dfc99220c825a315cf30e5a02cd3e440be53ae2f98d089c70d45078b"
+        }
+      ]
+    },
+    {
+      "frame": 7187,
+      "scene": 5748,
+      "time": 125.807873465409,
+      "waiting": 1,
+      "other_counts": {
+        "already_submitted": 186,
+        "custom": 15
+      },
+      "immutable_fields_equal": true,
+      "variants": [
+        {
+          "multiplier": 1,
+          "complete_fade": 0,
+          "instances": 1,
+          "quads": 18,
+          "viewport_quads": 18,
+          "culled_bounds": 0,
+          "geometry_sha256": "9d6d81d8229bf666e777b4bec863a2b6ac4272fcb5fe252dd1ec449fafe6af57",
+          "instances_sha256": "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 0,
+          "instances": 1,
+          "quads": 18,
+          "viewport_quads": 18,
+          "culled_bounds": 0,
+          "geometry_sha256": "9d6d81d8229bf666e777b4bec863a2b6ac4272fcb5fe252dd1ec449fafe6af57",
+          "instances_sha256": "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 0,
+          "instances": 1,
+          "quads": 18,
+          "viewport_quads": 18,
+          "culled_bounds": 0,
+          "geometry_sha256": "9d6d81d8229bf666e777b4bec863a2b6ac4272fcb5fe252dd1ec449fafe6af57",
+          "instances_sha256": "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7"
+        },
+        {
+          "multiplier": 1,
+          "complete_fade": 1,
+          "instances": 1,
+          "quads": 18,
+          "viewport_quads": 18,
+          "culled_bounds": 0,
+          "geometry_sha256": "e123d76a88f4f1ee308c554b89a3b53d201aead2d1a4629a3cb92541f276f535",
+          "instances_sha256": "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7"
+        },
+        {
+          "multiplier": 2,
+          "complete_fade": 1,
+          "instances": 1,
+          "quads": 18,
+          "viewport_quads": 18,
+          "culled_bounds": 0,
+          "geometry_sha256": "e123d76a88f4f1ee308c554b89a3b53d201aead2d1a4629a3cb92541f276f535",
+          "instances_sha256": "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7"
+        },
+        {
+          "multiplier": 3,
+          "complete_fade": 1,
+          "instances": 1,
+          "quads": 18,
+          "viewport_quads": 18,
+          "culled_bounds": 0,
+          "geometry_sha256": "e123d76a88f4f1ee308c554b89a3b53d201aead2d1a4629a3cb92541f276f535",
+          "instances_sha256": "2d639ddbf2d0594065e2ce8ada01510d45804977e9d8d3d7fb78a08bc62b8ab7"
+        }
+      ]
+    }
+  ],
+  "scope": "Five retained device-boundary RAM snapshots joined to independent pool and first-commit history. Selected ordinary live allocations have never submitted before that boundary and are excluded by the existing future-only predicate. Private geometry feasibility only: no live continuation, final visibility, material lifetime, temporal ordering or handover acceptance."
+}

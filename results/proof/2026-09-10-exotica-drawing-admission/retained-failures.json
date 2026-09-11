@@ -1,0 +1,24 @@
+{
+  "lifetime-native-actual": {
+    "passed": false,
+    "stage": "Trace preparation before native invocation",
+    "reason": "Contiguous pool assumption rejects 174 real transitions on external slots",
+    "first_event": 28387,
+    "first_address": 68158,
+    "reset_base": 112061,
+    "stride": 31,
+    "nodes": 1201,
+    "files": {
+      "rejected-contiguous-analyzer.cpp": "93e018543dec6dc594cd2f250f9e58d806cdf69f813a72e271024b59d15d5603",
+      "rejected-contiguous-lifetimes.h": "0d8f2c5c44b304b17d420147acf24b9900ca9d58ea023537609bef92cbf2ad88",
+      "rejected-contiguous-test.cpp": "a8b90d532fc17371f11e2336ed32621f2f1141bdda28c476d56825442d9c6f42",
+      "rejected-contiguous-trace-builder.py": "6264592f430fa7e80769bcdb00e0d3c618783f5e9746626b6c3fe0bcbaf76cd5"
+    }
+  },
+  "lifetime-native-actual-sparse": {
+    "passed": false,
+    "reason": "Text transport CRLF versus LF only; all operation lines equal",
+    "native_sha256": "62a3945a50809bfe22dedeaf9ded6bc3a1b072fafcbe7edafac4107a2cfc3870",
+    "python_sha256": "68fbb9b4de876266bf47adef12bffdcf1d4581788caf62777993f1bbb83a441a"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "events": 86376,
+  "pool_transitions": 48481,
+  "section_bindings": 4018,
+  "submissions": 33876,
+  "first_submissions": 3573,
+  "unknown_frees": 26,
+  "final_epoch": 2,
+  "final_sequence": 48481,
+  "input_sha256": "59882bad90e7fea94c702c257eb2fd29bb72c5295d7dbe8eaccdae3b6200b102",
+  "output_sha256": "62a3945a50809bfe22dedeaf9ded6bc3a1b072fafcbe7edafac4107a2cfc3870",
+  "normalized_output_sha256": "68fbb9b4de876266bf47adef12bffdcf1d4581788caf62777993f1bbb83a441a",
+  "python_output_sha256": "68fbb9b4de876266bf47adef12bffdcf1d4581788caf62777993f1bbb83a441a",
+  "text_protocol_normalization": "Windows CRLF to LF only",
+  "executable_sha256": "a55ee1492831d153c3990d4c359fda7f74da1bc48addbffd1aabdda27cb65997",
+  "sources": {
+    "exotica-pool-events.jsonl": "d15a8819603b54e889ccec986d6f1ab9f5e1a3ef151ef6f63e62476d5bf64fb9",
+    "exotica-fade-owner-events.jsonl": "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4",
+    "exotica-first-draws.jsonl": "9009ff30926b47f6193fa26a70dcd2e949588717670cff6a56c7d5222926d125"
+  },
+  "scope": "Canonical generic native lifetime helper exactly matches independent folding of actual read-only pool,section and model events. The native helper is standalone; no guest hooks, renderer, resource lifetime or opacity policy is enabled by this check.",
+  "full_check_binary": true
+}

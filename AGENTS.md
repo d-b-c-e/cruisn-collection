@@ -1,5 +1,54 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 actual drawing admission — ACTIVE native lifecycle integration
+
+Continue directly. Read docs/reviews/2026-09-10-exotica-drawing-admission.md.
+Native583/personal87d/publicv0.5.0 unchanged. First-draw Amazon/fullrepeat on9ed
+PASS8860inputs/7060camera/21180actualADCtimes/21completed4K/CRT. All8pool/owner/
+fade/firstdraw trace andreceipt files byteexact. Independent33876annotations
+andold30308fadecommits match. Ordinary3932allocations:3487firstdraws/445never;
+1115firstfading/2372firstopaque. Delaymedian238frames4.1617s,max726frames12.7039s.
+Currentfuturepassselectss.future only, excludingallocatedobjects beforetheycan
+draw. Allocation is NOT draw admission. No eliminatedpop-in claim.
+
+Fiveexactdeviceboundaries3900/5072/5644/6330/7187 select252/155/298/52/1ordinary
+live not-yet-submitted objects, immutablefields allmatchsources.30independent
+native/Python orderedgeometry comparisons (1/2/3x,current/completedfade),9input
+rejections PASS. LOCALwaiting-allocated-scenes. Snapshot5072 RAM/Wave/context/
+oldgeometryexacttoprior private-material5072-on3. ExactCPU5072->GPU5073command32
+join reused. Freshoriginal/private commandplayback exact. Eightofflinecombined
+future+waitinginsertions (twofadevariants1/2/3/repeat) preserveotherpage/depthbounds/
+repeats. Viewedwaiting-visual5072/comparison.png: visible extra distant trees;
+118226RGBpixels currentfade vsoldfutureonly,118409completedfade,zero newlyblack.
+This is one completed INTERNAL2736x1600page, NOTnewlive4K/CRT. Oldleftblackwedge
+remains. Originalcars/dinosaursforeground preserved inthissample; handoverOPEN.
+
+Canonicalnative/scenery_lifetimes.h +analyzer/tests areSTANDALONE, NOTlinkedinto
+MAME. Sparse boundedaddressdomain, source realm/section/key, perallocationgen/
+resetepoch andobservedsubmission. Firstcontiguous-pool attemptFAIL before native:
+174actualtransitions useexternallycreated slots. Retained LOCALlifetime-native-actual.
+Revisedtracker matches86376actualeventoperations (48481pool/4018bindings/33876draws),
+26prewindowfrees. SeparateCRLF/LFtextcomparisonfailure retained; onlytextnewline
+normalized, exactoperationsunchanged. FinalcompilednativefoldPASSin
+lifetime-native-final-binary.json. Fullchecksexec11069DONE/PASS352Python/no skips,
+49native tests,140commands,514-file source786f6abd57be9f1a479331267b334260956c67b2b2b827d08d3e39b820824c95.
+Proof2026-09-10-exotica-drawing-admission verifiesidentity/delaystats/receipts;
+rawnative/geometry/GPU/pixels remainreceipts. No MAMEbuild/GPU/game remains.
+
+NEXT integrateOBSERVATION ofnative registry first, separatelybuildcandidate.
+ReadLOCALpool-first-draw-probe.lua/owner-first-draw-probe.lua/first-draw-probe.lua
+andcommonpooldisassembly. Verifyhead/count/resettransactions andsectionready,
+capture firstoriginalmodelcommit and per-scene ownership with exactcurrentinputs.
+Compare full native event/generation identity with acceptedLua trace before
+changingselection. Thenprivateallocated-waitingcontinuation, correctfirstfade/
+opaquehandover andownedmaterials. Fade-branchS8+D240 occurs832times;5308ordinary
+lightbranchrecords andmodeloverridesmeanobjectalpha isNOTeveryquad'sfinalalpha.
+No blindopaque/duplicateblend policy. Keeporiginaldepth/commandorder/resources.
+No deploy/release/hostedCI/physicalFFB/Worldtuning/menu removal. Rigcheck,serial
+games/GPU/builds; no builds/exports/broadscansduringtimedplayback. Recoveryonly
+heartbeat, nevermilestoneidle. Poolcheckpointcommitted/pushed1c9fe46; newcheckpoint
+commitpending. SourcehelpernotyetaddedtoMAMEsyncmanifest because notlinked.
+
 ## September 10 pool lifetime acceptance — ACTIVE first original draw
 
 Read docs/reviews/2026-09-10-exotica-pool-lifetimes.md. All earlier pool sessions

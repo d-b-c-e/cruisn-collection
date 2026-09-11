@@ -77,6 +77,8 @@ def commands(group, output, cxx):
     compile_one('exotica-state', 'native/analyze_exotica_state.cpp')
     fade = compile_one('exotica-fade', 'native/analyze_exotica_fade.cpp')
     steps.append(('exotica-fade-inputs', [py, 'tests/native/check_exotica_fade.py', fade]))
+    lifetimes = compile_one('scenery-lifetimes', 'native/analyze_scenery_lifetimes.cpp')
+    steps.append(('scenery-lifetime-inputs', [py, 'tests/native/check_scenery_lifetimes.py', lifetimes]))
     compile_one('exotica-future', 'native/analyze_exotica_future.cpp')
     compile_one('exotica-scene', 'native/analyze_exotica_scene.cpp')
     compile_one('exotica-active', 'native/analyze_exotica_active.cpp')

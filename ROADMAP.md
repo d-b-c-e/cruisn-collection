@@ -30,8 +30,12 @@ and the public package remain v0.5.0.
   allocation/fade joins now match3932ordinary allocations and2539sampled fades.
   The [common-pool lifetime check](docs/reviews/2026-09-10-exotica-pool-lifetimes.md)
   now covers 48,481 transitions, slot reuse and the post-race reset on Amazon.
-  Verify actual first drawing and fade completion before implementing the host
-  transition; allocation alone does not establish drawing admission.
+  The [first-draw trace](docs/reviews/2026-09-10-exotica-drawing-admission.md)
+  measures a median 4.16-second allocation-to-draw delay. An offline continuation
+  adds visible distant trees by retaining eligible allocated-but-undrawn objects.
+  A standalone shared lifetime tracker matches the recorded events. Integrate
+  its native observer, then verify live continuation, material ownership and
+  fade handover before exposing the change to users.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.

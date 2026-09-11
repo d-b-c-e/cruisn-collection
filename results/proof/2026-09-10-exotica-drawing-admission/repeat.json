@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "files": {
+    "exotica-pool-events.jsonl": [
+      "d15a8819603b54e889ccec986d6f1ab9f5e1a3ef151ef6f63e62476d5bf64fb9",
+      "d15a8819603b54e889ccec986d6f1ab9f5e1a3ef151ef6f63e62476d5bf64fb9"
+    ],
+    "exotica-pool-capture.json": [
+      "1ae55578f43c1c81d148bb15bb09689d1cda6ad8830bcc54b339b17af8514978",
+      "1ae55578f43c1c81d148bb15bb09689d1cda6ad8830bcc54b339b17af8514978"
+    ],
+    "exotica-fade-owner-events.jsonl": [
+      "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4",
+      "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4"
+    ],
+    "exotica-fade-owner-capture.json": [
+      "06991021b5bca47e8f4f8ed93cad22f07012292a964814fd6311b00b9d9c4ce6",
+      "06991021b5bca47e8f4f8ed93cad22f07012292a964814fd6311b00b9d9c4ce6"
+    ],
+    "exotica-fade-events.jsonl": [
+      "300894577a606f6f5a25e1d96a9bb5e1378638d1dc82cbb5bca855a7e659f7c4",
+      "300894577a606f6f5a25e1d96a9bb5e1378638d1dc82cbb5bca855a7e659f7c4"
+    ],
+    "exotica-fade-capture.json": [
+      "2b7cb475af021d194ba353467741f2d07aad11fcbbd24b8757560282c011626e",
+      "2b7cb475af021d194ba353467741f2d07aad11fcbbd24b8757560282c011626e"
+    ],
+    "exotica-first-draws.jsonl": [
+      "9009ff30926b47f6193fa26a70dcd2e949588717670cff6a56c7d5222926d125",
+      "9009ff30926b47f6193fa26a70dcd2e949588717670cff6a56c7d5222926d125"
+    ],
+    "exotica-first-draw-capture.json": [
+      "259161f1f48ab618b4569dcb72684c3d1d781ada65dfe861f2cc70cfe4536961",
+      "259161f1f48ab618b4569dcb72684c3d1d781ada65dfe861f2cc70cfe4536961"
+    ]
+  }
+}

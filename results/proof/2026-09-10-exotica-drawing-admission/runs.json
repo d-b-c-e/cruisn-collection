@@ -1,0 +1,720 @@
+{
+  "first-draw-amazon": {
+    "input_frames": 8860,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "native_sha256": "ca7e814bcb62efa15e2192c857bd4dd24a69fbe8660a895b1a2aafcc5917105c",
+    "physical_ffb": 0,
+    "crt": 1,
+    "captures": [
+      {
+        "frame": 4650,
+        "received": 4650,
+        "dropped": 0,
+        "sha256": "7e121af8b257ba3bb68bae93f7bc3a7e445aab04568767cd49dfb2d3a8aea280",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4655,
+        "received": 4655,
+        "dropped": 0,
+        "sha256": "5987a404788ff7e749e3cd57f4827534a645fb4cf3886d4233b8399fba3db96d",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4660,
+        "received": 4660,
+        "dropped": 0,
+        "sha256": "82220d6d388755e74ef591cff4b6c65a652a1fab83520291e9a32e11365af7d7",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4665,
+        "received": 4665,
+        "dropped": 0,
+        "sha256": "e071335e2a7e388cc0e7ea53dd8fbc4df54cb8d1618ad1e9730a7944680f30d3",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4670,
+        "received": 4670,
+        "dropped": 0,
+        "sha256": "2a00f76225b34a2c3a1849b19eeabcd9b30ddee72ca130cf88e9d85000573091",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4675,
+        "received": 4675,
+        "dropped": 0,
+        "sha256": "229eae8da25d46bdcdd00fa2f30c67bf05bc51ce375a00a875a47fb9ee351add",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4680,
+        "received": 4680,
+        "dropped": 0,
+        "sha256": "1dc2965548fde46981314e55733cac21232f867d040b96d88fa10236b9472c09",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4685,
+        "received": 4685,
+        "dropped": 0,
+        "sha256": "09ded22d99a8e5fb543e206f289f9cf26b988707e949feea0422b75c363b0cc3",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4690,
+        "received": 4690,
+        "dropped": 0,
+        "sha256": "8fc856488d9819e355fd320e6f582a2af05e1de3bd3b855ab859a85fd14d5a86",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4695,
+        "received": 4695,
+        "dropped": 0,
+        "sha256": "0827663efda71efb6966293bcd5fb21b7289fab09e9e7e9c9ec529ce5e95fad8",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4700,
+        "received": 4700,
+        "dropped": 0,
+        "sha256": "1617c8a3b7960dca6a0ae9e7bcd25754edd86e490fc9e584e857789531e8a074",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4705,
+        "received": 4705,
+        "dropped": 0,
+        "sha256": "1bc3ad0dd4aebf6f6099e3367228c59493c0eae995a66480b192720307165e6b",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4710,
+        "received": 4710,
+        "dropped": 0,
+        "sha256": "dae72f43c16c79f4a2827e2fb679c5e6d1f76829e02dae4ab59e519809dc231b",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4715,
+        "received": 4715,
+        "dropped": 0,
+        "sha256": "b8a938822218a6ac6a6b3fa611bbaf6cd269266e00f2e8ea09638e2625944db1",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4720,
+        "received": 4720,
+        "dropped": 0,
+        "sha256": "0114cd40f0f533b687025180300efefa18bcf7fbd06b4274e7adf5535aeff50a",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4725,
+        "received": 4725,
+        "dropped": 0,
+        "sha256": "fa8abcc607348cc93726691f9a71cda9732714142f541077e5f5f63ae2db71fa",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4730,
+        "received": 4730,
+        "dropped": 0,
+        "sha256": "dadfd78003f3a4870327e8ccc33a5a03fcf9084792c8b7a9bf44f88f171bf45b",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4735,
+        "received": 4735,
+        "dropped": 0,
+        "sha256": "9d08418891637147a6165475f5cdf3b573730de93a938cf412eda81cdca1b417",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4740,
+        "received": 4740,
+        "dropped": 0,
+        "sha256": "556a2f94db60e4f200eb383f2cbf4b255f2e71050f06b97299de0da7f5082d89",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4745,
+        "received": 4745,
+        "dropped": 0,
+        "sha256": "2d122e51ec21effc01f06cad58bfda47b96c2c65935db130f549fe9d5570b457",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4750,
+        "received": 4750,
+        "dropped": 0,
+        "sha256": "124750ebd95a83a578f2a9b25b4eb725db4703136aefb14b13290e6e0c1106e5",
+        "size": [
+          3840,
+          2160
+        ]
+      }
+    ],
+    "motion": {
+      "schema": 1,
+      "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+      "passed": true,
+      "camera_equal": true,
+      "same_camera_interval": true,
+      "camera_samples": [
+        7060,
+        7060
+      ],
+      "camera_intervals": [
+        [
+          1800,
+          8859
+        ],
+        [
+          1800,
+          8859
+        ]
+      ],
+      "first_camera_difference_frame": null,
+      "camera_equal_frame_intervals": [
+        [
+          1800,
+          8859
+        ]
+      ],
+      "camera_equal_frames": 7060,
+      "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+      "actual_adc_reads": [
+        21180,
+        21180
+      ],
+      "adc_frame_value_pc_equal": true,
+      "adc_address_compared": true,
+      "first_adc_frame_value_pc_difference": null,
+      "adc_times_equal": true,
+      "first_adc_time_difference_index": null,
+      "sources": [
+        {
+          "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+          "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+        },
+        {
+          "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+          "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+        }
+      ]
+    },
+    "original_pixels_equal": true,
+    "original_traces": {
+      "exotica-fade-owner-events.jsonl": [
+        "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4",
+        "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4"
+      ],
+      "exotica-fade-owner-capture.json": [
+        "06991021b5bca47e8f4f8ed93cad22f07012292a964814fd6311b00b9d9c4ce6",
+        "06991021b5bca47e8f4f8ed93cad22f07012292a964814fd6311b00b9d9c4ce6"
+      ],
+      "exotica-fade-events.jsonl": [
+        "300894577a606f6f5a25e1d96a9bb5e1378638d1dc82cbb5bca855a7e659f7c4",
+        "300894577a606f6f5a25e1d96a9bb5e1378638d1dc82cbb5bca855a7e659f7c4"
+      ],
+      "exotica-fade-capture.json": [
+        "2b7cb475af021d194ba353467741f2d07aad11fcbbd24b8757560282c011626e",
+        "2b7cb475af021d194ba353467741f2d07aad11fcbbd24b8757560282c011626e"
+      ]
+    },
+    "capture": {
+      "schema": 1,
+      "complete": true,
+      "error": null,
+      "first": 1800,
+      "last": 8859,
+      "emissions_seen": 1010130,
+      "owned_commits": 948739,
+      "unowned_commits": 61391,
+      "records": 33876,
+      "first_draws": 3573,
+      "fading_draws": 30308,
+      "opaque_transitions": 1126
+    },
+    "join": {
+      "passed": true,
+      "counts": {
+        "verified_query_annotations": 33876,
+        "first_draws": 3573,
+        "opaque_transitions": 1126,
+        "ordinary_records": 33315,
+        "custom_records": 561,
+        "custom_firsts": 86
+      },
+      "fade_trace_exact": true,
+      "fade_trace_records": 30308,
+      "ordinary_allocations": 3932,
+      "ordinary_first_draws": 3487,
+      "ordinary_never_submitted": 445,
+      "first_draw_fading": 1115,
+      "first_draw_opaque": 2372,
+      "delay_frames": {
+        "min": 1,
+        "median": 238,
+        "p90": 540,
+        "max": 726
+      },
+      "delay_seconds": {
+        "min": 0.015533033333184676,
+        "median": 4.161716333291707,
+        "p90": 9.447564999905538,
+        "max": 12.703895199872974
+      },
+      "delay_above_60frames": 2801,
+      "original_fading_setup_branches": {
+        "fade": 24525,
+        "light": 5308
+      },
+      "source_plus_destination_by_branch": {
+        "fade:248": 832,
+        "fade:256": 23693,
+        "light:248": 177,
+        "light:256": 5131
+      },
+      "changed_immutable_fields": {},
+      "exceptions": [],
+      "sources": {
+        "exotica-pool-events.jsonl": "d15a8819603b54e889ccec986d6f1ab9f5e1a3ef151ef6f63e62476d5bf64fb9",
+        "exotica-fade-owner-events.jsonl": "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4",
+        "exotica-first-draws.jsonl": "9009ff30926b47f6193fa26a70dcd2e949588717670cff6a56c7d5222926d125",
+        "exotica-fade-submissions.jsonl": "f08e04ea510e937987de085f24ab6d84a27cf2fa8709a594982cb3b07b93d666"
+      },
+      "scope": "Original standard-model commit admission across complete observed section lifetimes; query annotations independently checked against pool and section traces. Model commit is not proof of visible pixels or final per-quad alpha, and custom models remain excluded."
+    },
+    "acceptance_sha256": "67bd002a5590065d7c3c7900809dd944a939b7765fc5357ea232b2ea1c1fe712",
+    "join_sha256": "e4c22b0b29557ff76ab370e33c2803f4922715292437d08bf8ad08e320c5363b"
+  },
+  "first-draw-amazon-repeat": {
+    "input_frames": 8860,
+    "comparison": {
+      "first_input_mismatches": [],
+      "first_pixel_mismatches": [],
+      "input_or_time_mismatches": 0,
+      "passed": true,
+      "pixel_mismatches": 0
+    },
+    "native_sha256": "ca7e814bcb62efa15e2192c857bd4dd24a69fbe8660a895b1a2aafcc5917105c",
+    "physical_ffb": 0,
+    "crt": 1,
+    "captures": [
+      {
+        "frame": 4650,
+        "received": 4650,
+        "dropped": 0,
+        "sha256": "7e121af8b257ba3bb68bae93f7bc3a7e445aab04568767cd49dfb2d3a8aea280",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4655,
+        "received": 4655,
+        "dropped": 0,
+        "sha256": "5987a404788ff7e749e3cd57f4827534a645fb4cf3886d4233b8399fba3db96d",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4660,
+        "received": 4660,
+        "dropped": 0,
+        "sha256": "82220d6d388755e74ef591cff4b6c65a652a1fab83520291e9a32e11365af7d7",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4665,
+        "received": 4665,
+        "dropped": 0,
+        "sha256": "e071335e2a7e388cc0e7ea53dd8fbc4df54cb8d1618ad1e9730a7944680f30d3",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4670,
+        "received": 4670,
+        "dropped": 0,
+        "sha256": "2a00f76225b34a2c3a1849b19eeabcd9b30ddee72ca130cf88e9d85000573091",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4675,
+        "received": 4675,
+        "dropped": 0,
+        "sha256": "229eae8da25d46bdcdd00fa2f30c67bf05bc51ce375a00a875a47fb9ee351add",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4680,
+        "received": 4680,
+        "dropped": 0,
+        "sha256": "1dc2965548fde46981314e55733cac21232f867d040b96d88fa10236b9472c09",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4685,
+        "received": 4685,
+        "dropped": 0,
+        "sha256": "09ded22d99a8e5fb543e206f289f9cf26b988707e949feea0422b75c363b0cc3",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4690,
+        "received": 4690,
+        "dropped": 0,
+        "sha256": "8fc856488d9819e355fd320e6f582a2af05e1de3bd3b855ab859a85fd14d5a86",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4695,
+        "received": 4695,
+        "dropped": 0,
+        "sha256": "0827663efda71efb6966293bcd5fb21b7289fab09e9e7e9c9ec529ce5e95fad8",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4700,
+        "received": 4700,
+        "dropped": 0,
+        "sha256": "1617c8a3b7960dca6a0ae9e7bcd25754edd86e490fc9e584e857789531e8a074",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4705,
+        "received": 4705,
+        "dropped": 0,
+        "sha256": "1bc3ad0dd4aebf6f6099e3367228c59493c0eae995a66480b192720307165e6b",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4710,
+        "received": 4710,
+        "dropped": 0,
+        "sha256": "dae72f43c16c79f4a2827e2fb679c5e6d1f76829e02dae4ab59e519809dc231b",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4715,
+        "received": 4715,
+        "dropped": 0,
+        "sha256": "b8a938822218a6ac6a6b3fa611bbaf6cd269266e00f2e8ea09638e2625944db1",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4720,
+        "received": 4720,
+        "dropped": 0,
+        "sha256": "0114cd40f0f533b687025180300efefa18bcf7fbd06b4274e7adf5535aeff50a",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4725,
+        "received": 4725,
+        "dropped": 0,
+        "sha256": "fa8abcc607348cc93726691f9a71cda9732714142f541077e5f5f63ae2db71fa",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4730,
+        "received": 4730,
+        "dropped": 0,
+        "sha256": "dadfd78003f3a4870327e8ccc33a5a03fcf9084792c8b7a9bf44f88f171bf45b",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4735,
+        "received": 4735,
+        "dropped": 0,
+        "sha256": "9d08418891637147a6165475f5cdf3b573730de93a938cf412eda81cdca1b417",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4740,
+        "received": 4740,
+        "dropped": 0,
+        "sha256": "556a2f94db60e4f200eb383f2cbf4b255f2e71050f06b97299de0da7f5082d89",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4745,
+        "received": 4745,
+        "dropped": 0,
+        "sha256": "2d122e51ec21effc01f06cad58bfda47b96c2c65935db130f549fe9d5570b457",
+        "size": [
+          3840,
+          2160
+        ]
+      },
+      {
+        "frame": 4750,
+        "received": 4750,
+        "dropped": 0,
+        "sha256": "124750ebd95a83a578f2a9b25b4eb725db4703136aefb14b13290e6e0c1106e5",
+        "size": [
+          3840,
+          2160
+        ]
+      }
+    ],
+    "motion": {
+      "schema": 1,
+      "scope": "Compare Exotica camera state and actual ADC reads from exotica_motion_trace.lua.\n\nCamera equality is a route check, not complete vehicle/physics equivalence.\nInput playback equality alone does not establish that a changed game followed\nthe original route. Both traces must cover the same complete frame interval.",
+      "passed": true,
+      "camera_equal": true,
+      "same_camera_interval": true,
+      "camera_samples": [
+        7060,
+        7060
+      ],
+      "camera_intervals": [
+        [
+          1800,
+          8859
+        ],
+        [
+          1800,
+          8859
+        ]
+      ],
+      "first_camera_difference_frame": null,
+      "camera_equal_frame_intervals": [
+        [
+          1800,
+          8859
+        ]
+      ],
+      "camera_equal_frames": 7060,
+      "camera_match_scope": "Camera words only; traffic, object state and rendering phase can still differ.",
+      "actual_adc_reads": [
+        21180,
+        21180
+      ],
+      "adc_frame_value_pc_equal": true,
+      "adc_address_compared": true,
+      "first_adc_frame_value_pc_difference": null,
+      "adc_times_equal": true,
+      "first_adc_time_difference_index": null,
+      "sources": [
+        {
+          "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+          "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+        },
+        {
+          "exotica-camera.csv": "f6fd70f28a5885373a8b11a8a1cfd6cd14ede9df08ca2c7cdd8c22b6793cd900",
+          "exotica-adc.csv": "8642cd662ff60d5837186167e35e2507b02c83367739cbc94d155285226dc651"
+        }
+      ]
+    },
+    "original_pixels_equal": true,
+    "original_traces": {
+      "exotica-fade-owner-events.jsonl": [
+        "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4",
+        "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4"
+      ],
+      "exotica-fade-owner-capture.json": [
+        "06991021b5bca47e8f4f8ed93cad22f07012292a964814fd6311b00b9d9c4ce6",
+        "06991021b5bca47e8f4f8ed93cad22f07012292a964814fd6311b00b9d9c4ce6"
+      ],
+      "exotica-fade-events.jsonl": [
+        "300894577a606f6f5a25e1d96a9bb5e1378638d1dc82cbb5bca855a7e659f7c4",
+        "300894577a606f6f5a25e1d96a9bb5e1378638d1dc82cbb5bca855a7e659f7c4"
+      ],
+      "exotica-fade-capture.json": [
+        "2b7cb475af021d194ba353467741f2d07aad11fcbbd24b8757560282c011626e",
+        "2b7cb475af021d194ba353467741f2d07aad11fcbbd24b8757560282c011626e"
+      ]
+    },
+    "capture": {
+      "schema": 1,
+      "complete": true,
+      "error": null,
+      "first": 1800,
+      "last": 8859,
+      "emissions_seen": 1010130,
+      "owned_commits": 948739,
+      "unowned_commits": 61391,
+      "records": 33876,
+      "first_draws": 3573,
+      "fading_draws": 30308,
+      "opaque_transitions": 1126
+    },
+    "join": {
+      "passed": true,
+      "counts": {
+        "verified_query_annotations": 33876,
+        "first_draws": 3573,
+        "opaque_transitions": 1126,
+        "ordinary_records": 33315,
+        "custom_records": 561,
+        "custom_firsts": 86
+      },
+      "fade_trace_exact": true,
+      "fade_trace_records": 30308,
+      "ordinary_allocations": 3932,
+      "ordinary_first_draws": 3487,
+      "ordinary_never_submitted": 445,
+      "first_draw_fading": 1115,
+      "first_draw_opaque": 2372,
+      "delay_frames": {
+        "min": 1,
+        "median": 238,
+        "p90": 540,
+        "max": 726
+      },
+      "delay_seconds": {
+        "min": 0.015533033333184676,
+        "median": 4.161716333291707,
+        "p90": 9.447564999905538,
+        "max": 12.703895199872974
+      },
+      "delay_above_60frames": 2801,
+      "original_fading_setup_branches": {
+        "fade": 24525,
+        "light": 5308
+      },
+      "source_plus_destination_by_branch": {
+        "fade:248": 832,
+        "fade:256": 23693,
+        "light:248": 177,
+        "light:256": 5131
+      },
+      "changed_immutable_fields": {},
+      "exceptions": [],
+      "sources": {
+        "exotica-pool-events.jsonl": "d15a8819603b54e889ccec986d6f1ab9f5e1a3ef151ef6f63e62476d5bf64fb9",
+        "exotica-fade-owner-events.jsonl": "3a8aa734bed6ec90af0a3e10c01000ed6fd3f5df419420be52e3871d727766c4",
+        "exotica-first-draws.jsonl": "9009ff30926b47f6193fa26a70dcd2e949588717670cff6a56c7d5222926d125",
+        "exotica-fade-submissions.jsonl": "f08e04ea510e937987de085f24ab6d84a27cf2fa8709a594982cb3b07b93d666"
+      },
+      "scope": "Original standard-model commit admission across complete observed section lifetimes; query annotations independently checked against pool and section traces. Model commit is not proof of visible pixels or final per-quad alpha, and custom models remain excluded."
+    },
+    "acceptance_sha256": "4723fcd76eea800b32bcf59823ea795bff05fd7351e403d47729c0066641c707",
+    "join_sha256": "e4c22b0b29557ff76ab370e33c2803f4922715292437d08bf8ad08e320c5363b"
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "passed": true,
+      "mode": "mirror",
+      "header": {
+        "frame": 5073,
+        "width": 2736,
+        "height": 4096,
+        "margin": 86,
+        "scale": 4,
+        "palette": 154,
+        "flags": 13
+      },
+      "counters": {
+        "quads": 3349,
+        "sky_copies": 0,
+        "clears": 1,
+        "uploads": 1
+      },
+      "color_differences": 87990,
+      "depth_differences": 41370,
+      "insertion": {
+        "future_quads": 1299,
+        "multiplier": 1,
+        "page": 0,
+        "future_packet_sha256": "5f5397b228a812e5c78ff6d45201b131a5cfee6025242307a84c3e2aeaa811ce",
+        "other_page_exact": true,
+        "integrity": true,
+        "future_visibility_accepted": false,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "journal_sha256": {
+        "wave": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+        "palette": "b3aa83d66b6862759a74852e2de37e0c5b132192789bfa1a95f5cd8ac21dd889",
+        "records": "c1707b4ec130174cfe292ca1261897e7286d52152f032a47a4071ac699f833be"
+      },
+      "initial_sha256": [
+        "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+        "a55990a06d4f5c5b837c71a1e6b46622867c8f9eb0fedf0b4943e0a489ecf72e"
+      ],
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "e98965c8d9cdd1874b4f3e6a4a3db8c336e847f29a1113008a1e1fd0fb129efa",
+        "7f1788f9269f1ccecf0548ebae1a8565a54f02038d99001bd37fc2042e219842"
+      ],
+      "expected_sha256": [
+        "9246387d19726bc4701354772dd70f70309db7270a006c6fd64b74fd73af8a9b",
+        "efc57afc3a23bd8ef775a63eecf2f055fc3d17a10e229000ae07edf31713ca11"
+      ],
+      "scope": "Independent command playback from prior completed GPU state, including exact initial materials and ordered updates. Original material/vertex shaders shared; wider mapping independently expressed. No future geometry or whole-game acceptance."
+    },
+    {
+      "passed": true,
+      "mode": "mirror",
+      "header": {
+        "frame": 5073,
+        "width": 2736,
+        "height": 4096,
+        "margin": 86,
+        "scale": 4,
+        "palette": 154,
+        "flags": 13
+      },
+      "counters": {
+        "quads": 3349,
+        "sky_copies": 0,
+        "clears": 1,
+        "uploads": 1
+      },
+      "color_differences": 122447,
+      "depth_differences": 74221,
+      "insertion": {
+        "future_quads": 1487,
+        "multiplier": 2,
+        "page": 0,
+        "future_packet_sha256": "f4098f48a11637e1c8cfe44f4984240f618daa7244bc50cbbe7670d3ceac0f63",
+        "other_page_exact": true,
+        "integrity": true,
+        "future_visibility_accepted": false,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "journal_sha256": {
+        "wave": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+        "palette": "b3aa83d66b6862759a74852e2de37e0c5b132192789bfa1a95f5cd8ac21dd889",
+        "records": "c1707b4ec130174cfe292ca1261897e7286d52152f032a47a4071ac699f833be"
+      },
+      "initial_sha256": [
+        "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+        "a55990a06d4f5c5b837c71a1e6b46622867c8f9eb0fedf0b4943e0a489ecf72e"
+      ],
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "fa4e324ca72bbc9885d27df11478b2fa0d3536fd5e0b8c0157936d5ea1ed5cc5",
+        "35e49d30ad8cb8c477ac97d0b38e9c4145fc85d71e44f940c9ce5349e8df8662"
+      ],
+      "expected_sha256": [
+        "9246387d19726bc4701354772dd70f70309db7270a006c6fd64b74fd73af8a9b",
+        "efc57afc3a23bd8ef775a63eecf2f055fc3d17a10e229000ae07edf31713ca11"
+      ],
+      "scope": "Independent command playback from prior completed GPU state, including exact initial materials and ordered updates. Original material/vertex shaders shared; wider mapping independently expressed. No future geometry or whole-game acceptance."
+    },
+    {
+      "passed": true,
+      "mode": "mirror",
+      "header": {
+        "frame": 5073,
+        "width": 2736,
+        "height": 4096,
+        "margin": 86,
+        "scale": 4,
+        "palette": 154,
+        "flags": 13
+      },
+      "counters": {
+        "quads": 3349,
+        "sky_copies": 0,
+        "clears": 1,
+        "uploads": 1
+      },
+      "color_differences": 122447,
+      "depth_differences": 74221,
+      "insertion": {
+        "future_quads": 1487,
+        "multiplier": 3,
+        "page": 0,
+        "future_packet_sha256": "0843297e47f38a5b53ac6008d5879f3a7a041361f7a75abcbfcceadad6c6f24c",
+        "other_page_exact": true,
+        "integrity": true,
+        "future_visibility_accepted": false,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "journal_sha256": {
+        "wave": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+        "palette": "b3aa83d66b6862759a74852e2de37e0c5b132192789bfa1a95f5cd8ac21dd889",
+        "records": "c1707b4ec130174cfe292ca1261897e7286d52152f032a47a4071ac699f833be"
+      },
+      "initial_sha256": [
+        "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+        "a55990a06d4f5c5b837c71a1e6b46622867c8f9eb0fedf0b4943e0a489ecf72e"
+      ],
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "fa4e324ca72bbc9885d27df11478b2fa0d3536fd5e0b8c0157936d5ea1ed5cc5",
+        "35e49d30ad8cb8c477ac97d0b38e9c4145fc85d71e44f940c9ce5349e8df8662"
+      ],
+      "expected_sha256": [
+        "9246387d19726bc4701354772dd70f70309db7270a006c6fd64b74fd73af8a9b",
+        "efc57afc3a23bd8ef775a63eecf2f055fc3d17a10e229000ae07edf31713ca11"
+      ],
+      "scope": "Independent command playback from prior completed GPU state, including exact initial materials and ordered updates. Original material/vertex shaders shared; wider mapping independently expressed. No future geometry or whole-game acceptance."
+    },
+    {
+      "passed": true,
+      "mode": "mirror",
+      "header": {
+        "frame": 5073,
+        "width": 2736,
+        "height": 4096,
+        "margin": 86,
+        "scale": 4,
+        "palette": 154,
+        "flags": 13
+      },
+      "counters": {
+        "quads": 3349,
+        "sky_copies": 0,
+        "clears": 1,
+        "uploads": 1
+      },
+      "color_differences": 122447,
+      "depth_differences": 74221,
+      "insertion": {
+        "future_quads": 1487,
+        "multiplier": 3,
+        "page": 0,
+        "future_packet_sha256": "0843297e47f38a5b53ac6008d5879f3a7a041361f7a75abcbfcceadad6c6f24c",
+        "other_page_exact": true,
+        "integrity": true,
+        "future_visibility_accepted": false,
+        "scope": "Offline future insertion construction, finite depth and other-page isolation only. Requires image inspection, native integration, temporal handover and performance acceptance."
+      },
+      "renderer": "NVIDIA GeForce RTX 5080/PCIe/SSE2",
+      "journal_sha256": {
+        "wave": "6dec5fb1dc80eaf2c723f77443ae32058f80e776f4f38444a97859e6d948d0c0",
+        "palette": "b3aa83d66b6862759a74852e2de37e0c5b132192789bfa1a95f5cd8ac21dd889",
+        "records": "c1707b4ec130174cfe292ca1261897e7286d52152f032a47a4071ac699f833be"
+      },
+      "initial_sha256": [
+        "b4fed4e747e09d559ea887f1628fa4d3f050fb3de0440431e190a3515bc06a19",
+        "a55990a06d4f5c5b837c71a1e6b46622867c8f9eb0fedf0b4943e0a489ecf72e"
+      ],
+      "shader_sha256": "f2be4218911e6d3568205464452f5d8517fd949451810404121141fde5da74b6",
+      "actual_sha256": [
+        "fa4e324ca72bbc9885d27df11478b2fa0d3536fd5e0b8c0157936d5ea1ed5cc5",
+        "35e49d30ad8cb8c477ac97d0b38e9c4145fc85d71e44f940c9ce5349e8df8662"
+      ],
+      "expected_sha256": [
+        "9246387d19726bc4701354772dd70f70309db7270a006c6fd64b74fd73af8a9b",
+        "efc57afc3a23bd8ef775a63eecf2f055fc3d17a10e229000ae07edf31713ca11"
+      ],
+      "scope": "Independent command playback from prior completed GPU state, including exact initial materials and ordered updates. Original material/vertex shaders shared; wider mapping independently expressed. No future geometry or whole-game acceptance."
+    }
+  ]
+}

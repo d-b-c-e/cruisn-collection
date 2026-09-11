@@ -26,6 +26,10 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
   only a small game-speed improvement. Allocation/fade diagnostics independently
   match 3,932 ordinary allocations and 2,539 sampled updates, providing a basis
   for the still-unimplemented host fade transition.
+- Measure Exotica's allocation-to-first-draw gap and prototype continuation of
+  allocated-but-undrawn scenery. A completed offline scene shows additional
+  distant trees. Add a standalone reusable lifetime tracker that matches the
+  recorded allocator and drawing events; live integration remains pending.
 - Full recorded drives, original input/camera timing and graphics-resource checks,
   independent geometry/pixel comparisons and repeat runs support these candidates.
 - Explicit host coverage/vertex-batch trials, with a targeted tunnel-seam

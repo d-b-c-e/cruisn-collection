@@ -29,6 +29,10 @@ match 3,932 ordinary allocations and all 2,539 sampled fades; a safe host fade
 transition still needs actual drawing admission and pixel checks. The new
 [pool lifetime study](2026-09-10-exotica-pool-lifetimes.md) verifies allocation,
 removal, slot reuse and the post-race reset across 48,481 Amazon transitions.
+The [actual first-draw study](2026-09-10-exotica-drawing-admission.md) now measures
+a median 4.16-second delay after allocation. Offline continuation through that
+gap adds visible distant trees in one completed scene. A reusable native lifetime
+tracker passes the recorded events, but live integration and handover remain open.
 
 Detailed evidence: [World 2.4 roads](2026-09-09-host-road-integration.md),
 [World 2.5](2026-09-09-world25-host-scenery.md),

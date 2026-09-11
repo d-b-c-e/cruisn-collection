@@ -40,8 +40,11 @@ awaiting validation.
 Separate **host scenery prototypes for all four games** now decode upcoming
 sections without changing guest simulation. World, USA and Off Road have measured
 earlier scenery; Exotica's private renderer has repeatable display comparisons
-but still needs faster preparation and smooth fade transitions. The new attended
-Off Road full-course recording is being used for broader comparisons.
+but still needs faster preparation and smooth fade transitions. A new Exotica
+study finds a several-second gap between scenery allocation and drawing; an
+offline continuation prototype adds visible distant trees through that gap.
+The attended Off Road full-course recording has also exposed and helped fix a
+final-section stop in its host renderer.
 These are **undeployed CLI candidates**. The launcher
 distance menus still use the earlier guest-distance experiments. Useful 3× gains
 are uneven, and performance, ground continuity, materials and broader track

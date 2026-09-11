@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "Original scene",
+      "changed_rgb_vs_future_only": 16792,
+      "changed_center_rgb": 10184,
+      "changed_margin_rgb": 6608,
+      "bounds": [
+        79,
+        645,
+        496,
+        828
+      ],
+      "newly_black": 0,
+      "raw_sha256": "9246387d19726bc4701354772dd70f70309db7270a006c6fd64b74fd73af8a9b"
+    },
+    {
+      "name": "Earlier future-only 3x",
+      "changed_rgb_vs_future_only": 0,
+      "changed_center_rgb": 0,
+      "changed_margin_rgb": 0,
+      "bounds": null,
+      "newly_black": 0,
+      "raw_sha256": "7e71b80b6f3db6eed85f875b63cde303a7c80e3b85deef799c361c67f57ad5a3"
+    },
+    {
+      "name": "Future + allocated waiting, current fade",
+      "changed_rgb_vs_future_only": 118226,
+      "changed_center_rgb": 92931,
+      "changed_margin_rgb": 25295,
+      "bounds": [
+        0,
+        297,
+        1068,
+        859
+      ],
+      "newly_black": 0,
+      "raw_sha256": "fa4e324ca72bbc9885d27df11478b2fa0d3536fd5e0b8c0157936d5ea1ed5cc5"
+    },
+    {
+      "name": "Future + waiting, completed fade (diagnostic)",
+      "changed_rgb_vs_future_only": 118409,
+      "changed_center_rgb": 93114,
+      "changed_margin_rgb": 25295,
+      "bounds": [
+        0,
+        297,
+        1068,
+        859
+      ],
+      "newly_black": 0,
+      "raw_sha256": "4a7d99dee29127d12037b10bee260af6f4468a1b0bc188b7e37d8e5177902b2d"
+    }
+  ],
+  "scope": "Completed offline original-command interval; current-fade and completed-fade waiting geometry added before original models. RGB difference is measured, not automatically a visual quality verdict. Single-scene upper bound only; no live temporal handover."
+}
