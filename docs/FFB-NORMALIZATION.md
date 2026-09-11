@@ -16,6 +16,8 @@ The games can retain different textures and force character.
 - [x] Identify recordings for all four games and the gaps in their force evidence.
 - [x] Run a preliminary offline algorithm sweep at 0, 25, 50, 80 and 100 with
   physical output disabled; retain its different-source/whole-drive limitations.
+- [x] Renew all four source traces on native795fc and repeat those 20 algorithm
+  cases; all underlying replays pass. Matched segments remain the next gate.
 - [ ] Produce a reproducible baseline with explicit time windows and data-quality
   flags for each game, using the same candidate, profile and nominal strength.
 - [ ] Label steady driving, left/right turns, car contacts, wall contacts and
@@ -92,8 +94,8 @@ close those items.
 | Recording | Available evidence | Gap |
 |---|---|---|
 | USA `my-drive` | Human inputs and host-time output trace; current 795fc default replay now supplies an emulated-time source trace with original input/pixel acceptance | No attended force acceptance in the original recording |
-| World Germany, September 6 | Human drive, emulated raw/adapted trace, host output, strength 80 | Older candidate; no current gate trace; requires current replay and independent state labels |
-| Off Road El Paso, September 10 | Human drive, source/gate/host output, strength 80 | Contacts and matched driving segments not labeled |
+| World Germany, September 6 | Human drive and host output; fresh 795fc retry supplies accepted source/gate traces and independent state checks | The first seven-case run had a renderer timeout; retry passes but cause is open; matched segments need labels |
+| Off Road El Paso, September 10 | Human drive, source/gate/host output; fresh 795fc replay passes all 9,644 inputs/native pixels | Contacts and matched driving segments not labeled |
 | Exotica Amazon, September 9 | Human drive, source/gate/host output; requested 80, effective 64, gain 800 | Contacts not labeled; current gain clips much of the motor range |
 
 The existing `harness/analyze_ffb.py` executes the actual vendored shaper and
@@ -107,3 +109,5 @@ time weighting and explicit coverage before choosing defaults. Legacy
 it is not a four-game acceptance gate.
 
 See the [upstream audit and initial clipping measurement](reviews/2026-09-10-ffb-plugin-and-normalization.md).
+The [initial common-candidate baseline receipts](../results/proof/2026-09-10-ffb-baseline/README.md)
+record what is measured and which acceptance items remain false.

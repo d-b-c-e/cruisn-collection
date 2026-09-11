@@ -83,6 +83,14 @@ from the accepted current-candidate replay of `my-drive`, World and Off Road
 from their human recordings, and Exotica from the current Amazon control.
 Thus source builds are not yet common across all four.
 
+A subsequent **common-candidate renewal is complete**: USA, Germany, El Paso
+and Amazon all supply accepted source traces from native795fc with physical FFB
+off. The fresh El Paso replay preserves all9,644 input frames/native pixels;
+Germany's separate retry preserves9,269. All20 offline strength cases pass again,
+with source CSVs and all five output-stage files per game byte-identical to the
+initial baseline. Different courses and unlabeled situations still prevent a
+cross-game normalization claim.
+
 These runs include menus/boot and simulate the shaper without the full game
 gate, worker timeout or device. They are algorithm baselines, not normalized
 wheel-force acceptance. Between the first and last captured Exotica writes,
@@ -96,6 +104,12 @@ Local command/receipt:
 `results/diagnostics/exotica-amazon-20260909/ffb-four-game-baseline.py` and
 `ffb-four-game-baseline/report.json`. The latter explicitly marks normalization
 and matched-segment/common-source acceptance false. Raw stage traces stay local.
+
+The renewal is `ffb-four-game-current-baseline/report.json`, generated with
+`--current`. It marks common native source true, matched segments and normalization
+false. [Public receipts](../../results/proof/2026-09-10-ffb-baseline/README.md)
+verify hashes/consistency only. Game/device polarity is also outside the offline
+shaper simulation; use the separate polarity checks before accepting signed force.
 
 The sweep preparation also exposed an offline-analyzer compatibility bug:
 `wheel_motor` rows were ignored while the older `wheel` name worked. The new

@@ -1,0 +1,406 @@
+{
+  "schema": 1,
+  "kind": "preliminary-four-game-algorithm-baseline",
+  "passed": true,
+  "normalization_accepted": false,
+  "physical_force": false,
+  "matched_segments": false,
+  "common_native_source": true,
+  "profile": "cruisn-vunit@2",
+  "profile_sha256": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52",
+  "analyzer_sha256": "fc5751e378781230f7736065f1546d8bd01d9765bcd955ffbf03ab40c4f8cb5e",
+  "source_sha256": "b80af53e4acf221d590471ae8237e9ba3d5cb791d0fcbda2b1eb702e401245f3",
+  "scope": "Recorded raw/adapted commands through current shaper only. Includes menus and boot; no gate/worker-hold/device simulation or game/device polarity. Different routes; do not use whole-drive RMS for calibration. Build identity is declared separately.",
+  "cases": {
+    "usa": {
+      "trace": "results\\diagnostics\\exotica-amazon-20260909\\native-lifetime-defaults-quiet\\usa-original\\run\\force-source.csv",
+      "trace_sha256": "677b00dfc3f2e06e2bcc2d754f4c02e38eb9f3db78589c083a68aa33e2e06bdf",
+      "samples": 4569,
+      "first_seconds": 7.66134452,
+      "last_seconds": 86.5035022,
+      "held_adapter_duration_seconds": 78.84215768,
+      "held_adapter_abs127_fraction": 0.0,
+      "held_adapter_nonzero_fraction": 0.7354615899192882,
+      "held_adapter_rms_byte": 38.21959408304858,
+      "strengths": [
+        {
+          "requested": 0,
+          "effective": 0,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 21627,
+            "motor_samples": 4569,
+            "strength": 0,
+            "peak_abs": 0.0,
+            "rms": 0.0,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 4
+          },
+          "stages_sha256": "0f3e410853846d3cc586483ebbab22c8edbc2f20aa2df931f21f78d7aad50966"
+        },
+        {
+          "requested": 25,
+          "effective": 25,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 21627,
+            "motor_samples": 4569,
+            "strength": 25,
+            "peak_abs": 0.239796802,
+            "rms": 0.069310681,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 4
+          },
+          "stages_sha256": "8f06cca4926884ff4825ad4ec42dac4c904b6b59806466859f5a11f3a67bb7a5"
+        },
+        {
+          "requested": 50,
+          "effective": 50,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 21627,
+            "motor_samples": 4569,
+            "strength": 50,
+            "peak_abs": 0.499731243,
+            "rms": 0.144466257,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 4
+          },
+          "stages_sha256": "e7966cb1547fd3de68aafadd60cd35ac49f63501f05928af8ee8fec9d6fff35b"
+        },
+        {
+          "requested": 80,
+          "effective": 80,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 21627,
+            "motor_samples": 4569,
+            "strength": 80,
+            "peak_abs": 0.799796045,
+            "rms": 0.231137362,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 4
+          },
+          "stages_sha256": "936c86f5156e5af0412f091a1633b5cb79107a51d1f1f0b0292b9eea29ff27ba"
+        },
+        {
+          "requested": 100,
+          "effective": 100,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 21627,
+            "motor_samples": 4569,
+            "strength": 100,
+            "peak_abs": 0.999796867,
+            "rms": 0.288934012,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 4
+          },
+          "stages_sha256": "0b707948ddcaea2b7c7c8b0b55ef26d83b87276219d199e5e212ceb3cf44e4ca"
+        }
+      ],
+      "replay_passed": true,
+      "input_frames": 5012,
+      "native_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "physical_ffb": "0",
+      "replay_report_sha256": "a0446f80d7838bead62d4c7acc4aa09a0e0d3721d81c8d9cf1f03b8196e081dd"
+    },
+    "world": {
+      "trace": "results\\diagnostics\\exotica-amazon-20260909\\native-lifetime-world-germany-retry\\world24-germany\\run\\force-source.csv",
+      "trace_sha256": "aaa420a6a2aeddfdeea2266989162cf29f0b722efb8797c74d3026deeeedbf44",
+      "samples": 8803,
+      "first_seconds": 8.0514546,
+      "last_seconds": 159.99090388,
+      "held_adapter_duration_seconds": 151.93944928,
+      "held_adapter_abs127_fraction": 0.0,
+      "held_adapter_nonzero_fraction": 0.9243755531927387,
+      "held_adapter_rms_byte": 54.14701972531624,
+      "strengths": [
+        {
+          "requested": 0,
+          "effective": 0,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 39998,
+            "motor_samples": 8803,
+            "strength": 0,
+            "peak_abs": 0.0,
+            "rms": 0.0,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 29
+          },
+          "stages_sha256": "225ea5cf1f15510bd76a5e16ca95fd3ef77a0da106c74c381e8530040526706e"
+        },
+        {
+          "requested": 25,
+          "effective": 25,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 39998,
+            "motor_samples": 8803,
+            "strength": 25,
+            "peak_abs": 0.239999995,
+            "rms": 0.100185334,
+            "full_strength_fraction": 0.000525026,
+            "unlabelled_force_candidates": 29
+          },
+          "stages_sha256": "45910c4ef122950a52396813f397955714072b1f89846a71c878173a7477276b"
+        },
+        {
+          "requested": 50,
+          "effective": 50,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 39998,
+            "motor_samples": 8803,
+            "strength": 50,
+            "peak_abs": 0.5,
+            "rms": 0.208774139,
+            "full_strength_fraction": 0.000525026,
+            "unlabelled_force_candidates": 29
+          },
+          "stages_sha256": "d0e321f524a61ea88a656857daf66d541c589cca7ac39c208d2330307d10848f"
+        },
+        {
+          "requested": 80,
+          "effective": 80,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 39998,
+            "motor_samples": 8803,
+            "strength": 80,
+            "peak_abs": 0.800000012,
+            "rms": 0.334123631,
+            "full_strength_fraction": 0.000525026,
+            "unlabelled_force_candidates": 29
+          },
+          "stages_sha256": "87ef7fc37f6eab47bf9e47e7e81bfa8c20c4f1baccd1de0c7471e47f0174c4a0"
+        },
+        {
+          "requested": 100,
+          "effective": 100,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 39998,
+            "motor_samples": 8803,
+            "strength": 100,
+            "peak_abs": 1.0,
+            "rms": 0.417670289,
+            "full_strength_fraction": 0.000525026,
+            "unlabelled_force_candidates": 29
+          },
+          "stages_sha256": "3dc4aa9093816e7cfb482104578c1792547ed26923f7cf0accdf5a1ac4a08fe2"
+        }
+      ],
+      "replay_passed": true,
+      "input_frames": 9269,
+      "native_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "physical_ffb": "0",
+      "replay_report_sha256": "e79c7bb2b1484396f3ba667b300dfb3bdc7b6845f2bb69bdcf8bf3132b646506"
+    },
+    "offroad": {
+      "trace": "results\\diagnostics\\exotica-amazon-20260909\\ffb-offroad-current-source\\run\\force-source.csv",
+      "trace_sha256": "58e9599573c105e7f53b1190f1e8b57bfc5276ae4898ec7c5c7d1e3ff128719e",
+      "samples": 8820,
+      "first_seconds": 14.22449716,
+      "last_seconds": 166.4644266,
+      "held_adapter_duration_seconds": 152.23992944,
+      "held_adapter_abs127_fraction": 0.0,
+      "held_adapter_nonzero_fraction": 0.8546320963139828,
+      "held_adapter_rms_byte": 65.25285652357523,
+      "strengths": [
+        {
+          "requested": 0,
+          "effective": 0,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 41617,
+            "motor_samples": 8820,
+            "strength": 0,
+            "peak_abs": 0.0,
+            "rms": 0.0,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 45
+          },
+          "stages_sha256": "e9c82c22e8dcad58c861a6f6068cd310ad71a5c34a2cbbada975a55b1e799186"
+        },
+        {
+          "requested": 25,
+          "effective": 25,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 41617,
+            "motor_samples": 8820,
+            "strength": 25,
+            "peak_abs": 0.235929415,
+            "rms": 0.118256848,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 45
+          },
+          "stages_sha256": "0db3cccf50674abc736e9e013a25ecfc460bc28de6ca72a683caaedee9a36642"
+        },
+        {
+          "requested": 50,
+          "effective": 50,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 41617,
+            "motor_samples": 8820,
+            "strength": 50,
+            "peak_abs": 0.491861343,
+            "rms": 0.246486281,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 45
+          },
+          "stages_sha256": "07fac3ab23178413dc9720129ef69cd69447689d61e4ca153c351e7af0e026c7"
+        },
+        {
+          "requested": 80,
+          "effective": 80,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 41617,
+            "motor_samples": 8820,
+            "strength": 80,
+            "peak_abs": 0.787048995,
+            "rms": 0.394507313,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 45
+          },
+          "stages_sha256": "2aa21cffd784fd9865750cf262752d07ae46b4dc5a11e8e30ae72739d53e2a61"
+        },
+        {
+          "requested": 100,
+          "effective": 100,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 41617,
+            "motor_samples": 8820,
+            "strength": 100,
+            "peak_abs": 0.983869076,
+            "rms": 0.493157004,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 45
+          },
+          "stages_sha256": "fff66de68cc8158bf17206099e4dbafdf23f3aef9246c94b761beb0cfa47b2a0"
+        }
+      ],
+      "replay_passed": true,
+      "input_frames": 9644,
+      "native_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "physical_ffb": "0",
+      "replay_report_sha256": "086e8bab14ff5cacb0201997326ebb31c93f3fde7db5183049100614fa0b7a2b"
+    },
+    "exotica": {
+      "trace": "results\\diagnostics\\exotica-amazon-20260909\\native-lifetime-amazon\\run\\force-source.csv",
+      "trace_sha256": "6bfbdf05d16252bb655a39259429225828993b3fc5b73d054b63086f83636336",
+      "samples": 7476,
+      "first_seconds": 0.043466867,
+      "last_seconds": 155.054412632,
+      "held_adapter_duration_seconds": 155.010945765,
+      "held_adapter_abs127_fraction": 0.23767813912221644,
+      "held_adapter_nonzero_fraction": 0.7976628963766901,
+      "held_adapter_rms_byte": 67.70072531778699,
+      "strengths": [
+        {
+          "requested": 0,
+          "effective": 0,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 38764,
+            "motor_samples": 7476,
+            "strength": 0,
+            "peak_abs": 0.0,
+            "rms": 0.0,
+            "full_strength_fraction": 0.0,
+            "unlabelled_force_candidates": 50
+          },
+          "stages_sha256": "f6ab286d2d26e3be652999ea21e63532d26b071bbd9777d32df34f6df443383f"
+        },
+        {
+          "requested": 25,
+          "effective": 20,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 38764,
+            "motor_samples": 7476,
+            "strength": 20,
+            "peak_abs": 0.200000003,
+            "rms": 0.10598068,
+            "full_strength_fraction": 0.001908988,
+            "unlabelled_force_candidates": 50
+          },
+          "stages_sha256": "0504dbe06c0ed9d36f3677ca2421c9cea749a98540a5e6315659730f73a73a6b"
+        },
+        {
+          "requested": 50,
+          "effective": 40,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 38764,
+            "motor_samples": 7476,
+            "strength": 40,
+            "peak_abs": 0.400000006,
+            "rms": 0.212242857,
+            "full_strength_fraction": 0.001908988,
+            "unlabelled_force_candidates": 50
+          },
+          "stages_sha256": "c6e506ce249df4a12f63a2254821a21b2e49c5a4ceb3eac78f12202a7488ad5a"
+        },
+        {
+          "requested": 80,
+          "effective": 64,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 38764,
+            "motor_samples": 7476,
+            "strength": 64,
+            "peak_abs": 0.639999986,
+            "rms": 0.339732929,
+            "full_strength_fraction": 0.001908988,
+            "unlabelled_force_candidates": 50
+          },
+          "stages_sha256": "3dd4a1e1b596d9ebef4ca602d129fd14291b089b1f37e34d32e60865d72e3a46"
+        },
+        {
+          "requested": 100,
+          "effective": 80,
+          "metrics": {
+            "tick_ms": 4,
+            "ticks": 38764,
+            "motor_samples": 7476,
+            "strength": 80,
+            "peak_abs": 0.800000012,
+            "rms": 0.424705608,
+            "full_strength_fraction": 0.001908988,
+            "unlabelled_force_candidates": 50
+          },
+          "stages_sha256": "3e6b1b7152bdc1bccf6057aa8668e8a3a352b3cc21523b5ad9488b6a16f10c79"
+        }
+      ],
+      "replay_passed": true,
+      "input_frames": 8860,
+      "native_sha256": "97cd738c6b89f59a7523c9494285c5ee625e9f5041622f542983d94173b37d7a",
+      "physical_ffb": "0",
+      "replay_report_sha256": "c24c2741b3ca674dc2460d0074b162a701655e8f541b501fd495a47045e974b1"
+    }
+  },
+  "bound_source_files": {
+    "native/analyze_ffb.cpp": "b80af53e4acf221d590471ae8237e9ba3d5cb791d0fcbda2b1eb702e401245f3",
+    "tests/native/check_motor_adapter.py": "5604664e3609b79983bc2bfeed9ca544d884baac0290698655b4eb7058475e70",
+    "lib/toolkit/profiles/force-profiles.ini": "6135c963c610c8b041f5379f27024e2ba32203b037ff9a0670cbf6db8ecd0b52"
+  },
+  "alias_regression": {
+    "before_failure_log_sha256": "5b17eb54c4a0aec61e8aeb9bdd1224f247552b2a32755291ab70e817495f2cc0",
+    "after_pass_log_sha256": "78d0e7f99bb63492bf0b2d6a5ea7e8be4c79d6ab03ffc0a38d41bf44c0670b1e",
+    "actual_usa_host_trace": {
+      "tick_ms": 4,
+      "ticks": 26363,
+      "motor_samples": 1374,
+      "strength": 50,
+      "peak_abs": 0.49979651,
+      "rms": 0.146490695,
+      "full_strength_fraction": 0.0
+    }
+  }
+}

@@ -21,9 +21,11 @@ older USAstall unresolved even though both USA cases pass now. No game/build
 remains at this checkpoint. Proof2026-09-10-exotica-native-lifetimes verifies
 hash/receipt consistency; actualnative/raw/GPU/tests remain receipts.
 
-NEXT investigate targeted World stream failure and validate LOCAL exotica_waiting.h
-and test before promotion. Both are uncompiled drafts under results/diagnostics/
-exotica-amazon-20260909. Independent five-snapshot geometry joins already exist;
+Germany-only retry exec96363 nowEXIT0/PASS9269inputs/originalnativepixels/telemetry/
+softwareforce on same795fc. Initialtimeout unexplained; fullsuite remainsFAIL.
+LOCAL exotica_waiting.h/test nowcompile andPASSsynthetic ownership/order/reset/
+padding/immutable checks. Not promoted. Under results/diagnostics/
+exotica-amazon-20260909. NEXT independent five-snapshot geometry joins already exist;
 new helper must derive candidates from actual registry, not trust supplied lists.
 Then live waiting observation/draw, fade/handover/materials, original route/4K.
 Personal87d/v0.5.0 unchanged. FFB normalization is now a separate near-term priority
@@ -31,6 +33,16 @@ below. No deploy/release/hostedCI/physicalFFB/menu removal. Serial rig/build/GPU
 no builds/exports/broadscans during timed playback. Continue directly.
 
 ## September 10 FFB normalization — NEAR-TERM maintainer priority
+
+Common native795fc source renewal NOWDONE: USA5012,WorldGermany9269,OffRoad9644,
+Exo8860 inputs, accepted nativepixels, physicalFFB0. Fresh OffRoad exec29238EXIT0.
+LOCAL ffb-four-game-baseline.py --current runs20strengthcases and all sourceCSV/
+stages match initialbaseline exactly. Public proof2026-09-10-ffb-baseline hashes
+the analyzer/test/profile and receipts. Matchedsegments/normalization/physical
+acceptance remainFALSE. No game/devicepolarity or full worker/gate simulation.
+Actual legacyUSAhosttrace1374motor rows now accepted. No current game/build.
+Next label matched steering/speed/contact windows and reconstruct final output;
+do not tune from whole-drive RMS or choose400 gain merely because upstream usesit.
 
 Initial LOCAL ffb-four-game-baseline script/report now PASS20 algorithm runs at
 0/25/50/80/100, explicit Exo0.8trim. Different source builds/routes, unsegmented

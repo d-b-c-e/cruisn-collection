@@ -76,6 +76,13 @@ not acceptable. Cause and reproducibility remain under investigation; the
 Exotica-only observer was disabled in this run. Do not relabel the suite PASS
 or attribute this failure to the new observer without evidence.
 
+A fresh, separate Germany-only retry subsequently **passes**, preserving all
+9,269 input frames and original native pixels, with telemetry/software-force
+checks passing. It uses the same 795fc executable; the only intervening source
+changes are the standalone FFB analyzer and its test. The initial timeout remains
+unexplained and the original seven-case suite remains failed. Local receipt:
+`results/diagnostics/exotica-amazon-20260909/native-lifetime-world-germany-retry/report.json`.
+
 An earlier suite attempt was interrupted after discovering another session's
 MAME build overlapping its first case. The other session's build was left alone;
 the incomplete attempt and reason are retained. The fresh suite used an enforcing
@@ -97,3 +104,7 @@ on reuse/reset. Use current coherent object fields and independently checked
 materials. Then verify live observation, insertion, original route and completed
 4K output before judging fade/handover. Preserve intrinsic translucency and
 foreground depth; object fade fields are not every quad's final alpha.
+
+The local helper now compiles and passes synthetic selection, first-submission,
+reset/reuse/realm, immutable-field, order and padding-isolation checks. It is
+still a local draft and has not yet passed those five actual-snapshot joins.
