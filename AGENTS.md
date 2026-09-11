@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 10 waiting selector — ACTIVE native observation next
+
+Read docs/reviews/2026-09-10-exotica-waiting-selection.md. Canonical
+native/exotica_waiting.h and tests/native/exotica_waiting_test.cpp now standalone.
+LOCAL analyzer folds validated native795fc event prefixes at exact device times;
+five actual selections252/155/298/52/1 match independent Lua owners/order. All30
+native/Python geometry variants PASS, including separate canonical-header build.
+DTOs retain future=false; no supplied selection list trusted. Bounds, reset/reuse,
+firstsubmission, immutablefields/currentmutable/padding/order testsPASS. Newfull
+localchecks exec73492 EXIT0:358Python/no skips50native142commands,518-file source
+e7af2918899c599e4519f1f25613d3d6ce23f4a45e67a27c6beb04e0a621567e.
+This also renews full offline FFB-alias tests. No new MAME build or deployment.
+Native795fc/personal87d/v0.5.0 unchanged; earlier7suite remains6PASS/WorldtimeoutFAIL,
+separateGermanyretryPASS. No processes currently running.
+
+NEXT native waiting OBSERVATION at current scene_observer_model device boundary,
+compute candidate owner/geometry logs while preserving original future packets.
+Require lifetime trace active before allocation and through hostlast+1, complete
+allocator transactions, same bank/track realm. Do not assume scene_observer_start
+can read initialized lifetime fields: it currently runs BEFORE lifetime_start.
+Then source-order future/waiting merge, ownedmaterials and privatewide draw.
+Firstfade/opaque handover, intrinsictransparency and foregrounddepth stay required.
+LOCAL prepare-waiting-registry-native.py/verify-waiting-registry-canonical.py
+carry actual comparison commands. Raw gamebytesLOCAL. No release/deploy/hostedCI/
+physicalFFB/menu removal. FFB normalization remains near-term as below. Serial
+rig/build/GPU; no builds/exports/broadscans duringtimed tests. Continue directly.
+
 ## September 10 native lifetimes — ACTIVE waiting-selection validation
 
 Read docs/reviews/2026-09-10-exotica-native-lifetimes.md. Native795fc77b68e is

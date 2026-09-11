@@ -1,0 +1,9 @@
+{
+  ".gitattributes": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+  "actual-scenes.json": "6a96041a5825f5bba05d82d27e4e6b87cbddc0041d3751ee40277db6e237232c",
+  "local-checks.json": "57433bf13607219d4e6a336e7db4a94a6bd9556f07763a6bb415c0d1a4d59b15",
+  "README.md": "6ccf8c5eb7afc146904479086f8fa2b184bdafbaadb7794dfe31b20625fa196f",
+  "source-identity.json": "804b5375e745fb7835554dc329f71ce7a1f71628894e6166b5eadcb050ba75ba",
+  "unit-tests.json": "0c2e395db1824904a878be49ad32276360fcfce21735c38dcf617a142e2602a9",
+  "verify.py": "9b1c735c259beea25cedc103e4b7ac67dbc65c1d61c5df8de45eeb2c5455f3e6"
+}
