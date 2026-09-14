@@ -79,7 +79,7 @@ def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=Fal
             projected=[];recip=reciprocal_table(original,far);objects=0;screen_rejected=[]
             for key,obj in expected.items():
                 center=camera_center(obj,camera,view);depth=center[2].fix();model=obj[13];radius=read(model)
-                if depth-radius<1000 or depth+radius>=far:continue
+                if depth-radius<1000 or depth-radius>=far:continue
                 if obj[14]&1 and not full_roads and depth>=read(profile['road_threshold']):
                     ordinal=(obj[15]>>12)&15
                     if not ordinal:raise ValueError('invalid far road template ordinal')
@@ -100,6 +100,10 @@ def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=Fal
                     matrix=matrix,camera_space=[f.store() for f in center]+origin)
                 try:
                     buffer=project(record,recip)
+                    # A sphere may straddle the far plane. The host accepts
+                    # only complete models whose real vertex depths fit; this
+                    # is not polygon clipping or a larger distance setting.
+                    if any(not 1000<=F.load(v).fix()<far for v in buffer[2::3]):continue
                     # The host excludes a whole object if any screen coordinate
                     # cannot fit signed DMA coordinates. Do not wrap it into a
                     # different on-screen polygon in the independent reference.

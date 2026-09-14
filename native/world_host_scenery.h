@@ -110,7 +110,11 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             model=selected.selected;radius=selected.radius;header=selected.header;
             materials=selected.materials;vertex_start=selected.vertex_data;poly_start=selected.polygon_data;
         }
-        if(int64_t(depth)-radius<1000 || int64_t(depth)+radius>=far){++scene.distance;continue;}
+        // A sphere intersecting the far plane can still contain a model whose
+        // actual vertices are all inside it (wide, shallow terrain especially).
+        // Reject only a wholly distant sphere here; every vertex below must
+        // still fit the configured depth interval. Near clipping stays excluded.
+        if(int64_t(depth)-radius<1000 || int64_t(depth)-radius>=far){++scene.distance;continue;}
         uint32_t pairs=(header&0x300)?((header>>10)&255)+1:0;
         uint32_t singles=header&255,polygons=(header>>18)+1,vertices=singles+2*pairs;
         if(!vertices || vertices>256 || polygons>1024 ||
@@ -130,6 +134,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         bool projection_ok=true;
         auto screen=[&](Float x,Float y,Float z)
         {
+            if(z.fix()<1000 || z.fix()>=int32_t(far)){projection_ok=false;return;}
             int32_t index=z.fix()>>4;
             if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(far))){projection_ok=false;return;}
             Float r=Float::load(index<5000?read(uint32_t(int64_t(table)+index)):

@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 World far bounds — verified modest gain; parity continues
+
+Read docs/reviews/2026-09-14-world-terrain-visibility.md. Nativeb7048961cd3 frozen/
+pushed SHA3a79167363b57a81843b544313522b0471354635a12664114b6b68084b9d478f.
+197patches reconstruct0b97a05cd907c0c791ef1f536942bd6d374ed317. World host now
+admits intersecting far spheres ONLY if every vertex depth stays1000..far-1;
+conservative near-sphere rejection unchanged. NOT polygon clipping or a bigger
+3x plane. Independent15saved24/25snapshots PASS32128/61898futurequads;3native19Python.
+Full6000inputs/originalnativeframes/4191camera/12573ADC PASS.1666scenes5688298quads;
+4/12images change952/2945/4022/880pixels, other8exact;99.98%MAME. Morefar mountains,
+oldterraingap REMAINS.3424x1353 current3440monitor, notfinal4K. Personal87d unchanged.
+
+Actualbackgroundorder ruled OUT oceanoverdraw:2854originalDMA exactnativejoin,
+5900scene1419quads;first10sky/oceantiles BEFORE hostindex10. Offlinecontrol204800
+nativeindicesexact. Qualityhost8294quads238468pixels,172390coveredbyordinarynear
+geometry,66078survive. No blanketforegroundbypass. Addingall354activeobjects
+offline yields1380quads/1531changedpixels AWAYfromgap; NOTpromoted.244futurecustomA
+definitions/17models lacklaterallocationmatches; customdispatch58EC known, donot
+pretendordinarycodec. Farboundoffline109extraquads4866pixels, nooldquadsremoved.
+LOCALworld25-roads-20260914 holdsbackground/active/bounds/live evidence.
+
+NEXT efficient USA/Exotica performance work (USA97ish, Exo94.2 quiet lastknown),
+then temporal/material/coverage and finalcombineddefault/4K gates. Do NOTrepeat
+broadtests withoutnewrisk. Userrequestscontinuousparitywork, keepgoingdirectly
+aftercheckpoints. Nogame/build/test running atthischeckpoint. No deploy/release/
+hostedCI/physicalFFB/menu removal. Pendingcalibrationavailability unanswered.
+
 ## September 14 full road detail — investigate actual background order next
 
 Read docs/reviews/2026-09-14-world-road-detail.md. Native679ef586ef7 frozen/pushed SHA

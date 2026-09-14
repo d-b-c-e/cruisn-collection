@@ -41,6 +41,22 @@ int main()
     assert(cruisn::world_host::build(read,extended,160000) && extended.decoded==1);
     assert(cruisn::world_host::build(read,triple,240000) && triple.decoded==1);
     assert(extended.objects[0].quads==triple.objects[0].quads && ram==before);
+    // A wide model's bounding sphere can cross the far limit while all actual
+    // vertices remain inside. Keep it, but never clamp an out-of-range vertex
+    // onto the far plane (which would distort its geometry).
+    ram[0x10803]=f(159984);ram[0xc00000]=100;
+    cruisn::world_host::Scene sphere_overlap;
+    assert(cruisn::world_host::build(read,sphere_overlap,160000));
+    assert(sphere_overlap.objects.size()==1 && sphere_overlap.objects[0].quads.size()==1);
+    ram[0xc00004]=16; // One vertex exactly at the far plane: whole model excluded.
+    cruisn::world_host::Scene vertex_at_limit;
+    assert(cruisn::world_host::build(read,vertex_at_limit,160000));
+    assert(vertex_at_limit.objects.empty() && vertex_at_limit.distance==1);
+    ram[0xc00004]=32;
+    cruisn::world_host::Scene vertex_beyond_limit;
+    assert(cruisn::world_host::build(read,vertex_beyond_limit,160000));
+    assert(vertex_beyond_limit.objects.empty());
+    ram[0xc00004]=0;ram[0xc00000]=20;ram[0x10803]=f(96000);
     assert(!cruisn::world_host::build(read,invalid,100000));
     assert(!cruisn::world_host::build(read,invalid,240000,nullptr,false,24,true));
     ram[0x1080e]=0x2208;
