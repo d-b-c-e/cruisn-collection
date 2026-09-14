@@ -7,6 +7,7 @@
 #include "exotica_active.h"
 #include "exotica_transform.h"
 #include "exotica_state.h"
+#include "exotica_fade.h"
 #include "zeus_state.h"
 #include "zeus_model.h"
 #include "zeus_model_bounds.h"
@@ -153,7 +154,11 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
             found=cache.emplace(key,std::move(model)).first;
         }
         operands.object=o;operands.cache.fill(UINT32_MAX);
-        if(p.complete_fade)flags&=~uint32_t(0x04000100);
+        if(p.complete_fade) {
+            ExoticaFadeStep completed;
+            if(!exotica_finish_marked_fade(o[16],flags,completed))return false;
+            operands.object[16]=completed.packed;flags=completed.flags;
+        }
         operands.flags=flags;
         if(!exotica_state::setup(operands,setup))return false;
         auto &packet=setup.packet;

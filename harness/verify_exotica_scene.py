@@ -21,6 +21,7 @@ from exotica_state import setup
 from exotica_transform import prepare, packet, select_model
 from scenery_c31 import signed
 from verify_exotica_future import Memory, words
+from verify_exotica_fade import finish_marked
 from verify_exotica_transforms import read_rows
 from verify_zeus_state import floats, verify as verify_original_state
 from verify_zeus_models import verify as verify_original_geometry
@@ -160,7 +161,8 @@ def reference(sources, read, wave, frame, margin, fade, call, context, position,
             raise ValueError('scene model bounds')
         model = list(struct.unpack_from('<'+str(2*(count+1))+'I', wave, block*8))
         if fade:
-            flags &= ~0x04000100
+            obj = obj[:]
+            obj[16], flags, _ = finish_marked(obj[16], flags)
         state = setup(obj, flags, [0xffffffff]*3, call['state_constants'], call['state_commands'],
                       call['programs'], [call['program'+str(i)] for i in range(4)],
                       call['default_state'], call['palette_setup'])

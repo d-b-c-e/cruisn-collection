@@ -23,6 +23,7 @@ assuming that a source feature is present in a downloaded package.
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |
+| [Exotica marked fades and handover](reviews/2026-09-14-exotica-marked-fades.md) | Corrected offline endpoint, completed-pixel differences and the original-fade transition risk |
 | [Exotica packet and identity checks](reviews/2026-09-10-exotica-packet-and-identity.md) | Exact serializer comparisons, paired timing and original allocation/fade joins |
 | [Exotica drawing admission](reviews/2026-09-10-exotica-drawing-admission.md) | Measured allocation-to-draw delay, reusable lifetime tracking and offline waiting-scenery continuation |
 | [Native Exotica lifetimes](reviews/2026-09-10-exotica-native-lifetimes.md) | Exact live event observation, full-drive repeat and the retained World renderer regression |

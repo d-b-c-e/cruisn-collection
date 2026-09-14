@@ -18,4 +18,19 @@ inline bool exotica_fade_step(uint32_t packed, uint32_t flags, uint32_t incremen
     value.flags=value.completed ? flags&~uint32_t(0x04000100) : flags;
     out=value;return true;
 }
+// Offline endpoint experiment, NOT a temporal handover policy. Only the game's
+// explicit marker grants permission to complete a fade. Bit0x100 alone may
+// describe intrinsic blending. Reject marked operands past completion.
+inline bool exotica_finish_marked_fade(uint32_t packed,uint32_t flags,ExoticaFadeStep &out)
+{
+    if(!(flags&0x04000000)) {
+        ExoticaFadeStep value;value.packed=packed;value.flags=flags;
+        out=value;return true;
+    }
+    const uint32_t alpha=(packed>>16)&255;
+    if(alpha>=247)return false;
+    // Collapse the measured +8 cadence to its first completing step, including
+    // its destination coefficient and preserved low-word metadata.
+    return exotica_fade_step(packed,flags,8*((247-alpha+7)/8),out);
+}
 }

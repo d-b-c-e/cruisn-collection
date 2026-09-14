@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 marked fades — source-only endpoint fixed; next actual handover
+
+Read docs/reviews/2026-09-14-exotica-marked-fades.md. Source native21c1688ffee pushed,
+200patches reconstruct39bc51499f8e258b0ea1493d38bdec350fae7f79. NOTbuilt: latest
+frozen candidate remains0cc8a2c95d8, personal87d/publicv0.5.0unchanged. Newcanonical
+finish_marked_fade preservesunmarked0100blend, completesmarked04000000viaactual+8
+cadence includingpackedcoefficients, rejectsmarkedalpha>=247. Offlinebool only;
+livep.complete_fade stillfalse. Addedfadeheader tosyncmanifest.3native24PythonPASS;
+6actualnative/independentPython scenes29888quads exact; defaultbytesexactprior,
+endpointbytesexactlocalGPUtestedprototype. No broadchecks/newMAMEbuild justified.
+
+LOCALR future-opacity-audit,marked-fade-probe,marked-fade-completed5072,
+marked-waiting-probe,marked-waiting-completed5072,opacity-handover-audit,
+marked-fade-canonical,marked-fade-native-export.json. R=results/diagnostics/
+exotica-amazon-20260909. Freshcompleted5073control matchesoldcomposedcolor/depth.
+Markedfuturecompletion changes16066RGB/692depthsamples,nonewblack. Plusmarked
+waitingcompletion63849RGB,nonewblack. Samevertices/owners/unmarkedfuturequads;
+singleoffline2736x1600page, NOTtemporal/newlive4Kacceptance. Manyfuturealpha8;
+modelcommands mayoverride. Nativegenerationjoin actualP -> laterB/firstD shows
+79/250/223firstfadingfutureinstances at5072/5644/7187. ExampleP5072B5083D5219end5249
+(.525s originalfade). Othersfinishbeforefirstdraw. Blanketopaquehostwouldrisk
+dimhandover. NEXT bindoriginalmodelcommands toearlierhostadmittedlifetimes,
+privateoriginal-position visibilitypolicy/alpha/depth check beforeliveoverride.
+ExistingCPU/modelcaptures LOCALscene5072-source/run, GPUdepth-stream-5073/run.
+Couldneedshorttargeted5219..5251 captureforactualknownfuturetransition; inspect
+existingcaptures first. Nogame/build/test running. Keepcontinuousparitywork,
+no deploy/release/hostedCI/physicalFFB/menu removal. Pendingcalibrationquestion
+unanswered; noattendedrecording withoutreply.
+
 ## September 14 Exotica delivery reserve — verified gain; next fade visibility
 
 Read docs/reviews/2026-09-14-exotica-delivery-reserve.md. Native0cc78ba6484 frozen/

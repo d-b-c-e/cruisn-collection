@@ -5,9 +5,17 @@ import tempfile
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'harness'))
-from verify_exotica_fade import step,verify
+from verify_exotica_fade import step,finish_marked,verify
 
 class ExoticaFade(unittest.TestCase):
+    def test_finish_only_explicit_fades_without_mutating_intrinsic_blends(self):
+        for flags in (0,0x100,0x8100,0x80000130):
+            self.assertEqual(finish_marked(0x55121234,flags),(0x55121234,flags,False))
+        self.assertEqual(finish_marked(0x7808abcd,0x04008130),(0x04f8abcd,0x8030,True))
+        self.assertEqual(finish_marked(0x00f61234,0x04000130),(0x01fe1234,0x30,True))
+        for alpha in range(247,256):
+            with self.assertRaises(ValueError):finish_marked(alpha<<16,0x04000130)
+
     def test_known_render_steps_and_completion_preserve_low_words(self):
         self.assertEqual(step(0x78081234,0x04000130,8),(0x78101234,0x04000130,False))
         self.assertEqual(step(0x10f01234,0x04000130,8),(0x04f81234,0x30,True))

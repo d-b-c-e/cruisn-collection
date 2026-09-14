@@ -37984,3 +37984,85 @@ index b1c3698d5fd..1cc1194fe94 100644
 -- 
 2.55.0.windows.3
 
+From 21c1688ffee9defb9554e1c56c524dd8b75f6598 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 14:32:38 -0500
+Subject: [PATCH] Preserve intrinsic blending in offline Exotica fade
+ completion
+
+---
+ src/mame/midway/cruisn/exotica_fade.h  | 36 ++++++++++++++++++++++++++
+ src/mame/midway/cruisn/exotica_scene.h |  7 ++++-
+ 2 files changed, 42 insertions(+), 1 deletion(-)
+ create mode 100644 src/mame/midway/cruisn/exotica_fade.h
+
+diff --git a/src/mame/midway/cruisn/exotica_fade.h b/src/mame/midway/cruisn/exotica_fade.h
+new file mode 100644
+index 00000000000..90e1f41aead
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_fade.h
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: BSD-3-Clause
++#pragma once
++#include <cstdint>
++namespace cruisn {
++struct ExoticaFadeStep { uint32_t packed=0, flags=0; bool completed=false; };
++// Verified B73D..B74D render-field update, before subsequent list classification.
++// Inputs outside a positive, non-overflowing eight-bit alpha step are rejected.
++inline bool exotica_fade_step(uint32_t packed, uint32_t flags, uint32_t increment,
++    ExoticaFadeStep &out)
++{
++    const uint32_t alpha=(packed>>16)&255;
++    if (!(flags&0x04000000) || !increment || increment>255 || alpha+increment>255)
++        return false;
++    const uint32_t next=alpha+increment;
++    ExoticaFadeStep value;
++    value.packed=((((256-next)>>1)<<8)|next)<<16 | (packed&65535);
++    value.completed=next>=247;
++    value.flags=value.completed ? flags&~uint32_t(0x04000100) : flags;
++    out=value;return true;
++}
++// Offline endpoint experiment, NOT a temporal handover policy. Only the game's
++// explicit marker grants permission to complete a fade. Bit0x100 alone may
++// describe intrinsic blending. Reject marked operands past completion.
++inline bool exotica_finish_marked_fade(uint32_t packed,uint32_t flags,ExoticaFadeStep &out)
++{
++    if(!(flags&0x04000000)) {
++        ExoticaFadeStep value;value.packed=packed;value.flags=flags;
++        out=value;return true;
++    }
++    const uint32_t alpha=(packed>>16)&255;
++    if(alpha>=247)return false;
++    // Collapse the measured +8 cadence to its first completing step, including
++    // its destination coefficient and preserved low-word metadata.
++    return exotica_fade_step(packed,flags,8*((247-alpha+7)/8),out);
++}
++}
+diff --git a/src/mame/midway/cruisn/exotica_scene.h b/src/mame/midway/cruisn/exotica_scene.h
+index 4173e0d20d7..2484104a6be 100644
+--- a/src/mame/midway/cruisn/exotica_scene.h
++++ b/src/mame/midway/cruisn/exotica_scene.h
+@@ -7,6 +7,7 @@
+ #include "exotica_active.h"
+ #include "exotica_transform.h"
+ #include "exotica_state.h"
++#include "exotica_fade.h"
+ #include "zeus_state.h"
+ #include "zeus_model.h"
+ #include "zeus_model_bounds.h"
+@@ -153,7 +154,11 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
+             found=cache.emplace(key,std::move(model)).first;
+         }
+         operands.object=o;operands.cache.fill(UINT32_MAX);
+-        if(p.complete_fade)flags&=~uint32_t(0x04000100);
++        if(p.complete_fade) {
++            ExoticaFadeStep completed;
++            if(!exotica_finish_marked_fade(o[16],flags,completed))return false;
++            operands.object[16]=completed.packed;flags=completed.flags;
++        }
+         operands.flags=flags;
+         if(!exotica_state::setup(operands,setup))return false;
+         auto &packet=setup.packet;
+-- 
+2.55.0.windows.3
+

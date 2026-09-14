@@ -26,6 +26,20 @@ def step(packed,flags,increment):
     completed=source>=247
     return int.from_bytes(lanes,'little'),flags&~0x04000100 if completed else flags,completed
 
+def finish_marked(packed,flags):
+    """Offline endpoint only; preserve unmarked blending, iterate original steps."""
+    packed,flags=map(word,(packed,flags))
+    if not flags&0x04000000:
+        return packed,flags,False
+    if ((packed>>16)&255)>=247:
+        raise ValueError('marked fade already beyond completion threshold')
+    for _ in range(31):
+        packed,flags,completed=step(packed,flags,8)
+        if completed:
+            return packed,flags,True
+    raise ValueError('marked fade failed to complete')
+
+
 def verify(directory,native=None):
     directory=Path(directory)
     receipt_path=directory/'exotica-fade-capture.json';events_path=directory/'exotica-fade-events.jsonl'
