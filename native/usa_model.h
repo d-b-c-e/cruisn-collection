@@ -110,6 +110,7 @@ template<class Reciprocal> bool project(const Model &model,const Transform &tran
     result.clear();
     if(!usa_distance::valid_far(far) || model.vertices.empty() || model.vertices.size()>256)return false;
     std::vector<Vertex> projected;
+    projected.reserve(model.vertices.size());
     std::array<Float,9> matrix;
     std::array<Float,3> center;
     for(unsigned i=0;i<9;++i)matrix[i]=Float::load(transform.matrix[i]);
@@ -153,6 +154,7 @@ template<class Palette> bool quads(const Model &model,const std::vector<Vertex> 
     result.clear();
     if(projected.size()!=model.vertices.size() || projected.empty() || model.polygons.size()>1024)return false;
     std::vector<Quad> output;
+    output.reserve(model.polygons.size());
     for(const auto &polygon:model.polygons)
     {
         std::array<unsigned,4> indices;

@@ -37928,3 +37928,35 @@ index a293513a2ab..6c943bafe72 100644
 -- 
 2.55.0.windows.3
 
+From c8b350ca75ad3f8330b212c7d459ad28fe700ba1 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 13:50:53 -0500
+Subject: [PATCH] Reserve USA host model projection and polygon buffers
+
+---
+ src/mame/midway/cruisn/usa_model.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/mame/midway/cruisn/usa_model.h b/src/mame/midway/cruisn/usa_model.h
+index fb266242faa..9019f21e159 100644
+--- a/src/mame/midway/cruisn/usa_model.h
++++ b/src/mame/midway/cruisn/usa_model.h
+@@ -110,6 +110,7 @@ template<class Reciprocal> bool project(const Model &model,const Transform &tran
+     result.clear();
+     if(!usa_distance::valid_far(far) || model.vertices.empty() || model.vertices.size()>256)return false;
+     std::vector<Vertex> projected;
++    projected.reserve(model.vertices.size());
+     std::array<Float,9> matrix;
+     std::array<Float,3> center;
+     for(unsigned i=0;i<9;++i)matrix[i]=Float::load(transform.matrix[i]);
+@@ -153,6 +154,7 @@ template<class Palette> bool quads(const Model &model,const std::vector<Vertex>
+     result.clear();
+     if(projected.size()!=model.vertices.size() || projected.empty() || model.polygons.size()>1024)return false;
+     std::vector<Quad> output;
++    output.reserve(model.polygons.size());
+     for(const auto &polygon:model.polygons)
+     {
+         std::array<unsigned,4> indices;
+-- 
+2.55.0.windows.3
+

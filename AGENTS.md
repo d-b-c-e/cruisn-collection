@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 USA reserved buffers — modest live gain; continue performance
+
+Read docs/reviews/2026-09-14-usa-reserved-buffers.md. Nativec8b350ca75a frozen/pushed
+SHA5f348ed54a8a79274c3577362e948f67505fbee395b6e4abe0f72ee90c3cdd96.198patches
+reconstruct0dcd47d9d283f95b4a9bf2f5db53917e514718d2. USAmodel projection/output
+reserve exactboundedvertex/polygoncount; twoallocationlines, nogeometrypolicy.
+4savedscenes*1/2/3 fullorderedbytes/counters exact;3nativePASS.5alternating80-loop
+benchrounds median gains7.99/14.34/2.92/6.96%. Localvertexconversioncache slower;
+crossobjectreuse negligible/inconsistent, neitherpromoted. Initialoldbenchstrict
+indentationcompileFAILretained, correctedseparatequalificationPASS.
+
+Same3440monitor b704control/c8candidate full5012inputs/originalnativeframes/
+3211camera/9633actualADC/all16completedimages andallnontimingscenefields EXACT.
+Driving3500..5000 speed96.584->97.896%;prepare3.1899->2.8804s,callbacks3.549->3.243s.
+WholeMAME98.94->99.36% includesboot/menus; NOTfullspeed/final4Kacceptance. OneA/B,
+no unrelatedsuite. LOCALusa-future-render-20260909/reserved-* andbuffer/vertex
+screening. Personal87d/publicv0.5.0unchanged. Nogame/build/test running.
+
+NEXT Exotica delivery cost: inspectedsceneobserver encodesHMTmaterials then
+XWDencodes same materialsagain; futurequads growwithoutreserve; perquad depth_range
+is repeated by encode.shape beforequeue. Needbenchmark actualsavedpackets BEFORE
+changingruntime. Actualcomposition-live-full/run/exotica-future-5644/6330/7187/8760.xwd
+available; earlier5072 incomposition-live-retry. No proof yetsavings/usefulfix.
+Preserveallvalidation/ownedmaterials/depth/queue-before-producercommit andwirebytes.
+Continuousparitywork aftercheckpoints. No deploy/release/hostedCI/physicalFFB/menu
+removal. PendingFFBcalibration availability unanswered.
+
 ## September 14 World far bounds — verified modest gain; parity continues
 
 Read docs/reviews/2026-09-14-world-terrain-visibility.md. Nativeb7048961cd3 frozen/
