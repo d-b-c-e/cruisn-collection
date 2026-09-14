@@ -1,5 +1,38 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 original endpoint — standalone verified; NEXT exact FIFO ownership
+
+Read docs/reviews/2026-09-14-exotica-original-endpoint.md. Canonical standalone
+exotica_model_endpoint.h/analyze_exotica_endpoint.cpp andnative test added,
+NOTMAMElinked/synced. Currentactualdevicecontext +ownedmodelbytes +freshprivate
+setup reproduces originalquads exactly, thenmarkedendpoint. Requiresunchanged
+vertices/program/palette/texture; onlyblendbit/coefficients/depthbias canchange.
+Caller mustproveadmission/generation/FIFOplacement/resources.7actualcompiled
+model original+endpoint bytesmatchPython andGPUtestedinputs;11inputrejections.
+Localcheckinventory auto-addsnative test andcompiles analyzer. No broadsuite.
+
+LOCALR/fade-handover-original5220-control native0cc PASS5260inputs/nativeimages/
+3460camera10380ADC/49609lifetimeprefix.331models3280quads;236CPUjoins233consecutive.
+35-frameCPUcapture missingcalls5244/5246 triggersoldverifierFAILretained. Derived
+exactcontiguous5218..5243 prefix26frames qualifies target; NOlatergapacceptance.
+7known5072futureadmittedoriginalmodels withalpha8/16/16/48/96/152/184;onefirstdraw.
+OriginalorderedGPU5220controlexact. Substitute66quads atoriginalindices:3830RGB,
+2331depth changes,nonewblack,otherpageexact. Singleoffline2736x1600 nottemporal/4K.
+Freshtransformfrompriorcontext failedmodel3. Currentactualcontext avoidsit;
+endpointdiffersonlyunusednonblendcoefficients vspriorcontext, retainedbyteFAILs
+plusfullcompletedGPUcolor/depthexact. Compiledhelper usescurrentactualcontext.
+Testmissinglimitsinclude/palettepacked-vs-linear checkfixedbeforequalification.
+
+NEXT native read-only exactoriginalmodel ownershipjoin: CPUcommit6970 exposes
+endingAR5/data046e andlast2ringwords; device modelcallback occursinsideFIFOwrite,
+existingfence identifiesPCb686+AR0. Verifypointer/packetidentity atbothboundaries;
+doNOT relysolely onbase/translation ambiguousmatch. Sourceadmission isearlier
+actualfuture/waiting draw, maintainrealm/epoch/generation; observer BEFORErewrite.
+Needboundedcue storage, reset/reuse/order/failbeforemutation andactualcontrol
+quads. Canonicalhelper NOTa lifecycleproof. NativeHEAD21c source-only200patch,
+frozencandidate0cc unchanged. No currentgame/build/test. Personal87d/v0.5.0
+unchanged; no deploy/release/hostedCI/physicalFFB/menu removal. Continueautonomously.
+
 ## September14 marked fades — source-only endpoint fixed; next actual handover
 
 Read docs/reviews/2026-09-14-exotica-marked-fades.md. Source native21c1688ffee pushed,
