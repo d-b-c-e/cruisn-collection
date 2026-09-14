@@ -37960,3 +37960,27 @@ index fb266242faa..9019f21e159 100644
 -- 
 2.55.0.windows.3
 
+From 0cc78ba648402f1f63e6b6a73e100ecb26ba143e Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 14:02:38 -0500
+Subject: [PATCH] Reserve Exotica future delivery packet geometry
+
+---
+ src/mame/midway/midzeus.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index b1c3698d5fd..1cc1194fe94 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -1030,6 +1030,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 			cruisn::zeus_wide::Packet future;
+ 			future.materials=packet;future.margin=uint32_t(m_scene_margin);future.page=p.context.render[4];
+ 			future.multiplier=m_scene_multiplier;future.draw=m_scene_future_mode==2;
++			future.quads.reserve(scene.quads.size());
+ 			for(size_t i=0;i<scene.instances.size();++i) {
+ 				const auto &instance=scene.instances[i];
+ 				for(size_t j=0;j<instance.quad_count;++j) {
+-- 
+2.55.0.windows.3
+

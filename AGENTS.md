@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 Exotica delivery reserve — verified gain; next fade visibility
+
+Read docs/reviews/2026-09-14-exotica-delivery-reserve.md. Native0cc78ba6484 frozen/
+pushed SHA8a2c95d8552043b0b48bdde52e507b3f5e75efb4db7fba13863429e1fbab09a2.
+199patches reconstructaefd4adc578adc5980a2cd5ef1b428f9168e689c. Onlyreserve future
+packet quadcapacity toknownscene size. No encoder/validation/ownership changes.
+Actual4packets5alternating100-loop benches fullpacket/materialbytesexact; nonempty
+CPUdelivery27.55..39.88%faster. Localone-material-encode andsingle-depthcheck ideas
+showedsmaller gains; NOTpromoted, canonicalencoders/outerchecksunchanged.
+
+Freshc8control/0cccandidatequiet fullAmazon8860inputs/originalnativeimages/
+7060camera/21180ADC PASS. All6953early/6953active/20859material nontimingfields exact
+andlifetime/handover/cohort/compositionfilesbyteexact, ALSOmatchpriorf6storage run.
+Materials5.3313->4.3897s(-17.66%);queueoverlaps, don'tdoublecount. Driving3501..8859
+95.288->96.152%;busy5001..7000 93.434->94.537%;wholeMAME94.97->95.56%. Freshbaseline
+itself fasterthanoldf6; quote matchedpair, NOTfullspeed. No heavyGL readbacks/
+new4Kclaim. LOCALR/delivery-* (R=results/diagnostics/exotica-amazon-20260909).
+
+NEXT actualfade/materialclassification fromsavedoriginal+future/waiting/active
+sources andpixels. Priorfade studyproved initialsourcealpha8 oftenalmostinvisible;
+exotica_fade_step verifiesmarked04000000fade, preservingunrelatedbits. Existing
+offline p.complete_fade unconditionally clears04000100, so notsafe forintrinsic
+0100-only sources; not enabledlive. Need distinguishmarkedfade vsintrinsicblend,
+then actualhandoverpolicy/proof BEFOREopacityoverride. Early/late/active source
+identity/depth/material-order contractsremain. No newfade implementation yet.
+Userrequestscontinuousparitywork. Nogame/build/test remains. No deploy/release/
+hostedCI/physicalFFB/menu removal. Personal87d/publicv0.5.0unchanged. PendingFFB
+calibrationavailability unanswered; do notlaunchattended recordings.
+
 ## September 14 USA reserved buffers — modest live gain; continue performance
 
 Read docs/reviews/2026-09-14-usa-reserved-buffers.md. Nativec8b350ca75a frozen/pushed
