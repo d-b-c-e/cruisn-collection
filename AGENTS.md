@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 admissions — standalone qualified; NEXT live private replacement
+
+Read docs/reviews/2026-09-14-exotica-admissions.md. New native/exotica_admissions.h
+and native unit test standalone, NOTMAMElinked/synced. Carries actually queued
+nonempty source instances into later lifetime bindings; release/reset/reuse/missed
+events/duplicate claims reject or retire explicitly. Copy proof at CPU commit;
+later release cannot alter queued original owner. Caller proves actual queue.
+Recorded5072 future packet/GPU receipt538quads,63nonempty of94instances. Compiled
+40147actual lifecycle/admission/query operations equal independentPython;
+1150queries61qualified. Eight of11saved models qualify; three excluded.
+Initialseven-only expectation FAIL retained: model2 lacked previousordinaryCPU
+context in oldmethod, but currentnative endpoint provesit and oldowneraudit bindsit.
+Offlineeightendpoint74quads GPUcompleted color/depth entirehashes equal oldseven;
+3830RGB2331depthchangesvsoriginal,nonewblack/otherpage. No temporal/live4K claim.
+LOCALR/admissions-qualified,admitted-endpoints-render; admissions-actual failed
+expectation retained. Nativee0/personal87d/publicv0.5.0unchanged. No activeprocess.
+NEXT connect actual future/waiting queue admissions to source bind/release/reset
+and copied original tickets, then gated private-target replacement. Preserve
+ordinary target and current original resource/command ordering. Continue directly.
+
 ## September14 native endpoints — NEXT admitted private replacement
 
 Read docs/reviews/2026-09-14-exotica-native-endpoint-observer.md and
