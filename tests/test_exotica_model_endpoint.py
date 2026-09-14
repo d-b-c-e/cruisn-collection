@@ -10,6 +10,17 @@ import exotica_model_endpoint as endpoint
 
 
 class EndpointObservation(unittest.TestCase):
+    def test_batch_receipts_require_complete_bounded_delivery(self):
+        text='MIDZ_ENDPOINT_BATCH=128\nMIDZ_ENDPOINT_BATCH_RESULT groups=3 pairs=200 peak=98 remaining=0\n'
+        self.assertEqual(endpoint.verify_batches(text,200),dict(groups=3,pairs=200,peak=98,remaining=0))
+        self.assertIsNone(endpoint.verify_batches('',200))
+        self.assertEqual(endpoint.verify_batches(text.replace('groups=3 pairs=200 peak=98','groups=0 pairs=0 peak=0'),0)['pairs'],0)
+        for bad in [text.replace('=128','=256'),text.splitlines()[0]+'\n',text.splitlines()[1]+'\n',
+                    text.replace('pairs=200','pairs=199'),text.replace('remaining=0','remaining=1'),
+                    text.replace('peak=98','peak=129'),text.replace('groups=3','groups=2'),
+                    text+text,'MIDZ_ENDPOINT_BATCH=invalid\n']:
+            with self.assertRaises(ValueError):endpoint.verify_batches(bad,200)
+
     def args(self,*words):
         p=argparse.ArgumentParser();p.add_argument('--candidate');endpoint.add_arguments(p)
         return p.parse_args(words)
@@ -126,6 +137,12 @@ class EndpointObservation(unittest.TestCase):
             originals=[dict(id=1,status=1,quads=2,device_frame=5219),dict(id=2,status=1,quads=1,device_frame=5219)]
             text='MIDZ_ENDPOINT_GPU_RESULT complete=1 pairs=2\n'
             self.assertEqual(endpoint.verify_draw(dict(mode='draw'),text,p,originals)['pairs'],2)
+            (p/'stdout.log').write_text('MIDZ_ENDPOINT_BATCH=128\n')
+            batched=text+'MIDZ_ENDPOINT_BATCH_RESULT groups=1 pairs=2 peak=2 remaining=0\n'
+            self.assertEqual(endpoint.verify_draw(dict(mode='draw'),batched,p,originals)['batching']['groups'],1)
+            with self.assertRaises(ValueError):endpoint.verify_draw(dict(mode='draw'),text,p,originals)
+            with self.assertRaises(ValueError):endpoint.verify_draw(dict(mode='draw'),'MIDZ_ENDPOINT_BATCH=128\n'+batched,p,originals)
+            (p/'stdout.log').unlink()
             with self.assertRaises(ValueError):endpoint.verify_draw(dict(mode='observe'),text,p,originals)
             (p/'exotica-endpoint-gpu.csv').write_text('frame,model,index,count\n5219,1,1,2\n5219,1,0,2\n')
             with self.assertRaises(ValueError):endpoint.verify_draw(dict(mode='draw'),text,p,originals)

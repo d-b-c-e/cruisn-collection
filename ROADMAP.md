@@ -8,8 +8,8 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 
 All four games now have native host future-scenery implementations. This is
 implementation progress, **not accepted four-game 3× parity**. The
-[current status assessment](docs/reviews/2026-09-10-scenery-parity-status.md)
-distinguishes visible benefit, performance and coverage. Personal Stream Deck
+[earlier per-game assessment](docs/reviews/2026-09-10-scenery-parity-status.md)
+separates visible benefit, performance and coverage; newer milestones are below. Personal Stream Deck
 and the public package remain v0.5.0.
 
 - **FFB normalization, near-term:** deliver a versioned four-game strength-50
@@ -27,50 +27,26 @@ and the public package remain v0.5.0.
   also finds that Exotica's enhanced detector cannot trigger on the Amazon source;
   event-source calibration must be measured separately from force strength.
 
-- **Exotica:** live 1×/2×/3× and repeat runs preserve the original Amazon route
-  and resources. The 3× repeat is exact across 14 completed internal snapshots
-  and the ordered scene/material stream. However, all 14 completed 2×/3× color
-  images match: extra polygons have not demonstrated extra visible 3× benefit
-  there. The separate [presentation candidate](docs/reviews/2026-09-10-zeus-future-presentation.md)
-  now finds33 changed3×-over2× images in233 actual4K/CRT samples. Inspected changes
-  are mostly small regions through foliage/at margins;3× repeats all233 exactly.
-  Useful visual acceptance remains open. This expands coverage beyond the14 internal samples.
-  [Runs without heavy readbacks](docs/reviews/2026-09-10-exotica-fade-and-performance.md)
-  measure 94.69% game speed at 2× and 90.79% at 3×, versus 99.99% original.
-  Preparing/uploading 3× without drawing already costs enough to reach 90.77%.
-  Optimize measured CPU preparation/packet work and complete fade/handover.
-  The [packet/identity renewal](docs/reviews/2026-09-10-exotica-packet-and-identity.md)
-  preserves all233 displayed frames at2×/3×/repeat. New3× timings89.31/89.41%
-  versus a fresh previous-build88.90% show only a small difference. Original
-  allocation/fade joins now match3932ordinary allocations and2539sampled fades.
-  The [common-pool lifetime check](docs/reviews/2026-09-10-exotica-pool-lifetimes.md)
-  now covers 48,481 transitions, slot reuse and the post-race reset on Amazon.
-  The [first-draw trace](docs/reviews/2026-09-10-exotica-drawing-admission.md)
-  measures a median 4.16-second allocation-to-draw delay. An offline continuation
-  adds visible distant trees by retaining eligible allocated-but-undrawn objects.
-  Live lifetime/waiting observation now reproduces the recorded identities and
-  proposed geometry. The [completion study](docs/reviews/2026-09-11-exotica-waiting-handover.md)
-  identifies original submissions to exclude. [Native completion observation](docs/reviews/2026-09-11-exotica-native-completion.md)
-  now passes full/repeat/disabled runs and reconciles all6,953cohorts at actual
-  native event watermarks. Offline filtered drawing still adds distant trees, but
-  transparency depends on placement. A [retained-material continuation](docs/reviews/2026-09-11-exotica-retained-materials.md)
-  now preserves proposal resources. The [live waiting-draw integration](docs/reviews/2026-09-13-exotica-waiting-draw.md)
-  passes a full Amazon drive and adds visible vegetation in selected4K comparisons.
-  [Assembly optimization](docs/reviews/2026-09-14-exotica-scene-performance.md)
-  now reduces logged assembly cost by14.2%, preserving all33 selected4K images
-  in another full drive. Instrumented83.51% is not normal-speed acceptance.
-  A [targeted handover window](docs/reviews/2026-09-14-exotica-transition-capture.md)
-  now joins one18-quad object's original fade and verifies a complete40-frame
-  interior window at3440x1440. Dense capture pacing and stop-frame preflight are
-  fixed; this is not general temporal or renewed4K acceptance. Next compose the
-  left-margin repair with this path, broaden material handover coverage and measure
-  sustained performance. This candidate remains undeployed.
+- **Exotica:** future scenery, allocated-but-undrawn scenery and active margin
+  repair now draw together with owned materials and original command ordering.
+  The [combined margin path](docs/reviews/2026-09-14-exotica-live-composition.md)
+  repairs the sampled black ground wedges. [Earlier visibility and handover](docs/reviews/2026-09-14-exotica-visibility-temporal.md)
+  keep distant vegetation visible through the original fade sequence in the
+  checked window. [Full Amazon coverage](docs/reviews/2026-09-14-exotica-full-visibility.md)
+  now preserves all 8,860 recorded inputs and original rendering, with all 30,308
+  marked model preparations accepted and zero endpoint fallbacks. This is a
+  development candidate, not four-game release acceptance. Next reduce the paired
+  GPU submission cost, assess the far visibility boundary and other tracks, then
+  renew full-speed 4K acceptance. The instrumented late-drive window is about
+  92% speed; the current completed-screen checks use 3440×1440.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.
 - **World:** earlier scenery at 3× is demonstrated for both revisions. World
-  2.4 host roads fill measured distant gaps; carry roads/ground to 2.5, then
-  broaden continuity, occlusion and handover checks.
+  2.4 host roads fill measured distant gaps. The [2.5 road adapter](docs/reviews/2026-09-14-world25-roads.md)
+  is implemented and independently checked, but its Hawaii terrain gap remains.
+  Investigate clipping and excluded custom scenery before claiming that roads
+  alone solve it; broaden continuity, occlusion and handover checks.
 - **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
   exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
   3× adds differences in22/66 images over2× and repeats all66 exactly. Complete

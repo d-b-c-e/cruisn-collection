@@ -39654,3 +39654,133 @@ index f2ddf6e152d..ea4316ecb2c 100644
 -- 
 2.55.0.windows.3
 
+From 81366bffadc19a2d38eaf7c96f968b0f846009b0 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 17:22:01 -0500
+Subject: [PATCH] Batch private Exotica endpoint pairs within unchanged
+ resource spans
+
+---
+ src/devices/video/zeus2.cpp | 50 +++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 10 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index fa787184fdc..9aac4d1979a 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -1197,6 +1197,9 @@ void thread_main()
+ 	cruisn::zeus_endpoint_pair::Order endpoint_order;
+ 	cruisn::zeus_endpoint_pair::Pair endpoint_pair;
+ 	uint64_t endpoint_pairs=0;
++	std::vector<cruisn::zeus_endpoint_pair::Pair> endpoint_batch;
++	uint64_t endpoint_groups=0,endpoint_submitted=0;
++	size_t endpoint_peak=0;
+ 	const uint64_t endpoint_pair_limit=envi("MIDZ_ENDPOINT_MARKED",nullptr,0)==1?1000000:131072;
+ 	FILE *endpoint_log=nullptr;
+ 	if(envi("MIDZ_MODEL_ENDPOINT",nullptr,0)==2) {
+@@ -1205,6 +1208,8 @@ void thread_main()
+ 		if(!endpoint_log){zlogf("cannot create endpoint GPU receipt");return;}
+ 		setvbuf(endpoint_log,nullptr,_IOFBF,65536);
+ 		fprintf(endpoint_log,"frame,model,index,count\n");
++		endpoint_batch.reserve(128);
++		printf("MIDZ_ENDPOINT_BATCH=128\n");
+ 	}
+ 	auto add_quad = [&](const midz_quad_rec &r)
+ 	{
+@@ -1227,6 +1232,30 @@ void thread_main()
+ 				vert(v[0], v[1], rb, p, meta);
+ 			}
+ 	};
++	// Only consecutive pairs with unchanged resource bindings may accumulate.
++	// Each target sees its original order; neither target receives both versions.
++	// Drain before any resource/ordinary/sky/private-pass/frame/chunk boundary.
++	auto flush_endpoints = [&]()
++	{
++		if(endpoint_batch.empty())return;
++		flush();
++		for(const auto &pair:endpoint_batch) {
++			midz_quad_rec q;std::memcpy(&q,&pair.original,sizeof(q));add_quad(q);
++		}
++		flush(1);
++		for(const auto &pair:endpoint_batch) {
++			midz_quad_rec q;std::memcpy(&q,&pair.replacement,sizeof(q));add_quad(q);
++		}
++		flush(2);
++		++endpoint_groups;endpoint_submitted+=endpoint_batch.size();
++		endpoint_peak=std::max(endpoint_peak,endpoint_batch.size());
++		for(const auto &pair:endpoint_batch) {
++			if(!endpoint_log || fprintf(endpoint_log,"%u,%u,%u,%u\n",pair.frame,pair.model,pair.index,pair.count)<0) {
++				private_failed=true;s_stopz.store(true);zlogf("endpoint GPU journal failure");break;
++			}
++		}
++		endpoint_batch.clear();
++	};
+ 	auto sky_tile = [](const midz_quad_rec &r)
+ 	{
+ 		cruisn::zeus_sky_tile t;
+@@ -1238,6 +1267,7 @@ void thread_main()
+ 	};
+ 	auto finish_sky = [&]()
+ 	{
++		flush_endpoints();
+ 		sky_open=false;
+ 		if (sky_tiles.empty()) return;
+ 		++sky_groups;
+@@ -1726,6 +1756,8 @@ void thread_main()
+ 			}
+ 			// Finish before changing palettes/uploads/pages or presenting. Stored
+ 			// tiles retain the current material only within this uninterrupted span.
++			if(hdr[0]!=1 && hdr[0]!=11)flush_endpoints();
++			if(private_failed)break;
+ 			if (sky_enabled && hdr[0]!=1 && hdr[0]!=7 && hdr[0]!=11 && !sky_quads.empty()) finish_sky();
+ 			if(endpoint_order.pending() && hdr[0]!=1) {
+ 				private_failed=true;s_stopz.store(true);zlogf("endpoint pair missing immediate original quad");break;
+@@ -1735,6 +1767,7 @@ void thread_main()
+ 			case 1:
+ 				if (rec.size() >= sizeof(midz_quad_rec)) {
+ 					auto const &q=*(const midz_quad_rec *)rec.data();
++					if(!endpoint_order.pending())flush_endpoints();
+ 					if (sky_enabled && sky_open) {
+ 						auto const t=sky_tile(q);
+ 						if (q.numverts==4 && cruisn::zeus_sky_candidate(t)) {
+@@ -1749,15 +1782,8 @@ void thread_main()
+ 						if(!endpoint_order.consume(actual,replacement) || ++endpoint_pairs>endpoint_pair_limit) {
+ 							private_failed=true;s_stopz.store(true);zlogf("endpoint actual original mismatch/order");break;
+ 						}
+-						// Finish earlier commands. Never blend both versions into the
+-						// private target: each target receives exactly its one version.
+-						flush();add_quad(q);flush(1);
+-						midz_quad_rec changed;std::memcpy(&changed,&replacement,sizeof(changed));
+-						add_quad(changed);flush(2);
+-						if(!endpoint_log || fprintf(endpoint_log,"%u,%u,%u,%u\n",endpoint_pair.frame,endpoint_pair.model,
+-							endpoint_pair.index,endpoint_pair.count)<0) {
+-							private_failed=true;s_stopz.store(true);zlogf("endpoint GPU journal failure");break;
+-						}
++						endpoint_batch.push_back(endpoint_pair);
++						if(endpoint_batch.size()==128 || endpoint_order.complete())flush_endpoints();
+ 					} else add_quad(q);
+ 				}
+ 				break;
+@@ -1900,6 +1926,7 @@ void thread_main()
+             if (frame_ready) break; // never consume the next frame before presenting this one
+ 		}
+ 		s_rr.store(r, std::memory_order_release);
++		if(!private_failed)flush_endpoints();
+ 		flush();
+ 
+         if(frame_ready && !endpoint_order.complete()) {
+@@ -2110,7 +2137,10 @@ void thread_main()
+ 	if(endpoint_log) {
+ 		const bool good=!ferror(endpoint_log);const int closed=fclose(endpoint_log);
+ 		fprintf(stderr,"MIDZ_ENDPOINT_GPU_RESULT complete=%u pairs=%llu\n",
+-			unsigned(!private_failed && good && !closed && endpoint_order.complete()),(unsigned long long)endpoint_pairs);
++			unsigned(!private_failed && good && !closed && endpoint_order.complete() && endpoint_batch.empty() && endpoint_submitted==endpoint_pairs),
++			(unsigned long long)endpoint_pairs);
++		fprintf(stderr,"MIDZ_ENDPOINT_BATCH_RESULT groups=%llu pairs=%llu peak=%u remaining=%u\n",
++			(unsigned long long)endpoint_groups,(unsigned long long)endpoint_submitted,unsigned(endpoint_peak),unsigned(endpoint_batch.size()));
+ 	}
+ 	if(mirror_log) {
+ 		const auto stats=mirror_writer.finish();
+-- 
+2.55.0.windows.3
+

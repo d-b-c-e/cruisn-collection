@@ -90,7 +90,7 @@ def verify_receipt(trial, text, directory):
     if enabled and early!=['1']:raise ValueError('missing early visibility receipt')
     if not enabled and '1' in early:raise ValueError('unexpected early visibility')
     if not trial or trial['mode']=='off':
-        if re.search(r'MIDZ_MODEL_ENDPOINT=[12]',text) or 'MIDZ_MODEL_ENDPOINT_RESULT' in text or 'MIDZ_ENDPOINT_GPU_RESULT' in text or paths or list(directory.glob('exotica-admission-*')):
+        if re.search(r'MIDZ_MODEL_ENDPOINT=[12]',text) or 'MIDZ_MODEL_ENDPOINT_RESULT' in text or 'MIDZ_ENDPOINT_GPU_RESULT' in text or 'MIDZ_ENDPOINT_BATCH' in text or paths or list(directory.glob('exotica-admission-*')):
             raise ValueError('disabled endpoint observer ran')
         return None
     mode='2' if trial['mode']=='draw' else '1'
@@ -191,7 +191,7 @@ def verify_draw(trial,text,directory,originals):
     from exotica_admissions import bounded_csv
     directory=Path(directory);path=directory/'exotica-endpoint-gpu.csv'
     if trial['mode']!='draw':
-        if path.exists() or 'MIDZ_ENDPOINT_GPU_RESULT' in text:raise ValueError('disabled endpoint private drawing ran')
+        if path.exists() or 'MIDZ_ENDPOINT_GPU_RESULT' in text or 'MIDZ_ENDPOINT_BATCH' in text:raise ValueError('disabled endpoint private drawing ran')
         return None
     final=re.findall(r'^MIDZ_ENDPOINT_GPU_RESULT complete=(\d+) pairs=(\d+)$',text,re.M)
     if len(final)!=1 or final[0][0]!='1':raise ValueError('endpoint GPU completion')
@@ -208,5 +208,30 @@ def verify_draw(trial,text,directory,originals):
             raise ValueError('endpoint GPU row contract')
         actual.append(tuple(map(int,row.values())))
     if actual!=expected or len(actual)!=int(final[0][1]):raise ValueError('endpoint GPU original quad order/count')
-    return dict(passed=True,pairs=len(actual),models=len({p[1] for p in actual}),
+    # Capability announcements may use stdout while final GPU receipts use
+    # stderr. Validate both captured native streams, including duplicates.
+    stdout=directory/'stdout.log';batch_text=text
+    if stdout.is_file():
+        if stdout.stat().st_size>4*1024*1024:raise ValueError('endpoint stdout receipt budget')
+        batch_text+='\n'+stdout.read_text(encoding='utf-8',errors='strict')
+    batching=verify_batches(batch_text,len(actual))
+    if batching and (batching['groups']<len({p[1] for p in actual}) or batching['peak']>max((p[3] for p in actual),default=0)):
+        raise ValueError('endpoint batching crossed a model boundary')
+    return dict(passed=True,pairs=len(actual),models=len({p[1] for p in actual}),batching=batching,
                 scope='Consumer receipts for exactly one original/private pair per qualified quad; pixel and temporal checks separate.')
+
+
+def verify_batches(text,pairs):
+    """Optional capability for older candidates; advertised batching must finish."""
+    start=re.findall(r'^MIDZ_ENDPOINT_BATCH=(\d+)$',text,re.M)
+    end=re.findall(r'^MIDZ_ENDPOINT_BATCH_RESULT groups=(\d+) pairs=(\d+) peak=(\d+) remaining=(\d+)$',text,re.M)
+    if not start and not end:
+        if 'MIDZ_ENDPOINT_BATCH' in text:raise ValueError('malformed endpoint batch receipt')
+        return None
+    if start!=['128'] or len(end)!=1:raise ValueError('endpoint batch receipts')
+    groups,submitted,peak,remaining=map(int,end[0])
+    if (submitted!=pairs or remaining or not 0<=peak<=128 or not 0<=groups<=pairs
+            or (pairs and (not peak or groups*peak<pairs or peak>pairs))
+            or (not pairs and (groups or peak))):
+        raise ValueError('endpoint batch accounting')
+    return dict(groups=groups,pairs=submitted,peak=peak,remaining=remaining)
