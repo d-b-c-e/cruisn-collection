@@ -35,7 +35,13 @@ inline bool prepare(const zeus_state::Context &current,uint32_t frame,uint32_t b
     if(!exotica_finish_marked_fade(operands.object[16],operands.flags,finished) || !finished.completed)return false;
     zeus_model::Result original;
     if(!zeus_model::decode(words,model_context(current,frame),original))return false;
-    auto input=operands;input.cache.fill(UINT32_MAX);
+    // Reuse the actual device palette, just as the paired original draw does.
+    // Register40 is the most recent transfer (possibly a program), not a
+    // persistent palette-load descriptor. Reissuing setup must not infer that
+    // an already resident palette needs a different upload from that register.
+    const uint32_t palette=operands.object[18]%1024+((operands.object[18]>>16)%2048)*1024;
+    if(palette!=current.palette)return false;
+    auto input=operands;input.cache.fill(UINT32_MAX);input.cache[0]=input.object[18];
     Result out;out.original=std::move(original.quads);
     bool original_light=false;
     for(unsigned endpoint=0;endpoint<2;++endpoint) {
@@ -54,14 +60,10 @@ inline bool prepare(const zeus_state::Context &current,uint32_t frame,uint32_t b
         if(c.quad_size!=current.quad_size || (c.ucode!=current.ucode && !light_completion) || c.palette!=current.palette ||
             c.texture!=current.texture || c.yscale!=current.yscale || c.matrix!=current.matrix ||
             c.translation!=current.translation)return false;
-        // This helper never performs the returned material loads. Only requests
-        // for the selected palette and the explicitly checked program are valid.
+        // No palette upload is allowed: source identity and the existing GPU
+        // binding are preserved. Only the checked program request is simulated.
         for(const auto &load:state.loads) {
-            if(load.kind==4) {
-                const uint32_t palette=load.source%1024+((load.source>>16)%2048)*1024;
-                if(palette!=current.palette || load.control!=current.regs[0x40])return false;
-            }
-            else if(load.kind==5) {if(load.source!=current.ucode && !(light_completion && load.source==c.ucode))return false;}
+            if(load.kind==5) {if(load.source!=current.ucode && !(light_completion && load.source==c.ucode))return false;}
             else return false;
         }
         if(!zeus_model::decode(words,model_context(c,frame),decoded))return false;

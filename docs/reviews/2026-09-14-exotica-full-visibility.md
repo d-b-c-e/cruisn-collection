@@ -79,3 +79,38 @@ but register 0x40 contains the last **program** load (`0x38550075`), not the las
 palette load (`0x0084003f`). The private endpoint should preserve the already-bound
 palette, validate its source identity and avoid proposing a redundant upload.
 That correction and its full-drive validation are the next work item.
+
+## Full marked coverage with the resident palette
+
+Native `080f78a235875c969df0a064e83c90eabbe25cc5` validates the object's expanded
+palette source against the current device binding and suppresses a redundant
+palette setup load. It does not infer palette residency from register 0x40.
+Any returned palette upload is rejected; both original and replacement quads
+continue to use the actual existing palette at their command position.
+
+Executable SHA-256:
+`2a3ecca172c8563920e2d286b0fe01c1156ca114aa6d2ed1f2cfcc86a8b7c0fa`.
+The 209-patch export reconstructs tree `4d3dc94ee4eed036637265c8f66ac567cec0b763`.
+`palette-endpoint-qualified` and `palette-endpoint-light-control` pass independent
+full-byte comparisons for both saved failure operands plus all eleven previous
+accepted models. Synthetic checks also cover a program load after the palette,
+reject the wrong current palette and preserve output transactionally.
+
+`full-palette-endpoint` / `full-palette-endpoint-qualified` pass all 8,860 inputs
+and all 30,308 marked model preparations with **zero rejections**. All remaining
+372 fallbacks are resolved. There are 282,036 GPU pairs across 23,910 nonempty
+qualified models. Original commands, camera, ADC, lifetimes, actual admissions,
+ordered early geometry and the saved original/private pages remain exact against
+the preceding candidate. Fifteen completed 3440×1440 CRT frames at 6,536–6,550
+are also pixel-exact (`palette-presentation`). This particular newly accepted
+group does not change those completed pixels; do not claim a visible gain there.
+
+This closes the observed full-drive endpoint rejection gap, not all Exotica or
+four-game release acceptance. Far-boundary appearance, additional tracks, 4K and
+performance remain open. `endpoint-cost-screening.json` measures 92.24% in the
+instrumented noncapture interval 7,001–8,848, versus 96.11% in the older quiet
+composition candidate. These have different instrumentation/work and are not an
+isolated performance experiment. The current endpoint path forces 564,072 flushes;
+grouping each model could reduce that to 47,820 before additional resource/chunk
+boundaries. The next bounded improvement is batching without changing per-target
+order, materials, sky boundaries or original/private separation.

@@ -58,6 +58,13 @@ int main()
     assert(result.original.size()==1 && result.changed==1 && current.ucode==0x29b);
     assert(result.original[0].vertices==result.replacement[0].vertices);
     const auto lit_saved=result;
+    auto last_program=current;last_program.regs[0x40]=0x38550075;
+    assert(exotica_endpoint::prepare(last_program,5000,0x100,7,0,lit_model,a,result));
+    assert(exotica_endpoint::same_quads(result.original,lit_saved.original) &&
+        exotica_endpoint::same_quads(result.replacement,lit_saved.replacement));
+    auto wrong_palette=last_program;++wrong_palette.palette;
+    assert(!exotica_endpoint::prepare(wrong_palette,5000,0x100,7,0,lit_model,a,result));
+    assert(exotica_endpoint::same_quads(result.replacement,lit_saved.replacement));
     for(unsigned mutation=0;mutation<5;++mutation) {
         bad=a;
         if(mutation==0)bad.bodies[2][1]=0xc0; // different layout
