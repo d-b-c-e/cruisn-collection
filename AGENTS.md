@@ -1,5 +1,35 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 margin composition — offline repair demonstrated
+
+Read docs/reviews/2026-09-14-exotica-margin-composition.md. Current user reports
+black left margin in sharp turns; this is ACTIVE work, not deferred. Three saved
+active/waiting contexts5072/6330/7187 match. Shared59/3/0 instances have exact
+geometry/render fields and unchanged covered textures/palettes. New standalone
+native/exotica_composition.h removes confirmed duplicates from active, preserving
+waiting alpha/order. Caller MUST establish actual scene/camera/page/fence and
+validate cohort lifetime through active sealing->ready; helper cannot do that.
+NOT linked/synced into MAME. No native/candidate/personal/public binary change.
+
+Compiled analyzer matches independent Python instance/quad bytes in all3samples;
+remaining active4/21/0 instances,32/71/0quads. C++11 strict compile/native rejection
+test and5local runner tests PASS. No broad suite. New analyzer auto compile entry.
+LOCAL margin-composed5072-render replays exact originalGPU5073: future32,waiting3358,
+activeafterwaiting with independent ready image, shared privatecolor/copiedD32depth.
+Control equals old retained renderer. Dedup32quads changes7455RGB,repairs6459black,
+zero newblack; center/otherpage/completeddepth exact. Unfiltered changes7495RGB.
+Inspected wedge filled. ONE offline2736x4096 target, NOT live/4K/temporal/perf.
+Old retained packet849quads/palettes/hash equal current waiting snapshot usedjoin.
+
+NEXT explicit native composition gate, three material phases P/W/A (Wzero delta,
+Aready delta then guestdirtycommit), distinct consumer stage order, actual lifetime
+checks and privatewide margin target. Existing exclusions must stay until these
+contracts implemented. Then short5072/5080originalroute/resources test. Reuse saved
+evidence; no blindmatrix. LOCAL margin-composition-overlap and-native plus offline
+renderer scripts under Amazon20260909root. Current native03e43/personal87d/v0.5.0
+unchanged. No game/build/test running. No deploy/release/hostedCI/physicalFFB.
+Attended FFB availability still unanswered; continuous work, no cadence waiting.
+
 ## September 14 transition window — current checkpoint
 
 Read docs/reviews/2026-09-14-exotica-transition-capture.md. Native03e43ffc3f5
