@@ -42,3 +42,40 @@ performance measurement. No new broad suite or physical force-feedback test was
 run for this coverage expansion. The next step is to verify the program transition
 against independent decoding, build separately and renew the full drive, retaining
 any remaining failure operands for diagnosis.
+
+## Qualified static-light completion
+
+Native `16e68b9362dbd531a2a5530ae7ffe3fee8306067` accepts only the known
+`0x29b` → `0x22b` marked lighting completion, after checking the original setup
+branch, selected program and unchanged 12-word layout. Geometry, material binding
+and depth-test checks remain in force. The current renderer does not execute
+these programs; their relevant interpretation is the packed layout, with no
+Exotica z offset. This is not a general microcode equivalence claim.
+
+The separate executable SHA-256 is
+`027c6f4bf4d0ef9d1c4a1109ffaf1316fab6f9d047463379ca126e8ad2cdf984`.
+The 208-patch export reconstructs tree `f97cd18b9c49f9a0e0045d732480b1c1398f5b04`.
+
+`light-endpoint-qualified-v2` compares all original/replacement bytes for twelve
+saved actual models to independent Python setup and decoding. The eleven old
+accepted models remain exact. Synthetic tests reject changed layouts, unqualified
+programs, palettes, textures and depth tests transactionally. The first negative
+test used bit 0x100 instead of the actual depth-test bit 0x20; its failed receipt
+is retained, and the test was corrected before acceptance.
+
+`full-light-endpoint` and `full-light-endpoint-qualified` pass the full 8,860-input
+drive and independent original camera/ADC/lifetime/admission joins. All 30,308
+original command identities and previously accepted output counts remain exact.
+The change fixes 5,176 rejections: 29,936 models prepare, 372 still reject, and
+280,313 replacement quads reach the GPU. Saved original and private completed
+pages 5,073/5,645 remain exact; these precede the lighting failures. Fifteen new
+completed presentation frames cover 6,536–6,550. Capture pacing prevents a speed
+claim. No repeated broad suite was needed.
+
+Remaining failures: 240 plain-fade submissions and 132 lighting submissions.
+The newly captured first plain failure, model 18,427 at frame 6,538, reproduces
+an overly strict palette-load comparison: the current palette address matches,
+but register 0x40 contains the last **program** load (`0x38550075`), not the last
+palette load (`0x0084003f`). The private endpoint should preserve the already-bound
+palette, validate its source identity and avoid proposing a redundant upload.
+That correction and its full-drive validation are the next work item.
