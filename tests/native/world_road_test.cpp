@@ -24,6 +24,12 @@ int main()
     assert(select(read,obj,15000,out,25) && !out.far_template && out.vertices==8);
     assert(select(read,obj,20000,out,25) && out.far_template && out.vertices==4);
     assert(select(read,obj,15000,out,24) && out.far_template);
+    for(uint32_t revision:{24U,25U})
+    {
+        assert(select(read,obj,240000,out,revision,true) && !out.far_template);
+        assert(out.vertices==8 && out.polygons==2 && out.selected==0xc10000);
+        assert(out.materials==0xc20000 && out.polygon_data==0xc10013);
+    }
     const auto no_read=[](uint32_t)->uint32_t{assert(false);return 0;};
     assert(!select(no_read,obj,20000,out,23) && !code_matches(no_read,23));
     assert(!code_matches([](uint32_t){return 0U;},24));

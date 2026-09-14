@@ -43,10 +43,10 @@ inline bool pointer(uint32_t p,uint32_t n)
 {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
 
 template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
-    const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24)
+    const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24,bool full_roads=false)
 {
     const auto *profile=layout(revision);
-    if(!profile)return false;
+    if(!profile || (full_roads && !roads))return false;
     if(far!=80000 && far!=160000 && far!=240000)return false;
     // The caller guards the exact code, ROM revision and scene boundary.
     uint32_t cam=read(0x41),view=read(0x43),bill=read(0x48),origin=read(0x47)+2;
@@ -106,7 +106,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         if(road)
         {
             world_road::Model selected;
-            if(!world_road::select(read,obj,depth,selected,revision))return false;
+            if(!world_road::select(read,obj,depth,selected,revision,full_roads))return false;
             model=selected.selected;radius=selected.radius;header=selected.header;
             materials=selected.materials;vertex_start=selected.vertex_data;poly_start=selected.polygon_data;
         }

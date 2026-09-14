@@ -1,5 +1,23 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 full road detail — investigate actual background order next
+
+Read docs/reviews/2026-09-14-world-road-detail.md. Native679ef586ef7 frozen/pushed SHA
+fe397937bd3a151d450c686c1532f772c0c1e632bc0a4802e3857e04593b22f3.196patches reconstruct
+487a66d6d302f48468971dc5db28a39beef910b4. CLI --world-host-road-detail stock|full;
+fullrequirescandidate+roadson. UsesROMnearmodelsathostdistanceonly; noguestLODchange.
+15saved24/25snapshots fullmodelsPASS31403/60622quads,2native8PythonPASS. World25full
+6000inputs/4191camera/12573ADC/originalnativeframesPASS.1666scenes218655roadvisits
+1820814roadquads(vs185640stock);99.98%average.12imagesonly4change22..197pixelsnear
+horizon, disconnectedlandremains. NOTrecommendedfix; no claimfulldetailhelps.
+LOCALfull-road*/full-detail* underworld25-roads-20260914. Stockon/off acceptance
+inpriorcheckpoint. NEXT originalbackground/ocean painter-order investigation;
+projectedextraquadbounds belowhorizonbutcompletedvisibility tiny. GPUcoveragebit
+onlycrackfill, notadepthbuffer; hostinsertsatCPU0x6a beforeoriginalscene-list draws.
+Possible laterbackgroundoverdraw needs actual orderedcommands/ownership proof,
+not indiscriminateforegroundbypass. No currentgame/build/test. Continue directly.
+No deploy/release/hostedCI/physicalFFB/menuremoval. Personal87d/v0.5.0unchanged.
+
 ## September 14 World2.5 roads — terrain continuity still open
 
 Read docs/reviews/2026-09-14-world25-roads.md. Nativee6151969875 frozen/pushed SHA

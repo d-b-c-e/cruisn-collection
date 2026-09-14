@@ -13,8 +13,9 @@ from world_host_scenery import camera_center,rotation_matrix,model_counts,projec
 from verification import sha256_file,write_json
 
 
-def check(run,allocations,binary,output,*,roads=False,revision=24):
+def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=False):
     profile=layout(revision)
+    if full_roads and not roads:raise ValueError('full road detail requires roads')
     output.mkdir(parents=True,exist_ok=False)
     rom=(run/'world-future-rom.bin').read_bytes()
     if len(rom)!=0x1000000:raise ValueError('invalid ROM snapshot size')
@@ -36,7 +37,7 @@ def check(run,allocations,binary,output,*,roads=False,revision=24):
         def execute(mode,far):
             r=subprocess.run([str(binary.resolve()),mode,str(ram_path.resolve()),str((run/'world-future-rom.bin').resolve()),
                 str(fast_path.resolve()),str(far)]+(['--roads'] if roads else [])+
-                (['--world25'] if revision==25 else []),env=env,capture_output=True,text=True)
+                (['--world25'] if revision==25 else [])+(['--full-roads'] if full_roads else []),env=env,capture_output=True,text=True)
             name=f'{frame}-{mode[2:]}-{far}'
             (output/(name+'.txt')).write_text(r.stdout);(output/(name+'.log')).write_text(r.stderr)
             if r.returncode:raise ValueError(r.stderr)
@@ -79,7 +80,7 @@ def check(run,allocations,binary,output,*,roads=False,revision=24):
             for key,obj in expected.items():
                 center=camera_center(obj,camera,view);depth=center[2].fix();model=obj[13];radius=read(model)
                 if depth-radius<1000 or depth+radius>=far:continue
-                if obj[14]&1 and depth>=read(profile['road_threshold']):
+                if obj[14]&1 and not full_roads and depth>=read(profile['road_threshold']):
                     ordinal=(obj[15]>>12)&15
                     if not ordinal:raise ValueError('invalid far road template ordinal')
                     selected=read(read(profile['road_templates'])+ordinal-1)
@@ -120,15 +121,16 @@ def check(run,allocations,binary,output,*,roads=False,revision=24):
     return dict(passed=bool(results) and all(r['passed'] for r in results),results=results,
         binary_sha256=sha256_file(binary),allocation_sha256=sha256_file(allocations),
         input_hashes={p.name:sha256_file(p) for p in sorted(run.glob('world-future-*.bin'))},
-        roads=roads,revision=revision,scope=__doc__)
+        roads=roads,revision=revision,full_roads=full_roads,scope=__doc__)
 
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('run',type=Path)
     ap.add_argument('allocations',type=Path);ap.add_argument('binary',type=Path)
     ap.add_argument('--output',type=Path,required=True);ap.add_argument('--roads',action='store_true')
-    ap.add_argument('--revision',type=int,choices=(24,25),default=24);args=ap.parse_args()
-    report=check(args.run,args.allocations,args.binary,args.output,roads=args.roads,revision=args.revision)
+    ap.add_argument('--revision',type=int,choices=(24,25),default=24)
+    ap.add_argument('--full-roads',action='store_true');args=ap.parse_args()
+    report=check(args.run,args.allocations,args.binary,args.output,roads=args.roads,revision=args.revision,full_roads=args.full_roads)
     write_json(args.output/'report.json',report);print('PASS' if report['passed'] else 'FAIL',args.output/'report.json')
     return 0 if report['passed'] else 1
 

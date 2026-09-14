@@ -38,13 +38,14 @@ template<class Read> bool code_matches(Read read,uint32_t revision=24)
     else {for(auto const &v:code25)if(read(v[0])!=v[1])return false;}
     return true;
 }
-template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out,uint32_t revision=24)
+template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out,uint32_t revision=24,bool full_detail=false)
 {
     const auto *profile=layout(revision);if(!profile)return false;
     if((obj[14]&0x801)!=1 || !rom(obj[13],3))return false;
     out=Model{};
     out.radius=read(obj[13]);out.vertex_data=obj[13]+3;
-    out.far_template=depth>=int32_t(read(profile->threshold));
+    // Explicit host-only quality experiment; the guest keeps its stock LOD.
+    out.far_template=!full_detail && depth>=int32_t(read(profile->threshold));
     if(out.far_template)
     {
         const uint32_t ordinal=(obj[15]>>12)&15;

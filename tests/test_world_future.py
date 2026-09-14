@@ -7,6 +7,27 @@ from world_host_options import add_arguments,configure
 
 
 class FutureSectionTests(unittest.TestCase):
+    def test_full_road_detail_requires_candidate_and_freezes_separately(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        base=['--world-host-scenery','draw','--world-host-first','1','--world-host-last','2']
+        for rom in ('crusnwld24','crusnwld'):
+            settings={'MIDV_GL':'1'}
+            args=parser.parse_args(base+['--world-host-roads','on','--world-host-road-detail','full'])
+            with self.assertRaisesRegex(ValueError,'candidate'):configure(args,rom,settings)
+            args.candidate='candidate.exe'
+            expected=configure(args,rom,settings)
+            self.assertEqual(settings['MIDV_WORLD_HOST_ROAD_DETAIL'],'1')
+            inherited=parser.parse_args([]);inherited.candidate='candidate.exe'
+            self.assertEqual(configure(inherited,rom,settings),expected)
+            args.world_host_roads='off'
+            with self.assertRaises(ValueError):configure(args,rom,dict(settings))
+            args.world_host_road_detail='stock'
+            self.assertEqual(configure(args,rom,settings)['road_detail'],'stock')
+            self.assertEqual(settings['MIDV_WORLD_HOST_ROAD_DETAIL'],'0')
+            configure(parser.parse_args(['--world-host-scenery','off']),rom,settings)
+            self.assertNotIn('MIDV_WORLD_HOST_ROAD_DETAIL',settings)
+        with self.assertRaises(ValueError):configure(parser.parse_args([]),'crusnwld',{'MIDV_WORLD_HOST_ROAD_DETAIL':'1'})
+
     def test_world25_freezes_supported_options_and_explicit_roads(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','1800',

@@ -37787,3 +37787,106 @@ index f8c1ba2c7f4..6dc44fd5470 100644
 -- 
 2.55.0.windows.3
 
+From 679ef586ef7ffc4dfba6665762f4d53b9f9da6d9 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 13:10:01 -0500
+Subject: [PATCH] Gate full-detail host road models for both World revisions
+
+---
+ src/mame/midway/cruisn/world_host_scenery.h |  6 +++---
+ src/mame/midway/cruisn/world_road_scenery.h |  5 +++--
+ src/mame/midway/midvunit.cpp                | 10 +++++++++-
+ src/mame/midway/midvunit.h                  |  2 +-
+ 4 files changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/world_host_scenery.h b/src/mame/midway/cruisn/world_host_scenery.h
+index 7d683fd93f5..a293513a2ab 100644
+--- a/src/mame/midway/cruisn/world_host_scenery.h
++++ b/src/mame/midway/cruisn/world_host_scenery.h
+@@ -43,10 +43,10 @@ inline bool pointer(uint32_t p,uint32_t n)
+ {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
+ 
+ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+-    const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24)
++    const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24,bool full_roads=false)
+ {
+     const auto *profile=layout(revision);
+-    if(!profile)return false;
++    if(!profile || (full_roads && !roads))return false;
+     if(far!=80000 && far!=160000 && far!=240000)return false;
+     // The caller guards the exact code, ROM revision and scene boundary.
+     uint32_t cam=read(0x41),view=read(0x43),bill=read(0x48),origin=read(0x47)+2;
+@@ -106,7 +106,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+         if(road)
+         {
+             world_road::Model selected;
+-            if(!world_road::select(read,obj,depth,selected,revision))return false;
++            if(!world_road::select(read,obj,depth,selected,revision,full_roads))return false;
+             model=selected.selected;radius=selected.radius;header=selected.header;
+             materials=selected.materials;vertex_start=selected.vertex_data;poly_start=selected.polygon_data;
+         }
+diff --git a/src/mame/midway/cruisn/world_road_scenery.h b/src/mame/midway/cruisn/world_road_scenery.h
+index bc8477a0914..1b8aa1deff1 100644
+--- a/src/mame/midway/cruisn/world_road_scenery.h
++++ b/src/mame/midway/cruisn/world_road_scenery.h
+@@ -38,13 +38,14 @@ template<class Read> bool code_matches(Read read,uint32_t revision=24)
+     else {for(auto const &v:code25)if(read(v[0])!=v[1])return false;}
+     return true;
+ }
+-template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out,uint32_t revision=24)
++template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out,uint32_t revision=24,bool full_detail=false)
+ {
+     const auto *profile=layout(revision);if(!profile)return false;
+     if((obj[14]&0x801)!=1 || !rom(obj[13],3))return false;
+     out=Model{};
+     out.radius=read(obj[13]);out.vertex_data=obj[13]+3;
+-    out.far_template=depth>=int32_t(read(profile->threshold));
++    // Explicit host-only quality experiment; the guest keeps its stock LOD.
++    out.far_template=!full_detail && depth>=int32_t(read(profile->threshold));
+     if(out.far_template)
+     {
+         const uint32_t ordinal=(obj[15]>>12)&15;
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 6dc44fd5470..b6d65e9cb11 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -325,6 +325,14 @@ void midvunit_base_state::world_host_start()
+ 		if(strcmp(roads,"0") && strcmp(roads,"1"))fatalerror("MIDV_WORLD_HOST_ROADS requires 0/1\n");
+ 		m_host_roads=!strcmp(roads,"1");
+ 	}
++	if(const char *detail=std::getenv("MIDV_WORLD_HOST_ROAD_DETAIL"))
++	{
++		if(strcmp(detail,"0") && strcmp(detail,"1"))fatalerror("MIDV_WORLD_HOST_ROAD_DETAIL requires 0/1\n");
++		m_host_full_roads=!strcmp(detail,"1");
++	}
++	if(m_host_full_roads && !m_host_roads)fatalerror("Full road detail requires host roads\n");
++	osd_printf_info("World host revision=%u roads=%u full_road_detail=%u; original guest LOD unchanged\n",
++		m_host_revision,unsigned(m_host_roads),unsigned(m_host_full_roads));
+ 	if(const char *layer=std::getenv("MIDV_WORLD_HOST_LAYER"))
+ 	{
+ 		if(strlen(layer)!=1 || layer[0]<'0' || layer[0]>'3')fatalerror("MIDV_WORLD_HOST_LAYER requires 0..3\n");
+@@ -405,7 +413,7 @@ void midvunit_base_state::world_host_start()
+ 			}
+ 			const auto future_prepared=std::chrono::steady_clock::now();
+ 			// Main RAM is read directly: no tap recursion or guest speedup handler.
+-			if(!cruisn::world_host::build(read,scene,m_host_far,m_host_future?&future:nullptr,m_host_roads,m_host_revision))
++			if(!cruisn::world_host::build(read,scene,m_host_far,m_host_future?&future:nullptr,m_host_roads,m_host_revision,m_host_full_roads))
+ 				fatalerror("World host scenery pointer/model/projection guard failed\n");
+ 			const auto prepared=std::chrono::steady_clock::now();
+ 			std::vector<std::array<uint16_t,16>> quads;
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index e7f52cab101..bc161072937 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -189,7 +189,7 @@ protected:
+ 	FILE *m_host_scene_log = nullptr, *m_host_quad_log = nullptr;
+ 	uint32_t m_host_mode = 0, m_host_first = 0, m_host_last = 0xffffffff, m_host_far = 80000;
+ 	double m_host_previous_scene_log_us = 0;
+-	bool m_host_future = false, m_host_roads = false;
++	bool m_host_future = false, m_host_roads = false, m_host_full_roads = false;
+ 	uint32_t m_host_revision = 24;
+ 	uint16_t m_host_layer = 0;
+ 	cruisn::world_future::Cache m_host_future_cache;
+-- 
+2.55.0.windows.3
+
