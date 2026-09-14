@@ -273,7 +273,7 @@ def main(argv=None):
         if waiting_trial:report['exotica_waiting']=waiting_trial
         handover_trial=exotica_handover.configure(args,manifest['rom'],manifest['settings'],scene_trial,waiting_trial)
         if handover_trial:report['exotica_handover']=handover_trial
-        endpoint_trial=exotica_model_endpoint.configure(args,manifest['rom'],manifest['settings'],lifetime_trial)
+        endpoint_trial=exotica_model_endpoint.configure(args,manifest['rom'],manifest['settings'],lifetime_trial,scene_trial)
         if endpoint_trial:report['exotica_model_endpoint']=endpoint_trial
         if scene_trial and scene_trial.get('future_present'):
             report['presentation']='explicit-extended-target'

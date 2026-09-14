@@ -38479,3 +38479,270 @@ index 9ac561a14de..8bb7716f7c6 100644
 -- 
 2.55.0.windows.3
 
+From 8d9d5c34dcc2c580cc55660863105bb19ac43afc Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 15:46:22 -0500
+Subject: [PATCH] Bind actual queued private scenery admissions to original
+ model tickets
+
+---
+ src/mame/midway/cruisn/exotica_admissions.h | 84 +++++++++++++++++++++
+ src/mame/midway/midzeus.cpp                 | 78 +++++++++++++++++++
+ 2 files changed, 162 insertions(+)
+ create mode 100644 src/mame/midway/cruisn/exotica_admissions.h
+
+diff --git a/src/mame/midway/cruisn/exotica_admissions.h b/src/mame/midway/cruisn/exotica_admissions.h
+new file mode 100644
+index 00000000000..58c98c2f03c
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_admissions.h
+@@ -0,0 +1,84 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Private draw admission carried through later guest source allocation.
++// Caller supplies only successfully queued nonempty draws, observes every source
++// bind/release/reset, and copies qualification into the original command ticket.
++// This ledger proves submission history, not screen visibility or a fade policy.
++#pragma once
++#include "scenery_lifetimes.h"
++#include <set>
++#include <vector>
++namespace cruisn { namespace exotica_admissions {
++using scenery_lifetimes::Key;
++using scenery_lifetimes::Handle;
++struct Draw {Key key;uint32_t quads=0;};
++struct Entry {
++    Key key;Handle owner;
++    uint64_t epoch=0,first_sequence=0,last_sequence=0;
++    uint32_t first_frame=0,last_frame=0;
++    bool bound=false;
++};
++enum class Status {invalid,unadmitted,matched};
++inline bool same(const Handle &a,const Handle &b) {
++    return a.slot==b.slot && a.epoch==b.epoch && a.generation==b.generation && a.key==b.key;
++}
++inline bool valid(const Handle &h) {
++    return h.key.valid() && h.epoch && h.generation && h.slot;
++}
++class Ledger {
++    std::map<Key,Entry> m_entries;
++    uint64_t m_epoch=0,m_sequence=0;
++    uint32_t m_frame=0;
++public:
++    size_t size()const{return m_entries.size();}
++    uint64_t epoch()const{return m_epoch;}
++    bool reset(uint64_t epoch) {
++        if(!epoch || epoch<=m_epoch)return false;
++        m_entries.clear();m_epoch=epoch;m_sequence=0;m_frame=0;return true;
++    }
++    // One sequence per successfully queued private packet; waiting and future
++    // packets may share a scene/frame but have distinct submission sequences.
++    bool admit(uint64_t sequence,uint32_t frame,const std::vector<Draw> &draws,
++               const scenery_lifetimes::Registry &registry) {
++        if(!m_epoch || registry.epoch()!=m_epoch || !sequence || sequence<=m_sequence ||
++                !frame || frame<m_frame || draws.size()>32768)return false;
++        std::set<Key> seen;std::vector<Entry> prepared;size_t added=0;
++        prepared.reserve(draws.size());
++        for(const auto &draw:draws) {
++            if(!draw.key.valid() || !draw.quads || draw.quads>131072 || !seen.insert(draw.key).second)return false;
++            Handle owner;const bool bound=registry.lookup(draw.key,owner);
++            const auto found=m_entries.find(draw.key);Entry e;
++            if(found==m_entries.end()) {
++                ++added;e.key=draw.key;e.epoch=m_epoch;e.first_sequence=sequence;e.first_frame=frame;
++                e.bound=bound;if(bound)e.owner=owner;
++            } else {
++                e=found->second;
++                // Never silently repair a missed binding/removal using today's
++                // slot occupant: that would hide a source-generation reuse.
++                if(e.bound!=bound || (bound && !same(e.owner,owner)))return false;
++            }
++            e.last_sequence=sequence;e.last_frame=frame;prepared.push_back(e);
++        }
++        if(added>32768-m_entries.size())return false;
++        for(const auto &e:prepared)m_entries[e.key]=e;
++        m_sequence=sequence;m_frame=frame;return true;
++    }
++    Status bind(const Handle &owner) {
++        if(!valid(owner) || owner.epoch!=m_epoch)return Status::invalid;
++        auto found=m_entries.find(owner.key);if(found==m_entries.end())return Status::unadmitted;
++        if(found->second.bound)return Status::invalid;
++        found->second.owner=owner;found->second.bound=true;return Status::matched;
++    }
++    Status release(const Handle &owner) {
++        if(!valid(owner) || owner.epoch!=m_epoch)return Status::invalid;
++        auto found=m_entries.find(owner.key);if(found==m_entries.end())return Status::unadmitted;
++        if(!found->second.bound || !same(found->second.owner,owner))return Status::invalid;
++        m_entries.erase(found);return Status::matched;
++    }
++    Status qualify(const Handle &owner,Entry &output)const {
++        if(!valid(owner) || owner.epoch!=m_epoch)return Status::invalid;
++        const auto found=m_entries.find(owner.key);if(found==m_entries.end())return Status::unadmitted;
++        if(!found->second.bound || !same(found->second.owner,owner))return Status::invalid;
++        output=found->second;return Status::matched;
++    }
++};
++} }
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 8bb7716f7c6..a3aab5c38ba 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -45,6 +45,7 @@ The Grid         v1.2   10/18/2000
+ #include "cruisn/zeus_retained_materials.h"
+ #include "cruisn/exotica_command_owners.h"
+ #include "cruisn/exotica_model_endpoint.h"
++#include "cruisn/exotica_admissions.h"
+ 
+ #include <algorithm>
+ #include <chrono>
+@@ -205,10 +206,17 @@ private:
+ 	void endpoint_commit(uint32_t end,uint32_t flags,const LifetimeOwner &owner);
+ 	void endpoint_model(uint32_t base,uint32_t count,uint32_t yscale);
+ 	void endpoint_exit();
++	void endpoint_admit(uint64_t scene,uint32_t frame,uint64_t realm,const cruisn::exotica_scene::Result &geometry,bool waiting=false);
++	cruisn::exotica_admissions::Ledger m_endpoint_admissions;
++	uint32_t m_endpoint_admit_from=0;
++	uint64_t m_endpoint_admit_sequence=0,m_endpoint_admit_bytes=0;
++	FILE *m_endpoint_admit_packets=nullptr,*m_endpoint_admit_log=nullptr;
+ 	struct EndpointPending {
+ 		cruisn::scenery_lifetimes::Handle owner;
+ 		cruisn::exotica_state::Operands operands;
+ 		uint32_t frame=0;double time=0;
++		cruisn::exotica_admissions::Entry admission;
++		bool admitted=false;
+ 	};
+ 	cruisn::exotica_commands::Owners m_endpoint_owners;
+ 	std::map<uint64_t,EndpointPending> m_endpoint_pending;
+@@ -542,6 +550,7 @@ void crusnexo_state::lifetime_start()
+ 						if(now<p.head_time || p.head_time<p.time || now-p.time>=.001)fatalerror("Exotica lifetime reset duration\n");
+ 						cruisn::scenery_lifetimes::Layout layout;layout.first=0x1000;layout.last=0x40000-31;layout.max_tracked=4096;
+ 						if(!m_lifetimes.reset(layout))fatalerror("Exotica lifetime reset registry\n");
++						if(m_endpoint_admissions.epoch() && !m_endpoint_admissions.reset(m_lifetimes.epoch()))fatalerror("Endpoint admission reset\n");
+ 						m_lifetime_owners.clear();lifetime_emit('R',p.base,0,0,{},1201,1200);
+ 						p=LifetimePending();m_lifetime_reset_tap.remove();
+ 					});
+@@ -555,6 +564,10 @@ void crusnexo_state::lifetime_start()
+ 			uint64_t generation=0;bool unknown=false;
+ 			if(p.kind==1 ? !m_lifetimes.allocate(p.slot,generation) : !m_lifetimes.release(p.slot,unknown))
+ 				fatalerror("Exotica lifetime registry transaction\n");
++			const auto retiring=m_lifetime_owners.find(p.slot);
++			if(p.kind==2 && m_endpoint_admissions.epoch() && retiring!=m_lifetime_owners.end() &&
++				m_endpoint_admissions.release(retiring->second.handle)==cruisn::exotica_admissions::Status::invalid)
++				fatalerror("Endpoint admission retirement\n");
+ 			m_lifetime_owners.erase(p.slot);
+ 			lifetime_emit(p.kind==1?'A':'F',p.slot,generation,0,{},unsigned(unknown),data);
+ 			p=LifetimePending();
+@@ -579,6 +592,8 @@ void crusnexo_state::lifetime_start()
+ 					if(!m_lifetimes.bind(m_lifetime_owner_slot,key,owner.handle) || ++m_lifetime_bindings>10000)
+ 						fatalerror("Exotica lifetime source binding\n");
+ 					owner.serial=m_lifetime_bindings;
++					if(m_endpoint_admissions.epoch() && m_endpoint_admissions.bind(owner.handle)==cruisn::exotica_admissions::Status::invalid)
++						fatalerror("Endpoint admission source binding\n");
+ 					if(!m_lifetime_owners.emplace(m_lifetime_owner_slot,owner).second)fatalerror("Exotica lifetime duplicate owner map\n");
+ 					lifetime_emit('B',m_lifetime_owner_slot,owner.handle.generation,owner.serial,key,0,m_ram_base[m_lifetime_owner_slot+15]);
+ 					m_lifetime_owner_slot=0;m_lifetime_ready_tap.remove();
+@@ -637,6 +652,18 @@ void crusnexo_state::endpoint_start()
+ 	};
+ 	m_endpoint_first=number("MIDZ_MODEL_ENDPOINT_FIRST");m_endpoint_last=number("MIDZ_MODEL_ENDPOINT_LAST");
+ 	m_endpoint_snapshot=number("MIDZ_MODEL_ENDPOINT_SNAPSHOT");
++	if(std::getenv("MIDZ_MODEL_ADMIT_FIRST")) {
++		m_endpoint_admit_from=number("MIDZ_MODEL_ADMIT_FIRST");
++		if(m_scene_future_mode!=2 || !m_scene_material_image || m_endpoint_admit_from>m_endpoint_first ||
++			m_endpoint_admit_from<m_scene_first || m_scene_last<m_endpoint_last)
++			fatalerror("Endpoint admissions require actual private future drawing and covered frames\n");
++		m_endpoint_admit_packets=fopen("exotica-admission-packets.bin","wb");
++		m_endpoint_admit_log=fopen("exotica-endpoint-admissions.csv","w");
++		if(!m_endpoint_admit_packets || !m_endpoint_admit_log)fatalerror("Endpoint admission files\n");
++		setvbuf(m_endpoint_admit_packets,nullptr,_IOFBF,65536);setvbuf(m_endpoint_admit_log,nullptr,_IOFBF,65536);
++		fprintf(m_endpoint_admit_log,"id,admitted,first_sequence,first_frame,last_sequence,last_frame,packets,records\n");
++		fprintf(stderr,"MIDZ_MODEL_ADMIT_FIRST=%u\n",m_endpoint_admit_from);
++	}
+ 	if(m_endpoint_first>m_endpoint_last || m_endpoint_last-m_endpoint_first>120 ||
+ 		m_endpoint_snapshot<m_endpoint_first || m_endpoint_snapshot>m_endpoint_last ||
+ 		m_lifetime_first>=m_endpoint_first || m_lifetime_last<=m_endpoint_last)
+@@ -670,6 +697,18 @@ void crusnexo_state::endpoint_commit(uint32_t end,uint32_t flags,const LifetimeO
+ 	const uint64_t id=++m_endpoint_commits;
+ 	if(id>65536 || !m_endpoint_owners.submit(id,end,opcode,base))fatalerror("Endpoint commit bounds/order\n");
+ 	EndpointPending p;p.owner=owner.handle;p.frame=frame;p.time=machine().time().as_double();p.operands.flags=flags;
++	if(m_endpoint_admit_log) {
++		if(m_endpoint_admissions.epoch()) {
++			const auto admitted=m_endpoint_admissions.qualify(owner.handle,p.admission);
++			if(admitted==cruisn::exotica_admissions::Status::invalid)fatalerror("Endpoint admission commit ownership\n");
++			p.admitted=admitted==cruisn::exotica_admissions::Status::matched;
++		}
++		const auto &a=p.admission;
++		if(fprintf(m_endpoint_admit_log,"%llu,%u,%llu,%u,%llu,%u,%llu,%llu\n",(unsigned long long)id,unsigned(p.admitted),
++			(unsigned long long)a.first_sequence,a.first_frame,(unsigned long long)a.last_sequence,a.last_frame,
++			(unsigned long long)m_endpoint_admit_sequence,(unsigned long long)m_lifetime_records)<0)
++			fatalerror("Endpoint admission commit journal\n");
++	}
+ 	auto &a=p.operands;
+ 	std::copy_n(m_ram_base+owner.handle.slot,32,a.object.begin());
+ 	if(flags&0x04000000) {
+@@ -776,12 +815,42 @@ void crusnexo_state::endpoint_exit()
+ 	if(fclose(m_endpoint_log))complete=false;
+ 	if(fclose(m_endpoint_inputs))complete=false;
+ 	m_endpoint_log=nullptr;m_endpoint_inputs=nullptr;
++	if(m_endpoint_admit_log) {
++		bool good=!ferror(m_endpoint_admit_log) && !ferror(m_endpoint_admit_packets);
++		if(fclose(m_endpoint_admit_log))good=false;
++		if(fclose(m_endpoint_admit_packets))good=false;
++		m_endpoint_admit_log=nullptr;m_endpoint_admit_packets=nullptr;
++		fprintf(stderr,"MIDZ_MODEL_ADMIT_RESULT complete=%u packets=%llu bytes=%llu\n",unsigned(complete && good),
++			(unsigned long long)m_endpoint_admit_sequence,(unsigned long long)m_endpoint_admit_bytes);
++	}
+ 	fprintf(stderr,"MIDZ_MODEL_ENDPOINT_RESULT complete=%u commits=%llu consumed=%llu untracked=%llu prepared=%llu rejected=%llu snapshots=%llu bytes=%llu remaining=%llu\n",
+ 		unsigned(complete),(unsigned long long)m_endpoint_commits,(unsigned long long)m_endpoint_consumed,(unsigned long long)m_endpoint_untracked,
+ 		(unsigned long long)m_endpoint_prepared,(unsigned long long)m_endpoint_rejected,(unsigned long long)m_endpoint_saved,
+ 		(unsigned long long)m_endpoint_bytes,(unsigned long long)m_endpoint_pending.size());
+ }
+ 
++void crusnexo_state::endpoint_admit(uint64_t scene,uint32_t frame,uint64_t realm,const cruisn::exotica_scene::Result &geometry,bool waiting)
++{
++	if(!m_endpoint_admit_packets || frame<m_endpoint_admit_from || frame>m_endpoint_last)return;
++	if(!m_endpoint_admissions.epoch() && !m_endpoint_admissions.reset(m_lifetimes.epoch()))fatalerror("Endpoint admission initial epoch\n");
++	std::vector<cruisn::exotica_admissions::Draw> draws;
++	std::vector<std::array<uint32_t,3>> records;
++	for(const auto &instance:geometry.instances)if(instance.quad_count) {
++		cruisn::exotica_admissions::Draw d;d.key.realm=realm;d.key.section=instance.entry;d.key.source=instance.source;
++		d.quads=uint32_t(instance.quad_count);draws.push_back(d);records.push_back({{instance.entry,instance.source,d.quads}});
++	}
++	const uint64_t sequence=++m_endpoint_admit_sequence;
++	if(!m_endpoint_admissions.admit(sequence,frame,draws,m_lifetimes))fatalerror("Endpoint queued admission rejected\n");
++	// Exact lifetime record watermark disambiguates source events at tied times.
++	const uint64_t header[]={0x31444158,sequence,scene,frame,m_lifetimes.epoch(),realm,records.size(),m_lifetime_records,uint64_t(waiting)};
++	const size_t bytes=sizeof(header)+records.size()*sizeof(records[0]);
++	if(bytes>64*1024*1024-m_endpoint_admit_bytes || sequence>20000)fatalerror("Endpoint admission journal budget\n");
++	if(fwrite(header,1,sizeof(header),m_endpoint_admit_packets)!=sizeof(header) ||
++		(!records.empty() && fwrite(records.data(),sizeof(records[0]),records.size(),m_endpoint_admit_packets)!=records.size()))
++		fatalerror("Endpoint admission packet journal\n");
++	m_endpoint_admit_bytes+=bytes;
++}
++
+ void crusnexo_state::scene_observer_start()
+ {
+ 	const char *mode=std::getenv("MIDZ_HOST_SCENE");
+@@ -1234,6 +1303,10 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 		} else if(!m_zeus->midz_host_materials(wire.data(),wire.size()))fatalerror("Exotica private material queue rejected\n");
+ 		const auto material_queued=std::chrono::steady_clock::now();
+ 		if(!m_scene_material_image->apply(packet.wave))fatalerror("Exotica private material producer commit rejected\n");
++		if(m_scene_future_mode==2) {
++			const uint64_t realm=(uint64_t(pending.bank+1)<<32)|(uint64_t(scene_read(0xe9))+scene_read(0x1fbc));
++			endpoint_admit(pending.scene,p.frame,realm,scene);
++		}
+ 		if(m_handover_mode==2)m_handover_generation=m_scene_material_image->generation();
+ 		// No emulated writes can occur between staging and this emulation-thread commit.
+ 		if(m_scene_material_pages)m_zeus->midz_host_wave_commit();
+@@ -1389,6 +1462,11 @@ void crusnexo_state::scene_waiting_ready()
+ 		if(!m_zeus->midz_host_waiting(encoded.data(),encoded.size()))fatalerror("Exotica waiting owned queue rejected\n");
+ 		const auto queued=std::chrono::steady_clock::now();
+ 		if(!cruisn::zeus_host::accept_retained(packet.materials,*m_scene_material_image))fatalerror("Exotica waiting producer commit rejected\n");
++		if(!owners.empty()) {
++			const uint64_t realm=owners[0][0];
++			for(const auto &owner:owners)if(owner[0]!=realm)fatalerror("Endpoint waiting admission realm\n");
++			endpoint_admit(m_handover_scene,frame,realm,filtered,true);
++		} else endpoint_admit(m_handover_scene,frame,0,filtered,true);
+ 		// No guest dirty-page commit here: guest writes since P belong to the NEXT
+ 		// future update, not this zero-page continuation of P's private image.
+ 		const auto committed=std::chrono::steady_clock::now();
+-- 
+2.55.0.windows.3
+

@@ -14,26 +14,30 @@ BOUNDS = ('first','last','snapshot')
 
 def add_arguments(parser):
     parser.add_argument('--exotica-model-endpoint', choices=('off','observe'))
+    parser.add_argument('--exotica-endpoint-admit-from',type=int,
+                        help='observe actual private future/waiting admissions from this native frame')
     for name in BOUNDS:
         parser.add_argument('--exotica-endpoint-'+name, type=int,
                             help='bounded original-model diagnostic native frame')
 
 
-def configure(args, rom, settings, lifetime):
+def configure(args, rom, settings, lifetime, scene=None):
     mode = getattr(args,'exotica_model_endpoint',None)
     bounds = [getattr(args,'exotica_endpoint_'+k,None) for k in BOUNDS]
+    admit=getattr(args,'exotica_endpoint_admit_from',None)
     if mode is None:
-        if any(v is not None for v in bounds):
+        if any(v is not None for v in bounds) or admit is not None:
             raise ValueError('endpoint bounds require an explicit mode')
-        if settings.get(KEY,'0') != '0' or any(KEY+'_'+k.upper() in settings for k in BOUNDS):
+        if settings.get(KEY,'0') != '0' or any(KEY+'_'+k.upper() in settings for k in BOUNDS) or 'MIDZ_MODEL_ADMIT_FIRST' in settings:
             raise ValueError('endpoint observation cannot be inherited from a recording')
         return None
     if not getattr(args,'candidate',None):
         raise ValueError('endpoint observation requires an explicit candidate')
     if mode == 'off':
-        if any(v is not None for v in bounds):raise ValueError('disabled endpoint bounds')
+        if any(v is not None for v in bounds) or admit is not None:raise ValueError('disabled endpoint bounds')
         settings[KEY]='0'
         for k in BOUNDS:settings.pop(KEY+'_'+k.upper(),None)
+        settings.pop('MIDZ_MODEL_ADMIT_FIRST',None)
         return dict(mode='off')
     first,last,snapshot=bounds
     if (mode!='observe' or rom!='crusnexo' or not lifetime or lifetime['mode']!='observe'
@@ -41,14 +45,21 @@ def configure(args, rom, settings, lifetime):
             or last-first>120 or not lifetime['first']<first<=last<lifetime['last']):
         raise ValueError('endpoint interval requires surrounding Exotica lifetimes')
     # Replay is device-free; make this boundary explicit before prepare_run too.
+    if admit is not None:
+        if (not scene or scene.get('future')!=2 or not scene.get('materials')
+                or not scene['first']<=admit<=first or scene['last']<last):
+            raise ValueError('endpoint admissions require covered actual private drawing')
     settings.update({KEY:'1','MIDV_FFB':'0',**{KEY+'_'+k.upper():str(v) for k,v in zip(BOUNDS,bounds)}})
-    return dict(mode=mode,**dict(zip(BOUNDS,bounds)))
+    trial=dict(mode=mode,**dict(zip(BOUNDS,bounds)))
+    if admit is not None:settings['MIDZ_MODEL_ADMIT_FIRST']=str(admit);trial['admit_from']=admit
+    else:settings.pop('MIDZ_MODEL_ADMIT_FIRST',None)
+    return trial
 
 
 def verify_receipt(trial, text, directory):
     directory=Path(directory);paths=list(directory.glob('exotica-endpoint-*'))
     if not trial or trial['mode']=='off':
-        if 'MIDZ_MODEL_ENDPOINT=1' in text or 'MIDZ_MODEL_ENDPOINT_RESULT' in text or paths:
+        if 'MIDZ_MODEL_ENDPOINT=1' in text or 'MIDZ_MODEL_ENDPOINT_RESULT' in text or paths or list(directory.glob('exotica-admission-*')):
             raise ValueError('disabled endpoint observer ran')
         return None
     if re.findall(r'^MIDZ_MODEL_ENDPOINT=1 first=(\d+) last=(\d+) snapshot=(\d+)$',text,re.M)!=[
@@ -81,6 +92,7 @@ def verify_receipt(trial, text, directory):
             rows.append(r)
     if len(rows)!=totals['consumed']:raise ValueError('endpoint journal count')
     expected={path.name,'exotica-endpoint-inputs.txt'};saved=[];size=0;prior_time=0.;prior_frame=0
+    if 'admit_from' in trial:expected.add('exotica-endpoint-admissions.csv')
     for i,r in enumerate(rows,1):
         if (r['id']!=i or not trial['first']<=r['commit_frame']<=trial['last']
                 or not r['commit_frame']<=r['device_frame']<=trial['last']+4
@@ -131,5 +143,7 @@ def verify_receipt(trial, text, directory):
     if ({p.name for p in paths}!=expected or len(saved)!=totals['snapshots'] or size!=totals['bytes']
             or sum(r['status']==1 for r in rows)!=totals['prepared']
             or sum(r['status']==2 for r in rows)!=totals['rejected']):raise ValueError('endpoint totals/artifacts')
-    return dict(passed=True,**totals,scope='Read-only native owner/endpoint receipts and bounded snapshot structure. '
+    from exotica_admissions import verify as verify_admissions
+    admissions=verify_admissions(trial,text,directory,rows)
+    return dict(passed=True,**totals,admissions=admissions,scope='Read-only native owner/endpoint receipts and bounded snapshot structure. '
                 'Independent source joins, actual native quads and temporal visibility require separate checks.')

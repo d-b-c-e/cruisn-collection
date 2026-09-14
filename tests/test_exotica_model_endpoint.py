@@ -101,5 +101,17 @@ class EndpointObservation(unittest.TestCase):
                 with self.subTest(offset=offset),self.assertRaises(ValueError):
                     endpoint.verify_receipt(self.trial,self.text,p)
 
+    def test_admission_requires_actual_covered_future_drawing(self):
+        args=self.args('--candidate','test.exe','--exotica-model-endpoint','observe',
+             '--exotica-endpoint-first','5218','--exotica-endpoint-last','5222',
+             '--exotica-endpoint-snapshot','5219','--exotica-endpoint-admit-from','5072')
+        life=dict(mode='observe',first=1799,last=5258)
+        scene=dict(future=2,materials=True,first=1800,last=5250)
+        settings={};trial=endpoint.configure(args,'crusnexo',settings,life,scene)
+        self.assertEqual(trial['admit_from'],5072)
+        self.assertEqual(settings['MIDZ_MODEL_ADMIT_FIRST'],'5072')
+        for bad in [None,dict(scene,future=1),dict(scene,materials=False),dict(scene,first=5100),dict(scene,last=5221)]:
+            with self.subTest(scene=bad),self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life,bad)
+
 
 if __name__=='__main__':unittest.main()

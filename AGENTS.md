@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 live admissions — NEXT private original-quad replacement
+
+Read docs/reviews/2026-09-14-exotica-native-admissions.md. Native8d9d5c34dcc frozen,
+SHA f56e7116fd21d1f35b45ae2b9ba5a5e5ac0d92b33d3a3ad2dfed2f7f1f6f3d69;
+203patches reconstruct611cf0978c4dd53b0f57c9a6c0318aaa6c414245, fork pushed.
+Ledger now linked/synced. --exotica-endpoint-admit-from requires actual private
+future draw and candidate endpoint observer. Queued future and actualR waiting
+draws admit nonempty sources, lifetimeB/F/R maintains identities, CPUcommits copy
+proof plus exact packet/lifetime watermarks. Read-only, NOreplacement/fadepolicy.
+5260input/nativeimage PASS. Camera/ADC/lifetimes/original models/resources/color/
+depth and endpoint operands/quads exact prior e0. All3389future deterministic
+scene rows exact0cc prefix (exclude exactly5named hostduration columns).
+300packets680040bytes,1150originalqueries579admitted,all58prepared qualify.
+Independent canonical fold checks every query against actual watermarks/GPUcounts.
+4snapshot source/quads exact:5072future63/538,waiting104/849(actual5073);
+5219future260/2558,waiting82/610(actual5220). 6endpoint+3admission testsPASS.
+Initial checker guessed wrongduration names FAIL retained, corrected exactsetPASS.
+LOCALR/native-admissions5220,native-admissions-final,native-admissions-export.json.
+
+NEXT pair original/private quad at same stream position, normaltarget original,
+private target replacement only, currentmaterials. Verify expected actualquad
+bytes and consume once in order; never draw both toprivate. NewLOCAL canonical
+native/zeus_endpoint_pair.h and test are drafted/uncommitted, standalone testPASS;
+not linked/synced. Next qualifyactual98quads/ABI, integrateproducer/consumer gated
+draw, then temporal and speed. No game/build/test now. Personal87d/publicv0.5.0
+unchanged; no deploy/release/hostedCI/physicalFFB/menu removal. Continue directly.
+
 ## September14 admissions — standalone qualified; NEXT live private replacement
 
 Read docs/reviews/2026-09-14-exotica-admissions.md. New native/exotica_admissions.h
