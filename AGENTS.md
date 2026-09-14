@@ -1,5 +1,39 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 LIVE composition — performance next, continue directly
+
+Read docs/reviews/2026-09-14-exotica-live-composition.md. User explicitly says keep
+working as long as parity work remains; do not stop at a checkpoint or wait for
+heartbeat. Nativee4cfcb864be built/frozen/pushed SHA c6a955fa3f509aecf7d6d8661bbf173485f8f4cd82f0f38a9865d9bce2a151c5.
+193patches reconstructe6ceb0690e11af69f9387791c75577616af5644c. CLI explicit
+--exotica-host-compose margins now combines P future/W retained/A active private
+wide margins. Three material stages; Wzero delta,no guestdirtycommit; Aready delta
+thencommit. Exact owners atE/R, duplicate geometry/material checks, center/other
+page/private depth/original buffers preserved. Standalone activeD24 stays intact.
+
+Short5200inputs/3400camera/10200ADC/3332scenes PASS.5072/5080repair6459/4231black,
+zero newblack. Completed5073displayedcolor/depth exactoffline; entiredepth exactold
+live. Full8860inputs/7060camera/21180ADC/6953scenes/20859materials/22currentmonitor
+captures PASS. Allsourcefields except host_us timing exactold; lifetime/handover
+CSV/cohort bytes exact.3originalGPU pairs/15proposalresources exact.4new snapshots
+5644/6330/7187/8760 independentfilter PASS.5644repair1919black;completed5645changed
+15947RGB,1919blackrepaired,zero newblack,center/depth unchanged.6331/7188displaypage
+andentiredepth exactold. ApparentRIGHTwedge atintermediate5644 is filled byoriginal
+commands beforecompleted5645; do NOT label it a remainingdisplay defect.
+
+Firstb6e candidate fails2219 blanketnoevents rule (2unrelatedfrees,emptycohort).
+Owner-awaree4c fixes it; preservefailedcomposition-live-short. Firstwholeoffline
+depthcomparisonFAIL77196pixels onpreviouspage with differentwaitinghistory;
+correcteddisplaypageoffline/entiredepthpriorLIVE assertionsPASS, no rerun.
+46targetedPython/no skips andsyncPASS. LOCALcomposition-live-retry/full, -acceptance
+scripts/reports underAmazon20260909root. Full91.22% instrumented, NOT 4K/normalperf.
+Future/waiting assembly18.03s/hash4.46s;activeassembly1.42s/seal1.51s. Queue/GPU
+submissiontimingsoverlap; don'tsumexclusive CPUcost. NEXT removeheavyreadbacksfor
+focusedperformancebaseline, then optimize measuredmainpath; no blindmatrices.
+Currentmonitor3440x1440; final4Kstillneeded. No game/build/testrunningatcheckpoint.
+Personal87d/publicv0.5.0 unchanged. No deploy/release/hostedCI/physicalFFB/menu
+removal. AttendedFFBavailability unanswered. Olderofflineonlynotesbelow superseded.
+
 ## September 14 margin composition — offline repair demonstrated
 
 Read docs/reviews/2026-09-14-exotica-margin-composition.md. Current user reports
