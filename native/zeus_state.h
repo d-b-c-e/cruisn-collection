@@ -6,6 +6,7 @@
 #include "scenery_c31.h"
 #include <vector>
 #include <cmath>
+#include <cstring>
 namespace cruisn { namespace zeus_state {
 struct Context
 {
@@ -21,7 +22,15 @@ struct Result { Context context;std::vector<Load> loads; };
 inline float floating(uint32_t w)
 {
     const auto f=scenery::Float::load(w);
-    return f.e==-128?0.0f:float(std::ldexp(double(int64_t(f.m)^INT64_C(0x80000000)),f.e-31));
+    if(f.e==-128)return 0.0f;
+    // Every normal-range input has an exactly representable 24-bit mantissa.
+    // Retain arithmetic for subnormal rounding and the one overflow encoding.
+    if(f.e>=-126 && !(f.e==127 && f.m==INT32_MIN)) {
+        uint32_t bits=uint32_t(f.e+127)<<23;
+        bits+=f.m>=0 ? uint32_t(f.m)>>8 : 0x80000000U+((0U-uint32_t(f.m))>>8);
+        float value;std::memcpy(&value,&bits,sizeof(value));return value;
+    }
+    return float(std::ldexp(double(int64_t(f.m)^INT64_C(0x80000000)),f.e-31));
 }
 inline bool valid(const Context &c)
 {
