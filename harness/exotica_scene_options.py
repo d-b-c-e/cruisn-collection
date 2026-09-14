@@ -293,11 +293,11 @@ def verify_receipt(trial, text, directory):
     from exotica_fence import verify as verify_fence
     fence_result = verify_fence(directory, rows, text, trial.get('fence', False))
     from exotica_active import verify as verify_active
-    active_result = verify_active(directory, rows, text, active, trial['snapshots'],compose=trial.get('compose',False))
+    active_result = verify_active(directory, rows, text, active, trial['snapshots'],compose=trial.get('compose',False),early=trial.get('early_visibility'))
     from exotica_future_gpu import verify as verify_future
     future_result = verify_future(directory, rows, text, trial.get('future', 0), trial['snapshots'], present=trial.get('future_present', False), waiting=trial.get('waiting_draw',False),compose=trial.get('compose',False))
     from exotica_composition import verify as verify_composition
-    composition=verify_composition(directory,rows,text,trial.get('compose',False),trial['snapshots'])
+    composition=verify_composition(directory,rows,text,trial.get('compose',False),trial['snapshots'],early=trial.get('early_visibility'))
     return dict(passed=True, scenes=matched, quads=quads, snapshots=saved, guest_cycles_unchanged=True, game_scene_boundary=True,
                 command_fence=fence_result, active_margins=active_result, private_future=future_result,composition=composition,
                 scope='Bounded live scene/material receipts; independent geometry and visual acceptance are separate.')

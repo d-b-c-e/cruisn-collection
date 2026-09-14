@@ -43,7 +43,16 @@ def filtered_geometry(active, aq, waiting, wq, owners, proposal, ready):
     return b''.join(kept),b''.join(quads),removed,removed_quads
 
 
-def verify(directory,scenes,text,enabled,captures):
+def endpoint_geometry(original,replacement):
+    if len(original)!=len(replacement) or len(original)%260:raise ValueError('composition endpoint extent')
+    for offset in range(0,len(original),260):
+        a=struct.unpack_from('<17I',original,offset);b=struct.unpack_from('<17I',replacement,offset)
+        if (original[offset+68:offset+260]!=replacement[offset+68:offset+260] or (a[9]^b[9])&~18
+                or any(a[k]!=b[k] for k in range(17) if k not in (7,8,9,10))):
+            raise ValueError('composition endpoint changed geometry/materials/depth test')
+
+
+def verify(directory,scenes,text,enabled,captures,early=None):
     directory=Path(directory)
     initial=re.findall(r'^MIDZ_HOST_COMPOSE=(\d+)$',text,re.M)
     final=re.findall(r'^MIDZ_HOST_COMPOSE_RESULT complete=(\d+) scenes=(\d+)$',text,re.M)
@@ -68,10 +77,19 @@ def verify(directory,scenes,text,enabled,captures):
             p=directory/f'exotica-{prefix}-{frame}-{suffix}.bin'
             if p.stat().st_size>limit:raise ValueError('composition snapshot budget')
             return p.read_bytes()
+        trial=early and early['first']<=frame<=early['last']
+        if trial and re.findall(r'^MIDZ_ENDPOINT_EARLY=([01])$',text,re.M)!=['1']:
+            raise ValueError('composition missing explicit early visibility')
+        waiting=read('handover','quads',131072*260);active_quads=read('active','quads',131072*260)
+        if trial:
+            original_waiting=read('handover','control-quads',131072*260);original_active=read('active','control-quads',131072*260)
+            endpoint_geometry(original_waiting,waiting);endpoint_geometry(original_active,active_quads)
+        else:
+            original_waiting=waiting;original_active=active_quads
         expected=filtered_geometry(read('compose','input-instances',4096*44),read('compose','input-quads',131072*260),
-            read('handover','instances',4096*44),read('handover','quads',131072*260),read('handover','owners',4096*48),
+            read('handover','instances',4096*44),original_waiting,read('handover','owners',4096*48),
             read('waiting-draw','wave',16777216),read('active','wave',16777216))
-        if (expected[0]!=read('active','instances',4096*44) or expected[1]!=read('active','quads',131072*260) or
+        if (expected[0]!=read('active','instances',4096*44) or expected[1]!=original_active or
                 expected[2]!=int(row['overlaps']) or expected[3]!=int(row['removed_quads'])):
             raise ValueError('composition independent filtered geometry differs')
         sampled.append(dict(frame=frame,removed_instances=expected[2],removed_quads=expected[3],byte_exact=True))

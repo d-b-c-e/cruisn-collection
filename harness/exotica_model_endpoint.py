@@ -14,6 +14,8 @@ BOUNDS = ('first','last','snapshot')
 
 def add_arguments(parser):
     parser.add_argument('--exotica-model-endpoint', choices=('off','observe','draw'))
+    parser.add_argument('--exotica-early-visibility', choices=('off','endpoint'),
+                        help='bounded private early visibility with original-state margin composition')
     parser.add_argument('--exotica-endpoint-admit-from',type=int,
                         help='observe actual private future/waiting admissions from this native frame')
     for name in BOUNDS:
@@ -25,6 +27,13 @@ def configure(args, rom, settings, lifetime, scene=None):
     mode = getattr(args,'exotica_model_endpoint',None)
     bounds = [getattr(args,'exotica_endpoint_'+k,None) for k in BOUNDS]
     admit=getattr(args,'exotica_endpoint_admit_from',None)
+    early=getattr(args,'exotica_early_visibility',None)
+    if early is None and settings.get('MIDZ_ENDPOINT_EARLY','0')!='0':
+        raise ValueError('early visibility cannot be inherited from a recording')
+    if early is not None:
+        if not getattr(args,'candidate',None) or (early=='endpoint' and mode!='draw'):
+            raise ValueError('early visibility requires explicit candidate and endpoint drawing')
+        settings['MIDZ_ENDPOINT_EARLY']='1' if early=='endpoint' else '0'
     if mode is None:
         if any(v is not None for v in bounds) or admit is not None:
             raise ValueError('endpoint bounds require an explicit mode')
@@ -50,8 +59,11 @@ def configure(args, rom, settings, lifetime, scene=None):
                 or not scene['first']<=admit<=first or scene['last']<last):
             raise ValueError('endpoint admissions require covered actual private drawing')
     if mode=='draw' and admit is None:raise ValueError('private endpoint drawing requires actual admission observation')
+    if early=='endpoint' and (not scene or not scene.get('compose') or scene.get('active')!=2):
+        raise ValueError('early visibility requires composed private margins')
     settings.update({KEY:'2' if mode=='draw' else '1','MIDV_FFB':'0',**{KEY+'_'+k.upper():str(v) for k,v in zip(BOUNDS,bounds)}})
     trial=dict(mode=mode,**dict(zip(BOUNDS,bounds)))
+    if early is not None:trial['early']=early
     if admit is not None:settings['MIDZ_MODEL_ADMIT_FIRST']=str(admit);trial['admit_from']=admit
     else:settings.pop('MIDZ_MODEL_ADMIT_FIRST',None)
     return trial
@@ -59,6 +71,10 @@ def configure(args, rom, settings, lifetime, scene=None):
 
 def verify_receipt(trial, text, directory):
     directory=Path(directory);paths=list(directory.glob('exotica-endpoint-*'))
+    enabled=bool(trial and trial.get('early')=='endpoint')
+    early=re.findall(r'^MIDZ_ENDPOINT_EARLY=([01])$',text,re.M)
+    if enabled and early!=['1']:raise ValueError('missing early visibility receipt')
+    if not enabled and '1' in early:raise ValueError('unexpected early visibility')
     if not trial or trial['mode']=='off':
         if re.search(r'MIDZ_MODEL_ENDPOINT=[12]',text) or 'MIDZ_MODEL_ENDPOINT_RESULT' in text or 'MIDZ_ENDPOINT_GPU_RESULT' in text or paths or list(directory.glob('exotica-admission-*')):
             raise ValueError('disabled endpoint observer ran')
@@ -123,7 +139,7 @@ def verify_receipt(trial, text, directory):
                 a,b=pair
                 for j in range(0,len(a),260):
                     x,y=struct.unpack_from('<17I',a,j),struct.unpack_from('<17I',b,j)
-                    if (a[j+68:j+260]!=b[j+68:j+260] or (x[9]^y[9])&~2
+                    if (a[j+68:j+260]!=b[j+68:j+260] or (x[9]^y[9])&~18
                             or any(x[k]!=y[k] for k in range(17) if k not in (7,8,9,10))):
                         raise ValueError('endpoint changed geometry or unrelated draw state')
                 if sum(a[j:j+260]!=b[j:j+260] for j in range(0,len(a),260))!=r['changed']:

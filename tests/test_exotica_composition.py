@@ -7,11 +7,21 @@ import tempfile
 import unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'harness'))
 import exotica_scene_options as options
-from exotica_composition import filtered_geometry
+from exotica_composition import filtered_geometry,endpoint_geometry
 from zeus_host_materials import verify_live
 
 
 class Composition(unittest.TestCase):
+    def test_endpoint_restrictions_keep_depth_test_and_materials(self):
+        a=bytearray(260);b=bytearray(a)
+        for index,value in [(7,247),(8,8),(9,18),(10,2047)]:struct.pack_into('<I',b,index*4,value)
+        endpoint_geometry(a,b)
+        for offset in [0,8,36,44,68,259]:
+            bad=bytearray(b);bad[offset]^=1
+            with self.subTest(offset=offset),self.assertRaises(ValueError):endpoint_geometry(a,bad)
+        bad=bytearray(b);bad[36]^=8
+        with self.assertRaises(ValueError):endpoint_geometry(a,bad)
+
     def test_candidate_gate_and_required_paths(self):
         p=argparse.ArgumentParser();p.add_argument('--candidate');options.add_arguments(p)
         base=['--candidate','x.exe','--exotica-host-scene','observe','--exotica-host-first','5000','--exotica-host-last','5002',

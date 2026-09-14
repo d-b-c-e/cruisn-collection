@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 earlier visibility — NEXT continuous appearance / completion
+
+Read docs/reviews/2026-09-14-exotica-early-visibility.md. Native1d3216d7a83 frozen
+SHA5ea44c115f3dfcfd924d41ca6b22f34161a9f660f40ff5387ba5131ebb7c74d3;
+206patches reconstruct5e3fe2564ad79e51829b11a34a73b2639b5dc6e1. New explicit
+--exotica-early-visibility endpoint connects earlier future/waiting appearance
+to original replacements. Requires draw/admissions/composedmargins/lifetimes/FFB0.
+Original waiting/active overlap stays BEFORE endpoint selection. Active permission
+copied at E with sealed operands;177actual permissions independentlyfolded.
+New scene_endpoint helper enforces exact ordered originalsubset/geometry/materials.
+Actualflag200 completion also changes depthwritebit16: priorbit2-only rule rejects
+thischange, foundin49savedquads; originalsetup constants verifythis. Depthtest preserved.
+Threeactualscenes14944q/subsets7184q PASS. Nativepair/model/scene unitchecks PASS.
+Live5260Amazoncompleted29enabledscenes5218..5248,6967ownedcommands735prepared0reject;
+5080GPUquads511models,348admissionpackets3607qualifiedoriginalqueries177marginproofs.
+InitialharnesscounterFAILretained; exactdouble-preparation bound and actual29count/
+bytecomparisons PASS. SavedrecheckunexpectedcontrolartifactFAILretained; explicit
+boundedcontrolchecks nowPASS. NOgame rerunforanalyzerfixes. FinalR/early-visibility-
+rechecked-v2.json and early-visibility-qualified PASSoriginalroute/resources/targets/
+camera/ADC/lifetimes,independentcomposition/admission/depth. 5219future2390/2558q,
+waiting598/610qchange; private5219/5220RGB69424/71721,no newblack,unusedrowsexact.
+Imagesviewed: visibleearlierforestbehindelephants;foreground/HUDintact. Sampleactive
+outputempty; visiblecorrectedmarginacceptance remainsopen. Non4K3440x1440/internal
+2736x4096. Doubleassembly/perquadflush diagnosticcost, notperformancesolution.
+NEXT continuouscompletedpresentation throughfirstoriginalandfadecompletion, then
+gradualappearancepolicy/speed. Personal87d/publicv0.5.0unchanged. No deployment,
+release/hostedCI/physicalFFB/menu removal. Serialrig; no builds/exportsduringtimed
+game. Keepworkingdirectly aftercheckpoint, no milestonewaiting.
+
 ## September14 live private endpoints — NEXT early visibility + temporal handover
 
 Read docs/reviews/2026-09-14-exotica-private-endpoints.md. Native156a03abfb0 frozen,

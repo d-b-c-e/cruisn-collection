@@ -15,7 +15,9 @@ inline bool valid(const Pair &p) {
             a.state[0]!=b.state[0] || (a.state[0] && a.state[0]!=p.frame) ||
             a.state[1]<3 || a.state[1]>8 || (a.state[11]!=0 && a.state[11]!=400) ||
             a.state[7]>256 || a.state[8]>256 || b.state[7]>256 || b.state[8]>256 ||
-            std::memcmp(a.vertices.data(),b.vertices.data(),sizeof(a.vertices)) || (a.state[9]^b.state[9])&~2U)return false;
+            // The game's flag0x200 endpoint restores register14=0x1000:
+            // depth writes turn off. Depth TEST, geometry/materials stay fixed.
+            std::memcmp(a.vertices.data(),b.vertices.data(),sizeof(a.vertices)) || (a.state[9]^b.state[9])&~18U)return false;
     for(unsigned j=0;j<17;++j)if((j<7 || j>10) && a.state[j]!=b.state[j])return false;
     for(const auto &v:a.vertices)for(float f:v)if(!std::isfinite(f))return false;
     return true;

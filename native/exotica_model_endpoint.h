@@ -62,7 +62,7 @@ inline bool prepare(const zeus_state::Context &current,uint32_t frame,uint32_t b
     if(out.original.size()!=out.replacement.size())return false;
     for(size_t i=0;i<out.original.size();++i) {
         const auto &a=out.original[i],&b=out.replacement[i];
-        if(std::memcmp(a.vertices.data(),b.vertices.data(),sizeof(a.vertices)) || (a.state[9]^b.state[9])&~uint32_t(2))return false;
+        if(std::memcmp(a.vertices.data(),b.vertices.data(),sizeof(a.vertices)) || (a.state[9]^b.state[9])&~uint32_t(18))return false;
         for(unsigned j=0;j<17;++j)if((j<7 || j>10) && a.state[j]!=b.state[j])return false;
         out.changed+=std::memcmp(&a,&b,sizeof(a))!=0;
     }

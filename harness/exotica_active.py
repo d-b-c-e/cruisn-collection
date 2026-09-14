@@ -163,7 +163,7 @@ def snapshot(directory, frame, cpu, gpu, mode, compose=False):
     return dict(frame=frame, quads=quad, vertices=vertices, **result)
 
 
-def verify(directory, scenes, text, mode, captures, compose=False):
+def verify(directory, scenes, text, mode, captures, compose=False, early=None):
     initial = re.findall(r'^MIDZ_HOST_ACTIVE=(\d+)$', text, re.M)
     sealed = re.findall(r'^MIDZ_HOST_ACTIVE_SEALED=(\d+)$', text, re.M)
     lease = re.findall(r'^MIDZ_HOST_ACTIVE_RESOURCE_LEASE=(\d+)$', text, re.M)
@@ -230,8 +230,12 @@ def verify(directory, scenes, text, mode, captures, compose=False):
             raise ValueError('active sealed scene boundary or binding counts')
         if bool(lease) != ('texture_pages' in sent):
             raise ValueError('active resource lease schema mismatch')
+        copies=2 if early and early['first']<=int(sent['frame'])<=early['last'] else 1
+        if copies==2 and re.findall(r'^MIDZ_ENDPOINT_EARLY=([01])$',text,re.M)!=['1']:
+            raise ValueError('active double preparation requires explicit early visibility')
         if lease and (not 0 <= int(sent['bindings_advanced']) <= int(sent['changed_objects']) or
-                not int(instances > 0) <= int(sent['model_checks']) <= candidates-submitted or
+                int(sent['model_checks'])%copies or int(sent['model_bytes'])%copies or
+                not copies*int(instances > 0) <= int(sent['model_checks']) <= copies*(candidates-submitted) or
                 not 8*int(sent['model_checks']) <= int(sent['model_bytes']) <= 8*0xc801*int(sent['model_checks']) or
                 int(sent['palette_checks']) != instances or not 0 <= int(sent['texture_pages']) <= 4096):
             raise ValueError('active resource lease counts')

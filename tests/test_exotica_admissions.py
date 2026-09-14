@@ -56,5 +56,24 @@ class AdmissionReceipts(unittest.TestCase):
             (Path(temp)/'exotica-admission-packets.bin').touch()
             with self.assertRaises(ValueError):verify({},'',temp,[])
 
+    def test_early_permissions_share_exact_original_lifecycle(self):
+        with tempfile.TemporaryDirectory() as temp:
+            p=Path(temp);originals=self.fixture(p)
+            self.trial.update(early='endpoint',first=5072)
+            self.text+='MIDZ_ENDPOINT_EARLY_RESULT complete=1 scenes=1 permissions=1\n'
+            self.csv(p/'exotica-handover-scenes.csv',['scene','end_records'],[[9,3]])
+            fields=['scene','frame','records','packets','slot','epoch','generation','realm','section','source',
+                    'first_sequence','first_frame','last_sequence','last_frame']
+            row=[9,5072,3,1,4096,1,2,10,20,30,1,5072,1,5072]
+            self.csv(p/'exotica-early-active.csv',fields,[row])
+            result=verify(self.trial,self.text,p,originals)
+            self.assertEqual(result['early_permissions'],1);self.assertEqual(result['admitted'],1)
+            for index,value in [(2,6),(3,0),(6,4),(8,21),(10,0)]:
+                bad=row.copy();bad[index]=value
+                self.csv(p/'exotica-early-active.csv',fields,[bad])
+                with self.subTest(index=index),self.assertRaises(ValueError):verify(self.trial,self.text,p,originals)
+            self.csv(p/'exotica-early-active.csv',fields,[row,row])
+            with self.assertRaises(ValueError):verify(self.trial,self.text,p,originals)
+
 
 if __name__=='__main__':unittest.main()

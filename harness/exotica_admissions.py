@@ -56,6 +56,37 @@ def verify(trial,text,directory,originals):
     waiting_path=directory/'exotica-waiting-draw-gpu.csv'
     waiting={int(e['scene']):e for e in bounded_csv(waiting_path,20000)} if waiting_path.exists() else {}
     fences={int(e['scene']):e for e in bounded_csv(directory/'exotica-host-fences.csv',20000)} if waiting else {}
+    combined=[({k:int(v) for k,v in q.items()},o,False) for q,o in zip(qrows,originals)]
+    def ordered(rows):
+        keys=[(q['packets'],q['records']) for q,o,early in rows]
+        if keys!=sorted(keys):raise ValueError('admission query order')
+    ordered(combined)
+    early_path=directory/'exotica-early-active.csv';early_rows=[]
+    if trial.get('early')=='endpoint':
+        final_early=re.findall(r'^MIDZ_ENDPOINT_EARLY_RESULT complete=(\d+) scenes=(\d+) permissions=(\d+)$',text,re.M)
+        expected_scenes=sum(trial['first']<=int(e['frame'])<=trial['last'] for e in future.values())
+        if len(final_early)!=1 or final_early[0][:2]!=('1',str(expected_scenes)) or not expected_scenes:
+            raise ValueError('early visibility completion/scene coverage')
+        early_fields=('scene','frame','records','packets','slot','epoch','generation','realm','section','source',
+                      'first_sequence','first_frame','last_sequence','last_frame')
+        handovers={int(e['scene']):e for e in bounded_csv(directory/'exotica-handover-scenes.csv',20000)}
+        seen=set()
+        for row in bounded_csv(early_path,65536):
+            if tuple(row)!=early_fields or any(not re.fullmatch('[0-9]+',v) for v in row.values()):
+                raise ValueError('early visibility permission schema')
+            o={k:int(v) for k,v in row.items()};scene=future.get(o['scene']);handover=handovers.get(o['scene'])
+            identity=(o['scene'],o['slot'])
+            if (not scene or not handover or identity in seen or not trial['first']<=o['frame']<=trial['last']
+                    or int(scene['frame'])!=o['frame'] or int(handover['end_records'])!=o['records']):
+                raise ValueError('early visibility sealed scene identity')
+            seen.add(identity);o['id']=len(early_rows)+1
+            q={k:o[k] for k in fields if k!='admitted'};q['admitted']=1
+            early_rows.append((q,o,True))
+        if len(early_rows)!=int(final_early[0][2]):raise ValueError('early visibility permission count')
+        ordered(early_rows)
+        combined=sorted(combined+early_rows,key=lambda row:(row[0]['packets'],row[0]['records']))
+    elif early_path.exists() or 'MIDZ_ENDPOINT_EARLY_RESULT' in text:
+        raise ValueError('disabled early visibility ran')
     live={};by_key={};admitted={};cursor=0;epoch=0;packet_index=0;last_frame=0;yes=0
     def fold(count):
         nonlocal cursor,epoch
@@ -94,8 +125,8 @@ def verify(trial,text,directory,originals):
                 if key not in admitted:admitted[key]=dict(owner=h,first_sequence=p['sequence'],first_frame=p['frame'])
                 elif admitted[key]['owner']!=h:raise ValueError('admission missed source lifecycle')
                 admitted[key].update(last_sequence=p['sequence'],last_frame=p['frame'])
-    for raw,o in zip(qrows,originals):
-        q={k:int(v) for k,v in raw.items()};advance(q['packets']);fold(q['records'])
+    for q,o,is_early in combined:
+        advance(q['packets']);fold(q['records'])
         h=tuple(o[k] for k in ('slot','epoch','generation','realm','section','source'))
         if q['id']!=o['id'] or live.get(h[0])!=h:raise ValueError('admission original owner join')
         state=admitted.get(h[3:]);matched=state is not None and state['owner']==h
@@ -103,8 +134,8 @@ def verify(trial,text,directory,originals):
         expected=[state[k] if matched else 0 for k in fields[2:6]]
         if q['admitted']!=int(matched) or [q[k] for k in fields[2:6]]!=expected:
             raise ValueError('admission original qualification differs')
-        yes+=matched
+        yes+=matched and not is_early
     advance(len(packets))
-    return dict(passed=True,packets=total,bytes=size,queries=len(qrows),admitted=yes,
+    return dict(passed=True,packets=total,bytes=size,queries=len(qrows),admitted=yes,early_permissions=len(early_rows),
                 scope='Every recorded admission/query folded against exact lifecycle/packet watermarks and GPU draw counts. '
                       'Individual source/geometry equality requires snapshot checks; no opacity or visibility policy.')

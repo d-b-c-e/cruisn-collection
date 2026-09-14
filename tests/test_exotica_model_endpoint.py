@@ -130,5 +130,23 @@ class EndpointObservation(unittest.TestCase):
             (p/'exotica-endpoint-gpu.csv').write_text('frame,model,index,count\n5219,1,1,2\n5219,1,0,2\n')
             with self.assertRaises(ValueError):endpoint.verify_draw(dict(mode='draw'),text,p,originals)
 
+    def test_early_visibility_is_explicit_and_requires_private_handover(self):
+        words=['--candidate','test.exe','--exotica-model-endpoint','draw',
+               '--exotica-endpoint-first','5218','--exotica-endpoint-last','5248',
+               '--exotica-endpoint-snapshot','5219','--exotica-endpoint-admit-from','5072']
+        life=dict(mode='observe',first=1799,last=5258)
+        scene=dict(future=2,materials=True,first=1800,last=5248,compose=True,active=2)
+        args=self.args(*words,'--exotica-early-visibility','endpoint');settings={}
+        self.assertEqual(endpoint.configure(args,'crusnexo',settings,life,scene)['early'],'endpoint')
+        self.assertEqual(settings['MIDZ_ENDPOINT_EARLY'],'1')
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life,dict(scene,compose=False))
+        args.exotica_model_endpoint='observe'
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life,scene)
+        with self.assertRaises(ValueError):endpoint.configure(self.args(*words),'crusnexo',settings,life,scene)
+        with tempfile.TemporaryDirectory() as temp:
+            p=Path(temp);self.fixture(p)
+            with self.assertRaises(ValueError):endpoint.verify_receipt(dict(self.trial,early='endpoint'),self.text,p)
+            with self.assertRaises(ValueError):endpoint.verify_receipt(self.trial,self.text+'MIDZ_ENDPOINT_EARLY=1\n',p)
+
 
 if __name__=='__main__':unittest.main()

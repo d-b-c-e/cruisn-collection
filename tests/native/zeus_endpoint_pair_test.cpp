@@ -25,6 +25,8 @@ int main() {
         assert(!valid(invalid));
     }
     auto invalid=p;invalid.replacement.vertices[0][0]=1;assert(!valid(invalid));
+    auto intrinsic=p;intrinsic.replacement.state[9]&=~16U;assert(valid(intrinsic));
+    intrinsic.replacement.state[9]^=8;assert(!valid(intrinsic));
     p.original.state[0]=0;p.replacement.state[0]=0;assert(valid(p)); // explicit live record convention
     std::cout<<"PASS original/private pair ABI, immutable geometry/state and ordered single consumption\n";
 }

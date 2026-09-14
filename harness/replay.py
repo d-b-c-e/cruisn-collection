@@ -275,6 +275,9 @@ def main(argv=None):
         if handover_trial:report['exotica_handover']=handover_trial
         endpoint_trial=exotica_model_endpoint.configure(args,manifest['rom'],manifest['settings'],lifetime_trial,scene_trial)
         if endpoint_trial:report['exotica_model_endpoint']=endpoint_trial
+        if endpoint_trial and endpoint_trial.get('early')=='endpoint':
+            scene_trial['early_visibility']={k:endpoint_trial[k] for k in ('first','last')}
+            handover_trial['early_visibility']=dict(scene_trial['early_visibility'])
         if scene_trial and scene_trial.get('future_present'):
             report['presentation']='explicit-extended-target'
         stall_trial=zeus_stream.configure_stall(args,manifest['rom'],manifest['settings'],reference['frames'])

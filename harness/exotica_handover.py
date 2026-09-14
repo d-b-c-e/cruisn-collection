@@ -158,6 +158,14 @@ def verify_receipt(trial, text, directory):
                     p=directory/name
                     if not p.is_file() or p.stat().st_size!=len(data) or p.read_bytes()!=data:
                         raise ValueError('Exotica filtered proposal geometry/order differs')
+                early=trial.get('early_visibility')
+                if early and early['first']<=frame<=early['last']:
+                    from exotica_composition import endpoint_geometry
+                    if re.findall(r'^MIDZ_ENDPOINT_EARLY=([01])$',text,re.M)!=['1']:
+                        raise ValueError('handover control without explicit early visibility')
+                    name=f'exotica-handover-{frame}-control-quads.bin';expected_files.add(name);p=directory/name
+                    if not p.is_file() or p.stat().st_size!=len(expected['quads']):raise ValueError('handover control extent')
+                    endpoint_geometry(p.read_bytes(),expected['quads'])
             for name in sums:sums[name]+=values[name]
             last_scene=values['scene']
             last_ready_time=rtime
