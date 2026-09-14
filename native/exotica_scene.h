@@ -13,6 +13,7 @@
 #include "zeus_model_bounds.h"
 #include <map>
 #include <set>
+#include <unordered_set>
 
 namespace cruisn { namespace exotica_scene {
 struct Parameters
@@ -102,14 +103,15 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
         std::set<uint32_t> explicit_formats;
     };
     std::map<std::pair<uint32_t,uint32_t>,CachedModel> cache;
-    std::set<std::pair<uint32_t,uint32_t>> identities;
+    std::unordered_set<uint64_t> identities;
+    identities.reserve(sources.size());
     zeus_model::Result decoded;
     auto operands=p.setup;
     exotica_state::Result setup;
     for(const auto &s:sources)
     {
         if(!s.supported || !select(s))continue;
-        if(!valid_identity(s) || !identities.emplace(s.entry,s.source).second)return false;
+        if(!valid_identity(s) || !identities.emplace((uint64_t(s.entry)<<32)|s.source).second)return false;
         ++out.selected;const auto &o=s.words;uint32_t flags=o[15];
         if(((flags&3)!=0 && (flags&3)!=3) || flags&0x80)
         {++out.unsupported_transform;continue;}
