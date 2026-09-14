@@ -26,14 +26,17 @@ struct Result
 };
 inline bool setup(const Operands &a,Result &output)
 {
-    output=Result();Result r;r.cache=a.cache;
+    // Reuse only storage; each call still starts with empty commands/state.
+    // A rejected setup leaves the public result reset, as before.
+    Result r;r.packet=std::move(output.packet);r.packet.clear();
+    output=Result();r.cache=a.cache;
     const auto c=[&](unsigned p){return a.constants[p-0x67d0];};
     const auto w=[&](unsigned p){return a.commands[p-0xb479];};
     if(a.defaults.empty() || a.defaults.size()>16 || !c(0x67d6) ||
         w(0xb47b)!=0x32000000 || w(0xb47c)!=0x1c000000 ||
         w(0xb481)!=0x05410000 || w(0xb482)!=0x05400000 || w(0xb493)!=0x05200000)return false;
     for(const auto &b:a.bodies)if(b[0]!=0x05410000 || b[2]!=0x05400000)return false;
-    auto &v=r.packet;
+    auto &v=r.packet;v.reserve(2*a.defaults.size()+32);
     const auto pointer=[&](uint32_t value){v.push_back(w(0xb493));v.push_back(value);};
     const uint32_t flags=a.flags,key=(flags&c(0x67d2))|(a.object[16]&0xffff0000);
     // Cache invalidation executes in 68D1's delay slots on both branch outcomes.

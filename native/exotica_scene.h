@@ -103,6 +103,8 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
     std::map<std::pair<uint32_t,uint32_t>,CachedModel> cache;
     std::set<std::pair<uint32_t,uint32_t>> identities;
     zeus_model::Result decoded;
+    auto operands=p.setup;
+    exotica_state::Result setup;
     for(const auto &s:sources)
     {
         if(!s.supported || !select(s))continue;
@@ -150,13 +152,12 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
             out.model_words_read+=size;CachedModel model;model.words=std::move(words);
             found=cache.emplace(key,std::move(model)).first;
         }
-        auto operands=p.setup;operands.object=o;operands.cache.fill(UINT32_MAX);
+        operands.object=o;operands.cache.fill(UINT32_MAX);
         if(p.complete_fade)flags&=~uint32_t(0x04000100);
-        operands.flags=flags;exotica_state::Result setup;
+        operands.flags=flags;
         if(!exotica_state::setup(operands,setup))return false;
-        auto packet=std::move(setup.packet);
-        const auto placement=exotica_transform::packet(transform,p.scale,true);
-        packet.insert(packet.end(),placement.begin(),placement.end());
+        auto &packet=setup.packet;
+        exotica_transform::append_packet(transform,p.scale,true,packet);
         zeus_state::Result state;
         if(!zeus_state::transition(p.context,{},packet,base,state))return false;
         if(state.context.regs[0x40]!=0x0084003f)return false;

@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 packet storage — continue World 2.5 roads next
+
+Read docs/reviews/2026-09-14-exotica-packet-storage.md. Nativef6e47894b08 frozen/pushed
+SHA36eab0cffc0cc92bcdef44e690a4e8b3bf3d57274f51f48f7c281ae1aadcf999.
+194patches reconstructe8e99fdbe741e5a2af9d3342ce665bb75d883b2f. Reuse per-scene setup
+operands/packet capacity and append placement directly; all commands/state reset.
+5targetednative tests and3actualscene byte comparisonsPASS; alternating offline
+assembly reductions21.21/11.28/12.06%. Tinyclipshortcut0.83%rejected; notpromoted.
+Initial local benchmark duplicateheader compileFAILretained, fixeddependencycopy.
+Fullquiet successorPASS8860inputs/7060camera/21180ADC.6953early+6953active+20859material
+records exactexcepttimings; lifetime/handover/cohort/compose filesbyteexact. Assembly
+17.361->15.241s(-12.21%); measured3501..8859speed93.40->94.20%, latewindowunchanged.
+MAMEaverage93.58->94.26%. StillNOTfullspeed ornew4K; noheavyreadbacks. LOCALscene-storage-*
+andcomposition-quiet-acceptance.json. Earliercompositionpixelacceptance retained.
+NEXT missingWorld2.5roads/ground adapter; inspect saved revision snapshots before
+newgame. Exotica performance/temporalhandover/final4K remainOPEN. Continue directly
+whileparityworkremains; no heartbeatwaiting. No currentgame/build/test. Personal87d/
+publicv0.5.0unchanged. No deploy/release/hostedCI/physicalFFB/menuremoval. Pending
+attendedFFBavailabilityunanswered. Serialize rig/GPU/builds; no broadscans duringgames.
+
 ## September 14 LIVE composition — performance next, continue directly
 
 Read docs/reviews/2026-09-14-exotica-live-composition.md. User explicitly says keep

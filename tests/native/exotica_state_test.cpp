@@ -17,5 +17,15 @@ int main()
     a.flags=0x8100;assert(setup(a,r) && r.branch==Branch::Light && r.program==3);
     assert(std::find(r.packet.begin(),r.packet.end(),0x15000000)==r.packet.end());
     a.flags=0x800;a.cache[2]=0;assert(setup(a,r) && r.cache[2]==0xffffffff && r.branch==Branch::Cached);
+    // Reuse after foreign placement words and across branches must not retain
+    // commands or state. Compare against fresh output for every setup branch.
+    for(auto flags:{0U,0x100U,0x200U,0x400U,0x8100U})
+    {
+        a.flags=flags;a.cache.fill(0xffffffff);Result fresh;
+        assert(setup(a,fresh));r.packet.insert(r.packet.end(),13,0xdeadbeef);
+        assert(setup(a,r));assert(r.packet==fresh.packet && r.cache==fresh.cache);
+        assert(r.branch==fresh.branch && r.program==fresh.program);
+    }
     a.defaults.clear();assert(!setup(a,r) && r.packet.empty());
+    assert(r.cache==Result().cache && r.branch==Branch::Cached && r.program==-1);
 }

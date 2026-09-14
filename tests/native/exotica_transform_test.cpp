@@ -13,6 +13,14 @@ int main()
     assert(result.matrix==rotation && result.depth==27);
     assert(result.translation[0]==f(9) && result.translation[1]==f(18));
     assert(packet(result,f(1),true).size()==13 && packet(result,f(1),false).size()==4);
+    for(bool update:{false,true})
+    {
+        std::vector<uint32_t> combined={0x05200000,0x12345678};
+        const auto placement=packet(result,f(2),update);
+        append_packet(result,f(2),update,combined);
+        assert(combined[0]==0x05200000 && combined[1]==0x12345678);
+        assert(std::vector<uint32_t>(combined.begin()+2,combined.end())==placement);
+    }
     assert(prepare(p,c,identity,rotation,identity,0x80000,result) && result.matrix==identity);
     assert(prepare(p,c,identity,rotation,identity,0x80,result) && result.matrix==rotation);
     assert(prepare(p,c,identity,rotation,identity,3,result) && result.translation==p && result.depth==30);

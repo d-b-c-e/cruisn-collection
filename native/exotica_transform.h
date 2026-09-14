@@ -50,13 +50,17 @@ inline bool prepare(const std::array<uint32_t,3> &position,
         result.matrix[row*3+col]=((r[col]*m[row*3]+r[col+3]*m[row*3+1])+r[col+6]*m[row*3+2]).store();
     return true;
 }
-inline std::vector<uint32_t> packet(const Prepared &prepared,uint32_t scale,bool update)
+inline void append_packet(const Prepared &prepared,uint32_t scale,bool update,std::vector<uint32_t> &output)
 {
-    std::vector<uint32_t> output(1,update?0x07000000:0x16000000);
+    output.reserve(output.size()+(update?13:4));
+    output.push_back(update?0x07000000:0x16000000);
     const auto f=Float::load(scale);
     if(update)for(auto w:prepared.matrix)output.push_back((Float::load(w)*f).store());
     for(auto w:prepared.translation)output.push_back((Float::load(w)*f).store());
-    return output;
+}
+inline std::vector<uint32_t> packet(const Prepared &prepared,uint32_t scale,bool update)
+{
+    std::vector<uint32_t> output;append_packet(prepared,scale,update,output);return output;
 }
 inline uint32_t select_model(uint32_t descriptor,uint32_t alternate,int32_t depth)
 {return alternate && depth>25000?alternate:descriptor;}
