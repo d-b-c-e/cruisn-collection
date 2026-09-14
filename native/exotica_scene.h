@@ -92,13 +92,17 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
         !std::isfinite(p.margin) || p.margin<0 || p.margin>256 || p.render_policy || p.early_depth>2 || !zeus_state::valid(p.context))return false;
     if(read(0x67da)!=p.far_limit || read(0x67db)!=p.scale)return false;
     Result out;
+    out.instances.reserve(std::min(max_instances,sources.size()));
+    out.quads.reserve(std::min(max_quads,sources.size()*8));
     struct CachedModel
     {
         std::vector<uint32_t> words;
         std::map<uint32_t,zeus_bounds::Bounds> bounds;
+        std::set<uint32_t> explicit_formats;
     };
     std::map<std::pair<uint32_t,uint32_t>,CachedModel> cache;
     std::set<std::pair<uint32_t,uint32_t>> identities;
+    zeus_model::Result decoded;
     for(const auto &s:sources)
     {
         if(!s.supported || !select(s))continue;
@@ -155,8 +159,11 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
         packet.insert(packet.end(),placement.begin(),placement.end());
         zeus_state::Result state;
         if(!zeus_state::transition(p.context,{},packet,base,state))return false;
-        if(state.context.regs[0x40]!=0x0084003f ||
-            !explicit_texture(found->second.words,state.context.quad_size))return false;
+        if(state.context.regs[0x40]!=0x0084003f)return false;
+        if(!found->second.explicit_formats.count(state.context.quad_size)) {
+            if(!explicit_texture(found->second.words,state.context.quad_size))return false;
+            found->second.explicit_formats.insert(state.context.quad_size);
+        }
         zeus_model::Context context;
         context.frame=p.frame;context.quad_size=state.context.quad_size;
         context.texture=state.context.texture;context.yscale=state.context.yscale;
@@ -180,7 +187,6 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
             if(zeus_bounds::outside(bound->second,context,p.margin,2147483520.f))
             {++out.culled_bounds;continue;}
         }
-        zeus_model::Result decoded;
         if(!zeus_model::decode(found->second.words,context,decoded) || decoded.quads.size()>max_quads-out.quads.size())return false;
         Instance instance;instance.entry=s.entry;instance.source=s.source;instance.descriptor=descriptor;
         instance.base=base;instance.count=count;instance.depth=transform.depth;

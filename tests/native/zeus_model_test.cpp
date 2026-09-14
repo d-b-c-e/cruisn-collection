@@ -27,5 +27,16 @@ int main()
     c.quad_size=10;auto bad=words;bad.pop_back();assert(!decode(bad,c,r));
     bad=words;bad[0]=0xff000000;assert(!decode(bad,c,r));
     bad=words;bad.insert(bad.begin(),{0x36200000,0x08000000});assert(!decode(bad,c,r));
-    c.regs[0x6c]=31;assert(!decode(words,c,r));
+    // Projection constants refresh at format changes and each decode call.
+    auto uv=words;uv[3]=1;
+    auto twice=uv;twice.push_back(0x229e0000);twice.push_back(1);
+    twice.insert(twice.end(),uv.begin()+2,uv.end());
+    assert(decode(twice,c,r) && r.quads.size()==2);
+    assert(r.quads[1].vertices[0][3]==2*r.quads[0].vertices[0][3]);
+    assert(r.quads[1].vertices[0][0]==r.quads[0].vertices[0][0]);
+    assert(decode(words,c,r) && r.quads.size()==1 && r.polygons==1);
+    assert(!std::memcmp(&r.quads[0],&baseline,sizeof(Quad)));
+    c.regs[0x6c]=31;assert(!decode(words,c,r) && r.quads.empty());
+    // A malformed projection without polygons was previously accepted.
+    assert(decode({},c,r) && r.quads.empty() && r.polygons==0);
 }

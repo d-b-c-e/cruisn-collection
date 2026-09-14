@@ -36883,3 +36883,144 @@ index f38c2cd10f6..80296ef1e74 100644
 -- 
 2.55.0.windows.3
 
+From 1d5af5a09287dc71a2c06ea2bc8ddf605310d329 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 02:01:07 -0500
+Subject: [PATCH] Reduce repeated Exotica scene assembly and projection work
+
+---
+ src/mame/midway/cruisn/exotica_scene.h | 12 ++++++--
+ src/mame/midway/cruisn/zeus_model.h    | 38 +++++++++++++++++++-------
+ 2 files changed, 37 insertions(+), 13 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/exotica_scene.h b/src/mame/midway/cruisn/exotica_scene.h
+index 2a7b52a509b..44117897e51 100644
+--- a/src/mame/midway/cruisn/exotica_scene.h
++++ b/src/mame/midway/cruisn/exotica_scene.h
+@@ -92,13 +92,17 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
+         !std::isfinite(p.margin) || p.margin<0 || p.margin>256 || p.render_policy || p.early_depth>2 || !zeus_state::valid(p.context))return false;
+     if(read(0x67da)!=p.far_limit || read(0x67db)!=p.scale)return false;
+     Result out;
++    out.instances.reserve(std::min(max_instances,sources.size()));
++    out.quads.reserve(std::min(max_quads,sources.size()*8));
+     struct CachedModel
+     {
+         std::vector<uint32_t> words;
+         std::map<uint32_t,zeus_bounds::Bounds> bounds;
++        std::set<uint32_t> explicit_formats;
+     };
+     std::map<std::pair<uint32_t,uint32_t>,CachedModel> cache;
+     std::set<std::pair<uint32_t,uint32_t>> identities;
++    zeus_model::Result decoded;
+     for(const auto &s:sources)
+     {
+         if(!s.supported || !select(s))continue;
+@@ -155,8 +159,11 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
+         packet.insert(packet.end(),placement.begin(),placement.end());
+         zeus_state::Result state;
+         if(!zeus_state::transition(p.context,{},packet,base,state))return false;
+-        if(state.context.regs[0x40]!=0x0084003f ||
+-            !explicit_texture(found->second.words,state.context.quad_size))return false;
++        if(state.context.regs[0x40]!=0x0084003f)return false;
++        if(!found->second.explicit_formats.count(state.context.quad_size)) {
++            if(!explicit_texture(found->second.words,state.context.quad_size))return false;
++            found->second.explicit_formats.insert(state.context.quad_size);
++        }
+         zeus_model::Context context;
+         context.frame=p.frame;context.quad_size=state.context.quad_size;
+         context.texture=state.context.texture;context.yscale=state.context.yscale;
+@@ -180,7 +187,6 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
+             if(zeus_bounds::outside(bound->second,context,p.margin,2147483520.f))
+             {++out.culled_bounds;continue;}
+         }
+-        zeus_model::Result decoded;
+         if(!zeus_model::decode(found->second.words,context,decoded) || decoded.quads.size()>max_quads-out.quads.size())return false;
+         Instance instance;instance.entry=s.entry;instance.source=s.source;instance.descriptor=descriptor;
+         instance.base=base;instance.count=count;instance.depth=transform.depth;
+diff --git a/src/mame/midway/cruisn/zeus_model.h b/src/mame/midway/cruisn/zeus_model.h
+index 4237b389b29..82a6af2a80f 100644
+--- a/src/mame/midway/cruisn/zeus_model.h
++++ b/src/mame/midway/cruisn/zeus_model.h
+@@ -37,13 +37,22 @@ inline float word_float(uint32_t value)
+     std::memcpy(&f,&value,sizeof(f));return f;
+ }
+ using Vertex=std::array<float,6>;
+-inline int project(const uint32_t *d,uint32_t tex,const Context &ctx,Quad &quad)
++struct Projection
++{
++    float scale=0,uvscale=0,clip=0,ox=0,oy=0,focal=0;
++};
++inline bool prepare_projection(const Context &ctx,Projection &p)
+ {
+     const int vs=int(ctx.regs[0x66])-0x8e,us=int(ctx.regs[0x68])-0x9d;
+-    if(vs<-31 || vs>31 || us<-31 || us>31 || ctx.regs[0x6c]>30)return -1;
+-    const float scale=std::ldexp(1.0f,vs),uvscale=std::ldexp(1.0f,us);
+-    const float clip=word_float(ctx.regs[0x78]),ox=word_float(ctx.regs[0x6a]),oy=word_float(ctx.regs[0x6b]);
+-    if(!std::isfinite(clip) || !std::isfinite(ox) || !std::isfinite(oy))return -1;
++    if(vs<-31 || vs>31 || us<-31 || us>31 || ctx.regs[0x6c]>30)return false;
++    p.scale=std::ldexp(1.0f,vs);p.uvscale=std::ldexp(1.0f,us);
++    p.clip=word_float(ctx.regs[0x78]);p.ox=word_float(ctx.regs[0x6a]);p.oy=word_float(ctx.regs[0x6b]);
++    p.focal=float(1U<<ctx.regs[0x6c]);
++    return std::isfinite(p.clip) && std::isfinite(p.ox) && std::isfinite(p.oy);
++}
++inline int project_prepared(const uint32_t *d,uint32_t tex,const Context &ctx,const Projection &p,Quad &quad)
++{
++    const float scale=p.scale,uvscale=p.uvscale,clip=p.clip,ox=p.ox,oy=p.oy;
+     const int32_t xyz[4][3]={{int16_t(d[2]),int16_t(d[3]),int16_t(d[6])},
+         {int16_t(d[2]>>16),int16_t(d[3]>>16),int16_t(d[6]>>16)},
+         {int16_t(d[8]),int16_t(d[9]),int16_t(d[7])},
+@@ -78,7 +87,7 @@ inline int project(const uint32_t *d,uint32_t tex,const Context &ctx,Quad &quad)
+     for(unsigned i=0;i<count;++i)
+     {
+         auto &v=output[i];if(v[2]<0)v[2]=0;
+-        const float ooz=float(1U<<ctx.regs[0x6c])/(v[2]+2.0f);
++        const float ooz=p.focal/(v[2]+2.0f);
+         v[0]=v[0]*ooz+ox;v[1]=v[1]*ooz+oy;
+         v[2]*=4096.0f;v[3]*=ooz;v[4]*=ooz;v[5]=ooz;
+         for(auto value:v)if(!std::isfinite(value))return -1;
+@@ -102,21 +111,28 @@ inline int project(const uint32_t *d,uint32_t tex,const Context &ctx,Quad &quad)
+         flags,bias,ctx.render[4],ctx.yscale,0,0,ctx.render[1]&0xfff,ctx.render[2]&0xfff}};
+     quad.vertices=output;return any_clipped?3:2;
+ }
++inline int project(const uint32_t *d,uint32_t tex,const Context &ctx,Quad &quad)
++{
++    Projection p;
++    return prepare_projection(ctx,p)?project_prepared(d,tex,ctx,p,quad):-1;
++}
+ inline bool decode(const std::vector<uint32_t> &words,Context context,Result &result)
+ {
+-    result=Result();
++    // Reuse bounded scratch storage across instances, never geometry or state.
++    result.quads.clear();
++    result.polygons=result.near_rejected=result.backfaces=result.near_clipped=result.register_writes=0;
+     if(words.size()>2*(0xc800+1) || words.size()%2 || context.yscale>1 || context.render_policy>7 ||
+         (context.quad_size!=10 && context.quad_size!=12 && context.quad_size!=14))return false;
+     for(auto f:context.matrix)if(!std::isfinite(f))return false;
+     for(auto f:context.translation)if(!std::isfinite(f))return false;
+-    uint32_t tex=0;
++    uint32_t tex=0;Projection projection;bool projection_ready=false;
+     for(size_t i=0;i<words.size();)
+     {
+         const uint32_t *d=words.data()+i,cmd=d[0]>>24;
+         const unsigned length=cmd==0x38?context.quad_size:2;
+         if(length>words.size()-i)return false;
+         i+=length;
+-        if(cmd==0 || cmd==0x22){context.regs[0x68]=(d[0]>>16)&255;tex=d[1];}
++        if(cmd==0 || cmd==0x22){context.regs[0x68]=(d[0]>>16)&255;tex=d[1];projection_ready=false;}
+         else if(cmd==0x36)
+         {
+             const uint32_t reg=(d[0]>>16)&127,pointer=d[1]>>24,value=d[1]&0xffffff;
+@@ -128,7 +144,9 @@ inline bool decode(const std::vector<uint32_t> &words,Context context,Result &re
+         }
+         else if(cmd==0x38)
+         {
+-            ++result.polygons;Quad quad;const int status=project(d,tex,context,quad);
++            ++result.polygons;
++            if(!projection_ready){if(!prepare_projection(context,projection))return false;projection_ready=true;}
++            Quad quad;const int status=project_prepared(d,tex,context,projection,quad);
+             if(status<0)return false;
+             if(status==0)++result.near_rejected;
+             else if(status==1)++result.backfaces;
+-- 
+2.55.0.windows.3
+
