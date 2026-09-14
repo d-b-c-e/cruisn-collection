@@ -35,8 +35,12 @@ and the public package remain v0.5.0.
   checked window. [Full Amazon coverage](docs/reviews/2026-09-14-exotica-full-visibility.md)
   now preserves all 8,860 recorded inputs and original rendering, with all 30,308
   marked model preparations accepted and zero endpoint fallbacks. This is a
-  development candidate, not four-game release acceptance. Next reduce the paired
-  GPU submission cost, assess the far visibility boundary and other tracks, then
+  development candidate, not four-game release acceptance. GPU batching preserved
+  pixels but showed no speed gain and was reverted. [Exact CPU preparation
+  optimizations](docs/reviews/2026-09-14-exotica-cpu-preparation.md) reduce saved-scene
+  assembly time by 3.8–9.1%; full-drive pixels and endpoint coverage pass, but
+  end-to-end speed did not improve in the measured pair. Next assess
+  remaining preparation/submission cost, the far visibility boundary and other tracks, then
   renew full-speed 4K acceptance. The instrumented late-drive window is about
   92% speed; the current completed-screen checks use 3440×1440.
 - **USA:** visible earlier scenery, including small 3× gains, but the last

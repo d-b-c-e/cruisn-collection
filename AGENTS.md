@@ -1,5 +1,69 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 CPU preparation — ACTIVE World custom dispatch investigation
+
+Read docs/reviews/2026-09-14-exotica-cpu-preparation.md. Nativef2e08e49d9e frozen
+SHA680f1cbf6f8314abf9023209caba4ca6e4472027846f3f3b3b4c74862864173b;
+214patches reconstructddba53361125d38bc5e3bf85d5976a307c9b665d. Includes reverted
+GPUbatching plus separately committed exactC31conversion/IEEEboundsneighbor/
+reservedidentityhash. Seven targetednativeexecutionsPASS including one million
+numericwords andfourroundingmodes. Three alternating200-loop actualscene checks
+matchfullorderedinstance/quadbytes; CPUmedians improve9.09/5.91/3.79percent.
+FullAmazon8860inputs30308marked0reject282036GPUpairs exact080, camera/ADC/lifetimes/
+admissions/earlygeometry andoriginal+private5073/5645 exact;15GL6536..6550BMPexact.
+Futureassembly17.456->17.026s,active2.516->2.071s. NOend-to-endgain demonstrated:
+fixedwindows97.13->95.85,85.86->79.46,92.24->90.57percent. Oneinstrumentedpair;
+doNOTrepeatfullgames forfavorabletiming. LOCALcurrent-cpu-checks/benchmark/export,
+full-current-cpu(-qualified),current-cpu-cost-v2. Initialcostsummaryintegerparse
+FAILretained, fractional corrected without replay. Personal87d/v0.5.0unchanged.
+
+NEXT WorldHawaiigap: custominitializer dispatch0x58ec confirmed; savedWorld25RAM
+5900[58eb]=c10c41 ROMtable. Pairsmetadata->handler, firstmatchwins (duplicatea08).
+Special244futuredefinitions/17models stillunsupported. No laterallocationmatches
+in oldcommonallocatorcapture. Need read handlers at59c5 etc to distinguish static
+templates vs animated/dynamic effects; do not blindlyrelabel ordinarygeometry.
+Prior near/farclipping andauthoredcoverage stillopen. No currentgame/build/test.
+Serialrig; no deploy/release/physicalFFB/hostedCI. Continueautonomouslywhileparity
+remains; do not waitforheartbeat. Currentmonitor3440x1440, no renewedfinal4K.
+
+## September14 batching evaluated — ACTIVE saved-scene CPU profiling next
+
+Read docs/reviews/2026-09-14-exotica-endpoint-batching.md. Native81366bffadc frozen,
+210patches, fullAmazon8860inputs30308marked0reject and282036GPUrowsbyteexact080.
+Originalcamera/ADC/lifetimes/admissions/earlygeometry/savedoriginal+private5073,
+5645 exact; all15GL6536..6550BMPexact. Groups23943/peak98,47886targetflushes vs564072.
+NOmeasuredspeedgain: late92.24->90.99%, earlier97.13->95.73/middle85.86->81.46.
+Oneinstrumentedpair, notstablecausalregressionclaim. Keep080asacceptedbaseline;
+doNOTpromotebatchingperformance. Gate/revertbatchingbeforecarryingnextcandidate
+forwardbydefault. DoNOTrepeatfullgames merelytofindfavorabletiming.
+InitialharnessFAIL splitstdoutannouncement/stderrfinal; canonicalcheckerreads
+bothboundedstreams,11focusedtestsPASS. RecheckfirstFAILmissingcompleteddisplay;
+correctedexplicitremainingchecks PASS, bothfailuresretained. LOCAL
+full-batched-endpoint-rechecked-v2.json/full-batched-endpoint-qualified,
+batched-endpoint-cost.json. No game/build/test now. Nextprofile saved Exo scene
+CPU phases (hostassembly~17s/fullrun dominates; useful read-only analyzer exists)
+beforechoosingoptimization. Personal87d/publicv0.5.0unchanged. Serialrig; no
+deploy/release/physicalFFB/hostedCI. Continueautonomouslywhileparityremains.
+
+## September14 full endpoint coverage — ACTIVE batching cost next
+
+Read docs/reviews/2026-09-14-exotica-full-visibility.md. Native080f78a2358 frozen
+SHA2a3ecca172c8563920e2d286b0fe01c1156ca114aa6d2ed1f2cfcc86a8b7c0fa;
+209patches reconstruct4d3dc94ee4eed036637265c8f66ac567cec0b763. Qualified lighting
+29b->22b plus residentpalette preservation resolve all5548initialrejections.
+FullAmazon8860inputs PASS30308marked preparations/0reject;282036GPUpairs23910models.
+Originalcommands/camera/ADC/lifetimes/admissions/earlygeometry andsavedoriginal/
+private5073,5645 exact.15completedGL6536..6550 exact previouscandidate, so no
+visiblegainclaimedforthislastpalettefix. Savedbothfailureoperands+11oldmodels
+independentPythonfullbytes PASS. LOCAL full-palette-endpoint(-qualified),
+palette-presentation,palette-endpoint-qualified,palette-endpoint-light-control.
+Instrumentedlate7001..8848 speed92.24%, notfinalperformance. GPUforcedflushes564072,
+modelbatchminimum47820,max98q/model. NEXT boundedendpointbatching between material/
+sky/ordinary/privatepass/frame/chunk boundaries, exactper-targetorder/receipts;
+then samecandidatepixel/costchecks. No game/build/test now. Personal87d/v0.5.0
+unchanged. No physicalFFB/deploy/release/hostedCI/menu removal. Continue directly;
+allgame parity remainsopen. Serialrig; no builds/exports/broadscansduringgames.
+
 ## September14 full visibility — ACTIVE endpoint rejection repair
 
 Read docs/reviews/2026-09-14-exotica-full-visibility.md. Native0a0a04b7de4 frozen,

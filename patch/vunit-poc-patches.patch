@@ -39784,3 +39784,263 @@ index fa787184fdc..9aac4d1979a 100644
 -- 
 2.55.0.windows.3
 
+From 1fab46e516ba269e0511b6014ab1e07851d921b7 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 17:51:07 -0500
+Subject: [PATCH 1/4] Revert "Batch private Exotica endpoint pairs within
+ unchanged resource spans"
+
+This reverts commit 81366bffadc19a2d38eaf7c96f968b0f846009b0.
+---
+ src/devices/video/zeus2.cpp | 50 ++++++++-----------------------------
+ 1 file changed, 10 insertions(+), 40 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 9aac4d1979a..fa787184fdc 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -1197,9 +1197,6 @@ void thread_main()
+ 	cruisn::zeus_endpoint_pair::Order endpoint_order;
+ 	cruisn::zeus_endpoint_pair::Pair endpoint_pair;
+ 	uint64_t endpoint_pairs=0;
+-	std::vector<cruisn::zeus_endpoint_pair::Pair> endpoint_batch;
+-	uint64_t endpoint_groups=0,endpoint_submitted=0;
+-	size_t endpoint_peak=0;
+ 	const uint64_t endpoint_pair_limit=envi("MIDZ_ENDPOINT_MARKED",nullptr,0)==1?1000000:131072;
+ 	FILE *endpoint_log=nullptr;
+ 	if(envi("MIDZ_MODEL_ENDPOINT",nullptr,0)==2) {
+@@ -1208,8 +1205,6 @@ void thread_main()
+ 		if(!endpoint_log){zlogf("cannot create endpoint GPU receipt");return;}
+ 		setvbuf(endpoint_log,nullptr,_IOFBF,65536);
+ 		fprintf(endpoint_log,"frame,model,index,count\n");
+-		endpoint_batch.reserve(128);
+-		printf("MIDZ_ENDPOINT_BATCH=128\n");
+ 	}
+ 	auto add_quad = [&](const midz_quad_rec &r)
+ 	{
+@@ -1232,30 +1227,6 @@ void thread_main()
+ 				vert(v[0], v[1], rb, p, meta);
+ 			}
+ 	};
+-	// Only consecutive pairs with unchanged resource bindings may accumulate.
+-	// Each target sees its original order; neither target receives both versions.
+-	// Drain before any resource/ordinary/sky/private-pass/frame/chunk boundary.
+-	auto flush_endpoints = [&]()
+-	{
+-		if(endpoint_batch.empty())return;
+-		flush();
+-		for(const auto &pair:endpoint_batch) {
+-			midz_quad_rec q;std::memcpy(&q,&pair.original,sizeof(q));add_quad(q);
+-		}
+-		flush(1);
+-		for(const auto &pair:endpoint_batch) {
+-			midz_quad_rec q;std::memcpy(&q,&pair.replacement,sizeof(q));add_quad(q);
+-		}
+-		flush(2);
+-		++endpoint_groups;endpoint_submitted+=endpoint_batch.size();
+-		endpoint_peak=std::max(endpoint_peak,endpoint_batch.size());
+-		for(const auto &pair:endpoint_batch) {
+-			if(!endpoint_log || fprintf(endpoint_log,"%u,%u,%u,%u\n",pair.frame,pair.model,pair.index,pair.count)<0) {
+-				private_failed=true;s_stopz.store(true);zlogf("endpoint GPU journal failure");break;
+-			}
+-		}
+-		endpoint_batch.clear();
+-	};
+ 	auto sky_tile = [](const midz_quad_rec &r)
+ 	{
+ 		cruisn::zeus_sky_tile t;
+@@ -1267,7 +1238,6 @@ void thread_main()
+ 	};
+ 	auto finish_sky = [&]()
+ 	{
+-		flush_endpoints();
+ 		sky_open=false;
+ 		if (sky_tiles.empty()) return;
+ 		++sky_groups;
+@@ -1756,8 +1726,6 @@ void thread_main()
+ 			}
+ 			// Finish before changing palettes/uploads/pages or presenting. Stored
+ 			// tiles retain the current material only within this uninterrupted span.
+-			if(hdr[0]!=1 && hdr[0]!=11)flush_endpoints();
+-			if(private_failed)break;
+ 			if (sky_enabled && hdr[0]!=1 && hdr[0]!=7 && hdr[0]!=11 && !sky_quads.empty()) finish_sky();
+ 			if(endpoint_order.pending() && hdr[0]!=1) {
+ 				private_failed=true;s_stopz.store(true);zlogf("endpoint pair missing immediate original quad");break;
+@@ -1767,7 +1735,6 @@ void thread_main()
+ 			case 1:
+ 				if (rec.size() >= sizeof(midz_quad_rec)) {
+ 					auto const &q=*(const midz_quad_rec *)rec.data();
+-					if(!endpoint_order.pending())flush_endpoints();
+ 					if (sky_enabled && sky_open) {
+ 						auto const t=sky_tile(q);
+ 						if (q.numverts==4 && cruisn::zeus_sky_candidate(t)) {
+@@ -1782,8 +1749,15 @@ void thread_main()
+ 						if(!endpoint_order.consume(actual,replacement) || ++endpoint_pairs>endpoint_pair_limit) {
+ 							private_failed=true;s_stopz.store(true);zlogf("endpoint actual original mismatch/order");break;
+ 						}
+-						endpoint_batch.push_back(endpoint_pair);
+-						if(endpoint_batch.size()==128 || endpoint_order.complete())flush_endpoints();
++						// Finish earlier commands. Never blend both versions into the
++						// private target: each target receives exactly its one version.
++						flush();add_quad(q);flush(1);
++						midz_quad_rec changed;std::memcpy(&changed,&replacement,sizeof(changed));
++						add_quad(changed);flush(2);
++						if(!endpoint_log || fprintf(endpoint_log,"%u,%u,%u,%u\n",endpoint_pair.frame,endpoint_pair.model,
++							endpoint_pair.index,endpoint_pair.count)<0) {
++							private_failed=true;s_stopz.store(true);zlogf("endpoint GPU journal failure");break;
++						}
+ 					} else add_quad(q);
+ 				}
+ 				break;
+@@ -1926,7 +1900,6 @@ void thread_main()
+             if (frame_ready) break; // never consume the next frame before presenting this one
+ 		}
+ 		s_rr.store(r, std::memory_order_release);
+-		if(!private_failed)flush_endpoints();
+ 		flush();
+ 
+         if(frame_ready && !endpoint_order.complete()) {
+@@ -2137,10 +2110,7 @@ void thread_main()
+ 	if(endpoint_log) {
+ 		const bool good=!ferror(endpoint_log);const int closed=fclose(endpoint_log);
+ 		fprintf(stderr,"MIDZ_ENDPOINT_GPU_RESULT complete=%u pairs=%llu\n",
+-			unsigned(!private_failed && good && !closed && endpoint_order.complete() && endpoint_batch.empty() && endpoint_submitted==endpoint_pairs),
+-			(unsigned long long)endpoint_pairs);
+-		fprintf(stderr,"MIDZ_ENDPOINT_BATCH_RESULT groups=%llu pairs=%llu peak=%u remaining=%u\n",
+-			(unsigned long long)endpoint_groups,(unsigned long long)endpoint_submitted,unsigned(endpoint_peak),unsigned(endpoint_batch.size()));
++			unsigned(!private_failed && good && !closed && endpoint_order.complete()),(unsigned long long)endpoint_pairs);
+ 	}
+ 	if(mirror_log) {
+ 		const auto stats=mirror_writer.finish();
+-- 
+2.55.0.windows.3
+
+
+From a204e4a092b887a4a82493aab6de890945f384e1 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 17:51:08 -0500
+Subject: [PATCH 2/4] Convert normal C31 scene values with exact IEEE bits
+
+---
+ src/mame/midway/cruisn/zeus_state.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/src/mame/midway/cruisn/zeus_state.h b/src/mame/midway/cruisn/zeus_state.h
+index 386c62ee730..1cb1753fa2d 100644
+--- a/src/mame/midway/cruisn/zeus_state.h
++++ b/src/mame/midway/cruisn/zeus_state.h
+@@ -6,6 +6,7 @@
+ #include "scenery_c31.h"
+ #include <vector>
+ #include <cmath>
++#include <cstring>
+ namespace cruisn { namespace zeus_state {
+ struct Context
+ {
+@@ -21,7 +22,15 @@ struct Result { Context context;std::vector<Load> loads; };
+ inline float floating(uint32_t w)
+ {
+     const auto f=scenery::Float::load(w);
+-    return f.e==-128?0.0f:float(std::ldexp(double(int64_t(f.m)^INT64_C(0x80000000)),f.e-31));
++    if(f.e==-128)return 0.0f;
++    // Every normal-range input has an exactly representable 24-bit mantissa.
++    // Retain arithmetic for subnormal rounding and the one overflow encoding.
++    if(f.e>=-126 && !(f.e==127 && f.m==INT32_MIN)) {
++        uint32_t bits=uint32_t(f.e+127)<<23;
++        bits+=f.m>=0 ? uint32_t(f.m)>>8 : 0x80000000U+((0U-uint32_t(f.m))>>8);
++        float value;std::memcpy(&value,&bits,sizeof(value));return value;
++    }
++    return float(std::ldexp(double(int64_t(f.m)^INT64_C(0x80000000)),f.e-31));
+ }
+ inline bool valid(const Context &c)
+ {
+-- 
+2.55.0.windows.3
+
+
+From f674e6c08b65085b1384124f451aaa80635a5e1e Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 17:51:50 -0500
+Subject: [PATCH 3/4] Step normal IEEE bounds directly while retaining numeric
+ edge behavior
+
+---
+ src/mame/midway/cruisn/zeus_model_bounds.h | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/zeus_model_bounds.h b/src/mame/midway/cruisn/zeus_model_bounds.h
+index 59a9bb2703b..09daccb605a 100644
+--- a/src/mame/midway/cruisn/zeus_model_bounds.h
++++ b/src/mame/midway/cruisn/zeus_model_bounds.h
+@@ -4,11 +4,22 @@
+ #pragma once
+ #include "zeus_model.h"
+ #include <limits>
++#include <cstring>
+ namespace cruisn { namespace zeus_bounds {
+ struct Bounds { std::array<int32_t,3> low{},high{}; bool empty=true; };
+ struct Range { float low,high; };
+-inline float down(float x){return std::nextafter(x,-std::numeric_limits<float>::infinity());}
+-inline float up(float x){return std::nextafter(x,std::numeric_limits<float>::infinity());}
++inline float adjacent(float x,bool positive) {
++ uint32_t bits;std::memcpy(&bits,&x,4);const uint32_t magnitude=bits&0x7fffffffU;
++ // Only normal finite values whose two neighbors are also normal and finite.
++ // Preserve library rounding/exception behavior at zero, subnormals and edges.
++ if(magnitude>0x00800000U && magnitude<0x7f7fffffU) {
++  bits+=((bits>>31)!=unsigned(positive))?1U:UINT32_MAX;
++  std::memcpy(&x,&bits,4);return x;
++ }
++ return std::nextafter(x,positive?std::numeric_limits<float>::infinity():-std::numeric_limits<float>::infinity());
++}
++inline float down(float x){return adjacent(x,false);}
++inline float up(float x){return adjacent(x,true);}
+ inline Range point(float x){return {x,x};}
+ inline Range add(Range a,Range b){return {down(a.low+b.low),up(a.high+b.high)};}
+ inline Range mul(Range a,Range b) {
+-- 
+2.55.0.windows.3
+
+
+From f2e08e49d9eeff082b88ca675fcbaff0b1ff6811 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 17:51:51 -0500
+Subject: [PATCH 4/4] Reserve Exotica scene identity hashing without reordering
+ sources
+
+---
+ src/mame/midway/cruisn/exotica_scene.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/exotica_scene.h b/src/mame/midway/cruisn/exotica_scene.h
+index 2484104a6be..b87aba388dd 100644
+--- a/src/mame/midway/cruisn/exotica_scene.h
++++ b/src/mame/midway/cruisn/exotica_scene.h
+@@ -13,6 +13,7 @@
+ #include "zeus_model_bounds.h"
+ #include <map>
+ #include <set>
++#include <unordered_set>
+ 
+ namespace cruisn { namespace exotica_scene {
+ struct Parameters
+@@ -102,14 +103,15 @@ bool build_sources(const std::vector<Source> &sources,const Parameters &p,
+         std::set<uint32_t> explicit_formats;
+     };
+     std::map<std::pair<uint32_t,uint32_t>,CachedModel> cache;
+-    std::set<std::pair<uint32_t,uint32_t>> identities;
++    std::unordered_set<uint64_t> identities;
++    identities.reserve(sources.size());
+     zeus_model::Result decoded;
+     auto operands=p.setup;
+     exotica_state::Result setup;
+     for(const auto &s:sources)
+     {
+         if(!s.supported || !select(s))continue;
+-        if(!valid_identity(s) || !identities.emplace(s.entry,s.source).second)return false;
++        if(!valid_identity(s) || !identities.emplace((uint64_t(s.entry)<<32)|s.source).second)return false;
+         ++out.selected;const auto &o=s.words;uint32_t flags=o[15];
+         if(((flags&3)!=0 && (flags&3)!=3) || flags&0x80)
+         {++out.unsupported_transform;continue;}
+-- 
+2.55.0.windows.3
+
