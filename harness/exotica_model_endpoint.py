@@ -13,7 +13,7 @@ BOUNDS = ('first','last','snapshot')
 
 
 def add_arguments(parser):
-    parser.add_argument('--exotica-model-endpoint', choices=('off','observe'))
+    parser.add_argument('--exotica-model-endpoint', choices=('off','observe','draw'))
     parser.add_argument('--exotica-endpoint-admit-from',type=int,
                         help='observe actual private future/waiting admissions from this native frame')
     for name in BOUNDS:
@@ -40,7 +40,7 @@ def configure(args, rom, settings, lifetime, scene=None):
         settings.pop('MIDZ_MODEL_ADMIT_FIRST',None)
         return dict(mode='off')
     first,last,snapshot=bounds
-    if (mode!='observe' or rom!='crusnexo' or not lifetime or lifetime['mode']!='observe'
+    if (mode not in ('observe','draw') or rom!='crusnexo' or not lifetime or lifetime['mode']!='observe'
             or any(v is None for v in bounds) or not 1800<=first<=snapshot<=last<=15998
             or last-first>120 or not lifetime['first']<first<=last<lifetime['last']):
         raise ValueError('endpoint interval requires surrounding Exotica lifetimes')
@@ -49,7 +49,8 @@ def configure(args, rom, settings, lifetime, scene=None):
         if (not scene or scene.get('future')!=2 or not scene.get('materials')
                 or not scene['first']<=admit<=first or scene['last']<last):
             raise ValueError('endpoint admissions require covered actual private drawing')
-    settings.update({KEY:'1','MIDV_FFB':'0',**{KEY+'_'+k.upper():str(v) for k,v in zip(BOUNDS,bounds)}})
+    if mode=='draw' and admit is None:raise ValueError('private endpoint drawing requires actual admission observation')
+    settings.update({KEY:'2' if mode=='draw' else '1','MIDV_FFB':'0',**{KEY+'_'+k.upper():str(v) for k,v in zip(BOUNDS,bounds)}})
     trial=dict(mode=mode,**dict(zip(BOUNDS,bounds)))
     if admit is not None:settings['MIDZ_MODEL_ADMIT_FIRST']=str(admit);trial['admit_from']=admit
     else:settings.pop('MIDZ_MODEL_ADMIT_FIRST',None)
@@ -59,10 +60,11 @@ def configure(args, rom, settings, lifetime, scene=None):
 def verify_receipt(trial, text, directory):
     directory=Path(directory);paths=list(directory.glob('exotica-endpoint-*'))
     if not trial or trial['mode']=='off':
-        if 'MIDZ_MODEL_ENDPOINT=1' in text or 'MIDZ_MODEL_ENDPOINT_RESULT' in text or paths or list(directory.glob('exotica-admission-*')):
+        if re.search(r'MIDZ_MODEL_ENDPOINT=[12]',text) or 'MIDZ_MODEL_ENDPOINT_RESULT' in text or 'MIDZ_ENDPOINT_GPU_RESULT' in text or paths or list(directory.glob('exotica-admission-*')):
             raise ValueError('disabled endpoint observer ran')
         return None
-    if re.findall(r'^MIDZ_MODEL_ENDPOINT=1 first=(\d+) last=(\d+) snapshot=(\d+)$',text,re.M)!=[
+    mode='2' if trial['mode']=='draw' else '1'
+    if re.findall(r'^MIDZ_MODEL_ENDPOINT='+mode+r' first=(\d+) last=(\d+) snapshot=(\d+)$',text,re.M)!=[
             tuple(str(trial[k]) for k in BOUNDS)]:raise ValueError('endpoint start receipt')
     names=('complete','commits','consumed','untracked','prepared','rejected','snapshots','bytes','remaining')
     final=re.findall(r'^MIDZ_MODEL_ENDPOINT_RESULT '+' '.join(n+r'=(\d+)' for n in names)+r'$',text,re.M)
@@ -93,6 +95,7 @@ def verify_receipt(trial, text, directory):
     if len(rows)!=totals['consumed']:raise ValueError('endpoint journal count')
     expected={path.name,'exotica-endpoint-inputs.txt'};saved=[];size=0;prior_time=0.;prior_frame=0
     if 'admit_from' in trial:expected.add('exotica-endpoint-admissions.csv')
+    if trial['mode']=='draw':expected.add('exotica-endpoint-gpu.csv')
     for i,r in enumerate(rows,1):
         if (r['id']!=i or not trial['first']<=r['commit_frame']<=trial['last']
                 or not r['commit_frame']<=r['device_frame']<=trial['last']+4
@@ -145,5 +148,31 @@ def verify_receipt(trial, text, directory):
             or sum(r['status']==2 for r in rows)!=totals['rejected']):raise ValueError('endpoint totals/artifacts')
     from exotica_admissions import verify as verify_admissions
     admissions=verify_admissions(trial,text,directory,rows)
-    return dict(passed=True,**totals,admissions=admissions,scope='Read-only native owner/endpoint receipts and bounded snapshot structure. '
-                'Independent source joins, actual native quads and temporal visibility require separate checks.')
+    drawing=verify_draw(trial,text,directory,rows)
+    return dict(passed=True,**totals,admissions=admissions,drawing=drawing,scope='Native owner/endpoint receipts and bounded snapshot structure. '
+                      'Independent source joins, actual native quads and temporal visibility require separate checks.')
+
+
+def verify_draw(trial,text,directory,originals):
+    from exotica_admissions import bounded_csv
+    directory=Path(directory);path=directory/'exotica-endpoint-gpu.csv'
+    if trial['mode']!='draw':
+        if path.exists() or 'MIDZ_ENDPOINT_GPU_RESULT' in text:raise ValueError('disabled endpoint private drawing ran')
+        return None
+    final=re.findall(r'^MIDZ_ENDPOINT_GPU_RESULT complete=(\d+) pairs=(\d+)$',text,re.M)
+    if len(final)!=1 or final[0][0]!='1':raise ValueError('endpoint GPU completion')
+    q=bounded_csv(directory/'exotica-endpoint-admissions.csv',65536)
+    if len(q)!=len(originals):raise ValueError('endpoint GPU admission count')
+    expected=[]
+    for o,admission in zip(originals,q):
+        if int(admission['id'])!=o['id']:raise ValueError('endpoint GPU original/admission order')
+        if o['status']==1 and admission['admitted']=='1':
+            expected.extend((o['device_frame'],o['id'],i,o['quads']) for i in range(o['quads']))
+    rows=bounded_csv(path,131072);actual=[]
+    for row in rows:
+        if tuple(row)!=('frame','model','index','count') or any(not re.fullmatch('[0-9]+',v) for v in row.values()):
+            raise ValueError('endpoint GPU row contract')
+        actual.append(tuple(map(int,row.values())))
+    if actual!=expected or len(actual)!=int(final[0][1]):raise ValueError('endpoint GPU original quad order/count')
+    return dict(passed=True,pairs=len(actual),models=len({p[1] for p in actual}),
+                scope='Consumer receipts for exactly one original/private pair per qualified quad; pixel and temporal checks separate.')

@@ -112,6 +112,23 @@ class EndpointObservation(unittest.TestCase):
         self.assertEqual(settings['MIDZ_MODEL_ADMIT_FIRST'],'5072')
         for bad in [None,dict(scene,future=1),dict(scene,materials=False),dict(scene,first=5100),dict(scene,last=5221)]:
             with self.subTest(scene=bad),self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life,bad)
+        args.exotica_model_endpoint='draw';settings={}
+        self.assertEqual(endpoint.configure(args,'crusnexo',settings,life,scene)['mode'],'draw')
+        self.assertEqual(settings['MIDZ_MODEL_ENDPOINT'],'2')
+        args.exotica_endpoint_admit_from=None
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life,scene)
+
+    def test_private_pair_receipts_require_exact_qualified_quad_order(self):
+        with tempfile.TemporaryDirectory() as temp:
+            p=Path(temp)
+            (p/'exotica-endpoint-admissions.csv').write_text('id,admitted\n1,1\n2,0\n')
+            (p/'exotica-endpoint-gpu.csv').write_text('frame,model,index,count\n5219,1,0,2\n5219,1,1,2\n')
+            originals=[dict(id=1,status=1,quads=2,device_frame=5219),dict(id=2,status=1,quads=1,device_frame=5219)]
+            text='MIDZ_ENDPOINT_GPU_RESULT complete=1 pairs=2\n'
+            self.assertEqual(endpoint.verify_draw(dict(mode='draw'),text,p,originals)['pairs'],2)
+            with self.assertRaises(ValueError):endpoint.verify_draw(dict(mode='observe'),text,p,originals)
+            (p/'exotica-endpoint-gpu.csv').write_text('frame,model,index,count\n5219,1,1,2\n5219,1,0,2\n')
+            with self.assertRaises(ValueError):endpoint.verify_draw(dict(mode='draw'),text,p,originals)
 
 
 if __name__=='__main__':unittest.main()

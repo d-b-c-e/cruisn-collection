@@ -1,5 +1,33 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 live private endpoints — NEXT early visibility + temporal handover
+
+Read docs/reviews/2026-09-14-exotica-private-endpoints.md. Native156a03abfb0 frozen,
+SHA b14d1d4b1ec2e58c8fa939d777e9c145a9ed2ce0a2a4b7e45c787806987095b6;
+204patches reconstructa8e191784a200556223198804078c6c463178fbe; nativefork pushed.
+Canonicalzeus_endpoint_pair.h linked/synced. --exotica-model-endpoint draw requires
+candidate+physicalFFB0+actualadmission/lifetimes. Producer checks actual original
+quads, side record11 paired with nexttype1, consumer exactorder/count then original
+targetonly original and privateonly endpoint. No doubleblend; currentmaterials;
+original captures untouched. Per-quad flush is diagnostic, notspeedacceptance.
+Pairnative testPASS;98actualquads11models exact544bytecodec/consume undercaptured
+and livezero-frame conventions. Seven endpointPython testsPASS (notbroadsuite).
+Live5260AmazonPASS509pairs58models. Alloriginalinputs/camera/ADC/lifetimes/
+modelcommands/resources/targets/admissions/endpoints exact8d9observer. Saved
+future/waitingpackets identical,5072privatebefore/after exactbeforeactivation.
+Completed5219page400 changes15838RGB;page0exact.5220page0 changes15222,page400
+retainspreviouschanges. Nonewblack;finite/rangeddepth;unusedrowsexact. Imagesviewed:
+distantroadsidefoliagestronger,foregroundcar/water/elephants/HUDappearintact.
+Stillnon4K3440x1440display/internal2736x4096, nottemporal/final4Kacceptance.
+LOCALR/private-endpoints5220,private-endpoints-qualified,endpoint-pairs-actual,
+private-endpoints-export.json. No activegame/build/test. Personal87d/publicv0.5.0
+unchanged; no deployment/release/hostedCI/physicalFFB/menu removal.
+NEXT complete earlier private visibility and carryit continuously intooriginal
+handover; current future/waiting p.complete_fade stillfalse. Preserveintrinsic
+alpha and active-margin ownership, inspect first-original throughcompletion then
+chooseappearancefadepolicy/speed. DoNOT blanketmodifyoriginalgpu/gueststate.
+Continue directly aftercheckpoint; no milestone waiting.
+
 ## September14 live admissions — NEXT private original-quad replacement
 
 Read docs/reviews/2026-09-14-exotica-native-admissions.md. Native8d9d5c34dcc frozen,
