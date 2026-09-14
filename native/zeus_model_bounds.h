@@ -4,11 +4,22 @@
 #pragma once
 #include "zeus_model.h"
 #include <limits>
+#include <cstring>
 namespace cruisn { namespace zeus_bounds {
 struct Bounds { std::array<int32_t,3> low{},high{}; bool empty=true; };
 struct Range { float low,high; };
-inline float down(float x){return std::nextafter(x,-std::numeric_limits<float>::infinity());}
-inline float up(float x){return std::nextafter(x,std::numeric_limits<float>::infinity());}
+inline float adjacent(float x,bool positive) {
+ uint32_t bits;std::memcpy(&bits,&x,4);const uint32_t magnitude=bits&0x7fffffffU;
+ // Only normal finite values whose two neighbors are also normal and finite.
+ // Preserve library rounding/exception behavior at zero, subnormals and edges.
+ if(magnitude>0x00800000U && magnitude<0x7f7fffffU) {
+  bits+=((bits>>31)!=unsigned(positive))?1U:UINT32_MAX;
+  std::memcpy(&x,&bits,4);return x;
+ }
+ return std::nextafter(x,positive?std::numeric_limits<float>::infinity():-std::numeric_limits<float>::infinity());
+}
+inline float down(float x){return adjacent(x,false);}
+inline float up(float x){return adjacent(x,true);}
 inline Range point(float x){return {x,x};}
 inline Range add(Range a,Range b){return {down(a.low+b.low),up(a.high+b.high)};}
 inline Range mul(Range a,Range b) {
