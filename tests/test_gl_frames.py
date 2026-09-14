@@ -10,6 +10,13 @@ from gl_frames import compare_completed_frames, read_completed_frames, main, req
 
 
 class CompletedGlTests(unittest.TestCase):
+    def test_stop_frame_requires_a_completed_frame_before_shutdown(self):
+        self.assertEqual(list(requested_frames(10,20,3,stop_frame=20)),[12,15,18])
+        self.assertEqual(list(requested_frames(7180,7219,1,40,stop_frame=7220)),list(range(7180,7220)))
+        for last in (7220,7221):
+            with self.subTest(last=last),self.assertRaisesRegex(ValueError,'precede the replay stop frame'):
+                requested_frames(7180,last,1,stop_frame=7220)
+
     def test_capture_preflight_counts_global_cadence(self):
         self.assertEqual(list(requested_frames(31, 35, 2, 2)), [32, 34])
         for args in ((31,35,2,1), (31,31,2), (0,10,0), (-1,5,1)):

@@ -24,7 +24,7 @@ class IncompleteCaptureError(ValueError):
                          f'{len(wanted-seen)} missing, {len(seen-wanted)} unexpected')
 
 
-def requested_frames(first, last, every, budget=None):
+def requested_frames(first, last, every, budget=None, *, stop_frame=None):
     """Native global-frame cadence; reject impossible requests before launch."""
     if not 0 <= first <= last or every < 1:
         raise ValueError('invalid GL capture interval or cadence')
@@ -33,6 +33,9 @@ def requested_frames(first, last, every, budget=None):
         raise ValueError('no capture frames align with the requested interval and cadence')
     if budget is not None and len(frames) > budget:
         raise ValueError(f'GL capture budget {budget} cannot cover {len(frames)} requested images')
+    if stop_frame is not None and frames[-1] >= stop_frame:
+        raise ValueError('completed GL captures must precede the replay stop frame; '
+                         'end capture earlier or extend the replay')
     return frames
 
 

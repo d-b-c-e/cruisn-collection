@@ -191,7 +191,8 @@ def main(argv=None):
                 first, last = map(int, args.gl_capture.split(":"))
                 if not 0 <= first < last <= reference["frames"]:
                     raise ValueError("GL interval must be within the recorded frames")
-                expected_gl = requested_frames(first, last, args.gl_every, args.gl_max)
+                expected_gl = requested_frames(first, last, args.gl_every, args.gl_max,
+                    stop_frame=reference['frames'] if gl_key=='MIDZ' else None)
                 overrides.update({gl_key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',
                     SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_EVERY=str(args.gl_every),SNAP_MAX=str(args.gl_max)).items()})
                 # New candidates can finish queued captures before teardown.
