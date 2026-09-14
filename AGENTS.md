@@ -1,5 +1,37 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 13 testing scope — maintainer priority
+
+Resume authorized rendering work, but spend testing time and tokens deliberately.
+Before another game run, identify the unresolved risk and what result would
+change the implementation decision. Reuse accepted baselines when unaffected.
+Start with changed-code checks and a short integration run; expand only for new
+coverage, failures, or a release gate. Revalidate retained raw captures after
+verifier-only fixes instead of replaying the game unnecessarily. Do not repeat
+whole-game matrices, all native/GPU tests, or bespoke proof packages at every
+small milestone. Preserve failures and state the limits of passing evidence.
+Final deployment still requires appropriate combined regressions. This changes
+test cadence, not the acceptance criteria for visual correctness or game behavior.
+
+Current native88803dabb21 is built and frozen at build/candidates/88803dabb21,
+SHA a165370e9cb776082acbdc7be4045db6d0bc938dc78c576dca576ca2827d62e2.
+It links the retained-image helper and draws waiting scenery at actual completion.
+Short6000 Amazon run completed; old waiting artifact glob initially rejected the
+new waiting-draw namespace. Verifier corrected; saved capture revalidation passes
+4120 completed batches, original inputs/camera/ADC,21 original4K images and three
+material/geometry snapshots. Original failed report retained. Full extended-view
+run now PASS8860inputs/7060camera/21180ADC,6953batches/5528581waitingquads, five
+material/geometry snapshots and unchanged early geometry/resources.17of33 selected
+4K captures change; inspected vegetation appears earlier at village/downhill.
+Old left-edge ground issue remains. Full run reports81.85% with instrumentation;
+not a clean performance result.37 targeted tests/native sync PASS.189patch export
+reconstructs55df7333c515b3bac1d2c516ecf2acb6959c1826 from prior verified188patches.
+Read docs/reviews/2026-09-13-exotica-waiting-draw.md for exact evidence/limits.
+NEXT measured assembly/hash/packet cost and temporal handover; no blind repeat
+matrix. No game/build/test running. No deployment or physical FFB.
+Personal87d/publicv0.5.0 unchanged. Older September11 instructions below are
+historical; the waiting draw is now linked, built and tested as described here.
+
 ## September 11 retained waiting materials — NEXT native private draw
 
 Read docs/reviews/2026-09-11-exotica-retained-materials.md. New standalone

@@ -52,6 +52,21 @@ filtered proposal geometry; it does not enable another draw pass. Explicit `off`
 verifies that no completion artifacts are produced. This mode is not a launcher
 default or a recording requirement.
 
+The newer isolated candidate also accepts `--exotica-host-handover draw`.
+It requires those observers plus private future drawing and owned materials,
+excludes the active-margin pass, and keeps physical FFB disabled. Waiting geometry
+is filtered at the actual completion fence and uses the proposal's retained texture
+image. `--exotica-host-future-present extended` displays the private result;
+`original` preserves the normal display for regression comparisons. See the
+[live waiting-draw checkpoint](reviews/2026-09-13-exotica-waiting-draw.md).
+
+Choose checks according to the change. Start with affected unit tests and a short
+recorded integration run. Use a full drive for later-course, reset, or transition
+coverage; repeat matrices only when a change or failure warrants them. A verifier
+fix can recheck retained captures without another emulator run. Such revalidation
+must preserve the original failed report and identify the corrected verifier.
+Instrumented captures do not establish normal gameplay performance.
+
 The separate development candidate supports `replay.py --zeus-upstream
 legacy|depth|alpha|blend|all`. This is an Exotica 2.4 diagnostic control for the
 three changes in [upstream #16094](https://github.com/mamedev/mame/pull/16094),

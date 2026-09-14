@@ -5,6 +5,11 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — September 9–11 diagnostics
 
+- Integrate an isolated Exotica waiting-scenery draw path. Full Amazon playback
+  preserves the driving route and adds visible trees; performance and smooth
+  transitions remain development work. Fix snapshot namespace checking and add
+  focused material/phase regression checks. This is not deployed in v0.5.0.
+
 - Add a standalone retained-material continuation for later Exotica scenery
   drawing. Captured packet/GPU comparisons preserve textures and ordered pixels;
   live integration remains pending.

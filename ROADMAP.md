@@ -54,8 +54,10 @@ and the public package remain v0.5.0.
   now passes full/repeat/disabled runs and reconciles all6,953cohorts at actual
   native event watermarks. Offline filtered drawing still adds distant trees, but
   transparency depends on placement. A [retained-material continuation](docs/reviews/2026-09-11-exotica-retained-materials.md)
-  now preserves proposal resources in standalone packet/GPU comparisons. Next add the gated private waiting draw and
-  verify live continuation, materials and fade handover before exposing it.
+  now preserves proposal resources. The [live waiting-draw integration](docs/reviews/2026-09-13-exotica-waiting-draw.md)
+  passes a full Amazon drive and adds visible vegetation in selected4K comparisons.
+  Next optimize measured assembly/packet work and verify smooth fade handover;
+  this candidate is not deployed or accepted at full speed.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.
