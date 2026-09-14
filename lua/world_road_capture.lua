@@ -1,6 +1,10 @@
 -- Read-only World road-codec evidence. Raw resources must remain local.
 local cpu=manager.machine.devices[':maincpu'];local s=cpu.spaces.program
-assert(manager.machine.system.name=='crusnwld24')
+local revision=manager.machine.system.name=='crusnwld24' and 24 or
+ (manager.machine.system.name=='crusnwld' and 25 or nil)
+assert(revision,'World 2.4/2.5 road capture only')
+local selected_address=revision==24 and 0xd4bf or 0xd4b9
+local threshold_address=revision==24 and 0xd4c0 or 0xd4ba
 local first=tonumber(os.getenv('CRUISN_ROAD_FIRST') or '4400')
 local last=tonumber(os.getenv('CRUISN_ROAD_LAST') or '4500')
 assert(first and last and first>=1 and last>=first and last-first<=1200,'bounded road interval required')
@@ -21,7 +25,7 @@ local function close()
  if out then
   out:close();draws:close();out=nil
   local f=assert(io.open('world-road-summary.json','w'))
-  f:write(string.format('{"starts":%d,"projected":%d,"draws":%d,"unmatched_draws":%d,"first":%d,"last":%d,"completed":%s}\n',serial,projected_count,draw_count,unmatched,first,last,tostring(frame>=last+1 and not fail)))
+  f:write(string.format('{"revision":%d,"starts":%d,"projected":%d,"draws":%d,"unmatched_draws":%d,"first":%d,"last":%d,"completed":%s}\n',revision,serial,projected_count,draw_count,unmatched,first,last,tostring(frame>=last+1 and not fail)))
   f:close()
  end
 end
@@ -29,7 +33,11 @@ cruisn_road_stop=emu.add_machine_stop_notifier(close)
 return function(n)
  if fail then error(fail) end;frame=n
  if n==first then
-  for p,v in pairs({[0x62c]=0x04a1d4c0,[0x635]=0x152fd4bf,[0x638]=0x08412101,[0x641]=0x082b0049,[0x677]=0x04f21387,[0x67d]=0x24c00182,[0x683]=0x6a20fb9d,[0x241]=0x082ed4bf,[0x2e0]=0x082ed4bf}) do assert(s:read_u32(p)==v,'road instruction signature') end
+  local code={[0x62c]=0x04a1d4c0,[0x635]=0x152fd4bf,[0x638]=0x08412101,[0x641]=0x082b0049,[0x677]=0x04f21387,[0x67d]=0x24c00182,[0x683]=0x6a20fb9d,[0x241]=0x082ed4bf,[0x2e0]=0x082ed4bf}
+  if revision==25 then
+   code[0x62c]=0x04a1d4ba;code[0x635]=0x152fd4b9;code[0x241]=0x082ed4b9;code[0x2e0]=0x082ed4b9
+  end
+  for p,v in pairs(code) do assert(s:read_u32(p)==v,'road instruction signature') end
   out=assert(io.open('world-road-transform.jsonl','w'));draws=assert(io.open('world-road-draws.csv','w'))
   draws:write('frame,call,object,model,pc,page,flags,palette,x0,y0,x1,y1,x2,y2,x3,y3,uv0,uv1,uv2,uv3,texture,word15\n')
   local f=assert(io.open('world-road-reciprocals.bin','wb'));local base=s:read_u32(0x4d)
@@ -39,7 +47,7 @@ return function(n)
   taps[#taps+1]=s:install_read_tap(0x49,0x49,'road_begin',guard(function(o,d,m)
    if cpu.state.PC.value~=0x642 then return end
    local id=cpu.state.AR0.value;local obj=words(id,32);assert(obj[15]&0x801==1,'unexpected road flags')
-   local model=obj[14];local selected=s:read_u32(0xd4bf)
+   local model=obj[14];local selected=s:read_u32(selected_address)
    local header=s:read_u32(cpu.state.SP.value);local vertices=cpu.state.RC.value+1;local polygons=(header>>18)+1
    assert(vertices==header&255 and vertices>0 and vertices<=256 and polygons<=1024,'road counts')
    assert(cpu.state.AR1.value==model+3,'road vertex start')
@@ -52,12 +60,12 @@ return function(n)
    local template=words(table+slot,1)[1]
    current={call=serial,frame=frame,object=id,model=selected,original_model=model,object_words=obj,
     vertex_buffer=d,vertices=vertices,input_vertices=vertices,polygons=polygons,fast=0,
-    lod_threshold=s:read_u32(0xd4c0),template_table=table,template_slot=slot,template_model=template,
+    lod_threshold=s:read_u32(threshold_address),template_table=table,template_slot=slot,template_model=template,
     original_header=s:read_u32(model+2),model_words=mw,material_words=words(mw[2],polygons*3),
     camera=words(s:read_u32(0x41),3),view=words(s:read_u32(0x43),9),
     matrix=words(cpu.state.AR5.value,9),camera_space=words(cpu.state.AR6.value-1,5)}
   end))
-  taps[#taps+1]=s:install_read_tap(0xd4bf,0xd4bf,'road_projected',guard(function(o,d,m)
+  taps[#taps+1]=s:install_read_tap(selected_address,selected_address,'road_projected',guard(function(o,d,m)
    local pc=cpu.state.PC.value;if pc~=0x242 and pc~=0x2e1 then return end
    if not current then return end
    assert(current.model==d,'road selected model changed')

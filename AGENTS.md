@@ -1,5 +1,28 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 World2.5 roads — terrain continuity still open
+
+Read docs/reviews/2026-09-14-world25-roads.md. Nativee6151969875 frozen/pushed SHA
+00912465164a23402eb3d8365e2f4341901aadff50a7101e0a3fab24b7de9445.195patches reconstruct
+a696d42ec73f99d9ab72b80cab50dedfd7cac896. Separatelymapped World25roadthresholdD4BA,
+selectedD4B9,sharedtable624; explicitcodeguards, defaults24retained. CLIexistingroads
+switch now25capable; no productmenu/deploy. Actualoriginal25probe4502inputsPASS,
+2701camera8103ADC;2424transforms/template/projectedbuffers and2227unclippedDMA match.
+197clippedDMAexcluded.11World25snapshots54185descriptors/11124laterallocations/33scenes/
+41905quads and4World24snapshots17605/16047/12/17309PASS.3native7PythonPASS. Initiallocal
+qualificationwrongpaths/missingolddraftsummaryretained; no fabricated completion.
+
+Samecandidate off/on6000inputs/4191camera/12573ADC/originalnativeframesPASS. Offscene
+fingerprints exactold25future3. On1666scenes218655roadvisits185640quads.12completed
+3424x1353imageson3440x1440;only4change51..98pixels. Disconnectedfarland REMAINS;
+do NOTclaim roadadapterfixesit. Nearbyfloatingsignalsoinoldoriginalcontrol, notnew.
+Off100.00/on99.87%average; no4K/repeat/defaultsuiteclaim. LOCALworld25-roads-20260914.
+NEXT trace remainingterrain source/LOD/customallocation fromsaved5900snapshot before
+newbuild/test. Full-detail road LOD is an untested possibility, notafix. Exotica
+f6storagegain retained, fullspeed/temporal/4KOPEN. Userrequestscontinuousparitywork.
+No game/build/testnow. No deploy/release/hostedCI/physicalFFB/menuremoval. Personal87d/
+v0.5.0unchanged. PendingattendedFFBavailabilityunanswered. Serialrig/GPU/builds.
+
 ## September 14 packet storage — continue World 2.5 roads next
 
 Read docs/reviews/2026-09-14-exotica-packet-storage.md. Nativef6e47894b08 frozen/pushed

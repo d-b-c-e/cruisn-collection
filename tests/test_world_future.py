@@ -7,7 +7,7 @@ from world_host_options import add_arguments,configure
 
 
 class FutureSectionTests(unittest.TestCase):
-    def test_world25_freezes_supported_options_but_rejects_unverified_roads(self):
+    def test_world25_freezes_supported_options_and_explicit_roads(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','1800',
             '--world-host-last','5990','--world-host-source','future','--world-host-far','240000'])
@@ -18,7 +18,11 @@ class FutureSectionTests(unittest.TestCase):
         for rom in ('crusnusa','offroadc','crusnexo','crusnwld23'):
             with self.assertRaises(ValueError):configure(args,rom,dict(settings))
         settings['MIDV_WORLD_HOST_ROADS']='1'
-        with self.assertRaisesRegex(ValueError,'World 2.4'):configure(parser.parse_args([]),'crusnwld',settings)
+        self.assertEqual(configure(parser.parse_args([]),'crusnwld',settings)['roads'],'on')
+        args=parser.parse_args(['--world-host-scenery','draw','--world-host-first','1800',
+            '--world-host-last','5990','--world-host-roads','off'])
+        self.assertEqual(configure(args,'crusnwld',settings)['roads'],'off')
+        self.assertEqual(configure(parser.parse_args([]),'crusnwld',settings)['roads'],'off')
 
     def test_world25_frontier_uses_its_own_bindings(self):
         m=self.memory();expected=future(m.__getitem__)

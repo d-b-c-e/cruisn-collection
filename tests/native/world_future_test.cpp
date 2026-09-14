@@ -39,7 +39,9 @@ int main()
     warm.clear();warm_stats={};
     assert(world_future::collect(read,cache,warm,warm_stats,64,false,25) && warm_stats.new_sections==2);
     for(const auto &o:warm)assert(o.words[16]==512 && o.words[17]==32);
-    assert(!world_future::collect(read,cache,warm,warm_stats,64,true,25));
+    warm.clear();warm_stats={};
+    assert(world_future::collect(read,cache,warm,warm_stats,64,true,25) && warm_stats.new_sections==2);
+    for(const auto &o:warm)assert(o.words[16]==512 && o.words[17]==32);
     assert(!world_future::collect(read,cache,warm,warm_stats,64,false,23));
     // The two revision images overlap at CC35; restore the original ROM image.
     for(unsigned i=0;i<7;++i)m[0xcc35+i]=constants[i];

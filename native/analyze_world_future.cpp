@@ -44,7 +44,7 @@ int main(int argc,char **argv)
         cruisn::world_future::Stats stats;
         auto begin=std::chrono::steady_clock::now();
         if(!cruisn::world_future::code_matches(read,revision))throw std::runtime_error("revision code guard failed");
-        if(roads && !cruisn::world_road::code_matches(read))throw std::runtime_error("road code guard failed");
+        if(roads && !cruisn::world_road::code_matches(read,revision))throw std::runtime_error("road code guard failed");
         if(!cruisn::world_future::collect(read,cache,descriptors,stats,64,roads,revision))throw std::runtime_error("future guard failed");
         auto built=std::chrono::steady_clock::now();
         std::vector<cruisn::world_host::Descriptor> repeat;cruisn::world_future::Stats warm;

@@ -8,8 +8,9 @@
 int main(int argc,char **argv)
 {
     using cruisn::scenery::Float;
-    if(argc==2 && std::string(argv[1])=="--road-model")
+    if(argc==2 && (std::string(argv[1])=="--road-model" || std::string(argv[1])=="--road-model25"))
     {
+        const uint32_t revision=std::string(argv[1])=="--road-model25"?25:24;
         int32_t depth;
         while(std::cin>>depth)
         {
@@ -21,7 +22,7 @@ int main(int argc,char **argv)
             cruisn::world_road::Model model;
             try
             {
-                if(!cruisn::world_road::select([&](uint32_t p){return memory.at(p);},obj,depth,model))
+                if(!cruisn::world_road::select([&](uint32_t p){return memory.at(p);},obj,depth,model,revision))
                     throw std::runtime_error("road model guard failed");
             }
             catch(const std::exception &error){std::cerr<<error.what()<<'\n';return 1;}

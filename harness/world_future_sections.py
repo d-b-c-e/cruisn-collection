@@ -7,8 +7,8 @@ from scenery_c31 import F,signed
 from verify_world_sections import placement,yaw_matrix
 
 LAYOUTS={
-    24:dict(section=0xd575,stage=0xd5a5,cursor=0xd5a1,palette=0x4151,texture=0x4150,trig=0xcc35,table=0xb66f),
-    25:dict(section=0xd56f,stage=0xd59f,cursor=0xd59b,palette=0x4121,texture=0x4120,trig=0xcc2f,table=0xb665)}
+    24:dict(section=0xd575,stage=0xd5a5,cursor=0xd5a1,palette=0x4151,texture=0x4150,trig=0xcc35,table=0xb66f,road_threshold=0xd4c0,road_templates=0x624),
+    25:dict(section=0xd56f,stage=0xd59f,cursor=0xd59b,palette=0x4121,texture=0x4120,trig=0xcc2f,table=0xb665,road_threshold=0xd4ba,road_templates=0x624)}
 
 
 def layout(revision):

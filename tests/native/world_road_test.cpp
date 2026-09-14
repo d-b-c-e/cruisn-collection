@@ -18,6 +18,16 @@ int main()
     assert(select(read,obj,15000,out) && out.far_template && out.selected==0x700);
     assert(out.vertices==4 && out.polygons==1 && out.vertex_data==0xc10003 && out.polygon_data==0x702 && out.materials==0x800);
     assert(m==original);
+    // Revision-specific threshold, same template table. Switching revision
+    // must not reuse the preceding revision's LOD decision.
+    m[0xd4ba]=20000;
+    assert(select(read,obj,15000,out,25) && !out.far_template && out.vertices==8);
+    assert(select(read,obj,20000,out,25) && out.far_template && out.vertices==4);
+    assert(select(read,obj,15000,out,24) && out.far_template);
+    const auto no_read=[](uint32_t)->uint32_t{assert(false);return 0;};
+    assert(!select(no_read,obj,20000,out,23) && !code_matches(no_read,23));
+    assert(!code_matches([](uint32_t){return 0U;},24));
+    assert(!code_matches([](uint32_t){return 0U;},25));
     obj[15]=0x300;assert(!select(read,obj,24000,out));obj[15]=0x2300;
     m[0x624]=0x993000;assert(!select(read,obj,24000,out));m[0x624]=0x600;
     m[0x601]=0x1ffff;assert(!select(read,obj,24000,out));m[0x601]=0x700;

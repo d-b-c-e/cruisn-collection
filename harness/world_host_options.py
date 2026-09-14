@@ -60,7 +60,6 @@ def configure(args,rom,settings):
         if source not in (None,'pending','future'):raise ValueError('invalid host source')
         if layer is not None and layer not in LAYERS:raise ValueError('invalid host layer')
         if roads not in (None,'off','on'):raise ValueError('invalid host roads')
-        if roads=='on' and rom!='crusnwld24':raise ValueError('host roads require World 2.4')
         far=80000 if far is None else far
         if far not in (80000,160000,240000):raise ValueError('invalid host far limit')
         if first is None or last is None or not 1<=first<=last<=1000000:

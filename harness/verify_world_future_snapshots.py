@@ -15,7 +15,6 @@ from verification import sha256_file,write_json
 
 def check(run,allocations,binary,output,*,roads=False,revision=24):
     profile=layout(revision)
-    if roads and revision!=24:raise ValueError('road oracle supports World 2.4 only')
     output.mkdir(parents=True,exist_ok=False)
     rom=(run/'world-future-rom.bin').read_bytes()
     if len(rom)!=0x1000000:raise ValueError('invalid ROM snapshot size')
@@ -80,10 +79,10 @@ def check(run,allocations,binary,output,*,roads=False,revision=24):
             for key,obj in expected.items():
                 center=camera_center(obj,camera,view);depth=center[2].fix();model=obj[13];radius=read(model)
                 if depth-radius<1000 or depth+radius>=far:continue
-                if obj[14]&1 and depth>=read(0xd4c0):
+                if obj[14]&1 and depth>=read(profile['road_threshold']):
                     ordinal=(obj[15]>>12)&15
                     if not ordinal:raise ValueError('invalid far road template ordinal')
-                    selected=read(read(0x624)+ordinal-1)
+                    selected=read(read(profile['road_templates'])+ordinal-1)
                     header=read(selected);materials_pointer=read(selected+1)
                     pairs,singles,polygons=model_counts(header)
                     if pairs:raise ValueError('paired road template')

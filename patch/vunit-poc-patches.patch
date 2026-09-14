@@ -37649,3 +37649,141 @@ index cc0ed59ac5c..533a3553474 100644
 -- 
 2.55.0.windows.3
 
+From e6151969875c1eaaa83a7a461038cf4cf11155bc Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 12:56:51 -0500
+Subject: [PATCH] Add separately guarded World 2.5 extended road adapter
+
+---
+ .../midway/cruisn/world_future_sections.h     |  4 ++--
+ src/mame/midway/cruisn/world_host_scenery.h   |  4 ++--
+ src/mame/midway/cruisn/world_road_scenery.h   | 23 +++++++++++++++----
+ src/mame/midway/midvunit.cpp                  |  3 +--
+ 4 files changed, 23 insertions(+), 11 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/world_future_sections.h b/src/mame/midway/cruisn/world_future_sections.h
+index c9c215c9807..c0f96d96327 100644
+--- a/src/mame/midway/cruisn/world_future_sections.h
++++ b/src/mame/midway/cruisn/world_future_sections.h
+@@ -87,7 +87,7 @@ struct Cache
+ 
+ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &next_id,bool roads=false,uint32_t revision=24)
+ {
+-    const auto *profile=world_host::layout(revision);if(!profile || (roads && revision!=24))return false;
++    const auto *profile=world_host::layout(revision);if(!profile)return false;
+     if(!span(p,8))return false;
+     std::array<uint32_t,12> section{};for(int i=0;i<8;++i)section[i]=read(p+i);
+     if(section[0]==UINT32_MAX){out.end=true;out.next=p;return true;}
+@@ -141,7 +141,7 @@ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &nex
+ 
+ template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor> &objects,Stats &stats,uint32_t count=64,bool roads=false,uint32_t revision=24)
+ {
+-    const auto *profile=world_host::layout(revision);if(!profile || (roads && revision!=24))return false;
++    const auto *profile=world_host::layout(revision);if(!profile)return false;
+     if(!count || count>128)return false;
+     if(cache.roads!=roads || cache.revision!=revision){cache.clear();cache.roads=roads;cache.revision=revision;}
+     stats.start=read(profile->section);stats.stage=read(profile->stage);stats.cursor=read(profile->cursor);
+diff --git a/src/mame/midway/cruisn/world_host_scenery.h b/src/mame/midway/cruisn/world_host_scenery.h
+index a12603387b9..7d683fd93f5 100644
+--- a/src/mame/midway/cruisn/world_host_scenery.h
++++ b/src/mame/midway/cruisn/world_host_scenery.h
+@@ -46,7 +46,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+     const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24)
+ {
+     const auto *profile=layout(revision);
+-    if(!profile || (roads && revision!=24))return false;
++    if(!profile)return false;
+     if(far!=80000 && far!=160000 && far!=240000)return false;
+     // The caller guards the exact code, ROM revision and scene boundary.
+     uint32_t cam=read(0x41),view=read(0x43),bill=read(0x48),origin=read(0x47)+2;
+@@ -106,7 +106,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+         if(road)
+         {
+             world_road::Model selected;
+-            if(!world_road::select(read,obj,depth,selected))return false;
++            if(!world_road::select(read,obj,depth,selected,revision))return false;
+             model=selected.selected;radius=selected.radius;header=selected.header;
+             materials=selected.materials;vertex_start=selected.vertex_data;poly_start=selected.polygon_data;
+         }
+diff --git a/src/mame/midway/cruisn/world_road_scenery.h b/src/mame/midway/cruisn/world_road_scenery.h
+index 3c310bc6d46..bc8477a0914 100644
+--- a/src/mame/midway/cruisn/world_road_scenery.h
++++ b/src/mame/midway/cruisn/world_road_scenery.h
+@@ -5,6 +5,10 @@
+ #include <cstdint>
+ 
+ namespace cruisn { namespace world_road {
++struct Layout {uint32_t threshold,templates;};
++constexpr Layout v24={0xd4c0,0x624},v25={0xd4ba,0x624};
++inline const Layout *layout(uint32_t revision)
++{return revision==24?&v24:revision==25?&v25:nullptr;}
+ struct Model
+ {
+     uint32_t selected=0,radius=0,header=0,vertices=0,polygons=0;
+@@ -15,28 +19,37 @@ inline bool rom(uint32_t p,uint32_t n)
+ {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
+ inline bool ram(uint32_t p,uint32_t n)
+ {return n<=4096 && uint64_t(p)+n<=0x20000;}
+-template<class Read> bool code_matches(Read read)
++template<class Read> bool code_matches(Read read,uint32_t revision=24)
+ {
++    if(!layout(revision))return false;
+     static const uint32_t code[][2]={{0x62c,0x04a1d4c0},{0x635,0x152fd4bf},
+         {0x638,0x08412101},{0x641,0x082b0049},{0x677,0x04f21387},
+         {0x67d,0x24c00182},{0x683,0x6a20fb9d},{0x241,0x082ed4bf},{0x2e0,0x082ed4bf},
+         {0x7c1b,0x0821d58d},{0x7c1d,0x04e00b00},{0x7c21,0x02e1f000},
+         {0x7c22,0x10610300},{0x7c23,0x1541040f},{0x7c27,0x0822d57d},
+         {0x7c28,0x1a620008},{0x7c30,0x08600001},{0x7c39,0x08610001}};
+-    for(auto const &v:code)if(read(v[0])!=v[1])return false;
++    static const uint32_t code25[][2]={{0x62c,0x04a1d4ba},{0x635,0x152fd4b9},
++        {0x638,0x08412101},{0x641,0x082b0049},{0x677,0x04f21387},
++        {0x67d,0x24c00182},{0x683,0x6a20fb9d},{0x241,0x082ed4b9},{0x2e0,0x082ed4b9},
++        {0x7c0d,0x0821d587},{0x7c0f,0x04e00b00},{0x7c13,0x02e1f000},
++        {0x7c14,0x10610300},{0x7c15,0x1541040f},{0x7c19,0x0822d577},
++        {0x7c1a,0x1a620008},{0x7c22,0x08600001},{0x7c2b,0x08610001}};
++    if(revision==24){for(auto const &v:code)if(read(v[0])!=v[1])return false;}
++    else {for(auto const &v:code25)if(read(v[0])!=v[1])return false;}
+     return true;
+ }
+-template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out)
++template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out,uint32_t revision=24)
+ {
++    const auto *profile=layout(revision);if(!profile)return false;
+     if((obj[14]&0x801)!=1 || !rom(obj[13],3))return false;
+     out=Model{};
+     out.radius=read(obj[13]);out.vertex_data=obj[13]+3;
+-    out.far_template=depth>=int32_t(read(0xd4c0));
++    out.far_template=depth>=int32_t(read(profile->threshold));
+     if(out.far_template)
+     {
+         const uint32_t ordinal=(obj[15]>>12)&15;
+         if(!ordinal)return false;
+-        uint32_t table=read(0x624);
++        uint32_t table=read(profile->templates);
+         if(!ram(table,15))return false;
+         out.selected=read(table+ordinal-1);
+         if(!ram(out.selected,2))return false;
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index f8c1ba2c7f4..6dc44fd5470 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -325,7 +325,6 @@ void midvunit_base_state::world_host_start()
+ 		if(strcmp(roads,"0") && strcmp(roads,"1"))fatalerror("MIDV_WORLD_HOST_ROADS requires 0/1\n");
+ 		m_host_roads=!strcmp(roads,"1");
+ 	}
+-	if(m_host_roads && m_host_revision!=24)fatalerror("Host road decoder requires World 2.4\n");
+ 	if(const char *layer=std::getenv("MIDV_WORLD_HOST_LAYER"))
+ 	{
+ 		if(strlen(layer)!=1 || layer[0]<'0' || layer[0]>'3')fatalerror("MIDV_WORLD_HOST_LAYER requires 0..3\n");
+@@ -394,7 +393,7 @@ void midvunit_base_state::world_host_start()
+ 				auto disabler=machine().disable_side_effects();
+ 				return s.read_dword(p);
+ 			};
+-			if(m_host_roads && !cruisn::world_road::code_matches(read))
++			if(m_host_roads && !cruisn::world_road::code_matches(read,m_host_revision))
+ 				fatalerror("World road template/descriptor code guard failed\n");
+ 			std::vector<cruisn::world_host::Descriptor> future;
+ 			cruisn::world_future::Stats future_stats;
+-- 
+2.55.0.windows.3
+

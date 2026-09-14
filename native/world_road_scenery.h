@@ -5,6 +5,10 @@
 #include <cstdint>
 
 namespace cruisn { namespace world_road {
+struct Layout {uint32_t threshold,templates;};
+constexpr Layout v24={0xd4c0,0x624},v25={0xd4ba,0x624};
+inline const Layout *layout(uint32_t revision)
+{return revision==24?&v24:revision==25?&v25:nullptr;}
 struct Model
 {
     uint32_t selected=0,radius=0,header=0,vertices=0,polygons=0;
@@ -15,28 +19,37 @@ inline bool rom(uint32_t p,uint32_t n)
 {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
 inline bool ram(uint32_t p,uint32_t n)
 {return n<=4096 && uint64_t(p)+n<=0x20000;}
-template<class Read> bool code_matches(Read read)
+template<class Read> bool code_matches(Read read,uint32_t revision=24)
 {
+    if(!layout(revision))return false;
     static const uint32_t code[][2]={{0x62c,0x04a1d4c0},{0x635,0x152fd4bf},
         {0x638,0x08412101},{0x641,0x082b0049},{0x677,0x04f21387},
         {0x67d,0x24c00182},{0x683,0x6a20fb9d},{0x241,0x082ed4bf},{0x2e0,0x082ed4bf},
         {0x7c1b,0x0821d58d},{0x7c1d,0x04e00b00},{0x7c21,0x02e1f000},
         {0x7c22,0x10610300},{0x7c23,0x1541040f},{0x7c27,0x0822d57d},
         {0x7c28,0x1a620008},{0x7c30,0x08600001},{0x7c39,0x08610001}};
-    for(auto const &v:code)if(read(v[0])!=v[1])return false;
+    static const uint32_t code25[][2]={{0x62c,0x04a1d4ba},{0x635,0x152fd4b9},
+        {0x638,0x08412101},{0x641,0x082b0049},{0x677,0x04f21387},
+        {0x67d,0x24c00182},{0x683,0x6a20fb9d},{0x241,0x082ed4b9},{0x2e0,0x082ed4b9},
+        {0x7c0d,0x0821d587},{0x7c0f,0x04e00b00},{0x7c13,0x02e1f000},
+        {0x7c14,0x10610300},{0x7c15,0x1541040f},{0x7c19,0x0822d577},
+        {0x7c1a,0x1a620008},{0x7c22,0x08600001},{0x7c2b,0x08610001}};
+    if(revision==24){for(auto const &v:code)if(read(v[0])!=v[1])return false;}
+    else {for(auto const &v:code25)if(read(v[0])!=v[1])return false;}
     return true;
 }
-template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out)
+template<class Read> bool select(Read read,const std::array<uint32_t,32> &obj,int32_t depth,Model &out,uint32_t revision=24)
 {
+    const auto *profile=layout(revision);if(!profile)return false;
     if((obj[14]&0x801)!=1 || !rom(obj[13],3))return false;
     out=Model{};
     out.radius=read(obj[13]);out.vertex_data=obj[13]+3;
-    out.far_template=depth>=int32_t(read(0xd4c0));
+    out.far_template=depth>=int32_t(read(profile->threshold));
     if(out.far_template)
     {
         const uint32_t ordinal=(obj[15]>>12)&15;
         if(!ordinal)return false;
-        uint32_t table=read(0x624);
+        uint32_t table=read(profile->templates);
         if(!ram(table,15))return false;
         out.selected=read(table+ordinal-1);
         if(!ram(out.selected,2))return false;

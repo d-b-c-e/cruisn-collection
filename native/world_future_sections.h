@@ -87,7 +87,7 @@ struct Cache
 
 template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &next_id,bool roads=false,uint32_t revision=24)
 {
-    const auto *profile=world_host::layout(revision);if(!profile || (roads && revision!=24))return false;
+    const auto *profile=world_host::layout(revision);if(!profile)return false;
     if(!span(p,8))return false;
     std::array<uint32_t,12> section{};for(int i=0;i<8;++i)section[i]=read(p+i);
     if(section[0]==UINT32_MAX){out.end=true;out.next=p;return true;}
@@ -141,7 +141,7 @@ template<class Read> bool decode(Read read,uint32_t p,Section &out,uint32_t &nex
 
 template<class Read> bool collect(Read read,Cache &cache,std::vector<Descriptor> &objects,Stats &stats,uint32_t count=64,bool roads=false,uint32_t revision=24)
 {
-    const auto *profile=world_host::layout(revision);if(!profile || (roads && revision!=24))return false;
+    const auto *profile=world_host::layout(revision);if(!profile)return false;
     if(!count || count>128)return false;
     if(cache.roads!=roads || cache.revision!=revision){cache.clear();cache.roads=roads;cache.revision=revision;}
     stats.start=read(profile->section);stats.stage=read(profile->stage);stats.cursor=read(profile->cursor);

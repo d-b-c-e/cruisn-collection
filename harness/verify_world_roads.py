@@ -16,6 +16,9 @@ def verify(run,native=None):
            'world-road-reciprocals.bin','world-road-summary.json']
     hashes={name:sha256_file(run/name) for name in names}
     summary=json.loads((run/names[-1]).read_text())
+    revision=summary.get('revision',24)
+    if revision not in (24,25):raise ValueError('unsupported road revision')
+    threshold_address=0xd4c0 if revision==24 else 0xd4ba
     if not summary['completed']:raise ValueError('road capture did not complete')
     rows=[json.loads(line) for line in (run/names[0]).read_text().splitlines()]
     if not rows or [r['call'] for r in rows]!=list(range(1,len(rows)+1)):
@@ -47,7 +50,7 @@ def verify(run,native=None):
         if native:
             original=row['original_model'];words=row['model_words'];selected=row['model']
             memory={original:words[0],original+1:words[1] if not far else 0,
-                    original+2:row['original_header'],0xd4c0:row['lod_threshold'],
+                    original+2:row['original_header'],threshold_address:row['lod_threshold'],
                     0x624:row['template_table'],row['template_table']+row['template_slot']:row['template_model']}
             if far:memory.update({selected:words[2],selected+1:words[1]})
             native_input.append(' '.join(map(str,[center[2].fix(),*obj,len(memory),
@@ -62,7 +65,7 @@ def verify(run,native=None):
     if native:
         env=dict(os.environ)
         if os.name=='nt':env['PATH']='E:/msys64/mingw64/bin;'+env.get('PATH','')
-        process=subprocess.run([str(native.resolve()),'--road-model'],input='\n'.join(native_input)+'\n',
+        process=subprocess.run([str(native.resolve()),'--road-model' if revision==24 else '--road-model25'],input='\n'.join(native_input)+'\n',
                                text=True,capture_output=True,env=env,timeout=120)
         if process.returncode:raise ValueError('native road selector failed: '+process.stderr)
         actual=[list(map(int,line.split())) for line in process.stdout.splitlines()]
