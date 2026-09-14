@@ -14,6 +14,21 @@
 #include <vector>
 
 namespace cruisn {
+// One capture-producing thread owns a signal; the render producer only reads it.
+// Nested capture/readback and writer-admission scopes restore the outer state.
+// This is not a multi-producer reference counter or a watchdog deadline override.
+class CapturePacingScope
+{
+public:
+    explicit CapturePacingScope(std::atomic<bool> *signal=nullptr)
+        : m_signal(signal),m_previous(signal ? signal->exchange(true) : false) {}
+    ~CapturePacingScope() { if(m_signal)m_signal->store(m_previous); }
+    CapturePacingScope(const CapturePacingScope &)=delete;
+    CapturePacingScope &operator=(const CapturePacingScope &)=delete;
+private:
+    std::atomic<bool> *m_signal;
+    bool m_previous;
+};
 // Only already encoded host screenshots enter this queue. No GL context,
 // device state, guest memory or borrowed pixel storage reaches the writer.
 // The caller owns index until finish() returns. All writes occur in FIFO order.
@@ -44,8 +59,8 @@ public:
         std::unique_lock<std::mutex> lock(m_mutex);
         const auto fits=[&]{return request.bitmap.size()<=m_limit-m_bytes && m_jobs<32;};
         if (!m_stop && !request.bitmap.empty() && request.bitmap.size()<=m_limit && !fits() && wait_ms && pacing) {
-            struct Signal { std::atomic<bool> *flag; ~Signal(){flag->store(false);} } signal{pacing};
-            const auto began=Clock::now(); pacing->store(true); ++m_stats.waits;
+            CapturePacingScope signal(pacing);
+            const auto began=Clock::now(); ++m_stats.waits;
             m_space.wait_for(lock,std::chrono::milliseconds(wait_ms),[&]{return m_stop || fits();});
             m_stats.wait_us+=elapsed(began);
         }

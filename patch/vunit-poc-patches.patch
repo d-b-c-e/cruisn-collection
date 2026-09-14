@@ -37024,3 +37024,75 @@ index 4237b389b29..82a6af2a80f 100644
 -- 
 2.55.0.windows.3
 
+From 03e43ffc3f5c1c9672247c3f971be7e93cb73b6e Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 09:06:21 -0500
+Subject: [PATCH] Account for paced diagnostic readbacks in Zeus stream waits
+
+---
+ src/devices/video/zeus2.cpp             |  4 ++++
+ src/mame/midway/cruisn/capture_writer.h | 19 +++++++++++++++++--
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 57065c111ee..4a6b59209f1 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -1400,6 +1400,9 @@ void thread_main()
+ 		if(!mirror_fbo || !depth_mirror.wide || (mode!=1 && mode!=2) ||
+ 			!cruisn::zeus_wide::decode(wire.data(),wire.size(),packet) || packet.draw!=(mode==2) || packet.margin!=unsigned(MARGIN))return false;
+ 		if(waiting && (!future_packets || packet.page!=future_page || packet.multiplier!=future_multiplier))return false;
++		// Paced diagnostics include texture readback/copy/validation, not just
++		// queue admission. The producer retains its independent10s hard limit.
++		cruisn::CapturePacingScope capture_scope(capture_paced && packet.materials.snapshot ? &s_capture_pacing : nullptr);
+ 		// The ring dispatcher has finished buffered sky copies. Commit them to
+ 		// both original/private targets before any future geometry is inserted.
+ 		flush();std::vector<uint8_t> material;
+@@ -1525,6 +1528,7 @@ void thread_main()
+ 		uint64_t colors=0,depths=0;double snapshot_us=0;
+ 		const bool snapshot=depth_mirror.snapshots.erase(frame)!=0;
+ 		if(snapshot) {
++			cruisn::CapturePacingScope capture_scope(capture_paced ? &s_capture_pacing : nullptr);
+ 			const auto began=std::chrono::steady_clock::now();
+ 			const size_t pixels=size_t(fw)*fh,bytes=pixels*4;
+ 			if(bytes>64*1024*1024)return false;
+diff --git a/src/mame/midway/cruisn/capture_writer.h b/src/mame/midway/cruisn/capture_writer.h
+index 8c8f4e81ccb..8940d4897e1 100644
+--- a/src/mame/midway/cruisn/capture_writer.h
++++ b/src/mame/midway/cruisn/capture_writer.h
+@@ -14,6 +14,21 @@
+ #include <vector>
+ 
+ namespace cruisn {
++// One capture-producing thread owns a signal; the render producer only reads it.
++// Nested capture/readback and writer-admission scopes restore the outer state.
++// This is not a multi-producer reference counter or a watchdog deadline override.
++class CapturePacingScope
++{
++public:
++    explicit CapturePacingScope(std::atomic<bool> *signal=nullptr)
++        : m_signal(signal),m_previous(signal ? signal->exchange(true) : false) {}
++    ~CapturePacingScope() { if(m_signal)m_signal->store(m_previous); }
++    CapturePacingScope(const CapturePacingScope &)=delete;
++    CapturePacingScope &operator=(const CapturePacingScope &)=delete;
++private:
++    std::atomic<bool> *m_signal;
++    bool m_previous;
++};
+ // Only already encoded host screenshots enter this queue. No GL context,
+ // device state, guest memory or borrowed pixel storage reaches the writer.
+ // The caller owns index until finish() returns. All writes occur in FIFO order.
+@@ -44,8 +59,8 @@ public:
+         std::unique_lock<std::mutex> lock(m_mutex);
+         const auto fits=[&]{return request.bitmap.size()<=m_limit-m_bytes && m_jobs<32;};
+         if (!m_stop && !request.bitmap.empty() && request.bitmap.size()<=m_limit && !fits() && wait_ms && pacing) {
+-            struct Signal { std::atomic<bool> *flag; ~Signal(){flag->store(false);} } signal{pacing};
+-            const auto began=Clock::now(); pacing->store(true); ++m_stats.waits;
++            CapturePacingScope signal(pacing);
++            const auto began=Clock::now(); ++m_stats.waits;
+             m_space.wait_for(lock,std::chrono::milliseconds(wait_ms),[&]{return m_stop || fits();});
+             m_stats.wait_us+=elapsed(began);
+         }
+-- 
+2.55.0.windows.3
+

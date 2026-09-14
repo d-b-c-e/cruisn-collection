@@ -39,6 +39,18 @@ int main()
     { std::unique_lock<std::mutex> lock(mutex); changed.wait(lock,[&]{return entered;}); }
     // A timed-out admission clears its signal and records a rejection.
     assert(!paced.submit(request(2),1,&pacing)); assert(!pacing.load());
+    // A writer wait inside a larger readback/copy scope must not clear it.
+    {
+        cruisn::CapturePacingScope outer(&pacing);assert(pacing.load());
+        assert(!paced.submit(request(2),1,&pacing));assert(pacing.load());
+        try {
+            cruisn::CapturePacingScope inner(&pacing);
+            throw std::runtime_error("capture aborted");
+        } catch(const std::runtime_error &) {}
+        assert(pacing.load());
+        {cruisn::CapturePacingScope disabled;assert(pacing.load());}
+    }
+    assert(!pacing.load());
     bool admitted=false;
     std::thread producer([&]{admitted=paced.submit(request(3),1000,&pacing);});
     const auto deadline=std::chrono::steady_clock::now()+std::chrono::seconds(1);
@@ -46,5 +58,5 @@ int main()
     assert(pacing.load());
     { std::lock_guard<std::mutex> lock(mutex); released=true; changed.notify_all(); }
     producer.join(); auto p= paced.finish();
-    assert(admitted && !pacing.load() && p.written==2 && p.rejected==1 && p.waits==2 && p.wait_us>0);
+    assert(admitted && !pacing.load() && p.written==2 && p.rejected==2 && p.waits==3 && p.wait_us>0);
 }
