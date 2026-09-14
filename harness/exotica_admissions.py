@@ -71,7 +71,7 @@ def verify(trial,text,directory,originals):
                       'first_sequence','first_frame','last_sequence','last_frame')
         handovers={int(e['scene']):e for e in bounded_csv(directory/'exotica-handover-scenes.csv',20000)}
         seen=set()
-        for row in bounded_csv(early_path,65536):
+        for row in bounded_csv(early_path,200000 if trial.get('scope')=='marked' else 65536):
             if tuple(row)!=early_fields or any(not re.fullmatch('[0-9]+',v) for v in row.values()):
                 raise ValueError('early visibility permission schema')
             o={k:int(v) for k,v in row.items()};scene=future.get(o['scene']);handover=handovers.get(o['scene'])

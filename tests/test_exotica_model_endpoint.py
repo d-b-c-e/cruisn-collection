@@ -148,5 +148,35 @@ class EndpointObservation(unittest.TestCase):
             with self.assertRaises(ValueError):endpoint.verify_receipt(dict(self.trial,early='endpoint'),self.text,p)
             with self.assertRaises(ValueError):endpoint.verify_receipt(self.trial,self.text+'MIDZ_ENDPOINT_EARLY=1\n',p)
 
+    def test_full_drive_requires_explicit_marked_scope(self):
+        args=self.args('--candidate','test.exe','--exotica-model-endpoint','observe',
+            '--exotica-endpoint-first','1800','--exotica-endpoint-last','8848',
+            '--exotica-endpoint-snapshot','5219')
+        life=dict(mode='observe',first=1799,last=8858)
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life)
+        args.exotica_endpoint_scope='marked';settings={}
+        self.assertEqual(endpoint.configure(args,'crusnexo',settings,life)['scope'],'marked')
+        self.assertEqual(settings['MIDZ_ENDPOINT_MARKED'],'1')
+        args.exotica_endpoint_scope=None
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',settings,life)
+        with tempfile.TemporaryDirectory() as temp:
+            p=Path(temp);self.fixture(p)
+            with self.assertRaises(ValueError):endpoint.verify_receipt(dict(self.trial,scope='marked'),self.text,p)
+            text=self.text+'MIDZ_ENDPOINT_MARKED=1\n'
+            self.assertTrue(endpoint.verify_receipt(dict(self.trial,scope='marked'),text,p)['passed'])
+            with self.assertRaises(ValueError):endpoint.verify_receipt(self.trial,text,p)
+
+    def test_marked_scope_retains_first_rejected_operands_outside_snapshot(self):
+        with tempfile.TemporaryDirectory() as temp:
+            p=Path(temp);self.fixture(p)
+            self.row.update(device_frame=2000,status=2,quads=0,changed=0)
+            self.input[1]=2000;self.write(p)
+            for kind in ('original','endpoint'):(p/f'exotica-endpoint-1-{kind}.bin').unlink()
+            text=self.text.replace('prepared=1 rejected=0','prepared=0 rejected=1').replace('bytes=520','bytes=0')+'MIDZ_ENDPOINT_MARKED=1\n'
+            trial=dict(self.trial,scope='marked')
+            self.assertEqual(endpoint.verify_receipt(trial,text,p)['rejected'],1)
+            self.row['snapshot']=0;self.write(p)
+            with self.assertRaises(ValueError):endpoint.verify_receipt(trial,text,p)
+
 
 if __name__=='__main__':unittest.main()

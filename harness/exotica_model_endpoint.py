@@ -14,6 +14,8 @@ BOUNDS = ('first','last','snapshot')
 
 def add_arguments(parser):
     parser.add_argument('--exotica-model-endpoint', choices=('off','observe','draw'))
+    parser.add_argument('--exotica-endpoint-scope',choices=('all','marked'),
+                        help='marked-only FIFO observation permits full-drive intervals with bounded journals')
     parser.add_argument('--exotica-early-visibility', choices=('off','endpoint'),
                         help='bounded private early visibility with original-state margin composition')
     parser.add_argument('--exotica-endpoint-admit-from',type=int,
@@ -28,6 +30,13 @@ def configure(args, rom, settings, lifetime, scene=None):
     bounds = [getattr(args,'exotica_endpoint_'+k,None) for k in BOUNDS]
     admit=getattr(args,'exotica_endpoint_admit_from',None)
     early=getattr(args,'exotica_early_visibility',None)
+    scope=getattr(args,'exotica_endpoint_scope',None)
+    if scope is None and settings.get('MIDZ_ENDPOINT_MARKED','0')!='0':
+        raise ValueError('endpoint scope cannot be inherited from a recording')
+    if scope is not None:
+        if not getattr(args,'candidate',None) or mode not in ('observe','draw'):
+            raise ValueError('endpoint scope requires explicit candidate and active observation')
+        settings['MIDZ_ENDPOINT_MARKED']='1' if scope=='marked' else '0'
     if early is None and settings.get('MIDZ_ENDPOINT_EARLY','0')!='0':
         raise ValueError('early visibility cannot be inherited from a recording')
     if early is not None:
@@ -51,7 +60,7 @@ def configure(args, rom, settings, lifetime, scene=None):
     first,last,snapshot=bounds
     if (mode not in ('observe','draw') or rom!='crusnexo' or not lifetime or lifetime['mode']!='observe'
             or any(v is None for v in bounds) or not 1800<=first<=snapshot<=last<=15998
-            or last-first>120 or not lifetime['first']<first<=last<lifetime['last']):
+            or (scope!='marked' and last-first>120) or not lifetime['first']<first<=last<lifetime['last']):
         raise ValueError('endpoint interval requires surrounding Exotica lifetimes')
     # Replay is device-free; make this boundary explicit before prepare_run too.
     if admit is not None:
@@ -63,6 +72,7 @@ def configure(args, rom, settings, lifetime, scene=None):
         raise ValueError('early visibility requires composed private margins')
     settings.update({KEY:'2' if mode=='draw' else '1','MIDV_FFB':'0',**{KEY+'_'+k.upper():str(v) for k,v in zip(BOUNDS,bounds)}})
     trial=dict(mode=mode,**dict(zip(BOUNDS,bounds)))
+    if scope is not None:trial['scope']=scope
     if early is not None:trial['early']=early
     if admit is not None:settings['MIDZ_MODEL_ADMIT_FIRST']=str(admit);trial['admit_from']=admit
     else:settings.pop('MIDZ_MODEL_ADMIT_FIRST',None)
@@ -72,6 +82,10 @@ def configure(args, rom, settings, lifetime, scene=None):
 def verify_receipt(trial, text, directory):
     directory=Path(directory);paths=list(directory.glob('exotica-endpoint-*'))
     enabled=bool(trial and trial.get('early')=='endpoint')
+    marked=bool(trial and trial.get('scope')=='marked')
+    scopes=re.findall(r'^MIDZ_ENDPOINT_MARKED=([01])$',text,re.M)
+    if marked and scopes!=['1']:raise ValueError('missing marked-only scope receipt')
+    if not marked and '1' in scopes:raise ValueError('unexpected marked-only scope')
     early=re.findall(r'^MIDZ_ENDPOINT_EARLY=([01])$',text,re.M)
     if enabled and early!=['1']:raise ValueError('missing early visibility receipt')
     if not enabled and '1' in early:raise ValueError('unexpected early visibility')
@@ -112,6 +126,7 @@ def verify_receipt(trial, text, directory):
     expected={path.name,'exotica-endpoint-inputs.txt'};saved=[];size=0;prior_time=0.;prior_frame=0
     if 'admit_from' in trial:expected.add('exotica-endpoint-admissions.csv')
     if trial['mode']=='draw':expected.add('exotica-endpoint-gpu.csv')
+    rejected_seen=0
     for i,r in enumerate(rows,1):
         if (r['id']!=i or not trial['first']<=r['commit_frame']<=trial['last']
                 or not r['commit_frame']<=r['device_frame']<=trial['last']+4
@@ -123,11 +138,14 @@ def verify_receipt(trial, text, directory):
                 or not 0x30000<=r['end']<0x32000 or r['opcode']>>16!=0x2486
                 or r['opcode']&65535>0xc800 or r['status'] not in (0,1,2)
                 or bool(r['flags']&0x04000000)!=(r['status']!=0)
+                or (marked and not r['flags']&0x04000000)
                 or not 0<=r['changed']<=r['quads']<=131072
                 or (r['status']!=1 and (r['quads'] or r['changed']))
-                or r['snapshot']!=int(r['device_frame']==trial['snapshot'] and r['status']!=0)):
+                or r['snapshot']!=int((r['device_frame']==trial['snapshot'] and r['status']!=0)
+                                     or (marked and r['status']==2 and not rejected_seen))):
             raise ValueError('endpoint owner/command/time/status contract')
         prior_time=r['device_time'];prior_frame=r['device_frame']
+        rejected_seen+=r['status']==2
         if r['snapshot']:
             saved.append(r)
             if r['status']==1:
@@ -184,7 +202,7 @@ def verify_draw(trial,text,directory,originals):
         if int(admission['id'])!=o['id']:raise ValueError('endpoint GPU original/admission order')
         if o['status']==1 and admission['admitted']=='1':
             expected.extend((o['device_frame'],o['id'],i,o['quads']) for i in range(o['quads']))
-    rows=bounded_csv(path,131072);actual=[]
+    rows=bounded_csv(path,1000000 if trial.get('scope')=='marked' else 131072);actual=[]
     for row in rows:
         if tuple(row)!=('frame','model','index','count') or any(not re.fullmatch('[0-9]+',v) for v in row.values()):
             raise ValueError('endpoint GPU row contract')

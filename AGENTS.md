@@ -1,5 +1,21 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 full visibility — ACTIVE endpoint rejection repair
+
+Read docs/reviews/2026-09-14-exotica-full-visibility.md. Native0a0a04b7de4 frozen,
+207patches. FullAmazon8860inputs/originalimages PASS;6953scenes,109804sealedactive
+permissions,30308markedcommands,24760prepared/5548rejected,194893GPUquads. Report
+PASS is NOT endpointcoverage acceptance. Firstfailure18418/frame6538 ownedinput
+saved automatically. LOCAL endpoint-rejection-diagnosis proves program29b->22b
+guard failure. Canonical narrow lighting-transition fix and synthetic tests are
+LOCAL pending; light-endpoint-qualified-v2 PASS12savedmodels versus independent
+Python fullbytes,includingfailedmodel. Initial negative test used wrong depthbit,
+failedretained; correctedbit0x20. Otherplainflag failures stillunexplained.
+NEXT sync/build/freeze narrowfix and fullreplay; diagnose remainingfallbacks.
+No currentgame/build; no physicalFFB/deploy/release/hostedCI. Personal87d/v0.5.0
+unchanged. Keepserialrig; no build/export/broadscan duringtimedgame. Continue
+directly; parity stillincomplete, heartbeat is notworkcadence.
+
 ## September14 temporal visibility — NEXT full-drive marked-only scope
 
 Read docs/reviews/2026-09-14-exotica-visibility-temporal.md. Same native1d3216d7a83
