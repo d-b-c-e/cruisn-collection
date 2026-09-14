@@ -32,6 +32,7 @@ assuming that a source feature is present in a downloaded package.
 | [Native waiting completion](reviews/2026-09-11-exotica-native-completion.md) | Full/repeat/disabled native cohort reconciliation at actual event watermarks |
 | [Retained waiting materials](reviews/2026-09-11-exotica-retained-materials.md) | Standalone proposal-image continuation, exact packet/GPU comparisons and remaining live integration |
 | [Live waiting drawing](reviews/2026-09-13-exotica-waiting-draw.md) | Full Amazon integration, visible extra trees, focused validation and remaining performance/transitions |
+| [Exotica assembly performance](reviews/2026-09-14-exotica-scene-performance.md) | Reduced repeated projection/assembly work, unchanged sampled 4K output and remaining release gates |
 | [Exotica pool lifetimes](reviews/2026-09-10-exotica-pool-lifetimes.md) | Allocation/removal generations, slot reuse and the post-race reset |
 | [September 9 handoff](OVERNIGHT-RESULTS-2026-09-09.md) | Measured 3x progress, undeployed candidates and remaining cross-game work |
 | [Local builds](LOCAL-BUILDS.md) | Local checks, packaging and exact-ZIP upload; Actions disabled |

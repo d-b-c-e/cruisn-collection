@@ -1,5 +1,23 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 scene performance — current checkpoint
+
+Read docs/reviews/2026-09-14-exotica-scene-performance.md. Native1d5af5a0928
+is built/frozen at build/candidates/1d5af5a0928/vunit.exe, SHA256
+f18591de69456916b1434fe1d4cbafbee135fd32729d34d9350288c12c5889bc.
+Projection preparation and bounded scratch/model validation reuse reduce full
+Amazon scene assembly20.471s->17.572s. Full8860inputs/7060camera/21180ADC,
+6953waiting batches/five insertion samples and33selected4K images all match
+the prior88803 waiting-draw candidate. Two targeted native tests and five actual
+scene byte comparisons PASS. Full diagnostic hashing remains enabled; no sampled
+hash mode was implemented. Instrumented83.51% is not normal-speed acceptance.
+190patch export reconstructs2c3511d125d6341cf40011ca5032b6995c36c020.
+NEXT concrete temporal handover window, left-margin composition and sustained
+performance. Reuse this accepted full replay; no blind broad matrix repeats.
+No deploy/release/hostedCI/physicalFFB. Personal87d/publicv0.5.0 unchanged.
+Attended FFB calibration availability still unanswered. No game/build/test running.
+Older checkpoints below are historical where superseded.
+
 ## September 13 testing scope — maintainer priority
 
 Resume authorized rendering work, but spend testing time and tokens deliberately.

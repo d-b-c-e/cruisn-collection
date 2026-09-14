@@ -4,7 +4,7 @@ Current work and acceptance criteria, with relevant legacy IDs retained.
 Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 (handoff). Update status here as items move.
 
-## Current priorities (2026-09-11, after v0.5.0)
+## Current priorities (2026-09-14, after v0.5.0)
 
 All four games now have native host future-scenery implementations. This is
 implementation progress, **not accepted four-game 3× parity**. The
@@ -56,8 +56,11 @@ and the public package remain v0.5.0.
   transparency depends on placement. A [retained-material continuation](docs/reviews/2026-09-11-exotica-retained-materials.md)
   now preserves proposal resources. The [live waiting-draw integration](docs/reviews/2026-09-13-exotica-waiting-draw.md)
   passes a full Amazon drive and adds visible vegetation in selected4K comparisons.
-  Next optimize measured assembly/packet work and verify smooth fade handover;
-  this candidate is not deployed or accepted at full speed.
+  [Assembly optimization](docs/reviews/2026-09-14-exotica-scene-performance.md)
+  now reduces logged assembly cost by14.2%, preserving all33 selected4K images
+  in another full drive. Instrumented83.51% is not normal-speed acceptance.
+  Next verify smooth fade handover, compose the left-margin repair with this path,
+  and measure sustained performance. This candidate remains undeployed.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.
