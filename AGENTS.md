@@ -1,5 +1,35 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 native endpoints — NEXT admitted private replacement
+
+Read docs/reviews/2026-09-14-exotica-native-endpoint-observer.md and
+2026-09-14-exotica-command-ownership.md. Native e0afe6360fd frozen separately,
+SHA de9b80c5944d291a56dbfa5f369cb2da5a39751e7e5138b54d392ad426435f46.
+202 patches reconstruct52b66c9d33e6c1eac120d4b8c6c2cc9eb75129c6; fork pushed.
+Canonical endpoint+ticket helpers now MAMElinked/synced. New replay option
+--exotica-model-endpoint observe with first/last/snapshot requires candidate,
+surrounding lifetimes and physicalFFB0. Read-only, no admission or replacement.
+Actual commit carries owner+copied setup through exact ring packet to current
+device context. All1150 consumed,58prepared/0rejected/0pending,503untracked.
+11saved98quads original/endpoint independently exact; originals equal actual
+native commands. Includes7earlierhandover models. All1150 lifetime joins;
+937CPUjoins,213outside olderLua window;232devicejoins. No hidden coverage claim.
+5260input/nativeimage control PASS; camera/ADC/lifetime/CPU/FIFO/models/resources
+and original/mirror5219/5220color/depth byteexact native0cc. Five new harness tests
+PASS. First d65 native attempt wrongly used ROM-only span for RAM setup; fatal
+guard and failed run retained. Corrected bounded RAM/ROM spans in e0 candidate.
+LOCALR/endpoint-ram5220,endpoint-ram-qualified,endpoint-ram-native-export.json.
+
+NEXT actually queued private-scene admission ledger by realm/epoch/source, bind
+later allocation generations, then private-target original-command replacement.
+Do not treat source enumeration as a draw, or blindly make all owned models opaque.
+Preserve original target/commands/resources, intrinsic alpha and foreground depth.
+LOCALR/endpoint-private-next.md details consumer shared-batch boundary and plan.
+Need temporal first-original/fadecompletion comparison before visual policy/speed.
+Black margins, performance and final4K remain open. No game/build/test running at
+this checkpoint. Personal87d/publicv0.5.0 unchanged; no deploy/release/hostedCI/
+physicalFFB/menu removal. Continue directly after checkpoint; no milestone waiting.
+
 ## September14 original endpoint — standalone verified; NEXT exact FIFO ownership
 
 Read docs/reviews/2026-09-14-exotica-original-endpoint.md. Canonical standalone

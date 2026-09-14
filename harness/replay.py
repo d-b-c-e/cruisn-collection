@@ -27,6 +27,7 @@ import exotica_scene_options
 import exotica_lifetimes
 import exotica_waiting
 import exotica_handover
+import exotica_model_endpoint
 import ffb_worker
 import zeus_render_policy
 import zeus_palette
@@ -94,6 +95,7 @@ def main(argv=None):
     exotica_lifetimes.add_arguments(ap)
     exotica_waiting.add_arguments(ap)
     exotica_handover.add_arguments(ap)
+    exotica_model_endpoint.add_arguments(ap)
     ffb_worker.add_arguments(ap)
     zeus_render_policy.add_arguments(ap)
     zeus_palette.add_arguments(ap)
@@ -271,6 +273,8 @@ def main(argv=None):
         if waiting_trial:report['exotica_waiting']=waiting_trial
         handover_trial=exotica_handover.configure(args,manifest['rom'],manifest['settings'],scene_trial,waiting_trial)
         if handover_trial:report['exotica_handover']=handover_trial
+        endpoint_trial=exotica_model_endpoint.configure(args,manifest['rom'],manifest['settings'],lifetime_trial)
+        if endpoint_trial:report['exotica_model_endpoint']=endpoint_trial
         if scene_trial and scene_trial.get('future_present'):
             report['presentation']='explicit-extended-target'
         stall_trial=zeus_stream.configure_stall(args,manifest['rom'],manifest['settings'],reference['frames'])
@@ -418,6 +422,8 @@ def main(argv=None):
         if waiting_result:report['exotica_waiting']['result']=waiting_result
         handover_result=exotica_handover.verify_receipt(handover_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if handover_result:report['exotica_handover']['result']=handover_result
+        endpoint_result=exotica_model_endpoint.verify_receipt(endpoint_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+        if endpoint_result:report['exotica_model_endpoint']['result']=endpoint_result
         depth_result=zeus_depth_mirror.verify_receipt(depth_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if depth_result:report['zeus_depth_mirror']['result']=depth_result
         stall_result=zeus_stream.verify_stall(stall_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
