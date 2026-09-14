@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September 14 transition window — current checkpoint
+
+Read docs/reviews/2026-09-14-exotica-transition-capture.md. Native03e43ffc3f5
+is built/frozen, SHA8ac2166812d63c253f602fe101250d5c553f876f8de541b96d358efc1ce0a625.
+191patches reconstruct9d743f9ed71969d53bc49189e1dfcdb842650f65. Explicit paced
+diagnostics now cover private/depth readback work; nested writer scopes preserve
+outer pacing. PhysicalFFB0 required; ordinary waits and10s hard cap unchanged.
+One dense Amazon retry fixes prior consumer timeout:5323future/waiting batches,
+10646materials,5private/6depth snapshots complete. Original41-image request FAIL
+at stopframe7220, retained. Separate40-frame7180..7219 acceptance PASS7220inputs,
+5420camera/16260ADC; eight7187internal buffers equal prior4K. Current monitor
+3440x1440, NOT renewed4K acceptance. New Zeus preflight rejects capture at stop.
+SevenPython capture tests/native writer test/sync PASS. No broad matrix rerun.
+Selected18quad owner retained7187..7189, original starts7190 with exactsame8/240
+blend, then original fade increments8. No obvious disappearance in inspected
+adjacent-frame crops. ONE object only; no earlierfade/opacity policy introduced.
+NEXT ground-margin composition and targeted othermaterial handovers; current
+window is reusable. No deploy/release/hostedCI/physicalFFB. Personal87d/v0.5.0
+unchanged. Attended FFB availability unanswered. No game/build/test running.
+
 ## September 14 scene performance — current checkpoint
 
 Read docs/reviews/2026-09-14-exotica-scene-performance.md. Native1d5af5a0928

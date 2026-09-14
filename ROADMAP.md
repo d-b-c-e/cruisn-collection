@@ -59,8 +59,12 @@ and the public package remain v0.5.0.
   [Assembly optimization](docs/reviews/2026-09-14-exotica-scene-performance.md)
   now reduces logged assembly cost by14.2%, preserving all33 selected4K images
   in another full drive. Instrumented83.51% is not normal-speed acceptance.
-  Next verify smooth fade handover, compose the left-margin repair with this path,
-  and measure sustained performance. This candidate remains undeployed.
+  A [targeted handover window](docs/reviews/2026-09-14-exotica-transition-capture.md)
+  now joins one18-quad object's original fade and verifies a complete40-frame
+  interior window at3440x1440. Dense capture pacing and stop-frame preflight are
+  fixed; this is not general temporal or renewed4K acceptance. Next compose the
+  left-margin repair with this path, broaden material handover coverage and measure
+  sustained performance. This candidate remains undeployed.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior.
