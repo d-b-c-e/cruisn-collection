@@ -35,7 +35,8 @@ def configure(args,rom,settings,frames):
         if any(k in settings for k in KEYS[1:]):raise ValueError('orphan depth mirror bounds')
         return None
     if (rom!='crusnexo' or settings['MIDZ_DEPTH_MIRROR'] not in ('1','2') or settings.get('MIDZ_GL')!='1' or
-            getattr(args,'headless',False) or getattr(args,'native_renderer',False) or settings.get('MIDZ_HOST_ACTIVE','0')!='0'):
+            getattr(args,'headless',False) or getattr(args,'native_renderer',False) or
+            (settings.get('MIDZ_HOST_ACTIVE','0')!='0' and settings.get('MIDZ_HOST_COMPOSE')!='1')):
         raise ValueError('depth mirror requires Exotica/live GL and no late host drawing')
     if not all(re.fullmatch('[0-9]+',settings.get(k,'')) for k in KEYS[1:3]):raise ValueError('invalid depth mirror interval')
     first,last=(int(settings[k]) for k in KEYS[1:3]);limit=getattr(args,'until_frame',None) or frames

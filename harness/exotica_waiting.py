@@ -34,7 +34,7 @@ def configure(args, rom, settings, scene, lifetime):
         raise ValueError('Exotica waiting requires future mode and lifetime coverage from1799 through hostlast+1')
     # The caller has resolved and validated live GL/private-wide requirements.
     if (settings.get('MIDZ_GL')!='1' or settings.get('MIDZ_DEPTH_MIRROR')!='2' or
-            settings.get('MIDZ_HOST_MATERIALS')!='1' or settings.get('MIDZ_HOST_ACTIVE','0')!='0' or
+            settings.get('MIDZ_HOST_MATERIALS')!='1' or (settings.get('MIDZ_HOST_ACTIVE','0')!='0' and not scene.get('compose')) or
             'MIDZ_DEPTH_STREAM_FRAME' in settings or any(getattr(args,k,False) for k in ('headless','native_renderer','zeus_native'))):
         raise ValueError('Exotica waiting requires live private-wide future mode')
     settings['MIDZ_HOST_WAITING']='1'

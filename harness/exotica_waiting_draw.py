@@ -5,7 +5,7 @@ from exotica_waiting import bounded_rows
 from exotica_future_gpu import verify as verify_gpu
 
 
-def verify(directory,text,enabled,captures):
+def verify(directory,text,enabled,captures,compose=False):
     directory=Path(directory)
     if not enabled:
         if ('MIDZ_HOST_WAITING_DRAW' in text or list(directory.glob('exotica-waiting-draw-*'))):
@@ -26,6 +26,6 @@ def verify(directory,text,enabled,captures):
             a=directory/f'exotica-waiting-draw-{frame}-{suffix}.bin'
             b=directory/f'exotica-handover-{frame}-{suffix}.bin'
             if a.read_bytes()!=b.read_bytes():raise ValueError('waiting packet differs from completed geometry')
-    result=verify_gpu(directory,scenes,text,2,captures,waiting=True,kind='waiting-draw')
+    result=verify_gpu(directory,scenes,text,2,captures,waiting=True,kind='waiting-draw',compose=compose)
     result['scope']='Private draw delivery and retained material/geometry bindings at actual completed cohorts; independent pixel/temporal/performance acceptance remains separate.'
     return result

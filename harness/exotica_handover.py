@@ -33,11 +33,11 @@ def configure(args, rom, settings, scene, waiting_trial):
         raise ValueError('Exotica completion requires waiting and actual command-fence observation')
     if value=='2':
         if (not getattr(args,'candidate',None) or scene.get('future')!=2 or
-                not scene.get('materials') or scene.get('active',0)):
+                not scene.get('materials') or (scene.get('active',0) and not scene.get('compose'))):
             raise ValueError('Exotica waiting draw requires explicit candidate, private future drawing and materials')
         scene['waiting_draw']=True
     settings['MIDZ_HOST_HANDOVER'] = value
-    return dict(mode='draw' if value=='2' else 'observe', waiting=waiting_trial, snapshots=list(waiting_trial['snapshots']))
+    return dict(mode='draw' if value=='2' else 'observe', waiting=waiting_trial, snapshots=list(waiting_trial['snapshots']),compose=scene.get('compose',False))
 
 
 def verify_receipt(trial, text, directory):
@@ -127,6 +127,8 @@ def verify_receipt(trial, text, directory):
             ended=[status(h) for h in owners]
             fold(values['ready_records'],rtime)
             completed=[status(h) for h in owners]
+            if trial.get('compose') and any(b=='retained' and a!='retained' for a,b in zip(ended,completed)):
+                raise ValueError('composition retained owner changed after active sealing')
             if epoch!=values['epoch'] or epoch!=cohort_epoch:
                 raise ValueError('Exotica completion reset boundary')
             for name in ('submitted','retired','retained'):
@@ -162,7 +164,7 @@ def verify_receipt(trial, text, directory):
         if stream.read(1):raise ValueError('trailing Exotica cohort bytes')
     if remaining or {p.name for p in files}!=expected_files or any(sums[k]!=totals[k] for k in sums):
         raise ValueError('Exotica completion final totals/artifacts')
-    drawing=verify_draw(directory,text,trial['mode']=='draw',trial['snapshots'])
+    drawing=verify_draw(directory,text,trial['mode']=='draw',trial['snapshots'],compose=trial.get('compose',False))
     return dict(passed=True,**totals,owners_changed_after_cpu_end=changed_after_end,drawing=drawing,
                 scope='Actual event-watermark/owner reconciliation for every cohort and filtered proposal geometry for snapshots. '
                       'Private drawing receipts, when requested, are separate; no temporal or performance acceptance.')

@@ -19,6 +19,8 @@ def snapshots(text):
 
 
 def add_arguments(parser):
+    parser.add_argument('--exotica-host-compose', choices=('off', 'margins'),
+                        help='explicit candidate-only combination of private waiting scenery and deduplicated active margins')
     parser.add_argument('--exotica-host-scene', choices=('off', 'observe'),
                         help='observe a private future scene at original model submission; does not draw it')
     parser.add_argument('--exotica-host-first', type=int)
@@ -56,6 +58,12 @@ def configure(args, rom, settings):
     active_option = getattr(args, 'exotica_host_active', None)
     future_option = getattr(args, 'exotica_host_future', None)
     present_option = getattr(args, 'exotica_host_future_present', None)
+    compose_option = getattr(args, 'exotica_host_compose', None)
+    compose = settings.get('MIDZ_HOST_COMPOSE', '0') if compose_option is None else str(int(compose_option == 'margins'))
+    if compose not in ('0', '1') or compose == '1' and not getattr(args, 'candidate', None):
+        raise ValueError('Exotica composition requires an explicit candidate and valid mode')
+    if compose_option is not None and mode not in ('observe',):
+        raise ValueError('Exotica composition requires explicit mode observe')
     values = [getattr(args, 'exotica_host_'+name, None) for name in ('first', 'last', 'multiplier', 'snapshots')]
     explicit = mode is not None
     if explicit:
@@ -66,7 +74,7 @@ def configure(args, rom, settings):
             raise ValueError('Exotica host bounds require an explicit mode')
         inherited = settings.get('MIDZ_HOST_SCENE')
         if inherited in (None, '0'):
-            if settings.get('MIDZ_HOST_FUTURE', '0') != '0' or settings.get('MIDZ_HOST_FUTURE_PRESENT', '0') != '0':
+            if settings.get('MIDZ_HOST_FUTURE', '0') != '0' or settings.get('MIDZ_HOST_FUTURE_PRESENT', '0') != '0' or compose != '0':
                 raise ValueError('orphan Exotica future mode')
             return None
         if inherited != '1':
@@ -91,6 +99,7 @@ def configure(args, rom, settings):
         settings.pop('MIDZ_HOST_FUTURE', None)
         settings.pop('MIDZ_HOST_FUTURE_PRESENT', None)
         settings.pop('MIDZ_HOST_WAITING', None)
+        settings.pop('MIDZ_HOST_COMPOSE', None)
         return dict(mode=mode)
     first, last, multiplier, captured = values
     multiplier = 1 if multiplier is None else multiplier
@@ -141,8 +150,12 @@ def configure(args, rom, settings):
     future_setting = settings.get('MIDZ_HOST_FUTURE', '0') if future_option is None else str(('off', 'observe', 'draw').index(future_option))
     if future_setting not in ('0', '1', '2'):
         raise ValueError('invalid recorded Exotica future mode')
-    if future_setting != '0' and (material_setting != '1' or active_setting != '0'):
+    if future_setting != '0' and (material_setting != '1' or active_setting != '0' and compose != '1'):
         raise ValueError('Exotica future requires private materials and no active margin drawing')
+    if compose == '1' and (future_setting != '2' or active_setting != '2' or page_setting == '0'):
+        raise ValueError('Exotica composition requires future/active drawing and tracked materials')
+    if compose_option is not None:
+        settings['MIDZ_HOST_COMPOSE'] = compose
     if future_option is not None:
         settings['MIDZ_HOST_FUTURE'] = future_setting
     present_setting = settings.get('MIDZ_HOST_FUTURE_PRESENT', '0') if present_option is None else str(int(present_option == 'extended'))
@@ -159,7 +172,7 @@ def configure(args, rom, settings):
     return dict(mode=mode, first=first, last=last, multiplier=multiplier, snapshots=captured,
                 bounds=bound_setting == '1', materials=material_setting == '1', material_pages=int(page_setting),
                 source_cache=int(cache_setting), early_depth=int(depth_setting), fence=fence_setting == '1', active=int(active_setting),
-                future=int(future_setting), future_present=present_setting == '1', explicit=explicit)
+                future=int(future_setting), future_present=present_setting == '1', compose=compose == '1', explicit=explicit)
 
 
 def validate_runtime(trial, args, settings):
@@ -174,6 +187,12 @@ def validate_runtime(trial, args, settings):
     if (int(settings['MIDZ_DEPTH_FIRST']) > trial['first'] or
             int(settings['MIDZ_DEPTH_LAST']) < trial['last']+1):
         raise ValueError('Exotica future interval must fit the completed-frame depth interval')
+    if trial.get('compose'):
+        handover = getattr(args, 'exotica_host_handover', None)
+        waiting = getattr(args, 'exotica_host_waiting', None)
+        if ((settings.get('MIDZ_HOST_HANDOVER') != '2' if handover is None else handover != 'draw') or
+                (settings.get('MIDZ_HOST_WAITING') != '1' if waiting is None else waiting != 'observe')):
+            raise ValueError('Exotica composition requires waiting observation and completion drawing')
 
 
 def verify_receipt(trial, text, directory):
@@ -270,13 +289,15 @@ def verify_receipt(trial, text, directory):
                 raise ValueError('missing Exotica host geometry snapshot')
     if materials:
         from zeus_host_materials import verify_live
-        verify_live(directory, rows, trial['snapshots'], text, active=bool(active), waiting=trial.get('waiting_draw',False))
+        verify_live(directory, rows, trial['snapshots'], text, active=bool(active), waiting=trial.get('waiting_draw',False), compose=trial.get('compose',False))
     from exotica_fence import verify as verify_fence
     fence_result = verify_fence(directory, rows, text, trial.get('fence', False))
     from exotica_active import verify as verify_active
-    active_result = verify_active(directory, rows, text, active, trial['snapshots'])
+    active_result = verify_active(directory, rows, text, active, trial['snapshots'],compose=trial.get('compose',False))
     from exotica_future_gpu import verify as verify_future
-    future_result = verify_future(directory, rows, text, trial.get('future', 0), trial['snapshots'], present=trial.get('future_present', False), waiting=trial.get('waiting_draw',False))
+    future_result = verify_future(directory, rows, text, trial.get('future', 0), trial['snapshots'], present=trial.get('future_present', False), waiting=trial.get('waiting_draw',False),compose=trial.get('compose',False))
+    from exotica_composition import verify as verify_composition
+    composition=verify_composition(directory,rows,text,trial.get('compose',False),trial['snapshots'])
     return dict(passed=True, scenes=matched, quads=quads, snapshots=saved, guest_cycles_unchanged=True, game_scene_boundary=True,
-                command_fence=fence_result, active_margins=active_result, private_future=future_result,
+                command_fence=fence_result, active_margins=active_result, private_future=future_result,composition=composition,
                 scope='Bounded live scene/material receipts; independent geometry and visual acceptance are separate.')

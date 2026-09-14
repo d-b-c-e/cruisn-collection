@@ -37096,3 +37096,462 @@ index 8c8f4e81ccb..8940d4897e1 100644
 -- 
 2.55.0.windows.3
 
+From b6e0b8e8c79d91ad01caf70629eeb66d91f260ad Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 12:04:54 -0500
+Subject: [PATCH] Gate combined private Exotica waiting scenery and active
+ margin repair
+
+---
+ src/devices/video/zeus2.cpp                  | 48 ++++++++-----
+ src/mame/midway/cruisn/exotica_composition.h | 74 ++++++++++++++++++++
+ src/mame/midway/midzeus.cpp                  | 65 ++++++++++++++++-
+ 3 files changed, 169 insertions(+), 18 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/exotica_composition.h
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 4a6b59209f1..284c93e1139 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -150,7 +150,7 @@ void zeus2_device::device_start()
+ 	if(const auto mirror=mzgl::depth_mirror_settings();mirror.enabled) {
+ 		const char *force=std::getenv("MIDV_FFB"),*live=std::getenv("MIDZ_GL"),*active=std::getenv("MIDZ_HOST_ACTIVE");
+ 		if(!force || strcmp(force,"0") || !live || strcmp(live,"1") ||
+-			(active && strcmp(active,"0")) || strcmp(machine().system().name,"crusnexo"))
++			(active && strcmp(active,"0") && (!std::getenv("MIDZ_HOST_COMPOSE") || strcmp(std::getenv("MIDZ_HOST_COMPOSE"),"1"))) || strcmp(machine().system().name,"crusnexo"))
+ 			fatalerror("Zeus depth mirror requires Exotica/live GL/FFB0 and no late host drawing\n");
+ 		fprintf(stderr,"MIDZ_DEPTH_MIRROR=%u first=%u last=%u snapshots=%u\n",mirror.wide?2u:1u,mirror.first,mirror.last,unsigned(mirror.snapshots.size()));
+ 	}
+@@ -996,6 +996,8 @@ void thread_main()
+ 	uint private_wave_tex=0,private_palette_tex=0;
+ 	uint64_t private_scene=0,private_packets=0,private_snapshots=0;
+ 	uint64_t private_late_scene=0,margin_packets=0,margin_quads=0;
++	uint64_t private_waiting_scene=0;
++	const bool compose=envi("MIDZ_HOST_COMPOSE",nullptr,0)==1;
+ 	uint margin_depth_tex=0,margin_fbo=0;
+ 	FILE *margin_log=nullptr;
+ 	// Owned raw diagnostic bytes use the same bounded FIFO writer as BMPs;
+@@ -1014,8 +1016,10 @@ void thread_main()
+ 		if(!decode(wire.data(),wire.size(),packet) || packet.frame<private_frame)return false;
+ 		if(late) {
+ 			if(packet.scene!=private_scene || packet.frame!=private_frame || packet.scene<=private_late_scene)return false;
++			if(compose && (retained ? private_waiting_scene>=packet.scene : private_waiting_scene!=packet.scene))return false;
+ 		} else if(packet.scene<=private_scene ||
+ 			((envi("MIDZ_HOST_ACTIVE",nullptr,0) || envi("MIDZ_HOST_HANDOVER",nullptr,0)==2) && private_late_scene!=private_scene))return false;
++		if(compose && !late && private_waiting_scene!=private_scene)return false;
+ 		if(!private_image)private_image=std::make_unique<WaveImage>();
+ 		if(retained ? !accept_retained(packet,*private_image) : !accept(packet,*private_image))return false;
+ 		const auto decoded=std::chrono::steady_clock::now();
+@@ -1086,7 +1090,10 @@ void thread_main()
+ 			unsigned(packet.wave.pages.size()),unsigned(packet.rows.size()),unsigned(wire.size()),
+ 			(unsigned long long)packet.wave.result_hash,us(start,decoded),us(decoded,uploaded),us(uploaded,finished))<0)return false;
+ 		private_scene=packet.scene;private_frame=packet.frame;++private_packets;
+-		if(late)private_late_scene=packet.scene;
++		if(late) {
++			if(compose && retained)private_waiting_scene=packet.scene;
++			else private_late_scene=packet.scene;
++		}
+ 		return true;
+ 	};
+ 	uint32_t pal_slot = 0;
+@@ -1273,6 +1280,11 @@ void thread_main()
+ 		cruisn::zeus_margin::Packet packet;
+ 		if((mode!=1 && mode!=2) || !cruisn::zeus_margin::decode(wire.data(),wire.size(),packet) ||
+ 			packet.draw!=(mode==2) || packet.margin!=unsigned(MARGIN))return false;
++		if(compose && (!mirror_fbo || !depth_mirror.wide || mode!=2))return false;
++		cruisn::CapturePacingScope pacing(capture_paced && packet.materials.snapshot ? &s_capture_pacing : nullptr);
++		const uint target_color=compose?mirror_color:fbTex,target_depth=compose?mirror_depth:depthTex;
++		const uint target_fbo=compose?mirror_fbo:fbo,draw_prog=compose?mirror_prog:prog;
++		const unsigned depth_type=compose?0x1406:0x1405;
+ 		std::vector<uint8_t> material;
+ 		if(!cruisn::zeus_host::encode(packet.materials,material) || !private_materials(material,true))return false;
+ 		// Finish all original queued polygons before copying their depth. The
+@@ -1284,31 +1296,32 @@ void thread_main()
+ 			gl.ActiveTexture(TEXTURE0+7);gl.BindTexture(0x0DE1,texture);
+ 			gl.PixelStorei(0x0D05,1);gl.GetTexImage(0x0DE1,0,format,type,data.data());return data;
+ 		};
+-		std::vector<uint8_t> before_color,before_depth;
++		std::vector<uint8_t> before_color,before_depth,original_color,original_depth;
+ 		if(packet.materials.snapshot) {
+-			before_color=texture_bytes(fbTex,RGBA,0x1401);
+-			before_depth=texture_bytes(depthTex,DEPTH_COMPONENT,0x1405);
++			before_color=texture_bytes(target_color,RGBA,0x1401);
++			before_depth=texture_bytes(target_depth,DEPTH_COMPONENT,depth_type);
++			if(compose) {original_color=texture_bytes(fbTex,RGBA,0x1401);original_depth=texture_bytes(depthTex,DEPTH_COMPONENT,0x1405);}
+ 			if(gl.GetError())return false;
+ 		}
+ 		size_t vertices=0;
+ 		if(packet.draw && MARGIN && !packet.quads.empty()) {
+ 			if(!margin_depth_tex) {
+ 				gl.ActiveTexture(TEXTURE0+7);
+-				margin_depth_tex=make_tex(fw,fh,DEPTH_COMPONENT24,DEPTH_COMPONENT,0x1405);
++				margin_depth_tex=make_tex(fw,fh,compose?0x8cac:DEPTH_COMPONENT24,DEPTH_COMPONENT,depth_type);
+ 				gl.GenFramebuffers(1,&margin_fbo);gl.BindFramebuffer(FRAMEBUFFER,margin_fbo);
+-				gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0,0x0DE1,fbTex,0);
++				gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0,0x0DE1,target_color,0);
+ 				gl.FramebufferTexture2D(FRAMEBUFFER,DEPTH_ATTACHMENT,0x0DE1,margin_depth_tex,0);
+ 				if(gl.CheckFramebufferStatus(FRAMEBUFFER)!=FRAMEBUFFER_COMPLETE)return false;
+ 			}
+ 			gl.Disable(GLSCISSOR_TEST);
+-			gl.BindFramebuffer(0x8CA8 /*READ_FRAMEBUFFER*/,fbo);
++			gl.BindFramebuffer(0x8CA8 /*READ_FRAMEBUFFER*/,target_fbo);
+ 			gl.BindFramebuffer(0x8CA9 /*DRAW_FRAMEBUFFER*/,margin_fbo);
+ 			const int y=int(packet.page)*S,h=DISPH*S;
+ 			for(int x:{0,(CW+MARGIN)*S})
+ 				gl.BlitFramebuffer(x,y,x+MARGIN*S,y+h,x,y,x+MARGIN*S,y+h,0x100 /*DEPTH only*/,0x2600 /*NEAREST*/);
+ 			if(gl.GetError())return false;
+ 			if(packet.materials.snapshot) {
+-				const auto copied=texture_bytes(margin_depth_tex,DEPTH_COMPONENT,0x1405);
++				const auto copied=texture_bytes(margin_depth_tex,DEPTH_COMPONENT,depth_type);
+ 				for(int row=y;row<y+h;++row)for(int x:{0,(CW+MARGIN)*S})
+ 					if(memcmp(copied.data()+(size_t(row)*fw+x)*4,before_depth.data()+(size_t(row)*fw+x)*4,size_t(MARGIN)*S*4))return false;
+ 			}
+@@ -1333,12 +1346,12 @@ void thread_main()
+ 			}
+ 			vertices=floats.size()/7;
+ 			if(!own_batches.empty())own_batches.back().count=int(vertices)-own_batches.back().first;
+-			gl.UseProgram(prog);gl.BindVertexArray(vao);
++			gl.UseProgram(draw_prog);gl.BindVertexArray(vao);
+ 			gl.BindBuffer(ARRAY_BUFFER,vbo_f);gl.BufferData(ARRAY_BUFFER,floats.size()*4,floats.data(),STREAM_DRAW);
+ 			gl.BindBuffer(ARRAY_BUFFER,vbo_u);gl.BufferData(ARRAY_BUFFER,integers.size()*4,integers.data(),STREAM_DRAW);
+ 			gl.BindFramebuffer(FRAMEBUFFER,margin_fbo);gl.Viewport(0,0,fw,fh);
+ 			gl.Enable(GLDEPTH_TEST);gl.Enable(GLSCISSOR_TEST);gl.BlendFunc(GLONE,GLSRC_ALPHA);
+-			gl.Uniform1i(gl.GetUniformLocation(prog,"waveram"),4);gl.Uniform1i(gl.GetUniformLocation(prog,"palTex"),5);
++			gl.Uniform1i(gl.GetUniformLocation(draw_prog,"waveram"),4);gl.Uniform1i(gl.GetUniformLocation(draw_prog,"palTex"),5);
+ 			gl.ActiveTexture(TEXTURE0+4);gl.BindTexture(0x0DE1,private_wave_tex);
+ 			gl.ActiveTexture(TEXTURE0+5);gl.BindTexture(0x0DE1,private_palette_tex);
+ 			for(const auto &b:own_batches) {
+@@ -1349,14 +1362,15 @@ void thread_main()
+ 					gl.DrawArrays(0x0004,b.first,b.count);
+ 				}
+ 			}
+-			gl.Uniform1i(gl.GetUniformLocation(prog,"waveram"),0);gl.Uniform1i(gl.GetUniformLocation(prog,"palTex"),1);
++			gl.Uniform1i(gl.GetUniformLocation(draw_prog,"waveram"),0);gl.Uniform1i(gl.GetUniformLocation(draw_prog,"palTex"),1);
+ 			gl.Disable(GLBLEND);gl.Disable(GLSCISSOR_TEST);gl.DepthMask(1);gl.ColorMask(1,1,1,1);
+ 			gl.BindFramebuffer(FRAMEBUFFER,0);
+ 			if(gl.GetError())return false;
+ 		}
+ 		if(packet.materials.snapshot) {
+-			auto after_color=texture_bytes(fbTex,RGBA,0x1401),after_depth=texture_bytes(depthTex,DEPTH_COMPONENT,0x1405);
++			auto after_color=texture_bytes(target_color,RGBA,0x1401),after_depth=texture_bytes(target_depth,DEPTH_COMPONENT,depth_type);
+ 			if(gl.GetError() || before_depth!=after_depth)return false;
++			if(compose && (original_color!=texture_bytes(fbTex,RGBA,0x1401) || original_depth!=texture_bytes(depthTex,DEPTH_COMPONENT,0x1405)))return false;
+ 			for(int row=0;row<fh;++row) {
+ 				const bool active=row>=int(packet.page)*S && row<(int(packet.page)+DISPH)*S;
+ 				const size_t x=active?size_t(MARGIN)*S:0,n=active?size_t(CW)*S:size_t(fw);
+@@ -2067,7 +2081,7 @@ void thread_main()
+ 	}
+ 	if(envi("MIDZ_HOST_FUTURE",nullptr,0)) {
+ 		const auto stats=future_writer.finish();const int closed=future_log?fclose(future_log):-1;
+-		const bool complete=!private_failed && future_packets && future_packets+(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2?waiting_packets:0)==private_packets && !closed &&
++		const bool complete=!private_failed && future_packets && future_packets+(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2?waiting_packets:0)+(compose?margin_packets:0)==private_packets && !closed &&
+ 			stats.submitted==4*future_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
+ 		fprintf(stderr,"MIDZ_HOST_FUTURE_GPU_RESULT complete=%u scenes=%llu quads=%llu snapshots=%llu written=%llu failed=%llu rejected=%llu\n",
+ 			unsigned(complete),(unsigned long long)future_packets,(unsigned long long)future_quads,(unsigned long long)future_snapshots,
+@@ -2075,7 +2089,8 @@ void thread_main()
+ 	}
+ 	if(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2) {
+ 		const auto stats=waiting_writer.finish();const int closed=waiting_log?fclose(waiting_log):-1;
+-		const bool complete=!private_failed && waiting_packets && waiting_packets==future_packets && private_late_scene==private_scene && !closed &&
++		const bool complete=!private_failed && waiting_packets && waiting_packets==future_packets && private_late_scene==private_scene &&
++			(!compose || (private_waiting_scene==private_scene && margin_packets==future_packets)) && !closed &&
+ 			stats.submitted==4*waiting_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
+ 		fprintf(stderr,"MIDZ_HOST_WAITING_DRAW_GPU_RESULT complete=%u scenes=%llu quads=%llu snapshots=%llu written=%llu failed=%llu rejected=%llu\n",
+ 			unsigned(complete),(unsigned long long)waiting_packets,(unsigned long long)waiting_quads,(unsigned long long)waiting_snapshots,
+@@ -2217,7 +2232,8 @@ bool zeus2_device::midz_host_waiting(const uint8_t *data,size_t size)
+ #ifdef _WIN32
+ 	const char *mode=std::getenv("MIDZ_HOST_HANDOVER"),*ffb=std::getenv("MIDV_FFB"),*future=std::getenv("MIDZ_HOST_FUTURE"),*mirror=std::getenv("MIDZ_DEPTH_MIRROR");
+ 	if(midz_live && mode && !strcmp(mode,"2") && ffb && !strcmp(ffb,"0") && future && !strcmp(future,"2") && mirror && !strcmp(mirror,"2") &&
+-		!std::getenv("MIDZ_DEPTH_STREAM_FRAME") && (!std::getenv("MIDZ_HOST_ACTIVE") || !strcmp(std::getenv("MIDZ_HOST_ACTIVE"),"0")) &&
++		!std::getenv("MIDZ_DEPTH_STREAM_FRAME") && (!std::getenv("MIDZ_HOST_ACTIVE") || !strcmp(std::getenv("MIDZ_HOST_ACTIVE"),"0") ||
++			(std::getenv("MIDZ_HOST_COMPOSE") && !strcmp(std::getenv("MIDZ_HOST_COMPOSE"),"1"))) &&
+ 		data && size>=cruisn::zeus_wide::header_bytes && size<=cruisn::zeus_wide::maximum_bytes)
+ 		return mzgl::ring_push2(10,data,uint32_t(size),nullptr,0);
+ #endif
+diff --git a/src/mame/midway/cruisn/exotica_composition.h b/src/mame/midway/cruisn/exotica_composition.h
+new file mode 100644
+index 00000000000..1d7a4c91b85
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_composition.h
+@@ -0,0 +1,74 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Remove active-margin copies already present in a completed waiting draw.
++// The caller MUST establish the actual shared scene/camera/page/device boundary,
++// validate owner lifetimes through that boundary, and retain the proposal image.
++// This helper compares owned render data; it cannot establish those live facts.
++#pragma once
++#include "exotica_scene.h"
++#include "zeus_resource_lease.h"
++#include "scenery_lifetimes.h"
++
++namespace cruisn { namespace exotica_composition {
++struct Counts {size_t overlaps=0,removed_quads=0,texture_pages=0;};
++inline bool layout(const exotica_scene::Result &scene,bool active) {
++    if(scene.instances.size()>exotica_scene::max_instances || scene.quads.size()>exotica_scene::max_quads)return false;
++    size_t next=0;std::set<std::pair<uint32_t,uint32_t>> keys;std::set<uint32_t> slots;
++    for(const auto &i:scene.instances) {
++        if(!i.entry || !i.source || !keys.emplace(i.entry,i.source).second ||
++            (active && !slots.insert(i.source).second) || i.first_quad!=next ||
++            i.quad_count>scene.quads.size()-next)return false;
++        next+=i.quad_count;
++    }
++    return next==scene.quads.size();
++}
++inline bool same_render(const exotica_scene::Instance &a,const exotica_scene::Instance &b) {
++    return std::tie(a.descriptor,a.base,a.count,a.band,a.palette,a.palette_control,a.depth,a.quad_count)==
++           std::tie(b.descriptor,b.base,b.count,b.band,b.palette,b.palette_control,b.depth,b.quad_count);
++}
++
++// Owners are the already reconciled native cohort, not a guessed slot match.
++// Any ambiguous overlap rejects the entire result before changing either output.
++// Keep waiting alpha/order untouched and preserve the remaining active order.
++inline bool filter(const exotica_scene::Result &active,const exotica_scene::Result &waiting,
++    const std::vector<scenery_lifetimes::Handle> &owners,const uint8_t *proposal,
++    const uint8_t *ready,size_t bytes,exotica_scene::Result &result,Counts &counts)
++{
++    if(!layout(active,true) || !layout(waiting,false) || owners.size()>4096 ||
++        !proposal || !ready || bytes!=zeus_lease::wave_bytes)return false;
++    using Key=std::pair<uint32_t,uint32_t>;
++    std::map<Key,uint32_t> slots;std::set<uint32_t> unique_slots;
++    uint64_t realm=0,epoch=0;
++    for(const auto &h:owners) {
++        if(!h.slot || !h.epoch || !h.generation || !h.key.valid() ||
++            (realm && h.key.realm!=realm) || (epoch && h.epoch!=epoch) ||
++            !slots.emplace(Key(h.key.section,h.key.source),h.slot).second || !unique_slots.insert(h.slot).second)return false;
++        realm=h.key.realm;epoch=h.epoch;
++    }
++    std::map<uint32_t,const exotica_scene::Instance *> by_slot;
++    for(const auto &i:waiting.instances) {
++        auto found=slots.find({i.entry,i.source});if(found==slots.end())return false;
++        if(!by_slot.emplace(found->second,&i).second)return false;
++    }
++    Counts checked;std::set<uint32_t> remove;zeus_lease::Coverage coverage;
++    for(const auto &a:active.instances) {
++        const auto found=by_slot.find(a.source);if(found==by_slot.end())continue;
++        const auto &b=*found->second;
++        if(!same_render(a,b))return false;
++        for(size_t j=0;j<a.quad_count;++j) {
++            const auto &x=active.quads[a.first_quad+j],&y=waiting.quads[b.first_quad+j];
++            if(x.state!=y.state || std::memcmp(x.vertices.data(),y.vertices.data(),sizeof(x.vertices)) || !coverage.add(x))return false;
++        }
++        if(!zeus_lease::palette_equal(proposal,ready,bytes,a.palette))return false;
++        remove.insert(a.source);++checked.overlaps;checked.removed_quads+=a.quad_count;
++    }
++    if(!coverage.equal(proposal,ready,bytes))return false;
++    checked.texture_pages=coverage.count();
++    exotica_scene::Result filtered=active;filtered.instances.clear();filtered.quads.clear();
++    for(auto i:active.instances) {
++        if(remove.count(i.source))continue;
++        const auto begin=active.quads.begin()+i.first_quad;i.first_quad=filtered.quads.size();
++        filtered.quads.insert(filtered.quads.end(),begin,begin+i.quad_count);filtered.instances.push_back(i);
++    }
++    result=std::move(filtered);counts=checked;return true;
++}
++} }
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 80296ef1e74..68c73a34022 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -41,6 +41,7 @@ The Grid         v1.2   10/18/2000
+ #include "cruisn/scenery_lifetimes.h"
+ #include "cruisn/exotica_waiting.h"
+ #include "cruisn/exotica_waiting_handover.h"
++#include "cruisn/exotica_composition.h"
+ #include "cruisn/zeus_retained_materials.h"
+ 
+ #include <algorithm>
+@@ -261,6 +262,11 @@ private:
+ 	std::set<uint32_t> m_handover_snapshots;
+ 	cruisn::exotica_waiting::Pending m_handover_pending;
+ 	cruisn::exotica_scene::Result m_handover_geometry;
++	bool m_compose=false;
++	cruisn::exotica_scene::Result m_compose_waiting;
++	std::vector<cruisn::scenery_lifetimes::Handle> m_compose_owners;
++	uint64_t m_compose_scene=0,m_compose_sealed_records=0,m_compose_completed=0;
++	FILE *m_compose_log=nullptr;
+ 	cruisn::zeus_host::PaletteSet m_handover_palettes;
+ 	cruisn::zeus_wide::Packet m_handover_packet;
+ 	uint64_t m_handover_generation=0;
+@@ -617,6 +623,7 @@ void crusnexo_state::scene_observer_start()
+ 	m_scene_bounds=number("MIDZ_HOST_BOUNDS",0,1,0)!=0;
+ 	m_scene_depth_mode=number("MIDZ_HOST_EARLY_DEPTH",0,2,0);
+ 	m_active_mode=number("MIDZ_HOST_ACTIVE",0,2,0);
++	m_compose=number("MIDZ_HOST_COMPOSE",0,1,0)!=0;
+ 	if(number("MIDZ_HOST_FENCE",0,1,0)) {
+ 		m_scene_fence_log=fopen("exotica-host-fences.csv","w");
+ 		if(!m_scene_fence_log)fatalerror("Cannot create Exotica command-fence log\n");
+@@ -650,7 +657,7 @@ void crusnexo_state::scene_observer_start()
+ 	m_scene_future_mode=number("MIDZ_HOST_FUTURE",0,2,0);
+ 	if(m_scene_future_mode) {
+ 		const char *mirror=std::getenv("MIDZ_DEPTH_MIRROR");
+-		if(!m_scene_material_image || m_active_mode || !m_zeus->midz_live || !mirror || strcmp(mirror,"2") || std::getenv("MIDZ_DEPTH_STREAM_FRAME"))
++		if(!m_scene_material_image || (m_active_mode && !m_compose) || !m_zeus->midz_live || !mirror || strcmp(mirror,"2") || std::getenv("MIDZ_DEPTH_STREAM_FRAME"))
+ 			fatalerror("Exotica future drawing requires private materials/wide mirror and no late margins/command journal\n");
+ 		fprintf(stderr,"MIDZ_HOST_FUTURE=%u\n",m_scene_future_mode);
+ 	}
+@@ -659,8 +666,16 @@ void crusnexo_state::scene_observer_start()
+ 	m_waiting_mode=number("MIDZ_HOST_WAITING",0,1,0);
+ 	m_handover_mode=number("MIDZ_HOST_HANDOVER",0,2,0);
+ 	if(m_handover_mode==2 && (m_scene_future_mode!=2 || !m_scene_material_image))fatalerror("Exotica waiting draw requires private future drawing and materials\n");
+-	if(m_handover_mode && (!m_waiting_mode || !m_scene_fence_log || m_active_mode))
++	if(m_handover_mode && (!m_waiting_mode || !m_scene_fence_log || (m_active_mode && !m_compose)))
+ 		fatalerror("Exotica waiting completion requires waiting/fence observation and excludes active margins\n");
++	if(m_compose) {
++		if(m_active_mode!=2 || m_scene_future_mode!=2 || m_handover_mode!=2 || !m_scene_material_pages)
++			fatalerror("Exotica composition requires active/future/waiting drawing and tracked materials\n");
++		m_compose_log=fopen("exotica-compose-scenes.csv","w");if(!m_compose_log)fatalerror("Cannot create composition log\n");
++		setvbuf(m_compose_log,nullptr,_IOFBF,65536);
++		fprintf(m_compose_log,"scene,frame,end_records,ready_records,input_instances,input_quads,overlaps,removed_quads,texture_pages,instances,quads\n");
++		fprintf(stderr,"MIDZ_HOST_COMPOSE=1\n");
++	}
+ 	if(m_waiting_mode) {
+ 		const char *lifetime=std::getenv("MIDZ_LIFETIME");
+ 		if(!m_scene_future_mode || !lifetime || strcmp(lifetime,"1") ||
+@@ -1236,6 +1251,13 @@ void crusnexo_state::scene_waiting_ready()
+ 	}
+ 	++m_handover_completed;m_handover_captured+=completion.captured;
+ 	m_handover_submitted+=completion.submitted;m_handover_retired+=completion.retired;
++	if(m_compose) {
++		if(m_compose_scene || m_handover_frame!=m_active_seed.frame || m_handover_scene!=m_active_seed_scene)
++			fatalerror("Exotica composition proposal/active scene mismatch\n");
++		m_compose_waiting=std::move(filtered);m_compose_owners.clear();
++		for(const auto &item:completion.items)m_compose_owners.push_back(item.owner);
++		m_compose_scene=m_handover_scene;
++	}
+ 	m_handover_geometry=cruisn::exotica_scene::Result{};
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica waiting completion changed CPU cycles\n");
+ }
+@@ -1283,6 +1305,7 @@ void crusnexo_state::scene_active_seal()
+ 	m_zeus->midz_active_wave_commit();
+ 	for(unsigned i=0;i<m_active_internal.size();++i)m_active_internal[i]=read(0x87fe00+i);
+ 	m_active_sealed_scene=m_scene_fence_scene;m_active_sealed_loading=m_scene_loading!=0;
++	if(m_compose)m_compose_sealed_records=m_lifetime_records;
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica active sealing changed CPU cycles\n");
+ 	m_active_seal_us=std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-started).count();
+ }
+@@ -1380,6 +1403,39 @@ void crusnexo_state::scene_active_ready()
+ 			scene.instances.push_back(instance);
+ 		}
+ 	}
++	if(m_compose) {
++		// Until per-owner sealing is captured, reject ANY intervening lifetime
++		// event. Never identify a sealed object solely by its reused RAM slot.
++		if(m_compose_scene!=m_scene_fence_scene || m_compose_sealed_records!=m_lifetime_records ||
++			m_lifetime_pending.kind || m_lifetime_owner_slot || !m_scene_material_image)
++			reject("composition lifetime boundary");
++		for(const auto &owner:m_compose_owners) {
++			cruisn::scenery_lifetimes::State state;
++			if(!m_lifetimes.inspect(owner,state) || state.last_submission)reject("composition stale owner",owner.slot);
++		}
++		const auto input_instances=scene.instances.size(),input_quads=scene.quads.size();
++		if(m_active_snapshots.count(p.frame)) {
++			const auto words=cruisn::exotica_scene::instance_words(scene);
++			const auto prefix="exotica-compose-"+std::to_string(p.frame);
++			auto save=[](const std::string &name,const void *data,size_t bytes) {
++				FILE *f=fopen(name.c_str(),"wb");if(!f)fatalerror("Cannot open composition snapshot\n");
++				const bool ok=fwrite(data,1,bytes,f)==bytes;const int closed=fclose(f);
++				if(!ok || closed)fatalerror("Cannot complete composition snapshot\n");
++			};
++			save(prefix+"-input-instances.bin",words.data(),words.size()*sizeof(words[0]));
++			save(prefix+"-input-quads.bin",scene.quads.data(),scene.quads.size()*sizeof(scene.quads[0]));
++		}
++		cruisn::exotica_scene::Result filtered;cruisn::exotica_composition::Counts counts;
++		if(!cruisn::exotica_composition::filter(scene,m_compose_waiting,m_compose_owners,
++			m_scene_material_image->bytes().data(),wave,m_scene_material_image->bytes().size(),filtered,counts))
++			reject("composition overlap/materials");
++		scene=std::move(filtered);
++		if(fprintf(m_compose_log,"%llu,%u,%llu,%llu,%u,%u,%u,%u,%u,%u,%u\n",
++			(unsigned long long)m_compose_scene,p.frame,(unsigned long long)m_compose_sealed_records,(unsigned long long)m_lifetime_records,
++			unsigned(input_instances),unsigned(input_quads),unsigned(counts.overlaps),unsigned(counts.removed_quads),unsigned(counts.texture_pages),
++			unsigned(scene.instances.size()),unsigned(scene.quads.size()))<0)fatalerror("Composition log write\n");
++		m_compose_scene=0;m_compose_waiting={};m_compose_owners.clear();++m_compose_completed;
++	}
+ 	const auto check_started=std::chrono::steady_clock::now();
+ 	cruisn::zeus_lease::Coverage coverage;
+ 	for(const auto &quad:scene.quads)if(!coverage.add(quad))fatalerror("Exotica active texture footprint rejected\n");
+@@ -1462,6 +1518,11 @@ void crusnexo_state::scene_active_ready()
+ void crusnexo_state::scene_observer_exit()
+ {
+ 	if(!m_scene_log)return;
++	if(m_compose_log) {
++		const bool good=!ferror(m_compose_log);const int closed=fclose(m_compose_log);m_compose_log=nullptr;
++		fprintf(stderr,"MIDZ_HOST_COMPOSE_RESULT complete=%u scenes=%llu\n",unsigned(good && !closed && !m_compose_scene &&
++			m_compose_completed==m_active_scenes && m_compose_completed==m_handover_completed),(unsigned long long)m_compose_completed);
++	}
+ 	if(m_handover_log) {
+ 		const bool good=!ferror(m_handover_log) && !ferror(m_handover_cohorts);
+ 		const int closed=fclose(m_handover_log),cohorts_closed=fclose(m_handover_cohorts);
+-- 
+2.55.0.windows.3
+
+From e4cfcb864be9b2520d8e324ca8c2280085176bf6 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Mon, 14 Sep 2026 12:09:42 -0500
+Subject: [PATCH] Validate retained composition owners across unrelated
+ lifetime events
+
+---
+ src/mame/midway/midzeus.cpp | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
+
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 68c73a34022..b1c3698d5fd 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -265,6 +265,7 @@ private:
+ 	bool m_compose=false;
+ 	cruisn::exotica_scene::Result m_compose_waiting;
+ 	std::vector<cruisn::scenery_lifetimes::Handle> m_compose_owners;
++	std::map<uint32_t,cruisn::scenery_lifetimes::Handle> m_compose_sealed_owners;
+ 	uint64_t m_compose_scene=0,m_compose_sealed_records=0,m_compose_completed=0;
+ 	FILE *m_compose_log=nullptr;
+ 	cruisn::zeus_host::PaletteSet m_handover_palettes;
+@@ -1305,7 +1306,13 @@ void crusnexo_state::scene_active_seal()
+ 	m_zeus->midz_active_wave_commit();
+ 	for(unsigned i=0;i<m_active_internal.size();++i)m_active_internal[i]=read(0x87fe00+i);
+ 	m_active_sealed_scene=m_scene_fence_scene;m_active_sealed_loading=m_scene_loading!=0;
+-	if(m_compose)m_compose_sealed_records=m_lifetime_records;
++	if(m_compose) {
++		m_compose_sealed_records=m_lifetime_records;m_compose_sealed_owners.clear();
++		for(const auto &item:m_handover_pending.selection().items) {
++			cruisn::scenery_lifetimes::State state;
++			if(m_lifetimes.inspect(item.owner,state))m_compose_sealed_owners.emplace(item.owner.slot,item.owner);
++		}
++	}
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica active sealing changed CPU cycles\n");
+ 	m_active_seal_us=std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-started).count();
+ }
+@@ -1404,14 +1411,17 @@ void crusnexo_state::scene_active_ready()
+ 		}
+ 	}
+ 	if(m_compose) {
+-		// Until per-owner sealing is captured, reject ANY intervening lifetime
+-		// event. Never identify a sealed object solely by its reused RAM slot.
+-		if(m_compose_scene!=m_scene_fence_scene || m_compose_sealed_records!=m_lifetime_records ||
++		// Intervening unrelated allocations are legal. Every retained owner must
++		// still match its identity at active sealing, not just its reused slot.
++		if(m_compose_scene!=m_scene_fence_scene || m_compose_sealed_records>m_lifetime_records ||
+ 			m_lifetime_pending.kind || m_lifetime_owner_slot || !m_scene_material_image)
+ 			reject("composition lifetime boundary");
+ 		for(const auto &owner:m_compose_owners) {
+ 			cruisn::scenery_lifetimes::State state;
+-			if(!m_lifetimes.inspect(owner,state) || state.last_submission)reject("composition stale owner",owner.slot);
++			const auto sealed=m_compose_sealed_owners.find(owner.slot);
++			if(sealed==m_compose_sealed_owners.end() || sealed->second.epoch!=owner.epoch || sealed->second.generation!=owner.generation ||
++				!(sealed->second.key==owner.key) || !m_lifetimes.inspect(owner,state) || state.last_submission)
++				reject("composition stale owner",owner.slot);
+ 		}
+ 		const auto input_instances=scene.instances.size(),input_quads=scene.quads.size();
+ 		if(m_active_snapshots.count(p.frame)) {
+@@ -1434,7 +1444,7 @@ void crusnexo_state::scene_active_ready()
+ 			(unsigned long long)m_compose_scene,p.frame,(unsigned long long)m_compose_sealed_records,(unsigned long long)m_lifetime_records,
+ 			unsigned(input_instances),unsigned(input_quads),unsigned(counts.overlaps),unsigned(counts.removed_quads),unsigned(counts.texture_pages),
+ 			unsigned(scene.instances.size()),unsigned(scene.quads.size()))<0)fatalerror("Composition log write\n");
+-		m_compose_scene=0;m_compose_waiting={};m_compose_owners.clear();++m_compose_completed;
++		m_compose_scene=0;m_compose_waiting={};m_compose_owners.clear();m_compose_sealed_owners.clear();++m_compose_completed;
+ 	}
+ 	const auto check_started=std::chrono::steady_clock::now();
+ 	cruisn::zeus_lease::Coverage coverage;
+-- 
+2.55.0.windows.3
+

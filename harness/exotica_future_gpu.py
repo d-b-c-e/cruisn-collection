@@ -76,7 +76,7 @@ def snapshot(directory, cpu, gpu, mode, kind='future'):
     return dict(frame=frame, quads=cursor, vertices=vertices, packet_sha256=hashlib.sha256(wire).hexdigest(), **result)
 
 
-def verify(directory, scenes, text, mode, captures, present=False, waiting=False, kind='future'):
+def verify(directory, scenes, text, mode, captures, present=False, waiting=False, kind='future', compose=False):
     if kind not in ('future','waiting-draw') or kind=='waiting-draw' and (not waiting or mode!=2 or present):
         raise ValueError('invalid private drawing phase')
     stem='FUTURE' if kind=='future' else 'WAITING_DRAW'
@@ -101,11 +101,13 @@ def verify(directory, scenes, text, mode, captures, present=False, waiting=False
         with path.open(encoding='utf-8', newline='') as f:
             return list(csv.DictReader(f))
     gpu, materials = rows(f'exotica-{kind}-gpu.csv'), rows('exotica-host-materials.csv')
-    if len(gpu) != len(scenes) or len(materials) != len(scenes)*(2 if waiting else 1):
+    phases = 3 if compose else 2 if waiting else 1
+    if compose and not waiting:raise ValueError('composition requires waiting drawing')
+    if len(gpu) != len(scenes) or len(materials) != len(scenes)*phases:
         raise ValueError('future producer/consumer count differs')
     if waiting:
         phase = 1 if kind == 'waiting-draw' else 0
-        materials = materials[phase::2]
+        materials = materials[phase::phases]
     sampled = []
     for cpu, received, material in zip(scenes, gpu, materials):
         count = int(cpu['quads']); frame = int(cpu['frame']); vertices = int(received['vertices'])

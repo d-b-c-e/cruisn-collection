@@ -107,7 +107,7 @@ def sealed_snapshot(cpu, context, ram, ready, internal, instances, resource_leas
     return dict(camera_advanced=advanced, instance_bindings_checked=len(seen))
 
 
-def snapshot(directory, frame, cpu, gpu, mode):
+def snapshot(directory, frame, cpu, gpu, mode, compose=False):
     prefix = Path(directory)/f'exotica-active-{frame}'
     read = lambda suffix: Path(str(prefix)+suffix).read_bytes()
     packet = parse(read('-packet.bin'))
@@ -157,10 +157,13 @@ def snapshot(directory, frame, cpu, gpu, mode):
             result['resource_lease'] = lease
         result['sealed'] = sealed_snapshot(cpu, decode_context(read('-context.bin')), read('-ram.bin'),
             read('-ready-ram.bin'), read('-end-internal.bin'), instances, lease)
+    if compose:
+        result['private_depth_unchanged']=result.pop('original_depth_unchanged')
+        result['target']='private-wide'
     return dict(frame=frame, quads=quad, vertices=vertices, **result)
 
 
-def verify(directory, scenes, text, mode, captures):
+def verify(directory, scenes, text, mode, captures, compose=False):
     initial = re.findall(r'^MIDZ_HOST_ACTIVE=(\d+)$', text, re.M)
     sealed = re.findall(r'^MIDZ_HOST_ACTIVE_SEALED=(\d+)$', text, re.M)
     lease = re.findall(r'^MIDZ_HOST_ACTIVE_RESOURCE_LEASE=(\d+)$', text, re.M)
@@ -253,8 +256,9 @@ def verify(directory, scenes, text, mode, captures):
                 if key.endswith('_us') and (not math.isfinite(float(value)) or float(value) < 0):
                     raise ValueError('active margin timing')
         if saved:
-            sampled.append(snapshot(directory, int(sent['frame']), sent, received, mode))
+            sampled.append(snapshot(directory, int(sent['frame']), sent, received, mode, compose=compose))
     if sorted(s['frame'] for s in sampled) != sorted(captures):
         raise ValueError('active margin snapshot completion')
     return dict(passed=True, mode=mode, scenes=len(scenes), quads=total, snapshots=sampled, sealed_at_scene_end=bool(sealed), resource_lease=bool(lease), ram_models=bool(ram_models), seal_pages=bool(seal_pages),
-                scope='Current margin geometry and private D24 preservation; far distance and full occlusion remain unproven.')
+                scope=('Current margin geometry on private wide color with copied D32 depth; original-buffer preservation also checked natively.' if compose else
+                       'Current margin geometry and private D24 preservation; far distance and full occlusion remain unproven.'))

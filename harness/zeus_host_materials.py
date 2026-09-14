@@ -88,8 +88,9 @@ def snapshot(directory, frame, kind='host'):
                 packet_sha256=hashlib.sha256(wire).hexdigest())
 
 
-def verify_live(directory, scenes, captures, text, active=False, waiting=False):
-    if active and waiting:raise ValueError('active and waiting material phases conflict')
+def verify_live(directory, scenes, captures, text, active=False, waiting=False, compose=False):
+    if active and waiting and not compose:raise ValueError('active and waiting material phases conflict')
+    if compose and not (active and waiting):raise ValueError('composition requires all three material phases')
     def rows(name):
         path = Path(directory) / name
         if path.stat().st_size > 8*1024*1024:
@@ -97,7 +98,7 @@ def verify_live(directory, scenes, captures, text, active=False, waiting=False):
         with path.open(encoding='utf-8', newline='') as stream:
             return list(csv.DictReader(stream))
     producer, gpu = rows('exotica-host-materials.csv'), rows('exotica-host-materials-gpu.csv')
-    phases = 2 if active or waiting else 1
+    phases = 3 if compose else 2 if active or waiting else 1
     if not producer or len(producer) != len(scenes)*phases or len(gpu) != len(producer):
         raise ValueError('material queue did not drain every scene')
     previous = 0
@@ -107,7 +108,7 @@ def verify_live(directory, scenes, captures, text, active=False, waiting=False):
         fields = ('scene', 'frame', 'generation', 'pages', 'palettes', 'bytes', 'hash')
         if any(sent[k] != received[k] for k in fields):
             raise ValueError('material producer/consumer receipt differs')
-        if waiting and late and (int(sent['pages'])!=0 or sent['hash']!=producer[i-1]['hash']):
+        if waiting and i % phases == 1 and (int(sent['pages'])!=0 or sent['hash']!=producer[i-1]['hash']):
             raise ValueError('waiting continuation changed proposal materials')
         if (sent['scene'] != source['scene'] or sent['frame'] != source['frame'] or
                 (int(sent['scene']) != previous if late else int(sent['scene']) <= previous) or int(sent['generation']) != i+1 or
@@ -126,7 +127,7 @@ def verify_live(directory, scenes, captures, text, active=False, waiting=False):
     if end != [expected] or gpu_end != [('1', expected[0], str(len(captures)*phases), expected[1])]:
         raise ValueError('material final generation or capture acknowledgment')
     sampled = [snapshot(directory, frame, kind) for frame in captures
-               for kind in (('host', 'active') if active else ('host','waiting-draw') if waiting else ('host',))]
+               for kind in (('host','waiting-draw','active') if compose else ('host', 'active') if active else ('host','waiting-draw') if waiting else ('host',))]
     by_generation = {int(r['generation']): r for r in producer}
     for row in sampled:
         sent = by_generation.get(row['generation'])
