@@ -270,13 +270,13 @@ def verify_receipt(trial, text, directory):
                 raise ValueError('missing Exotica host geometry snapshot')
     if materials:
         from zeus_host_materials import verify_live
-        verify_live(directory, rows, trial['snapshots'], text, active=bool(active))
+        verify_live(directory, rows, trial['snapshots'], text, active=bool(active), waiting=trial.get('waiting_draw',False))
     from exotica_fence import verify as verify_fence
     fence_result = verify_fence(directory, rows, text, trial.get('fence', False))
     from exotica_active import verify as verify_active
     active_result = verify_active(directory, rows, text, active, trial['snapshots'])
     from exotica_future_gpu import verify as verify_future
-    future_result = verify_future(directory, rows, text, trial.get('future', 0), trial['snapshots'], present=trial.get('future_present', False))
+    future_result = verify_future(directory, rows, text, trial.get('future', 0), trial['snapshots'], present=trial.get('future_present', False), waiting=trial.get('waiting_draw',False))
     return dict(passed=True, scenes=matched, quads=quads, snapshots=saved, guest_cycles_unchanged=True, game_scene_boundary=True,
                 command_fence=fence_result, active_margins=active_result, private_future=future_result,
                 scope='Bounded live scene/material receipts; independent geometry and visual acceptance are separate.')

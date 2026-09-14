@@ -40,14 +40,14 @@ def framebuffer(buffers, margin, page, draw):
                 other_page_unchanged=True, sha256=[hashlib.sha256(b).hexdigest() for b in buffers])
 
 
-def snapshot(directory, cpu, gpu, mode):
+def snapshot(directory, cpu, gpu, mode, kind='future'):
     directory = Path(directory); frame = int(cpu['frame'])
-    path = directory/f'exotica-future-{frame}.xwd'
+    path = directory/f'exotica-{kind}-{frame}.xwd'
     if not 32 <= path.stat().st_size <= MAX_PACKET:
         raise ValueError('future snapshot packet budget')
     wire = path.read_bytes(); packet = parse(wire); material = packet['materials']
     material_size = struct.unpack_from('<I', wire, 4)[0]
-    host = directory/f'exotica-host-{frame}'
+    host = directory/f'exotica-{"host" if kind=="future" else kind}-{frame}'
     read_host = lambda suffix: Path(str(host)+suffix).read_bytes()
     quads = b''.join(wire[i+4:i+264] for i in range(32+material_size, len(wire), 264))
     if (wire[32:32+material_size] != read_host('-materials.bin') or quads != read_host('-quads.bin') or
@@ -70,17 +70,20 @@ def snapshot(directory, cpu, gpu, mode):
     vertices = sum(3*(q['state'][1]-2) for q in packet['quads']) if mode == 2 else 0
     if cursor != int(cpu['quads']) or vertices != int(gpu['vertices']):
         raise ValueError('future triangle fan count differs')
-    buffers = [(directory/f'exotica-future-{frame}-{suffix}.bin').read_bytes()
+    buffers = [(directory/f'exotica-{kind}-{frame}-{suffix}.bin').read_bytes()
                for suffix in ('before-color', 'before-depth', 'after-color', 'after-depth')]
     result = framebuffer(buffers, packet['margin'], packet['page'], mode == 2)
     return dict(frame=frame, quads=cursor, vertices=vertices, packet_sha256=hashlib.sha256(wire).hexdigest(), **result)
 
 
-def verify(directory, scenes, text, mode, captures, present=False):
-    initial = re.findall(r'^MIDZ_HOST_FUTURE=(\d+)$', text, re.M)
-    final = re.findall(r'^MIDZ_HOST_FUTURE_GPU_RESULT complete=(\d+) scenes=(\d+) quads=(\d+) snapshots=(\d+) written=(\d+) failed=(\d+) rejected=(\d+)$', text, re.M)
+def verify(directory, scenes, text, mode, captures, present=False, waiting=False, kind='future'):
+    if kind not in ('future','waiting-draw') or kind=='waiting-draw' and (not waiting or mode!=2 or present):
+        raise ValueError('invalid private drawing phase')
+    stem='FUTURE' if kind=='future' else 'WAITING_DRAW'
+    initial = re.findall(r'^MIDZ_HOST_'+stem+r'=(\d+)$', text, re.M)
+    final = re.findall(r'^MIDZ_HOST_'+stem+r'_GPU_RESULT complete=(\d+) scenes=(\d+) quads=(\d+) snapshots=(\d+) written=(\d+) failed=(\d+) rejected=(\d+)$', text, re.M)
     presentation = re.findall(r'^MIDZ_HOST_FUTURE_PRESENT=(\d+)$', text, re.M)
-    if present and mode != 2 or presentation != (['1'] if present else []):
+    if kind=='future' and (present and mode != 2 or presentation != (['1'] if present else [])):
         raise ValueError('future presentation acknowledgment differs')
     if not mode:
         if initial or final:
@@ -97,9 +100,12 @@ def verify(directory, scenes, text, mode, captures, present=False):
             raise ValueError('future log budget')
         with path.open(encoding='utf-8', newline='') as f:
             return list(csv.DictReader(f))
-    gpu, materials = rows('exotica-future-gpu.csv'), rows('exotica-host-materials.csv')
-    if len(gpu) != len(scenes) or len(materials) != len(scenes):
+    gpu, materials = rows(f'exotica-{kind}-gpu.csv'), rows('exotica-host-materials.csv')
+    if len(gpu) != len(scenes) or len(materials) != len(scenes)*(2 if waiting else 1):
         raise ValueError('future producer/consumer count differs')
+    if waiting:
+        phase = 1 if kind == 'waiting-draw' else 0
+        materials = materials[phase::2]
     sampled = []
     for cpu, received, material in zip(scenes, gpu, materials):
         count = int(cpu['quads']); frame = int(cpu['frame']); vertices = int(received['vertices'])
@@ -113,7 +119,7 @@ def verify(directory, scenes, text, mode, captures, present=False):
                 not math.isfinite(float(received['host_us'])) or float(received['host_us']) < 0):
             raise ValueError('future ordered scene/geometry receipt differs')
         if frame in captures:
-            sampled.append(snapshot(directory, cpu, received, mode))
+            sampled.append(snapshot(directory, cpu, received, mode, kind=kind))
     if [r['frame'] for r in sampled] != sorted(captures):
         raise ValueError('future snapshot frame coverage differs')
     return dict(passed=True, scenes=len(scenes), quads=total, snapshots=sampled, pixel_policy_verified=False, presented=present,

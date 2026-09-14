@@ -36505,3 +36505,381 @@ index efabad53ad5..ceb93440b4e 100644
 -- 
 2.55.0.windows.3
 
+From 88803dabb212f776e2e8e62ff3e58cd903a2efa2 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Fri, 11 Sep 2026 03:55:59 -0500
+Subject: [PATCH] Draw owned Exotica waiting scenery at the device completion
+ fence
+
+---
+ src/devices/video/zeus2.cpp                   | 67 +++++++++++----
+ src/devices/video/zeus2.h                     |  1 +
+ .../midway/cruisn/zeus_retained_materials.h   | 38 +++++++++
+ src/mame/midway/midzeus.cpp                   | 81 +++++++++++++++++--
+ 4 files changed, 165 insertions(+), 22 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/zeus_retained_materials.h
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index fdf339d8686..57065c111ee 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -14,6 +14,7 @@
+ #include "../../mame/midway/cruisn/zeus_host_materials.h"
+ #include "../../mame/midway/cruisn/zeus_margin_packet.h"
+ #include "../../mame/midway/cruisn/zeus_wide_packet.h"
++#include "../../mame/midway/cruisn/zeus_retained_materials.h"
+ 
+ #include "screen.h"
+ 
+@@ -1003,7 +1004,7 @@ void thread_main()
+ 	uint32_t private_frame=0;
+ 	FILE *private_log=nullptr;
+ 	bool private_failed=false;
+-	auto private_materials=[&](const std::vector<uint8_t> &wire,bool late=false)->bool {
++	auto private_materials=[&](const std::vector<uint8_t> &wire,bool late=false,bool retained=false)->bool {
+ 		using namespace cruisn::zeus_host;
+ 		const auto start=std::chrono::steady_clock::now();
+ 		const char *enabled=std::getenv("MIDZ_HOST_MATERIALS");
+@@ -1014,9 +1015,9 @@ void thread_main()
+ 		if(late) {
+ 			if(packet.scene!=private_scene || packet.frame!=private_frame || packet.scene<=private_late_scene)return false;
+ 		} else if(packet.scene<=private_scene ||
+-			(envi("MIDZ_HOST_ACTIVE",nullptr,0) && private_late_scene!=private_scene))return false;
++			((envi("MIDZ_HOST_ACTIVE",nullptr,0) || envi("MIDZ_HOST_HANDOVER",nullptr,0)==2) && private_late_scene!=private_scene))return false;
+ 		if(!private_image)private_image=std::make_unique<WaveImage>();
+-		if(!accept(packet,*private_image))return false;
++		if(retained ? !accept_retained(packet,*private_image) : !accept(packet,*private_image))return false;
+ 		const auto decoded=std::chrono::steady_clock::now();
+ 		if(!private_log) {
+ 			private_log=fopen("exotica-host-materials-gpu.csv","w");
+@@ -1072,7 +1073,7 @@ void thread_main()
+ 				const bool written=fwrite(data,1,bytes,file)==bytes;const int closed=fclose(file);
+ 				return written && !closed;
+ 			};
+-			const auto prefix=std::string(late?"exotica-active-":"exotica-host-")+std::to_string(packet.frame);
++			const auto prefix=std::string(retained?"exotica-waiting-draw-":late?"exotica-active-":"exotica-host-")+std::to_string(packet.frame);
+ 			if(!save(prefix+"-gpu-wave.bin",wave.data(),wave.size()) ||
+ 				!save(prefix+"-gpu-palettes.bin",palettes.data(),colors.size()*4))return false;
+ 			++private_snapshots;
+@@ -1385,15 +1386,24 @@ void thread_main()
+ 	cruisn::CaptureWriter future_writer;
+ 	FILE *future_log=nullptr;
+ 	uint64_t future_packets=0,future_quads=0,future_snapshots=0;
+-	auto private_future=[&](const std::vector<uint8_t> &wire)->bool {
+-		const auto started=std::chrono::steady_clock::now();const int mode=envi("MIDZ_HOST_FUTURE",nullptr,0);
++	cruisn::CaptureWriter waiting_writer;FILE *waiting_log=nullptr;
++	uint64_t waiting_packets=0,waiting_quads=0,waiting_snapshots=0;
++	uint32_t future_page=0,future_multiplier=0;
++	auto private_future=[&](const std::vector<uint8_t> &wire,bool waiting=false)->bool {
++		const auto started=std::chrono::steady_clock::now();const int mode=envi(waiting?"MIDZ_HOST_HANDOVER":"MIDZ_HOST_FUTURE",nullptr,0);
++		if(waiting && mode!=2)return false;
++		const char *prefix=waiting?"exotica-waiting-draw-":"exotica-future-";
++		auto &writer=waiting?waiting_writer:future_writer;auto &log=waiting?waiting_log:future_log;
++		auto &packets=waiting?waiting_packets:future_packets;auto &quads=waiting?waiting_quads:future_quads;
++		auto &snapshots=waiting?waiting_snapshots:future_snapshots;
+ 		cruisn::zeus_wide::Packet packet;
+ 		if(!mirror_fbo || !depth_mirror.wide || (mode!=1 && mode!=2) ||
+ 			!cruisn::zeus_wide::decode(wire.data(),wire.size(),packet) || packet.draw!=(mode==2) || packet.margin!=unsigned(MARGIN))return false;
++		if(waiting && (!future_packets || packet.page!=future_page || packet.multiplier!=future_multiplier))return false;
+ 		// The ring dispatcher has finished buffered sky copies. Commit them to
+ 		// both original/private targets before any future geometry is inserted.
+ 		flush();std::vector<uint8_t> material;
+-		if(!cruisn::zeus_host::encode(packet.materials,material) || !private_materials(material))return false;
++		if(!cruisn::zeus_host::encode(packet.materials,material) || !private_materials(material,waiting,waiting))return false;
+ 		auto read_texture=[&](uint texture,unsigned format,unsigned type) {
+ 			std::vector<uint8_t> bytes(size_t(fw)*fh*4);
+ 			gl.ActiveTexture(TEXTURE0+7);gl.BindTexture(0x0de1,texture);gl.PixelStorei(0x0d05,1);
+@@ -1447,24 +1457,26 @@ void thread_main()
+ 			auto after_color=read_texture(mirror_color,RGBA,0x1401),after_depth=read_texture(mirror_depth,DEPTH_COMPONENT,0x1406);
+ 			if(original_color!=read_texture(fbTex,RGBA,0x1401) || original_depth!=read_texture(depthTex,DEPTH_COMPONENT,0x1405))return false;
+ 			auto save=[&](const char *suffix,std::vector<uint8_t> bytes) {
+-				cruisn::CaptureWriter::Request request;request.path="exotica-future-"+std::to_string(packet.materials.frame)+suffix;request.bitmap=std::move(bytes);
+-				return future_writer.submit(std::move(request),capture_paced?10000:0,&s_capture_pacing);
++				cruisn::CaptureWriter::Request request;request.path=std::string(prefix)+std::to_string(packet.materials.frame)+suffix;request.bitmap=std::move(bytes);
++				return writer.submit(std::move(request),capture_paced?10000:0,&s_capture_pacing);
+ 			};
+ 			if(!save("-before-color.bin",std::move(before_color)) || !save("-before-depth.bin",std::move(before_depth)) ||
+ 				!save("-after-color.bin",std::move(after_color)) || !save("-after-depth.bin",std::move(after_depth)))return false;
+-			++future_snapshots;
++			++snapshots;
+ 		}
+ 		gl.ActiveTexture(TEXTURE0);gl.BindTexture(0x0de1,waveTex);gl.ActiveTexture(TEXTURE0+1);gl.BindTexture(0x0de1,palTex);gl.ActiveTexture(TEXTURE0);
+ 		if(gl.GetError())return false;
+-		if(!future_log) {
+-			future_log=fopen("exotica-future-gpu.csv","w");if(!future_log)return false;setvbuf(future_log,nullptr,_IOFBF,65536);
+-			fprintf(future_log,"scene,frame,mode,multiplier,page,quads,vertices,bytes,hash,snapshot,host_us\n");
++		if(!log) {
++			log=fopen((std::string(prefix)+"gpu.csv").c_str(),"w");if(!log)return false;setvbuf(log,nullptr,_IOFBF,65536);
++			fprintf(log,"scene,frame,mode,multiplier,page,quads,vertices,bytes,hash,snapshot,host_us\n");
+ 		}
+ 		const auto elapsed=std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-started).count();
+-		if(fprintf(future_log,"%llu,%u,%u,%u,%u,%u,%llu,%llu,%016llx,%u,%.3f\n",(unsigned long long)packet.materials.scene,
++		if(fprintf(log,"%llu,%u,%u,%u,%u,%u,%llu,%llu,%016llx,%u,%.3f\n",(unsigned long long)packet.materials.scene,
+ 			packet.materials.frame,unsigned(mode),packet.multiplier,packet.page,unsigned(packet.quads.size()),(unsigned long long)vertices,
+ 			(unsigned long long)wire.size(),(unsigned long long)hash,unsigned(packet.materials.snapshot),elapsed)<0)return false;
+-		++future_packets;future_quads+=packet.quads.size();return true;
++		++packets;quads+=packet.quads.size();
++		if(!waiting){future_page=packet.page;future_multiplier=packet.multiplier;}
++		return true;
+ 	};
+ 
+ 	std::vector<uint8_t> rec;
+@@ -1818,6 +1830,9 @@ void thread_main()
+ 			case 9:
+ 				if(!private_future(rec)) {private_failed=true;s_stopz.store(true);zlogf("private future validation/draw failed after %llu packets",(unsigned long long)future_packets);}
+ 				break;
++			case 10:
++				if(!private_future(rec,true)) {private_failed=true;s_stopz.store(true);zlogf("private waiting validation/draw failed after %llu packets",(unsigned long long)waiting_packets);}
++				break;
+ 			case 8:
+ 				if(!private_margin(rec)) {
+ 					private_failed=true;s_stopz.store(true);
+@@ -2048,12 +2063,20 @@ void thread_main()
+ 	}
+ 	if(envi("MIDZ_HOST_FUTURE",nullptr,0)) {
+ 		const auto stats=future_writer.finish();const int closed=future_log?fclose(future_log):-1;
+-		const bool complete=!private_failed && future_packets && future_packets==private_packets && !closed &&
++		const bool complete=!private_failed && future_packets && future_packets+(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2?waiting_packets:0)==private_packets && !closed &&
+ 			stats.submitted==4*future_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
+ 		fprintf(stderr,"MIDZ_HOST_FUTURE_GPU_RESULT complete=%u scenes=%llu quads=%llu snapshots=%llu written=%llu failed=%llu rejected=%llu\n",
+ 			unsigned(complete),(unsigned long long)future_packets,(unsigned long long)future_quads,(unsigned long long)future_snapshots,
+ 			(unsigned long long)stats.written,(unsigned long long)stats.failed,(unsigned long long)stats.rejected);
+ 	}
++	if(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2) {
++		const auto stats=waiting_writer.finish();const int closed=waiting_log?fclose(waiting_log):-1;
++		const bool complete=!private_failed && waiting_packets && waiting_packets==future_packets && private_late_scene==private_scene && !closed &&
++			stats.submitted==4*waiting_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
++		fprintf(stderr,"MIDZ_HOST_WAITING_DRAW_GPU_RESULT complete=%u scenes=%llu quads=%llu snapshots=%llu written=%llu failed=%llu rejected=%llu\n",
++			unsigned(complete),(unsigned long long)waiting_packets,(unsigned long long)waiting_quads,(unsigned long long)waiting_snapshots,
++			(unsigned long long)stats.written,(unsigned long long)stats.failed,(unsigned long long)stats.rejected);
++	}
+ 	if(depth_mirror.stream_frame) {
+ 		const auto stats=stream_writer.finish();
+ 		const bool complete=stream_complete && !stream_failed && !stream_active && stats.submitted==3 && stats.written==3 && !stats.failed && !stats.rejected;
+@@ -2185,6 +2208,18 @@ bool zeus2_device::midz_host_future(const uint8_t *data, size_t size)
+ 	return false;
+ }
+ 
++bool zeus2_device::midz_host_waiting(const uint8_t *data,size_t size)
++{
++#ifdef _WIN32
++	const char *mode=std::getenv("MIDZ_HOST_HANDOVER"),*ffb=std::getenv("MIDV_FFB"),*future=std::getenv("MIDZ_HOST_FUTURE"),*mirror=std::getenv("MIDZ_DEPTH_MIRROR");
++	if(midz_live && mode && !strcmp(mode,"2") && ffb && !strcmp(ffb,"0") && future && !strcmp(future,"2") && mirror && !strcmp(mirror,"2") &&
++		!std::getenv("MIDZ_DEPTH_STREAM_FRAME") && (!std::getenv("MIDZ_HOST_ACTIVE") || !strcmp(std::getenv("MIDZ_HOST_ACTIVE"),"0")) &&
++		data && size>=cruisn::zeus_wide::header_bytes && size<=cruisn::zeus_wide::maximum_bytes)
++		return mzgl::ring_push2(10,data,uint32_t(size),nullptr,0);
++#endif
++	return false;
++}
++
+ bool zeus2_device::midz_host_materials(const uint8_t *data, size_t size)
+ {
+ #ifdef _WIN32
+diff --git a/src/devices/video/zeus2.h b/src/devices/video/zeus2.h
+index 0072c254919..e6619606d0b 100644
+--- a/src/devices/video/zeus2.h
++++ b/src/devices/video/zeus2.h
+@@ -156,6 +156,7 @@ public:
+ 	// Owned, bounded private texture uploads only; no original GPU resource writes.
+ 	bool midz_host_materials(const uint8_t *data, size_t size);
+ 	bool midz_host_future(const uint8_t *data, size_t size);
++	bool midz_host_waiting(const uint8_t *data, size_t size);
+ 	bool midz_host_margin(const uint8_t *data,size_t size);
+ 	// Emulation-thread-only notifications, independent of original upload spans.
+ 	void midz_host_wave_enable() { m_host_wave_pages=std::make_unique<cruisn::WrittenPages<0x1000000,4096>>(); }
+diff --git a/src/mame/midway/cruisn/zeus_retained_materials.h b/src/mame/midway/cruisn/zeus_retained_materials.h
+new file mode 100644
+index 00000000000..5b626d89e75
+--- /dev/null
++++ b/src/mame/midway/cruisn/zeus_retained_materials.h
+@@ -0,0 +1,38 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Proposal-owned materials for a later private draw; no live memory access.
++#pragma once
++#include "zeus_host_materials.h"
++
++namespace cruisn { namespace zeus_host {
++// A later draw may advance the packet sequence while retaining the exact
++// proposal-time image. It owns its palette colors, carries no replacement
++// pages, and cannot accept a newer live image as an equivalent baseline.
++// The caller separately enforces scene/frame/page ordering and one completion
++// per proposal; this helper cannot identify a device command fence.
++inline bool retained_shape(const Packet &packet, const WaveImage &image) {
++    const auto &delta = packet.wave;
++    return packet.scene && packet.frame >= 1800 && packet.frame <= 16001 &&
++        image.generation() && image.generation() != UINT64_MAX &&
++        delta.base == image.generation() && delta.generation == delta.base + 1 &&
++        delta.base_hash == image.image_hash() && delta.result_hash == delta.base_hash &&
++        !delta.full && delta.pages.empty();
++}
++inline bool retain(Packet &packet, const WaveImage &image) {
++    if (!packet.scene || packet.frame < 1800 || packet.frame > 16001 ||
++        !image.generation() || image.bytes().size() != 16777216) return false;
++    WaveImage::Packet delta;
++    if (!image.stage_selected_pages(image.bytes().data(), image.bytes().size(), {}, delta)) return false;
++    // Validate palette bytes before exposing a usable packet to the caller.
++    if (packet.rows.size() > max_palettes) return false;
++    for (const auto &row : packet.rows) {
++        Palette expected;
++        if (!palette(image.bytes().data(), image.bytes().size(), row.base, row.control, expected) ||
++            row.colors != expected.colors) return false;
++    }
++    packet.wave = std::move(delta);
++    return true;
++}
++inline bool accept_retained(const Packet &packet, WaveImage &image) {
++    return retained_shape(packet, image) && accept(packet, image);
++}
++}}
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index f38c2cd10f6..80296ef1e74 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -41,6 +41,7 @@ The Grid         v1.2   10/18/2000
+ #include "cruisn/scenery_lifetimes.h"
+ #include "cruisn/exotica_waiting.h"
+ #include "cruisn/exotica_waiting_handover.h"
++#include "cruisn/zeus_retained_materials.h"
+ 
+ #include <algorithm>
+ #include <chrono>
+@@ -260,6 +261,9 @@ private:
+ 	std::set<uint32_t> m_handover_snapshots;
+ 	cruisn::exotica_waiting::Pending m_handover_pending;
+ 	cruisn::exotica_scene::Result m_handover_geometry;
++	cruisn::zeus_host::PaletteSet m_handover_palettes;
++	cruisn::zeus_wide::Packet m_handover_packet;
++	uint64_t m_handover_generation=0;
+ 	double m_scene_cpu_time=0;
+ 	bool m_scene_open=false,m_scene_armed=false,m_scene_bounds=false;
+ 	std::array<uint32_t,3> m_scene_camera{};
+@@ -653,7 +657,8 @@ void crusnexo_state::scene_observer_start()
+ 	if(number("MIDZ_HOST_FUTURE_PRESENT",0,1,0) && m_scene_future_mode!=2)
+ 		fatalerror("Exotica future presentation requires explicit future draw mode\n");
+ 	m_waiting_mode=number("MIDZ_HOST_WAITING",0,1,0);
+-	m_handover_mode=number("MIDZ_HOST_HANDOVER",0,1,0);
++	m_handover_mode=number("MIDZ_HOST_HANDOVER",0,2,0);
++	if(m_handover_mode==2 && (m_scene_future_mode!=2 || !m_scene_material_image))fatalerror("Exotica waiting draw requires private future drawing and materials\n");
+ 	if(m_handover_mode && (!m_waiting_mode || !m_scene_fence_log || m_active_mode))
+ 		fatalerror("Exotica waiting completion requires waiting/fence observation and excludes active margins\n");
+ 	if(m_waiting_mode) {
+@@ -694,7 +699,8 @@ void crusnexo_state::scene_observer_start()
+ 		if(!m_handover_log || !m_handover_cohorts)fatalerror("Cannot create Exotica completion observation\n");
+ 		setvbuf(m_handover_log,nullptr,_IOFBF,65536);setvbuf(m_handover_cohorts,nullptr,_IOFBF,65536);
+ 		fprintf(m_handover_log,"scene,proposal_frame,proposal_time,proposal_records,end_records,ready_frame,ready_time,ready_records,epoch,captured,submitted,retired,retained,owners_hash,instances,quads,geometry_hash,guest_cycles\n");
+-		fprintf(stderr,"MIDZ_HOST_HANDOVER=1\n");
++		fprintf(stderr,"MIDZ_HOST_HANDOVER=%u\n",m_handover_mode);
++		if(m_handover_mode==2)fprintf(stderr,"MIDZ_HOST_WAITING_DRAW=2\n");
+ 	}
+ 	m_scene_log=fopen("exotica-host-scenes.csv","w");
+ 	if(!m_scene_log)fatalerror("Cannot create Exotica host scene log\n");
+@@ -953,7 +959,17 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 			if(fwrite(header,1,sizeof(header),m_handover_cohorts)!=sizeof(header) ||
+ 				fwrite(owners.data(),sizeof(owners[0]),owners.size(),m_handover_cohorts)!=owners.size())
+ 				fatalerror("Exotica waiting cohort write\n");
+-			m_handover_bytes+=bytes;m_handover_geometry=std::move(proposed);
++			m_handover_bytes+=bytes;
++			if(m_handover_mode==2) {
++				if(m_handover_generation || !cruisn::zeus_host::palettes(proposed.instances,
++					reinterpret_cast<const uint8_t *>(z.m_waveram.get()),0x1000000,m_handover_palettes))
++					fatalerror("Exotica waiting proposal palette/sequence ownership\n");
++				m_handover_packet=cruisn::zeus_wide::Packet{};
++				auto &packet=m_handover_packet;packet.materials.frame=p.frame;packet.materials.scene=pending.scene;
++				packet.materials.snapshot=m_scene_snapshots.count(p.frame)!=0;
++				packet.margin=uint32_t(m_scene_margin);packet.page=p.context.render[4];packet.multiplier=m_scene_multiplier;packet.draw=true;
++			}
++			m_handover_geometry=std::move(proposed);
+ 		}
+ 	}
+ 	cruisn::exotica_scene::Result scene;
+@@ -1018,6 +1034,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 		} else if(!m_zeus->midz_host_materials(wire.data(),wire.size()))fatalerror("Exotica private material queue rejected\n");
+ 		const auto material_queued=std::chrono::steady_clock::now();
+ 		if(!m_scene_material_image->apply(packet.wave))fatalerror("Exotica private material producer commit rejected\n");
++		if(m_handover_mode==2)m_handover_generation=m_scene_material_image->generation();
+ 		// No emulated writes can occur between staging and this emulation-thread commit.
+ 		if(m_scene_material_pages)m_zeus->midz_host_wave_commit();
+ 		const auto material_committed=std::chrono::steady_clock::now();
+@@ -1131,9 +1148,11 @@ void crusnexo_state::scene_waiting_ready()
+ 		owners.push_back({{h.key.realm,h.key.section,h.key.source,h.slot,h.epoch,h.generation}});
+ 	}
+ 	// Filter already-built proposal geometry. Rebuilding against device-ready
+-	// WaveRAM/context would silently mix two resource boundaries. No drawing here.
++	// WaveRAM/context would silently mix two resource boundaries.
+ 	cruisn::exotica_scene::Result filtered;
+-	for(auto instance:m_handover_geometry.instances) {
++	std::map<uint32_t,uint32_t> palette_indices;
++	for(size_t i=0;i<m_handover_geometry.instances.size();++i) {
++		auto instance=m_handover_geometry.instances[i];
+ 		if(!retained.count({instance.entry,instance.source}))continue;
+ 		if(instance.first_quad>m_handover_geometry.quads.size() ||
+ 			instance.quad_count>m_handover_geometry.quads.size()-instance.first_quad)
+@@ -1142,6 +1161,56 @@ void crusnexo_state::scene_waiting_ready()
+ 		instance.first_quad=filtered.quads.size();
+ 		filtered.quads.insert(filtered.quads.end(),begin,begin+instance.quad_count);
+ 		filtered.instances.push_back(instance);
++		if(m_handover_mode==2) {
++			if(i>=m_handover_palettes.instance_rows.size())fatalerror("Exotica waiting palette instance extent\n");
++			const auto source_row=m_handover_palettes.instance_rows[i];
++			if(source_row>=m_handover_palettes.rows.size())fatalerror("Exotica waiting palette row extent\n");
++			auto found=palette_indices.find(source_row);
++			if(found==palette_indices.end()) {
++				found=palette_indices.emplace(source_row,uint32_t(m_handover_packet.materials.rows.size())).first;
++				m_handover_packet.materials.rows.push_back(m_handover_palettes.rows[source_row]);
++			}
++			for(size_t j=0;j<instance.quad_count;++j) {
++				cruisn::zeus_wide::Quad q;q.polygon=*(begin+j);q.palette=found->second;m_handover_packet.quads.push_back(q);
++			}
++		}
++	}
++	if(m_handover_mode==2) {
++		const auto started=std::chrono::steady_clock::now();auto &packet=m_handover_packet;
++		if(!m_scene_material_image || !m_handover_generation || m_scene_material_image->generation()!=m_handover_generation ||
++			packet.materials.scene!=m_handover_scene || packet.materials.frame!=m_handover_frame ||
++			packet.page!=m_zeus->m_renderRegs[4] || packet.quads.size()!=filtered.quads.size() ||
++			!cruisn::zeus_host::retain(packet.materials,*m_scene_material_image))
++			fatalerror("Exotica waiting retained image/frame/page ownership\n");
++		const auto staged=std::chrono::steady_clock::now();std::vector<uint8_t> encoded,material;
++		if(!cruisn::zeus_wide::encode(packet,encoded) || !cruisn::zeus_host::encode(packet.materials,material))
++			fatalerror("Exotica waiting retained packet encoding\n");
++		const auto encoded_at=std::chrono::steady_clock::now();
++		if(!m_zeus->midz_host_waiting(encoded.data(),encoded.size()))fatalerror("Exotica waiting owned queue rejected\n");
++		const auto queued=std::chrono::steady_clock::now();
++		if(!cruisn::zeus_host::accept_retained(packet.materials,*m_scene_material_image))fatalerror("Exotica waiting producer commit rejected\n");
++		// No guest dirty-page commit here: guest writes since P belong to the NEXT
++		// future update, not this zero-page continuation of P's private image.
++		const auto committed=std::chrono::steady_clock::now();
++		auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
++		if(fprintf(m_scene_material_log,"%llu,%u,%llu,0,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
++			(unsigned long long)packet.materials.scene,packet.materials.frame,(unsigned long long)packet.materials.wave.generation,
++			unsigned(packet.materials.rows.size()),unsigned(material.size()),(unsigned long long)packet.materials.wave.result_hash,
++			us(started,staged),us(staged,encoded_at),us(encoded_at,queued),us(queued,committed))<0)fatalerror("Exotica waiting material log write\n");
++		if(packet.materials.snapshot) {
++			auto dump=[](const std::string &name,const void *data,size_t bytes) {
++				FILE *f=fopen(name.c_str(),"wb");if(!f)fatalerror("Cannot open Exotica waiting draw snapshot\n");
++				const bool ok=fwrite(data,1,bytes,f)==bytes;const int closed=fclose(f);
++				if(!ok || closed)fatalerror("Cannot complete Exotica waiting draw snapshot\n");
++			};
++			const auto prefix="exotica-waiting-draw-"+std::to_string(m_handover_frame);
++			const auto instances=cruisn::exotica_scene::instance_words(filtered);
++			dump(prefix+".xwd",encoded.data(),encoded.size());dump(prefix+"-materials.bin",material.data(),material.size());
++			dump(prefix+"-wave.bin",m_scene_material_image->bytes().data(),m_scene_material_image->bytes().size());
++			dump(prefix+"-quads.bin",filtered.quads.data(),filtered.quads.size()*sizeof(filtered.quads[0]));
++			dump(prefix+"-instances.bin",instances.data(),instances.size()*sizeof(instances[0]));
++		}
++		m_handover_generation=0;m_handover_packet=cruisn::zeus_wide::Packet{};m_handover_palettes=cruisn::zeus_host::PaletteSet{};
+ 	}
+ 	const auto owner_hash=cruisn::exotica_scene::byte_hash(owners.data(),owners.size()*sizeof(owners[0]));
+ 	const auto geometry_hash=cruisn::exotica_scene::byte_hash(filtered.quads.data(),filtered.quads.size()*sizeof(filtered.quads[0]));
+@@ -1398,7 +1467,7 @@ void crusnexo_state::scene_observer_exit()
+ 		const int closed=fclose(m_handover_log),cohorts_closed=fclose(m_handover_cohorts);
+ 		m_handover_log=nullptr;m_handover_cohorts=nullptr;
+ 		fprintf(stderr,"MIDZ_HOST_HANDOVER_RESULT complete=%u scenes=%llu captured=%llu submitted=%llu retired=%llu bytes=%llu snapshots=%u remaining=%u\n",
+-			unsigned(good && !closed && !cohorts_closed && !m_handover_pending.pending() &&
++			unsigned(good && !closed && !cohorts_closed && !m_handover_pending.pending() && !m_handover_generation &&
+ 				m_handover_completed && m_handover_completed==m_waiting_scenes && m_handover_snapshots.empty()),
+ 			(unsigned long long)m_handover_completed,(unsigned long long)m_handover_captured,
+ 			(unsigned long long)m_handover_submitted,(unsigned long long)m_handover_retired,
+-- 
+2.55.0.windows.3
+

@@ -70,6 +70,8 @@ def verify_receipt(trial, text, directory):
         if 'MIDZ_HOST_WAITING=1' in text or 'MIDZ_HOST_WAITING_RESULT' in text or path.exists() or files:
             raise ValueError('disabled Exotica waiting observer ran')
         return None
+    # Drawing owns a separate namespace, validated by exotica_waiting_draw.
+    files = [p for p in files if not p.name.startswith('exotica-waiting-draw-')]
     if re.findall(r'^MIDZ_HOST_WAITING=(\d+)$',text,re.M)!=['1']:
         raise ValueError('Exotica waiting start acknowledgment')
     names=('complete','scenes','candidates','quads','snapshots','remaining')

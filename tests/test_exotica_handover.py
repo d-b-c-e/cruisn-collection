@@ -18,6 +18,19 @@ def write_csv(path,fields,rows):
 
 
 class ExoticaHandoverTests(unittest.TestCase):
+    def test_draw_requires_private_future_materials_and_excludes_active_margins(self):
+        args = SimpleNamespace(exotica_host_handover='draw', candidate=Path('candidate.exe'))
+        waiting = dict(mode='observe', snapshots=[3900])
+        scene = dict(fence=True, future=2, materials=True, active=0)
+        settings = {}
+        trial = h.configure(args, 'crusnexo', settings, scene, waiting)
+        self.assertEqual(trial['mode'], 'draw')
+        self.assertEqual(settings['MIDZ_HOST_HANDOVER'], '2')
+        self.assertTrue(scene['waiting_draw'])
+        for change in (dict(future=1), dict(materials=False), dict(active=2)):
+            with self.subTest(change=change), self.assertRaises(ValueError):
+                h.configure(args, 'crusnexo', {}, dict(scene, **change), waiting)
+
     def test_explicit_mode_requires_candidate_waiting_and_real_fence(self):
         args=SimpleNamespace(exotica_host_handover='observe',candidate=Path('candidate.exe'))
         waiting=dict(mode='observe',snapshots=[3900])

@@ -1,4 +1,4 @@
-"""Observe waiting cohorts at actual CPU/device completion; no extra drawing."""
+"""Reconcile waiting cohorts at device completion, with explicit private drawing."""
 import math
 from pathlib import Path
 import re
@@ -12,16 +12,16 @@ FIELDS = ('scene','proposal_frame','proposal_time','proposal_records','end_recor
 
 
 def add_arguments(parser):
-    parser.add_argument('--exotica-host-handover', choices=('off','observe'),
-                        help='observe actual waiting-cohort retirement at the command fence; no extra drawing')
+    parser.add_argument('--exotica-host-handover', choices=('off','observe','draw'),
+                        help='reconcile waiting cohorts at the command fence; optionally draw with retained private materials')
 
 
 def configure(args, rom, settings, scene, waiting_trial):
     option = getattr(args, 'exotica_host_handover', None)
     if option is not None and not getattr(args, 'candidate', None):
         raise ValueError('Exotica completion requires an explicit candidate')
-    value = settings.get('MIDZ_HOST_HANDOVER', '0') if option is None else str(('off','observe').index(option))
-    if value not in ('0','1'):
+    value = settings.get('MIDZ_HOST_HANDOVER', '0') if option is None else str(('off','observe','draw').index(option))
+    if value not in ('0','1','2'):
         raise ValueError('invalid recorded Exotica completion mode')
     if value == '0':
         if option is not None:
@@ -31,18 +31,25 @@ def configure(args, rom, settings, scene, waiting_trial):
     if (rom != 'crusnexo' or not waiting_trial or waiting_trial.get('mode') != 'observe'
             or not scene or scene.get('fence') is not True):
         raise ValueError('Exotica completion requires waiting and actual command-fence observation')
-    settings['MIDZ_HOST_HANDOVER'] = '1'
-    return dict(mode='observe', waiting=waiting_trial, snapshots=list(waiting_trial['snapshots']))
+    if value=='2':
+        if (not getattr(args,'candidate',None) or scene.get('future')!=2 or
+                not scene.get('materials') or scene.get('active',0)):
+            raise ValueError('Exotica waiting draw requires explicit candidate, private future drawing and materials')
+        scene['waiting_draw']=True
+    settings['MIDZ_HOST_HANDOVER'] = value
+    return dict(mode='draw' if value=='2' else 'observe', waiting=waiting_trial, snapshots=list(waiting_trial['snapshots']))
 
 
 def verify_receipt(trial, text, directory):
     directory=Path(directory);path=directory/'exotica-handover-scenes.csv'
     files=list(directory.glob('exotica-handover-*.bin'))
+    from exotica_waiting_draw import verify as verify_draw
     if not trial or trial['mode']=='off':
-        if 'MIDZ_HOST_HANDOVER=1' in text or 'MIDZ_HOST_HANDOVER_RESULT' in text or path.exists() or files:
+        verify_draw(directory,text,False,[])
+        if re.search(r'MIDZ_HOST_HANDOVER=[12]',text) or 'MIDZ_HOST_HANDOVER_RESULT' in text or path.exists() or files:
             raise ValueError('disabled Exotica completion observer ran')
         return None
-    if re.findall(r'^MIDZ_HOST_HANDOVER=(\d+)$',text,re.M)!=['1']:
+    if re.findall(r'^MIDZ_HOST_HANDOVER=(\d+)$',text,re.M)!=['2' if trial['mode']=='draw' else '1']:
         raise ValueError('Exotica completion start acknowledgment')
     names=('complete','scenes','captured','submitted','retired','bytes','snapshots','remaining')
     final=re.findall(r'^MIDZ_HOST_HANDOVER_RESULT '+' '.join(n+r'=(\d+)' for n in names)+r'$',text,re.M)
@@ -155,6 +162,7 @@ def verify_receipt(trial, text, directory):
         if stream.read(1):raise ValueError('trailing Exotica cohort bytes')
     if remaining or {p.name for p in files}!=expected_files or any(sums[k]!=totals[k] for k in sums):
         raise ValueError('Exotica completion final totals/artifacts')
-    return dict(passed=True,**totals,owners_changed_after_cpu_end=changed_after_end,
+    drawing=verify_draw(directory,text,trial['mode']=='draw',trial['snapshots'])
+    return dict(passed=True,**totals,owners_changed_after_cpu_end=changed_after_end,drawing=drawing,
                 scope='Actual event-watermark/owner reconciliation for every cohort and filtered proposal geometry for snapshots. '
-                      'No waiting draw, material residency, alpha-order, performance or temporal visual acceptance.')
+                      'Private drawing receipts, when requested, are separate; no temporal or performance acceptance.')

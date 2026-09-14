@@ -24,6 +24,14 @@ class PrivateMaterials(unittest.TestCase):
                         writer.writeheader();writer.writerows(values)
             write(rows)
             self.assertTrue(verify_live(temp, scenes, [], text, active=True)['passed'])
+            self.assertTrue(verify_live(temp, scenes, [], text, waiting=True)['passed'])
+            for change in (dict(pages='1', bytes='4196'), dict(hash='000000000000000a')):
+                bad = [dict(row) for row in rows]
+                bad[1].update(change)
+                write(bad)
+                with self.assertRaisesRegex(ValueError, 'changed proposal'):
+                    verify_live(temp, scenes, [], text, waiting=True)
+            write(rows)
             with self.assertRaisesRegex(ValueError, 'drain'):
                 verify_live(temp, scenes, [], text)
             write([rows[0], rows[2], rows[1], rows[3]])

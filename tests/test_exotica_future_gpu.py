@@ -95,6 +95,27 @@ class ExoticaFutureGpu(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'completion/writer'):
                 verify(tmp, [source], text.replace('complete=1', 'complete=0'), 2, [])
 
+    def test_waiting_uses_late_material_packet_and_separate_completion(self):
+        source = dict(scene='3', frame='5001', multiplier='3', quads='1', hash='123456789abcdef0')
+        received = dict(source, mode='2', page='0', vertices='6', bytes=str(32+96+264), snapshot='0', host_us='1')
+        text = ('MIDZ_HOST_WAITING_DRAW=2\n'
+                'MIDZ_HOST_WAITING_DRAW_GPU_RESULT complete=1 scenes=1 quads=1 snapshots=0 written=0 failed=0 rejected=0\n')
+        with tempfile.TemporaryDirectory() as tmp:
+            def write(name, rows):
+                with (Path(tmp)/name).open('w', newline='') as f:
+                    writer = csv.DictWriter(f, fieldnames=list(rows[0]))
+                    writer.writeheader(); writer.writerows(rows)
+            write('exotica-waiting-draw-gpu.csv', [received])
+            early = dict(scene='3', frame='5001', bytes='1128')
+            late = dict(early, bytes='96')
+            write('exotica-host-materials.csv', [early, late])
+            self.assertTrue(verify(tmp, [source], text, 2, [], waiting=True, kind='waiting-draw')['passed'])
+            write('exotica-host-materials.csv', [late, early])
+            with self.assertRaisesRegex(ValueError, 'ordered scene'):
+                verify(tmp, [source], text, 2, [], waiting=True, kind='waiting-draw')
+            with self.assertRaisesRegex(ValueError, 'invalid private drawing phase'):
+                verify(tmp, [source], text, 2, [], kind='waiting-draw')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -82,6 +82,7 @@ class ExoticaWaitingTests(unittest.TestCase):
     def test_complete_registry_prefix_and_snapshot_ownership(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);trial,text=self.fixture(root)
+            (root/'exotica-waiting-draw-1800-quads.bin').write_bytes(b'drawing-owned')
             result=w.verify_receipt(trial,text,root)
             self.assertEqual(result['snapshot_owners_verified'],1)
             self.assertTrue(result['passed'])

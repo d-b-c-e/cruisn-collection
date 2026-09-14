@@ -49,7 +49,7 @@ def palette_bytes(wave, base):
 
 
 def snapshot(directory, frame, kind='host'):
-    if kind not in ('host', 'active'):
+    if kind not in ('host', 'active', 'waiting-draw'):
         raise ValueError('unknown material snapshot phase')
     prefix = Path(directory) / f'exotica-{kind}-{frame}'
     read = lambda suffix: Path(str(prefix) + suffix).read_bytes()
@@ -57,6 +57,9 @@ def snapshot(directory, frame, kind='host'):
     p = parse(wire)
     if p['frame'] != frame or not p['snapshot'] or len(wave) != SIZE or gpu_wave != wave:
         raise ValueError('private GPU snapshot differs from device WaveRAM')
+    if kind=='waiting-draw' and (p['pages'] or p['hash']!=p['base_hash'] or
+            wave!=(Path(directory)/f'exotica-host-{frame}-wave.bin').read_bytes()):
+        raise ValueError('waiting material snapshot did not retain the proposal image')
     root = 0
     for offset in range(0, SIZE, PAGE):
         root ^= page_hash(offset // PAGE, wave[offset:offset + PAGE])
@@ -85,7 +88,8 @@ def snapshot(directory, frame, kind='host'):
                 packet_sha256=hashlib.sha256(wire).hexdigest())
 
 
-def verify_live(directory, scenes, captures, text, active=False):
+def verify_live(directory, scenes, captures, text, active=False, waiting=False):
+    if active and waiting:raise ValueError('active and waiting material phases conflict')
     def rows(name):
         path = Path(directory) / name
         if path.stat().st_size > 8*1024*1024:
@@ -93,7 +97,7 @@ def verify_live(directory, scenes, captures, text, active=False):
         with path.open(encoding='utf-8', newline='') as stream:
             return list(csv.DictReader(stream))
     producer, gpu = rows('exotica-host-materials.csv'), rows('exotica-host-materials-gpu.csv')
-    phases = 2 if active else 1
+    phases = 2 if active or waiting else 1
     if not producer or len(producer) != len(scenes)*phases or len(gpu) != len(producer):
         raise ValueError('material queue did not drain every scene')
     previous = 0
@@ -103,6 +107,8 @@ def verify_live(directory, scenes, captures, text, active=False):
         fields = ('scene', 'frame', 'generation', 'pages', 'palettes', 'bytes', 'hash')
         if any(sent[k] != received[k] for k in fields):
             raise ValueError('material producer/consumer receipt differs')
+        if waiting and late and (int(sent['pages'])!=0 or sent['hash']!=producer[i-1]['hash']):
+            raise ValueError('waiting continuation changed proposal materials')
         if (sent['scene'] != source['scene'] or sent['frame'] != source['frame'] or
                 (int(sent['scene']) != previous if late else int(sent['scene']) <= previous) or int(sent['generation']) != i+1 or
                 not 0 <= int(sent['pages']) <= 4096 or not 0 <= int(sent['palettes']) <= MAX_ROWS or
@@ -120,7 +126,7 @@ def verify_live(directory, scenes, captures, text, active=False):
     if end != [expected] or gpu_end != [('1', expected[0], str(len(captures)*phases), expected[1])]:
         raise ValueError('material final generation or capture acknowledgment')
     sampled = [snapshot(directory, frame, kind) for frame in captures
-               for kind in (('host', 'active') if active else ('host',))]
+               for kind in (('host', 'active') if active else ('host','waiting-draw') if waiting else ('host',))]
     by_generation = {int(r['generation']): r for r in producer}
     for row in sampled:
         sent = by_generation.get(row['generation'])
