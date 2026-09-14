@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September14 temporal visibility — NEXT full-drive marked-only scope
+
+Read docs/reviews/2026-09-14-exotica-visibility-temporal.md. Same native1d3216d7a83
+control/early runs PASS5300inputs each,55completed3440x1440CRT frames5216..5270.
+All originalcamera/ADC/lifetimes/modelrows/operands/admissionsources exacteachother.
+Early8638replacementquads1117models;17330queries9135admitted738sealedpermissions.
+Firstvisiblepresentationchange5220;5216..5219exact. Changed79223..102784pixels/frame
+thereafter;zero newblackall55;fixedforegroundROI identicalall55. Paired5219/5244/
+5252viewed: forestpresentthroughtrackedcompletion,foreground/HUDintact intheseviews.
+Threeownersfirst5219/5220 alpha8->unmarked248at5249/5250. Allobservedmarked submissions
+qualified. InitiallocalcadenceassertionFAIL retained: updates200/216 or192/208 can
+have NOdraw. Corrected report preservesgaps, monotonic8-unitstates+actualcompletion.
+R/visibility-temporal-control,visibility-temporal-early PASS; qualified-v2accepted;
+initialqualifiedFAILretained. Capturepacingenabled, NOperformance/final4K/full-drive
+acceptance. Stillnative1d/personal87d/publicv0.5.0. No game/build/testrunning.
+NEXT explicitmarked-onlyendpointscope toboundfull-driveobservations; currentall-
+commandobserverlimited120frames. Track exactmarkedFIFOowners, retainuntrackedcommand
+handling, do notdropmaterial/geometry/admissionchecks. Then fullAmazonappearance,
+farboundaryfade andmeasuredcost. NophysicalFFB/deploy/release/hostedCI/menu removal.
+Continue directly; serialrig and no builds/exports/broadscansduringtimedgames.
+
 ## September14 earlier visibility — NEXT continuous appearance / completion
 
 Read docs/reviews/2026-09-14-exotica-early-visibility.md. Native1d3216d7a83 frozen
