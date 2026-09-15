@@ -53,4 +53,18 @@ int main()
     memory[0x1000d]=0xc00000;memory[0x45]=0x993000;
     assert(!build(read,scene));
     assert(!build(read,scene,100000));
+    // Membership storage must retain duplicate rejection and explicit draw order.
+    memory=before;
+    Descriptor future_a;future_a.id=0x80000002;
+    for(unsigned i=0;i<32;++i)future_a.words[i]=memory.at(0x10000+i);
+    Descriptor future_b=future_a;future_b.id=0x80000001;
+    std::vector<Descriptor> future={future_a,future_b};
+    assert(build(read,scene,80000,&future) && scene.objects.size()==3);
+    assert(scene.objects[0].id==0x10000 && scene.objects[1].id==future_b.id && scene.objects[2].id==future_a.id);
+    for(const auto &object:scene.objects)assert(object.quads.size()==1 && object.quads[0]==expected);
+    future.push_back(future_a);
+    assert(!build(read,scene,80000,&future) && scene.objects.empty());
+    future.assign(16385,future_a);
+    assert(!build(read,scene,80000,&future) && scene.objects.empty());
+    assert(memory==before);
 }

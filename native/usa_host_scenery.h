@@ -3,7 +3,7 @@
 #pragma once
 #include "usa_model.h"
 #include <map>
-#include <set>
+#include <unordered_set>
 
 namespace cruisn { namespace usa_host {
 using usa_model::Float;
@@ -77,7 +77,7 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
     for(unsigned i=0;i<3;++i)camera[i]=read(cam+i);
     for(unsigned i=0;i<9;++i){matrix[i]=read(view+i);billboard[i]=read(bill+i);}
     for(unsigned i=0;i<4;++i)compact_billboard[i]=read(compact_bill+i);
-    Scene scene;std::set<uint32_t> seen;std::vector<Descriptor> candidates;
+    Scene scene;std::unordered_set<uint32_t> seen;std::vector<Descriptor> candidates;
     uint32_t id=read(0xc9b4);
     while(id)
     {
@@ -91,6 +91,10 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
     if(future)
     {
         if(future->size()>16384)return false;
+        // Only membership is observed here; draw ordering is established below.
+        // Bound the reservation before allocating storage for future descriptors.
+        candidates.reserve(candidates.size()+future->size());
+        seen.reserve(seen.size()+future->size());
         for(const auto &descriptor:*future)
         {
             if(!(descriptor.id&0x80000000) || !seen.insert(descriptor.id).second)return false;

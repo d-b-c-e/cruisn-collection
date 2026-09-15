@@ -41203,3 +41203,61 @@ index f1bf155d968..0e403788500 100644
 -- 
 2.55.0.windows.3
 
+From 8de985146b339e74320728a8adf1de440a7ec837 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 04:22:27 -0500
+Subject: [PATCH] Reserve USA descriptor storage and hash duplicate membership
+
+---
+ src/mame/midway/cruisn/usa_future_sections.h | 1 +
+ src/mame/midway/cruisn/usa_host_scenery.h    | 8 ++++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/usa_future_sections.h b/src/mame/midway/cruisn/usa_future_sections.h
+index e0c43061733..dc4c576a2b6 100644
+--- a/src/mame/midway/cruisn/usa_future_sections.h
++++ b/src/mame/midway/cruisn/usa_future_sections.h
+@@ -4,6 +4,7 @@
+ #include "usa_model.h"
+ #include "usa_host_scenery.h"
+ #include "world_future_sections.h" // Shared, independently checked C31 yaw polynomial only.
++#include <set>
+ 
+ namespace cruisn { namespace usa_future {
+ using scenery::Float;
+diff --git a/src/mame/midway/cruisn/usa_host_scenery.h b/src/mame/midway/cruisn/usa_host_scenery.h
+index b2c9324768c..2f83fb65cc9 100644
+--- a/src/mame/midway/cruisn/usa_host_scenery.h
++++ b/src/mame/midway/cruisn/usa_host_scenery.h
+@@ -3,7 +3,7 @@
+ #pragma once
+ #include "usa_model.h"
+ #include <map>
+-#include <set>
++#include <unordered_set>
+ 
+ namespace cruisn { namespace usa_host {
+ using usa_model::Float;
+@@ -77,7 +77,7 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
+     for(unsigned i=0;i<3;++i)camera[i]=read(cam+i);
+     for(unsigned i=0;i<9;++i){matrix[i]=read(view+i);billboard[i]=read(bill+i);}
+     for(unsigned i=0;i<4;++i)compact_billboard[i]=read(compact_bill+i);
+-    Scene scene;std::set<uint32_t> seen;std::vector<Descriptor> candidates;
++    Scene scene;std::unordered_set<uint32_t> seen;std::vector<Descriptor> candidates;
+     uint32_t id=read(0xc9b4);
+     while(id)
+     {
+@@ -91,6 +91,10 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
+     if(future)
+     {
+         if(future->size()>16384)return false;
++        // Only membership is observed here; draw ordering is established below.
++        // Bound the reservation before allocating storage for future descriptors.
++        candidates.reserve(candidates.size()+future->size());
++        seen.reserve(seen.size()+future->size());
+         for(const auto &descriptor:*future)
+         {
+             if(!(descriptor.id&0x80000000) || !seen.insert(descriptor.id).second)return false;
+-- 
+2.55.0.windows.3
+

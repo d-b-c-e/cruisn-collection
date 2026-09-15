@@ -4,6 +4,7 @@
 #include "usa_model.h"
 #include "usa_host_scenery.h"
 #include "world_future_sections.h" // Shared, independently checked C31 yaw polynomial only.
+#include <set>
 
 namespace cruisn { namespace usa_future {
 using scenery::Float;

@@ -67,6 +67,11 @@ and the public package remain v0.5.0.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior. The
+  [descriptor-storage improvement](docs/reviews/2026-09-15-usa-descriptor-storage.md)
+  reduces current4K preparation by8.7% with exact scene/image results, but driving
+  remains97.4%. Saved expensive scenes contain many wholly offscreen objects;
+  conservative horizontal rejection is the next measured opportunity.
+  The
   [gated far-coverage adapter](docs/reviews/2026-09-15-usa-far-coverage.md) passes
   independent geometry and 4K comparisons, but changes only 26 pixels in two of
   21 completed frames; it is not a substantial pop-in fix.
