@@ -26,4 +26,14 @@ int main() {
         assert(!b::complete(read,base,tail,0,UINT32_MAX,0xbbd5,tail));ram[code[i].first]^=1;
     }
     for(uint32_t bad:{0u,0xfffu,0x30000u,0x3ffffu,UINT32_MAX})assert(!b::pool(bad));
+    ram[0x67f5]=0x15200ff2;ram[0x681f]=0x082fbbb5;ram[0x6835]=0x082fbbb9;
+    assert(b::scene_boundary(read,1385,1385,0xff2,UINT32_MAX,UINT32_MAX,0x67f6));
+    assert(!b::scene_boundary(read,1384,1385,0xff2,UINT32_MAX,UINT32_MAX,0x67f6));
+    assert(!b::scene_boundary(read,1385,1385,0xff3,UINT32_MAX,UINT32_MAX,0x67f6));
+    assert(!b::scene_boundary(read,1385,1385,0xff2,0,UINT32_MAX,0x67f6));
+    assert(!b::scene_boundary(read,1385,1385,0xff2,UINT32_MAX,0xffff,0x67f6));
+    assert(!b::scene_boundary(read,1385,1385,0xff2,UINT32_MAX,UINT32_MAX,0x67f5));
+    for(uint32_t at:{0x67f5u,0x681fu,0x6835u}) {
+        ram[at]^=1;assert(!b::scene_boundary(read,1385,1385,0xff2,UINT32_MAX,UINT32_MAX,0x67f6));ram[at]^=1;
+    }
 }

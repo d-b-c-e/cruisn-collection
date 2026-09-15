@@ -110,8 +110,11 @@ those same windows merely to obtain a positive result.
    [Quiet journals and checked counters](2026-09-15-exotica-runtime-counters.md)
    now qualify on a primary4K sample with exact captured-control output.
    Routine journal budgets no longer stop quiet execution; live bounds and
-   snapshot/failure evidence remain. Verified startup, machine reset and ordinary
-   exit/drain handling are still required for continuous operation.
+   snapshot/failure evidence remain. [Guest-based startup](2026-09-15-exotica-bootstrap-scenes.md)
+   now passes a targeted4K replay: pool and scene activation use verified game
+   transactions, including the previously excluded boot/menu period. Finite end
+   windows, machine reset and ordinary exit/drain handling remain required for
+   continuous operation.
 5. After the rendering policy is stable, expose coherent per-game controls and
    renew final package/default/4K gates. Obtain attended cross-track and wheel
    acceptance; do not treat prior-release waivers as acceptance of these changes.

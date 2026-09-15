@@ -48,10 +48,10 @@ inline bool shape(const Packet &p) {
         if(q.palette>=p.materials.rows.size() || !depth_range(q.polygon,p.materials.frame,p.page))return false;
     return true;
 }
-inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
+inline bool encode(const Packet &p,std::vector<uint8_t> &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
     if(!shape(p))return false;
     std::vector<uint8_t> material,wire;
-    if(!zeus_host::encode(p.materials,material))return false;
+    if(!zeus_host::encode(p.materials,material,policy))return false;
     wire.resize(header_bytes+material.size()+p.quads.size()*quad_bytes);
     auto *data=wire.data();
     // Shape and material encoding bound the complete allocation before writes.
@@ -72,13 +72,13 @@ inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
     }
     out=std::move(wire);return true;
 }
-inline bool decode(const uint8_t *wire,size_t size,Packet &out) {
+inline bool decode(const uint8_t *wire,size_t size,Packet &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
     using zeus_host::get32;
     if(!wire || size<header_bytes || size>maximum_bytes || get32(wire)!=0x31445758 || get32(wire+24)>1 || get32(wire+28))return false;
     const uint32_t material=get32(wire+4),count=get32(wire+8);
     if(material>zeus_host::maximum_material_bytes || count>max_quads || size!=header_bytes+size_t(material)+size_t(count)*quad_bytes)return false;
     Packet p;p.margin=get32(wire+12);p.page=get32(wire+16);p.multiplier=get32(wire+20);p.draw=get32(wire+24)!=0;
-    if(!zeus_host::decode(wire+header_bytes,material,p.materials))return false;
+    if(!zeus_host::decode(wire+header_bytes,material,p.materials,policy))return false;
     p.quads.reserve(count);const auto *data=wire+header_bytes+material;
     for(unsigned i=0;i<count;++i) {
         Quad q;q.palette=get32(data);data+=4;

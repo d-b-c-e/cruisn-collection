@@ -43,10 +43,10 @@ inline bool shape(const Packet &p) {
         if(q.palette>=p.materials.rows.size() || !depth24(q.polygon,p.materials.frame,p.page))return false;
     return true;
 }
-inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
+inline bool encode(const Packet &p,std::vector<uint8_t> &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
     if(!shape(p))return false;
     std::vector<uint8_t> material,wire;
-    if(!zeus_host::encode(p.materials,material))return false;
+    if(!zeus_host::encode(p.materials,material,policy))return false;
     wire.reserve(header_bytes+material.size()+p.quads.size()*quad_bytes);
     using zeus_host::put32;
     put32(wire,0x31444d58); //XMD1: no borrowed original material rows or pointers
@@ -63,7 +63,7 @@ inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
     }
     out=std::move(wire);return true;
 }
-inline bool decode(const uint8_t *wire,size_t size,Packet &out) {
+inline bool decode(const uint8_t *wire,size_t size,Packet &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
     using zeus_host::get32;
     if(!wire || size<header_bytes || size>maximum_bytes || get32(wire)!=0x31444d58 ||
         get32(wire+20)>1 || get32(wire+24) || get32(wire+28))return false;
@@ -71,7 +71,7 @@ inline bool decode(const uint8_t *wire,size_t size,Packet &out) {
     if(material>zeus_host::maximum_material_bytes || count>max_quads ||
         size!=header_bytes+size_t(material)+size_t(count)*quad_bytes)return false;
     Packet p;p.margin=get32(wire+12);p.page=get32(wire+16);p.draw=get32(wire+20)!=0;
-    if(!zeus_host::decode(wire+header_bytes,material,p.materials))return false;
+    if(!zeus_host::decode(wire+header_bytes,material,p.materials,policy))return false;
     p.quads.reserve(count);const auto *data=wire+header_bytes+material;
     for(unsigned i=0;i<count;++i) {
         Quad q;q.palette=get32(data);data+=4;

@@ -82,8 +82,13 @@ inline uint32_t get32(const uint8_t *wire) {
 inline bool palette_shape(const Palette &row) {
     return row.control == 0x0084003f && uint64_t(row.base) * 8 + 512 <= 16777216;
 }
-inline bool encode(const Packet &packet, std::vector<uint8_t> &output) {
-    if (!packet.scene || packet.frame < 1800 || packet.frame > 16001 || packet.rows.size() > max_palettes)
+enum class FramePolicy { capture, guest_ready };
+inline bool frame_valid(uint32_t frame,FramePolicy policy) {
+    return (policy==FramePolicy::capture || policy==FramePolicy::guest_ready) &&
+        frame>=(policy==FramePolicy::guest_ready?1u:1800u) && frame<=16001;
+}
+inline bool encode(const Packet &packet, std::vector<uint8_t> &output,FramePolicy policy=FramePolicy::capture) {
+    if (!packet.scene || !frame_valid(packet.frame,policy) || packet.rows.size() > max_palettes)
         return false;
     for (const auto &row : packet.rows) if (!palette_shape(row)) return false;
     std::vector<uint8_t> wave;
@@ -103,7 +108,7 @@ inline bool encode(const Packet &packet, std::vector<uint8_t> &output) {
     output = std::move(wire);
     return true;
 }
-inline bool decode(const uint8_t *wire, std::size_t size, Packet &output) {
+inline bool decode(const uint8_t *wire, std::size_t size, Packet &output,FramePolicy policy=FramePolicy::capture) {
     if (!wire || size < packet_header_bytes || size > maximum_material_bytes ||
         get32(wire) != 0x31544d48 || get32(wire + 24) > 1 || get32(wire + 28)) return false;
     const uint32_t wave_bytes = get32(wire + 16), rows = get32(wire + 20);
@@ -114,7 +119,7 @@ inline bool decode(const uint8_t *wire, std::size_t size, Packet &output) {
     packet.frame = get32(wire + 4);
     packet.scene = uint64_t(get32(wire + 8)) | (uint64_t(get32(wire + 12)) << 32);
     packet.snapshot = get32(wire + 24) != 0;
-    if (!packet.scene || packet.frame < 1800 || packet.frame > 16001 ||
+    if (!packet.scene || !frame_valid(packet.frame,policy) ||
         !WaveImage::decode(wire + packet_header_bytes, wave_bytes, packet.wave)) return false;
     packet.rows.reserve(rows);
     for (std::size_t i = 0; i < rows; ++i) {

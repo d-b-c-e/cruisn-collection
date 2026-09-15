@@ -9,16 +9,16 @@ namespace cruisn { namespace zeus_host {
 // pages, and cannot accept a newer live image as an equivalent baseline.
 // The caller separately enforces scene/frame/page ordering and one completion
 // per proposal; this helper cannot identify a device command fence.
-inline bool retained_shape(const Packet &packet, const WaveImage &image) {
+inline bool retained_shape(const Packet &packet, const WaveImage &image,FramePolicy policy=FramePolicy::capture) {
     const auto &delta = packet.wave;
-    return packet.scene && packet.frame >= 1800 && packet.frame <= 16001 &&
+    return packet.scene && frame_valid(packet.frame,policy) &&
         image.generation() && image.generation() != UINT64_MAX &&
         delta.base == image.generation() && delta.generation == delta.base + 1 &&
         delta.base_hash == image.image_hash() && delta.result_hash == delta.base_hash &&
         !delta.full && delta.pages.empty();
 }
-inline bool retain(Packet &packet, const WaveImage &image) {
-    if (!packet.scene || packet.frame < 1800 || packet.frame > 16001 ||
+inline bool retain(Packet &packet, const WaveImage &image,FramePolicy policy=FramePolicy::capture) {
+    if (!packet.scene || !frame_valid(packet.frame,policy) ||
         !image.generation() || image.bytes().size() != 16777216) return false;
     WaveImage::Packet delta;
     if (!image.stage_selected_pages(image.bytes().data(), image.bytes().size(), {}, delta)) return false;
@@ -32,7 +32,7 @@ inline bool retain(Packet &packet, const WaveImage &image) {
     packet.wave = std::move(delta);
     return true;
 }
-inline bool accept_retained(const Packet &packet, WaveImage &image) {
-    return retained_shape(packet, image) && accept(packet, image);
+inline bool accept_retained(const Packet &packet, WaveImage &image,FramePolicy policy=FramePolicy::capture) {
+    return retained_shape(packet, image,policy) && accept(packet, image);
 }
 }}

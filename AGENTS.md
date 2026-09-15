@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 guest scene startup — verified; continuous end policy next
+
+Read docs/reviews/2026-09-15-exotica-bootstrap-scenes.md. Native067f0b0e095 frozen
+SHA506fd16f7049b8e4891eff92533f7d91d7a596384892b28f09679ffd1ad1c00d;
+243patches tree80e1891ec40f69d3058629bf6b5ab54b4432bacb. --exotica-bootstrap scenes
+captures first verifiedpool andactual67f6scene: both1385,scene1. Explicitguest_ready
+material FramePolicy permitsnonzeroearlyframes; capturebounds1800..16001unchanged.
+Firsteb830scene runFAILat1385codecminimum retained; corrected067full5300PASS.
+411extraearlyscenes0extraquads; later3429non-timingfieldsexact; full51534lifetime
+journalexactffec.175savedfilesexact,18packetsdifferonlyPIMbase/gen+1233;2longer
+ownershipjournalsindependentlyfolded.4completed4KCRT5220/5224/5228/5232exact.
+4Pythonbootstrap+6nativechecksPASS. R/bootstrap-scenes-retry-4k andbootstrap-scenes-
+qualifiedPASS. export-bootstrap-scenes.py/export-bootstrap-materials.pyALREADYRUN.
+NEXT coordinatedcontinuousCPU/GPUendpolicy. Currentfiniteendwindows/codecupper
+16001stillapply; no continuousreleaseclaim. NativeGPUstop alreadyjoinsbutfixed
+mirrorlast/CPUlast drive diagnosticcompletion; ordinaryexit maycutmidscene, donot
+silentlycallthatcomplete. MAMEmachine_reset staysfatalafterobservedactivity;
+guestclear/rebuild separatelyverified. No game/build/testnow. Primary4KDISPLAY2.
+Personal87d/publicv0.5.0unchanged. No deploy/release/hostedCI/physicalFFB/menu removal.
+Continueusefulwork directly; no milestonewaiting or repeatedbroadtests.
+
 ## September15 guest lifetime startup — verified; scene activation next
 
 Read docs/reviews/2026-09-15-exotica-bootstrap-lifetimes.md and startup-readiness.

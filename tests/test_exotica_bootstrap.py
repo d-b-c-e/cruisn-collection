@@ -28,6 +28,25 @@ class BootstrapTests(unittest.TestCase):
         for bad in (None,dict(proof,passed=False),dict(proof,changes_startup=False),dict(proof,frame=1800)):
             with self.assertRaises(ValueError):b.lifetime_trial(trial,bad,life)
 
+    def test_scene_configuration_and_atomic_resolution(self):
+        from exotica_journals import REQUIRED
+        args=SimpleNamespace(candidate='test.exe',exotica_bootstrap='scenes')
+        settings=dict(REQUIRED,MIDZ_DEPTH_FIRST='2',MIDZ_HOST_FIRST='1800',MIDZ_MODEL_ENDPOINT_FIRST='1800',MIDZ_MODEL_ADMIT_FIRST='1800')
+        for key in (*REQUIRED,'MIDZ_DEPTH_FIRST'):
+            with self.subTest(key=key),self.assertRaises(ValueError):b.configure(args,'crusnexo',dict(settings,**{key:'bad'}),5300)
+        trial=b.configure(args,'crusnexo',settings,5300)
+        self.assertEqual(settings[b.KEY],'3')
+        scene=dict(first=1800,compose=True,early_visibility=dict(first=1800,last=5288))
+        waiting=dict(first=1800,mode='observe');handover=dict(mode='draw',waiting=waiting,early_visibility=dict(scene['early_visibility']))
+        endpoint=dict(mode='draw',first=1800,admit_from=1800)
+        proof=dict(passed=True,frame=1385,scene_frame=1400)
+        with self.assertRaises(ValueError):b.resolve_scenes(trial,dict(proof,scene_frame=1801),scene,waiting,handover,endpoint)
+        self.assertEqual(scene['first'],1800)
+        b.resolve_scenes(trial,proof,scene,waiting,handover,endpoint)
+        self.assertEqual((scene['first'],waiting['first'],endpoint['first'],endpoint['admit_from']),(1400,)*4)
+        self.assertEqual(handover['early_visibility']['first'],1400)
+        self.assertEqual(handover['waiting']['first'],1400)
+
     def test_proof_and_missing_or_wrong_transaction(self):
         base=0x20000;tail=base+1200*31
         words=[0x31534258,1,600,600,base,len(b.CODE),1201,0xbbc9,0xbbd5,tail,tail,0,0xffffffff,base,1200,0]
@@ -51,5 +70,16 @@ class BootstrapTests(unittest.TestCase):
                 with self.assertRaises(ValueError):b.verify(trial,root)
             write(words[:-1],lines)
             with self.assertRaises(ValueError):b.verify(trial,root)
+            st=dict(trial,mode='scenes',latest_scene_start=1799)
+            write(words,['MIDZ_BOOTSTRAP=3',*lines[1:], 'MIDZ_BOOTSTRAP_SCENE frame=605 scene=1'])
+            sp=[0x31534358,1,605,600,0x67f6,0xff2,0xffffffff,0xffffffff,0x67f5,0x15200ff2,0x681f,0x082fbbb5,0x6835,0x082fbbb9,1,0]
+            path=root/'exotica-bootstrap-scene.bin'
+            path.write_bytes(struct.pack('<16I',*sp))
+            self.assertEqual(b.verify(st,root)['scene_frame'],605)
+            for i in range(16):
+                bad=list(sp);bad[i]^=1;path.write_bytes(struct.pack('<16I',*bad))
+                with self.subTest(scene_word=i),self.assertRaises(ValueError):b.verify(st,root)
+            path.unlink()
+            with self.assertRaises(ValueError):b.verify(st,root)
 
 if __name__=='__main__':unittest.main()

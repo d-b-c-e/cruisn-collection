@@ -45763,3 +45763,457 @@ index 3957942d8aa..70b8322febf 100644
 -- 
 2.55.0.windows.3
 
+From eb830f7db574ff44d2f79eafba42cfd56add8517 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 14:39:08 -0500
+Subject: [PATCH] Activate Exotica scenery at verified guest scene boundary
+
+---
+ src/mame/midway/cruisn/exotica_bootstrap.h |  6 +++
+ src/mame/midway/midzeus.cpp                | 59 +++++++++++++++++-----
+ 2 files changed, 53 insertions(+), 12 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/exotica_bootstrap.h b/src/mame/midway/cruisn/exotica_bootstrap.h
+index 5681ac09be8..b6451dd7493 100644
+--- a/src/mame/midway/cruisn/exotica_bootstrap.h
++++ b/src/mame/midway/cruisn/exotica_bootstrap.h
+@@ -37,4 +37,10 @@ bool complete(Read read,uint32_t base,uint32_t address,uint32_t value,uint32_t m
+     for(uint32_t i=0;i<1200;++i)if(read(base+i*31)!=base+(i+1)*31)return false;
+     return true;
+ }
++
++template<class Read>
++bool scene_boundary(Read read,uint32_t frame,uint32_t ready,uint32_t address,uint32_t value,uint32_t mask,uint32_t pc) {
++    return frame>=ready && address==0xff2 && value==UINT32_MAX && mask==UINT32_MAX && pc==0x67f6 &&
++        read(0x67f5)==0x15200ff2 && read(0x681f)==0x082fbbb5 && read(0x6835)==0x082fbbb9;
++}
+ }}
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 70b8322febf..ee63ab96d04 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -241,6 +241,8 @@ private:
+ 
+ 	void bootstrap_start();
+ 	void bootstrap_exit();
++	void bootstrap_scene(uint32_t address,uint32_t value,uint32_t mask);
++	bool m_bootstrap_scenes=false,m_bootstrap_scene_started=false;
+ 	bool m_bootstrap_ready=false,m_bootstrap_pending=false,m_bootstrap_lifetimes=false;
+ 	uint32_t m_bootstrap_base=0,m_bootstrap_frame=0,m_bootstrap_ready_frame=0;
+ 	double m_bootstrap_time=0;
+@@ -488,13 +490,22 @@ void crusnexo_state::bootstrap_start()
+ {
+ 	const char *mode=std::getenv("MIDZ_BOOTSTRAP");if(!mode)return;
+ 	const char *ffb=std::getenv("MIDV_FFB");
+-	if((strcmp(mode,"1") && strcmp(mode,"2")) || !ffb || strcmp(ffb,"0") || m_ram_base.bytes()!=0x100000)
+-		fatalerror("Exotica bootstrap requires mode1/2 and FFB0\n");
+-	m_bootstrap_lifetimes=!strcmp(mode,"2");
++	if((strcmp(mode,"1") && strcmp(mode,"2") && strcmp(mode,"3")) || !ffb || strcmp(ffb,"0") || m_ram_base.bytes()!=0x100000)
++		fatalerror("Exotica bootstrap requires mode1/2/3 and FFB0\n");
++	m_bootstrap_scenes=!strcmp(mode,"3");
++	m_bootstrap_lifetimes=m_bootstrap_scenes || !strcmp(mode,"2");
+ 	const char *life=std::getenv("MIDZ_LIFETIME");
+ 	const char *journals=std::getenv("MIDZ_HOST_JOURNALS");
+ 	if(m_bootstrap_lifetimes && (!life || strcmp(life,"1") || (journals && strcmp(journals,"capture"))))
+ 		fatalerror("Exotica bootstrap lifetimes require captured lifetime observation\n");
++	if(m_bootstrap_scenes) {
++		const std::pair<const char *,const char *> required[]={
++			{"MIDZ_GL","1"},{"MIDZ_HOST_SCENE","1"},{"MIDZ_HOST_MATERIALS","1"},{"MIDZ_HOST_WAITING","1"},
++			{"MIDZ_HOST_FENCE","1"},{"MIDZ_HOST_HANDOVER","2"},{"MIDZ_HOST_ACTIVE","2"},{"MIDZ_HOST_COMPOSE","1"},
++			{"MIDZ_HOST_FUTURE","2"},{"MIDZ_HOST_FUTURE_PRESENT","1"},{"MIDZ_DEPTH_MIRROR","2"},
++			{"MIDZ_MODEL_ENDPOINT","2"},{"MIDZ_ENDPOINT_EARLY","1"},{"MIDZ_ENDPOINT_MARKED","1"},{"MIDZ_DEPTH_FIRST","2"}};
++		for(const auto &kv:required) {const char *v=std::getenv(kv.first);if(!v || strcmp(v,kv.second))fatalerror("Exotica bootstrap scene setting %s\n",kv.first);}
++	}
+ 	m_bootstrap_count_tap=m_maincpu->space(AS_PROGRAM).install_write_tap(0x10a9,0x10a9,"exotica_bootstrap_count",
+ 		[this](offs_t,uint32_t &data,uint32_t mask) {
+ 			if(machine().side_effects_disabled() || m_bootstrap_ready || m_maincpu->state_int(TMS320C3X_PC)!=0xbbc9)return;
+@@ -536,13 +547,36 @@ void crusnexo_state::bootstrap_start()
+ 				});
+ 		});
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::bootstrap_exit,this));
+-	fprintf(stderr,"MIDZ_BOOTSTRAP=%u\n",m_bootstrap_lifetimes?2:1);
++	fprintf(stderr,"MIDZ_BOOTSTRAP=%u\n",m_bootstrap_scenes?3:(m_bootstrap_lifetimes?2:1));
+ }
+ 
+ void crusnexo_state::bootstrap_exit()
+ {
+ 	m_bootstrap_count_tap.remove();m_bootstrap_tail_tap.remove();
+-	fprintf(stderr,"MIDZ_BOOTSTRAP_RESULT complete=%u frame=%u\n",unsigned(m_bootstrap_ready && !m_bootstrap_pending),m_bootstrap_ready_frame);
++	fprintf(stderr,"MIDZ_BOOTSTRAP_RESULT complete=%u frame=%u\n",unsigned(m_bootstrap_ready && !m_bootstrap_pending && (!m_bootstrap_scenes || m_bootstrap_scene_started)),m_bootstrap_ready_frame);
++}
++
++void crusnexo_state::bootstrap_scene(uint32_t address,uint32_t value,uint32_t mask)
++{
++	if(!m_bootstrap_scenes || m_bootstrap_scene_started)return;
++	const uint32_t frame=uint32_t(m_screen->frame_number());
++	const uint64_t scene=m_scene_serial+1;
++	if(!m_bootstrap_ready || !m_lifetime_started || m_lifetime_pending.kind || m_lifetime_owner_slot ||
++		m_scene_open || m_scene_loading || !m_scene_pending.empty() || m_scene_fence.pending() || !m_endpoint_pending.empty() ||
++		!scene || frame>m_scene_first || frame>m_endpoint_first || frame>m_endpoint_admit_from ||
++		!cruisn::exotica_bootstrap::scene_boundary([this](uint32_t at){return uint32_t(m_ram_base[at]);},frame,m_bootstrap_ready_frame,
++			address,value,mask,uint32_t(m_maincpu->state_int(TMS320C3X_PC))))
++		fatalerror("Exotica bootstrap scene boundary rejected\n");
++	const uint32_t proof[]={0x31534358,1,frame,m_bootstrap_ready_frame,0x67f6,address,value,mask,
++		0x67f5,m_ram_base[0x67f5],0x681f,m_ram_base[0x681f],0x6835,m_ram_base[0x6835],uint32_t(scene),uint32_t(scene>>32)};
++	FILE *file=fopen("exotica-bootstrap-scene.bin","wb");if(!file)fatalerror("Exotica bootstrap scene proof create\n");
++	const bool written=fwrite(proof,1,sizeof(proof),file)==sizeof(proof);
++	if(fclose(file) || !written)fatalerror("Exotica bootstrap scene proof write\n");
++	m_scene_first=frame;m_endpoint_first=frame;m_endpoint_admit_from=frame;m_bootstrap_scene_started=true;
++	fprintf(stderr,"MIDZ_BOOTSTRAP_SCENE frame=%u scene=%llu\n",frame,(unsigned long long)scene);
++	fprintf(stderr,"MIDZ_HOST_SCENE=1 first=%u last=%u multiplier=%u snapshots=%u\n",m_scene_first,m_scene_last,m_scene_multiplier,unsigned(m_scene_snapshots.size()));
++	fprintf(stderr,"MIDZ_MODEL_ADMIT_FIRST=%u\n",m_endpoint_admit_from);
++	fprintf(stderr,"MIDZ_MODEL_ENDPOINT=%u first=%u last=%u snapshot=%u\n",m_endpoint_draw?2:1,m_endpoint_first,m_endpoint_last,m_endpoint_snapshot);
+ }
+ 
+ bool crusnexo_state::lifetime_scope()
+@@ -790,7 +824,7 @@ void crusnexo_state::endpoint_start()
+ 		if(!m_endpoint_admit_packets || !m_endpoint_admit_log)fatalerror("Endpoint admission files\n");
+ 		m_endpoint_admit_packets.buffer(nullptr,_IOFBF,65536);m_endpoint_admit_log.buffer(nullptr,_IOFBF,65536);
+ 		m_endpoint_admit_log.print("id,admitted,first_sequence,first_frame,last_sequence,last_frame,packets,records\n");
+-		fprintf(stderr,"MIDZ_MODEL_ADMIT_FIRST=%u\n",m_endpoint_admit_from);
++		if(!m_bootstrap_scenes)fprintf(stderr,"MIDZ_MODEL_ADMIT_FIRST=%u\n",m_endpoint_admit_from);
+ 	}
+ 	if(m_endpoint_first>m_endpoint_last || (!m_endpoint_marked && m_endpoint_last-m_endpoint_first>120) ||
+ 		m_endpoint_snapshot<m_endpoint_first || m_endpoint_snapshot>m_endpoint_last ||
+@@ -818,7 +852,7 @@ void crusnexo_state::endpoint_start()
+ 		endpoint_model(base,count,scale);scene_observer_model(base,count,scale);
+ 	});
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::endpoint_exit,this));
+-	fprintf(stderr,"MIDZ_MODEL_ENDPOINT=%u first=%u last=%u snapshot=%u\n",m_endpoint_draw?2:1,m_endpoint_first,m_endpoint_last,m_endpoint_snapshot);
++	if(!m_bootstrap_scenes)fprintf(stderr,"MIDZ_MODEL_ENDPOINT=%u first=%u last=%u snapshot=%u\n",m_endpoint_draw?2:1,m_endpoint_first,m_endpoint_last,m_endpoint_snapshot);
+ }
+ 
+ void crusnexo_state::endpoint_commit(uint32_t end,uint32_t flags,const LifetimeOwner &owner)
+@@ -1181,7 +1215,8 @@ void crusnexo_state::scene_observer_start()
+ 	// boundary, then join only the first supported original scenery submission.
+ 	m_scene_marker_tap=space.install_write_tap(0xff2,0xff2,"exotica_host_scene_begin",
+ 		[this](offs_t offset,uint32_t &data,uint32_t mask) {
+-			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x67f6)return;
++			if(machine().side_effects_disabled() || (m_bootstrap_scenes && !m_bootstrap_ready) || m_maincpu->state_int(TMS320C3X_PC)!=0x67f6)return;
++			bootstrap_scene(uint32_t(offset),data,mask);
+ 			if(m_scene_open || data!=UINT32_MAX)fatalerror("Exotica host scene begin order\n");
+ 			m_scene_cpu_frame=uint32_t(m_screen->frame_number());m_scene_cpu_time=machine().time().as_double();
+ 			m_scene_open=true;m_scene_armed=false;m_scene_fence_selected=false;++m_scene_serial;
+@@ -1193,7 +1228,7 @@ void crusnexo_state::scene_observer_start()
+ 		});
+ 	m_scene_lists_tap=space.install_read_tap(0xbbb5,0xbbb9,"exotica_host_scene_lists",
+ 		[this](offs_t offset,uint32_t &data,uint32_t mask) {
+-			if(machine().side_effects_disabled())return;
++			if(machine().side_effects_disabled() || (m_bootstrap_scenes && !m_bootstrap_scene_started))return;
+ 			const auto pc=m_maincpu->state_int(TMS320C3X_PC);
+ 			if(offset==0xbbb5 && pc==0x6820) {
+ 				if(!m_scene_open || m_scene_armed || m_ram_base[0x67f5]!=0x15200ff2 ||
+@@ -1217,21 +1252,21 @@ void crusnexo_state::scene_observer_start()
+ 		});
+ 	m_scene_begin_tap=space.install_read_tap(0x597,0x597,"exotica_host_loader_begin",
+ 		[this](offs_t offset,uint32_t &data,uint32_t mask) {
+-			if(!machine().side_effects_disabled() && m_maincpu->state_int(TMS320C3X_PC)==0xb7e9) {
++			if(!machine().side_effects_disabled() && (!m_bootstrap_scenes || m_bootstrap_ready) && m_maincpu->state_int(TMS320C3X_PC)==0xb7e9) {
+ 				if(m_scene_loading)fatalerror("Exotica host nested loader\n");
+ 				m_scene_loading=data;
+ 			}
+ 		});
+ 	m_scene_end_tap=space.install_write_tap(0x59b,0x59b,"exotica_host_loader_end",
+ 		[this](offs_t offset,uint32_t &data,uint32_t mask) {
+-			if(!machine().side_effects_disabled() && m_maincpu->state_int(TMS320C3X_PC)==0xb841) {
++			if(!machine().side_effects_disabled() && (!m_bootstrap_scenes || m_bootstrap_ready) && m_maincpu->state_int(TMS320C3X_PC)==0xb841) {
+ 				if(!m_scene_loading || m_ram_base[0x597]!=m_scene_loading+4)fatalerror("Exotica host loader frontier\n");
+ 				m_scene_loading=0;
+ 			}
+ 		});
+ 	m_zeus->set_midz_model_observer([this](uint32_t base,uint32_t count,uint32_t yscale){scene_observer_model(base,count,yscale);});
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::scene_observer_exit,this));
+-	fprintf(stderr,"MIDZ_HOST_SCENE=1 first=%u last=%u multiplier=%u snapshots=%u\n",m_scene_first,m_scene_last,m_scene_multiplier,unsigned(m_scene_snapshots.size()));
++	if(!m_bootstrap_scenes)fprintf(stderr,"MIDZ_HOST_SCENE=1 first=%u last=%u multiplier=%u snapshots=%u\n",m_scene_first,m_scene_last,m_scene_multiplier,unsigned(m_scene_snapshots.size()));
+ 	if(m_scene_bounds)fprintf(stderr,"MIDZ_HOST_BOUNDS=1\n");
+ }
+ 
+-- 
+2.55.0.windows.3
+
+From 067f0b0e0956a50af31ebd09716dab08810fc0be Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 14:51:14 -0500
+Subject: [PATCH] Allow verified bootstrap frames through private material
+ codecs
+
+---
+ src/devices/video/zeus2.cpp                      | 14 ++++++++------
+ src/mame/midway/cruisn/zeus_host_materials.h     | 13 +++++++++----
+ src/mame/midway/cruisn/zeus_margin_packet.h      |  8 ++++----
+ src/mame/midway/cruisn/zeus_retained_materials.h | 12 ++++++------
+ src/mame/midway/cruisn/zeus_wide_packet.h        |  8 ++++----
+ src/mame/midway/midzeus.cpp                      | 15 +++++++++------
+ 6 files changed, 40 insertions(+), 30 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 9fe0caa7da3..efd5aa54a8d 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -1018,6 +1018,8 @@ void thread_main()
+ 	uint32_t private_frame=0;
+ 	cruisn::DiagnosticJournal private_log;
+ 	bool private_failed=false;
++	const auto material_frame_policy=envi("MIDZ_BOOTSTRAP",nullptr,0)==3?
++		cruisn::zeus_host::FramePolicy::guest_ready:cruisn::zeus_host::FramePolicy::capture;
+ 	auto private_materials=[&](const std::vector<uint8_t> &wire,bool late=false,bool retained=false)->bool {
+ 		using namespace cruisn::zeus_host;
+ 		const auto start=std::chrono::steady_clock::now();
+@@ -1025,7 +1027,7 @@ void thread_main()
+ 		const char *ffb=std::getenv("MIDV_FFB");
+ 		if(!enabled || strcmp(enabled,"1") || !ffb || strcmp(ffb,"0"))return false;
+ 		Packet packet;
+-		if(!decode(wire.data(),wire.size(),packet) || packet.frame<private_frame)return false;
++		if(!decode(wire.data(),wire.size(),packet,material_frame_policy) || packet.frame<private_frame)return false;
+ 		if(late) {
+ 			if(packet.scene!=private_scene || packet.frame!=private_frame || packet.scene<=private_late_scene)return false;
+ 			if(compose && (retained ? private_waiting_scene>=packet.scene : private_waiting_scene!=packet.scene))return false;
+@@ -1033,7 +1035,7 @@ void thread_main()
+ 			((envi("MIDZ_HOST_ACTIVE",nullptr,0) || envi("MIDZ_HOST_HANDOVER",nullptr,0)==2) && private_late_scene!=private_scene))return false;
+ 		if(compose && !late && private_waiting_scene!=private_scene)return false;
+ 		if(!private_image)private_image=std::make_unique<WaveImage>();
+-		if(retained ? !accept_retained(packet,*private_image) : !accept(packet,*private_image))return false;
++		if(retained ? !accept_retained(packet,*private_image,material_frame_policy) : !accept(packet,*private_image))return false;
+ 		const auto decoded=std::chrono::steady_clock::now();
+ 		if(!private_log) {
+ 			private_log.open("exotica-host-materials-gpu.csv","w",journal_policy);
+@@ -1302,7 +1304,7 @@ void thread_main()
+ 		const auto started=std::chrono::steady_clock::now();
+ 		const int mode=envi("MIDZ_HOST_ACTIVE",nullptr,0);
+ 		cruisn::zeus_margin::Packet packet;
+-		if((mode!=1 && mode!=2) || !cruisn::zeus_margin::decode(wire.data(),wire.size(),packet) ||
++		if((mode!=1 && mode!=2) || !cruisn::zeus_margin::decode(wire.data(),wire.size(),packet,material_frame_policy) ||
+ 			packet.draw!=(mode==2) || packet.margin!=unsigned(MARGIN))return false;
+ 		if(compose && (!mirror_fbo || !depth_mirror.wide || mode!=2))return false;
+ 		cruisn::CapturePacingScope pacing(capture_paced && packet.materials.snapshot ? &s_capture_pacing : nullptr);
+@@ -1310,7 +1312,7 @@ void thread_main()
+ 		const uint target_fbo=compose?mirror_fbo:fbo,draw_prog=compose?mirror_prog:prog;
+ 		const unsigned depth_type=compose?0x1406:0x1405;
+ 		std::vector<uint8_t> material;
+-		if(!cruisn::zeus_host::encode(packet.materials,material) || !private_materials(material,true))return false;
++		if(!cruisn::zeus_host::encode(packet.materials,material,material_frame_policy) || !private_materials(material,true))return false;
+ 		// Finish all original queued polygons before copying their depth. The
+ 		// producer sent this record only after the exact original FIFO target.
+ 		flush();
+@@ -1436,7 +1438,7 @@ void thread_main()
+ 		auto &snapshots=waiting?waiting_snapshots:future_snapshots;
+ 		cruisn::zeus_wide::Packet packet;
+ 		if(!mirror_fbo || !depth_mirror.wide || (mode!=1 && mode!=2) ||
+-			!cruisn::zeus_wide::decode(wire.data(),wire.size(),packet) || packet.draw!=(mode==2) || packet.margin!=unsigned(MARGIN))return false;
++			!cruisn::zeus_wide::decode(wire.data(),wire.size(),packet,material_frame_policy) || packet.draw!=(mode==2) || packet.margin!=unsigned(MARGIN))return false;
+ 		if(waiting && (!future_packets || packet.page!=future_page || packet.multiplier!=future_multiplier))return false;
+ 		// Paced diagnostics include texture readback/copy/validation, not just
+ 		// queue admission. The producer retains its independent10s hard limit.
+@@ -1444,7 +1446,7 @@ void thread_main()
+ 		// The ring dispatcher has finished buffered sky copies. Commit them to
+ 		// both original/private targets before any future geometry is inserted.
+ 		flush();std::vector<uint8_t> material;
+-		if(!cruisn::zeus_host::encode(packet.materials,material) || !private_materials(material,waiting,waiting))return false;
++		if(!cruisn::zeus_host::encode(packet.materials,material,material_frame_policy) || !private_materials(material,waiting,waiting))return false;
+ 		auto read_texture=[&](uint texture,unsigned format,unsigned type) {
+ 			std::vector<uint8_t> bytes(size_t(fw)*fh*4);
+ 			gl.ActiveTexture(TEXTURE0+7);gl.BindTexture(0x0de1,texture);gl.PixelStorei(0x0d05,1);
+diff --git a/src/mame/midway/cruisn/zeus_host_materials.h b/src/mame/midway/cruisn/zeus_host_materials.h
+index 87f87cc1af6..48d518b2d48 100644
+--- a/src/mame/midway/cruisn/zeus_host_materials.h
++++ b/src/mame/midway/cruisn/zeus_host_materials.h
+@@ -82,8 +82,13 @@ inline uint32_t get32(const uint8_t *wire) {
+ inline bool palette_shape(const Palette &row) {
+     return row.control == 0x0084003f && uint64_t(row.base) * 8 + 512 <= 16777216;
+ }
+-inline bool encode(const Packet &packet, std::vector<uint8_t> &output) {
+-    if (!packet.scene || packet.frame < 1800 || packet.frame > 16001 || packet.rows.size() > max_palettes)
++enum class FramePolicy { capture, guest_ready };
++inline bool frame_valid(uint32_t frame,FramePolicy policy) {
++    return (policy==FramePolicy::capture || policy==FramePolicy::guest_ready) &&
++        frame>=(policy==FramePolicy::guest_ready?1u:1800u) && frame<=16001;
++}
++inline bool encode(const Packet &packet, std::vector<uint8_t> &output,FramePolicy policy=FramePolicy::capture) {
++    if (!packet.scene || !frame_valid(packet.frame,policy) || packet.rows.size() > max_palettes)
+         return false;
+     for (const auto &row : packet.rows) if (!palette_shape(row)) return false;
+     std::vector<uint8_t> wave;
+@@ -103,7 +108,7 @@ inline bool encode(const Packet &packet, std::vector<uint8_t> &output) {
+     output = std::move(wire);
+     return true;
+ }
+-inline bool decode(const uint8_t *wire, std::size_t size, Packet &output) {
++inline bool decode(const uint8_t *wire, std::size_t size, Packet &output,FramePolicy policy=FramePolicy::capture) {
+     if (!wire || size < packet_header_bytes || size > maximum_material_bytes ||
+         get32(wire) != 0x31544d48 || get32(wire + 24) > 1 || get32(wire + 28)) return false;
+     const uint32_t wave_bytes = get32(wire + 16), rows = get32(wire + 20);
+@@ -114,7 +119,7 @@ inline bool decode(const uint8_t *wire, std::size_t size, Packet &output) {
+     packet.frame = get32(wire + 4);
+     packet.scene = uint64_t(get32(wire + 8)) | (uint64_t(get32(wire + 12)) << 32);
+     packet.snapshot = get32(wire + 24) != 0;
+-    if (!packet.scene || packet.frame < 1800 || packet.frame > 16001 ||
++    if (!packet.scene || !frame_valid(packet.frame,policy) ||
+         !WaveImage::decode(wire + packet_header_bytes, wave_bytes, packet.wave)) return false;
+     packet.rows.reserve(rows);
+     for (std::size_t i = 0; i < rows; ++i) {
+diff --git a/src/mame/midway/cruisn/zeus_margin_packet.h b/src/mame/midway/cruisn/zeus_margin_packet.h
+index 860cd654f5e..8731359f29d 100644
+--- a/src/mame/midway/cruisn/zeus_margin_packet.h
++++ b/src/mame/midway/cruisn/zeus_margin_packet.h
+@@ -43,10 +43,10 @@ inline bool shape(const Packet &p) {
+         if(q.palette>=p.materials.rows.size() || !depth24(q.polygon,p.materials.frame,p.page))return false;
+     return true;
+ }
+-inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
++inline bool encode(const Packet &p,std::vector<uint8_t> &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
+     if(!shape(p))return false;
+     std::vector<uint8_t> material,wire;
+-    if(!zeus_host::encode(p.materials,material))return false;
++    if(!zeus_host::encode(p.materials,material,policy))return false;
+     wire.reserve(header_bytes+material.size()+p.quads.size()*quad_bytes);
+     using zeus_host::put32;
+     put32(wire,0x31444d58); //XMD1: no borrowed original material rows or pointers
+@@ -63,7 +63,7 @@ inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
+     }
+     out=std::move(wire);return true;
+ }
+-inline bool decode(const uint8_t *wire,size_t size,Packet &out) {
++inline bool decode(const uint8_t *wire,size_t size,Packet &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
+     using zeus_host::get32;
+     if(!wire || size<header_bytes || size>maximum_bytes || get32(wire)!=0x31444d58 ||
+         get32(wire+20)>1 || get32(wire+24) || get32(wire+28))return false;
+@@ -71,7 +71,7 @@ inline bool decode(const uint8_t *wire,size_t size,Packet &out) {
+     if(material>zeus_host::maximum_material_bytes || count>max_quads ||
+         size!=header_bytes+size_t(material)+size_t(count)*quad_bytes)return false;
+     Packet p;p.margin=get32(wire+12);p.page=get32(wire+16);p.draw=get32(wire+20)!=0;
+-    if(!zeus_host::decode(wire+header_bytes,material,p.materials))return false;
++    if(!zeus_host::decode(wire+header_bytes,material,p.materials,policy))return false;
+     p.quads.reserve(count);const auto *data=wire+header_bytes+material;
+     for(unsigned i=0;i<count;++i) {
+         Quad q;q.palette=get32(data);data+=4;
+diff --git a/src/mame/midway/cruisn/zeus_retained_materials.h b/src/mame/midway/cruisn/zeus_retained_materials.h
+index 5b626d89e75..bc1d8a95893 100644
+--- a/src/mame/midway/cruisn/zeus_retained_materials.h
++++ b/src/mame/midway/cruisn/zeus_retained_materials.h
+@@ -9,16 +9,16 @@ namespace cruisn { namespace zeus_host {
+ // pages, and cannot accept a newer live image as an equivalent baseline.
+ // The caller separately enforces scene/frame/page ordering and one completion
+ // per proposal; this helper cannot identify a device command fence.
+-inline bool retained_shape(const Packet &packet, const WaveImage &image) {
++inline bool retained_shape(const Packet &packet, const WaveImage &image,FramePolicy policy=FramePolicy::capture) {
+     const auto &delta = packet.wave;
+-    return packet.scene && packet.frame >= 1800 && packet.frame <= 16001 &&
++    return packet.scene && frame_valid(packet.frame,policy) &&
+         image.generation() && image.generation() != UINT64_MAX &&
+         delta.base == image.generation() && delta.generation == delta.base + 1 &&
+         delta.base_hash == image.image_hash() && delta.result_hash == delta.base_hash &&
+         !delta.full && delta.pages.empty();
+ }
+-inline bool retain(Packet &packet, const WaveImage &image) {
+-    if (!packet.scene || packet.frame < 1800 || packet.frame > 16001 ||
++inline bool retain(Packet &packet, const WaveImage &image,FramePolicy policy=FramePolicy::capture) {
++    if (!packet.scene || !frame_valid(packet.frame,policy) ||
+         !image.generation() || image.bytes().size() != 16777216) return false;
+     WaveImage::Packet delta;
+     if (!image.stage_selected_pages(image.bytes().data(), image.bytes().size(), {}, delta)) return false;
+@@ -32,7 +32,7 @@ inline bool retain(Packet &packet, const WaveImage &image) {
+     packet.wave = std::move(delta);
+     return true;
+ }
+-inline bool accept_retained(const Packet &packet, WaveImage &image) {
+-    return retained_shape(packet, image) && accept(packet, image);
++inline bool accept_retained(const Packet &packet, WaveImage &image,FramePolicy policy=FramePolicy::capture) {
++    return retained_shape(packet, image,policy) && accept(packet, image);
+ }
+ }}
+diff --git a/src/mame/midway/cruisn/zeus_wide_packet.h b/src/mame/midway/cruisn/zeus_wide_packet.h
+index ff018fcb5b7..c32eaa263c4 100644
+--- a/src/mame/midway/cruisn/zeus_wide_packet.h
++++ b/src/mame/midway/cruisn/zeus_wide_packet.h
+@@ -48,10 +48,10 @@ inline bool shape(const Packet &p) {
+         if(q.palette>=p.materials.rows.size() || !depth_range(q.polygon,p.materials.frame,p.page))return false;
+     return true;
+ }
+-inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
++inline bool encode(const Packet &p,std::vector<uint8_t> &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
+     if(!shape(p))return false;
+     std::vector<uint8_t> material,wire;
+-    if(!zeus_host::encode(p.materials,material))return false;
++    if(!zeus_host::encode(p.materials,material,policy))return false;
+     wire.resize(header_bytes+material.size()+p.quads.size()*quad_bytes);
+     auto *data=wire.data();
+     // Shape and material encoding bound the complete allocation before writes.
+@@ -72,13 +72,13 @@ inline bool encode(const Packet &p,std::vector<uint8_t> &out) {
+     }
+     out=std::move(wire);return true;
+ }
+-inline bool decode(const uint8_t *wire,size_t size,Packet &out) {
++inline bool decode(const uint8_t *wire,size_t size,Packet &out,zeus_host::FramePolicy policy=zeus_host::FramePolicy::capture) {
+     using zeus_host::get32;
+     if(!wire || size<header_bytes || size>maximum_bytes || get32(wire)!=0x31445758 || get32(wire+24)>1 || get32(wire+28))return false;
+     const uint32_t material=get32(wire+4),count=get32(wire+8);
+     if(material>zeus_host::maximum_material_bytes || count>max_quads || size!=header_bytes+size_t(material)+size_t(count)*quad_bytes)return false;
+     Packet p;p.margin=get32(wire+12);p.page=get32(wire+16);p.multiplier=get32(wire+20);p.draw=get32(wire+24)!=0;
+-    if(!zeus_host::decode(wire+header_bytes,material,p.materials))return false;
++    if(!zeus_host::decode(wire+header_bytes,material,p.materials,policy))return false;
+     p.quads.reserve(count);const auto *data=wire+header_bytes+material;
+     for(unsigned i=0;i<count;++i) {
+         Quad q;q.palette=get32(data);data+=4;
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index ee63ab96d04..c95ac74ec03 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -243,6 +243,9 @@ private:
+ 	void bootstrap_exit();
+ 	void bootstrap_scene(uint32_t address,uint32_t value,uint32_t mask);
+ 	bool m_bootstrap_scenes=false,m_bootstrap_scene_started=false;
++	cruisn::zeus_host::FramePolicy material_frame_policy() const {
++		return m_bootstrap_scenes && m_bootstrap_scene_started?cruisn::zeus_host::FramePolicy::guest_ready:cruisn::zeus_host::FramePolicy::capture;
++	}
+ 	bool m_bootstrap_ready=false,m_bootstrap_pending=false,m_bootstrap_lifetimes=false;
+ 	uint32_t m_bootstrap_base=0,m_bootstrap_frame=0,m_bootstrap_ready_frame=0;
+ 	double m_bootstrap_time=0;
+@@ -1508,7 +1511,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 		packet.rows=std::move(palettes.rows);
+ 		const auto material_staged=std::chrono::steady_clock::now();
+ 		auto &wire=material_wire;
+-		if(!cruisn::zeus_host::encode(packet,wire))fatalerror("Exotica private material packet rejected\n");
++		if(!cruisn::zeus_host::encode(packet,wire,material_frame_policy()))fatalerror("Exotica private material packet rejected\n");
+ 		const auto material_encoded=std::chrono::steady_clock::now();
+ 		if(m_scene_future_mode) {
+ 			cruisn::zeus_wide::Packet future;
+@@ -1524,7 +1527,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 				}
+ 			}
+ 			std::vector<uint8_t> encoded;
+-			if(!cruisn::zeus_wide::encode(future,encoded) || !m_zeus->midz_host_future(encoded.data(),encoded.size()))
++			if(!cruisn::zeus_wide::encode(future,encoded,material_frame_policy()) || !m_zeus->midz_host_future(encoded.data(),encoded.size()))
+ 				fatalerror("Exotica future owned queue rejected\n");
+ 			if(packet.snapshot) {
+ 				const auto name="exotica-future-"+std::to_string(p.frame)+".xwd";
+@@ -1701,15 +1704,15 @@ void crusnexo_state::scene_waiting_ready()
+ 		if(!m_scene_material_image || !m_handover_generation || m_scene_material_image->generation()!=m_handover_generation ||
+ 			packet.materials.scene!=m_handover_scene || packet.materials.frame!=m_handover_frame ||
+ 			packet.page!=m_zeus->m_renderRegs[4] || packet.quads.size()!=filtered.quads.size() ||
+-			!cruisn::zeus_host::retain(packet.materials,*m_scene_material_image))
++			!cruisn::zeus_host::retain(packet.materials,*m_scene_material_image,material_frame_policy()))
+ 			fatalerror("Exotica waiting retained image/frame/page ownership\n");
+ 		const auto staged=std::chrono::steady_clock::now();std::vector<uint8_t> encoded,material;
+-		if(!cruisn::zeus_wide::encode(packet,encoded) || !cruisn::zeus_host::encode(packet.materials,material))
++		if(!cruisn::zeus_wide::encode(packet,encoded,material_frame_policy()) || !cruisn::zeus_host::encode(packet.materials,material,material_frame_policy()))
+ 			fatalerror("Exotica waiting retained packet encoding\n");
+ 		const auto encoded_at=std::chrono::steady_clock::now();
+ 		if(!m_zeus->midz_host_waiting(encoded.data(),encoded.size()))fatalerror("Exotica waiting owned queue rejected\n");
+ 		const auto queued=std::chrono::steady_clock::now();
+-		if(!cruisn::zeus_host::accept_retained(packet.materials,*m_scene_material_image))fatalerror("Exotica waiting producer commit rejected\n");
++		if(!cruisn::zeus_host::accept_retained(packet.materials,*m_scene_material_image,material_frame_policy()))fatalerror("Exotica waiting producer commit rejected\n");
+ 		if(!owners.empty()) {
+ 			const uint64_t realm=owners[0][0];
+ 			for(const auto &owner:owners)if(owner[0]!=realm)fatalerror("Endpoint waiting admission realm\n");
+@@ -2043,7 +2046,7 @@ void crusnexo_state::scene_active_ready()
+ 		++m_scene_material_verified;
+ 	}
+ 	const auto staged_at=std::chrono::steady_clock::now();std::vector<uint8_t> wire,material_wire;
+-	if(!cruisn::zeus_margin::encode(packet,wire) || !cruisn::zeus_host::encode(material,material_wire))fatalerror("Exotica active owned packet rejected\n");
++	if(!cruisn::zeus_margin::encode(packet,wire,material_frame_policy()) || !cruisn::zeus_host::encode(material,material_wire,material_frame_policy()))fatalerror("Exotica active owned packet rejected\n");
+ 	const auto encoded=std::chrono::steady_clock::now();
+ 	if(!m_zeus->midz_host_margin(wire.data(),wire.size()))fatalerror("Exotica active owned queue rejected\n");
+ 	const auto queued=std::chrono::steady_clock::now();
+-- 
+2.55.0.windows.3
+

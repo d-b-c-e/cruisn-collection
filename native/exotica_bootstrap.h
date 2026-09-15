@@ -37,4 +37,10 @@ bool complete(Read read,uint32_t base,uint32_t address,uint32_t value,uint32_t m
     for(uint32_t i=0;i<1200;++i)if(read(base+i*31)!=base+(i+1)*31)return false;
     return true;
 }
+
+template<class Read>
+bool scene_boundary(Read read,uint32_t frame,uint32_t ready,uint32_t address,uint32_t value,uint32_t mask,uint32_t pc) {
+    return frame>=ready && address==0xff2 && value==UINT32_MAX && mask==UINT32_MAX && pc==0x67f6 &&
+        read(0x67f5)==0x15200ff2 && read(0x681f)==0x082fbbb5 && read(0x6835)==0x082fbbb9;
+}
 }}
