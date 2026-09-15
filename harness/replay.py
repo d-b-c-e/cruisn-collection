@@ -245,6 +245,9 @@ def main(argv=None):
         if args.snapshot_mode:
             manifest["snapshot_mode"] = args.snapshot_mode
             report["snapshot_mode_override"] = args.snapshot_mode
+        # Option gates must see the same disabled physical force that prepare_run
+        # enforces for playback, including recordings made with attended FFB.
+        manifest['settings']['MIDV_FFB'] = '0'
         trial = world_distance.configure(args, manifest['rom'], manifest['settings'])
         if trial:
             report['world_distance'] = trial
