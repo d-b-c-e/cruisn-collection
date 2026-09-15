@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — ACTIVE actual Off-Road rejection classification
+
+Read docs/reviews/2026-09-15-offroad-admission-screen.md. Do NOT promote OffRoad
+141888->191040 admission: five older material views + two actualElPaso views
+change ZERO pixels. Actual2640 adds216q,2880adds718q; all addedscreenboxes outside
+widescreen viewport. Full native/independent scenes exact, oldorderedsubsetexact.
+Oldfiveviews belong six-final-offroad case, NOT user's recordedElPaso.
+
+New lua/offroad_scene_resources.lua captures bounded sceneRAM/ROM/materials.
+First liveattempt targetedLua ticks:0snapshotsFAIL. Nativeclock correction saved
+2640/2880 at replay2641/2881, but stoppedbefore3360: overallrun remainsFAIL.
+Two complete snapshots separatelyqualified:1561camera6244ADC +four original4K
+imagesexact; nofullinput/nativeimageacceptanceclaim. Finalprobe adds two-tick
+headroom guard; successfulfullcapturewithguardstillUNVERIFIED. No thirdreplay.
+LOCAL W/offroad-drive-resources-partial-qualified andoffroad-drive-admission-materials.
+NEXT classify actual2880 sevenprojection +11material rejects fromsavedoperands,
+checkviewport relevance; do notbypassguards justtoincreasequadcount. No current
+game/build/test. Nativefe1/candidate217patch unchanged; personal87d/v0.5.0 unchanged.
+No deploy/release/physicalFFB/hostedCI/menuremoval. Continue directly; scopedchecks.
+
 ## September15 — ACTIVE Off-Road existing projection-range admission
 
 Read docs/reviews/2026-09-15-usa-far-coverage.md. Nativefe1a862c784 frozen,
