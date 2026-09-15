@@ -26,6 +26,9 @@ struct Object
     uint32_t id=0,model=0,section=0;
     int32_t depth=0;
     std::vector<Quad> quads;
+    // Populated only for the explicitly gated coverage trial. Original quads
+    // remain unchanged; camera depths travel separately to the private renderer.
+    std::vector<std::array<uint32_t,4>> depths;
 };
 struct Scene
 {
@@ -43,11 +46,12 @@ inline bool pointer(uint32_t p,uint32_t n)
 {return p>=0xc00000 && n<=4096 && uint64_t(p)+n<=0x1000000;}
 
 template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
-    const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24,bool full_roads=false)
+    const std::vector<Descriptor> *future=nullptr,bool roads=false,uint32_t revision=24,bool full_roads=false,bool far_coverage=false)
 {
     const auto *profile=layout(revision);
     if(!profile || (full_roads && !roads))return false;
     if(far!=80000 && far!=160000 && far!=240000)return false;
+    if(far_coverage && far!=240000)return false;
     // The caller guards the exact code, ROM revision and scene boundary.
     uint32_t cam=read(0x41),view=read(0x43),bill=read(0x48),origin=read(0x47)+2;
     uint32_t head=read(profile->pending),table=read(0x4d);
@@ -134,11 +138,22 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         bool projection_ok=true;
         auto screen=[&](Float x,Float y,Float z)
         {
-            if(z.fix()<1000 || z.fix()>=int32_t(far)){projection_ok=false;return;}
+            const uint32_t projection_far=far_coverage?480000:far;
+            if(z.fix()<1000 || z.fix()>=int32_t(projection_far)){projection_ok=false;return;}
             int32_t index=z.fix()>>4;
-            if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(far))){projection_ok=false;return;}
-            Float r=Float::load(index<5000?read(uint32_t(int64_t(table)+index)):
-                cruisn::world_distance::reciprocal(uint32_t(index),far));
+            if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(projection_far))){projection_ok=false;return;}
+            uint32_t reciprocal=0;
+            if(index<5000)reciprocal=read(uint32_t(int64_t(table)+index));
+            else if(index<=int32_t(cruisn::world_distance::maximum_index(far)))
+                reciprocal=cruisn::world_distance::reciprocal(uint32_t(index),far);
+            else {
+                // Private projection of a crossing model only. Do not expand
+                // the guest table or admit a wholly distant model.
+                const float value=float(std::floor(512.0/(16*index+1)*1000000+0.5)/1000000);
+                uint32_t ieee;std::memcpy(&ieee,&value,sizeof(ieee));
+                reciprocal=((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff);
+            }
+            Float r=Float::load(reciprocal);
             Float sx=(x*r+ox).reload(),sy=((y*r)*yscale+oy).reload();
             if(sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767)
             {projection_ok=false;return;}
@@ -168,6 +183,9 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             uint32_t flags=read(poly_start+2*i),packed=read(poly_start+2*i+1);
             uint32_t ix[4]={(packed&255),(packed>>8)&255,(packed>>16)&255,(packed>>24)&255};
             for(auto j:ix)if(j>=vertices)return false;
+            if(far_coverage && projected[ix[0]][2].fix()>=int32_t(far) &&
+                projected[ix[1]][2].fix()>=int32_t(far) && projected[ix[2]][2].fix()>=int32_t(far) &&
+                projected[ix[3]][2].fix()>=int32_t(far))continue;
             const auto &a=projected[ix[0]],&b=projected[ix[1]],&c=projected[ix[2]];
             Float cross=(b[1]-c[1])*(b[0]-a[0])-(b[0]-c[0])*(b[1]-a[1]);
             if(cross.e!=-128 && cross.m>=0)continue;
@@ -176,6 +194,8 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             uint32_t uv0=read(materials+3*i),uv1=read(materials+3*i+1),tex=read(materials+3*i+2);
             quad[10]=uint16_t(uv0);quad[11]=uint16_t(uv0>>16);quad[12]=uint16_t(uv1);quad[13]=uint16_t(uv1>>16);
             quad[14]=uint16_t(tex+obj[17]);object.quads.push_back(quad);
+            if(far_coverage)object.depths.push_back({{projected[ix[0]][2].store(),projected[ix[1]][2].store(),
+                projected[ix[2]][2].store(),projected[ix[3]][2].store()}});
         }
         if(road){++scene.roads;scene.road_quads+=uint32_t(object.quads.size());}
         ++scene.decoded;scene.objects.push_back(std::move(object));

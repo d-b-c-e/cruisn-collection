@@ -75,6 +75,8 @@ uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded
                            // inside the margins so extend fills from the
                            // 4:3 boundary (sky above, terrain below). 0=off.
 uniform int  uClipW;       // coarse canvas width (for the right margin)
+uniform int  uFarCoverage; // private V-Unit trial; zero preserves ordinary coverage
+layout(std430, binding=3) readonly buffer FarCoverage { vec4 farMask[]; };
 flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;
 flat in vec4 uv01; flat in vec4 uv23;
 flat in vec4 uvBounds;
@@ -110,6 +112,27 @@ void main() {
     float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down
     float cx = fx / float(uScale);
     float cy = fy / float(uScale);
+    if (uFarCoverage != 0) {
+        // Two bounding-box triangles carry each original quad. Mask indexing
+        // resets with every draw; original UV interpolation below is unchanged.
+        int base = 4 * (gl_PrimitiveID / 2);
+        int count = int(farMask[base].x);
+        if (count < 0 || count > 6) discard;
+        if (count > 0) {
+            bool inside = false;
+            int last = count - 1;
+            vec2 a = (last % 2 == 0) ? farMask[base+1+last/2].xy : farMask[base+1+last/2].zw;
+            for (int j=0; j<count; ++j) {
+                vec2 b = (j % 2 == 0) ? farMask[base+1+j/2].xy : farMask[base+1+j/2].zw;
+                if ((a.y > cy) != (b.y > cy)) {
+                    float boundary = a.x + (cy-a.y)*(b.x-a.x)/(b.y-a.y);
+                    if (cx < boundary) inside = !inside;
+                }
+                a = b;
+            }
+            if (!inside) discard;
+        }
+    }
     int px = int(floor(cx));
     int py = int(floor(cy));
     // exact mode evaluates at MAME's scanline centre; quality mode uses the

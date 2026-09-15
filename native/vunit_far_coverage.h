@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
-// Standalone coverage-only far-plane prototype. Not wired into a game renderer.
+// Coverage-only far-plane prototype for the explicitly gated private renderer.
 // Preserve the original quad and its UV interpolation; clip only pixel coverage.
 // Inputs are the renderer's inclusive screen corners and positive camera depths.
 // Reciprocal-depth interpolation approximates the quantized V-Unit projection;
@@ -7,12 +7,36 @@
 #pragma once
 #include <array>
 #include <cmath>
+#include <cstdint>
+#include <cstddef>
 
 namespace cruisn { namespace vunit_far {
 using Point=std::array<float,2>;
 // Shader layout: count (-1 reject, 0 unchanged, 3..6 clipped), three padding
 // floats, then six screen points. No palette, texture, owner or target identity.
 using Mask=std::array<float,16>;
+struct Input { uint32_t far=0;std::array<uint32_t,4> words{}; };
+static_assert(sizeof(Input)==20,"far coverage input layout");
+struct Packet {
+    uint32_t frame=0;uint16_t pc=0,pad=0;uint16_t dma[16]{};Input coverage;
+};
+static_assert(offsetof(Packet,coverage)==40 && sizeof(Packet)==60,"far quad wire layout");
+// Wire inputs currently permit only the independently screened World 3x range.
+// Positive normal C31 depths convert exactly to double, without emulated flags.
+inline bool decode(const Input &input,std::array<double,4> &depths)
+{
+    depths={};if(input.far!=240000)return false;
+    std::array<double,4> values{};unsigned inside=0;
+    for(unsigned i=0;i<4;++i) {
+        const uint32_t w=input.words[i];const int e=int8_t(w>>24);
+        if((w&0x800000) || e<9 || e>18)return false;
+        values[i]=std::ldexp(double((w&0x7fffff)|0x800000),e-23);
+        if(values[i]<1000 || values[i]>=480000)return false;
+        inside+=values[i]<input.far;
+    }
+    if(inside==0 || inside==4)return false;
+    depths=values;return true;
+}
 inline bool coverage(const std::array<Point,4> &xy,const std::array<double,4> &z,
     double far,Mask &output)
 {

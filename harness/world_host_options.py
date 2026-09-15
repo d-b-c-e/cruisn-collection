@@ -20,6 +20,8 @@ def add_arguments(parser):
                         help='include separately decoded road templates (diagnostic)')
     parser.add_argument('--world-host-road-detail',choices=('stock','full'),
                         help='candidate-only use of original detailed road models at all host distances')
+    parser.add_argument('--world-host-far-coverage',choices=('off','on'),
+                        help='candidate-only World 3x coverage clipping; original quad UVs retained')
 
 
 def configure(args,rom,settings):
@@ -31,12 +33,14 @@ def configure(args,rom,settings):
     layer=getattr(args,'world_host_layer',None)
     roads=getattr(args,'world_host_roads',None)
     detail=getattr(args,'world_host_road_detail',None)
+    coverage=getattr(args,'world_host_far_coverage',None)
     if mode is None:
-        if any(value is not None for value in (first,last,far,trace,source,layer,roads,detail)):
+        if any(value is not None for value in (first,last,far,trace,source,layer,roads,detail,coverage)):
             raise ValueError('host bounds/logging require an explicit mode')
         inherited=settings.get('MIDV_WORLD_HOST_SCENERY','0')
         if inherited=='0':
             if settings.get('MIDV_WORLD_HOST_ROAD_DETAIL','0')!='0':raise ValueError('orphan host road detail')
+            if settings.get('MIDV_WORLD_HOST_FAR_COVERAGE','0')!='0':raise ValueError('orphan host far coverage')
             return None
         modes={v:k for k,v in MODES.items()}
         if inherited not in modes:raise ValueError('invalid recorded host scenery mode')
@@ -61,6 +65,10 @@ def configure(args,rom,settings):
             saved_detail=settings['MIDV_WORLD_HOST_ROAD_DETAIL']
             if saved_detail not in ('0','1'):raise ValueError('invalid recorded road detail')
             detail='full' if saved_detail=='1' else 'stock'
+        if 'MIDV_WORLD_HOST_FAR_COVERAGE' in settings:
+            saved=settings['MIDV_WORLD_HOST_FAR_COVERAGE']
+            if saved not in ('0','1'):raise ValueError('invalid recorded far coverage')
+            coverage='on' if saved=='1' else 'off'
     if rom not in ('crusnwld24','crusnwld') or mode not in MODES:
         raise ValueError('host scenery supports World 2.4/2.5 only')
     if mode!='off':
@@ -74,6 +82,10 @@ def configure(args,rom,settings):
             raise ValueError('full road detail requires an explicit candidate and roads on')
         far=80000 if far is None else far
         if far not in (80000,160000,240000):raise ValueError('invalid host far limit')
+        if coverage not in (None,'off','on'):raise ValueError('invalid host far coverage')
+        if coverage=='on' and (mode!='draw' or far!=240000 or source!='future' or
+                not getattr(args,'candidate',None) or settings.get('MIDV_FFB')!='0'):
+            raise ValueError('far coverage requires candidate World3x future draw and physical FFB0')
         if first is None or last is None or not 1<=first<=last<=1000000:
             raise ValueError('host scenery requires bounded --world-host-first/last')
         if (settings.get('MIDV_WORLD_FAR') or settings.get('MIDV_SCENERY','off') not in ('off','0')
@@ -82,7 +94,7 @@ def configure(args,rom,settings):
         if mode=='draw' and (getattr(args,'headless',False) or getattr(args,'native_renderer',False)
                             or settings.get('MIDV_GL')!='1'):
             raise ValueError('host scenery drawing requires live GL presentation')
-    elif any(value is not None for value in (first,last,far,trace,source,layer,roads,detail)):
+    elif any(value is not None for value in (first,last,far,trace,source,layer,roads,detail,coverage)):
         raise ValueError('off mode does not take a frame interval')
     settings['MIDV_WORLD_HOST_SCENERY']=MODES[mode]
     for key,value in [('MIDV_WORLD_HOST_FIRST',first),('MIDV_WORLD_HOST_LAST',last),('MIDV_WORLD_HOST_FAR',far)]:
@@ -98,6 +110,9 @@ def configure(args,rom,settings):
     else:settings['MIDV_WORLD_HOST_ROADS']='1' if roads=='on' else '0'
     if detail is None:settings.pop('MIDV_WORLD_HOST_ROAD_DETAIL',None)
     else:settings['MIDV_WORLD_HOST_ROAD_DETAIL']='1' if detail=='full' else '0'
+    if coverage is None:settings.pop('MIDV_WORLD_HOST_FAR_COVERAGE',None)
+    else:settings['MIDV_WORLD_HOST_FAR_COVERAGE']='1' if coverage=='on' else '0'
     result=dict(mode=mode,first=first,last=last,far=far,log=trace,source=source or 'pending',layer=layer or 'legacy',roads=roads or 'off')
     if detail is not None:result['road_detail']=detail
+    if coverage is not None:result['far_coverage']=coverage
     return result

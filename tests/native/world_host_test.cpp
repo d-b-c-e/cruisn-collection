@@ -56,6 +56,18 @@ int main()
     cruisn::world_host::Scene vertex_beyond_limit;
     assert(cruisn::world_host::build(read,vertex_beyond_limit,160000));
     assert(vertex_beyond_limit.objects.empty());
+    ram[0x10803]=f(239984);ram[0xc00004]=32;
+    const auto crossing_ram=ram;
+    cruisn::world_host::Scene crossing_control,crossing_candidate;
+    assert(cruisn::world_host::build(read,crossing_control,240000) && crossing_control.objects.empty());
+    assert(cruisn::world_host::build(read,crossing_candidate,240000,nullptr,false,24,false,true));
+    assert(crossing_candidate.objects.size()==1 && crossing_candidate.objects[0].quads.size()==1);
+    assert(crossing_candidate.objects[0].depths.size()==1);
+    assert(Float::load(crossing_candidate.objects[0].depths[0][0]).fix()==240016);
+    assert(Float::load(crossing_candidate.objects[0].depths[0][1]).fix()==239984);
+    assert(ram==crossing_ram && !io_read);
+    cruisn::world_host::Scene coverage_invalid;
+    assert(!cruisn::world_host::build(read,coverage_invalid,160000,nullptr,false,24,false,true));
     ram[0xc00004]=0;ram[0xc00000]=20;ram[0x10803]=f(96000);
     assert(!cruisn::world_host::build(read,invalid,100000));
     assert(!cruisn::world_host::build(read,invalid,240000,nullptr,false,24,true));

@@ -84,6 +84,21 @@ class WorldModelTests(unittest.TestCase):
         points=[[F.load(p[i+j]).fix() for j in (0,1,2)] for i in range(0,12,3)]
         self.assertEqual(points,[[246,189,1024],[246,210,1024],[266,189,1024],[266,210,1024]])
 
+    def test_coverage_keeps_multiple_materials_and_depth_sidecars(self):
+        r=self.record();r['model_words'][2]|=1<<18
+        r['model_words']+=r['model_words'][-2:]
+        r['material_words']+=[0x00100000,0x10001010,0x30]
+        p=project(r,{64:F.integer(1).store()})
+        original=fast_quads(r,p);covered=fast_quads(r,p,far_coverage=True)
+        self.assertEqual(len(original),2)
+        self.assertEqual([v[-1] for v in original],[0x60,0x70])
+        self.assertEqual([q for q,depths in covered],original)
+        self.assertEqual([depths for q,depths in covered],[[F.integer(1024).store()]*4]*2)
+        p[2::3]=[F.integer(n).store() for n in (200000,300000,300000,200000)]
+        self.assertEqual([q for q,depths in fast_quads(r,p,far_coverage=True)],original)
+        p[2::3]=[F.integer(240000).store()]*4
+        self.assertEqual(fast_quads(r,p,far_coverage=True),[])
+
     def test_uncaptured_projection_and_unsupported_clipping_fail(self):
         r=self.record()
         with self.assertRaisesRegex(ValueError,'uncaptured'):project(r,{})

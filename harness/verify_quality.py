@@ -23,9 +23,15 @@ def rectangle(x0=2, y0=2, x1=14, y1=3, mode=0x100):
     return q
 
 
-def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS, positions=None, canvas=(20,12), meta_bits=0):
+def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS, positions=None, canvas=(20,12), meta_bits=0, far_masks=None):
     size = (canvas[0] * scale, canvas[1] * scale)
     prog = ctx.program(vertex_shader=R.VS, fragment_shader=fragment_shader)
+    far_buffer=None
+    if far_masks is not None:
+        masks=np.asarray(far_masks,dtype='<f4')
+        if masks.shape!=(len(quads),16):raise ValueError('one far coverage mask per quad required')
+        far_buffer=ctx.buffer(masks.tobytes());far_buffer.bind_to_storage_buffer(3)
+        prog['uFarCoverage'].value=1
     for name, value in {"uCanvas": tuple(map(float,canvas)), "uScale": scale, "uClipRight": canvas[0]-1,
                         "texram": 0, "texMask": texture.size - 1, "uDbgQuadId": int(debug),
                         "uBgMargin": 0, "uClipW": canvas[0]}.items():
@@ -46,6 +52,7 @@ def render(ctx, quads, texture, scale, *, debug=False, fragment_shader=R.FS, pos
               for t, dtype in ((idx, np.uint16), (mask, np.uint8))]
     for obj in (vao, vf, vu, target, idx, mask, tex, prog):
         obj.release()
+    if far_buffer is not None:far_buffer.release()
     return result
 
 

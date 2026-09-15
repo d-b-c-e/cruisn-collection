@@ -48,6 +48,7 @@ def commands(group, output, cxx):
     if group == 'gpu':
         return [('gpu-quality', [py, 'harness/verify_quality.py', '--report',
                                  str(output/'gpu-quality.json')]),
+                ('vunit-far-coverage',[py,'harness/verify_vunit_far_coverage.py','--report',str(output/'vunit-far-coverage.json')]),
                 ('zeus-policy-pixels',[py,'harness/verify_zeus_policy.py','--report',str(output/'zeus-policy-pixels.json')]),
                 ('zeus-palette-pixels',[py,'harness/verify_zeus_palette.py','--report',str(output/'zeus-palette-pixels.json')]),
                 ('zeus-margin-pixels',[py,'harness/verify_zeus_margin_clear.py','--report',str(output/'zeus-margin-pixels.json')]),

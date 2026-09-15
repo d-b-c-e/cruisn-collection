@@ -3,7 +3,7 @@
 Raw snapshots contain game resources and remain local. This does not validate
 GPU visibility, palette contents, static lifetime or actual native scheduling.
 """
-import argparse,csv,json,os,struct,subprocess
+import argparse,csv,json,os,struct,subprocess,math
 from collections import Counter
 from pathlib import Path
 from scenery_c31 import F
@@ -13,7 +13,7 @@ from world_host_scenery import camera_center,rotation_matrix,model_counts,projec
 from verification import sha256_file,write_json
 
 
-def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=False):
+def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=False,far_coverage=False):
     profile=layout(revision)
     if full_roads and not roads:raise ValueError('full road detail requires roads')
     output.mkdir(parents=True,exist_ok=False)
@@ -37,7 +37,8 @@ def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=Fal
         def execute(mode,far):
             r=subprocess.run([str(binary.resolve()),mode,str(ram_path.resolve()),str((run/'world-future-rom.bin').resolve()),
                 str(fast_path.resolve()),str(far)]+(['--roads'] if roads else [])+
-                (['--world25'] if revision==25 else [])+(['--full-roads'] if full_roads else []),env=env,capture_output=True,text=True)
+                (['--world25'] if revision==25 else [])+(['--full-roads'] if full_roads else [])+
+                (['--far-coverage'] if far_coverage and mode=='--scene' else []),env=env,capture_output=True,text=True)
             name=f'{frame}-{mode[2:]}-{far}'
             (output/(name+'.txt')).write_text(r.stdout);(output/(name+'.log')).write_text(r.stderr)
             if r.returncode:raise ValueError(r.stderr)
@@ -74,9 +75,14 @@ def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=Fal
         bill=[read(read(0x48)+i) for i in range(9)];origin=[read(read(0x47)+2+i) for i in range(2)]
         original={i:read(profile['table']+i) for i in range(-80,5000)}
         scenes=[]
-        for far in (80000,160000,240000):
+        for far in ((240000,) if far_coverage else (80000,160000,240000)):
             rows=execute('--scene',far)[1:];actual_quads=[r for r in rows if r[0]>=0x80000000]
             projected=[];recip=reciprocal_table(original,far);objects=0;screen_rejected=[]
+            if far_coverage:
+                for index in range(15001,30001):
+                    value=math.floor(512.0/(16*index+1)*1000000+0.5)/1000000
+                    ieee=struct.unpack('<I',struct.pack('<f',value))[0]
+                    recip[index]=((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff)
             for key,obj in expected.items():
                 center=camera_center(obj,camera,view);depth=center[2].fix();model=obj[13];radius=read(model)
                 if depth-radius<1000 or depth-radius>=far:continue
@@ -103,18 +109,20 @@ def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=Fal
                     # A sphere may straddle the far plane. The host accepts
                     # only complete models whose real vertex depths fit; this
                     # is not polygon clipping or a larger distance setting.
-                    if any(not 1000<=F.load(v).fix()<far for v in buffer[2::3]):continue
+                    if any(not 1000<=F.load(v).fix()<(480000 if far_coverage else far) for v in buffer[2::3]):continue
                     # The host excludes a whole object if any screen coordinate
                     # cannot fit signed DMA coordinates. Do not wrap it into a
                     # different on-screen polygon in the independent reference.
                     if any(not -32768<=F.load(v).fix()<=32767 for i,v in enumerate(buffer) if i%3!=2):
                         screen_rejected.append(actual_native[key][0]);continue
-                    q=fast_quads(record,buffer)
+                    q=fast_quads(record,buffer,far_coverage=far_coverage)
                 except ValueError as error:
                     if 'uncaptured reciprocal index' in str(error):continue
                     raise
                 identifier=actual_native[key][0]
-                projected += [[identifier,model,depth,obj[27]&65535,*words,0] for words in q]
+                if far_coverage:
+                    projected += [[identifier,model,depth,obj[27]&65535,*words,0,*depths] for words,depths in q]
+                else:projected += [[identifier,model,depth,obj[27]&65535,*words,0] for words in q]
             projected.sort(key=lambda r:(-r[2],r[0]))
             scenes.append(dict(far=far,passed=projected==actual_quads,future_objects=objects,
                 future_quads=len(actual_quads),expected_quads=len(projected),pending_quads=len(rows)-len(actual_quads),
@@ -125,7 +133,7 @@ def check(run,allocations,binary,output,*,roads=False,revision=24,full_roads=Fal
     return dict(passed=bool(results) and all(r['passed'] for r in results),results=results,
         binary_sha256=sha256_file(binary),allocation_sha256=sha256_file(allocations),
         input_hashes={p.name:sha256_file(p) for p in sorted(run.glob('world-future-*.bin'))},
-        roads=roads,revision=revision,full_roads=full_roads,scope=__doc__)
+        roads=roads,revision=revision,full_roads=full_roads,far_coverage=far_coverage,scope=__doc__)
 
 
 def main():
@@ -133,8 +141,8 @@ def main():
     ap.add_argument('allocations',type=Path);ap.add_argument('binary',type=Path)
     ap.add_argument('--output',type=Path,required=True);ap.add_argument('--roads',action='store_true')
     ap.add_argument('--revision',type=int,choices=(24,25),default=24)
-    ap.add_argument('--full-roads',action='store_true');args=ap.parse_args()
-    report=check(args.run,args.allocations,args.binary,args.output,roads=args.roads,revision=args.revision,full_roads=args.full_roads)
+    ap.add_argument('--full-roads',action='store_true');ap.add_argument('--far-coverage',action='store_true');args=ap.parse_args()
+    report=check(args.run,args.allocations,args.binary,args.output,roads=args.roads,revision=args.revision,full_roads=args.full_roads,far_coverage=args.far_coverage)
     write_json(args.output/'report.json',report);print('PASS' if report['passed'] else 'FAIL',args.output/'report.json')
     return 0 if report['passed'] else 1
 

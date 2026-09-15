@@ -90,8 +90,12 @@ def project(record, reciprocals, *, matrix=None, center=None):
     return output
 
 
-def fast_quads(record, projected):
-    """Generate the main unclipped path's DMA words, in original model order."""
+def fast_quads(record, projected, *, far_coverage=False):
+    """Generate ordered DMA words; coverage mode returns (DMA, C31 depths) pairs.
+
+    Coverage mode is the private World 3x prototype. It drops wholly far quads
+    but retains the original coordinates and UVs of crossing polygons.
+    """
     if record['end_pc'] != 0x242:
         raise ValueError('clipped polygon path requires separate reconstruction')
     words = record['model_words']
@@ -103,6 +107,8 @@ def fast_quads(record, projected):
         indices = [(packed >> shift) & 255 for shift in (0, 8, 16, 24)]
         if max(indices)*3+2 >= len(projected):
             raise ValueError('polygon indexes outside projected vertices')
+        depths=[projected[3*j+2] for j in indices]
+        if far_coverage and all(F.load(w).fix()>=240000 for w in depths):continue
         points = [[F.load(projected[3*j+k]) for k in (0, 1)] for j in indices]
         a, b, c = points[:3]
         cross = (b[1]-c[1])*(b[0]-a[0]) - (b[0]-c[0])*(b[1]-a[1])
@@ -113,5 +119,6 @@ def fast_quads(record, projected):
         dma = [flags, record['object_words'][16]]
         dma.extend(p.fix() for point in points for p in point)
         dma.extend([uv0, uv0 >> 16, uv1, uv1 >> 16, tex+record['object_words'][17]])
-        result.append([n & 65535 for n in dma])
+        dma_words=[n & 65535 for n in dma]
+        result.append((dma_words,depths) if far_coverage else dma_words)
     return result
