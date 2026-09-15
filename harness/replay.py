@@ -38,6 +38,7 @@ import zeus_stream
 import offroad_distance
 import world_host_options
 import vunit_original_mirror
+import vunit_host_failure
 import usa_host_options
 import offroad_host_options
 from display_target import parse_size
@@ -106,6 +107,7 @@ def main(argv=None):
     offroad_distance.add_arguments(ap)
     world_host_options.add_arguments(ap)
     vunit_original_mirror.add_arguments(ap)
+    vunit_host_failure.add_arguments(ap)
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
@@ -294,6 +296,8 @@ def main(argv=None):
         if usa_host_trial:report['usa_host_scenery']=usa_host_trial
         offroad_host_trial=offroad_host_options.configure(args,manifest['rom'],manifest['settings'])
         if offroad_host_trial:report['offroad_host_scenery']=offroad_host_trial
+        host_failure_trial=vunit_host_failure.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
+        if host_failure_trial:report['vunit_host_failure']=host_failure_trial
         worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
         if worker_trial:report['ffb_worker']=worker_trial
         # A screenshot can finish before later private scenes/materials. Drain
@@ -499,6 +503,12 @@ def main(argv=None):
                     sum(report['zeus_capture']['quad_frames'].values()))
                 if report['zeus_models']['render_policy']!=(zeus_trial['mask'] if zeus_trial else 0):
                     raise ValueError('Zeus model capture policy differs from the requested rendering semantics')
+        host_failure_result=vunit_host_failure.verify_receipt(host_failure_trial,runtime)
+        if host_failure_result:
+            report['vunit_host_failure']['result']=host_failure_result
+            if host_failure_result['degraded']:
+                report['passed']=False
+                report['error']='host scenery preparation failed; degraded output does not qualify parity'
     except (ValueError, OSError, KeyError, subprocess.SubprocessError) as exc:
         report["passed"] = False
         report["error"] = str(exc)

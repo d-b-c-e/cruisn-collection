@@ -19,6 +19,8 @@ int main()
         ram[0x120e]=0x1000; // an ordinary active object is excluded
         auto read=[&](uint32_t p){assert(p<0x20000);return ram[p];};
         std::vector<Descriptor> out;
+        assert(cruisn::world_active_roads::code_matches(read,revision));
+        assert(!cruisn::world_active_roads::code_matches(read,23));
         assert(cruisn::world_active_roads::collect(read,out,revision) && out.size()==1);
         assert(out[0].id==0xc0001100 && out[0].active_margin && out[0].words[14]==0x10001001);
         const auto saved=out;
@@ -27,6 +29,7 @@ int main()
         ram[0x1000]=0;out.clear();assert(cruisn::world_active_roads::collect(read,out,revision) && out.empty());
         // Invalid topology cannot append a partially collected prefix.
         ram[0x1000]=0x1100;ram[0x1100]=0x1100;out=saved;
+        assert(cruisn::world_active_roads::code_matches(read,revision));
         assert(!cruisn::world_active_roads::collect(read,out,revision) && out.size()==1);
         ram[0x1100]=0;ram[0x1001]=0x1100;
         assert(!cruisn::world_active_roads::collect(read,out,revision) && out.size()==1);
@@ -37,6 +40,7 @@ int main()
         ram[0x110e]=0x1001;ram[0x1100]=0x900000;
         assert(!cruisn::world_active_roads::collect(read,out,revision) && out.size()==1);
         ram[0x1100]=0;ram[0x6a]^=1;
+        assert(!cruisn::world_active_roads::code_matches(read,revision));
         assert(!cruisn::world_active_roads::collect(read,out,revision) && out.size()==1);
     }
 }

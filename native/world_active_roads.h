@@ -4,18 +4,26 @@
 #include "world_host_scenery.h"
 #include <set>
 namespace cruisn { namespace world_active_roads {
-template<class Read> bool collect(Read read,std::vector<world_host::Descriptor> &out,uint32_t revision)
+inline std::array<uint32_t,4> heads(uint32_t revision)
+{
+    return revision==24 ? std::array<uint32_t,4>{{0x61ee,0x61eb,0x61ed,0x61ef}} :
+        std::array<uint32_t,4>{{0x658f,0x658c,0x658e,0x6590}};
+}
+template<class Read> bool code_matches(Read read,uint32_t revision)
 {
     if(revision!=24 && revision!=25)return false;
-    const std::array<uint32_t,4> heads=revision==24 ?
-        std::array<uint32_t,4>{{0x61ee,0x61eb,0x61ed,0x61ef}} :
-        std::array<uint32_t,4>{{0x658f,0x658c,0x658e,0x6590}};
+    const auto globals=heads(revision);
     const uint32_t pcs[]={0x69,0x6c,0x6f,0x72};
     for(unsigned i=0;i<4;++i)
-        if(read(pcs[i])!=(0x08280000|heads[i]) || read(pcs[i]+1)!=0x6200034c)return false;
+        if(read(pcs[i])!=(0x08280000|globals[i]) || read(pcs[i]+1)!=0x6200034c)return false;
+    return true;
+}
+template<class Read> bool collect(Read read,std::vector<world_host::Descriptor> &out,uint32_t revision)
+{
+    if(!code_matches(read,revision))return false;
     std::vector<world_host::Descriptor> result;
     std::set<uint32_t> seen;
-    for(auto global:heads)
+    for(auto global:heads(revision))
     {
         uint32_t head=read(global);
         if(head<0x1000 || head>=0x20000)return false;

@@ -92,6 +92,10 @@ those same windows merely to obtain a positive result.
    fallback/reporting contract for an unsupported scene before these controls
    are suitable for player use. Keep diagnostic failures strict and visible;
    do not silently count degraded output as passing parity.
+   The [preparation fallback candidate](2026-09-15-vunit-preparation-fallback.md)
+   now completes an injected World failure with exact original-only output and
+   an explicit degraded report. Other game paths and continuous product operation
+   remain to be qualified.
 5. After the rendering policy is stable, expose coherent per-game controls and
    renew final package/default/4K gates. Obtain attended cross-track and wheel
    acceptance; do not treat prior-release waivers as acceptance of these changes.
