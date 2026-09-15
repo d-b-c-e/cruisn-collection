@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — USA near-fullspeed3x; horizontal rejection qualified
+
+Read docs/reviews/2026-09-15-usa-horizontal-cull.md and descriptor-storage.md
+(full filename2026-09-15-usa-descriptor-storage.md). Nativeebe10e87c33 frozen
+SHA6f65d28f6936c85f20d32a6cf2d251603f58ba38df7ad4c5d2c1bf8d9d3bafc2,
+223patches reconstruct1eee62d5a610c40f42411f55d714830936d1232a.
+Preceding8de reserveddescriptorstorage/hashmembership:3native/12savedoutputs
+exact;CPUprepare2.9428->2.6877s butlive97.367->97.433%, noend-to-endclaim.
+NewUSAhostcheck AFTERprojection/source/model/paletteguards:allprojectedvertices
+strictlyx<-128orx>640, generousbeyondmaximumrenderer[-86,598]. Emptyobjectsretain
+identity/depthsort/decodedcounts. Earlyreturnforpotentiallyvisiblemodels.
+12saved1/2/3x orderedretainedsubsets exact; removedquadsalloutofbounds. Actual
+6226/18446removedquads throughGLscales1/4,maxmargin86height401:zeroindex/coverage,
+positivecontrol7056pixels.3nativePASS; initialtestnamespacecompileFAILretained.
+Matched5012input livepairPASS3201camera9603ADC,750selectionrows equalexceptquad
+count/hash;7completed4Kmonitorimages3500:5000every250EXACT. Quads6445085->1637123.
+Prepare2.6815->2.1742s, pack.2146->.0524,submit.1707->.0377,total3.0678->2.2654s.
+Sixpredefinedcapture-freesubwindowscombined98.18->99.68%,slow3800..3950
+90.96->97.99%,otherfive~100%. No fullspeed/logfree/alltrackclaim anddon'trepeat
+timingforfavorableoutcome. LOCALU horizontal-cull-live-{control,candidate},
+horizontal-cull-live-qualified.json, horizontal-cull-{prototype,gpu,qualified-v2},
+horizontal-cull-native-export.json. U=results/diagnostics/usa-future-render-20260909.
+Descriptorfirstlocalcompilefailedimplicitsetinclude;fixedownincludeandretainedFAIL.
+Exotica4Ktemporal/marginrenewal qualifiedpreviouscheckpoint. NEXT assess whether
+sameunusedhorizontalwork matters forWorld/OffRoadsavedscenes, then remaining
+coverage/farappearance/defaultcombinedgates. No game/build/test atcheckpoint.
+Personal87d/publicv0.5.0unchanged. No deploy/release/physicalFFB/hostedCI/menu removal.
+Continue directly whileparityremains; serialrig/no builds,exports,broadscansduringgames.
+
 ## September15 — current Exotica4K handover passes; USA4K performance next
 
 Read docs/reviews/2026-09-15-exotica-4k-temporal.md and

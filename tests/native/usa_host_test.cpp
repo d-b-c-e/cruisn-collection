@@ -67,4 +67,16 @@ int main()
     future.assign(16385,future_a);
     assert(!build(read,scene,80000,&future) && scene.objects.empty());
     assert(memory==before);
+    auto vertices=[&](std::initializer_list<int> xs) {
+        std::vector<cruisn::usa_model::Vertex> v;
+        for(auto x:xs)v.push_back({{f(x),f(100),f(2000)}});
+        return v;
+    };
+    assert(!outside_horizontal_canvas({}));
+    assert(outside_horizontal_canvas(vertices({-300,-129,-500})));
+    assert(outside_horizontal_canvas(vertices({641,700,1200})));
+    assert(!outside_horizontal_canvas(vertices({-300,-128})));
+    assert(!outside_horizontal_canvas(vertices({641,640})));
+    assert(!outside_horizontal_canvas(vertices({-300,700})));
+    assert(!outside_horizontal_canvas(vertices({-300,100,-500})));
 }

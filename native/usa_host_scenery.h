@@ -48,6 +48,22 @@ inline bool ram_span(uint32_t p,uint32_t n)
 {return n<=8192 && uint64_t(p)+n<=0x20000;}
 inline bool fast_span(uint32_t p,uint32_t n)
 {return p>=0x809800 && n<=2048 && uint64_t(p)+n<=0x80a000;}
+inline bool outside_horizontal_canvas(const std::vector<usa_model::Vertex> &projected)
+{
+    if(projected.empty())return false;
+    // Live V-Unit clamps its maximum margin to86: visible x is [-86,598].
+    // Retain an extra42 pixels beyond each edge for inclusive vertices, seam
+    // alignment and quality dilation. Inspect every model vertex, not its center
+    // or authored radius. This runs only after host projection range checks.
+    bool left=true,right=true;
+    for(const auto &vertex:projected)
+    {
+        const auto x=Float::load(vertex[0]).fix();
+        left&=x<-128;right&=x>640;
+        if(!left && !right)return false;
+    }
+    return left || right;
+}
 inline bool code_matches(const uint32_t *ram,size_t words)
 {
     if(!usa_distance::code_matches(ram,words,80000) || !usa_distance::residency_matches(ram,words))return false;
@@ -136,7 +152,9 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
         if(!direct)for(const auto &polygon:model.polygons)
             if(!ram_span(palette_table+(polygon[0]>>16),1))return false;
         Object output;output.id=owner;output.model=address;output.depth=depth;
-        if(!usa_model::quads(model,projected,direct,[&](uint32_t flags)
+        // Keep source/model/palette validation above even when no pixel can be
+        // reached. Empty objects retain identity, depth order and decoded counts.
+        if(!outside_horizontal_canvas(projected) && !usa_model::quads(model,projected,direct,[&](uint32_t flags)
             {return direct?object[16]:read(palette_table+(flags>>16));},output.quads,
             far_coverage?&output.depths:nullptr))return false;
         ++scene.decoded;scene.objects.push_back(std::move(output));

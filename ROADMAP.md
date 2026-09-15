@@ -71,6 +71,10 @@ and the public package remain v0.5.0.
   reduces current4K preparation by8.7% with exact scene/image results, but driving
   remains97.4%. Saved expensive scenes contain many wholly offscreen objects;
   conservative horizontal rejection is the next measured opportunity.
+  That [horizontal rejection](docs/reviews/2026-09-15-usa-horizontal-cull.md) now
+  preserves seven4K images while reducing host submissions by74.6%. Matched
+  capture-free subwindows improve98.18→99.68% overall; the busiest remains97.99%.
+  It is a real performance improvement, with the small remaining gap retained.
   The
   [gated far-coverage adapter](docs/reviews/2026-09-15-usa-far-coverage.md) passes
   independent geometry and 4K comparisons, but changes only 26 pixels in two of
