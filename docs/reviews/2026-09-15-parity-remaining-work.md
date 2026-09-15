@@ -118,6 +118,10 @@ those same windows merely to obtain a positive result.
    replay, preserving193 saved files and four4K images with joined quiescent
    shutdown. Multi-race operation, interrupted exit and machine reset remain
    separate acceptance work; this is still a candidate-only mode with FFB0.
+   The [V-Unit runtime audit](2026-09-15-vunit-runtime-readiness.md) identifies
+   the corresponding per-game startup/end work and fixes ignored buffered
+   diagnostic write/close failures. Existing summary sizes do not justify
+   treating V-Unit logging as the same measured cost problem as Exotica.
 5. After the rendering policy is stable, expose coherent per-game controls and
    renew final package/default/4K gates. Obtain attended cross-track and wheel
    acceptance; do not treat prior-release waivers as acceptance of these changes.

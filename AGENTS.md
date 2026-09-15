@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 V-Unit runtime audit — checked log closure fixed
+
+Read docs/reviews/2026-09-15-vunit-runtime-readiness.md. Latestnative71c8339c8c7
+frozenSHAffe224ca4cd6c4b59a644aeb27f85bf6b2b61477a4d6dfe78badbe44f79c0b20;
+247patches tree94ff46cdd92067358f022e6b4c5915e5aa176459. SharedVUnitexitnowchecks
+ferrorANDfclose onfade/scene/quad/clip; closesallbeforefatalreport. Standalonetest
+realread-onlywritefailurePASS, nativebuildPASS; NOnewgameforI/O-onlyfix. Exotica
+continuous qualification belongs toe19predecessor; donotclaimfreshsuccessorgame.
+R/checked-journal-close-native-export andbuild; exportscriptALREADYRUN.
+W/vunit-runtime-audit.jsonPASS3retainedsummaries: USA129881bytes750scenes,
+World25280577/1666,OffRoad211718/1578. Notperformance/heap/fullsessionproof.
+Sourcecachesalreadybounded/pruned; VUnitfixedwindowsandstartupstillneedwork.
+NEXT boundedread-onlyactualstartup observer forUSA/World24+25/OffRoad before
+continuouspolicy; preservecode/readiness/resource/fallbackcontracts andactual
+scene cadence. Exotica two-race/open-track recording availability pending; no
+attendedlaunchwithoutreply. Important: Worldcustomdispatch/noop/terrainneighbors
+ALREADYscreened (Sept14terrain-boundary,Sept15terrain-neighbors); priorNEXTisSTALE.
+No game/build/testnow. Personal87d/publicv0.5.0unchanged. No deploy/release/hostedCI/
+physicalFFB/menu removal. PrimaryDISPLAY2 4K. Continueusefulwork, avoidbroadscans
+ofentireresults tree (huge; useknowncasepaths) andunjustifiedrepeatedgames.
+
 ## September15 continuous policy — targeted PASS; multi-race acceptance next
 
 Read docs/reviews/2026-09-15-exotica-continuous-runtime.md. Nativee19b29ab09f frozen

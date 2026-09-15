@@ -46800,3 +46800,68 @@ index 6a65ecb3e79..37fef0343c5 100644
 -- 
 2.55.0.windows.3
 
+From 71c8339c8c7fbd157f1d948b4689a6b9ce6ce49b Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 17:25:33 -0500
+Subject: [PATCH] Reject V-Unit host evidence on buffered write or close errors
+
+---
+ src/mame/midway/cruisn/checked_journal_close.h | 15 +++++++++++++++
+ src/mame/midway/midvunit.cpp                   | 12 ++++++++----
+ 2 files changed, 23 insertions(+), 4 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/checked_journal_close.h
+
+diff --git a/src/mame/midway/cruisn/checked_journal_close.h b/src/mame/midway/cruisn/checked_journal_close.h
+new file mode 100644
+index 00000000000..37af57e5a3c
+--- /dev/null
++++ b/src/mame/midway/cruisn/checked_journal_close.h
+@@ -0,0 +1,15 @@
++// SPDX-License-Identifier: BSD-3-Clause
++#pragma once
++#include <cstdio>
++
++namespace cruisn {
++// Retire the owner even on failure. Earlier buffered-write errors can survive
++// a successful fclose, so both the stream error flag and final flush matter.
++inline bool close_journal(FILE *&owner) {
++    FILE *file=owner;owner=nullptr;
++    if(!file)return true;
++    const bool clean=std::ferror(file)==0;
++    const int closed=std::fclose(file);
++    return clean && closed==0;
++}
++}
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index a8ffbe8b065..38b270656fa 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -23,6 +23,7 @@
+ **************************************************************************/
+ 
+ #include "emu.h"
++#include "cruisn/checked_journal_close.h"
+ #include "cruisn/motor_signal.h"
+ #include "cruisn/hud_drivetrain.h"
+ 
+@@ -588,10 +589,13 @@ void midvunit_base_state::world_host_start()
+ 
+ void midvunit_base_state::world_host_exit()
+ {
+-	if(m_host_fade_log){FILE *fp=m_host_fade_log;m_host_fade_log=nullptr;if(fclose(fp))fatalerror("Fade producer close failed\n");}
+-	if(m_host_scene_log){fclose(m_host_scene_log);m_host_scene_log=nullptr;}
+-	if(m_host_quad_log){fclose(m_host_quad_log);m_host_quad_log=nullptr;}
+-	if(m_host_clip_log){fclose(m_host_clip_log);m_host_clip_log=nullptr;}
++	const bool fade=cruisn::close_journal(m_host_fade_log);
++	const bool scene=cruisn::close_journal(m_host_scene_log);
++	const bool quads=cruisn::close_journal(m_host_quad_log);
++	const bool clip=cruisn::close_journal(m_host_clip_log);
++	if(!fade || !scene || !quads || !clip)
++		fatalerror("V-Unit host journal write/close failed: fade=%u scene=%u quads=%u clip=%u\n",
++			unsigned(fade),unsigned(scene),unsigned(quads),unsigned(clip));
+ }
+ 
+ // Developer-only global projection/residency experiment. The matching checked
+-- 
+2.55.0.windows.3
+
