@@ -98,3 +98,10 @@ The subsequent [CPU/GPU integration](2026-09-15-exotica-journal-integration.md)
 now passes a focused capture-compatibility replay and primary4K sample check.
 All20 journals select capture explicitly; quiet and continuous operation are
 still separate next steps.
+
+The later [quiet policy](2026-09-15-exotica-quiet-journals.md) and
+[checked counters](2026-09-15-exotica-runtime-counters.md) now remove routine
+journal output and cumulative capture cutoffs from the gated quiet candidate.
+Selected/first-failure operands are retained. Its final combined4K sample matches
+the captured control; fixed startup/exit windows and machine-reset handling
+remain open. The table above continues to describe **capture** budgets.

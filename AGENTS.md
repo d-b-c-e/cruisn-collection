@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 quiet counters — qualified; lifecycle windows next
+
+Read docs/reviews/2026-09-15-exotica-runtime-counters.md. Native d1576aad3ab frozen
+SHAb29e54c4851bb7c9addd9a11087b4a78c813353cf3fe19b6abf0fcc35f2bbbf0;239patches
+tree1ad708d7477d12e96462228794eba9032189040a. diagnostic_count.h linkedCPU/GPU:
+capturecapsunchanged; quietchecked64bit counters, endpointIDs<=UINT32_MAX before
+increment/narrow. Lifetime records/bindings/emissions, admissionssequence/bytes,
+waitingcount/cohortbytes, earlypermissions, GPUpaircount separatedfromcapturecaps.
+Live4096slots/tickets,32768admissions, packet/resource/snapshot/orderingboundsexact.
+NativefocusedtestPASS 70000ticket+codec+GPUorder commands across2drainedepochs,
+capture65536cutoff,32/64bitbounds/overflowrejectwithoutmutation, no lowIDreuse.
+Onefinal5300quietAmazon replayPASS;192savedfiles including39408byteendpoint
+operands andall4completed3840CRT5220/5224/5228/5232 exactd18capturecontrol.
+19routinejournals omitted51530716bytes; summaryfields exactexceptnamedtiming/
+batchpartition/writeroccupancy. Noper-eventquietproof, speedclaim orfullrelease.
+R/quiet-counts-4k,quiet-counts-qualified,quiet-counts-native-export.json.
+Export-quiet-counts.py ALREADYRUN. Personal87d/publicv0.5.0unchanged. No processes.
+NEXT genuine continuous activation/exit: CPUfixed1799/1800..15999 windows,
+depthmirror/retirement<=16000, exitchecksrequirefinalframe. Needverifiedguest
+readiness beforeobservingbootwrites; actualPC67f6scene/fences; guestpoolreset
+bbc9/globalclear85b4 distinctfromMAMEmachine_reset(whichcurrentlyfatalafteruse).
+DoNOTmerelysethugewindows orclearownershipmaps. Then usefulmultiracerecording,
+openExosightline, broadertracks/package/attendedgates. PrimaryDISPLAY2 4K,
+secondaryDISPLAY1. Continueusefulwork; no deploy/hostedCI/physicalFFB/broadrepeats.
+
 ## September15 quiet journals — qualified output; counters/windows next
 
 Read docs/reviews/2026-09-15-exotica-quiet-journals.md. Nativef02c990e3a5 frozen

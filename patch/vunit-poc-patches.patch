@@ -45343,3 +45343,164 @@ index 480ff31d5fc..c7f749aaaf2 100644
 -- 
 2.55.0.windows.3
 
+From d1576aad3aba4160748f7cdc1ee7e4629bcff2c1 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 13:27:16 -0500
+Subject: [PATCH] Separate quiet runtime counters from cumulative capture
+ limits
+
+---
+ src/devices/video/zeus2.cpp               |  3 ++-
+ src/mame/midway/cruisn/diagnostic_count.h | 20 +++++++++++++++++
+ src/mame/midway/midzeus.cpp               | 27 ++++++++++++++---------
+ 3 files changed, 39 insertions(+), 11 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/diagnostic_count.h
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 6c92e6330dc..9fe0caa7da3 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -7,6 +7,7 @@
+ **************************************************************************/
+ #include "emu.h"
+ #include "../../mame/midway/cruisn/exotica_journal_policy.h"
++#include "../../mame/midway/cruisn/diagnostic_count.h"
+ #include "zeus2.h"
+ #include "../../mame/midway/cruisn/zeus_render_policy.h"
+ #include "../../mame/midway/cruisn/zeus_palette_lifetime.h"
+@@ -1759,7 +1760,7 @@ void thread_main()
+ 						cruisn::zeus_model::Quad actual,replacement;
+ 						static_assert(sizeof(actual)==sizeof(q),"endpoint original quad ABI");
+ 						std::memcpy(&actual,&q,sizeof(q));
+-						if(!endpoint_order.consume(actual,replacement) || ++endpoint_pairs>endpoint_pair_limit) {
++						if(!endpoint_order.consume(actual,replacement) || !cruisn::diagnostic_count::add(endpoint_pairs,1,journal_policy,endpoint_pair_limit)) {
+ 							private_failed=true;s_stopz.store(true);zlogf("endpoint actual original mismatch/order");break;
+ 						}
+ 						// Finish earlier commands. Never blend both versions into the
+diff --git a/src/mame/midway/cruisn/diagnostic_count.h b/src/mame/midway/cruisn/diagnostic_count.h
+new file mode 100644
+index 00000000000..c4158b86473
+--- /dev/null
++++ b/src/mame/midway/cruisn/diagnostic_count.h
+@@ -0,0 +1,20 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Cumulative diagnostic budgets are distinct from live resource/queue bounds.
++#pragma once
++#include "diagnostic_journal.h"
++#include <cstdint>
++#include <limits>
++
++namespace cruisn { namespace diagnostic_count {
++inline bool can_add(uint64_t value,uint64_t amount,DiagnosticJournal::Policy policy,
++                    uint64_t capture_limit,uint64_t runtime_limit=std::numeric_limits<uint64_t>::max()) {
++    if(policy!=DiagnosticJournal::Policy::capture && policy!=DiagnosticJournal::Policy::quiet)return false;
++    const uint64_t limit=policy==DiagnosticJournal::Policy::capture?capture_limit:runtime_limit;
++    return value<=limit && amount<=limit-value;
++}
++inline bool add(uint64_t &value,uint64_t amount,DiagnosticJournal::Policy policy,
++                uint64_t capture_limit,uint64_t runtime_limit=std::numeric_limits<uint64_t>::max()) {
++    if(!can_add(value,amount,policy,capture_limit,runtime_limit))return false;
++    value+=amount;return true;
++}
++}}
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index c7f749aaaf2..9d5e867fcd9 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -28,6 +28,7 @@ The Grid         v1.2   10/18/2000
+ 
+ #include "emu.h"
+ #include "cruisn/exotica_journal_policy.h"
++#include "cruisn/diagnostic_count.h"
+ #include "cruisn/motor_signal.h"
+ #include "cruisn/hud_drivetrain.h"
+ #include "cruisn/exotica_visibility.h"
+@@ -464,7 +465,7 @@ bool crusnexo_state::lifetime_slot(uint32_t slot)const
+ void crusnexo_state::lifetime_emit(char event,uint32_t slot,uint64_t generation,uint64_t owner,
+ 	const cruisn::scenery_lifetimes::Key &key,uint32_t reason,uint32_t flags)
+ {
+-	if(!m_lifetime_log || ++m_lifetime_records>200000)fatalerror("Exotica lifetime record budget\n");
++	if(!m_lifetime_log || !cruisn::diagnostic_count::add(m_lifetime_records,1,m_journal_policy,200000))fatalerror("Exotica lifetime record budget\n");
+ 	if(m_lifetime_log.print("%c,%u,%.17g,%llu,%llu,%llu,%u,%llu,%llu,%u,%u,%u,%u\n",
+ 		event,unsigned(m_screen->frame_number()),machine().time().as_double(),
+ 		(unsigned long long)m_lifetimes.sequence(),(unsigned long long)m_lifetimes.epoch(),
+@@ -637,7 +638,7 @@ void crusnexo_state::lifetime_start()
+ 					if(bank>2 || !cruisn::exotica_future::span(table,1))fatalerror("Exotica lifetime source realm\n");
+ 					cruisn::scenery_lifetimes::Key key;key.realm=(uint64_t(bank+1)<<32)|table;key.section=m_lifetime_owner_entry;key.source=m_lifetime_owner_source;
+ 					LifetimeOwner owner;
+-					if(!m_lifetimes.bind(m_lifetime_owner_slot,key,owner.handle) || ++m_lifetime_bindings>10000)
++					if(!m_lifetimes.bind(m_lifetime_owner_slot,key,owner.handle) || !cruisn::diagnostic_count::add(m_lifetime_bindings,1,m_journal_policy,10000))
+ 						fatalerror("Exotica lifetime source binding\n");
+ 					owner.serial=m_lifetime_bindings;
+ 					if(m_endpoint_admissions.epoch() && m_endpoint_admissions.bind(owner.handle)==cruisn::exotica_admissions::Status::invalid)
+@@ -650,7 +651,7 @@ void crusnexo_state::lifetime_start()
+ 	m_lifetime_submit_tap=space.install_write_tap(0x46e,0x46e,"exotica_lifetime_model_commit",
+ 		[this](offs_t,uint32_t &data,uint32_t mask) {
+ 			if(!lifetime_scope() || m_maincpu->state_int(TMS320C3X_PC)!=0x6970)return;
+-			if(++m_lifetime_emissions>20000000)fatalerror("Exotica lifetime submission budget\n");
++			if(!cruisn::diagnostic_count::add(m_lifetime_emissions,1,m_journal_policy,20000000))fatalerror("Exotica lifetime submission budget\n");
+ 			const uint32_t slot=uint32_t(m_maincpu->state_int(TMS320C3X_AR7));
+ 			auto found=m_lifetime_owners.find(slot);if(found==m_lifetime_owners.end())return;
+ 			if(mask!=UINT32_MAX || !lifetime_slot(slot) || data<0x30000 || data>=0x32000 || data!=uint32_t(m_maincpu->state_int(TMS320C3X_AR5)))
+@@ -768,8 +769,12 @@ void crusnexo_state::endpoint_commit(uint32_t end,uint32_t flags,const LifetimeO
+ 		fatalerror("Endpoint epoch changed with pending commands\n");
+ 	const uint32_t opcode=m_ram_base[0x30000+((end-0x30000+0x1ffe)&0x1fff)];
+ 	const uint32_t base=m_ram_base[0x30000+((end-0x30000+0x1fff)&0x1fff)];
+-	const uint64_t id=++m_endpoint_commits;
+-	if(id>65536 || !m_endpoint_owners.submit(id,end,opcode,base))fatalerror("Endpoint commit bounds/order\n");
++	// The wire carries32-bit model IDs. Quiet removes only the diagnostic
++	// count cap; validate the transport limit before increment or narrowing.
++	if(!cruisn::diagnostic_count::add(m_endpoint_commits,1,m_journal_policy,65536,std::numeric_limits<uint32_t>::max()))
++		fatalerror("Endpoint commit ID budget/overflow\n");
++	const uint64_t id=m_endpoint_commits;
++	if(!m_endpoint_owners.submit(id,end,opcode,base))fatalerror("Endpoint commit bounds/order\n");
+ 	EndpointPending p;p.owner=owner.handle;p.frame=frame;p.time=machine().time().as_double();p.operands.flags=flags;
+ 	if(m_endpoint_admit_log) {
+ 		if(m_endpoint_admissions.epoch()) {
+@@ -923,12 +928,14 @@ void crusnexo_state::endpoint_admit(uint64_t scene,uint32_t frame,uint64_t realm
+ 		cruisn::exotica_admissions::Draw d;d.key.realm=realm;d.key.section=instance.entry;d.key.source=instance.source;
+ 		d.quads=uint32_t(instance.quad_count);draws.push_back(d);records.push_back({{instance.entry,instance.source,d.quads}});
+ 	}
+-	const uint64_t sequence=++m_endpoint_admit_sequence;
++	if(!cruisn::diagnostic_count::add(m_endpoint_admit_sequence,1,m_journal_policy,20000))
++		fatalerror("Endpoint admission sequence budget/overflow\n");
++	const uint64_t sequence=m_endpoint_admit_sequence;
+ 	if(!m_endpoint_admissions.admit(sequence,frame,draws,m_lifetimes))fatalerror("Endpoint queued admission rejected\n");
+ 	// Exact lifetime record watermark disambiguates source events at tied times.
+ 	const uint64_t header[]={0x31444158,sequence,scene,frame,m_lifetimes.epoch(),realm,records.size(),m_lifetime_records,uint64_t(waiting)};
+ 	const size_t bytes=sizeof(header)+records.size()*sizeof(records[0]);
+-	if(bytes>64*1024*1024-m_endpoint_admit_bytes || sequence>20000)fatalerror("Endpoint admission journal budget\n");
++	if(!cruisn::diagnostic_count::can_add(m_endpoint_admit_bytes,bytes,m_journal_policy,64*1024*1024))fatalerror("Endpoint admission journal budget\n");
+ 	if(m_endpoint_admit_packets.write(header,1,sizeof(header))!=sizeof(header) ||
+ 		(!records.empty() && m_endpoint_admit_packets.write(records.data(),sizeof(records[0]),records.size())!=records.size()))
+ 		fatalerror("Endpoint admission packet journal\n");
+@@ -1274,7 +1281,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 	};
+ 	if(m_waiting_mode) {
+ 		if(!m_lifetime_started || p.frame<m_lifetime_first || p.frame>m_lifetime_last ||
+-			m_lifetime_pending.kind || m_lifetime_owner_slot || m_waiting_scenes>=20000)
++			m_lifetime_pending.kind || m_lifetime_owner_slot || !cruisn::diagnostic_count::can_add(m_waiting_scenes,1,m_journal_policy,20000))
+ 			fatalerror("Exotica waiting incomplete lifetime boundary frame%u\n",p.frame);
+ 		const uint64_t table=uint64_t(read(0xe9))+read(0x1fbc);
+ 		if(table>UINT32_MAX)fatalerror("Exotica waiting track table overflow\n");
+@@ -1333,7 +1340,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 			// native structs. WCH1, scene, actual event watermark, epoch, count.
+ 			const uint64_t header[]={0x31484357,pending.scene,m_lifetime_records,m_lifetimes.epoch(),owners.size()};
+ 			const size_t bytes=sizeof(header)+owners.size()*sizeof(owners[0]);
+-			if(bytes>64*1024*1024-m_handover_bytes)fatalerror("Exotica waiting cohort byte budget\n");
++			if(!cruisn::diagnostic_count::can_add(m_handover_bytes,bytes,m_journal_policy,64*1024*1024))fatalerror("Exotica waiting cohort byte budget\n");
+ 			if(m_handover_cohorts.write(header,1,sizeof(header))!=sizeof(header) ||
+ 				m_handover_cohorts.write(owners.data(),sizeof(owners[0]),owners.size())!=owners.size())
+ 				fatalerror("Exotica waiting cohort write\n");
+@@ -1704,7 +1711,7 @@ void crusnexo_state::scene_active_seal()
+ 			if(status==cruisn::exotica_admissions::Status::invalid)fatalerror("Private active endpoint stale admission\n");
+ 			if(status==cruisn::exotica_admissions::Status::matched) {
+ 				m_endpoint_active_slots.insert(source.source);const auto &h=admission.owner;
+-				if(++m_endpoint_early_rows>(m_endpoint_marked?200000U:65536U) || m_endpoint_early_log.print("%llu,%u,%llu,%llu,%u,%llu,%llu,%llu,%u,%u,%llu,%u,%llu,%u\n",
++				if(!cruisn::diagnostic_count::add(m_endpoint_early_rows,1,m_journal_policy,m_endpoint_marked?200000U:65536U) || m_endpoint_early_log.print("%llu,%u,%llu,%llu,%u,%llu,%llu,%llu,%u,%u,%llu,%u,%llu,%u\n",
+ 					(unsigned long long)m_scene_fence_scene,m_active_seed.frame,(unsigned long long)m_lifetime_records,
+ 					(unsigned long long)m_endpoint_admit_sequence,h.slot,(unsigned long long)h.epoch,(unsigned long long)h.generation,
+ 					(unsigned long long)h.key.realm,h.key.section,h.key.source,(unsigned long long)admission.first_sequence,admission.first_frame,
+-- 
+2.55.0.windows.3
+
