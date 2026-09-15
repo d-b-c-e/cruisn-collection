@@ -64,7 +64,11 @@ def verify_receipt(trial,text,directory):
     if len(rows)!=totals['records']:raise ValueError('Exotica lifetime journal count')
     live={};known=set();sources={};seen_draws=set();faded=set();opaque=set()
     sequence=0;epoch=1;bindings=draws=firsts=fades=completions=unknowns=0
-    count=None;last_time=-1.;last_frame=-1;allow_unknown=True;reset_base=0
+    count=None;last_time=-1.;last_frame=-1;reset_base=trial.get('bootstrap_base',0);allow_unknown=not reset_base
+    if reset_base:
+        if (not 0x1000<=reset_base or reset_base+1201*31>0x40000 or
+                not (reset_base+1201*31<=0x30000 or reset_base>=0x32000)):
+            raise ValueError('lifetime bootstrap pool extent')
     for index,row in enumerate(rows):
         if set(row)!=set(FIELDS) or any(row[k] is None for k in FIELDS):raise ValueError('incomplete lifetime row')
         try:
@@ -81,6 +85,8 @@ def verify_receipt(trial,text,directory):
         if index==0:
             if op!='L' or r['sequence'] or r['epoch']!=1 or r['generation'] or r['owner'] or r['realm'] or r['section'] or r['source'] or r['flags'] or r['reason']>4096:
                 raise ValueError('lifetime initialization')
+            if reset_base and (slot!=reset_base or r['reason']!=1200 or r['frame']!=trial['first']):
+                raise ValueError('lifetime initialization differs from bootstrap proof')
             count=r['reason'];continue
         if op in ('A','F','R','C'):
             sequence+=1

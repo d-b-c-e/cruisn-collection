@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 guest lifetime startup — verified; scene activation next
+
+Read docs/reviews/2026-09-15-exotica-bootstrap-lifetimes.md and startup-readiness.
+Nativeffec5a90359 frozen SHAeaa9ef109cca4d2bbfa24839fe3ec05af18d57ca6bc42aeb5e4c307015d11587;
+241patches treee4b7e3cfb926fd4ac5d9f4e02511c0831132e9e0. Explicit--exotica-bootstrap
+lifetimes requirescapturedobserver/FFB0; actual18codewords+1201links proveinitial
+pool completion1385/base112061. Registryknownfree; externaladoptionretained.
+Full5300prefixPASS: additional457A383F2C2R; later50689events exactactualfields/time
+withsequence+844/epoch+4;20unknownfrees nowknown.186geometry/resources/targets/
+cameraADC/endpointoperands exactoldcapture;8ownershipfilesindependentlyfolded;
+all4completed3840CRT5220/5224/5228/5232 exact.3bootstrap+9lifetimePythonPASS.
+R/bootstrap-lifetimes-4k andbootstrap-lifetimes-qualified-v2PASS; initialchecker
+wrongwaitingreportkeyFAILretained. Priorbootstrap2100overallFAILbadendbounds,
+independentbootstrap-prefix-qualified-v2PASSinputs/nativeimages/proof only.
+Export-bootstrap.py/export-bootstrap-lifetimes.py ALREADYRUN. No rerun.
+NEXT actualguestscene-boundary activation then coordinatedordinaryexit/drain;
+scene1800/endwindows stillfixed. Noperformance/distancegain/continuousreleaseclaim.
+Personal87d/publicv0.5.0unchanged. PrimaryDISPLAY2 4K. No deployment/physicalFFB/
+hostedCI/menu removal. Continue directly whileparityworkremains; avoidbroadrepeats.
+
 ## September15 quiet counters — qualified; lifecycle windows next
 
 Read docs/reviews/2026-09-15-exotica-runtime-counters.md. Native d1576aad3ab frozen

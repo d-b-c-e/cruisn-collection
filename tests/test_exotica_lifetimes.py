@@ -76,6 +76,19 @@ class ExoticaLifetimes(unittest.TestCase):
         self.assertTrue(result['passed'])
         self.assertEqual((result['unknown_frees'],result['first_draws'],result['epochs']),(1,1,2))
 
+    def test_bootstrap_rejects_unallocated_pool_free_but_accepts_external_adoption(self):
+        base=112061
+        def row(op,**kw):
+            return dict.fromkeys(FIELDS,0)|dict(event=op,frame=1385,time=24.25,epoch=1)|kw
+        rows=[row('L',slot=base,reason=1200),row('F',slot=0x1100,sequence=1,reason=1,flags=1201)]
+        text=('MIDZ_LIFETIME=1 first=1385 last=2098\n'
+              'MIDZ_LIFETIME_RESULT complete=1 records=2 transitions=1 bindings=0 emissions=0 owned=0 draws=0 first_draws=0 fading=0 opaque=0 epochs=1\n')
+        trial=dict(mode='observe',first=1385,last=2098,bootstrap_base=base)
+        self.assertTrue(self.verify(rows,text,trial)['passed'])
+        for index,key,value in ((0,'slot',base+31),(0,'reason',1199),(0,'frame',1386),(1,'slot',base)):
+            changed=copy.deepcopy(rows);changed[index][key]=value
+            with self.subTest(key=key,value=value),self.assertRaises(ValueError):self.verify(changed,text,trial)
+
     def test_rejects_stale_handles_bad_transitions_bounds_and_clocks(self):
         mutations=[(0,'epoch',0),(0,'time',-0.5),(2,'generation',1),
             (3,'realm',0),(3,'owner',2),(4,'source',0xa02004),(4,'generation',1),

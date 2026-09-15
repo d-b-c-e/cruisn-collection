@@ -1,4 +1,4 @@
-"""Read-only guest pool readiness proof; does not enable earlier rendering."""
+"""Verified guest pool readiness and optional earlier lifetime tracking."""
 from pathlib import Path
 import re,struct
 
@@ -10,16 +10,27 @@ CODE=((0xbbf6,0x152010a8),(0xbbf9,0x152010a9),(0xbc64,0x152a10a8),(0xbc67,0x1520
       (0x696f,0x152d046e),(0x6963,0x0820b47d))
 
 def add_arguments(parser):
-    parser.add_argument('--exotica-bootstrap',choices=('observe',),help='capture first verified complete guest pool rebuild; no startup policy change')
+    parser.add_argument('--exotica-bootstrap',choices=('observe','lifetimes'),help='verify first guest pool rebuild; optionally start lifetime tracking there (scene start unchanged)')
 
 def configure(args,rom,settings,frames):
     mode=getattr(args,'exotica_bootstrap',None)
     if mode is None:
         if KEY in settings:raise ValueError('bootstrap observation requires explicit selection')
         return None
-    if mode!='observe' or rom!='crusnexo' or not getattr(args,'candidate',None) or settings.get('MIDV_FFB')!='0':
+    if mode not in ('observe','lifetimes') or rom!='crusnexo' or not getattr(args,'candidate',None) or settings.get('MIDV_FFB')!='0':
         raise ValueError('bootstrap observation requires Exotica candidate and FFB0')
-    settings[KEY]='1';return dict(mode=mode,frames=frames,changes_startup=False)
+    if mode=='lifetimes' and (settings.get('MIDZ_LIFETIME')!='1' or settings.get('MIDZ_HOST_JOURNALS','capture')!='capture'):
+        raise ValueError('bootstrap lifetimes require captured lifetime observation')
+    settings[KEY]='2' if mode=='lifetimes' else '1'
+    return dict(mode=mode,frames=frames,changes_startup=mode=='lifetimes')
+
+def lifetime_trial(trial,proof,lifetime):
+    """Resolve the effective boundary only after independently checking its proof."""
+    if not trial or trial['mode']!='lifetimes':return lifetime
+    if (not proof or not proof.get('passed') or not proof.get('changes_startup') or
+            not lifetime or lifetime.get('mode')!='observe' or not 0<=proof['frame']<=lifetime['first']):
+        raise ValueError('bootstrap lifetime boundary does not precede requested coverage')
+    return dict(lifetime,requested_first=lifetime['first'],first=proof['frame'],bootstrap_base=proof['base'])
 
 def verify(trial,directory):
     directory=Path(directory);lines=[];proof=directory/'exotica-bootstrap.bin'
@@ -34,7 +45,8 @@ def verify(trial,directory):
     ready=[m for m in ready if m]
     if len(ready)!=1:raise ValueError('missing or duplicate bootstrap readiness')
     begin,frame,base=map(int,ready[0].groups())
-    expected=[KEY+'=1',ready[0][0],f'{KEY}_RESULT complete=1 frame={frame}']
+    activates=trial.get('mode')=='lifetimes'
+    expected=[KEY+('=2' if activates else '=1'),ready[0][0],f'{KEY}_RESULT complete=1 frame={frame}']
     if sorted(lines)!=sorted(expected) or not 0<=begin<=frame<=begin+1 or frame>=trial['frames']:
         raise ValueError('bootstrap receipt order/completion bounds')
     if not 0x1000<=base or base+1201*31>0x40000 or not (base+1201*31<=0x30000 or base>=0x32000):
@@ -49,4 +61,4 @@ def verify(trial,directory):
     links=tuple(base+(i+1)*31 for i in range(1200))+(0,)
     if data[16+len(code):]!=links:raise ValueError('bootstrap pool links differ')
     return dict(passed=True,begin=begin,frame=frame,base=base,links=1201,code_words=len(CODE),bytes=words*4,
-                changes_startup=False,scope='First verified guest pool rebuild; not continuous startup, reset or exit acceptance.')
+                changes_startup=activates,scope='First verified guest pool rebuild; optional lifetime activation, not continuous scene/reset/exit acceptance.')

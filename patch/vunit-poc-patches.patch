@@ -45673,3 +45673,93 @@ index 9d5e867fcd9..3957942d8aa 100644
 -- 
 2.55.0.windows.3
 
+From ffec5a90359d78953d193713c9aee34c0dd4c7b1 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 14:19:41 -0500
+Subject: [PATCH] Gate initial Exotica lifetime tracking on verified guest pool
+ completion
+
+---
+ src/mame/midway/midzeus.cpp | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
+
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 3957942d8aa..70b8322febf 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -241,7 +241,7 @@ private:
+ 
+ 	void bootstrap_start();
+ 	void bootstrap_exit();
+-	bool m_bootstrap_ready=false,m_bootstrap_pending=false;
++	bool m_bootstrap_ready=false,m_bootstrap_pending=false,m_bootstrap_lifetimes=false;
+ 	uint32_t m_bootstrap_base=0,m_bootstrap_frame=0,m_bootstrap_ready_frame=0;
+ 	double m_bootstrap_time=0;
+ 	memory_passthrough_handler m_bootstrap_count_tap,m_bootstrap_tail_tap;
+@@ -488,8 +488,13 @@ void crusnexo_state::bootstrap_start()
+ {
+ 	const char *mode=std::getenv("MIDZ_BOOTSTRAP");if(!mode)return;
+ 	const char *ffb=std::getenv("MIDV_FFB");
+-	if(strcmp(mode,"1") || !ffb || strcmp(ffb,"0") || m_ram_base.bytes()!=0x100000)
+-		fatalerror("Exotica bootstrap observation requires mode1 and FFB0\n");
++	if((strcmp(mode,"1") && strcmp(mode,"2")) || !ffb || strcmp(ffb,"0") || m_ram_base.bytes()!=0x100000)
++		fatalerror("Exotica bootstrap requires mode1/2 and FFB0\n");
++	m_bootstrap_lifetimes=!strcmp(mode,"2");
++	const char *life=std::getenv("MIDZ_LIFETIME");
++	const char *journals=std::getenv("MIDZ_HOST_JOURNALS");
++	if(m_bootstrap_lifetimes && (!life || strcmp(life,"1") || (journals && strcmp(journals,"capture"))))
++		fatalerror("Exotica bootstrap lifetimes require captured lifetime observation\n");
+ 	m_bootstrap_count_tap=m_maincpu->space(AS_PROGRAM).install_write_tap(0x10a9,0x10a9,"exotica_bootstrap_count",
+ 		[this](offs_t,uint32_t &data,uint32_t mask) {
+ 			if(machine().side_effects_disabled() || m_bootstrap_ready || m_maincpu->state_int(TMS320C3X_PC)!=0xbbc9)return;
+@@ -520,11 +525,18 @@ void crusnexo_state::bootstrap_start()
+ 					if(fclose(file) || !written)fatalerror("Exotica bootstrap proof write\n");
+ 					m_bootstrap_ready=true;m_bootstrap_pending=false;m_bootstrap_ready_frame=frame;
+ 					fprintf(stderr,"MIDZ_BOOTSTRAP_READY begin=%u frame=%u base=%u links=1201\n",m_bootstrap_frame,frame,m_bootstrap_base);
++					if(m_bootstrap_lifetimes) {
++						if(!m_lifetime_log || m_lifetime_started || m_lifetime_pending.kind || m_lifetime_owner_slot || frame>m_lifetime_first)
++							fatalerror("Exotica bootstrap lifetime activation boundary\n");
++						m_lifetime_first=frame;
++						if(!lifetime_scope())fatalerror("Exotica bootstrap lifetime activation failed\n");
++						fprintf(stderr,"MIDZ_LIFETIME=1 first=%u last=%u\n",m_lifetime_first,m_lifetime_last);
++					}
+ 					m_bootstrap_count_tap.remove();m_bootstrap_tail_tap.remove();
+ 				});
+ 		});
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::bootstrap_exit,this));
+-	fprintf(stderr,"MIDZ_BOOTSTRAP=1\n");
++	fprintf(stderr,"MIDZ_BOOTSTRAP=%u\n",m_bootstrap_lifetimes?2:1);
+ }
+ 
+ void crusnexo_state::bootstrap_exit()
+@@ -535,7 +547,7 @@ void crusnexo_state::bootstrap_exit()
+ 
+ bool crusnexo_state::lifetime_scope()
+ {
+-	if(machine().side_effects_disabled())return false;
++	if(machine().side_effects_disabled() || (m_bootstrap_lifetimes && !m_bootstrap_ready))return false;
+ 	const auto frame=m_screen->frame_number();
+ 	if(frame<m_lifetime_first || frame>m_lifetime_last)return false;
+ 	if(!m_lifetime_started) {
+@@ -543,7 +555,8 @@ bool crusnexo_state::lifetime_scope()
+ 		for(size_t i=0;i<count;++i)if(m_ram_base[signatures[i].first]!=signatures[i].second)
+ 			fatalerror("Exotica lifetime code signature %x\n",signatures[i].first);
+ 		cruisn::scenery_lifetimes::Layout layout;layout.first=0x1000;layout.last=0x40000-31;layout.max_tracked=4096;
+-		if(!m_lifetimes.start(layout,true))fatalerror("Exotica lifetime initialization\n");
++		if(!m_lifetimes.start(layout,!m_bootstrap_lifetimes))fatalerror("Exotica lifetime initialization\n");
++		if(m_bootstrap_lifetimes)m_lifetime_pool_base=m_bootstrap_base;
+ 		m_lifetime_initial_head=m_ram_base[0x10a8];m_lifetime_initial_count=m_ram_base[0x10a9];
+ 		if((m_lifetime_initial_head && !lifetime_slot(m_lifetime_initial_head)) || m_lifetime_initial_count>4096)
+ 			fatalerror("Exotica initial pool bounds\n");
+@@ -722,7 +735,7 @@ void crusnexo_state::lifetime_start()
+ 			endpoint_commit(data,flags,owner);
+ 		});
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::lifetime_exit,this));
+-	fprintf(stderr,"MIDZ_LIFETIME=1 first=%u last=%u\n",m_lifetime_first,m_lifetime_last);
++	if(!m_bootstrap_lifetimes)fprintf(stderr,"MIDZ_LIFETIME=1 first=%u last=%u\n",m_lifetime_first,m_lifetime_last);
+ }
+ 
+ void crusnexo_state::lifetime_exit()
+-- 
+2.55.0.windows.3
+

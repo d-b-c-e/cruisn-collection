@@ -449,6 +449,11 @@ def main(argv=None):
         if sky_result:report['zeus_sky']['result']=sky_result
         bootstrap_result=exotica_bootstrap.verify(bootstrap_trial,runtime)
         if bootstrap_result:report['exotica_bootstrap']['result']=bootstrap_result
+        lifetime_trial=exotica_bootstrap.lifetime_trial(bootstrap_trial,bootstrap_result,lifetime_trial)
+        if lifetime_trial:
+            report['exotica_lifetimes']=lifetime_trial
+            if waiting_trial and waiting_trial.get('mode')=='observe':
+                waiting_trial['lifetime']=dict(lifetime_trial)
         journal_result=exotica_journals.verify(journal_trial,runtime)
         if journal_result:report['exotica_journals']['result']=journal_result
         if not journal_trial or journal_trial['mode']!='quiet':
