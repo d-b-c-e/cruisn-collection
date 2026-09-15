@@ -1,5 +1,24 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — ACTIVE shared far-boundary reuse evaluation
+
+Read docs/reviews/2026-09-15-world-live-far-coverage.md. World gated private
+far-coverage now linked/built/frozen native676985e833a, SHA708c285acf12bb706a7d193b3e8af88cf4916cd655ba258f415ea0040b221deb.
+216patches reconstruct e0b88c24d7b09e5fe15a90fc8ffdbf85ac4a63ab.
+Same-candidate off/on5902inputs PASS4101camera12303ADC/originalresources.
+21completed4K3824x2073CRTframes5880..5900;18change218..3980pixels in distant
+terrain; entirebelow-y1200exact. Max34newnearblack, inspectedfoliagetips; NOT
+zero-blackacceptance. Authored floatingterrain gap REMAINS. 8403oldorderedquads
+exact+194added/81crossing allindependentlyverifiedfuture. Pendingexactold only.
+3889producer/GPUpreparation packets/masks exact; receipts BEFORE DrawArrays.
+15saved24/25snapshots,4dedicated+32sharedGPUcases,focusednative/Python PASS.
+InitialreferencewordoverwriteFAIL andWindows far-macro buildFAIL retained/fixed.
+LOCAL W/far-coverage-live-qualified-v2 narrows original report geometry/ROI scope.
+No speed/fulltemporal claim. NEXT saved USA/OffRoad far-boundary adapter screening;
+Exotica separate policy. No currentgame/build/test. Monitor3840x2160. Personal87d/
+publicv0.5.0 unchanged; no deploy/release/physicalFFB/hostedCI/menu removal.
+Continue directly while parity remains, serialrig and scoped tests.
+
 ## September15 — ACTIVE World coverage clipping integration next
 
 Read docs/reviews/2026-09-15-world-far-coverage.md and
