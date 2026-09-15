@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — ACTIVE Off-Road existing projection-range admission
+
+Read docs/reviews/2026-09-15-usa-far-coverage.md. Nativefe1a862c784 frozen,
+SHAebed961ddfb838e75f3f79d9a85a4d3dc88dae0c18c8e9bbb0e960560ba48c5f,
+217patches reconstructd31f63cf92dd9d60c616570490cb1d93f3415adb.
+USA gated far-coverage uses shared World transport/mask. Four full independent
+savedscenes exact, oldquads retained+294/138/28/49;3native16Python PASS.
+Live3522inputs1721camera5163ADC/originalresources PASS;5289crossingpackets/masks
+exact. Actual3501scene9269+294quads matchesindependent;136depthpackets.
+21completed4KCRTimages:only3519/3520change26pixels each at horizon;19exact.
+Zero newnearblack andbelow-y1200exact. Tiny benefit; NOT speed/fullhandover claim.
+Isolatedhostscene changes1128/0/8/0pixels, neareroriginalgeometry hidesmost.
+LOCAL W/usa-far-live-qualified,usa-far-canonical,usa-far-native-export.
+
+OffRoad 16savedscenes firstfail94screen/0far, notfull-driveclassification.
+Existing3x sphere141888 vsprojection191040: LOCAL copiedheader raisesadmission
+toexistingprojection ceiling. Independent16scenes PASSoldorderedsubsetexact;
+10gain161..2115quads,6unchanged. NOTcanonical/nativeintegrated/visuallyaccepted.
+NEXT actualsavedtextures/paletteGPU check thenchoosegatedruntimecandidate.
+LOCAL W/offroad-admission-screen-v2; initialCRLFparserFAIL retained. USApalette
+u16assumptionFAIL retained/fixedu32. No currentgame/build/test. Currentmonitor4K.
+Personal87d/publicv0.5.0 unchanged. No deploy/release/FFB/hostedCI/menu removal.
+Continue directly whileparity remains; scopedchecks andserialrig.
+
 ## September15 — ACTIVE shared far-boundary reuse evaluation
 
 Read docs/reviews/2026-09-15-world-live-far-coverage.md. World gated private
