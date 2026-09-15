@@ -8,8 +8,8 @@ Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 
 All four games now have native host future-scenery implementations. This is
 implementation progress, **not accepted four-game 3× parity**. The
-[earlier per-game assessment](docs/reviews/2026-09-10-scenery-parity-status.md)
-separates visible benefit, performance and coverage; newer milestones are below. Personal Stream Deck
+[current remaining-work assessment](docs/reviews/2026-09-15-parity-remaining-work.md)
+separates visible benefit, performance and coverage; detailed milestones are below. Personal Stream Deck
 and the public package remain v0.5.0.
 
 - **FFB normalization, near-term:** deliver a versioned four-game strength-50
@@ -45,8 +45,8 @@ and the public package remain v0.5.0.
   restores approximately 100% speed in three Amazon driving windows while
   retaining the exact route, endpoint geometry and two completed 3840×2160 CRT
   images. The harness had maximized a covered GDI window behind Zeus's own
-  full-monitor display. Broader 4K temporal/margin checks, other tracks, the far
-  visibility boundary and final default regressions remain open.
+  full-monitor display. Other tracks, the far visibility boundary and final
+  default regressions remain separate requirements.
   The [current 4K temporal renewal](docs/reviews/2026-09-15-exotica-4k-temporal.md)
   now passes55 consecutive completed frames through original fade completion:
   added scenery, no newly near-black pixels and an unchanged fixed car region.
@@ -64,13 +64,10 @@ and the public package remain v0.5.0.
   third-band objects, and the old Amazon7188 original drawing covers the checked
   future-only contribution even after marked fade completion. A global fade
   still needs visible-boundary and ownership-continuity evidence.
-- **USA:** visible earlier scenery, including small 3× gains, but the last
-  measured 3× performance is approximately 97–98%. Reduce unnecessary projection
-  work while preserving visibility and original game behavior. The
+- **USA:** visible earlier scenery, including small 3× gains. The
   [descriptor-storage improvement](docs/reviews/2026-09-15-usa-descriptor-storage.md)
   reduces current4K preparation by8.7% with exact scene/image results, but driving
-  remains97.4%. Saved expensive scenes contain many wholly offscreen objects;
-  conservative horizontal rejection is the next measured opportunity.
+  remained97.4% in that pair. Saved expensive scenes contain many wholly offscreen objects.
   That [horizontal rejection](docs/reviews/2026-09-15-usa-horizontal-cull.md) now
   preserves seven4K images while reducing host submissions by74.6%. Matched
   capture-free subwindows improve98.18→99.68% overall; the busiest remains97.99%.
@@ -105,7 +102,9 @@ and the public package remain v0.5.0.
 
 Shared acceptance still requires useful visible benefit, stable materials,
 correct foreground occlusion, smooth activation handover, full-speed 4K and
-renewed default regressions on the final combined candidate. Do not remove the
+final package/default acceptance. The [seven existing default regressions](docs/reviews/2026-09-15-combined-default-regressions.md)
+now pass on nativeebe, including all four games' telemetry and21ExoticaGLimages;
+this does not clear packaging, fresh install or attended checks. Do not remove the
 existing experiments or deploy a nominal 3× replacement before those gates.
 
 ### Exotica rendering foundations and retained limitations
@@ -425,15 +424,15 @@ Relevant legacy IDs are retained below.
 
 | ID | Work | Next concrete step | Acceptance needed |
 |---|---|---|---|
-| C2 / A3 | Global host scenery | World2.4 future packed sections are implemented and visibly help at3x. Verify the separate road codec, complete integrity/occlusion/handover acceptance and add World2.5, USA, Off Road and Zeus adapters. Keep game layouts separate from shared math and acceptance. | Original inputs/camera/ADC and guest DMA/resources unchanged; visible benefit, correct occlusion/handover, repeatability, performance and attended cross-track coverage. |
-| C2 | Exotica admission | Trace render-register `0x15`: all 814 matched bias changes are 2047 → 0. Isolate state/order changes before native admission support. | Preserve original submissions/resources and repeat the candidate; additional admissions are not proof of visible scenery. |
-| C2 | USA global distance | Examine geometry and simulation differences in the repeatable CLI candidate before exposing it in the launcher. | Full candidate replay, scene/resource comparisons and an attended drive. |
+| C2 / A3 | Global host scenery | Adapters exist for all four games, including both World road revisions. Complete remaining visible-boundary, terrain, handover and cross-track acceptance before product integration. Keep game layouts separate from shared math and acceptance. | Original inputs/camera/ADC and guest DMA/resources unchanged; visible benefit, correct occlusion/handover, repeatability, performance and attended cross-track coverage. |
+| C2 | Exotica visibility | Combined admissions, waiting/active margins and original replacements pass full Amazon and a Hong Kong segment. Identify a visible outer boundary before implementing a continuous distance fade. | Preserve original submissions/resources, intrinsic blending and ownership through handover. Additional admissions or intermediate pixels are not proof of completed visible benefit. |
+| C2 | USA global distance | Horizontal rejection preserves the checked 4K images and improves measured speed to99.68% overall, with97.99% in the busiest window. Address the remaining measured cost only from profiling; broaden track/activation coverage before launcher integration. | Full candidate replay, scene/resource comparisons, stable4K output and an attended drive. |
 | C2 | World / Off Road distance | Broaden coverage beyond the current routes; determine whether activation or residency, rather than far clipping, limits additional benefit. | Matched completed images, timing and fresh drives; do not count extra admissions alone. |
 | C2 / G8 | Soften remaining scenery pop-in | Investigate distance-based alpha or fog transitions after the host scenery path is stable. Capture Exotica's existing appearance and trace its alpha/depth state as a reference; do not assume the same mechanism exists on V-Unit. Prefer a shared renderer transition with game-specific depth/material adapters. | Matched drives show reduced temporal jumps without transparent roads, halos, depth/order errors, temporal trails or new stutter. Preserve native translucency and shadows; fade static distant scenery only, with default-off A/B controls. Fading cannot reveal geometry before it is available. |
 | C3 | World New York artifacts/crash | Obtain a recorded race reproducing black flashes and, if reproducible, the 3×/+12 finish crash. Preserve the default/2× control. | Diagnose the first bad submission or guest instruction; retain the original failing recording. |
 | B8 | Broaden Cheats coverage | Live activation/replay is shipped and deployed. Validate rank/nitro and parameter effects individually; broaden actual race-end and code-restoration gameplay coverage beyond the current memory checks. | Exact-revision effects, correct restoration, recording fidelity and default-off regression controls. |
-| A3 | World future-section decoder | Final descriptor/override and partial frontier checks pass; bounded PC-owned section storage now draws eligible packed scenery. Finish GPU lifetime and road/custom-class coverage, plus exactly-once transition to ordinary drawing. | Correct XYZ/orientation/materials, no dynamic/physics initialization, no per-model/level allowlist, smooth presentation and transfer to ordinary guest drawing. |
-| B1 | Speed telemetry | Replace World's remaining OCR only after finding and guarding a real producer; retain validity/lifetime checks. | Actual outgoing packets versus independent memory/HUD evidence in both revisions. |
+| A3 | World future-section decoder | Both revisions and road codecs are implemented. The Hawaii gap has an authored in-range mesh boundary; investigate adjacent coverage/backdrop relationships. Matched custom handlers include dynamic work and cannot be blindly treated as static geometry. | Correct XYZ/orientation/materials, no dynamic/physics initialization, no per-model/level allowlist, smooth presentation and transfer to ordinary guest drawing. |
+| B1 | Speed telemetry | Guarded memory speed producers are implemented, including World. Renew their actual packet comparisons on the combined candidate and retain validity/lifetime checks. | Actual outgoing packets versus independent memory/HUD evidence in both revisions. |
 | B2 | Gear / estimated RPM coverage | Existing guarded gear/rev producers work across all four games. Broaden automatic/manual drives and higher-gear Off Road/Exotica coverage. | Real gauges/SimHub/Buttkicker plus independent traces; RPM remains an estimate from the game's rev signal. Never use E632. |
 | B4 / B9 | Per-game menu force controls | **Post-release.** Extend the Exotica Menu Force Feedback experiment to USA, World and Off Road after verifying each game's menu/driving/race-end states. Preserve current World passthrough until that work is requested. | Correct transitions, no stuck effects, recorded gate/source traces and attended wheel checks. Do not conflate this with force normalization or alter defaults without testing. |
 | B4 | Force normalization and impacts | **Near-term priority, requested September 10.** The actual-worker strength50 baseline now passes all four complete drives with unchanged game-source traces. Next review matched driving/contact windows, measure clipping and test versioned calibration. [Plan and checklist](docs/FFB-NORMALIZATION.md). Preserve World menu passthrough and Exotica DIP-aware polarity; assess gain/trim from data. | Comparable sustained force on the same wheel, impact headroom and contrast, correct centering, monotonic strength and attended stability checks. Software measurements and physical feel are separate acceptance items. |
