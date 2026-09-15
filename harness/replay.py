@@ -40,6 +40,7 @@ import world_host_options
 import vunit_original_mirror
 import vunit_host_failure
 import exotica_host_failure
+import exotica_journals
 import usa_host_options
 import offroad_host_options
 from display_target import parse_size
@@ -110,6 +111,7 @@ def main(argv=None):
     vunit_original_mirror.add_arguments(ap)
     vunit_host_failure.add_arguments(ap)
     exotica_host_failure.add_arguments(ap)
+    exotica_journals.add_arguments(ap)
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
@@ -302,6 +304,8 @@ def main(argv=None):
         if host_failure_trial:report['vunit_host_failure']=host_failure_trial
         exotica_failure_trial=exotica_host_failure.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
         if exotica_failure_trial:report['exotica_host_failure']=exotica_failure_trial
+        journal_trial=exotica_journals.configure(args,manifest['rom'],manifest['settings'])
+        if journal_trial:report['exotica_journals']=journal_trial
         worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
         if worker_trial:report['ffb_worker']=worker_trial
         # A screenshot can finish before later private scenes/materials. Drain
@@ -439,18 +443,21 @@ def main(argv=None):
         if margin_result:report['zeus_margin_clear']['result']=margin_result
         sky_result=zeus_sky_options.verify_receipt(sky_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if sky_result:report['zeus_sky']['result']=sky_result
-        scene_result=exotica_scene_options.verify_receipt(scene_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
-        if scene_result:report['exotica_host_scene']['result']=scene_result
-        lifetime_result=exotica_lifetimes.verify_receipt(lifetime_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
-        if lifetime_result:report['exotica_lifetimes']['result']=lifetime_result
-        waiting_result=exotica_waiting.verify_receipt(waiting_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
-        if waiting_result:report['exotica_waiting']['result']=waiting_result
-        handover_result=exotica_handover.verify_receipt(handover_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
-        if handover_result:report['exotica_handover']['result']=handover_result
-        endpoint_result=exotica_model_endpoint.verify_receipt(endpoint_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
-        if endpoint_result:report['exotica_model_endpoint']['result']=endpoint_result
-        depth_result=zeus_depth_mirror.verify_receipt(depth_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
-        if depth_result:report['zeus_depth_mirror']['result']=depth_result
+        journal_result=exotica_journals.verify(journal_trial,runtime)
+        if journal_result:report['exotica_journals']['result']=journal_result
+        if not journal_trial or journal_trial['mode']!='quiet':
+            scene_result=exotica_scene_options.verify_receipt(scene_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+            if scene_result:report['exotica_host_scene']['result']=scene_result
+            lifetime_result=exotica_lifetimes.verify_receipt(lifetime_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+            if lifetime_result:report['exotica_lifetimes']['result']=lifetime_result
+            waiting_result=exotica_waiting.verify_receipt(waiting_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+            if waiting_result:report['exotica_waiting']['result']=waiting_result
+            handover_result=exotica_handover.verify_receipt(handover_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+            if handover_result:report['exotica_handover']['result']=handover_result
+            endpoint_result=exotica_model_endpoint.verify_receipt(endpoint_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+            if endpoint_result:report['exotica_model_endpoint']['result']=endpoint_result
+            depth_result=zeus_depth_mirror.verify_receipt(depth_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
+            if depth_result:report['zeus_depth_mirror']['result']=depth_result
         mirror_result=vunit_original_mirror.verify(mirror_trial,runtime)
         if mirror_result:report['vunit_original_mirror']['result']=mirror_result
         stall_result=zeus_stream.verify_stall(stall_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))

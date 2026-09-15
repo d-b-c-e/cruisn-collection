@@ -1,5 +1,27 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 quiet journals — qualified output; counters/windows next
+
+Read docs/reviews/2026-09-15-exotica-quiet-journals.md. Nativef02c990e3a5 frozen
+SHA0fc70a285c43cc35f647dacbc62686de6b38ba0558e2d95b8fece8f68d6ff858;238patches
+tree78a84611ee513ffdaaca897c0de83d6adac863ff. CLI --exotica-journals capture|quiet;
+quiet requires fullcombinedExo/liveGL/markedendpoints/FFB0. ExplicitnativeCPU/GPU
+policyack; harness19strictsummary/writercontracts and no routinejournalfiles;
+report independent_event_journals=false,continuous=false. Original input/GL
+validation remains. FivePython tests + nativepolicy test PASS.
+Predecessorf048 quiet5300Amazon PASS:191savedcamera/ADC/source/resource/target
+files and all4completed3840CRT5220/5224/5228/5232 exactlyd18capture. Deterministic
+summaryfields exact;51,570,124bytes/20journals omitted. Review retained bounded
+endpoint-inputs selected/firstfailure operands in f02, leaving19routinejournals
+off. f02buildPASS; no additional fullreplay solelyforfile-retention-only fix.
+R/quiet-journals-qualified.json retainsolder20file scope; don'tretrofitasf02proof.
+Export-quiet-journals.py and export-quiet-operands.py ALREADYRUN. No processes.
+Primary4KDISPLAY2,secondaryDISPLAY1. Personal87d/publicv0.5.0unchanged.
+NEXT checked cumulative diagnostic counters forquiet, keeping live4096slots/
+tickets,32768admissions,UINT32endpointIDs, snapshotfilebounds. Bindingcount10000
+and emissions20million also accumulate. Fixedwindows/startup/reset stillopen.
+Continue usefulparity work, no deploy/release/hostedCI/physicalFFB/broadrepeat.
+
 ## September15 journal integration — capture qualified at primary4K
 
 Read docs/reviews/2026-09-15-exotica-journal-integration.md. Native d18bf17d820

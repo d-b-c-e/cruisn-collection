@@ -1,0 +1,21 @@
+MIDZ_HOST_JOURNALS cpu=quiet
+MIDZ_HOST_JOURNALS gpu=quiet
+MIDZ_ENDPOINT_EARLY_RESULT complete=1 scenes=3429 permissions=55564
+MIDZ_MODEL_ADMIT_RESULT complete=1 packets=6857 bytes=10061544
+MIDZ_MODEL_ENDPOINT_RESULT complete=1 commits=9695 consumed=9695 untracked=743525 prepared=9695 rejected=0 snapshots=11 bytes=50960 remaining=0
+MIDZ_LIFETIME_RESULT complete=1 records=50690 transitions=37132 bindings=1895 emissions=534046 owned=490561 draws=11662 first_draws=1832 fading=9842 opaque=412 epochs=1
+MIDZ_HOST_COMPOSE_RESULT complete=1 scenes=3429
+MIDZ_HOST_HANDOVER_RESULT complete=1 scenes=3429 captured=536711 submitted=1415 retired=0 bytes=25899288 snapshots=3 remaining=0
+MIDZ_HOST_WAITING_RESULT complete=1 scenes=3429 candidates=536711 quads=3084194 snapshots=3 remaining=0
+MIDZ_HOST_ACTIVE_RESULT complete=1 scenes=3429 quads=221188 remaining=0
+MIDZ_HOST_FENCE_RESULT complete=1 requested=3429 completed=3429 immediate=662
+MIDZ_HOST_MATERIALS_RESULT queued=10287 hash=89900b813daaccdb
+MIDZ_HOST_SCENE_RESULT complete=1 prepared=3429 matched=3429 quads=4541234 snapshots=3 pending=0 remaining=0
+MIDZ_ENDPOINT_GPU_RESULT complete=1 pairs=74010
+MIDZ_DEPTH_MIRROR_RESULT complete=1 frames=5289 batches=142080 vertices=61966311 clears=7775 snapshots=3 remaining=0
+MIDZ_DEPTH_MIRROR_WRITER submitted=12 written=12 failed=0 rejected=0 peak_bytes=313786368 write_total_us=12365183 write_max_us=3114333 drain_us=3567999 waits=0 wait_us=0
+MIDZ_HOST_FUTURE_GPU_RESULT complete=1 scenes=3429 quads=4541234 snapshots=3 written=12 failed=0 rejected=0
+MIDZ_HOST_WAITING_DRAW_GPU_RESULT complete=1 scenes=3429 quads=3072588 snapshots=3 written=12 failed=0 rejected=0
+MIDZ_HOST_ACTIVE_WRITER submitted=12 written=12 failed=0 rejected=0 peak_bytes=313786368 write_total_us=12666327 write_max_us=3208300 drain_us=67 waits=0 wait_us=0
+MIDZ_HOST_ACTIVE_GPU_RESULT complete=1 scenes=3429 quads=221188
+MIDZ_HOST_MATERIALS_GPU_RESULT complete=1 received=10287 snapshots=9 hash=89900b813daaccdb
