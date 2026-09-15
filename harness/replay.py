@@ -41,6 +41,7 @@ import vunit_original_mirror
 import vunit_host_failure
 import exotica_host_failure
 import exotica_journals
+import exotica_bootstrap
 import usa_host_options
 import offroad_host_options
 from display_target import parse_size
@@ -112,6 +113,7 @@ def main(argv=None):
     vunit_host_failure.add_arguments(ap)
     exotica_host_failure.add_arguments(ap)
     exotica_journals.add_arguments(ap)
+    exotica_bootstrap.add_arguments(ap)
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
@@ -306,6 +308,8 @@ def main(argv=None):
         if exotica_failure_trial:report['exotica_host_failure']=exotica_failure_trial
         journal_trial=exotica_journals.configure(args,manifest['rom'],manifest['settings'])
         if journal_trial:report['exotica_journals']=journal_trial
+        bootstrap_trial=exotica_bootstrap.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
+        if bootstrap_trial:report['exotica_bootstrap']=bootstrap_trial
         worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
         if worker_trial:report['ffb_worker']=worker_trial
         # A screenshot can finish before later private scenes/materials. Drain
@@ -443,6 +447,8 @@ def main(argv=None):
         if margin_result:report['zeus_margin_clear']['result']=margin_result
         sky_result=zeus_sky_options.verify_receipt(sky_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if sky_result:report['zeus_sky']['result']=sky_result
+        bootstrap_result=exotica_bootstrap.verify(bootstrap_trial,runtime)
+        if bootstrap_result:report['exotica_bootstrap']['result']=bootstrap_result
         journal_result=exotica_journals.verify(journal_trial,runtime)
         if journal_result:report['exotica_journals']['result']=journal_result
         if not journal_trial or journal_trial['mode']!='quiet':
