@@ -1,5 +1,35 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — Hong Kong combined path passes; far appearance next
+
+Read docs/reviews/2026-09-15-exotica-track-resets.md. Nativec7e3e6b456f frozen
+SHA4a69ed65998705298bcb17495461403fa5e82e920be954747cbcc89b131d76b4;
+221patches reconstructf62dd86d148e7b1e698e632c31198b4415de213d.
+FirstHongKong failed1986PC85b4 globalclear; qualified exactloop/zeroedprefix/
+head/count/tail before resetC. Nextfailed3454 originalfree of externallycreated
+menuobjects. Guarded external adoption ONLYoutsideverifiedresetpool, withactual
+free/link/count checks; known doublefree/in-poolunknown remainrejected.
+Raw3500controlPASS; independent5800transactions/sixexternaladoptions exactnative
+registry,5121oldnativeevents sameprefix. 8Python lifetime+native registryPASS;
+earlierclear27Python/one native+actualheadguardPASS. UpdatedAmazonfold86376records/
+48481transitions exactpriorreceipt, NOnewAmazongame. Readonly2300probe retained
+emptyGLFAIL; separate2300inputs/38nativeimages/491camera1473ADC qualified. OldCRT-off
+HongKong images unsuitableforpixelcomparison; freshCRTcontrol used.
+Samec7 complete6000input original/extended pairPASS,4191camera12573ADC exactold.
+8939marked prepared0reject,6571admitted57524GPUquads6545models,69195earlypermissions.
+4121scenes12363materialstages; allnontimingfields/68files(57binary)exact, including
+completed5001original/privatecolor+depth. Scene5000 independent7147sources790instances
+4854q. Noendpointmodelbinaryat5000 (zero marked draws on exactframe), don'tclaimit.
+21completed4KCRT4990..5010 change2357..28837pixels; fixedcarROI1500,1450..2300,1950
+exactall21. Max184newnearblackat5008 inspectedrightfoliage; NOTzero-blackacceptance.
+Twofixedwindows~100%speed; instrumentedcallbacktiming, notGPU/FFB/log-freeverdict.
+LOCALR combined-hong-kong-qualified-v2,scene5000,cost and external-pool-*.
+Initialpairchecker wrongframeskeyFAILretained, correctedexpected_frames/capture_paths.
+No game/build/test now. NEXT assess saved far-boundary firstappearance/fade policy,
+then targeted4K temporal/margin/defaultcombined gates. No fullHongKongrace claim.
+Personal87d/publicv0.5.0 unchanged; no deploy/release/physicalFFB/hostedCI/menu removal.
+Continue directly whileparity remains; serialrig and no broadscans/builds duringgames.
+
 ## September15 — Exotica full speed recovered; different-track coverage next
 
 Read docs/reviews/2026-09-15-exotica-owner-window.md and

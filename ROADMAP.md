@@ -47,6 +47,12 @@ and the public package remain v0.5.0.
   images. The harness had maximized a covered GDI window behind Zeus's own
   full-monitor display. Broader 4K temporal/margin checks, other tracks, the far
   visibility boundary and final default regressions remain open.
+  A [complete combined Hong Kong trial](docs/reviews/2026-09-15-exotica-track-resets.md)
+  exposed and fixed pre-race pool clearing and external-object adoption. Its
+ 6000-input control/candidate pair now passes with8939marked preparations and
+  zero rejections,21completed4KCRT comparisons and approximately full speed.
+  This is a synthetic second-track segment, not a complete race or all-track
+  acceptance. Sparse small new dark foliage pixels remain explicitly recorded.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior. The

@@ -70,6 +70,49 @@ The221-patch export reconstructs `f62dd86d148e7b1e698e632c31198b4415de213d`.
 Local evidence: `hong-kong-pool-transactions`, `external-pool-qualified`,
 `external-pool-export.json` and `combined-hong-kong-external`.
 
+## Completed Hong Kong pair
+
+The corrected candidate and a matching original-display control now each
+complete6000inputs. Both still compute the complete private3× scene; only the
+displayed target changes. All4191camera/12573ADC rows match the earlier control.
+All8939marked preparations succeed with zero rejections;6571queries qualify for
+prior admission, producing57524GPU quad pairs across6545models. The complete
+lifetime fold covers21820records/10829transitions,1135bindings and seven epochs.
+
+All saved original/private buffers and resource binaries are identical between
+the two display modes, including completed5001 original/mirror color and depth.
+All deterministic scene, material, lifetime, admission and endpoint records
+match. The independent scene5000 decoder verifies7147source definitions,
+790instances and4854quads. No original-model endpoint binary was saved at5000
+because no marked preparation occurred on that exact frame; it is not claimed
+as an independently decoded endpoint sample.
+
+All21completed3840×2160 CRT frames4990–5010 show changes, ranging2357–28837pixels.
+The fixed inspected car region (1500,1450)–(2300,1950) stays identical throughout.
+The largest new-near-black count is184pixels on5008, localized in the dark
+right-side vegetation and inspected against the control; this is not a
+zero-new-black result or evidence that every margin defect is gone. There is
+no large black road patch in these inspected views. The earlier non-CRT
+comparison was unsuitable for quantifying rendering changes and was not used.
+
+Both fixed noncapture windows (3600–4800 and5200–5988) measure approximately
+100% emulation speed. These are instrumented callback timings, with occasional
+longer callbacks retained in the report, not GPU latency or a log-free/physical
+FFB release verdict. This synthetic first-gear route is a second-track check,
+not a complete Hong Kong race or equivalent evidence for all four games.
+
+Acceptance reports: `combined-hong-kong-qualified-v2`,
+`combined-hong-kong-scene5000.json` and `combined-hong-kong-cost.json`.
+The first local pair checker used the wrong capture-request field name and
+failed; its artifact is retained. The corrected checker uses the canonical
+request schema and capture-path reader, without another game run.
+
+The updated independent lifetime fold also reproduces the accepted Amazon
+receipt exactly:86376records/48481transitions,26initial unknown frees and two
+epochs (`external-pool-amazon-fold.json`). No new Amazon native-game regression
+is implied. Next qualify gradual far-boundary appearance from saved scenes and
+renew targeted4K temporal/margin evidence before the final combined defaults.
+
 Local evidence in `results/diagnostics/exotica-amazon-20260909`:
 `combined-hong-kong`, `hong-kong-pool-clear`, `pool-clear-qualified`,
 `pool-clear-export.json`, `combined-hong-kong-clear` and their plans/logs.
