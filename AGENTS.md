@@ -1,5 +1,27 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 solid-color correctness — qualified separate backport
+
+Read docs/reviews/2026-09-15-zeus-upstream-refresh.md. Upstream#16094 mergedSept12
+samehead54b alreadyisolated; #16122 mergedSept13 addsGridmesh+solidcolorR06.
+Sixsavedoriginaljournals1566models25493commands:38solidsallold/newzero, no8wordmesh.
+No knownblackmargin/pop-infix claimed. BackportONLYR06colortosourcedeviceproducer
+(feedsCPU+GL), canonicalzeus_model.h andindependentPython. Two native10PythonPASS;
+sixactualmodeloracles15941emittedquadbytesEXACT(includesduplicate5000window).
+Nativea87729610ae frozen SHAa255be67964d2fd461de41b310af0738752d5537b902b3b913966182d40df9e8;
+232patches reconstruct239fd82e5d0f1049068bab8b5f22f7138e0e1aa8. Exportsolidfill.py
+ALREADYRUN, receiptLOCALR/solidfill-native-export.json. One5300inputsame2xsettings
+regressionPASS283savedfiles/original+privateS4targets/allnontimingpipeline exact:
+3429scenes10287material74010endpointGPUrows. No unrelatedsuite. No game/build/test
+now. Current3440x1440, NOTnew4K/performance/visiblegain. Personal87d/v0.5.0unchanged.
+RepoPUBLIC/anonymouslatestv0.5.0 verified; staleRELEASE-CHECKLISTprivateclaimfixed.
+No openupstreamPRkeywordzeus/midvunit; filehistoriesreviewedcorrectwilliams/device
+paths. Open-viewExotica recordingquestionpending; noattendedlaunchuntilreply.
+Next considerproductionruntime separation: existingboundedcapture/fatalguard
+adapters cannotjustbeexposedasplayerfeatures. Preserve strictdiagnosticfailures;
+needcontinuous runtime, boundedcost anddefinedoriginalfallback beforepromotion.
+Continueindependentparitywork; no deploy/release/hostedCI/physicalFFB/menu removal.
+
 ## September15 Exotica sample selection — no additional runtime change
 
 Read docs/reviews/2026-09-15-exotica-distance-sample-selection.md. Nine saved

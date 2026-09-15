@@ -23,6 +23,8 @@ assuming that a source feature is present in a downloaded package.
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
 | [Remaining scenery release gates](reviews/2026-09-15-parity-remaining-work.md) | Current four-game evidence, unresolved coverage and the work needed before promotion |
 | [World road coverage repair](reviews/2026-09-15-world-road-polygon-coverage.md) | Verified Germany margin repair, World 2.5 compatibility and displayed-scene diagnostics |
+| [Exotica distance sample selection](reviews/2026-09-15-exotica-distance-sample-selection.md) | Avoiding empty or foreground-hidden third-band comparisons |
+| [Latest Zeus upstream review](reviews/2026-09-15-zeus-upstream-refresh.md) | Qualified solid-color register backport and the deferred mesh changes |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |
 | [Exotica marked fades and handover](reviews/2026-09-14-exotica-marked-fades.md) | Corrected offline endpoint, completed-pixel differences and the original-fade transition risk |

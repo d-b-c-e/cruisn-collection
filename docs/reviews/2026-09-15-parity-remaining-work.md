@@ -86,9 +86,20 @@ those same windows merely to obtain a positive result.
 3. Keep World's authored terrain gap separate from far-plane clipping. Find the
    adjacent coverage or backdrop relationship before considering generated
    geometry; increasing an already sufficient far plane cannot extend a mesh.
-4. After the rendering policy is stable, expose coherent per-game controls and
+4. Separate production operation from diagnostic capture. The current adapters
+   have bounded observation intervals and deliberate fatal guards. A normal
+   gameplay mode needs continuous operation, bounded resource use and an explicit
+   fallback/reporting contract for an unsupported scene before these controls
+   are suitable for player use. Keep diagnostic failures strict and visible;
+   do not silently count degraded output as passing parity.
+5. After the rendering policy is stable, expose coherent per-game controls and
    renew final package/default/4K gates. Obtain attended cross-track and wheel
    acceptance; do not treat prior-release waivers as acceptance of these changes.
+
+The [September15 upstream refresh](2026-09-15-zeus-upstream-refresh.md) also
+backports the Zeus2 solid-color register correction separately. The frozen
+successor preserves the sampled Exotica original/private output; it is not a
+new distance or black-margin improvement.
 
 Local evidence: `world25-roads-20260914/horizontal-cull-cross-game-screen.json`
 and `exotica-amazon-20260909/far-appearance-immediate5644/` under

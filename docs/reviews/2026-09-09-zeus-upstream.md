@@ -142,6 +142,10 @@ guarded A/B trial are next. Keep the earlier frame3600 failure as unresolved.
 
 ## Relevant changes
 
+Historical table below records the September9 evaluation. See the
+[September15 refresh](2026-09-15-zeus-upstream-refresh.md) for the merge of#16094,
+the newer mesh/solid-fill change and its saved Exotica operand audit.
+
 | Upstream work | Local status | Action |
 |---|---|---|
 | [Open #16094: depth and blending](https://github.com/mamedev/mame/pull/16094), head `54b7ec0720e1d3a3d26a2e881b06628f78732837` | Added to a separate, default-off diagnostic candidate | Isolated A/B trials against Amazon and Hong Kong; CPU, GPU and independent oracles carry matching selectable semantics. |
