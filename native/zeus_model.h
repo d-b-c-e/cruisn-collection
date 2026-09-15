@@ -106,7 +106,9 @@ inline int project_prepared(const uint32_t *d,uint32_t tex,const Context &ctx,co
     if(type==2 && !alpha)flags|=128;
     uint32_t width=0x20<<((mode>>2)&3);if(type==0)width>>=1;
     const uint32_t bias=uint32_t(int32_t(ctx.render[0x15]<<8)>>8);
-    quad.state={{ctx.frame,count,tex,ctx.texture,width,ctx.regs[0]&0x7fff,
+    // Zeus2 solid fill uses render R06; host R00 is a status register.
+    // Keep this synchronized with the device producer (upstream #16122).
+    quad.state={{ctx.frame,count,tex,ctx.texture,width,ctx.render[6]&0x7fff,
         (mode&0x180)?0U:0x100U,mat.source_alpha,std::min(ctx.render[0xd],0x100U),
         flags,bias,ctx.render[4],ctx.yscale,0,0,ctx.render[1]&0xfff,ctx.render[2]&0xfff}};
     quad.vertices=output;return any_clipped?3:2;

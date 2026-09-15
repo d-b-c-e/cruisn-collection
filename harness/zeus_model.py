@@ -84,7 +84,7 @@ def decode(r):
    if typ==2 and not alpha:flags|=128
    width=0x20<<((mode>>2)&3)
    if typ==0:width>>=1
-   fields=[r['frame'],len(points),tex,texture,width,regs[0]&0x7fff,0 if mode&0x180 else 0x100,
+   fields=[r['frame'],len(points),tex,texture,width,render[6]&0x7fff,0 if mode&0x180 else 0x100,
     mat['source_alpha'],min(render[0xd],0x100),flags,signed(render[0x15],24)&0xffffffff,render[4],r['yscale'],0,0,render[1]&0xfff,render[2]&0xfff]
    result.append((fields,points))
   else:raise ValueError('unsupported model command '+hex(cmd))

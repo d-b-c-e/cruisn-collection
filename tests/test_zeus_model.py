@@ -18,6 +18,15 @@ def fixture():
 
 
 class ZeusModelTests(unittest.TestCase):
+    def test_solid_color_uses_current_render_register(self):
+        r=fixture();r['words'][1]=0x0c01
+        r['regs'][0]=0x03e0;r['render'][6]=0x807c00
+        r['words'] += [0x36200000,0x0600001f]+fixture()['words'][2:]
+        original=deepcopy(r);quads,_=decode(r)
+        self.assertEqual(r,original)
+        self.assertEqual([q[0][5] for q in quads],[0x7c00,0x001f])
+        self.assertTrue(all(q[0][9]&1 for q in quads))
+
     def test_state_isolation_and_material_flags(self):
         r=fixture();r['words']=[0x36200000,0x05000005]+r['words'];original=deepcopy(r)
         quads,stats=decode(r)

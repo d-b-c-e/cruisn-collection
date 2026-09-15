@@ -13,6 +13,17 @@ int main()
     const auto baseline=r.quads[0];assert(baseline.state[1]==4 && baseline.state[9]==28);
     assert(baseline.vertices[0][0]<256 && baseline.vertices[2][0]>256);
     assert(baseline.state[15]==511 && baseline.state[16]==399);
+    {
+        auto solid=words;solid[1]=0x0c01;
+        Context color=c;color.regs[0]=0x03e0;color.render[6]=0x807c00;
+        assert(decode(solid,color,r) && r.quads.size()==1);
+        assert((r.quads[0].state[9]&1) && r.quads[0].state[5]==0x7c00);
+        solid.insert(solid.end(),{0x36200000,0x0600001f});
+        solid.insert(solid.end(),words.begin()+2,words.end());
+        assert(decode(solid,color,r) && r.quads.size()==2);
+        assert(r.quads[0].state[5]==0x7c00 && r.quads[1].state[5]==0x001f);
+        assert(color.render[6]==0x807c00 && color.regs[0]==0x03e0);
+    }
     auto material=words;material.insert(material.begin(),{0x36200000,0x05000005});
     assert(decode(material,c,r) && r.quads[0].state[3]==5 && c.texture==0 && c.render[5]==0);
     material=words;material[1]=0x82;
