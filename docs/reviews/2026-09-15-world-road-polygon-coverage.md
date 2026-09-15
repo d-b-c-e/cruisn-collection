@@ -90,12 +90,30 @@ connectivity are retained; this is not a claim that every changed pixel is black
 artifact-free or that all tracks are accepted. The live integrity/prediction
 report passes separately from that strict pixel metric.
 
-World2.5 compatibility and cost review remain pending at this checkpoint. No
-deployment or public release is authorized by these checks. Personal/Stream
-Deck87d and publicv0.5.0 are unchanged.
+World2.5 also passes6000 recorded inputs,4191 camera samples and12573 ADC reads.
+Its1666 source/frontier rows remain stable, with75 additional polygons across the
+segment. All eight GPU planes at5900, the captured resources and completed1280x720
+image match the earlier active-road candidate. This is a second-revision segment
+on the4K monitor, not a renewed full4K cross-track qualification. Its metadata-
+enabled path consumes4121980 packets and195330 authored road packets; the5922
+captured producer/consumer packets are byte-identical and independently decoded.
+No distance fade is enabled in that compatibility check.
+
+The preselected Germany5000..6500 window, before resource or screenshot captures,
+measures100.0044% in the control and100.0084% in the successor. Preparation totals
+are1.22865s and1.23872s. This single instrumented pair shows neither a meaningful
+speed gain nor a throughput regression in that window. Whole-run averages include
+the deliberate snapshot stalls and do not establish final uninstrumented speed.
+No additional runs were made merely to improve the timing result.
+
+No deployment or public release is authorized by these checks. Personal/Stream
+Deck87d and publicv0.5.0 are unchanged. Remaining work includes other tracks,
+World's authored terrain edge, visible distance transitions and the final package
+and attended acceptance gates.
 
 Local evidence is under `results/diagnostics/world25-roads-20260914/`:
 `germany-residual-resources`, `germany-residual-qualified/resources-qualified-v2.json`,
 `polygon-depths-initial-failure.json`, `polygon-depths-qualified-v2.json`,
 `coverage-scenes-qualified.json`, `coverage-native-pixels.json`,
-`germany-polygon-coverage-qualified.json`, and `germany-polygon-new-black.json`.
+`germany-polygon-coverage-qualified.json`, `germany-polygon-new-black.json`,
+`world25-polygon-coverage-qualified.json`, and `germany-polygon-coverage-cost.json`.

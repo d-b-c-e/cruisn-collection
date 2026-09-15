@@ -9,7 +9,7 @@ features; the personal installation and public v0.5.0 package are unchanged.
 | Game | Latest useful evidence | Remaining requirement |
 | --- | --- | --- |
 | USA | Conservative horizontal rejection preserves seven 4K captures, cuts submitted future quads by 74.6%, and improves six measured windows from 98.18% to 99.68% speed overall. | The busiest window still measures 97.99%. Broader track and activation coverage remain; small far-coverage gains are not elimination of pop-in. |
-| World 2.4 / 2.5 | Both future adapters and both road codecs are implemented. The 2.5 far-coverage candidate adds distant coverage in 18 of 21 completed 4K frames. | Hawaii's exposed authored terrain edge remains. New York artifacts/crash need their own reproduction. Coverage, handover and occlusion must be evaluated beyond the current routes. |
+| World 2.4 / 2.5 | Both future adapters and both road codecs are implemented. The 2.5 far-coverage candidate adds distant coverage in 18 of 21 completed 4K frames. Active-road polygon recovery now repairs the sampled Germany black/pale road gaps, passes the full drive and a 2.5 compatibility segment, with exact original buffers and recorded inputs. | Hawaii's exposed authored terrain edge remains. New York artifacts/crash need their own reproduction. Coverage, handover and occlusion must be evaluated beyond the current routes. |
 | Off Road | Complete El Paso 2×/3×/repeat preserves the drive; 3× changes 22 of 66 images over 2× and repeats all 66 exactly. Late original resources and a nonempty future scene pass. | Other courses and broader foreground/handover coverage remain. The wider-admission trial adds geometry but changes none of its 21 completed frames; it is not a product improvement. |
 | Exotica | Combined future/waiting/active margins and original replacements pass the Amazon route. Current 4K temporal checks retain earlier foliage through handover, preserve the car region and repair sampled black wedges. Correcting the harness's covered-window size restores approximately 100% in measured windows. Hong Kong also passes a second-track segment. | The outer visibility boundary still needs a useful, continuous transition. Hong Kong is not a complete attended race, and its saved frame5000 contains no third-band objects. Other courses and final combined defaults remain separate gates. |
 
@@ -48,8 +48,12 @@ Do not run another whole drive merely to inflate submission counts.
 The [active-road margin recovery](2026-09-15-world-active-road-margins.md) now
 repairs the sampled Germany1:37 black wedge in all five compared current4K
 frames. Original route/resources/draw commands remain exact. This nearby-road
-repair is separate from far-distance parity; World2.5 live coverage and broader
-track/handover acceptance remain open. The diagnostic stays off by default.
+repair is separate from far-distance parity. The subsequent
+[polygon coverage repair](2026-09-15-world-road-polygon-coverage.md) also fills the
+two residual Germany1:35.69 holes and passes the full recording plus World2.5
+compatibility. Its entire displayed indexed page matches the independently
+reconstructed proposal. Broader track/handover acceptance remains open. The
+diagnostic stays off by default.
 
 The subsequent [World fade comparison](2026-09-15-world-germany-distance-fade.md)
 preserves the Germany drive and all 31 completed current-4K images, but changes

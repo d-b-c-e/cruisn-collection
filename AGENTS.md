@@ -1,6 +1,6 @@
 # Cruis'n POC — Codex Agent Instructions
 
-## September15 polygon road coverage — live Germany repair; World2.5 running
+## September15 polygon road coverage — both World revisions qualified
 
 Read docs/reviews/2026-09-15-world-road-polygon-coverage.md. Native0ce0f02457a frozen
 SHA0ce0468292f0e33828ae8b1bf855cca5db6cf34b08e9e025a377077f3bf32d53;
@@ -25,8 +25,15 @@ Paired7270viewed largepalepatch repaired, no newmissingregion seen; strictzero
 metric stillNOTPASS. Smalloldpaletriangle remains nearviewportedge. LOCALW=
 results/diagnostics/world25-roads-20260914; germany-polygon-coverage-qualified,
 germany-residual-qualified, germany-polygon-new-black. Export scripts ALREADYRUN.
-World25 polygon-coverage6000input replay withfadeMETADATA(no fade) running now;
-next qualify against world25-active-roads/original-mirror-host, then cost/remainder.
+World25 polygon-coverage6000inputs4191camera12573ADC PASS; all8planes5900/resources/
+1280x720completedimageexact;1666source rowsstable +75q. Metadata(no fade)4121980
+packets195330roads,5922captured producer/consumerbytesexact. Germany preselected
+5000..6500 speed100.0044->100.0084%,prepare1.22865->1.23872s; no further timing run.
+No game/build/test now. NEXT improve reusable displayed-page selection: mirror
+ordinary_quads is exact consumed original DMA prefix (7280 count3756893; raw
+through7280 has3756898, five later background commands). Select visible physical
+page from that prefix, not final draw page or guessed frame subtraction. Verify
+against saved7277/7340/World25 evidence; no new game needed for harness work.
 No broaddefault suite/repeatedtiming runs. Personal87d/publicv0.5.0unchanged.
 No deploy/release/hostedCI/physicalFFB/menuremoval. Current4Kmonitor, serialrig.
 Continue directly after checkpoints while parity work remains.
