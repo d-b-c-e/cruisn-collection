@@ -84,6 +84,27 @@ def indexed_fragment_shader(original):
     return shader
 
 
+def mirror_fragment_shader(source):
+    """Duplicate ordinary index/mask writes to MRT3/4 in a single traversal.
+
+    Auxiliary draws MUST disable attachments3/4 (or bind an extended-only FBO).
+    CPU index writes use the same wrapper. Opacity is one unless the input shader
+    already computes it. No page clearing or source classification is inferred.
+    """
+    if (source.count('void main() {') != 1 or 'outIndex;' not in source or
+            'outMask;' not in source or 'outOriginalIndex' in source):
+        raise ValueError('unsupported indexed shader for original mirror')
+    has_alpha = 'layout(location=2) out float outFadeAlpha;' in source
+    declarations = '' if has_alpha else 'layout(location=2) out float outFadeAlpha;\n'
+    declarations += ('layout(location=3) out uint outOriginalIndex;\n'
+                     'layout(location=4) out uint outOriginalMask;\n')
+    body = 'void main() {\n mirror_source();\n'
+    if not has_alpha:
+        body += ' outFadeAlpha=1.0;\n'
+    body += ' outOriginalIndex=outIndex;\n outOriginalMask=outMask;\n}\n'
+    return source.replace('void main() {', 'void mirror_source() {') + declarations + body
+
+
 def palette_shader(original):
     """Resolve both index views late, retaining separate seam/dither ownership.
 

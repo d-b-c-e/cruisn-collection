@@ -116,3 +116,46 @@ Local evidence under `results/diagnostics/world25-roads-20260914/`:
 `distance-fade-underlay` (their owners), `distance-fade-v5` (corrected sweep), and
 `distance-fade-canonical-v2` (explicit canonical qualification). Raw game data stays
 local. Personal Stream Deck/public v0.5.0 are unchanged.
+
+
+## Follow-up: mirrored GPU writes and deferred sweep
+
+The standalone mirror shader now duplicates ordinary indices and masks into two
+additional render targets in one geometry traversal. Auxiliary draws use an
+extended-only framebuffer; sparse CPU writes replace both views and reset opacity
+only at dirty pixels. A GPU fixture verifies those routes, discarded translucent
+pixels, a later opaque foreground and isolation from the other page. Its ordinary
+mirror matches the unchanged legacy shader. This is not yet native integration.
+
+On the actual saved World scene, three ordered batches (original, auxiliary,
+original) produce byte-exact extended indices/masks and written opacity compared
+with the earlier combined draw. The original-only targets match a separate legacy
+render exactly: 2,867 ordinary and 8,597 auxiliary quads. Unwritten opacity starts
+at one. Evidence: `mirror-scene/report.json`.
+
+The deferred policy also has its own 21-step stationary far-plane sweep, from
+220,000 to 240,000 in 1,000-unit steps. The maximum summed absolute RGB change
+falls from 587,507 to 330,999 with CRT off (43.66%), and from 568,538 to 359,701 with
+CRT on (36.73%). Every step preserves the lower foreground below fine y1000 and
+introduces zero newly fully black pixels. The final indexed control remains exact.
+These are image-difference metrics from one stationary scene, not a percentage
+reduction in perceived gameplay pop-in. The previously exposed terrain underside
+is still visible; fading does not supply missing terrain.
+
+The first sweep was rejected: creating and releasing separate palette-resolve GL
+contexts left the next geometry render without its context restored, producing
+implausible whole-screen changes. Its report is retained as failed. The corrected
+sweep explicitly restores the scene context and bindings, requires bounded local
+changes, and compares the last indices with the independent saved control.
+Evidence: `deferred-fade-sweep-v2/report.json`. No game was rerun for this correction.
+
+Nine focused fade tests pass. Initial mirror assertions incorrectly expected the
+high-resolution dither-smoothing mask at scale1 and bounded reciprocal-depth float
+error too tightly (1.1325e-6 versus a 1e-6 bound). Both failures are retained; the
+expectations now follow the existing scale1 mask and an explicit 2e-6 alpha bound,
+well below one 8-bit color code. Neither required changing the material shader.
+
+Native implementation still needs separately owned page resets, mirrored CPU
+uploads, bounded capture receipts and per-quad depth/protected-road transport.
+The helper and these tests do not yet enable a launcher feature. No native build,
+deployment or release changed for this work.
