@@ -1,5 +1,37 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 V-Unit fallback qualified; NEXT Exotica ordered retirement
+
+Read docs/reviews/2026-09-15-vunit-preparation-fallback.md and
+2026-09-15-exotica-stop-boundary.md. Nativee1f9ce0f17f frozen SHA
+2c2d462fa1b8bbc60f3a5fc4b91c5cdcf491f8963c0825ed0b90171c37f48647;
+234patches reconstruct47ccb660151557b52067d6b3b7075b9c22c62903. Collection6215146
+and nativefork pushed. VUnit explicit --vunit-host-failure original|strict plus
+faultframe; read-only preparation only, latch extra scenes off, no silent PASS.
+Revision/code/readspan/cycle/transport remainfatal. ActiveRoadcodecheck separated.
+WorldGermany7301failure7342inputs/5542camera16626ADC exact; 2750sceneprefix exact,
+both main/original pages color+coverage exactscope-stop,7340CRTbitmapexact.
+Strict1800expectedexit3. USA4001/4042inputs2242camera6726ADC/250scenes;
+OffRoad5060/5102inputs3302camera13208ADC/1579scenes; bothpagesoriginalcolor/coverage
+exact afterlatch. EverydegradedrunexplicitparityFAIL, separatefallbackPASS.
+2Pythonfailure+1native+7Pythonmirrorchecks; no default-suite repeat.
+LOCALW=results/diagnostics/world25-roads-20260914; *injected*-qualified,
+host-failure/vunit-mirror-native-export.json. Export scripts ALREADYRUN.
+
+Exotica existing scope-stop through5220 PASS5300inputs3500camera10500ADC50690life;
+3363scenes10089material65576endpointGPUrows exactpriorprefix; allfences drain.
+5073/5081/5220 original/private12files exactprior. Entire5280colororiginal/private
+exact;10depthdifferencesNOTrounding: code16776961/private0.9999848 fitsraw-depth
+2^24path vsgeometry2^26, writerNOTproven. DoNOTaltershader/depthonthisevidence.
+LOCALR=results/diagnostics/exotica-amazon-20260909/scene-scope-stop*. No injected
+Exofallbackyet. NEXT narrow future-assembly recovery must finishcurrentowned
+waiting/activework, stopnewadmissions, drainoldendpointtickets, orderedGPUretire
+afterR, explicitoriginaltarget/degradedreceipts. See doc plan, notimplemented.
+No game/build/test now. Current3440monitor, NOTnew4K. Personal87d/publicv0.5.0
+unchanged. No deploy/release/physicalFFB/hostedCI/menu removal. Serialrig.
+Continue usefulparitywork directly. Pendingask foropen-view Exotica course
+recording unanswered; don'tlaunchattendedsession. Avoidbroadreplaysforsameproof.
+
 ## September15 solid-color correctness — qualified separate backport
 
 Read docs/reviews/2026-09-15-zeus-upstream-refresh.md. Upstream#16094 mergedSept12
