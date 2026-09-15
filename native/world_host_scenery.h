@@ -161,13 +161,21 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             }
         }
         std::vector<std::array<Float,3>> projected;
+        std::array<bool,256> projected_valid;
         bool projection_ok=true;
         auto screen=[&](Float x,Float y,Float z)
         {
+            // Active margins may use a wholly valid polygon from a model that
+            // crosses the near plane. Keep invalid vertex slots so polygon
+            // indices never shift; those vertices are never submitted.
+            const auto reject=[&]() {
+                projection_ok=false;
+                if(active_margin){projected_valid[projected.size()]=false;projected.push_back({});}
+            };
             const uint32_t projection_far=far_coverage?480000:far;
-            if(z.fix()<1000 || z.fix()>=int32_t(projection_far)){projection_ok=false;return;}
+            if(z.fix()<1000 || z.fix()>=int32_t(projection_far)){reject();return;}
             int32_t index=z.fix()>>4;
-            if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(projection_far))){projection_ok=false;return;}
+            if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(projection_far))){reject();return;}
             uint32_t reciprocal=0;
             if(index<5000)reciprocal=read(uint32_t(int64_t(table)+index));
             else if(index<=int32_t(cruisn::world_distance::maximum_index(far)))
@@ -182,7 +190,8 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             Float r=Float::load(reciprocal);
             Float sx=(x*r+ox).reload(),sy=((y*r)*yscale+oy).reload();
             if(sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767)
-            {projection_ok=false;return;}
+            {reject();return;}
+            if(active_margin)projected_valid[projected.size()]=true;
             projected.push_back({{sx,sy,z.reload()}});
         };
         int axis=int((header>>8)&3)-1;
@@ -200,7 +209,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
                 screen(offset*matrix[axis]+x.reload(),offset*matrix[axis+3]+y.reload(),offset*matrix[axis+6]+z.reload());
             }
         }
-        if(!projection_ok){++scene.distance;continue;}
+        if(!projection_ok && !active_margin){++scene.distance;continue;}
         if(projected.size()!=vertices)return false;
         Object object;object.id=object_id;object.model=model;object.depth=depth;object.section=obj[27]&65535;
         object.protected_road=road;
@@ -212,6 +221,8 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             for(auto j:ix)if(j>=vertices)return false;
             if(active_margin)
             {
+                bool valid=true;for(auto j:ix)valid=valid && projected_valid[j];
+                if(!valid)continue;
                 bool left=true,right=true;
                 for(auto j:ix){left=left && projected[j][0].fix()<0;right=right && projected[j][0].fix()>511;}
                 if(!left && !right)continue; // no writes to the native 4:3 area
