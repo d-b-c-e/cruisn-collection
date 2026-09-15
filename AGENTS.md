@@ -1,5 +1,38 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — Germany black road wedge repaired; World2.5 live qualification next
+
+Read docs/reviews/2026-09-15-world-active-road-margins.md. Native62f2d62a42f frozen
+SHA4c714cb027359a15985edaad07d85197fa9074e31362a8a38295de57bb1cc4e3;
+229patches reconstruct0bf1885e46bb7b9e4700e41d39db060ca6f0a9bc. Gated
+--world-host-active-roads margins: fresh bounded current lists, actual active road
+flags preserved, original horizontal sphere rejection, every real vertex positive
+1000+, only polygons wholly outside native4:3. No guest writes/ordinary DMA change.
+World24/25 layouts explicit. Saved Germany7337 independent46q exact, old2521exact;
+7339 +46/old2479exact; World25Hawaii5900 no additions/5922exact. 2native13PythonPASS.
+Initial 2e live stopped1884: valid effect flags3020 wrongly required active flags.
+Baseline exact1884 resource capture proves topology valid. 62f skips unsupported
+non-road objects; corruption guards remain. Both failedrun/initial10vs46expectation
+retained. Native229 export scripts ALREADYRUN; never rerun old export scripts.
+
+Live successor7342 inputs/original nativeframes/5542camera16626ADC PASS. Bothscene
+RAM/FAST/materials and original command-provenance bytes exact control; complete
+original DMA/framebuffer/textures/palette7340 exact. Native2567/2525quads fingerprints
+match canonical. All5completed4K3824x2073CRT7336..7340 repair leftmargin:21093/10604/
+10604/3152/3152 changedRGB, zero newblack, fixedinterior exact. Finalimageviewed:
+blackroadwedge gone. Matched capturefree5000..6500 speed100.0066/100.0057%; onepair.
+IMPORTANT offline default capture shows DRAW page not DISPLAY page. Actual completed
+7340 uses page0scene7337; default offline preview page1 elapsed1:36.81 misses visible
+1:36.78 wedge. Actual originalmirror7337 has no polygon coverage in2446targetpixels.
+Roadcenter2827radius2461 sphereendsx-131 but realvertexx-60; farplane isirrelevant.
+LOCALW=results/diagnostics/world25-roads-20260914, germany-active-roads-v2-qualified,
+germany-road-qualified,world-active-membership-control. No game/build/test now.
+Personal87d/publicv0.5.0unchanged. No deploy/release/hostedCI/physicalFFB/menuremoval.
+NEXT oneWorld25same-settings mirror/scene probe to qualify second revision live,
+then broader temporal coverage and remaining parity; do not repeat Germanywindow.
+Continue directly while parity remains. Currentmonitor3840x2160. Pending attended
+FFB availability unanswered. Serial rig; no build/export/broadscan during games.
+
 ## September15 — partial recovery built; visible-benefit gate FAIL, continue elsewhere
 
 Read docs/reviews/2026-09-15-offroad-partial-frontier.md. Nativea035f824e3b frozen/

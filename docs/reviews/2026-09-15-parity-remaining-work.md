@@ -45,6 +45,12 @@ Do not run another whole drive merely to inflate submission counts.
 
 ## Next decisions
 
+The [active-road margin recovery](2026-09-15-world-active-road-margins.md) now
+repairs the sampled Germany1:37 black wedge in all five compared current4K
+frames. Original route/resources/draw commands remain exact. This nearby-road
+repair is separate from far-distance parity; World2.5 live coverage and broader
+track/handover acceptance remain open. The diagnostic stays off by default.
+
 The subsequent [World fade comparison](2026-09-15-world-germany-distance-fade.md)
 preserves the Germany drive and all 31 completed current-4K images, but changes
 none of them. The earlier World2.5 positive effect is small. Neither result

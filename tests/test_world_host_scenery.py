@@ -108,6 +108,24 @@ class WorldModelTests(unittest.TestCase):
 
 
 class HostOptionsTests(unittest.TestCase):
+    def test_active_road_gate_roundtrip_and_removal(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        argv=['--world-host-scenery','draw','--world-host-first','1800','--world-host-last','7341',
+              '--world-host-source','future','--world-host-roads','on','--world-host-layer','both',
+              '--world-host-active-roads','margins']
+        for rom in ('crusnwld24','crusnwld'):
+            args=parser.parse_args(argv);args.candidate='candidate.exe'
+            settings={'MIDV_GL':'1','MIDV_FFB':'0'}
+            self.assertEqual(configure(args,rom,settings)['active_roads'],'margins')
+            inherited=parser.parse_args([]);inherited.candidate='candidate.exe'
+            self.assertEqual(configure(inherited,rom,settings)['active_roads'],'margins')
+            for field,value in [('candidate',None),('world_host_road_detail','full'),('world_host_layer','legacy')]:
+                invalid=copy.copy(args);setattr(invalid,field,value)
+                with self.assertRaises(ValueError):configure(invalid,rom,dict(settings))
+            with self.assertRaises(ValueError):configure(args,rom,dict(settings,MIDV_FFB='1'))
+            configure(parser.parse_args(['--world-host-scenery','off']),rom,settings)
+            self.assertNotIn('MIDV_WORLD_HOST_ACTIVE_ROADS',settings)
+        with self.assertRaises(ValueError):configure(parser.parse_args([]),'crusnwld24',{'MIDV_WORLD_HOST_ACTIVE_ROADS':'1'})
     def test_trace_mode_is_explicit_frozen_and_validated(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         args=parser.parse_args(['--world-host-scenery','observe','--world-host-first','1',

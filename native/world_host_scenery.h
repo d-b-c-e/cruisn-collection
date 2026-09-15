@@ -40,6 +40,9 @@ struct Descriptor
 {
     uint32_t id=0;
     std::array<uint32_t,32> words{};
+    // Set only by a fresh, code-qualified active-list walk. Preserve the real
+    // active flag; never relabel an allocated road as an unallocated source.
+    bool active_margin=false;
 };
 inline bool pointer(uint32_t p,uint32_t n)
 // Static geometry/materials must reside in the mapped ROM region. A corrupt
@@ -73,6 +76,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
     {
         std::array<uint32_t,32> obj;
         uint32_t object_id;
+        bool active_margin=false;
         if(id)
         {
             if(id<0x1000 || id>0x20000-32 || seen.size()>=2048 ||
@@ -83,12 +87,17 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         }
         else
         {
-            const auto &item=(*future)[future_index++];obj=item.words;object_id=item.id;
+            const auto &item=(*future)[future_index++];obj=item.words;object_id=item.id;active_margin=item.active_margin;
             if(object_id<0x80000000)return false;
         }
         // The pending flag proves list membership. Road decoding is opt-in;
         // other alternate/dynamic codecs remain excluded.
-        if((obj[14]&0x3000)!=0x2000)return false;
+        if(active_margin)
+        {
+            if(!roads || full_roads || (obj[14]&0x3861)!=0x1001 ||
+                obj[16]>65535 || obj[17]>65535 || (object_id&0xfffe0000)!=0xc0000000)return false;
+        }
+        else if((obj[14]&0x3000)!=0x2000)return false;
         if(obj[14]&(roads?0x860:0x861)){++scene.unsupported;continue;}
         const bool road=bool(obj[14]&1);
         std::array<Float,3> delta,center;
@@ -119,7 +128,23 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         // actual vertices are all inside it (wide, shallow terrain especially).
         // Reject only a wholly distant sphere here; every vertex below must
         // still fit the configured depth interval. Near clipping stays excluded.
-        if(int64_t(depth)-radius<1000 || int64_t(depth)-radius>=far){++scene.distance;continue;}
+        if((!active_margin && int64_t(depth)-radius<1000) ||
+            (active_margin && int64_t(depth)+radius<1000) || int64_t(depth)-radius>=far){++scene.distance;continue;}
+        if(active_margin)
+        {
+            // Original object rejection projects the radius at the center's
+            // depth. It can underestimate nearby perspective geometry. Recover
+            // only roads that this horizontal test rejects, then require every
+            // real vertex to remain safely in front of the projection plane.
+            if(depth<=0 || depth>=80000 || radius>uint32_t(INT32_MAX))continue;
+            const int index=std::min(4999,depth>>4);
+            const Float r=Float::load(read(table+uint32_t(index)));
+            const Float extent=Float::integer(int32_t(radius))*r;
+            const Float x=center[0]*r;
+            const Float left=x+extent+ox;
+            const Float right=(left-extent-extent)-Float::integer(512);
+            if(!(left.e!=-128 && left.m<0) && !(right.e!=-128 && right.m>=0))continue;
+        }
         uint32_t pairs=(header&0x300)?((header>>10)&255)+1:0;
         uint32_t singles=header&255,polygons=(header>>18)+1,vertices=singles+2*pairs;
         if(!vertices || vertices>256 || polygons>1024 ||
@@ -185,6 +210,12 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             uint32_t flags=read(poly_start+2*i),packed=read(poly_start+2*i+1);
             uint32_t ix[4]={(packed&255),(packed>>8)&255,(packed>>16)&255,(packed>>24)&255};
             for(auto j:ix)if(j>=vertices)return false;
+            if(active_margin)
+            {
+                bool left=true,right=true;
+                for(auto j:ix){left=left && projected[j][0].fix()<0;right=right && projected[j][0].fix()>511;}
+                if(!left && !right)continue; // no writes to the native 4:3 area
+            }
             if(far_coverage && projected[ix[0]][2].fix()>=int32_t(far) &&
                 projected[ix[1]][2].fix()>=int32_t(far) && projected[ix[2]][2].fix()>=int32_t(far) &&
                 projected[ix[3]][2].fix()>=int32_t(far))continue;

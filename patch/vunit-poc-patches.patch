@@ -43216,3 +43216,218 @@ index 6c88a41eddb..5d472834cfc 100644
 -- 
 2.55.0.windows.3
 
+From 2e0466f84e0148f9da54c202f9484c1e3ad7f271 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 07:50:34 -0500
+Subject: [PATCH] Recover rejected active World road geometry in private
+ widescreen margins
+
+---
+ src/mame/midway/cruisn/world_active_roads.h | 36 ++++++++++++++++++++
+ src/mame/midway/cruisn/world_host_scenery.h | 37 +++++++++++++++++++--
+ src/mame/midway/midvunit.cpp                | 15 ++++++++-
+ 3 files changed, 84 insertions(+), 4 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/world_active_roads.h
+
+diff --git a/src/mame/midway/cruisn/world_active_roads.h b/src/mame/midway/cruisn/world_active_roads.h
+new file mode 100644
+index 00000000000..f3fc20b43c6
+--- /dev/null
++++ b/src/mame/midway/cruisn/world_active_roads.h
+@@ -0,0 +1,36 @@
++// license:BSD-3-Clause
++// Fresh active-list membership for private, wholly-margin road recovery.
++#pragma once
++#include "world_host_scenery.h"
++#include <set>
++namespace cruisn { namespace world_active_roads {
++template<class Read> bool collect(Read read,std::vector<world_host::Descriptor> &out,uint32_t revision)
++{
++    if(revision!=24 && revision!=25)return false;
++    const std::array<uint32_t,4> heads=revision==24 ?
++        std::array<uint32_t,4>{{0x61ee,0x61eb,0x61ed,0x61ef}} :
++        std::array<uint32_t,4>{{0x658f,0x658c,0x658e,0x6590}};
++    const uint32_t pcs[]={0x69,0x6c,0x6f,0x72};
++    for(unsigned i=0;i<4;++i)
++        if(read(pcs[i])!=(0x08280000|heads[i]) || read(pcs[i]+1)!=0x6200034c)return false;
++    std::vector<world_host::Descriptor> result;
++    std::set<uint32_t> seen;
++    for(auto global:heads)
++    {
++        uint32_t head=read(global);
++        if(head<0x1000 || head>=0x20000)return false;
++        uint32_t p=read(head);
++        while(p)
++        {
++            if(p<0x1000 || p>0x20000-32 || seen.size()>=2048 || !seen.insert(p).second)return false;
++            world_host::Descriptor d;d.id=0xc0000000|p;d.active_margin=true;
++            for(unsigned i=0;i<32;++i)d.words[i]=read(p+i);
++            p=d.words[0];
++            if((d.words[14]&0x3000)!=0x1000)return false;
++            if((d.words[14]&0x861)!=1 || d.words[16]>65535 || d.words[17]>65535)continue;
++            result.push_back(d);
++        }
++    }
++    out.insert(out.end(),result.begin(),result.end());return true;
++}
++} }
+diff --git a/src/mame/midway/cruisn/world_host_scenery.h b/src/mame/midway/cruisn/world_host_scenery.h
+index 64a51753587..e7eadd519a4 100644
+--- a/src/mame/midway/cruisn/world_host_scenery.h
++++ b/src/mame/midway/cruisn/world_host_scenery.h
+@@ -40,6 +40,9 @@ struct Descriptor
+ {
+     uint32_t id=0;
+     std::array<uint32_t,32> words{};
++    // Set only by a fresh, code-qualified active-list walk. Preserve the real
++    // active flag; never relabel an allocated road as an unallocated source.
++    bool active_margin=false;
+ };
+ inline bool pointer(uint32_t p,uint32_t n)
+ // Static geometry/materials must reside in the mapped ROM region. A corrupt
+@@ -73,6 +76,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+     {
+         std::array<uint32_t,32> obj;
+         uint32_t object_id;
++        bool active_margin=false;
+         if(id)
+         {
+             if(id<0x1000 || id>0x20000-32 || seen.size()>=2048 ||
+@@ -83,12 +87,17 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+         }
+         else
+         {
+-            const auto &item=(*future)[future_index++];obj=item.words;object_id=item.id;
++            const auto &item=(*future)[future_index++];obj=item.words;object_id=item.id;active_margin=item.active_margin;
+             if(object_id<0x80000000)return false;
+         }
+         // The pending flag proves list membership. Road decoding is opt-in;
+         // other alternate/dynamic codecs remain excluded.
+-        if((obj[14]&0x3000)!=0x2000)return false;
++        if(active_margin)
++        {
++            if(!roads || full_roads || (obj[14]&0x3861)!=0x1001 ||
++                obj[16]>65535 || obj[17]>65535 || (object_id&0xfffe0000)!=0xc0000000)return false;
++        }
++        else if((obj[14]&0x3000)!=0x2000)return false;
+         if(obj[14]&(roads?0x860:0x861)){++scene.unsupported;continue;}
+         const bool road=bool(obj[14]&1);
+         std::array<Float,3> delta,center;
+@@ -119,7 +128,23 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+         // actual vertices are all inside it (wide, shallow terrain especially).
+         // Reject only a wholly distant sphere here; every vertex below must
+         // still fit the configured depth interval. Near clipping stays excluded.
+-        if(int64_t(depth)-radius<1000 || int64_t(depth)-radius>=far){++scene.distance;continue;}
++        if((!active_margin && int64_t(depth)-radius<1000) ||
++            (active_margin && int64_t(depth)+radius<1000) || int64_t(depth)-radius>=far){++scene.distance;continue;}
++        if(active_margin)
++        {
++            // Original object rejection projects the radius at the center's
++            // depth. It can underestimate nearby perspective geometry. Recover
++            // only roads that this horizontal test rejects, then require every
++            // real vertex to remain safely in front of the projection plane.
++            if(depth<=0 || depth>=80000 || radius>uint32_t(INT32_MAX))continue;
++            const int index=std::min(4999,depth>>4);
++            const Float r=Float::load(read(table+uint32_t(index)));
++            const Float extent=Float::integer(int32_t(radius))*r;
++            const Float x=center[0]*r;
++            const Float left=x+extent+ox;
++            const Float right=(left-extent-extent)-Float::integer(512);
++            if(!(left.e!=-128 && left.m<0) && !(right.e!=-128 && right.m>=0))continue;
++        }
+         uint32_t pairs=(header&0x300)?((header>>10)&255)+1:0;
+         uint32_t singles=header&255,polygons=(header>>18)+1,vertices=singles+2*pairs;
+         if(!vertices || vertices>256 || polygons>1024 ||
+@@ -185,6 +210,12 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+             uint32_t flags=read(poly_start+2*i),packed=read(poly_start+2*i+1);
+             uint32_t ix[4]={(packed&255),(packed>>8)&255,(packed>>16)&255,(packed>>24)&255};
+             for(auto j:ix)if(j>=vertices)return false;
++            if(active_margin)
++            {
++                bool left=true,right=true;
++                for(auto j:ix){left=left && projected[j][0].fix()<0;right=right && projected[j][0].fix()>511;}
++                if(!left && !right)continue; // no writes to the native 4:3 area
++            }
+             if(far_coverage && projected[ix[0]][2].fix()>=int32_t(far) &&
+                 projected[ix[1]][2].fix()>=int32_t(far) && projected[ix[2]][2].fix()>=int32_t(far) &&
+                 projected[ix[3]][2].fix()>=int32_t(far))continue;
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 737368e7fb7..ce70a13c31e 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -34,6 +34,7 @@
+ #include "cruisn/world_scenery.h"
+ #include "cruisn/world_distance.h"
+ #include "cruisn/world_host_scenery.h"
++#include "cruisn/world_active_roads.h"
+ #include <chrono>
+ #include "cruisn/usa_distance.h"
+ #include "cruisn/usa_host_scenery.h"
+@@ -394,6 +395,16 @@ void midvunit_base_state::world_host_start()
+ 		if(strcmp(fade,"0") && strcmp(fade,"1"))fatalerror("Invalid host fade metadata mode\n");
+ 		m_host_fade_metadata=!strcmp(fade,"1");
+ 	}
++	bool active_roads=false;
++	if(const char *active=std::getenv("MIDV_WORLD_HOST_ACTIVE_ROADS"))
++	{
++		if(strcmp(active,"0") && strcmp(active,"1"))fatalerror("Invalid active road margins\n");
++		active_roads=!strcmp(active,"1");
++	}
++	if(active_roads && (m_host_mode!=2 || !m_host_future || !m_host_roads || m_host_full_roads ||
++		m_host_layer!=3 || !std::getenv("MIDV_FFB") || strcmp(std::getenv("MIDV_FFB"),"0")))
++		fatalerror("Active road margins require future draw, stock roads, both layers and FFB0\n");
++	if(active_roads)osd_printf_info("World active road margins enabled; original 4:3 geometry and guest state unchanged\n");
+ 	if(m_host_fade_metadata)
+ 	{
+ 		if(!m_host_far_coverage || m_host_layer!=3 || !std::getenv("MIDV_GL_ORIGINAL_MIRROR") ||
+@@ -436,7 +447,7 @@ void midvunit_base_state::world_host_start()
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&midvunit_base_state::world_host_exit,this));
+ 	auto &space=m_maincpu->space(AS_PROGRAM);
+ 	m_host_scene_tap=space.install_read_tap(profile->scene,profile->scene,"world_host_scene",
+-		[this](offs_t offset,uint32_t &data,uint32_t mask)
++		[this,active_roads](offs_t offset,uint32_t &data,uint32_t mask)
+ 		{
+ 			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x6a)return;
+ 			uint64_t frame=m_screen->frame_number();
+@@ -474,6 +485,8 @@ void midvunit_base_state::world_host_start()
+ 					!cruisn::world_future::collect(read,m_host_future_cache,future,future_stats,64,m_host_roads,m_host_revision))
+ 					fatalerror("World future section code/pointer/frontier guard failed\n");
+ 			}
++			if(active_roads && !cruisn::world_active_roads::collect(read,future,m_host_revision))
++				fatalerror("World active road list/code/membership guard failed\n");
+ 			const auto future_prepared=std::chrono::steady_clock::now();
+ 			// Main RAM is read directly: no tap recursion or guest speedup handler.
+ 			if(!cruisn::world_host::build(read,scene,m_host_far,m_host_future?&future:nullptr,m_host_roads,m_host_revision,m_host_full_roads,m_host_far_coverage))
+-- 
+2.55.0.windows.3
+
+From 62f2d62a42f57296fb6967dbfa3348e5b00fb3b0 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 07:55:46 -0500
+Subject: [PATCH] Exclude valid non-road transition objects from margin
+ recovery
+
+---
+ src/mame/midway/cruisn/world_active_roads.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/world_active_roads.h b/src/mame/midway/cruisn/world_active_roads.h
+index f3fc20b43c6..3bdd75becd0 100644
+--- a/src/mame/midway/cruisn/world_active_roads.h
++++ b/src/mame/midway/cruisn/world_active_roads.h
+@@ -26,8 +26,10 @@ template<class Read> bool collect(Read read,std::vector<world_host::Descriptor>
+             world_host::Descriptor d;d.id=0xc0000000|p;d.active_margin=true;
+             for(unsigned i=0;i<32;++i)d.words[i]=read(p+i);
+             p=d.words[0];
+-            if((d.words[14]&0x3000)!=0x1000)return false;
+-            if((d.words[14]&0x861)!=1 || d.words[16]>65535 || d.words[17]>65535)continue;
++            // The renderer also traverses menu/effect objects (e.g. captured
++            // 0x3020). Valid topology does not make those ordinary active roads.
++            // Exclude them without aborting a scene or granting draw permission.
++            if((d.words[14]&0x3861)!=0x1001 || d.words[16]>65535 || d.words[17]>65535)continue;
+             result.push_back(d);
+         }
+     }
+-- 
+2.55.0.windows.3
+
