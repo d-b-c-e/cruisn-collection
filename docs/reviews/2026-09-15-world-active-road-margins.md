@@ -98,6 +98,19 @@ The build is separately frozen with SHA256
 The229-patch export reconstructs native tree
 `0bf1885e46bb7b9e4700e41d39db060ca6f0a9bc`.
 
+A World2.5 run also passes6000 inputs,4191 camera samples and12573 ADC reads.
+All1666 source-scene rows preserve their frontier/identity fields. The feature
+adds2130 polygons over that segment, but none at the selected scene5900. Its
+5922 host polygons match the freshly captured scene operands. All eight raw
+mirror planes at5900 and the completed1280x720 image are exactly the retained
+control. This qualifies second-revision execution and preservation in that
+segment; it does not claim a new visible improvement there or a full4K capture.
+
+The offline renderer now records its selected draw page and the captured visible
+page separately, and explicitly marks completed presentation as unverified.
+The saved Germany check reports draw1/visible0 while retaining its exact204800-
+pixel native comparison. This reporting change does not alter rendered pixels.
+
 Local evidence lives under `results/diagnostics/world25-roads-20260914/`:
 `germany-road-resources`, `germany-road-qualified`, `germany-active-roads` (initial
 guard failure), `germany-active-roads-v2`, `germany-active-roads-v2-qualified.json`,

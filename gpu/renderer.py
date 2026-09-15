@@ -534,7 +534,13 @@ void main() {
 
 
 def load_scene(cap, history=True):
-    """Return (quads, page_control, meta) for the last complete scene.
+    """Return (quads, page_control, meta, history_count) for a complete draw page.
+
+    This selects the most recent completed DMA page group for comparison with
+    that page of hardware VRAM. It does NOT select the image on the monitor.
+    Double buffering can leave the other, earlier scene visible. Use completed
+    presentation receipts and corresponding page commands for visual diagnosis;
+    a matching native framebuffer alone does not establish presentation timing.
 
     With history=True the previous scene rendered to the SAME page is
     prepended. The game leaves sub-pixel cracks between adjacent quads
@@ -984,6 +990,11 @@ def main():
     report = {"schema": 1, "capture": os.path.abspath(cap), "scale": S,
               "renderer": ctx.info["GL_RENDERER"],
               "scope": "native-index-buffer" if exact else "quality-preview",
+              "scene_selection": {
+                  "basis": "last-complete-draw-page",
+                  "selected_draw_page": int(bool(pc & 4)),
+                  "captured_visible_page": int(bool(meta["page_control"][0] & 1)),
+                  "completed_presentation_verified": False},
               "passed": None}
     if args.align_tjunctions:
         report["tjunction_experiment"] = joins
