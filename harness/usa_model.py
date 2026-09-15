@@ -57,7 +57,9 @@ def validate(record):
     return vertices, polygons
 
 
-def project(record, reciprocals, *, host_far=None):
+def project(record, reciprocals, *, host_far=None, far_coverage=False):
+    if far_coverage and host_far != 240000:
+        raise ValueError('USA coverage requires host 3x')
     vertices, _ = validate(record)
     if host_far is None and len(reciprocals) != 5080:
         raise ValueError('expected complete stock reciprocal table')
@@ -85,7 +87,8 @@ def project(record, reciprocals, *, host_far=None):
             reciprocal = F.load(reciprocals[max(-80, min(4999, index))+80])
         else:
             maximum = 4999 if host_far == 80000 else host_far//16
-            if host_far not in (80000, 160000, 240000) or z.fix() < 1000 or index > maximum:
+            outside = z.fix() >= 480000 if far_coverage else index > maximum
+            if host_far not in (80000, 160000, 240000) or z.fix() < 1000 or outside:
                 raise ValueError('host vertex depth outside projection range')
             reciprocal = F.load(reciprocals[index])
         sx = (x*reciprocal+F.integer(256)).reload()
@@ -96,7 +99,7 @@ def project(record, reciprocals, *, host_far=None):
     return buffer
 
 
-def quads(record, buffer):
+def quads(record, buffer, *, far_coverage=False):
     vertices, polygons = validate(record)
     if len(buffer) != 3*vertices:
         raise ValueError('incomplete projected buffer')
@@ -104,6 +107,12 @@ def quads(record, buffer):
     for i in range(polygons):
         flags, packed, uv0, uv1, texture = record['model_words'][2+2*vertices+5*i:7+2*vertices+5*i]
         indices = [(packed >> shift) & 255 for shift in (0, 8, 16, 24)]
+        depths = [buffer[3*j+2] for j in indices]
+        if far_coverage:
+            if any(not 1000 <= F.load(w).value() < 480000 for w in depths):
+                raise ValueError('invalid USA coverage depth')
+            if min(F.load(w).value() for w in depths) >= 240000:
+                continue
         points = [[F.load(buffer[3*j+k]) for k in (0, 1)] for j in indices]
         a, b, c = points[:3]
         cross = (b[1]-c[1])*(b[0]-a[0])-(b[0]-c[0])*(b[1]-a[1])
@@ -113,5 +122,6 @@ def quads(record, buffer):
         if not record['palette_kind']:
             palette = (palette >> 16) << 8
         result.append([v & 65535 for v in [flags, palette,
-            *[p.fix() for point in points for p in point], uv0, uv0 >> 16, uv1, uv1 >> 16, texture, 0]])
+            *[p.fix() for point in points for p in point], uv0, uv0 >> 16, uv1, uv1 >> 16, texture, 0]]
+            + (depths if far_coverage else []))
     return result

@@ -102,13 +102,15 @@ inline bool prepare(const std::array<uint32_t,32> &object,
 // Captured mode reproduces original reciprocal clamps and DMA coordinate wrap
 // ONLY for the offline oracle. Host mode rejects near/out-of-range vertices
 // and uses a host-generated reciprocal tail; it never reads past guest tables.
-enum class Projection { captured,host };
+enum class Projection { captured,host,host_far_coverage };
 template<class Reciprocal> bool project(const Model &model,const Transform &transform,
     Reciprocal reciprocal,std::vector<Vertex> &result,
     Projection mode=Projection::host,uint32_t far=80000)
 {
     result.clear();
     if(!usa_distance::valid_far(far) || model.vertices.empty() || model.vertices.size()>256)return false;
+    const bool coverage=mode==Projection::host_far_coverage;
+    if(coverage && far!=240000)return false;
     std::vector<Vertex> projected;
     projected.reserve(model.vertices.size());
     std::array<Float,9> matrix;
@@ -136,11 +138,22 @@ template<class Reciprocal> bool project(const Model &model,const Transform &tran
         }
         int32_t index=z.fix()>>4;
         if(mode==Projection::captured)index=std::max(-80,std::min(4999,index));
-        else if(z.fix()<1000 || index>int32_t(usa_distance::maximum_index(far)))return false;
-        const Float r=Float::load(index<5000?reciprocal(index):usa_distance::cached_reciprocal(uint32_t(index),far));
+        else if(z.fix()<1000 || (coverage?z.fix()>=480000:index>int32_t(usa_distance::maximum_index(far))))return false;
+        uint32_t reciprocal_word;
+        if(index<5000)reciprocal_word=reciprocal(index);
+        else if(index<=int32_t(usa_distance::maximum_index(far)))
+            reciprocal_word=usa_distance::cached_reciprocal(uint32_t(index),far);
+        else {
+            // Only the private coverage mode reaches this bounded tail. Keep
+            // the original six-decimal table rule; never read adjacent RAM.
+            float value=float(std::floor(512.0/(16*index+1)*1000000+0.5)/1000000);
+            uint32_t ieee;std::memcpy(&ieee,&value,sizeof(ieee));
+            reciprocal_word=((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff);
+        }
+        const Float r=Float::load(reciprocal_word);
         const Float sx=(x*r+Float::integer(256)).reload();
         const Float sy=((y*r)*Float::load(0x00052000)+Float::load(transform.origin_y)).reload();
-        if(mode==Projection::host && (sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767))return false;
+        if(mode!=Projection::captured && (sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767))return false;
         projected.push_back({{sx.store(),sy.store(),z.store()}});
     }
     result=std::move(projected);return true;
@@ -149,12 +162,16 @@ template<class Reciprocal> bool project(const Model &model,const Transform &tran
 // Lookup receives the original polygon flags. It must use a checked palette
 // table; direct=true instead uses object word16. No World texture offset exists.
 template<class Palette> bool quads(const Model &model,const std::vector<Vertex> &projected,
-    bool direct,Palette palette,std::vector<Quad> &result)
+    bool direct,Palette palette,std::vector<Quad> &result,
+    std::vector<std::array<uint32_t,4>> *coverage_depths=nullptr)
 {
     result.clear();
+    if(coverage_depths)coverage_depths->clear();
     if(projected.size()!=model.vertices.size() || projected.empty() || model.polygons.size()>1024)return false;
     std::vector<Quad> output;
     output.reserve(model.polygons.size());
+    std::vector<std::array<uint32_t,4>> depths;
+    if(coverage_depths)depths.reserve(model.polygons.size());
     for(const auto &polygon:model.polygons)
     {
         std::array<unsigned,4> indices;
@@ -162,6 +179,16 @@ template<class Palette> bool quads(const Model &model,const std::vector<Vertex> 
         {
             indices[j]=(polygon[1]>>(8*j))&255;
             if(indices[j]>=projected.size())return false;
+        }
+        std::array<uint32_t,4> zs{};
+        if(coverage_depths) {
+            bool inside=false;
+            for(unsigned j=0;j<4;++j) {
+                zs[j]=projected[indices[j]][2];const int32_t z=Float::load(zs[j]).fix();
+                if(z<1000 || z>=480000)return false;
+                inside|=z<240000;
+            }
+            if(!inside)continue;
         }
         std::array<std::array<Float,2>,4> p;
         for(unsigned j=0;j<4;++j)for(unsigned k=0;k<2;++k)p[j][k]=Float::load(projected[indices[j]][k]);
@@ -176,7 +203,10 @@ template<class Palette> bool quads(const Model &model,const std::vector<Vertex> 
         q[10]=uint16_t(polygon[2]);q[11]=uint16_t(polygon[2]>>16);
         q[12]=uint16_t(polygon[3]);q[13]=uint16_t(polygon[3]>>16);
         q[14]=uint16_t(polygon[4]);output.push_back(q);
+        if(coverage_depths)depths.push_back(zs);
     }
-    result=std::move(output);return true;
+    result=std::move(output);
+    if(coverage_depths)*coverage_depths=std::move(depths);
+    return true;
 }
 } }

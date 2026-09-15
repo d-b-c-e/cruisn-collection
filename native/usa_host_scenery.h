@@ -13,6 +13,7 @@ struct Object
     uint32_t id=0,model=0;
     int32_t depth=0;
     std::vector<Quad> quads;
+    std::vector<std::array<uint32_t,4>> depths;
 };
 struct Scene
 {
@@ -60,10 +61,11 @@ inline bool code_matches(const uint32_t *ram,size_t words)
     return true;
 }
 template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
-    const std::vector<Descriptor> *future=nullptr,ModelCache *cache=nullptr)
+    const std::vector<Descriptor> *future=nullptr,ModelCache *cache=nullptr,bool far_coverage=false)
 {
     result=Scene{};
     if(far!=80000 && far!=160000 && far!=240000)return false;
+    if(far_coverage && far!=240000)return false;
     if(read(0x41)!=0xc9b4 || read(0x52)!=usa_distance::reciprocal_base)return false;
     const uint32_t cam=read(0x45),view=read(0x47),bill=read(0x4d),compact_bill=read(0x4e);
     const uint32_t palette_table=read(0x62),mode=read(0xc8f5),enabled=read(0xe8a1);
@@ -125,13 +127,14 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
         std::vector<usa_model::Vertex> projected;
         if(!usa_model::project(model,transform,[&](int32_t index)
             {return read(uint32_t(int64_t(usa_distance::reciprocal_base)+index));},projected,
-            usa_model::Projection::host,far)){++scene.projection;continue;}
+            far_coverage?usa_model::Projection::host_far_coverage:usa_model::Projection::host,far)){++scene.projection;continue;}
         const bool direct=bool(object[14]&0x400);
         if(!direct)for(const auto &polygon:model.polygons)
             if(!ram_span(palette_table+(polygon[0]>>16),1))return false;
         Object output;output.id=owner;output.model=address;output.depth=depth;
         if(!usa_model::quads(model,projected,direct,[&](uint32_t flags)
-            {return direct?object[16]:read(palette_table+(flags>>16));},output.quads))return false;
+            {return direct?object[16]:read(palette_table+(flags>>16));},output.quads,
+            far_coverage?&output.depths:nullptr))return false;
         ++scene.decoded;scene.objects.push_back(std::move(output));
     }
     std::sort(scene.objects.begin(),scene.objects.end(),[](const Object &a,const Object &b)

@@ -12,17 +12,22 @@ def add_arguments(parser):
     parser.add_argument('--usa-host-log', choices=('summary', 'quads'))
     parser.add_argument('--usa-host-layer', choices=LAYERS)
     parser.add_argument('--usa-host-source', choices=('pending', 'future'))
+    parser.add_argument('--usa-host-far-coverage', choices=('off', 'on'),
+                        help='candidate-only USA 3x partial far-plane coverage')
 
 
 def configure(args, rom, settings):
     mode = getattr(args, 'usa_host_scenery', None)
+    coverage = getattr(args, 'usa_host_far_coverage', None)
     first, last, far, trace, layer, source = [getattr(args, 'usa_host_'+name, None)
                                      for name in ('first', 'last', 'far', 'log', 'layer', 'source')]
     if mode is None:
-        if any(v is not None for v in (first, last, far, trace, layer, source)):
+        if any(v is not None for v in (first, last, far, trace, layer, source, coverage)):
             raise ValueError('USA host controls require an explicit mode')
         saved = settings.get(PREFIX+'SCENERY', '0')
         if saved == '0':
+            if settings.get(PREFIX+'FAR_COVERAGE', '0') != '0':
+                raise ValueError('orphan USA far coverage')
             return None
         if saved not in ('1', '2'):
             raise ValueError('invalid recorded USA host mode')
@@ -33,14 +38,15 @@ def configure(args, rom, settings):
             trace = {'0': 'summary', '1': 'quads'}[settings.get(PREFIX+'QUADS', '0')]
             layer = {v: k for k, v in LAYERS.items()}[settings.get(PREFIX+'LAYER', '3')]
             source = {'0': 'pending', '1': 'future'}[settings[PREFIX+'FUTURE']] if PREFIX+'FUTURE' in settings else None
+            coverage = {'0': 'off', '1': 'on'}[settings[PREFIX+'FAR_COVERAGE']] if PREFIX+'FAR_COVERAGE' in settings else None
         except (ValueError, KeyError) as error:
             raise ValueError('invalid recorded USA host controls') from error
     if rom != 'crusnusa' or mode not in MODES:
         raise ValueError('USA host scenery requires USA 4.5')
     if mode == 'off':
-        if any(v is not None for v in (first, last, far, trace, layer, source)):
+        if any(v is not None for v in (first, last, far, trace, layer, source, coverage)):
             raise ValueError('USA host off does not take additional controls')
-        for key in ('FIRST', 'LAST', 'FAR', 'QUADS', 'LAYER', 'FUTURE'):
+        for key in ('FIRST', 'LAST', 'FAR', 'QUADS', 'LAYER', 'FUTURE', 'FAR_COVERAGE'):
             settings.pop(PREFIX+key, None)
         settings[PREFIX+'SCENERY'] = '0'
         return dict(mode='off')
@@ -51,6 +57,12 @@ def configure(args, rom, settings):
         raise ValueError('USA host requires bounded first/last frames')
     if far not in (80000, 160000, 240000) or trace not in ('summary', 'quads') or layer not in LAYERS or source not in (None, 'pending', 'future'):
         raise ValueError('invalid USA host controls')
+    if coverage not in (None, 'off', 'on'):
+        raise ValueError('invalid USA far coverage')
+    actual_source = source or ('future' if settings.get(PREFIX+'FUTURE') == '1' else 'pending')
+    if coverage == 'on' and (mode != 'draw' or far != 240000 or actual_source != 'future'
+            or not getattr(args, 'candidate', None) or settings.get('MIDV_FFB') != '0'):
+        raise ValueError('USA far coverage requires candidate 3x future draw and physical FFB0')
     if settings.get('MIDV_USA_FAR') or getattr(args, 'usa_far', None) is not None:
         raise ValueError('USA host requires stock guest distance/residency')
     if mode == 'draw' and (getattr(args, 'headless', False) or getattr(args, 'native_renderer', False) or settings.get('MIDV_GL') != '1'):
@@ -59,5 +71,12 @@ def configure(args, rom, settings):
                      PREFIX+'FAR': str(far), PREFIX+'QUADS': '1' if trace == 'quads' else '0', PREFIX+'LAYER': LAYERS[layer]})
     if source is not None:
         settings[PREFIX+'FUTURE'] = '1' if source == 'future' else '0'
-    return dict(mode=mode, first=first, last=last, far=far, log=trace, layer=layer,
+    if coverage is None:
+        settings.pop(PREFIX+'FAR_COVERAGE', None)
+    else:
+        settings[PREFIX+'FAR_COVERAGE'] = '1' if coverage == 'on' else '0'
+    result = dict(mode=mode, first=first, last=last, far=far, log=trace, layer=layer,
                 source='future' if settings.get(PREFIX+'FUTURE') == '1' else 'pending')
+    if coverage is not None:
+        result['far_coverage'] = coverage
+    return result

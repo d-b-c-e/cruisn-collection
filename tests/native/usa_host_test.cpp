@@ -39,6 +39,9 @@ int main()
     assert(build(read,scene,80000) && scene.objects.empty());
     assert(build(read,scene,160000) && scene.projection==1 && scene.objects.empty());
     assert(build(read,scene,240000) && scene.decoded==1);
+    assert(build(read,scene,240000,nullptr,nullptr,true) && scene.decoded==1);
+    assert(scene.objects[0].depths.size()==scene.objects[0].quads.size());
+    assert(!build(read,scene,160000,nullptr,nullptr,true) && scene.objects.empty());
     memory[0x1000e]=0x1400;
     assert(!build(read,scene) && scene.objects.empty());
     memory[0x1000e]=0x2c00;

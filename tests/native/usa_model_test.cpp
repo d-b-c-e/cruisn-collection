@@ -62,6 +62,29 @@ int main()
     assert(!project(model,transform,no_guest,vertices,Projection::host,160000) && vertices.empty());
     assert(project(model,transform,no_guest,vertices,Projection::host,240000));
     assert(Float::load(vertices[0][2]).fix()==160016);
+    // Coverage mode projects beyond 3x without reading guest-tail memory.
+    transform.center[2]=f(241000);
+    assert(!project(model,transform,no_guest,vertices,Projection::host,240000));
+    assert(project(model,transform,no_guest,vertices,Projection::host_far_coverage,240000));
+    assert(Float::load(vertices[0][2]).fix()==241000);
+    assert(!project(model,transform,no_guest,vertices,Projection::host_far_coverage,160000));
+    transform.center[2]=f(480000);
+    assert(!project(model,transform,no_guest,vertices,Projection::host_far_coverage,240000));
+    // Sidecar depths follow emitted polygon order and do not change UVs.
+    std::vector<std::array<uint32_t,4>> depths;
+    vertices={{{f(246),f(189),f(239000)}},{{f(266),f(189),f(241000)}},
+              {{f(266),f(210),f(241000)}},{{f(246),f(210),f(239000)}}};
+    assert(quads(model,vertices,true,[](uint32_t){return 0x200;},output,&depths));
+    assert(output.size()==1 && output[0]==expected && depths.size()==1);
+    assert(depths[0][0]==f(239000) && depths[0][1]==f(241000));
+    for(auto &v:vertices)v[2]=f(241000);
+    assert(quads(model,vertices,true,[](uint32_t){return 0x200;},output,&depths));
+    assert(output.empty() && depths.empty());
+    // The ordinary codec remains unchanged, including beyond-plane input.
+    assert(quads(model,vertices,true,[](uint32_t){return 0x200;},output) && output[0]==expected);
+    vertices[0][2]=f(999);depths.push_back({{1,2,3,4}});
+    assert(!quads(model,vertices,true,[](uint32_t){return 0x200;},output,&depths));
+    assert(output.empty() && depths.empty());
     transform.center[2]=f(0);
     assert(!project(model,transform,no_guest,vertices) && vertices.empty());
     transform.center={{f(100000),f(0),f(1024)}};

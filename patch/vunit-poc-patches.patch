@@ -40674,3 +40674,237 @@ index 007af8635ca..b27285e0d75 100644
 -- 
 2.55.0.windows.3
 
+From fe1a862c784c2d53179ea1219965dba8aa7f5115 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 02:11:59 -0500
+Subject: [PATCH] Add gated USA private far coverage using shared V-Unit
+ transport
+
+---
+ src/mame/midway/cruisn/usa_host_scenery.h |  9 +++--
+ src/mame/midway/cruisn/usa_model.h        | 42 +++++++++++++++++++----
+ src/mame/midway/midvunit.cpp              | 27 ++++++++++++---
+ src/mame/midway/midvunit_v.cpp            |  9 +++++
+ 4 files changed, 74 insertions(+), 13 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/usa_host_scenery.h b/src/mame/midway/cruisn/usa_host_scenery.h
+index fd8e5710019..b2c9324768c 100644
+--- a/src/mame/midway/cruisn/usa_host_scenery.h
++++ b/src/mame/midway/cruisn/usa_host_scenery.h
+@@ -13,6 +13,7 @@ struct Object
+     uint32_t id=0,model=0;
+     int32_t depth=0;
+     std::vector<Quad> quads;
++    std::vector<std::array<uint32_t,4>> depths;
+ };
+ struct Scene
+ {
+@@ -60,10 +61,11 @@ inline bool code_matches(const uint32_t *ram,size_t words)
+     return true;
+ }
+ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
+-    const std::vector<Descriptor> *future=nullptr,ModelCache *cache=nullptr)
++    const std::vector<Descriptor> *future=nullptr,ModelCache *cache=nullptr,bool far_coverage=false)
+ {
+     result=Scene{};
+     if(far!=80000 && far!=160000 && far!=240000)return false;
++    if(far_coverage && far!=240000)return false;
+     if(read(0x41)!=0xc9b4 || read(0x52)!=usa_distance::reciprocal_base)return false;
+     const uint32_t cam=read(0x45),view=read(0x47),bill=read(0x4d),compact_bill=read(0x4e);
+     const uint32_t palette_table=read(0x62),mode=read(0xc8f5),enabled=read(0xe8a1);
+@@ -125,13 +127,14 @@ template<class Read> bool build(Read read,Scene &result,uint32_t far=80000,
+         std::vector<usa_model::Vertex> projected;
+         if(!usa_model::project(model,transform,[&](int32_t index)
+             {return read(uint32_t(int64_t(usa_distance::reciprocal_base)+index));},projected,
+-            usa_model::Projection::host,far)){++scene.projection;continue;}
++            far_coverage?usa_model::Projection::host_far_coverage:usa_model::Projection::host,far)){++scene.projection;continue;}
+         const bool direct=bool(object[14]&0x400);
+         if(!direct)for(const auto &polygon:model.polygons)
+             if(!ram_span(palette_table+(polygon[0]>>16),1))return false;
+         Object output;output.id=owner;output.model=address;output.depth=depth;
+         if(!usa_model::quads(model,projected,direct,[&](uint32_t flags)
+-            {return direct?object[16]:read(palette_table+(flags>>16));},output.quads))return false;
++            {return direct?object[16]:read(palette_table+(flags>>16));},output.quads,
++            far_coverage?&output.depths:nullptr))return false;
+         ++scene.decoded;scene.objects.push_back(std::move(output));
+     }
+     std::sort(scene.objects.begin(),scene.objects.end(),[](const Object &a,const Object &b)
+diff --git a/src/mame/midway/cruisn/usa_model.h b/src/mame/midway/cruisn/usa_model.h
+index 9019f21e159..998ecdd6074 100644
+--- a/src/mame/midway/cruisn/usa_model.h
++++ b/src/mame/midway/cruisn/usa_model.h
+@@ -102,13 +102,15 @@ inline bool prepare(const std::array<uint32_t,32> &object,
+ // Captured mode reproduces original reciprocal clamps and DMA coordinate wrap
+ // ONLY for the offline oracle. Host mode rejects near/out-of-range vertices
+ // and uses a host-generated reciprocal tail; it never reads past guest tables.
+-enum class Projection { captured,host };
++enum class Projection { captured,host,host_far_coverage };
+ template<class Reciprocal> bool project(const Model &model,const Transform &transform,
+     Reciprocal reciprocal,std::vector<Vertex> &result,
+     Projection mode=Projection::host,uint32_t far=80000)
+ {
+     result.clear();
+     if(!usa_distance::valid_far(far) || model.vertices.empty() || model.vertices.size()>256)return false;
++    const bool coverage=mode==Projection::host_far_coverage;
++    if(coverage && far!=240000)return false;
+     std::vector<Vertex> projected;
+     projected.reserve(model.vertices.size());
+     std::array<Float,9> matrix;
+@@ -136,11 +138,22 @@ template<class Reciprocal> bool project(const Model &model,const Transform &tran
+         }
+         int32_t index=z.fix()>>4;
+         if(mode==Projection::captured)index=std::max(-80,std::min(4999,index));
+-        else if(z.fix()<1000 || index>int32_t(usa_distance::maximum_index(far)))return false;
+-        const Float r=Float::load(index<5000?reciprocal(index):usa_distance::cached_reciprocal(uint32_t(index),far));
++        else if(z.fix()<1000 || (coverage?z.fix()>=480000:index>int32_t(usa_distance::maximum_index(far))))return false;
++        uint32_t reciprocal_word;
++        if(index<5000)reciprocal_word=reciprocal(index);
++        else if(index<=int32_t(usa_distance::maximum_index(far)))
++            reciprocal_word=usa_distance::cached_reciprocal(uint32_t(index),far);
++        else {
++            // Only the private coverage mode reaches this bounded tail. Keep
++            // the original six-decimal table rule; never read adjacent RAM.
++            float value=float(std::floor(512.0/(16*index+1)*1000000+0.5)/1000000);
++            uint32_t ieee;std::memcpy(&ieee,&value,sizeof(ieee));
++            reciprocal_word=((((ieee>>23)-127)&255)<<24)|(ieee&0x7fffff);
++        }
++        const Float r=Float::load(reciprocal_word);
+         const Float sx=(x*r+Float::integer(256)).reload();
+         const Float sy=((y*r)*Float::load(0x00052000)+Float::load(transform.origin_y)).reload();
+-        if(mode==Projection::host && (sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767))return false;
++        if(mode!=Projection::captured && (sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767))return false;
+         projected.push_back({{sx.store(),sy.store(),z.store()}});
+     }
+     result=std::move(projected);return true;
+@@ -149,12 +162,16 @@ template<class Reciprocal> bool project(const Model &model,const Transform &tran
+ // Lookup receives the original polygon flags. It must use a checked palette
+ // table; direct=true instead uses object word16. No World texture offset exists.
+ template<class Palette> bool quads(const Model &model,const std::vector<Vertex> &projected,
+-    bool direct,Palette palette,std::vector<Quad> &result)
++    bool direct,Palette palette,std::vector<Quad> &result,
++    std::vector<std::array<uint32_t,4>> *coverage_depths=nullptr)
+ {
+     result.clear();
++    if(coverage_depths)coverage_depths->clear();
+     if(projected.size()!=model.vertices.size() || projected.empty() || model.polygons.size()>1024)return false;
+     std::vector<Quad> output;
+     output.reserve(model.polygons.size());
++    std::vector<std::array<uint32_t,4>> depths;
++    if(coverage_depths)depths.reserve(model.polygons.size());
+     for(const auto &polygon:model.polygons)
+     {
+         std::array<unsigned,4> indices;
+@@ -163,6 +180,16 @@ template<class Palette> bool quads(const Model &model,const std::vector<Vertex>
+             indices[j]=(polygon[1]>>(8*j))&255;
+             if(indices[j]>=projected.size())return false;
+         }
++        std::array<uint32_t,4> zs{};
++        if(coverage_depths) {
++            bool inside=false;
++            for(unsigned j=0;j<4;++j) {
++                zs[j]=projected[indices[j]][2];const int32_t z=Float::load(zs[j]).fix();
++                if(z<1000 || z>=480000)return false;
++                inside|=z<240000;
++            }
++            if(!inside)continue;
++        }
+         std::array<std::array<Float,2>,4> p;
+         for(unsigned j=0;j<4;++j)for(unsigned k=0;k<2;++k)p[j][k]=Float::load(projected[indices[j]][k]);
+         const auto &a=p[0],&b=p[1],&c=p[2];
+@@ -176,7 +203,10 @@ template<class Palette> bool quads(const Model &model,const std::vector<Vertex>
+         q[10]=uint16_t(polygon[2]);q[11]=uint16_t(polygon[2]>>16);
+         q[12]=uint16_t(polygon[3]);q[13]=uint16_t(polygon[3]>>16);
+         q[14]=uint16_t(polygon[4]);output.push_back(q);
++        if(coverage_depths)depths.push_back(zs);
+     }
+-    result=std::move(output);return true;
++    result=std::move(output);
++    if(coverage_depths)*coverage_depths=std::move(depths);
++    return true;
+ }
+ } }
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index c3c994e2832..2ad779a710d 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -221,6 +221,14 @@ void midvunit_base_state::usa_host_start()
+ 		else if(!strcmp(far,"240000"))m_host_far=240000;
+ 		else fatalerror("USA host far requires 80000/160000/240000\n");
+ 	}
++	if(const char *coverage=std::getenv("MIDV_USA_HOST_FAR_COVERAGE"))
++	{
++		if(strcmp(coverage,"0") && strcmp(coverage,"1"))fatalerror("Invalid USA host far coverage\n");
++		m_host_far_coverage=!strcmp(coverage,"1");
++	}
++	if(m_host_far_coverage && (m_host_far!=240000 || m_host_mode!=2 || !m_host_future ||
++		!std::getenv("MIDV_FFB") || strcmp(std::getenv("MIDV_FFB"),"0")))
++		fatalerror("USA far coverage requires 3x future draw and physical FFB0\n");
+ 	if(const char *layer=std::getenv("MIDV_USA_HOST_LAYER"))
+ 	{
+ 		if(strlen(layer)!=1 || *layer<'0' || *layer>'3')fatalerror("Invalid USA host layer\n");
+@@ -234,6 +242,13 @@ void midvunit_base_state::usa_host_start()
+ 	}
+ 	m_host_scene_log=fopen("usa-host-scenes.csv","w");
+ 	if(trace)m_host_quad_log=fopen("usa-host-quads.csv","w");
++	if(trace && m_host_far_coverage)
++	{
++		m_host_clip_log=fopen("usa-far-coverage.bin","wb");
++		if(!m_host_clip_log)fatalerror("Cannot create USA far coverage evidence\n");
++		setvbuf(m_host_clip_log,nullptr,_IOFBF,65536);
++		if(fwrite("VFP1",1,4,m_host_clip_log)!=4)fatalerror("Cannot write USA far coverage header\n");
++	}
+ 	if(!m_host_scene_log || (trace && !m_host_quad_log))fatalerror("Cannot create USA host evidence\n");
+ 	setvbuf(m_host_scene_log,nullptr,_IOFBF,65536);
+ 	fprintf(m_host_scene_log,"frame,time,page,mode,host_far,pending,unsupported,near,far,projection,decoded,quads,quads_hash,guard_us,prepare_us,pack_us,log_us,submit_us,microseconds,future_enabled,future_start,future_loading,future_number,future_sections,future_definitions,future_special,future_unbound,future_deferred,future_ready,future_uploads,future_partial,future_new_sections\n");
+@@ -270,12 +285,16 @@ void midvunit_base_state::usa_host_start()
+ 				fatalerror("USA future scene/material/upload guard failed\n");
+ 			if(previous_track!=m_usa_future_cache.track)m_usa_model_cache.clear();
+ 			cruisn::usa_host::Scene scene;
+-			if(!cruisn::usa_host::build(read,scene,m_host_far,m_host_future?&future:nullptr,m_host_future?&m_usa_model_cache:nullptr))fatalerror("USA host scene/model guard failed\n");
++			if(!cruisn::usa_host::build(read,scene,m_host_far,m_host_future?&future:nullptr,m_host_future?&m_usa_model_cache:nullptr,m_host_far_coverage))fatalerror("USA host scene/model guard failed\n");
+ 			const auto prepared=std::chrono::steady_clock::now();
+ 			std::vector<std::array<uint16_t,16>> quads;
+ 			uint64_t hash=cruisn::world_host::hash_seed;
+-			for(const auto &o:scene.objects)for(const auto &q:o.quads)
+-			{quads.push_back(q);hash=cruisn::world_host::quad_hash(hash,q);}
++			std::vector<std::array<uint32_t,4>> depths;
++			for(const auto &o:scene.objects)for(size_t i=0;i<o.quads.size();++i)
++			{
++				if(m_host_far_coverage){if(o.depths.size()!=o.quads.size())fatalerror("Missing USA far depths\n");depths.push_back(o.depths[i]);}
++				quads.push_back(o.quads[i]);hash=cruisn::world_host::quad_hash(hash,o.quads[i]);
++			}
+ 			const auto packed=std::chrono::steady_clock::now();
+ 			const double time=machine().time().as_double();
+ 			if(m_host_quad_log)for(const auto &o:scene.objects)for(const auto &q:o.quads)
+@@ -285,7 +304,7 @@ void midvunit_base_state::usa_host_start()
+ 				fputc('\n',m_host_quad_log);
+ 			}
+ 			const auto logged=std::chrono::steady_clock::now();
+-			if(m_host_mode==2)world_host_submit(quads);
++			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("USA host inspection changed guest cycles\n");
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index b27285e0d75..340e676930b 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -1318,6 +1318,15 @@ void thread_main()
+ 		if(!far_log || fwrite("VFG1",1,4,far_log)!=4)fatalerror("Cannot create far GPU receipts\n");
+ 		setvbuf(far_log,nullptr,_IOFBF,65536);
+ 	}
++	if(std::getenv("MIDV_USA_HOST_FAR_COVERAGE") && !strcmp(std::getenv("MIDV_USA_HOST_FAR_COVERAGE"),"1") &&
++		std::getenv("MIDV_USA_HOST_QUADS") && !strcmp(std::getenv("MIDV_USA_HOST_QUADS"),"1"))
++	{
++		if(far_log)fatalerror("Conflicting far coverage evidence profiles\n");
++		far_log=fopen("usa-far-gpu.bin","wb");
++		if(!far_log)fatalerror("Cannot create USA far GPU receipts\n");
++		setvbuf(far_log,nullptr,_IOFBF,65536);
++		if(fwrite("VFG1",1,4,far_log)!=4)fatalerror("Cannot write USA far GPU header\n");
++	}
+ 	uint64_t presents = 0, n_quads = 0, n_scenes = 0, n_pal = 0, n_tex = 0, n_vram = 0;
+ 	int snap_n = 0;
+ 	cruisn::CaptureWriter snapshot_writer;
+-- 
+2.55.0.windows.3
+

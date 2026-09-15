@@ -17,7 +17,9 @@ from verification import sha256_file, write_json
 from analyze_usa_host import COUNTERS, evidence, key
 
 
-def reference(memory, far, future=None):
+def reference(memory, far, future=None, *, far_coverage=False):
+    if far_coverage and far != 240000:
+        raise ValueError('USA coverage requires 3x')
     def words(address, count):
         return [memory[address+i] for i in range(count)]
     counts = [0]*6
@@ -25,6 +27,12 @@ def reference(memory, far, future=None):
     seen = set()
     assert memory[0x41] == 0xc9b4 and memory[0x52] == 0xb2b3
     reciprocal = reciprocal_table({i: memory[0xb2b3+i] for i in range(-80, 5000)}, far)
+    if far_coverage:
+        import math, struct
+        for index in range(15001, 30001):
+            value = math.floor(512.0/(16*index+1)*1000000+0.5)/1000000
+            ieee = struct.unpack('<I', struct.pack('<f', value))[0]
+            reciprocal[index] = ((((ieee >> 23)-127) & 255) << 24) | (ieee & 0x7fffff)
     owner = memory[0xc9b4]; candidates = []
     while owner:
         if owner in seen or len(seen) >= 2048 or not 0x1000 <= owner <= 0x20000-32:
@@ -72,14 +80,14 @@ def reference(memory, far, future=None):
             record.update(model_words=model_words, vertices=vertices, polygons=polygons,
                           projected=[0]*(3*vertices), palette_words=palettes)
             try:
-                buffer = project(record, reciprocal, host_far=far)
+                buffer = project(record, reciprocal, host_far=far, far_coverage=far_coverage)
             except ValueError as error:
                 if not str(error).startswith('host '):
                     raise
                 counts[4] += 1
             else:
                 counts[5] += 1
-                objects.append((owner, model, depth, quads(record, buffer)))
+                objects.append((owner, model, depth, quads(record, buffer, far_coverage=far_coverage)))
     objects.sort(key=lambda item: (-item[2], item[0]))
     return counts, [[owner, model, depth, *q] for owner, model, depth, output in objects for q in output]
 

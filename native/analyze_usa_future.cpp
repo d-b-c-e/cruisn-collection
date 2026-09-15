@@ -18,7 +18,8 @@ int main(int argc,char **argv)
     {
         if(argc<2)return 2;
         const std::string mode=argv[1];const bool scene_mode=mode=="--scene";
-        if((scene_mode && argc!=6) || (!scene_mode && (argc!=5 || (mode!="--future" && mode!="--collect"))))return 2;
+        const bool coverage=scene_mode && argc==7 && std::string(argv[6])=="--far-coverage";
+        if((scene_mode && argc!=(coverage?7:6)) || (!scene_mode && (argc!=5 || (mode!="--future" && mode!="--collect"))))return 2;
         const unsigned offset=scene_mode?3:2;
         const auto ram=load(argv[offset],0x80000),fast=load(argv[offset+1],0x2000),rom=load(argv[offset+2],0x1000000);
         auto read=[&](uint32_t p){if(p<ram.size())return ram[p];
@@ -38,10 +39,12 @@ int main(int argc,char **argv)
                 cruisn::usa_host::Scene scene;cruisn::usa_host::ModelCache models;
                 // Exercise both cold and warm ROM caches against the same independent oracle.
                 for(unsigned pass=0;pass<2;++pass)
-                    if(!cruisn::usa_host::build(read,scene,uint32_t(std::stoul(argv[2])),&descriptors,&models))throw std::runtime_error("USA scene rejected");
+                    if(!cruisn::usa_host::build(read,scene,uint32_t(std::stoul(argv[2])),&descriptors,&models,coverage))throw std::runtime_error("USA scene rejected");
                 std::cout<<scene.pending+scene.future<<' '<<scene.unsupported<<' '<<scene.near<<' '<<scene.far<<' '<<scene.projection<<' '<<scene.decoded<<'\n';
-                for(const auto &o:scene.objects)for(const auto &q:o.quads)
-                {std::cout<<o.id<<' '<<o.model<<' '<<o.depth;for(auto word:q)std::cout<<' '<<word;std::cout<<'\n';}
+                for(const auto &o:scene.objects)for(size_t i=0;i<o.quads.size();++i)
+                {std::cout<<o.id<<' '<<o.model<<' '<<o.depth;for(auto word:o.quads[i])std::cout<<' '<<word;
+                 if(coverage)for(auto word:o.depths.at(i))std::cout<<' '<<word;
+                 std::cout<<'\n';}
             }
             else for(const auto &d:descriptors)
             {std::cout<<d.id;for(auto word:d.words)std::cout<<' '<<word;std::cout<<'\n';}
