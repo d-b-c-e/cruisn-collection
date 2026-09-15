@@ -49,8 +49,10 @@ and the public package remain v0.5.0.
 - **World:** earlier scenery at 3× is demonstrated for both revisions. World
   2.4 host roads fill measured distant gaps. The [2.5 road adapter](docs/reviews/2026-09-14-world25-roads.md)
   is implemented and independently checked, but its Hawaii terrain gap remains.
-  Investigate clipping and excluded custom scenery before claiming that roads
-  alone solve it; broaden continuity, occlusion and handover checks.
+  [Saved boundary analysis](docs/reviews/2026-09-14-world-terrain-boundary.md)
+  identifies an exposed original mesh edge already inside the far plane; custom
+  initializer and LOD screening do not repair it. Investigate adjacent authored
+  coverage and the ocean backdrop; broaden clipping, occlusion and handover checks.
 - **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
   exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
   3× adds differences in22/66 images over2× and repeats all66 exactly. Complete
