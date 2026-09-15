@@ -56,8 +56,9 @@ and the public package remain v0.5.0.
 - **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
   exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
   3× adds differences in22/66 images over2× and repeats all66 exactly. Complete
-  later-course resource checks, materials and handover; four late live geometry
-  joins already pass. Other courses
+  materials and handover. A [late 4K resource comparison](docs/reviews/2026-09-15-offroad-late-resources.md)
+  now preserves original DMA, framebuffer, textures and palette at a nonempty
+  516-quad scene; four earlier late live geometry joins also pass. Other courses
   and broader foreground-occlusion acceptance remain open.
 
 Shared acceptance still requires useful visible benefit, stable materials,
