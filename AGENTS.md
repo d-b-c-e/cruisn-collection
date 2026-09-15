@@ -1,5 +1,31 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 - Off-Road admission no live gain; Exotica cost next
+
+Read docs/reviews/2026-09-15-offroad-admission-screen.md and
+2026-09-15-zeus-upstream-solid-fill.md. Native6ec8b0fbfc5 frozen SHA005041d61c33cf6ab4fb26d4a8739f4ab186e85e9cfea64da1b5b2b819d6ec71,
+218patches reconstruct547d2c754dec2e7f76f60be025836aa07b6a5aa8. CLI only
+--offroad-host-admission clip gates3x future draw/FFB0; defaults unchanged.
+21savedscenes*2 exactnative/independent/fulloldsubset,2native+6Python PASS.
+CompletedElPaso resourcecapture8802inputs/nativeimages7001camera28004ADC/GL8760
+exact;3snapshots3360/6240/8760. Isolated3360 +14125RGB, other9materialviews0.
+Live3382samecandidatepair1581camera6324ADC/originalDMA/resources exact;
+3360scene856->4467q exactindependent; all21completed4K3350..3370 images EXACT.
+NO visiblegain; do not promote or repeat this policy withoutnewusefulevidence.
+Canyon2880 all7projection/11materialrejections offscreen. No guards bypassed.
+FirstcandidatepreflightFAIL: recordedFFB seen beforeplaybackFFB0; fixedreplay
+ordering,10sessiontestsPASS. Initialchecker copiedUSA TJ0 assumptionFAILretained;
+actualOffRoadTJ1/crackfill1, corrected-v2PASS withoutreplay. LOCAL W/offroad-admission-*
+and offroad-drive-resources-v3. Earlier failed captures remain failed.
+Newupstream16122 mesh/solidcolor mergedSept13,16094depthblend mergedSept12.
+BoundedAPI refresh only, NOT renewedallPRinventory. SavedGPU5072 18solids small
+originalviewport,7187 none. Adjacent5071 owned240models3255originalquads exact,
+19solidquads remainblack withcorrectrender06. NoExochange/newgamejustifiedforit.
+Next inspect Exotica instrumentation/submission cost for a quiet release path
+before another costly game. Previous CPU candidate had NOendtoendgain.
+Currentmonitor4K3840x2160; no currentgame/build/test. Personal87d/publicv0.5.0
+unchanged. No deploy/release/physicalFFB/hostedCI/menuremoval. Continue directly.
+
 ## September15 — ACTIVE actual Off-Road rejection classification
 
 Read docs/reviews/2026-09-15-offroad-admission-screen.md. Do NOT promote OffRoad
