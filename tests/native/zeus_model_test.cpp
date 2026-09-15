@@ -36,6 +36,26 @@ int main()
     assert(r.quads[1].vertices[0][0]==r.quads[0].vertices[0][0]);
     assert(decode(words,c,r) && r.quads.size()==1 && r.polygons==1);
     assert(!std::memcmp(&r.quads[0],&baseline,sizeof(Quad)));
+    // Same-exponent commands retain only projection constants, never texture,
+    // material state, or transformed vertices. Compare each polygon to a fresh
+    // independent projection call with its actual state.
+    auto repeated=uv;
+    repeated.insert(repeated.end(),{0x36200000,0x05000007,0x009d0000,0x00010082});
+    repeated.insert(repeated.end(),uv.begin()+2,uv.end());
+    repeated.insert(repeated.end(),{0x229e0000,0x00020001});
+    repeated.insert(repeated.end(),uv.begin()+2,uv.end());
+    assert(decode(repeated,c,r) && r.quads.size()==3 && r.register_writes==1);
+    Context fresh=c;
+    for(unsigned i=0;i<3;++i) {
+        const uint32_t texture[]={1,0x00010082,0x00020001};
+        if(i){fresh.texture=7;fresh.regs[0x20]=0x05000007;fresh.render[5]=7;}
+        fresh.regs[0x68]=i==2?0x9e:0x9d;
+        Quad expected;assert(project(uv.data()+2,texture[i],fresh,expected)==2);
+        assert(!std::memcmp(&r.quads[i],&expected,sizeof(Quad)));
+    }
+    auto invalid=uv;invalid.insert(invalid.end(),{0x22ff0000,1});
+    invalid.insert(invalid.end(),uv.begin()+2,uv.end());
+    assert(!decode(invalid,c,r) && r.quads.size()==1);
     c.regs[0x6c]=31;assert(!decode(words,c,r) && r.quads.empty());
     // A malformed projection without polygons was previously accepted.
     assert(decode({},c,r) && r.quads.empty() && r.polygons==0);

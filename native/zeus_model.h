@@ -132,7 +132,14 @@ inline bool decode(const std::vector<uint32_t> &words,Context context,Result &re
         const unsigned length=cmd==0x38?context.quad_size:2;
         if(length>words.size()-i)return false;
         i+=length;
-        if(cmd==0 || cmd==0x22){context.regs[0x68]=(d[0]>>16)&255;tex=d[1];projection_ready=false;}
+        if(cmd==0 || cmd==0x22)
+        {
+            // Texture/mode changes do not change projection constants. Only
+            // this command's UV exponent can invalidate the prepared values.
+            const uint32_t exponent=(d[0]>>16)&255;
+            if(context.regs[0x68]!=exponent)projection_ready=false;
+            context.regs[0x68]=exponent;tex=d[1];
+        }
         else if(cmd==0x36)
         {
             const uint32_t reg=(d[0]>>16)&127,pointer=d[1]>>24,value=d[1]&0xffffff;
