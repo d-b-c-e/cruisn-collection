@@ -17,7 +17,8 @@ inline bool decode(const Packet &packet,std::array<float,4> &depths,bool &crossi
 {
     depths={};crossing=false;
     const auto &q=packet.quad;
-    if(!q.frame || q.pad!=3 || packet.policy>1 || q.coverage.far_limit!=240000)return false;
+    if(!q.frame || (q.pad!=3 && q.pad!=7) || packet.policy>1 || q.coverage.far_limit!=240000)return false;
+    if(q.pad==7 && packet.policy!=1)return false; // margin coverage is an authored-road permission
     std::array<float,4> values{};unsigned inside=0;
     for(unsigned i=0;i<4;++i)
     {

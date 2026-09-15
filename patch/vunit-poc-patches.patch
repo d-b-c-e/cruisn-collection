@@ -43431,3 +43431,310 @@ index f3fc20b43c6..3bdd75becd0 100644
 -- 
 2.55.0.windows.3
 
+From b553c01eb91e1ec498834ca3242616eaa1772d3b Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 08:33:42 -0500
+Subject: [PATCH 1/2] Keep wholly valid active road polygons in near-crossing
+ models
+
+---
+ src/mame/midway/cruisn/world_host_scenery.h | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/world_host_scenery.h b/src/mame/midway/cruisn/world_host_scenery.h
+index e7eadd519a4..2fb506533f3 100644
+--- a/src/mame/midway/cruisn/world_host_scenery.h
++++ b/src/mame/midway/cruisn/world_host_scenery.h
+@@ -161,13 +161,21 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+             }
+         }
+         std::vector<std::array<Float,3>> projected;
++        std::array<bool,256> projected_valid;
+         bool projection_ok=true;
+         auto screen=[&](Float x,Float y,Float z)
+         {
++            // Active margins may use a wholly valid polygon from a model that
++            // crosses the near plane. Keep invalid vertex slots so polygon
++            // indices never shift; those vertices are never submitted.
++            const auto reject=[&]() {
++                projection_ok=false;
++                if(active_margin){projected_valid[projected.size()]=false;projected.push_back({});}
++            };
+             const uint32_t projection_far=far_coverage?480000:far;
+-            if(z.fix()<1000 || z.fix()>=int32_t(projection_far)){projection_ok=false;return;}
++            if(z.fix()<1000 || z.fix()>=int32_t(projection_far)){reject();return;}
+             int32_t index=z.fix()>>4;
+-            if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(projection_far))){projection_ok=false;return;}
++            if(index < -80 || index>int32_t(cruisn::world_distance::maximum_index(projection_far))){reject();return;}
+             uint32_t reciprocal=0;
+             if(index<5000)reciprocal=read(uint32_t(int64_t(table)+index));
+             else if(index<=int32_t(cruisn::world_distance::maximum_index(far)))
+@@ -182,7 +190,8 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+             Float r=Float::load(reciprocal);
+             Float sx=(x*r+ox).reload(),sy=((y*r)*yscale+oy).reload();
+             if(sx.fix()<-32768 || sx.fix()>32767 || sy.fix()<-32768 || sy.fix()>32767)
+-            {projection_ok=false;return;}
++            {reject();return;}
++            if(active_margin)projected_valid[projected.size()]=true;
+             projected.push_back({{sx,sy,z.reload()}});
+         };
+         int axis=int((header>>8)&3)-1;
+@@ -200,7 +209,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+                 screen(offset*matrix[axis]+x.reload(),offset*matrix[axis+3]+y.reload(),offset*matrix[axis+6]+z.reload());
+             }
+         }
+-        if(!projection_ok){++scene.distance;continue;}
++        if(!projection_ok && !active_margin){++scene.distance;continue;}
+         if(projected.size()!=vertices)return false;
+         Object object;object.id=object_id;object.model=model;object.depth=depth;object.section=obj[27]&65535;
+         object.protected_road=road;
+@@ -212,6 +221,8 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+             for(auto j:ix)if(j>=vertices)return false;
+             if(active_margin)
+             {
++                bool valid=true;for(auto j:ix)valid=valid && projected_valid[j];
++                if(!valid)continue;
+                 bool left=true,right=true;
+                 for(auto j:ix){left=left && projected[j][0].fix()<0;right=right && projected[j][0].fix()>511;}
+                 if(!left && !right)continue; // no writes to the native 4:3 area
+-- 
+2.55.0.windows.3
+
+
+From 0ce0f02457aba1fed99a9dbc17098027b94ecd51 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 08:40:18 -0500
+Subject: [PATCH 2/2] Mask active World road coverage at the native viewport
+ boundary
+
+---
+ src/mame/midway/cruisn/vunit_distance_fade.h |  3 ++-
+ src/mame/midway/cruisn/world_host_scenery.h  | 13 +++++++++----
+ src/mame/midway/midvunit.cpp                 |  5 ++++-
+ src/mame/midway/midvunit.h                   |  3 ++-
+ src/mame/midway/midvunit_gl_shaders.h        | 18 ++++++++++++++++++
+ src/mame/midway/midvunit_v.cpp               | 18 +++++++++++++-----
+ 6 files changed, 48 insertions(+), 12 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/vunit_distance_fade.h b/src/mame/midway/cruisn/vunit_distance_fade.h
+index 9202c59bfa6..dbbbd46f604 100644
+--- a/src/mame/midway/cruisn/vunit_distance_fade.h
++++ b/src/mame/midway/cruisn/vunit_distance_fade.h
+@@ -17,7 +17,8 @@ inline bool decode(const Packet &packet,std::array<float,4> &depths,bool &crossi
+ {
+     depths={};crossing=false;
+     const auto &q=packet.quad;
+-    if(!q.frame || q.pad!=3 || packet.policy>1 || q.coverage.far_limit!=240000)return false;
++    if(!q.frame || (q.pad!=3 && q.pad!=7) || packet.policy>1 || q.coverage.far_limit!=240000)return false;
++    if(q.pad==7 && packet.policy!=1)return false; // margin coverage is an authored-road permission
+     std::array<float,4> values{};unsigned inside=0;
+     for(unsigned i=0;i<4;++i)
+     {
+diff --git a/src/mame/midway/cruisn/world_host_scenery.h b/src/mame/midway/cruisn/world_host_scenery.h
+index 2fb506533f3..9df639492b6 100644
+--- a/src/mame/midway/cruisn/world_host_scenery.h
++++ b/src/mame/midway/cruisn/world_host_scenery.h
+@@ -26,6 +26,7 @@ struct Object
+     uint32_t id=0,model=0,section=0;
+     int32_t depth=0;
+     bool protected_road=false; // authored object flag, never inferred from screen geometry
++    bool margin_only=false; // coverage mask; preserve full quad geometry and UVs
+     std::vector<Quad> quads;
+     // Populated only for the explicitly gated coverage trial. Original quads
+     // remain unchanged; camera depths travel separately to the private renderer.
+@@ -135,7 +136,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+             // Original object rejection projects the radius at the center's
+             // depth. It can underestimate nearby perspective geometry. Recover
+             // only roads that this horizontal test rejects, then require every
+-            // real vertex to remain safely in front of the projection plane.
++            // vertex of each submitted polygon to pass the projection checks.
+             if(depth<=0 || depth>=80000 || radius>uint32_t(INT32_MAX))continue;
+             const int index=std::min(4999,depth>>4);
+             const Float r=Float::load(read(table+uint32_t(index)));
+@@ -213,6 +214,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+         if(projected.size()!=vertices)return false;
+         Object object;object.id=object_id;object.model=model;object.depth=depth;object.section=obj[27]&65535;
+         object.protected_road=road;
++        object.margin_only=active_margin;
+         if(!road)poly_start=model+3+2*(pairs+singles);
+         for(uint32_t i=0;i<polygons;++i)
+         {
+@@ -223,9 +225,12 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
+             {
+                 bool valid=true;for(auto j:ix)valid=valid && projected_valid[j];
+                 if(!valid)continue;
+-                bool left=true,right=true;
+-                for(auto j:ix){left=left && projected[j][0].fix()<0;right=right && projected[j][0].fix()>511;}
+-                if(!left && !right)continue; // no writes to the native 4:3 area
++                bool outside=false;
++                for(auto j:ix)outside=outside || projected[j][0].fix()<0 || projected[j][0].fix()>511;
++                if(!outside)continue;
++                // A crossing polygon still covers useful margin pixels. The
++                // renderer must discard its native-center fragments; changing
++                // corners or UVs here would distort affine texture mapping.
+             }
+             if(far_coverage && projected[ix[0]][2].fix()>=int32_t(far) &&
+                 projected[ix[1]][2].fix()>=int32_t(far) && projected[ix[2]][2].fix()>=int32_t(far) &&
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index ce70a13c31e..dbf71a3ddf6 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -495,14 +495,17 @@ void midvunit_base_state::world_host_start()
+ 			std::vector<std::array<uint16_t,16>> quads;
+ 			std::vector<std::array<uint32_t,4>> depths;
+ 			std::vector<uint32_t> policies;
++			std::vector<uint8_t> margins;
+ 			size_t count=0;for(const auto &o:scene.objects)count+=o.quads.size();
+ 			quads.reserve(count);
+ 			if(m_host_far_coverage)depths.reserve(count);
+ 			uint64_t hash=cruisn::world_host::hash_seed;
+ 			if(m_host_fade_metadata)policies.reserve(count);
++			if(active_roads)margins.reserve(count);
+ 			for(const auto &o:scene.objects)for(size_t qi=0;qi<o.quads.size();++qi)
+ 			{
+ 				const auto &q=o.quads[qi];
++				if(active_roads)margins.push_back(o.margin_only?1:0);
+ 				if(m_host_fade_metadata)policies.push_back(o.protected_road?1:0);
+ 				if(m_host_far_coverage){if(o.depths.size()!=o.quads.size())fatalerror("Missing World far depths\n");depths.push_back(o.depths[qi]);}
+ 				quads.push_back(q);
+@@ -516,7 +519,7 @@ void midvunit_base_state::world_host_start()
+ 				fputc('\n',m_host_quad_log);
+ 			}
+ 			const auto logged=std::chrono::steady_clock::now();
+-			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr,m_host_fade_metadata?&policies:nullptr);
++			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr,m_host_fade_metadata?&policies:nullptr,active_roads?&margins:nullptr);
+ 			if(m_maincpu->total_cycles()!=guest_cycles)
+ 				fatalerror("World host inspection changed emulated CPU cycles\n");
+ 			const auto submitted=std::chrono::steady_clock::now();
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index 5d472834cfc..21324650e65 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -111,7 +111,8 @@ protected:
+ 	void offroad_host_start();
+ 	void world_host_exit();
+ 	void world_host_submit(const std::vector<std::array<uint16_t,16>> &quads,
+-		const std::vector<std::array<uint32_t,4>> *depths=nullptr, const std::vector<uint32_t> *policies=nullptr);
++		const std::vector<std::array<uint32_t,4>> *depths=nullptr, const std::vector<uint32_t> *policies=nullptr,
++		const std::vector<uint8_t> *margins=nullptr);
+ 	void usa_distance_start();
+ 	void usa_distance_tick();
+ 	void usa_distance_exit();
+diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
+index f565b31e3ab..c22294eb972 100644
+--- a/src/mame/midway/midvunit_gl_shaders.h
++++ b/src/mame/midway/midvunit_gl_shaders.h
+@@ -73,6 +73,12 @@ static const char *MVGL_FS =
+ 	"    float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down\n"
+ 	"    float cx = fx / float(uScale);\n"
+ 	"    float cy = fy / float(uScale);\n"
++	"    // Qualified active-road packets may straddle the native viewport. Mask\n"
++	"    // coverage only; all original corner/UV interpolation below stays intact.\n"
++	"    if ((meta.z & 16u) != 0u) {\n"
++	"        float margin = (uCanvas.x - 512.0) * 0.5;\n"
++	"        if (cx >= margin && cx < margin + 512.0) discard;\n"
++	"    }\n"
+ 	"    if (uFarCoverage != 0) {\n"
+ 	"        // Two bounding-box triangles carry each original quad. Mask indexing\n"
+ 	"        // resets with every draw; original UV interpolation below is unchanged.\n"
+@@ -547,6 +553,12 @@ static const char *MVGL_MIRROR_FS =
+ 	"    float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down\n"
+ 	"    float cx = fx / float(uScale);\n"
+ 	"    float cy = fy / float(uScale);\n"
++	"    // Qualified active-road packets may straddle the native viewport. Mask\n"
++	"    // coverage only; all original corner/UV interpolation below stays intact.\n"
++	"    if ((meta.z & 16u) != 0u) {\n"
++	"        float margin = (uCanvas.x - 512.0) * 0.5;\n"
++	"        if (cx >= margin && cx < margin + 512.0) discard;\n"
++	"    }\n"
+ 	"    if (uFarCoverage != 0) {\n"
+ 	"        // Two bounding-box triangles carry each original quad. Mask indexing\n"
+ 	"        // resets with every draw; original UV interpolation below is unchanged.\n"
+@@ -835,6 +847,12 @@ static const char *MVGL_FADE_FS =
+ 	"    float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down\n"
+ 	"    float cx = fx / float(uScale);\n"
+ 	"    float cy = fy / float(uScale);\n"
++	"    // Qualified active-road packets may straddle the native viewport. Mask\n"
++	"    // coverage only; all original corner/UV interpolation below stays intact.\n"
++	"    if ((meta.z & 16u) != 0u) {\n"
++	"        float margin = (uCanvas.x - 512.0) * 0.5;\n"
++	"        if (cx >= margin && cx < margin + 512.0) discard;\n"
++	"    }\n"
+ 	"    if (uFarCoverage != 0) {\n"
+ 	"        // Two bounding-box triangles carry each original quad. Mask indexing\n"
+ 	"        // resets with every draw; original UV interpolation below is unchanged.\n"
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 5e88a5d5dfd..244c5be3082 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -945,7 +945,7 @@ static size_t build_vertices(const std::vector<QuadMsg> &quads, float xoff,
+ 			f[14] = us[2]; f[15] = vs[2]; f[16] = us[3]; f[17] = vs[3];
+ 			for (int i = 0; i < 4; i++) f[18 + i] = bounds[i];
+ 			uint32_t *u = &udata[(q * 6 + k) * 4];
+-			u[0] = pixdata; u[1] = mode; u[2] = dither | ((quads[q].pad & 1) ? 8u : 0u); u[3] = uint32_t(dma[14]) * 256;
++			u[0] = pixdata; u[1] = mode; u[2] = dither | ((quads[q].pad & 1) ? 8u : 0u) | ((quads[q].pad & 4) ? 16u : 0u); u[3] = uint32_t(dma[14]) * 256;
+ 		}
+ 	}
+ 	return joined.aligned;
+@@ -1444,7 +1444,7 @@ void thread_main()
+ 		bool const auxiliary = original_mirror && (run.front().pad & 2);
+ 		if(original_mirror)
+ 		{
+-			for(auto const &q:run)if(q.pad!=(auxiliary?3:0))fatalerror("Original mirror unqualified layer ownership\n");
++			for(auto const &q:run)if(auxiliary?(q.pad!=3 && q.pad!=7):q.pad!=0)fatalerror("Original mirror unqualified layer ownership\n");
+ 			if(auxiliary)mirror_auxiliary+=run.size();
+ 			else {mirror_ordinary+=run.size();original_cpu_written[pg]=0;}
+ 		}
+@@ -1731,6 +1731,10 @@ void thread_main()
+ 				float selector=1;
+ 				bool far_packet=type==7;
+ 				memcpy(&q, staging.data(),type==1?40:60);
++				if(q.pad & 4) {
++					const char *permission=std::getenv("MIDV_WORLD_HOST_ACTIVE_ROADS");
++					if(q.pad!=7 || !permission || std::strcmp(permission,"1"))fatalerror("Unqualified active road margin packet\n");
++				}
+ 				if(type==7){std::array<double,4> depths;if(!cruisn::vunit_far::decode(q.coverage,depths))fatalerror("Invalid far quad metadata\n");}
+ 				if(type==8)
+ 				{
+@@ -3407,12 +3411,15 @@ void midvunit_base_state::observe_numeric_hud()
+ }
+ 
+ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_t,16>> &quads,
+-	const std::vector<std::array<uint32_t,4>> *depths, const std::vector<uint32_t> *policies)
++	const std::vector<std::array<uint32_t,4>> *depths, const std::vector<uint32_t> *policies,
++	const std::vector<uint8_t> *margins)
+ {
+ 	if(!live().enabled)fatalerror("World host scenery drawing requires the live GL renderer\n");
+ 	if(quads.empty())return;
+ 	if(depths && (!m_host_far_coverage || depths->size()!=quads.size()))fatalerror("Host far depths mismatch\n");
+ 	if(policies && (!m_host_fade_metadata || !depths || policies->size()!=quads.size()))fatalerror("Host fade policies mismatch\n");
++	if(margins && (m_host_layer!=3 || margins->size()!=quads.size() ||
++		std::any_of(margins->begin(),margins->end(),[](uint8_t v){return v>1;})))fatalerror("Host margin permissions mismatch\n");
+ 	const uint32_t frame=uint32_t(m_screen->frame_number());
+ 	live().last_frame=frame;
+ 	live().sync_state(frame,m_paletteram.target(),uint32_t(m_paletteram.bytes()),
+@@ -3422,10 +3429,11 @@ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_
+ 	int const fade_frame=capture_text?atoi(capture_text):0;
+ 	for(size_t i=0;i<quads.size();++i)
+ 	{
++		h.pad=m_host_layer | ((margins && (*margins)[i])?4:0);
+ 		if(policies)
+ 		{
+ 			cruisn::vunit_fade::Packet packet;
+-			packet.quad.frame=frame;packet.quad.pc=m_page_control;packet.quad.pad=m_host_layer;
++			packet.quad.frame=frame;packet.quad.pc=m_page_control;packet.quad.pad=h.pad;
+ 			std::copy(quads[i].begin(),quads[i].end(),packet.quad.dma);
+ 			packet.quad.coverage.far_limit=m_host_far;packet.quad.coverage.words=(*depths)[i];packet.policy=(*policies)[i];
+ 			std::array<float,4> decoded;bool crossing;
+@@ -3438,7 +3446,7 @@ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_
+ 		bool crossing=false;
+ 		if(depths)for(auto word:(*depths)[i])crossing|=cruisn::scenery::Float::load(word).fix()>=int32_t(m_host_far);
+ 		if(!crossing){live().write_msg(1,&h,8,quads[i].data(),32);continue;}
+-		cruisn::vunit_far::Packet q{};q.frame=frame;q.pc=m_page_control;q.pad=m_host_layer;
++		cruisn::vunit_far::Packet q{};q.frame=frame;q.pc=m_page_control;q.pad=h.pad;
+ 		std::copy(quads[i].begin(),quads[i].end(),q.dma);q.coverage.far_limit=m_host_far;q.coverage.words=(*depths)[i];
+ 		std::array<double,4> decoded;
+ 		if(!cruisn::vunit_far::decode(q.coverage,decoded))fatalerror("Invalid emitted far quad depths\n");
+-- 
+2.55.0.windows.3
+

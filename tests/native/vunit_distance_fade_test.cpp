@@ -18,6 +18,9 @@ int main()
     for(unsigned i=0;i<4;++i)assert(depths[i]==old[i]);
     p.policy=1;
     assert(vunit_fade::decode(p,depths,crossing));
+    p.quad.pad=7;assert(vunit_fade::decode(p,depths,crossing));
+    p.policy=0;assert(!vunit_fade::decode(p,depths,crossing));
+    p.policy=1;p.quad.pad=3;
     fill({1000,220000,230000,239999});
     assert(vunit_fade::decode(p,depths,crossing) && !crossing);
     assert(!vunit_far::decode(p.quad.coverage,old)); // original codec remains crossing-only

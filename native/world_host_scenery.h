@@ -26,6 +26,7 @@ struct Object
     uint32_t id=0,model=0,section=0;
     int32_t depth=0;
     bool protected_road=false; // authored object flag, never inferred from screen geometry
+    bool margin_only=false; // coverage mask; preserve full quad geometry and UVs
     std::vector<Quad> quads;
     // Populated only for the explicitly gated coverage trial. Original quads
     // remain unchanged; camera depths travel separately to the private renderer.
@@ -135,7 +136,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             // Original object rejection projects the radius at the center's
             // depth. It can underestimate nearby perspective geometry. Recover
             // only roads that this horizontal test rejects, then require every
-            // real vertex to remain safely in front of the projection plane.
+            // vertex of each submitted polygon to pass the projection checks.
             if(depth<=0 || depth>=80000 || radius>uint32_t(INT32_MAX))continue;
             const int index=std::min(4999,depth>>4);
             const Float r=Float::load(read(table+uint32_t(index)));
@@ -213,6 +214,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         if(projected.size()!=vertices)return false;
         Object object;object.id=object_id;object.model=model;object.depth=depth;object.section=obj[27]&65535;
         object.protected_road=road;
+        object.margin_only=active_margin;
         if(!road)poly_start=model+3+2*(pairs+singles);
         for(uint32_t i=0;i<polygons;++i)
         {
@@ -223,9 +225,12 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
             {
                 bool valid=true;for(auto j:ix)valid=valid && projected_valid[j];
                 if(!valid)continue;
-                bool left=true,right=true;
-                for(auto j:ix){left=left && projected[j][0].fix()<0;right=right && projected[j][0].fix()>511;}
-                if(!left && !right)continue; // no writes to the native 4:3 area
+                bool outside=false;
+                for(auto j:ix)outside=outside || projected[j][0].fix()<0 || projected[j][0].fix()>511;
+                if(!outside)continue;
+                // A crossing polygon still covers useful margin pixels. The
+                // renderer must discard its native-center fragments; changing
+                // corners or UVs here would distort affine texture mapping.
             }
             if(far_coverage && projected[ix[0]][2].fix()>=int32_t(far) &&
                 projected[ix[1]][2].fix()>=int32_t(far) && projected[ix[2]][2].fix()>=int32_t(far) &&

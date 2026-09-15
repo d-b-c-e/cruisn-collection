@@ -112,6 +112,12 @@ void main() {
     float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down
     float cx = fx / float(uScale);
     float cy = fy / float(uScale);
+    // Qualified active-road packets may straddle the native viewport. Mask
+    // coverage only; all original corner/UV interpolation below stays intact.
+    if ((meta.z & 16u) != 0u) {
+        float margin = (uCanvas.x - 512.0) * 0.5;
+        if (cx >= margin && cx < margin + 512.0) discard;
+    }
     if (uFarCoverage != 0) {
         // Two bounding-box triangles carry each original quad. Mask indexing
         // resets with every draw; original UV interpolation below is unchanged.

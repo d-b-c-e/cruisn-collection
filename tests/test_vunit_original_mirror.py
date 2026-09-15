@@ -75,6 +75,14 @@ class OriginalMirrorTests(unittest.TestCase):
                 writer = csv.DictWriter(stream, fieldnames=list(row));writer.writeheader();writer.writerow(row)
             trial = dict(frame=100, first=80, last=150, fade_metadata=True)
             self.assertEqual(verify_metadata(trial, root)['captured_crossings'], 1)
+            margin = b'VFD1'+struct.pack('<IHH16HI4II',100,513,7,*quad,240000,*words,1)
+            for name in ('producer','consumer'):
+                (root/f'vunit-fade-{name}.bin').write_bytes(margin)
+            with self.assertRaisesRegex(ValueError,'identity or policy'):
+                verify_metadata(trial,root)
+            self.assertEqual(verify_metadata(dict(trial,margin_coverage=True),root)['captured_roads'],1)
+            for name in ('producer','consumer'):
+                (root/f'vunit-fade-{name}.bin').write_bytes(raw)
             mirror = dict(frame=100, width=512, height=256, visible_page=0,
                           ordinary_quads=1, auxiliary_quads=1, cpu_blits=1, original_resets=1)
             (root/'vunit-mirror.json').write_text(json.dumps(mirror))

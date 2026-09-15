@@ -41,6 +41,8 @@ def configure(args, rom, settings, frames):
     if host and settings.get('MIDV_WORLD_HOST_LAYER') != '3':
         raise ValueError('original mirror requires split and tagged host ownership')
     result = dict(frame=frame, auxiliary=host)
+    if settings.get('MIDV_WORLD_HOST_ACTIVE_ROADS') == '1':
+        result['margin_coverage'] = True
     if metadata:
         first = int(settings.get('MIDV_WORLD_HOST_FIRST', '0'))
         last = int(settings.get('MIDV_WORLD_HOST_LAST', '0'))
@@ -141,7 +143,8 @@ def verify_metadata(trial, directory):
     for packet in packets:
         frame, pc, pad = packet[:3]
         limit, *words, policy = packet[19:]
-        if frame != trial['frame'] or pad != 3 or limit != 240000 or policy not in (0, 1):
+        valid_layer = pad == 3 or (pad == 7 and trial.get('margin_coverage') is True and policy == 1)
+        if frame != trial['frame'] or not valid_layer or limit != 240000 or policy not in (0, 1):
             raise ValueError('invalid fade metadata identity or policy')
         depths = []
         for word in words:

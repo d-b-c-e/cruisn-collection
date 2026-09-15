@@ -1,5 +1,36 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 polygon road coverage — live Germany repair; World2.5 running
+
+Read docs/reviews/2026-09-15-world-road-polygon-coverage.md. Native0ce0f02457a frozen
+SHA0ce0468292f0e33828ae8b1bf855cca5db6cf34b08e9e025a377077f3bf32d53;
+231patches reconstruct93cad1c2f3b2744e469233c3b9b30be4053dd88d. Separate nativeb553
+per-polygon depth and0ce0 margin-fragment mask. Fresh active road membership and
+original object rejection retained; no near clamping/guest mutation. Active quad
+pad7 carries margin-only coverage, leaves full corners/UVs; fade permits authored
+roads only. Invalid vertices retain slots; any referencing polygon excluded.
+Four native24Python targetedPASS. Actual7277 2463->2485q:19safe near-model polygons
+plus3crossingnativeboundary; all186active quad/depth bytes independentlyexact.
+Other7337/7339/World25 5900 future2521/2479/5922exact. Source-only initial depth
+count expected8 but19qualified; failure retained. First resource capture missed
+embeddedoldPCtap; separate bounded recheck qualifies available data, no fake PC.
+
+FullGermany9269inputs7461camera22383ADC/originalDMA/framebuffer/materials EXACT.
+Fouratomicresources exact. CorrectedPCtrace joins1453DMA. AlloriginalGPU7280pages
+andnativecenters exact. Entire2736x1600 indexed displayed candidate7280 matches
+offlineprediction EXACT; paired4Kimageviewed bothholes/strip repaired.31completed
+4Kframes7060..7360:11change20exact,121369summedblackpixels repaired,interiorexact.
+Newzero210:2nearblack7230;208at7270 maxcomponent6pixels, mostly CRTouteredge.
+Paired7270viewed largepalepatch repaired, no newmissingregion seen; strictzero
+metric stillNOTPASS. Smalloldpaletriangle remains nearviewportedge. LOCALW=
+results/diagnostics/world25-roads-20260914; germany-polygon-coverage-qualified,
+germany-residual-qualified, germany-polygon-new-black. Export scripts ALREADYRUN.
+World25 polygon-coverage6000input replay withfadeMETADATA(no fade) running now;
+next qualify against world25-active-roads/original-mirror-host, then cost/remainder.
+No broaddefault suite/repeatedtiming runs. Personal87d/publicv0.5.0unchanged.
+No deploy/release/hostedCI/physicalFFB/menuremoval. Current4Kmonitor, serialrig.
+Continue directly after checkpoints while parity work remains.
+
 ## September15 — Germany black road wedge repaired; World2.5 live qualification next
 
 Read docs/reviews/2026-09-15-world-active-road-margins.md. Native62f2d62a42f frozen

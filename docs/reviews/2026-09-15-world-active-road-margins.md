@@ -111,6 +111,35 @@ page separately, and explicitly marks completed presentation as unverified.
 The saved Germany check reports draw1/visible0 while retaining its exact204800-
 pixel native comparison. This reporting change does not alter rendered pixels.
 
+## Full Germany and the remaining gaps
+
+The full9269-input recording also passes through the race end. All7461 camera
+samples and22383 ADC reads match the retained full control. The exact scene
+resources and original draw provenance remain unchanged. At completed7340 both
+original-only GPU pages and the native4:3 portions of all eight planes are exact.
+
+Across the wider31-frame4K window7060..7360,17 frames change and14 stay exact.
+The sampled images gain292749 formerly black pixels in total (a sum across
+frames, not unique world area), including repairs on the right margin at7160
+and7180. The fixed interior remains exact throughout. The paired7280 images were
+inspected: a large missing road area is restored, but smaller old gaps remain.
+This is useful progress, not complete road coverage.
+
+The initial strict zero-new-black check fails at7210. The full retained audit
+finds223 newly zero-valued pixels across seven frames; every previous channel
+was only0..2/255, at the outer display edge. The literal metric remains FAIL;
+the full original-data integrity verdict is PASS. These tiny dark-color changes
+are not evidence of a newly missing textured region. The report preserves all
+coordinates and prior RGB values instead of silently redefining its threshold.
+
+The next investigation is the residual gap at completed7280 / elapsed1:35.69:
+determine its actual source and rejection path before relaxing the current
+whole-model positive-depth requirement or attempting polygon clipping.
+Do not repeat the full drive merely to seek better timing or another favorable
+image. Local full evidence is `germany-active-roads-full`,
+`germany-active-roads-full-qualified.json` (first strict failure), and
+`germany-active-roads-full-audit.json` (complete audit).
+
 Local evidence lives under `results/diagnostics/world25-roads-20260914/`:
 `germany-road-resources`, `germany-road-qualified`, `germany-active-roads` (initial
 guard failure), `germany-active-roads-v2`, `germany-active-roads-v2-qualified.json`,

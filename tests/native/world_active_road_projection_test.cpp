@@ -24,6 +24,7 @@ int main()
     // An unused near vertex must not reject a separate wholly valid polygon.
     assert(build(read,scene,80000,&descriptors,true));
     assert(scene.objects.size()==1 && scene.objects[0].quads.size()==1);
+    assert(scene.objects[0].margin_only);
     for(unsigned i=2;i<10;i+=2)assert(int16_t(scene.objects[0].quads[0][i])<0);
     assert(ram==original);
     // Any referenced invalid vertex rejects that polygon, never a clamped draw.
