@@ -1,5 +1,71 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — partial recovery built; visible-benefit gate FAIL, continue elsewhere
+
+Read docs/reviews/2026-09-15-offroad-partial-frontier.md. Nativea035f824e3b frozen/
+pushed SHA35a135dff5544b9de0abae2864235dff554e824f27fb9fe237319dc8307aab33;
+227patches reconstructbe17d6fdf3ec669831c28b9be67e766549c7dfcf. Optional
+--offroad-host-partial recover requirescandidate/3x/future/draw/FFB0. Fullbounded
+free-list+allocatedtagset onpartialscenes; onlyunallocatedordinarynextsections,
+nevercachemembership; keepoldsource/material/near/order guards. Canonicalnative/
+Python cold/warm5042/5044/5046 exact; recovering5044adds235quads49objects from51sources.
+Alloldorderedobjects exact, neighbor scenesunchanged. 1newnative5options2scenePASS.
+PreviousOffRoaddepthhelpers nowlinked butlive retentionOFF. No othergamepolicychange.
+
+One5060inputnativecandidate versusfresh e534control PASSoriginalinput/nativeimages,
+3257camera/13028ADC, completeoriginalDMA/framebuffer/texture/palette5058 exact,
+all3actualsceneRAM/material/metadatabytesexact.5044native892qfingerprint matches
+independentproposal.22partialscene rowschange,22actualrecoveryreceipts; allother
+scene fields(except6durations)exact. ALL11completed4Kmonitor3824x2073CRT5040..5050
+PIXELIDENTICAL. IntegrityPASS butvisible-benefitFAILretained. Foregroundoccludes
+isolatedtownstrip (14458pixels potential). DO NOTrepeatthiswindow/promoteasfix.
+LOCALW/offroad-partial-live-qualified.json,partial-native-export.json(ALREADYRUN),
+partial-recovered,partial-resources,partial-allocation-audit.json (52partialnext,
+14withstrictlylaterallocations; sameframeorderambiguous). No currentgame/build/test.
+Personal87d/publicv0.5.0unchanged; no deploy/release/hostedCI/physicalFFB/menuremoval.
+Continue directly onotherunresolvedparity evidence; stop escalating this no-effect
+case. Worldauthoredcoverage/customclasses or actualvisibletransition-source proof
+remainuseful; finalpackage/attendedgates stillopen. Currentmonitor3840x2160.
+
+## September15 — Germany no fade effect; Off-Road partial frontier lead
+
+Read docs/reviews/2026-09-15-world-germany-distance-fade.md and
+2026-09-15-offroad-camera-depth.md. Collection6e90133 pushed. Nativee534 frozen
+unchanged (226patches/SHA8e09bf779f582adcfbfbcfb18ce41304e5eedd2e82aad9a787f5205ca484699d).
+Germany7400input off/on PASS;31completed3824x2073 CRT7060..7360 PIXELIDENTICAL.
+No visiblefadebenefit, oldleftroadwedge remains; appearance comparisonFAILretained.
+All8indexedplanes7340 and2796hostscenesexact,9,008,212metadata/1,154,698roads.
+7340isnodrawframe: header-onlymetadata qualifiedbyactualscenerows/fullaggregate;
+initialcontrolFAILretained, explicitreport-rechecked.json verifiesALLremaining
+receipts/input/native/31completedframes WITHOUTreplay. Bothopacitypagesall1.
+Preselected6500..6800 ratios100.091/100.007%; notbroadperformance. Canonical
+compare_distance_fade.py reproducesoldWorld25positivepair;7focusedtestsPASS.
+OffRoadoptionalcamera/quaddepths SOURCEONLY,NOTMAMEsynced.1399originalrecords/
+15094vertices/9602quadsindependentlyexact;3actualElPaso3xscenes2819quads/cachedpasses
+exactoldgeometry+independentdepths.3native8PythonPASS. LOCALoffroad-model-20260909/
+depth-qualified. Isolateddepth-envelope probe at141888/11824:3360partial821zero9976;
+6240/8760none. Upperboundallhosteligible, NOTroadpolicy/originalocclusion acceptance.
+
+ACTIVE moreconcreteOffRoadone-scenehole: existingfullElPasoprogress+3739allocation
+records show14partialfrontiers skipnextsection BEFOREitsobjectsallocate. Example
+native5044(Replay5045):657quads vs906/903neighbors;51ordinarysection28sources notyet
+allocated. Otherspartialstates HAVEallocatedsources, so cannotblanketremoveguard.
+Onefresh5060inpute534capturePASS,3257camera13028ADC exactold,11completed4K5040..5050,
+3atomicresources5042/5044/5046+originalDMA. LOCALW/offroad-partial-resources and
+partial-qualified PASS. LocalPythonproposal usesfullallocatedpooltags toadmitonly
+unallocatedordinarynext-section sources. At5044 +49objects/+235quads =>892;oldobjects
+exactand5042/5046unchanged. IsolatedhostGPU+14458RGB pixels bounds520,576..936,630;
+sceneimagesviewed: distanttownstrip. Actualcompleted5044viewed: foregroundtownmay
+occludeit. NOlivefix/GPUfullcompositionclaim. Need qualifycurrentpoolmembership
+contract, canonicaloptionalpartial-sourcefilter/cache behavior andactualpixel
+benefit BEFOREpromotion. Originalcodeexcludesnextsectionifpartial (lead=current
+counterlagorallocationahead); sourceword6encodessection/ordinal; freepoolhelper
+Pythonverify_offroad_future.allocated_pool available. Keepmaterial/near/orderguards.
+LOCALW/probe-offroad-partial.py andqualify-offroad-partial.py ALREADYRUN; outputs
+mustnotclobber. Native source stillclean e534, personal87d/v0.5.0unchanged.
+No currentgame/build/test. Continue directly whileparityremains; no heartbeatwait,
+no deploy/release/hostedCI/physicalFFB/menu removal. Serialize rig. Monitor4Kcurrent.
+
 ## September15 — first native distance fade qualified; next Germany4K temporal pair
 
 Read docs/reviews/2026-09-15-vunit-live-distance-fade.md. Nativee5344546a8e frozen/

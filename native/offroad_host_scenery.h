@@ -5,6 +5,7 @@
 #include "offroad_transform.h"
 #include "offroad_future_sections.h"
 #include "offroad_distance.h"
+#include "offroad_partial_sections.h"
 #include <algorithm>
 #include <map>
 #include <set>
@@ -22,6 +23,7 @@ struct Object
 struct Scene
 {
     uint32_t pending=0,future=0,unsupported=0,near=0,far=0,projection=0,material=0;
+    uint32_t partial_recovered=0;
     bool pretrack=false,partial=false,deferred=false;
     std::vector<Object> objects;
 };
@@ -85,10 +87,11 @@ inline bool material_bound(const Quad &q,const MaterialState &state)
 }
 
 template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache,
-    bool clip_admission=false,bool retain_depths=false)
+    bool clip_admission=false,bool retain_depths=false,bool recover_partial=false)
 {
     result=Scene{};Scene scene;
     if(!offroad_distance::valid_multiplier(multiplier) || (clip_admission && (multiplier!=3 || !use_future)))return false;
+    if(recover_partial && (multiplier!=3 || !use_future))return false;
     offroad_future::Frontier f;if(!offroad_future::frontier(read,f))return false;
     if(f.pretrack){cache.clear();scene.pretrack=true;result=scene;return true;}
     if(cache.track!=f.track){cache.clear();cache.track=f.track;}
@@ -113,6 +116,9 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
     if(use_future)
     {
         offroad_future::Result future;if(!offroad_future::collect(read,future,cache.future))return false;
+        const size_t original_sources=future.sources.size();
+        if(recover_partial && !offroad_future::recover_partial(read,future))return false;
+        scene.partial_recovered=uint32_t(future.sources.size()-original_sources);
         for(const auto &source:future.sources)
         {
             if(!source.supported){++scene.unsupported;continue;}

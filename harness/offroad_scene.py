@@ -6,6 +6,7 @@ from scenery_c31 import F, signed
 from offroad_sections import frontier, sections, span
 from offroad_transform import prepare, select_lod, CONSTANTS
 from offroad_model import quads
+from offroad_partial import recover as recover_partial_sources
 
 
 def position_and_order(obj, view, scale):
@@ -49,9 +50,11 @@ def host_project(vertices, matrix, origin, read, multiplier, *, camera_depths=No
     return points
 
 
-def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=False):
+def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=False, recover_partial=False):
     if multiplier not in (1, 2, 3) or (clip_admission and (multiplier != 3 or not use_future)):
         raise ValueError('host multiplier')
+    if recover_partial and (multiplier != 3 or not use_future):
+        raise ValueError('partial recovery requires 3x future scenery')
     f = frontier(read)
     counts = Counter(dict(pending=0, future=0, unsupported=0, near=0, far=0,
                           projection=0, material=0, pretrack=int(f['pretrack']), partial=int(f['partial']), deferred=0))
@@ -80,7 +83,10 @@ def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=F
         seen.add(p); obj = [read(p+i) for i in range(22)]; candidates.append((p, obj)); p = obj[0]
         counts['pending'] += 1
     if use_future:
-        for source in sections(read)['sources']:
+        future = sections(read)
+        if recover_partial:
+            future = recover_partial_sources(read,future)
+        for source in future['sources']:
             if not source['supported']:
                 counts['unsupported'] += 1
                 continue

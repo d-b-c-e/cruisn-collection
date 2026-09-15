@@ -58,6 +58,28 @@ class OffroadHostOptionsTests(unittest.TestCase):
             bad = dict(settings); bad['MIDV_OFFROAD_HOST_'+name] = value
             with self.assertRaises(ValueError): configure(self.args(), 'offroadc', bad)
 
+    def test_partial_recovery_gates_and_replay(self):
+        args = self.trial(); args.candidate = 'candidate'; args.offroad_host_partial = 'recover'
+        settings = dict(MIDV_GL='1', MIDV_FFB='0')
+        self.assertEqual(configure(args,'offroadc',settings)['partial'],'recover')
+        inherited = self.args(); inherited.candidate = 'candidate'
+        self.assertEqual(configure(inherited,'offroadc',settings)['partial'],'recover')
+        for field,value in [('candidate',None),('offroad_host_distance',2),('offroad_host_source','pending'),
+                            ('offroad_host_scenery','observe')]:
+            bad = copy.copy(args); setattr(bad,field,value)
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                configure(bad,'offroadc',dict(MIDV_GL='1',MIDV_FFB='0'))
+        with self.assertRaises(ValueError):
+            configure(args,'offroadc',dict(MIDV_GL='1',MIDV_FFB='1'))
+        with self.assertRaises(ValueError):
+            configure(self.args(),'offroadc',dict(MIDV_OFFROAD_HOST_RECOVER_PARTIAL='1'))
+        configure(self.args('--offroad-host-scenery','off'),'offroadc',settings)
+        self.assertNotIn('MIDV_OFFROAD_HOST_RECOVER_PARTIAL',settings)
+        args.offroad_host_partial = 'stock'; configure(args,'offroadc',settings)
+        self.assertEqual(settings['MIDV_OFFROAD_HOST_RECOVER_PARTIAL'],'0')
+        args.offroad_host_partial = None; configure(args,'offroadc',settings)
+        self.assertNotIn('MIDV_OFFROAD_HOST_RECOVER_PARTIAL',settings)
+
     def test_clip_admission_gate_and_replay(self):
         args = self.trial(); args.candidate = 'private-candidate'
         args.offroad_host_admission = 'clip'

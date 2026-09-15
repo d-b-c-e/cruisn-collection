@@ -16,13 +16,14 @@ int main(int argc,char **argv)
 {
     try
     {
-        const bool scene_mode=argc>=6 && argc<=8 && std::string(argv[1])=="--scene";
-        bool clip_admission=false,with_depths=false;
+        const bool scene_mode=argc>=6 && argc<=9 && std::string(argv[1])=="--scene";
+        bool clip_admission=false,with_depths=false,recover_partial=false;
         if(scene_mode)for(int i=6;i<argc;++i)
         {
             const std::string flag=argv[i];
             if(flag=="--clip-admission" && !clip_admission)clip_admission=true;
             else if(flag=="--depths" && !with_depths)with_depths=true;
+            else if(flag=="--recover-partial" && !recover_partial)recover_partial=true;
             else return 2;
         }
         if(!scene_mode && (argc!=4 || (std::string(argv[1])!="--future" && std::string(argv[1])!="--loaded")))return 2;
@@ -39,7 +40,7 @@ int main(int argc,char **argv)
             cruisn::offroad_host::Cache cache;cruisn::offroad_host::Scene scene;
             for(unsigned pass=0;pass<2;++pass)
             {
-                if(!cruisn::offroad_host::build(read,scene,multiplier,mode=="future",cache,clip_admission,with_depths))
+                if(!cruisn::offroad_host::build(read,scene,multiplier,mode=="future",cache,clip_admission,with_depths,recover_partial))
                     throw std::runtime_error("Off Road host scene rejected");
                 std::cout<<scene.pending<<' '<<scene.future<<' '<<scene.unsupported<<' '<<scene.near<<' '<<scene.far<<' '
                     <<scene.projection<<' '<<scene.material<<' '<<scene.pretrack<<' '<<scene.partial<<' '<<scene.deferred<<' '<<scene.objects.size()<<'\n';

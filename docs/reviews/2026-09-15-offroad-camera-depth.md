@@ -44,3 +44,11 @@ executables and complete scene outputs. These are source-only helpers, not a new
 frozen emulator. Native e534, personal87d and publicv0.5.0 remain unchanged.
 Next assess the far envelope against actual visible surfaces, then connect a
 game-qualified transport/profile rather than relax existing material guards.
+
+The subsequent isolated depth-envelope screen uses a 141,888-unit plane and
+11,824-unit transition width, treating every host surface as eligible only to
+measure an upper bound. At3360 it finds821 partial-opacity pixels and9,976 zero
+pixels;6240 and8760 have none. Indexed colors and masks remain exact. This is
+not a road policy or a completed-image benefit. The later
+[partial-frontier study](2026-09-15-offroad-partial-frontier.md) links the optional
+depth helpers into its native candidate with live depth retention disabled.
