@@ -72,6 +72,10 @@ The saved CSV inventory is `world25-roads-20260914/vunit-runtime-audit.json`.
    both World revisions and Off-Road. Existing callbacks check different guest
    instructions and readiness structures; Exotica's pool protocol cannot simply
    be copied onto them. Reuse existing saved startup evidence where available.
+   The subsequent [USA startup observation](2026-09-15-usa-startup-observation.md)
+   qualifies six original RAM/fast-RAM states at first scene and first frontier
+   against native code guards and independent Python preparation. Early live
+   rendering and the other game profiles remain to be exercised.
 2. Add an explicit continuous policy with optional bounded capture, keeping
    live cache/source/resource bounds and the existing latched preparation-only
    fallback. Suppress persistent journals for normal operation without making

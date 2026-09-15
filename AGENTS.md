@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 USA startup — observed and independently qualified
+
+Read docs/reviews/2026-09-15-usa-startup-observation.md. Newboundedread-onlyLua
+vunit_startup_observer capturesactualPC-ownedscenehook, RAMshare+fastRAM;
+max4096rows/8explicitsequence snapshots, writes/closechecked. USAonlyexercised;
+otherprofilesNOTaccepted. Native71c unchanged. Original-only/headless2101prefix
+PASS1301scenes739..2098. Firstscene snapshots739/740/755 fullhost+futurecodeguards,
+canonical3x andindependentPython exactempty pretrack. Firstnonzerofrontier706/1480.
+SecondSHORT1552prefix justifiedmissingRAM706/710/730 (1480/1484/1504);775rows exact
+firstprefix exceptsnapshotflags, inputs/nativeimagesPASS. All3 guard+Pythonexact:
+64sections5382defs52special3381unbound1949ready, all1949near-rejected,0quads/uploads.
+W/usa-startup-observer,usa-startup-qualified,usa-startup-frontier,usa-startup-frontier-
+qualified PASS. Reusedcompiledanalyzersecondtime, no newgamebuild. No earlylive
+rendering/interveningscenes/multirace/4K/performanceclaim. Neverhardcode739/1480.
+NEXT gatedUSAactualboundaryactivation retainingper-callreadiness/fallback; plus
+World24/25 andOffRoadstartup qualification. Exotica two-race availability pending;
+no attendedlaunchwithoutreply. Latestnative71c247patches/personal87d/publicv0.5.0
+unchanged. No game/build/testnow. Serialrig, no deployment/physicalFFB/hostedCI/
+release/menu removal. Continueautonomously, useboundedtests withspecificpurpose.
+
 ## September15 V-Unit runtime audit — checked log closure fixed
 
 Read docs/reviews/2026-09-15-vunit-runtime-readiness.md. Latestnative71c8339c8c7
