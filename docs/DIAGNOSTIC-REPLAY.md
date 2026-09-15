@@ -623,6 +623,20 @@ divergence](reviews/2026-09-06-global-distance-and-native-port.md).
 
 ## Exotica far distance and submission timing
 
+Before scheduling another distance replay, check the saved future and waiting
+packets for geometry in the band being changed:
+
+```powershell
+python harness/exotica_distance_samples.py results/diagnostics/my-comparison/run --frames 5072 5644 --require-third-band --report results/diagnostics/distance-samples.json
+```
+
+Choose actual saved snapshot frames. This command validates ordered instance
+spans and quad counts; it does not render or establish completed visibility.
+The strict option fails selection if all selected samples have zero third-band
+polygons. Earlier admissions may still affect later original replacements.
+See [the sample-selection findings](reviews/2026-09-15-exotica-distance-sample-selection.md)
+before repeating the existing Amazon windows.
+
 For Exotica far-distance diagnostics, `run_exotica_distance_trials.py` runs a
 bounded stock/coherent/2x/3x/repeat matrix. `compare_exotica_distance.py` compares
 actual branch outcomes at equal poses while excluding only the requested far
