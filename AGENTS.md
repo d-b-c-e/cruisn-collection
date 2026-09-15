@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — all-host depth/road transport qualified; NEXT native distance fade
+
+Read docs/reviews/2026-09-15-vunit-fade-metadata.md. Nativee1a93e3589e frozen/pushed
+SHAdbe5f5126c5159536b67b11ab208f71e70004f0191013213193c69e722bf24d8;
+225patches reconstructe2baf89da3bfa2370f7166a161ee59f5f23372ee. Canonical64byte
+vunit_fade packet(60byteexistingprefix+roadbit), strictownedpositiveC31 decoder.
+WorldObject.protected_road fromauthoredflag. Both helpersMAMElinked/synced.
+--world-host-fade-metadata requiresmirror/future3x/coverage/FFB0/boundedhostwindow.
+Type8 validated bothends, insidequad clearscoverage ONLYafterdepthdecode, crosses
+retainexistingtype7behavior. Missinghostmetadata rejects. No fading/presentationchange.
+Full6000input/nativeimagesPASS;4119775packets/193125roadquads allconsumed throughhost
+window; drain5999.5900producer/consumer5922packets byteexact;363roads60crossings,
+independentdepth/page/FNV/order/count checksPASS. Alleightindex/maskplanes+completed
+1280x720BMPexact0f3mirror.1666hostrows exactexcept8namedtimings. Internal2736x1600,
+NOTfinal4K/performance. LOCALW fade-metadata-live(-qualified.json),fade-metadata-native-
+export.json(exportalreadyrun),build.log. No activegame/build/test. Personal87d/v0.5.0
+unchanged.5harness+2native focusedtestsPASS. Offline8597fullroadmetadata bytesexact;
+World24/25actual2814/8597quads unchanged,1260/3038roadflags independentlyexact.
+InitiallocalanalyzerstrictindentcompileFAIL retained inroad-provenance;v2PASS.
+
+NEXT livefade: gpu helper indexed_fragment_shader + mirror_fragment_shader +
+palette_shader alreadyofflinequalified, NOTnativeusedforfade. AddopacityMRT2 only
+explicitmode; original/CPU writes1, auxiliaryeligible-depth envelope, roadsopaque.
+CRITICAL opacity followsPERSISTENTindices: MASKONLYscene reset mustNOTresetalpha;
+indexclearsmustresetcorrespondingalpha coherently. CurrentmirrorhasMRT2NONE andno
+alphaallocation. Ordinary/private scene clearseparate. Needper-run selector/depth
+SSBO4/5 vectors resetatbatchedquadboundaries (type8decodeddepths currentlydiscarded),
+alloriginal/protectedselectors1. Preserveallcoveragepacket validation/order/current
+palette/CRT. Reference doc givesdesign. Nativepalette viewblends2lateindexviews,
+notorderedmulti-surfaceRGBA; stationary43.66%CRT0/36.73%CRT1 L1gain NOTgameplayproof.
+Then boundedmovingcamera pair andothergameadapters. Worldterrainundersidestillopen.
+Continue directly; no deploy/release/physicalFFB/hostedCI/menu removal. Serialrig.
+W=results/diagnostics/world25-roads-20260914.
+
+
 ## September15 — native original mirror qualified; next all-host fade metadata
 
 Read docs/reviews/2026-09-15-vunit-original-mirror.md. Native0f3b4b51f5a frozen/pushed

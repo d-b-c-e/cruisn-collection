@@ -1,20 +1,27 @@
 """One-frame original-only indexed mirror qualification; no display policy."""
 import hashlib
 import json
+import csv
+import math
+import re
+import struct
 from pathlib import Path
 
-KEYS = ('MIDV_GL_ORIGINAL_MIRROR', 'MIDV_GL_MIRROR_FRAME')
+KEYS = ('MIDV_GL_ORIGINAL_MIRROR', 'MIDV_GL_MIRROR_FRAME', 'MIDV_WORLD_HOST_FADE_METADATA')
 
 
 def add_arguments(parser):
     parser.add_argument('--vunit-original-mirror-frame', type=int,
                         help='candidate-only World indexed mirror snapshot; physical FFB off')
+    parser.add_argument('--world-host-fade-metadata', action='store_true',
+                        help='transport all host depths and authored road flags; no fading yet')
 
 
 def configure(args, rom, settings, frames):
     frame = getattr(args, 'vunit_original_mirror_frame', None)
+    metadata = getattr(args, 'world_host_fade_metadata', False)
     if frame is None:
-        if any(settings.get(k, '0') != '0' for k in KEYS):
+        if metadata or any(settings.get(k, '0') != '0' for k in KEYS):
             raise ValueError('original mirror requires explicit replay selection')
         return None
     if (rom not in ('crusnwld24', 'crusnwld') or not getattr(args, 'candidate', None)
@@ -26,12 +33,25 @@ def configure(args, rom, settings, frames):
     host = settings.get('MIDV_WORLD_HOST_SCENERY', '0') == '2'
     if host and settings.get('MIDV_WORLD_HOST_LAYER') != '3':
         raise ValueError('original mirror requires split and tagged host ownership')
+    result = dict(frame=frame, auxiliary=host)
+    if metadata:
+        first = int(settings.get('MIDV_WORLD_HOST_FIRST', '0'))
+        last = int(settings.get('MIDV_WORLD_HOST_LAST', '0'))
+        if (not host or settings.get('MIDV_WORLD_HOST_FUTURE') != '1'
+                or settings.get('MIDV_WORLD_HOST_FAR_COVERAGE') != '1'
+                or not 1 <= first <= frame <= last < frames - 1):
+            raise ValueError('fade metadata requires bounded future/coverage draw through capture and before drain')
+        settings['MIDV_WORLD_HOST_FADE_METADATA'] = '1'
+        result.update(fade_metadata=True, first=first, last=last)
+    elif settings.get('MIDV_WORLD_HOST_FADE_METADATA', '0') != '0':
+        raise ValueError('fade metadata requires explicit replay selection')
     settings.update(MIDV_GL_ORIGINAL_MIRROR='1', MIDV_GL_MIRROR_FRAME=str(frame))
-    return dict(frame=frame, auxiliary=host)
+    return result
 
 
 def verify(trial, directory):
     directory = Path(directory)
+    metadata = verify_metadata(trial, directory)
     path = directory / 'vunit-mirror.json'
     if not trial:
         if path.exists() or next(directory.glob('vunit-mirror-*.bin'), None):
@@ -66,7 +86,71 @@ def verify(trial, directory):
                     raise ValueError('original-only mirror differs from ordinary target')
     if {p.name for p in directory.glob('vunit-mirror-*.bin')} != set(digests):
         raise ValueError('unexpected original mirror planes')
-    return dict(**row, sha256=digests, passed=True)
+    result = dict(**row, sha256=digests, passed=True)
+    if metadata:
+        result['fade_metadata'] = metadata
+    return result
+
+
+def verify_metadata(trial, directory):
+    """Qualify both FIFO boundaries, decoded depths, and each captured scene hash."""
+    directory = Path(directory)
+    paths = [directory/f'vunit-fade-{name}.bin' for name in ('producer', 'consumer')]
+    stderr = directory/'stderr.log'
+    text = stderr.read_text(encoding='utf-8', errors='replace') if stderr.exists() else ''
+    receipt = re.findall(r'^MIDV_FADE_METADATA packets=(\d+) roads=(\d+) captured=(\d+)$', text, re.M)
+    if not trial or not trial.get('fade_metadata'):
+        if receipt or any(p.exists() for p in paths):
+            raise ValueError('unrequested fade metadata')
+        return None
+    if len(receipt) != 1 or any(not p.is_file() or not 68 <= p.stat().st_size <= 16*1024*1024 for p in paths):
+        raise ValueError('missing or oversized fade metadata')
+    data, other = (p.read_bytes() for p in paths)
+    if data != other or data[:4] != b'VFD1' or (len(data)-4) % 64:
+        raise ValueError('fade metadata FIFO bytes differ or malformed')
+    packets = list(struct.iter_unpack('<IHH16HI4II', data[4:]))
+    crossings = roads = 0
+    for packet in packets:
+        frame, pc, pad = packet[:3]
+        limit, *words, policy = packet[19:]
+        if frame != trial['frame'] or pad != 3 or limit != 240000 or policy not in (0, 1):
+            raise ValueError('invalid fade metadata identity or policy')
+        depths = []
+        for word in words:
+            exponent = int.from_bytes(bytes([word >> 24]), 'little', signed=True)
+            value = math.ldexp((word & 0x7fffff) | 0x800000, exponent-23)
+            if word & 0x800000 or not 9 <= exponent <= 18 or not 1000 <= value < 480000:
+                raise ValueError('invalid fade metadata depth')
+            depths.append(value)
+        if all(z >= limit for z in depths):
+            raise ValueError('outside-only fade quad')
+        crossings += any(z >= limit for z in depths)
+        roads += policy
+    with (directory/'world-host-scenes.csv').open(encoding='utf-8', newline='') as stream:
+        scenes = list(csv.DictReader(stream))
+    if not scenes or any(not trial['first'] <= int(s['frame']) <= trial['last'] for s in scenes):
+        raise ValueError('fade scene interval differs')
+    totals = tuple(map(int, receipt[0]))
+    expected_totals = (sum(int(s['quads']) for s in scenes), sum(int(s['road_quads']) for s in scenes), len(packets))
+    if totals != expected_totals:
+        raise ValueError('incomplete fade consumer coverage')
+    at = 0
+    for scene in (s for s in scenes if int(s['frame']) == trial['frame']):
+        group = packets[at:at+int(scene['quads'])];at += len(group)
+        if len(group) != int(scene['quads']) or sum(p[-1] for p in group) != int(scene['road_quads']):
+            raise ValueError('fade scene road/count mismatch')
+        fingerprint = 14695981039346656037
+        for packet in group:
+            if packet[1] != int(scene['page']):
+                raise ValueError('fade page differs')
+            for byte in struct.pack('<16H', *packet[3:19]):
+                fingerprint = ((fingerprint ^ byte) * 1099511628211) & 0xffffffffffffffff
+        if f'{fingerprint:016x}' != scene['quads_hash']:
+            raise ValueError('fade original quad bytes/order differ')
+    if at != len(packets):
+        raise ValueError('unclaimed fade packets')
+    return dict(passed=True, total_packets=totals[0], total_roads=totals[1], captured=len(packets),
+                captured_roads=roads, captured_crossings=crossings, sha256=hashlib.sha256(data).hexdigest())
 
 
 def compare_originals(control, candidate):

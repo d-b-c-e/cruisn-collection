@@ -1,12 +1,15 @@
 from pathlib import Path
 from types import SimpleNamespace
 import json
+import csv
+import struct
 import sys
 import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
-from vunit_original_mirror import configure, verify, compare_originals
+from vunit_original_mirror import configure, verify, compare_originals, verify_metadata
+from scenery_c31 import F
 
 
 class OriginalMirrorTests(unittest.TestCase):
@@ -35,6 +38,51 @@ class OriginalMirrorTests(unittest.TestCase):
             self.assertIsNone(verify(None, root))
             with self.assertRaises(ValueError):
                 verify(dict(frame=100, auxiliary=False), root)
+
+    def test_metadata_requires_full_owned_capture_and_drain_interval(self):
+        args = SimpleNamespace(vunit_original_mirror_frame=100, candidate='candidate.exe',
+                               world_host_fade_metadata=True)
+        settings = dict(MIDV_GL='1', MIDV_FFB='0', MIDV_WORLD_HOST_SCENERY='2',
+                        MIDV_WORLD_HOST_LAYER='3', MIDV_WORLD_HOST_FUTURE='1',
+                        MIDV_WORLD_HOST_FAR_COVERAGE='1', MIDV_WORLD_HOST_FIRST='80', MIDV_WORLD_HOST_LAST='150')
+        self.assertTrue(configure(args, 'crusnwld', settings.copy(), 200)['fade_metadata'])
+        for changes in [dict(MIDV_WORLD_HOST_FIRST='101'), dict(MIDV_WORLD_HOST_LAST='199'),
+                        dict(MIDV_WORLD_HOST_FAR_COVERAGE='0'), dict(MIDV_WORLD_HOST_FUTURE='0')]:
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                configure(args, 'crusnwld', dict(settings, **changes), 200)
+
+    def test_metadata_boundaries_depths_order_and_consumer_coverage(self):
+        with tempfile.TemporaryDirectory() as root:
+            root = Path(root)
+            words = [F.integer(z).store() for z in (1000, 220000, 239999, 240001)]
+            quad = list(range(16))
+            packet = struct.pack('<IHH16HI4II', 100, 513, 3, *quad, 240000, *words, 1)
+            raw = b'VFD1'+packet
+            for name in ('producer', 'consumer'):
+                (root/f'vunit-fade-{name}.bin').write_bytes(raw)
+            stderr = root/'stderr.log'
+            stderr.write_text('MIDV_FADE_METADATA packets=1 roads=1 captured=1\n')
+            fingerprint = 14695981039346656037
+            for byte in struct.pack('<16H', *quad):
+                fingerprint = ((fingerprint ^ byte)*1099511628211) & 0xffffffffffffffff
+            row = dict(frame=100, page=513, quads=1, road_quads=1, quads_hash=f'{fingerprint:016x}')
+            with (root/'world-host-scenes.csv').open('w', newline='') as stream:
+                writer = csv.DictWriter(stream, fieldnames=list(row));writer.writeheader();writer.writerow(row)
+            trial = dict(frame=100, first=80, last=150, fade_metadata=True)
+            self.assertEqual(verify_metadata(trial, root)['captured_crossings'], 1)
+            stderr.write_text('MIDV_FADE_METADATA packets=0 roads=0 captured=1\n')
+            with self.assertRaisesRegex(ValueError, 'consumer coverage'):
+                verify_metadata(trial, root)
+            stderr.write_text('MIDV_FADE_METADATA packets=1 roads=1 captured=1\n')
+            corrupted = bytearray(raw)
+            struct.pack_into('<I', corrupted, 4+44, 0)  # first depth: invalid zero C31 exponent
+            for name in ('producer', 'consumer'):
+                (root/f'vunit-fade-{name}.bin').write_bytes(corrupted)
+            with self.assertRaisesRegex(ValueError, 'depth'):
+                verify_metadata(trial, root)
+            (root/'vunit-fade-consumer.bin').write_bytes(raw)
+            with self.assertRaisesRegex(ValueError, 'FIFO'):
+                verify_metadata(trial, root)
 
     def test_both_pages_exact_and_corruption_rejected(self):
         with tempfile.TemporaryDirectory() as root:

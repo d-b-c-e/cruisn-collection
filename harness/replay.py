@@ -301,6 +301,8 @@ def main(argv=None):
         # Older binaries may ignore this; strict receipt validation still applies.
         drain = completion_drain_target(gl_key, reference['frames'], expected_gl if args.gl_capture else (),
             depth_observation=bool(depth_trial and depth_trial.get('enabled')))
+        if mirror_trial and mirror_trial.get('fade_metadata'):
+            drain = reference['frames'] - 1
         if drain is not None:
             manifest['settings'][gl_key+'_GL_DRAIN_FRAME'] = str(drain)
             report['completion_drain_frame'] = drain

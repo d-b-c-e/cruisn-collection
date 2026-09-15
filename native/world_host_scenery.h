@@ -25,6 +25,7 @@ struct Object
 {
     uint32_t id=0,model=0,section=0;
     int32_t depth=0;
+    bool protected_road=false; // authored object flag, never inferred from screen geometry
     std::vector<Quad> quads;
     // Populated only for the explicitly gated coverage trial. Original quads
     // remain unchanged; camera depths travel separately to the private renderer.
@@ -177,6 +178,7 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         if(!projection_ok){++scene.distance;continue;}
         if(projected.size()!=vertices)return false;
         Object object;object.id=object_id;object.model=model;object.depth=depth;object.section=obj[27]&65535;
+        object.protected_road=road;
         if(!road)poly_start=model+3+2*(pairs+singles);
         for(uint32_t i=0;i<polygons;++i)
         {
