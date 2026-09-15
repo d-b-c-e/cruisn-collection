@@ -61,3 +61,82 @@ def fragment_shader(original):
                    "uniform usampler2D colors;\n"
                    "layout(std430,binding=4) readonly buffer Opacity { float opacity[]; };")
     return original.replace(output, replacement).replace(entry, 'void original_pixel() {') + TAIL
+
+
+def indexed_fragment_shader(original):
+    """Preserve late palette resolution; write the visible owner's opacity to MRT2.
+
+    This alternative requires an original-only index mirror. Final blending uses
+    the visible extended index and original index, both resolved with the current
+    palette. It is a distance-weighted composite, not ordered alpha accumulation
+    through every overlapping host surface. Compare those policies before use.
+    """
+    shader = fragment_shader(original)
+    shader = shader.replace('uint outIndex;\nlayout(location=0) out vec4 outColor;',
+                            'layout(location=0) out uint outIndex;\n'
+                            'layout(location=2) out float outFadeAlpha;')
+    shader = shader.replace('uniform usampler2D colors;\n', '')
+    first = shader.index(' uint pen=outIndex&32767u;', shader.index('void main()'))
+    last = shader.index(' int id=gl_PrimitiveID/2;', first)
+    shader = shader[:first] + shader[last:]
+    shader = shader.replace(' outColor=vec4(vec3((rgb<<3)|(rgb>>2))/255.0,alpha);',
+                            ' outFadeAlpha=alpha;')
+    return shader
+
+
+def palette_shader(original):
+    """Resolve both index views late, retaining separate seam/dither ownership.
+
+    The caller maintains original-only indices/masks plus extended indices/masks
+    and visible-owner opacity. Both views use the presentation-time palette.
+    Native CRT processing follows the blend. This does not implement page,
+    palette, CPU-write or command lifetimes in the native renderer.
+    """
+    import re
+    begin = original.index('bool covered(ivec2 p, bool foreground) {')
+    end = original.index('ivec2 src_px(vec2 tuv) {', begin)
+    helpers = original[begin:end]
+    names = ('covered', 'fill_layer', 'fill_px', 'fetch_raw', 'fetch_at')
+    mapping = {name: 'original_' + name for name in names}
+    mapping.update(idxTex='originalIdxTex', maskTex='originalMaskTex', uHostLayers='0')
+    base = re.sub(r'\b(' + '|'.join(mapping) + r')\b', lambda m: mapping[m[0]], helpers)
+    entry = 'vec3 fetch_at(ivec2 p) {'
+    if helpers.count(entry) != 1:
+        raise ValueError('unsupported V-Unit filtered palette resolve layout')
+    enhanced = helpers.replace(entry, 'vec3 enhanced_fetch_at(ivec2 p) {')
+    declarations = """uniform int uDistanceFade;
+uniform usampler2D originalIdxTex;
+uniform usampler2D originalMaskTex;
+uniform sampler2D fadeAlphaTex;
+"""
+    blend = """
+float owner_alpha(ivec2 p) {
+    return clamp(texelFetch(fadeAlphaTex, fill_px(p), 0).r, 0.0, 1.0);
+}
+float surface_alpha(ivec2 p) {
+    return clamp(texelFetch(fadeAlphaTex, p, 0).r, 0.0, 1.0);
+}
+vec3 fetch_at(ivec2 p) {
+    vec3 extended = enhanced_fetch_at(p);
+    if (uDistanceFade == 0) return extended;
+    ivec2 sz = textureSize(idxTex, 0);
+    p = clamp(p, ivec2(0), sz - 1);
+    float alpha = owner_alpha(p);
+    ivec2 b = (p / 2) * 2;
+    if (b.x + 1 < sz.x && b.y + 1 < sz.y) {
+        bool a = (texelFetch(maskTex, b, 0).r & 3u) == 3u;
+        bool c = (texelFetch(maskTex, b + ivec2(1, 0), 0).r & 3u) == 3u;
+        bool d = (texelFetch(maskTex, b + ivec2(0, 1), 0).r & 3u) == 3u;
+        bool e = (texelFetch(maskTex, b + ivec2(1, 1), 0).r & 3u) == 3u;
+        // The game's qualified dither pair is resolved as one smoked surface.
+        // Use its written pixels' opacity for all four filtered pixels; the
+        // untouched background's opaque tag must not reintroduce checkerboards.
+        if (a == e && c == d && a != c) {
+            alpha = a ? 0.5 * (surface_alpha(b) + surface_alpha(b + ivec2(1, 1)))
+                      : 0.5 * (surface_alpha(b + ivec2(1, 0)) + surface_alpha(b + ivec2(0, 1)));
+        }
+    }
+    return mix(original_fetch_at(p), extended, alpha);
+}
+"""
+    return original[:begin] + declarations + base + enhanced + blend + original[end:]

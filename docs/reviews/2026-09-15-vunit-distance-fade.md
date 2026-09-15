@@ -68,6 +68,49 @@ bounded replayable renderer fixture before connecting a default-off live policy.
 Then evaluate an actual moving-camera boundary and extend the depth adapters to
 USA/Off Road. Another whole-game timing run is not justified by this offline shader.
 
+## Follow-up: defer color resolution to preserve palette updates
+
+Native code confirms that palette messages flush geometry, then update the shared
+palette texture. Previously drawn indices pick up those later colors at
+presentation. The original immediate-RGBA prototype would freeze their old colors;
+preserving command order alone is insufficient.
+
+The module now also provides an alternative indexed shader and palette resolve.
+It retains the normal extended indices/mask, adds visible-owner opacity, and uses
+an original-only index/mask mirror as the background. Both views resolve against
+the current palette at presentation. This is a weighted composite of the two
+views, **not** ordered alpha accumulation through every overlapping future surface.
+Its appearance must be evaluated separately from the49.7% sweep above.
+
+Each view retains its own seam and native dither filtering. The blend occurs
+before the existing CRT processing. A qualified two-pixel dither surface supplies
+opacity for its whole filtered2×2 block; background pixels must not inject their
+opaque value and recreate a checkerboard. An initial focused test caught opacity
+being redirected by seam repair to a neighboring background pixel. Reading the
+tagged surface's own opacity fixes it; the failing result is retained.
+
+Three additional actual-OpenGL tests pass: later palette updates recolor both
+views without geometry redraw; zero/full/disabled endpoints preserve their own
+seam masks and CRT exactly; and partial-opacity native dither does not recreate a
+checkerboard. The earlier four tests remain separate coverage of depth/material
+generation.
+
+A saved-scene check generates exact qualified World indices plus finite opacity.
+With the native auxiliary-layer tag included, both zero/full endpoints match the
+corresponding legacy palette resolver exactly, with CRT off and on. Partial
+opacity changes9,306 raw or10,012 CRT pixels, with zero newly black pixels and an
+unchanged lower foreground region. The original-only mirror is reconstructed
+offline here. This does not yet prove native page, CPU-write or resource lifetimes.
+Evidence: `deferred-fade-scene-v2`; its earlier untagged screen remains separate.
+
+The next native design should keep original commands and CPU framebuffer writes
+in both index views, while auxiliary draws update only the extended view. Multiple
+render targets can avoid a second geometry traversal. Palette updates must remain
+shared, and page/mask/opacity resets must follow the same boundaries. Current
+V-Unit transport carries depth only for far-crossing quads; a gated fade will need
+depth and protected-road ownership for every eligible host quad. Start with
+World's proven adapter; do not assume USA/Off Road depth/classification parity.
+
 Local evidence under `results/diagnostics/world25-roads-20260914/`:
 `distance-fade-v3` (whole-object rule), `distance-fade-v4` (two exposed pixels),
 `distance-fade-underlay` (their owners), `distance-fade-v5` (corrected sweep), and

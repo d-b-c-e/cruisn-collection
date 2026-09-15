@@ -1,5 +1,34 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — deferred palette-safe fade prototype qualified; native mirror next
+
+Read appended deferred section in docs/reviews/2026-09-15-vunit-distance-fade.md.
+Nativeebe unchanged, no native integration/build/deploy. gpu/vunit_distance_fade.py
+now also emits indexed+opacity MRT and separate-view palette shader. Native case3
+pal updates occur AFTER flushed geometry and recolor retained indices at present;
+early RGBA freezes wrong colors. Deferred prototype blends extended/original-only
+index views with final palette, each view's own seam/dither mask, then unchangedCRT.
+This is a two-view composite, NOT ordered alpha through every future surface; don't
+carry over49.7% peak claim until measuring this policy. For qualified dither2x2 use
+written surface's raw opacity for wholefilteredblock, not background'salpha1.
+Initial3tests:2FAIL (halfUNORMrounding + actualopacityseam-redirectiondefect) retained;
+fixed latter by raw surface alpha, corrected127/128quantization assertion. All7
+targeted fade tests nowPASS. ActualWorld scene MRTindices exactly oldqualifiedclip;
+finite0..1alpha. Withnativehosttagbit8 invertexmetadata, full/zero endpoints exact
+legacy resolver forbothCRT0/1. Faded9306/10012pixels,zero newblack,belowfiney1000exact.
+LOCALW deferred-fade-scene-v2/report.json; untagged firstscreen separate. Original
+mirror reconstructedoffline, NOT native CPU/page/resource lifetime proof.
+NEXT bounded original-only native mirror with original/CPU writes tobothviews,
+auxiliary extendedonly, sharefinalpalette andretain page/mask/opacity resets.
+MRT5attachments canavoid2ndgeometrytraversal; palette helper uses6samplers. Need
+all-eligible-host depth/protectedroad metadata: currenttype7 onlyfar-crossingquads,
+world_host_submit ordinarydepth packets omitted, WorldObject lacksroad marker.
+StartWorldadapter, no USA/OffRoad classification assumption. Nonewgame needed just
+for helper tests. Seven-default pass priorstandalonehelper identity remainsvalid
+for native/default behavior, notnewsource releasegate. No activegame/build/test.
+Keepworking directly; personal87d/publicv0.5.0unchanged, serialrig, no physicalFFB/
+deploy/release/hostedCI/menu removal.
+
 ## September15 — default suite renewed; standalone distance fade next
 
 Read docs/reviews/2026-09-15-combined-default-regressions.md,
