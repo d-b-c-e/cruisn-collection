@@ -36,6 +36,19 @@ class AdmissionReceipts(unittest.TestCase):
             self.csv(p/'exotica-endpoint-admissions.csv',self.qfields,self.qrows)
             with self.assertRaisesRegex(ValueError,'qualification'):verify(self.trial,self.text,p,originals)
 
+    def test_global_clear_retires_admission_before_same_source_rebinds(self):
+        with tempfile.TemporaryDirectory() as temp:
+            p=Path(temp);originals=self.fixture(p)
+            fields=['event','slot','epoch','generation','realm','section','source']
+            self.csv(p/'exotica-lifetime-events.csv',fields,[['L',0,1,0,0,0,0],
+                ['A',4096,1,2,0,0,0],['B',4096,1,2,10,20,30],
+                ['C',0,2,0,0,0,0],['A',4096,2,4,0,0,0],['B',4096,2,4,10,20,30]])
+            originals[1]['epoch']=2
+            self.assertEqual(verify(self.trial,self.text,p,originals)['admitted'],1)
+            self.qrows[1]=[2,1,1,5072,1,5072,1,6]
+            self.csv(p/'exotica-endpoint-admissions.csv',self.qfields,self.qrows)
+            with self.assertRaisesRegex(ValueError,'qualification'):verify(self.trial,self.text,p,originals)
+
     def test_bad_watermarks_empty_draws_and_gpu_claims_reject(self):
         with tempfile.TemporaryDirectory() as temp:
             p=Path(temp);originals=self.fixture(p)

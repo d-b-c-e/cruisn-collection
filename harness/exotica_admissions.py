@@ -93,7 +93,7 @@ def verify(trial,text,directory,originals):
         if not cursor<=count<=len(life):raise ValueError('admission lifecycle watermark')
         while cursor<count:
             e=life[cursor];cursor+=1;op=e['event'];slot=int(e['slot'])
-            if op in ('L','R'):
+            if op in ('L','R','C'):
                 epoch=int(e['epoch']);live.clear();by_key.clear();admitted.clear()
             elif op in ('A','F'):
                 old=live.pop(slot,None)

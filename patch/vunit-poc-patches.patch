@@ -41025,3 +41025,104 @@ index 82a6af2a80f..cf151697430 100644
 -- 
 2.55.0.windows.3
 
+From 101a323e223798bfbea6a8d0097d0fe3d6dbe42f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 03:32:05 -0500
+Subject: [PATCH] Track Exotica pool invalidation during pre-race global clear
+
+---
+ src/mame/midway/cruisn/exotica_pool_clear.h | 23 ++++++++++++++
+ src/mame/midway/midzeus.cpp                 | 33 ++++++++++++++++++++-
+ 2 files changed, 55 insertions(+), 1 deletion(-)
+ create mode 100644 src/mame/midway/cruisn/exotica_pool_clear.h
+
+diff --git a/src/mame/midway/cruisn/exotica_pool_clear.h b/src/mame/midway/cruisn/exotica_pool_clear.h
+new file mode 100644
+index 00000000000..62143e66e85
+--- /dev/null
++++ b/src/mame/midway/cruisn/exotica_pool_clear.h
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Qualify the original global-clear loop which invalidates the scenery pool.
++// No guest writes. The caller pairs head/count and commits reset at the tail.
++#pragma once
++#include <cstdint>
++
++namespace cruisn { namespace exotica_pool_clear {
++constexpr uint32_t first=0x471, end=0x11cc, instruction=0x85b3;
++template<class Read>
++bool valid(Read read,uint32_t address,uint32_t value,uint32_t mask,
++           uint32_t pc,uint32_t r0,uint32_t ar0,uint32_t rc,uint32_t rs,uint32_t re) {
++    if((address!=0x10a8 && address!=0x10a9 && address!=end-1) || value ||
++       mask!=UINT32_MAX || pc!=instruction+1 || r0 || ar0!=address+1 ||
++       rc!=end-1-address || rs!=instruction || re!=instruction)return false;
++    const uint32_t code[]={0x082885a0,0x083b85a1,0x181b0008,0x187b0001,
++                           0x1a800000,0x640085b3,0x15402001,0x78800000};
++    if(read(0x85a0)!=first || read(0x85a1)!=end)return false;
++    for(unsigned i=0;i<8;++i)if(read(0x85ad+i)!=code[i])return false;
++    // Verify the completed prefix, not just a coincidental zero at the head.
++    for(uint32_t p=first;p<address;++p)if(read(p))return false;
++    return true;
++}
++} }
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index a8bf7a671e6..f1bf155d968 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -47,6 +47,7 @@ The Grid         v1.2   10/18/2000
+ #include "cruisn/exotica_model_endpoint.h"
+ #include "cruisn/exotica_admissions.h"
+ #include "cruisn/exotica_scene_endpoint.h"
++#include "cruisn/exotica_pool_clear.h"
+ 
+ #include <algorithm>
+ #include <chrono>
+@@ -527,7 +528,29 @@ void crusnexo_state::lifetime_start()
+ 			p.old_head=m_ram_base[0x10a8];p.count=m_ram_base[0x10a9];p.new_head=data;p.time=machine().time().as_double();
+ 			if((p.old_head && !lifetime_slot(p.old_head)) || (data && !lifetime_slot(data)) || p.count>4096)
+ 				fatalerror("Exotica lifetime head/count bounds\n");
+-			if(pc==0xbbf7) {
++			if(pc==0x85b4) {
++				auto valid=[this](uint32_t address,uint32_t value,uint32_t bits) {
++					return cruisn::exotica_pool_clear::valid([this](uint32_t at){return uint32_t(m_ram_base[at]);},
++						address,value,bits,uint32_t(m_maincpu->state_int(TMS320C3X_PC)),uint32_t(m_maincpu->state_int(TMS320C3X_R0)),
++						uint32_t(m_maincpu->state_int(TMS320C3X_AR0)),uint32_t(m_maincpu->state_int(TMS320C3X_RC)),
++						uint32_t(m_maincpu->state_int(TMS320C3X_RS)),uint32_t(m_maincpu->state_int(TMS320C3X_RE)));
++				};
++				if(!valid(0x10a8,data,mask))fatalerror("Exotica lifetime global clear head\n");
++				p.kind=4;
++				m_lifetime_reset_tap=m_maincpu->space(AS_PROGRAM).install_write_tap(0x11cb,0x11cb,"exotica_lifetime_clear_tail",
++					[this,valid](offs_t address,uint32_t &value,uint32_t bits) {
++						if(machine().side_effects_disabled())return;
++						auto &p=m_lifetime_pending;const double now=machine().time().as_double();
++						if(p.kind!=4 || !p.head_time || !valid(uint32_t(address),value,bits) ||
++							now<p.head_time || p.head_time<p.time || now-p.time>=.001)
++							fatalerror("Exotica lifetime global clear tail\n");
++						cruisn::scenery_lifetimes::Layout layout;layout.first=0x1000;layout.last=0x40000-31;layout.max_tracked=4096;
++						if(!m_lifetimes.reset(layout))fatalerror("Exotica global clear registry\n");
++						if(m_endpoint_admissions.epoch() && !m_endpoint_admissions.reset(m_lifetimes.epoch()))fatalerror("Endpoint global clear reset\n");
++						m_lifetime_owners.clear();lifetime_emit('C',0,0,0,{},0x85b4,0);
++						p=LifetimePending();m_lifetime_reset_tap.remove();
++					});
++			} else if(pc==0xbbf7) {
+ 				p.kind=1;p.slot=uint32_t(m_maincpu->state_int(TMS320C3X_AR0));
+ 				if(!lifetime_slot(p.slot) || p.slot!=p.old_head || !p.count || m_ram_base[p.slot]!=data)
+ 					fatalerror("Exotica lifetime allocation link\n");
+@@ -542,6 +565,14 @@ void crusnexo_state::lifetime_start()
+ 			if(!lifetime_scope())return;
+ 			if(mask!=UINT32_MAX)fatalerror("Exotica lifetime partial count write\n");
+ 			auto &p=m_lifetime_pending;const auto pc=m_maincpu->state_int(TMS320C3X_PC);
++			if(p.kind==4) {
++				if(pc!=0x85b4 || data || p.head_time || m_ram_base[0x10a8] || m_ram_base[0x10a9]!=p.count ||
++					uint32_t(m_maincpu->state_int(TMS320C3X_R0)) || uint32_t(m_maincpu->state_int(TMS320C3X_AR0))!=0x10aa ||
++					uint32_t(m_maincpu->state_int(TMS320C3X_RC))!=0x122 || uint32_t(m_maincpu->state_int(TMS320C3X_RS))!=0x85b3 ||
++					uint32_t(m_maincpu->state_int(TMS320C3X_RE))!=0x85b3)
++					fatalerror("Exotica lifetime global clear count\n");
++				p.head_time=machine().time().as_double();return;
++			}
+ 			if(!p.kind && pc==0xbbc9) {
+ 				p.kind=3;p.base=m_ram_base[0xbbbc];p.old_head=m_ram_base[0x10a8];p.count=m_ram_base[0x10a9];p.time=machine().time().as_double();
+ 				if(data!=1200 || m_ram_base[0xbbba]!=0x10a8 || !lifetime_slot(p.base) || uint64_t(p.base)+1201*31>0x40000 || (p.base<0x32000 && uint64_t(p.base)+1201*31>0x30000))
+-- 
+2.55.0.windows.3
+

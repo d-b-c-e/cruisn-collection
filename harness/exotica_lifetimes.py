@@ -82,10 +82,14 @@ def verify_receipt(trial,text,directory):
             if op!='L' or r['sequence'] or r['epoch']!=1 or r['generation'] or r['owner'] or r['realm'] or r['section'] or r['source'] or r['flags'] or r['reason']>4096:
                 raise ValueError('lifetime initialization')
             count=r['reason'];continue
-        if op in ('A','F','R'):
+        if op in ('A','F','R','C'):
             sequence+=1
             if r['owner'] or r['realm'] or r['section'] or r['source']:raise ValueError('pool event has source binding')
-            if op=='R':
+            if op=='C':
+                if slot or r['reason']!=0x85b4 or r['flags'] or r['generation']:
+                    raise ValueError('lifetime global clear identity')
+                live.clear();known.clear();sources.clear();allow_unknown=False;epoch+=1;count=0
+            elif op=='R':
                 if r['reason']!=1201 or r['flags']!=1200 or r['generation']:raise ValueError('lifetime reset extent')
                 end=slot+1201*31
                 if not slot or end>0x40000 or (slot<0x32000 and end>0x30000):raise ValueError('lifetime reset pool bounds')

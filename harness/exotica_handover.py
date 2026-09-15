@@ -77,7 +77,7 @@ def verify_receipt(trial, text, directory):
             event=events[cursor];cursor+=1;op=event['event'];slot=int(event['slot'])
             if float(event['time'])>time+1e-12:raise ValueError('completion includes future event')
             epoch=int(event['epoch'])
-            if op in ('L','R'):live.clear()
+            if op in ('L','R','C'):live.clear()
             elif op=='A':live[slot]=dict(epoch=epoch,generation=int(event['generation']),key=None,drawn=False)
             elif op=='F':live.pop(slot,None)
             elif op=='B':live[slot]['key']=(int(event['realm']),int(event['section']),int(event['source']))

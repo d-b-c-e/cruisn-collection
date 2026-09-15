@@ -108,7 +108,7 @@ def verify_receipt(trial, text, directory):
             e=events[cursor];cursor+=1;op=e['event'];slot=int(e['slot'])
             epoch=int(e['epoch']);sequence=int(e['sequence'])
             if float(e['time'])>t:raise ValueError('Exotica waiting future lifetime event')
-            if op in ('L','R'):live.clear()
+            if op in ('L','R','C'):live.clear()
             elif op=='A':live[slot]=dict(generation=int(e['generation']),owner=None,drawn=False)
             elif op=='F':live.pop(slot,None)
             elif op=='B':live[slot]['owner']=(int(e['realm']),int(e['section']),int(e['source']))

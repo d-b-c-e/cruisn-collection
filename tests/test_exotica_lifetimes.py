@@ -110,5 +110,24 @@ class ExoticaLifetimes(unittest.TestCase):
             with self.subTest(op=op),self.assertRaises(ValueError):
                 self.verify(changed,text.replace('records=9','records=10'))
 
+    def test_global_clear_invalidates_bound_owners_before_pool_rebuild(self):
+        rows,text=self.fixture()
+        clear=dict.fromkeys(FIELDS,0)|dict(event='C',frame=1800,time=31.5,
+            sequence=3,epoch=2,reason=0x85b4)
+        # Clear while a source is bound, then rebuild; old source is never freed.
+        rows=rows[:7]+[clear,dict(rows[-1],epoch=3)]
+        text=text.replace('epochs=2','epochs=3')
+        self.assertTrue(self.verify(rows,text)['passed'])
+        for key,value in [('slot',0x1100),('generation',2),('flags',1),('reason',0x85b3)]:
+            bad=copy.deepcopy(rows);bad[7][key]=value
+            with self.subTest(key=key),self.assertRaises(ValueError):self.verify(bad,text)
+        for op in ('D','F','A'):
+            bad=copy.deepcopy(rows[:8])
+            extra=dict(rows[4] if op=='D' else rows[1] if op=='F' else rows[2])
+            extra.update(event=op,sequence=3 if op=='D' else 4,epoch=2)
+            if op=='A':extra.update(generation=4,flags=0)
+            bad.append(extra)
+            with self.subTest(op=op),self.assertRaises(ValueError):self.verify(bad,text)
+
 
 if __name__=='__main__':unittest.main()
