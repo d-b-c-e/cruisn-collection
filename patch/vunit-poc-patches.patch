@@ -44233,3 +44233,832 @@ index 0e403788500..fae0156d4a5 100644
 -- 
 2.55.0.windows.3
 
+From d18bf17d8207704b22fa7344cba4f60fd0df6fe0 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 12:54:55 -0500
+Subject: [PATCH] Separate Exotica rendering journals from file handles
+
+---
+ src/devices/video/zeus2.cpp                 |  63 +++----
+ src/mame/midway/cruisn/diagnostic_journal.h |  94 +++++++++++
+ src/mame/midway/midzeus.cpp                 | 173 ++++++++++----------
+ 3 files changed, 213 insertions(+), 117 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/diagnostic_journal.h
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index c4383ea142b..d842f85fbbc 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -6,6 +6,7 @@
+ 
+ **************************************************************************/
+ #include "emu.h"
++#include "../../mame/midway/cruisn/diagnostic_journal.h"
+ #include "zeus2.h"
+ #include "../../mame/midway/cruisn/zeus_render_policy.h"
+ #include "../../mame/midway/cruisn/zeus_palette_lifetime.h"
+@@ -852,7 +853,7 @@ void thread_main()
+ 	gl.BindFramebuffer(FRAMEBUFFER, 0);
+ 
+ 	uint mirror_prog=0,mirror_color=0,mirror_depth=0,mirror_fbo=0;
+-	FILE *mirror_log=nullptr;
++	cruisn::DiagnosticJournal mirror_log;
+ 	cruisn::CaptureWriter mirror_writer;
+ 	uint64_t mirror_batches=0,mirror_vertices=0,mirror_clears=0,mirror_frames=0,mirror_samples=0;
+ 	bool mirror_failed=false;
+@@ -880,9 +881,9 @@ void thread_main()
+ 		gl.Uniform1f(gl.GetUniformLocation(mirror_prog,"uMargin"),float(MARGIN));
+ 		gl.Uniform1i(gl.GetUniformLocation(mirror_prog,"waveram"),0);
+ 		gl.Uniform1i(gl.GetUniformLocation(mirror_prog,"palTex"),1);
+-		mirror_log=fopen("zeus-depth-mirror.csv","w");if(!mirror_log) {zlogf("depth mirror log failed");return;}
+-		setvbuf(mirror_log,nullptr,_IOFBF,65536);
+-		fprintf(mirror_log,"frame,width,height,batches,vertices,clears,snapshot,color_differences,depth_differences,mirror_us,snapshot_us\n");
++		mirror_log.open("zeus-depth-mirror.csv","w",cruisn::DiagnosticJournal::Policy::capture);if(!mirror_log) {zlogf("depth mirror log failed");return;}
++		mirror_log.buffer(nullptr,_IOFBF,65536);
++		mirror_log.print("frame,width,height,batches,vertices,clears,snapshot,color_differences,depth_differences,mirror_us,snapshot_us\n");
+ 	}
+ 
+ 	const bool future_present=envi("MIDZ_HOST_FUTURE_PRESENT",nullptr,0)==1;
+@@ -1003,12 +1004,12 @@ void thread_main()
+ 	uint64_t private_waiting_scene=0;
+ 	const bool compose=envi("MIDZ_HOST_COMPOSE",nullptr,0)==1;
+ 	uint margin_depth_tex=0,margin_fbo=0;
+-	FILE *margin_log=nullptr;
++	cruisn::DiagnosticJournal margin_log;
+ 	// Owned raw diagnostic bytes use the same bounded FIFO writer as BMPs;
+ 	// no device state or GL calls can reach this background worker.
+ 	cruisn::CaptureWriter margin_writer;
+ 	uint32_t private_frame=0;
+-	FILE *private_log=nullptr;
++	cruisn::DiagnosticJournal private_log;
+ 	bool private_failed=false;
+ 	auto private_materials=[&](const std::vector<uint8_t> &wire,bool late=false,bool retained=false)->bool {
+ 		using namespace cruisn::zeus_host;
+@@ -1028,10 +1029,10 @@ void thread_main()
+ 		if(retained ? !accept_retained(packet,*private_image) : !accept(packet,*private_image))return false;
+ 		const auto decoded=std::chrono::steady_clock::now();
+ 		if(!private_log) {
+-			private_log=fopen("exotica-host-materials-gpu.csv","w");
++			private_log.open("exotica-host-materials-gpu.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 			if(!private_log)return false;
+-			setvbuf(private_log,nullptr,_IOFBF,65536);
+-			fprintf(private_log,"scene,frame,generation,pages,palettes,bytes,hash,decode_us,upload_us,snapshot_us\n");
++			private_log.buffer(nullptr,_IOFBF,65536);
++			private_log.print("scene,frame,generation,pages,palettes,bytes,hash,decode_us,upload_us,snapshot_us\n");
+ 		}
+ 		if(gl.GetError()) {zlogf("private materials: preexisting OpenGL error");return false;}
+ 		std::vector<uint8_t> original_wave_before,original_palette_before;
+@@ -1089,7 +1090,7 @@ void thread_main()
+ 		gl.ActiveTexture(TEXTURE0);
+ 		const auto finished=std::chrono::steady_clock::now();
+ 		auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+-		if(fprintf(private_log,"%llu,%u,%llu,%u,%u,%u,%016llx,%.3f,%.3f,%.3f\n",
++		if(private_log.print("%llu,%u,%llu,%u,%u,%u,%016llx,%.3f,%.3f,%.3f\n",
+ 			(unsigned long long)packet.scene,packet.frame,(unsigned long long)packet.wave.generation,
+ 			unsigned(packet.wave.pages.size()),unsigned(packet.rows.size()),unsigned(wire.size()),
+ 			(unsigned long long)packet.wave.result_hash,us(start,decoded),us(decoded,uploaded),us(uploaded,finished))<0)return false;
+@@ -1201,13 +1202,13 @@ void thread_main()
+ 	cruisn::zeus_endpoint_pair::Pair endpoint_pair;
+ 	uint64_t endpoint_pairs=0;
+ 	const uint64_t endpoint_pair_limit=envi("MIDZ_ENDPOINT_MARKED",nullptr,0)==1?1000000:131072;
+-	FILE *endpoint_log=nullptr;
++	cruisn::DiagnosticJournal endpoint_log;
+ 	if(envi("MIDZ_MODEL_ENDPOINT",nullptr,0)==2) {
+ 		if(!mirror_fbo || !depth_mirror.wide) {zlogf("endpoint replacement requires private wide target");return;}
+-		endpoint_log=fopen("exotica-endpoint-gpu.csv","w");
++		endpoint_log.open("exotica-endpoint-gpu.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!endpoint_log){zlogf("cannot create endpoint GPU receipt");return;}
+-		setvbuf(endpoint_log,nullptr,_IOFBF,65536);
+-		fprintf(endpoint_log,"frame,model,index,count\n");
++		endpoint_log.buffer(nullptr,_IOFBF,65536);
++		endpoint_log.print("frame,model,index,count\n");
+ 	}
+ 	auto add_quad = [&](const midz_quad_rec &r)
+ 	{
+@@ -1403,20 +1404,20 @@ void thread_main()
+ 		gl.ActiveTexture(TEXTURE0);gl.BindTexture(0x0DE1,waveTex);
+ 		gl.ActiveTexture(TEXTURE0+1);gl.BindTexture(0x0DE1,palTex);gl.ActiveTexture(TEXTURE0);
+ 		if(!margin_log) {
+-			margin_log=fopen("exotica-active-gpu.csv","w");if(!margin_log)return false;
+-			setvbuf(margin_log,nullptr,_IOFBF,65536);
+-			fprintf(margin_log,"scene,frame,mode,quads,vertices,width,height,page,margin,snapshot,host_us\n");
++			margin_log.open("exotica-active-gpu.csv","w",cruisn::DiagnosticJournal::Policy::capture);if(!margin_log)return false;
++			margin_log.buffer(nullptr,_IOFBF,65536);
++			margin_log.print("scene,frame,mode,quads,vertices,width,height,page,margin,snapshot,host_us\n");
+ 		}
+ 		const auto elapsed=std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-started).count();
+-		if(fprintf(margin_log,"%llu,%u,%u,%u,%u,%d,%d,%u,%u,%u,%.3f\n",(unsigned long long)packet.materials.scene,
++		if(margin_log.print("%llu,%u,%u,%u,%u,%d,%d,%u,%u,%u,%.3f\n",(unsigned long long)packet.materials.scene,
+ 			packet.materials.frame,mode,unsigned(packet.quads.size()),unsigned(vertices),fw,fh,packet.page,packet.margin,unsigned(packet.materials.snapshot),elapsed)<0)return false;
+ 		++margin_packets;margin_quads+=packet.quads.size();return true;
+ 	};
+ 
+ 	cruisn::CaptureWriter future_writer;
+-	FILE *future_log=nullptr;
++	cruisn::DiagnosticJournal future_log;
+ 	uint64_t future_packets=0,future_quads=0,future_snapshots=0;
+-	cruisn::CaptureWriter waiting_writer;FILE *waiting_log=nullptr;
++	cruisn::CaptureWriter waiting_writer;cruisn::DiagnosticJournal waiting_log;
+ 	uint64_t waiting_packets=0,waiting_quads=0,waiting_snapshots=0;
+ 	uint32_t future_page=0,future_multiplier=0;
+ 	auto private_future=[&](const std::vector<uint8_t> &wire,bool waiting=false)->bool {
+@@ -1500,11 +1501,11 @@ void thread_main()
+ 		gl.ActiveTexture(TEXTURE0);gl.BindTexture(0x0de1,waveTex);gl.ActiveTexture(TEXTURE0+1);gl.BindTexture(0x0de1,palTex);gl.ActiveTexture(TEXTURE0);
+ 		if(gl.GetError())return false;
+ 		if(!log) {
+-			log=fopen((std::string(prefix)+"gpu.csv").c_str(),"w");if(!log)return false;setvbuf(log,nullptr,_IOFBF,65536);
+-			fprintf(log,"scene,frame,mode,multiplier,page,quads,vertices,bytes,hash,snapshot,host_us\n");
++			log.open((std::string(prefix)+"gpu.csv").c_str(),"w",cruisn::DiagnosticJournal::Policy::capture);if(!log)return false;log.buffer(nullptr,_IOFBF,65536);
++			log.print("scene,frame,mode,multiplier,page,quads,vertices,bytes,hash,snapshot,host_us\n");
+ 		}
+ 		const auto elapsed=std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-started).count();
+-		if(fprintf(log,"%llu,%u,%u,%u,%u,%u,%llu,%llu,%016llx,%u,%.3f\n",(unsigned long long)packet.materials.scene,
++		if(log.print("%llu,%u,%u,%u,%u,%u,%llu,%llu,%016llx,%u,%.3f\n",(unsigned long long)packet.materials.scene,
+ 			packet.materials.frame,unsigned(mode),packet.multiplier,packet.page,unsigned(packet.quads.size()),(unsigned long long)vertices,
+ 			(unsigned long long)wire.size(),(unsigned long long)hash,unsigned(packet.materials.snapshot),elapsed)<0)return false;
+ 		++packets;quads+=packet.quads.size();
+@@ -1593,7 +1594,7 @@ void thread_main()
+ 			snapshot_us=std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-began).count();
+ 			++mirror_samples;
+ 		}
+-		if(fprintf(mirror_log,"%u,%d,%d,%llu,%llu,%llu,%u,%llu,%llu,%.3f,%.3f\n",frame,fw,fh,
++		if(mirror_log.print("%u,%d,%d,%llu,%llu,%llu,%u,%llu,%llu,%.3f,%.3f\n",frame,fw,fh,
+ 			(unsigned long long)mirror_batches,(unsigned long long)mirror_vertices,(unsigned long long)mirror_clears,unsigned(snapshot),
+ 			(unsigned long long)colors,(unsigned long long)depths,mirror_total_us,snapshot_us)<0)return false;
+ 		// Wide mode reports differences from compatibility, not a pixel-depth
+@@ -1760,7 +1761,7 @@ void thread_main()
+ 						flush();add_quad(q);flush(1);
+ 						midz_quad_rec changed;std::memcpy(&changed,&replacement,sizeof(changed));
+ 						add_quad(changed);flush(2);
+-						if(!endpoint_log || fprintf(endpoint_log,"%u,%u,%u,%u\n",endpoint_pair.frame,endpoint_pair.model,
++						if(!endpoint_log || endpoint_log.print("%u,%u,%u,%u\n",endpoint_pair.frame,endpoint_pair.model,
+ 							endpoint_pair.index,endpoint_pair.count)<0) {
+ 							private_failed=true;s_stopz.store(true);zlogf("endpoint GPU journal failure");break;
+ 						}
+@@ -2130,13 +2131,13 @@ void thread_main()
+ 	}
+ 
+ 	if(endpoint_log) {
+-		const bool good=!ferror(endpoint_log);const int closed=fclose(endpoint_log);
++		const bool good=!endpoint_log.error();const int closed=endpoint_log.close();
+ 		fprintf(stderr,"MIDZ_ENDPOINT_GPU_RESULT complete=%u pairs=%llu\n",
+ 			unsigned(!private_failed && good && !closed && endpoint_order.complete()),(unsigned long long)endpoint_pairs);
+ 	}
+ 	if(mirror_log) {
+ 		const auto stats=mirror_writer.finish();
+-		const int closed=fclose(mirror_log);
++		const int closed=mirror_log.close();
+ 		if(stats.failed || stats.rejected || stats.submitted!=stats.written || stats.written!=4*mirror_samples ||
+ 			!depth_mirror.snapshots.empty() || mirror_previous!=depth_mirror.last || closed)mirror_failed=true;
+ 		fprintf(stderr,"MIDZ_DEPTH_MIRROR_RESULT complete=%u frames=%llu batches=%llu vertices=%llu clears=%llu snapshots=%llu remaining=%u\n",
+@@ -2148,7 +2149,7 @@ void thread_main()
+ 			(unsigned long long)stats.waits,(unsigned long long)stats.wait_us);
+ 	}
+ 	if(envi("MIDZ_HOST_FUTURE",nullptr,0)) {
+-		const auto stats=future_writer.finish();const int closed=future_log?fclose(future_log):-1;
++		const auto stats=future_writer.finish();const int closed=future_log?future_log.close():-1;
+ 		const bool complete=!private_failed && future_packets && future_packets+(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2?waiting_packets:0)+(compose?margin_packets:0)==private_packets && !closed &&
+ 			stats.submitted==4*future_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
+ 		fprintf(stderr,"MIDZ_HOST_FUTURE_GPU_RESULT complete=%u scenes=%llu quads=%llu snapshots=%llu written=%llu failed=%llu rejected=%llu\n",
+@@ -2156,7 +2157,7 @@ void thread_main()
+ 			(unsigned long long)stats.written,(unsigned long long)stats.failed,(unsigned long long)stats.rejected);
+ 	}
+ 	if(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2) {
+-		const auto stats=waiting_writer.finish();const int closed=waiting_log?fclose(waiting_log):-1;
++		const auto stats=waiting_writer.finish();const int closed=waiting_log?waiting_log.close():-1;
+ 		const bool complete=!private_failed && waiting_packets && waiting_packets==future_packets && private_late_scene==private_scene &&
+ 			(!compose || (private_waiting_scene==private_scene && margin_packets==future_packets)) && !closed &&
+ 			stats.submitted==4*waiting_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
+@@ -2181,14 +2182,14 @@ void thread_main()
+ 			(unsigned long long)stats.submitted,(unsigned long long)stats.written,(unsigned long long)stats.failed,(unsigned long long)stats.rejected,
+ 			(unsigned long long)stats.peak_bytes,(unsigned long long)stats.write_total_us,(unsigned long long)stats.write_max_us,(unsigned long long)stats.drain_us,
+ 			(unsigned long long)stats.waits,(unsigned long long)stats.wait_us);
+-		if(fclose(margin_log))private_failed=true;
++		if(margin_log.close())private_failed=true;
+ 		fprintf(stderr,"MIDZ_HOST_ACTIVE_GPU_RESULT complete=%u scenes=%llu quads=%llu\n",
+ 			unsigned(!private_failed),(unsigned long long)margin_packets,(unsigned long long)margin_quads);
+ 	}
+ 	if(margin_fbo)gl.DeleteFramebuffers(1,&margin_fbo);
+ 	if(margin_depth_tex)gl.DeleteTextures(1,&margin_depth_tex);
+ 	if(private_log) {
+-		if(fclose(private_log))private_failed=true;
++		if(private_log.close())private_failed=true;
+ 		fprintf(stderr,"MIDZ_HOST_MATERIALS_GPU_RESULT complete=%u received=%llu snapshots=%llu hash=%016llx\n",
+ 			unsigned(!private_failed),(unsigned long long)private_packets,(unsigned long long)private_snapshots,
+ 			(unsigned long long)private_image->image_hash());
+diff --git a/src/mame/midway/cruisn/diagnostic_journal.h b/src/mame/midway/cruisn/diagnostic_journal.h
+new file mode 100644
+index 00000000000..9d753616517
+--- /dev/null
++++ b/src/mame/midway/cruisn/diagnostic_journal.h
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Optional evidence output. Enabled runtime work is separate from an open file.
++// This component does not relax rendering, resource or outstanding-owner bounds.
++#pragma once
++#include <cstdarg>
++#include <cstddef>
++#include <cstdio>
++#include <limits>
++
++namespace cruisn {
++class DiagnosticJournal {
++public:
++    enum class Policy { capture, quiet };
++private:
++    FILE *m_file=nullptr;
++    bool m_enabled=false,m_failed=false;
++public:
++    DiagnosticJournal()=default;
++    DiagnosticJournal(const DiagnosticJournal &)=delete;
++    DiagnosticJournal &operator=(const DiagnosticJournal &)=delete;
++    ~DiagnosticJournal(){if(m_file)std::fclose(m_file);}
++
++    // Quiet does not open even a null-device file. Callers must explicitly
++    // select it; failed capture opens never silently become quiet operation.
++    bool open(const char *path,const char *mode,Policy policy) {
++        if(m_enabled || m_file || !path || !mode ||
++                (policy!=Policy::capture && policy!=Policy::quiet))return false;
++        m_failed=false;
++        if(policy==Policy::capture) {
++            m_file=std::fopen(path,mode);
++            if(!m_file){m_failed=true;return false;}
++        }
++        m_enabled=true;return true;
++    }
++    explicit operator bool()const{return m_enabled;}
++    bool capturing()const{return m_enabled && m_file;}
++    bool error()const{return m_failed || (m_file && std::ferror(m_file));}
++    int buffer(char *storage,int mode,size_t size) {
++        if(!m_enabled)return -1;
++        if(!m_file)return 0;
++        const int result=std::setvbuf(m_file,storage,mode,size);
++        m_failed=m_failed || result!=0;return result;
++    }
++    // Preserve the compiler's format/type checks when replacing fprintf.
++#if defined(__GNUC__) || defined(__clang__)
++#if defined(__MINGW_PRINTF_FORMAT)
++    __attribute__((format(__MINGW_PRINTF_FORMAT,2,3)))
++#else
++    __attribute__((format(printf,2,3)))
++#endif
++#endif
++    int print(const char *format,...) {
++        if(!m_enabled || !format)return -1;
++        if(!m_file)return 0;
++        va_list args;va_start(args,format);
++        const int result=std::vfprintf(m_file,format,args);va_end(args);
++        m_failed=m_failed || result<0;return result;
++    }
++    size_t write(const void *data,size_t size,size_t count) {
++        if(!m_enabled || (size && count && !data) ||
++                (size && count>std::numeric_limits<size_t>::max()/size)) {
++            m_failed=true;return 0;
++        }
++        if(!size || !count)return 0;
++        if(!m_file)return count;
++        const size_t result=std::fwrite(data,size,count,m_file);
++        m_failed=m_failed || result!=count;return result;
++    }
++    int put(int ch) {
++        if(!m_enabled)return EOF;
++        if(!m_file)return static_cast<unsigned char>(ch);
++        const int result=std::fputc(ch,m_file);
++        m_failed=m_failed || result==EOF;return result;
++    }
++    long tell() {
++        if(!m_enabled)return -1;
++        if(!m_file)return 0;
++        const long result=std::ftell(m_file);
++        m_failed=m_failed || result<0;return result;
++    }
++    int flush() {
++        if(!m_enabled)return EOF;
++        if(!m_file)return m_failed?EOF:0;
++        const int result=std::fflush(m_file);
++        m_failed=m_failed || result!=0;return result;
++    }
++    int close() {
++        if(!m_enabled)return m_failed?EOF:0;
++        const int result=m_file?std::fclose(m_file):0;
++        m_file=nullptr;m_enabled=false;m_failed=m_failed || result!=0;
++        return m_failed?EOF:0;
++    }
++};
++}
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index fae0156d4a5..6cef4d6b571 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -27,6 +27,7 @@ The Grid         v1.2   10/18/2000
+ **************************************************************************/
+ 
+ #include "emu.h"
++#include "cruisn/diagnostic_journal.h"
+ #include "cruisn/motor_signal.h"
+ #include "cruisn/hud_drivetrain.h"
+ #include "cruisn/exotica_visibility.h"
+@@ -212,7 +213,7 @@ private:
+ 	cruisn::exotica_admissions::Ledger m_endpoint_admissions;
+ 	uint32_t m_endpoint_admit_from=0;
+ 	uint64_t m_endpoint_admit_sequence=0,m_endpoint_admit_bytes=0;
+-	FILE *m_endpoint_admit_packets=nullptr,*m_endpoint_admit_log=nullptr;
++	cruisn::DiagnosticJournal m_endpoint_admit_packets,m_endpoint_admit_log;
+ 	struct EndpointPending {
+ 		cruisn::scenery_lifetimes::Handle owner;
+ 		cruisn::exotica_state::Operands operands;
+@@ -222,14 +223,14 @@ private:
+ 	};
+ 	cruisn::exotica_commands::Owners m_endpoint_owners;
+ 	std::map<uint64_t,EndpointPending> m_endpoint_pending;
+-	FILE *m_endpoint_log=nullptr,*m_endpoint_inputs=nullptr;
++	cruisn::DiagnosticJournal m_endpoint_log,m_endpoint_inputs;
+ 	uint32_t m_endpoint_first=0,m_endpoint_last=0,m_endpoint_snapshot=0;
+ 	bool m_endpoint_draw=false;
+ 	bool m_endpoint_early=false,m_active_early=false,m_handover_early=false;
+ 	bool m_endpoint_marked=false;
+ 	std::set<uint32_t> m_endpoint_active_slots;
+ 	cruisn::exotica_scene::Result m_handover_control;
+-	FILE *m_endpoint_early_log=nullptr;
++	cruisn::DiagnosticJournal m_endpoint_early_log;
+ 	uint64_t m_endpoint_early_rows=0,m_endpoint_early_scenes=0;
+ 	uint64_t m_endpoint_commits=0,m_endpoint_consumed=0,m_endpoint_untracked=0;
+ 	uint64_t m_endpoint_prepared=0,m_endpoint_rejected=0,m_endpoint_saved=0,m_endpoint_bytes=0;
+@@ -255,7 +256,7 @@ private:
+ 	bool m_lifetime_started=false;
+ 	uint64_t m_lifetime_records=0,m_lifetime_bindings=0,m_lifetime_emissions=0,m_lifetime_owned=0;
+ 	uint64_t m_lifetime_first_draws=0,m_lifetime_fading_draws=0,m_lifetime_opaque=0,m_lifetime_draw_records=0;
+-	FILE *m_lifetime_log=nullptr;
++	cruisn::DiagnosticJournal m_lifetime_log;
+ 	memory_passthrough_handler m_lifetime_head_tap,m_lifetime_count_tap,m_lifetime_reset_tap;
+ 	memory_passthrough_handler m_lifetime_owner_tap,m_lifetime_ready_tap,m_lifetime_submit_tap;
+ 
+@@ -281,7 +282,7 @@ private:
+ 	};
+ 	std::deque<ScenePending> m_scene_pending;
+ 	memory_passthrough_handler m_scene_ready_tap,m_scene_begin_tap,m_scene_end_tap,m_scene_marker_tap,m_scene_lists_tap;
+-	FILE *m_scene_log=nullptr;
++	cruisn::DiagnosticJournal m_scene_log;
+ 	uint32_t m_scene_first=0,m_scene_last=0,m_scene_multiplier=1,m_scene_cpu_frame=0;
+ 	uint64_t m_scene_serial=0;
+ 	bool m_scene_failure_original=false,m_scene_retired=false;
+@@ -289,7 +290,7 @@ private:
+ 	uint64_t m_scene_failed_scene=0;
+ 	uint32_t m_scene_future_mode=0;
+ 	uint32_t m_waiting_mode=0;
+-	FILE *m_waiting_log=nullptr;
++	cruisn::DiagnosticJournal m_waiting_log;
+ 	uint64_t m_waiting_scenes=0,m_waiting_candidates=0,m_waiting_quads=0;
+ 	uint32_t m_waiting_saved=0;
+ 	std::set<uint32_t> m_waiting_snapshots;
+@@ -297,7 +298,7 @@ private:
+ 	uint64_t m_handover_scene=0,m_handover_proposal_records=0,m_handover_end_records=0;
+ 	uint64_t m_handover_completed=0,m_handover_captured=0,m_handover_submitted=0,m_handover_retired=0,m_handover_bytes=0;
+ 	double m_handover_time=0;
+-	FILE *m_handover_log=nullptr,*m_handover_cohorts=nullptr;
++	cruisn::DiagnosticJournal m_handover_log,m_handover_cohorts;
+ 	std::set<uint32_t> m_handover_snapshots;
+ 	cruisn::exotica_waiting::Pending m_handover_pending;
+ 	cruisn::exotica_scene::Result m_handover_geometry;
+@@ -306,7 +307,7 @@ private:
+ 	std::vector<cruisn::scenery_lifetimes::Handle> m_compose_owners;
+ 	std::map<uint32_t,cruisn::scenery_lifetimes::Handle> m_compose_sealed_owners;
+ 	uint64_t m_compose_scene=0,m_compose_sealed_records=0,m_compose_completed=0;
+-	FILE *m_compose_log=nullptr;
++	cruisn::DiagnosticJournal m_compose_log;
+ 	cruisn::zeus_host::PaletteSet m_handover_palettes;
+ 	cruisn::zeus_wide::Packet m_handover_packet;
+ 	uint64_t m_handover_generation=0;
+@@ -319,7 +320,7 @@ private:
+ 	uint64_t m_scene_prepared=0,m_scene_matched=0,m_scene_quads=0,m_scene_saved=0;
+ 	bool m_scene_busy=false,m_scene_rom_saved=false;
+ 	std::unique_ptr<cruisn::zeus_host::WaveImage> m_scene_material_image;
+-	FILE *m_scene_material_log=nullptr;
++	cruisn::DiagnosticJournal m_scene_material_log;
+ 	uint32_t m_scene_material_pages=0; //0 full scan,1 written pages,2 full-scan comparison
+ 	uint64_t m_scene_material_verified=0;
+ 	uint32_t m_scene_source_mode=0; //0 rebuild,1 checked cache,2 exact rebuild comparison
+@@ -329,7 +330,7 @@ private:
+ 	uint64_t m_scene_depth_tests=0,m_scene_depth_verified=0,m_scene_depth_skipped=0;
+ 	using SceneFence=cruisn::CommandRingFence<0x30000,0x2000>;
+ 	SceneFence m_scene_fence;
+-	FILE *m_scene_fence_log=nullptr;
++	cruisn::DiagnosticJournal m_scene_fence_log;
+ 	bool m_scene_fence_selected=false;
+ 	uint64_t m_scene_fence_requests=0,m_scene_fence_completed=0,m_scene_fence_immediate=0,m_scene_fence_scene=0;
+ 	uint32_t m_scene_fence_scene_frame=0,m_scene_fence_end_frame=0,m_scene_fence_consumer=0,m_scene_fence_words=0;
+@@ -349,7 +350,7 @@ private:
+ 	uint32_t m_active_seed_bank=0;
+ 	std::set<uint32_t> m_active_submitted,m_active_snapshots;
+ 	memory_passthrough_handler m_active_submission_tap;
+-	FILE *m_active_log=nullptr;
++	cruisn::DiagnosticJournal m_active_log;
+ 
+ 	void visibility_start();
+ 	void visibility_guard();
+@@ -463,7 +464,7 @@ void crusnexo_state::lifetime_emit(char event,uint32_t slot,uint64_t generation,
+ 	const cruisn::scenery_lifetimes::Key &key,uint32_t reason,uint32_t flags)
+ {
+ 	if(!m_lifetime_log || ++m_lifetime_records>200000)fatalerror("Exotica lifetime record budget\n");
+-	if(fprintf(m_lifetime_log,"%c,%u,%.17g,%llu,%llu,%llu,%u,%llu,%llu,%u,%u,%u,%u\n",
++	if(m_lifetime_log.print("%c,%u,%.17g,%llu,%llu,%llu,%u,%llu,%llu,%u,%u,%u,%u\n",
+ 		event,unsigned(m_screen->frame_number()),machine().time().as_double(),
+ 		(unsigned long long)m_lifetimes.sequence(),(unsigned long long)m_lifetimes.epoch(),
+ 		(unsigned long long)generation,slot,(unsigned long long)owner,(unsigned long long)key.realm,
+@@ -511,10 +512,10 @@ void crusnexo_state::lifetime_start()
+ 	m_lifetime_first=number("MIDZ_LIFETIME_FIRST");m_lifetime_last=number("MIDZ_LIFETIME_LAST");
+ 	if(m_lifetime_last<m_lifetime_first || m_lifetime_last-m_lifetime_first>10000 || m_ram_base.bytes()!=0x100000)
+ 		fatalerror("Exotica lifetime interval/space bounds\n");
+-	m_lifetime_log=fopen("exotica-lifetime-events.csv","w");
++	m_lifetime_log.open("exotica-lifetime-events.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 	if(!m_lifetime_log)fatalerror("Cannot open Exotica lifetime journal\n");
+-	setvbuf(m_lifetime_log,nullptr,_IOFBF,65536);
+-	if(fprintf(m_lifetime_log,"event,frame,time,sequence,epoch,generation,slot,owner,realm,section,source,reason,flags\n")<0)
++	m_lifetime_log.buffer(nullptr,_IOFBF,65536);
++	if(m_lifetime_log.print("event,frame,time,sequence,epoch,generation,slot,owner,realm,section,source,reason,flags\n")<0)
+ 		fatalerror("Cannot write Exotica lifetime header\n");
+ 	auto &space=m_maincpu->space(AS_PROGRAM);
+ 	m_lifetime_head_tap=space.install_write_tap(0x10a8,0x10a8,"exotica_lifetime_head",
+@@ -672,7 +673,7 @@ void crusnexo_state::lifetime_exit()
+ 	m_lifetime_head_tap.remove();m_lifetime_count_tap.remove();m_lifetime_reset_tap.remove();
+ 	m_lifetime_owner_tap.remove();m_lifetime_ready_tap.remove();m_lifetime_submit_tap.remove();
+ 	const bool complete=m_lifetime_started && m_screen->frame_number()>m_lifetime_last && !m_lifetime_pending.kind && !m_lifetime_owner_slot;
+-	const bool good=!ferror(m_lifetime_log);const int closed=fclose(m_lifetime_log);m_lifetime_log=nullptr;
++	const bool good=!m_lifetime_log.error();const int closed=m_lifetime_log.close();
+ 	fprintf(stderr,"MIDZ_LIFETIME_RESULT complete=%u records=%llu transitions=%llu bindings=%llu emissions=%llu owned=%llu draws=%llu first_draws=%llu fading=%llu opaque=%llu epochs=%llu\n",
+ 		unsigned(complete && good && !closed),(unsigned long long)m_lifetime_records,(unsigned long long)m_lifetimes.sequence(),
+ 		(unsigned long long)m_lifetime_bindings,(unsigned long long)m_lifetime_emissions,(unsigned long long)m_lifetime_owned,
+@@ -713,11 +714,11 @@ void crusnexo_state::endpoint_start()
+ 		if(m_scene_future_mode!=2 || !m_scene_material_image || m_endpoint_admit_from>m_endpoint_first ||
+ 			m_endpoint_admit_from<m_scene_first || m_scene_last<m_endpoint_last)
+ 			fatalerror("Endpoint admissions require actual private future drawing and covered frames\n");
+-		m_endpoint_admit_packets=fopen("exotica-admission-packets.bin","wb");
+-		m_endpoint_admit_log=fopen("exotica-endpoint-admissions.csv","w");
++		m_endpoint_admit_packets.open("exotica-admission-packets.bin","wb",cruisn::DiagnosticJournal::Policy::capture);
++		m_endpoint_admit_log.open("exotica-endpoint-admissions.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!m_endpoint_admit_packets || !m_endpoint_admit_log)fatalerror("Endpoint admission files\n");
+-		setvbuf(m_endpoint_admit_packets,nullptr,_IOFBF,65536);setvbuf(m_endpoint_admit_log,nullptr,_IOFBF,65536);
+-		fprintf(m_endpoint_admit_log,"id,admitted,first_sequence,first_frame,last_sequence,last_frame,packets,records\n");
++		m_endpoint_admit_packets.buffer(nullptr,_IOFBF,65536);m_endpoint_admit_log.buffer(nullptr,_IOFBF,65536);
++		m_endpoint_admit_log.print("id,admitted,first_sequence,first_frame,last_sequence,last_frame,packets,records\n");
+ 		fprintf(stderr,"MIDZ_MODEL_ADMIT_FIRST=%u\n",m_endpoint_admit_from);
+ 	}
+ 	if(m_endpoint_first>m_endpoint_last || (!m_endpoint_marked && m_endpoint_last-m_endpoint_first>120) ||
+@@ -730,16 +731,16 @@ void crusnexo_state::endpoint_start()
+ 	fprintf(stderr,"MIDZ_ENDPOINT_EARLY=%u\n",unsigned(m_endpoint_early));
+ 	fprintf(stderr,"MIDZ_ENDPOINT_MARKED=%u\n",unsigned(m_endpoint_marked));
+ 	if(m_endpoint_early) {
+-		m_endpoint_early_log=fopen("exotica-early-active.csv","w");
++		m_endpoint_early_log.open("exotica-early-active.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!m_endpoint_early_log)fatalerror("Cannot create private visibility journal\n");
+-		setvbuf(m_endpoint_early_log,nullptr,_IOFBF,65536);
+-		fprintf(m_endpoint_early_log,"scene,frame,records,packets,slot,epoch,generation,realm,section,source,first_sequence,first_frame,last_sequence,last_frame\n");
++		m_endpoint_early_log.buffer(nullptr,_IOFBF,65536);
++		m_endpoint_early_log.print("scene,frame,records,packets,slot,epoch,generation,realm,section,source,first_sequence,first_frame,last_sequence,last_frame\n");
+ 	}
+-	m_endpoint_log=fopen("exotica-endpoint-models.csv","w");
+-	m_endpoint_inputs=fopen("exotica-endpoint-inputs.txt","w");
++	m_endpoint_log.open("exotica-endpoint-models.csv","w",cruisn::DiagnosticJournal::Policy::capture);
++	m_endpoint_inputs.open("exotica-endpoint-inputs.txt","w",cruisn::DiagnosticJournal::Policy::capture);
+ 	if(!m_endpoint_log || !m_endpoint_inputs)fatalerror("Cannot create endpoint observer files\n");
+-	setvbuf(m_endpoint_log,nullptr,_IOFBF,65536);setvbuf(m_endpoint_inputs,nullptr,_IOFBF,65536);
+-	fprintf(m_endpoint_log,"id,commit_frame,commit_time,device_frame,device_time,epoch,generation,slot,realm,section,source,end,opcode,base,flags,packed,status,quads,changed,snapshot\n");
++	m_endpoint_log.buffer(nullptr,_IOFBF,65536);m_endpoint_inputs.buffer(nullptr,_IOFBF,65536);
++	m_endpoint_log.print("id,commit_frame,commit_time,device_frame,device_time,epoch,generation,slot,realm,section,source,end,opcode,base,flags,packed,status,quads,changed,snapshot\n");
+ 	m_zeus->set_midz_model_observer([this](uint32_t base,uint32_t count,uint32_t scale) {
+ 		endpoint_model(base,count,scale);scene_observer_model(base,count,scale);
+ 	});
+@@ -774,7 +775,7 @@ void crusnexo_state::endpoint_commit(uint32_t end,uint32_t flags,const LifetimeO
+ 			p.admitted=admitted==cruisn::exotica_admissions::Status::matched;
+ 		}
+ 		const auto &a=p.admission;
+-		if(fprintf(m_endpoint_admit_log,"%llu,%u,%llu,%u,%llu,%u,%llu,%llu\n",(unsigned long long)id,unsigned(p.admitted),
++		if(m_endpoint_admit_log.print("%llu,%u,%llu,%u,%llu,%u,%llu,%llu\n",(unsigned long long)id,unsigned(p.admitted),
+ 			(unsigned long long)a.first_sequence,a.first_frame,(unsigned long long)a.last_sequence,a.last_frame,
+ 			(unsigned long long)m_endpoint_admit_sequence,(unsigned long long)m_lifetime_records)<0)
+ 			fatalerror("Endpoint admission commit journal\n");
+@@ -854,7 +855,7 @@ void crusnexo_state::endpoint_model(uint32_t base,uint32_t count,uint32_t yscale
+ 	if(snapshot) {
+ 		if(++m_endpoint_saved>1024)fatalerror("Endpoint snapshot count\n");
+ 		// Decimal words use the standalone analyzer's bounded input format.
+-		auto word=[this](uint32_t w){if(fprintf(m_endpoint_inputs,"%u ",w)<0)fatalerror("Endpoint input write\n");};
++		auto word=[this](uint32_t w){if(m_endpoint_inputs.print("%u ",w)<0)fatalerror("Endpoint input write\n");};
+ 		auto array=[&](const auto &values){for(auto v:values)word(v);};
+ 		auto floats=[&](const auto &values){for(float f:values){uint32_t w;std::memcpy(&w,&f,4);word(w);}};
+ 		for(uint32_t v:{uint32_t(ticket.id),frame,base,count,uint32_t(m_zeus->m_upstream_render),c.quad_size,c.ucode,c.palette,c.texture,c.yscale,c.zoffset})word(v);
+@@ -862,7 +863,7 @@ void crusnexo_state::endpoint_model(uint32_t base,uint32_t count,uint32_t yscale
+ 		word(a.flags);word(a.palette_setup);array(a.object);array(a.cache);array(a.constants);array(a.commands);array(a.programs);
+ 		for(const auto &body:a.bodies)array(body);
+ 		word(uint32_t(a.defaults.size()));array(a.defaults);array(words);
+-		if(fputc('\n',m_endpoint_inputs)==EOF || ftell(m_endpoint_inputs)<0 || ftell(m_endpoint_inputs)>64*1024*1024)
++		if(m_endpoint_inputs.put('\n')==EOF || m_endpoint_inputs.tell()<0 || m_endpoint_inputs.tell()>64*1024*1024)
+ 			fatalerror("Endpoint input budget/write\n");
+ 		if(prepared==1)for(unsigned endpoint=0;endpoint<2;++endpoint) {
+ 			const auto &quads=endpoint?result.replacement:result.original;
+@@ -874,7 +875,7 @@ void crusnexo_state::endpoint_model(uint32_t base,uint32_t count,uint32_t yscale
+ 			const int closed=fclose(f);if(!good || closed)fatalerror("Endpoint snapshot write\n");
+ 		}
+ 	}
+-	if(fprintf(m_endpoint_log,"%llu,%u,%.17g,%u,%.17g,%llu,%llu,%u,%llu,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u\n",
++	if(m_endpoint_log.print("%llu,%u,%.17g,%u,%.17g,%llu,%llu,%u,%llu,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u\n",
+ 		(unsigned long long)ticket.id,p.frame,p.time,frame,now,(unsigned long long)h.epoch,(unsigned long long)h.generation,h.slot,
+ 		(unsigned long long)h.key.realm,h.key.section,h.key.source,end,opcode,base,a.flags,a.object[16],prepared,
+ 		unsigned(result.original.size()),unsigned(result.changed),unsigned(snapshot))<0)fatalerror("Endpoint journal write\n");
+@@ -886,20 +887,20 @@ void crusnexo_state::endpoint_exit()
+ {
+ 	if(!m_endpoint_log)return;
+ 	bool complete=m_screen->frame_number()>m_endpoint_last && m_endpoint_commits && m_endpoint_pending.empty() &&
+-		!m_endpoint_owners.pending() && m_endpoint_commits==m_endpoint_consumed && !ferror(m_endpoint_log) && !ferror(m_endpoint_inputs);
+-	if(fclose(m_endpoint_log))complete=false;
+-	if(fclose(m_endpoint_inputs))complete=false;
+-	m_endpoint_log=nullptr;m_endpoint_inputs=nullptr;
++		!m_endpoint_owners.pending() && m_endpoint_commits==m_endpoint_consumed && !m_endpoint_log.error() && !m_endpoint_inputs.error();
++	if(m_endpoint_log.close())complete=false;
++	if(m_endpoint_inputs.close())complete=false;
++
+ 	if(m_endpoint_early_log) {
+-		bool good=!ferror(m_endpoint_early_log);if(fclose(m_endpoint_early_log))good=false;m_endpoint_early_log=nullptr;
++		bool good=!m_endpoint_early_log.error();if(m_endpoint_early_log.close())good=false;
+ 		fprintf(stderr,"MIDZ_ENDPOINT_EARLY_RESULT complete=%u scenes=%llu permissions=%llu\n",unsigned(complete && good && m_endpoint_early_scenes),
+ 			(unsigned long long)m_endpoint_early_scenes,(unsigned long long)m_endpoint_early_rows);
+ 	}
+ 	if(m_endpoint_admit_log) {
+-		bool good=!ferror(m_endpoint_admit_log) && !ferror(m_endpoint_admit_packets);
+-		if(fclose(m_endpoint_admit_log))good=false;
+-		if(fclose(m_endpoint_admit_packets))good=false;
+-		m_endpoint_admit_log=nullptr;m_endpoint_admit_packets=nullptr;
++		bool good=!m_endpoint_admit_log.error() && !m_endpoint_admit_packets.error();
++		if(m_endpoint_admit_log.close())good=false;
++		if(m_endpoint_admit_packets.close())good=false;
++
+ 		fprintf(stderr,"MIDZ_MODEL_ADMIT_RESULT complete=%u packets=%llu bytes=%llu\n",unsigned(complete && good),
+ 			(unsigned long long)m_endpoint_admit_sequence,(unsigned long long)m_endpoint_admit_bytes);
+ 	}
+@@ -925,8 +926,8 @@ void crusnexo_state::endpoint_admit(uint64_t scene,uint32_t frame,uint64_t realm
+ 	const uint64_t header[]={0x31444158,sequence,scene,frame,m_lifetimes.epoch(),realm,records.size(),m_lifetime_records,uint64_t(waiting)};
+ 	const size_t bytes=sizeof(header)+records.size()*sizeof(records[0]);
+ 	if(bytes>64*1024*1024-m_endpoint_admit_bytes || sequence>20000)fatalerror("Endpoint admission journal budget\n");
+-	if(fwrite(header,1,sizeof(header),m_endpoint_admit_packets)!=sizeof(header) ||
+-		(!records.empty() && fwrite(records.data(),sizeof(records[0]),records.size(),m_endpoint_admit_packets)!=records.size()))
++	if(m_endpoint_admit_packets.write(header,1,sizeof(header))!=sizeof(header) ||
++		(!records.empty() && m_endpoint_admit_packets.write(records.data(),sizeof(records[0]),records.size())!=records.size()))
+ 		fatalerror("Endpoint admission packet journal\n");
+ 	m_endpoint_admit_bytes+=bytes;
+ }
+@@ -958,10 +959,10 @@ void crusnexo_state::scene_observer_start()
+ 	m_active_mode=number("MIDZ_HOST_ACTIVE",0,2,0);
+ 	m_compose=number("MIDZ_HOST_COMPOSE",0,1,0)!=0;
+ 	if(number("MIDZ_HOST_FENCE",0,1,0)) {
+-		m_scene_fence_log=fopen("exotica-host-fences.csv","w");
++		m_scene_fence_log.open("exotica-host-fences.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!m_scene_fence_log)fatalerror("Cannot create Exotica command-fence log\n");
+-		setvbuf(m_scene_fence_log,nullptr,_IOFBF,65536);
+-		fprintf(m_scene_fence_log,"scene,scene_frame,end_frame,end_time,ready_frame,ready_time,consumer,target,words,immediate,guest_cycles,page\n");
++		m_scene_fence_log.buffer(nullptr,_IOFBF,65536);
++		m_scene_fence_log.print("scene,scene_frame,end_frame,end_time,ready_frame,ready_time,consumer,target,words,immediate,guest_cycles,page\n");
+ 		m_zeus->set_midz_fifo_observer([this](bool empty){scene_fence_word(empty);});
+ 		fprintf(stderr,"MIDZ_HOST_FENCE=1\n");
+ 	}
+@@ -976,10 +977,10 @@ void crusnexo_state::scene_observer_start()
+ 		fatalerror("Exotica written pages require private materials\n");
+ 	if(number("MIDZ_HOST_MATERIALS",0,1,0)) {
+ 		m_scene_material_image=std::make_unique<cruisn::zeus_host::WaveImage>();
+-		m_scene_material_log=fopen("exotica-host-materials.csv","w");
++		m_scene_material_log.open("exotica-host-materials.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!m_scene_material_log)fatalerror("Cannot create Exotica material log\n");
+-		setvbuf(m_scene_material_log,nullptr,_IOFBF,65536);
+-		fprintf(m_scene_material_log,"scene,frame,generation,pages,palettes,bytes,hash,stage_us,encode_us,queue_us,commit_us\n");
++		m_scene_material_log.buffer(nullptr,_IOFBF,65536);
++		m_scene_material_log.print("scene,frame,generation,pages,palettes,bytes,hash,stage_us,encode_us,queue_us,commit_us\n");
+ 		fprintf(stderr,"MIDZ_HOST_MATERIALS=1\n");
+ 		if(m_scene_material_pages) {
+ 			if(!m_zeus->midz_live)fatalerror("Exotica written pages require live GL\n");
+@@ -1004,9 +1005,9 @@ void crusnexo_state::scene_observer_start()
+ 	if(m_compose) {
+ 		if(m_active_mode!=2 || m_scene_future_mode!=2 || m_handover_mode!=2 || !m_scene_material_pages)
+ 			fatalerror("Exotica composition requires active/future/waiting drawing and tracked materials\n");
+-		m_compose_log=fopen("exotica-compose-scenes.csv","w");if(!m_compose_log)fatalerror("Cannot create composition log\n");
+-		setvbuf(m_compose_log,nullptr,_IOFBF,65536);
+-		fprintf(m_compose_log,"scene,frame,end_records,ready_records,input_instances,input_quads,overlaps,removed_quads,texture_pages,instances,quads\n");
++		m_compose_log.open("exotica-compose-scenes.csv","w",cruisn::DiagnosticJournal::Policy::capture);if(!m_compose_log)fatalerror("Cannot create composition log\n");
++		m_compose_log.buffer(nullptr,_IOFBF,65536);
++		m_compose_log.print("scene,frame,end_records,ready_records,input_instances,input_quads,overlaps,removed_quads,texture_pages,instances,quads\n");
+ 		fprintf(stderr,"MIDZ_HOST_COMPOSE=1\n");
+ 	}
+ 	if(m_waiting_mode) {
+@@ -1045,35 +1046,35 @@ void crusnexo_state::scene_observer_start()
+ 	}
+ 	if(m_waiting_mode) {
+ 		m_waiting_snapshots=m_scene_snapshots;
+-		m_waiting_log=fopen("exotica-waiting-scenes.csv","w");
++		m_waiting_log.open("exotica-waiting-scenes.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!m_waiting_log)fatalerror("Cannot create Exotica waiting log\n");
+-		setvbuf(m_waiting_log,nullptr,_IOFBF,65536);
+-		fprintf(m_waiting_log,"scene,frame,device_time,epoch,sequence,records,historical,unowned,submitted,future,bound_future,bound_future_submitted,candidates,instances,quads,hash,guest_cycles\n");
++		m_waiting_log.buffer(nullptr,_IOFBF,65536);
++		m_waiting_log.print("scene,frame,device_time,epoch,sequence,records,historical,unowned,submitted,future,bound_future,bound_future_submitted,candidates,instances,quads,hash,guest_cycles\n");
+ 		fprintf(stderr,"MIDZ_HOST_WAITING=1\n");
+ 	}
+ 	if(m_handover_mode) {
+ 		m_handover_snapshots=m_scene_snapshots;
+-		m_handover_log=fopen("exotica-handover-scenes.csv","w");
+-		m_handover_cohorts=fopen("exotica-handover-cohorts.bin","wb");
++		m_handover_log.open("exotica-handover-scenes.csv","w",cruisn::DiagnosticJournal::Policy::capture);
++		m_handover_cohorts.open("exotica-handover-cohorts.bin","wb",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!m_handover_log || !m_handover_cohorts)fatalerror("Cannot create Exotica completion observation\n");
+-		setvbuf(m_handover_log,nullptr,_IOFBF,65536);setvbuf(m_handover_cohorts,nullptr,_IOFBF,65536);
+-		fprintf(m_handover_log,"scene,proposal_frame,proposal_time,proposal_records,end_records,ready_frame,ready_time,ready_records,epoch,captured,submitted,retired,retained,owners_hash,instances,quads,geometry_hash,guest_cycles\n");
++		m_handover_log.buffer(nullptr,_IOFBF,65536);m_handover_cohorts.buffer(nullptr,_IOFBF,65536);
++		m_handover_log.print("scene,proposal_frame,proposal_time,proposal_records,end_records,ready_frame,ready_time,ready_records,epoch,captured,submitted,retired,retained,owners_hash,instances,quads,geometry_hash,guest_cycles\n");
+ 		fprintf(stderr,"MIDZ_HOST_HANDOVER=%u\n",m_handover_mode);
+ 		if(m_handover_mode==2)fprintf(stderr,"MIDZ_HOST_WAITING_DRAW=2\n");
+ 	}
+-	m_scene_log=fopen("exotica-host-scenes.csv","w");
++	m_scene_log.open("exotica-host-scenes.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 	if(!m_scene_log)fatalerror("Cannot create Exotica host scene log\n");
+-	setvbuf(m_scene_log,nullptr,_IOFBF,65536);
+-	fprintf(m_scene_log,"frame,cpu_frame,cpu_time,device_time,base,count,bank,page,multiplier,partial,sources,instances,quads,viewport,hash,source_us,assembly_us,hash_us,snapshot_us,guest_cycles,scene,scene_frame,scene_time,bounds,culled_bounds,materials_us,source_cache,depth_mode,depth_tests,depth_verified,depth_skipped\n");
++	m_scene_log.buffer(nullptr,_IOFBF,65536);
++	m_scene_log.print("frame,cpu_frame,cpu_time,device_time,base,count,bank,page,multiplier,partial,sources,instances,quads,viewport,hash,source_us,assembly_us,hash_us,snapshot_us,guest_cycles,scene,scene_frame,scene_time,bounds,culled_bounds,materials_us,source_cache,depth_mode,depth_tests,depth_verified,depth_skipped\n");
+ 	auto &space=m_maincpu->space(AS_PROGRAM);
+ 	if(m_active_mode) {
+ 		if(!m_scene_fence_log || !m_scene_material_image || !m_zeus->midz_live)
+ 			fatalerror("Exotica active margins require command fence, private materials and live GL\n");
+ 		m_active_snapshots=m_scene_snapshots;
+-		m_active_log=fopen("exotica-active-scenes.csv","w");
++		m_active_log.open("exotica-active-scenes.csv","w",cruisn::DiagnosticJournal::Policy::capture);
+ 		if(!m_active_log)fatalerror("Cannot create Exotica active-scene log\n");
+-		setvbuf(m_active_log,nullptr,_IOFBF,65536);
+-		fprintf(m_active_log,"scene,scene_frame,frame,ready_frame,objects,candidates,already_submitted,instances,quads,excluded_raster,hash,guest_cycles,assembly_us,materials_us,sealed_frame,camera_advanced,changed_objects,binding_checks,seal_us,bindings_advanced,model_checks,model_bytes,palette_checks,texture_pages,lease_us,ram_models,seal_pages,seal_verified\n");
++		m_active_log.buffer(nullptr,_IOFBF,65536);
++		m_active_log.print("scene,scene_frame,frame,ready_frame,objects,candidates,already_submitted,instances,quads,excluded_raster,hash,guest_cycles,assembly_us,materials_us,sealed_frame,camera_advanced,changed_objects,binding_checks,seal_us,bindings_advanced,model_checks,model_bytes,palette_checks,texture_pages,lease_us,ram_models,seal_pages,seal_verified\n");
+ 		m_active_ram.resize(m_ram_base.bytes()/4);
+ 		m_active_wave.resize(cruisn::zeus_lease::wave_bytes);
+ 		m_zeus->midz_active_wave_enable();
+@@ -1299,7 +1300,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 				fatalerror("Private waiting endpoint changed original geometry/materials\n");
+ 		}
+ 		const auto hash=cruisn::exotica_scene::byte_hash(proposed.quads.data(),proposed.quads.size()*sizeof(proposed.quads[0]));
+-		if(fprintf(m_waiting_log,"%llu,%u,%.12f,%llu,%llu,%llu,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,0\n",
++		if(m_waiting_log.print("%llu,%u,%.12f,%llu,%llu,%llu,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,0\n",
+ 			(unsigned long long)pending.scene,p.frame,now,(unsigned long long)m_lifetimes.epoch(),(unsigned long long)m_lifetimes.sequence(),(unsigned long long)m_lifetime_records,
+ 			unsigned(waiting.historical),unsigned(waiting.unowned),unsigned(waiting.submitted),unsigned(waiting.future),
+ 			unsigned(waiting.bound_future),unsigned(waiting.bound_future_submitted),unsigned(selected.size()),
+@@ -1325,8 +1326,8 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 			const uint64_t header[]={0x31484357,pending.scene,m_lifetime_records,m_lifetimes.epoch(),owners.size()};
+ 			const size_t bytes=sizeof(header)+owners.size()*sizeof(owners[0]);
+ 			if(bytes>64*1024*1024-m_handover_bytes)fatalerror("Exotica waiting cohort byte budget\n");
+-			if(fwrite(header,1,sizeof(header),m_handover_cohorts)!=sizeof(header) ||
+-				fwrite(owners.data(),sizeof(owners[0]),owners.size(),m_handover_cohorts)!=owners.size())
++			if(m_handover_cohorts.write(header,1,sizeof(header))!=sizeof(header) ||
++				m_handover_cohorts.write(owners.data(),sizeof(owners[0]),owners.size())!=owners.size())
+ 				fatalerror("Exotica waiting cohort write\n");
+ 			m_handover_bytes+=bytes;
+ 			if(m_handover_mode==2) {
+@@ -1424,7 +1425,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 		if(m_scene_material_pages)m_zeus->midz_host_wave_commit();
+ 		const auto material_committed=std::chrono::steady_clock::now();
+ 		auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+-		if(fprintf(m_scene_material_log,"%llu,%u,%llu,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
++		if(m_scene_material_log.print("%llu,%u,%llu,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
+ 			(unsigned long long)pending.scene,p.frame,(unsigned long long)packet.wave.generation,
+ 			unsigned(packet.wave.pages.size()),unsigned(packet.rows.size()),unsigned(wire.size()),
+ 			(unsigned long long)packet.wave.result_hash,us(material_start,material_staged),us(material_staged,material_encoded),
+@@ -1455,7 +1456,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica host assembly changed CPU cycles\n");
+ 	const auto finished=std::chrono::steady_clock::now();
+ 	auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+-	if(fprintf(m_scene_log,"%u,%u,%.12f,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,0,%llu,%u,%.12f,%u,%u,%.3f,%u,%u,%u,%u,%u\n",
++	if(m_scene_log.print("%u,%u,%.12f,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,0,%llu,%u,%.12f,%u,%u,%.3f,%u,%u,%u,%u,%u\n",
+ 		p.frame,cpu_frame,pending.time,now,base,count,pending.bank,c.render[4],p.multiplier,unsigned(m_scene_loading!=0),
+ 		unsigned(sources.sources.size()),unsigned(scene.instances.size()),unsigned(scene.quads.size()),unsigned(scene.viewport_polygons),
+ 		(unsigned long long)hash,us(started,ready),us(ready,built),us(built,hashed),us(materials_done,finished),
+@@ -1504,7 +1505,7 @@ void crusnexo_state::scene_fence_ready(bool immediate)
+ 	if(m_scene_fence.pending() || !m_zeus->midz_fifo_empty() || frame<m_scene_fence_end_frame ||
+ 		frame>m_scene_fence_end_frame+1 || now<m_scene_fence_end_time || now-m_scene_fence_end_time>=.0176)
+ 		fatalerror("Exotica command-fence completion clock\n");
+-	if(fprintf(m_scene_fence_log,"%llu,%u,%u,%.12f,%u,%.12f,%u,%u,%u,%u,0,%u\n",
++	if(m_scene_fence_log.print("%llu,%u,%u,%.12f,%u,%.12f,%u,%u,%u,%u,0,%u\n",
+ 		(unsigned long long)m_scene_fence_scene,m_scene_fence_scene_frame,m_scene_fence_end_frame,m_scene_fence_end_time,
+ 		frame,now,m_scene_fence_consumer,m_scene_fence.target(),m_scene_fence_words,unsigned(immediate),m_zeus->m_renderRegs[4])<0)
+ 		fatalerror("Exotica command-fence log write\n");
+@@ -1599,7 +1600,7 @@ void crusnexo_state::scene_waiting_ready()
+ 		// future update, not this zero-page continuation of P's private image.
+ 		const auto committed=std::chrono::steady_clock::now();
+ 		auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+-		if(fprintf(m_scene_material_log,"%llu,%u,%llu,0,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
++		if(m_scene_material_log.print("%llu,%u,%llu,0,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
+ 			(unsigned long long)packet.materials.scene,packet.materials.frame,(unsigned long long)packet.materials.wave.generation,
+ 			unsigned(packet.materials.rows.size()),unsigned(material.size()),(unsigned long long)packet.materials.wave.result_hash,
+ 			us(started,staged),us(staged,encoded_at),us(encoded_at,queued),us(queued,committed))<0)fatalerror("Exotica waiting material log write\n");
+@@ -1620,7 +1621,7 @@ void crusnexo_state::scene_waiting_ready()
+ 	}
+ 	const auto owner_hash=cruisn::exotica_scene::byte_hash(owners.data(),owners.size()*sizeof(owners[0]));
+ 	const auto geometry_hash=cruisn::exotica_scene::byte_hash(filtered.quads.data(),filtered.quads.size()*sizeof(filtered.quads[0]));
+-	if(fprintf(m_handover_log,"%llu,%u,%.12f,%llu,%llu,%u,%.12f,%llu,%llu,%u,%u,%u,%u,%016llx,%u,%u,%016llx,0\n",
++	if(m_handover_log.print("%llu,%u,%.12f,%llu,%llu,%u,%.12f,%llu,%llu,%u,%u,%u,%u,%016llx,%u,%u,%016llx,0\n",
+ 		(unsigned long long)m_handover_scene,m_handover_frame,m_handover_time,
+ 		(unsigned long long)m_handover_proposal_records,(unsigned long long)m_handover_end_records,frame,now,
+ 		(unsigned long long)m_lifetime_records,(unsigned long long)m_lifetimes.epoch(),unsigned(completion.captured),
+@@ -1695,7 +1696,7 @@ void crusnexo_state::scene_active_seal()
+ 			if(status==cruisn::exotica_admissions::Status::invalid)fatalerror("Private active endpoint stale admission\n");
+ 			if(status==cruisn::exotica_admissions::Status::matched) {
+ 				m_endpoint_active_slots.insert(source.source);const auto &h=admission.owner;
+-				if(++m_endpoint_early_rows>(m_endpoint_marked?200000U:65536U) || fprintf(m_endpoint_early_log,"%llu,%u,%llu,%llu,%u,%llu,%llu,%llu,%u,%u,%llu,%u,%llu,%u\n",
++				if(++m_endpoint_early_rows>(m_endpoint_marked?200000U:65536U) || m_endpoint_early_log.print("%llu,%u,%llu,%llu,%u,%llu,%llu,%llu,%u,%u,%llu,%u,%llu,%u\n",
+ 					(unsigned long long)m_scene_fence_scene,m_active_seed.frame,(unsigned long long)m_lifetime_records,
+ 					(unsigned long long)m_endpoint_admit_sequence,h.slot,(unsigned long long)h.epoch,(unsigned long long)h.generation,
+ 					(unsigned long long)h.key.realm,h.key.section,h.key.source,(unsigned long long)admission.first_sequence,admission.first_frame,
+@@ -1871,7 +1872,7 @@ void crusnexo_state::scene_active_ready()
+ 			m_scene_material_image->bytes().data(),wave,m_scene_material_image->bytes().size(),filtered,counts))
+ 			reject("composition overlap/materials");
+ 		scene=std::move(filtered);
+-		if(fprintf(m_compose_log,"%llu,%u,%llu,%llu,%u,%u,%u,%u,%u,%u,%u\n",
++		if(m_compose_log.print("%llu,%u,%llu,%llu,%u,%u,%u,%u,%u,%u,%u\n",
+ 			(unsigned long long)m_compose_scene,p.frame,(unsigned long long)m_compose_sealed_records,(unsigned long long)m_lifetime_records,
+ 			unsigned(input_instances),unsigned(input_quads),unsigned(counts.overlaps),unsigned(counts.removed_quads),unsigned(counts.texture_pages),
+ 			unsigned(scene.instances.size()),unsigned(scene.quads.size()))<0)fatalerror("Composition log write\n");
+@@ -1931,7 +1932,7 @@ void crusnexo_state::scene_active_ready()
+ 	if(m_scene_material_pages)m_zeus->midz_host_wave_commit();
+ 	const auto committed=std::chrono::steady_clock::now();
+ 	auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+-	if(fprintf(m_scene_material_log,"%llu,%u,%llu,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
++	if(m_scene_material_log.print("%llu,%u,%llu,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
+ 		(unsigned long long)material.scene,p.frame,(unsigned long long)material.wave.generation,
+ 		unsigned(material.wave.pages.size()),unsigned(material.rows.size()),unsigned(material_wire.size()),
+ 		(unsigned long long)material.wave.result_hash,us(assembled,staged_at),us(staged_at,encoded),us(encoded,queued),us(queued,committed))<0)
+@@ -1960,7 +1961,7 @@ void crusnexo_state::scene_active_ready()
+ 	const uint64_t hash=cruisn::exotica_scene::byte_hash(scene.quads.data(),scene.quads.size()*sizeof(scene.quads[0]));
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica active completion changed CPU cycles\n");
+ 	const auto ram_models=std::count_if(scene.instances.begin(),scene.instances.end(),[](const auto &s){return s.descriptor<0x40000;});
+-	if(fprintf(m_active_log,"%llu,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,0,%.3f,%.3f,%u,%u,%u,%u,%.3f,%u,%u,%llu,%u,%u,%.3f,%u,%u,%u\n",
++	if(m_active_log.print("%llu,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,0,%.3f,%.3f,%u,%u,%u,%u,%.3f,%u,%u,%llu,%u,%u,%.3f,%u,%u,%u\n",
+ 		(unsigned long long)m_scene_fence_scene,m_scene_fence_scene_frame,p.frame,unsigned(m_screen->frame_number()),
+ 		unsigned(selected.objects),unsigned(selected.candidates),unsigned(selected.already_submitted),unsigned(scene.instances.size()),unsigned(scene.quads.size()),unsigned(excluded),
+ 		(unsigned long long)hash,us(started,assembled),us(assembled,committed),m_scene_fence_end_frame,unsigned(camera_advanced),changed_objects,binding_checks,m_active_seal_us,
+@@ -1972,14 +1973,14 @@ void crusnexo_state::scene_observer_exit()
+ {
+ 	if(!m_scene_log)return;
+ 	if(m_compose_log) {
+-		const bool good=!ferror(m_compose_log);const int closed=fclose(m_compose_log);m_compose_log=nullptr;
++		const bool good=!m_compose_log.error();const int closed=m_compose_log.close();
+ 		fprintf(stderr,"MIDZ_HOST_COMPOSE_RESULT complete=%u scenes=%llu\n",unsigned(good && !closed && !m_compose_scene &&
+ 			m_compose_completed==m_active_scenes && m_compose_completed==m_handover_completed),(unsigned long long)m_compose_completed);
+ 	}
+ 	if(m_handover_log) {
+-		const bool good=!ferror(m_handover_log) && !ferror(m_handover_cohorts);
+-		const int closed=fclose(m_handover_log),cohorts_closed=fclose(m_handover_cohorts);
+-		m_handover_log=nullptr;m_handover_cohorts=nullptr;
++		const bool good=!m_handover_log.error() && !m_handover_cohorts.error();
++		const int closed=m_handover_log.close(),cohorts_closed=m_handover_cohorts.close();
++
+ 		fprintf(stderr,"MIDZ_HOST_HANDOVER_RESULT complete=%u scenes=%llu captured=%llu submitted=%llu retired=%llu bytes=%llu snapshots=%u remaining=%u\n",
+ 			unsigned(good && !closed && !cohorts_closed && !m_handover_pending.pending() && !m_handover_generation &&
+ 				m_handover_completed && m_handover_completed==m_waiting_scenes && m_handover_snapshots.empty()),
+@@ -1988,21 +1989,21 @@ void crusnexo_state::scene_observer_exit()
+ 			(unsigned long long)m_handover_bytes,m_handover_saved,unsigned(m_handover_snapshots.size()));
+ 	}
+ 	if(m_waiting_log) {
+-		const bool good=!ferror(m_waiting_log);const int closed=fclose(m_waiting_log);m_waiting_log=nullptr;
++		const bool good=!m_waiting_log.error();const int closed=m_waiting_log.close();
+ 		fprintf(stderr,"MIDZ_HOST_WAITING_RESULT complete=%u scenes=%llu candidates=%llu quads=%llu snapshots=%u remaining=%u\n",
+ 			unsigned(good && !closed && m_waiting_scenes && m_waiting_scenes==m_scene_matched && m_waiting_snapshots.empty()),
+ 			(unsigned long long)m_waiting_scenes,(unsigned long long)m_waiting_candidates,(unsigned long long)m_waiting_quads,
+ 			m_waiting_saved,unsigned(m_waiting_snapshots.size()));
+ 	}
+ 	if(m_active_log) {
+-		const int closed=fclose(m_active_log);m_active_log=nullptr;
++		const int closed=m_active_log.close();
+ 		fprintf(stderr,"MIDZ_HOST_ACTIVE_RESULT complete=%u scenes=%llu quads=%llu remaining=%u\n",
+ 			unsigned(!closed && m_active_scenes==m_scene_matched && m_active_snapshots.empty()),
+ 			(unsigned long long)m_active_scenes,(unsigned long long)m_active_quads,unsigned(m_active_snapshots.size()));
+ 	}
+ 	if(m_scene_fence_log) {
+ 		m_zeus->set_midz_fifo_observer({});
+-		const int closed=fclose(m_scene_fence_log);m_scene_fence_log=nullptr;
++		const int closed=m_scene_fence_log.close();
+ 		const bool complete=!closed && !m_scene_fence.pending() && m_scene_fence_requests==m_scene_matched &&
+ 			m_scene_fence_completed==m_scene_fence_requests && m_scene_fence_requests;
+ 		fprintf(stderr,"MIDZ_HOST_FENCE_RESULT complete=%u requested=%llu completed=%llu immediate=%llu\n",unsigned(complete),
+@@ -2014,15 +2015,15 @@ void crusnexo_state::scene_observer_exit()
+ 		m_scene_source_mode,(unsigned long long)m_scene_source_verified,
+ 		(unsigned long long)m_scene_source_cache->hits,(unsigned long long)m_scene_source_cache->misses);
+ 	if(m_scene_material_log) {
+-		if(fclose(m_scene_material_log))fatalerror("Exotica material log close\n");
+-		m_scene_material_log=nullptr;
++		if(m_scene_material_log.close())fatalerror("Exotica material log close\n");
++
+ 		if(m_scene_material_pages)fprintf(stderr,"MIDZ_HOST_MATERIAL_PAGES_RESULT mode=%u verified=%llu\n",
+ 			m_scene_material_pages,(unsigned long long)m_scene_material_verified);
+ 		fprintf(stderr,"MIDZ_HOST_MATERIALS_RESULT queued=%llu hash=%016llx\n",
+ 			(unsigned long long)m_scene_material_image->generation(),(unsigned long long)m_scene_material_image->image_hash());
+ 	}
+ 	m_zeus->set_midz_model_observer({});
+-	const int closed=fclose(m_scene_log);m_scene_log=nullptr;
++	const int closed=m_scene_log.close();
+ 	const bool complete=!closed && m_scene_prepared && m_scene_prepared==m_scene_matched &&
+ 		m_scene_pending.empty() && m_scene_snapshots.empty() && m_screen->frame_number()>=m_scene_last;
+ 	fprintf(stderr,"MIDZ_HOST_SCENE_RESULT complete=%u prepared=%llu matched=%llu quads=%llu snapshots=%llu pending=%u remaining=%u\n",
+-- 
+2.55.0.windows.3
+

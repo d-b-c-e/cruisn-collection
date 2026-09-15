@@ -41,6 +41,14 @@ public:
         const int result=std::setvbuf(m_file,storage,mode,size);
         m_failed=m_failed || result!=0;return result;
     }
+    // Preserve the compiler's format/type checks when replacing fprintf.
+#if defined(__GNUC__) || defined(__clang__)
+#if defined(__MINGW_PRINTF_FORMAT)
+    __attribute__((format(__MINGW_PRINTF_FORMAT,2,3)))
+#else
+    __attribute__((format(printf,2,3)))
+#endif
+#endif
     int print(const char *format,...) {
         if(!m_enabled || !format)return -1;
         if(!m_file)return 0;

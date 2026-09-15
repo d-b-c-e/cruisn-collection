@@ -1,5 +1,24 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 journal integration — capture qualified at primary4K
+
+Read docs/reviews/2026-09-15-exotica-journal-integration.md. Native d18bf17d820
+frozen SHA aa1baa4a4ab5e606286e864b8dbc4107c0c2480510dd6be5d986f9897f1ef9de;
+236patches reconstruct2cfce89cb53c4b2f6f37b2fa023a768e40a09dff. TwentyCPU/GPU
+journals use DiagnosticJournal; capturepolicy everywhere, no quietmode yet.
+FocusednativeC++11 PASS; MAMEbuildPASS; one5300inputAmazon replayPASS.
+203source/resource/target/journal files exactsolidfillcontrol;3429scenes and
+active rows,10287CPU/GPUmaterials exact except named hostdurations. Batchcounts
+141849/141779 scheduling-dependent (flush afterconsumerdrain); all perframe
+vertex/clearcounts exact. Initial strictbatch comparisonFAIL retained; corrected
+qualified-v2 PASS withoutreplay. Four actual3840x2160CRT captures5220/5224/5228/5232
+viewed intact; no finalallgame4K, distancegain orspeedclaim. PrimaryDISPLAY2 now
+4K;DISPLAY1 secondary3440x1440. No game/build/test now. Personal87d/v0.5.0unchanged.
+NEXT gatedquietpolicy with narrower explicit summary/output verification, then
+continuouslifecycle/counterwork. Existing finite bounds unchanged; do notdeclare
+runtimeparitydone. R/journal-integration-* and export-journal-integration.py;
+exportALREADYRUN. Continueusefulwork directly, no broadrepeats/physicalFFB/deploy.
+
 ## September15 journal component — standalone only, integration next
 
 native/diagnostic_journal.h and tests/native/diagnostic_journal_test.cpp added.

@@ -93,3 +93,8 @@ the normal C++11 compiler settings and is included by the existing native-test
 inventory. This helper is **not yet linked into MAME**; no runtime callback,
 capture budget or release behavior has changed because of it. Integrate and
 qualify the CPU and GPU journal users before selecting quiet operation.
+
+The subsequent [CPU/GPU integration](2026-09-15-exotica-journal-integration.md)
+now passes a focused capture-compatibility replay and primary4K sample check.
+All20 journals select capture explicitly; quiet and continuous operation are
+still separate next steps.
