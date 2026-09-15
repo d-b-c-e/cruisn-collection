@@ -52,7 +52,10 @@ and the public package remain v0.5.0.
   [Saved boundary analysis](docs/reviews/2026-09-14-world-terrain-boundary.md)
   identifies an exposed original mesh edge already inside the far plane; custom
   initializer and LOD screening do not repair it. Investigate adjacent authored
-  coverage and the ocean backdrop; broaden clipping, occlusion and handover checks.
+  coverage and the ocean backdrop. A [coverage-only far-clipping prototype](docs/reviews/2026-09-15-world-far-coverage.md)
+  reduces the largest image change in a stationary far-plane sweep from13,020
+  to1,348pixels, but does not repair the gap. Connect the qualified standalone
+  helper behind a private gate, then check moving-camera admission and cost.
 - **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
   exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
   3× adds differences in22/66 images over2× and repeats all66 exactly. Complete

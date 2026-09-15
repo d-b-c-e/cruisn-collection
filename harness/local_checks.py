@@ -71,6 +71,7 @@ def commands(group, output, cxx):
         steps.append(('run-'+source.stem, [binary]))
     host = compile_one('world-host', 'native/analyze_world_host.cpp')
     compile_one('world-future', 'native/analyze_world_future.cpp')
+    compile_one('vunit-far-coverage', 'native/analyze_vunit_far_coverage.cpp')
     compile_one('usa-model', 'native/analyze_usa_model.cpp')
     compile_one('offroad-model', 'native/analyze_offroad_model.cpp')
     compile_one('exotica-transform', 'native/analyze_exotica_transform.cpp')
