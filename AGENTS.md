@@ -1,5 +1,35 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — ACTIVE World coverage clipping integration next
+
+Read docs/reviews/2026-09-15-world-far-coverage.md and
+2026-09-15-offroad-late-resources.md. World custom dispatch/LOD screening did not
+repair the Hawaii authored terrain edge (2026-09-14-world-terrain-boundary.md).
+New standalone vunit_far_coverage.h preserves quad UVs and clips only coverage.
+NOT MAME linked/synced. Local World5900 far-coverage-v2:8403 old ordered quads exact,
+194added/81crossing;1619 changed pixels vs3757unmasked, terrain gap REMAINS.
+Stationary220000..240000 sweep1000 steps:worst changed pixels13020whole/1348clip,
+NOT moving-camera smoothness acceptance. Native unitPASS;180537 actual quad/plane
+operations11554368maskbytes exactly independentPython. Local W/far-sweep,
+far-coverage-qualified. Initial local Float::value compileFAIL retained.
+NEXT explicit private World far-clipping gate/metadata/shader integration, then
+bounded actual movement and original resource checks before USA/OffRoad reuse.
+
+OffRoad fresh4K8762-input off/draw pair PASS original nativeimages,6961camera,
+27844ADC reads/time; frame8760 original DMA/VRAM/texture/palette/meta byteexact.
+516quads/153objects/152future; actual ordered FNV+scene counters match prior full3x
+(NOT full-byte or independent new geometry reconstruction).105382displaypixels
+change at horizon, road/truck/HUD intact in inspected frame. New canonical
+compare_vunit_resources.py/4testsPASS. LOCAL O/verified-resource-qualification-v2.
+Initial9240pair empty and invalid for drawing; retainedFAIL. AuxiliaryRAMprobe
+retained stale frame constants due nested string replacements, so NOnewRAMsnapshot.
+Missing snapshot + mistaken old fullquadlog checkerFAILs retained; qualified
+resource/fingerprint scope explicitly narrower, no rerun just for analyzer fixes.
+Singleton GLcapture preflight fixed/7focusedtestsPASS. Current monitor3840x2160,
+client3824x2073; old3440 preflightFAIL retained. No game/build/test running now.
+Nativef2e frozen214patches unchanged; personal87d/publicv0.5.0unchanged. No deploy/
+release/hostedCI/physicalFFB/menu removal. Continue directly while parity remains.
+
 ## September14 CPU preparation — ACTIVE World custom dispatch investigation
 
 Read docs/reviews/2026-09-14-exotica-cpu-preparation.md. Nativef2e08e49d9e frozen
