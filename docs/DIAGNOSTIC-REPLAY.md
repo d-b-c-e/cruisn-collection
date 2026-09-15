@@ -673,6 +673,14 @@ actual frame, stage and fallback decision; do not accept it as rendering parity.
 Road, with split/tagged host ownership. World fade controls remain World-only.
 See [the actual fallback qualification](reviews/2026-09-15-vunit-preparation-fallback.md).
 
+Exotica has a separate `--exotica-host-failure original|strict` and
+`--exotica-host-inject-failure-frame N`. This only covers future-assembly
+rejection in the combined private pipeline. Already owned work must finish, CPU
+and GPU retirement receipts must agree, and the renderer switches to the original
+target. Source snapshots must precede injection. A recovered run remains an
+explicit degraded FAIL. See [the ordered recovery qualification](reviews/2026-09-15-exotica-retirement.md);
+resource/ownership/transport failures are still fatal.
+
 ## Drivetrain and actual telemetry packets
 
 USA v4.5, World2.4/2.5, Off Road and Exotica have separate verified rev and gear

@@ -1,5 +1,36 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 all-engine narrow recovery — NEXT continuous-runtime separation
+
+Read docs/reviews/2026-09-15-exotica-retirement.md. Native645ed36ba18 frozen SHA
+807d677ff86e492f3ffe428f71fb6fb25a93b8f724a58f26cdd5b9a048aa6567;
+235patches reconstruct9d27b0fb9337051ad2d6cdcf2afc7c9d1a53c8e6. Explicit Exotica
+future-assembly-only recovery: discardfailedfuture, emptyownedmaterialpacket,
+finishcurrentwaiting/active, stopnewscenes/endpointcommits, drainoldtickets,
+retiremessage12 atR, GPUselectoriginal and rejectlateraux. Resource/ownership/
+endpoint/transport/codeguards remainfatal. CLI --exotica-host-failure original
+and --exotica-host-inject-failure-frame; strictdefault, no product/deploy.
+Fault5230scene3819, queued/GPU/present5231;5300inputs/3500camera10500ADC50690life
+exactcontrol,3372priorscenesexact;3373eachwaiting/active/handover/composecomplete.
+187source/original/preprivatefilesexact.5230extended differsoriginalcontrol;
+all4completed3440CRT5231..5234 exactlyoriginalcontrol. Normalnativeexit, explicit
+degradedparityFAIL, independentrecoveryPASS. Strict2000scene617exit3/fallback0.
+Two strictLOCALprelaunchplansfailed(empty snapshot then depthtail);retained.
+Correctedretirement-strict-v3-qualified PASS. Two focusedPython testsPASS.
+R=results/diagnostics/exotica-amazon-20260909/retirement-*; export-exotica-retirement.py
+ALREADYRUN. VUnitrecoverypriorqualifiedall3adapters, seepreviouscheckpoint.
+
+NEXT continuousruntime: remove dependency on finite diagnostic windows/journals
+withoutweakening outstanding-owner/resource bounds. Exotica endpoint IDs cap65536,
+admission journal20000/64MiB and lifetimereceipt200k; intentional diagnostics, not
+continuousproduct mode. Profile actualcontainers/lifecycles before designing.
+Keep sourceadmission/firstoriginal/ownershipcontracts. VisibleouterExoboundary
+stillneedsusefulopenviewrecording(pendingaskunanswered); no repeatedoccludedtests.
+Worldauthoredterrain/NY, othertracks/attendedwheel/final4K remainopen.
+No game/build/test now. Current3440monitor. Personal87d/publicv0.5.0unchanged.
+No deploy/release/hostedCI/physicalFFB/menu removal. Continue usefulparitywork
+directly, serialrig and no broadrepeat withoutnewrisk.
+
 ## September15 V-Unit fallback qualified; NEXT Exotica ordered retirement
 
 Read docs/reviews/2026-09-15-vunit-preparation-fallback.md and

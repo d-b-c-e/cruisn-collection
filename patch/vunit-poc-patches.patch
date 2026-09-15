@@ -44025,3 +44025,211 @@ index 244c5be3082..d44d014f887 100644
 -- 
 2.55.0.windows.3
 
+From 645ed36ba1844a290996939ea7ccdf55a6e71e6e Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 10:44:13 -0500
+Subject: [PATCH] Gate Exotica future-assembly recovery through ordered private
+ retirement
+
+---
+ src/devices/video/zeus2.cpp | 37 ++++++++++++++++++++++++++++-
+ src/devices/video/zeus2.h   |  1 +
+ src/mame/midway/midzeus.cpp | 47 ++++++++++++++++++++++++++++++++-----
+ 3 files changed, 78 insertions(+), 7 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 50d3d120b30..c4383ea142b 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -886,6 +886,9 @@ void thread_main()
+ 	}
+ 
+ 	const bool future_present=envi("MIDZ_HOST_FUTURE_PRESENT",nullptr,0)==1;
++	uint32_t retire_frame=0;
++	uint64_t retire_scene=0;
++	bool retire_presented=false;
+ 	if(future_present) {
+ 		if(!mirror_fbo || !depth_mirror.wide || envi("MIDZ_HOST_FUTURE",nullptr,0)!=2) {
+ 			zlogf("future presentation requires owned draw and wide target");return;
+@@ -1727,6 +1730,9 @@ void thread_main()
+ 			// Finish before changing palettes/uploads/pages or presenting. Stored
+ 			// tiles retain the current material only within this uninterrupted span.
+ 			if (sky_enabled && hdr[0]!=1 && hdr[0]!=7 && hdr[0]!=11 && !sky_quads.empty()) finish_sky();
++			if(retire_frame && hdr[0]>=7 && hdr[0]<=12) {
++				private_failed=true;s_stopz.store(true);zlogf("auxiliary submission after private retirement");break;
++			}
+ 			if(endpoint_order.pending() && hdr[0]!=1) {
+ 				private_failed=true;s_stopz.store(true);zlogf("endpoint pair missing immediate original quad");break;
+ 			}
+@@ -1877,6 +1883,18 @@ void thread_main()
+ 					zlogf("private material validation/upload failed after %llu packets",(unsigned long long)private_packets);
+ 				}
+ 				break;
++			case 12:
++			{
++				std::array<uint32_t,4> request{};
++				if(rec.size()==sizeof(request))std::memcpy(request.data(),rec.data(),sizeof(request));
++				if(!future_present || envi("MIDZ_HOST_FAILURE_POLICY",nullptr,0)!=1 ||
++					request[0]!=0x31545258 || request[1]<1 || request[1]>16000 || (!request[2] && !request[3])) {
++					private_failed=true;s_stopz.store(true);zlogf("private retirement receipt rejected");break;
++				}
++				flush();retire_frame=request[1];retire_scene=uint64_t(request[2])|(uint64_t(request[3])<<32);
++				fprintf(stderr,"EXOTICA_HOST_RETIRE_GPU frame=%u scene=%llu\n",retire_frame,(unsigned long long)retire_scene);
++				break;
++			}
+ 			case 11:
+ 				if(!endpoint_log || !cruisn::zeus_endpoint_pair::decode(rec.data(),rec.size(),endpoint_pair) ||
+ 					!endpoint_order.expect(endpoint_pair)) {
+@@ -1963,7 +1981,11 @@ void thread_main()
+ 		gl.Uniform1f(gl.GetUniformLocation(present, "uSampX0"),
+ 			wide_mode ? 0.0f : float(MARGIN));
+ 		gl.ActiveTexture(TEXTURE0 + 3);
+-		gl.BindTexture(0x0DE1, future_present?mirror_color:fbTex);
++		gl.BindTexture(0x0DE1, future_present && (!retire_frame || completed_frame<retire_frame)?mirror_color:fbTex);
++		if(retire_frame && completed_frame>=retire_frame && !retire_presented) {
++			retire_presented=true;
++			fprintf(stderr,"EXOTICA_HOST_RETIRE_PRESENT frame=%u scene=%llu\n",completed_frame,(unsigned long long)retire_scene);
++		}
+ 		gl.Viewport((cw - vw) / 2, (ch - vh) / 2, vw, vh);
+ 		gl.BindVertexArray(vao_empty);
+ 		gl.DrawArrays(0x0004, 0, 3);
+@@ -2273,6 +2295,19 @@ bool zeus2_device::midz_host_future(const uint8_t *data, size_t size)
+ 	return false;
+ }
+ 
++bool zeus2_device::midz_host_retire(uint32_t frame,uint64_t scene)
++{
++#ifdef _WIN32
++	const char *policy=std::getenv("MIDZ_HOST_FAILURE_POLICY"),*ffb=std::getenv("MIDV_FFB");
++	if(midz_live && midz_fifo_empty() && policy && !strcmp(policy,"1") && ffb && !strcmp(ffb,"0") &&
++		frame>=1 && frame<=16000 && scene) {
++		const std::array<uint32_t,4> request{{0x31545258,frame,uint32_t(scene),uint32_t(scene>>32)}};
++		return mzgl::ring_push2(12,request.data(),sizeof(request),nullptr,0);
++	}
++#endif
++	return false;
++}
++
+ bool zeus2_device::midz_host_waiting(const uint8_t *data,size_t size)
+ {
+ #ifdef _WIN32
+diff --git a/src/devices/video/zeus2.h b/src/devices/video/zeus2.h
+index 75de3fcc675..10d5a58aca3 100644
+--- a/src/devices/video/zeus2.h
++++ b/src/devices/video/zeus2.h
+@@ -156,6 +156,7 @@ public:
+ 	// Owned, bounded private texture uploads only; no original GPU resource writes.
+ 	bool midz_host_materials(const uint8_t *data, size_t size);
+ 	bool midz_host_future(const uint8_t *data, size_t size);
++	bool midz_host_retire(uint32_t frame,uint64_t scene);
+ 	bool midz_host_waiting(const uint8_t *data, size_t size);
+ 	bool midz_host_margin(const uint8_t *data,size_t size);
+ 	bool midz_endpoint_begin(uint32_t model,uint32_t frame,const void *original,const void *replacement,size_t quads);
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 0e403788500..fae0156d4a5 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -284,6 +284,9 @@ private:
+ 	FILE *m_scene_log=nullptr;
+ 	uint32_t m_scene_first=0,m_scene_last=0,m_scene_multiplier=1,m_scene_cpu_frame=0;
+ 	uint64_t m_scene_serial=0;
++	bool m_scene_failure_original=false,m_scene_retired=false;
++	uint32_t m_scene_inject_frame=0,m_scene_failed_frame=0;
++	uint64_t m_scene_failed_scene=0;
+ 	uint32_t m_scene_future_mode=0;
+ 	uint32_t m_waiting_mode=0;
+ 	FILE *m_waiting_log=nullptr;
+@@ -747,7 +750,7 @@ void crusnexo_state::endpoint_start()
+ void crusnexo_state::endpoint_commit(uint32_t end,uint32_t flags,const LifetimeOwner &owner)
+ {
+ 	const uint32_t frame=uint32_t(m_screen->frame_number());
+-	if(!m_endpoint_log || frame<m_endpoint_first || frame>m_endpoint_last)return;
++	if(!m_endpoint_log || m_scene_failed_scene || frame<m_endpoint_first || frame>m_endpoint_last)return;
+ 	// Exact FIFO ownership is still required for every eligible command. Other
+ 	// commands remain explicitly untracked; never match only by model address.
+ 	if(m_endpoint_marked && !(flags&0x04000000))return;
+@@ -809,7 +812,7 @@ void crusnexo_state::endpoint_commit(uint32_t end,uint32_t flags,const LifetimeO
+ void crusnexo_state::endpoint_model(uint32_t base,uint32_t count,uint32_t yscale)
+ {
+ 	const uint32_t frame=uint32_t(m_screen->frame_number());
+-	if(!m_endpoint_log || frame<m_endpoint_first || (frame>m_endpoint_last && m_endpoint_pending.empty()))return;
++	if(!m_endpoint_log || frame<m_endpoint_first || ((frame>m_endpoint_last || m_scene_failed_scene) && m_endpoint_pending.empty()))return;
+ 	if(m_maincpu->state_int(TMS320C3X_PC)!=0xb686){++m_endpoint_untracked;return;}
+ 	const uint32_t end=uint32_t(m_maincpu->state_int(TMS320C3X_AR0));
+ 	if(!cruisn::exotica_commands::Owners::cursor(end))fatalerror("Endpoint consumer ring bounds\n");
+@@ -1014,6 +1017,17 @@ void crusnexo_state::scene_observer_start()
+ 			fatalerror("Exotica waiting observation requires future mode and lifetime coverage from1799 through hostlast+1\n");
+ 	}
+ 	m_scene_margin=float(number("MIDZ_GL_MARGIN",0,120,number("MIDV_GL_MARGIN",0,120,88)));
++	const char *failure=std::getenv("MIDZ_HOST_FAILURE_POLICY");
++	const char *inject=std::getenv("MIDZ_HOST_FAILURE_FRAME");
++	if(failure || inject) {
++		if(!failure || (strcmp(failure,"0") && strcmp(failure,"1")) || !m_compose || m_scene_future_mode!=2 ||
++			!std::getenv("MIDZ_HOST_FUTURE_PRESENT") || strcmp(std::getenv("MIDZ_HOST_FUTURE_PRESENT"),"1") ||
++			!std::getenv("MIDV_FFB") || strcmp(std::getenv("MIDV_FFB"),"0"))
++			fatalerror("Exotica failure trial requires explicit policy, combined private draw and FFB0\n");
++		m_scene_failure_original=!strcmp(failure,"1");
++		if(inject)m_scene_inject_frame=number("MIDZ_HOST_FAILURE_FRAME",m_scene_first,m_scene_last,0);
++		fprintf(stderr,"EXOTICA_HOST_FAILURE_POLICY original=%u inject=%u\n",unsigned(m_scene_failure_original),m_scene_inject_frame);
++	}
+ 	if(!m_scene_first || m_scene_last<m_scene_first || m_scene_last-m_scene_first>10000 ||
+ 		memregion("maindata")->bytes()!=0x800000 || memregion("bankeddata")->bytes()!=0x3000000 ||
+ 		m_ram_base.bytes()!=0x100000 || m_zeus->m_upstream_render)
+@@ -1100,13 +1114,14 @@ void crusnexo_state::scene_observer_start()
+ 				if(!m_scene_open || m_scene_armed || m_ram_base[0x67f5]!=0x15200ff2 ||
+ 					m_ram_base[0x681f]!=0x082fbbb5 || m_ram_base[0x6835]!=0x082fbbb9)
+ 					fatalerror("Exotica host scene list signature/order\n");
+-				m_scene_armed=m_scene_cpu_frame>=m_scene_first && m_scene_cpu_frame<=m_scene_last;
++				m_scene_armed=!m_scene_failed_scene && m_scene_cpu_frame>=m_scene_first && m_scene_cpu_frame<=m_scene_last;
+ 			} else if(offset==0xbbb9 && pc==0x6836) {
+ 				if(!m_scene_open)fatalerror("Exotica host scene end order\n");
+ 				if(m_scene_fence_log && m_scene_fence_selected)scene_fence_end();
+ 				m_scene_open=false;m_scene_armed=false;
+ 			}
+-			if(m_active_mode && m_scene_open && m_scene_cpu_frame>=m_scene_first && m_scene_cpu_frame<=m_scene_last &&
++			if(m_active_mode && m_scene_open && (!m_scene_failed_scene || m_scene_serial==m_scene_failed_scene) &&
++				m_scene_cpu_frame>=m_scene_first && m_scene_cpu_frame<=m_scene_last &&
+ 				((offset==0xbbb5 && pc==0x6820) || (offset==0xbbb6 && pc==0x6824) ||
+ 				 (offset==0xbbb7 && pc==0x6830) || (offset==0xbbb8 && pc==0x6834)))scene_active_list(offset,data);
+ 		});
+@@ -1328,8 +1343,19 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 	}
+ 	cruisn::exotica_scene::Result scene;
+ 	p.early_depth=m_scene_depth_mode;
+-	if(!cruisn::exotica_scene::build(sources.sources,p,read,model_read,[](const cruisn::exotica_future::Source &s){return s.future;},scene))
+-		fatalerror("Exotica host live scene rejected\n");
++	const bool injected=m_scene_inject_frame && p.frame>=m_scene_inject_frame;
++	if(injected || !cruisn::exotica_scene::build(sources.sources,p,read,model_read,[](const cruisn::exotica_future::Source &s){return s.future;},scene)) {
++		if(m_maincpu->total_cycles()!=cycles || m_scene_failed_scene || pending.scene!=m_scene_serial)
++			fatalerror("Invalid Exotica preparation failure boundary\n");
++		fprintf(stderr,"EXOTICA_HOST_PREP_FAILURE frame=%u scene=%llu injected=%u fallback=%u\n",
++			p.frame,(unsigned long long)pending.scene,unsigned(injected),unsigned(m_scene_failure_original));
++		if(!m_scene_failure_original)fatalerror("%s\n",injected?"Injected Exotica future assembly failure":"Exotica host live scene rejected");
++		// The current waiting proposal and active capture already own operands.
++		// Finish those and their ordinary FIFO fence; never discard pending tickets.
++		// An empty future packet maintains material sequencing but admits no source.
++		scene=cruisn::exotica_scene::Result{};
++		m_scene_failed_scene=pending.scene;m_scene_failed_frame=p.frame;
++	}
+ 	if(m_scene_depth_mode && (scene.depth_tests!=scene.selected-scene.unsupported_transform ||
+ 		(m_scene_depth_mode==2 && scene.depth_verified!=scene.depth_tests)))
+ 		fatalerror("Exotica host incomplete depth comparison\n");
+@@ -1485,6 +1511,15 @@ void crusnexo_state::scene_fence_ready(bool immediate)
+ 	++m_scene_fence_completed;m_scene_fence_immediate+=immediate;
+ 	if(m_handover_mode)scene_waiting_ready();
+ 	if(m_active_mode)scene_active_ready();
++	if(m_scene_failed_scene && !m_scene_retired) {
++		if(m_scene_fence_scene!=m_scene_failed_scene || frame<m_scene_failed_frame || frame>m_scene_failed_frame+1 ||
++			!m_scene_pending.empty() || !m_endpoint_pending.empty() ||
++			m_handover_pending.pending() || m_handover_generation ||
++			!m_zeus->midz_host_retire(frame,m_scene_failed_scene))
++			fatalerror("Exotica private retirement boundary/queue rejected\n");
++		m_scene_retired=true;
++		fprintf(stderr,"EXOTICA_HOST_RETIRE_QUEUED frame=%u scene=%llu\n",frame,(unsigned long long)m_scene_failed_scene);
++	}
+ }
+ 
+ void crusnexo_state::scene_waiting_ready()
+-- 
+2.55.0.windows.3
+

@@ -94,12 +94,15 @@ those same windows merely to obtain a positive result.
    do not silently count degraded output as passing parity.
    The [preparation fallback candidate](2026-09-15-vunit-preparation-fallback.md)
    now completes injected World, USA and Off Road failures with exact
-   original-only output and explicit degraded reports. Exotica and continuous
-   product operation remain to be qualified.
+   original-only output and explicit degraded reports. Continuous product
+   operation remains to be qualified.
    An [Exotica bounded stop](2026-09-15-exotica-stop-boundary.md) now drains all
    pending work and returns its private color target to the original image in
    the retained Amazon segment. Actual fault recovery still needs an ordered
    retirement protocol; a blanket early return would strand scene ownership.
+   The subsequent [ordered retirement candidate](2026-09-15-exotica-retirement.md)
+   now recovers a future-assembly-only fault and matches the original-view control
+   from its first retired frame. Other failure phases remain strict.
 5. After the rendering policy is stable, expose coherent per-game controls and
    renew final package/default/4K gates. Obtain attended cross-track and wheel
    acceptance; do not treat prior-release waivers as acceptance of these changes.
