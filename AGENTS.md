@@ -1,5 +1,27 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 shutdown state — observed; continuous runtime policy next
+
+Read docs/reviews/2026-09-15-exotica-shutdown-observer.md. Nativeede2c7a4ea7 frozen
+SHA53c513b80572f733d4b1bc7157f8600de35eca66ffd52aa2dd24538a07b3180e;
+245patches treeee699e1c987aee412e5c7cd2f3b329d06b12dc9d. Explicit--exotica-shutdown
+observe requiresbootstrapscenes/FFB0; recordsCPUbeforeteardown,GPUactualerrors/
+phases,thenqueuepositionsAFTERjoin. No behaviorchange. Verifier distinguishes
+quiescent/interrupted/failed; doesnotconvertcaptureFAILtoPASS.3focusedtestsPASS.
+Short1900inputprefix: exit1899,all510scenes/fencesmatched,allpendingzero,GPU0errors,
+124279648byteswritten=read afterjoin. Originalinputs/time/nativeimagesexact.
+Overallreport intentionallyFAILlifetimecompletion atlast1899; separate
+R/shutdown-observer-prefix-qualifiedPASSobserver/inputscope. Notactive-raceexit.
+Firstbuildfailed localenvihelperoutofscope; separatefix+v2buildPASS, failuresretained.
+export-shutdown-observer.py ALREADYRUN. Latest067startupfull5300qualification retained;
+newede onlyread-onlyexitdiagnostics; no extra fullgamejustforlogging.
+NEXT coordinatednormalruntimeCPU/GPUendpolicy, preservefinitecapturestrictness,
+materialupper16001policy, pending-state/join distinction, machine-reset contract.
+DoNOTjustraiseendwindows ordeclarepartialexitfullcapture. Futureusefulmultirace/
+openExosightline/attendedgatesstillneeded. No game/build/testnow. Personal87d/
+publicv0.5.0unchanged. PrimaryDISPLAY2 4K. No deployment/hostedCI/physicalFFB/
+menu removal. Continueusefulwork; no heartbeatwaiting/broadrepeatforitsownsake.
+
 ## September15 guest scene startup — verified; continuous end policy next
 
 Read docs/reviews/2026-09-15-exotica-bootstrap-scenes.md. Native067f0b0e095 frozen

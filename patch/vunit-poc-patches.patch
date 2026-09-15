@@ -46217,3 +46217,165 @@ index ee63ab96d04..c95ac74ec03 100644
 -- 
 2.55.0.windows.3
 
+From 4e5dca5e80a048b5751d1fc416641795b7b88871 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 15:11:36 -0500
+Subject: [PATCH 1/2] Observe CPU and joined GPU state at Exotica shutdown
+
+---
+ src/devices/video/zeus2.cpp | 21 ++++++++++++++++-----
+ src/mame/midway/midzeus.cpp | 17 +++++++++++++++++
+ 2 files changed, 33 insertions(+), 5 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index efd5aa54a8d..f37a294acbf 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -2139,13 +2139,15 @@ void thread_main()
+ 			Sleep(4);   // ~4 ms pace: plenty of presents, no busy spin
+ 	}
+ 
++	const bool shutdown_render_failed=private_failed || mirror_failed || stream_failed || s_drops_quad.load() || s_drops_state.load();
++	bool shutdown_writer_failed=false;
+ 	if(endpoint_log) {
+ 		const bool good=!endpoint_log.error();const int closed=endpoint_log.close();
+ 		fprintf(stderr,"MIDZ_ENDPOINT_GPU_RESULT complete=%u pairs=%llu\n",
+ 			unsigned(!private_failed && good && !closed && endpoint_order.complete()),(unsigned long long)endpoint_pairs);
+ 	}
+ 	if(mirror_log) {
+-		const auto stats=mirror_writer.finish();
++		const auto stats=mirror_writer.finish();shutdown_writer_failed|=stats.failed || stats.rejected || stats.submitted!=stats.written;
+ 		const int closed=mirror_log.close();
+ 		if(stats.failed || stats.rejected || stats.submitted!=stats.written || stats.written!=4*mirror_samples ||
+ 			!depth_mirror.snapshots.empty() || mirror_previous!=depth_mirror.last || closed)mirror_failed=true;
+@@ -2158,7 +2160,7 @@ void thread_main()
+ 			(unsigned long long)stats.waits,(unsigned long long)stats.wait_us);
+ 	}
+ 	if(envi("MIDZ_HOST_FUTURE",nullptr,0)) {
+-		const auto stats=future_writer.finish();const int closed=future_log?future_log.close():-1;
++		const auto stats=future_writer.finish();shutdown_writer_failed|=stats.failed || stats.rejected || stats.submitted!=stats.written;const int closed=future_log?future_log.close():-1;
+ 		const bool complete=!private_failed && future_packets && future_packets+(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2?waiting_packets:0)+(compose?margin_packets:0)==private_packets && !closed &&
+ 			stats.submitted==4*future_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
+ 		fprintf(stderr,"MIDZ_HOST_FUTURE_GPU_RESULT complete=%u scenes=%llu quads=%llu snapshots=%llu written=%llu failed=%llu rejected=%llu\n",
+@@ -2166,7 +2168,7 @@ void thread_main()
+ 			(unsigned long long)stats.written,(unsigned long long)stats.failed,(unsigned long long)stats.rejected);
+ 	}
+ 	if(envi("MIDZ_HOST_HANDOVER",nullptr,0)==2) {
+-		const auto stats=waiting_writer.finish();const int closed=waiting_log?waiting_log.close():-1;
++		const auto stats=waiting_writer.finish();shutdown_writer_failed|=stats.failed || stats.rejected || stats.submitted!=stats.written;const int closed=waiting_log?waiting_log.close():-1;
+ 		const bool complete=!private_failed && waiting_packets && waiting_packets==future_packets && private_late_scene==private_scene &&
+ 			(!compose || (private_waiting_scene==private_scene && margin_packets==future_packets)) && !closed &&
+ 			stats.submitted==4*waiting_snapshots && stats.written==stats.submitted && !stats.failed && !stats.rejected;
+@@ -2175,7 +2177,7 @@ void thread_main()
+ 			(unsigned long long)stats.written,(unsigned long long)stats.failed,(unsigned long long)stats.rejected);
+ 	}
+ 	if(depth_mirror.stream_frame) {
+-		const auto stats=stream_writer.finish();
++		const auto stats=stream_writer.finish();shutdown_writer_failed|=stats.failed || stats.rejected || stats.submitted!=stats.written;
+ 		const bool complete=stream_complete && !stream_failed && !stream_active && stats.submitted==3 && stats.written==3 && !stats.failed && !stats.rejected;
+ 		fprintf(stderr,"MIDZ_DEPTH_STREAM_RESULT complete=%u frame=%u commands=%llu bytes=%llu written=%llu failed=%llu rejected=%llu\n",
+ 			unsigned(complete),depth_mirror.stream_frame,(unsigned long long)stream_count,(unsigned long long)stream_bytes,
+@@ -2185,7 +2187,7 @@ void thread_main()
+ 	if(mirror_color)gl.DeleteTextures(1,&mirror_color);
+ 	if(mirror_depth)gl.DeleteTextures(1,&mirror_depth);
+ 	if(margin_log) {
+-		const auto stats=margin_writer.finish();
++		const auto stats=margin_writer.finish();shutdown_writer_failed|=stats.failed || stats.rejected || stats.submitted!=stats.written;
+ 		if(stats.failed || stats.rejected || stats.submitted!=stats.written)private_failed=true;
+ 		fprintf(stderr,"MIDZ_HOST_ACTIVE_WRITER submitted=%llu written=%llu failed=%llu rejected=%llu peak_bytes=%llu write_total_us=%llu write_max_us=%llu drain_us=%llu waits=%llu wait_us=%llu\n",
+ 			(unsigned long long)stats.submitted,(unsigned long long)stats.written,(unsigned long long)stats.failed,(unsigned long long)stats.rejected,
+@@ -2206,6 +2208,12 @@ void thread_main()
+ 	if(private_wave_tex)gl.DeleteTextures(1,&private_wave_tex);
+ 	if(private_palette_tex)gl.DeleteTextures(1,&private_palette_tex);
+ 	const auto capture_stats = snapshot_writer.finish();
++	if(envi("MIDZ_SHUTDOWN_OBSERVE",nullptr,0)==1) {
++		fprintf(stderr,"MIDZ_SHUTDOWN_GPU frame=%u endpoint_pending=%u material_pending=%u failed=%u writer_failed=%u\n",
++			completed_frame,unsigned(!endpoint_order.complete()),unsigned(private_scene!=private_late_scene || (compose && private_scene!=private_waiting_scene)),
++			unsigned(shutdown_render_failed || private_failed),
++			unsigned(shutdown_writer_failed || capture_stats.failed || capture_stats.rejected || capture_stats.submitted!=capture_stats.written));
++	}
+ 	if (snapdir) {
+ 		std::fprintf(stderr, "MIDZ_CAPTURE_WRITER submitted=%llu written=%llu failed=%llu rejected=%llu peak_bytes=%llu write_total_us=%llu write_max_us=%llu drain_us=%llu paced=%u waits=%llu wait_us=%llu\n",
+ 			(unsigned long long)capture_stats.submitted, (unsigned long long)capture_stats.written,
+@@ -2288,6 +2296,9 @@ void stop()
+ 	s_stopz.store(true);
+ 	if (s_thread.joinable())
+ 		s_thread.join();
++	if(envi("MIDZ_SHUTDOWN_OBSERVE",nullptr,0)==1)
++		fprintf(stderr,"MIDZ_SHUTDOWN_JOIN written=%llu read=%llu joined=1\n",
++			(unsigned long long)s_rw.load(),(unsigned long long)s_rr.load());
+ 	s_on.store(false);
+ }
+ 
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index c95ac74ec03..6a65ecb3e79 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -196,6 +196,11 @@ protected:
+ 		scene_observer_start();
+ 		lifetime_start();
+ 		endpoint_start();
++		if(const char *observe=std::getenv("MIDZ_SHUTDOWN_OBSERVE")) {
++			if(strcmp(observe,"1") || !m_bootstrap_scenes)fatalerror("Exotica shutdown observation requires verified scene startup\n");
++			machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::shutdown_observe,this));
++			fprintf(stderr,"MIDZ_SHUTDOWN_OBSERVE=1\n");
++		}
+ 	}
+ 
+ 	virtual void machine_reset() override
+@@ -239,6 +244,7 @@ private:
+ 	uint64_t m_endpoint_commits=0,m_endpoint_consumed=0,m_endpoint_untracked=0;
+ 	uint64_t m_endpoint_prepared=0,m_endpoint_rejected=0,m_endpoint_saved=0,m_endpoint_bytes=0;
+ 
++	void shutdown_observe();
+ 	void bootstrap_start();
+ 	void bootstrap_exit();
+ 	void bootstrap_scene(uint32_t address,uint32_t value,uint32_t mask);
+@@ -489,6 +495,17 @@ void crusnexo_state::lifetime_emit(char event,uint32_t slot,uint64_t generation,
+ // Observe the first completed pool rebuild independently of the finite lifetime
+ // window. Boot RAM loading may touch the same addresses; require actual guest
+ // instructions, code signatures and every rebuilt link. No renderer activation.
++// Capture the actual pre-teardown ownership state. An interrupted scene is not
++// a completed capture, and this observer neither drains nor discards work.
++void crusnexo_state::shutdown_observe()
++{
++	fprintf(stderr,"MIDZ_SHUTDOWN_CPU frame=%llu scene_open=%u loading=%u pool_pending=%u source_pending=%u models_pending=%u endpoints_pending=%u fence_pending=%u waiting_pending=%u compose_pending=%u prepared=%llu matched=%llu requested=%llu completed=%llu\n",
++		(unsigned long long)m_screen->frame_number(),unsigned(m_scene_open),unsigned(m_scene_loading!=0),unsigned(m_lifetime_pending.kind!=0),
++		unsigned(m_lifetime_owner_slot!=0),unsigned(m_scene_pending.size()),unsigned(m_endpoint_pending.size()),unsigned(m_scene_fence.pending()),
++		unsigned(m_handover_pending.pending()),unsigned(m_compose_scene!=0),(unsigned long long)m_scene_prepared,(unsigned long long)m_scene_matched,
++		(unsigned long long)m_scene_fence_requests,(unsigned long long)m_scene_fence_completed);
++}
++
+ void crusnexo_state::bootstrap_start()
+ {
+ 	const char *mode=std::getenv("MIDZ_BOOTSTRAP");if(!mode)return;
+-- 
+2.55.0.windows.3
+
+
+From ede2c7a4ea729991516d4ae441505a7f7428e812 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 15:14:10 -0500
+Subject: [PATCH 2/2] Read shutdown observer selection in GPU stop scope
+
+---
+ src/devices/video/zeus2.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index f37a294acbf..1f8b9380bc9 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -2296,7 +2296,8 @@ void stop()
+ 	s_stopz.store(true);
+ 	if (s_thread.joinable())
+ 		s_thread.join();
+-	if(envi("MIDZ_SHUTDOWN_OBSERVE",nullptr,0)==1)
++	const char *shutdown_observe=std::getenv("MIDZ_SHUTDOWN_OBSERVE");
++	if(shutdown_observe && !strcmp(shutdown_observe,"1"))
+ 		fprintf(stderr,"MIDZ_SHUTDOWN_JOIN written=%llu read=%llu joined=1\n",
+ 			(unsigned long long)s_rw.load(),(unsigned long long)s_rr.load());
+ 	s_on.store(false);
+-- 
+2.55.0.windows.3
+

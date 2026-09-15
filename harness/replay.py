@@ -25,6 +25,7 @@ import usa_distance
 import exotica_visibility
 import exotica_scene_options
 import exotica_lifetimes
+import exotica_shutdown
 import exotica_waiting
 import exotica_handover
 import exotica_model_endpoint
@@ -114,6 +115,7 @@ def main(argv=None):
     exotica_host_failure.add_arguments(ap)
     exotica_journals.add_arguments(ap)
     exotica_bootstrap.add_arguments(ap)
+    exotica_shutdown.add_arguments(ap)
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
@@ -310,6 +312,8 @@ def main(argv=None):
         if journal_trial:report['exotica_journals']=journal_trial
         bootstrap_trial=exotica_bootstrap.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
         if bootstrap_trial:report['exotica_bootstrap']=bootstrap_trial
+        shutdown_trial=exotica_shutdown.configure(args,manifest['rom'],manifest['settings'])
+        if shutdown_trial:report['exotica_shutdown']=shutdown_trial
         worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
         if worker_trial:report['ffb_worker']=worker_trial
         # A screenshot can finish before later private scenes/materials. Drain
@@ -447,6 +451,10 @@ def main(argv=None):
         if margin_result:report['zeus_margin_clear']['result']=margin_result
         sky_result=zeus_sky_options.verify_receipt(sky_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if sky_result:report['zeus_sky']['result']=sky_result
+        shutdown_result=exotica_shutdown.verify(shutdown_trial,runtime)
+        if shutdown_result:
+            report['exotica_shutdown']['result']=shutdown_result
+            if shutdown_result['classification']=='failed':raise ValueError('Exotica shutdown observed renderer or writer failure')
         bootstrap_result=exotica_bootstrap.verify(bootstrap_trial,runtime)
         if bootstrap_result:report['exotica_bootstrap']['result']=bootstrap_result
         lifetime_trial=exotica_bootstrap.lifetime_trial(bootstrap_trial,bootstrap_result,lifetime_trial)
