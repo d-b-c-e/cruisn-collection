@@ -45,15 +45,19 @@ template<class Read> bool load(Read read,uint32_t descriptor,Model &result)
 
 template<class Reciprocal> bool project(const Model &model,
     const std::array<uint32_t,12> &matrix,uint32_t origin,uint32_t path,
-    Reciprocal reciprocal,std::vector<Vertex> &result,uint32_t host_multiplier=0)
+    Reciprocal reciprocal,std::vector<Vertex> &result,uint32_t host_multiplier=0,
+    std::vector<uint32_t> *camera_depths=nullptr)
 {
     result.clear();
+    if(camera_depths)camera_depths->clear();
     if(model.vertices.empty() || model.vertices.size()>512)return false;
     if(path!=0x1e03 && path!=0x1e3b && path!=0x1e60)return false;
     if(host_multiplier>3 || (host_multiplier && path!=0x1e03))return false;
     std::array<Float,12> m;
     for(unsigned i=0;i<12;++i)m[i]=Float::load(matrix[i]);
     std::vector<Vertex> points;
+    std::vector<uint32_t> depths;
+    if(camera_depths)depths.reserve(model.vertices.size());
     for(const auto &vertex:model.vertices)
     {
         const std::array<Float,3> v={{Float::load(vertex[0]),Float::load(vertex[1]),Float::load(vertex[2])}};
@@ -77,18 +81,29 @@ template<class Reciprocal> bool project(const Model &model,
         const int32_t sx=(x*r+Float::load(origin)).fix(),sy=(Float::integer(200)-y*r).fix();
         if(host_multiplier && (sx<-32768 || sx>32767 || sy<-32768 || sy>32767))return false;
         points.push_back({{uint32_t(sx),uint32_t(sy)}});
+        // Retain the actual camera transform, before any reciprocal-index clamp.
+        // The original guest XY buffer's third word is stale and is not a depth.
+        if(camera_depths)depths.push_back(z.store());
     }
-    result=std::move(points);return true;
+    result=std::move(points);
+    if(camera_depths)*camera_depths=std::move(depths);
+    return true;
 }
 
 template<class Palette> bool quads(const Model &model,const std::vector<Vertex> &points,
     uint32_t extra,uint32_t palette_base,uint32_t texture_base,Palette palette,
-    std::vector<Quad> &result)
+    std::vector<Quad> &result,const std::vector<uint32_t> *camera_depths=nullptr,
+    std::vector<std::array<uint32_t,4>> *quad_depths=nullptr)
 {
     result.clear();
+    if(quad_depths)quad_depths->clear();
+    if(bool(camera_depths)!=bool(quad_depths) ||
+        (camera_depths && camera_depths->size()!=points.size()))return false;
     if(points.size()!=model.vertices.size() || points.empty() || points.size()>512 ||
         model.polygons.empty() || model.polygons.size()>1024)return false;
     std::vector<Quad> output;
+    std::vector<std::array<uint32_t,4>> depths;
+    if(quad_depths)depths.reserve(model.polygons.size());
     for(const auto &p:model.polygons)
     {
         const std::array<unsigned,4> offsets={{p[4]&65535,p[4]>>16,p[5]&65535,p[5]>>16}};
@@ -105,7 +120,11 @@ template<class Palette> bool quads(const Model &model,const std::vector<Vertex> 
         q[10]=uint16_t(p[1]);q[11]=uint16_t(p[1]>>16);
         q[12]=uint16_t(p[2]);q[13]=uint16_t(p[2]>>16);q[14]=uint16_t(p[3]+texture_base);
         output.push_back(q);
+        if(quad_depths)depths.push_back({{(*camera_depths)[offsets[0]/3],(*camera_depths)[offsets[1]/3],
+            (*camera_depths)[offsets[2]/3],(*camera_depths)[offsets[3]/3]}});
     }
-    result=std::move(output);return true;
+    result=std::move(output);
+    if(quad_depths)*quad_depths=std::move(depths);
+    return true;
 }
 } }

@@ -21,7 +21,7 @@ FIELDS = ('flags', 'palette', 'x0', 'y0', 'x1', 'y1', 'x2', 'y2', 'x3', 'y3',
           'uv0', 'uv1', 'uv2', 'uv3', 'texture', 'word15')
 
 
-def native_records(binary, records, reciprocals, transform_table=None):
+def native_records(binary, records, reciprocals, transform_table=None, with_depths=False):
     lines = [' '.join(map(str, reciprocals))]
     if transform_table is not None:
         lines.append(' '.join(map(str, [*offroad_transform.CONSTANTS, *transform_table])))
@@ -36,6 +36,8 @@ def native_records(binary, records, reciprocals, transform_table=None):
     if os.name == 'nt':
         env['PATH'] = 'E:/msys64/mingw64/bin;'+env.get('PATH', '')
     command = [str(binary)]+(['--prepared'] if transform_table is not None else [])
+    if with_depths:
+        command.append('--depths')
     process = subprocess.run(command, input='\n'.join(lines)+'\n', capture_output=True,
                              text=True, env=env, timeout=120)
     if process.returncode:
@@ -46,11 +48,15 @@ def native_records(binary, records, reciprocals, transform_table=None):
         if len(values) < 3:
             raise ValueError('truncated native record')
         call, vertices, count = values[:3]
+        original_end = 3+2*vertices+16*count
         if (call in result or not 1 <= vertices <= 512 or not 0 <= count <= 1024 or
-                len(values) != 3+2*vertices+16*count):
+                len(values) != original_end+(vertices+4*count if with_depths else 0)):
             raise ValueError('invalid native record')
         split = 3+2*vertices
-        result[call] = (values[3:split], [values[i:i+16] for i in range(split, len(values), 16)])
+        result[call] = (values[3:split], [values[i:i+16] for i in range(split, original_end, 16)])
+        if with_depths:
+            result[call] += (values[original_end:original_end+vertices],
+                            [values[i:i+4] for i in range(original_end+vertices,len(values),4)])
     if list(result) != [r['call'] for r in records]:
         raise ValueError('native record coverage mismatch')
     return result

@@ -1,8 +1,9 @@
-"""Opt-in V-Unit RGBA distance-fade shader for saved-scene diagnostics.
+"""V-Unit distance-fade variants for saved scenes and gated native diagnostics.
 
-NOT used by the launcher or native renderer. Resolve each command's palette
-before blending, at its original position. The caller must preserve palette
-update order and both native material and layer provenance before live use.
+The RGBA variant resolves each command's palette before ordered blending.
+The indexed/mirror variants preserve late palette resolution and are linked by
+the explicit native World experiment. They are not launcher defaults. Callers
+must preserve palette updates, original buffers and material/layer ownership.
 
 Additional bindings: palette R32UI at uniform ``colors``; SSBO4 float per quad
 (-1 = fade, +1 = opaque), SSBO5 vec4 positive camera depths per quad. Both reset

@@ -26,8 +26,11 @@ def reciprocal(read, index):
     return ((((ieee >> 23)-127) & 255) << 24) | (ieee & 0x7fffff)
 
 
-def host_project(vertices, matrix, origin, read, multiplier):
+def host_project(vertices, matrix, origin, read, multiplier, *, camera_depths=None):
     m = list(map(F.load, matrix)); points = []
+    depths = []
+    if camera_depths is not None:
+        camera_depths.clear()
     for i in range(0, len(vertices), 3):
         v = list(map(F.load, vertices[i:i+3]))
         x, y, z = [((v[0]*m[a]+m[a+3])+v[1]*m[a+1])+v[2]*m[a+2] for a in (0, 4, 8)]
@@ -39,10 +42,14 @@ def host_project(vertices, matrix, origin, read, multiplier):
         if any(not -32768 <= v <= 32767 for v in xy):
             return None
         points.extend(v & 0xffffffff for v in xy)
+        if camera_depths is not None:
+            depths.append(z.store())
+    if camera_depths is not None:
+        camera_depths.extend(depths)
     return points
 
 
-def scene(read, multiplier, use_future, *, clip_admission=False):
+def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=False):
     if multiplier not in (1, 2, 3) or (clip_admission and (multiplier != 3 or not use_future)):
         raise ValueError('host multiplier')
     f = frontier(read)
@@ -102,7 +109,8 @@ def scene(read, multiplier, use_future, *, clip_admission=False):
             raise ValueError('host model counts')
         vertices = [read(dw[1]+i) for i in range(3*nv)]
         polygons = [read(dw[4]+i) for i in range(6*np)]
-        points = host_project(vertices, matrix, read(0x11230), read, multiplier)
+        depths = [] if retain_depths else None
+        points = host_project(vertices, matrix, read(0x11230), read, multiplier, camera_depths=depths)
         if points is None:
             counts['projection'] += 1
             continue
@@ -123,5 +131,17 @@ def scene(read, multiplier, use_future, *, clip_admission=False):
             counts['material'] += 1
             continue
         output.append(dict(id=owner, model=obj[20], lod=lod, depth=pos[2].reload().fix(), order=order, quads=qs))
+        if retain_depths:
+            selected = []
+            for i in range(np):
+                p = polygons[6*i:6*i+6]
+                indices = [p[4]&65535,p[4]>>16,p[5]&65535,p[5]>>16]
+                xy = [signed(points[2*(j//3)+k]) for j in indices for k in (0,1)]
+                x0,y0,x1,y1,x2,y2 = xy[:6]
+                if signed((x0-x1)*(y2-y1)-(y0-y1)*(x2-x1)) <= 0:
+                    selected.append([depths[j//3] for j in indices])
+            if len(selected) != len(qs):
+                raise ValueError('quad depth selection differs')
+            output[-1]['depths'] = selected
     output.sort(key=lambda o: (-o['order'], o['id']))
     return counts, output

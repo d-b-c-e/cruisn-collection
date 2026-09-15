@@ -17,6 +17,7 @@ struct Object
     uint32_t id=0,model=0,lod=0;
     int32_t depth=0,order=0;
     std::vector<Quad> quads;
+    std::vector<std::array<uint32_t,4>> depths;
 };
 struct Scene
 {
@@ -84,7 +85,7 @@ inline bool material_bound(const Quad &q,const MaterialState &state)
 }
 
 template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache,
-    bool clip_admission=false)
+    bool clip_admission=false,bool retain_depths=false)
 {
     result=Scene{};Scene scene;
     if(!offroad_distance::valid_multiplier(multiplier) || (clip_admission && (multiplier!=3 || !use_future)))return false;
@@ -138,14 +139,16 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
         const auto lod=offroad_transform::select_lod(o,context).first;
         const auto *model=cache.get(read,o[20]+7+5*lod);if(!model)return false;
         std::vector<offroad_model::Vertex> projected;
+        std::vector<uint32_t> camera_depths;
         if(!offroad_model::project(*model,matrix,read(0x11230),0x1e03,[&](int32_t i){
             return i<=63679?read(uint32_t(offroad_distance::table_base+i)):offroad_distance::reciprocal(i);
-        },projected,multiplier)){++scene.projection;continue;}
+        },projected,multiplier,retain_depths?&camera_depths:nullptr)){++scene.projection;continue;}
         for(const auto &poly:model->polygons)if(!offroad_future::rom_span(o[17]+(poly[0]>>16),1))return false;
         Object out;out.id=entry.first;out.model=o[20];out.lod=lod;out.depth=position[2].reload().fix();
         out.order=order(position,Float::load(read(0x11238)));
         if(!offroad_model::quads(*model,projected,(o[5]&read(0x11249))?0x2000:0,o[18],o[19],
-            [&](uint32_t index){return read(o[17]+index);},out.quads))return false;
+            [&](uint32_t index){return read(o[17]+index);},out.quads,
+            retain_depths?&camera_depths:nullptr,retain_depths?&out.depths:nullptr))return false;
         if(std::any_of(out.quads.begin(),out.quads.end(),[&](const Quad &q){return !material_bound(q,materials);}))
         {++scene.material;continue;}
         scene.objects.push_back(std::move(out));

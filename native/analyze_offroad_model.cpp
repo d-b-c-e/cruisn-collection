@@ -8,8 +8,14 @@
 int main(int argc,char **argv)
 {
     using namespace cruisn::offroad_model;
-    const bool prepared=argc==2 && std::string(argv[1])=="--prepared";
-    if(argc!=1 && !prepared)return 2;
+    bool prepared=false,with_depths=false;
+    for(int i=1;i<argc;++i)
+    {
+        const std::string flag=argv[i];
+        if(flag=="--prepared" && !prepared)prepared=true;
+        else if(flag=="--depths" && !with_depths)with_depths=true;
+        else return 2;
+    }
     std::vector<uint32_t> reciprocals(67776);
     for(auto &v:reciprocals)if(!(std::cin>>v))return 2;
     std::vector<uint32_t> trigonometry;
@@ -71,11 +77,19 @@ int main(int argc,char **argv)
             matrix=actual;
         }
         std::vector<Vertex> points;std::vector<Quad> output;
-        if(!project(model,matrix,origin,path,[&](int32_t index){return reciprocals.at(index+4096);},points))return 4;
-        if(!quads(model,points,extra,palette_base,texture_base,[&](uint32_t index){return palettes.at(index);},output))return 5;
+        std::vector<uint32_t> depths;std::vector<std::array<uint32_t,4>> quad_depths;
+        if(!project(model,matrix,origin,path,[&](int32_t index){return reciprocals.at(index+4096);},points,
+            0,with_depths?&depths:nullptr))return 4;
+        if(!quads(model,points,extra,palette_base,texture_base,[&](uint32_t index){return palettes.at(index);},output,
+            with_depths?&depths:nullptr,with_depths?&quad_depths:nullptr))return 5;
         std::cout<<id<<' '<<points.size()<<' '<<output.size();
         for(const auto &p:points)for(auto w:p)std::cout<<' '<<w;
         for(const auto &q:output)for(auto w:q)std::cout<<' '<<w;
+        if(with_depths)
+        {
+            for(auto w:depths)std::cout<<' '<<w;
+            for(const auto &q:quad_depths)for(auto w:q)std::cout<<' '<<w;
+        }
         std::cout<<'\n';
     }
     return std::cin.eof() && records?0:2;
