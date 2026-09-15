@@ -47,6 +47,12 @@ and the public package remain v0.5.0.
   images. The harness had maximized a covered GDI window behind Zeus's own
   full-monitor display. Broader 4K temporal/margin checks, other tracks, the far
   visibility boundary and final default regressions remain open.
+  The [current 4K temporal renewal](docs/reviews/2026-09-15-exotica-4k-temporal.md)
+  now passes55 consecutive completed frames through original fade completion:
+  added scenery, no newly near-black pixels and an unchanged fixed car region.
+  Known margin samples again repair6459/4231black pixels. A replay shutdown
+  drain bug exposed by this check is fixed. Broader tracks and far-boundary
+  appearance remain open.
   A [complete combined Hong Kong trial](docs/reviews/2026-09-15-exotica-track-resets.md)
   exposed and fixed pre-race pool clearing and external-object adoption. Its
  6000-input control/candidate pair now passes with8939marked preparations and

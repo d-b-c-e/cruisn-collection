@@ -1,5 +1,31 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — current Exotica4K handover passes; USA4K performance next
+
+Read docs/reviews/2026-09-15-exotica-4k-temporal.md and
+2026-09-15-zeus-replay-drain.md. Nativec7e3e6b456f unchanged/221patches.
+Current5300Amazon candidatePASS9695marked0reject74010GPUpairs55794permissions,
+3500camera10500ADCexactacceptedprefix.55completed3840x2160CRT5216..5270 change
+173875..238153pixels,nonewnearblack,carROI1450,1450..2390,2020exactall55.
+Threeowners28markeddrawseach preservepriororiginalpackedcadenceincludinggaps,
+first5219/5220 completion5249/5250;currentlifetimesconfirmcompletion.
+Active5072/5080repair6459/4231black,nonewblack,center/depth/otherpageexact;
+5219activeempty. Savedrawstageimages aren'tcompletedpresentationat5072/5080.
+OriginalcontrolcanonicalFAILretained: olddrain5270missed54materialpackets.
+Separatelyqualifiedall5300inputs/55images/savedbuffers/exactGPU-prefix; no
+controlrerun. HarnessnowdrainsZeustostop-1,includingdepthwithoutcapture;
+VUnitcaptureconventionunchanged.11focusedGLtestsPASS;correctedlive5299drain
+complete10287materialpackets. No performanceclaimfrompacedimages.
+LOCALR combined-temporal4k-original(FAIL),combined-temporal4k-drained-extended,
+combined-temporal4k-qualified,temporal4k-handover. No newnativebuild.
+Farappearancescreen: HongKong5000zero3rdband. Amazon5644/7187outer82/162objects;
+old7188orderedGPUfuture-onlyoriginalfade/completed/removed162(1157q)allcolor/depth
+exactoriginal. Doesn'treconstructcurrentprivateoriginalreplacements, nofadepromoted.
+See2026-09-15-exotica-far-appearance.md. NEXT USAcurrent4Kstandard3xfuture check,
+then boundedCPUoptimizationonlyifmeasuredgap. Personal87d/publicv0.5.0unchanged.
+No deploy/release/physicalFFB/hostedCI/menu removal. Continue directly whileparity
+remains; serialrig, no builds/exports/broadscans duringgames.
+
 ## September15 — Hong Kong combined path passes; far appearance next
 
 Read docs/reviews/2026-09-15-exotica-track-resets.md. Nativec7e3e6b456f frozen
