@@ -1,5 +1,18 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 journal component — standalone only, integration next
+
+native/diagnostic_journal.h and tests/native/diagnostic_journal_test.cpp added.
+Explicit capture/quiet; enabled state separatefromfile, quiet skipsformat/IO,
+captureopenfailure neverfallsback; print/write/put/tell/buffer/flush/close methods.
+NativeC++11 focusedtestPASS exact21mixedtext/binarybytes, quietnonexistentpath,
+skippedformatting, failedcaptureopen and overflow. NOTMAMElinked/synced/built;
+frozen645/personal87d/publicv0.5.0 unchanged. Seecontinuous-runtime-budget doc.
+NEXT integrateexplicitjournal methods into Exotica CPU/GPU users while preserving
+capturedbytes/defaultguards, then gatedquietmode and monotonic/runtime bounds.
+DoNOTreplaceeveryerrorguard or claimcontinuousmodealreadyexists. No game/build/
+test running. Existing defaultchecks/recoveryproofs should not be broadlyrepeated.
+
 ## September15 runtime budget measured — NEXT explicit capture/runtime separation
 
 Read docs/reviews/2026-09-15-continuous-runtime-budget.md. Newread-only

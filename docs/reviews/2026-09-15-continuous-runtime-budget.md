@@ -78,3 +78,18 @@ The newly qualified failure paths provide a foundation for this work, not a
 replacement for it. They remain explicit candidates, with degraded output kept
 separate from rendering parity. The personal installation and public release
 remain unchanged.
+
+## First implementation component
+
+`native/diagnostic_journal.h` now provides explicit capture and quiet policies.
+An enabled quiet journal opens no file and skips formatting; a failed capture
+open cannot silently turn into quiet operation. Byte/format/close failures remain
+observable. Its enabled state is separate from whether it is capturing.
+
+The standalone native test verifies exact mixed text/binary capture bytes,
+flush/close behavior, quiet operation without touching the destination, skipped
+formatting, failed capture opens and size-overflow rejection. It passes under
+the normal C++11 compiler settings and is included by the existing native-test
+inventory. This helper is **not yet linked into MAME**; no runtime callback,
+capture budget or release behavior has changed because of it. Integrate and
+qualify the CPU and GPU journal users before selecting quiet operation.
