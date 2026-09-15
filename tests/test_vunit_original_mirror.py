@@ -46,6 +46,11 @@ class OriginalMirrorTests(unittest.TestCase):
                         MIDV_WORLD_HOST_LAYER='3', MIDV_WORLD_HOST_FUTURE='1',
                         MIDV_WORLD_HOST_FAR_COVERAGE='1', MIDV_WORLD_HOST_FIRST='80', MIDV_WORLD_HOST_LAST='150')
         self.assertTrue(configure(args, 'crusnwld', settings.copy(), 200)['fade_metadata'])
+        fade_args = SimpleNamespace(**(vars(args) | {'world_host_distance_fade':True}))
+        self.assertTrue(configure(fade_args, 'crusnwld', settings.copy(), 200)['distance_fade'])
+        with self.assertRaisesRegex(ValueError, 'explicit qualified metadata'):
+            configure(SimpleNamespace(**(vars(fade_args) | {'world_host_fade_metadata':False})),
+                      'crusnwld', settings.copy(), 200)
         for changes in [dict(MIDV_WORLD_HOST_FIRST='101'), dict(MIDV_WORLD_HOST_LAST='199'),
                         dict(MIDV_WORLD_HOST_FAR_COVERAGE='0'), dict(MIDV_WORLD_HOST_FUTURE='0')]:
             with self.subTest(changes=changes), self.assertRaises(ValueError):
@@ -70,6 +75,22 @@ class OriginalMirrorTests(unittest.TestCase):
                 writer = csv.DictWriter(stream, fieldnames=list(row));writer.writeheader();writer.writerow(row)
             trial = dict(frame=100, first=80, last=150, fade_metadata=True)
             self.assertEqual(verify_metadata(trial, root)['captured_crossings'], 1)
+            mirror = dict(frame=100, width=512, height=256, visible_page=0,
+                          ordinary_quads=1, auxiliary_quads=1, cpu_blits=1, original_resets=1)
+            (root/'vunit-mirror.json').write_text(json.dumps(mirror))
+            for page in range(2):
+                for plane in range(4):
+                    (root/f'vunit-mirror-100-page{page}-plane{plane}.bin').write_bytes(bytes(512*256*(1 if plane & 1 else 2)))
+                (root/f'vunit-mirror-100-page{page}-alpha.bin').write_bytes(struct.pack('<f', 1)*512*256)
+            fade_trial = dict(trial, distance_fade=True, auxiliary=True)
+            self.assertTrue(all(s['opaque']==512*256 for s in verify(fade_trial, root)['opacity']))
+            alpha = root/'vunit-mirror-100-page1-alpha.bin'
+            with alpha.open('r+b') as stream:
+                stream.write(struct.pack('<f', float('nan')))
+            with self.assertRaisesRegex(ValueError, 'invalid distance fade opacity'):
+                verify(fade_trial, root)
+            with alpha.open('r+b') as stream:
+                stream.write(struct.pack('<f', 1))
             stderr.write_text('MIDV_FADE_METADATA packets=0 roads=0 captured=1\n')
             with self.assertRaisesRegex(ValueError, 'consumer coverage'):
                 verify_metadata(trial, root)

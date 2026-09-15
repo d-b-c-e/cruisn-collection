@@ -1,5 +1,39 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — first native distance fade qualified; next Germany4K temporal pair
+
+Read docs/reviews/2026-09-15-vunit-live-distance-fade.md. Nativee5344546a8e frozen/
+pushed SHA8e09bf779f582adcfbfbcfb18ce41304e5eedd2e82aad9a787f5205ca484699d,
+226patches reconstruct328a24ba413237814e8aae6b8e035992e1013baf. Canonicalshadergen
+now emitsFADE_FS(mirror+indexed),FADE_PAL_FS(deferred). Explicit CLI--world-host-
+distance-fade requiresmetadata+mirror; no launcher/deployment/defaultchange.
+OpacityMRT2floatpersistent, ordinary/CPU1, auxiliarydepth/roadprotectedselectors,
+SSBO4/5 perbatch matchingoriginalorder. Mask-onlyreset preservesalpha; pixelclear
+resetsalpha1 withscissor; originalviewsseparate. Palettebothviews late, thenCRT;
+2Dskip. Rawtwoalpha planescheckedfinite0..1, opaque/partial/zero counts.
+SamecandidateWorld25control/on6000inputsPASS;4119775metadata packets exact,
+1666hostrows exactexcept8durations, all8indexed/maskplanes5900exact. Alpha partial
+8618/9068pages,1zeroeach.21completed5880..5900 changed17..1855RGBpixels,0newblack,
+bottomthirdexacteach.5900pairedimagesviewed: smallvisibleeffect, olddetachedterrain
+remains. Presentation1280x720/internal2736x1600; NOT4K/perceptualpopin/fullspeedclaim.
+LOCALW distance-fade-{control,on},distance-fade-live-qualified.json, distance-fade-
+native-export.json(ALREADYRUN),build.log. Fiveexpandedharness testsPASS; earlier
+9shaderGPUtests separate. No game/build/test now. Personal87d/v0.5.0 unchanged.
+
+NEXT longer movingWorld24Germany pairedframes7060..7360 every10, mirror7340,
+host1800..7390, prefix7400, samecandidateoff/on. Existingcase results/diagnostics/
+world-germany-20260906 has9269inputs, onlyMIDV_PATCH recorded (nohost/farsetting).
+Review2026-09-06-world-rendering-and-replay.md mapsactualgame1:37 to7320..7360
+blackleftroadwedge. DoNOTclaimthisfadefixesthat. Currentmonitors() freshlyconfirms
+DISPLAY1primary3840x2160; --display-size3840:2160 canqualifycurrent4Kmonitor. Define
+capture-free6500..6800timingwindow BEFORErun;31captures notwholedefaultsuite.
+USAordinaryhostexcludesflags0x8e3(includingbit1), haspositiveC31depths incoverage
+mode; roadmeaning mustbeverifiedbeforepolicy. OffRoadObject hasno depths yet and
+its distanceunits/admission differ; don't blindlycopyWorld240k. ExoRGBA/depth/fade
+pipeline distinct. Continue directparitywork. No deploy/release/physicalFFB/hostedCI/
+menu removal. Serialrig. W=results/diagnostics/world25-roads-20260914.
+
+
 ## September15 — all-host depth/road transport qualified; NEXT native distance fade
 
 Read docs/reviews/2026-09-15-vunit-fade-metadata.md. Nativee1a93e3589e frozen/pushed

@@ -5,9 +5,11 @@ import csv
 import math
 import re
 import struct
+import numpy as np
 from pathlib import Path
 
-KEYS = ('MIDV_GL_ORIGINAL_MIRROR', 'MIDV_GL_MIRROR_FRAME', 'MIDV_WORLD_HOST_FADE_METADATA')
+KEYS = ('MIDV_GL_ORIGINAL_MIRROR', 'MIDV_GL_MIRROR_FRAME', 'MIDV_WORLD_HOST_FADE_METADATA',
+        'MIDV_WORLD_HOST_DISTANCE_FADE')
 
 
 def add_arguments(parser):
@@ -15,11 +17,16 @@ def add_arguments(parser):
                         help='candidate-only World indexed mirror snapshot; physical FFB off')
     parser.add_argument('--world-host-fade-metadata', action='store_true',
                         help='transport all host depths and authored road flags; no fading yet')
+    parser.add_argument('--world-host-distance-fade', action='store_true',
+                        help='candidate-only20k distance envelope using qualified metadata and original mirror')
 
 
 def configure(args, rom, settings, frames):
     frame = getattr(args, 'vunit_original_mirror_frame', None)
     metadata = getattr(args, 'world_host_fade_metadata', False)
+    fade = getattr(args, 'world_host_distance_fade', False)
+    if fade and not metadata:
+        raise ValueError('distance fade requires explicit qualified metadata')
     if frame is None:
         if metadata or any(settings.get(k, '0') != '0' for k in KEYS):
             raise ValueError('original mirror requires explicit replay selection')
@@ -45,6 +52,11 @@ def configure(args, rom, settings, frames):
         result.update(fade_metadata=True, first=first, last=last)
     elif settings.get('MIDV_WORLD_HOST_FADE_METADATA', '0') != '0':
         raise ValueError('fade metadata requires explicit replay selection')
+    if fade:
+        settings['MIDV_WORLD_HOST_DISTANCE_FADE'] = '1'
+        result['distance_fade'] = True
+    elif settings.get('MIDV_WORLD_HOST_DISTANCE_FADE', '0') != '0':
+        raise ValueError('distance fade requires explicit replay selection')
     settings.update(MIDV_GL_ORIGINAL_MIRROR='1', MIDV_GL_MIRROR_FRAME=str(frame))
     return result
 
@@ -84,11 +96,27 @@ def verify(trial, directory):
                 prefix = f"vunit-mirror-{row['frame']}-page{page}-plane"
                 if digests[prefix+str(plane)+'.bin'] != digests[prefix+str(plane+2)+'.bin']:
                     raise ValueError('original-only mirror differs from ordinary target')
+    opacity = []
+    if trial.get('distance_fade'):
+        for page in range(2):
+            name = f"vunit-mirror-{row['frame']}-page{page}-alpha.bin"
+            path = directory/name
+            if not path.is_file() or path.stat().st_size != row['width']*row['height']*4:
+                raise ValueError('missing or wrong-size distance fade opacity')
+            data = path.read_bytes()
+            values = np.frombuffer(data, dtype='<f4')
+            if not np.isfinite(values).all() or not np.all((values >= 0) & (values <= 1)):
+                raise ValueError('invalid distance fade opacity')
+            digests[name] = hashlib.sha256(data).hexdigest()
+            opacity.append(dict(page=page, partial=int(((values > 0) & (values < 1)).sum()),
+                                zero=int((values == 0).sum()), opaque=int((values == 1).sum())))
     if {p.name for p in directory.glob('vunit-mirror-*.bin')} != set(digests):
         raise ValueError('unexpected original mirror planes')
     result = dict(**row, sha256=digests, passed=True)
     if metadata:
         result['fade_metadata'] = metadata
+    if opacity:
+        result['opacity'] = opacity
     return result
 
 
