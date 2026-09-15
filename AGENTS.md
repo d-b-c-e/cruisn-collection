@@ -1,5 +1,32 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — Exotica full speed recovered; different-track coverage next
+
+Read docs/reviews/2026-09-15-exotica-owner-window.md and
+2026-09-15-exotica-projection-reuse.md. Nativef0cfbd005c8 frozen
+SHA30d3472d471f77b5cd1ff6cb1a30cf0cc91e58e32d64d1e491816644960a5fa4,
+219patches reconstruct8e15b541e2d88d2c67b16e49062d50034f1f86ac.
+Projection reuse preserves full saved bytes/3native tests; full Amazon assembly
+16.5483->15.2928s. Initial4K speeds73..82% traced to replay --display-size
+maximizing coveredGDIowner, unlike existingZeuslauncher policy. Corrected helper
+selectsmonitor but keeps owner native-size; VUnit/nativecontrols unchanged.
+6displaytestsPASS. SAMEf0/full8860inputs originalimages/camera/ADC/lifetimes/
+admissions/endpoints/all deterministic scene fields/22savedmodel binaries exact.
+30308prepared0reject282036GPUpairs. Two completed4KCRT6538/6545 pixel-identical.
+Threefixeddrivingwindows99.94/100.10/100.01% vs81.56/72.89/79.14. No log-free/
+physicalFFB/all-game release acceptance. No further repeated Amazon timing needed.
+CPUprofiler's leaf luaopen_lfs is misleading nearest-symbol attribution: callers
+identify renderer_gdi. Profile mode changes throttle/processors, NOT FPS proof.
+Canonical gl_frames --run-directories reads invocation cadence/backend and actual
+completed image sizes;10testsPASS. Don'tguess cadence/dimensions; inherited local
+plan prose says3frames, actual global-every7 gives2. InitialFAILretained.
+LOCALR projection-small-owner-*,projection-native-profile,projection-reuse-*.
+NEXT combined HongKong6000input trial,21CRT4990..5010/scene5000/depth5001. Then
+temporal4K/margin and combineddefault checks, quiet product gate stillpending.
+Currentmonitor4K3840x2160. Personal87d/publicv0.5.0unchanged. No deploy/release/
+physicalFFB/hostedCI/menu removal. Serialrig, no builds/exports/broadscans during
+games. Continue directly whileparity remains; no checkpoint/heartbeat waiting.
+
 ## September15 - Off-Road admission no live gain; Exotica cost next
 
 Read docs/reviews/2026-09-15-offroad-admission-screen.md and

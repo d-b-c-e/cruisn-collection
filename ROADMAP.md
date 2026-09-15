@@ -4,7 +4,7 @@ Current work and acceptance criteria, with relevant legacy IDs retained.
 Detail lives in `results/RESULTS.md` (chronology) and `.Codex/session-notes.md`
 (handoff). Update status here as items move.
 
-## Current priorities (2026-09-14, after v0.5.0)
+## Current priorities (2026-09-15, after v0.5.0)
 
 All four games now have native host future-scenery implementations. This is
 implementation progress, **not accepted four-game 3× parity**. The
@@ -39,13 +39,20 @@ and the public package remain v0.5.0.
   pixels but showed no speed gain and was reverted. [Exact CPU preparation
   optimizations](docs/reviews/2026-09-14-exotica-cpu-preparation.md) reduce saved-scene
   assembly time by 3.8–9.1%; full-drive pixels and endpoint coverage pass, but
-  end-to-end speed did not improve in the measured pair. Next assess
-  remaining preparation/submission cost, the far visibility boundary and other tracks, then
-  renew full-speed 4K acceptance. The instrumented late-drive window is about
-  92% speed; the current completed-screen checks use 3440×1440.
+  end-to-end speed did not improve in that measured pair. Further
+  [projection reuse](docs/reviews/2026-09-15-exotica-projection-reuse.md) cuts full-drive
+  future assembly by 7.6%. More significantly, a [4K replay window-sizing fix](docs/reviews/2026-09-15-exotica-owner-window.md)
+  restores approximately 100% speed in three Amazon driving windows while
+  retaining the exact route, endpoint geometry and two completed 3840×2160 CRT
+  images. The harness had maximized a covered GDI window behind Zeus's own
+  full-monitor display. Broader 4K temporal/margin checks, other tracks, the far
+  visibility boundary and final default regressions remain open.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
-  work while preserving visibility and original game behavior.
+  work while preserving visibility and original game behavior. The
+  [gated far-coverage adapter](docs/reviews/2026-09-15-usa-far-coverage.md) passes
+  independent geometry and 4K comparisons, but changes only 26 pixels in two of
+  21 completed frames; it is not a substantial pop-in fix.
 - **World:** earlier scenery at 3× is demonstrated for both revisions. World
   2.4 host roads fill measured distant gaps. The [2.5 road adapter](docs/reviews/2026-09-14-world25-roads.md)
   is implemented and independently checked, but its Hawaii terrain gap remains.
@@ -54,15 +61,21 @@ and the public package remain v0.5.0.
   initializer and LOD screening do not repair it. Investigate adjacent authored
   coverage and the ocean backdrop. A [coverage-only far-clipping prototype](docs/reviews/2026-09-15-world-far-coverage.md)
   reduces the largest image change in a stationary far-plane sweep from13,020
-  to1,348pixels, but does not repair the gap. Connect the qualified standalone
-  helper behind a private gate, then check moving-camera admission and cost.
+  to1,348pixels, but does not repair the gap. The [gated live adapter](docs/reviews/2026-09-15-world-live-far-coverage.md)
+  now preserves original geometry/resources and adds visible distant coverage
+  in 18 of 21 completed 4K frames. The authored terrain gap and broader temporal
+  acceptance remain unresolved.
 - **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
   exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
   3× adds differences in22/66 images over2× and repeats all66 exactly. Complete
   materials and handover. A [late 4K resource comparison](docs/reviews/2026-09-15-offroad-late-resources.md)
   now preserves original DMA, framebuffer, textures and palette at a nonempty
   516-quad scene; four earlier late live geometry joins also pass. Other courses
-  and broader foreground-occlusion acceptance remain open.
+  and broader foreground-occlusion acceptance remain open. Raising host admission
+  to the existing projection limit adds thousands of quads in one isolated view,
+  but [all 21 completed live frames remain identical](docs/reviews/2026-09-15-offroad-admission-screen.md).
+  Keep this diagnostic policy out of product defaults; no visible benefit has
+  been demonstrated for it.
 
 Shared acceptance still requires useful visible benefit, stable materials,
 correct foreground occlusion, smooth activation handover, full-speed 4K and
