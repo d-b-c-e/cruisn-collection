@@ -19,9 +19,10 @@ def configure(args,rom,settings,frames):
         return None
     if mode not in ('observe','lifetimes','scenes') or rom!='crusnexo' or not getattr(args,'candidate',None) or settings.get('MIDV_FFB')!='0':
         raise ValueError('bootstrap observation requires Exotica candidate and FFB0')
-    if mode in ('lifetimes','scenes') and (settings.get('MIDZ_LIFETIME')!='1' or settings.get('MIDZ_HOST_JOURNALS','capture')!='capture'):
+    continuous=getattr(args,'exotica_runtime',None)=='continuous' and mode=='scenes'
+    if mode in ('lifetimes','scenes') and (settings.get('MIDZ_LIFETIME')!='1' or settings.get('MIDZ_HOST_JOURNALS','capture')!=('quiet' if continuous else 'capture')):
         raise ValueError('bootstrap lifetimes require captured lifetime observation')
-    trial=dict(mode=mode,frames=frames,changes_startup=mode!='observe')
+    trial=dict(mode=mode,frames=frames,changes_startup=mode!='observe',continuous=continuous)
     if mode=='scenes':
         from exotica_journals import REQUIRED
         if any(settings.get(k)!=v for k,v in dict(REQUIRED,MIDZ_DEPTH_FIRST='2').items()):
@@ -34,7 +35,8 @@ def lifetime_trial(trial,proof,lifetime):
     """Resolve the effective boundary only after independently checking its proof."""
     if not trial or trial['mode'] not in ('lifetimes','scenes'):return lifetime
     if (not proof or not proof.get('passed') or not proof.get('changes_startup') or
-            not lifetime or lifetime.get('mode')!='observe' or not 0<=proof['frame']<=lifetime['first']):
+            not lifetime or lifetime.get('mode')!='observe' or not 0<=proof['frame'] or
+            (not trial.get('continuous') and proof['frame']>lifetime['first'])):
         raise ValueError('bootstrap lifetime boundary does not precede requested coverage')
     return dict(lifetime,requested_first=lifetime['first'],first=proof['frame'],bootstrap_base=proof['base'])
 
@@ -45,8 +47,9 @@ def resolve_scenes(trial,proof,scene,waiting,handover,endpoint):
     frame=proof['scene_frame']
     if (not all((scene,waiting,handover,endpoint)) or waiting.get('mode')!='observe' or handover.get('mode')!='draw' or
             endpoint.get('mode')!='draw' or not scene.get('compose') or
-            any(not proof['frame']<=frame<=t['first'] for t in (scene,waiting,endpoint)) or
-            frame>endpoint['admit_from'] or 'early_visibility' not in scene or 'early_visibility' not in handover):
+            frame<proof['frame'] or (not trial.get('continuous') and
+            (any(frame>t['first'] for t in (scene,waiting,endpoint)) or frame>endpoint['admit_from'])) or
+            'early_visibility' not in scene or 'early_visibility' not in handover):
         raise ValueError('bootstrap scene activation does not precede configured coverage')
     for t in (scene,waiting,endpoint):t.update(requested_first=t['first'],first=frame)
     endpoint.update(requested_admit_from=endpoint['admit_from'],admit_from=frame)
@@ -73,7 +76,7 @@ def verify(trial,directory):
         found=[m for m in found if m]
         if len(found)!=1:raise ValueError('missing or duplicate bootstrap scene receipt')
         sf,serial=map(int,found[0].groups());expected.append(found[0][0])
-        if not frame<=sf<=trial['latest_scene_start'] or not 0<serial<2**64 or not scene_proof.is_file() or scene_proof.stat().st_size!=64:
+        if not frame<=sf<trial['frames'] or (not trial.get('continuous') and sf>trial['latest_scene_start']) or not 0<serial<2**64 or not scene_proof.is_file() or scene_proof.stat().st_size!=64:
             raise ValueError('bootstrap scene bounds or proof extent')
         scene_words=(0x31534358,1,sf,frame,0x67f6,0xff2,0xffffffff,0xffffffff,0x67f5,0x15200ff2,0x681f,0x082fbbb5,0x6835,0x082fbbb9,serial&0xffffffff,serial>>32)
         if struct.unpack('<16I',scene_proof.read_bytes())!=scene_words:raise ValueError('bootstrap scene transaction/code proof')

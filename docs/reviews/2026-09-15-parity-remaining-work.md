@@ -112,9 +112,12 @@ those same windows merely to obtain a positive result.
    Routine journal budgets no longer stop quiet execution; live bounds and
    snapshot/failure evidence remain. [Guest-based startup](2026-09-15-exotica-bootstrap-scenes.md)
    now passes a targeted4K replay: pool and scene activation use verified game
-   transactions, including the previously excluded boot/menu period. Finite end
-   windows, machine reset and ordinary exit/drain handling remain required for
-   continuous operation.
+   transactions, including the previously excluded boot/menu period. The
+   [continuous runtime policy](2026-09-15-exotica-continuous-runtime.md) now
+   carries CPU/GPU work past shortened capture ends in one quiet5,300-input
+   replay, preserving193 saved files and four4K images with joined quiescent
+   shutdown. Multi-race operation, interrupted exit and machine reset remain
+   separate acceptance work; this is still a candidate-only mode with FFB0.
 5. After the rendering policy is stable, expose coherent per-game controls and
    renew final package/default/4K gates. Obtain attended cross-track and wheel
    acceptance; do not treat prior-release waivers as acceptance of these changes.

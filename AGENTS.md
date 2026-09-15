@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 continuous policy — targeted PASS; multi-race acceptance next
+
+Read docs/reviews/2026-09-15-exotica-continuous-runtime.md. Nativee19b29ab09f frozen
+SHA91b9ebbdedcb3c84de1349bff157e872468e069a6734bce3b3003d1365540be1;
+246patches treea0da315f1b42f82a16aa9ea98aa43eaac2208bff. Explicit--exotica-runtime
+continuous requiresquiet/verifiedscenes/shutdownobserver/combinedrenderer/FFB0.
+SharedCPU/GPUendpolicy; oldfinitecapturedefaultunchanged. Runtimeframecodec>16001;
+explicitframeoverflowguard. Receiptscompletion=quiescence,reportcapture_completed
+false. Rejectinterrupted/mismatched/incomplete; nofalsefinitecapturePASS.
+2native12PythonfocusedchecksPASS. One5300Amazonrun: ends5240..5242 overridden;
+lastprepared5298/mirror5299,3850scenes/fencesallmatch,allpending0,joinedqueue
+5074092384written=read,0errors/drops. Originalinputs/time/nativeimagesPASS;
+193savedcamera/ADC/endpoint/geometry/resources/targets exactstartup067;4completed
+4KCRT5220/5224/5228/5232exact. ImagesPRECEDEend; beyondendproofisprogress/counts,
+NOTpostboundarypixelcomparison/performance/multiraceclaim. R/continuous-runtime-4k,
+continuous-runtime-qualified andcontinuous-runtime-native-exportPASS.
+export-continuous-runtime.py ALREADYRUN. No game/build/testnow. Personal87d/
+publicv0.5.0unchanged. No deploy/release/hostedCI/physicalFFB/menu removal.
+NEXT useful two-race Exotica recording throughmenus +open secondtrack; async
+availabilityquestion pending, doNOTlaunchattendedwithoutreply. Machine reset
+stillunsupported; actualguestclear/rebuild separate. Continue independentparity
+work whilewaiting: savedWorldHawaiicustomdispatch/terraincoverage remainsopen.
+PrimaryDISPLAY2 4K. No broadrepeat or heartbeatwaiting.
+
 ## September15 shutdown state — observed; continuous runtime policy next
 
 Read docs/reviews/2026-09-15-exotica-shutdown-observer.md. Nativeede2c7a4ea7 frozen

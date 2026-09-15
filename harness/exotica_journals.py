@@ -60,7 +60,7 @@ def configure(args,rom,settings):
         depth_snapshots=len([x for x in settings.get('MIDZ_DEPTH_SNAPSHOTS','').split(',') if x]))
 
 
-def verify(trial,directory):
+def verify(trial,directory,*,runtime_result=None):
     directory=Path(directory);lines=[]
     for name in ('stdout.log','stderr.log'):
         path=directory/name
@@ -72,6 +72,11 @@ def verify(trial,directory):
         if ack:raise ValueError('unrequested journal policy')
         return None
     mode=trial['mode']
+    continuous=trial.get('continuous',False)
+    if continuous and (mode!='quiet' or not runtime_result or not runtime_result.get('passed') or runtime_result.get('capture_completed') is not False):
+        raise ValueError('continuous summaries require independently checked runtime and shutdown receipts')
+    if not continuous and (runtime_result or any(x.startswith('MIDZ_RUNTIME') for x in lines)):
+        raise ValueError('continuous receipts cannot qualify a finite capture')
     if sorted(ack)!=[KEY+' cpu='+mode,KEY+' gpu='+mode]:
         raise ValueError('missing, malformed or duplicated CPU/GPU journal acknowledgment')
     if mode=='capture':return dict(mode=mode,independent_event_journals=True)
@@ -126,5 +131,6 @@ def verify(trial,directory):
         if (row['submitted']!=4*count or row['written']!=row['submitted']
                 or not 0<=row['peak_bytes']<=512*1024*1024):
             raise ValueError('quiet writer completion mismatch '+tag)
-    return dict(mode=mode,independent_event_journals=False,continuous=False,receipts=receipts,
-        scope='Native completion summaries; independent input and optional snapshot checks are separate. No saved per-event ownership proof.')
+    return dict(mode=mode,independent_event_journals=False,continuous=continuous,receipts=receipts,
+        capture_completed=not continuous,
+        scope='Native transaction completion summaries; independent input and optional snapshot checks are separate. No saved per-event ownership proof. Continuous mode does not establish finite-capture completion.')

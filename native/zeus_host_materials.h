@@ -82,8 +82,9 @@ inline uint32_t get32(const uint8_t *wire) {
 inline bool palette_shape(const Palette &row) {
     return row.control == 0x0084003f && uint64_t(row.base) * 8 + 512 <= 16777216;
 }
-enum class FramePolicy { capture, guest_ready };
+enum class FramePolicy { capture, guest_ready, continuous };
 inline bool frame_valid(uint32_t frame,FramePolicy policy) {
+    if(policy==FramePolicy::continuous)return frame!=0;
     return (policy==FramePolicy::capture || policy==FramePolicy::guest_ready) &&
         frame>=(policy==FramePolicy::guest_ready?1u:1800u) && frame<=16001;
 }

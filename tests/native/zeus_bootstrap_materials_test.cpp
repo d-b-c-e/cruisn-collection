@@ -35,4 +35,20 @@ int main() {
     assert(accept_retained(p,image,ready) && image.generation()==2 && image.image_hash()==hash);
     assert(!accept_retained(p,image,ready));
     assert(!frame_valid(1385,static_cast<FramePolicy>(99)));
+    // The same packet layout is used after the former diagnostic upper bound.
+    const auto runtime=FramePolicy::continuous;
+    for(uint32_t frame:{1u,1385u,1800u,16001u,16002u,1000000u,UINT32_MAX}) {
+        p.frame=frame;p.scene=3;
+        assert(retain(p,image,runtime));
+        assert(encode(p,bytes,runtime) && decode(bytes.data(),bytes.size(),decoded,runtime));
+        assert(decoded.frame==frame && encode(decoded,copy,runtime) && bytes==copy);
+        if(frame>=1800 && frame<=16001)assert(encode(p,copy) && copy==bytes);
+        else assert(!decode(bytes.data(),bytes.size(),decoded));
+        wide.materials=p;margin.materials=p;
+        assert(zeus_wide::encode(wide,copy,runtime) && zeus_wide::decode(copy.data(),copy.size(),wd,runtime));
+        assert(wd.materials.frame==frame);
+        assert(zeus_margin::encode(margin,copy,runtime) && zeus_margin::decode(copy.data(),copy.size(),md,runtime));
+        assert(md.materials.frame==frame);
+    }
+    p.frame=0;assert(!retain(p,image,runtime) && !encode(p,copy,runtime));
 }

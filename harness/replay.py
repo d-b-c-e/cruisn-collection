@@ -26,6 +26,7 @@ import exotica_visibility
 import exotica_scene_options
 import exotica_lifetimes
 import exotica_shutdown
+import exotica_runtime
 import exotica_waiting
 import exotica_handover
 import exotica_model_endpoint
@@ -116,6 +117,7 @@ def main(argv=None):
     exotica_journals.add_arguments(ap)
     exotica_bootstrap.add_arguments(ap)
     exotica_shutdown.add_arguments(ap)
+    exotica_runtime.add_arguments(ap)
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
@@ -314,6 +316,10 @@ def main(argv=None):
         if bootstrap_trial:report['exotica_bootstrap']=bootstrap_trial
         shutdown_trial=exotica_shutdown.configure(args,manifest['rom'],manifest['settings'])
         if shutdown_trial:report['exotica_shutdown']=shutdown_trial
+        runtime_trial=exotica_runtime.configure(args,manifest['rom'],manifest['settings'])
+        if runtime_trial:
+            report['exotica_runtime']=runtime_trial
+            journal_trial['continuous']=True
         worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
         if worker_trial:report['ffb_worker']=worker_trial
         # A screenshot can finish before later private scenes/materials. Drain
@@ -463,7 +469,9 @@ def main(argv=None):
             if waiting_trial and waiting_trial.get('mode')=='observe':
                 waiting_trial['lifetime']=dict(lifetime_trial)
         exotica_bootstrap.resolve_scenes(bootstrap_trial,bootstrap_result,scene_trial,waiting_trial,handover_trial,endpoint_trial)
-        journal_result=exotica_journals.verify(journal_trial,runtime)
+        runtime_result=exotica_runtime.verify(runtime_trial,runtime,shutdown_result)
+        if runtime_result:report['exotica_runtime']['result']=runtime_result
+        journal_result=exotica_journals.verify(journal_trial,runtime,runtime_result=runtime_result)
         if journal_result:report['exotica_journals']['result']=journal_result
         if not journal_trial or journal_trial['mode']!='quiet':
             scene_result=exotica_scene_options.verify_receipt(scene_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
