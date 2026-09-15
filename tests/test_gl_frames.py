@@ -8,10 +8,20 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
 from gl_frames import (compare_completed_frames, read_completed_frames, main,
-                       requested_frames, recorded_capture_request, IncompleteCaptureError)
+                       requested_frames, recorded_capture_request, IncompleteCaptureError,
+                       completion_drain_target)
 
 
 class CompletedGlTests(unittest.TestCase):
+    def test_zeus_drain_covers_scenes_after_last_screenshot(self):
+        self.assertEqual(completion_drain_target('MIDZ',5300,range(5216,5271)),5299)
+        self.assertEqual(completion_drain_target('MIDZ',5300,depth_observation=True),5299)
+        self.assertIsNone(completion_drain_target('MIDZ',5300))
+        self.assertEqual(completion_drain_target('MIDV',5300,[5270]),5270)
+        self.assertEqual(completion_drain_target('MIDV',5300,[5300]),5300)
+        with self.assertRaises(ValueError):completion_drain_target('MIDZ',5300,[5300])
+        with self.assertRaises(ValueError):completion_drain_target('MIDV',5300,depth_observation=True)
+
     def run_fixture(self, path, prefix='MIDZ', frames=(6538, 6545)):
         path.mkdir()
         self.fixture(path/'gl-snap', frames)

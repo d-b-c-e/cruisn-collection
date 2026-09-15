@@ -19,7 +19,7 @@ from run_capture import ARTIFACTS
 from session_case import compare_evidence, prepare_run, session_evidence, tree_hashes, set_option
 from verification import sha256_file, write_json, required_files
 from session_clock import SessionClock, position
-from gl_frames import requested_frames, read_completed_frames, IncompleteCaptureError
+from gl_frames import requested_frames, read_completed_frames, IncompleteCaptureError, completion_drain_target
 import world_distance
 import usa_distance
 import exotica_visibility
@@ -197,10 +197,6 @@ def main(argv=None):
                     stop_frame=reference['frames'] if gl_key=='MIDZ' else None)
                 overrides.update({gl_key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',
                     SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_EVERY=str(args.gl_every),SNAP_MAX=str(args.gl_max)).items()})
-                # New candidates can finish queued captures before teardown.
-                # Old binaries ignore this request; strict image validation
-                # still applies equally to both.
-                overrides[gl_key+'_GL_DRAIN_FRAME']=str(expected_gl[-1])
                 if args.gl_capture_pacing:
                     overrides[gl_key+'_CAPTURE_PACE'] = '1'
             if args.gl_log:
@@ -296,6 +292,14 @@ def main(argv=None):
         if offroad_host_trial:report['offroad_host_scenery']=offroad_host_trial
         worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
         if worker_trial:report['ffb_worker']=worker_trial
+        # A screenshot can finish before later private scenes/materials. Drain
+        # through the last completed Zeus frame, including runs without captures.
+        # Older binaries may ignore this; strict receipt validation still applies.
+        drain = completion_drain_target(gl_key, reference['frames'], expected_gl if args.gl_capture else (),
+            depth_observation=bool(depth_trial and depth_trial.get('enabled')))
+        if drain is not None:
+            manifest['settings'][gl_key+'_GL_DRAIN_FRAME'] = str(drain)
+            report['completion_drain_frame'] = drain
         ffb_worker.prepare(worker_trial,work)
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)

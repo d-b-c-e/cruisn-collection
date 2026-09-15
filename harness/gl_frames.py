@@ -40,6 +40,25 @@ def requested_frames(first, last, every, budget=None, *, stop_frame=None):
     return frames
 
 
+def completion_drain_target(renderer, stop_frame, captures=(), *, depth_observation=False):
+    """Finish queued Zeus work beyond the last screenshot before teardown.
+
+    The stop frame is the input recorder's stop, not an extra emulated frame.
+    V-Unit retains its existing capture-bound drain convention.
+    """
+    if renderer not in ('MIDV', 'MIDZ') or stop_frame < 1:
+        raise ValueError('invalid renderer or replay stop for GL drain')
+    captures = tuple(captures)
+    if depth_observation and renderer != 'MIDZ':
+        raise ValueError('private depth observation requires Zeus')
+    if not captures and not depth_observation:
+        return None
+    if captures and (min(captures) < 0 or max(captures) > stop_frame or
+                     (renderer == 'MIDZ' and max(captures) == stop_frame)):
+        raise ValueError('GL drain capture exceeds completed replay frames')
+    return stop_frame - 1 if renderer == 'MIDZ' else max(captures)
+
+
 def recorded_capture_request(run):
     """Recover explicit capture cadence from the actual isolated invocation.
 
