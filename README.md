@@ -47,22 +47,23 @@ is not yet normalized across games; see the
 [measurement and acceptance plan](docs/FFB-NORMALIZATION.md).
 
 Separate **host scenery prototypes for all four games** now decode upcoming
-sections without changing guest simulation. World, USA and Off Road have measured
-earlier scenery; Exotica's private renderer has repeatable display comparisons
-but still needs faster preparation and smooth fade transitions. A new Exotica
-study finds a several-second gap between scenery allocation and drawing; an
-offline continuation prototype adds visible distant trees through that gap.
-Live observation now reproduces those waiting selections and geometry and
-filters copies the original game starts drawing later in the same scene.
-The new [live waiting-draw candidate](docs/reviews/2026-09-13-exotica-waiting-draw.md)
-preserves proposal textures and adds visible trees in a full Amazon replay.
-Smooth transitions and normal-speed performance remain unfinished.
-The attended Off Road full-course recording has also exposed and helped fix a
-final-section stop in its host renderer.
+sections without changing guest simulation. All four have measured earlier
+scenery on recorded routes. Exotica now combines future, waiting and active
+scenery and has continuous 4K checks through the original game's fade handover.
+Off Road's full El Paso drive demonstrates repeatable 3× gains over 2× and helped
+fix a final-section stop. USA's host filtering substantially reduces offscreen
+work, although its busiest measured interval remains slightly below full speed.
+World supports both 2.4 and 2.5, including their separate road formats.
+
+These results do **not** eliminate pop-in. The first native World distance-fade
+trial has a small visible effect in Hawaii and no visible effect in the tested
+Germany window. Off Road's new partial-section recovery restores submitted
+geometry but changes none of its targeted town screenshots. Such negative
+results stay separate from useful visual improvements.
 These are **undeployed CLI candidates**. The launcher
 distance menus still use the earlier guest-distance experiments. Useful 3× gains
 are uneven, and performance, ground continuity, materials and broader track
-coverage remain unfinished. See the [current four-game assessment](docs/reviews/2026-09-10-scenery-parity-status.md)
+coverage remain unfinished. See the [current release-parity checklist](docs/reviews/2026-09-15-parity-remaining-work.md)
 and [roadmap](ROADMAP.md). Ordinary launcher sessions do not enable these prototypes.
 
 - [Setup, controls, telemetry and troubleshooting](docs/INSTALL.md)

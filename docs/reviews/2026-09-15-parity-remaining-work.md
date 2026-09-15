@@ -45,6 +45,17 @@ Do not run another whole drive merely to inflate submission counts.
 
 ## Next decisions
 
+The subsequent [World fade comparison](2026-09-15-world-germany-distance-fade.md)
+preserves the Germany drive and all 31 completed current-4K images, but changes
+none of them. The earlier World2.5 positive effect is small. Neither result
+establishes a useful general solution to pop-in or repairs the left road wedge.
+Off Road now has [verified optional camera depths](2026-09-15-offroad-camera-depth.md)
+and a [gated partial-frontier recovery](2026-09-15-offroad-partial-frontier.md).
+The latter restores 235 polygons in a captured town scene but changes none of
+its 11 completed images. Keep these experimental controls out of product
+promotion until there is a demonstrated completed-image benefit. Do not repeat
+those same windows merely to obtain a positive result.
+
 1. The [seven-case default suite now passes](2026-09-15-combined-default-regressions.md)
    on the combined native candidate. Retain that result; do not repeat it without
    a new change or unresolved concern. Package/fresh-install/attended gates remain.
