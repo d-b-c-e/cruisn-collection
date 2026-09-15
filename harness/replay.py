@@ -12,7 +12,7 @@ import subprocess
 import sys
 import shutil
 
-from diagnostic_runtime import execute, new_run, ROOT
+from diagnostic_runtime import execute, execution_failure, new_run, ROOT
 from raw_snapshots import convert_raw_snapshots
 from game_patch import read_patch, verify_patch_ram, late_patch_lua
 from run_capture import ARTIFACTS
@@ -407,8 +407,10 @@ def main(argv=None):
         # path so the same strict evidence validator serves both paths.
         if (runtime / "stdout.log").exists():
             (runtime / "launch.log").write_bytes((runtime / "stdout.log").read_bytes())
-        if invocation["error"]:
-            raise ValueError(invocation["error"])
+        stderr_path=runtime/'stderr.log'
+        failure=execution_failure(invocation,stderr_path.read_text(encoding='utf-8',errors='replace') if stderr_path.exists() else '')
+        if failure:
+            raise ValueError(failure)
         if env.get(gl_key+'_CAPTURE_PACE') == '1':
             from capture_writer import verify as verify_writer
             verify_writer((runtime/'stderr.log').read_text(encoding='utf-8', errors='replace'), require_pacing=True)

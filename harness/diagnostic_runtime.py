@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import os
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -11,6 +12,17 @@ import time
 from verification import sha256_file, write_json
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def execution_failure(invocation, stderr):
+    """Keep the emulator's cause ahead of secondary incomplete-capture errors."""
+    if invocation.get('error'):
+        return invocation['error']
+    if invocation.get('returncode') != 0:
+        fatal = re.search(r'^Fatal error:[ \t]*(.+)$', stderr, re.MULTILINE)
+        detail = ': ' + fatal.group(1).strip()[:1000] if fatal else ''
+        return f"emulator exit code {invocation.get('returncode')}{detail}"
+    return None
 
 
 def new_run(kind, output=None):
