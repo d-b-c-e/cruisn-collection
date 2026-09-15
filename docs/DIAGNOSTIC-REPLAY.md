@@ -198,8 +198,9 @@ python harness/replay.py results/diagnostics/my-drive --headless --snapshot-mode
 Overrides and the replacement diagnostic script hash are retained in the report;
 the original case is never edited. `--until-frame` explicitly compares only the
 requested prefix, still checking every input/time and sampled image in that
-prefix. `--capture-state` retains quads and native RAM at stop-minus-two, matching
-the offline renderer's completed-scene convention. Missing dump files fail.
+prefix. `--capture-state` retains quads and native RAM at stop-minus-two. The
+default offline renderer selects a completed **draw page**, which can differ
+from the page displayed onscreen. Missing dump files fail.
 New native candidates use a bounded background writer for enhanced-renderer BMPs.
 The ordinary path rejects an overflowing capture queue and the harness marks the
 run incomplete. For dense offline ranges, explicitly add `--gl-capture-pacing`
@@ -314,6 +315,35 @@ that the recorded scene is correct, compare every displayed pixel between
 snapshots, or establish live GL determinism. A candidate that intentionally
 changes native output should fail and receive an explicit reviewed reference
 update; the harness never blesses it automatically.
+
+## Select the scene actually displayed
+
+For a V-Unit run with both `--capture-state` and a completed
+`--vunit-original-mirror-frame` capture, use the same run's renderer receipt to
+select the original commands:
+
+```powershell
+python harness/vunit_display_scene.py results/diagnostics/my-run/run --report results/diagnostics/my-run/display-scene.json --quads results/diagnostics/my-run/display-scene.npz
+```
+
+The selector uses `vunit-mirror.json`'s count of consumed original commands, then
+selects its visible physical page. It excludes commands the emulator produced
+after that GPU capture, even if a longer recording continued for many seconds.
+Do not substitute the final draw buffer or assume a fixed frame offset. The
+report records the exact command ranges, their frame stamps, the consumed-prefix
+hash and the prior same-page group. Partial journals and inconsistent receipts
+fail rather than silently truncating input.
+
+The optional NPZ contains original `current` and `history` DMA arrays; keep it
+with the ignored local diagnostic resources. This is scene selection, not a
+complete rendering proof. CPU overlays, current palette/texture contents, host
+layers, margin clears and older framebuffer history still require their own
+reconstruction. The default `gpu/renderer.py` draw-page behavior is unchanged.
+
+The first qualification matches three retained Germany captures at completed
+7280/7340, including the exact scene used by the
+[road coverage repair](reviews/2026-09-15-world-road-polygon-coverage.md).
+No additional game execution is required to select or recheck these saved scenes.
 
 ## Generate an unattended driving case
 

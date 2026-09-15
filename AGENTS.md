@@ -29,11 +29,15 @@ World25 polygon-coverage6000inputs4191camera12573ADC PASS; all8planes5900/resour
 1280x720completedimageexact;1666source rowsstable +75q. Metadata(no fade)4121980
 packets195330roads,5922captured producer/consumerbytesexact. Germany preselected
 5000..6500 speed100.0044->100.0084%,prepare1.22865->1.23872s; no further timing run.
-No game/build/test now. NEXT improve reusable displayed-page selection: mirror
-ordinary_quads is exact consumed original DMA prefix (7280 count3756893; raw
-through7280 has3756898, five later background commands). Select visible physical
-page from that prefix, not final draw page or guessed frame subtraction. Verify
-against saved7277/7340/World25 evidence; no new game needed for harness work.
+No game/build/test now. Reusable harness/vunit_display_scene.py now selects the
+visible physical page using mirror ordinary_quads consumed-prefix fence, not the
+final draw page or guessed frame subtraction. Five testsPASS; three actualGermany
+captures7277/7340 current+historyexact,1M+latercommands excludedinfullcaptures.
+FullprefixSHA retained; standalone selection is NOTmaterial/CPU/pixelacceptance.
+Documented DIAGNOSTIC-REPLAY.md. No newgame/buildneeded. Next investigate useful
+completed-image far visibility using retained Exotica sources; prior5644 immediate
+removal correspondence was NOT a full completed composition, so do not equate it
+with proof of occlusion. Read parity-remaining-work and inspect saved pipeline first.
 No broaddefault suite/repeatedtiming runs. Personal87d/publicv0.5.0unchanged.
 No deploy/release/hostedCI/physicalFFB/menuremoval. Current4Kmonitor, serialrig.
 Continue directly after checkpoints while parity work remains.

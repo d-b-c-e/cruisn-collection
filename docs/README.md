@@ -1,6 +1,6 @@
 # Documentation
 
-Current guides describe the source checkout as of 2026-09-11. The published
+Current guides describe the source checkout as of 2026-09-15. The published
 **v0.5.0** ZIP is the accepted baseline; v0.4.0 remains preserved for rollback.
 Check the release notes before
 assuming that a source feature is present in a downloaded package.
@@ -21,6 +21,8 @@ assuming that a source feature is present in a downloaded package.
 | [Actual force worker](reviews/2026-09-11-ffb-actual-worker.md) | Device-free worker timing, gates, conditioning and independent stage verification |
 | [Worker window measurements](reviews/2026-09-11-ffb-worker-windows.md) | Conservative host/game clock joins, time-weighted output and remaining calibration-drive coverage |
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
+| [Remaining scenery release gates](reviews/2026-09-15-parity-remaining-work.md) | Current four-game evidence, unresolved coverage and the work needed before promotion |
+| [World road coverage repair](reviews/2026-09-15-world-road-polygon-coverage.md) | Verified Germany margin repair, World 2.5 compatibility and displayed-scene diagnostics |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |
 | [Exotica marked fades and handover](reviews/2026-09-14-exotica-marked-fades.md) | Corrected offline endpoint, completed-pixel differences and the original-fade transition risk |
