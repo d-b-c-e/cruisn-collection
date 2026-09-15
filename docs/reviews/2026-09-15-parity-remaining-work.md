@@ -43,6 +43,15 @@ intermediate contribution cannot yet be claimed to soften a visible boundary.
 The existing7188 completed future-only removal likewise finds no visible gain.
 Do not run another whole drive merely to inflate submission counts.
 
+The [subsequent sample-selection investigation](2026-09-15-exotica-distance-sample-selection.md)
+finds no uncovered active object in nine saved Exotica views. A completed2x/3x
+comparison is exact at three snapshots, but those scenes have no third-band
+polygons and do not establish outer-boundary quality. The two sampled scenes
+with substantial third-band geometry produce no colored fragments when screened
+against their completed depth. Use the new saved-band preflight and seek a more
+open sightline before another distance replay; retain the existing Amazon case
+for its useful margin and handover coverage.
+
 ## Next decisions
 
 The [active-road margin recovery](2026-09-15-world-active-road-margins.md) now

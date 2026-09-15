@@ -1,5 +1,30 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 Exotica sample selection — no additional runtime change
+
+Read docs/reviews/2026-09-15-exotica-distance-sample-selection.md. Nine saved
+active views/seven frames: one stock-far candidate(slot137047 generation36074)
+at5072/5080 is already retained with16 waitingquads, firstoriginal5132. No proven
+post-first-draw coverage hole. At5644 all26535 outer affected pixels receive
+nearer depth BEFORE waiting. Offline third-band probes5644/7187 exact immediate
+controls;3746/3139quads yieldZEROcoloredfragments againstcompleteddepth. This is
+sample selection, NOT full command ownership/transparency/updated7187fade proof.
+
+One frozen-c7e samecandidate2x5300inputs PASS, exactcamera/ADC/lifetimes/original
+models/resources/originaltargets. Three completedS4privatecolor/depth5073/5081/
+5220 EXACT3x. Weak selection: allthreefuture/waiting sampleshaveZEROthirdband;
+do NOTrepeat. Initial4KattemptpreflightFAILretained, nogamelaunch. Currentmonitor
+3440x1440 confirmed; internalcomparison NOTnew4Kacceptance. New reusable
+harness/exotica_distance_samples.py checksorderedinstancebands+quadcounts;
+--require-third-band rejects emptyselections, notavisibilityproof.2focusedtests
+PASS; actual5072zero/5644has3746. Docs trackcoverageupdatedfullElPaso/Amazon,
+risk-basedcomparisons insteadofautomaticfullmultipliermatrix. LOCALR active-far-
+gap-audit,temporal-multiplier2(-internal),temporal-multiplier-qualified,
+third-band-completed-depth,distance-sample-selection. No native change/build.
+Native0ce/personal87d/publicv0.5.0unchanged. No game/test now. Optional new Exotica
+open-sightline recording question pending; no attendedlaunchuntilreply. Continue
+other paritywork meanwhile. No deploy/release/hostedCI/physicalFFB/menu removal.
+
 ## September15 polygon road coverage — both World revisions qualified
 
 Read docs/reviews/2026-09-15-world-road-polygon-coverage.md. Native0ce0f02457a frozen
