@@ -18,6 +18,7 @@ class CompletedGlTests(unittest.TestCase):
                 requested_frames(7180,last,1,stop_frame=7220)
 
     def test_capture_preflight_counts_global_cadence(self):
+        self.assertEqual(list(requested_frames(9240, 9240, 1, 1)), [9240])
         self.assertEqual(list(requested_frames(31, 35, 2, 2)), [32, 34])
         for args in ((31,35,2,1), (31,31,2), (0,10,0), (-1,5,1)):
             with self.subTest(args=args), self.assertRaises(ValueError):

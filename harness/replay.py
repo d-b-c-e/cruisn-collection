@@ -191,7 +191,7 @@ def main(argv=None):
                                   gl_key+'_GL_STALL_MS':str(stall_ms), gl_key+'_GL_LOG':'1'})
             if args.gl_capture:
                 first, last = map(int, args.gl_capture.split(":"))
-                if not 0 <= first < last <= reference["frames"]:
+                if not 0 <= first <= last <= reference["frames"]:
                     raise ValueError("GL interval must be within the recorded frames")
                 expected_gl = requested_frames(first, last, args.gl_every, args.gl_max,
                     stop_frame=reference['frames'] if gl_key=='MIDZ' else None)
