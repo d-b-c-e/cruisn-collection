@@ -16,7 +16,8 @@ int main(int argc,char **argv)
 {
     try
     {
-        const bool scene_mode=argc==6 && std::string(argv[1])=="--scene";
+        const bool clip_admission=argc==7 && std::string(argv[6])=="--clip-admission";
+        const bool scene_mode=(argc==6 || clip_admission) && std::string(argv[1])=="--scene";
         if(!scene_mode && (argc!=4 || (std::string(argv[1])!="--future" && std::string(argv[1])!="--loaded")))return 2;
         const unsigned offset=scene_mode?4:2;
         const auto ram=load(argv[offset],0x80000),rom=load(argv[offset+1],0x1000000);
@@ -31,7 +32,7 @@ int main(int argc,char **argv)
             cruisn::offroad_host::Cache cache;cruisn::offroad_host::Scene scene;
             for(unsigned pass=0;pass<2;++pass)
             {
-                if(!cruisn::offroad_host::build(read,scene,multiplier,mode=="future",cache))
+                if(!cruisn::offroad_host::build(read,scene,multiplier,mode=="future",cache,clip_admission))
                     throw std::runtime_error("Off Road host scene rejected");
                 std::cout<<scene.pending<<' '<<scene.future<<' '<<scene.unsupported<<' '<<scene.near<<' '<<scene.far<<' '
                     <<scene.projection<<' '<<scene.material<<' '<<scene.pretrack<<' '<<scene.partial<<' '<<scene.deferred<<' '<<scene.objects.size()<<'\n';

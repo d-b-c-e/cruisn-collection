@@ -42,8 +42,8 @@ def host_project(vertices, matrix, origin, read, multiplier):
     return points
 
 
-def scene(read, multiplier, use_future):
-    if multiplier not in (1, 2, 3):
+def scene(read, multiplier, use_future, *, clip_admission=False):
+    if multiplier not in (1, 2, 3) or (clip_admission and (multiplier != 3 or not use_future)):
         raise ValueError('host multiplier')
     f = frontier(read)
     counts = Counter(dict(pending=0, future=0, unsupported=0, near=0, far=0,
@@ -92,7 +92,7 @@ def scene(read, multiplier, use_future):
         if nearest.value() < 1000:
             counts['near'] += 1
             continue
-        if nearest.value() >= 47296*multiplier:
+        if nearest.value() >= (63680 if clip_admission else 47296)*multiplier:
             counts['far'] += 1
             continue
         r = dict(object_words=obj, view=view, lod_context=context, trig_constants=CONSTANTS)

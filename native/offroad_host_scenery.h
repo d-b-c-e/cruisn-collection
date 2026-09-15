@@ -83,10 +83,11 @@ inline bool material_bound(const Quad &q,const MaterialState &state)
     return uint64_t(q[14])*256+std::min(v+1,255U)*256+std::min(u+1,255U)<state.texture_end;
 }
 
-template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache)
+template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache,
+    bool clip_admission=false)
 {
     result=Scene{};Scene scene;
-    if(!offroad_distance::valid_multiplier(multiplier))return false;
+    if(!offroad_distance::valid_multiplier(multiplier) || (clip_admission && (multiplier!=3 || !use_future)))return false;
     offroad_future::Frontier f;if(!offroad_future::frontier(read,f))return false;
     if(f.pretrack){cache.clear();scene.pretrack=true;result=scene;return true;}
     if(cache.track!=f.track){cache.clear();cache.track=f.track;}
@@ -128,7 +129,10 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
         const auto radius=Float::load(read(o[20]));
         const auto nearest=position[2]-radius;
         if(less(nearest,Float::integer(1000))){++scene.near;continue;}
-        if(!less(nearest,Float::integer(int32_t(offroad_distance::original_far*multiplier)))){++scene.far;continue;}
+        // Candidate-only admission up to the existing projection limit. Every
+        // vertex still passes the unchanged projection/material guards below.
+        const auto admission=clip_admission?offroad_distance::original_clip:offroad_distance::original_far;
+        if(!less(nearest,Float::integer(int32_t(admission*multiplier)))){++scene.far;continue;}
         std::array<uint32_t,12> matrix;
         if(!offroad_transform::prepare(o,view,[&](int32_t i){return read(uint32_t(0xc23e97+i));},matrix))return false;
         const auto lod=offroad_transform::select_lod(o,context).first;

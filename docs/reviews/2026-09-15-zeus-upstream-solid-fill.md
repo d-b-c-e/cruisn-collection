@@ -46,3 +46,18 @@ This refresh examined the two named PRs and recent Zeus source history. It does
 not replace the September10 complete open-PR inventory or claim that every
 currently open PR has been reviewed again. Native, personal and public Exotica
 rendering remain unchanged by this investigation.
+
+## Owned-context follow-up
+
+A neighboring original capture at5071 supplies the missing device contexts:
+240 models reconstruct3,255 ordered original quads byte-exactly, with no model
+exclusions. Re-decoding them with render06 as the solid-color source changes
+none of the19 solid quads; both sources are black. The modified decoder preserves
+all geometry and all other state fields. This is a separate adjacent capture,
+not an assertion that its19 quads are the18 at5072.
+
+This removes the immediate justification for another Exotica replay or broad
+mesh backport to address these particular artifacts. Retain the upstream fix as
+a separately qualified maintenance item. Local `solid-owned-contexts.json` and
+`solid-owned-original-qualified.json` retain the comparison and original-byte
+qualification. No live observer or renderer change was made.

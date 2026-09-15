@@ -30,5 +30,9 @@ int main()
     matrix[11]=Float::integer(502).store();
     assert(!offroad_model::project(model,matrix,Float::integer(256).store(),0x1e03,reciprocal,points,2));
     assert(!offroad_model::project(model,matrix,0,0x1e60,reciprocal,points,2));
-    Cache cache;Scene scene;assert(build(read,scene,1,true,cache) && scene.pretrack && scene.objects.empty());
+    Cache cache;Scene scene;
+    assert(!build(read,scene,2,true,cache,true));
+    assert(!build(read,scene,3,false,cache,true));
+    assert(build(read,scene,3,true,cache,true) && scene.pretrack);
+   assert(build(read,scene,1,true,cache) && scene.pretrack && scene.objects.empty());
 }

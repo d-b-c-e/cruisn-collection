@@ -40908,3 +40908,88 @@ index b27285e0d75..340e676930b 100644
 -- 
 2.55.0.windows.3
 
+From 6ec8b0fbfc540da7c3f6aee35e67564695612c58 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 02:45:12 -0500
+Subject: [PATCH] Gate Off Road host admission at the existing 3x projection
+ limit
+
+---
+ src/mame/midway/cruisn/offroad_host_scenery.h | 10 +++++++---
+ src/mame/midway/midvunit.cpp                  | 10 +++++++++-
+ src/mame/midway/midvunit.h                    |  1 +
+ 3 files changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/offroad_host_scenery.h b/src/mame/midway/cruisn/offroad_host_scenery.h
+index 72a66eb524b..6321c43b897 100644
+--- a/src/mame/midway/cruisn/offroad_host_scenery.h
++++ b/src/mame/midway/cruisn/offroad_host_scenery.h
+@@ -83,10 +83,11 @@ inline bool material_bound(const Quad &q,const MaterialState &state)
+     return uint64_t(q[14])*256+std::min(v+1,255U)*256+std::min(u+1,255U)<state.texture_end;
+ }
+ 
+-template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache)
++template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache,
++    bool clip_admission=false)
+ {
+     result=Scene{};Scene scene;
+-    if(!offroad_distance::valid_multiplier(multiplier))return false;
++    if(!offroad_distance::valid_multiplier(multiplier) || (clip_admission && (multiplier!=3 || !use_future)))return false;
+     offroad_future::Frontier f;if(!offroad_future::frontier(read,f))return false;
+     if(f.pretrack){cache.clear();scene.pretrack=true;result=scene;return true;}
+     if(cache.track!=f.track){cache.clear();cache.track=f.track;}
+@@ -128,7 +129,10 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
+         const auto radius=Float::load(read(o[20]));
+         const auto nearest=position[2]-radius;
+         if(less(nearest,Float::integer(1000))){++scene.near;continue;}
+-        if(!less(nearest,Float::integer(int32_t(offroad_distance::original_far*multiplier)))){++scene.far;continue;}
++        // Candidate-only admission up to the existing projection limit. Every
++        // vertex still passes the unchanged projection/material guards below.
++        const auto admission=clip_admission?offroad_distance::original_clip:offroad_distance::original_far;
++        if(!less(nearest,Float::integer(int32_t(admission*multiplier)))){++scene.far;continue;}
+         std::array<uint32_t,12> matrix;
+         if(!offroad_transform::prepare(o,view,[&](int32_t i){return read(uint32_t(0xc23e97+i));},matrix))return false;
+         const auto lod=offroad_transform::select_lod(o,context).first;
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 2ad779a710d..c48749bb62b 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -117,6 +117,14 @@ void midvunit_base_state::offroad_host_start()
+ 		if(strlen(distance)!=1 || *distance<'1' || *distance>'3')fatalerror("Off Road host distance requires 1/2/3\n");
+ 		m_offroad_host_multiplier=uint32_t(*distance-'0');
+ 	}
++	if(const char *admission=std::getenv("MIDV_OFFROAD_HOST_CLIP_ADMISSION"))
++	{
++		if(strcmp(admission,"0") && strcmp(admission,"1"))fatalerror("Invalid Off Road host admission\n");
++		m_offroad_host_clip_admission=!strcmp(admission,"1");
++		const char *ffb=std::getenv("MIDV_FFB");
++		if(m_offroad_host_clip_admission && (m_host_mode!=2 || m_offroad_host_multiplier!=3 || !m_host_future || !ffb || strcmp(ffb,"0")))
++			fatalerror("Off Road clip admission requires 3x future draw and physical FFB0\n");
++	}
+ 	if(const char *layer=std::getenv("MIDV_OFFROAD_HOST_LAYER"))
+ 	{
+ 		if(strlen(layer)!=1 || *layer<'0' || *layer>'3')fatalerror("Invalid Off Road host layer\n");
+@@ -158,7 +166,7 @@ void midvunit_base_state::offroad_host_start()
+ 				!cruisn::offroad_future::code_matches(read))fatalerror("Off Road host revision/stock-code guard failed\n");
+ 			const auto guarded=std::chrono::steady_clock::now();
+ 			cruisn::offroad_host::Scene scene;
+-			if(!cruisn::offroad_host::build(read,scene,m_offroad_host_multiplier,m_host_future,m_offroad_host_cache))
++			if(!cruisn::offroad_host::build(read,scene,m_offroad_host_multiplier,m_host_future,m_offroad_host_cache,m_offroad_host_clip_admission))
+ 				fatalerror("Off Road host scene/model/material guard failed at frame %llu\n",(unsigned long long)frame);
+ 			const auto prepared=std::chrono::steady_clock::now();
+ 			std::vector<std::array<uint16_t,16>> quads;
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index 8ecfcb16b8f..431ba763ed3 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -198,6 +198,7 @@ protected:
+ 	cruisn::usa_host::ModelCache m_usa_model_cache;
+ 	cruisn::offroad_host::Cache m_offroad_host_cache;
+ 	uint32_t m_offroad_host_multiplier = 1;
++	bool m_offroad_host_clip_admission = false;
+ 	memory_passthrough_handler m_usa_far_tap, m_usa_reciprocal_tap, m_usa_residency_tap;
+ 	uint32_t m_usa_far = 0, m_usa_max_index = 0;
+ 	bool m_usa_residency = false;
+-- 
+2.55.0.windows.3
+

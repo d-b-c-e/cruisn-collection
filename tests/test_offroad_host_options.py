@@ -58,6 +58,29 @@ class OffroadHostOptionsTests(unittest.TestCase):
             bad = dict(settings); bad['MIDV_OFFROAD_HOST_'+name] = value
             with self.assertRaises(ValueError): configure(self.args(), 'offroadc', bad)
 
+    def test_clip_admission_gate_and_replay(self):
+        args = self.trial(); args.candidate = 'private-candidate'
+        args.offroad_host_admission = 'clip'
+        settings = dict(MIDV_GL='1', MIDV_FFB='0')
+        self.assertEqual(configure(args, 'offroadc', settings)['admission'], 'clip')
+        inherited = self.args(); inherited.candidate = args.candidate
+        self.assertEqual(configure(inherited, 'offroadc', settings)['admission'], 'clip')
+        for key, value in [('candidate', None), ('offroad_host_distance', 2),
+                           ('offroad_host_source', 'pending'), ('offroad_host_scenery', 'observe')]:
+            bad = copy.copy(args); setattr(bad, key, value)
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                configure(bad, 'offroadc', dict(MIDV_GL='1', MIDV_FFB='0'))
+        with self.assertRaises(ValueError): configure(args, 'offroadc', dict(MIDV_GL='1', MIDV_FFB='1'))
+        args.offroad_host_admission = 'stock'; configure(args, 'offroadc', settings)
+        self.assertEqual(settings['MIDV_OFFROAD_HOST_CLIP_ADMISSION'], '0')
+        args.offroad_host_admission = None; configure(args, 'offroadc', settings)
+        self.assertNotIn('MIDV_OFFROAD_HOST_CLIP_ADMISSION', settings)
+        settings['MIDV_OFFROAD_HOST_CLIP_ADMISSION'] = '1'
+        configure(self.args('--offroad-host-scenery', 'off'), 'offroadc', settings)
+        self.assertNotIn('MIDV_OFFROAD_HOST_CLIP_ADMISSION', settings)
+        with self.assertRaises(ValueError):
+            configure(self.args(), 'offroadc', dict(MIDV_OFFROAD_HOST_CLIP_ADMISSION='1'))
+
 
 if __name__ == '__main__':
     unittest.main()
