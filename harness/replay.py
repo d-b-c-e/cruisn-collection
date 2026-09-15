@@ -300,13 +300,12 @@ def main(argv=None):
         runtime = work / "run"
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
         if args.display_size:
-            from display_target import choose_size,monitors
+            from display_target import choose_size,monitors,apply_window_target
             target=choose_size(args.display_size,monitors())
-            command=set_option(command,'-screen',target['selected']['device'])
-            command=set_option(command,'-resolution','x'.join(map(str,args.display_size)))
-            command=[arg for arg in command if arg!='-nomaximize']
-            command+=['-maximize']
+            zeus_overlay=gl_key=='MIDZ' and env.get('MIDZ_GL')=='1' and not args.native_renderer
+            command=apply_window_target(command,target,zeus_overlay=zeus_overlay)
             report['display_target']=target
+            report['display_owner_policy']='native-size owner, monitor-sized Zeus overlay' if zeus_overlay else 'maximized presentation window'
         if args.zeus_capture_frame is not None:
             zeus_capture_directory=runtime/'zeus-capture';zeus_capture_directory.mkdir()
             env.update(MIDZ_CAPTURE=str(zeus_capture_directory),MIDZ_CAPTURE_FRAME=str(args.zeus_capture_frame),MIDZ_CAPTURE_MINQUADS='0')

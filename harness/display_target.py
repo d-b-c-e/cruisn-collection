@@ -21,6 +21,23 @@ def choose_size(size,available):
     return {'reference_size':list(size),'selected':next((m for m in matching if m['primary']),matching[0]),'available':available}
 
 
+def apply_window_target(command, target, *, zeus_overlay=False):
+    """Select a display without scaling Zeus's covered GDI owner to that display.
+
+    Zeus presents on its owner's entire monitor independently of owner bounds.
+    VUnit and native controls present at their actual MAME window dimensions.
+    """
+    from session_case import set_option
+    command = set_option(command, '-screen', target['selected']['device'])
+    command = [arg for arg in command if arg not in ('-maximize', '-nomaximize')]
+    if zeus_overlay:
+        command = set_option(command, '-resolution', 'auto')
+        command = [arg for arg in command if arg not in ('-window', '-nowindow')]
+        return command + ['-window', '-nomaximize']
+    command = set_option(command, '-resolution', 'x'.join(map(str, target['reference_size'])))
+    return command + ['-maximize']
+
+
 def monitors():
     if os.name != 'nt': raise ValueError('Zeus monitor-bound captures require Windows display enumeration')
     class MonitorInfo(ctypes.Structure):

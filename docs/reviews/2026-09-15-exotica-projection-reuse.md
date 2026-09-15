@@ -1,5 +1,10 @@
 # Exotica projection reuse: verified CPU saving, modest live gain
 
+Follow-up: the [covered-window correction](2026-09-15-exotica-owner-window.md)
+restores approximately full speed in all three measured windows on this same
+candidate. The low absolute speeds below include a replay harness window-sizing
+regression. The matched CPU assembly saving remains valid.
+
 The model decoder invalidated prepared projection constants on every texture
 command. These commands change texture/mode and the UV exponent, but only the
 exponent changes projection constants. Retain prepared values when that exponent
