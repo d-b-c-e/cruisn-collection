@@ -17,7 +17,7 @@ class OriginalMirrorTests(unittest.TestCase):
         args = SimpleNamespace(vunit_original_mirror_frame=100, candidate='candidate.exe')
         settings = dict(MIDV_GL='1', MIDV_FFB='0')
         self.assertEqual(configure(args, 'crusnwld', settings.copy(), 200), dict(frame=100, auxiliary=False))
-        for rom, changes in [('crusnusa', {}), ('crusnwld', {'MIDV_FFB':'1'}),
+        for rom, changes in [('crusnexo', {}), ('crusnwld', {'MIDV_FFB':'1'}),
                              ('crusnwld', {'MIDV_GL_BATCH_VRAM':'0'}),
                              ('crusnwld', {'MIDV_WORLD_HOST_SCENERY':'2','MIDV_WORLD_HOST_LAYER':'1'})]:
             with self.subTest(rom=rom, changes=changes), self.assertRaises(ValueError):
@@ -28,6 +28,18 @@ class OriginalMirrorTests(unittest.TestCase):
                 configure(SimpleNamespace(**(vars(args) | changes)), 'crusnwld', settings.copy(), 200)
         host = dict(settings, MIDV_WORLD_HOST_SCENERY='2', MIDV_WORLD_HOST_LAYER='3')
         self.assertTrue(configure(args, 'crusnwld24', host, 200)['auxiliary'])
+
+    def test_other_vunit_ownership_without_world_fade(self):
+        args = SimpleNamespace(vunit_original_mirror_frame=100, candidate='candidate.exe')
+        for rom, game in [('crusnusa', 'USA'), ('offroadc', 'OFFROAD')]:
+            settings = {'MIDV_GL':'1', 'MIDV_FFB':'0', f'MIDV_{game}_HOST_SCENERY':'2',
+                        f'MIDV_{game}_HOST_LAYER':'3'}
+            self.assertTrue(configure(args, rom, settings.copy(), 200)['auxiliary'])
+            for layer in ('0','1','2'):
+                with self.assertRaises(ValueError):
+                    configure(args, rom, settings | {f'MIDV_{game}_HOST_LAYER':layer}, 200)
+            with self.assertRaises(ValueError):
+                configure(SimpleNamespace(**(vars(args) | {'world_host_fade_metadata':True})), rom, settings, 200)
 
     def test_explicit_selection_and_missing_receipt(self):
         args = SimpleNamespace(vunit_original_mirror_frame=None)

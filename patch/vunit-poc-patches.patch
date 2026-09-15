@@ -43988,3 +43988,40 @@ index 21324650e65..477c4cd3d81 100644
 -- 
 2.55.0.windows.3
 
+From e1f9ce0f17f9b97bb610c424427b495d2d4ae984 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 10:19:59 -0500
+Subject: [PATCH] Guard original-only mirror ownership for all V-Unit host
+ adapters
+
+---
+ src/mame/midway/midvunit_v.cpp | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 244c5be3082..d44d014f887 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -1140,10 +1140,16 @@ void thread_main()
+ 	if (original_mirror)
+ 	{
+ 		if (!std::getenv("MIDV_FFB") || strcmp(std::getenv("MIDV_FFB"),"0") || mirror_frame<1 || mirror_frame>1000000 ||
+-			(std::getenv("MIDV_GL_BATCH_VRAM") && strcmp(std::getenv("MIDV_GL_BATCH_VRAM"),"1")) ||
+-			(std::getenv("MIDV_WORLD_HOST_SCENERY") && !strcmp(std::getenv("MIDV_WORLD_HOST_SCENERY"),"2") &&
+-			 (!std::getenv("MIDV_WORLD_HOST_LAYER") || strcmp(std::getenv("MIDV_WORLD_HOST_LAYER"),"3"))))
++			(std::getenv("MIDV_GL_BATCH_VRAM") && strcmp(std::getenv("MIDV_GL_BATCH_VRAM"),"1")))
+ 			fatalerror("Original mirror requires FFB0, bounded frame, batched CPU writes and split/tagged host draws\n");
++		for(const char *game:{"WORLD","USA","OFFROAD"})
++		{
++			const std::string prefix=std::string("MIDV_")+game+"_HOST_";
++			const char *mode=std::getenv((prefix+"SCENERY").c_str());
++			const char *layer=std::getenv((prefix+"LAYER").c_str());
++			if(mode && !strcmp(mode,"2") && (!layer || strcmp(layer,"3")))
++				fatalerror("Original mirror requires split/tagged %s host draws\n",game);
++		}
+ 		gl.load1(gl.GetTexImage,"glGetTexImage");
+ 		if(!gl.GetTexImage)fatalerror("Original mirror texture readback unavailable\n");
+ 	}
+-- 
+2.55.0.windows.3
+

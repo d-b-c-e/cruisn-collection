@@ -10,11 +10,12 @@ from pathlib import Path
 
 KEYS = ('MIDV_GL_ORIGINAL_MIRROR', 'MIDV_GL_MIRROR_FRAME', 'MIDV_WORLD_HOST_FADE_METADATA',
         'MIDV_WORLD_HOST_DISTANCE_FADE')
+GAMES = {'crusnusa': 'USA', 'crusnwld24': 'WORLD', 'crusnwld': 'WORLD', 'offroadc': 'OFFROAD'}
 
 
 def add_arguments(parser):
     parser.add_argument('--vunit-original-mirror-frame', type=int,
-                        help='candidate-only World indexed mirror snapshot; physical FFB off')
+                        help='candidate-only V-Unit indexed mirror snapshot; physical FFB off')
     parser.add_argument('--world-host-fade-metadata', action='store_true',
                         help='transport all host depths and authored road flags; no fading yet')
     parser.add_argument('--world-host-distance-fade', action='store_true',
@@ -31,15 +32,19 @@ def configure(args, rom, settings, frames):
         if metadata or any(settings.get(k, '0') != '0' for k in KEYS):
             raise ValueError('original mirror requires explicit replay selection')
         return None
-    if (rom not in ('crusnwld24', 'crusnwld') or not getattr(args, 'candidate', None)
+    if (rom not in GAMES or not getattr(args, 'candidate', None)
             or getattr(args, 'headless', False) or getattr(args, 'native_renderer', False)
             or settings.get('MIDV_GL') != '1' or settings.get('MIDV_FFB') != '0'
             or settings.get('MIDV_GL_BATCH_VRAM', '1') != '1'
             or not 1 <= frame < frames - 1):
-        raise ValueError('original mirror requires candidate World GL, FFB0, batched CPU and a frame before drain')
-    host = settings.get('MIDV_WORLD_HOST_SCENERY', '0') == '2'
-    if host and settings.get('MIDV_WORLD_HOST_LAYER') != '3':
+        raise ValueError('original mirror requires candidate V-Unit GL, FFB0, batched CPU and a frame before drain')
+    prefix = 'MIDV_' + GAMES[rom] + '_HOST_'
+    host = settings.get(prefix+'SCENERY', '0') == '2'
+    if host and settings.get(prefix+'LAYER') != '3':
         raise ValueError('original mirror requires split and tagged host ownership')
+    if GAMES[rom] != 'WORLD' and (metadata or fade or
+            any(settings.get(k, '0') != '0' for k in KEYS[2:])):
+        raise ValueError('World fade metadata does not apply to other V-Unit games')
     result = dict(frame=frame, auxiliary=host)
     if settings.get('MIDV_WORLD_HOST_ACTIVE_ROADS') == '1':
         result['margin_coverage'] = True

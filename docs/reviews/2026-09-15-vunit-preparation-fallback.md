@@ -78,7 +78,43 @@ Local evidence under `results/diagnostics/world25-roads-20260914/`:
 the corresponding immutable run/plan directories and
 `host-failure-native-export.json`. Raw game resources remain local.
 
-Before product use: qualify the other V-Unit paths, define Exotica's separate
+Before product use: finish the separate qualifications below, define Exotica's
 failure boundaries, and provide continuous operation and visible player-facing
 status. A fallback preserves a playable baseline; it does not repair the rejected
 scene or fulfill extended-distance parity.
+
+## USA and Off Road qualification
+
+The next isolated change extends the existing original-only mirror to USA and
+Off Road. The replay harness configures their host options before validating
+mirror ownership. Both native and harness checks require split/tagged host
+submissions. World fade metadata remains World-only. Seven focused mirror tests
+pass; this changes no ordinary shader, source admission or rendering policy.
+
+One retained route prefix per adapter then exercises the same failure latch:
+
+| Game | Inputs completed | Failure / last extra scene | Camera / ADC rows exact | Completed mirror |
+| --- | --- | --- | --- | --- |
+| USA | 4042 | 4001 / 3999 | 2242 / 6726 | 4040, both2736x1600 pages |
+| Off Road, El Paso | 5102 | 5060 / 5058 | 3302 /13208 | 5100, both2736x1604 pages |
+
+All pre-failure deterministic scene rows match retained controls:250 USA rows
+and1579 Off Road rows. Each run had substantial extra geometry before failure.
+Both physical pages' main color and coverage exactly equal their same-invocation
+original-only mirrors after fallback. Each native process exits normally; both
+replays deliberately report degraded FAIL while retaining passing original
+input/native-image comparisons. One completed CRT image is captured per case at
+3424x1353; these exact frames have no prior completed control screenshot, so no
+cross-run presentation equality is claimed for them.
+
+Native successor `e1f9ce0f17f9b97bb610c424427b495d2d4ae984`, binary SHA256
+`2c2d462fa1b8bbc60f3a5fc4b91c5cdcf491f8963c0825ed0b90171c37f48647`;
+234 patches reconstruct tree `47ccb660151557b52067d6b3b7075b9c22c62903`.
+Local evidence: `usa-injected-fallback-qualified.json`,
+`offroad-injected-fallback-qualified.json`, their retained run/plan directories,
+and `vunit-mirror-native-export.json` in the same evidence root.
+
+All three V-Unit adapters now have an actual injected-failure qualification.
+World2.5 uses the shared World path and its code guards are unit-tested, but no
+additional2.5 fault replay was performed solely to repeat that shared latch.
+Exotica and continuous product operation remain separate open work.

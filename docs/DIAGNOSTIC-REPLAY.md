@@ -657,6 +657,22 @@ admitted objects can remain active after the taps are removed. The current
 candidate repeats but fails strict scene-state/order checks; see
 [the admission review](reviews/2026-09-08-exotica-admission.md).
 
+## Host preparation failure trials
+
+For candidate V-Unit host drawing, `--vunit-host-failure original` latches extra
+scenery off if read-only preparation fails before submission. Add
+`--vunit-host-inject-failure-frame N` to exercise the first qualified scene at or
+after N. The explicit `strict` policy retains fatal diagnostic behavior. These
+controls require physical FFB0, live GL and a scene interval ending before the
+replay drain. They do not apply to Exotica or recover device/transport failures.
+
+A degraded run intentionally returns FAIL even when its independent original
+input/image comparison passes. Inspect `vunit_host_failure.result`, including
+actual frame, stage and fallback decision; do not accept it as rendering parity.
+`--vunit-original-mirror-frame N` now supports USA, both World revisions and Off
+Road, with split/tagged host ownership. World fade controls remain World-only.
+See [the actual fallback qualification](reviews/2026-09-15-vunit-preparation-fallback.md).
+
 ## Drivetrain and actual telemetry packets
 
 USA v4.5, World2.4/2.5, Off Road and Exotica have separate verified rev and gear
