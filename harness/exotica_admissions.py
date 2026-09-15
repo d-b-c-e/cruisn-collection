@@ -16,7 +16,7 @@ def bounded_csv(path, limit=200000):
     return rows
 
 
-def verify(trial,text,directory,originals):
+def verify(trial,text,directory,originals,*,measure_occupancy=False):
     directory=Path(directory);binary=directory/'exotica-admission-packets.bin';queries=directory/'exotica-endpoint-admissions.csv'
     if 'admit_from' not in trial:
         if binary.exists() or queries.exists() or 'MIDZ_MODEL_ADMIT_' in text:
@@ -88,8 +88,9 @@ def verify(trial,text,directory,originals):
     elif early_path.exists() or 'MIDZ_ENDPOINT_EARLY_RESULT' in text:
         raise ValueError('disabled early visibility ran')
     live={};by_key={};admitted={};cursor=0;epoch=0;packet_index=0;last_frame=0;yes=0
+    peak_entries=0;peak_bound=0
     def fold(count):
-        nonlocal cursor,epoch
+        nonlocal cursor,epoch,peak_bound
         if not cursor<=count<=len(life):raise ValueError('admission lifecycle watermark')
         while cursor<count:
             e=life[cursor];cursor+=1;op=e['event'];slot=int(e['slot'])
@@ -108,8 +109,9 @@ def verify(trial,text,directory,originals):
                 if h[3:] in admitted:
                     if admitted[h[3:]]['owner'] is not None:raise ValueError('admission duplicate/missed binding')
                     admitted[h[3:]]['owner']=h
+            if measure_occupancy:peak_bound=max(peak_bound,len(by_key))
     def advance(limit):
-        nonlocal packet_index,last_frame
+        nonlocal packet_index,last_frame,peak_entries
         if not packet_index<=limit<=len(packets):raise ValueError('admission packet watermark')
         while packet_index<limit:
             p=packets[packet_index];packet_index+=1;fold(p['records'])
@@ -125,6 +127,7 @@ def verify(trial,text,directory,originals):
                 if key not in admitted:admitted[key]=dict(owner=h,first_sequence=p['sequence'],first_frame=p['frame'])
                 elif admitted[key]['owner']!=h:raise ValueError('admission missed source lifecycle')
                 admitted[key].update(last_sequence=p['sequence'],last_frame=p['frame'])
+            if measure_occupancy:peak_entries=max(peak_entries,len(admitted))
     for q,o,is_early in combined:
         advance(q['packets']);fold(q['records'])
         h=tuple(o[k] for k in ('slot','epoch','generation','realm','section','source'))
@@ -136,6 +139,11 @@ def verify(trial,text,directory,originals):
             raise ValueError('admission original qualification differs')
         yes+=matched and not is_early
     advance(len(packets))
-    return dict(passed=True,packets=total,bytes=size,queries=len(qrows),admitted=yes,early_permissions=len(early_rows),
+    result=dict(passed=True,packets=total,bytes=size,queries=len(qrows),admitted=yes,early_permissions=len(early_rows),
                 scope='Every recorded admission/query folded against exact lifecycle/packet watermarks and GPU draw counts. '
                       'Individual source/geometry equality requires snapshot checks; no opacity or visibility policy.')
+    if measure_occupancy:
+        result['occupancy']=dict(peak_admitted_entries=peak_entries,peak_bound_sources=peak_bound,
+            admitted_at_watermark=len(admitted),bound_at_watermark=len(by_key),lifetime_watermark=cursor,
+            lifetime_rows=len(life),scope='Through the final consumed query/packet watermark; not process memory, allocation counts or a future-session bound.')
+    return result

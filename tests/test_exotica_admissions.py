@@ -32,6 +32,12 @@ class AdmissionReceipts(unittest.TestCase):
             p=Path(temp);originals=self.fixture(p)
             result=verify(self.trial,self.text,p,originals)
             self.assertTrue(result['passed']);self.assertEqual(result['admitted'],1)
+            self.assertNotIn('occupancy',result)
+            occupancy=verify(self.trial,self.text,p,originals,measure_occupancy=True)['occupancy']
+            self.assertEqual(occupancy['peak_admitted_entries'],1)
+            self.assertEqual(occupancy['peak_bound_sources'],1)
+            self.assertEqual(occupancy['admitted_at_watermark'],0)
+            self.assertEqual(occupancy['lifetime_watermark'],6)
             self.qrows[1]=[2,1,1,5072,1,5072,1,6]
             self.csv(p/'exotica-endpoint-admissions.csv',self.qfields,self.qrows)
             with self.assertRaisesRegex(ValueError,'qualification'):verify(self.trial,self.text,p,originals)

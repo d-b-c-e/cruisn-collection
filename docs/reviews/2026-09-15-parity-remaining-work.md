@@ -103,6 +103,10 @@ those same windows merely to obtain a positive result.
    The subsequent [ordered retirement candidate](2026-09-15-exotica-retirement.md)
    now recovers a future-assembly-only fault and matches the original-view control
    from its first retired frame. Other failure phases remain strict.
+   The [saved runtime-budget audit](2026-09-15-continuous-runtime-budget.md)
+   finds modest live ledger occupancy but a handover journal already73.5% of
+   its64MiB cap in one Amazon drive. Separate runtime enablement from capture
+   policy before removing diagnostic windows; do not simply raise every limit.
 5. After the rendering policy is stable, expose coherent per-game controls and
    renew final package/default/4K gates. Obtain attended cross-track and wheel
    acceptance; do not treat prior-release waivers as acceptance of these changes.

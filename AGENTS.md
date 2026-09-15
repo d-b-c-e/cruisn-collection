@@ -1,5 +1,24 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 runtime budget measured — NEXT explicit capture/runtime separation
+
+Read docs/reviews/2026-09-15-continuous-runtime-budget.md. Newread-only
+harness/analyze_exotica_runtime_budget.py reusesadmissionfold with optional
+occupancy; defaultverifieroutputunchanged. FivefocusedtestsPASS. SavedfullAmazon
+13906packets30308queries109804permissions/86376life fullyfolded. Peakledger1866,
+peakboundsources734, bothzeroatfinalwatermark. Cohortjournal49324904/67108864
+bytes73.5%; admissionpackets69.53%. Theseareaccumulateddiagnostics, NOTliveheap.
+Initialwrapper omittedmarkedscopetag -> wrong65krowcapFAILretained; corrected
+runtime-budget-full-amazon-v2.json PASS. No newgame/build/GPUworkneeded.
+Runtimeplan: separateenabledstatefromFILE*pointers, optional boundedcapture,
+preservelive4096ticket/slot+32768admission bounds, overflow-safe64->32bitmodelIDs,
+verifiedguest-lifecycle startup insteadofrecording1799/1800/finitelast. Then
+savedlong-count/reusechecks andonejustifiedmulti-racecapture, notblindboundraises.
+Native645ed36ba18/person87d/publicv0.5.0unchanged. No activegame/build/test.
+Allfour narrowrecoverypathsqualifiedpreviouscheckpoints; continuousproductmode
+andvisiblecross-track/4K/attendedacceptance remainopen. Keepworkingdirectlywhile
+usefulparityworkremains. No deploy/release/hostedCI/physicalFFB/menu removal.
+
 ## September15 all-engine narrow recovery — NEXT continuous-runtime separation
 
 Read docs/reviews/2026-09-15-exotica-retirement.md. Native645ed36ba18 frozen SHA

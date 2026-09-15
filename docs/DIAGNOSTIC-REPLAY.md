@@ -681,6 +681,11 @@ target. Source snapshots must precede injection. A recovered run remains an
 explicit degraded FAIL. See [the ordered recovery qualification](reviews/2026-09-15-exotica-retirement.md);
 resource/ownership/transport failures are still fatal.
 
+`python harness/analyze_exotica_runtime_budget.py PATH/TO/run --report NEW.json`
+measures admission-ledger occupancy from saved lifecycle/packet watermarks and
+compares completed journal totals to current diagnostic caps. It does not launch
+the game or estimate process memory. See [the continuous-runtime audit](reviews/2026-09-15-continuous-runtime-budget.md).
+
 ## Drivetrain and actual telemetry packets
 
 USA v4.5, World2.4/2.5, Off Road and Exotica have separate verified rev and gear
