@@ -1,4 +1,6 @@
+#define far
 #include "vunit_far_coverage.h"
+#undef far
 #include "scenery_c31.h"
 #include <cassert>
 #include <limits>
@@ -25,12 +27,12 @@ int main()
     }
     auto invalid=xy;invalid[1][0]=65537;
     assert(!coverage(invalid,z,200,m) && m==Mask{});
-    Input input;input.far=240000;
+    Input input;input.far_limit=240000;
     const auto word=[](int n){return cruisn::scenery::Float::integer(n).store();};
     input.words={{word(200000),word(300000),word(300000),word(200000)}};
     std::array<double,4> decoded;
     assert(decode(input,decoded) && decoded[0]==200000 && decoded[1]==300000);
-    input.far=160000;assert(!decode(input,decoded));input.far=240000;
+    input.far_limit=160000;assert(!decode(input,decoded));input.far_limit=240000;
     for(int n:{999,480000,-200000}){auto bad_input=input;bad_input.words[0]=word(n);assert(!decode(bad_input,decoded));}
     input.words.fill(word(200000));assert(!decode(input,decoded));
     input.words.fill(word(300000));assert(!decode(input,decoded));
