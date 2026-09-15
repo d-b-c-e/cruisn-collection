@@ -1,4 +1,5 @@
 import csv
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -6,10 +7,49 @@ import unittest
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
-from gl_frames import compare_completed_frames, read_completed_frames, main, requested_frames, IncompleteCaptureError
+from gl_frames import (compare_completed_frames, read_completed_frames, main,
+                       requested_frames, recorded_capture_request, IncompleteCaptureError)
 
 
 class CompletedGlTests(unittest.TestCase):
+    def run_fixture(self, path, prefix='MIDZ', frames=(6538, 6545)):
+        path.mkdir()
+        self.fixture(path/'gl-snap', frames)
+        env = {prefix+'_GL': '1', prefix+'_GL_SNAP': 'archived/path/is/not/followed',
+               prefix+'_GL_SNAP_FIRST': '6536', prefix+'_GL_SNAP_LAST': '6550',
+               prefix+'_GL_SNAP_EVERY': '7', prefix+'_GL_SNAP_MAX': '3', 'SNAP_STOP': '6552'}
+        (path/'invocation.json').write_text(json.dumps({'environment': env}))
+        return env
+
+    def test_run_comparison_uses_actual_global_cadence_and_receipt_dimensions(self):
+        for prefix in ('MIDV', 'MIDZ'):
+            with self.subTest(renderer=prefix), tempfile.TemporaryDirectory() as tmp:
+                root=Path(tmp); a,b=root/'a',root/'b'
+                self.run_fixture(a,prefix); self.run_fixture(b,prefix)
+                report=root/'report.json'
+                self.assertEqual(main([str(a),str(b),'--run-directories','--report',str(report)]),0)
+                result=json.loads(report.read_text())
+                self.assertEqual(result['frames'],2)
+                self.assertEqual(result['capture_requests'][0]['expected_frames'],[6538,6545])
+                self.assertEqual(result['capture_requests'][0]['renderer'],prefix)
+
+    def test_run_comparison_rejects_missing_images_even_when_both_runs_match(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); a,b=root/'a',root/'b'
+            self.run_fixture(a,frames=(6538,)); self.run_fixture(b,frames=(6538,))
+            report=root/'report.json'
+            self.assertEqual(main([str(a),str(b),'--run-directories','--report',str(report)]),1)
+            self.assertEqual(json.loads(report.read_text())['capture_diagnostics']['missing_frames'],[6545])
+
+    def test_recorded_capture_request_rejects_ambiguous_or_incomplete_settings(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'run';env=self.run_fixture(path)
+            for change in ({'MIDZ_GL_SNAP_MAX':'1'}, {'SNAP_STOP':'6545'},
+                           {'MIDZ_GL_SNAP_EVERY':None}, {'MIDV_GL':'1','MIDV_GL_SNAP':'also-active'}):
+                with self.subTest(change=change):
+                    (path/'invocation.json').write_text(json.dumps({'environment':dict(env,**change)}))
+                    with self.assertRaises(ValueError): recorded_capture_request(path)
+
     def test_stop_frame_requires_a_completed_frame_before_shutdown(self):
         self.assertEqual(list(requested_frames(10,20,3,stop_frame=20)),[12,15,18])
         self.assertEqual(list(requested_frames(7180,7219,1,40,stop_frame=7220)),list(range(7180,7220)))

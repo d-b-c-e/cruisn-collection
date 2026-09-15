@@ -1,6 +1,7 @@
 """Compare completed GL frames; asynchronous legacy captures are not frame oracles."""
 import argparse
 import csv
+import json
 from pathlib import Path
 import sys
 
@@ -37,6 +38,31 @@ def requested_frames(first, last, every, budget=None, *, stop_frame=None):
         raise ValueError('completed GL captures must precede the replay stop frame; '
                          'end capture earlier or extend the replay')
     return frames
+
+
+def recorded_capture_request(run):
+    """Recover explicit capture cadence from the actual isolated invocation.
+
+    Archived absolute SNAP paths are never followed. Images remain under the
+    supplied run/gl-snap. Dimensions come from validated completion receipts,
+    not assumptions about monitor size or the renderer's window decoration.
+    """
+    invocation = json.loads((Path(run) / 'invocation.json').read_text(encoding='utf-8'))
+    env = invocation.get('environment')
+    if not isinstance(env, dict):
+        raise ValueError('capture invocation requires an environment')
+    enabled = [p for p in ('MIDV', 'MIDZ') if env.get(p+'_GL') == '1' and env.get(p+'_GL_SNAP')]
+    if len(enabled) != 1:
+        raise ValueError('capture invocation requires one active capture renderer')
+    prefix = enabled[0]
+    values = [env.get(prefix+'_GL_'+k) for k in ('SNAP_FIRST', 'SNAP_LAST', 'SNAP_EVERY', 'SNAP_MAX')]
+    values.append(env.get('SNAP_STOP'))
+    if any(not isinstance(v, str) or not v.isascii() or not v.isdecimal() for v in values):
+        raise ValueError('capture invocation requires explicit numeric bounds, cadence, budget and stop')
+    first, last, every, budget, stop = map(int, values)
+    frames = requested_frames(first, last, every, budget, stop_frame=stop)
+    return dict(renderer=prefix, first=first, last=last, every=every, budget=budget,
+                stop_frame=stop, expected_frames=list(frames))
 
 
 def read_completed_frames(directory, expected=None):
@@ -142,6 +168,8 @@ def main(argv=None):
     ap.add_argument("reference", type=Path)
     ap.add_argument("candidate", type=Path)
     ap.add_argument("--frames", help="required inclusive FIRST:LAST capture interval")
+    ap.add_argument("--run-directories", action='store_true',
+                    help="compare RUN/gl-snap using each RUN/invocation.json capture request")
     ap.add_argument("--every", type=int, default=1, help="capture global frame multiples of N within --frames (default1)")
     ap.add_argument("--details", action='store_true', help="count changed pixels and locate their bounds")
     ap.add_argument("--contact-sheet", type=Path, help="save first/peak/last changed images side by side")
@@ -152,11 +180,23 @@ def main(argv=None):
         if args.every < 1 or (args.every != 1 and not args.frames):
             raise ValueError('--every must be positive and requires --frames')
         expected = None
-        if args.frames:
+        requests = None
+        if args.run_directories:
+            if args.frames or args.every != 1:
+                raise ValueError('--run-directories reads cadence from invocations; do not override it')
+            requests = [recorded_capture_request(p) for p in (args.reference, args.candidate)]
+            if requests[0]['expected_frames'] != requests[1]['expected_frames']:
+                raise ValueError('run invocations request different completed frames')
+            expected = requests[0]['expected_frames']
+            args.reference /= 'gl-snap'
+            args.candidate /= 'gl-snap'
+        elif args.frames:
             first, last = map(int, args.frames.split(":"))
             expected = requested_frames(first, last, args.every)
         result = compare_completed_frames(args.reference, args.candidate, expected,
                                           args.details or bool(args.contact_sheet))
+        if requests is not None:
+            result['capture_requests'] = requests
         if args.contact_sheet:
             contact_sheet(args.reference, args.candidate, result, args.contact_sheet)
             result['contact_sheet'] = str(args.contact_sheet.resolve())
