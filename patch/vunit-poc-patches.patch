@@ -41312,3 +41312,496 @@ index 2f83fb65cc9..90cb8ad0703 100644
 -- 
 2.55.0.windows.3
 
+From 0f3b4b51f5a65d1b43d745ba251f8884e0ca2121 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Tue, 15 Sep 2026 05:51:18 -0500
+Subject: [PATCH] VUnit: add gated original-only indexed mirror diagnostic
+
+---
+ src/mame/midway/midvunit_gl_shaders.h | 286 ++++++++++++++++++++++++++
+ src/mame/midway/midvunit_v.cpp        | 103 +++++++++-
+ 2 files changed, 387 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
+index e2745a2ed15..8a0bf6d1436 100644
+--- a/src/mame/midway/midvunit_gl_shaders.h
++++ b/src/mame/midway/midvunit_gl_shaders.h
+@@ -497,3 +497,289 @@ static const char *MVGL_MENU_FS =
+ 	"}\n"
+ 	"\n";
+ 
++static const char *MVGL_MIRROR_FS =
++	"\n"
++	"#version 430\n"
++	"uniform int  uScale;       // 1 = exact mode, >1 = quality mode\n"
++	"uniform vec2 uCanvas;      // coarse canvas size\n"
++	"uniform int  uClipRight;   // coarse cliprect right (W-1)\n"
++	"uniform usampler2D texram; // 4096-wide R8UI, 8 MB of texture RAM\n"
++	"uniform int  texMask;      // byte-size mask (size-1)\n"
++	"uniform int  uDbgQuadId;   // debug: if 1, outIndex = quad id (gl_PrimitiveID/2)\n"
++	"uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded\n"
++	"                           // inside the margins so extend fills from the\n"
++	"                           // 4:3 boundary (sky above, terrain below). 0=off.\n"
++	"uniform int  uClipW;       // coarse canvas width (for the right margin)\n"
++	"uniform int  uFarCoverage; // private V-Unit trial; zero preserves ordinary coverage\n"
++	"layout(std430, binding=3) readonly buffer FarCoverage { vec4 farMask[]; };\n"
++	"flat in vec2 v0; flat in vec2 v1; flat in vec2 v2; flat in vec2 v3;\n"
++	"flat in vec4 uv01; flat in vec4 uv23;\n"
++	"flat in vec4 uvBounds;\n"
++	"flat in uvec4 meta;\n"
++	"layout(location = 0) out uint outIndex;\n"
++	"layout(location = 1) out uint outMask;   // 1 = this scene wrote the pixel\n"
++	"\n"
++	"int round_coord(float f) {           // poly.h: floor, +1 iff frac > 0.5\n"
++	"    float ip = floor(f);\n"
++	"    return int(ip) + (((f - ip) > 0.5) ? 1 : 0);\n"
++	"}\n"
++	"int c_int32(float f) {               // C float->int32: trunc, OOR -> INT_MIN\n"
++	"    if (!(abs(f) < 2147483648.0)) return -2147483648;\n"
++	"    return int(f);\n"
++	"}\n"
++	"\n"
++	"float edge_reciprocal(float denominator) {\n"
++	"    // GLSL 'precise' prevents contraction/reassociation, but does not require\n"
++	"    // correctly rounded float division. An approximate reciprocal can move a\n"
++	"    // shared vertex from x.5 to x.500001 and incorrectly discard a native pixel.\n"
++	"    // Round a double reciprocal to float for the native CPU's float32 semantics.\n"
++	"    // Enhanced rendering retains its existing fast subpixel arithmetic.\n"
++	"    return uScale == 1 ? float(1.0LF / double(denominator)) : 1.0 / denominator;\n"
++	"}\n"
++	"uint fetch_texel(int idx) {\n"
++	"    idx &= texMask;\n"
++	"    return texelFetch(texram, ivec2(idx & 4095, idx >> 12), 0).r;\n"
++	"}\n"
++	"\n"
++	"void mirror_source() {\n"
++	"    vec2 vx[4] = vec2[4](v0, v1, v2, v3);\n"
++	"    float fx = gl_FragCoord.x;\n"
++	"    float fy = uCanvas.y * float(uScale) - gl_FragCoord.y;   // y-down\n"
++	"    float cx = fx / float(uScale);\n"
++	"    float cy = fy / float(uScale);\n"
++	"    if (uFarCoverage != 0) {\n"
++	"        // Two bounding-box triangles carry each original quad. Mask indexing\n"
++	"        // resets with every draw; original UV interpolation below is unchanged.\n"
++	"        int base = 4 * (gl_PrimitiveID / 2);\n"
++	"        int count = int(farMask[base].x);\n"
++	"        if (count < 0 || count > 6) discard;\n"
++	"        if (count > 0) {\n"
++	"            bool inside = false;\n"
++	"            int last = count - 1;\n"
++	"            vec2 a = (last % 2 == 0) ? farMask[base+1+last/2].xy : farMask[base+1+last/2].zw;\n"
++	"            for (int j=0; j<count; ++j) {\n"
++	"                vec2 b = (j % 2 == 0) ? farMask[base+1+j/2].xy : farMask[base+1+j/2].zw;\n"
++	"                if ((a.y > cy) != (b.y > cy)) {\n"
++	"                    float boundary = a.x + (cy-a.y)*(b.x-a.x)/(b.y-a.y);\n"
++	"                    if (cx < boundary) inside = !inside;\n"
++	"                }\n"
++	"                a = b;\n"
++	"            }\n"
++	"            if (!inside) discard;\n"
++	"        }\n"
++	"    }\n"
++	"    int px = int(floor(cx));\n"
++	"    int py = int(floor(cy));\n"
++	"    // exact mode evaluates at MAME's scanline centre; quality mode uses the\n"
++	"    // fine fragment's own continuous coordinate\n"
++	"    precise float fully = (uScale == 1) ? float(py) + 0.5 : cy;\n"
++	"\n"
++	"    // ---- min/max Y vertices (poly.h render_polygon) ----\n"
++	"    int minv = 0, maxv = 0;\n"
++	"    for (int i = 1; i < 4; i++) {\n"
++	"        if (vx[i].y < vx[minv].y) minv = i;\n"
++	"        else if (vx[i].y > vx[maxv].y) maxv = i;\n"
++	"    }\n"
++	"    if (uScale == 1 && round_coord(vx[maxv].y) - round_coord(vx[minv].y) <= 0) discard;\n"
++	"    float maxvy = vx[maxv].y;\n"
++	"\n"
++	"    // poly.h renders scanlines [round(miny), round(maxy)) only - the expanded\n"
++	"    // bounding box generates fragments beyond that, where extrapolated edges\n"
++	"    // still yield plausible x-extents. Without this cut, later quads steal\n"
++	"    // their neighbours' shared-edge rows.\n"
++	"    if (uScale == 1) {\n"
++	"        if (py < round_coord(vx[minv].y) || py >= round_coord(maxvy)) discard;\n"
++	"    } else {\n"
++	"        if (cy < vx[minv].y || cy >= maxvy) discard;\n"
++	"    }\n"
++	"\n"
++	"    // ---- forward / backward edge lists (<=3 each) ----\n"
++	"    // e[k] = (v1x, v1y, v2y, dxdy), p[k] = (u1, v1_p, dudy, dvdy)\n"
++	"    precise vec4 fe[3]; precise vec4 fp[3]; int fn = 0;\n"
++	"    precise vec4 be[3]; precise vec4 bp[3]; int bn = 0;\n"
++	"    vec4 uvs[4] = vec4[4](vec4(uv01.xy, 0, 0), vec4(uv01.zw, 0, 0),\n"
++	"                          vec4(uv23.xy, 0, 0), vec4(uv23.zw, 0, 0));\n"
++	"    for (int curv = minv; curv != maxv; curv = (curv + 1) & 3) {\n"
++	"        int nxt = (curv + 1) & 3;\n"
++	"        if (vx[nxt].y != vx[curv].y) {\n"
++	"            precise float ooy = edge_reciprocal(vx[nxt].y - vx[curv].y);\n"
++	"            fe[fn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,\n"
++	"                          (vx[nxt].x - vx[curv].x) * ooy);\n"
++	"            fp[fn] = vec4(uvs[curv].xy,\n"
++	"                          (uvs[nxt].x - uvs[curv].x) * ooy,\n"
++	"                          (uvs[nxt].y - uvs[curv].y) * ooy);\n"
++	"            fn++;\n"
++	"        }\n"
++	"    }\n"
++	"    for (int curv = minv; curv != maxv; curv = (curv - 1) & 3) {\n"
++	"        int nxt = (curv - 1) & 3;\n"
++	"        if (vx[nxt].y != vx[curv].y) {\n"
++	"            precise float ooy = edge_reciprocal(vx[nxt].y - vx[curv].y);\n"
++	"            be[bn] = vec4(vx[curv].x, vx[curv].y, vx[nxt].y,\n"
++	"                          (vx[nxt].x - vx[curv].x) * ooy);\n"
++	"            bp[bn] = vec4(uvs[curv].xy,\n"
++	"                          (uvs[nxt].x - uvs[curv].x) * ooy,\n"
++	"                          (uvs[nxt].y - uvs[curv].y) * ooy);\n"
++	"            bn++;\n"
++	"        }\n"
++	"    }\n"
++	"    if (fn == 0 || bn == 0) discard;\n"
++	"\n"
++	"    // ---- left/right decision (poly.h:1194) ----\n"
++	"    bool sharedFirst = (fe[0].x == be[0].x) && (fe[0].y == be[0].y);\n"
++	"    bool fwd_left = (sharedFirst && fe[0].w < be[0].w)\n"
++	"                 || (!sharedFirst && fe[0].x < be[0].x);\n"
++	"\n"
++	"    // ---- advance to the edge pair spanning this scanline ----\n"
++	"    int li = 0, ri = 0;\n"
++	"    vec4 le, lp, re, rp;\n"
++	"    if (fwd_left) {\n"
++	"        while (fully > fe[li].z && fully < maxvy && li + 1 < fn) li++;\n"
++	"        while (fully > be[ri].z && fully < maxvy && ri + 1 < bn) ri++;\n"
++	"        le = fe[li]; lp = fp[li]; re = be[ri]; rp = bp[ri];\n"
++	"    } else {\n"
++	"        while (fully > be[li].z && fully < maxvy && li + 1 < bn) li++;\n"
++	"        while (fully > fe[ri].z && fully < maxvy && ri + 1 < fn) ri++;\n"
++	"        le = be[li]; lp = bp[li]; re = fe[ri]; rp = fp[ri];\n"
++	"    }\n"
++	"\n"
++	"    precise float startx = le.x + (fully - le.y) * le.w;\n"
++	"    precise float stopx  = re.x + (fully - re.y) * re.w;\n"
++	"    int istartx = round_coord(startx);\n"
++	"    int istopx  = round_coord(stopx);\n"
++	"    if (istartx > istopx) { int t = istartx; istartx = istopx; istopx = t; }\n"
++	"\n"
++	"    // ---- params at this scanline (poly.h:1250) ----\n"
++	"    precise float ldy = fully - le.y;\n"
++	"    precise float rdy = fully - re.y;\n"
++	"    precise float oox = edge_reciprocal(stopx - startx);\n"
++	"    precise float lu = lp.x + ldy * lp.z;\n"
++	"    precise float lv = lp.y + ldy * lp.w;\n"
++	"    precise float dudx = (rp.x + rdy * rp.z - lu) * oox;\n"
++	"    precise float dvdx = (rp.y + rdy * rp.w - lv) * oox;\n"
++	"    precise float su = lu + (float(istartx) + 0.5 - startx) * dudx;\n"
++	"    precise float sv = lv + (float(istartx) + 0.5 - startx) * dvdx;\n"
++	"\n"
++	"    // ---- left/right clip with param adjust ----\n"
++	"    if (istartx < 0) {\n"
++	"        su += float(-istartx) * dudx;\n"
++	"        sv += float(-istartx) * dvdx;\n"
++	"        istartx = 0;\n"
++	"    }\n"
++	"    if (istopx > uClipRight) istopx = uClipRight + 1;\n"
++	"    // A native-empty span may still cover fine samples. Reject by rounded\n"
++	"    // integer extent only in exact mode; quality coverage is continuous below.\n"
++	"    if (uScale == 1 && istartx >= istopx) discard;\n"
++	"\n"
++	"    // ---- coverage ----\n"
++	"    if (uScale == 1) {\n"
++	"        if (px < istartx || px >= istopx) discard;\n"
++	"    } else {\n"
++	"        // continuous edges at fine resolution; clip window still applies\n"
++	"        float lo = max(min(startx, stopx), 0.0);\n"
++	"        float hi = min(max(startx, stopx), float(uClipRight + 1));\n"
++	"        if (cx < lo || cx >= hi) discard;\n"
++	"    }\n"
++	"\n"
++	"    uint pixdata = meta.x, mode = meta.y, dither = meta.z & 1u;\n"
++	"    // parked screen-space UI (meta bit 2, set only in wide builds): panels\n"
++	"    // the game slides in from past the 4:3 edge (crusnwld radio) park fully\n"
++	"    // off-screen where the hardware raster crop hid them - never draw the\n"
++	"    // parked position; sliding/deployed quads straddle x=511 and stay.\n"
++	"    if ((meta.z & 4u) != 0u) discard;\n"
++	"    bool backdrop = (meta.z & 2u) != 0u;\n"
++	"    // suppress backdrop (sky/horizon band) in the 16:9 margins: leaves the\n"
++	"    // pixel unwritten so the margin-extend fills it from the 4:3 boundary\n"
++	"    // column - sky in the upper margin, terrain in the lower (covers the\n"
++	"    // \"water through the ground\" reveal). Terrain/rock quads are unaffected.\n"
++	"    if (backdrop && uBgMargin > 0 && (px < uBgMargin || px >= uClipW - uBgMargin))\n"
++	"        discard;\n"
++	"    // dither = the hardware's 50% translucency (shadows, HUD boxes, the\n"
++	"    // radio panel, sprite backboards). At native scale the mask is the\n"
++	"    // authentic coarse checkerboard (identical to fine there - exact mode\n"
++	"    // stays bit-perfect); at higher internal scales mask at FINE pixel\n"
++	"    // granularity so it reads as the smoked glass the CRT made of it\n"
++	"    // instead of chunky 4x4 blocks.\n"
++	"    if (dither == 1u) {\n"
++	"        // fine coords in the same y-down space as px/py (fx,fy above);\n"
++	"        // at uScale==1 these ARE px,py - exact mode stays bit-perfect\n"
++	"        int fdx = int(fx);\n"
++	"        int fdy = int(floor(fy));\n"
++	"        if (((fdx ^ fdy) & 1) != 0) discard;\n"
++	"    }\n"
++	"\n"
++	"    // Keep a material tag for the final color resolve. A fine checkerboard\n"
++	"    // sampled with nearest-neighbor at a noninteger display ratio makes moire.\n"
++	"    // Native-exact masks remain 1; opaque geometry overwrites the dither tag.\n"
++	"    outMask = (uScale > 1 && dither == 1u) ? 3u : 1u;\n"
++	"    // Auxiliary scenery must not claim that a foreground seam was covered.\n"
++	"    // This provenance bit is supplied only by the explicit host-layer trial.\n"
++	"    if ((meta.z & 8u) != 0u) outMask |= 4u;\n"
++	"    if (mode == 0u) {\n"
++	"        outIndex = (uDbgQuadId == 1) ? uint(gl_PrimitiveID / 2) : pixdata & 0xffffu;\n"
++	"        return;\n"
++	"    }\n"
++	"\n"
++	"    int ui, vi;\n"
++	"    if (uScale == 1) {   // MAME's integer DDA, analytically\n"
++	"        ui = c_int32(su) + (px - istartx) * c_int32(dudx);\n"
++	"        vi = c_int32(sv) + (px - istartx) * c_int32(dvdx);\n"
++	"    } else {             // sub-pixel float interpolation\n"
++	"        // Coverage dilation must not read another tile in texture RAM.\n"
++	"        // A one-pixel-tall distant road quad can extrapolate by 80 texels;\n"
++	"        // clamping to its original UV domain retains the interior gradient\n"
++	"        // and extends only its edge texel. Native DDA remains unchanged.\n"
++	"        ui = c_int32(clamp(lu + (cx - startx) * dudx, uvBounds.x, uvBounds.y));\n"
++	"        vi = c_int32(clamp(lv + (cx - startx) * dvdx, uvBounds.z, uvBounds.w));\n"
++	"    }\n"
++	"    uint texel = fetch_texel(int(meta.w) + ((vi >> 8) & 0xff00) + (ui >> 16));\n"
++	"    if (mode == 1u)      outIndex = (pixdata + texel) & 0xffffu;\n"
++	"    else if (mode == 2u) { if (texel == 0u) discard;\n"
++	"                           outIndex = (pixdata + texel) & 0xffffu; }\n"
++	"    else                 { if (texel == 0u) discard;\n"
++	"                           outIndex = pixdata & 0xffffu; }\n"
++	"    // Ownership must respect transparent texels, just like the real draw.\n"
++	"    if (uDbgQuadId == 1) outIndex = uint(gl_PrimitiveID / 2);\n"
++	"}\n"
++	"layout(location=2) out float outFadeAlpha;\n"
++	"layout(location=3) out uint outOriginalIndex;\n"
++	"layout(location=4) out uint outOriginalMask;\n"
++	"void main() {\n"
++	" mirror_source();\n"
++	" outFadeAlpha=1.0;\n"
++	" outOriginalIndex=outIndex;\n"
++	" outOriginalMask=outMask;\n"
++	"}\n"
++	"\n";
++
++static const char *MVGL_MIRROR_CPU_FS =
++	"\n"
++	"#version 430\n"
++	"uniform usampler2D cpuIndex;\n"
++	"uniform usampler2D cpuDirty;\n"
++	"uniform int uScale;\n"
++	"uniform int uMargin;\n"
++	"uniform int uHeight;\n"
++	"layout(location = 0) out uint outIndex;\n"
++	"layout(location = 1) out uint outMask;\n"
++	"void mirror_source() {\n"
++	"    ivec2 native = ivec2(gl_FragCoord.xy) / uScale;\n"
++	"    native.x -= uMargin;\n"
++	"    native.y = uHeight - 1 - native.y;\n"
++	"    if (native.x < 0 || native.x >= 512 || native.y < 0 || native.y >= uHeight)\n"
++	"        discard;\n"
++	"    if (texelFetch(cpuDirty, native, 0).r == 0u) discard;\n"
++	"    outIndex = texelFetch(cpuIndex, native, 0).r;\n"
++	"    outMask = 1u;\n"
++	"}\n"
++	"layout(location=2) out float outFadeAlpha;\n"
++	"layout(location=3) out uint outOriginalIndex;\n"
++	"layout(location=4) out uint outOriginalMask;\n"
++	"void main() {\n"
++	" mirror_source();\n"
++	" outFadeAlpha=1.0;\n"
++	" outOriginalIndex=outIndex;\n"
++	" outOriginalMask=outMask;\n"
++	"}\n"
++	"\n";
++
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 340e676930b..98de8031834 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -692,6 +692,7 @@ struct GL
+ 	void (WINAPI *ActiveTexture)(unsigned);
+ 	void (WINAPI *DrawBuffers)(int, const unsigned *);
+ 	void (WINAPI *ClearBufferuiv)(unsigned, int, const uint *);
++	void (WINAPI *GetTexImage)(unsigned, int, unsigned, unsigned, void *) = nullptr;
+ 
+ 	template <typename T> void load1(T &fn, const char *name)
+ 	{
+@@ -1124,9 +1125,23 @@ void thread_main()
+ 	}
+ 	if (gl.SwapIntervalEXT) gl.SwapIntervalEXT(1);
+ 
+-	uint prog = link(gl, MVGL_VS, MVGL_FS);
++	// Diagnostic only: keep original indices separate; presentation is unchanged.
++	bool const original_mirror = std::getenv("MIDV_GL_ORIGINAL_MIRROR") &&
++		!strcmp(std::getenv("MIDV_GL_ORIGINAL_MIRROR"), "1");
++	int const mirror_frame = std::getenv("MIDV_GL_MIRROR_FRAME") ? atoi(std::getenv("MIDV_GL_MIRROR_FRAME")) : 0;
++	if (original_mirror)
++	{
++		if (!std::getenv("MIDV_FFB") || strcmp(std::getenv("MIDV_FFB"),"0") || mirror_frame<1 || mirror_frame>1000000 ||
++			(std::getenv("MIDV_GL_BATCH_VRAM") && strcmp(std::getenv("MIDV_GL_BATCH_VRAM"),"1")) ||
++			(std::getenv("MIDV_WORLD_HOST_SCENERY") && !strcmp(std::getenv("MIDV_WORLD_HOST_SCENERY"),"2") &&
++			 (!std::getenv("MIDV_WORLD_HOST_LAYER") || strcmp(std::getenv("MIDV_WORLD_HOST_LAYER"),"3"))))
++			fatalerror("Original mirror requires FFB0, bounded frame, batched CPU writes and split/tagged host draws\n");
++		gl.load1(gl.GetTexImage,"glGetTexImage");
++		if(!gl.GetTexImage)fatalerror("Original mirror texture readback unavailable\n");
++	}
++	uint prog = link(gl, MVGL_VS, original_mirror ? MVGL_MIRROR_FS : MVGL_FS);
+ 	uint pal = link(gl, MVGL_PAL_VS, MVGL_PAL_FS);
+-	uint cpu_copy = link(gl, MVGL_PAL_VS, MVGL_CPU_FS);
++	uint cpu_copy = link(gl, MVGL_PAL_VS, original_mirror ? MVGL_MIRROR_CPU_FS : MVGL_CPU_FS);
+ 	if (!prog || !pal || !cpu_copy) return;
+ 
+ 	gl.PixelStorei(0x0CF5 /*GL_UNPACK_ALIGNMENT*/, 1);
+@@ -1152,6 +1167,14 @@ void thread_main()
+ 	// the palette pass fills unwritten slivers (hardware quad cracks that
+ 	// would show the stale page) from axis-bounded neighbours
+ 	uint maskTex[2] = { make_tex(fw, fh, R8UI), make_tex(fw, fh, R8UI) };
++	uint originalTex[2]{}, originalMask[2]{}, originalFbo[2]{};
++	if(original_mirror)
++	{
++		gl.GenFramebuffers(2,originalFbo);
++		for(int i=0;i<2;++i){originalTex[i]=make_tex(fw,fh,R16UI);originalMask[i]=make_tex(fw,fh,R8UI);}
++	}
++	unsigned const mirror_bufs[5]={COLOR_ATTACHMENT0,COLOR_ATTACHMENT0+1,0,COLOR_ATTACHMENT0+3,COLOR_ATTACHMENT0+4};
++	unsigned const extended_bufs[2]={COLOR_ATTACHMENT0,COLOR_ATTACHMENT0+1};
+ 	uint fbo[2];
+ 	gl.GenFramebuffers(2, fbo);
+ 	for (int i = 0; i < 2; i++)
+@@ -1161,9 +1184,24 @@ void thread_main()
+ 		gl.FramebufferTexture2D(FRAMEBUFFER, COLOR_ATTACHMENT0 + 1, 0x0DE1, maskTex[i], 0);
+ 		unsigned const bufs[2] = { COLOR_ATTACHMENT0, COLOR_ATTACHMENT0 + 1 };
+ 		gl.DrawBuffers(2, bufs);
++		if(original_mirror)
++		{
++			gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0+3,0x0DE1,originalTex[i],0);
++			gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0+4,0x0DE1,originalMask[i],0);
++			gl.DrawBuffers(5,mirror_bufs);
++			if(gl.CheckFramebufferStatus(FRAMEBUFFER)!=FRAMEBUFFER_COMPLETE)fatalerror("Original mirror MRT incomplete\n");
++		}
+ 		if (gl.CheckFramebufferStatus(FRAMEBUFFER) != FRAMEBUFFER_COMPLETE)
+ 			logf("fbo %d incomplete", i);
+ 		gl.Clear(0x4000);
++		if(original_mirror)
++		{
++			gl.BindFramebuffer(FRAMEBUFFER,originalFbo[i]);
++			gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0,0x0DE1,originalTex[i],0);
++			gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0+1,0x0DE1,originalMask[i],0);
++			gl.DrawBuffers(2,bufs);
++			if(gl.CheckFramebufferStatus(FRAMEBUFFER)!=FRAMEBUFFER_COMPLETE)fatalerror("Original mirror reset target incomplete\n");
++		}
+ 	}
+ 	gl.BindFramebuffer(FRAMEBUFFER, 0);
+ 
+@@ -1352,11 +1390,23 @@ void thread_main()
+ 		memcpy(dst, lv.data + o, first);
+ 		if (len > first) memcpy((uint8_t *)dst + first, lv.data, len - first);
+ 	};
++	uint16_t original_active_pc=0xffff;
++	int original_cpu_written[2]{};
++	uint64_t mirror_ordinary=0,mirror_auxiliary=0,mirror_cpu_blits=0,mirror_resets=0;
++	bool mirror_captured=false;
+ 	uint64_t n_flips = 0;
+ 	auto complete_run = [&]()
+ 	{
+ 		if (run.empty()) return;
+ 		int const pg = (run_pc & 4) ? 1 : 0;
++		bool const auxiliary = original_mirror && (run.front().pad & 2);
++		if(original_mirror)
++		{
++			for(auto const &q:run)if(q.pad!=(auxiliary?3:0))fatalerror("Original mirror unqualified layer ownership\n");
++			if(auxiliary)mirror_auxiliary+=run.size();
++			else {mirror_ordinary+=run.size();original_cpu_written[pg]=0;}
++		}
++		bool const new_original_scene=original_mirror && !auxiliary && original_active_pc!=run_pc;
+ 		bool const new_scene = active_pc != run_pc;
+ 		if (new_scene) { quad_count[pg] = 0; scene_axis[pg] = 0; host_layers[pg] = false; active_pc = run_pc; }
+ 		n_aligned += build_vertices(run, float(MARGIN), fdata, udata, align_joins,run_far?&far_masks:nullptr,far_log);
+@@ -1396,6 +1446,7 @@ void thread_main()
+ 		gl.BindBuffer(ARRAY_BUFFER, vbo_u);
+ 		gl.BufferData(ARRAY_BUFFER, udata.size() * 4, udata.data(), STREAM_DRAW);
+ 		gl.BindFramebuffer(FRAMEBUFFER, fbo[pg]);
++		if(original_mirror)gl.DrawBuffers(2,extended_bufs); // host resets cannot clear original history
+ 		gl.Viewport(0, 0, fw, fh);
+ 		if (new_scene)
+ 		{
+@@ -1427,6 +1478,24 @@ void thread_main()
+ 			gl.Clear(0x4000);
+ 			gl.Disable(0x0C11);
+ 		}
++		if(new_original_scene)
++		{
++			original_active_pc=run_pc;++mirror_resets;
++			gl.BindFramebuffer(FRAMEBUFFER,originalFbo[pg]);
++			uint const zero[4]={0,0,0,0};gl.ClearBufferuiv(0x1800,1,zero);
++			gl.Enable(0x0C11);gl.ClearColor(0,0,0,0);
++			int const os=2*S;
++			gl.Scissor(0,0,MARGIN*S+os,fh);gl.Clear(0x4000);
++			gl.Scissor(fw-MARGIN*S-os,0,MARGIN*S+os,fh);gl.Clear(0x4000);
++			gl.Scissor(0,0,fw,os);gl.Clear(0x4000);
++			gl.Scissor(0,fh-os,fw,os);gl.Clear(0x4000);
++			gl.Disable(0x0C11);
++		}
++		if(original_mirror)
++		{
++			gl.BindFramebuffer(FRAMEBUFFER,fbo[pg]);
++			gl.DrawBuffers(auxiliary?2:5,auxiliary?extended_bufs:mirror_bufs);
++		}
+ 		gl.ActiveTexture(TEXTURE0);
+ 		gl.BindTexture(0x0DE1, texram);
+ 		gl.DrawArrays(0x0004 /*TRIANGLES*/, 0, int(run.size() * 6));
+@@ -1455,6 +1524,7 @@ void thread_main()
+ 				gl.BindTexture(0x0DE1, cpu_dirty_tex);
+ 				gl.TexSubImage2D(0x0DE1, 0, 0, 0, 512, H, RED_INTEGER, 0x1401, cpu_dirty.mask(pg));
+ 				gl.BindFramebuffer(FRAMEBUFFER, fbo[pg]);
++				if(original_mirror){gl.DrawBuffers(5,mirror_bufs);++mirror_cpu_blits;}
+ 				gl.Viewport(0, 0, fw, fh);
+ 				gl.UseProgram(cpu_copy);
+ 				gl.BindVertexArray(vao_empty);
+@@ -1649,6 +1719,11 @@ void thread_main()
+ 					memcpy(&shadow[pg][rel], staging.data() + 12, (end - rel) * 2);
+ 					cpu_dirty.mark(pg, rel, end - rel);
+ 					if (!batch_cpu) flush_cpu(); // explicit immediate-upload control
++					if(original_mirror)
++					{
++						original_cpu_written[pg]+=end-rel;
++						if(original_cpu_written[pg]>=H*512*7/10)original_active_pc=0xffff;
++					}
+ 					cpu_written[pg] += end - rel;
+ 					if (cpu_written[pg] >= H * 512 * 7 / 10)
+ 						quad_fresh[pg] = false, active_pc = 0xffff;
+@@ -1668,6 +1743,30 @@ void thread_main()
+ 		if (!frame_complete && !menu_open && !ui_changed) { Sleep(1); continue; }
+ 
+ 		flush_cpu(); // also covers a menu redraw without a new frame fence
++		if(original_mirror && frame_complete && int(completed_frame)==mirror_frame && !mirror_captured)
++		{
++			gl.PixelStorei(0x0D05 /*PACK_ALIGNMENT*/,1);
++			std::vector<uint8_t> pixels(size_t(fw)*fh*2);
++			gl.ActiveTexture(TEXTURE0+6);
++			for(int pg=0;pg<2;++pg)for(int plane=0;plane<4;++plane)
++			{
++				uint const textures[4]={pageTex[pg],maskTex[pg],originalTex[pg],originalMask[pg]};
++				bool const mask=plane&1;
++				gl.BindTexture(0x0DE1,textures[plane]);
++				gl.GetTexImage(0x0DE1,0,RED_INTEGER,mask?0x1401:0x1403,pixels.data());
++				if(gl.GetError())fatalerror("Original mirror readback GL error\n");
++				char name[128];snprintf(name,sizeof(name),"vunit-mirror-%u-page%d-plane%d.bin",completed_frame,pg,plane);
++				FILE *fp=fopen(name,"wb");size_t const bytes=size_t(fw)*fh*(mask?1:2);
++				if(!fp)fatalerror("Cannot open original mirror evidence\n");
++				bool const written=fwrite(pixels.data(),1,bytes,fp)==bytes;
++				if(fclose(fp) || !written)fatalerror("Cannot write original mirror evidence\n");
++			}
++			FILE *fp=fopen("vunit-mirror.json","w");
++			if(!fp)fatalerror("Cannot open mirror receipt\n");
++			int const written=fprintf(fp,"{\"frame\":%u,\"width\":%d,\"height\":%d,\"visible_page\":%d,\"ordinary_quads\":%llu,\"auxiliary_quads\":%llu,\"cpu_blits\":%llu,\"original_resets\":%llu}\n",completed_frame,fw,fh,visible,(unsigned long long)mirror_ordinary,(unsigned long long)mirror_auxiliary,(unsigned long long)mirror_cpu_blits,(unsigned long long)mirror_resets);
++			if(fclose(fp) || written<0)fatalerror("Cannot write mirror receipt\n");
++			mirror_captured=true;
++		}
+ 		// ---- present ----
+ 		int const cw = rc.right, ch = rc.bottom;
+ 		gl.Viewport(0, 0, cw, ch);
+-- 
+2.55.0.windows.3
+

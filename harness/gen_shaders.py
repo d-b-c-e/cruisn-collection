@@ -13,6 +13,7 @@ POC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path[:0] = [os.path.join(POC, "gpu"), os.path.join(POC, "harness")]
 import renderer as R  # noqa: E402
 import zeus_renderer as Z  # noqa: E402
+from vunit_distance_fade import mirror_fragment_shader
 from zeus_depth import compatibility_fragment, wide_fragment  # noqa: E402
 
 HEADER = r"E:\Source\mame-src\src\mame\midway\midvunit_gl_shaders.h"
@@ -33,6 +34,8 @@ def main():
     body += " - regenerate with harness/gen_shaders.py, never hand-edit\n\n"
     for n in ("VS", "FS", "PAL_VS", "PAL_FS", "CPU_FS", "MENU_VS", "MENU_FS"):
         body += cstr("MVGL", n, getattr(R, n))
+    body += cstr("MVGL", "MIRROR_FS", mirror_fragment_shader(R.FS))
+    body += cstr("MVGL", "MIRROR_CPU_FS", mirror_fragment_shader(R.CPU_FS))
     with open(HEADER, "w", newline="\n") as f:
         f.write(body)
     print(f"wrote {HEADER} ({len(body)} bytes)")

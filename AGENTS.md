@@ -1,5 +1,59 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — native original mirror qualified; next all-host fade metadata
+
+Read docs/reviews/2026-09-15-vunit-original-mirror.md. Native0f3b4b51f5a frozen/pushed
+SHAe56e68b5e79b59846bfd052a9f439d699296e1532d219191c733914cdecdd8ad;
+224patches reconstruct86382b9844028b248eeb891c56e69e9b9d207216. Defaultoff original
+indexedmirror, ordinary/CPU bothviews, auxiliaryextendedonly, independentoriginal
+scene/marginresets, bounded8planes/receipt. No fade or presentationchange. CLI
+--vunit-original-mirror-frame requirescandidateWorldGL/FFB0/batchedCPU; hostlayer3.
+Actual6000inputcontrol+host PASS;5900bothpageoriginalindex/masks exact,2965204ordinary
+quads/195CPUblits/2639resets equal;host3839110auxquads. Thirdmatchedoldnativeebe
+6000inputrunPASS: completed5900BMPexact,1666hostrows exactexcept8explicitdurations.
+Presentation1280x720/internal2736x1600, NOTnewfinal4K/performance/allgameclaim.
+LOCALW original-mirror-{control,host,presentation-control},original-mirror-pair.json,
+original-mirror-presentation.json,original-mirror-native-export.json. Exportalready
+runDO NOTrepeat. 3targetedharness testsPASS;canonicalmirror9GPUtestsPASSpreviously.
+
+NEXT native depth/roadtransport forfade. LOCALnewstandalone native/vunit_distance_fade.h
+and tests/native/vunit_distance_fade_test.cpp drafted; compile/executionPASS,
+NOTMAMElinked/synced. 64bytepacket preserves60bytequadprefix+policybit0 roadopaque.
+Strictframe/pad3/240k/positiveC31depth1000..480k, excludesalloutside, permitsallinside
+unlikeunchangedcrossing-onlytype7codec. Need actualsavedquadqualification, persist
+roadmarker fromauthoredobjflags inWorldObject, then connectgatedfade shader/transport.
+No activegame/build/test. Personal87d/publicv0.5.0unchanged. Continue directly.
+No deploy/release/physicalFFB/hostedCI/menu removal; keepserialrig. W=results/diagnostics/
+world25-roads-20260914. Standalonefade sweep earlier43.66%CRT0/36.73%CRT1 peakL1gain
+isstationarymetric NOTmovingcamera popin acceptance; Worldterrainundersidestillopen.
+
+
+## September15 — mirrored fade qualified; native mirror building
+
+Read latest docs/reviews/2026-09-15-vunit-distance-fade.md. Canonical MRT helper
+committedf9f4717;9GPUtestsPASS. ActualsavedWorld2867ordinary/8597aux quads in3batches
+produce exact4index/masktargets vsindependentcontrols; writtenalphaexactcombined,
+unusedalpha1. LOCALW/mirror-scene. Deferred21step220k..240k peakL1 587507->330999
+CRT0(43.66%),568538->359701 CRT1(36.73%). Every step nonewblack/lowerforegroundexact;
+lastindicesexact. Stationaryscene metric NOTmovingcamera/perceivedpopin percentage.
+Firstsweep invalidGLcontextrestoration FAILretained; v2restoresctx/bindings and
+boundschanges+finalcontrol. LOCALW/deferred-fade-sweep-v2. Initialmirror scale1mask
+expectation7wrong(actual5),alpha1e-6boundwrong(actual1.1325e-6); corrected2e-6, failures
+retained. No materialshaderchange. Worldauthoredterraingapstillvisible.
+
+Native0f3b4b51f5a sourcecommit adds default-off originalindexmirror, separateoriginal
+scene/margin resets, ordinary+batchedCPUwritesboth, auxiliaryextendedonly. Optional
+onecompletedframe readback8planes/receipt. NOfade/presentationchange. GLshaderheaders
+generatedcanonical. MIDV_GL_ORIGINAL_MIRROR requiresFFB0/boundedframe/batchedCPU;
+Worldhostdrawrequireslayer3;runtime rejectsunknownpad ownership. Newharnessmodule
+vunit_original_mirror wiredreplay --vunit-original-mirror-frame;3focusedtestsPASS.
+Buildrunning original-mirror-build.log; export-original-mirror.py preparedNOTRUN.
+Priorfrozenebe/223patches andpersonal87d/publicv0.5.0unchanged. Nextfinishbuild/freeze,
+oneoriginal+host boundedmirrorpair verifybothpageoriginals andcompletedpresentation;
+then depth/protectedroadtransport andfade. No deploy/release/physicalFFB/hostedCI.
+Do not stopatcheckpoint; keepserialrig. W=results/diagnostics/world25-roads-20260914.
+
+
 ## September15 — deferred palette-safe fade prototype qualified; native mirror next
 
 Read appended deferred section in docs/reviews/2026-09-15-vunit-distance-fade.md.

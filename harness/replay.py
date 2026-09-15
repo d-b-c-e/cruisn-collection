@@ -37,6 +37,7 @@ import zeus_depth_mirror
 import zeus_stream
 import offroad_distance
 import world_host_options
+import vunit_original_mirror
 import usa_host_options
 import offroad_host_options
 from display_target import parse_size
@@ -104,6 +105,7 @@ def main(argv=None):
     zeus_depth_mirror.add_arguments(ap)
     offroad_distance.add_arguments(ap)
     world_host_options.add_arguments(ap)
+    vunit_original_mirror.add_arguments(ap)
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
     args = ap.parse_args(argv)
@@ -286,6 +288,8 @@ def main(argv=None):
             report['offroad_distance']=offroad_trial
         host_trial=world_host_options.configure(args,manifest['rom'],manifest['settings'])
         if host_trial:report['world_host_scenery']=host_trial
+        mirror_trial=vunit_original_mirror.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
+        if mirror_trial:report['vunit_original_mirror']=mirror_trial
         usa_host_trial=usa_host_options.configure(args,manifest['rom'],manifest['settings'])
         if usa_host_trial:report['usa_host_scenery']=usa_host_trial
         offroad_host_trial=offroad_host_options.configure(args,manifest['rom'],manifest['settings'])
@@ -437,6 +441,8 @@ def main(argv=None):
         if endpoint_result:report['exotica_model_endpoint']['result']=endpoint_result
         depth_result=zeus_depth_mirror.verify_receipt(depth_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
         if depth_result:report['zeus_depth_mirror']['result']=depth_result
+        mirror_result=vunit_original_mirror.verify(mirror_trial,runtime)
+        if mirror_result:report['vunit_original_mirror']['result']=mirror_result
         stall_result=zeus_stream.verify_stall(stall_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'))
         if stall_result:report['zeus_stall']['result']=stall_result
         if args.patch_at_frame is not None:
