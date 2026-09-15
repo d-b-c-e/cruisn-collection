@@ -61,10 +61,12 @@ public:
         Slot s;s.life=Life::live;s.generation=m_sequence+1;m_slots[address]=s;++m_sequence;
         generation=s.generation;return true;
     }
-    bool release(uint32_t address,bool &was_unknown) {
+    // A verified external adoption is an actual guest free of an object created
+    // outside the observed allocator. It cannot override a known double free.
+    bool release(uint32_t address,bool &was_unknown,bool verified_external=false) {
         if(!valid_address(address) || !next())return false;
         auto found=m_slots.find(address);const bool unknown=found==m_slots.end();
-        if(unknown ? (!m_unknown || m_slots.size()>=m_layout.max_tracked) : found->second.life!=Life::live)return false;
+        if(unknown ? ((!m_unknown && !verified_external) || m_slots.size()>=m_layout.max_tracked) : found->second.life!=Life::live)return false;
         if(!unknown && found->second.bound)m_sources.erase(found->second.key);
         Slot s;s.life=Life::free;m_slots[address]=s;++m_sequence;was_unknown=unknown;return true;
     }

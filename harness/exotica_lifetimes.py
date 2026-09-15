@@ -64,7 +64,7 @@ def verify_receipt(trial,text,directory):
     if len(rows)!=totals['records']:raise ValueError('Exotica lifetime journal count')
     live={};known=set();sources={};seen_draws=set();faded=set();opaque=set()
     sequence=0;epoch=1;bindings=draws=firsts=fades=completions=unknowns=0
-    count=None;last_time=-1.;last_frame=-1;allow_unknown=True
+    count=None;last_time=-1.;last_frame=-1;allow_unknown=True;reset_base=0
     for index,row in enumerate(rows):
         if set(row)!=set(FIELDS) or any(row[k] is None for k in FIELDS):raise ValueError('incomplete lifetime row')
         try:
@@ -88,18 +88,19 @@ def verify_receipt(trial,text,directory):
             if op=='C':
                 if slot or r['reason']!=0x85b4 or r['flags'] or r['generation']:
                     raise ValueError('lifetime global clear identity')
-                live.clear();known.clear();sources.clear();allow_unknown=False;epoch+=1;count=0
+                live.clear();known.clear();sources.clear();allow_unknown=False;epoch+=1;count=0;reset_base=0
             elif op=='R':
                 if r['reason']!=1201 or r['flags']!=1200 or r['generation']:raise ValueError('lifetime reset extent')
                 end=slot+1201*31
                 if not slot or end>0x40000 or (slot<0x32000 and end>0x30000):raise ValueError('lifetime reset pool bounds')
-                live.clear();known.clear();sources.clear();allow_unknown=False;epoch+=1;count=1200
+                live.clear();known.clear();sources.clear();allow_unknown=False;epoch+=1;count=1200;reset_base=slot
             elif op=='A':
                 if not slot or slot in live or r['generation']!=sequence or r['reason'] or count<=0:raise ValueError('lifetime allocation')
                 live[slot]=dict(generation=sequence,key=None,owner=None);known.add(slot);count-=1
             else:
                 unknown=slot not in known
-                if not slot or (slot not in live and not (unknown and allow_unknown)) or r['reason']!=int(unknown) or r['generation']:
+                external=reset_base and not reset_base<=slot<reset_base+1201*31
+                if not slot or (slot not in live and not (unknown and (allow_unknown or external))) or r['reason']!=int(unknown) or r['generation']:
                     raise ValueError('lifetime removal')
                 old=live.pop(slot,None)
                 if old and old['key'] is not None:sources.pop(old['key'])

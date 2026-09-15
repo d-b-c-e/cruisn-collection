@@ -49,5 +49,13 @@ int main() {
     assert(!fresh.allocate(600,generation)); // bounded distinct address history
     assert(fresh.release(537,unknown) && !fresh.allocate(600,generation));
     assert(fresh.allocate(537,generation));
+    Registry external;assert(external.start(l,false));
+    assert(!external.release(600,unknown));
+    assert(external.release(600,unknown,true) && unknown);
+    assert(!external.release(600,unknown,true));
+    assert(external.allocate(600,generation) && external.release(600,unknown,true) && !unknown);
+    assert(!external.release(0,unknown,true));
+    assert(external.release(700,unknown,true) && unknown);
+    assert(!external.release(800,unknown,true)); // external adoption retains history budget
     std::cout<<"PASS stale generations, source realms, reset epochs, partial observation, bounds and 10000 slot reuses\n";
 }

@@ -43,6 +43,7 @@ int main(int argc,char **) {
             if(op=="L" && v.size()==4 && line_number==1 && v[3]<=1)accepted=registry.start(layout(),v[3]!=0);
             else if(op=="A" && v.size()==1)accepted=registry.allocate(u32(0),generation);
             else if(op=="F" && v.size()==1)accepted=registry.release(u32(0),flag);
+            else if(op=="E" && v.size()==1)accepted=registry.release(u32(0),flag,true);
             else if(op=="R" && v.size()==3)accepted=registry.reset(layout());
             else if(op=="B" && v.size()==4) {accepted=registry.bind(u32(0),key(1),h);generation=h.generation;}
             else if(op=="D" && v.size()==7) {

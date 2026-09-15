@@ -100,15 +100,26 @@ class ExoticaLifetimes(unittest.TestCase):
             self.assertIsNone(verify_receipt(None,'',temp))
             with self.assertRaisesRegex(ValueError,'disabled'):verify_receipt(None,text,temp)
 
-    def test_reset_invalidates_owner_and_prohibits_unknown_free(self):
+    def test_reset_invalidates_owner_and_prohibits_free_of_unallocated_pool_slot(self):
         rows,text=self.fixture()
         for op in ('D','F'):
             changed=copy.deepcopy(rows)
             extra=dict(rows[4]) if op=='D' else dict(rows[1])
             extra.update(event=op,sequence=4 if op=='D' else 5,epoch=2)
+            if op=='F':extra.update(slot=0x19000,flags=1201)
             changed.append(extra)
             with self.subTest(op=op),self.assertRaises(ValueError):
                 self.verify(changed,text.replace('records=9','records=10'))
+
+    def test_verified_external_free_after_rebuild_is_explicit_and_not_repeatable(self):
+        rows,text=self.fixture()
+        extra=dict(rows[1],sequence=5,epoch=2,slot=0x10b21,flags=1201)
+        rows.append(extra)
+        text=text.replace('records=9','records=10').replace('transitions=4','transitions=5')
+        self.assertEqual(self.verify(rows,text)['unknown_frees'],2)
+        rows.append(dict(extra,sequence=6,flags=1202))
+        with self.assertRaisesRegex(ValueError,'removal'):
+            self.verify(rows,text.replace('records=10','records=11').replace('transitions=5','transitions=6'))
 
     def test_global_clear_invalidates_bound_owners_before_pool_rebuild(self):
         rows,text=self.fixture()
