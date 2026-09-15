@@ -88,6 +88,14 @@ and the public package remain v0.5.0.
   now preserves original geometry/resources and adds visible distant coverage
   in 18 of 21 completed 4K frames. The authored terrain gap and broader temporal
   acceptance remain unresolved.
+  The [adjacent-mesh search](docs/reviews/2026-09-15-world-terrain-neighbors.md)
+  finds no continuation of the sampled exposed edge among4,712 eligible future
+  and allocated descriptors, including full road models. Separately, a
+  [standalone true-color distance fade](docs/reviews/2026-09-15-vunit-distance-fade.md)
+  cuts the largest stationary boundary color change by49.7%, with no new black
+  pixels after native translucent quads receive the same distance envelope.
+  This is an offline shader, not a native feature: ordered palette updates,
+  post-processing, moving-camera handover and other games still need proof.
 - **Off Road:** the [new attended El Paso drive](docs/reviews/2026-09-10-offroad-full-drive.md)
   exposed a final-section stop, now fixed. Full 2×/3×/repeat preserve the route;
   3× adds differences in22/66 images over2× and repeats all66 exactly. Complete
@@ -428,7 +436,7 @@ Relevant legacy IDs are retained below.
 | C2 | Exotica visibility | Combined admissions, waiting/active margins and original replacements pass full Amazon and a Hong Kong segment. Identify a visible outer boundary before implementing a continuous distance fade. | Preserve original submissions/resources, intrinsic blending and ownership through handover. Additional admissions or intermediate pixels are not proof of completed visible benefit. |
 | C2 | USA global distance | Horizontal rejection preserves the checked 4K images and improves measured speed to99.68% overall, with97.99% in the busiest window. Address the remaining measured cost only from profiling; broaden track/activation coverage before launcher integration. | Full candidate replay, scene/resource comparisons, stable4K output and an attended drive. |
 | C2 | World / Off Road distance | Broaden coverage beyond the current routes; determine whether activation or residency, rather than far clipping, limits additional benefit. | Matched completed images, timing and fresh drives; do not count extra admissions alone. |
-| C2 / G8 | Soften remaining scenery pop-in | Investigate distance-based alpha or fog transitions after the host scenery path is stable. Capture Exotica's existing appearance and trace its alpha/depth state as a reference; do not assume the same mechanism exists on V-Unit. Prefer a shared renderer transition with game-specific depth/material adapters. | Matched drives show reduced temporal jumps without transparent roads, halos, depth/order errors, temporal trails or new stutter. Preserve native translucency and shadows; fade static distant scenery only, with default-off A/B controls. Fading cannot reveal geometry before it is available. |
+| C2 / G8 | Soften remaining scenery pop-in | The standalone V-Unit RGBA shader passes focused GPU checks and reduces a saved World boundary sweep's peak color change. Prove ordered palette updates and existing dither/seam/CRT processing before a default-off live integration; then qualify moving-camera transitions and per-game depth adapters. Exotica retains its separate renderer path. | Matched drives show reduced temporal jumps without transparent roads, halos, depth/order errors, temporal trails or new stutter. Preserve native translucency and shadows; fade static distant scenery only, with default-off A/B controls. Fading cannot reveal geometry before it is available. |
 | C3 | World New York artifacts/crash | Obtain a recorded race reproducing black flashes and, if reproducible, the 3×/+12 finish crash. Preserve the default/2× control. | Diagnose the first bad submission or guest instruction; retain the original failing recording. |
 | B8 | Broaden Cheats coverage | Live activation/replay is shipped and deployed. Validate rank/nitro and parameter effects individually; broaden actual race-end and code-restoration gameplay coverage beyond the current memory checks. | Exact-revision effects, correct restoration, recording fidelity and default-off regression controls. |
 | A3 | World future-section decoder | Both revisions and road codecs are implemented. The Hawaii gap has an authored in-range mesh boundary; investigate adjacent coverage/backdrop relationships. Matched custom handlers include dynamic work and cannot be blindly treated as static geometry. | Correct XYZ/orientation/materials, no dynamic/physics initialization, no per-model/level allowlist, smooth presentation and transfer to ordinary guest drawing. |

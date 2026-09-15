@@ -1,5 +1,40 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September15 — default suite renewed; standalone distance fade next
+
+Read docs/reviews/2026-09-15-combined-default-regressions.md,
+2026-09-15-world-terrain-neighbors.md and2026-09-15-vunit-distance-fade.md.
+Nativeebe/223patches unchanged. Seven default cases PASS once:43293inputs,
+620meaningful VUnit snapshots,21ExoticaGL,22130memory/packet samples, all6timing
+windows99.973..100.005%. Source34ace5674c134808e8932fd3cd3ab75380af5884dca16e320b07cc718651b710
+stable during suite. Later standalone shader source NOT covered by that identity;
+native/default path unchanged. LOCAL parity-defaults-20260915-ebe/qualified.json.
+World adjacency v3 covers4712nonbillboard/ordinary descriptors including fullroads,
+397allocated objects across5guardedlists,117006edges: no collinear continuation
+of knownedge32/33. Nearest other-model edge midpoint7461units, alreadydrawn.
+Billboard/alternate/custom exclusions explicit; no automatic skirt or gap fix.
+Exo current5644immediate removal82outerobjects/1504quads changes26535pixels,
+none color+depth identical at completed5645; correspondence only, not full removal.
+
+NEW gpu/vunit_distance_fade.py standalone only, NOTMAMElinked/launcherdefault.
+RGBA per-command palette resolution, reciprocal per-pixel depth smoothstep20k,
+originalUV/coverage/dither retained, roads/original commands opaque. World stationary
+220k..240k sweep maxL1 colorjump583428->293758(-49.7%); wholemodel rule597099 rejected.
+Initial per-pixel excluded native translucent quads:2newblack pixels traced to
+remaining fullstrength translucent host owners; multiplying native coverage by
+distance envelope fixesboth. Final9201changedpixels,nonewblack,belowfiney1000exact.
+4focusedtestsPASS actualGPU endpoints/foreground/dither/slopedfan. Initialhalfalpha
+128-only assertionFAILretained;127/128adjacent UNORM codes accepted with otherchannels
+exact. Canonical4actualrenders:opaque+peakpair exact;finalfade1pixel1channel1code
+diff from runtimewidthuniform. InitialstrictFAILretained, explicitv2boundedPASS.
+Other first shader reservedname/pendingmap failures retained. LOCALW distance-fade-*
+and terrain-neighbors-v3, W=results/diagnostics/world25-roads-20260914.
+NEXT ordered palette-update and existing dither/seam/CRT contract before livefade;
+then moving boundary/other VUnit depth adapters. No newgame/build justified for
+shader-only work. Nogame/build/test running. Personal87d/publicv0.5.0unchanged.
+No deploy/release/hostedCI/physicalFFB/menu removal. Continue directly while parity
+remains; serialrig. Do not repeat seven defaults without newnative/default risk.
+
 ## September15 — USA near-fullspeed3x; horizontal rejection qualified
 
 Read docs/reviews/2026-09-15-usa-horizontal-cull.md and descriptor-storage.md
