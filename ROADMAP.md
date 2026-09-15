@@ -53,6 +53,11 @@ and the public package remain v0.5.0.
   zero rejections,21completed4KCRT comparisons and approximately full speed.
   This is a synthetic second-track segment, not a complete race or all-track
   acceptance. Sparse small new dark foliage pixels remain explicitly recorded.
+  A [saved outer-distance screen](docs/reviews/2026-09-15-exotica-far-appearance.md)
+  distinguishes submission counts from visible benefit: Hong Kong5000 has no
+  third-band objects, and the old Amazon7188 original drawing covers the checked
+  future-only contribution even after marked fade completion. A global fade
+  still needs visible-boundary and ownership-continuity evidence.
 - **USA:** visible earlier scenery, including small 3× gains, but the last
   measured 3× performance is approximately 97–98%. Reduce unnecessary projection
   work while preserving visibility and original game behavior. The
