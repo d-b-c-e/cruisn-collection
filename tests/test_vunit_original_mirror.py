@@ -105,6 +105,23 @@ class OriginalMirrorTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'FIFO'):
                 verify_metadata(trial, root)
 
+    def test_empty_capture_requires_no_matching_scene_quads_and_full_coverage(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in ('producer', 'consumer'):
+                (root/f'vunit-fade-{name}.bin').write_bytes(b'VFD1')
+            (root/'stderr.log').write_text('MIDV_FADE_METADATA packets=2 roads=1 captured=0\n')
+            scene = root/'world-host-scenes.csv'
+            scene.write_text('frame,page,quads,road_quads,quads_hash\n99,0,2,1,unused\n')
+            trial = dict(frame=100, first=80, last=150, fade_metadata=True)
+            self.assertEqual(verify_metadata(trial, root)['captured'], 0)
+            scene.write_text('frame,page,quads,road_quads,quads_hash\n100,0,2,1,unused\n')
+            with self.assertRaisesRegex(ValueError, 'road/count mismatch'):
+                verify_metadata(trial, root)
+            scene.write_text('frame,page,quads,road_quads,quads_hash\n99,0,3,1,unused\n')
+            with self.assertRaisesRegex(ValueError, 'consumer coverage'):
+                verify_metadata(trial, root)
+
     def test_both_pages_exact_and_corruption_rejected(self):
         with tempfile.TemporaryDirectory() as root:
             root = Path(root)

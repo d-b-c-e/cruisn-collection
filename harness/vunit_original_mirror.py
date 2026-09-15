@@ -131,7 +131,7 @@ def verify_metadata(trial, directory):
         if receipt or any(p.exists() for p in paths):
             raise ValueError('unrequested fade metadata')
         return None
-    if len(receipt) != 1 or any(not p.is_file() or not 68 <= p.stat().st_size <= 16*1024*1024 for p in paths):
+    if len(receipt) != 1 or any(not p.is_file() or not 4 <= p.stat().st_size <= 16*1024*1024 for p in paths):
         raise ValueError('missing or oversized fade metadata')
     data, other = (p.read_bytes() for p in paths)
     if data != other or data[:4] != b'VFD1' or (len(data)-4) % 64:
@@ -160,7 +160,7 @@ def verify_metadata(trial, directory):
         raise ValueError('fade scene interval differs')
     totals = tuple(map(int, receipt[0]))
     expected_totals = (sum(int(s['quads']) for s in scenes), sum(int(s['road_quads']) for s in scenes), len(packets))
-    if totals != expected_totals:
+    if totals != expected_totals or not totals[0]:
         raise ValueError('incomplete fade consumer coverage')
     at = 0
     for scene in (s for s in scenes if int(s['frame']) == trial['frame']):
@@ -177,8 +177,11 @@ def verify_metadata(trial, directory):
             raise ValueError('fade original quad bytes/order differ')
     if at != len(packets):
         raise ValueError('unclaimed fade packets')
-    return dict(passed=True, total_packets=totals[0], total_roads=totals[1], captured=len(packets),
-                captured_roads=roads, captured_crossings=crossings, sha256=hashlib.sha256(data).hexdigest())
+    result = dict(passed=True, total_packets=totals[0], total_roads=totals[1], captured=len(packets),
+                  captured_roads=roads, captured_crossings=crossings, sha256=hashlib.sha256(data).hexdigest())
+    if not packets:
+        result['capture_scope'] = 'No host quads at this completed frame; aggregate coverage only'
+    return result
 
 
 def compare_originals(control, candidate):
