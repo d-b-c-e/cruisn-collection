@@ -48635,3 +48635,210 @@ index 8aed854774f..8401dbeda1b 100644
 -- 
 2.55.0.windows.3
 
+From e13ed764ed7c4670d5b7c21f6a6dadae120fa914 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 07:54:14 -0500
+Subject: [PATCH] Observe Off-Road depth envelope using its own projection
+ bounds
+
+---
+ src/mame/midway/cruisn/vunit_distance_fade.h | 15 ++++++---
+ src/mame/midway/midvunit.cpp                 | 34 +++++++++++++++++---
+ src/mame/midway/midvunit.h                   |  1 +
+ src/mame/midway/midvunit_v.cpp               | 31 +++++++++++-------
+ 4 files changed, 61 insertions(+), 20 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/vunit_distance_fade.h b/src/mame/midway/cruisn/vunit_distance_fade.h
+index dbbbd46f604..aa09d2d10c7 100644
+--- a/src/mame/midway/cruisn/vunit_distance_fade.h
++++ b/src/mame/midway/cruisn/vunit_distance_fade.h
+@@ -11,21 +11,28 @@ struct Packet {
+ };
+ static_assert(sizeof(Packet)==64 && offsetof(Packet,policy)==60,"distance-fade wire layout");
+ 
++enum class Profile { world_usa, offroad };
++// Off-Road's limit records its projection guard, NOT its nearer sphere admission.
++// Its metadata must never enable World's per-pixel far clipping.
+ // Unlike the crossing-only codec, this also permits wholly inside host quads.
+ // A completely outside quad is not eligible; the producer must omit it.
+-inline bool decode(const Packet &packet,std::array<float,4> &depths,bool &crossing)
++inline bool decode(const Packet &packet,std::array<float,4> &depths,bool &crossing,
++    Profile profile=Profile::world_usa)
+ {
+     depths={};crossing=false;
++    if(profile!=Profile::world_usa && profile!=Profile::offroad)return false;
++    const bool offroad=profile==Profile::offroad;
+     const auto &q=packet.quad;
+-    if(!q.frame || (q.pad!=3 && q.pad!=7) || packet.policy>1 || q.coverage.far_limit!=240000)return false;
++    if(!q.frame || (q.pad!=3 && q.pad!=7) || packet.policy>1 || q.coverage.far_limit!=(offroad?191040U:240000U))return false;
++    if(offroad && (q.pad!=3 || packet.policy))return false;
+     if(q.pad==7 && packet.policy!=1)return false; // margin coverage is an authored-road permission
+     std::array<float,4> values{};unsigned inside=0;
+     for(unsigned i=0;i<4;++i)
+     {
+         const uint32_t w=q.coverage.words[i];const int e=int8_t(w>>24);
+-        if((w&0x800000) || e<9 || e>18)return false;
++        if((w&0x800000) || e<(offroad?8:9) || e>18)return false;
+         values[i]=std::ldexp(float((w&0x7fffff)|0x800000),e-23);
+-        if(values[i]<1000 || values[i]>=480000)return false;
++        if(values[i]<(offroad?503:1000) || values[i]>=(offroad?191040:480000))return false;
+         inside+=values[i]<q.coverage.far_limit;
+     }
+     if(!inside)return false;
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index a566759b53f..9eb59fec4a1 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -261,6 +261,22 @@ void midvunit_base_state::offroad_host_start()
+ 		if(strlen(layer)!=1 || *layer<'0' || *layer>'3')fatalerror("Invalid Off Road host layer\n");
+ 		m_host_layer=uint16_t(*layer-'0');
+ 	}
++	if(const char *metadata=std::getenv("MIDV_OFFROAD_HOST_FADE_METADATA"))
++	{
++		if(strcmp(metadata,"0") && strcmp(metadata,"1"))fatalerror("Invalid Off Road host metadata\n");
++		m_host_fade_metadata=!strcmp(metadata,"1");
++	}
++	if(m_host_fade_metadata)
++	{
++		if(m_host_mode!=2 || m_offroad_host_multiplier!=3 || !m_host_future || m_host_layer!=3 ||
++			m_offroad_host_clip_admission || !std::getenv("MIDV_FFB") || strcmp(std::getenv("MIDV_FFB"),"0") ||
++			!std::getenv("MIDV_GL_ORIGINAL_MIRROR") || strcmp(std::getenv("MIDV_GL_ORIGINAL_MIRROR"),"1"))
++			fatalerror("Off Road metadata requires3x stock sphere admission, mirror and FFB0\n");
++		m_host_offroad_metadata=true;
++		m_host_fade_log=fopen("vunit-fade-producer.bin","wb");
++		if(!m_host_fade_log || fwrite("VFD1",1,4,m_host_fade_log)!=4)fatalerror("Cannot create Off Road metadata evidence\n");
++		setvbuf(m_host_fade_log,nullptr,_IOFBF,65536);
++	}
+ 	bool trace=false;
+ 	if(const char *text=std::getenv("MIDV_OFFROAD_HOST_QUADS"))
+ 	{
+@@ -298,14 +314,22 @@ void midvunit_base_state::offroad_host_start()
+ 			const auto guarded=std::chrono::steady_clock::now();
+ 			cruisn::offroad_host::Scene scene;
+ 			if(host_injected_failure(frame,cycles))return;
+-			if(!cruisn::offroad_host::build(read,scene,m_offroad_host_multiplier,m_host_future,m_offroad_host_cache,m_offroad_host_clip_admission,false,m_offroad_host_recover_partial))
++			if(!cruisn::offroad_host::build(read,scene,m_offroad_host_multiplier,m_host_future,m_offroad_host_cache,m_offroad_host_clip_admission,m_host_fade_metadata,m_offroad_host_recover_partial))
+ 			{host_prepare_failed(frame,cycles,3,"Off Road host scene/model/material guard failed");return;}
+ 			host_bootstrap_ready(frame);
+ 			const auto prepared=std::chrono::steady_clock::now();
+ 			std::vector<std::array<uint16_t,16>> quads;
+ 			uint64_t hash=cruisn::world_host::hash_seed;
+-			for(const auto &o:scene.objects)for(const auto &q:o.quads)
+-			{quads.push_back(q);hash=cruisn::world_host::quad_hash(hash,q);}
++			std::vector<std::array<uint32_t,4>> depths;
++			for(const auto &o:scene.objects)
++			{
++				if(m_host_fade_metadata && o.depths.size()!=o.quads.size())fatalerror("Missing Off Road camera depths\n");
++				for(size_t i=0;i<o.quads.size();++i)
++				{
++					if(m_host_fade_metadata)depths.push_back(o.depths[i]);
++					quads.push_back(o.quads[i]);hash=cruisn::world_host::quad_hash(hash,o.quads[i]);
++				}
++			}
+ 			const auto packed=std::chrono::steady_clock::now();
+ 			const double time=machine().time().as_double();
+ 			if(m_host_quad_log)for(const auto &o:scene.objects)for(const auto &q:o.quads)
+@@ -315,7 +339,9 @@ void midvunit_base_state::offroad_host_start()
+ 				fputc('\n',m_host_quad_log);
+ 			}
+ 			const auto logged=std::chrono::steady_clock::now();
+-			if(m_host_mode==2)world_host_submit(quads);
++			std::vector<uint32_t> policies;
++			if(m_host_fade_metadata)policies.assign(quads.size(),0);
++			if(m_host_mode==2)world_host_submit(quads,m_host_fade_metadata?&depths:nullptr,m_host_fade_metadata?&policies:nullptr);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("Off Road host inspection changed guest cycles\n");
+ 			host_scene_record(frame,quads.size(),hash);
+ 			const auto submitted=std::chrono::steady_clock::now();
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index d1faddfae2c..beb68d54189 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -200,6 +200,7 @@ protected:
+ 	memory_passthrough_handler m_host_scene_tap;
+ 	FILE *m_host_fade_log = nullptr;
+ 	bool m_host_fade_metadata = false;
++	bool m_host_offroad_metadata = false;
+ 	cruisn::DiagnosticJournal m_host_scene_log;
+ 	cruisn::DiagnosticJournal::Policy m_host_journal_policy=cruisn::DiagnosticJournal::Policy::capture;
+ 	uint64_t m_host_geometry=cruisn::vunit_journals::seed;
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 8401dbeda1b..48d94bb914f 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -1152,19 +1152,26 @@ void thread_main()
+ 		!strcmp(std::getenv("MIDV_WORLD_HOST_FADE_METADATA"),"1");
+ 	bool const usa_metadata = std::getenv("MIDV_USA_HOST_FADE_METADATA") &&
+ 		!strcmp(std::getenv("MIDV_USA_HOST_FADE_METADATA"),"1");
+-	if(world_metadata && usa_metadata)fatalerror("Multiple host metadata profiles\n");
+-	for(const auto &entry:{std::make_pair(world_metadata,"MIDV_WORLD_HOST_SCENERY"),std::make_pair(usa_metadata,"MIDV_USA_HOST_SCENERY")})
++	bool const offroad_metadata=std::getenv("MIDV_OFFROAD_HOST_FADE_METADATA") &&
++		!strcmp(std::getenv("MIDV_OFFROAD_HOST_FADE_METADATA"),"1");
++	if(unsigned(world_metadata)+unsigned(usa_metadata)+unsigned(offroad_metadata)>1)
++		fatalerror("Multiple host metadata profiles\n");
++	for(const auto &entry:{std::make_pair(world_metadata,"MIDV_WORLD_HOST_SCENERY"),std::make_pair(usa_metadata,"MIDV_USA_HOST_SCENERY"),std::make_pair(offroad_metadata,"MIDV_OFFROAD_HOST_SCENERY")})
+ 		if(entry.first && (!std::getenv(entry.second) || strcmp(std::getenv(entry.second),"2")))
+ 			fatalerror("Host metadata requires matching game drawing\n");
+-	bool const fade_metadata=world_metadata || usa_metadata;
++	bool const fade_metadata=world_metadata || usa_metadata || offroad_metadata;
++	auto const metadata_profile=offroad_metadata?cruisn::vunit_fade::Profile::offroad:cruisn::vunit_fade::Profile::world_usa;
+ 	bool const distance_fade = std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE") &&
+ 		!strcmp(std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE"),"1");
+ 	// Measure the hypothetical envelope after ordinary occlusion without applying
+ 	// it to displayed colors. USA road/surface fade eligibility is still unproven.
+-	bool const opacity_observer=std::getenv("MIDV_USA_HOST_OPACITY_OBSERVER") &&
++	bool const usa_observer=std::getenv("MIDV_USA_HOST_OPACITY_OBSERVER") &&
+ 		!strcmp(std::getenv("MIDV_USA_HOST_OPACITY_OBSERVER"),"1");
+-	if(opacity_observer && !usa_metadata)fatalerror("USA opacity observer requires explicit depth metadata\n");
+-	bool const fade_opacity=distance_fade || opacity_observer;
++	if(usa_observer && !usa_metadata)fatalerror("USA opacity observer requires explicit depth metadata\n");
++	bool const offroad_observer=std::getenv("MIDV_OFFROAD_HOST_OPACITY_OBSERVER") &&
++		!strcmp(std::getenv("MIDV_OFFROAD_HOST_OPACITY_OBSERVER"),"1");
++	if(offroad_observer && !offroad_metadata)fatalerror("Off Road opacity observer requires explicit depth metadata\n");
++	bool const fade_opacity=distance_fade || usa_observer || offroad_observer;
+ 	if(distance_fade && !world_metadata)fatalerror("Distance fade requires qualified host metadata\n");
+ 	if(fade_metadata && !original_mirror)fatalerror("Fade metadata requires original mirror\n");
+ 	if (original_mirror)
+@@ -1308,8 +1315,8 @@ void thread_main()
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uClipW"), WIDE);
+ 	if(fade_opacity)
+ 	{
+-		gl.Uniform1f(gl.GetUniformLocation(prog,"fadePlane"),240000.f);
+-		gl.Uniform1f(gl.GetUniformLocation(prog,"fadeWidth"),20000.f);
++		gl.Uniform1f(gl.GetUniformLocation(prog,"fadePlane"),offroad_observer?141888.f:240000.f);
++		gl.Uniform1f(gl.GetUniformLocation(prog,"fadeWidth"),offroad_observer?11824.f:20000.f);
+ 	}
+ 	// Legacy margin suppression/column stretching destroyed valid skies in
+ 	// recorded World/Off Road races. Retain it only as an explicit experiment.
+@@ -1775,7 +1782,7 @@ void thread_main()
+ 				if(type==8)
+ 				{
+ 					cruisn::vunit_fade::Packet packet;memcpy(&packet,staging.data(),sizeof(packet));
+-					if(!fade_metadata || !cruisn::vunit_fade::decode(packet,fade_depths,far_packet))fatalerror("Invalid host fade metadata\n");
++					if(!fade_metadata || !cruisn::vunit_fade::decode(packet,fade_depths,far_packet,metadata_profile))fatalerror("Invalid host fade metadata\n");
+ 					selector=packet.policy?1.f:-1.f;
+ 					++fade_packets;fade_roads+=packet.policy;
+ 					if(int(q.frame)==mirror_frame)
+@@ -3482,7 +3489,7 @@ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_
+ {
+ 	if(!live().enabled)fatalerror("World host scenery drawing requires the live GL renderer\n");
+ 	if(quads.empty())return;
+-	if(depths && (!m_host_far_coverage || depths->size()!=quads.size()))fatalerror("Host far depths mismatch\n");
++	if(depths && ((!m_host_far_coverage && !m_host_offroad_metadata) || depths->size()!=quads.size()))fatalerror("Host far depths mismatch\n");
+ 	if(policies && (!m_host_fade_metadata || !depths || policies->size()!=quads.size()))fatalerror("Host fade policies mismatch\n");
+ 	if(margins && (m_host_layer!=3 || margins->size()!=quads.size() ||
+ 		std::any_of(margins->begin(),margins->end(),[](uint8_t v){return v>1;})))fatalerror("Host margin permissions mismatch\n");
+@@ -3501,9 +3508,9 @@ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_
+ 			cruisn::vunit_fade::Packet packet;
+ 			packet.quad.frame=frame;packet.quad.pc=m_page_control;packet.quad.pad=h.pad;
+ 			std::copy(quads[i].begin(),quads[i].end(),packet.quad.dma);
+-			packet.quad.coverage.far_limit=m_host_far;packet.quad.coverage.words=(*depths)[i];packet.policy=(*policies)[i];
++			packet.quad.coverage.far_limit=m_host_offroad_metadata?191040:m_host_far;packet.quad.coverage.words=(*depths)[i];packet.policy=(*policies)[i];
+ 			std::array<float,4> decoded;bool crossing;
+-			if(!cruisn::vunit_fade::decode(packet,decoded,crossing))fatalerror("Invalid emitted host fade metadata\n");
++			if(!cruisn::vunit_fade::decode(packet,decoded,crossing,m_host_offroad_metadata?cruisn::vunit_fade::Profile::offroad:cruisn::vunit_fade::Profile::world_usa))fatalerror("Invalid emitted host fade metadata\n");
+ 			if(crossing && m_host_clip_log && fwrite(&packet.quad,1,sizeof(packet.quad),m_host_clip_log)!=sizeof(packet.quad))fatalerror("Far producer receipt write failed\n");
+ 			if(int(frame)==fade_frame &&
+ 				fwrite(&packet,1,sizeof(packet),m_host_fade_log)!=sizeof(packet))fatalerror("Fade producer write failed\n");
+-- 
+2.55.0.windows.3
+

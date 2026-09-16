@@ -37,4 +37,20 @@ int main()
     for(int invalid:{-1,0,999,480000,1000000}) {
         fill({1000,2000,3000,invalid});reject();
     }
+    // Off-Road accepts vertices beyond the sphere admission without clipping.
+    p.quad.coverage.far_limit=191040;
+    fill({503,141888,167308,191039});
+    assert(vunit_fade::decode(p,depths,crossing,vunit_fade::Profile::offroad) && !crossing);
+    assert(!vunit_fade::decode(p,depths,crossing)); // explicit profile required
+    for(int invalid:{502,191040,240000}) {
+        fill({503,1000,141888,invalid});depths.fill(123);crossing=true;
+        assert(!vunit_fade::decode(p,depths,crossing,vunit_fade::Profile::offroad));
+        assert((depths==std::array<float,4>{}) && !crossing);
+    }
+    fill({503,141888,167308,191039});
+    p.policy=1;assert(!vunit_fade::decode(p,depths,crossing,vunit_fade::Profile::offroad));p.policy=0;
+    p.quad.pad=7;assert(!vunit_fade::decode(p,depths,crossing,vunit_fade::Profile::offroad));p.quad.pad=3;
+    p.quad.coverage.far_limit=141888;
+    assert(!vunit_fade::decode(p,depths,crossing,vunit_fade::Profile::offroad));
+
 }

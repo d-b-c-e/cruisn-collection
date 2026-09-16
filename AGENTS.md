@@ -2,21 +2,24 @@
 
 ## Current work: release parity, September 16
 
-Latest: read docs/reviews/2026-09-16-usa-opacity-observer.md.
-Native0d24929d1c7 frozen259patches, SHA65376963ee84a46fa3441b174e8ff177301207d5925eb1dbebfe4476b6495fe2;
-build attestation attached. Source-only5832metadata followed by0d249GPU observer.
-3522input control/observer pair PASS;1721camera5163ADC/originalDMA/resources/
-all8index-maskplanes/fivecompleted4KCRTimages3500..3504 exact.
-38225metadata packets,3264captured/100crossing fullorderedDMA/depths independently
-exact saved3501 currentreference.11scenerows exact except6named durations.
-Visiblepage only41partial pixels,other20;zero0. Everyaffectedpixelhosttag4.
-No fade applied; no temporal/performance/roadclassification claim. Initialold
-pre-cullreference FAIL and wrongvertexbit8vsframebuffermask4 FAILretained;
-canonicalreferenceupdated, v3PASS withoutgame rerun.9mirror+9USAhosttestsPASS.
-LOCALworld25-roads-20260914/usa-opacity-qualified-v3.json and liveoff/on.
-QuiescentExoticareset/VUnitcache reset and binaryprovenance priorreviews retained.
-NEXT Offroad distinct depth/opacity observer: sphere3x141888, projection191040;
-do NOTreuseWorldcoverage discard/240000 bounds. Existingoffroaddepthsqualified.
+Latest: read docs/reviews/2026-09-16-offroad-opacity-observer.md.
+Nativee13ed764ed7 frozen260patches with buildattestation;
+SHAb33d91db38f19f412a41523e2264601bad9fbc78e52c078bd09a91b6fd0cfb6d.
+Offroadexplicitmetadata profile503..191040 retainsalloriginalprojection;
+observerplane141888/width11824, NO appliedfade orfarcoverage discard.
+Samecandidate3382inputs/1581camera6324ADC/originalresources/all8mirrorplanes/
+fivecompleted4KCRTimages3358..3362 exact.21065packets856captured fullorderedDMA/
+depths independentlyexact saved3360;21scene rows except6durations exact.
+Visiblehost603pixels(other6), butzero partial/zeroopacity pixelsbothpages.
+Priorisolated821partial9976zero arecoveredbyactualforeground. DoNOTrepeatthiswindow.
+Nativeprofiletest+10mirrorPythonPASS; savedWorld/USA receipts revalidateexact.
+LOCALworld25-roads-20260914/offroad-opacity-qualified.json/prior-profiles.json.
+USAobserverprevious0d249:3522inputpair exact;visible41partialpixels only.
+Read2026-09-16-usa-opacity-observer.md; rawpre-cullreference/wrongmaskbit failures
+retained, v3PASS; canonicalUSAreference fixedin fbd50ee. No game rerun.
+NEXT inspect remainingExoticaresetboundaries, especiallypre-bootstrap reset:
+runtime_reset currentlyrequiresm_bootstrap_scene_started; phasechecksstrict.
+DoNOTclearqueuedownership toavoidfailure. Broadertrack/attended/FFBgatesremain.
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
 

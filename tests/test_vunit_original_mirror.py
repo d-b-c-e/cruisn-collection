@@ -121,6 +121,38 @@ class OriginalMirrorTests(unittest.TestCase):
                     self.assertEqual(result['captured_crossings'], 1)
                     self.assertEqual(result['captured_roads'], 0)
 
+    def test_offroad_metadata_uses_projection_bound_without_far_clipping(self):
+        args = SimpleNamespace(vunit_original_mirror_frame=100, candidate='candidate.exe',
+                               offroad_host_fade_metadata=True, offroad_host_opacity_observer=True)
+        settings = dict(MIDV_GL='1', MIDV_FFB='0', MIDV_OFFROAD_HOST_SCENERY='2',
+                        MIDV_OFFROAD_HOST_LAYER='3', MIDV_OFFROAD_HOST_FUTURE='1',
+                        MIDV_OFFROAD_HOST_DISTANCE='3', MIDV_OFFROAD_HOST_FIRST='80', MIDV_OFFROAD_HOST_LAST='150')
+        trial = configure(args, 'offroadc', settings.copy(), 200)
+        self.assertEqual(trial['metadata_game'], 'offroad')
+        for changes in ({'MIDV_OFFROAD_HOST_DISTANCE':'2'}, {'MIDV_OFFROAD_HOST_CLIP_ADMISSION':'1'}):
+            with self.assertRaises(ValueError):
+                configure(args, 'offroadc', settings | changes, 200)
+        with self.assertRaises(ValueError):
+            configure(args, 'crusnusa', settings, 200)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); quad = list(range(16))
+            fingerprint = 14695981039346656037
+            for byte in struct.pack('<16H', *quad):
+                fingerprint = ((fingerprint ^ byte)*1099511628211) & 0xffffffffffffffff
+            (root/'offroad-host-scenes.csv').write_text(
+                f'frame,page,quads,quads_hash\n100,513,1,{fingerprint:016x}\n', encoding='utf-8')
+            (root/'stderr.log').write_text('MIDV_FADE_METADATA packets=1 roads=0 captured=1\n', encoding='utf-8')
+            for limit, last in ((191040,191039), (141888,191039), (191040,191040)):
+                words = [F.integer(z).store() for z in (503,141888,167308,last)]
+                raw = b'VFD1'+struct.pack('<IHH16HI4II',100,513,3,*quad,limit,*words,0)
+                for name in ('producer','consumer'):
+                    (root/f'vunit-fade-{name}.bin').write_bytes(raw)
+                if limit == 191040 and last == 191039:
+                    self.assertEqual(verify_metadata(trial,root)['captured_crossings'],0)
+                else:
+                    with self.assertRaises(ValueError):
+                        verify_metadata(trial,root)
+
     def test_metadata_boundaries_depths_order_and_consumer_coverage(self):
         with tempfile.TemporaryDirectory() as root:
             root = Path(root)

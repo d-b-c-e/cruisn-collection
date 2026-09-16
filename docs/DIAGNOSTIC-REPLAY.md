@@ -890,3 +890,11 @@ Add --usa-host-opacity-observer to record the hypothetical20k outer envelope
 in both completed pages without changing displayed colors. Physical FFB must
 remain off. This is a visibility diagnostic, not a road policy or launcher option.
 See [the qualified measurement](reviews/2026-09-16-usa-opacity-observer.md).
+
+## Off-Road opacity observation
+
+--offroad-host-fade-metadata and --offroad-host-opacity-observer use the same
+bounded original-mirror workflow with explicit3x future drawing, stock sphere
+admission and physical FFB0. Projection remains bounded below191040; the observer
+measures an11824-unit envelope below141888 without applying a fade or clipping
+existing geometry. See [the completed-frame result](reviews/2026-09-16-offroad-opacity-observer.md).

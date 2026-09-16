@@ -191,3 +191,11 @@ variants, completion correspondence and inspected image. These checks needed no
 new game execution or native build. Raw game resources remain local.
 
 The [quiescent Exotica reset candidate](2026-09-16-exotica-quiescent-reset.md) now reboots with exact original inputs and completed images in an early case. The subsequent7500-input Mars reset also passes nonempty scenery, camera/ADC and all ten sampled post-reset images. Interrupted-work and pre-startup reset boundaries remain open; no reset workload waiver was introduced.
+
+The [USA](2026-09-16-usa-opacity-observer.md) and
+[Off-Road](2026-09-16-offroad-opacity-observer.md) completed-opacity observers now
+separate final-distance envelopes from foreground occlusion without changing
+displayed colors. USA's sampled visible page has41 potentially affected fine
+pixels; Off-Road's has none. These windows do not justify another fade replay.
+Existing positive2x/3x comparisons remain valid; broader visible transitions need
+their own source/ownership evidence.

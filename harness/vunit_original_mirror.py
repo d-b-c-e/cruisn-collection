@@ -9,7 +9,8 @@ import numpy as np
 from pathlib import Path
 
 KEYS = ('MIDV_GL_ORIGINAL_MIRROR', 'MIDV_GL_MIRROR_FRAME', 'MIDV_WORLD_HOST_FADE_METADATA',
-        'MIDV_WORLD_HOST_DISTANCE_FADE', 'MIDV_USA_HOST_FADE_METADATA', 'MIDV_USA_HOST_OPACITY_OBSERVER')
+        'MIDV_WORLD_HOST_DISTANCE_FADE', 'MIDV_USA_HOST_FADE_METADATA', 'MIDV_USA_HOST_OPACITY_OBSERVER',
+        'MIDV_OFFROAD_HOST_FADE_METADATA', 'MIDV_OFFROAD_HOST_OPACITY_OBSERVER')
 GAMES = {'crusnusa': 'USA', 'crusnwld24': 'WORLD', 'crusnwld': 'WORLD', 'offroadc': 'OFFROAD'}
 
 
@@ -22,23 +23,29 @@ def add_arguments(parser):
                         help='candidate-only USA depth transport; no fade or road classification')
     parser.add_argument('--usa-host-opacity-observer', action='store_true',
                         help='measure completed USA distance opacity without applying it to displayed colors')
+    parser.add_argument('--offroad-host-fade-metadata', action='store_true',
+                        help='candidate-only Off-Road projection-depth transport without far clipping')
+    parser.add_argument('--offroad-host-opacity-observer', action='store_true',
+                        help='measure the Off-Road sphere-distance envelope without changing displayed colors')
     parser.add_argument('--world-host-distance-fade', action='store_true',
                         help='candidate-only20k distance envelope using qualified metadata and original mirror')
 
 
 def configure(args, rom, settings, frames):
     frame = getattr(args, 'vunit_original_mirror_frame', None)
-    world_metadata = getattr(args, 'world_host_fade_metadata', False)
-    usa_metadata = getattr(args, 'usa_host_fade_metadata', False)
-    metadata = world_metadata or usa_metadata
-    observer = getattr(args, 'usa_host_opacity_observer', False)
-    if observer and not usa_metadata:
-        raise ValueError('USA opacity observer requires explicit depth metadata')
-    if ((world_metadata and rom not in ('crusnwld', 'crusnwld24'))
-            or (usa_metadata and rom != 'crusnusa')):
+    selected = {game: bool(getattr(args, game+'_host_fade_metadata', False))
+                for game in ('world', 'usa', 'offroad')}
+    observers = {game: bool(getattr(args, game+'_host_opacity_observer', False))
+                 for game in ('usa', 'offroad')}
+    game = GAMES.get(rom, '').lower()
+    if any(enabled and chosen != game for chosen, enabled in selected.items()):
         raise ValueError('fade metadata must match the recorded game')
+    if any(enabled and (chosen != game or not selected[chosen]) for chosen, enabled in observers.items()):
+        raise ValueError('opacity observer requires explicit depth metadata for its game')
+    metadata = any(selected.values())
+    observer = any(observers.values())
     fade = getattr(args, 'world_host_distance_fade', False)
-    if fade and not world_metadata:
+    if fade and not selected['world']:
         raise ValueError('distance fade requires explicit qualified metadata')
     if frame is None:
         if metadata or any(settings.get(k, '0') != '0' for k in KEYS):
@@ -54,25 +61,29 @@ def configure(args, rom, settings, frames):
     host = settings.get(prefix+'SCENERY', '0') == '2'
     if host and settings.get(prefix+'LAYER') != '3':
         raise ValueError('original mirror requires split and tagged host ownership')
-    if GAMES[rom] != 'WORLD' and (fade or any(settings.get(k, '0') != '0' for k in KEYS[2:4])):
-        raise ValueError('World fade metadata does not apply to other V-Unit games')
-    if rom != 'crusnusa' and settings.get('MIDV_USA_HOST_FADE_METADATA', '0') != '0':
-        raise ValueError('USA fade metadata does not apply to other games')
+    for other in ('world', 'usa', 'offroad'):
+        if other != game and any(settings.get('MIDV_'+other.upper()+'_HOST_'+suffix, '0') != '0'
+                                 for suffix in ('FADE_METADATA', 'OPACITY_OBSERVER', 'DISTANCE_FADE')):
+            raise ValueError('fade/observer metadata does not apply to other games')
     result = dict(frame=frame, auxiliary=host)
-    if settings.get('MIDV_WORLD_HOST_ACTIVE_ROADS') == '1':
+    if game == 'world' and settings.get('MIDV_WORLD_HOST_ACTIVE_ROADS') == '1':
         result['margin_coverage'] = True
     if metadata:
         first = int(settings.get(prefix+'FIRST', '0'))
         last = int(settings.get(prefix+'LAST', '0'))
         if (not host or settings.get(prefix+'FUTURE') != '1'
-                or settings.get(prefix+'FAR_COVERAGE') != '1'
                 or not 1 <= first <= frame <= last < frames - 1):
-            raise ValueError('fade metadata requires bounded future/coverage draw through capture and before drain')
+            raise ValueError('fade metadata requires bounded future draw through capture and before drain')
+        if game == 'offroad':
+            if settings.get(prefix+'DISTANCE') != '3' or settings.get(prefix+'CLIP_ADMISSION', '0') != '0':
+                raise ValueError('Off-Road metadata requires3x stock sphere admission')
+        elif settings.get(prefix+'FAR_COVERAGE') != '1':
+            raise ValueError('fade metadata requires qualified far coverage')
         settings[prefix+'FADE_METADATA'] = '1'
         result.update(fade_metadata=True, first=first, last=last)
-        if usa_metadata:
-            result['metadata_game'] = 'usa'
-    elif any(settings.get(k, '0') != '0' for k in ('MIDV_WORLD_HOST_FADE_METADATA', 'MIDV_USA_HOST_FADE_METADATA')):
+        if game != 'world':
+            result['metadata_game'] = game
+    elif settings.get(prefix+'FADE_METADATA', '0') != '0':
         raise ValueError('fade metadata requires explicit replay selection')
     if fade:
         settings['MIDV_WORLD_HOST_DISTANCE_FADE'] = '1'
@@ -80,9 +91,9 @@ def configure(args, rom, settings, frames):
     elif settings.get('MIDV_WORLD_HOST_DISTANCE_FADE', '0') != '0':
         raise ValueError('distance fade requires explicit replay selection')
     if observer:
-        settings['MIDV_USA_HOST_OPACITY_OBSERVER'] = '1'
+        settings[prefix+'OPACITY_OBSERVER'] = '1'
         result['opacity_observer'] = True
-    elif settings.get('MIDV_USA_HOST_OPACITY_OBSERVER', '0') != '0':
+    elif settings.get(prefix+'OPACITY_OBSERVER', '0') != '0':
         raise ValueError('opacity observer requires explicit replay selection')
     settings.update(MIDV_GL_ORIGINAL_MIRROR='1', MIDV_GL_MIRROR_FRAME=str(frame))
     return result
@@ -165,22 +176,24 @@ def verify_metadata(trial, directory):
         raise ValueError('fade metadata FIFO bytes differ or malformed')
     packets = list(struct.iter_unpack('<IHH16HI4II', data[4:]))
     game = trial.get('metadata_game', 'world')
-    if game not in ('world', 'usa'):
+    if game not in ('world', 'usa', 'offroad'):
         raise ValueError('unsupported fade metadata game')
+    offroad = game == 'offroad'
+    expected_limit, minimum, maximum, minimum_exponent = (191040, 503, 191040, 8) if offroad else (240000, 1000, 480000, 9)
     crossings = roads = 0
     for packet in packets:
         frame, pc, pad = packet[:3]
         limit, *words, policy = packet[19:]
         valid_layer = pad == 3 or (pad == 7 and trial.get('margin_coverage') is True and policy == 1)
-        if frame != trial['frame'] or not valid_layer or limit != 240000 or policy not in (0, 1):
+        if frame != trial['frame'] or not valid_layer or limit != expected_limit or policy not in (0, 1):
             raise ValueError('invalid fade metadata identity or policy')
-        if game == 'usa' and (policy or pad != 3):
-            raise ValueError('USA metadata has no authored-road or margin permission')
+        if game != 'world' and (policy or pad != 3):
+            raise ValueError('metadata profile has no authored-road or margin permission')
         depths = []
         for word in words:
             exponent = int.from_bytes(bytes([word >> 24]), 'little', signed=True)
             value = math.ldexp((word & 0x7fffff) | 0x800000, exponent-23)
-            if word & 0x800000 or not 9 <= exponent <= 18 or not 1000 <= value < 480000:
+            if word & 0x800000 or not minimum_exponent <= exponent <= 18 or not minimum <= value < maximum:
                 raise ValueError('invalid fade metadata depth')
             depths.append(value)
         if all(z >= limit for z in depths):
