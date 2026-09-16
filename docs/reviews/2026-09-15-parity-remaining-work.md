@@ -50,6 +50,12 @@ now matches397 original source and draw-command observations. This identifies
 a missing scenery class without changing the game. Its earlier visibility and
 handover are still under investigation; the helper is not live.
 
+[Matched source/display capture](2026-09-16-matched-host-capture.md) now closes
+a diagnostic timing gap: source2520 is checked against the completed2524page
+that contains it. Earlier same-numbered preparation/display pairs were not
+necessarily the same scene. This improves the next visibility investigations;
+it is not a new rendering feature.
+
 ## Current position
 
 The [animated-source census and sequencer](2026-09-16-exotica-animation-sequencing.md)

@@ -912,3 +912,20 @@ Use harness/offroad_fade_screen.py SAVED_RUN --frame N --report NEW_REPORT.json 
 ### Original Off-Road billboard capture
 
 The read-only offroad_billboard_capture.lua probe uses CRUISN_OFFROAD_BILLBOARD_FIRST/LAST (default2500..2520, maximum121frames). Verify its local output with verify_offroad_billboard.py RUN --native ANALYZER --report NEW_REPORT. This checks actual current-basis matrices and four-vertex XYZ only; it does not accept future sources, materials or displayed geometry. See [the foundation review](reviews/2026-09-16-offroad-billboard-foundation.md).
+
+
+## Match host preparation to its displayed frame
+
+A mirror frame can display an older scene. The completed renderer's auxiliary
+count now binds each physical page to its last submitted host preparation.
+Check host_completion in the mirror result; a captured preparation is not
+automatically the visible scene. This is submission alignment, not a substitute
+for checking original geometry, materials, CPU writes and completed pixels.
+
+For a new V-Unit candidate capture, --vunit-host-metadata-frame S separates
+the saved depth operands from --vunit-original-mirror-frame P. S must be within
+the host preparation interval and no later than P. Explicit selection requires
+the completed visible page to contain the complete S scene; a mismatch fails
+verification. The existing behavior remains available when the option is omitted,
+but the report explicitly states whether its source matches the visible page.
+The option requires the game's existing depth-metadata mode and physical FFB0.

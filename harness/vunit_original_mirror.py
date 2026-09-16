@@ -9,6 +9,7 @@ import numpy as np
 from pathlib import Path
 
 KEYS = ('MIDV_GL_ORIGINAL_MIRROR', 'MIDV_GL_MIRROR_FRAME', 'MIDV_WORLD_HOST_FADE_METADATA',
+        'MIDV_GL_HOST_METADATA_FRAME',
         'MIDV_WORLD_HOST_DISTANCE_FADE', 'MIDV_USA_HOST_FADE_METADATA', 'MIDV_USA_HOST_OPACITY_OBSERVER',
         'MIDV_OFFROAD_HOST_FADE_METADATA', 'MIDV_OFFROAD_HOST_OPACITY_OBSERVER')
 GAMES = {'crusnusa': 'USA', 'crusnwld24': 'WORLD', 'crusnwld': 'WORLD', 'offroadc': 'OFFROAD'}
@@ -17,6 +18,8 @@ GAMES = {'crusnusa': 'USA', 'crusnwld24': 'WORLD', 'crusnwld': 'WORLD', 'offroad
 def add_arguments(parser):
     parser.add_argument('--vunit-original-mirror-frame', type=int,
                         help='candidate-only V-Unit indexed mirror snapshot; physical FFB off')
+    parser.add_argument('--vunit-host-metadata-frame', type=int,
+                        help='capture earlier host depth operands; require they match the completed visible scene')
     parser.add_argument('--world-host-fade-metadata', action='store_true',
                         help='transport all host depths and authored road flags; no fading yet')
     parser.add_argument('--usa-host-fade-metadata', action='store_true',
@@ -33,6 +36,7 @@ def add_arguments(parser):
 
 def configure(args, rom, settings, frames):
     frame = getattr(args, 'vunit_original_mirror_frame', None)
+    metadata_frame = getattr(args, 'vunit_host_metadata_frame', None)
     selected = {game: bool(getattr(args, game+'_host_fade_metadata', False))
                 for game in ('world', 'usa', 'offroad')}
     observers = {game: bool(getattr(args, game+'_host_opacity_observer', False))
@@ -43,6 +47,11 @@ def configure(args, rom, settings, frames):
     if any(enabled and (chosen != game or not selected[chosen]) for chosen, enabled in observers.items()):
         raise ValueError('opacity observer requires explicit depth metadata for its game')
     metadata = any(selected.values())
+    if metadata_frame is not None and (not metadata or frame is None or
+            not 1 <= metadata_frame <= frame):
+        raise ValueError('host metadata frame requires metadata and must precede or equal the mirror')
+    if metadata_frame is None and settings.get('MIDV_GL_HOST_METADATA_FRAME', '0') != '0':
+        raise ValueError('host metadata frame requires explicit replay selection')
     observer = any(observers.values())
     fade = getattr(args, 'world_host_distance_fade', False)
     if fade and not selected['world']:
@@ -74,6 +83,11 @@ def configure(args, rom, settings, frames):
         if (not host or settings.get(prefix+'FUTURE') != '1'
                 or not 1 <= first <= frame <= last < frames - 1):
             raise ValueError('fade metadata requires bounded future draw through capture and before drain')
+        if metadata_frame is not None:
+            if not first <= metadata_frame <= last:
+                raise ValueError('host metadata frame is outside the preparation interval')
+            result['metadata_frame'] = metadata_frame
+            settings['MIDV_GL_HOST_METADATA_FRAME'] = str(metadata_frame)
         if game == 'offroad':
             if settings.get(prefix+'DISTANCE') != '3' or settings.get(prefix+'CLIP_ADMISSION', '0') != '0':
                 raise ValueError('Off-Road metadata requires3x stock sphere admission')
@@ -157,7 +171,10 @@ def verify(trial, directory):
         result['host_completion'] = host_completion(directory, trial.get('metadata_game', 'world'), row)
         visible = result['host_completion']['visible']
         result['host_completion']['captured_preparation_matches_visible'] = bool(
-            visible and visible['complete'] and visible['frame'] == trial['frame'])
+            visible and visible['complete'] and visible['frame'] == trial.get('metadata_frame', trial['frame']))
+        if 'metadata_frame' in trial:
+            from vunit_host_completion import require_preparation_frame
+            require_preparation_frame(result['host_completion'], trial['metadata_frame'])
     if opacity:
         result['opacity'] = opacity
     return result
@@ -180,6 +197,7 @@ def verify_metadata(trial, directory):
     if data != other or data[:4] != b'VFD1' or (len(data)-4) % 64:
         raise ValueError('fade metadata FIFO bytes differ or malformed')
     packets = list(struct.iter_unpack('<IHH16HI4II', data[4:]))
+    captured_frame = trial.get('metadata_frame', trial['frame'])
     game = trial.get('metadata_game', 'world')
     if game not in ('world', 'usa', 'offroad'):
         raise ValueError('unsupported fade metadata game')
@@ -190,7 +208,7 @@ def verify_metadata(trial, directory):
         frame, pc, pad = packet[:3]
         limit, *words, policy = packet[19:]
         valid_layer = pad == 3 or (pad == 7 and trial.get('margin_coverage') is True and policy == 1)
-        if frame != trial['frame'] or not valid_layer or limit != expected_limit or policy not in (0, 1):
+        if frame != captured_frame or not valid_layer or limit != expected_limit or policy not in (0, 1):
             raise ValueError('invalid fade metadata identity or policy')
         if game != 'world' and (policy or pad != 3):
             raise ValueError('metadata profile has no authored-road or margin permission')
@@ -214,7 +232,7 @@ def verify_metadata(trial, directory):
     if totals != expected_totals or not totals[0]:
         raise ValueError('incomplete fade consumer coverage')
     at = 0
-    for scene in (s for s in scenes if int(s['frame']) == trial['frame']):
+    for scene in (s for s in scenes if int(s['frame']) == captured_frame):
         group = packets[at:at+int(scene['quads'])];at += len(group)
         if len(group) != int(scene['quads']) or sum(p[-1] for p in group) != (int(scene['road_quads']) if game == 'world' else 0):
             raise ValueError('fade scene road/count mismatch')

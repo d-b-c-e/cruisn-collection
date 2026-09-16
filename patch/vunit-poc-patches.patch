@@ -48964,3 +48964,48 @@ index 4f0b1876c33..29086ac62f5 100644
 -- 
 2.55.0.windows.3
 
+From 07e9eb25de5f3f45566dd2baf6c15445e59e8e2f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 09:17:49 -0500
+Subject: [PATCH] Separate host metadata capture from completed mirror
+ presentation
+
+---
+ src/mame/midway/midvunit_v.cpp | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 48d94bb914f..15261d9f211 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -1160,6 +1160,10 @@ void thread_main()
+ 		if(entry.first && (!std::getenv(entry.second) || strcmp(std::getenv(entry.second),"2")))
+ 			fatalerror("Host metadata requires matching game drawing\n");
+ 	bool const fade_metadata=world_metadata || usa_metadata || offroad_metadata;
++	char const *metadata_frame_text=std::getenv("MIDV_GL_HOST_METADATA_FRAME");
++	int const metadata_frame=metadata_frame_text?atoi(metadata_frame_text):mirror_frame;
++	if(metadata_frame_text && (!fade_metadata || metadata_frame<1 || metadata_frame>mirror_frame))
++		fatalerror("Host metadata frame requires metadata before the completed mirror\n");
+ 	auto const metadata_profile=offroad_metadata?cruisn::vunit_fade::Profile::offroad:cruisn::vunit_fade::Profile::world_usa;
+ 	bool const distance_fade = std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE") &&
+ 		!strcmp(std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE"),"1");
+@@ -1785,7 +1789,7 @@ void thread_main()
+ 					if(!fade_metadata || !cruisn::vunit_fade::decode(packet,fade_depths,far_packet,metadata_profile))fatalerror("Invalid host fade metadata\n");
+ 					selector=packet.policy?1.f:-1.f;
+ 					++fade_packets;fade_roads+=packet.policy;
+-					if(int(q.frame)==mirror_frame)
++					if(int(q.frame)==metadata_frame)
+ 					{
+ 						if(fwrite(&packet,1,sizeof(packet),fade_file.fp)!=sizeof(packet))fatalerror("Fade consumer write failed\n");
+ 						++fade_captured;
+@@ -3499,6 +3503,7 @@ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_
+ 		m_textureram.target(),uint32_t(m_textureram.bytes()));
+ 	struct {uint32_t frame;uint16_t pc,pad;} h={frame,m_page_control,m_host_layer};
+ 	const char *capture_text=policies?std::getenv("MIDV_GL_MIRROR_FRAME"):nullptr;
++	if(policies && std::getenv("MIDV_GL_HOST_METADATA_FRAME"))capture_text=std::getenv("MIDV_GL_HOST_METADATA_FRAME");
+ 	int const fade_frame=capture_text?atoi(capture_text):0;
+ 	for(size_t i=0;i<quads.size();++i)
+ 	{
+-- 
+2.55.0.windows.3
+

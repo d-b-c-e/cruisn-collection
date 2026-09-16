@@ -2,32 +2,23 @@
 
 ## Current work: release parity, September 16
 
-Latest: read docs/reviews/2026-09-16-exotica-pre-device-reset.md.
-Native083ceb32407 frozen262patches/attested;
-SHA50779072342fb6046eb579e05a31e550b7526af87beab7805ffe467ca197f6d9.
-Fixedrealresetordering: rootdevice_reset BEFOREchildren, prior machine_reset
-guard sawZeusFIFOalreadycleared. Existingstrictquiescence unchanged.
-Actual7500MarsresetPASSpre-deviceFIFOempty5559/scene4161/gen12372, newpool6944.
-Allinputs/nativeimages5691camera12921ADCexact;12completed4KCRTframes5200..7400
-byteexactprioraccepted3x.4679scenes2734357696bytesdrain/join.3focusedtestsPASS.
-InitialaggregateoldreportmissingnewattestationKeyErrorretained; correctedv2
-hashesoldreport,NOgamerun. LOCALrace-transitions-20260916/exotica-active-reset/
-pre-device-3x and pre-device-qualified-v2.json.
-Interrupted/bootstrap/degradedresetremainstrict; no blindqueuedownerclears.
-PriorUSA/Offroadopacityobservers qualified; USAvisible41partialpixels, Offroad0.
-NEXT separatehostmetadata/preparation frame fromcompletedmirror:
-read2026-09-16-host-presentation-binding.md. Newvunit_host_completion binds
-completedauxiliaryprefix tophysicalpages;4new+10existingtestsPASS.
-Saved4checksindependentperquadexact:Offroad2520pages2518/2516,3360pages3358/3356;
-USA3501pages3501/3499,World5900pages5896/5898. Allcapturedsource!=visible.
-Priorcompletedopacityandseparatesourcebyteproofsstand; causalocclusionclaims
-DONOT. Billboard2520correspondencecannotjudgevisibilityagainstolder2516camera.
-Needoptional metadataframe separatefrommirrorframe, thenexplicitmatchinggate.
-LOCALW/host-completion-qualified.json. NoMAMEchange/newgameyet.
-Billboardstatichelpers committed a7e64cc:397actualsources+orderedDMAexact.
-Standaloneonly. LOCALsaved2520/3360/8760 add205/54/31billboards, isolated811/759/
-334RGBchanges;NOTcompletedvisibility. Damaged/dynamicunsupported.
-Native083/personal87d/publicv0.5.0unchanged.
+Latest: read docs/reviews/2026-09-16-matched-host-capture.md.
+Native07e9eb25de5 frozen263patches/attested;
+SHA1adac2fd14f4443b0c41366bfd8be144abfe42320c2ae539d50ec963488e830e.
+--vunit-host-metadata-frame S separatesoperands frommirrorP; explicitmatchrequired.
+ActualOffroad2528inputs/nativeimages727camera2908ADCexact. S2520/P2524visiblepage1
+1482quadsexact; originalDMA931from2520..2521. ROM/RAM/textures/palettes/metadata2520
+byteexactprior083; sharedGL2520exact. New2524GL4KCRTviewed,0:02.96/49MPH/2AUTO.
+Bothpagesopacityall1;nowvisiblepagealigned. Noactualfade/newbillboardsenabled.
+11focusedmirror+4completiontestsPASS. No broadsuite.
+LOCALW/offroad-matched2520(-qualified),metadata-presentation-native-export.json.
+NEXT usematchedsavedimage tojudgeprototype205futurebillboardvisibility, then
+pending/material/sourceownershipbeforelive. DoNOTcompareS2520witholdP2520(scene2516).
+Standalonebillboardhelpers a7e64cc:397actualstaticROMsources+orderedDMAexact;
+505matrix/2020vertex foundation. Damaged/dynamicunsupported. HelpersNOTMAMElinked.
+LOCALsaved2520/3360/8760 add205/54/31billboards,isolated811/759/334RGBchanges.
+No completedbillboardvisibilityclaim. Sourceevidence!=visiblebenefit.
+PriorExoticapre-devicereset083verified; runtimebehaviorretained. Personal87d/v0.5.0.
 
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.

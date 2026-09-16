@@ -13,6 +13,26 @@ from scenery_c31 import F
 
 
 class OriginalMirrorTests(unittest.TestCase):
+    def test_metadata_capture_can_precede_completed_presentation(self):
+        args = SimpleNamespace(vunit_original_mirror_frame=104, vunit_host_metadata_frame=100,
+                               candidate='candidate.exe', offroad_host_fade_metadata=True)
+        settings = dict(MIDV_GL='1', MIDV_FFB='0', MIDV_OFFROAD_HOST_SCENERY='2',
+                        MIDV_OFFROAD_HOST_LAYER='3', MIDV_OFFROAD_HOST_FUTURE='1',
+                        MIDV_OFFROAD_HOST_FIRST='80', MIDV_OFFROAD_HOST_LAST='150',
+                        MIDV_OFFROAD_HOST_DISTANCE='3')
+        configured = settings.copy()
+        result = configure(args, 'offroadc', configured, 200)
+        self.assertEqual(result['metadata_frame'], 100)
+        self.assertEqual(result['frame'], 104)
+        self.assertEqual(configured['MIDV_GL_HOST_METADATA_FRAME'], '100')
+        for frame in (0, 79, 105):
+            with self.subTest(frame=frame), self.assertRaises(ValueError):
+                configure(SimpleNamespace(**(vars(args) | {'vunit_host_metadata_frame':frame})),
+                          'offroadc', settings.copy(), 200)
+        with self.assertRaises(ValueError):
+            configure(SimpleNamespace(**(vars(args) | {'vunit_host_metadata_frame':None})),
+                      'offroadc', configured, 200)
+
     def test_candidate_and_ownership_gates(self):
         args = SimpleNamespace(vunit_original_mirror_frame=100, candidate='candidate.exe')
         settings = dict(MIDV_GL='1', MIDV_FFB='0')

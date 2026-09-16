@@ -21,6 +21,7 @@ assuming that a source feature is present in a downloaded package.
 | [Actual force worker](reviews/2026-09-11-ffb-actual-worker.md) | Device-free worker timing, gates, conditioning and independent stage verification |
 | [Worker window measurements](reviews/2026-09-11-ffb-worker-windows.md) | Conservative host/game clock joins, time-weighted output and remaining calibration-drive coverage |
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
+| [Matched host preparation/display capture](reviews/2026-09-16-matched-host-capture.md) | Separate diagnostic source and presentation frames with a required completion match |
 | [Host scene and presentation binding](reviews/2026-09-16-host-presentation-binding.md) | Prevent newer preparation snapshots from being treated as the displayed scene |
 | [Off-Road billboard source qualification](reviews/2026-09-16-offroad-billboard-sources.md) | Exact static descriptors and original draw commands; earlier visibility remains unqualified |
 | [Remaining scenery release gates](reviews/2026-09-15-parity-remaining-work.md) | Current four-game evidence, unresolved coverage and the work needed before promotion |
