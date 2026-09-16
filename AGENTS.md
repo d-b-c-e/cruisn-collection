@@ -1,5 +1,31 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September16 V-Unit startup parity — next continuous lifetime/shutdown
+
+Read docs/reviews/2026-09-16-vunit-scene-bootstrap.md. Native6cc8a1869d3 frozen
+SHA08d7fe4985ac5aec6d82c5a0880e11bffb87eb34bdf1b5b1aed0dce1ad860660,
+250patches treecff2f9f92c53369d8f8327f07a6994926d173c03. --vunit-bootstrap scenes
+nowUSA/World24/25/OffRoad; exactreadiness, per-callguards/fallback andfiniteend
+retained. Opt-inWorld24both-zero state skipsdrawing butneverinstructionchecks.
+3native5PythonfocusedPASS. Native45f0 three2502liveprefixes originalinputs/images
+PASS; World24/25first1675/1206, early62/297scenes83558/724301quads; later351each
+exactcorrectpolygoncoveragecontrols,701camera2103ADC each. OffRoadfirst1045,
+early378empty, later300exactpartialcontrol,701camera2804ADC. Savedfirstoperands
+all exactread-onlyobserver. Threecompleted2400client3824x2073imagesviewed:
+Germanyearlydrive/Londonattract/ElPasostart; NOTall-early-framepixelacceptance.
+World25initialstalebaselineFAILretained, correctcontrolPASSwithoutgame repeat.
+45f0OffRoadreceiptwrongaddress61ee (defaultWorldrevision24) FAILretained; separate
+renderqualificationPASSdoesNOTvalidatereceipt. 6ccgameprofilefixalsofixesUSA;
+shortOffRoad1102/USA802normalharness+firstoperandreceiptchecksPASS. No fullreruns.
+W/bootstrap-receipt-smokes-qualified.json, vunit-bootstrap-receipt-native-export.
+export-vunit-bootstrap.py ANDexport-vunit-bootstrap-receipt.py ALREADYRUN.
+NEXT continuousVUnitpolicy withownedgraphicsworker/shutdown assessment. Prior
+auditjoinatmidvunit_v2872 isFFBworker, NOTGPU: graphicsworker currentlydetached,
+s_stop/s_done boundedwait1s(or10scapture); doNOTclaimjoin/quiescencealreadyproved.
+No game/build/testnow. No deploy/release/physicalFFB/hostedCI/menu removal.
+Personal87d/publicv0.5.0 unchanged. Continueovernightdirectly; heartbeatbackupONLY.
+Exo2raceavailabilitypending; independentruntime workremains, notuserblocked.
+
 ## September16 other V-Unit startup — qualified; next live activation
 
 Read docs/reviews/2026-09-16-vunit-startup-readiness.md. Sixshortoriginal-only

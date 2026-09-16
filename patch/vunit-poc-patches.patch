@@ -46969,3 +46969,204 @@ index 477c4cd3d81..94514e667c8 100644
 -- 
 2.55.0.windows.3
 
+From 45f0e5169c5d072b0d67df11a8f67bb898321254 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 02:20:13 -0500
+Subject: [PATCH] Extend verified scene startup to World and Off Road
+
+---
+ src/mame/midway/cruisn/world_host_layout.h | 12 +++++++----
+ src/mame/midway/midvunit.cpp               | 23 ++++++++++++++--------
+ 2 files changed, 23 insertions(+), 12 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/world_host_layout.h b/src/mame/midway/cruisn/world_host_layout.h
+index 866b0b72ba3..94e8671f2e5 100644
+--- a/src/mame/midway/cruisn/world_host_layout.h
++++ b/src/mame/midway/cruisn/world_host_layout.h
+@@ -8,18 +8,22 @@ struct Layout {uint32_t revision,table,pending,scene,section,stage,cursor,palett
+ constexpr Layout v24={24,0xb66f,0x61ec,0x61ee,0xd575,0xd5a5,0xd5a1,0x4151,0x4150,0xcc35};
+ constexpr Layout v25={25,0xb665,0x658d,0x658f,0xd56f,0xd59f,0xd59b,0x4121,0x4120,0xcc2f};
+ inline const Layout *layout(uint32_t revision){return revision==24?&v24:revision==25?&v25:nullptr;}
+-template<class Read> bool track_reset(Read read,uint32_t revision)
++template<class Read> bool track_reset(Read read,uint32_t revision,bool allow_empty_world24=false)
+ {
+     // World 2.5 clears these together while leaving menu objects on its lists.
+     // A pending list alone does not prove that a race's scenery is initialized.
+-    return revision==25 && read(v25.section)==0 && read(0xd586)==0;
++    // Explicit bootstrap also recognizes the captured World2.4 empty state.
++    // Default World2.4 capture behavior is unchanged.
++    const auto *profile=layout(revision);
++    return profile && (revision==25 || allow_empty_world24) &&
++        read(profile->section)==0 && read(revision==24?0xd58c:0xd586)==0;
+ }
+-template<class Read> bool scene_matches(Read read,uint32_t revision)
++template<class Read> bool scene_matches(Read read,uint32_t revision,bool allow_empty_world24=false)
+ {
+     const auto *profile=layout(revision);if(!profile)return false;
+     return read(0x69)==(0x08280000|profile->scene) &&
+         read(revision==24?0x7b55:0x7b47)==(0x08280000|profile->pending) &&
+         read(revision==24?0x7b5c:0x7b4e)==0x1ae03000 &&
+-        (read(revision==24?0xd58c:0xd586)==11 || track_reset(read,revision));
++        (read(revision==24?0xd58c:0xd586)==11 || track_reset(read,revision,allow_empty_world24));
+ }
+ } }
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index e977a0ab4ec..438316db0b1 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -99,9 +99,11 @@ void midvunit_base_state::host_bootstrap_start()
+ 	const char *mode=std::getenv("MIDV_HOST_BOOTSTRAP");
+ 	if(!mode)return;
+ 	const char *gl=std::getenv("MIDV_GL"), *ffb=std::getenv("MIDV_FFB");
+-	if(strcmp(mode,"1") || strcmp(machine().system().name,"crusnusa") ||
++	const char *rom=machine().system().name;
++	const bool supported=!strcmp(rom,"crusnusa") || !strcmp(rom,"crusnwld24") || !strcmp(rom,"crusnwld") || !strcmp(rom,"offroadc");
++	if(strcmp(mode,"1") || !supported ||
+ 		m_host_mode!=2 || !m_host_future || m_host_layer!=3 || !gl || strcmp(gl,"1") || !ffb || strcmp(ffb,"0"))
+-		fatalerror("V-Unit bootstrap requires USA future draw, both layers, live GL and physical FFB0\n");
++		fatalerror("V-Unit bootstrap requires supported future draw, both layers, live GL and physical FFB0\n");
+ 	m_host_bootstrap=true;
+ 	osd_printf_info("VUNIT_BOOTSTRAP scenes=1 first=actual last=%u\n",m_host_last);
+ }
+@@ -129,7 +131,10 @@ void midvunit_base_state::host_bootstrap_ready(uint64_t frame)
+ 		if(!written || !closed)fatalerror("Cannot write/close V-Unit bootstrap operands\n");
+ 	}
+ 	m_host_bootstrap_frame=frame;
+-	osd_printf_info("VUNIT_BOOTSTRAP_READY frame=%llu pc=81 address=40\n",(unsigned long long)frame);
++	const uint32_t address=m_host_revision?cruisn::world_host::layout(m_host_revision)->scene:
++		!strcmp(machine().system().name,"crusnusa")?0x40:0x111f4;
++	osd_printf_info("VUNIT_BOOTSTRAP_READY frame=%llu pc=%x address=%x\n",(unsigned long long)frame,
++		unsigned(m_maincpu->state_int(TMS320C3X_PC)),address);
+ }
+ 
+ // Only read-only preparation failures BEFORE world_host_submit can use this
+@@ -244,7 +249,7 @@ void midvunit_base_state::offroad_host_start()
+ 		{
+ 			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x1bf9)return;
+ 			const uint64_t frame=m_screen->frame_number();
+-			if(frame<m_host_first || frame>m_host_last || m_host_failed_frame)return;
++			if((!m_host_bootstrap && frame<m_host_first) || frame>m_host_last || m_host_failed_frame)return;
+ 			const auto cycles=m_maincpu->total_cycles();
+ 			const auto started=std::chrono::steady_clock::now();
+ 			auto &space=m_maincpu->space(AS_PROGRAM);
+@@ -261,6 +266,7 @@ void midvunit_base_state::offroad_host_start()
+ 			if(host_injected_failure(frame,cycles))return;
+ 			if(!cruisn::offroad_host::build(read,scene,m_offroad_host_multiplier,m_host_future,m_offroad_host_cache,m_offroad_host_clip_admission,false,m_offroad_host_recover_partial))
+ 			{host_prepare_failed(frame,cycles,3,"Off Road host scene/model/material guard failed");return;}
++			host_bootstrap_ready(frame);
+ 			const auto prepared=std::chrono::steady_clock::now();
+ 			std::vector<std::array<uint16_t,16>> quads;
+ 			uint64_t hash=cruisn::world_host::hash_seed;
+@@ -538,13 +544,13 @@ void midvunit_base_state::world_host_start()
+ 		{
+ 			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x6a)return;
+ 			uint64_t frame=m_screen->frame_number();
+-			if(frame<m_host_first || frame>m_host_last || m_host_failed_frame)return;
++			if((!m_host_bootstrap && frame<m_host_first) || frame>m_host_last || m_host_failed_frame)return;
+ 			const auto guest_cycles=m_maincpu->total_cycles();
+ 			const auto started=std::chrono::steady_clock::now();
+ 			if(!cruisn::world_distance::code_matches(m_ram_base,m_ram_base.bytes()/4,80000,m_host_revision) ||
+-				!cruisn::world_host::scene_matches([&](uint32_t p){return m_ram_base[p];},m_host_revision))
++				!cruisn::world_host::scene_matches([&](uint32_t p){return m_ram_base[p];},m_host_revision,m_host_bootstrap))
+ 				fatalerror("World host scenery exact-revision/stock-distance guard failed\n");
+-			if(cruisn::world_host::track_reset([&](uint32_t p){return m_ram_base[p];},m_host_revision))
++			if(cruisn::world_host::track_reset([&](uint32_t p){return m_ram_base[p];},m_host_revision,m_host_bootstrap))
+ 			{
+ 				m_host_future_cache.clear();
+ 				return;
+@@ -581,6 +587,7 @@ void midvunit_base_state::world_host_start()
+ 			if(host_injected_failure(frame,guest_cycles))return;
+ 			if(!cruisn::world_host::build(read,scene,m_host_far,m_host_future?&future:nullptr,m_host_roads,m_host_revision,m_host_full_roads,m_host_far_coverage))
+ 			{host_prepare_failed(frame,guest_cycles,3,"World host scenery pointer/model/projection guard failed");return;}
++			host_bootstrap_ready(frame);
+ 			const auto prepared=std::chrono::steady_clock::now();
+ 			std::vector<std::array<uint16_t,16>> quads;
+ 			std::vector<std::array<uint32_t,4>> depths;
+@@ -1123,7 +1130,7 @@ void midvplus_state::machine_start()
+ }
+ 
+ 
+-// ── POC code patcher (env-gated, ROM files untouched) ───────────────────
++// â”€â”€ POC code patcher (env-gated, ROM files untouched) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+ // The whole TMS320C31 program is copied maindata ROM -> program RAM at each
+ // reset; we overlay word patches on that RAM copy, so nothing on disk is
+ // modified (GPL/legal bright line intact). MIDV_PATCH=<file>, one patch per
+-- 
+2.55.0.windows.3
+
+From 6cc8a1869d3da04f80bb1a281cb5e23197e1c081 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 02:28:11 -0500
+Subject: [PATCH] Select bootstrap receipt address from the actual game profile
+
+---
+ src/mame/midway/cruisn/vunit_bootstrap_profile.h | 16 ++++++++++++++++
+ src/mame/midway/midvunit.cpp                     |  8 ++++----
+ 2 files changed, 20 insertions(+), 4 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/vunit_bootstrap_profile.h
+
+diff --git a/src/mame/midway/cruisn/vunit_bootstrap_profile.h b/src/mame/midway/cruisn/vunit_bootstrap_profile.h
+new file mode 100644
+index 00000000000..032aac52f02
+--- /dev/null
++++ b/src/mame/midway/cruisn/vunit_bootstrap_profile.h
+@@ -0,0 +1,16 @@
++// SPDX-License-Identifier: BSD-3-Clause
++#pragma once
++#include <cstdint>
++#include <cstring>
++namespace cruisn {
++struct VunitBootstrapProfile { uint32_t pc, address; };
++inline VunitBootstrapProfile vunit_bootstrap_profile(const char *rom)
++{
++    if(!rom)return {0,0};
++    if(!std::strcmp(rom,"crusnusa"))return {0x81,0x40};
++    if(!std::strcmp(rom,"crusnwld24"))return {0x6a,0x61ee};
++    if(!std::strcmp(rom,"crusnwld"))return {0x6a,0x658f};
++    if(!std::strcmp(rom,"offroadc"))return {0x1bf9,0x111f4};
++    return {0,0};
++}
++}
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 438316db0b1..4f0b6f215e0 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -31,6 +31,7 @@
+ #include <cerrno>
+ #include <cctype>
+ #include "midvunit.h"
++#include "cruisn/vunit_bootstrap_profile.h"
+ #include "cruisn/checked_patch.h"
+ #include "cruisn/world_scenery.h"
+ #include "cruisn/world_distance.h"
+@@ -100,7 +101,7 @@ void midvunit_base_state::host_bootstrap_start()
+ 	if(!mode)return;
+ 	const char *gl=std::getenv("MIDV_GL"), *ffb=std::getenv("MIDV_FFB");
+ 	const char *rom=machine().system().name;
+-	const bool supported=!strcmp(rom,"crusnusa") || !strcmp(rom,"crusnwld24") || !strcmp(rom,"crusnwld") || !strcmp(rom,"offroadc");
++	const bool supported=cruisn::vunit_bootstrap_profile(rom).address!=0;
+ 	if(strcmp(mode,"1") || !supported ||
+ 		m_host_mode!=2 || !m_host_future || m_host_layer!=3 || !gl || strcmp(gl,"1") || !ffb || strcmp(ffb,"0"))
+ 		fatalerror("V-Unit bootstrap requires supported future draw, both layers, live GL and physical FFB0\n");
+@@ -131,8 +132,7 @@ void midvunit_base_state::host_bootstrap_ready(uint64_t frame)
+ 		if(!written || !closed)fatalerror("Cannot write/close V-Unit bootstrap operands\n");
+ 	}
+ 	m_host_bootstrap_frame=frame;
+-	const uint32_t address=m_host_revision?cruisn::world_host::layout(m_host_revision)->scene:
+-		!strcmp(machine().system().name,"crusnusa")?0x40:0x111f4;
++	const uint32_t address=cruisn::vunit_bootstrap_profile(machine().system().name).address;
+ 	osd_printf_info("VUNIT_BOOTSTRAP_READY frame=%llu pc=%x address=%x\n",(unsigned long long)frame,
+ 		unsigned(m_maincpu->state_int(TMS320C3X_PC)),address);
+ }
+@@ -1130,7 +1130,7 @@ void midvplus_state::machine_start()
+ }
+ 
+ 
+-// â”€â”€ POC code patcher (env-gated, ROM files untouched) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
++// ── POC code patcher (env-gated, ROM files untouched) ───────────────────
+ // The whole TMS320C31 program is copied maindata ROM -> program RAM at each
+ // reset; we overlay word patches on that RAM copy, so nothing on disk is
+ // modified (GPL/legal bright line intact). MIDV_PATCH=<file>, one patch per
+-- 
+2.55.0.windows.3
+

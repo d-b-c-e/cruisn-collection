@@ -1,14 +1,16 @@
-"""Explicit USA scene-boundary activation; finite capture completion is retained."""
+"""Explicit V-Unit scene-boundary activation; finite capture completion is retained."""
 import hashlib
 import re
 from pathlib import Path
 
 KEY = 'MIDV_HOST_BOOTSTRAP'
+PROFILES = {'crusnusa': ('usa', 0x81, 0x40), 'crusnwld24': ('world', 0x6a, 0x61ee),
+            'crusnwld': ('world', 0x6a, 0x658f), 'offroadc': ('offroad', 0x1bf9, 0x111f4)}
 
 
 def add_arguments(parser):
     parser.add_argument('--vunit-bootstrap', choices=('scenes',),
-                        help='candidate USA activation at the first guarded actual scene')
+                        help='candidate V-Unit activation at the first guarded actual scene')
 
 
 def configure(args, rom, settings, frames):
@@ -17,19 +19,20 @@ def configure(args, rom, settings, frames):
         if KEY in settings:
             raise ValueError('V-Unit bootstrap requires explicit replay selection')
         return None
-    prefix = 'MIDV_USA_HOST_'
-    if (mode != 'scenes' or rom != 'crusnusa' or not getattr(args, 'candidate', None)
-            or getattr(args, 'usa_host_scenery', None) != 'draw'
+    game = PROFILES.get(rom, ('invalid',))[0]
+    prefix = 'MIDV_' + game.upper() + '_HOST_'
+    if (mode != 'scenes' or rom not in PROFILES or not getattr(args, 'candidate', None)
+            or getattr(args, game+'_host_scenery', None) != 'draw'
             or getattr(args, 'headless', False) or getattr(args, 'native_renderer', False)
             or settings.get('MIDV_GL') != '1' or settings.get('MIDV_FFB') != '0'
             or settings.get(prefix+'SCENERY') != '2' or settings.get(prefix+'FUTURE') != '1'
             or settings.get(prefix+'LAYER') != '3'):
-        raise ValueError('V-Unit bootstrap requires explicit candidate USA future draw, both layers, live GL and FFB0')
+        raise ValueError('V-Unit bootstrap requires explicit candidate future draw, both layers, live GL and FFB0')
     first, last = int(settings[prefix+'FIRST']), int(settings[prefix+'LAST'])
     if not 1 <= first <= last < frames - 1:
         raise ValueError('V-Unit bootstrap requires finite scene bounds before drain')
     settings[KEY] = '1'
-    return dict(mode=mode, capture_reference_first=first, last=last)
+    return dict(mode=mode, rom=rom, capture_reference_first=first, last=last)
 
 
 def verify(trial, directory):
@@ -47,7 +50,8 @@ def verify(trial, directory):
             raise ValueError('unrequested V-Unit bootstrap evidence')
         return None
     ack = f"VUNIT_BOOTSTRAP scenes=1 first=actual last={trial['last']}"
-    events = [re.fullmatch(r'VUNIT_BOOTSTRAP_READY frame=(\d+) pc=81 address=40', line)
+    game, pc, address = PROFILES[trial['rom']]
+    events = [re.fullmatch(rf'VUNIT_BOOTSTRAP_READY frame=(\d+) pc={pc:x} address={address:x}', line)
               for line in lines if line != ack]
     if lines.count(ack) != 1 or len(events) != 1 or events[0] is None:
         raise ValueError('missing or mismatched V-Unit bootstrap activation')
@@ -59,8 +63,16 @@ def verify(trial, directory):
         if not path.is_file() or path.stat().st_size != size:
             raise ValueError('missing or truncated V-Unit bootstrap operands')
         snapshots[path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
-    from analyze_usa_host import evidence
-    scenes, _, summary = evidence(directory, retain_geometry=False)
+    if game == 'world':
+        from analyze_world_host import scene_summary, rows
+        scene_summary(directory)
+        _, scenes = rows(directory/'world-host-scenes.csv')
+    else:
+        if game == 'usa':
+            from analyze_usa_host import evidence
+        else:
+            from analyze_offroad_host import evidence
+        scenes, _, _ = evidence(directory, retain_geometry=False)
     if not scenes or int(scenes[0]['frame']) != frame or any(
             not frame <= int(s['frame']) <= trial['last'] or s['future_enabled'] != '1'
             or s['mode'] != '2' for s in scenes):

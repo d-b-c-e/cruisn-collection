@@ -29,9 +29,26 @@ class BootstrapTests(unittest.TestCase):
                 configure(args, 'crusnusa', settings | {key:value}, 5012)
         self.assertIsNone(configure(SimpleNamespace(), 'crusnusa', {}, 5012))
 
+    def test_each_game_requires_its_own_mode_and_receipt(self):
+        from vunit_bootstrap import PROFILES
+        for rom, (game, pc, address) in PROFILES.items():
+            args = SimpleNamespace(candidate='x', vunit_bootstrap='scenes', **{game+'_host_scenery':'draw'})
+            prefix='MIDV_'+game.upper()+'_HOST_'
+            settings={'MIDV_GL':'1','MIDV_FFB':'0',**{prefix+k:v for k,v in
+                      [('SCENERY','2'),('FUTURE','1'),('LAYER','3'),('FIRST','1800'),('LAST','1900')]}}
+            trial=configure(args,rom,settings,1902)
+            self.assertEqual(trial['rom'],rom)
+            with tempfile.TemporaryDirectory() as temporary:
+                root=Path(temporary)
+                (root/'stdout.log').write_text('VUNIT_BOOTSTRAP scenes=1 first=actual last=1900\n')
+                # A different game's boundary must fail before any files can qualify.
+                (root/'stderr.log').write_text(f'VUNIT_BOOTSTRAP_READY frame=1800 pc={pc^1:x} address={address:x}\n')
+                with self.assertRaisesRegex(ValueError,'activation'):
+                    verify(trial,root)
+
     def test_activation_and_truncated_evidence(self):
         from analyze_usa_host import COUNTERS, PHASES
-        trial = dict(mode='scenes', capture_reference_first=3500, last=5000)
+        trial = dict(mode='scenes', rom='crusnusa', capture_reference_first=3500, last=5000)
         ack = 'VUNIT_BOOTSTRAP scenes=1 first=actual last=5000\n'
         ready = 'VUNIT_BOOTSTRAP_READY frame=739 pc=81 address=40\n'
         with tempfile.TemporaryDirectory() as temporary:
