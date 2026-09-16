@@ -20,6 +20,11 @@ after the full Amazon recording: identical menu images and camera/ADC, ten nativ
 pool epochs, clean shutdown and a new-race start. This is not a complete second
 race or proof of useful outer-band visibility.
 
+World now passes a [3x race-selection continuation](2026-09-16-world-race-transition.md)
+through a new coastal race:12,669 inputs, exact motion, clean continuous shutdown
+and visible distant terrain in changed completed images. This is sparse visual
+coverage, not complete second-race acceptance. Off-Road transition is next.
+
 ## Current position
 
 | Game | Latest useful evidence | Remaining requirement |

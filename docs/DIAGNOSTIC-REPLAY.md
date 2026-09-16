@@ -347,6 +347,13 @@ No additional game execution is required to select or recheck these saved scenes
 
 ## Generate an unattended driving case
 
+To continue an existing drive through later menus, use
+[`harness/extend_input.py`](reviews/2026-09-16-scripted-recording-continuations.md).
+It preserves the original INP rows and appends a labeled synthetic tail, including
+the actual analog state at the join. The generated stimulus must pass through
+MAME recording and prefix validation before becoming a new replay case. A
+scripted continuation is not an attended recording of a new track.
+
 ```powershell
 python harness/run_replay_smoke.py --output results/diagnostics/neutral-seed
 python harness/synthesize_input.py results/diagnostics/neutral-seed/case fixtures/scenarios/crusnusa-input-sweep.json

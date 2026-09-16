@@ -1,6 +1,6 @@
 # Documentation
 
-Current guides describe the source checkout as of 2026-09-15. The published
+Current guides describe the source checkout as of 2026-09-16. The published
 **v0.5.0** ZIP is the accepted baseline; v0.4.0 remains preserved for rollback.
 Check the release notes before
 assuming that a source feature is present in a downloaded package.
@@ -22,6 +22,10 @@ assuming that a source feature is present in a downloaded package.
 | [Worker window measurements](reviews/2026-09-11-ffb-worker-windows.md) | Conservative host/game clock joins, time-weighted output and remaining calibration-drive coverage |
 | [Four-game scenery status](reviews/2026-09-10-scenery-parity-status.md) | Demonstrated gains, unequal 3× results, performance and remaining coverage |
 | [Remaining scenery release gates](reviews/2026-09-15-parity-remaining-work.md) | Current four-game evidence, unresolved coverage and the work needed before promotion |
+| [Continuous V-Unit operation](reviews/2026-09-16-vunit-quiet-runtime.md) | Scene startup, quiet journals, geometry fingerprints and checked shutdown |
+| [Scripted recording continuations](reviews/2026-09-16-scripted-recording-continuations.md) | Preserve recorded inputs while adding labeled menu/race transition stimuli |
+| [Exotica3x race transition](reviews/2026-09-16-exotica-race-transition.md) | Amazon, name entry, loading and new-race start; scope and limits |
+| [World3x race transition](reviews/2026-09-16-world-race-transition.md) | Germany, race selection and new coastal-race scenery with exact motion |
 | [World road coverage repair](reviews/2026-09-15-world-road-polygon-coverage.md) | Verified Germany margin repair, World 2.5 compatibility and displayed-scene diagnostics |
 | [Exotica distance sample selection](reviews/2026-09-15-exotica-distance-sample-selection.md) | Avoiding empty or foreground-hidden third-band comparisons |
 | [Latest Zeus upstream review](reviews/2026-09-15-zeus-upstream-refresh.md) | Qualified solid-color register backport and the deferred mesh changes |
@@ -63,7 +67,7 @@ assuming that a source feature is present in a downloaded package.
 | Exotica margin scenery trial | Optional Widescreen Scenery | Same; does not extend far distance |
 | World host-owned scenery | Pending prototype, disabled by normal launch | Future-section CLI candidate; not deployed, visual acceptance incomplete |
 | USA / Off Road host future scenery | Not included | Separate native CLI candidates; measured earlier scenery, acceptance incomplete |
-| Exotica host future scenery | Not included | Private wide-depth native candidate; dense comparisons repeat, performance and fade/handover incomplete |
+| Exotica host future scenery | Not included | Combined private scenery and marked fade handover; continuous3x race-transition check passes, broader visual acceptance remains open |
 | Normal-launch `env` regression | Fixed | Fixed |
 
 ## Research and historical evidence

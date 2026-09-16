@@ -55,6 +55,13 @@ fix a final-section stop. USA's host filtering substantially reduces offscreen
 work, although its busiest measured interval remains slightly below full speed.
 World supports both 2.4 and 2.5, including their separate road formats.
 
+The candidates now also support verified scene startup, continuous operation,
+quiet diagnostic journals and checked graphics-worker shutdown. A scripted
+continuation after the Amazon recording tests Exotica3× through name entry,
+loading and a new race start. The [continuation tool](docs/reviews/2026-09-16-scripted-recording-continuations.md)
+preserves the original recorded inputs and labels the added inputs as synthetic;
+it helps test transitions without replacing attended driving.
+
 These results do **not** eliminate pop-in. The first native World distance-fade
 trial has a small visible effect in Hawaii and no visible effect in the tested
 Germany window. Off Road's new partial-section recovery restores submitted

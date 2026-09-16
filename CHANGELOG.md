@@ -3,7 +3,26 @@
 All notable changes to Cruis'n Collection. Dates are YYYY-MM-DD. The full
 engineering log with numbers and proof images is `results/RESULTS.md`.
 
-## Unreleased — September 9–11 diagnostics
+## Unreleased — renderer candidates and diagnostics
+
+### Added and fixed, September 12–16
+
+- Add verified V-Unit scene startup, continuous scenery, quiet journals and
+  owned graphics-worker shutdown, with targeted checks across all three games
+  and both World revisions. These remain undeployed CLI candidates.
+- Preserve recorded drives while appending explicitly scripted input tails.
+  Exotica3× now passes an Amazon-to-menu-to-new-race transition; this does not
+  establish complete second-race or all-course acceptance.
+- Integrate Exotica future/waiting/active margins and marked fade handover,
+  improve measured CPU costs, and repair the sampled World Germany road gaps.
+  See the [current evidence and remaining gates](docs/reviews/2026-09-15-parity-remaining-work.md).
+- Archive accumulated agent checkpoints and retain concise current build,
+  safety, evidence and continuation instructions.
+
+### Earlier diagnostic work, September 9–11
+
+The intermediate statuses below are historical. Later results and remaining
+requirements are summarized in the current parity checklist linked above.
 
 - Integrate an isolated Exotica waiting-scenery draw path. Full Amazon playback
   preserves the driving route and adds visible trees; performance and smooth
