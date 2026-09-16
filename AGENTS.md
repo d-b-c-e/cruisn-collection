@@ -1,5 +1,23 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September16 other V-Unit startup — qualified; next live activation
+
+Read docs/reviews/2026-09-16-vunit-startup-readiness.md. Sixshortoriginal-only
+prefixes PASS: World24scene623/frontier1675, World25scene623/frontier1206,
+OffRoadscene1045/frontier2170. First2101each; missingfrontier prefixes1682/1212/
+3502 respectively. NewoptionalCRUISN_STARTUP_FRONTIER_SNAPSHOT capturesactual
+firstnonzerofrontier, included8snapshotbudget; defaultobserverunchanged.
+Firstoperands/prefixrows530/295/512 exact. AllinitializedfullguardsPASS;
+World24empty scene guardfalse duezero pendinglimit, stock/future/roadcodePASS;
+World25existingtrack_reset true. Needexplicit24emptyreadinessskip, notloosecode.
+WorldfrontierindependentPython/native descriptors+roadgeometry1/2/3xPASS;
+OffRoademptyandinitialized569objects1560quads fullorderedPython/coldwarmPASS.
+LOCALW/vunit-startup-qualified/report.json. Native03dd248patches unchanged.
+NEXT extendgatedbootstrap toWorld24/25/OffRoad usingobservedreadiness, qualifylive;
+then continuoussession policy. Earlypresentation/multirace/perf stillOPEN.
+No game/build/testnow; no deploy/release/physicalFFB/hostedCI/menu removal.
+Continue directlyovernight; heartbeatbackup notcadence. Exoavailabilitypending.
+
 ## September16 USA actual-scene activation — candidate qualified; continue parity
 
 Read docs/reviews/2026-09-16-usa-scene-bootstrap.md. Native03ddf36820c frozen

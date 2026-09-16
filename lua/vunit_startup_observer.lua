@@ -10,6 +10,10 @@ local profiles={
  offroadc={address=0x111f4,pc=0x1bf9,words={0x111f4,0x111ee,0x1120b,0x1b4b4,0x1b4cc,0x1b4b5,0x1b4b7,0x1b4ba}},
 }
 local profile=assert(profiles[rom],'unsupported V-Unit startup profile')
+local frontier_word=({crusnusa=0xe4a5,crusnwld24=0xd575,crusnwld=0xd56f,offroadc=0x1b4b4})[rom]
+local frontier_option=os.getenv('CRUISN_STARTUP_FRONTIER_SNAPSHOT')
+assert(not frontier_option or frontier_option=='1','invalid startup frontier snapshot option')
+local frontier_saved=false
 local last=tonumber(os.getenv('CRUISN_STARTUP_LAST') or '2099')
 assert(last and last%1==0 and last>=1 and last<=3500 and ram.size==0x80000,'invalid startup observation bounds')
 local frame,count,saved,busy,failure,tap,out=0,0,0,false,nil,nil,nil
@@ -21,7 +25,7 @@ for token in requested:gmatch('[^,]+')do
  assert(sequence and sequence%1==0 and sequence>=1 and sequence<=4096 and not wanted[sequence],'invalid startup snapshot sequence')
  wanted[sequence]=true;budget=budget+1
 end
-assert(budget>=1 and budget<=8,'startup snapshot budget exceeded')
+assert(budget>=1 and budget+(frontier_option and 1 or 0)<=8,'startup snapshot budget exceeded')
 local function read(p)assert(p>=0 and p<0x20000);return ram:read_u32(4*p)end
 local function dump(path,n,fn)
  local file=assert(io.open(path,'wb'));local chunk={}
@@ -43,6 +47,7 @@ return function(n)
   out=assert(io.open('vunit-startup-scenes.csv','w'));out:setvbuf('full',65536)
   assert(out:write('sequence,frame,native_frame,time,pc,value,mask,snapshot'))
   for _,p in ipairs(profile.words)do assert(out:write(string.format(',w%05x',p)))end
+  if frontier_option then assert(out:write(',frontier_snapshot'))end
   assert(out:write('\n'))
   tap=space:install_read_tap(profile.address,profile.address,'vunit_startup_scene',function(o,d,m)
    if busy or failure or cpu.state.PC.value~=profile.pc then return end
@@ -52,6 +57,8 @@ return function(n)
     assert(out:write(string.format('%d,%d,%d,%.12f,%x,%x,%x,%d',count,frame,
      manager.machine.screens[':screen']:frame_number(),emu.time(),profile.pc,d,m,wanted[count] and 1 or 0)))
     for _,p in ipairs(profile.words)do assert(out:write(string.format(',%08x',read(p))))end
+    local frontier_now=frontier_option and not frontier_saved and read(frontier_word)~=0
+    if frontier_option then assert(out:write(frontier_now and ',1' or ',0'))end
     assert(out:write('\n'))
     if wanted[count] then
      local stem=string.format('vunit-startup-%02d',count)
@@ -60,12 +67,21 @@ return function(n)
      dump(stem..'-fast.bin',0x800,function(p)return space:read_u32(0x809800+p)end)
      saved=saved+1
     end
+    if frontier_now then
+     dump('vunit-startup-frontier-ram.bin',0x20000,read)
+     dump('vunit-startup-frontier-fast.bin',0x800,function(p)return space:read_u32(0x809800+p)end)
+     frontier_saved=true
+    end
    end)
    busy=false;if not ok then failure=tostring(reason)end
   end)
  end
  if n==last+1 then
   close();assert(count>0 and saved==budget,'startup observation did not reach required scene snapshots')
+  if frontier_option then
+   assert(frontier_saved,'startup observation did not reach first frontier')
+   print(string.format('VUNIT_STARTUP_FRONTIER rom=%s saved=1',rom))
+  end
   print(string.format('VUNIT_STARTUP_OBSERVED rom=%s scenes=%d snapshots=%d',rom,count,saved))
  end
 end
