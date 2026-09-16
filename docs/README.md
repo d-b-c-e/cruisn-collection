@@ -26,6 +26,7 @@ assuming that a source feature is present in a downloaded package.
 | [Scripted recording continuations](reviews/2026-09-16-scripted-recording-continuations.md) | Preserve recorded inputs while adding labeled menu/race transition stimuli |
 | [Exotica3x race transition](reviews/2026-09-16-exotica-race-transition.md) | Amazon, name entry, loading and new-race start; scope and limits |
 | [World3x race transition](reviews/2026-09-16-world-race-transition.md) | Germany, race selection and new coastal-race scenery with exact motion |
+| [Off-Road3x race transition](reviews/2026-09-16-offroad-race-transition.md) | El Paso restart, matching projection and distant-cliff additions |
 | [World road coverage repair](reviews/2026-09-15-world-road-polygon-coverage.md) | Verified Germany margin repair, World 2.5 compatibility and displayed-scene diagnostics |
 | [Exotica distance sample selection](reviews/2026-09-15-exotica-distance-sample-selection.md) | Avoiding empty or foreground-hidden third-band comparisons |
 | [Latest Zeus upstream review](reviews/2026-09-15-zeus-upstream-refresh.md) | Qualified solid-color register backport and the deferred mesh changes |

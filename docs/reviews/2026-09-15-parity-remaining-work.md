@@ -23,7 +23,10 @@ race or proof of useful outer-band visibility.
 World now passes a [3x race-selection continuation](2026-09-16-world-race-transition.md)
 through a new coastal race:12,669 inputs, exact motion, clean continuous shutdown
 and visible distant terrain in changed completed images. This is sparse visual
-coverage, not complete second-race acceptance. Off-Road transition is next.
+coverage, not complete second-race acceptance. Off-Road also passes a [3x El Paso restart](2026-09-16-offroad-race-transition.md)
+through car selection and early second-race driving. The initial401/400-line
+image mismatch is retained; a matching400-line control verifies distant-cliff
+additions. This is same-course restart coverage, not a new-track acceptance.
 
 ## Current position
 

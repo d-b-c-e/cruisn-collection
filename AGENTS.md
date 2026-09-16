@@ -11,24 +11,29 @@ Read these current references first:
 
 - [Remaining release work](docs/reviews/2026-09-15-parity-remaining-work.md)
 - [Quiet continuous V-Unit](docs/reviews/2026-09-16-vunit-quiet-runtime.md)
+- [Off-Road 3x race transition](docs/reviews/2026-09-16-offroad-race-transition.md)
 - [World 3x race transition](docs/reviews/2026-09-16-world-race-transition.md)
 - [Exotica 3x race transition](docs/reviews/2026-09-16-exotica-race-transition.md)
 - [Scripted recording continuations](docs/reviews/2026-09-16-scripted-recording-continuations.md)
 
-**Current checkpoint:** World2.4 continuous quiet3x transition passes12,669
-input/time frames,10,869 camera records and32,607 ADC reads through12668.
-The original9,269-frame Germany prefix is exact; the3,400 scripted tail reaches
-race selection and a new coastal race. All5,497 scenes/13,049,354 quads complete
-without degradation and the owned worker drains/joins. Ten of13 completed4K
-client images are exact; three add distant terrain. The lower foreground is
-unchanged. Detailed scope is in the World transition review below.
+**Current checkpoint:** World2.4 and Off-Road continuous quiet3x race/menu
+continuations qualify, alongside Exotica. World12,669 inputs; Off-Road13,044;
+original motion and owned shutdown exact. Both add distant terrain after menus.
+Off-Road initially compared inherited401-line control against400-line candidate;
+that raw comparison is NOT visual acceptance. A matching400-line control passes,
+with10/14 images exact and4 changing only distant geometry above y838. The
+candidate was not rerun. See their dated reviews for actual course/scope limits.
 
-Next run the prepared Off-Road transition control, then candidate and checker:
-`results/diagnostics/world25-roads-20260914/record-vunit-continuation.py offroad`,
-`run-vunit-continuation-candidate.py offroad`, and
-`check-vunit-continuation.py offroad` in that same directory. These Off-Road
-scripts have not run. Never launch games concurrently. No game/build/test is
-active at this checkpoint. Retain failures and diagnose before another game.
+**Active:** isolated native build, exec session4094, source successorf0b4db1f25d.
+It allows endpoint snapshot0 only under Exotica continuous quiet runtime and
+opens operand capture lazily on the first rejected marked model.21 targeted
+Python tests and one native runtime test pass. Two reusable continuation-command
+tests also pass. Build log: `results/diagnostics/world25-roads-20260914/endpoint-routine-capture-build.log`.
+This native successor is not yet frozen/exported/live-qualified. Next finish
+build, create a NEW export based on vunit-quiet-native-export.json, then replay
+the existing5300-input Exotica continuous4K scope with snapshot0, retaining other
+explicit snapshots for exact geometry/material/pixel comparison. No full drive
+or broad suite is justified for this capture-policy change. No game is active.
 
 Current frozen native: `1a1b7e0ff6bcc41a8ca92f5f1131a1310e1fa89a`,
 `build/candidates/1a1b7e0ff6b/vunit.exe`, SHA256
