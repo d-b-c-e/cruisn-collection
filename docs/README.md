@@ -34,6 +34,7 @@ assuming that a source feature is present in a downloaded package.
 | [Exotica distance sample selection](reviews/2026-09-15-exotica-distance-sample-selection.md) | Avoiding empty or foreground-hidden third-band comparisons |
 | [Exotica Mars third-band visibility](reviews/2026-09-16-exotica-mars-distance.md) | Small verified3x gain, reproducible scout and source-fragment attribution |
 | [Exotica animation sequencing](reviews/2026-09-16-exotica-animation-sequencing.md) | Custom-source census and246original model-animation updates reproduced independently |
+| [Exotica long-session fallback](reviews/2026-09-16-exotica-late-retirement.md) | Remove the diagnostic16000-frame cap from real continuous recovery |
 | [Latest Zeus upstream review](reviews/2026-09-15-zeus-upstream-refresh.md) | Qualified solid-color register backport and the deferred mesh changes |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |

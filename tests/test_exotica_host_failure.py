@@ -6,6 +6,25 @@ from exotica_host_failure import configure,verify_receipt
 
 
 class ExoticaFailureTests(unittest.TestCase):
+    def test_real_failure_beyond_injection_window_remains_degraded(self):
+        args=SimpleNamespace(candidate='x',exotica_host_failure='original',exotica_host_inject_failure_frame=None,
+            exotica_runtime='continuous',exotica_bootstrap='scenes',exotica_journals='quiet')
+        env=dict(MIDV_FFB='0',MIDZ_GL='1',MIDZ_HOST_FUTURE='2',MIDZ_HOST_COMPOSE='1',
+            MIDZ_HOST_FUTURE_PRESENT='1',MIDZ_HOST_FIRST='1800',MIDZ_HOST_LAST='5240',MIDZ_MODEL_ENDPOINT_SNAPSHOT='0')
+        trial=configure(args,'crusnexo',env,20000)
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            (root/'stdout.log').write_text('EXOTICA_HOST_FAILURE_POLICY original=1 inject=0\n',encoding='utf-8')
+            (root/'stderr.log').write_text(
+                'EXOTICA_HOST_PREP_FAILURE frame=18000 scene=17000 injected=0 fallback=1\n'
+                'EXOTICA_HOST_RETIRE_QUEUED frame=18001 scene=17000\n'
+                'EXOTICA_HOST_RETIRE_GPU frame=18001 scene=17000\n'
+                'EXOTICA_HOST_RETIRE_PRESENT frame=18001 scene=17000\n',encoding='utf-8')
+            result=verify_receipt(trial,root)
+            self.assertTrue(result['degraded'])
+            self.assertFalse(result['failure']['injected'])
+            self.assertEqual(result['presented_frame'],18001)
+
     def test_continuous_failure_extends_reference_but_bounds_injection_and_drain(self):
         args=SimpleNamespace(candidate='x',exotica_host_failure='original',exotica_host_inject_failure_frame=5300,
             exotica_runtime='continuous',exotica_bootstrap='scenes',exotica_journals='quiet')

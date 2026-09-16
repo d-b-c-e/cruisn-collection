@@ -117,10 +117,18 @@ NEXT Exotica machine-reset contract (currentlyexplicitfatalaftertracking);
 inspectorderedretirement/CPU-GPUresetownershipbeforechangingit. No game/test.
 Continue directly.
 
+Read2026-09-16-exotica-late-retirement.md. SourceauditfoundCPU/GPUretirementstill
+capped16000evencontinuous. Native569549d9aee nowuses sharedruntimeframepolicy,
+capture1..16000unchanged/continuous1..UINT32_MAX; injectionstill16000. Nativeboundary
+and4focusedPythonfailuretestsPASS, localbuild/export255patchesPASS. No newgame
+or livepost16000/rebootclaim. Lastlivecandidate5c retained. Machine-reset remains
+open: pendingCPUscene/cuesneedexplicitcancellation plusorderedGPUboundary, cannot
+justclearfatalguards. Luaactualsoft_reset confirmedsource;screenframecontinues.
 
-Current frozen native: `5c4da4891a9a147d62ffc17668f381e6000c76e9`,
-`build/candidates/5c4da4891a9/vunit.exe`, SHA256
-`e1064decae78d24ca4d397873e8f5b270dd02f30e79c8252727980fd712f8aa6`.
+
+Current frozen native: `569549d9aee75a78c004c3ad78f99e68080229fd`,
+`build/candidates/569549d9aee/vunit.exe`, SHA256
+`e9c477fa7c575bf77e8c6d42f1a246e817fb03300744cf37e8cec28ee9227fb1`.
 254 patches reconstruct `de584ffe34debd9a4dc406d05f64c2014e96879d`.
 `continuous-retirement-native-export.json` under
 `results/diagnostics/world25-roads-20260914` is the current export receipt.

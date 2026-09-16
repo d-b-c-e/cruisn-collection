@@ -33,6 +33,11 @@ inline uint32_t injection_last(Policy policy,uint32_t capture_last) {
 }
 // Frames travel on existing 32-bit packets. Never silently wrap at narrowing.
 inline bool representable(uint64_t frame) {return frame<=std::numeric_limits<uint32_t>::max();}
+// Real recovery is not fault injection: a continuous session may fail after the
+// diagnostic injection window. Keep the old bounded capture protocol unchanged.
+inline bool retirement_frame(Policy policy,uint64_t frame) {
+    return frame>=1 && representable(frame) && (continuous(policy) || frame<=16000);
+}
 inline bool after(Policy policy,uint64_t frame,uint32_t last) {
     return !continuous(policy) && frame>last;
 }
