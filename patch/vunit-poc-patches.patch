@@ -47482,3 +47482,294 @@ index d44d014f887..725bd4411a9 100644
 -- 
 2.55.0.windows.3
 
+From 1a1b7e0ff6bcc41a8ca92f5f1131a1310e1fa89a Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 03:00:56 -0500
+Subject: [PATCH] Separate continuous V-Unit scenery from persistent diagnostic
+ journals
+
+---
+ src/mame/midway/cruisn/vunit_journal_policy.h | 36 ++++++++++
+ src/mame/midway/midvunit.cpp                  | 71 +++++++++++--------
+ src/mame/midway/midvunit.h                    |  8 ++-
+ src/mame/midway/midvunit_v.cpp                |  5 +-
+ 4 files changed, 86 insertions(+), 34 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/vunit_journal_policy.h
+
+diff --git a/src/mame/midway/cruisn/vunit_journal_policy.h b/src/mame/midway/cruisn/vunit_journal_policy.h
+new file mode 100644
+index 00000000000..68f1f7a2177
+--- /dev/null
++++ b/src/mame/midway/cruisn/vunit_journal_policy.h
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: BSD-3-Clause
++#pragma once
++#include "diagnostic_journal.h"
++#include "vunit_runtime.h"
++namespace cruisn { namespace vunit_journals {
++template<class Lookup> bool select(const char *mode,Lookup lookup,DiagnosticJournal::Policy &policy)
++{
++    policy=DiagnosticJournal::Policy::capture;
++    if(!mode)return true;
++    vunit_runtime::Policy runtime;
++    const char *selected=lookup("MIDV_HOST_RUNTIME");
++    if(std::strcmp(mode,"quiet") || !selected ||
++            !vunit_runtime::select(selected,lookup,runtime) || !vunit_runtime::continuous(runtime))return false;
++    for(const auto *key:{"MIDV_WORLD_HOST_QUADS","MIDV_USA_HOST_QUADS","MIDV_OFFROAD_HOST_QUADS",
++            "MIDV_WORLD_HOST_FADE_METADATA","MIDV_GL_ORIGINAL_MIRROR"}) {
++        const char *value=lookup(key);if(value && std::strcmp(value,"0"))return false;
++    }
++    // World defaults to detailed capture. Quiet requires an explicit summary.
++    const char *world=lookup("MIDV_WORLD_HOST_SCENERY");
++    if(world && std::strcmp(world,"0")) {
++        const char *quads=lookup("MIDV_WORLD_HOST_QUADS");
++        if(!quads || std::strcmp(quads,"0"))return false;
++    }
++    policy=DiagnosticJournal::Policy::quiet;return true;
++}
++// Fixed LE64 fields: frame, page, quad count, ordered quad fingerprint.
++// This is geometry evidence, not proof of all source/material semantics.
++inline uint64_t fold(uint64_t hash,uint64_t frame,uint64_t page,uint64_t quads,uint64_t geometry)
++{
++    for(uint64_t word:{frame,page,quads,geometry})for(unsigned byte=0;byte<8;++byte) {
++        hash^=uint8_t(word>>(8*byte));hash*=1099511628211ull;
++    }
++    return hash;
++}
++constexpr uint64_t seed=14695981039346656037ull;
++}}
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index a063c966d7e..738bacb7a13 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -86,6 +86,9 @@ void midvunit_base_state::machine_start()
+ 	world_distance_start();
+ 	usa_distance_start();
+ 	offroad_distance_start();
++	if(!cruisn::vunit_journals::select(std::getenv("MIDV_HOST_JOURNALS"),
++		[](const char *key){return std::getenv(key);},m_host_journal_policy))
++		fatalerror("Invalid V-Unit journal policy\n");
+ 	world_host_start();
+ 	usa_host_start();
+ 	offroad_host_start();
+@@ -113,10 +116,11 @@ bool midvunit_base_state::host_scene_allowed(uint64_t frame)
+ 	return !m_host_failed_frame && cruisn::vunit_runtime::within(m_host_runtime,frame,m_host_first,m_host_last,m_host_bootstrap);
+ }
+ 
+-void midvunit_base_state::host_scene_record(uint64_t frame,size_t quads)
++void midvunit_base_state::host_scene_record(uint64_t frame,size_t quads,uint64_t hash)
+ {
+ 	if(!cruisn::vunit_runtime::continuous(m_host_runtime))return;
+ 	m_host_runtime_frame=frame;++m_host_runtime_scenes;m_host_runtime_quads+=quads;
++	m_host_geometry=cruisn::vunit_journals::fold(m_host_geometry,frame,m_page_control,quads,hash);
+ }
+ 
+ // Candidate-only startup policy. Every scene still runs the complete code,
+@@ -140,22 +144,25 @@ void midvunit_base_state::host_bootstrap_ready(uint64_t frame)
+ 	if(!m_host_bootstrap || m_host_bootstrap_frame)return;
+ 	if(!frame || cruisn::vunit_runtime::after(m_host_runtime,frame,m_host_last) || m_ram_base.bytes()!=0x80000)
+ 		fatalerror("V-Unit bootstrap invalid scene frame/RAM span\n");
+-	// Explicit little-endian bytes match the independent saved-scene codec.
+-	// Ordinary RAM reads bypass guest cycle handlers. Fast RAM reads suppress taps.
+-	auto disabled=machine().disable_side_effects();
+-	for(bool fast:{false,true})
++	if(m_host_journal_policy==cruisn::DiagnosticJournal::Policy::capture)
+ 	{
+-		std::vector<uint8_t> bytes(fast?0x2000:0x80000);
+-		for(size_t i=0;i<bytes.size()/4;++i)
++		// Explicit little-endian bytes match the independent saved-scene codec.
++		// Ordinary RAM reads bypass guest cycle handlers. Fast RAM reads suppress taps.
++		auto disabled=machine().disable_side_effects();
++		for(bool fast:{false,true})
+ 		{
+-			uint32_t word=fast?m_maincpu->space(AS_PROGRAM).read_dword(0x809800+i):m_ram_base[i];
+-			for(unsigned b=0;b<4;++b)bytes[4*i+b]=uint8_t(word>>(8*b));
++			std::vector<uint8_t> bytes(fast?0x2000:0x80000);
++			for(size_t i=0;i<bytes.size()/4;++i)
++			{
++				uint32_t word=fast?m_maincpu->space(AS_PROGRAM).read_dword(0x809800+i):m_ram_base[i];
++				for(unsigned b=0;b<4;++b)bytes[4*i+b]=uint8_t(word>>(8*b));
++			}
++			FILE *file=fopen(fast?"vunit-bootstrap-fast.bin":"vunit-bootstrap-ram.bin","wb");
++			if(!file)fatalerror("Cannot create V-Unit bootstrap operands\n");
++			const bool written=fwrite(bytes.data(),1,bytes.size(),file)==bytes.size();
++			const bool closed=cruisn::close_journal(file);
++			if(!written || !closed)fatalerror("Cannot write/close V-Unit bootstrap operands\n");
+ 		}
+-		FILE *file=fopen(fast?"vunit-bootstrap-fast.bin":"vunit-bootstrap-ram.bin","wb");
+-		if(!file)fatalerror("Cannot create V-Unit bootstrap operands\n");
+-		const bool written=fwrite(bytes.data(),1,bytes.size(),file)==bytes.size();
+-		const bool closed=cruisn::close_journal(file);
+-		if(!written || !closed)fatalerror("Cannot write/close V-Unit bootstrap operands\n");
+ 	}
+ 	m_host_bootstrap_frame=frame;
+ 	const uint32_t address=cruisn::vunit_bootstrap_profile(machine().system().name).address;
+@@ -260,11 +267,11 @@ void midvunit_base_state::offroad_host_start()
+ 		if(strcmp(text,"0") && strcmp(text,"1"))fatalerror("Invalid Off Road host quad trace\n");
+ 		trace=!strcmp(text,"1");
+ 	}
+-	m_host_scene_log=fopen("offroad-host-scenes.csv","w");
++	if(!m_host_scene_log.open("offroad-host-scenes.csv","w",m_host_journal_policy))fatalerror("Cannot open host scene journal\n");
+ 	if(trace)m_host_quad_log=fopen("offroad-host-quads.csv","w");
+ 	if(!m_host_scene_log || (trace && !m_host_quad_log))fatalerror("Cannot create Off Road host evidence\n");
+-	setvbuf(m_host_scene_log,nullptr,_IOFBF,65536);
+-	fprintf(m_host_scene_log,"frame,time,page,mode,multiplier,future_enabled,pending,future,future_definitions,unsupported,near,far,projection,material,decoded,pretrack,partial,deferred,quads,quads_hash,guard_us,prepare_us,pack_us,log_us,submit_us,microseconds\n");
++	if(m_host_scene_log.buffer(nullptr,_IOFBF,65536))fatalerror("Cannot buffer host scene journal\n");
++	m_host_scene_log.print("frame,time,page,mode,multiplier,future_enabled,pending,future,future_definitions,unsupported,near,far,projection,material,decoded,pretrack,partial,deferred,quads,quads_hash,guard_us,prepare_us,pack_us,log_us,submit_us,microseconds\n");
+ 	if(m_host_quad_log)
+ 	{
+ 		setvbuf(m_host_quad_log,nullptr,_IOFBF,65536);
+@@ -310,12 +317,12 @@ void midvunit_base_state::offroad_host_start()
+ 			const auto logged=std::chrono::steady_clock::now();
+ 			if(m_host_mode==2)world_host_submit(quads);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("Off Road host inspection changed guest cycles\n");
+-			host_scene_record(frame,quads.size());
++			host_scene_record(frame,quads.size(),hash);
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+ 			const unsigned definitions=m_host_future && !scene.pretrack && !scene.deferred ? unsigned(m_offroad_host_cache.future.value.sources.size())+scene.partial_recovered:0;
+-			if(scene.partial_recovered)osd_printf_info("OFFROAD_PARTIAL frame=%llu sources=%u\n",(unsigned long long)frame,scene.partial_recovered);
+-			fprintf(m_host_scene_log,"%llu,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n",
++			if(scene.partial_recovered && m_host_journal_policy==cruisn::DiagnosticJournal::Policy::capture)osd_printf_info("OFFROAD_PARTIAL frame=%llu sources=%u\n",(unsigned long long)frame,scene.partial_recovered);
++			m_host_scene_log.print("%llu,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n",
+ 				(unsigned long long)frame,time,m_page_control,m_host_mode,m_offroad_host_multiplier,unsigned(m_host_future),
+ 				scene.pending,scene.future,definitions,scene.unsupported,scene.near,scene.far,scene.projection,scene.material,unsigned(scene.objects.size()),
+ 				unsigned(scene.pretrack),unsigned(scene.partial),unsigned(scene.deferred),unsigned(quads.size()),(unsigned long long)hash,
+@@ -376,7 +383,7 @@ void midvunit_base_state::usa_host_start()
+ 		if(strcmp(text,"0") && strcmp(text,"1"))fatalerror("Invalid USA host quad trace\n");
+ 		trace=!strcmp(text,"1");
+ 	}
+-	m_host_scene_log=fopen("usa-host-scenes.csv","w");
++	if(!m_host_scene_log.open("usa-host-scenes.csv","w",m_host_journal_policy))fatalerror("Cannot open host scene journal\n");
+ 	if(trace)m_host_quad_log=fopen("usa-host-quads.csv","w");
+ 	if(trace && m_host_far_coverage)
+ 	{
+@@ -386,8 +393,8 @@ void midvunit_base_state::usa_host_start()
+ 		if(fwrite("VFP1",1,4,m_host_clip_log)!=4)fatalerror("Cannot write USA far coverage header\n");
+ 	}
+ 	if(!m_host_scene_log || (trace && !m_host_quad_log))fatalerror("Cannot create USA host evidence\n");
+-	setvbuf(m_host_scene_log,nullptr,_IOFBF,65536);
+-	fprintf(m_host_scene_log,"frame,time,page,mode,host_far,pending,unsupported,near,far,projection,decoded,quads,quads_hash,guard_us,prepare_us,pack_us,log_us,submit_us,microseconds,future_enabled,future_start,future_loading,future_number,future_sections,future_definitions,future_special,future_unbound,future_deferred,future_ready,future_uploads,future_partial,future_new_sections\n");
++	if(m_host_scene_log.buffer(nullptr,_IOFBF,65536))fatalerror("Cannot buffer host scene journal\n");
++	m_host_scene_log.print("frame,time,page,mode,host_far,pending,unsupported,near,far,projection,decoded,quads,quads_hash,guard_us,prepare_us,pack_us,log_us,submit_us,microseconds,future_enabled,future_start,future_loading,future_number,future_sections,future_definitions,future_special,future_unbound,future_deferred,future_ready,future_uploads,future_partial,future_new_sections\n");
+ 	if(m_host_quad_log)
+ 	{
+ 		setvbuf(m_host_quad_log,nullptr,_IOFBF,65536);
+@@ -445,10 +452,10 @@ void midvunit_base_state::usa_host_start()
+ 			const auto logged=std::chrono::steady_clock::now();
+ 			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("USA host inspection changed guest cycles\n");
+-			host_scene_record(frame,quads.size());
++			host_scene_record(frame,quads.size(),hash);
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+-			fprintf(m_host_scene_log,"%llu,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u\n",
++			m_host_scene_log.print("%llu,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u\n",
+ 				(unsigned long long)frame,time,m_page_control,m_host_mode,m_host_far,scene.pending,scene.unsupported,
+ 				scene.near,scene.far,scene.projection,scene.decoded,unsigned(quads.size()),(unsigned long long)hash,
+ 				us(started,guarded),us(guarded,prepared),us(prepared,packed),us(packed,logged),us(logged,submitted),us(started,submitted),
+@@ -549,7 +556,7 @@ void midvunit_base_state::world_host_start()
+ 		if(strcmp(trace,"0") && strcmp(trace,"1"))fatalerror("MIDV_WORLD_HOST_QUADS requires 0/1\n");
+ 		quad_trace=!strcmp(trace,"1");
+ 	}
+-	m_host_scene_log=fopen("world-host-scenes.csv","w");
++	if(!m_host_scene_log.open("world-host-scenes.csv","w",m_host_journal_policy))fatalerror("Cannot open host scene journal\n");
+ 	if(quad_trace)m_host_quad_log=fopen("world-host-quads.csv","w");
+ 	if(quad_trace && m_host_far_coverage)
+ 	{
+@@ -558,14 +565,14 @@ void midvunit_base_state::world_host_start()
+ 		setvbuf(m_host_clip_log,nullptr,_IOFBF,65536);
+ 	}
+ 	if(!m_host_scene_log || (quad_trace && !m_host_quad_log))fatalerror("Cannot create host scenery evidence\n");
+-	setvbuf(m_host_scene_log,nullptr,_IOFBF,65536);
++	if(m_host_scene_log.buffer(nullptr,_IOFBF,65536))fatalerror("Cannot buffer host scene journal\n");
+ 	if(m_host_quad_log)
+ 	{
+ 		setvbuf(m_host_quad_log,nullptr,_IOFBF,65536);
+ 		fprintf(m_host_quad_log,"frame,page,object,model,depth,section,flags,palette,x0,y0,x1,y1,x2,y2,x3,y3,uv0,uv1,uv2,uv3,texture,word15\n");
+ 	}
+ 	m_host_previous_scene_log_us=0;
+-	fprintf(m_host_scene_log,"frame,page,mode,pending,unsupported,distance,decoded,quads,microseconds,host_far,quad_trace,quads_hash,guard_us,prepare_us,pack_us,quad_log_us,submit_us,previous_scene_log_us,future_enabled,future_sections,future_definitions,future_skipped,future_special,future_unbound,future_ready,future_new_sections,future_stage,future_cursor,future_start,future_us,roads_enabled,road_objects,road_quads\n");
++	m_host_scene_log.print("frame,page,mode,pending,unsupported,distance,decoded,quads,microseconds,host_far,quad_trace,quads_hash,guard_us,prepare_us,pack_us,quad_log_us,submit_us,previous_scene_log_us,future_enabled,future_sections,future_definitions,future_skipped,future_special,future_unbound,future_ready,future_new_sections,future_stage,future_cursor,future_start,future_us,roads_enabled,road_objects,road_quads\n");
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&midvunit_base_state::world_host_exit,this));
+ 	auto &space=m_maincpu->space(AS_PROGRAM);
+ 	m_host_scene_tap=space.install_read_tap(profile->scene,profile->scene,"world_host_scene",
+@@ -648,12 +655,12 @@ void midvunit_base_state::world_host_start()
+ 			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr,m_host_fade_metadata?&policies:nullptr,active_roads?&margins:nullptr);
+ 			if(m_maincpu->total_cycles()!=guest_cycles)
+ 				fatalerror("World host inspection changed emulated CPU cycles\n");
+-			host_scene_record(frame,quads.size());
++			host_scene_record(frame,quads.size(),hash);
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+ 			// The current scene row cannot include the duration of writing itself.
+ 			// Retain that cost on the next row, explicitly attributed as previous.
+-			fprintf(m_host_scene_log,"%llu,%u,%u,%u,%u,%u,%u,%u,%.3f,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%.3f,%u,%u,%u\n",
++			m_host_scene_log.print("%llu,%u,%u,%u,%u,%u,%u,%u,%.3f,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%.3f,%u,%u,%u\n",
+ 				(unsigned long long)frame,m_page_control,m_host_mode,scene.pending,scene.unsupported,scene.distance,
+ 				scene.decoded,unsigned(quads.size()),us(started,submitted),m_host_far,unsigned(m_host_quad_log!=nullptr),
+ 				(unsigned long long)hash,us(started,guarded),us(guarded,prepared),us(prepared,packed),
+@@ -672,8 +679,10 @@ void midvunit_base_state::world_host_exit()
+ 		osd_printf_info("VUNIT_RUNTIME_CPU frame=%llu scenes=%llu quads=%llu failed=%llu\n",
+ 			(unsigned long long)m_host_runtime_frame,(unsigned long long)m_host_runtime_scenes,
+ 			(unsigned long long)m_host_runtime_quads,(unsigned long long)m_host_failed_frame);
++	if(m_host_journal_policy==cruisn::DiagnosticJournal::Policy::quiet)
++		osd_printf_info("VUNIT_RUNTIME_JOURNALS quiet=1 geometry=%016llx\n",(unsigned long long)m_host_geometry);
+ 	const bool fade=cruisn::close_journal(m_host_fade_log);
+-	const bool scene=cruisn::close_journal(m_host_scene_log);
++	const bool scene=m_host_scene_log.close()==0;
+ 	const bool quads=cruisn::close_journal(m_host_quad_log);
+ 	const bool clip=cruisn::close_journal(m_host_clip_log);
+ 	if(!fade || !scene || !quads || !clip)
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index 810a5f8412b..d1faddfae2c 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -13,6 +13,7 @@
+ #include "midwayic.h"
+ #include "cruisn/world_future_sections.h"
+ #include "cruisn/vunit_runtime.h"
++#include "cruisn/vunit_journal_policy.h"
+ #include "cruisn/usa_future_sections.h"
+ #include "cruisn/offroad_host_scenery.h"
+ 
+@@ -114,7 +115,7 @@ protected:
+ 	void host_bootstrap_start();
+ 	void host_runtime_start();
+ 	bool host_scene_allowed(uint64_t frame);
+-	void host_scene_record(uint64_t frame,size_t quads);
++	void host_scene_record(uint64_t frame,size_t quads,uint64_t hash);
+ 	void host_bootstrap_ready(uint64_t frame);
+ 	void host_prepare_failed(uint64_t frame, uint64_t cycles, uint32_t stage, const char *reason);
+ 	bool host_injected_failure(uint64_t frame, uint64_t cycles);
+@@ -199,7 +200,10 @@ protected:
+ 	memory_passthrough_handler m_host_scene_tap;
+ 	FILE *m_host_fade_log = nullptr;
+ 	bool m_host_fade_metadata = false;
+-	FILE *m_host_scene_log = nullptr, *m_host_quad_log = nullptr, *m_host_clip_log = nullptr;
++	cruisn::DiagnosticJournal m_host_scene_log;
++	cruisn::DiagnosticJournal::Policy m_host_journal_policy=cruisn::DiagnosticJournal::Policy::capture;
++	uint64_t m_host_geometry=cruisn::vunit_journals::seed;
++	FILE *m_host_quad_log = nullptr, *m_host_clip_log = nullptr;
+ 	uint32_t m_host_mode = 0, m_host_first = 0, m_host_last = 0xffffffff, m_host_far = 80000;
+ 	bool m_host_bootstrap = false;
+ 	cruisn::vunit_runtime::Policy m_host_runtime = cruisn::vunit_runtime::Policy::capture;
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 725bd4411a9..84529541f0c 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -2046,7 +2046,10 @@ void thread_main()
+ 	{
+ 		// Finish an already consumed partial batch without inventing a guest
+ 		// frame/presentation. The producer is stopped before this drain.
+-		complete_run();flush_cpu();gl.Finish();gl.GetError();
++		// A failed persistent stream cannot safely draw its remaining partial batch.
++		if(!InterlockedCompareExchange((volatile LONG *)(lv.base+32),0,0))
++		{complete_run();flush_cpu();}
++		gl.Finish();gl.GetError();
+ 		s_runtime_pending=run.size();s_runtime_errors=gl.errors;
+ 		s_runtime_completed=completed_frame;s_runtime_ready=true;
+ 	}
+-- 
+2.55.0.windows.3
+

@@ -59,6 +59,16 @@ def verify(trial, directory):
     last = trial.get('runtime_last', trial['last'])
     if not 1 <= frame <= last:
         raise ValueError('V-Unit bootstrap activation outside finite capture')
+    if trial.get('journals')=='quiet':
+        from vunit_runtime import receipts
+        cpu,_,_=receipts(trial,directory)
+        prepared,scenes,_,_=cpu
+        forbidden=paths+[directory/(g+suffix) for g in ('world','usa','offroad')
+                         for suffix in ('-host-scenes.csv','-host-quads.csv','-far-coverage.bin')]
+        if 'runtime_last' not in trial or any(p.exists() for p in forbidden) or not frame<=prepared<=last or scenes<1:
+            raise ValueError('quiet V-Unit bootstrap has unexpected evidence or invalid scene coverage')
+        return dict(verified=True,first=frame,last_prepared=prepared,scenes=scenes,
+                    snapshots={},operand_capture=False,coverage='aggregate runtime receipt')
     snapshots = {}
     for path, size in zip(paths, (0x80000, 0x2000)):
         if not path.is_file() or path.stat().st_size != size:

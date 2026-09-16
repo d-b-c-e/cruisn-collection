@@ -1,5 +1,27 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September16 quiet V-Unit — next recorded transitions
+
+Read docs/reviews/2026-09-16-vunit-quiet-runtime.md. Native1a1b7e0ff6b frozen
+SHAa9e5b5734347033c5d5f28387761bf2f76ebbdd50f295a1bba24055de401109a,
+252patches treead2774cd1d5286a9424413a75384b725719ac1e0. --vunit-journals quiet
+requirescontinuous/bootstrap/liveGL/FFB0/summary, rejects detailedmirror/fade.
+CheckedDiagnosticJournal; nohostscene/quad/firstRAMfiles. Actualscenegeometryfold
+receipt retained, bootstrap explicitlynooperandcapture. 3native9PythonPASS;
+compiledall4savedscene folds matchindependentPython. QuietUSA4002/World25,Offroad
+2502inputs PASS2267/648/678scenes4020633/1419058/251021quads exactfolds;
+World24capture2502/413scenes semanticrows/firstoperands exact. Allnativeinputs/
+images/camera/ADC andpostend3750/2400GL exact3824x2073CRT on4K; GPUjoinedringempty,
+0drops/pending/GLerrors. Noperformance/multiraceclaim. Failedstreamtailguard now
+doesnotdrawpartialbatch; no newcorruptiontestclaim. W/*-quiet-qualified.json,
+vunit-quiet-checks/report.json,vunit-quiet-native-export.json. ExportALREADYRUN.
+NEXT labeledscriptedextensionofexistingdrive foractualmenu/racetransitions;
+preservehumanINPprefix, don'tcallsynthetictailattendeddriving. Existingcachebounds
+andresetlogic alreadyreviewed in2026-09-15-vunit-runtime-readiness.md; don'tredo
+thatinventory. PendingExo2raceavailability unanswered; independentworkremains.
+No game/build/testnow. Personal87d/publicv0.5.0unchanged. No deploy/release/FFB/
+hostedCI/menu removal. Continueovernightdirectly, heartbeatbackupONLY.
+
 ## September16 continuous V-Unit — next quiet runtime and transitions
 
 Read docs/reviews/2026-09-16-vunit-continuous-runtime.md. Nativee4860a3c76b frozen

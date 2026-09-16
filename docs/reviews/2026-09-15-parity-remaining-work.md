@@ -10,6 +10,11 @@ now have focused recorded qualification across USA, both World revisions and
 Off-Road. This closes the fixed-start/fixed-end implementation gap for explicitly
 selected candidates. Routine logging, multiple-race transitions and product
 acceptance remain open; it does not establish elimination of pop-in.
+The subsequent [quiet runtime change](2026-09-16-vunit-quiet-runtime.md) removes
+persistent V-Unit scene journals and bootstrap dumps under explicit continuous
+selection, with matching geometry fingerprints and recorded presentation.
+Routine capture separation is now implemented; multi-race and product gates
+remain open.
 
 ## Current position
 
