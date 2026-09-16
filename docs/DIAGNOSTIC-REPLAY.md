@@ -852,3 +852,20 @@ and depth, then labels the last surviving fragment against completed depth.
 `--save-labels` retains local per-pixel arrays. Blended contributions and actual
 final-screen visibility require separate checks; see the
 [Mars qualification](reviews/2026-09-16-exotica-mars-distance.md).
+
+Scheduled emulator resets are retained separately from MAME INP, which records
+game inputs. `record_continuation.py --soft-reset-frame N` adds a reset after the
+preserved parent input prefix; repeat the option for up to16ordered resets.
+The frame is relative to the entire case, and at least two frames must remain
+before stopping. Existing parent schedules are retained by continuation and
+derivation. `Recording.prepare(..., session_actions=[{'frame': N,
+'action': 'soft_reset'}])` exposes the same bounded mechanism to local harnesses.
+
+New cases freeze the schedule and Lua loader with their initial hashes. Normal
+`replay.py` executes the same schedule automatically and requires matching actual
+request/completion receipts and timing. Physical FFB is disabled. Missing,
+duplicate, unexpected or delayed resets fail evidence validation; successful
+recovery still does not establish scenery parity. This currently supports complete
+scheduled cases, not cutting a replay before a later scheduled action. Manually
+pressing MAME reset is not automatically converted into a replayable schedule.
+See [recorder reset continuity](reviews/2026-09-16-session-soft-reset.md).

@@ -28,3 +28,21 @@ An INP file alone does not encode this emulator action. Next retain a bounded
 reset schedule and actual completion receipts as part of the case, so later reset
 tests can use the normal replay workflow without an out-of-band mutating probe.
 Exotica's extended-renderer reset ownership problem remains open.
+
+## Scheduled actions now travel with a case
+
+The recorder can now freeze up to16explicit `soft_reset` actions, with a
+validated frame schedule, owned Lua loader and request/completion log. The normal
+replayer runs those actions automatically; comparisons require exact receipt
+hashes, including emulated completion timing. The completion notifier confirms
+the emulator actually reset. Force-enabled recordings cannot schedule these
+diagnostic actions. Continuation and derivation preserve existing schedules.
+
+An ordinary headless Exotica case with resets60/120 passes normal `replay.py`:
+all180inputs/times and six native images match; both request/completion pairs
+are exact. No external probe is used. Fourteen focused Python tests covering
+actions, recording continuations and existing session behavior pass. Evidence:
+`race-transitions-20260916/scheduled-soft-reset/{case,identity}`. This is a brief
+recorder integration check, not extended-renderer reset or gameplay acceptance.
+Scheduled cases currently require their complete schedule; shortened-prefix
+replay before a later scheduled action is rejected rather than silently dropped.

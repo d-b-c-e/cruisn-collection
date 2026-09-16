@@ -129,8 +129,12 @@ oldscriptreproducesnonconsecutivetrace, newrecord+identity180frames/6nativeimage
 exactwithactualreset90. Ordinaryheadlessboot, notextendedrenderer. LOCALrace-
 transitions-20260916/session-soft-reset/qualified-v2.json; initialimportFAILand
 rawconversioncheckerFAILretained, no rerunforchecker. NEXT boundedrecordedreset
-schedule/completionreceipt so normalreplay canreproduceactions withoutprobe.
-Then Exoticamachine-reset CPU/GPUownership. No activegame/build/test.
+schedule/completionreceipt nowimplemented (max16,FFB0, frozenmetadata+loader).
+Normalheadlessreplay resets60/120 PASS180inputs/times+6nativeimages+actualcompletion
+receipthashes.14focusedPythonchecksPASS. LOCALscheduled-soft-reset/{case,identity}.
+Continuation/derivation inheritactions. Completecasesonly; shorterprefixbeforea
+laterscheduledactionrejects. NEXT Exoticamachine-reset CPU/GPUownership usingnew
+fixturemechanism; notyetextendedrenderresetacceptance. No activegame/build/test.
 
 
 Current frozen native: `569549d9aee75a78c004c3ad78f99e68080229fd`,

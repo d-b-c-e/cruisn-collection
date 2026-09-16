@@ -45,6 +45,8 @@ def main(argv=None):
     ap.add_argument('--gl-crt', choices=('on','off'), help='explicit CRT setting for the new case')
     ap.add_argument('--gl-height', type=int, choices=(400,401), help='explicit V-Unit native height')
     ap.add_argument('--probe-script', type=Path, help='explicit Lua diagnostic probe, copied into the new run')
+    ap.add_argument('--soft-reset-frame',type=int,action='append',default=[],
+                    help='record a scheduled emulator reset after the preserved prefix; repeat at most16times')
     ap.add_argument('--gl-capture', help='FIRST:LAST completed frames, relative to the entire case')
     ap.add_argument('--gl-every', type=int, default=300)
     args = ap.parse_args(argv)
@@ -63,6 +65,10 @@ def main(argv=None):
         if provenance['recorded_frames'] != manifest['evidence']['frames']:
             raise ValueError('parent INP and trace frame counts differ')
         stop = provenance['total_frames']
+        if any(frame<=provenance['recorded_frames'] for frame in args.soft_reset_frame):
+            raise ValueError('continuation reset would change the preserved input prefix')
+        actions=(list(manifest.get('session_actions',[]))+
+                 [dict(frame=frame,action='soft_reset') for frame in args.soft_reset_frame]) or None
         (work/'stimulus.inp').write_bytes(stimulus)
         (work/'scenario.json').write_bytes(scenario_bytes)
         provenance.update(parent=str(parent), parent_case_sha256=sha256_file(parent/'case.json'),
@@ -89,9 +95,10 @@ def main(argv=None):
             settings['MIDV_GL_HEIGHT'] = str(args.gl_height)
         expected = configure_gl(settings, manifest['rom'], args.gl_capture, args.gl_every, stop)
         recording = Recording(work/'case', every=manifest['every'], stop_frame=stop)
-        actions = parent/'record/cheats/actions.csv'
+        cheat_actions = parent/'record/cheats/actions.csv'
         command, env, runtime = recording.prepare(command, diagnostic_env(settings), parent/'initial',
-            stimulus=work/'stimulus.inp', cheat_actions=actions if actions.exists() else None)
+            stimulus=work/'stimulus.inp', cheat_actions=cheat_actions if cheat_actions.exists() else None,
+            session_actions=actions)
         if args.probe_script:
             shutil.copy2(args.probe_script, runtime/'probe.lua')
             env['SNAP_PROBE_SCRIPT'] = str(runtime/'probe.lua')

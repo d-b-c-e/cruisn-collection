@@ -27,6 +27,14 @@ local started = emu.osd_ticks()
 local probe_path = os.getenv("SNAP_PROBE_SCRIPT")
 local probe, probe_error
 local cheat_tick
+local actions
+if os.getenv('SNAP_ACTIONS') then
+    local ok, result = pcall(function()
+        local loader = assert(os.getenv('SNAP_ACTIONS')):gsub('session%-actions%.csv$', 'session_actions.lua')
+        return assert(loadfile(loader))()
+    end)
+    if ok then actions = result else probe_error = tostring(result) end
+end
 if os.getenv('MIDV_CHEATS') then
     local ok, result = pcall(function() return assert(loadfile(os.getenv('MIDV_CHEATS')..'/cheats.lua'))() end)
     if ok then cheat_tick = result else probe_error = tostring(result) end
@@ -57,6 +65,10 @@ emu.register_frame_done(function()
     cruisn_session_state.frame = count
     if cheat_tick then
         local ok, reason = pcall(cheat_tick)
+        if not ok then fail_probe(reason); return end
+    end
+    if actions then
+        local ok, reason = pcall(actions.tick, count)
         if not ok then fail_probe(reason); return end
     end
     if probe then
@@ -110,6 +122,10 @@ end)
 -- A top-level local can be collected once autoboot returns. Retain the RAII
 -- subscription in the Lua global table until machine stop has run.
 cruisn_session_stop_subscription = emu.add_machine_stop_notifier(function()
+    if actions then
+        local ok, reason = pcall(actions.close)
+        if not ok then emu.print_error('session.lua: probe failed: actions: '..tostring(reason)) end
+    end
     log:flush()
     log:close()
     emu.print_info(string.format("session.lua: stopped at frame %d", count))

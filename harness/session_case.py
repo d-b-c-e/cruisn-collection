@@ -119,6 +119,9 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
     evidence = {"frames": len(rows), "columns": fields, "snapshots": shots,
             "input_coverage": coverage,
             "trace_sha256": sha256_file(directory / "frames.csv")}
+    from session_actions import verify as verify_actions
+    actions=verify_actions(directory,len(rows))
+    if actions is not None:evidence['session_actions']=actions
     if capture_writer is not None:
         evidence['capture_writer'] = capture_writer
     if (directory/'cheats').exists():
@@ -162,6 +165,8 @@ def session_evidence(directory, every, returncode, *, require_gl=False):
 
 
 def compare_evidence(reference_dir, replay_dir, reference, replay):
+    if reference.get('session_actions') != replay.get('session_actions'):
+        raise ValueError('record/replay emulator actions or completion timing differ')
     if reference.get('cheats') != replay.get('cheats'):
         raise ValueError('record/replay cheat selections or actual state changes differ')
     if reference["frames"] != replay["frames"] or reference["columns"] != replay["columns"]:
@@ -193,11 +198,13 @@ class Recording:
         self.clock = clock
         self.manifest = None
 
-    def prepare(self, command, env, rig, *, stimulus=None, cheat_actions=None):
+    def prepare(self, command, env, rig, *, stimulus=None, cheat_actions=None, session_actions=None):
         """Freeze the already-prepared launch configuration, then run a copy."""
         rig = Path(rig)
         if self.with_ffb and stimulus:
             raise ValueError("physical FFB is only allowed during an attended live recording")
+        if session_actions is not None and self.with_ffb:
+            raise ValueError('scheduled session actions require physical FFB disabled')
         initial = self.path / "initial"
         initial.mkdir()
         for name in STATE_DIRS:
@@ -209,6 +216,11 @@ class Recording:
         if (rig / "collection.ini").exists():
             shutil.copy2(rig / "collection.ini", initial / "collection.ini")
         shutil.copy2(ROOT / "lua" / "session.lua", initial / "session.lua")
+        actions=None
+        if session_actions is not None:
+            from session_actions import PLAN,write_schedule
+            actions=write_schedule(initial/PLAN,session_actions,self.stop_frame)
+            shutil.copy2(ROOT/'lua/session_actions.lua',initial/'session_actions.lua')
         if stimulus:
             shutil.copy2(stimulus, initial / "stimulus.inp")
         settings = {k: v for k, v in diagnostic_env(env).items()
@@ -273,6 +285,7 @@ class Recording:
             "dependencies": dependencies, "rom_containers": roms,
             "initial_hashes": tree_hashes(initial),
             "collection_source": git_identity(ROOT), "emulator_source": git_identity(exe.parent)}
+        if actions is not None:self.manifest['session_actions']=actions
         write_json(self.path / "case.json", self.manifest)
         runtime = self.path / "record"
         cmd, launch_env = prepare_run(self.path, self.manifest, runtime, playback=False)
@@ -346,6 +359,8 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
         elif k.endswith(("_SNAP", "_STATEDUMP_DIR", "_QUADLOG", "_CAPTURE", "_RAMDUMP_DIR")):
             del settings[k]
     env = diagnostic_env(settings)
+    from session_actions import configure as configure_actions
+    env.update(configure_actions(runtime,manifest,int(settings['SNAP_STOP'])))
     if not playback and not headless and manifest.get("attended_ffb") and manifest.get("origin") == "live-input":
         env["MIDV_FFB"] = settings.get("MIDV_FFB", "0")
     if manifest.get("snapshot_mode") == "raw":
