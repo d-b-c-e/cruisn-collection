@@ -90,7 +90,14 @@ record-onlyscouts now reusable. Rawsetup/cadence/dimension/bounded64removal fail
 retained; no game reruns forcheckers. LOCALexotica-open-course-20260916 contains
 allplans,scout,pair,qualification,canonicalfragmentreceipt. NEXT inspectbriefactual
 appearance intervalaround5200 andsourcehandover. No fullcourse/per-framecamera/
-physicalFFB/performance claim. No currentgame/build/test. Continue directly.
+physicalFFB/performance claim. Follow-up appearancepair5500inputs3700camera/
+11100ADC exact,30savedoriginalfilesexact.15GL5060..5340every20:5200/5240/5260/5280
+change509/314/146/16pixels,nonewblack,carROIexact;other11EXACTincluding5220.
+5300has1961thirdbandquadsbutcompleteddepthscreen0visible;no fadefailureclaim.
+All4064scenes2580marked0reject/ownedshutdown. LOCALmars-appearance-qualified.json
+andmars5300-fragments. NEXT census unsupportedExotica descriptorclasses fromsaved
+Mars/Amazon sources; fulltrackenumerationalreadyconfirmed, no shortlookaheadfix.
+No currentgame/build/test. Continue directly.
 
 
 Current frozen native: `5c4da4891a9a147d62ffc17668f381e6000c76e9`,

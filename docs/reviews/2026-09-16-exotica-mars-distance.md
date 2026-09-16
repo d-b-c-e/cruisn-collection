@@ -79,3 +79,30 @@ Local evidence is under `results/diagnostics/exotica-open-course-20260916`:
 `third-band-completed-depth-v2`, and `mars-fragments-canonical`.
 The equality-only completed-image subreport correctly saysfalse for5200;
 the enclosing qualification reports the intended visual difference explicitly.
+
+## Follow-up appearance samples
+
+One matched pair samples5060..5340 every20frames, adding independent camera/ADC
+traces and saved source/target snapshots at5100,5200,5300. Both preserve5500inputs,
+all3700camera words and11100actual ADC reads/times over1800..5499. All30selected
+original game/resource/quad/color/depth files match. Both again complete4064scenes,
+2580marked preparations with zero rejection, and joined shutdown.
+
+Of15completed4Kimages, four differ:5200by509pixels,5240by314,5260by146 and5280by16.
+All four have zero new near-black pixels and identical fixed car regions. The
+other11images are exact, including5220. This sampling does not establish smooth
+continuous visibility; the equal5220sample must not be omitted from that account.
+
+At5300,1961third-band polygons remain, but the checked full insertion and
+completed-depth screen yield zero visible colored fragments, consistent with
+the matching final images. The visible difference ending is therefore not proof
+of a failed fade or missing3x geometry. A global opacity change is not justified
+by these samples alone. The source decoder already enumerates the complete track
+until its checked sentinel, with a128-section bound; it is not limited to just
+the next few sections. Unsupported custom model handlers/classes remain a
+separate coverage question.
+
+Evidence: `mars-appearance-2x`, `mars-appearance-3x`,
+`mars-appearance-qualified.json`, `mars-appearance-bands.json`, and
+`mars5300-fragments`. The raw equality-only image report remainsfalse for the
+four intended differences. No new game build or default-suite rerun was needed.
