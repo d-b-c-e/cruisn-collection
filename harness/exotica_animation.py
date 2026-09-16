@@ -33,3 +33,18 @@ def step(sequence, state):
     if not 0xa00000 <= models[cursor] < 0x1000000:
         raise ValueError('animation selected descriptor')
     return period, cursor+1, models[cursor]
+
+
+def initial_fields(definition, model, section, matrix, constants, trig, materials, node):
+    """Initial fields with a supplied observed node; no future-source admission."""
+    from exotica_sections import descriptor
+    if (len(definition)!=6 or not definition[0]>>24
+            or definition[5]&0xf00 in (0xa00,0xb00,0xc00,0xf00)
+            or not 0x1000<=node<=0x40000-6 or (node<0x32000 and node+6>0x30000)):
+        raise ValueError('unsupported animation initializer or node')
+    plain=list(definition);plain[0]&=0xffffff
+    fields=descriptor(plain,model,section,matrix,constants,trig,materials)
+    if fields is None:raise ValueError('animation base fields')
+    fields[15]|=0x2000
+    fields[17],fields[24]=definition[0],node
+    return fields

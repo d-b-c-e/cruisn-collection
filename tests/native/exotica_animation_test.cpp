@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: BSD-3-Clause
 #include "exotica_animation.h"
+#include "exotica_animation_source.h"
 #include <cassert>
 #include <iostream>
 using namespace cruisn::exotica_animation;
@@ -22,5 +23,16 @@ int main()
     a.remaining=4;assert(!step(s,a,b));
     a.remaining=1;a.cursor=3;assert(!step(s,a,b));
     a.cursor=0;a.model=0;assert(!step(s,a,b));
+    std::array<uint32_t,6> d{},model{};d[0]=0x01a00100;
+    cruisn::exotica_future::Section section;cruisn::exotica_future::Source source;
+    std::array<uint32_t,11> constants{};std::array<uint32_t,7> trig{};
+    std::array<uint32_t,2> materials{};
+    for(uint32_t node:{0U,0xfffU,0x2fffbU,0x30000U,0x31fffU,0x3fffbU,0xffffffffU})
+        assert(!initial_fields(d,model,section,constants,trig,materials,node,source) && !source.supported);
+    for(uint32_t type:{0xa00U,0xb00U,0xc00U,0xf00U}) {
+        d[5]=type;assert(!initial_fields(d,model,section,constants,trig,materials,0xfe33,source));
+    }
+    d[5]=0;d[0]&=0xffffff;
+    assert(!initial_fields(d,model,section,constants,trig,materials,0xfe33,source));
     std::cout<<"PASS animation countdown, wrap and rejection boundaries\n";
 }

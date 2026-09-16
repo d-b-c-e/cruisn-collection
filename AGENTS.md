@@ -104,8 +104,13 @@ exactindependentPython+compiledC++;3focusedPython+nativeboundarytestPASS.
 FirsttwoinstrumentationFAILsretained: program-spaceinstructionfetchE8CC mistaken
 forcountdownread; exactfetchfilterfixesit. LOCALexotica-open-course-20260916/
 animation-qualified/actual-updates.json andamazon-animation-updates-v3.
-NEXT savedanimatedsourceinitializationfields, thenphase/lifetime/admissionproof;
-no newliveanimation policy or allocation/RNG calls. No currentgame/build/test.
+Standaloneanimation_source now28initialfields/35actualallocations/tags7..12 exact
+Python;compiled32wordreconstructionexact. Nodepointerisobservedinput, notallocation
+proof; result remainsfutureunsupported. ClassA/B/C/F rejected. Amazonoldallocation
+captureonlytaggedcustomhandler, emptycoverageFAILretained.4Python/nativeboundary
+checksPASS and246updatesstillmatchcombinedanalyzer. No MAMElink/sync/build.
+NEXT savedanimatedsourcespotentialvisiblecoverage, thenphase/lifetime/admission
+proofifuseful; no newliveanimation policy or allocation/RNG calls. No game/test.
 Continue directly.
 
 

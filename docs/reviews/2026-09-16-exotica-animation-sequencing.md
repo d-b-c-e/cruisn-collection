@@ -55,6 +55,35 @@ Next compare animated source initialization against already saved original objec
 fields, then establish phase and allocation ownership before any live admission.
 The personal installation, public release and frozen MAME candidate are unchanged.
 
+## Initial fields from existing allocation captures
+
+The standalone `exotica_animation_source.h` now reproduces28initial render fields
+for35captured allocations covering tags7..12 at frames3485,5020 and5970. The
+independent Python result matches the original fields, and the compiled helper
+matches all32reconstructed words. The actual animation-node pointer is supplied
+as an input and is explicitly excluded from the independent allocation claim.
+The result remains `supported=false` for future-source admission.
+
+ClassA/F callbacks and classB/C word24 overrides remain rejected. The separate
+Amazon allocation capture contains only one tagged source, which also invokes a
+custom handler; its initial-field report correctly fails for empty supported
+coverage. It is retained, not counted as a passing Amazon initialization test.
+An earlier local prototype also stopped on that unsupported combination. Four
+focused Python tests and the expanded native boundary test pass; the combined
+analyzer still reproduces all246previously captured animation updates.
+
+Six later Amazon objects in the7187 snapshot match the ordinary placement and
+binding hypothesis, but their current model, rendering coefficients and linkage
+have already changed. That saved-state screen is not an initial-allocation proof.
+The first screen named a run without the requested snapshot; the corrected screen
+uses the existing `composition-live-full` snapshot and its own lifetime journal.
+
+Evidence: `animation-qualified/initial-fields5990.json` (35objects),
+`initial-fields5072.json` (unsupported-only failure), `updates-combined-analyzer.json`,
+`animation-initialization-fields.json`, and `animation-allocations-prototype.json`.
+Next assess the excluded animated sources' potential visible coverage from saved
+scenes before investing in live phase, residency and ownership integration.
+
 Local evidence is under `results/diagnostics/exotica-open-course-20260916`:
 `custom-descriptor-census.json`, `animation-table-screen-v2.json`,
 `amazon-animation-live-snapshots.json`, `amazon-animation-updates`,

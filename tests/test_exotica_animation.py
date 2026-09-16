@@ -6,7 +6,7 @@ from unittest.mock import patch
 from types import SimpleNamespace
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
-from exotica_animation import decode, step
+from exotica_animation import decode, step, initial_fields
 from verify_exotica_animation import verify
 
 
@@ -53,6 +53,16 @@ class AnimationTests(unittest.TestCase):
                 run.assert_not_called()
             event['after_model']=0xa00100;summary['complete']=False;save()
             with self.assertRaisesRegex(ValueError,'incomplete'):verify(root,native)
+
+    def test_initializer_rejects_other_handlers_and_invalid_nodes(self):
+        d=[0x01a00100,0,0,0,0,0]
+        for node in (0,0xfff,0x2fffb,0x30000,0x31fff,0x3fffb,0xffffffff):
+            with self.assertRaisesRegex(ValueError,'unsupported'):
+                initial_fields(d,[],{},[],[],[],[],node)
+        for kind in (0xa00,0xb00,0xc00,0xf00):
+            d[5]=kind
+            with self.assertRaisesRegex(ValueError,'unsupported'):
+                initial_fields(d,[],{},[],[],[],[],0xfe33)
 
 
 if __name__=='__main__':unittest.main()
