@@ -4,6 +4,13 @@ All four games have host scenery implementations, but the current candidate is
 not yet accepted for release. The newer adapters are still diagnostic CLI
 features; the personal installation and public v0.5.0 package are unchanged.
 
+September16 update: [verified V-Unit scene startup](2026-09-16-vunit-scene-bootstrap.md)
+and [continuous operation with owned graphics shutdown](2026-09-16-vunit-continuous-runtime.md)
+now have focused recorded qualification across USA, both World revisions and
+Off-Road. This closes the fixed-start/fixed-end implementation gap for explicitly
+selected candidates. Routine logging, multiple-race transitions and product
+acceptance remain open; it does not establish elimination of pop-in.
+
 ## Current position
 
 | Game | Latest useful evidence | Remaining requirement |

@@ -47170,3 +47170,315 @@ index 438316db0b1..4f0b6f215e0 100644
 -- 
 2.55.0.windows.3
 
+From e4860a3c76bda21db846e2e4f7241165e7de389f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 02:40:58 -0500
+Subject: [PATCH] Gate continuous V-Unit scenery with owned graphics-worker
+ shutdown
+
+---
+ src/mame/midway/cruisn/vunit_runtime.h | 25 +++++++++++++
+ src/mame/midway/midvunit.cpp           | 46 ++++++++++++++++++++---
+ src/mame/midway/midvunit.h             |  6 +++
+ src/mame/midway/midvunit_v.cpp         | 52 ++++++++++++++++++++++++--
+ 4 files changed, 119 insertions(+), 10 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/vunit_runtime.h
+
+diff --git a/src/mame/midway/cruisn/vunit_runtime.h b/src/mame/midway/cruisn/vunit_runtime.h
+new file mode 100644
+index 00000000000..68e0ddc62e1
+--- /dev/null
++++ b/src/mame/midway/cruisn/vunit_runtime.h
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: BSD-3-Clause
++#pragma once
++#include <cstdint>
++#include <cstring>
++#include <limits>
++#include <initializer_list>
++namespace cruisn { namespace vunit_runtime {
++enum class Policy { capture, continuous };
++template<class Lookup> bool select(const char *mode,Lookup lookup,Policy &policy)
++{
++    policy=Policy::capture;
++    if(!mode)return true;
++    if(std::strcmp(mode,"continuous"))return false;
++    for(const auto *key:{"MIDV_HOST_BOOTSTRAP","MIDV_GL"}) {
++        const char *value=lookup(key);if(!value || std::strcmp(value,"1"))return false;
++    }
++    const char *ffb=lookup("MIDV_FFB");if(!ffb || std::strcmp(ffb,"0"))return false;
++    policy=Policy::continuous;return true;
++}
++inline bool continuous(Policy policy){return policy==Policy::continuous;}
++inline bool representable(uint64_t frame){return frame<=std::numeric_limits<uint32_t>::max();}
++inline bool after(Policy policy,uint64_t frame,uint32_t last){return !continuous(policy)&&frame>last;}
++inline bool within(Policy policy,uint64_t frame,uint32_t first,uint32_t last,bool bootstrap)
++{return representable(frame) && (bootstrap||frame>=first) && !after(policy,frame,last);}
++}}
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 4f0b6f215e0..a063c966d7e 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -89,8 +89,34 @@ void midvunit_base_state::machine_start()
+ 	world_host_start();
+ 	usa_host_start();
+ 	offroad_host_start();
+-	host_failure_start();
+ 	host_bootstrap_start();
++	host_runtime_start();
++	host_failure_start();
++}
++
++void midvunit_base_state::host_runtime_start()
++{
++	if(!cruisn::vunit_runtime::select(std::getenv("MIDV_HOST_RUNTIME"),
++		[](const char *key){return std::getenv(key);},m_host_runtime))
++		fatalerror("Invalid V-Unit continuous runtime policy\n");
++	if(cruisn::vunit_runtime::continuous(m_host_runtime))
++	{
++		if(!m_host_bootstrap || m_host_mode!=2)fatalerror("V-Unit runtime requires verified scenery bootstrap\n");
++		osd_printf_info("VUNIT_RUNTIME cpu=continuous end=none\n");
++	}
++}
++
++bool midvunit_base_state::host_scene_allowed(uint64_t frame)
++{
++	if(cruisn::vunit_runtime::continuous(m_host_runtime) && !cruisn::vunit_runtime::representable(frame))
++		fatalerror("V-Unit runtime frame exceeds packet representation\n");
++	return !m_host_failed_frame && cruisn::vunit_runtime::within(m_host_runtime,frame,m_host_first,m_host_last,m_host_bootstrap);
++}
++
++void midvunit_base_state::host_scene_record(uint64_t frame,size_t quads)
++{
++	if(!cruisn::vunit_runtime::continuous(m_host_runtime))return;
++	m_host_runtime_frame=frame;++m_host_runtime_scenes;m_host_runtime_quads+=quads;
+ }
+ 
+ // Candidate-only startup policy. Every scene still runs the complete code,
+@@ -112,7 +138,7 @@ void midvunit_base_state::host_bootstrap_start()
+ void midvunit_base_state::host_bootstrap_ready(uint64_t frame)
+ {
+ 	if(!m_host_bootstrap || m_host_bootstrap_frame)return;
+-	if(!frame || frame>m_host_last || m_ram_base.bytes()!=0x80000)
++	if(!frame || cruisn::vunit_runtime::after(m_host_runtime,frame,m_host_last) || m_ram_base.bytes()!=0x80000)
+ 		fatalerror("V-Unit bootstrap invalid scene frame/RAM span\n");
+ 	// Explicit little-endian bytes match the independent saved-scene codec.
+ 	// Ordinary RAM reads bypass guest cycle handlers. Fast RAM reads suppress taps.
+@@ -155,7 +181,8 @@ void midvunit_base_state::host_failure_start()
+ 		char *end=nullptr;errno=0;
+ 		if(!*inject || *inject=='-')fatalerror("Invalid host injected failure frame\n");
+ 		const unsigned long frame=strtoul(inject,&end,10);
+-		if(errno || *end || frame<m_host_first || frame>m_host_last)fatalerror("Host injected failure outside scene interval\n");
++		if(errno || *end || (!m_host_bootstrap && frame<m_host_first) ||
++			!cruisn::vunit_runtime::representable(frame) || cruisn::vunit_runtime::after(m_host_runtime,frame,m_host_last))fatalerror("Host injected failure outside scene interval\n");
+ 		m_host_inject_frame=uint32_t(frame);
+ 	}
+ 	osd_printf_info("VUNIT_HOST_FAILURE_POLICY original=%u inject=%u\n",unsigned(m_host_failure_original),m_host_inject_frame);
+@@ -249,7 +276,7 @@ void midvunit_base_state::offroad_host_start()
+ 		{
+ 			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x1bf9)return;
+ 			const uint64_t frame=m_screen->frame_number();
+-			if((!m_host_bootstrap && frame<m_host_first) || frame>m_host_last || m_host_failed_frame)return;
++			if(!host_scene_allowed(frame))return;
+ 			const auto cycles=m_maincpu->total_cycles();
+ 			const auto started=std::chrono::steady_clock::now();
+ 			auto &space=m_maincpu->space(AS_PROGRAM);
+@@ -283,6 +310,7 @@ void midvunit_base_state::offroad_host_start()
+ 			const auto logged=std::chrono::steady_clock::now();
+ 			if(m_host_mode==2)world_host_submit(quads);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("Off Road host inspection changed guest cycles\n");
++			host_scene_record(frame,quads.size());
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+ 			const unsigned definitions=m_host_future && !scene.pretrack && !scene.deferred ? unsigned(m_offroad_host_cache.future.value.sources.size())+scene.partial_recovered:0;
+@@ -371,7 +399,7 @@ void midvunit_base_state::usa_host_start()
+ 		{
+ 			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x81)return;
+ 			const uint64_t frame=m_screen->frame_number();
+-			if((!m_host_bootstrap && frame<m_host_first) || frame>m_host_last || m_host_failed_frame)return;
++			if(!host_scene_allowed(frame))return;
+ 			const auto cycles=m_maincpu->total_cycles();
+ 			const auto started=std::chrono::steady_clock::now();
+ 			if(!cruisn::usa_host::code_matches(m_ram_base,m_ram_base.bytes()/4))
+@@ -417,6 +445,7 @@ void midvunit_base_state::usa_host_start()
+ 			const auto logged=std::chrono::steady_clock::now();
+ 			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("USA host inspection changed guest cycles\n");
++			host_scene_record(frame,quads.size());
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+ 			fprintf(m_host_scene_log,"%llu,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u\n",
+@@ -544,7 +573,7 @@ void midvunit_base_state::world_host_start()
+ 		{
+ 			if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0x6a)return;
+ 			uint64_t frame=m_screen->frame_number();
+-			if((!m_host_bootstrap && frame<m_host_first) || frame>m_host_last || m_host_failed_frame)return;
++			if(!host_scene_allowed(frame))return;
+ 			const auto guest_cycles=m_maincpu->total_cycles();
+ 			const auto started=std::chrono::steady_clock::now();
+ 			if(!cruisn::world_distance::code_matches(m_ram_base,m_ram_base.bytes()/4,80000,m_host_revision) ||
+@@ -619,6 +648,7 @@ void midvunit_base_state::world_host_start()
+ 			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr,m_host_fade_metadata?&policies:nullptr,active_roads?&margins:nullptr);
+ 			if(m_maincpu->total_cycles()!=guest_cycles)
+ 				fatalerror("World host inspection changed emulated CPU cycles\n");
++			host_scene_record(frame,quads.size());
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+ 			// The current scene row cannot include the duration of writing itself.
+@@ -638,6 +668,10 @@ void midvunit_base_state::world_host_start()
+ 
+ void midvunit_base_state::world_host_exit()
+ {
++	if(cruisn::vunit_runtime::continuous(m_host_runtime))
++		osd_printf_info("VUNIT_RUNTIME_CPU frame=%llu scenes=%llu quads=%llu failed=%llu\n",
++			(unsigned long long)m_host_runtime_frame,(unsigned long long)m_host_runtime_scenes,
++			(unsigned long long)m_host_runtime_quads,(unsigned long long)m_host_failed_frame);
+ 	const bool fade=cruisn::close_journal(m_host_fade_log);
+ 	const bool scene=cruisn::close_journal(m_host_scene_log);
+ 	const bool quads=cruisn::close_journal(m_host_quad_log);
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index 94514e667c8..810a5f8412b 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -12,6 +12,7 @@
+ 
+ #include "midwayic.h"
+ #include "cruisn/world_future_sections.h"
++#include "cruisn/vunit_runtime.h"
+ #include "cruisn/usa_future_sections.h"
+ #include "cruisn/offroad_host_scenery.h"
+ 
+@@ -111,6 +112,9 @@ protected:
+ 	void offroad_host_start();
+ 	void host_failure_start();
+ 	void host_bootstrap_start();
++	void host_runtime_start();
++	bool host_scene_allowed(uint64_t frame);
++	void host_scene_record(uint64_t frame,size_t quads);
+ 	void host_bootstrap_ready(uint64_t frame);
+ 	void host_prepare_failed(uint64_t frame, uint64_t cycles, uint32_t stage, const char *reason);
+ 	bool host_injected_failure(uint64_t frame, uint64_t cycles);
+@@ -198,6 +202,8 @@ protected:
+ 	FILE *m_host_scene_log = nullptr, *m_host_quad_log = nullptr, *m_host_clip_log = nullptr;
+ 	uint32_t m_host_mode = 0, m_host_first = 0, m_host_last = 0xffffffff, m_host_far = 80000;
+ 	bool m_host_bootstrap = false;
++	cruisn::vunit_runtime::Policy m_host_runtime = cruisn::vunit_runtime::Policy::capture;
++	uint64_t m_host_runtime_frame = 0, m_host_runtime_scenes = 0, m_host_runtime_quads = 0;
+ 	uint64_t m_host_bootstrap_frame = 0;
+ 	bool m_host_failure_original = false;
+ 	uint64_t m_host_failed_frame = 0;
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index d44d014f887..725bd4411a9 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -607,6 +607,18 @@ static void telem_init(const char *spec, const char *game)
+ }
+ 
+ namespace mvgl {
++static std::thread s_owned_thread;
++static bool s_runtime_ready=false;
++static uint64_t s_runtime_pending=0, s_runtime_errors=0;
++static uint32_t s_runtime_completed=0;
++static bool continuous_runtime()
++{
++	cruisn::vunit_runtime::Policy policy;
++	if(!cruisn::vunit_runtime::select(std::getenv("MIDV_HOST_RUNTIME"),
++		[](const char *key){return std::getenv(key);},policy))fatalerror("Invalid V-Unit graphics runtime policy\n");
++	return cruisn::vunit_runtime::continuous(policy);
++}
++
+ 
+ // teardown handshake: machine exit flags the GL thread down and waits for
+ // its acknowledgement (see midvunit_base_state::mvgl_exit)
+@@ -656,7 +668,10 @@ struct GL
+ 	void (WINAPI *Disable)(unsigned);
+ 	void (WINAPI *Scissor)(int, int, int, int);
+ 	void (WINAPI *ReadPixels)(int, int, int, int, unsigned, unsigned, void *);
+-	unsigned (WINAPI *GetError)();
++	unsigned (WINAPI *GetErrorRaw)();
++	void (WINAPI *Finish)();
++	uint64_t errors=0;
++	unsigned GetError(){const unsigned error=GetErrorRaw();if(error)++errors;return error;}
+ 	// modern (via wglGetProcAddress)
+ 	uint (WINAPI *CreateShader)(unsigned);
+ 	void (WINAPI *ShaderSource)(uint, int, const char *const *, const int *);
+@@ -720,7 +735,7 @@ struct GL
+ 		L(TexParameteri, "glTexParameteri") L(TexImage2D, "glTexImage2D")
+ 		L(TexSubImage2D, "glTexSubImage2D") L(PixelStorei, "glPixelStorei")
+ 		L(DrawArrays, "glDrawArrays") L(Enable, "glEnable")
+-		L(Disable, "glDisable") L(Scissor, "glScissor") L(ReadPixels, "glReadPixels") L(GetError, "glGetError")
++		L(Disable, "glDisable") L(Scissor, "glScissor") L(ReadPixels, "glReadPixels") L(GetErrorRaw, "glGetError") L(Finish, "glFinish")
+ 		L(CreateShader, "glCreateShader") L(ShaderSource, "glShaderSource")
+ 		L(CompileShader, "glCompileShader") L(GetShaderiv, "glGetShaderiv")
+ 		L(GetShaderInfoLog, "glGetShaderInfoLog") L(CreateProgram, "glCreateProgram")
+@@ -1025,6 +1040,8 @@ static uint link(GL &gl, const char *vs, const char *fs)
+ 
+ void thread_main()
+ {
++	const bool runtime=continuous_runtime();
++	if(runtime)osd_printf_info("VUNIT_RUNTIME gpu=owned\n");
+ 	// every exit path must acknowledge shutdown or mvgl_exit stalls 1 s
+ 	struct DoneGuard { ~DoneGuard() { s_done.store(true); } } done_guard;
+ 	midv_live &lv = live();
+@@ -1615,7 +1632,7 @@ void thread_main()
+ 		});
+ 	};
+ 
+-	while (IsWindow(parent) && !s_stop.load())
++	while (IsWindow(parent) && (!s_stop.load() || (runtime && ring_load(lv.rpos)<ring_load(lv.wpos))))
+ 	{
+ 		if (InterlockedCompareExchange((volatile LONG *)(lv.base + 32), 0, 0))
+ 		{
+@@ -2025,6 +2042,14 @@ void thread_main()
+ 		SwapBuffers(dc);
+ 		if(frame_complete)s_presented_frame.store(completed_frame);
+ 	}
++	if(runtime)
++	{
++		// Finish an already consumed partial batch without inventing a guest
++		// frame/presentation. The producer is stopped before this drain.
++		complete_run();flush_cpu();gl.Finish();gl.GetError();
++		s_runtime_pending=run.size();s_runtime_errors=gl.errors;
++		s_runtime_completed=completed_frame;s_runtime_ready=true;
++	}
+ 	const auto capture_stats = snapshot_writer.finish();
+ 	if(fade_metadata)
+ 	{
+@@ -2079,7 +2104,10 @@ midv_live &live()
+ 	static bool gl_spawned = [&]() -> bool
+ 	{
+ 		if (s.enabled && std::getenv("MIDV_GL"))
+-			std::thread(mvgl::thread_main).detach();
++			{
++				if(mvgl::continuous_runtime())mvgl::s_owned_thread=std::thread(mvgl::thread_main);
++				else std::thread(mvgl::thread_main).detach();
++			}
+ 		return true;
+ 	}();
+ 	(void)gl_spawned;
+@@ -3129,6 +3157,22 @@ void midvunit_base_state::mvgl_exit()
+ 					unsigned(mvgl::s_presented_frame.load()>=target));
+ 			}
+ 		}
++	if(mvgl::continuous_runtime())
++	{
++		if(!mvgl::s_owned_thread.joinable())fatalerror("V-Unit runtime graphics worker did not start\n");
++		auto &lv=live();lv.flush_span();
++		mvgl::s_menu_pause.store(0);mvgl::s_stop.store(true);
++		const auto began=GetTickCount64();
++		while(!mvgl::s_done.load() && GetTickCount64()-began<10000)Sleep(5);
++		if(!mvgl::s_done.load())fatalerror("V-Unit runtime graphics shutdown timeout\n");
++		mvgl::s_owned_thread.join();
++		osd_printf_info("VUNIT_RUNTIME_GPU joined=1 ready=%u written=%llu read=%llu dropped=%llu failed=%u pending_quads=%llu gl_errors=%llu completed=%u presented=%u\n",
++			unsigned(mvgl::s_runtime_ready),(unsigned long long)ring_load(lv.wpos),(unsigned long long)ring_load(lv.rpos),
++			(unsigned long long)ring_load(lv.dropped),unsigned(InterlockedCompareExchange((volatile LONG *)(lv.base+32),0,0)!=0),
++			(unsigned long long)mvgl::s_runtime_pending,(unsigned long long)mvgl::s_runtime_errors,
++			mvgl::s_runtime_completed,mvgl::s_presented_frame.load());
++		return;
++	}
+ 	// POC: a detached GL thread that outlives the machine races teardown
+ 	// (msvcrt!memcpy AVs logged at roughly every second exit). Flag it down
+ 	// and acknowledge teardown. Diagnostic screenshots get a bounded longer
+-- 
+2.55.0.windows.3
+

@@ -1,5 +1,29 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September16 continuous V-Unit — next quiet runtime and transitions
+
+Read docs/reviews/2026-09-16-vunit-continuous-runtime.md. Nativee4860a3c76b frozen
+SHAbdd9b442dc572b574e4d6c119206d65ee6270ef5a8e858602d1aba2cd0885891,
+251patches tree0e920025462cded1a48e2d485cb93a7b7a0daea5. Explicitcontinuous policy
+retains guardedbootstrap, removes diagnosticend, owns GPUthread withboundedstop,
+drainedring/partialbatch/GLfinish/join receipts. Defaultcapturepath unchanged.
+1native7PythonPASS. USA4002/World24,25,OffRoad2502inputs nativeimages exact;
+2267/413/648/678common scenes exact savedbootstrapcontrols exceptnamedtimingfields.
+Allcamera/ADC andfirstoperands exact. Fourpost-reference-end images3750/2400
+exact3824x2073CRT on4K. AllGPUjoins ringequal/0drops/pending/errors. USAinitial
+analyzertruncated4000instead4001FAILretained; correctedv2PASS withoutgamerepeat.
+World25failure1500 beyondoldend1400 correctlylatchesfallback:1552inputs25native
+images exact,147scenes, cleanGPUjoin; runtimecorrectlyrejectsdegraded. Initial
+report missinginheritedGLcaptureFAILretained; separateexplicitnative/receipt
+qualificationPASS, NOGLimageclaim/rerun. W/*-continuous-qualified, USA-v2,
+world25-continuous-failure-qualified.json. export-vunit-continuous.py ALREADYRUN.
+NEXT quietcontinuousoperation: removepersistentdiagnosticjournals/snapshots only
+underexplicitpolicy, retainstrictaggregategeometry/lifecycleverification. Then
+multirace/tracktransitions; arbitrarylongsession/finalproductacceptance OPEN.
+No game/build/testnow. No deploy/release/physicalFFB/hostedCI/menu removal.
+Personal87d/publicv0.5.0unchanged. Continueovernightdirectly; heartbeatbackupONLY.
+PendingExo2raceavailability unanswered; independentworkremains.
+
 ## September16 V-Unit startup parity — next continuous lifetime/shutdown
 
 Read docs/reviews/2026-09-16-vunit-scene-bootstrap.md. Native6cc8a1869d3 frozen

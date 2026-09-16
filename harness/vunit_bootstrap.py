@@ -56,7 +56,8 @@ def verify(trial, directory):
     if lines.count(ack) != 1 or len(events) != 1 or events[0] is None:
         raise ValueError('missing or mismatched V-Unit bootstrap activation')
     frame = int(events[0][1])
-    if not 1 <= frame <= trial['last']:
+    last = trial.get('runtime_last', trial['last'])
+    if not 1 <= frame <= last:
         raise ValueError('V-Unit bootstrap activation outside finite capture')
     snapshots = {}
     for path, size in zip(paths, (0x80000, 0x2000)):
@@ -74,7 +75,7 @@ def verify(trial, directory):
             from analyze_offroad_host import evidence
         scenes, _, _ = evidence(directory, retain_geometry=False)
     if not scenes or int(scenes[0]['frame']) != frame or any(
-            not frame <= int(s['frame']) <= trial['last'] or s['future_enabled'] != '1'
+            not frame <= int(s['frame']) <= last or s['future_enabled'] != '1'
             or s['mode'] != '2' for s in scenes):
         raise ValueError('V-Unit bootstrap does not match prepared scene coverage')
     return dict(verified=True, first=frame, last_prepared=int(scenes[-1]['frame']),
