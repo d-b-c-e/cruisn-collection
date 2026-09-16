@@ -15,18 +15,19 @@ hashesoldreport,NOgamerun. LOCALrace-transitions-20260916/exotica-active-reset/
 pre-device-3x and pre-device-qualified-v2.json.
 Interrupted/bootstrap/degradedresetremainstrict; no blindqueuedownerclears.
 PriorUSA/Offroadopacityobservers qualified; USAvisible41partialpixels, Offroad0.
-NEXT Offroadbillboard visibility/handover: read2026-09-16-offroad-billboard-sources.md.
-StandalonePython/C++397actualstaticROMsourcefields+uniqueorderedoriginalDMAexact.
-Classes804/800804 only; indexedhitbitsclear required,108dynamicexcluded.
-Firstpolygon bypassesordinarybackfacecull.4Python2nativePASS; noMAMEbuild.
-Prior505matrices/2020vertices/13models exact; original2524inputs/motion/GLexact.
-Basis1BDD..1BF7 preparedBEFOREhost1BF8. HelpersNOTMAMElinked/synced.
-LOCALW/offroad-billboard-source-qualified.json andoffroad-billboard-saved2520.
-Prototype205futurebillboards/592eligible/387far, nopendinginthisscene.
-Isolatedmerge811RGB changes;0atcurrentlycorrespondinghost-ownedpixels.
-NOTcompletedvisibility norproofofzerobenefit: newgeometrycouldreplaceoldsky.
-NEXT screenchangedareas/othersavedviews, thenpending/material/ownershipbeforelive.
-Priorfade2520/3360no visibleenvelope;8760noneingeometry. Don'trepeatthosewindows.
+NEXT separatehostmetadata/preparation frame fromcompletedmirror:
+read2026-09-16-host-presentation-binding.md. Newvunit_host_completion binds
+completedauxiliaryprefix tophysicalpages;4new+10existingtestsPASS.
+Saved4checksindependentperquadexact:Offroad2520pages2518/2516,3360pages3358/3356;
+USA3501pages3501/3499,World5900pages5896/5898. Allcapturedsource!=visible.
+Priorcompletedopacityandseparatesourcebyteproofsstand; causalocclusionclaims
+DONOT. Billboard2520correspondencecannotjudgevisibilityagainstolder2516camera.
+Needoptional metadataframe separatefrommirrorframe, thenexplicitmatchinggate.
+LOCALW/host-completion-qualified.json. NoMAMEchange/newgameyet.
+Billboardstatichelpers committed a7e64cc:397actualsources+orderedDMAexact.
+Standaloneonly. LOCALsaved2520/3360/8760 add205/54/31billboards, isolated811/759/
+334RGBchanges;NOTcompletedvisibility. Damaged/dynamicunsupported.
+Native083/personal87d/publicv0.5.0unchanged.
 
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.

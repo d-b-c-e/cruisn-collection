@@ -14,8 +14,10 @@ scene RAM/ROM;17684metadata packets reach both FIFO boundaries.
 
 The completed visible page has46706host-owned fine pixels, but neither page
 has any partial/zero opacity. Scalar geometry contains51partial-envelope quads
-and one fully-zero quad; they do not survive into completed opacity. A positive
-geometry count would again have overstated the visible usefulness of this fade.
+and one fully-zero quad. Later [presentation binding](2026-09-16-host-presentation-binding.md)
+shows that the completed page contains the older2516scene, so those2520source
+quads cannot be attributed directly to its completed opacity. The completed
+zero-envelope measurement stands; the source-to-pixel survival claim does not.
 This is one frame, not temporal acceptance. No separate original-resource
 control was captured here and no displayed fade was applied.
 

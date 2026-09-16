@@ -153,6 +153,11 @@ def verify(trial, directory):
     result = dict(**row, sha256=digests, passed=True)
     if metadata:
         result['fade_metadata'] = metadata
+        from vunit_host_completion import load as host_completion
+        result['host_completion'] = host_completion(directory, trial.get('metadata_game', 'world'), row)
+        visible = result['host_completion']['visible']
+        result['host_completion']['captured_preparation_matches_visible'] = bool(
+            visible and visible['complete'] and visible['frame'] == trial['frame'])
     if opacity:
         result['opacity'] = opacity
     return result

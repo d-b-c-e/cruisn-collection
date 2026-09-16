@@ -47,3 +47,9 @@ Next inspect the changed areas and other already-saved views, then prove source
 ownership, pending handover, current material residency and completed ordering
 before a live candidate. No frame or model allowlist is proposed. Native083,
 personal87d and publicv0.5.0 remain unchanged.
+
+A subsequent [completion-prefix check](2026-09-16-host-presentation-binding.md)
+identifies the visible host scene as2516, while this prototype uses2520.
+Do not use its correspondence count as occlusion evidence. Two further saved
+isolated screens add54billboards/759changed pixels at3360 and31/334 at8760;
+neither is completed visibility acceptance. No new game was run.
