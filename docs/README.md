@@ -24,6 +24,7 @@ assuming that a source feature is present in a downloaded package.
 | [Remaining scenery release gates](reviews/2026-09-15-parity-remaining-work.md) | Current four-game evidence, unresolved coverage and the work needed before promotion |
 | [Continuous V-Unit operation](reviews/2026-09-16-vunit-quiet-runtime.md) | Scene startup, quiet journals, geometry fingerprints and checked shutdown |
 | [Scripted recording continuations](reviews/2026-09-16-scripted-recording-continuations.md) | Preserve recorded inputs while adding labeled menu/race transition stimuli |
+| [Optional endpoint capture](reviews/2026-09-16-exotica-optional-endpoint-capture.md) | Continuous Exotica without scheduled model dumps, preserving failure evidence |
 | [Exotica3x race transition](reviews/2026-09-16-exotica-race-transition.md) | Amazon, name entry, loading and new-race start; scope and limits |
 | [World3x race transition](reviews/2026-09-16-world-race-transition.md) | Germany, race selection and new coastal-race scenery with exact motion |
 | [Off-Road3x race transition](reviews/2026-09-16-offroad-race-transition.md) | El Paso restart, matching projection and distant-cliff additions |

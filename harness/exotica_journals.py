@@ -56,6 +56,7 @@ def configure(args,rom,settings):
         raise ValueError('quiet journal trial requires the combined renderer, marked endpoints and FFB0')
     settings[KEY]=mode
     return dict(mode=mode,independent_event_journals=mode=='capture',continuous=False,
+        endpoint_snapshot=settings.get('MIDZ_MODEL_ENDPOINT_SNAPSHOT'),
         snapshots=len([x for x in settings.get('MIDZ_HOST_SNAPSHOTS','').split(',') if x]),
         depth_snapshots=len([x for x in settings.get('MIDZ_DEPTH_SNAPSHOTS','').split(',') if x]))
 
@@ -83,7 +84,8 @@ def verify(trial,directory,*,runtime_result=None):
     if any((directory/name).exists() for name in JOURNALS):
         raise ValueError('quiet renderer unexpectedly wrote a per-event journal')
     operands=directory/'exotica-endpoint-inputs.txt'
-    if not operands.is_file() or operands.stat().st_size>64*1024*1024:
+    no_snapshot=continuous and trial.get('endpoint_snapshot')=='0'
+    if not no_snapshot and (not operands.is_file() or operands.stat().st_size>64*1024*1024):
         raise ValueError('missing or oversized retained endpoint snapshot operands')
     receipts={}
     for tag,fields in SCHEMAS.items():
@@ -116,6 +118,9 @@ def verify(trial,directory,*,runtime_result=None):
             or get('HOST_ACTIVE_RESULT')['quads']!=get('HOST_ACTIVE_GPU_RESULT')['quads']):
         raise ValueError('quiet CPU/GPU geometry mismatch')
     endpoint=get('MODEL_ENDPOINT_RESULT')
+    if no_snapshot and (endpoint['snapshots'] or endpoint['bytes'] or
+                        any(directory.glob('exotica-endpoint-*'))):
+        raise ValueError('unexpected endpoint capture in routine-snapshot-free runtime')
     if (not endpoint['commits'] or endpoint['commits']!=endpoint['consumed']
             or endpoint['prepared']!=endpoint['commits'] or not get('ENDPOINT_GPU_RESULT')['pairs']
             or not get('MODEL_ADMIT_RESULT')['packets'] or not get('LIFETIME_RESULT')['records']):

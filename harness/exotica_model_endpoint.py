@@ -22,7 +22,8 @@ def add_arguments(parser):
                         help='observe actual private future/waiting admissions from this native frame')
     for name in BOUNDS:
         parser.add_argument('--exotica-endpoint-'+name, type=int,
-                            help='bounded original-model diagnostic native frame')
+                            help=('snapshot frame; 0 disables routine operands only with continuous quiet runtime'
+                                  if name=='snapshot' else 'bounded original-model diagnostic native frame'))
 
 
 def configure(args, rom, settings, lifetime, scene=None):
@@ -58,8 +59,11 @@ def configure(args, rom, settings, lifetime, scene=None):
         settings.pop('MIDZ_MODEL_ADMIT_FIRST',None)
         return dict(mode='off')
     first,last,snapshot=bounds
+    no_snapshot=(snapshot==0 and getattr(args,'exotica_runtime',None)=='continuous'
+                 and getattr(args,'exotica_journals',None)=='quiet')
     if (mode not in ('observe','draw') or rom!='crusnexo' or not lifetime or lifetime['mode']!='observe'
-            or any(v is None for v in bounds) or not 1800<=first<=snapshot<=last<=15998
+            or any(v is None for v in bounds) or not 1800<=first<=last<=15998
+            or (not no_snapshot and not first<=snapshot<=last)
             or (scope!='marked' and last-first>120) or not lifetime['first']<first<=last<lifetime['last']):
         raise ValueError('endpoint interval requires surrounding Exotica lifetimes')
     # Replay is device-free; make this boundary explicit before prepare_run too.

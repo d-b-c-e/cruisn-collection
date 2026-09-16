@@ -47773,3 +47773,97 @@ index 725bd4411a9..84529541f0c 100644
 -- 
 2.55.0.windows.3
 
+From f0b4db1f25d869d010d396997bb1839c412a4b23 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 03:55:58 -0500
+Subject: [PATCH] Allow continuous Exotica without routine endpoint snapshots
+
+---
+ src/mame/midway/cruisn/exotica_runtime.h |  8 ++++++++
+ src/mame/midway/midzeus.cpp              | 25 ++++++++++++++++--------
+ 2 files changed, 25 insertions(+), 8 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/exotica_runtime.h b/src/mame/midway/cruisn/exotica_runtime.h
+index 6e8bd29eeb0..ce6bc0785ac 100644
+--- a/src/mame/midway/cruisn/exotica_runtime.h
++++ b/src/mame/midway/cruisn/exotica_runtime.h
+@@ -31,4 +31,12 @@ inline bool after(Policy policy,uint64_t frame,uint32_t last) {
+ inline bool within(Policy policy,uint64_t frame,uint32_t first,uint32_t last) {
+     return representable(frame) && frame>=first && !after(policy,frame,last);
+ }
++// Zero explicitly disables routine operands only under qualified quiet runtime.
++// Capture trials retain their selected-frame contract; first failures survive.
++inline bool endpoint_snapshot_allowed(Policy policy,uint32_t snapshot,uint32_t first,uint32_t last) {
++    return snapshot ? first<=snapshot && snapshot<=last : continuous(policy);
++}
++inline bool capture_endpoint(uint32_t frame,uint32_t snapshot,unsigned prepared,bool marked,uint64_t rejected) {
++    return (snapshot && frame==snapshot && prepared) || (marked && prepared==2 && rejected==1);
++}
+ }}
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 37fef0343c5..86b993f84ad 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -839,15 +839,15 @@ void crusnexo_state::endpoint_start()
+ 	if((strcmp(mode,"1") && strcmp(mode,"2")) || !ffb || strcmp(ffb,"0") || !m_lifetime_log || strcmp(machine().system().name,"crusnexo"))
+ 		fatalerror("Exotica endpoint observation requires lifetimes and physical FFB=0\n");
+ 	m_endpoint_draw=!strcmp(mode,"2");
+-	auto number=[](const char *name) {
++	auto number=[](const char *name,bool zero=false) {
+ 		const char *s=std::getenv(name);if(!s || !*s)fatalerror("Missing endpoint bound %s\n",name);
+ 		for(const char *p=s;*p;++p)if(*p<'0' || *p>'9')fatalerror("Invalid endpoint bound %s\n",name);
+ 		char *end=nullptr;auto v=strtoul(s,&end,10);
+-		if(*end || v<1800 || v>15998)fatalerror("Endpoint range %s\n",name);
++		if(*end || (v<1800 && !(zero && v==0)) || v>15998)fatalerror("Endpoint range %s\n",name);
+ 		return uint32_t(v);
+ 	};
+ 	m_endpoint_first=number("MIDZ_MODEL_ENDPOINT_FIRST");m_endpoint_last=number("MIDZ_MODEL_ENDPOINT_LAST");
+-	m_endpoint_snapshot=number("MIDZ_MODEL_ENDPOINT_SNAPSHOT");
++	m_endpoint_snapshot=number("MIDZ_MODEL_ENDPOINT_SNAPSHOT",true);
+ 	if(std::getenv("MIDZ_MODEL_ADMIT_FIRST")) {
+ 		m_endpoint_admit_from=number("MIDZ_MODEL_ADMIT_FIRST");
+ 		if(m_scene_future_mode!=2 || !m_scene_material_image || m_endpoint_admit_from>m_endpoint_first ||
+@@ -861,7 +861,7 @@ void crusnexo_state::endpoint_start()
+ 		if(!m_bootstrap_scenes)fprintf(stderr,"MIDZ_MODEL_ADMIT_FIRST=%u\n",m_endpoint_admit_from);
+ 	}
+ 	if(m_endpoint_first>m_endpoint_last || (!m_endpoint_marked && m_endpoint_last-m_endpoint_first>120) ||
+-		m_endpoint_snapshot<m_endpoint_first || m_endpoint_snapshot>m_endpoint_last ||
++		!cruisn::exotica_runtime::endpoint_snapshot_allowed(m_runtime_policy,m_endpoint_snapshot,m_endpoint_first,m_endpoint_last) ||
+ 		m_lifetime_first>=m_endpoint_first || m_lifetime_last<=m_endpoint_last)
+ 		fatalerror("Endpoint interval requires surrounding lifetime coverage\n");
+ 	if(m_endpoint_draw && !m_endpoint_admit_from)fatalerror("Endpoint private drawing requires actual admission observation\n");
+@@ -878,9 +878,12 @@ void crusnexo_state::endpoint_start()
+ 	m_endpoint_log.open("exotica-endpoint-models.csv","w",m_journal_policy);
+ 	// Selected snapshots and first-rejection operands are bounded failure
+ 	// evidence, not a per-event journal. Keep them even when routine logs are quiet.
+-	m_endpoint_inputs.open("exotica-endpoint-inputs.txt","w",cruisn::DiagnosticJournal::Policy::capture);
+-	if(!m_endpoint_log || !m_endpoint_inputs)fatalerror("Cannot create endpoint observer files\n");
+-	m_endpoint_log.buffer(nullptr,_IOFBF,65536);m_endpoint_inputs.buffer(nullptr,_IOFBF,65536);
++	if(m_endpoint_snapshot) {
++		m_endpoint_inputs.open("exotica-endpoint-inputs.txt","w",cruisn::DiagnosticJournal::Policy::capture);
++		if(!m_endpoint_inputs || m_endpoint_inputs.buffer(nullptr,_IOFBF,65536))fatalerror("Cannot create endpoint operands\n");
++	}
++	if(!m_endpoint_log)fatalerror("Cannot create endpoint observer files\n");
++	m_endpoint_log.buffer(nullptr,_IOFBF,65536);
+ 	m_endpoint_log.print("id,commit_frame,commit_time,device_frame,device_time,epoch,generation,slot,realm,section,source,end,opcode,base,flags,packed,status,quads,changed,snapshot\n");
+ 	m_zeus->set_midz_model_observer([this](uint32_t base,uint32_t count,uint32_t scale) {
+ 		endpoint_model(base,count,scale);scene_observer_model(base,count,scale);
+@@ -996,8 +999,14 @@ void crusnexo_state::endpoint_model(uint32_t base,uint32_t count,uint32_t yscale
+ 		fatalerror("Endpoint private model preparation rejected\n");
+ 	// A full drive can encounter a new unsupported state far from the selected
+ 	// snapshot. Retain the first rejected model's owned operands without a rerun.
+-	const bool snapshot=(frame==m_endpoint_snapshot && prepared) || (m_endpoint_marked && prepared==2 && m_endpoint_rejected==1);
++	const bool snapshot=cruisn::exotica_runtime::capture_endpoint(frame,m_endpoint_snapshot,prepared,m_endpoint_marked,m_endpoint_rejected);
+ 	if(snapshot) {
++		// No routine file in continuous snapshot-free mode; still retain the
++		// first rejected model automatically, before another run is necessary.
++		if(!m_endpoint_inputs) {
++			if(!m_endpoint_inputs.open("exotica-endpoint-inputs.txt","w",cruisn::DiagnosticJournal::Policy::capture) ||
++				m_endpoint_inputs.buffer(nullptr,_IOFBF,65536))fatalerror("Cannot create rejected endpoint operands\n");
++		}
+ 		if(++m_endpoint_saved>1024)fatalerror("Endpoint snapshot count\n");
+ 		// Decimal words use the standalone analyzer's bounded input format.
+ 		auto word=[this](uint32_t w){if(m_endpoint_inputs.print("%u ",w)<0)fatalerror("Endpoint input write\n");};
+-- 
+2.55.0.windows.3
+

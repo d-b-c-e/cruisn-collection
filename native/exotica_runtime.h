@@ -31,4 +31,12 @@ inline bool after(Policy policy,uint64_t frame,uint32_t last) {
 inline bool within(Policy policy,uint64_t frame,uint32_t first,uint32_t last) {
     return representable(frame) && frame>=first && !after(policy,frame,last);
 }
+// Zero explicitly disables routine operands only under qualified quiet runtime.
+// Capture trials retain their selected-frame contract; first failures survive.
+inline bool endpoint_snapshot_allowed(Policy policy,uint32_t snapshot,uint32_t first,uint32_t last) {
+    return snapshot ? first<=snapshot && snapshot<=last : continuous(policy);
+}
+inline bool capture_endpoint(uint32_t frame,uint32_t snapshot,unsigned prepared,bool marked,uint64_t rejected) {
+    return (snapshot && frame==snapshot && prepared) || (marked && prepared==2 && rejected==1);
+}
 }}

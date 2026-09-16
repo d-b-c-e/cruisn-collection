@@ -56,6 +56,20 @@ class EndpointObservation(unittest.TestCase):
             (Path(temp)/'exotica-endpoint-inputs.txt').touch()
             with self.assertRaises(ValueError):endpoint.verify_receipt(None,'',temp)
 
+    def test_zero_snapshot_requires_explicit_quiet_continuous_selection(self):
+        args=self.args('--candidate','test.exe','--exotica-model-endpoint','observe',
+                       '--exotica-endpoint-first','2000','--exotica-endpoint-last','2004',
+                       '--exotica-endpoint-snapshot','0')
+        life=dict(mode='observe',first=1799,last=2010)
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life)
+        args.exotica_runtime='continuous';args.exotica_journals='capture'
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life)
+        args.exotica_journals='quiet';settings={}
+        self.assertEqual(endpoint.configure(args,'crusnexo',settings,life)['snapshot'],0)
+        self.assertEqual(settings['MIDZ_MODEL_ENDPOINT_SNAPSHOT'],'0')
+        args.exotica_endpoint_snapshot=None
+        with self.assertRaises(ValueError):endpoint.configure(args,'crusnexo',{},life)
+
     def fixture(self,directory):
         self.trial=dict(mode='observe',first=2000,last=2004,snapshot=2001)
         self.text=('MIDZ_MODEL_ENDPOINT=1 first=2000 last=2004 snapshot=2001\n'

@@ -10,6 +10,7 @@ The recovery heartbeat is a backup, not the work cadence.
 Read these current references first:
 
 - [Remaining release work](docs/reviews/2026-09-15-parity-remaining-work.md)
+- [Optional Exotica endpoint capture](docs/reviews/2026-09-16-exotica-optional-endpoint-capture.md)
 - [Quiet continuous V-Unit](docs/reviews/2026-09-16-vunit-quiet-runtime.md)
 - [Off-Road 3x race transition](docs/reviews/2026-09-16-offroad-race-transition.md)
 - [World 3x race transition](docs/reviews/2026-09-16-world-race-transition.md)
@@ -24,22 +25,25 @@ that raw comparison is NOT visual acceptance. A matching400-line control passes,
 with10/14 images exact and4 changing only distant geometry above y838. The
 candidate was not rerun. See their dated reviews for actual course/scope limits.
 
-**Active:** isolated native build, exec session4094, source successorf0b4db1f25d.
-It allows endpoint snapshot0 only under Exotica continuous quiet runtime and
-opens operand capture lazily on the first rejected marked model.21 targeted
-Python tests and one native runtime test pass. Two reusable continuation-command
-tests also pass. Build log: `results/diagnostics/world25-roads-20260914/endpoint-routine-capture-build.log`.
-This native successor is not yet frozen/exported/live-qualified. Next finish
-build, create a NEW export based on vunit-quiet-native-export.json, then replay
-the existing5300-input Exotica continuous4K scope with snapshot0, retaining other
-explicit snapshots for exact geometry/material/pixel comparison. No full drive
-or broad suite is justified for this capture-policy change. No game is active.
+**Current checkpoint:** Exotica snapshot0 under explicit continuous quiet mode
+passes one5300-input check.170 prior non-endpoint files and4 completed4K images
+are exact, original input/camera/ADC unchanged,9842 endpoints prepared/0reject,
+joined shutdown. Initial checker failed on scheduling-dependent depth batch count;
+source-guided qualified-v2 preserves vertices/resources/pixels and separates that
+count. No game rerun. Native first-rejection selection remains tested and lazy
+operand capture retained. Read the optional endpoint capture review below.
+No game/build/test is active. Next close USA's race/menu continuation gap using
+the existing5012-input case plus an explicitly scripted tail; its last frame
+still has54 seconds on the race timer, so a3400-frame tail is insufficient.
+Use a longer bounded tail and match native height/CRT/scale before comparisons.
+Then address remaining continuous operation/product and visible-distance gates;
+do not stop at this checkpoint.
 
-Current frozen native: `1a1b7e0ff6bcc41a8ca92f5f1131a1310e1fa89a`,
-`build/candidates/1a1b7e0ff6b/vunit.exe`, SHA256
-`a9e5b5734347033c5d5f28387761bf2f76ebbdd50f295a1bba24055de401109a`.
-252 patches reconstruct `ad2774cd1d5286a9424413a75384b725719ac1e0`.
-Native fork is pushed. `vunit-quiet-native-export.json` under
+Current frozen native: `f0b4db1f25d869d010d396997bb1839c412a4b23`,
+`build/candidates/f0b4db1f25d/vunit.exe`, SHA256
+`435123cf0e1026fbdda94a8069a59f025a3d8b98fc2d1cebda0146b871fd95c1`.
+253 patches reconstruct `476814a23a6864416d95e564830a464b0e4672c3`.
+`endpoint-routine-capture-native-export.json` under
 `results/diagnostics/world25-roads-20260914` is the current export receipt.
 **All existing export scripts have already run. Never rerun an export against
 its appended patch baseline.** Create a new export for a new native commit.

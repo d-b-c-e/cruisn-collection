@@ -29,4 +29,21 @@ int main() {
     }
     assert(!representable(4294967296ull));
     assert(!within(Policy::continuous,4294967296ull,1800,5200));
+    assert(endpoint_snapshot_allowed(Policy::continuous,0,1800,5200));
+    assert(!endpoint_snapshot_allowed(Policy::capture,0,1800,5200));
+    for(auto mode:{Policy::capture,Policy::continuous}) {
+        assert(endpoint_snapshot_allowed(mode,1800,1800,5200));
+        assert(endpoint_snapshot_allowed(mode,5200,1800,5200));
+        assert(!endpoint_snapshot_allowed(mode,1799,1800,5200));
+        assert(!endpoint_snapshot_allowed(mode,5201,1800,5200));
+    }
+    assert(capture_endpoint(5219,5219,1,true,0));
+    assert(!capture_endpoint(5219,0,1,true,0));
+    assert(!capture_endpoint(0,0,1,true,0));
+    assert(!capture_endpoint(5219,5219,0,true,0));
+    // A rejected marked model is retained away from any selected frame.
+    assert(capture_endpoint(9000,0,2,true,1));
+    assert(capture_endpoint(9000,5219,2,true,1));
+    assert(!capture_endpoint(9000,0,2,true,2));
+    assert(!capture_endpoint(9000,0,2,false,1));
 }

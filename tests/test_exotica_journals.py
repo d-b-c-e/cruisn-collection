@@ -63,6 +63,21 @@ class JournalTests(unittest.TestCase):
             operands.write_text('',encoding='utf-8')
             with self.assertRaises(ValueError):journals.verify(self.trial(),root)
 
+    def test_no_routine_operands_requires_continuous_zero_snapshot_and_no_saved_models(self):
+        lines=[line.replace('snapshots=11 bytes=50960','snapshots=0 bytes=0') for line in self.fixture()]
+        trial=self.trial()|dict(continuous=True,endpoint_snapshot='0')
+        runtime=dict(passed=True,capture_completed=False)
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);self.write(root,lines)
+            operands=root/'exotica-endpoint-inputs.txt';operands.unlink()
+            self.assertTrue(journals.verify(trial,root,runtime_result=runtime)['continuous'])
+            with self.assertRaises(ValueError):journals.verify(trial,root)
+            with self.assertRaises(ValueError):journals.verify(trial|dict(endpoint_snapshot='5219'),root,runtime_result=runtime)
+            operands.write_text('unexpected',encoding='utf-8')
+            with self.assertRaises(ValueError):journals.verify(trial,root,runtime_result=runtime)
+            operands.unlink();self.write(root,self.fixture());operands.unlink()
+            with self.assertRaises(ValueError):journals.verify(trial,root,runtime_result=runtime)
+
     @staticmethod
     def trial():return dict(mode='quiet',snapshots=3,depth_snapshots=3)
     @staticmethod
