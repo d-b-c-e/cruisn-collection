@@ -44,6 +44,8 @@ def load_plan(directory):
     env=plan['environment']
     if env.get('MIDV_FFB')!='0' or any(k in env for k in ('MIDV_FFB_TEST','MIDV_TELEM_UDP','MIDV_TELEM_FORZA','MIDZ_TELEM_UDP')):
         raise ValueError('prepared recording must disable physical force and external telemetry')
+    if any(k.endswith(('_HOST_FAILURE_FRAME','_GL_STOP_FRAME')) or '_GL_STALL_' in k for k in env):
+        raise ValueError('live recording cannot inherit failure injection or consumer stalls')
     if ('SNAP_PROBE_SCRIPT' in env or any(k.endswith(('_GL_SNAP','_CAPTURE','_STATEDUMP_DIR','_RAMDUMP_DIR','_QUADLOG')) for k in env)
             or any(env.get(k) for k in ('MIDZ_HOST_SNAPSHOTS','MIDZ_DEPTH_SNAPSHOTS'))
             or env.get('MIDZ_MODEL_ENDPOINT_SNAPSHOT','0')!='0'):
@@ -77,16 +79,21 @@ def renderer_receipts(report, runtime, frames):
     """Use actual recording extent; never infer complete playback or visual quality."""
     report=copy.deepcopy(report)
     if 'exotica_runtime' in report:
-        import exotica_bootstrap,exotica_shutdown,exotica_runtime,exotica_journals
+        import exotica_bootstrap,exotica_shutdown,exotica_runtime,exotica_journals,exotica_host_failure
         report['exotica_bootstrap']['frames']=frames
         bootstrap=exotica_bootstrap.verify(report['exotica_bootstrap'],runtime)
         shutdown=exotica_shutdown.verify(report['exotica_shutdown'],runtime)
         continuous=exotica_runtime.verify(report['exotica_runtime'],runtime,shutdown)
         journals=exotica_journals.verify(report['exotica_journals'],runtime,runtime_result=continuous)
-        return dict(bootstrap=bootstrap,shutdown=shutdown,runtime=continuous,journals=journals)
+        trial=report.get('exotica_host_failure')
+        if trial and trial.get('continuous'):trial['last']=frames-1
+        failure=exotica_host_failure.verify_receipt(trial,runtime)
+        if failure and failure['degraded']:raise ValueError('recording used retired original-only fallback')
+        return dict(bootstrap=bootstrap,shutdown=shutdown,runtime=continuous,journals=journals,failure=failure)
     import vunit_bootstrap,vunit_runtime,vunit_host_failure
     report['vunit_bootstrap']['runtime_last']=frames-1
     report['vunit_runtime']['verification_last']=frames-1
+    report['vunit_host_failure']['last']=frames-1
     bootstrap=vunit_bootstrap.verify(report['vunit_bootstrap'],runtime)
     continuous=vunit_runtime.verify(report['vunit_runtime'],runtime,bootstrap)
     failure=vunit_host_failure.verify_receipt(report['vunit_host_failure'],runtime)

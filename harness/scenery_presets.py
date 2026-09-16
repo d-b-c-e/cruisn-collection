@@ -37,7 +37,8 @@ PROFILES = {
 --exotica-endpoint-last 5240 --exotica-endpoint-snapshot 0
 --exotica-endpoint-admit-from 1800 --exotica-early-visibility endpoint
 --exotica-journals quiet --exotica-bootstrap scenes
---exotica-shutdown observe --exotica-runtime continuous'''.split()+DISPLAY,
+--exotica-shutdown observe --exotica-runtime continuous
+--exotica-host-failure original'''.split()+DISPLAY,
 }
 MANAGED = frozenset(word for profile in PROFILES.values() for word in profile if word.startswith('--'))
 

@@ -27,7 +27,16 @@ def configure(args, rom, settings, frames):
     first, last = int(settings.get('MIDZ_HOST_FIRST','0')), int(settings.get('MIDZ_HOST_LAST','0'))
     if not 1800 <= first <= last < frames-1:
         raise ValueError('Exotica failure trial requires bounded scenes before drain')
-    if inject is not None and (type(inject) is not int or not first <= inject <= last):
+    reference_first,reference_last=first,last
+    continuous=getattr(args,'exotica_runtime',None)=='continuous'
+    if continuous and (getattr(args,'exotica_bootstrap',None)!='scenes' or
+                       getattr(args,'exotica_journals',None)!='quiet'):
+        raise ValueError('continuous Exotica failure trial requires quiet guest-based startup')
+    if getattr(args,'exotica_bootstrap',None)=='scenes':first=1
+    if continuous:last=frames-1
+    # Leave two full frames for the ready fence and original presentation.
+    injection_last=min(16000,frames-3) if continuous else last
+    if inject is not None and (type(inject) is not int or not first <= inject <= injection_last):
         raise ValueError('Exotica injected failure outside scene interval')
     settings[KEYS[0]] = '1' if policy == 'original' else '0'
     settings.pop(KEYS[1], None)
@@ -37,7 +46,8 @@ def configure(args, rom, settings, frames):
             if any(int(v) >= inject for v in settings.get(key,'').split(',') if v):
                 raise ValueError('source snapshots must precede the injected failure')
         settings[KEYS[1]] = str(inject)
-    return dict(policy=policy, inject=inject or 0, first=first, last=last)
+    return dict(policy=policy, inject=inject or 0, first=first, last=last,
+                continuous=continuous,reference_first=reference_first,reference_last=reference_last)
 
 
 def verify_receipt(trial, directory):

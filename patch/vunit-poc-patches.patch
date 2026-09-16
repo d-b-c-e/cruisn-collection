@@ -47867,3 +47867,51 @@ index 37fef0343c5..86b993f84ad 100644
 -- 
 2.55.0.windows.3
 
+From 5c4da4891a9a147d62ffc17668f381e6000c76e9 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 04:48:50 -0500
+Subject: [PATCH] Allow bounded future-assembly fault probes across continuous
+ Exotica runtime
+
+---
+ src/mame/midway/cruisn/exotica_runtime.h | 8 ++++++++
+ src/mame/midway/midzeus.cpp              | 4 +++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/src/mame/midway/cruisn/exotica_runtime.h b/src/mame/midway/cruisn/exotica_runtime.h
+index ce6bc0785ac..74cabc101a0 100644
+--- a/src/mame/midway/cruisn/exotica_runtime.h
++++ b/src/mame/midway/cruisn/exotica_runtime.h
+@@ -23,6 +23,14 @@ bool select(const char *mode,Lookup lookup,Policy &policy) {
+     policy=Policy::continuous;return true;
+ }
+ inline bool continuous(Policy policy) {return policy==Policy::continuous;}
++// Fault injection is a bounded diagnostic even when real runtime is continuous.
++// Guest-based startup can prepare a scene before the old capture first frame.
++inline uint32_t failure_first(bool scene_bootstrap,uint32_t capture_first) {
++    return scene_bootstrap ? 1 : capture_first;
++}
++inline uint32_t injection_last(Policy policy,uint32_t capture_last) {
++    return continuous(policy) ? 16000 : capture_last;
++}
+ // Frames travel on existing 32-bit packets. Never silently wrap at narrowing.
+ inline bool representable(uint64_t frame) {return frame<=std::numeric_limits<uint32_t>::max();}
+ inline bool after(Policy policy,uint64_t frame,uint32_t last) {
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 86b993f84ad..cf427436e31 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -1187,7 +1187,9 @@ void crusnexo_state::scene_observer_start()
+ 			!std::getenv("MIDV_FFB") || strcmp(std::getenv("MIDV_FFB"),"0"))
+ 			fatalerror("Exotica failure trial requires explicit policy, combined private draw and FFB0\n");
+ 		m_scene_failure_original=!strcmp(failure,"1");
+-		if(inject)m_scene_inject_frame=number("MIDZ_HOST_FAILURE_FRAME",m_scene_first,m_scene_last,0);
++		if(inject)m_scene_inject_frame=number("MIDZ_HOST_FAILURE_FRAME",
++			cruisn::exotica_runtime::failure_first(m_bootstrap_scenes,m_scene_first),
++			cruisn::exotica_runtime::injection_last(m_runtime_policy,m_scene_last),0);
+ 		fprintf(stderr,"EXOTICA_HOST_FAILURE_POLICY original=%u inject=%u\n",unsigned(m_scene_failure_original),m_scene_inject_frame);
+ 	}
+ 	if(!m_scene_first || m_scene_last<m_scene_first || m_scene_last-m_scene_first>10000 ||
+-- 
+2.55.0.windows.3
+

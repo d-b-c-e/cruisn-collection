@@ -40,6 +40,11 @@ and USA as representatives of both renderer workers. Both drain and join cleanly
 full playback failures are retained separately from the passing close/prefix
 scope. Machine reset and product integration remain separate requirements.
 
+[Continuous Exotica recovery](2026-09-16-exotica-continuous-retirement.md)
+now returns to the exact ordinary view after a rejected future assembly beyond
+the old capture cutoff. The preset selects this narrow fallback; degraded output
+still fails parity. Startup recovery and machine reset remain separate.
+
 ## Current position
 
 | Game | Latest useful evidence | Remaining requirement |

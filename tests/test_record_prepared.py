@@ -43,6 +43,8 @@ class PreparedRecordingTests(unittest.TestCase):
             self.assertEqual(recorder.load_plan(plan)[2]['rom'],'crusnusa')
             for key,v in (('MIDV_FFB','1'),('MIDV_FFB_TEST','0'),('MIDV_TELEM_FORZA','127.0.0.1:5300'),
                           ('SNAP_PROBE_SCRIPT','probe.lua'),('MIDZ_GL_SNAP','old'),('MIDZ_HOST_SNAPSHOTS','5219'),
+                          ('MIDZ_HOST_FAILURE_FRAME','5300'),('MIDV_HOST_FAILURE_FRAME','4000'),
+                          ('MIDZ_GL_STOP_FRAME','0'),('MIDV_GL_STALL_FRAME','4000'),
                           ('MIDZ_MODEL_ENDPOINT_SNAPSHOT','5219')):
                 old=dict(value['environment']);value['environment'][key]=v;save()
                 with self.subTest(key=key),self.assertRaises(ValueError):recorder.load_plan(plan)

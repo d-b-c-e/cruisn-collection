@@ -56,16 +56,27 @@ freeze exact continuous3x live cases with FFB0 and the external clock. Read
 families freeze live cases. SyntheticWorld25 correctly rejects disabled devices.
 Initial inherited-GL-capture failure retained; explicit clearing fixes schedule,
 not disabled bindings. No attended game launched. Ready Exotica plan is LOCAL
-race-transitions-20260916/exotica-recording-plan-v2; use a NEW output when user
+race-transitions-20260916/exotica-recording-plan-v3; use a NEW output when user
 is ready. Three focused tests and saved Exo/USA native receipt checks PASS.
 Product FFB, machine reset, broader courses and useful outer distance remain.
 Continue independent work; don't launch an attended recording without a reply.
+Read docs/reviews/2026-09-16-exotica-continuous-retirement.md. One5400-input
+fault/control pair qualifies Exotica continuous recovery: failure5300/retire5301,
+3852scenes,9854endpoints,0reject,fulloriginalinputs and3600camera/10800ADC exact,
+GL5299/5300different and5301..5304exactoriginal, joined quiescent5.576GBdrain.
+RawdegradedFAIL retained; initialcheckerFAIL wrongnonempty-patch assumption,
+qualified-v2PASSfromsamefiles. No replay for analyzer. Preset now Exo failureoriginal.
+Prepared recorder rejects fault/stall inheritance and degraded-native acceptance.
+Native/runtime3Python +3preset+3recorder testsPASS. No currentgame/build/test.
+NEXT bounded startup recovery, especially zero prior endpoint/model work;
+normal runtime/journal acceptance must not hide independent degraded evidence.
 
-Current frozen native: `f0b4db1f25d869d010d396997bb1839c412a4b23`,
-`build/candidates/f0b4db1f25d/vunit.exe`, SHA256
-`435123cf0e1026fbdda94a8069a59f025a3d8b98fc2d1cebda0146b871fd95c1`.
-253 patches reconstruct `476814a23a6864416d95e564830a464b0e4672c3`.
-`endpoint-routine-capture-native-export.json` under
+
+Current frozen native: `5c4da4891a9a147d62ffc17668f381e6000c76e9`,
+`build/candidates/5c4da4891a9/vunit.exe`, SHA256
+`e1064decae78d24ca4d397873e8f5b270dd02f30e79c8252727980fd712f8aa6`.
+254 patches reconstruct `de584ffe34debd9a4dc406d05f64c2014e96879d`.
+`continuous-retirement-native-export.json` under
 `results/diagnostics/world25-roads-20260914` is the current export receipt.
 **All existing export scripts have already run. Never rerun an export against
 its appended patch baseline.** Create a new export for a new native commit.

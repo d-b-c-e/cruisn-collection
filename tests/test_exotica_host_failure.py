@@ -6,6 +6,23 @@ from exotica_host_failure import configure,verify_receipt
 
 
 class ExoticaFailureTests(unittest.TestCase):
+    def test_continuous_failure_extends_reference_but_bounds_injection_and_drain(self):
+        args=SimpleNamespace(candidate='x',exotica_host_failure='original',exotica_host_inject_failure_frame=5300,
+            exotica_runtime='continuous',exotica_bootstrap='scenes',exotica_journals='quiet')
+        env=dict(MIDV_FFB='0',MIDZ_GL='1',MIDZ_HOST_FUTURE='2',MIDZ_HOST_COMPOSE='1',
+            MIDZ_HOST_FUTURE_PRESENT='1',MIDZ_HOST_FIRST='1800',MIDZ_HOST_LAST='5240',MIDZ_MODEL_ENDPOINT_SNAPSHOT='0')
+        trial=configure(args,'crusnexo',env.copy(),5400)
+        self.assertEqual((trial['first'],trial['last'],trial['reference_last']),(1,5399,5240))
+        for frame in (1,1799,5397):
+            self.assertEqual(configure(SimpleNamespace(**(vars(args)|{'exotica_host_inject_failure_frame':frame})),
+                                       'crusnexo',env.copy(),5400)['inject'],frame)
+        for update in ({'exotica_bootstrap':None},{'exotica_journals':None},
+                       {'exotica_host_inject_failure_frame':5398},{'exotica_host_inject_failure_frame':True},
+                       {'exotica_host_inject_failure_frame':0}):
+            with self.assertRaises(ValueError):configure(SimpleNamespace(**(vars(args)|update)),'crusnexo',env.copy(),5400)
+        with self.assertRaises(ValueError):
+            configure(SimpleNamespace(**(vars(args)|{'exotica_host_inject_failure_frame':16001})),'crusnexo',env.copy(),18000)
+
     def test_selection_and_late_snapshot_rejection(self):
         args=SimpleNamespace(candidate='x',exotica_host_failure='original',exotica_host_inject_failure_frame=5230)
         settings=dict(MIDV_FFB='0',MIDZ_GL='1',MIDZ_HOST_FUTURE='2',MIDZ_HOST_COMPOSE='1',

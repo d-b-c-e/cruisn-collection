@@ -28,6 +28,10 @@ int main() {
         assert(within(Policy::capture,frame,1800,5200)==(frame>=1800 && frame<=5200));
     }
     assert(!representable(4294967296ull));
+    assert(failure_first(false,1800)==1800);
+    assert(failure_first(true,1800)==1);
+    assert(injection_last(Policy::capture,5240)==5240);
+    assert(injection_last(Policy::continuous,5240)==16000);
     assert(!within(Policy::continuous,4294967296ull,1800,5200));
     assert(endpoint_snapshot_allowed(Policy::continuous,0,1800,5200));
     assert(!endpoint_snapshot_allowed(Policy::capture,0,1800,5200));

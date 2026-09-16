@@ -36,6 +36,7 @@ class SceneryPresetTests(unittest.TestCase):
                     self.assertEqual(value('--exotica-runtime'),'continuous')
                     self.assertEqual(value('--exotica-endpoint-snapshot'),'0')
                     self.assertEqual(value('--exotica-host-multiplier'),'3')
+                    self.assertEqual(value('--exotica-host-failure'),'original')
                     self.assertNotIn('--gl-height',keys)
                 else:
                     self.assertEqual(value('--vunit-runtime'),'continuous')

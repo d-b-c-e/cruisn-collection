@@ -388,6 +388,10 @@ Exotica combines future/waiting/active scenery and marked original replacements,
 with routine endpoint snapshots disabled. This requires a current candidate
 including the optional endpoint-capture change (nativef0b4db1f25d or a compatible
 successor), a GL recording and physical FFB remains disabled.
+The preset now selects ordered original-view fallback for a rejected Exotica
+future assembly, alongside V-Unit's preparation fallback. Current native5c4da4891a9
+also supports bounded Exotica fault injection beyond the old capture window;
+that is a separate explicit diagnostic, never a live-recording default.
 
 Capture intervals, motion probes and display selection remain explicit. The
 report records the expanded controls. Conflicting manual controls are rejected;

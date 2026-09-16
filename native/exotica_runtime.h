@@ -23,6 +23,14 @@ bool select(const char *mode,Lookup lookup,Policy &policy) {
     policy=Policy::continuous;return true;
 }
 inline bool continuous(Policy policy) {return policy==Policy::continuous;}
+// Fault injection is a bounded diagnostic even when real runtime is continuous.
+// Guest-based startup can prepare a scene before the old capture first frame.
+inline uint32_t failure_first(bool scene_bootstrap,uint32_t capture_first) {
+    return scene_bootstrap ? 1 : capture_first;
+}
+inline uint32_t injection_last(Policy policy,uint32_t capture_last) {
+    return continuous(policy) ? 16000 : capture_last;
+}
 // Frames travel on existing 32-bit packets. Never silently wrap at narrowing.
 inline bool representable(uint64_t frame) {return frame<=std::numeric_limits<uint32_t>::max();}
 inline bool after(Policy policy,uint64_t frame,uint32_t last) {
