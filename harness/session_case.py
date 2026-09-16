@@ -19,6 +19,7 @@ from diagnostic_runtime import ROOT, diagnostic_env, new_run
 from verification import image_signature, required_files, sha256_file, write_json
 from raw_snapshots import convert_raw_snapshots
 from capture_writer import verify as verify_capture_writer
+import binary_provenance
 
 STATE_DIRS = ("ini", "cfg", "nvram", "ctrlr")
 WRITABLE_DIRS = {"-inipath": "ini", "-cfg_directory": "cfg",
@@ -251,6 +252,11 @@ class Recording:
         shutil.copy2(exe, binary / "vunit.exe")
         command = ["@binary/vunit.exe", *command[1:]]
         dependencies = {"vunit.exe": sha256_file(binary / "vunit.exe")}
+        emulator_source = binary_provenance.read(exe, dependencies['vunit.exe'])
+        if emulator_source:
+            receipt = binary_provenance.receipt_path(exe)
+            shutil.copy2(receipt, binary / 'vunit.exe.build.json')
+            dependencies['vunit.exe.build.json'] = emulator_source['receipt_sha256']
         for name in ("SDL2.dll", "force-profiles.ini", "force-profiles.user.ini"):
             source = exe.parent / name
             if source.exists():
@@ -284,7 +290,8 @@ class Recording:
             "executable_source": str(exe),
             "dependencies": dependencies, "rom_containers": roms,
             "initial_hashes": tree_hashes(initial),
-            "collection_source": git_identity(ROOT), "emulator_source": git_identity(exe.parent)}
+            "collection_source": git_identity(ROOT), "emulator_source": emulator_source,
+            "executable_location_source": git_identity(exe.parent)}
         if actions is not None:self.manifest['session_actions']=actions
         write_json(self.path / "case.json", self.manifest)
         runtime = self.path / "record"

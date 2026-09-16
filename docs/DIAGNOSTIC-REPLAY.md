@@ -875,3 +875,9 @@ The continuous Exotica candidate now has an explicit quiescent reset path.
 proofs against the scheduled action. An interrupted-work reset remains a strict
 failure. A successful reboot with no marked scenery is not accepted as full
 extended-renderer workload coverage. See the [reset assessment](reviews/2026-09-16-exotica-quiescent-reset.md).
+
+New case manifests identify MAME source only from a build receipt matching the
+archived executable bytes. A missing receipt leaves source identity unknown;
+the enclosing Git checkout is labeled separately. See [build provenance](reviews/2026-09-16-binary-provenance.md)
+for attaching a verified native export before recording. Historical manifests
+remain intact; their old emulator_source field alone does not prove a native revision.

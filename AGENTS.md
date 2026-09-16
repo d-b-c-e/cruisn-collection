@@ -20,10 +20,14 @@ Worldreset4620/control+3x6600inputs/nativeimagesexact;1859scenes6167404quads,
 post-resetLondonbridge6000/6400changes32199/289740; viewedbothpairs, farbridge/
 leftbuildingsadded, y1200..bottomall7exact. NoUSA/Offroadresetreplay orcameraADCclaim.
 LOCALworld-reset/qualified.json. No game/build active. Readvunit-reset-caches review.
-NEXTfinish binaryprovenance fix: recording currentlylabels enclosingcollectiongit
-as emulator_source; newLOCALsidecar validation/archiving +16focusedtestsPASS,
-realprepare-onlyplan/livecasefreezePASSwithoutgame. Uncommittedharnesschanges.
-Latestcandidatehasvunit.exe.build.json attachedfromverifiedexport; no executablechange. Personal87d/publicv0.5.0unchanged.
+Binaryprovenance fixed: emulator_source nowunknown without executable-matched
+buildattestation, enclosinggit separatelynamed.16focusedtestsPASS; actualprepare-
+onlyplan/livecasefreezePASS, native18004correctlydistinguishedfromcollectiongit.
+Readbinary-provenance review. Latestcandidatehasvunit.exe.build.json attachedfrom
+verifiedexport; no executablechange. Historicalcasefieldsnotrewritten.
+NEXT inspectexistingWorlddistancefade integration for reuse acrossUSA/Offroad
+before choosinganynewvisualpolicy. No broadtests ornewgameswithoutconcretequestion.
+Exoticaquiescentresetdone; pending/prebootstrap/degradedresetstillstrict/open. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
 
 

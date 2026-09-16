@@ -11,6 +11,30 @@ from session_case import compare_evidence, read_trace, session_evidence, prepare
 
 
 class SessionTests(unittest.TestCase):
+
+    def test_recording_archives_binary_source_attestation_not_enclosing_repo(self):
+        import binary_provenance
+        import json
+        from session_case import Recording
+        from verification import sha256_file
+        with tempfile.TemporaryDirectory() as td:
+            root=Path(td);exe=root/'mame.exe';exe.write_bytes(b'fixture executable')
+            roms=root/'roms';roms.mkdir();(roms/'crusnwld24.zip').write_bytes(b'fixture rom')
+            rig=root/'rig';rig.mkdir();export=root/'export.json'
+            export.write_text(json.dumps(dict(passed=True,candidate_sha256=sha256_file(exe),
+                native_commit='a'*40,tree='b'*40,patch_sha256='c'*64,build_log_sha256='d'*64)),encoding='utf-8')
+            source=binary_provenance.attach(exe,export)
+            recording=Recording(root/'case')
+            with mock.patch('session_case.subprocess.check_output',return_value=b'<mame><machine name="crusnwld24"/></mame>'), mock.patch('session_case.git_identity',return_value={'commit':'enclosing repo'}):
+                recording.prepare([str(exe),'crusnwld24','-rompath',str(roms)],{'MIDV_FFB':'0'},rig)
+            source.unlink()
+            manifest=recording.manifest
+            self.assertEqual(manifest['emulator_source']['commit'],'a'*40)
+            self.assertEqual(manifest['executable_location_source']['commit'],'enclosing repo')
+            archived=root/'case/binary/vunit.exe.build.json'
+            self.assertEqual(manifest['dependencies'][archived.name],sha256_file(archived))
+            self.assertEqual(binary_provenance.read(root/'case/binary/vunit.exe'),manifest['emulator_source'])
+
     def test_global_recording_archives_patch_before_temporary_source_disappears(self):
         from session_case import Recording
         from world_distance import compose
@@ -35,6 +59,7 @@ class SessionTests(unittest.TestCase):
             self.assertFalse(patch.exists())
             self.assertEqual(read_patch(env['MIDV_PATCH'])[0x40], (80000,160000))
             self.assertEqual(read_patch(env['MIDV_PATCH'])[0x247], (0x0c800000,0x08620056))
+            self.assertIsNone(recording.manifest['emulator_source'])
             self.assertEqual(recording.manifest['settings']['MIDV_PATCH'],'@initial/game-patch.txt')
             self.assertEqual(recording.manifest['settings']['MIDV_WORLD_LEAD'],'8')
             self.assertEqual(env['MIDV_FFB'],'0')

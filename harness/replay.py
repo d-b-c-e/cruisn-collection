@@ -47,6 +47,7 @@ import exotica_host_failure
 import exotica_journals
 import exotica_bootstrap
 import exotica_reset
+import binary_provenance
 import usa_host_options
 import offroad_host_options
 import scenery_presets
@@ -456,15 +457,17 @@ def main(argv=None):
             report['usa_distance']['patch_sha256'] = sha256_file(patch_file)
             if args.capture_state:
                 env.update(MIDV_RAMDUMP_DIR=str(capture), MIDV_RAMDUMP_EVERY=str(args.until_frame - 2))
+        executable_digest=sha256_file(command[0])
+        report['emulator_source']=binary_provenance.read(command[0],executable_digest)
         if args.prepare_only:
             if args.telemetry_loopback:
                 raise ValueError('prepare-only does not allocate telemetry loopback sockets')
             plan=dict(schema=1,prepared=True,executed=False,physical_force=False,
                 command=[str(x) for x in command],cwd=str(runtime),
                 environment={k:v for k,v in env.items() if k.startswith(('MIDV_','MIDZ_','SNAP_','CRUISN_'))},
-                executable_sha256=sha256_file(command[0]),runtime_hashes=tree_hashes(runtime),
+                executable_sha256=executable_digest,runtime_hashes=tree_hashes(runtime),
                 candidate_dependencies={name:sha256_file(Path(command[0]).parent/name)
-                    for name in ('SDL2.dll','force-profiles.ini','force-profiles.user.ini')
+                    for name in ('SDL2.dll','force-profiles.ini','force-profiles.user.ini',Path(command[0]).name+'.build.json')
                     if (Path(command[0]).parent/name).is_file()},
                 case=str(case),case_sha256=sha256_file(case/'case.json'),
                 scope='Validated launch preparation only; no emulator execution, renderer acceptance or replay completion.')

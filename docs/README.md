@@ -38,6 +38,7 @@ assuming that a source feature is present in a downloaded package.
 | [Recorder soft-reset continuity](reviews/2026-09-16-session-soft-reset.md) | Preserve the trace and callbacks when MAME reruns its autoboot script |
 | [Exotica quiescent reset](reviews/2026-09-16-exotica-quiescent-reset.md) | Ordered GPU boundary, fresh source identities and verified startup after reset |
 | [V-Unit reset caches](reviews/2026-09-16-vunit-reset-caches.md) | Clear stale host state before RAM reload; World reset and resumed scenery check |
+| [Executable build provenance](reviews/2026-09-16-binary-provenance.md) | Bind diagnostic source identity to the actual binary rather than its enclosing Git checkout |
 | [Latest Zeus upstream review](reviews/2026-09-15-zeus-upstream-refresh.md) | Qualified solid-color register backport and the deferred mesh changes |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |

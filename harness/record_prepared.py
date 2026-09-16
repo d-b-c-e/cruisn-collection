@@ -37,7 +37,7 @@ def load_plan(directory):
     if sha256_file(plan['command'][0])!=plan['executable_sha256']:
         raise ValueError('prepared candidate changed')
     dependencies={name:sha256_file(Path(plan['command'][0]).parent/name)
-        for name in ('SDL2.dll','force-profiles.ini','force-profiles.user.ini')
+        for name in ('SDL2.dll','force-profiles.ini','force-profiles.user.ini',Path(plan['command'][0]).name+'.build.json')
         if (Path(plan['command'][0]).parent/name).is_file()}
     if dependencies!=plan['candidate_dependencies']:
         raise ValueError('prepared candidate dependencies changed')
