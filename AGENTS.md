@@ -12,13 +12,20 @@ byteexactprior083; sharedGL2520exact. New2524GL4KCRTviewed,0:02.96/49MPH/2AUTO.
 Bothpagesopacityall1;nowvisiblepagealigned. Noactualfade/newbillboardsenabled.
 11focusedmirror+4completiontestsPASS. No broadsuite.
 LOCALW/offroad-matched2520(-qualified),metadata-presentation-native-export.json.
-NEXT usematchedsavedimage tojudgeprototype205futurebillboardvisibility, then
-pending/material/sourceownershipbeforelive. DoNOTcompareS2520witholdP2520(scene2516).
-Standalonebillboardhelpers a7e64cc:397actualstaticROMsources+orderedDMAexact;
-505matrix/2020vertex foundation. Damaged/dynamicunsupported. HelpersNOTMAMElinked.
-LOCALsaved2520/3360/8760 add205/54/31billboards,isolated811/759/334RGBchanges.
-No completedbillboardvisibilityclaim. Sourceevidence!=visiblebenefit.
-PriorExoticapre-devicereset083verified; runtimebehaviorretained. Personal87d/v0.5.0.
+Matchedbillboardscreencomplete: read2026-09-16-offroad-billboard-visibility.md.
+Existing1482host+931originalcommands reproduceALL4388544completedindicesexact.
+Added205futurebillboards changeZERO afteroriginalforeground. No runtimepromote.
+Saved8760 existing516hostDMAexact;31billboards with449originalcommands change10
+indices in4x3region, NOTmatchedcompletedacceptance. 3360isolatedonly.
+LOCALW/offroad-billboard-completed2524,offroad-billboard-ordered8760.
+Standalonehelpers a7e64cc397sources/DMAexact remainuseful, damaged/dynamicexcluded.
+WAITING for useful next attended visual input: askeduserchooseExoticaopen/tworaces,
+Offroadopen,orWorldNewYorkrepro. No attendedlaunchuntilresponse. Wheel/FFBacceptance
+also needsmaintainer. Do not repeat currenthiddenviews seekingpositivecounts.
+Recoveryheartbeat PAUSED atthisvalidationboundary; no paritycompletionclaim.
+Unresolved: broadercourses,visibleouterhandover,FFBnormalization/finalpackage;
+Exotica interrupted/degradedreset remainsstrict,notuniversallyaccepted.
+Personal87d/publicv0.5.0unchanged.
 
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.

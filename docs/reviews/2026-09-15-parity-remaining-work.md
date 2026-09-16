@@ -56,6 +56,13 @@ that contains it. Earlier same-numbered preparation/display pairs were not
 necessarily the same scene. This improves the next visibility investigations;
 it is not a new rendering feature.
 
+The [ordered billboard screen](2026-09-16-offroad-billboard-visibility.md)
+reproduces the full early Off-Road indexed framebuffer, then finds zero visible
+change from205extra billboards. A later saved scene has only10potential changed
+indices. The foundation is retained; no runtime adapter is promoted from those
+results. More open attended routes and wheel acceptance are the next requested
+inputs, with the overnight recovery automation paused awaiting the maintainer.
+
 ## Current position
 
 The [animated-source census and sequencer](2026-09-16-exotica-animation-sequencing.md)
