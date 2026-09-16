@@ -28,6 +28,13 @@ through car selection and early second-race driving. The initial401/400-line
 image mismatch is retained; a matching400-line control verifies distant-cliff
 additions. This is same-course restart coverage, not a new-track acceptance.
 
+USA now passes [Continue and a Golden Gate restart](2026-09-16-usa-race-transition.md)
+with12,212 exact inputs/motion and clean continuous shutdown. Each game family
+now has a recorded race/menu/new-race continuation, with explicitly scripted tails
+and limited second-race scope. A [shared diagnostic preset](2026-09-16-scenery-presets.md)
+centralizes the qualified continuous3x configuration; it is not yet a product
+control or full-course release acceptance.
+
 ## Current position
 
 | Game | Latest useful evidence | Remaining requirement |

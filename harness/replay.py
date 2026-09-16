@@ -48,6 +48,7 @@ import exotica_journals
 import exotica_bootstrap
 import usa_host_options
 import offroad_host_options
+import scenery_presets
 from display_target import parse_size
 
 
@@ -124,7 +125,18 @@ def main(argv=None):
     exotica_runtime.add_arguments(ap)
     usa_host_options.add_arguments(ap)
     offroad_host_options.add_arguments(ap)
+    scenery_presets.add_arguments(ap)
     args = ap.parse_args(argv)
+    preset_trial = None
+    if args.scenery_preset:
+        if not args.candidate or args.headless or args.native_renderer:
+            ap.error('scenery preset requires an explicit live-GL candidate')
+        try:
+            preset_manifest=json.loads((args.case/'case.json').read_text(encoding='utf-8'))
+            expanded,preset_trial=scenery_presets.expand(list(sys.argv[1:] if argv is None else argv),preset_manifest['rom'])
+            args=ap.parse_args(expanded)
+        except (OSError,ValueError,KeyError) as exc:
+            ap.error(str(exc))
     if args.zeus_capture_models and args.zeus_capture_frame is None:
         ap.error('--zeus-capture-models requires --zeus-capture-frame')
     if args.timeout <= 0:
@@ -153,6 +165,7 @@ def main(argv=None):
     report = {"schema": 1, "kind": "candidate-regression" if args.candidate else "identity-replay",
               "case": str(args.case.resolve()), "passed": False,
               "presentation": "native-headless" if args.headless else "recorded-settings"}
+    if preset_trial:report['scenery_preset']=preset_trial
     print(f"replay evidence: {work}")
     try:
         case = args.case.resolve()

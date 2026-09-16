@@ -369,6 +369,31 @@ GL must already be enabled in the parent. Existing capture ranges are cleared.
 The output `case` is ready for an explicit candidate replay. No extra full drive
 is automatically scheduled, and recording success does not establish route,
 second-race or visual acceptance.
+Use `--gl-crt on --gl-height 400` when creating a V-Unit control for the current
+host renderer; inherited401-line recordings otherwise change pixels across the
+whole image. `--probe-script lua/usa_motion_trace.lua` (or the matching game probe)
+copies and fingerprints an explicit diagnostic script. Its documented frame
+environment still needs to cover the desired interval in control and replay.
+
+### Continuous host scenery candidate preset
+
+```powershell
+python harness/replay.py results/diagnostics/my-drive-continued/case --candidate build/candidates/COMMIT/vunit.exe --scenery-preset continuous-3x --output results/diagnostics/my-drive-host3x
+```
+
+The exact recorded ROM selects USA, World2.4/2.5, Off-Road or Exotica controls.
+The preset combines the existing continuous startup/shutdown and quiet journal
+paths with3x host scenery, CRT on and internal scale4. V-Unit uses native height400;
+Exotica combines future/waiting/active scenery and marked original replacements,
+with routine endpoint snapshots disabled. This requires a current candidate
+including the optional endpoint-capture change (nativef0b4db1f25d or a compatible
+successor), a GL recording and physical FFB remains disabled.
+
+Capture intervals, motion probes and display selection remain explicit. The
+report records the expanded controls. Conflicting manual controls are rejected;
+omit the preset when investigating a different policy. Existing ROM, recorded
+patch and resource guards still apply. This is a diagnostic convenience, not a
+launcher setting, deployment, equal visible3x distance guarantee or release gate.
 
 ```powershell
 python harness/run_replay_smoke.py --output results/diagnostics/neutral-seed

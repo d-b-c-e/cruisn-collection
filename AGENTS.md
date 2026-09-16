@@ -10,6 +10,8 @@ The recovery heartbeat is a backup, not the work cadence.
 Read these current references first:
 
 - [Remaining release work](docs/reviews/2026-09-15-parity-remaining-work.md)
+- [USA race transition](docs/reviews/2026-09-16-usa-race-transition.md)
+- [Continuous3x preset](docs/reviews/2026-09-16-scenery-presets.md)
 - [Optional Exotica endpoint capture](docs/reviews/2026-09-16-exotica-optional-endpoint-capture.md)
 - [Quiet continuous V-Unit](docs/reviews/2026-09-16-vunit-quiet-runtime.md)
 - [Off-Road 3x race transition](docs/reviews/2026-09-16-offroad-race-transition.md)
@@ -32,12 +34,21 @@ joined shutdown. Initial checker failed on scheduling-dependent depth batch coun
 source-guided qualified-v2 preserves vertices/resources/pixels and separates that
 count. No game rerun. Native first-rejection selection remains tested and lazy
 operand capture retained. Read the optional endpoint capture review below.
-No game/build/test is active. Next close USA's race/menu continuation gap using
-the existing5012-input case plus an explicitly scripted tail; its last frame
-still has54 seconds on the race timer, so a3400-frame tail is insufficient.
-Use a longer bounded tail and match native height/CRT/scale before comparisons.
-Then address remaining continuous operation/product and visible-distance gates;
-do not stop at this checkpoint.
+USA also now passes12,212 inputs,10,412 camera/31,236 ADC,6,336 scenes,
+14,903,983 quads and joined shutdown. Continue8400/startGoldenGate9000/bridge12000
+at0:54.41 observed.2/13 menu images exact,11 gameplay changes all above y1142;
+start-letter gap detail retained, not blanket overlay acceptance. No full second
+race claim. The reusable recording command ran live and preserves all5012 source
+inputs; probe/CRT/height controls are explicit.
+
+The new diagnostic --scenery-preset continuous-3x centralizes all5 ROM profiles.
+Three targeted parser/conflict tests PASS; saved controls match executed plans
+(Exotica only changes snapshot5219->0, separately qualified). No redundant game
+replay for argument spelling. No game/build/test active. Next investigate actual
+user-requested close/interruption semantics with owned workers, using existing
+check_frozen_package.py WM_CLOSE helper and FFB0; inspect native shutdown contracts
+before selecting a bounded run. Keep ordinary input/capture completion distinct
+from an intentionally interrupted test. Product/attended/distance gates remain.
 
 Current frozen native: `f0b4db1f25d869d010d396997bb1839c412a4b23`,
 `build/candidates/f0b4db1f25d/vunit.exe`, SHA256
