@@ -76,6 +76,7 @@ def commands(group, output, cxx):
     compile_one('usa-model', 'native/analyze_usa_model.cpp')
     compile_one('offroad-model', 'native/analyze_offroad_model.cpp')
     compile_one('exotica-transform', 'native/analyze_exotica_transform.cpp')
+    compile_one('exotica-animation', 'native/analyze_exotica_animation.cpp')
     compile_one('exotica-state', 'native/analyze_exotica_state.cpp')
     fade = compile_one('exotica-fade', 'native/analyze_exotica_fade.cpp')
     steps.append(('exotica-fade-inputs', [py, 'tests/native/check_exotica_fade.py', fade]))

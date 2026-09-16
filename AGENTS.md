@@ -95,9 +95,18 @@ physicalFFB/performance claim. Follow-up appearancepair5500inputs3700camera/
 change509/314/146/16pixels,nonewblack,carROIexact;other11EXACTincluding5220.
 5300has1961thirdbandquadsbutcompleteddepthscreen0visible;no fadefailureclaim.
 All4064scenes2580marked0reject/ownedshutdown. LOCALmars-appearance-qualified.json
-andmars5300-fragments. NEXT census unsupportedExotica descriptorclasses fromsaved
-Mars/Amazon sources; fulltrackenumerationalreadyconfirmed, no shortlookaheadfix.
-No currentgame/build/test. Continue directly.
+andmars5300-fragments. Fulltrackenumerationalreadyconfirmed, no shortlookaheadfix.
+Read2026-09-16-exotica-animation-sequencing.md. Census: Mars125animationtags plus
+138customclasses;Amazon21tags plus65classes. Matchedhandlersaredynamic, no useful
+future no-op omission. Newstandaloneanimationhelper/analyzer NOTMAMElinked/synced.
+Amazon7220inputoriginalreplayPASS,246actualupdates/sixowners/78modelchanges/sixwraps
+exactindependentPython+compiledC++;3focusedPython+nativeboundarytestPASS.
+FirsttwoinstrumentationFAILsretained: program-spaceinstructionfetchE8CC mistaken
+forcountdownread; exactfetchfilterfixesit. LOCALexotica-open-course-20260916/
+animation-qualified/actual-updates.json andamazon-animation-updates-v3.
+NEXT savedanimatedsourceinitializationfields, thenphase/lifetime/admissionproof;
+no newliveanimation policy or allocation/RNG calls. No currentgame/build/test.
+Continue directly.
 
 
 Current frozen native: `5c4da4891a9a147d62ffc17668f381e6000c76e9`,

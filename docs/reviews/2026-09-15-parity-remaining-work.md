@@ -47,6 +47,11 @@ still fails parity. Startup recovery and machine reset remain separate.
 
 ## Current position
 
+The [animated-source census and sequencer](2026-09-16-exotica-animation-sequencing.md)
+identify a separate Exotica coverage gap.246original animation updates now match
+independent scalar/native helpers, but initial phase, lifetime ownership and earlier
+animated drawing remain unqualified. The helper is standalone, not a live fix.
+
 | Game | Latest useful evidence | Remaining requirement |
 | --- | --- | --- |
 | USA | Conservative horizontal rejection preserves seven 4K captures, cuts submitted future quads by 74.6%, and improves six measured windows from 98.18% to 99.68% speed overall. | The busiest window still measures 97.99%. Broader track and activation coverage remain; small far-coverage gains are not elimination of pop-in. |
