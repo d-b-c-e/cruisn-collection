@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September16 USA actual-scene activation — candidate qualified; continue parity
+
+Read docs/reviews/2026-09-16-usa-scene-bootstrap.md. Native03ddf36820c frozen
+SHAb63803f0f149077550f4319df4b62c458018b64c69437c6edb20f121bad56333;
+248patches tree6fe1b58c1884911c59fadb4387c0751a68a6827e. Explicit--vunit-bootstrap
+scenes USAonly/liveGL/future/both/FFB0 bypassesfirstboundonly, finiteend retained.
+Everycode/source/model/cycle/fallbackguard retained; firstpreparedRAM/fast saved.
+4focusedPythonPASS, nativebuildPASS. One5012input4Kmonitor runPASS2766scenes739..4999,
+2016earlyscenes3342256quads(firstnonempty1606); nofallback. Firstoperands exact
+originalobserver andnative+Python. Later750scenes/3201camera/9603ADC exactbaseline.
+SixlaterGLexact;3500 differs27021distantpixels/0newblack, viewedbridgebackground;
+oldfirstprepared3501 so expectedearlydraw. Actualclient3824x2073. Initialall-equal
+analyzerFAILretained; W/usa-bootstrap-qualified-v2 PASSexplicitboundarycheck,
+NOgame rerun. W/usa-bootstrap-live-4k andusa-bootstrap-native-export.json.
+export-usa-bootstrap.py ALREADYRUN. Earlypresentation/multirace/continuous/perfOPEN.
+NEXT World24/25/OffRoad startup qualification, then continuousVUnit lifetime.
+Overnightrecoveryheartbeat ACTIVE1minute; backupONLY, continue directlybetween
+commits, do notwaitforheartbeat. Exo2raceavailabilitypending; noattendedlaunch.
+No currentgame/build/test. No deployment/release/physicalFFB/hostedCI/menu removal.
+Personal87d/publicv0.5.0unchanged. Serialrig. Continueuntilparity oruserroadblock.
+
 ## September15 USA startup — observed and independently qualified
 
 Read docs/reviews/2026-09-15-usa-startup-observation.md. Newboundedread-onlyLua

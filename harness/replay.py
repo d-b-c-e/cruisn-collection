@@ -41,6 +41,7 @@ import offroad_distance
 import world_host_options
 import vunit_original_mirror
 import vunit_host_failure
+import vunit_bootstrap
 import exotica_host_failure
 import exotica_journals
 import exotica_bootstrap
@@ -113,6 +114,7 @@ def main(argv=None):
     world_host_options.add_arguments(ap)
     vunit_original_mirror.add_arguments(ap)
     vunit_host_failure.add_arguments(ap)
+    vunit_bootstrap.add_arguments(ap)
     exotica_host_failure.add_arguments(ap)
     exotica_journals.add_arguments(ap)
     exotica_bootstrap.add_arguments(ap)
@@ -304,6 +306,8 @@ def main(argv=None):
         if usa_host_trial:report['usa_host_scenery']=usa_host_trial
         offroad_host_trial=offroad_host_options.configure(args,manifest['rom'],manifest['settings'])
         if offroad_host_trial:report['offroad_host_scenery']=offroad_host_trial
+        vunit_bootstrap_trial=vunit_bootstrap.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
+        if vunit_bootstrap_trial:report['vunit_bootstrap']=vunit_bootstrap_trial
         mirror_trial=vunit_original_mirror.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
         if mirror_trial:report['vunit_original_mirror']=mirror_trial
         host_failure_trial=vunit_host_failure.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
@@ -548,6 +552,8 @@ def main(argv=None):
             if exotica_failure_result['degraded']:
                 report['passed']=False
                 report['error']='Exotica future assembly failed; retired output does not qualify parity'
+        vunit_bootstrap_result=vunit_bootstrap.verify(vunit_bootstrap_trial,runtime)
+        if vunit_bootstrap_result:report['vunit_bootstrap']['result']=vunit_bootstrap_result
         host_failure_result=vunit_host_failure.verify_receipt(host_failure_trial,runtime)
         if host_failure_result:
             report['vunit_host_failure']['result']=host_failure_result

@@ -32,6 +32,8 @@ def configure(args, rom, settings, frames):
     first, last = int(settings.get(prefix+'FIRST', '0')), int(settings.get(prefix+'LAST', '0'))
     if not 1 <= first <= last < frames - 1:
         raise ValueError('host failure trial requires a bounded scene interval before drain')
+    if settings.get('MIDV_HOST_BOOTSTRAP') == '1':
+        first = 1  # Preparation can fail before the former capture start.
     if inject is not None and (type(inject) is not int or not first <= inject <= last):
         raise ValueError('injected failure frame outside scene interval')
     settings[KEYS[0]] = '1' if policy == 'original' else '0'
