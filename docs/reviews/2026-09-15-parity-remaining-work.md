@@ -189,3 +189,5 @@ and `exotica-amazon-20260909/far-appearance-immediate5644/` under
 `results/diagnostics`. The latter contains the exact control, two removal
 variants, completion correspondence and inspected image. These checks needed no
 new game execution or native build. Raw game resources remain local.
+
+The [quiescent Exotica reset candidate](2026-09-16-exotica-quiescent-reset.md) now reboots with exact original inputs and completed images in an early case. Nonempty scenery reset and interrupted-work boundaries remain separate gates; no reset workload waiver was introduced.

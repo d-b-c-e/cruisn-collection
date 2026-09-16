@@ -24,7 +24,7 @@ def configure(args,rom,settings):
         raise ValueError('continuous trial requires validated finite capture reference bounds')
     settings[KEY]=mode
     return dict(mode=mode,end=None,capture_reference_ends={k:int(settings[k]) for k in ENDS},
-                capture_completed=False,machine_reset_supported=False)
+                capture_completed=False,machine_reset_acceptance='requires-explicit-reset-case')
 
 def verify(trial,directory,shutdown):
     lines=[]

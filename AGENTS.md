@@ -2,6 +2,19 @@
 
 ## Current work: release parity, September 16
 
+Latest: read docs/reviews/2026-09-16-exotica-quiescent-reset.md. Nativee65c6270d42
+frozen256patches; quiescent reset CPU/GPU boundary+fresh bootstrap implemented.
+5460input earlyMars reset4000 now completes; reset3999/restart5384, alloriginal
+inputs/nativeimages and7completed4KCRT images4200..5400exact.2683scenes/drain615743800.
+RawFAILzeroendpointworkload retained; separatequiescent-qualifiedPASS onlyreset.
+ExhaustiveGPU16,777,216D24codes/colorpixels exact, ordinaryunchanged; nativeboundary
+and9PythonPASS. Initialfatalcurrent-3x retained. Newexotica_reset verifier linked;
+freshproofs perreset, no blanketqueueclear. Pendingwork/prebootstrap/reboot/
+degradedreset stillstrict/open. NEXT actualnonempty-scenery reset afterMars5500,
+usingoneoriginalcontinuation+candidate. Personal87d/publicv0.5.0unchanged.
+No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
+
+
 Continue autonomously through useful parity work. Commit completed changes
 separately and start the next item; do not stop at a milestone or wait for the
 heartbeat. Stop only for a real user-dependent roadblock or a user pause.

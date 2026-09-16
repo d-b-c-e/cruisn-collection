@@ -46,6 +46,7 @@ import vunit_runtime
 import exotica_host_failure
 import exotica_journals
 import exotica_bootstrap
+import exotica_reset
 import usa_host_options
 import offroad_host_options
 import scenery_presets
@@ -520,6 +521,8 @@ def main(argv=None):
         exotica_bootstrap.resolve_scenes(bootstrap_trial,bootstrap_result,scene_trial,waiting_trial,handover_trial,endpoint_trial)
         runtime_result=exotica_runtime.verify(runtime_trial,runtime,shutdown_result)
         if runtime_result:report['exotica_runtime']['result']=runtime_result
+        reset_result=exotica_reset.verify(runtime_trial,runtime,reference['frames'])
+        if reset_result:report['exotica_reset']=reset_result
         journal_error=None
         try:journal_result=exotica_journals.verify(journal_trial,runtime,runtime_result=runtime_result)
         except ValueError as exc:

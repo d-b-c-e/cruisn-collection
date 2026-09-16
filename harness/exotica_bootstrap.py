@@ -55,6 +55,31 @@ def resolve_scenes(trial,proof,scene,waiting,handover,endpoint):
     endpoint.update(requested_admit_from=endpoint['admit_from'],admit_from=frame)
     for t in (scene,handover):t['early_visibility']=dict(t['early_visibility'],first=frame)
 
+def verify_pool_proof(proof,begin,frame,base):
+    proof=Path(proof)
+    if not 0<=begin<=frame<=begin+1:raise ValueError("bootstrap pool clock")
+    if not 0x1000<=base or base+1201*31>0x40000 or not (base+1201*31<=0x30000 or base>=0x32000):
+        raise ValueError('bootstrap pool extent')
+    words=16+2*len(CODE)+1201
+    if not proof.is_file() or proof.stat().st_size!=words*4:raise ValueError('missing or incomplete bootstrap proof')
+    data=struct.unpack('<'+'I'*words,proof.read_bytes());tail=base+1200*31
+    header=(0x31534258,1,begin,frame,base,len(CODE),1201,0xbbc9,0xbbd5,tail,tail,0,0xffffffff,base,1200,0)
+    if data[:16]!=header:raise ValueError('bootstrap instruction/transaction proof')
+    code=tuple(v for pair in CODE for v in pair)
+    if data[16:16+len(code)]!=code:raise ValueError('bootstrap code signatures differ')
+    links=tuple(base+(i+1)*31 for i in range(1200))+(0,)
+    if data[16+len(code):]!=links:raise ValueError('bootstrap pool links differ')
+    return words
+
+
+def verify_scene_proof(path,sf,frame,serial):
+    path=Path(path)
+    if not frame<=sf<2**32 or not 0<serial<2**64 or not path.is_file() or path.stat().st_size!=64:
+        raise ValueError('bootstrap scene proof extent')
+    words=(0x31534358,1,sf,frame,0x67f6,0xff2,0xffffffff,0xffffffff,0x67f5,0x15200ff2,0x681f,0x082fbbb5,0x6835,0x082fbbb9,serial&0xffffffff,serial>>32)
+    if struct.unpack('<16I',path.read_bytes())!=words:raise ValueError('bootstrap scene transaction/code proof')
+
+
 def verify(trial,directory):
     directory=Path(directory);lines=[];proof=directory/'exotica-bootstrap.bin';scene_proof=directory/'exotica-bootstrap-scene.bin'
     for name in ('stdout.log','stderr.log'):
@@ -78,22 +103,11 @@ def verify(trial,directory):
         sf,serial=map(int,found[0].groups());expected.append(found[0][0])
         if not frame<=sf<trial['frames'] or (not trial.get('continuous') and sf>trial['latest_scene_start']) or not 0<serial<2**64 or not scene_proof.is_file() or scene_proof.stat().st_size!=64:
             raise ValueError('bootstrap scene bounds or proof extent')
-        scene_words=(0x31534358,1,sf,frame,0x67f6,0xff2,0xffffffff,0xffffffff,0x67f5,0x15200ff2,0x681f,0x082fbbb5,0x6835,0x082fbbb9,serial&0xffffffff,serial>>32)
-        if struct.unpack('<16I',scene_proof.read_bytes())!=scene_words:raise ValueError('bootstrap scene transaction/code proof')
+        verify_scene_proof(scene_proof,sf,frame,serial)
         scene_result=dict(scene_frame=sf,scene_serial=serial,scene_proof_bytes=64)
     elif scene_proof.exists():raise ValueError('unrequested bootstrap scene proof')
     if sorted(lines)!=sorted(expected) or not 0<=begin<=frame<=begin+1 or frame>=trial['frames']:
         raise ValueError('bootstrap receipt order/completion bounds')
-    if not 0x1000<=base or base+1201*31>0x40000 or not (base+1201*31<=0x30000 or base>=0x32000):
-        raise ValueError('bootstrap pool extent')
-    words=16+2*len(CODE)+1201
-    if not proof.is_file() or proof.stat().st_size!=words*4:raise ValueError('missing or incomplete bootstrap proof')
-    data=struct.unpack('<'+'I'*words,proof.read_bytes());tail=base+1200*31
-    header=(0x31534258,1,begin,frame,base,len(CODE),1201,0xbbc9,0xbbd5,tail,tail,0,0xffffffff,base,1200,0)
-    if data[:16]!=header:raise ValueError('bootstrap instruction/transaction proof')
-    code=tuple(v for pair in CODE for v in pair)
-    if data[16:16+len(code)]!=code:raise ValueError('bootstrap code signatures differ')
-    links=tuple(base+(i+1)*31 for i in range(1200))+(0,)
-    if data[16+len(code):]!=links:raise ValueError('bootstrap pool links differ')
+    words=verify_pool_proof(proof,begin,frame,base)
     return dict(passed=True,begin=begin,frame=frame,base=base,links=1201,code_words=len(CODE),bytes=words*4,
                 changes_startup=activates,**scene_result,scope='Verified guest pool/optional scene startup. Continuous exit and broader-course acceptance remain separate.')

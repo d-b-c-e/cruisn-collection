@@ -869,3 +869,9 @@ recovery still does not establish scenery parity. This currently supports comple
 scheduled cases, not cutting a replay before a later scheduled action. Manually
 pressing MAME reset is not automatically converted into a replayable schedule.
 See [recorder reset continuity](reviews/2026-09-16-session-soft-reset.md).
+
+The continuous Exotica candidate now has an explicit quiescent reset path.
+`replay.py` verifies its CPU/GPU material boundary and separate fresh-start
+proofs against the scheduled action. An interrupted-work reset remains a strict
+failure. A successful reboot with no marked scenery is not accepted as full
+extended-renderer workload coverage. See the [reset assessment](reviews/2026-09-16-exotica-quiescent-reset.md).
