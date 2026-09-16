@@ -15,6 +15,14 @@ int main()
     vertices[0]=f(3);vertices[1]=f(4);vertices[2]=f(5);
     assert(project(vertices,matrix,f(256),[&](uint32_t z){assert(z==1000 || z==1005);return f(1);},output));
     assert(output[0]==263 && output[1]==176 && output[2]==1005);
+    std::array<uint32_t,6> polygon={{0x10100,0x02030405,0x06070809,10,0x00030000,0x00090006}};
+    std::array<uint16_t,16> draw;
+    object[18]=100;object[19]=200;
+    assert(quad(object,polygon,output,3,0x2000,draw));
+    assert(draw[0]==0x2100 && draw[1]==103 && draw[10]==0x0405 && draw[14]==210);
+    polygon[4]=1;assert(!quad(object,polygon,output,3,0,draw));
+    assert((draw==std::array<uint16_t,16>{}));
+    polygon[4]=0x00030000;assert(!quad(object,polygon,output,3,1,draw));
     for(unsigned flags:{0U,2U,6U}) {
         object[5]=flags;matrix.fill(123);
         assert(!prepare(object,view,basis,matrix));

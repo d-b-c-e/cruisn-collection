@@ -15,17 +15,17 @@ hashesoldreport,NOgamerun. LOCALrace-transitions-20260916/exotica-active-reset/
 pre-device-3x and pre-device-qualified-v2.json.
 Interrupted/bootstrap/degradedresetremainstrict; no blindqueuedownerclears.
 PriorUSA/Offroadopacityobservers qualified; USAvisible41partialpixels, Offroad0.
-NEXT Offroadstaticbillboard sources: read2026-09-16-offroad-billboard-foundation.md.
-StandalonePython/C++505actualmatrices2020vertices/13modelsEXACT;2Python1nativePASS.
-2524originalinputs/nativeimages723camera2892ADC andcompleted2520CRTpriorcontrol
-exact. Captured10basisvariants. Source1BDD..1BF7preparebasisBEFOREhost1BF8.
-TwoLOCALprobeFAILswrongreadspanthenaddress809C00identified; correctedv3PASS.
-CanonicalboundedLua added, fixedcaptureequivalentparameterizationnotnewgamerun.
-HelpersNOTMAMElinked/synced. LOCALW/offroad-billboard-original-v3,
-offroad-billboard-original-qualified.json,offroad-billboard-transparent.json.
-337actualflags00800804+60flags00000804/hitbitsclear;108dynamic04004004excluded.
-NEXT bindstaticactualrecords toROMdescriptors/currenthitstate, thenpolygon/DMA/
-materials beforeearlierdrawing. No blindordinaryrelabeling. Native083unchanged.
+NEXT Offroadbillboard visibility/handover: read2026-09-16-offroad-billboard-sources.md.
+StandalonePython/C++397actualstaticROMsourcefields+uniqueorderedoriginalDMAexact.
+Classes804/800804 only; indexedhitbitsclear required,108dynamicexcluded.
+Firstpolygon bypassesordinarybackfacecull.4Python2nativePASS; noMAMEbuild.
+Prior505matrices/2020vertices/13models exact; original2524inputs/motion/GLexact.
+Basis1BDD..1BF7 preparedBEFOREhost1BF8. HelpersNOTMAMElinked/synced.
+LOCALW/offroad-billboard-source-qualified.json andoffroad-billboard-saved2520.
+Prototype205futurebillboards/592eligible/387far, nopendinginthisscene.
+Isolatedmerge811RGB changes;0atcurrentlycorrespondinghost-ownedpixels.
+NOTcompletedvisibility norproofofzerobenefit: newgeometrycouldreplaceoldsky.
+NEXT screenchangedareas/othersavedviews, thenpending/material/ownershipbeforelive.
 Priorfade2520/3360no visibleenvelope;8760noneingeometry. Don'trepeatthosewindows.
 
 No game/build/test active. Personal87d/publicv0.5.0unchanged.

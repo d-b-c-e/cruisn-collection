@@ -76,6 +76,7 @@ def commands(group, output, cxx):
     compile_one('usa-model', 'native/analyze_usa_model.cpp')
     compile_one('offroad-model', 'native/analyze_offroad_model.cpp')
     compile_one('offroad-billboard', 'native/analyze_offroad_billboard.cpp')
+    compile_one('offroad-billboard-source', 'native/analyze_offroad_billboard_source.cpp')
     compile_one('exotica-transform', 'native/analyze_exotica_transform.cpp')
     compile_one('exotica-animation', 'native/analyze_exotica_animation.cpp')
     compile_one('exotica-state', 'native/analyze_exotica_state.cpp')

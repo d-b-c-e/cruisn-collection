@@ -39,4 +39,19 @@ template<class Reciprocal> bool project(const std::array<uint32_t,12> &vertices,
     }
     result=output;return true;
 }
+
+inline bool quad(const std::array<uint32_t,22> &object,const std::array<uint32_t,6> &polygon,
+    const std::array<uint32_t,12> &projected,uint32_t palette_lookup,uint32_t extra_flags,
+    std::array<uint16_t,16> &result)
+{
+    result={};if((object[5]&6)!=4 || (extra_flags && extra_flags!=0x2000))return false;
+    const std::array<uint32_t,4> offsets={{polygon[4]&65535,polygon[4]>>16,polygon[5]&65535,polygon[5]>>16}};
+    for(auto i:offsets)if(i%3 || i>=12)return false;
+    std::array<uint16_t,16> output{};
+    output[0]=uint16_t(polygon[0]|extra_flags);output[1]=uint16_t(object[18]+palette_lookup);
+    for(unsigned i=0;i<4;++i)for(unsigned k=0;k<2;++k)output[2+2*i+k]=uint16_t(projected[offsets[i]+k]);
+    output[10]=uint16_t(polygon[1]);output[11]=uint16_t(polygon[1]>>16);
+    output[12]=uint16_t(polygon[2]);output[13]=uint16_t(polygon[2]>>16);
+    output[14]=uint16_t(polygon[3]+object[19]);result=output;return true;
+}
 } }

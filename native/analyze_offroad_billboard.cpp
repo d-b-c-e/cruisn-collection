@@ -3,9 +3,12 @@
 #include "offroad_billboard.h"
 #include <iostream>
 #include <map>
+#include <string>
 
-int main()
+int main(int argc,char **argv)
 {
+    const bool quads=argc==2 && std::string(argv[1])=="--quad";
+    if(argc!=1 && !quads)return 2;
     uint32_t id,previous=0,count=0;
     while(std::cin>>id) {
         if(id!=previous+1 || ++count>4096)return 2;
@@ -14,6 +17,15 @@ int main()
         std::array<uint32_t,12> view,basis,vertices,matrix,projected;
         uint32_t origin;
         for(auto &w:object)std::cin>>w;
+        if(quads) {
+            std::array<uint32_t,6> polygon;std::array<uint16_t,16> output;
+            uint32_t palette,extra;
+            for(auto &w:polygon)std::cin>>w;
+            for(auto &w:projected)std::cin>>w;
+            if(!(std::cin>>palette>>extra))return 2;
+            if(!cruisn::offroad_billboard::quad(object,polygon,projected,palette,extra,output))return 6;
+            std::cout<<id;for(auto w:output)std::cout<<' '<<w;std::cout<<'\n';continue;
+        }
         for(auto &w:view)std::cin>>w;
         for(auto &w:basis)std::cin>>w;
         for(auto &w:vertices)std::cin>>w;

@@ -45,6 +45,11 @@ now returns to the exact ordinary view after a rejected future assembly beyond
 the old capture cutoff. The preset selects this narrow fallback; degraded output
 still fails parity. Startup recovery and machine reset remain separate.
 
+The [Off-Road static billboard decoder](2026-09-16-offroad-billboard-sources.md)
+now matches397 original source and draw-command observations. This identifies
+a missing scenery class without changing the game. Its earlier visibility and
+handover are still under investigation; the helper is not live.
+
 ## Current position
 
 The [animated-source census and sequencer](2026-09-16-exotica-animation-sequencing.md)
