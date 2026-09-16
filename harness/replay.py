@@ -56,6 +56,10 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("case", type=Path)
     ap.add_argument("--output", help="new evidence directory (must not exist)")
+    ap.add_argument('--prepare-only',action='store_true',
+        help='validate dependencies/options and save an isolated launch plan; do not start MAME or report a replay pass')
+    ap.add_argument('--no-inherited-gl-captures',action='store_true',
+        help='clear the recorded GL screenshot schedule; explicit --gl-capture still applies')
     ap.add_argument("--headless", action="store_true", help="native snapshots, no GL presentation")
     ap.add_argument("--small-window", action="store_true", help="disable window maximization for cheaper dense GL captures")
     ap.add_argument('--display-size',type=parse_size,help='select an actual WIDTH:HEIGHT display and maximize; captured client pixels may exclude borders')
@@ -194,6 +198,11 @@ def main(argv=None):
         reference = session_evidence(case / "record", manifest["every"], manifest["returncode"])
         if reference != manifest["evidence"]:
             raise ValueError("reference evidence has changed")
+        if args.no_inherited_gl_captures:
+            removed={k:v for k,v in manifest['settings'].items()
+                     if k.startswith(('MIDV_GL_SNAP','MIDZ_GL_SNAP'))}
+            for key in removed:del manifest['settings'][key]
+            report['removed_inherited_gl_captures']=removed
         if args.until_frame is not None:
             if not manifest["every"] <= args.until_frame <= reference["frames"]:
                 raise ValueError("prefix must include a snapshot and end within the recording")
@@ -446,6 +455,23 @@ def main(argv=None):
             report['usa_distance']['patch_sha256'] = sha256_file(patch_file)
             if args.capture_state:
                 env.update(MIDV_RAMDUMP_DIR=str(capture), MIDV_RAMDUMP_EVERY=str(args.until_frame - 2))
+        if args.prepare_only:
+            if args.telemetry_loopback:
+                raise ValueError('prepare-only does not allocate telemetry loopback sockets')
+            plan=dict(schema=1,prepared=True,executed=False,physical_force=False,
+                command=[str(x) for x in command],cwd=str(runtime),
+                environment={k:v for k,v in env.items() if k.startswith(('MIDV_','MIDZ_','SNAP_','CRUISN_'))},
+                executable_sha256=sha256_file(command[0]),runtime_hashes=tree_hashes(runtime),
+                candidate_dependencies={name:sha256_file(Path(command[0]).parent/name)
+                    for name in ('SDL2.dll','force-profiles.ini','force-profiles.user.ini')
+                    if (Path(command[0]).parent/name).is_file()},
+                case=str(case),case_sha256=sha256_file(case/'case.json'),
+                scope='Validated launch preparation only; no emulator execution, renderer acceptance or replay completion.')
+            write_json(work/'launch-plan.json',plan)
+            report.update(prepared_only=True,executed=False,launch_plan_sha256=sha256_file(work/'launch-plan.json'))
+            write_json(work/'report.json',report)
+            print(f"PREPARED (not executed): {work / 'launch-plan.json'}")
+            return 0
         clock = SessionClock(runtime, "Replay: " + manifest.get("title", manifest["rom"]), args.clock_position)
         if args.clock:
             clock.start()

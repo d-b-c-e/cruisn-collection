@@ -395,6 +395,43 @@ omit the preset when investigating a different policy. Existing ROM, recorded
 patch and resource guards still apply. This is a diagnostic convenience, not a
 launcher setting, deployment, equal visible3x distance guarantee or release gate.
 
+### Record a fresh drive with the host candidate
+
+First validate a recorded case's initial state and the selected candidate without
+starting gameplay:
+
+```powershell
+python harness/replay.py results/diagnostics/my-drive --candidate build/candidates/COMMIT/vunit.exe --scenery-preset continuous-3x --display-size 3840:2160 --no-inherited-gl-captures --prepare-only --output results/diagnostics/my-host-plan
+```
+
+`launch-plan.json` binds the exact executable, adjacent runtime dependencies,
+initial files and parent case. The report says prepared, unexecuted and
+`passed=false`; successful preparation is not a replay pass. The explicit
+`--no-inherited-gl-captures` clears the old screenshot schedule, while a separately
+requested `--gl-capture` still applies to an ordinary replay.
+
+When the driver is ready, start a new isolated recording:
+
+```powershell
+python harness/record_prepared.py results/diagnostics/my-host-plan --output results/diagnostics/my-new-drive --title "Open course with host 3x"
+```
+
+This uses the parent recording's wheel bindings and initial state, the prepared
+candidate, CRT4x and continuous host scenery. **Physical FFB is off.** It removes
+playback and finite recording stops, enables the external emulation clock, and
+records fresh effective inputs until F12. Wait for recording validation after
+closing. Changed dependencies, disabled input devices, old probes and scheduled
+captures reject before gameplay. Use an actual driving case as the parent;
+synthetic/headless cases can deliberately disable wheel input.
+
+Add `--prepare-only` to the recording command to freeze its private case without
+starting gameplay. That mode performs MAME's read-only ROM identity query; it
+does not produce a completed recording. Use a new output directory for the
+subsequent attended command. Normal completion separately reports input recording
+status and native renderer receipt qualification. Deterministic replay, visible
+distance quality and physical wheel acceptance remain separate. No launcher
+settings, personal NVRAM or installed executable are changed.
+
 ```powershell
 python harness/run_replay_smoke.py --output results/diagnostics/neutral-seed
 python harness/synthesize_input.py results/diagnostics/neutral-seed/case fixtures/scenarios/crusnusa-input-sweep.json

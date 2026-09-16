@@ -50,9 +50,16 @@ trial per engine: Exotica4012/USA4019 original inputs and66 native images exact,
 joined. Full replay FAILs intentionally retained because both stopped early;
 separate qualified reports PASS. Read docs/reviews/2026-09-16-normal-close.md.
 V-Unit independent shutdown reporting now precedes full-input comparison.
-No game/build/test active. Next audit normal launcher integration requirements;
-keep diagnostic controls, physical FFB and release acceptance distinct. Product,
-attended and visible-distance gates remain.
+No game/build/test active. New replay --prepare-only and record_prepared.py
+freeze exact continuous3x live cases with FFB0 and the external clock. Read
+2026-09-16-prepared-candidate-recording.md. All5 ROM plans validate;4 actual-input
+families freeze live cases. SyntheticWorld25 correctly rejects disabled devices.
+Initial inherited-GL-capture failure retained; explicit clearing fixes schedule,
+not disabled bindings. No attended game launched. Ready Exotica plan is LOCAL
+race-transitions-20260916/exotica-recording-plan-v2; use a NEW output when user
+is ready. Three focused tests and saved Exo/USA native receipt checks PASS.
+Product FFB, machine reset, broader courses and useful outer distance remain.
+Continue independent work; don't launch an attended recording without a reply.
 
 Current frozen native: `f0b4db1f25d869d010d396997bb1839c412a4b23`,
 `build/candidates/f0b4db1f25d/vunit.exe`, SHA256
