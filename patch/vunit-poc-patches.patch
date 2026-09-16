@@ -48367,3 +48367,33 @@ index cf427436e31..5f2f338d809 100644
 -- 
 2.55.0.windows.3
 
+From 1800458b8e3592839af542a575b1e70dc98bbd00 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 07:16:15 -0500
+Subject: [PATCH] Invalidate V-Unit host scenery caches at actual machine reset
+
+---
+ src/mame/midway/midvunit.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 738bacb7a13..efa38f12a7f 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -1264,6 +1264,13 @@ void midv_patches_tick(uint32_t *ram)
+ 
+ void midvunit_base_state::machine_reset()
+ {
++	// RAM and guest section ownership are about to be replaced. Do not rely
++	// on a later track callback observing an intermediate empty/rewound cursor.
++	// Keep runtime totals and any explicit failure retirement for this launch.
++	m_host_future_cache.clear();
++	m_usa_future_cache.clear();
++	m_usa_model_cache.clear();
++	m_offroad_host_cache.clear();
+ 	offroad_distance_reset();
+ 	m_scenery_tree = 0;
+ 	reset_display_assets();
+-- 
+2.55.0.windows.3
+

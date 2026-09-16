@@ -14,8 +14,16 @@ degradedreset stillstrict/open. Actualnonempty-scenery reset nowPASS7500inputs,5
 2993770futurequads/2598marked0reject/13689GPUpairs/488bindings12epochs. Reset5559,
 newbootstrap6944.2pre-reset4Kimagesexactold3x;10post-resetexactordinary.
 LOCALrace-transitions-20260916/exotica-active-reset qualified/prior-3x-prefix.
-All2734357696bytesdrained. No newbuild/rerun. NEXT V-Unitresetcache lifetime audit;
-actualmachine_reset reloadsRAM but fourhostcachesonlyclear via latertrackstate. Personal87d/publicv0.5.0unchanged.
+All2734357696bytesdrained. No newbuild/rerun. V-Unitresetcache fixnow1800458b8e3,257patches, clearsfourcaches beforeRAMreload.
+Worldreset4620/control+3x6600inputs/nativeimagesexact;1859scenes6167404quads,
+9609422120bytesdrained.7CRTclient3824x2073images on4Kprimary:4exact,1changes5pixels,
+post-resetLondonbridge6000/6400changes32199/289740; viewedbothpairs, farbridge/
+leftbuildingsadded, y1200..bottomall7exact. NoUSA/Offroadresetreplay orcameraADCclaim.
+LOCALworld-reset/qualified.json. No game/build active. Readvunit-reset-caches review.
+NEXTfinish binaryprovenance fix: recording currentlylabels enclosingcollectiongit
+as emulator_source; newLOCALsidecar validation/archiving +16focusedtestsPASS,
+realprepare-onlyplan/livecasefreezePASSwithoutgame. Uncommittedharnesschanges.
+Latestcandidatehasvunit.exe.build.json attachedfromverifiedexport; no executablechange. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
 
 
