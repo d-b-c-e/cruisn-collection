@@ -52,3 +52,21 @@ qualified separately. Its first plan was rejected before emulator launch because
 the endpoint snapshot is mandatory; the corrected plan retains snapshot5219.
 The original failed report remains available. No physical FFB, deployment,
 release or hosted CI is involved.
+
+## Reusable recording command
+
+`harness/record_continuation.py` now performs stimulus creation, source-case
+validation, isolated MAME recording and complete original input/time-prefix
+comparison. It preserves frozen game patches and recorded cheat actions, stores
+the source/scenario hashes, requires a new destination and disables physical
+FFB. Capture ranges are explicit for the new case; stale parent ranges are
+cleared. An optional display selection and completed-GL capture range use the
+existing verified harness helpers.
+
+This command records once. Candidate replay and route/visual acceptance remain
+separate, so it does not automatically spend another full drive on an identity
+replay. Two focused tests cover changed controls/times, truncated tails, changed
+columns, allowable host-speed differences and mocked command orchestration with
+physical force disabled and exact source provenance. The underlying recorder
+and extension codec have the actual Exotica/World/Off-Road transition evidence;
+the new wrapper itself has not justified another full live recording.

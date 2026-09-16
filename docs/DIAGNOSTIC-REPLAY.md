@@ -354,12 +354,29 @@ the actual analog state at the join. The generated stimulus must pass through
 MAME recording and prefix validation before becoming a new replay case. A
 scripted continuation is not an attended recording of a new track.
 
+`record_continuation.py` performs that recording and prefix check in one command:
+
+```powershell
+python harness/record_continuation.py results/diagnostics/my-drive tail.json --candidate build/candidates/COMMIT/vunit.exe --output results/diagnostics/my-drive-continued --title "Recorded drive plus scripted menus"
+```
+
+The tail uses the generator's scenario format, with every steering/pedal axis
+explicitly set at tail frame0. The command validates the source case, preserves
+its frozen settings and cheat actions, and disables physical FFB. Optional
+`--display-size 3840:2160 --gl-capture FIRST:LAST --gl-every 300` selects the display
+and verifies completed capture frames; frame numbers cover the entire new case.
+GL must already be enabled in the parent. Existing capture ranges are cleared.
+The output `case` is ready for an explicit candidate replay. No extra full drive
+is automatically scheduled, and recording success does not establish route,
+second-race or visual acceptance.
+
 ```powershell
 python harness/run_replay_smoke.py --output results/diagnostics/neutral-seed
 python harness/synthesize_input.py results/diagnostics/neutral-seed/case fixtures/scenarios/crusnusa-input-sweep.json
 ```
 
-The neutral seed verifies the installed INP layout. The USA-only generator then
+The neutral seed verifies the installed INP layout. The generator supports the
+five recorded ROM layouts across the four games (including both World revisions), and
 constructs explicit digital pulses and analog current/previous values, runs the
 stimulus through MAME while recording, and replays the resulting real INP. It
 rejects an unexpected ROM, layout, timing or nonneutral seed. This is a synthetic
