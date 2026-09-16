@@ -35,6 +35,11 @@ and limited second-race scope. A [shared diagnostic preset](2026-09-16-scenery-p
 centralizes the qualified continuous3x configuration; it is not yet a product
 control or full-course release acceptance.
 
+[Normal mid-race close](2026-09-16-normal-close.md) now qualifies on Exotica
+and USA as representatives of both renderer workers. Both drain and join cleanly;
+full playback failures are retained separately from the passing close/prefix
+scope. Machine reset and product integration remain separate requirements.
+
 ## Current position
 
 | Game | Latest useful evidence | Remaining requirement |

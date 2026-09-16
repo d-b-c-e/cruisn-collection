@@ -517,6 +517,14 @@ def main(argv=None):
                 raise ValueError("late game patch application receipt missing")
         worker_result=ffb_worker.verify_receipt(worker_trial,runtime)
         if worker_result:report['ffb_worker']['result']=worker_result
+        # Preserve independent teardown evidence even when an intentionally
+        # interrupted replay subsequently fails its full-input comparison.
+        vunit_bootstrap_result=vunit_bootstrap.verify(vunit_bootstrap_trial,runtime)
+        if vunit_bootstrap_result:report['vunit_bootstrap']['result']=vunit_bootstrap_result
+        vunit_runtime_result=vunit_runtime.verify(vunit_runtime_trial,runtime,vunit_bootstrap_result)
+        if vunit_runtime_result:report['vunit_runtime']['result']=vunit_runtime_result
+        host_failure_result=vunit_host_failure.verify_receipt(host_failure_trial,runtime)
+        if host_failure_result:report['vunit_host_failure']['result']=host_failure_result
         convert_raw_snapshots(runtime)
         report["evidence"] = session_evidence(runtime, manifest["every"], invocation["returncode"],
             require_gl=not (args.headless or args.native_renderer) and bool(manifest["settings"].get(gl_key+"_GL_SNAP")))
@@ -569,13 +577,7 @@ def main(argv=None):
             if exotica_failure_result['degraded']:
                 report['passed']=False
                 report['error']='Exotica future assembly failed; retired output does not qualify parity'
-        vunit_bootstrap_result=vunit_bootstrap.verify(vunit_bootstrap_trial,runtime)
-        if vunit_bootstrap_result:report['vunit_bootstrap']['result']=vunit_bootstrap_result
-        vunit_runtime_result=vunit_runtime.verify(vunit_runtime_trial,runtime,vunit_bootstrap_result)
-        if vunit_runtime_result:report['vunit_runtime']['result']=vunit_runtime_result
-        host_failure_result=vunit_host_failure.verify_receipt(host_failure_trial,runtime)
         if host_failure_result:
-            report['vunit_host_failure']['result']=host_failure_result
             if host_failure_result['degraded']:
                 report['passed']=False
                 report['error']='host scenery preparation failed; degraded output does not qualify parity'

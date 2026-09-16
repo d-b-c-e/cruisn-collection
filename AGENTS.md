@@ -44,11 +44,15 @@ inputs; probe/CRT/height controls are explicit.
 The new diagnostic --scenery-preset continuous-3x centralizes all5 ROM profiles.
 Three targeted parser/conflict tests PASS; saved controls match executed plans
 (Exotica only changes snapshot5219->0, separately qualified). No redundant game
-replay for argument spelling. No game/build/test active. Next investigate actual
-user-requested close/interruption semantics with owned workers, using existing
-check_frozen_package.py WM_CLOSE helper and FFB0; inspect native shutdown contracts
-before selecting a bounded run. Keep ordinary input/capture completion distinct
-from an intentionally interrupted test. Product/attended/distance gates remain.
+replay for argument spelling. The preset now ran live in one normal WM_CLOSE
+trial per engine: Exotica4012/USA4019 original inputs and66 native images exact,
+2200camera/6600ADC prefix exact, all queued bytes drained and graphics workers
+joined. Full replay FAILs intentionally retained because both stopped early;
+separate qualified reports PASS. Read docs/reviews/2026-09-16-normal-close.md.
+V-Unit independent shutdown reporting now precedes full-input comparison.
+No game/build/test active. Next audit normal launcher integration requirements;
+keep diagnostic controls, physical FFB and release acceptance distinct. Product,
+attended and visible-distance gates remain.
 
 Current frozen native: `f0b4db1f25d869d010d396997bb1839c412a4b23`,
 `build/candidates/f0b4db1f25d/vunit.exe`, SHA256
