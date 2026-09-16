@@ -1,5 +1,26 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September16 Exotica 3x transition — next World/OffRoad
+
+Read docs/reviews/2026-09-16-exotica-race-transition.md. Same1a1b7native. NewMAME
+control Amazon8860+scripted2400=11260 preservesoriginalinputs. 3xcontinuousquiet
+candidatePASSall11260inputs/nativeimages,9460camera28380ADC exact;9734scenes,
+10nativepoolepochs,32221markedcommands0reject296076GPUpairs. Last11258/11259,
+joinedquiescent0queued/outstanding/stream/writererrors. EightGL8700..10800 exact
+menus/loading;11100newracestartChineseflags changes102002pixels ONLYfar-right
+foliage bbox3502,51..3825,666;941newdarkpixelsthere retained, foregroundROIexact.
+All3840x2160CRT. Notcompletesecondrace/independenteventhistory/outer3xbenefitclaim.
+T=results/diagnostics/race-transitions-20260916; exotica-menu-tail-3x-qualified
+and-pixels PASS. First3xplanprelaunchFAILmissingmandatoryendpointsnapshot retained;
+v2restores5219. No gamerepeatforanalyzer. Allprocessesfinishedatcheckpoint.
+NEXT W/record-vunit-continuation.py world24 thenOffroad afterqualification; script
+preparedNOTRUN. Preserveshumanprefix,3400scriptedtail,currentnativeoriginalcontrol
+then3xcontinuouscandidate, inspectactualtransitionsbeforeclaim. W=world25-roads-
+20260914 directory. Don't run both gamesconcurrently. No builds/exports/broadscans
+duringgame. Personal87d/publicv0.5.0unchanged; nodeploy/release/physicalFFB/hostedCI/
+menuremoval. Continueovernightdirectly; no heartbeatwait. AttendedExoavailability
+pendingbutindependentworkremains.
+
 ## September16 scripted extension — ACTIVE Exotica 3x transition replay
 
 Read docs/reviews/2026-09-16-scripted-recording-continuations.md. Newextend_input.py

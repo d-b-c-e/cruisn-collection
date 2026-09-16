@@ -15,6 +15,10 @@ persistent V-Unit scene journals and bootstrap dumps under explicit continuous
 selection, with matching geometry fingerprints and recorded presentation.
 Routine capture separation is now implemented; multi-race and product gates
 remain open.
+Exotica now also passes a [3x scripted race transition](2026-09-16-exotica-race-transition.md)
+after the full Amazon recording: identical menu images and camera/ADC, ten native
+pool epochs, clean shutdown and a new-race start. This is not a complete second
+race or proof of useful outer-band visibility.
 
 ## Current position
 
