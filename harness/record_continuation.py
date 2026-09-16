@@ -42,6 +42,9 @@ def main(argv=None):
     ap.add_argument('--title', required=True)
     ap.add_argument('--timeout', type=float, default=450)
     ap.add_argument('--display-size', type=parse_size)
+    ap.add_argument('--gl-crt', choices=('on','off'), help='explicit CRT setting for the new case')
+    ap.add_argument('--gl-height', type=int, choices=(400,401), help='explicit V-Unit native height')
+    ap.add_argument('--probe-script', type=Path, help='explicit Lua diagnostic probe, copied into the new run')
     ap.add_argument('--gl-capture', help='FIRST:LAST completed frames, relative to the entire case')
     ap.add_argument('--gl-every', type=int, default=300)
     args = ap.parse_args(argv)
@@ -77,11 +80,24 @@ def main(argv=None):
         # Captures are explicit for this longer case; do not inherit stale ranges.
         settings = {k:v for k,v in settings.items()
                     if not k.startswith(('MIDV_GL_SNAP', 'MIDZ_GL_SNAP'))}
+        key = 'MIDZ' if manifest['rom']=='crusnexo' else 'MIDV'
+        if args.gl_crt is not None:
+            settings[key+'_GL_CRT'] = str(int(args.gl_crt=='on'))
+        if args.gl_height is not None:
+            if key!='MIDV':
+                raise ValueError('native-height override applies to V-Unit only')
+            settings['MIDV_GL_HEIGHT'] = str(args.gl_height)
         expected = configure_gl(settings, manifest['rom'], args.gl_capture, args.gl_every, stop)
         recording = Recording(work/'case', every=manifest['every'], stop_frame=stop)
         actions = parent/'record/cheats/actions.csv'
         command, env, runtime = recording.prepare(command, diagnostic_env(settings), parent/'initial',
             stimulus=work/'stimulus.inp', cheat_actions=actions if actions.exists() else None)
+        if args.probe_script:
+            shutil.copy2(args.probe_script, runtime/'probe.lua')
+            env['SNAP_PROBE_SCRIPT'] = str(runtime/'probe.lua')
+            report['probe'] = dict(source=str(args.probe_script.resolve()),
+                                  sha256=sha256_file(runtime/'probe.lua'))
+            recording.manifest['continuation_probe'] = report['probe']
         recording.manifest.update(title=args.title, derived_from=provenance)
         write_json(recording.path/'case.json', recording.manifest)
         invocation = execute(command, runtime, env, args.timeout)

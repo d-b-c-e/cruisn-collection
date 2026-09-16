@@ -28,6 +28,7 @@ class ContinuationPrefixTests(unittest.TestCase):
             scenario = root/'tail.json'
             scenario.write_text(json.dumps(dict(frames=1,analog={
                 tag:[[0,0]] for tag in ANALOG_LAYOUTS['crusnusa']})),encoding='utf-8')
+            probe=root/'probe.lua';probe.write_text('return function(frame) end\n',encoding='utf-8')
             with patch.object(record_continuation,'validate_parent') as validation, \
                  patch.object(record_continuation,'Recording') as factory, \
                  patch.object(record_continuation,'execute') as execution:
@@ -41,11 +42,15 @@ class ContinuationPrefixTests(unittest.TestCase):
                 recording.prepare.side_effect = prepare
                 execution.return_value = dict(returncode=0,error=None)
                 self.assertEqual(record_continuation.main([str(parent),str(scenario),
-                    '--candidate',str(root/'candidate.exe'),'--output',str(output),'--title','Test tail']),0)
+                    '--candidate',str(root/'candidate.exe'),'--output',str(output),'--title','Test tail',
+                    '--gl-crt','on','--gl-height','400','--probe-script',str(probe)]),0)
                 validation.assert_called_once()
                 execution.assert_called_once()
                 self.assertEqual(execution.call_args.args[2]['MIDV_FFB'],'0')
                 self.assertNotIn('MIDV_GL_SNAP',execution.call_args.args[2])
+                self.assertEqual(execution.call_args.args[2]['MIDV_GL_CRT'],'1')
+                self.assertEqual(execution.call_args.args[2]['MIDV_GL_HEIGHT'],'400')
+                self.assertEqual(Path(execution.call_args.args[2]['SNAP_PROBE_SCRIPT']).read_bytes(),probe.read_bytes())
                 self.assertEqual(factory.call_args.kwargs['stop_frame'],3)
                 report = json.loads((output/'report.json').read_text(encoding='utf-8'))
                 self.assertTrue(report['passed']); self.assertEqual(report['original_inputs_exact'],2)
