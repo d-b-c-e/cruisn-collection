@@ -119,3 +119,5 @@ archives. They include superseded assumptions and unimplemented designs.
 - [Off-Road completed-opacity observer](reviews/2026-09-16-offroad-opacity-observer.md): its separate projection profile qualifies; actual foreground hides the sampled outer envelope.
 
 - [Exotica pristine startup reset](reviews/2026-09-16-exotica-startup-reset.md): reproduced failure repaired without discarding pending work; full5460-input successor qualifies.
+
+[Pre-device Exotica reset](reviews/2026-09-16-exotica-pre-device-reset.md) now checks FIFO ownership before MAME clears child-device state. The existing active reset and all twelve completed4K images remain exact; interrupted-work reset remains separate.

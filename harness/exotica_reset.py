@@ -18,6 +18,19 @@ def verify(trial,directory,frames):
         return None
     actions=read_schedule(root/PLAN,frames);completed=verify_actions(root,frames)
     if not completed or completed['completed']!=len(actions):raise ValueError('missing scheduled reset completion')
+    entries=[m for line in lines if (m:=re.fullmatch(r'MIDZ_RESET_ENTRY frame=(\d+) fifo_empty=(0|1)',line))]
+    entry_result=None
+    if entries:
+        if [int(m[1]) for m in entries]!=[a['frame']-1 for a in actions] or any(m[2]!='1' for m in entries):
+            raise ValueError('reset pre-device FIFO boundary')
+        for entry in entries:
+            targets=[line for line in lines if re.match(
+                rf'MIDZ_RESET_(?:STARTUP|QUEUED) index=\d+ frame={entry[1]} ',line)]
+            if len(targets)!=1 or lines.index(entry[0])>=lines.index(targets[0]):
+                raise ValueError('reset pre-device receipt order')
+        remove={m[0] for m in entries};lines=[line for line in lines if line not in remove]
+        entry_result=dict(passed=True,frames=[int(m[1]) for m in entries],fifo_empty=True,
+                          scope='Observed before child-device reset, not after Zeus FIFO clearing.')
     # A reset before any pool/scene transaction retains the original startup
     # proof. It must not masquerade as an active scene/GPU reseed.
     startups=[m for line in lines if (m:=re.fullmatch(
@@ -80,4 +93,5 @@ def verify(trial,directory,frames):
     if sorted(proofs)!=sorted(expected_proofs):raise ValueError('extra reset proof files')
     report=dict(passed=True,resets=result,actions=completed,scope='Scheduled pristine-startup or quiescent active resets only; interrupted-work resets and physical FFB remain unqualified.')
     if startup_result:report['startup']=startup_result
+    if entry_result:report['pre_device']=entry_result
     return report

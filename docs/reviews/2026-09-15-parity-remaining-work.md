@@ -204,3 +204,5 @@ The [pristine Exotica startup reset](2026-09-16-exotica-startup-reset.md) now
 passes a full5460-input case with nonempty scenery and unchanged original motion.
 Its separate receipt/proof path complements active quiescent reset support;
 interrupted work and degraded-reset handling remain open.
+
+[Pre-device Exotica reset](2026-09-16-exotica-pre-device-reset.md) now checks FIFO ownership before MAME clears child-device state. The existing active reset and all twelve completed4K images remain exact; interrupted-work reset remains separate.

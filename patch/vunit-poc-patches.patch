@@ -48923,3 +48923,44 @@ index 5f2f338d809..4f0b1876c33 100644
 -- 
 2.55.0.windows.3
 
+From 083ceb32407c866bbe91663c4f322b0fa0b4e321 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 08:15:54 -0500
+Subject: [PATCH] Check Exotica reset ownership before child devices clear
+ their state
+
+---
+ src/mame/midway/midzeus.cpp | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 4f0b1876c33..29086ac62f5 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -208,10 +208,21 @@ protected:
+ 		}
+ 	}
+ 
++	// Driver machine_reset runs after child devices, including Zeus FIFO clearing.
++	// Establish the ownership boundary while the actual pre-reset device state exists.
++	virtual void device_reset() override
++	{
++		if(continuous() && renderer_frame())
++		{
++			fprintf(stderr,"MIDZ_RESET_ENTRY frame=%u fifo_empty=%u\n",renderer_frame(),unsigned(m_zeus->midz_fifo_empty()));
++			runtime_reset();
++		}
++		midzeus2_state::device_reset();
++	}
++
+ 	virtual void machine_reset() override
+ 	{
+-		if(continuous() && renderer_frame())runtime_reset();
+-        else {
++        if(!(continuous() && renderer_frame())) {
+             if(m_lifetime_started)fatalerror("Exotica lifetime diagnostic cannot cross machine reset\n");
+             if(m_scene_fence_requests)fatalerror("Exotica command-fence diagnostic cannot cross machine reset\n");
+         }
+-- 
+2.55.0.windows.3
+

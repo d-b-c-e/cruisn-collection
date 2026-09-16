@@ -9,7 +9,7 @@ as an extended-scenery workload test.
 
 Native `e65c6270d42` permits a reset only after verified startup and completion
 of every pending CPU phase. It checks matching scene/fence/waiting/active counts,
-empty command ownership, and the actual device FIFO before queuing a separate
+empty command ownership, and the device FIFO before queuing a separate
 GPU boundary. The GPU independently checks the scene, material generation/hash,
 completed endpoint order and monotonically increasing reset identity.
 
@@ -70,3 +70,5 @@ This closes the sampled quiescent reset with actual prior scenery ownership.
 No repeated full drive, new build or verifier relaxation was needed. The
 interrupted-work/pre-startup/repeated-during-reboot cases listed above remain
 separate limitations. V-Unit reset cache lifetime is the next source audit.
+
+The later [pre-device reset correction](2026-09-16-exotica-pre-device-reset.md) fixes an ordering flaw: this original hook checked FIFO after Zeus had cleared it. The corrected root hook proves emptiness before child reset and preserves the actual7500-input reset and all twelve completed images.

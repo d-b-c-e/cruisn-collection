@@ -63,6 +63,17 @@ class ResetTests(unittest.TestCase):
             self.assertEqual(result['startup']['resets'],[dict(index=1,frame=89)])
             self.assertEqual(len(result['resets']),1)
             self.assertEqual(result['actions']['completed'],2)
+            entries=['MIDZ_RESET_ENTRY frame=89 fifo_empty=1','MIDZ_RESET_ENTRY frame=5999 fifo_empty=1']
+            def with_entries(values):
+                return [values[0],*lines[:5],*values[1:],*lines[5:]]
+            self.write(root,with_entries(entries))
+            self.assertEqual(r.verify({'mode':'continuous'},root,8000)['pre_device']['frames'],[89,5999])
+            for bad in (entries[:1],entries[::-1],[entries[0],entries[1].replace('empty=1','empty=0')],entries+[entries[0]]):
+                self.write(root,with_entries(bad))
+                with self.assertRaises(ValueError):r.verify({'mode':'continuous'},root,8000)
+            self.write(root,lines+entries)
+            with self.assertRaises(ValueError):r.verify({'mode':'continuous'},root,8000)
+
             for bad in ('index=2','frame=90','frame=1000','prepared=1','generation=1','epoch=1'):
                 old=bad.split('=')[0]+'='+dict(index='1',frame='89',prepared='0',generation='0',epoch='0')[bad.split('=')[0]]
                 self.write(root,[line.replace(old,bad) if line==startup else line for line in lines])

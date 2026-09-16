@@ -2,24 +2,21 @@
 
 ## Current work: release parity, September 16
 
-Latest: read docs/reviews/2026-09-16-exotica-startup-reset.md.
-Native225c295d870 frozen261patches with attestation;
-SHA70298c41e6355933398ef0600fd2db96e93fb9312b649e8d7d8d4f20c1dc9fc1.
-Pristine startup reset now allowed ONLYallphasequiescent/no pool/epoch/material/
-preparedscene/prioractivereset. No queuedworkclear/reseed. Separate receipts tied
-to actualactions+firstbootstrap proofs. Olde13 FAILnative89 allpending0 retained.
-New5460inputs/nativeimagesPASS;reset89/pool+scene1474;3935scenes2448968futurequads/
-2537marked0reject;3651camera10953ADCexact;2335451688bytesdrain/join.
-10completed4KCRT images500..5000:9exact,5000onlyleftmargin47434pixels/newblack0;
-both5000viewed, Marsforegroundcar/HUDintact. InitialreportKeyErrorcomparison_scope
-retained;qualified-v2PASSno gamerun. Nativepristinegate+3PythontestsPASS; oldactive
-7500caseownership/actions/proofsrevalidateexact withoutreplay.
-LOCALrace-transitions-20260916/exotica-startup-reset and startup-reset-active-regression.
+Latest: read docs/reviews/2026-09-16-exotica-pre-device-reset.md.
+Native083ceb32407 frozen262patches/attested;
+SHA50779072342fb6046eb579e05a31e550b7526af87beab7805ffe467ca197f6d9.
+Fixedrealresetordering: rootdevice_reset BEFOREchildren, prior machine_reset
+guard sawZeusFIFOalreadycleared. Existingstrictquiescence unchanged.
+Actual7500MarsresetPASSpre-deviceFIFOempty5559/scene4161/gen12372, newpool6944.
+Allinputs/nativeimages5691camera12921ADCexact;12completed4KCRTframes5200..7400
+byteexactprioraccepted3x.4679scenes2734357696bytesdrain/join.3focusedtestsPASS.
+InitialaggregateoldreportmissingnewattestationKeyErrorretained; correctedv2
+hashesoldreport,NOgamerun. LOCALrace-transitions-20260916/exotica-active-reset/
+pre-device-3x and pre-device-qualified-v2.json.
+Interrupted/bootstrap/degradedresetremainstrict; no blindqueuedownerclears.
 PriorUSA/Offroadopacityobservers qualified; USAvisible41partialpixels, Offroad0.
-DoNOTrepeatsamefar-envelopewindows; theydo notjustifyappliedfades.
-NEXT inspect MAME/device reset ordering and explicit interrupted-work retirement.
-Currentpending/bootstrap-in-progress/degradedresetremainstrict. DoNOTblindlyclear
-queuedowners orlabelunfinishedphasescomplete. Broadertrack/attended/FFBgatesremain.
+NEXT selectOffroadvisibleboundaryfromexistingpositivefull2x/3ximages before
+anynewcapture. DoNOTrepeat3360zero-opacitywindow. Broaderattended/FFBgatesopen.
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
 
