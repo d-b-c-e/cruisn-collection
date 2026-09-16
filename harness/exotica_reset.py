@@ -1,7 +1,7 @@
 """Verify scheduled quiescent Exotica reset, GPU boundary and fresh guest proofs."""
 from pathlib import Path
 import re
-from exotica_bootstrap import verify_pool_proof,verify_scene_proof
+from exotica_bootstrap import verify_pool_proof,verify_scene_proof,verify as verify_bootstrap
 from session_actions import verify as verify_actions,read_schedule,PLAN
 from verification import sha256_file
 
@@ -18,6 +18,28 @@ def verify(trial,directory,frames):
         return None
     actions=read_schedule(root/PLAN,frames);completed=verify_actions(root,frames)
     if not completed or completed['completed']!=len(actions):raise ValueError('missing scheduled reset completion')
+    # A reset before any pool/scene transaction retains the original startup
+    # proof. It must not masquerade as an active scene/GPU reseed.
+    startups=[m for line in lines if (m:=re.fullmatch(
+        r'MIDZ_RESET_STARTUP index=(\d+) frame=(\d+) prepared=0 generation=0 epoch=0',line))]
+    startup_result=None;startup_frames=set()
+    if startups:
+        proof=verify_bootstrap(dict(mode='scenes',frames=frames,continuous=True),root)
+        previous=0;rows=[]
+        action_frames={a['frame']-1 for a in actions}
+        for index,m in enumerate(startups,1):
+            frame=int(m[2])
+            if int(m[1])!=index or not previous<frame<proof['begin'] or frame not in action_frames:
+                raise ValueError('startup reset order/action/readiness')
+            startup_frames.add(frame);previous=frame
+            rows.append(dict(index=index,frame=frame))
+        final=f'MIDZ_RESET_STARTUP_RESULT count={len(startups)}'
+        if lines.count(final)!=1:raise ValueError('startup reset completion')
+        remove={m[0] for m in startups}|{final}
+        lines=[line for line in lines if line not in remove]
+        startup_result=dict(passed=True,resets=rows,bootstrap=proof,
+            scope='Pristine pre-pool resets; no auxiliary geometry/materials or source epoch existed.')
+    actions=[a for a in actions if a['frame']-1 not in startup_frames]
     patterns={
         'queued':r'MIDZ_RESET_QUEUED index=(\d+) frame=(\d+) scene=(\d+) generation=(\d+) hash=([0-9a-f]{16}) epoch=(\d+)',
         'gpu':r'MIDZ_RESET_GPU index=(\d+) frame=(\d+) scene=(\d+) generation=(\d+) hash=([0-9a-f]{16})',
@@ -31,9 +53,10 @@ def verify(trial,directory,frames):
         found[kind]=matches;recognized.extend(m[0] for m in matches)
     count=len(actions)
     finals=[f'MIDZ_RESET_RESULT complete=1 requested={count} ready={count} scenes={count}',
-            f'MIDZ_RESET_GPU_RESULT complete=1 count={count}']
+            f'MIDZ_RESET_GPU_RESULT complete=1 count={count}'] if count else []
     if sorted(lines)!=sorted(recognized+finals):raise ValueError('extra or incomplete reset receipts')
-    result=[];expected_proofs=[];last_scene=last_generation=last_epoch=last_frame=0
+    result=[];expected_proofs=[];last_scene=last_generation=last_epoch=0
+    last_frame=startup_result['bootstrap']['scene_frame'] if startup_result else 0
     for offset,action in enumerate(actions):
         q,g,b,s=(found[k][offset] for k in ('queued','gpu','ready','scene'));index=offset+1
         if any(int(m[1])!=index for m in (q,g,b,s)):raise ValueError('reset index order')
@@ -55,4 +78,6 @@ def verify(trial,directory,frames):
             pool_sha256=sha256_file(pool),scene_sha256=sha256_file(first)))
         last_frame=sf;last_scene=serial;last_generation=generation;last_epoch=epoch
     if sorted(proofs)!=sorted(expected_proofs):raise ValueError('extra reset proof files')
-    return dict(passed=True,resets=result,actions=completed,scope='Scheduled quiescent resets only; interrupted-work resets and physical FFB remain unqualified.')
+    report=dict(passed=True,resets=result,actions=completed,scope='Scheduled pristine-startup or quiescent active resets only; interrupted-work resets and physical FFB remain unqualified.')
+    if startup_result:report['startup']=startup_result
+    return report

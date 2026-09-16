@@ -2,24 +2,24 @@
 
 ## Current work: release parity, September 16
 
-Latest: read docs/reviews/2026-09-16-offroad-opacity-observer.md.
-Nativee13ed764ed7 frozen260patches with buildattestation;
-SHAb33d91db38f19f412a41523e2264601bad9fbc78e52c078bd09a91b6fd0cfb6d.
-Offroadexplicitmetadata profile503..191040 retainsalloriginalprojection;
-observerplane141888/width11824, NO appliedfade orfarcoverage discard.
-Samecandidate3382inputs/1581camera6324ADC/originalresources/all8mirrorplanes/
-fivecompleted4KCRTimages3358..3362 exact.21065packets856captured fullorderedDMA/
-depths independentlyexact saved3360;21scene rows except6durations exact.
-Visiblehost603pixels(other6), butzero partial/zeroopacity pixelsbothpages.
-Priorisolated821partial9976zero arecoveredbyactualforeground. DoNOTrepeatthiswindow.
-Nativeprofiletest+10mirrorPythonPASS; savedWorld/USA receipts revalidateexact.
-LOCALworld25-roads-20260914/offroad-opacity-qualified.json/prior-profiles.json.
-USAobserverprevious0d249:3522inputpair exact;visible41partialpixels only.
-Read2026-09-16-usa-opacity-observer.md; rawpre-cullreference/wrongmaskbit failures
-retained, v3PASS; canonicalUSAreference fixedin fbd50ee. No game rerun.
-NEXT inspect remainingExoticaresetboundaries, especiallypre-bootstrap reset:
-runtime_reset currentlyrequiresm_bootstrap_scene_started; phasechecksstrict.
-DoNOTclearqueuedownership toavoidfailure. Broadertrack/attended/FFBgatesremain.
+Latest: read docs/reviews/2026-09-16-exotica-startup-reset.md.
+Native225c295d870 frozen261patches with attestation;
+SHA70298c41e6355933398ef0600fd2db96e93fb9312b649e8d7d8d4f20c1dc9fc1.
+Pristine startup reset now allowed ONLYallphasequiescent/no pool/epoch/material/
+preparedscene/prioractivereset. No queuedworkclear/reseed. Separate receipts tied
+to actualactions+firstbootstrap proofs. Olde13 FAILnative89 allpending0 retained.
+New5460inputs/nativeimagesPASS;reset89/pool+scene1474;3935scenes2448968futurequads/
+2537marked0reject;3651camera10953ADCexact;2335451688bytesdrain/join.
+10completed4KCRT images500..5000:9exact,5000onlyleftmargin47434pixels/newblack0;
+both5000viewed, Marsforegroundcar/HUDintact. InitialreportKeyErrorcomparison_scope
+retained;qualified-v2PASSno gamerun. Nativepristinegate+3PythontestsPASS; oldactive
+7500caseownership/actions/proofsrevalidateexact withoutreplay.
+LOCALrace-transitions-20260916/exotica-startup-reset and startup-reset-active-regression.
+PriorUSA/Offroadopacityobservers qualified; USAvisible41partialpixels, Offroad0.
+DoNOTrepeatsamefar-envelopewindows; theydo notjustifyappliedfades.
+NEXT inspect MAME/device reset ordering and explicit interrupted-work retirement.
+Currentpending/bootstrap-in-progress/degradedresetremainstrict. DoNOTblindlyclear
+queuedowners orlabelunfinishedphasescomplete. Broadertrack/attended/FFBgatesremain.
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
 

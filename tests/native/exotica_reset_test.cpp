@@ -14,6 +14,11 @@ int main() {
         uint64_t a[]={4,4,4,4,4,4,4};a[i]++;
         assert(!quiescent(0,a[0],a[1],a[2],a[3],a[4],a[5],a[6]));
     }
+    assert(pristine(false,false,false,false,0,0,0,0,0));
+    for(unsigned i=0;i<9;++i) {
+        uint64_t a[]={0,0,0,0,0,0,0,0,0};a[i]=1;
+        assert(!pristine(a[0],a[1],a[2],a[3],a[4],a[5],a[6],a[7],a[8]));
+    }
     assert(gpu_matches(r,2,18000,75000,75000,75000,225000,r.hash,true));
     assert(!gpu_matches(r,3,18000,75000,75000,75000,225000,r.hash,true));
     assert(!gpu_matches(r,2,18002,75000,75000,75000,225000,r.hash,true));

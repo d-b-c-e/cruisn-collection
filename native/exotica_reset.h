@@ -22,6 +22,13 @@ inline bool decode(const void *data,size_t size,Request &out) {
     if(!valid(r))return false;
     out=r;return true;
 }
+// Before the first pool/scene transaction there is no auxiliary ownership to
+// invalidate or GPU work to reseed. A caller must also prove phase quiescence.
+inline bool pristine(bool pending,bool pool_ready,bool scene_started,bool lifetime_started,
+                     uint64_t epoch,uint64_t generation,uint64_t prepared,uint64_t scene,uint64_t resets) {
+    return !pending && !pool_ready && !scene_started && !lifetime_started &&
+        !epoch && !generation && !prepared && !scene && !resets;
+}
 // The adapter collects every live phase before touching guest or host state.
 inline bool quiescent(uint32_t pending,uint64_t prepared,uint64_t matched,uint64_t requested,
                       uint64_t completed,uint64_t waiting,uint64_t active,uint64_t composed) {

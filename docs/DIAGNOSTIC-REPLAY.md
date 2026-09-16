@@ -898,3 +898,9 @@ bounded original-mirror workflow with explicit3x future drawing, stock sphere
 admission and physical FFB0. Projection remains bounded below191040; the observer
 measures an11824-unit envelope below141888 without applying a fade or clipping
 existing geometry. See [the completed-frame result](reviews/2026-09-16-offroad-opacity-observer.md).
+
+Exotica continuous candidates now distinguish a reset before any pool/scene
+ownership from an active quiescent reset. The former retains the first startup
+proof and has no GPU-reseed receipt; mixed schedules preserve both kinds of proof.
+Interrupted bootstrap, pending work and degraded resets still reject. See
+[the startup-reset qualification](reviews/2026-09-16-exotica-startup-reset.md).

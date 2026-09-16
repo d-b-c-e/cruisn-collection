@@ -117,3 +117,5 @@ archives. They include superseded assumptions and unimplemented designs.
 - [USA completed-opacity observer](reviews/2026-09-16-usa-opacity-observer.md): qualified depth transport without presentation changes; only41 potentially affected visible pixels in the sampled horizon.
 
 - [Off-Road completed-opacity observer](reviews/2026-09-16-offroad-opacity-observer.md): its separate projection profile qualifies; actual foreground hides the sampled outer envelope.
+
+- [Exotica pristine startup reset](reviews/2026-09-16-exotica-startup-reset.md): reproduced failure repaired without discarding pending work; full5460-input successor qualifies.

@@ -48842,3 +48842,84 @@ index 8401dbeda1b..48d94bb914f 100644
 -- 
 2.55.0.windows.3
 
+From 225c295d87085ee12f96b04ad09e51f2244a6e28 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 08:06:31 -0500
+Subject: [PATCH] Allow Exotica reset before any auxiliary startup ownership
+ exists
+
+---
+ src/mame/midway/cruisn/exotica_reset.h |  7 +++++++
+ src/mame/midway/midzeus.cpp            | 18 ++++++++++++++++--
+ 2 files changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/exotica_reset.h b/src/mame/midway/cruisn/exotica_reset.h
+index 90d11ffe6da..41ce6f018de 100644
+--- a/src/mame/midway/cruisn/exotica_reset.h
++++ b/src/mame/midway/cruisn/exotica_reset.h
+@@ -22,6 +22,13 @@ inline bool decode(const void *data,size_t size,Request &out) {
+     if(!valid(r))return false;
+     out=r;return true;
+ }
++// Before the first pool/scene transaction there is no auxiliary ownership to
++// invalidate or GPU work to reseed. A caller must also prove phase quiescence.
++inline bool pristine(bool pending,bool pool_ready,bool scene_started,bool lifetime_started,
++                     uint64_t epoch,uint64_t generation,uint64_t prepared,uint64_t scene,uint64_t resets) {
++    return !pending && !pool_ready && !scene_started && !lifetime_started &&
++        !epoch && !generation && !prepared && !scene && !resets;
++}
+ // The adapter collects every live phase before touching guest or host state.
+ inline bool quiescent(uint32_t pending,uint64_t prepared,uint64_t matched,uint64_t requested,
+                       uint64_t completed,uint64_t waiting,uint64_t active,uint64_t composed) {
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 5f2f338d809..4f0b1876c33 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -265,7 +265,7 @@ private:
+ 	void bootstrap_start();
+     void bootstrap_arm();
+     void runtime_reset();
+-    uint64_t m_reset_count=0,m_reset_ready=0,m_reset_scenes=0;
++    uint64_t m_reset_count=0,m_reset_ready=0,m_reset_scenes=0,m_startup_reset_count=0;
+     uint32_t m_bootstrap_initial_ready=0;
+ 	void bootstrap_exit();
+ 	void bootstrap_scene(uint32_t address,uint32_t value,uint32_t mask);
+@@ -564,13 +564,26 @@ void crusnexo_state::runtime_reset()
+         m_handover_pending.pending() || m_handover_generation || m_compose_scene || m_bootstrap_pending ||
+         !m_zeus->midz_fifo_empty() || m_endpoint_commits!=m_endpoint_consumed ||
+         m_handover_completed!=m_waiting_scenes;
+-    if(!continuous() || !m_bootstrap_scenes || !m_bootstrap_scene_started || m_scene_failed_scene ||
++    if(!continuous() || !m_bootstrap_scenes || !m_scene_material_image || m_scene_failed_scene ||
+         m_reset_count!=m_reset_ready || m_reset_count!=m_reset_scenes ||
+         !cruisn::exotica_reset::quiescent(unsigned(pending),m_scene_prepared,m_scene_matched,
+             m_scene_fence_requests,m_scene_fence_completed,m_waiting_scenes,m_active_scenes,m_compose_completed) ||
+         m_reset_count==std::numeric_limits<uint64_t>::max())
+         fatalerror("Exotica reset requires quiescent continuous renderer\n");
+     const auto generation=m_scene_material_image->generation();
++    if(!m_bootstrap_scene_started)
++    {
++        if(!cruisn::exotica_reset::pristine(pending,m_bootstrap_ready,m_bootstrap_scene_started,m_lifetime_started,
++                m_lifetimes.epoch(),generation,m_scene_prepared,m_scene_fence_scene,m_reset_count) ||
++            m_bootstrap_frame || m_startup_reset_count==std::numeric_limits<uint64_t>::max())
++            fatalerror("Exotica reset cannot interrupt bootstrap ownership\n");
++        // Keep the untriggered guest startup taps. No auxiliary commands, materials
++        // or source epoch exist; ordinary emulation performs its own reset below.
++        ++m_startup_reset_count;
++        fprintf(stderr,"MIDZ_RESET_STARTUP index=%llu frame=%u prepared=0 generation=0 epoch=0\n",
++            (unsigned long long)m_startup_reset_count,frame);
++        return;
++    }
+     const cruisn::exotica_reset::Request request{frame,m_reset_count+1,m_scene_fence_scene,
+         generation,generation?m_scene_material_image->image_hash():0};
+     const auto wire=cruisn::exotica_reset::encode(request);
+@@ -655,6 +668,7 @@ void crusnexo_state::bootstrap_exit()
+ {
+ 	m_bootstrap_count_tap.remove();m_bootstrap_tail_tap.remove();
+ 	fprintf(stderr,"MIDZ_BOOTSTRAP_RESULT complete=%u frame=%u\n",unsigned(m_bootstrap_ready && !m_bootstrap_pending && (!m_bootstrap_scenes || m_bootstrap_scene_started)),m_bootstrap_initial_ready);
++    if(m_startup_reset_count)fprintf(stderr,"MIDZ_RESET_STARTUP_RESULT count=%llu\n",(unsigned long long)m_startup_reset_count);
+     if(m_reset_count)fprintf(stderr,"MIDZ_RESET_RESULT complete=%u requested=%llu ready=%llu scenes=%llu\n",
+         unsigned(m_bootstrap_ready && !m_bootstrap_pending && m_bootstrap_scene_started &&
+             m_reset_count==m_reset_ready && m_reset_count==m_reset_scenes),
+-- 
+2.55.0.windows.3
+

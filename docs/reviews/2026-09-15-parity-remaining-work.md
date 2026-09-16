@@ -199,3 +199,8 @@ displayed colors. USA's sampled visible page has41 potentially affected fine
 pixels; Off-Road's has none. These windows do not justify another fade replay.
 Existing positive2x/3x comparisons remain valid; broader visible transitions need
 their own source/ownership evidence.
+
+The [pristine Exotica startup reset](2026-09-16-exotica-startup-reset.md) now
+passes a full5460-input case with nonempty scenery and unchanged original motion.
+Its separate receipt/proof path complements active quiescent reset support;
+interrupted work and degraded-reset handling remain open.

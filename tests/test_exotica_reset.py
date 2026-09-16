@@ -41,6 +41,42 @@ class ResetTests(unittest.TestCase):
             (root/'session-action-events.csv').write_text('id,event,frame,time\n1,request,6000,105\n',encoding='utf-8')
             with self.assertRaises(ValueError):r.verify({'mode':'continuous'},root,8000)
 
+    def test_pristine_startup_then_active_reset_keeps_separate_proofs(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp);active=self.fixture(root);base=112061
+            pool=list(struct.unpack('<'+'I'*((root/'exotica-reset-1-bootstrap.bin').stat().st_size//4),
+                (root/'exotica-reset-1-bootstrap.bin').read_bytes()))
+            pool[2:4]=[1000,1000]
+            (root/'exotica-bootstrap.bin').write_bytes(struct.pack('<'+'I'*len(pool),*pool))
+            scene=list(struct.unpack('<16I',(root/'exotica-reset-1-scene.bin').read_bytes()))
+            scene[2:4]=[1001,1000];scene[14]=1
+            (root/'exotica-bootstrap-scene.bin').write_bytes(struct.pack('<16I',*scene))
+            bootstrap=['MIDZ_BOOTSTRAP=3',f'MIDZ_BOOTSTRAP_READY begin=1000 frame=1000 base={base} links=1201',
+                'MIDZ_BOOTSTRAP_SCENE frame=1001 scene=1','MIDZ_BOOTSTRAP_RESULT complete=1 frame=1000']
+            startup='MIDZ_RESET_STARTUP index=1 frame=89 prepared=0 generation=0 epoch=0'
+            lines=[startup,*bootstrap,*active,'MIDZ_RESET_STARTUP_RESULT count=1']
+            (root/'session-actions.csv').write_text('frame,action\n90,soft_reset\n6000,soft_reset\n',encoding='utf-8')
+            (root/'session-action-events.csv').write_text(
+                'id,event,frame,time\n1,request,90,1\n1,complete,90,1\n2,request,6000,105\n2,complete,6000,105\n',encoding='utf-8')
+            self.write(root,lines)
+            result=r.verify({'mode':'continuous'},root,8000)
+            self.assertEqual(result['startup']['resets'],[dict(index=1,frame=89)])
+            self.assertEqual(len(result['resets']),1)
+            self.assertEqual(result['actions']['completed'],2)
+            for bad in ('index=2','frame=90','frame=1000','prepared=1','generation=1','epoch=1'):
+                old=bad.split('=')[0]+'='+dict(index='1',frame='89',prepared='0',generation='0',epoch='0')[bad.split('=')[0]]
+                self.write(root,[line.replace(old,bad) if line==startup else line for line in lines])
+                with self.assertRaises(ValueError):r.verify({'mode':'continuous'},root,8000)
+            # With no active reset there must be no synthetic GPU reset/proof.
+            self.write(root,[startup,*bootstrap,'MIDZ_RESET_STARTUP_RESULT count=1'])
+            for p in root.glob('exotica-reset-*.bin'):p.unlink()
+            (root/'session-actions.csv').write_text('frame,action\n90,soft_reset\n',encoding='utf-8')
+            (root/'session-action-events.csv').write_text(
+                'id,event,frame,time\n1,request,90,1\n1,complete,90,1\n',encoding='utf-8')
+            result=r.verify({'mode':'continuous'},root,8000)
+            self.assertEqual(result['resets'],[])
+            self.assertTrue(result['startup']['bootstrap']['passed'])
+
     def test_corrupt_proof_phase_order_and_unscheduled_reset_reject(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);lines=self.fixture(root)
