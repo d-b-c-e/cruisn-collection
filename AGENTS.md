@@ -15,15 +15,18 @@ hashesoldreport,NOgamerun. LOCALrace-transitions-20260916/exotica-active-reset/
 pre-device-3x and pre-device-qualified-v2.json.
 Interrupted/bootstrap/degradedresetremainstrict; no blindqueuedownerclears.
 PriorUSA/Offroadopacityobservers qualified; USAvisible41partialpixels, Offroad0.
-NEXT Offroadbillboardclass: read2026-09-16-offroad-visible-boundary.md.
-One2524observerPASS1482orderedDMA/depths; completed2520exactprior3x,
-723camera2892ADCexact;46706visiblehostpixels butzeroopacityallpages.
-Scalar51partial+1zeroallhidden.8760all516quads<107893 so no newreplay.
-Newoffroad_fade_screen.py2tests+actual2520/8760PASS; nofadepromotion.
-Sourcecensus00800000=657excluded,209heuristicinrange/7models,mostlyquads.
-Actualbit4dispatch1CA8->1D61 usesbasisRAM1120E; loaderpost9C8C consultshitstate.
-NEXT captureoriginalbillboardbasis/matrix/projectionbeforeearlydrawing.
-No blindrelabeling ordinarygeometry; damage-state/materials/lifetimeproofneeded.
+NEXT Offroadstaticbillboard sources: read2026-09-16-offroad-billboard-foundation.md.
+StandalonePython/C++505actualmatrices2020vertices/13modelsEXACT;2Python1nativePASS.
+2524originalinputs/nativeimages723camera2892ADC andcompleted2520CRTpriorcontrol
+exact. Captured10basisvariants. Source1BDD..1BF7preparebasisBEFOREhost1BF8.
+TwoLOCALprobeFAILswrongreadspanthenaddress809C00identified; correctedv3PASS.
+CanonicalboundedLua added, fixedcaptureequivalentparameterizationnotnewgamerun.
+HelpersNOTMAMElinked/synced. LOCALW/offroad-billboard-original-v3,
+offroad-billboard-original-qualified.json,offroad-billboard-transparent.json.
+337actualflags00800804+60flags00000804/hitbitsclear;108dynamic04004004excluded.
+NEXT bindstaticactualrecords toROMdescriptors/currenthitstate, thenpolygon/DMA/
+materials beforeearlierdrawing. No blindordinaryrelabeling. Native083unchanged.
+Priorfade2520/3360no visibleenvelope;8760noneingeometry. Don'trepeatthosewindows.
 
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.

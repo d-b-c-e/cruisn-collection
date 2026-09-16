@@ -908,3 +908,7 @@ Interrupted bootstrap, pending work and degraded resets still reject. See
 ### Screen Off-Road fade candidates before replay
 
 Use harness/offroad_fade_screen.py SAVED_RUN --frame N --report NEW_REPORT.json on a scene from offroad_scene_resources.lua. This checks ordered2x/3x geometry and decodes C31 camera depths. A zero envelope avoids an unnecessary capture; a positive result is not completed visibility or fade acceptance. See [the actual early/late El Paso checks](reviews/2026-09-16-offroad-visible-boundary.md).
+
+### Original Off-Road billboard capture
+
+The read-only offroad_billboard_capture.lua probe uses CRUISN_OFFROAD_BILLBOARD_FIRST/LAST (default2500..2520, maximum121frames). Verify its local output with verify_offroad_billboard.py RUN --native ANALYZER --report NEW_REPORT. This checks actual current-basis matrices and four-vertex XYZ only; it does not accept future sources, materials or displayed geometry. See [the foundation review](reviews/2026-09-16-offroad-billboard-foundation.md).
