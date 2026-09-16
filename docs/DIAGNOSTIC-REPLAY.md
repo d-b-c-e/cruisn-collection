@@ -828,3 +828,16 @@ Current `force-gate.csv` also includes `game_invert` and `device_invert`.
 the requested signed level from `force-source.csv`. Exotica normalizes its cabinet
 motor switch; World keeps game polarity0. Device inversion remains separate.
 See [the all-game findings and final validation](reviews/2026-09-07-release-feedback.md).
+
+For synthetic course-selection and short sightline scouting, `synthesize_input.py`
+accepts `--record-only` to retain a MAME-written input case without automatically
+running it a second time. The resulting report explicitly says `passed: false`
+and `identity_replayed: false`; recording completion is not repeatability or
+rendering acceptance. Use this only when the next planned candidate comparison
+answers a concrete question, rather than repeating an unchanged scouting run.
+
+`--gl-capture FIRST:LAST --gl-every N` allows sparse images over a longer scenario,
+with a maximum of241 images and time left for presentation before stopping.
+Cadence follows global native frame multiples: `3060:5460 --gl-every 400` captures
+3200,3600,4000,4400,4800,5200. It does not start its cadence at3060.
+

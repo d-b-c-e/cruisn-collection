@@ -3,12 +3,43 @@ import struct
 import sys
 import unittest
 import zlib
+import json
+import tempfile
+from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "harness"))
-from synthesize_input import ANALOG, ANALOG_LAYOUTS, STEERING, PORTS, STRIDE, LAYOUTS, generate
+from synthesize_input import ANALOG, ANALOG_LAYOUTS, STEERING, PORTS, STRIDE, LAYOUTS, generate, capture_schedule, main
 
 
 class SyntheticInputTests(unittest.TestCase):
+    def test_sparse_capture_uses_global_frame_alignment_and_bounds(self):
+        self.assertEqual(capture_schedule('3060:5460',400,5500)['SNAP_MAX'],'6')
+        for interval,every,stop in [('10:20',100,100),('1:1000',1,2000),
+                ('10:99',1,100),('bad',1,100),('10:20',0,100)]:
+            with self.subTest(interval=interval,every=every),self.assertRaises(ValueError):
+                capture_schedule(interval,every,stop)
+
+    def test_record_only_retains_explicit_unqualified_result_without_replay(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);seed=root/'seed';(seed/'record/input').mkdir(parents=True)
+            (seed/'record/input/session.inp').write_bytes(self.seed())
+            (seed/'case.json').write_text(json.dumps(dict(rom='crusnusa',
+                evidence=dict(columns=['frame','time','x','y',*PORTS]),
+                command=['exe','crusnusa'],settings={})),encoding='utf-8')
+            scenario=root/'scenario.json';scenario.write_text('{"frames": 2}',encoding='utf-8')
+            work=root/'out';recording=MagicMock();recording.path=work/'case'
+            recording.manifest={'status':'recorded'}
+            recording.prepare.return_value=(['exe','crusnusa'],{},work/'runtime')
+            with patch('synthesize_input.Recording',return_value=recording), \
+                 patch('synthesize_input.execute',return_value={'returncode':0}), \
+                 patch('synthesize_input.replay.main') as replay_main:
+                self.assertEqual(main([str(seed),str(scenario),'--output',str(work),'--record-only']),0)
+                replay_main.assert_not_called()
+            report=json.loads((work/'report.json').read_text(encoding='utf-8'))
+            self.assertTrue(report['recorded'])
+            self.assertFalse(report['passed'])
+            self.assertFalse(report['identity_replayed'])
+
     def seed(self, rom="crusnusa"):
         header = bytearray(64)
         header[:8] = b"MAMEINP\0"

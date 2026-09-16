@@ -15,6 +15,7 @@ import zlib
 from diagnostic_runtime import diagnostic_env, execute, new_run
 from session_case import Recording, set_option
 from verification import sha256_file, write_json
+from gl_frames import requested_frames
 import replay
 
 PORTS = (":ACCEL", ":BRAKE", ":CONF", ":DSW", ":FAKE", ":IN0", ":IN1", ":MOTION", ":WHEEL")
@@ -117,6 +118,19 @@ def generate(seed_bytes, scenario):
     return seed_bytes[:64] + zlib.compress(result, 6)
 
 
+def capture_schedule(interval, every, stop):
+    """Bound captured images rather than forcing a dense, short time window."""
+    try:
+        first, last = map(int, interval.split(':'))
+    except ValueError as exc:
+        raise ValueError('GL capture requires first:last frame numbers') from exc
+    if not 0 <= first < last < stop - 1 or every < 1:
+        raise ValueError('GL capture must leave a completed frame before stop and use a positive interval')
+    count = len(requested_frames(first, last, every, budget=241, stop_frame=stop-1))
+    return dict(SNAP='redirect-at-launch', SNAP_EVERY=str(every),
+                SNAP_FIRST=str(first), SNAP_LAST=str(last), SNAP_MAX=str(count))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("seed", type=Path, help="neutral completed run_replay_smoke.py case")
@@ -127,6 +141,9 @@ def main(argv=None):
     ap.add_argument("--gl", action="store_true", help="show the V-Unit GL renderer during the scripted drive")
     ap.add_argument("--patch", type=Path, help="explicit game-code patch for this new case")
     ap.add_argument("--gl-capture", help="short first:last stream-frame interval for live GL BMP captures")
+    ap.add_argument('--gl-every', type=int, default=1, help='capture spacing; at most 241 images')
+    ap.add_argument('--record-only', action='store_true',
+                    help='retain the new synthetic recording without an automatic identity replay; not an acceptance pass')
     args = ap.parse_args(argv)
     work = new_run("scenario", args.output)
     seed = args.seed.resolve()
@@ -157,11 +174,13 @@ def main(argv=None):
             from graphics_options import VUNIT_HEIGHT, family
             settings['MIDV_GL_HEIGHT'] = str(VUNIT_HEIGHT.get(family(manifest['rom']),400))
     if args.gl_capture:
-        first, last = [int(v) for v in args.gl_capture.split(":")]
-        if not args.gl or not 0 <= first < last <= scenario["frames"] or last - first > 240:
-            ap.error("GL capture requires --gl and an interval of 1..240 frames within the scenario")
-        settings.update({key+'_GL_'+k:v for k,v in dict(SNAP='redirect-at-launch',SNAP_EVERY='1',
-            SNAP_FIRST=str(first),SNAP_LAST=str(last),SNAP_MAX='241').items()})
+        if not args.gl:
+            ap.error('GL capture requires --gl')
+        try:
+            schedule = capture_schedule(args.gl_capture, args.gl_every, scenario['frames'])
+        except ValueError as exc:
+            ap.error(str(exc))
+        settings.update({key+'_GL_'+k:v for k,v in schedule.items()})
     recording = Recording(str(work / "case"), every=scenario.get("snapshot_every", 60),
                            stop_frame=scenario["frames"])
     command, env, runtime = recording.prepare(command, diagnostic_env(settings),
@@ -172,6 +191,11 @@ def main(argv=None):
     recording.finish(result["returncode"])
     if recording.manifest["status"] != "recorded":
         return 1
+    if args.record_only:
+        write_json(work/'report.json', dict(recorded=True, identity_replayed=False,
+            passed=False, physical_force=False,
+            scope='Synthetic stimulus recorded through MAME. Repeatability and visual acceptance remain untested.'))
+        return 0
     presentation = [] if manifest['rom'] == 'crusnexo' and args.gl else ['--headless']
     if args.gl_capture:
         presentation = ['--compare-gl']
