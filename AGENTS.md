@@ -10,8 +10,12 @@ RawFAILzeroendpointworkload retained; separatequiescent-qualifiedPASS onlyreset.
 ExhaustiveGPU16,777,216D24codes/colorpixels exact, ordinaryunchanged; nativeboundary
 and9PythonPASS. Initialfatalcurrent-3x retained. Newexotica_reset verifier linked;
 freshproofs perreset, no blanketqueueclear. Pendingwork/prebootstrap/reboot/
-degradedreset stillstrict/open. NEXT actualnonempty-scenery reset afterMars5500,
-usingoneoriginalcontinuation+candidate. Personal87d/publicv0.5.0unchanged.
+degradedreset stillstrict/open. Actualnonempty-scenery reset nowPASS7500inputs,5691camera12921ADC,4679scenes/
+2993770futurequads/2598marked0reject/13689GPUpairs/488bindings12epochs. Reset5559,
+newbootstrap6944.2pre-reset4Kimagesexactold3x;10post-resetexactordinary.
+LOCALrace-transitions-20260916/exotica-active-reset qualified/prior-3x-prefix.
+All2734357696bytesdrained. No newbuild/rerun. NEXT V-Unitresetcache lifetime audit;
+actualmachine_reset reloadsRAM but fourhostcachesonlyclear via latertrackstate. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
 
 

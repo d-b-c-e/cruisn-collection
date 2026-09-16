@@ -47,3 +47,26 @@ Local evidence: `results/diagnostics/race-transitions-20260916/exotica-mid-race-
 `d5fb48024f5a243d823a087df0cd1e149b88bc5f16d6463046a75dff07d1c41b`.
 Personal Stream Deck binary and publicv0.5.0 remain unchanged. No deployment,
 physical FFB or general reset/release acceptance is implied.
+
+## Reset after actual extended scenery
+
+A second case preserves all5500Mars inputs, appends an explicit neutral tail,
+and schedules reset5560. Its ordinary recording and continuous3x replay both
+complete7500inputs. The normal replay report now passes all workload checks:
+4679scenes,2,993,770futurequads,2598marked endpoints prepared with0reject,13,689GPU
+pairs,488lifetime bindings and12epochs. CPU/GPU reset receipts agree at5559
+(scene4161,material generation12372); fresh pool/scene activation occurs6944
+(scene4162). All2,734,357,696queued bytes drain and workers join.
+
+All7500original inputs/times/native snapshots,5691camera rows and12,921actual ADC
+rows match. Twelve completed4K CRT images cover5200..7400. Both pre-reset images
+are byte exact the retained prior3x candidate; all ten post-reset images are byte
+exact the ordinary control. The355near-black pixels differing from ordinary at
+5200 are already present in that prior3x image, not a reset regression.
+
+Evidence under race-transitions-20260916/exotica-active-reset:
+report.json, host3x/report.json, qualified.json and prior-3x-prefix.json.
+This closes the sampled quiescent reset with actual prior scenery ownership.
+No repeated full drive, new build or verifier relaxation was needed. The
+interrupted-work/pre-startup/repeated-during-reboot cases listed above remain
+separate limitations. V-Unit reset cache lifetime is the next source audit.
