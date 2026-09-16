@@ -17,7 +17,15 @@ from verification import sha256_file, write_json
 from analyze_usa_host import COUNTERS, evidence, key
 
 
-def reference(memory, far, future=None, *, far_coverage=False):
+def outside_horizontal_canvas(projected):
+    if len(projected) % 3:
+        raise ValueError('incomplete USA projected vertex')
+    xs = [F.load(word).fix() for word in projected[::3]]
+    # Match current native visibility bounds; include every projected vertex.
+    return bool(xs) and (max(xs) < -128 or min(xs) > 640)
+
+
+def reference(memory, far, future=None, *, far_coverage=False, horizontal_cull=True):
     if far_coverage and far != 240000:
         raise ValueError('USA coverage requires 3x')
     def words(address, count):
@@ -87,7 +95,8 @@ def reference(memory, far, future=None, *, far_coverage=False):
                 counts[4] += 1
             else:
                 counts[5] += 1
-                objects.append((owner, model, depth, quads(record, buffer, far_coverage=far_coverage)))
+                output = [] if horizontal_cull and outside_horizontal_canvas(buffer) else quads(record, buffer, far_coverage=far_coverage)
+                objects.append((owner, model, depth, output))
     objects.sort(key=lambda item: (-item[2], item[0]))
     return counts, [[owner, model, depth, *q] for owner, model, depth, output in objects for q in output]
 

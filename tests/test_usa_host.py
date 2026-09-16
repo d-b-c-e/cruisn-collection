@@ -12,6 +12,20 @@ from analyze_usa_host import COUNTERS, PHASES, evidence, compare_host_interval
 from analyze_world_host import HASH_SEED, QUAD_FIELDS, hash_quad
 
 
+class UsaVisibilityReferenceTests(unittest.TestCase):
+    def test_retains_crossing_and_boundary_models(self):
+        from verify_usa_host import outside_horizontal_canvas
+        from scenery_c31 import F
+        def points(xs):
+            return [F.integer(v).store() for x in xs for v in (x, 200, 90000)]
+        for xs in ([], [-300, -128], [640, 1000], [-300, 1000], [-400, -300, 20]):
+            self.assertFalse(outside_horizontal_canvas(points(xs)))
+        for xs in ([-300, -129, -200], [641, 1000, 900]):
+            self.assertTrue(outside_horizontal_canvas(points(xs)))
+        with self.assertRaises(ValueError):
+            outside_horizontal_canvas([0, 0])
+
+
 class UsaHostOptionsTests(unittest.TestCase):
     def args(self, *values):
         parser = argparse.ArgumentParser()
