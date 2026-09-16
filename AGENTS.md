@@ -1,5 +1,25 @@
 # Cruis'n POC — Codex Agent Instructions
 
+## September16 scripted extension — ACTIVE Exotica 3x transition replay
+
+Read docs/reviews/2026-09-16-scripted-recording-continuations.md. Newextend_input.py
+preserveseveryhumanINProw/header andappends explicitlyscriptedtail; analogjoins
+fromactuallastaccumulator, timesteps/Zeusinitialrounding exact. Outputisstimulus,
+notverifiedcase. Twofocusedtests all5layoutsPASS; actual5recordingpreflights
+sourceSHA/prefixbytes exact. FirstMAMErecordedAmazon8860+2400tail PASS11260,
+original8860input/timeframesexact. 4KCRTcompleted9000/9900nameentry,10800loading,
+11100newracestartChinese flags. Notcompletesecondrace/visualdistanceacceptance.
+LOCALT=results/diagnostics/race-transitions-20260916; exotica-menu-tail-v1/case.
+ACTIVE candidate3xcontinuousquiet runT/exotica-menu-tail-3x-v2, execsession96133
+atcheckpoint. FirstplanT/exotica-menu-tail-3x FAILBEFORElaunch missingrequired
+endpointsnapshot; v2retains5219, removesotherhost/depthsnapshots. KeepfirstFAIL.
+Native1a1b7e0ff6b frozen/pushed unchanged. NEXT finishthisrun, matchallmotion,
+actualnewtrackimages+nativeepoch/transaction/shutdown receipts; diagnosefailure
+ifanybeforemoregames. Existingbaselineoneactualrecord, no unnecessaryidentityrun.
+Neverbuild/export/broadscanduringgame. Thenothergame transitions/qualityremaining.
+Personal87d/publicv0.5.0unchanged, nodeploy/release/physicalFFB/hostedCI/menuremoval.
+Continueovernightdirectly; heartbeatbackupONLY. AttendedExoavailabilitypending.
+
 ## September16 quiet V-Unit — next recorded transitions
 
 Read docs/reviews/2026-09-16-vunit-quiet-runtime.md. Native1a1b7e0ff6b frozen
