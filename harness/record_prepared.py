@@ -84,11 +84,11 @@ def renderer_receipts(report, runtime, frames):
         bootstrap=exotica_bootstrap.verify(report['exotica_bootstrap'],runtime)
         shutdown=exotica_shutdown.verify(report['exotica_shutdown'],runtime)
         continuous=exotica_runtime.verify(report['exotica_runtime'],runtime,shutdown)
-        journals=exotica_journals.verify(report['exotica_journals'],runtime,runtime_result=continuous)
         trial=report.get('exotica_host_failure')
         if trial and trial.get('continuous'):trial['last']=frames-1
         failure=exotica_host_failure.verify_receipt(trial,runtime)
         if failure and failure['degraded']:raise ValueError('recording used retired original-only fallback')
+        journals=exotica_journals.verify(report['exotica_journals'],runtime,runtime_result=continuous)
         return dict(bootstrap=bootstrap,shutdown=shutdown,runtime=continuous,journals=journals,failure=failure)
     import vunit_bootstrap,vunit_runtime,vunit_host_failure
     report['vunit_bootstrap']['runtime_last']=frames-1

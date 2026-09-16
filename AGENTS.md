@@ -68,8 +68,16 @@ RawdegradedFAIL retained; initialcheckerFAIL wrongnonempty-patch assumption,
 qualified-v2PASSfromsamefiles. No replay for analyzer. Preset now Exo failureoriginal.
 Prepared recorder rejects fault/stall inheritance and degraded-native acceptance.
 Native/runtime3Python +3preset+3recorder testsPASS. No currentgame/build/test.
-NEXT bounded startup recovery, especially zero prior endpoint/model work;
-normal runtime/journal acceptance must not hide independent degraded evidence.
+Startup recovery now separately qualifies2000inputs/33nativeimages,200camera/
+600ADC and3ordinary4Ktrack-menu images1945..1947. Failure1385scene2,retireGPU1385,
+present1386,1scene,0endpointcommits,2emptyadmissionpackets,125867456bytesdrained.
+Rawquiet-workloadFAIL remains: nativecomplete requirespositiveendpointcoverage.
+No verifier relaxation. Saved recoveryPASS explicitly workloadFALSE. Read
+2026-09-16-exotica-startup-retirement.md. Replay now retains independent retirement
+and continues input/pixel checks after a journal error, still finalFAIL. No rerun
+for this analyzer change. No activegame/build/test. NEXT inspect existing scripted
+Exotica course-selection work for an autonomous open-sightline sample; no invented
+track names or claim of attended/full-course acceptance.
 
 
 Current frozen native: `5c4da4891a9a147d62ffc17668f381e6000c76e9`,

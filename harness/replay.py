@@ -508,6 +508,8 @@ def main(argv=None):
         if shutdown_result:
             report['exotica_shutdown']['result']=shutdown_result
             if shutdown_result['classification']=='failed':raise ValueError('Exotica shutdown observed renderer or writer failure')
+        exotica_failure_result=exotica_host_failure.verify_receipt(exotica_failure_trial,runtime)
+        if exotica_failure_result:report['exotica_host_failure']['result']=exotica_failure_result
         bootstrap_result=exotica_bootstrap.verify(bootstrap_trial,runtime)
         if bootstrap_result:report['exotica_bootstrap']['result']=bootstrap_result
         lifetime_trial=exotica_bootstrap.lifetime_trial(bootstrap_trial,bootstrap_result,lifetime_trial)
@@ -518,7 +520,13 @@ def main(argv=None):
         exotica_bootstrap.resolve_scenes(bootstrap_trial,bootstrap_result,scene_trial,waiting_trial,handover_trial,endpoint_trial)
         runtime_result=exotica_runtime.verify(runtime_trial,runtime,shutdown_result)
         if runtime_result:report['exotica_runtime']['result']=runtime_result
-        journal_result=exotica_journals.verify(journal_trial,runtime,runtime_result=runtime_result)
+        journal_error=None
+        try:journal_result=exotica_journals.verify(journal_trial,runtime,runtime_result=runtime_result)
+        except ValueError as exc:
+            # A startup retirement can contain no endpoint workload. Keep the
+            # strict failure, but still check original inputs and captured pixels.
+            journal_result=None;journal_error=str(exc)
+            report.setdefault('exotica_journals',{})['verification_error']=journal_error
         if journal_result:report['exotica_journals']['result']=journal_result
         if not journal_trial or journal_trial['mode']!='quiet':
             scene_result=exotica_scene_options.verify_receipt(scene_trial,(runtime/'stderr.log').read_text(encoding='utf-8',errors='replace'),runtime)
@@ -566,6 +574,9 @@ def main(argv=None):
             report['display_target']['completed']=verify_completed_size(
                 args.display_size,report['evidence']['gl_captures']['files'])
         report["passed"] = report["comparison"]["passed"]
+        if journal_error:
+            report['passed']=False
+            report['error']=journal_error
         if telemetry and not report['telemetry_loopback']['passed']:
             # Keep independent input/image evidence when a telemetry producer
             # fails; a silent UDP stream must not prevent snapshot validation.
@@ -597,9 +608,7 @@ def main(argv=None):
                     sum(report['zeus_capture']['quad_frames'].values()))
                 if report['zeus_models']['render_policy']!=(zeus_trial['mask'] if zeus_trial else 0):
                     raise ValueError('Zeus model capture policy differs from the requested rendering semantics')
-        exotica_failure_result=exotica_host_failure.verify_receipt(exotica_failure_trial,runtime)
         if exotica_failure_result:
-            report['exotica_host_failure']['result']=exotica_failure_result
             if exotica_failure_result['degraded']:
                 report['passed']=False
                 report['error']='Exotica future assembly failed; retired output does not qualify parity'
