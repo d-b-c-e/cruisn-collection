@@ -84,6 +84,19 @@ Evidence: `animation-qualified/initial-fields5990.json` (35objects),
 Next assess the excluded animated sources' potential visible coverage from saved
 scenes before investing in live phase, residency and ownership integration.
 
+The saved-geometry screen finds one of125future tagged Mars sources within3x
+range (149viewport polygons) and ten of20Amazon sources (27viewport polygons).
+Both initial-model hypotheses decode without geometry errors. Their new palette
+rows come from the same captured WaveRAM, which exactly matches the GPU image.
+The unmodified full insertion first reproduces saved color/depth exactly.
+Against the completed depth buffer, neither group produces any colored pixels.
+`animation-completed-depth.json` records this negative result. It does not test
+every animation phase, but supplies no positive visual reason to prioritize live
+integration in these samples. No game run or MAME build was needed.
+
+Keep the standalone groundwork and return to the independent machine-reset
+release gap; seek useful animated visibility before further runtime integration.
+
 Local evidence is under `results/diagnostics/exotica-open-course-20260916`:
 `custom-descriptor-census.json`, `animation-table-screen-v2.json`,
 `amazon-animation-live-snapshots.json`, `amazon-animation-updates`,

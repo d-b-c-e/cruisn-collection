@@ -109,8 +109,12 @@ Python;compiled32wordreconstructionexact. Nodepointerisobservedinput, notallocat
 proof; result remainsfutureunsupported. ClassA/B/C/F rejected. Amazonoldallocation
 captureonlytaggedcustomhandler, emptycoverageFAILretained.4Python/nativeboundary
 checksPASS and246updatesstillmatchcombinedanalyzer. No MAMElink/sync/build.
-NEXT savedanimatedsourcespotentialvisiblecoverage, thenphase/lifetime/admission
-proofifuseful; no newliveanimation policy or allocation/RNG calls. No game/test.
+Savedinitial-modelscreen Mars1/125futuretaggedinrange149viewportquads,Amazon10/20
+27viewportquads;both0coloredpixelsagainstcompleteddepth. Originalfullinsertion
+color/depthexact andCPU/GPUWaveexact, newpalettesfromsameWave. LOCALanimation-
+completed-depth.json. No positivevisibilityclaim or liveanimationpromotion.
+NEXT Exotica machine-reset contract (currentlyexplicitfatalaftertracking);
+inspectorderedretirement/CPU-GPUresetownershipbeforechangingit. No game/test.
 Continue directly.
 
 
