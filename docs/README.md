@@ -32,6 +32,7 @@ assuming that a source feature is present in a downloaded package.
 | [Off-Road3x race transition](reviews/2026-09-16-offroad-race-transition.md) | El Paso restart, matching projection and distant-cliff additions |
 | [World road coverage repair](reviews/2026-09-15-world-road-polygon-coverage.md) | Verified Germany margin repair, World 2.5 compatibility and displayed-scene diagnostics |
 | [Exotica distance sample selection](reviews/2026-09-15-exotica-distance-sample-selection.md) | Avoiding empty or foreground-hidden third-band comparisons |
+| [Exotica Mars third-band visibility](reviews/2026-09-16-exotica-mars-distance.md) | Small verified3x gain, reproducible scout and source-fragment attribution |
 | [Latest Zeus upstream review](reviews/2026-09-15-zeus-upstream-refresh.md) | Qualified solid-color register backport and the deferred mesh changes |
 | [Off Road complete drive](reviews/2026-09-10-offroad-full-drive.md) | Attended El Paso recording, exact full-route replay and extended-scenery checks |
 | [Exotica fade and performance](reviews/2026-09-10-exotica-fade-and-performance.md) | Original fade reconstruction and measured future-rendering costs |

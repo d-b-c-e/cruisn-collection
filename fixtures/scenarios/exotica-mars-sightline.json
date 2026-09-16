@@ -1,0 +1,63 @@
+{
+  "analog": {
+    ":ANALOG1": [
+      [
+        0,
+        0
+      ]
+    ],
+    ":ANALOG2": [
+      [
+        0,
+        0
+      ],
+      [
+        3100,
+        1
+      ]
+    ],
+    ":ANALOG3": [
+      [
+        0,
+        0
+      ],
+      [
+        2900,
+        0.5
+      ],
+      [
+        3150,
+        0
+      ]
+    ]
+  },
+  "buttons": [
+    {
+      "end": 2410,
+      "mask": 1,
+      "port": ":SYSTEM",
+      "start": 2400
+    },
+    {
+      "end": 2460,
+      "mask": 1,
+      "port": ":SYSTEM",
+      "start": 2450
+    },
+    {
+      "end": 2510,
+      "mask": 1,
+      "port": ":SYSTEM",
+      "start": 2500
+    },
+    {
+      "end": 2610,
+      "mask": 4,
+      "port": ":SYSTEM",
+      "start": 2600
+    }
+  ],
+  "description": "Exotica Mars open-sightline scout: verified half-wheel course selection, automatic transmission, short unsteered drive. Synthetic input, not a complete race or attended acceptance.",
+  "frames": 5500,
+  "snapshot_every": 60
+}

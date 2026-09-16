@@ -75,9 +75,22 @@ Rawquiet-workloadFAIL remains: nativecomplete requirespositiveendpointcoverage.
 No verifier relaxation. Saved recoveryPASS explicitly workloadFALSE. Read
 2026-09-16-exotica-startup-retirement.md. Replay now retains independent retirement
 and continues input/pixel checks after a journal error, still finalFAIL. No rerun
-for this analyzer change. No activegame/build/test. NEXT inspect existing scripted
-Exotica course-selection work for an autonomous open-sightline sample; no invented
-track names or claim of attended/full-course acceptance.
+for this analyzer change.
+
+Read docs/reviews/2026-09-16-exotica-mars-distance.md. Native5c unchanged. Scripted
+half-wheel selection confirms Mars by displayed name. One5500input scout plus
+matched2x/3x pair; allinputstime exact,20saved originalRAM/resources/quad/target
+files exact,4064scenes2580marked0reject,joinedshutdown.13current4KCRT images:
+only5200changes509pixels atfarleft(35,1066)-(127,1115),nonewblack,carROIexact.
+5200has2286thirdbandquads/319instances;4800none. Completeddepthscreen680pixels.
+Newexotica_fragment_sources.py auxiliaryintegerattachment reproduces fullsaved
+insertioncolor/depthexact andidentical680mask;19sources,8blendedlast-fragmentpixels.
+Two focusednegative/ownershiptestsPASS;7syntheticinputtestsPASS. Sparsecaptures/
+record-onlyscouts now reusable. Rawsetup/cadence/dimension/bounded64removal failures
+retained; no game reruns forcheckers. LOCALexotica-open-course-20260916 contains
+allplans,scout,pair,qualification,canonicalfragmentreceipt. NEXT inspectbriefactual
+appearance intervalaround5200 andsourcehandover. No fullcourse/per-framecamera/
+physicalFFB/performance claim. No currentgame/build/test. Continue directly.
 
 
 Current frozen native: `5c4da4891a9a147d62ffc17668f381e6000c76e9`,

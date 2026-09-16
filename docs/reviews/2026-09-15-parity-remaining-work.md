@@ -93,6 +93,13 @@ against their completed depth. Use the new saved-band preflight and seek a more
 open sightline before another distance replay; retain the existing Amazon case
 for its useful margin and handover coverage.
 
+The [Mars scout and matched pair](2026-09-16-exotica-mars-distance.md) now find
+a small actual3x benefit:509 completed4K pixels at5200, zero new near-black,
+with the other12 sampled images exact. The source-fragment diagnostic qualifies
+its unchanged full insertion before attributing the conservative completed-depth
+screen. This supplies a useful positive sample; continuous appearance, broader
+course coverage and physical-wheel acceptance remain open.
+
 ## Next decisions
 
 The [active-road margin recovery](2026-09-15-world-active-road-margins.md) now

@@ -841,3 +841,14 @@ with a maximum of241 images and time left for presentation before stopping.
 Cadence follows global native frame multiples: `3060:5460 --gl-every 400` captures
 3200,3600,4000,4400,4800,5200. It does not start its cadence at3060.
 
+For source attribution in saved Exotica geometry:
+
+```powershell
+python harness/exotica_fragment_sources.py RUN_DIRECTORY --frame 5200 --band 3 --require-visible --output NEW_REPORT_DIRECTORY
+```
+
+This performs no game execution. It first requires exact saved insertion color
+and depth, then labels the last surviving fragment against completed depth.
+`--save-labels` retains local per-pixel arrays. Blended contributions and actual
+final-screen visibility require separate checks; see the
+[Mars qualification](reviews/2026-09-16-exotica-mars-distance.md).
