@@ -904,3 +904,7 @@ ownership from an active quiescent reset. The former retains the first startup
 proof and has no GPU-reseed receipt; mixed schedules preserve both kinds of proof.
 Interrupted bootstrap, pending work and degraded resets still reject. See
 [the startup-reset qualification](reviews/2026-09-16-exotica-startup-reset.md).
+
+### Screen Off-Road fade candidates before replay
+
+Use harness/offroad_fade_screen.py SAVED_RUN --frame N --report NEW_REPORT.json on a scene from offroad_scene_resources.lua. This checks ordered2x/3x geometry and decodes C31 camera depths. A zero envelope avoids an unnecessary capture; a positive result is not completed visibility or fade acceptance. See [the actual early/late El Paso checks](reviews/2026-09-16-offroad-visible-boundary.md).

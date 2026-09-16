@@ -206,3 +206,5 @@ Its separate receipt/proof path complements active quiescent reset support;
 interrupted work and degraded-reset handling remain open.
 
 [Pre-device Exotica reset](2026-09-16-exotica-pre-device-reset.md) now checks FIFO ownership before MAME clears child-device state. The existing active reset and all twelve completed4K images remain exact; interrupted-work reset remains separate.
+
+[Off-Road's visible boundary screen](2026-09-16-offroad-visible-boundary.md) preserves the early3x view but finds no completed opacity contribution. The next investigation is the excluded billboard object class, including its persistent hit-state hook, rather than another replay of these fade windows.

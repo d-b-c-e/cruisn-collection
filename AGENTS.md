@@ -15,8 +15,16 @@ hashesoldreport,NOgamerun. LOCALrace-transitions-20260916/exotica-active-reset/
 pre-device-3x and pre-device-qualified-v2.json.
 Interrupted/bootstrap/degradedresetremainstrict; no blindqueuedownerclears.
 PriorUSA/Offroadopacityobservers qualified; USAvisible41partialpixels, Offroad0.
-NEXT selectOffroadvisibleboundaryfromexistingpositivefull2x/3ximages before
-anynewcapture. DoNOTrepeat3360zero-opacitywindow. Broaderattended/FFBgatesopen.
+NEXT Offroadbillboardclass: read2026-09-16-offroad-visible-boundary.md.
+One2524observerPASS1482orderedDMA/depths; completed2520exactprior3x,
+723camera2892ADCexact;46706visiblehostpixels butzeroopacityallpages.
+Scalar51partial+1zeroallhidden.8760all516quads<107893 so no newreplay.
+Newoffroad_fade_screen.py2tests+actual2520/8760PASS; nofadepromotion.
+Sourcecensus00800000=657excluded,209heuristicinrange/7models,mostlyquads.
+Actualbit4dispatch1CA8->1D61 usesbasisRAM1120E; loaderpost9C8C consultshitstate.
+NEXT captureoriginalbillboardbasis/matrix/projectionbeforeearlydrawing.
+No blindrelabeling ordinarygeometry; damage-state/materials/lifetimeproofneeded.
+
 No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
 
