@@ -48397,3 +48397,241 @@ index 738bacb7a13..efa38f12a7f 100644
 -- 
 2.55.0.windows.3
 
+From 5832c43917c904392ad321c5c2e33bf3b26ab58f Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 07:41:25 -0500
+Subject: [PATCH] Carry gated USA scenery depth metadata through owned GPU
+ transport
+
+---
+ src/mame/midway/midvunit.cpp   | 18 +++++++++++++++++-
+ src/mame/midway/midvunit_v.cpp | 11 +++++++++--
+ 2 files changed, 26 insertions(+), 3 deletions(-)
+
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index efa38f12a7f..a566759b53f 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -377,6 +377,20 @@ void midvunit_base_state::usa_host_start()
+ 		if(strlen(layer)!=1 || *layer<'0' || *layer>'3')fatalerror("Invalid USA host layer\n");
+ 		m_host_layer=uint16_t(*layer-'0');
+ 	}
++	// Read-only metadata transport; USA surface/road opacity remains unclassified.
++	if(const char *metadata=std::getenv("MIDV_USA_HOST_FADE_METADATA"))
++	{
++		if(strcmp(metadata,"0") && strcmp(metadata,"1"))fatalerror("Invalid USA host fade metadata\n");
++		m_host_fade_metadata=!strcmp(metadata,"1");
++	}
++	if(m_host_fade_metadata)
++	{
++		if(!m_host_far_coverage || m_host_layer!=3 || !std::getenv("MIDV_GL_ORIGINAL_MIRROR") ||
++			strcmp(std::getenv("MIDV_GL_ORIGINAL_MIRROR"),"1"))fatalerror("USA metadata requires qualified3x mirror/coverage\n");
++		m_host_fade_log=fopen("vunit-fade-producer.bin","wb");
++		if(!m_host_fade_log || fwrite("VFD1",1,4,m_host_fade_log)!=4)fatalerror("Cannot create USA metadata evidence\n");
++		setvbuf(m_host_fade_log,nullptr,_IOFBF,65536);
++	}
+ 	bool trace=false;
+ 	if(const char *text=std::getenv("MIDV_USA_HOST_QUADS"))
+ 	{
+@@ -450,7 +464,9 @@ void midvunit_base_state::usa_host_start()
+ 				fputc('\n',m_host_quad_log);
+ 			}
+ 			const auto logged=std::chrono::steady_clock::now();
+-			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr);
++			std::vector<uint32_t> policies;
++			if(m_host_fade_metadata)policies.assign(quads.size(),0); // no authored-road classification inferred
++			if(m_host_mode==2)world_host_submit(quads,m_host_far_coverage?&depths:nullptr,m_host_fade_metadata?&policies:nullptr);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("USA host inspection changed guest cycles\n");
+ 			host_scene_record(frame,quads.size(),hash);
+ 			const auto submitted=std::chrono::steady_clock::now();
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 84529541f0c..8aed854774f 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -1148,11 +1148,18 @@ void thread_main()
+ 	bool const original_mirror = std::getenv("MIDV_GL_ORIGINAL_MIRROR") &&
+ 		!strcmp(std::getenv("MIDV_GL_ORIGINAL_MIRROR"), "1");
+ 	int const mirror_frame = std::getenv("MIDV_GL_MIRROR_FRAME") ? atoi(std::getenv("MIDV_GL_MIRROR_FRAME")) : 0;
+-	bool const fade_metadata = std::getenv("MIDV_WORLD_HOST_FADE_METADATA") &&
++	bool const world_metadata = std::getenv("MIDV_WORLD_HOST_FADE_METADATA") &&
+ 		!strcmp(std::getenv("MIDV_WORLD_HOST_FADE_METADATA"),"1");
++	bool const usa_metadata = std::getenv("MIDV_USA_HOST_FADE_METADATA") &&
++		!strcmp(std::getenv("MIDV_USA_HOST_FADE_METADATA"),"1");
++	if(world_metadata && usa_metadata)fatalerror("Multiple host metadata profiles\n");
++	for(const auto &entry:{std::make_pair(world_metadata,"MIDV_WORLD_HOST_SCENERY"),std::make_pair(usa_metadata,"MIDV_USA_HOST_SCENERY")})
++		if(entry.first && (!std::getenv(entry.second) || strcmp(std::getenv(entry.second),"2")))
++			fatalerror("Host metadata requires matching game drawing\n");
++	bool const fade_metadata=world_metadata || usa_metadata;
+ 	bool const distance_fade = std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE") &&
+ 		!strcmp(std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE"),"1");
+-	if(distance_fade && !fade_metadata)fatalerror("Distance fade requires qualified host metadata\n");
++	if(distance_fade && !world_metadata)fatalerror("Distance fade requires qualified host metadata\n");
+ 	if(fade_metadata && !original_mirror)fatalerror("Fade metadata requires original mirror\n");
+ 	if (original_mirror)
+ 	{
+-- 
+2.55.0.windows.3
+
+From 0d24929d1c768f0ebfa780c7078d64f4dddb8709 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 07:45:06 -0500
+Subject: [PATCH] Observe USA far-envelope opacity without changing
+ presentation
+
+---
+ src/mame/midway/midvunit_v.cpp | 40 +++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 17 deletions(-)
+
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 8aed854774f..8401dbeda1b 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -1159,6 +1159,12 @@ void thread_main()
+ 	bool const fade_metadata=world_metadata || usa_metadata;
+ 	bool const distance_fade = std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE") &&
+ 		!strcmp(std::getenv("MIDV_WORLD_HOST_DISTANCE_FADE"),"1");
++	// Measure the hypothetical envelope after ordinary occlusion without applying
++	// it to displayed colors. USA road/surface fade eligibility is still unproven.
++	bool const opacity_observer=std::getenv("MIDV_USA_HOST_OPACITY_OBSERVER") &&
++		!strcmp(std::getenv("MIDV_USA_HOST_OPACITY_OBSERVER"),"1");
++	if(opacity_observer && !usa_metadata)fatalerror("USA opacity observer requires explicit depth metadata\n");
++	bool const fade_opacity=distance_fade || opacity_observer;
+ 	if(distance_fade && !world_metadata)fatalerror("Distance fade requires qualified host metadata\n");
+ 	if(fade_metadata && !original_mirror)fatalerror("Fade metadata requires original mirror\n");
+ 	if (original_mirror)
+@@ -1177,12 +1183,12 @@ void thread_main()
+ 		gl.load1(gl.GetTexImage,"glGetTexImage");
+ 		if(!gl.GetTexImage)fatalerror("Original mirror texture readback unavailable\n");
+ 	}
+-	if(distance_fade)
++	if(fade_opacity)
+ 	{
+ 		gl.load1(gl.ClearBufferfv,"glClearBufferfv");
+ 		if(!gl.ClearBufferfv)fatalerror("Distance fade opacity clearing unavailable\n");
+ 	}
+-	uint prog = link(gl, MVGL_VS, distance_fade ? MVGL_FADE_FS : original_mirror ? MVGL_MIRROR_FS : MVGL_FS);
++	uint prog = link(gl, MVGL_VS, fade_opacity ? MVGL_FADE_FS : original_mirror ? MVGL_MIRROR_FS : MVGL_FS);
+ 	uint pal = link(gl, MVGL_PAL_VS, distance_fade ? MVGL_FADE_PAL_FS : MVGL_PAL_FS);
+ 	uint cpu_copy = link(gl, MVGL_PAL_VS, original_mirror ? MVGL_MIRROR_CPU_FS : MVGL_CPU_FS);
+ 	if (!prog || !pal || !cpu_copy) return;
+@@ -1214,13 +1220,13 @@ void thread_main()
+ 	uint originalTex[2]{}, originalMask[2]{}, originalFbo[2]{};
+ 	uint alphaTex[2]{};
+ 	float const opaque[4]={1,1,1,1};
+-	if(distance_fade)for(auto &texture:alphaTex)texture=make_tex(fw,fh,0x822E /*R32F*/);
++	if(fade_opacity)for(auto &texture:alphaTex)texture=make_tex(fw,fh,0x822E /*R32F*/);
+ 	if(original_mirror)
+ 	{
+ 		gl.GenFramebuffers(2,originalFbo);
+ 		for(int i=0;i<2;++i){originalTex[i]=make_tex(fw,fh,R16UI);originalMask[i]=make_tex(fw,fh,R8UI);}
+ 	}
+-	unsigned const mirror_bufs[5]={COLOR_ATTACHMENT0,COLOR_ATTACHMENT0+1,distance_fade?COLOR_ATTACHMENT0+2:0,COLOR_ATTACHMENT0+3,COLOR_ATTACHMENT0+4};
++	unsigned const mirror_bufs[5]={COLOR_ATTACHMENT0,COLOR_ATTACHMENT0+1,fade_opacity?COLOR_ATTACHMENT0+2:0,COLOR_ATTACHMENT0+3,COLOR_ATTACHMENT0+4};
+ 	unsigned const extended_bufs[3]={COLOR_ATTACHMENT0,COLOR_ATTACHMENT0+1,COLOR_ATTACHMENT0+2};
+ 	uint fbo[2];
+ 	gl.GenFramebuffers(2, fbo);
+@@ -1233,7 +1239,7 @@ void thread_main()
+ 		gl.DrawBuffers(2, bufs);
+ 		if(original_mirror)
+ 		{
+-			if(distance_fade)gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0+2,0x0DE1,alphaTex[i],0);
++			if(fade_opacity)gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0+2,0x0DE1,alphaTex[i],0);
+ 			gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0+3,0x0DE1,originalTex[i],0);
+ 			gl.FramebufferTexture2D(FRAMEBUFFER,COLOR_ATTACHMENT0+4,0x0DE1,originalMask[i],0);
+ 			gl.DrawBuffers(5,mirror_bufs);
+@@ -1242,7 +1248,7 @@ void thread_main()
+ 		if (gl.CheckFramebufferStatus(FRAMEBUFFER) != FRAMEBUFFER_COMPLETE)
+ 			logf("fbo %d incomplete", i);
+ 		gl.Clear(0x4000);
+-		if(distance_fade)gl.ClearBufferfv(0x1800 /*COLOR*/,2,opaque);
++		if(fade_opacity)gl.ClearBufferfv(0x1800 /*COLOR*/,2,opaque);
+ 		if(original_mirror)
+ 		{
+ 			gl.BindFramebuffer(FRAMEBUFFER,originalFbo[i]);
+@@ -1257,7 +1263,7 @@ void thread_main()
+ 	// geometry VAO: two streamed VBOs, attributes by name
+ 	uint vao, vbo_f, vbo_u, vbo_far, vao_empty;
+ 	uint vbo_opacity=0,vbo_depths=0;
+-	if(distance_fade){gl.GenBuffers(1,&vbo_opacity);gl.GenBuffers(1,&vbo_depths);}
++	if(fade_opacity){gl.GenBuffers(1,&vbo_opacity);gl.GenBuffers(1,&vbo_depths);}
+ 	gl.GenVertexArrays(1, &vao);
+ 	gl.GenVertexArrays(1, &vao_empty);
+ 	gl.GenBuffers(1, &vbo_f);
+@@ -1300,7 +1306,7 @@ void thread_main()
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "texMask"), (8 << 20) - 1);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uDbgQuadId"), 0);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uClipW"), WIDE);
+-	if(distance_fade)
++	if(fade_opacity)
+ 	{
+ 		gl.Uniform1f(gl.GetUniformLocation(prog,"fadePlane"),240000.f);
+ 		gl.Uniform1f(gl.GetUniformLocation(prog,"fadeWidth"),20000.f);
+@@ -1505,7 +1511,7 @@ void thread_main()
+ 		scene_axis[pg] += axis;
+ 		crop2d[pg] = (scene_axis[pg] * 10 >= quad_count[pg] * 7);
+ 		gl.UseProgram(prog);
+-		if(distance_fade)
++		if(fade_opacity)
+ 		{
+ 			if(run_opacity.size()!=run.size() || run_depths.size()!=run.size())fatalerror("Distance fade batch ownership mismatch\n");
+ 			gl.BindBuffer(0x90D2,vbo_opacity);gl.BufferData(0x90D2,run_opacity.size()*sizeof(float),run_opacity.data(),STREAM_DRAW);
+@@ -1526,7 +1532,7 @@ void thread_main()
+ 		gl.BindBuffer(ARRAY_BUFFER, vbo_u);
+ 		gl.BufferData(ARRAY_BUFFER, udata.size() * 4, udata.data(), STREAM_DRAW);
+ 		gl.BindFramebuffer(FRAMEBUFFER, fbo[pg]);
+-		if(original_mirror)gl.DrawBuffers(distance_fade?3:2,extended_bufs); // host resets cannot clear original history
++		if(original_mirror)gl.DrawBuffers(fade_opacity?3:2,extended_bufs); // host resets cannot clear original history
+ 		gl.Viewport(0, 0, fw, fh);
+ 		if (new_scene)
+ 		{
+@@ -1550,16 +1556,16 @@ void thread_main()
+ 			int const os = 2 * S;
+ 			gl.Scissor(0, 0, MARGIN * S + os, fh);
+ 			gl.Clear(0x4000);
+-			if(distance_fade)gl.ClearBufferfv(0x1800,2,opaque);
++			if(fade_opacity)gl.ClearBufferfv(0x1800,2,opaque);
+ 			gl.Scissor(fw - MARGIN * S - os, 0, MARGIN * S + os, fh);
+ 			gl.Clear(0x4000);
+-			if(distance_fade)gl.ClearBufferfv(0x1800,2,opaque);
++			if(fade_opacity)gl.ClearBufferfv(0x1800,2,opaque);
+ 			gl.Scissor(0, 0, fw, os);
+ 			gl.Clear(0x4000);
+-			if(distance_fade)gl.ClearBufferfv(0x1800,2,opaque);
++			if(fade_opacity)gl.ClearBufferfv(0x1800,2,opaque);
+ 			gl.Scissor(0, fh - os, fw, os);
+ 			gl.Clear(0x4000);
+-			if(distance_fade)gl.ClearBufferfv(0x1800,2,opaque);
++			if(fade_opacity)gl.ClearBufferfv(0x1800,2,opaque);
+ 			gl.Disable(0x0C11);
+ 		}
+ 		if(new_original_scene)
+@@ -1578,7 +1584,7 @@ void thread_main()
+ 		if(original_mirror)
+ 		{
+ 			gl.BindFramebuffer(FRAMEBUFFER,fbo[pg]);
+-			gl.DrawBuffers(auxiliary?(distance_fade?3:2):5,auxiliary?extended_bufs:mirror_bufs);
++			gl.DrawBuffers(auxiliary?(fade_opacity?3:2):5,auxiliary?extended_bufs:mirror_bufs);
+ 		}
+ 		gl.ActiveTexture(TEXTURE0);
+ 		gl.BindTexture(0x0DE1, texram);
+@@ -1784,7 +1790,7 @@ void thread_main()
+ 					(!run.empty() && ((q.pad ^ run.back().pad) & 2)))) complete_run();
+ 				run_pc = q.pc;
+ 				run.push_back(q);
+-				if(distance_fade){run_opacity.push_back(selector);run_depths.push_back(fade_depths);}
++				if(fade_opacity){run_opacity.push_back(selector);run_depths.push_back(fade_depths);}
+ 				run_far|=far_packet;
+ 				++n_quads;
+ 				break;
+@@ -1869,7 +1875,7 @@ void thread_main()
+ 				bool const written=fwrite(pixels.data(),1,bytes,fp)==bytes;
+ 				if(fclose(fp) || !written)fatalerror("Cannot write original mirror evidence\n");
+ 			}
+-			if(distance_fade)
++			if(fade_opacity)
+ 			{
+ 				pixels.resize(size_t(fw)*fh*sizeof(float));
+ 				for(int pg=0;pg<2;++pg)
+-- 
+2.55.0.windows.3
+

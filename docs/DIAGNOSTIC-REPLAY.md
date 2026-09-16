@@ -881,3 +881,12 @@ archived executable bytes. A missing receipt leaves source identity unknown;
 the enclosing Git checkout is labeled separately. See [build provenance](reviews/2026-09-16-binary-provenance.md)
 for attaching a verified native export before recording. Historical manifests
 remain intact; their old emulator_source field alone does not prove a native revision.
+
+## Observe USA distance opacity without applying a fade
+
+The candidate-only --usa-host-fade-metadata transports all USA host depths with
+3x future drawing, far coverage and an explicit --vunit-original-mirror-frame.
+Add --usa-host-opacity-observer to record the hypothetical20k outer envelope
+in both completed pages without changing displayed colors. Physical FFB must
+remain off. This is a visibility diagnostic, not a road policy or launcher option.
+See [the qualified measurement](reviews/2026-09-16-usa-opacity-observer.md).

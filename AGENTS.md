@@ -2,34 +2,23 @@
 
 ## Current work: release parity, September 16
 
-Latest: read docs/reviews/2026-09-16-exotica-quiescent-reset.md. Nativee65c6270d42
-frozen256patches; quiescent reset CPU/GPU boundary+fresh bootstrap implemented.
-5460input earlyMars reset4000 now completes; reset3999/restart5384, alloriginal
-inputs/nativeimages and7completed4KCRT images4200..5400exact.2683scenes/drain615743800.
-RawFAILzeroendpointworkload retained; separatequiescent-qualifiedPASS onlyreset.
-ExhaustiveGPU16,777,216D24codes/colorpixels exact, ordinaryunchanged; nativeboundary
-and9PythonPASS. Initialfatalcurrent-3x retained. Newexotica_reset verifier linked;
-freshproofs perreset, no blanketqueueclear. Pendingwork/prebootstrap/reboot/
-degradedreset stillstrict/open. Actualnonempty-scenery reset nowPASS7500inputs,5691camera12921ADC,4679scenes/
-2993770futurequads/2598marked0reject/13689GPUpairs/488bindings12epochs. Reset5559,
-newbootstrap6944.2pre-reset4Kimagesexactold3x;10post-resetexactordinary.
-LOCALrace-transitions-20260916/exotica-active-reset qualified/prior-3x-prefix.
-All2734357696bytesdrained. No newbuild/rerun. V-Unitresetcache fixnow1800458b8e3,257patches, clearsfourcaches beforeRAMreload.
-Worldreset4620/control+3x6600inputs/nativeimagesexact;1859scenes6167404quads,
-9609422120bytesdrained.7CRTclient3824x2073images on4Kprimary:4exact,1changes5pixels,
-post-resetLondonbridge6000/6400changes32199/289740; viewedbothpairs, farbridge/
-leftbuildingsadded, y1200..bottomall7exact. NoUSA/Offroadresetreplay orcameraADCclaim.
-LOCALworld-reset/qualified.json. No game/build active. Readvunit-reset-caches review.
-Binaryprovenance fixed: emulator_source nowunknown without executable-matched
-buildattestation, enclosinggit separatelynamed.16focusedtestsPASS; actualprepare-
-onlyplan/livecasefreezePASS, native18004correctlydistinguishedfromcollectiongit.
-Readbinary-provenance review. Latestcandidatehasvunit.exe.build.json attachedfrom
-verifiedexport; no executablechange. Historicalcasefieldsnotrewritten.
-NEXT inspectexistingWorlddistancefade integration for reuse acrossUSA/Offroad
-before choosinganynewvisualpolicy. No broadtests ornewgameswithoutconcretequestion.
-Exoticaquiescentresetdone; pending/prebootstrap/degradedresetstillstrict/open. Personal87d/publicv0.5.0unchanged.
+Latest: read docs/reviews/2026-09-16-usa-opacity-observer.md.
+Native0d24929d1c7 frozen259patches, SHA65376963ee84a46fa3441b174e8ff177301207d5925eb1dbebfe4476b6495fe2;
+build attestation attached. Source-only5832metadata followed by0d249GPU observer.
+3522input control/observer pair PASS;1721camera5163ADC/originalDMA/resources/
+all8index-maskplanes/fivecompleted4KCRTimages3500..3504 exact.
+38225metadata packets,3264captured/100crossing fullorderedDMA/depths independently
+exact saved3501 currentreference.11scenerows exact except6named durations.
+Visiblepage only41partial pixels,other20;zero0. Everyaffectedpixelhosttag4.
+No fade applied; no temporal/performance/roadclassification claim. Initialold
+pre-cullreference FAIL and wrongvertexbit8vsframebuffermask4 FAILretained;
+canonicalreferenceupdated, v3PASS withoutgame rerun.9mirror+9USAhosttestsPASS.
+LOCALworld25-roads-20260914/usa-opacity-qualified-v3.json and liveoff/on.
+QuiescentExoticareset/VUnitcache reset and binaryprovenance priorreviews retained.
+NEXT Offroad distinct depth/opacity observer: sphere3x141888, projection191040;
+do NOTreuseWorldcoverage discard/240000 bounds. Existingoffroaddepthsqualified.
+No game/build/test active. Personal87d/publicv0.5.0unchanged.
 No deploy/release/physicalFFB/hostedCI. Continue directly whileparityremains.
-
 
 Continue autonomously through useful parity work. Commit completed changes
 separately and start the next item; do not stop at a milestone or wait for the

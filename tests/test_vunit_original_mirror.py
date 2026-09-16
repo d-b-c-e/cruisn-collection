@@ -68,6 +68,59 @@ class OriginalMirrorTests(unittest.TestCase):
             with self.subTest(changes=changes), self.assertRaises(ValueError):
                 configure(args, 'crusnwld', dict(settings, **changes), 200)
 
+    def test_usa_metadata_is_explicit_and_does_not_enable_fade(self):
+        args = SimpleNamespace(vunit_original_mirror_frame=100, candidate='candidate.exe',
+                               usa_host_fade_metadata=True)
+        settings = dict(MIDV_GL='1', MIDV_FFB='0', MIDV_USA_HOST_SCENERY='2',
+                        MIDV_USA_HOST_LAYER='3', MIDV_USA_HOST_FUTURE='1',
+                        MIDV_USA_HOST_FAR_COVERAGE='1', MIDV_USA_HOST_FIRST='80', MIDV_USA_HOST_LAST='150')
+        actual = settings.copy()
+        result = configure(args, 'crusnusa', actual, 200)
+        self.assertEqual(result['metadata_game'], 'usa')
+        self.assertEqual(actual['MIDV_USA_HOST_FADE_METADATA'], '1')
+        self.assertNotIn('MIDV_WORLD_HOST_DISTANCE_FADE', actual)
+        observed = settings.copy()
+        observed_result = configure(SimpleNamespace(**(vars(args) | {'usa_host_opacity_observer':True})),
+                                    'crusnusa', observed, 200)
+        self.assertTrue(observed_result['opacity_observer'])
+        self.assertEqual(observed['MIDV_USA_HOST_OPACITY_OBSERVER'], '1')
+        self.assertNotIn('MIDV_WORLD_HOST_DISTANCE_FADE', observed)
+        for rom, changes, options in [
+                ('offroadc', {}, {}), ('crusnwld', {}, {}),
+                ('crusnusa', {'MIDV_USA_HOST_FAR_COVERAGE':'0'}, {}),
+                ('crusnusa', {'MIDV_USA_HOST_LAST':'199'}, {}),
+                ('crusnusa', {}, {'world_host_distance_fade':True}),
+                ('crusnusa', {}, {'usa_host_fade_metadata':False, 'usa_host_opacity_observer':True}),
+                ('crusnusa', {'MIDV_USA_HOST_OPACITY_OBSERVER':'1'}, {}),
+                ('crusnusa', {}, {'vunit_original_mirror_frame':None}),
+                ('crusnusa', {'MIDV_USA_HOST_FADE_METADATA':'1'}, {'usa_host_fade_metadata':False})]:
+            with self.subTest(rom=rom, changes=changes, options=options), self.assertRaises(ValueError):
+                configure(SimpleNamespace(**(vars(args) | options)), rom, settings | changes, 200)
+
+    def test_usa_metadata_receipts_reject_invented_road_permission(self):
+        with tempfile.TemporaryDirectory() as root:
+            root = Path(root)
+            words = [F.integer(z).store() for z in (1000, 220000, 239999, 240001)]
+            quad = list(range(16))
+            fingerprint = 14695981039346656037
+            for byte in struct.pack('<16H', *quad):
+                fingerprint = ((fingerprint ^ byte)*1099511628211) & 0xffffffffffffffff
+            (root/'usa-host-scenes.csv').write_text(
+                f'frame,page,quads,quads_hash\n100,513,1,{fingerprint:016x}\n', encoding='utf-8')
+            (root/'stderr.log').write_text('MIDV_FADE_METADATA packets=1 roads=0 captured=1\n', encoding='utf-8')
+            trial = dict(frame=100, first=80, last=150, fade_metadata=True, metadata_game='usa')
+            for policy in (0, 1):
+                raw = b'VFD1'+struct.pack('<IHH16HI4II',100,513,3,*quad,240000,*words,policy)
+                for name in ('producer', 'consumer'):
+                    (root/f'vunit-fade-{name}.bin').write_bytes(raw)
+                if policy:
+                    with self.assertRaisesRegex(ValueError, 'no authored-road'):
+                        verify_metadata(trial, root)
+                else:
+                    result = verify_metadata(trial, root)
+                    self.assertEqual(result['captured_crossings'], 1)
+                    self.assertEqual(result['captured_roads'], 0)
+
     def test_metadata_boundaries_depths_order_and_consumer_coverage(self):
         with tempfile.TemporaryDirectory() as root:
             root = Path(root)

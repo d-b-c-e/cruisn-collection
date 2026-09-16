@@ -113,3 +113,5 @@ The older [settings proposal](settings-redesign.md), [widescreen survey](widescr
 [Off Road handoff](offroadc-left-edge-handoff.md), [achievements feasibility](ACHIEVEMENTS.md)
 and [World draft patches](experiments/world-global-distance/README.md) are research
 archives. They include superseded assumptions and unimplemented designs.
+
+- [USA completed-opacity observer](reviews/2026-09-16-usa-opacity-observer.md): qualified depth transport without presentation changes; only41 potentially affected visible pixels in the sampled horizon.
