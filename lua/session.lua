@@ -1,5 +1,13 @@
 -- Record evidence at emulated frames. Never injects input: MAME INP owns replay.
 -- Keep the notifier subscriptions alive for the lifetime of this script.
+-- MAME reruns the same autoboot chunk after soft reset. Its Lua environment and
+-- registered callbacks survive; reopening logs here would truncate the drive
+-- and register another frame callback. Preserve the original recorder closure.
+if cruisn_session_state then
+    emu.print_info(string.format("session.lua: autoboot resumed at frame %d", cruisn_session_state.frame))
+    return
+end
+cruisn_session_state = { frame = 0 }
 local count = 0
 local last_emulated = -1
 local every = tonumber(os.getenv("SNAP_EVERY")) or 60
@@ -46,6 +54,7 @@ emu.register_frame_done(function()
     if emu.time() == last_emulated then return end -- host redraw while paused
     last_emulated = emu.time()
     count = count + 1
+    cruisn_session_state.frame = count
     if cheat_tick then
         local ok, reason = pcall(cheat_tick)
         if not ok then fail_probe(reason); return end

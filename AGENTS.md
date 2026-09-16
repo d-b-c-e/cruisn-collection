@@ -124,13 +124,20 @@ and4focusedPythonfailuretestsPASS, localbuild/export255patchesPASS. No newgame
 or livepost16000/rebootclaim. Lastlivecandidate5c retained. Machine-reset remains
 open: pendingCPUscene/cuesneedexplicitcancellation plusorderedGPUboundary, cannot
 justclearfatalguards. Luaactualsoft_reset confirmedsource;screenframecontinues.
+Read2026-09-16-session-soft-reset.md. session.lua nowidempotentacrossautobootreset;
+oldscriptreproducesnonconsecutivetrace, newrecord+identity180frames/6nativeimages
+exactwithactualreset90. Ordinaryheadlessboot, notextendedrenderer. LOCALrace-
+transitions-20260916/session-soft-reset/qualified-v2.json; initialimportFAILand
+rawconversioncheckerFAILretained, no rerunforchecker. NEXT boundedrecordedreset
+schedule/completionreceipt so normalreplay canreproduceactions withoutprobe.
+Then Exoticamachine-reset CPU/GPUownership. No activegame/build/test.
 
 
 Current frozen native: `569549d9aee75a78c004c3ad78f99e68080229fd`,
 `build/candidates/569549d9aee/vunit.exe`, SHA256
 `e9c477fa7c575bf77e8c6d42f1a246e817fb03300744cf37e8cec28ee9227fb1`.
-254 patches reconstruct `de584ffe34debd9a4dc406d05f64c2014e96879d`.
-`continuous-retirement-native-export.json` under
+255 patches reconstruct `dd5e248097adfd6aea546517d4ed0e3f48de865e`.
+`late-retirement-native-export.json` under
 `results/diagnostics/world25-roads-20260914` is the current export receipt.
 **All existing export scripts have already run. Never rerun an export against
 its appended patch baseline.** Create a new export for a new native commit.
