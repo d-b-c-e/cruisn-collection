@@ -183,3 +183,34 @@ The candidate is reviewable, not deployed. Source, native emulator, Stream Deck
 installation and public release remain unchanged outside the isolated worktree.
 This does not qualify physical force, modal input interaction, active-game F8,
 rendering parity or a release package.
+
+
+## Native seam assessment: stop latch and device identity
+
+Read-only audit against native `4df727db105` identifies concrete follow-ups:
+
+- `midvunit_v.cpp::mvffb::select_device` accepts case-insensitive name substrings
+  or VID:PID. A named match that lacks haptics fails closed; an unmatched explicit
+  name also fails closed. With no explicit name, it still falls back to the first
+  suitable wheel/device. Duplicate names or identical VID:PID are ambiguous.
+  A frontend dropdown alone cannot prove stable physical association. The native
+  selector needs an identity contract, uniqueness check and no fallback for a
+  missing saved device; the binding store needs the same identity.
+- `midv_ffb_cancel()` zeros the current request and asks the worker to reset
+  shaping/impact history. It is not latched: a subsequent game write can resume
+  force. Mapping F8 to this function would therefore be an incomplete stop.
+- The worker owns constant force, optional rumble and persistent condition effects.
+  A true stop must gate every output, clear pending history, stop all owned effects
+  on the worker thread, and remain off despite later game writes, menu transitions
+  and focus changes. It must have an explicit re-enable path. The owner's World
+  menu pass-through is independent of this user-controlled stop.
+- The launcher already unbinds MAME's F8/F9 frameskip controls. The settings wizard
+  reserves F8, but no native F8 latch exists. Active gameplay and the launcher
+  are separate processes; the new saved switch applies at the next launch only.
+- An existing device-free native worker sink records requested output without
+  loading SDL haptics. Extend that seam to test stop during nonzero constant,
+  impact and condition requests, continued source writes and explicit resume;
+  then qualify native key delivery and finally attended hardware behavior.
+
+No native code, package or FFB behavior was changed for this audit. This is an
+implementation boundary, not acceptance inferred from frontend tests.
