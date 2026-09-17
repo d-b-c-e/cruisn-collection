@@ -31,6 +31,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
 import graphics_options
+import settings_view
 import force_options
 import cheats
 try:
@@ -407,30 +408,42 @@ class Shell:
         tw = self.title.width * (self.h / 14 * 1.9) / self.title.height
         self.rect(self.title, (self.w - tw) / 2, self.h * 0.05,
                   tw, self.h / 14 * 1.9)
-        self.center_text(title, self.h // 20, self.h * 0.26,
+        self.center_text(title, self.h // 20, self.h * 0.20,
                          (1.0, 0.85, 0.4, 1.0))
-        x0, x1 = self.w * 0.30, self.w * 0.70
-        px = self.h // 33
-        for i, (name, value) in enumerate(rows):
-            y = self.h * (0.34 + 0.055 * i)
-            if i == ssel:
-                pulse = 0.65 + 0.35 * math.sin(t * 4.0)
-                col = (GOLD[0], GOLD[1], GOLD[2], pulse)
-                vcol = col
-            else:
-                col = (0.75, 0.75, 0.8, 1.0)
-                vcol = (0.55, 0.55, 0.62, 1.0)
-            self.text_at(name, px, x0, y, col)
-            if value:
-                self.text_at(value, px, x1, y, vcol, align="r")
-        if notice:
-            self.center_text(notice, self.h // 40, self.h * 0.895,
-                             (1.0, 0.85, 0.4, 1.0))
-        elif hint:
-            self.center_text(hint, self.h // 48, self.h * 0.895,
-                             (0.65, 0.65, 0.72, 1.0))
+        # The view selector stays fixed while long button lists scroll.
+        view_label, view_value = rows[0]
+        self.center_text(view_label + ": " + view_value, max(16, self.h // 38), self.h * 0.305,
+                         (1.0, 0.85, 0.4, 1.0) if ssel == 0 else (0.75, 0.75, 0.8, 1.0))
+        if title != "SAVE BINDINGS":
+            for i, key in enumerate(settings_view.CORE):
+                label = SETTINGS_TITLE[key].title() if key != 'ffb' else 'FFB'
+                color = GOLD if SETTINGS_TITLE[key] == title else (0.65,0.65,0.72,1.0)
+                self.text_at(label,max(14,self.h//48),self.w*(.14+.12*i),self.h*.35,color)
+        body = rows[1:]
+        first = max(0, ssel - 8)
+        x0, x1 = self.w * 0.18, self.w * 0.82
+        px = max(16, self.h // 36)
+        for offset, (name, value) in enumerate(body[first:first+8]):
+            i = first + offset + 1
+            y = self.h * (0.40 + 0.048 * offset)
+            selected = i == ssel
+            col = (GOLD[0], GOLD[1], GOLD[2], 1.0) if selected else (0.75, 0.75, 0.8, 1.0)
+            # Full assignment/recovery text is retained in the focused hint.
+            shown = name if len(name) <= 34 else name[:31] + "..."
+            shown_value = value if len(value) <= 27 else value[:24] + "..."
+            self.text_at(shown, px, x0, y, col)
+            if shown_value:
+                self.text_at(shown_value, px, x1, y, col, align="r")
+        if len(body) > 8:
+            self.center_text(f"{first+1}-{min(first+8,len(body))} / {len(body)}", max(14,self.h//52), self.h*0.80,
+                             (0.65,0.65,0.72,1.0))
+        import textwrap
+        message = notice or hint
+        for i, line in enumerate(textwrap.wrap(message, width=110)[:2]):
+            self.center_text(line, max(14, self.h // 52), self.h * (0.835 + i * 0.035),
+                             (1.0,0.85,0.4,1.0) if notice else (0.65,0.65,0.72,1.0))
         foot = self.footer_tex(
-            "^  v  NAVIGATE      <  >  ADJUST      ENTER  OK      ESC  BACK")
+            "^ v  ROWS    < >  ADJUST    TAB  PAGE    ENTER  OK    ESC / F6  CLOSE")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
         self.rect(foot, (self.w - fw) / 2, self.h * 0.92, fw, fh)
@@ -488,7 +501,7 @@ class ForzaKeeper:
         self.targets = []
         try:
             cp = configparser.ConfigParser()
-            cp.read(CFG)
+            cp.read(CFG, encoding="utf-8-sig")
             v = cp.get("telemetry", "forza", fallback="").strip()
             if v.lower() in ("1", "on", "true", "yes"):
                 v = "127.0.0.1:5300"
@@ -714,7 +727,8 @@ def _keycode_table():
     for d in "0123456789":
         t[getattr(glfw, f"KEY_{d}")] = f"KEYCODE_{d}"
     for i in range(1, 13):
-        t[getattr(glfw, f"KEY_F{i}")] = f"KEYCODE_F{i}"
+        if i not in (6, 8):  # Settings and reserved Stop FFB; never consume as capture.
+            t[getattr(glfw, f"KEY_F{i}")] = f"KEYCODE_F{i}"
     t.update({
         glfw.KEY_SPACE: "KEYCODE_SPACE", glfw.KEY_ENTER: "KEYCODE_ENTER",
         glfw.KEY_TAB: "KEYCODE_TAB",
@@ -735,7 +749,7 @@ def _keycode_table():
 
 def load_config():
     cp = configparser.ConfigParser()
-    cp.read(CFG)
+    cp.read(CFG, encoding="utf-8-sig")
     sec = cp["collection"] if "collection" in cp else {}
     mg = str(sec.get("margin", "")).strip()
 
@@ -776,7 +790,9 @@ def load_config():
         tr = "sequential" if (seq and not hpat) else "hpattern"
 
     ffb = _num("ffb")
-    return {"crt": str(sec.get("crt", "1")) == "1",
+    return {**settings_view.load(sec), "crt": str(sec.get("crt", "1")) == "1",
+            "bindings": dict(cp["wheelmap"]) if "wheelmap" in cp else {},
+            "telemetry": dict(cp["telemetry"]) if "telemetry" in cp else {},
             "transmission": tr,
             "crackfill": str(sec.get("crackfill", "1")) == "1",
             "graphics": graphics_options.load(sec),
@@ -803,7 +819,7 @@ def load_config():
 
 def save_config(state):
     cp = configparser.ConfigParser()
-    cp.read(CFG)   # preserve other sections (wheelmap)
+    cp.read(CFG, encoding="utf-8-sig")   # preserve other sections (wheelmap)
     sec = {"crt": "1" if state["crt"] else "0",
            "crackfill": "1" if state["crackfill"] else "0",
            "marginfill": "0",  # retired: old sky stretching must not return on save
@@ -815,7 +831,9 @@ def save_config(state):
            "ffb_invert": str(state.get("ffbinvert", 0)),
            "ffb_profile": state.get("ffbprofile", "cruisn-vunit@2"),
            "ffb_spring": str(state.get("ffbspring", 0)),
-           "world_rom": state.get("world_rom", "crusnwld24")}
+           "world_rom": state.get("world_rom", "crusnwld24"),
+           "settings_view": settings_view.view(state.get("settings_view")),
+           "settings_page": settings_view.page(state.get("settings_page"), state.get("settings_view"))}
     for rom, _, _, _ in GAMES:
         sv = state["steersens"].get(rom)
         cv = state["steercurve"].get(rom)
@@ -831,7 +849,7 @@ def save_config(state):
     for k, v in sec.items():
         cp.set("collection", k, v)
     os.makedirs(os.path.dirname(CFG), exist_ok=True)
-    with open(CFG, "w") as f:
+    with open(CFG, "w", encoding="utf-8") as f:
         cp.write(f)
 
 
@@ -842,14 +860,7 @@ def save_wheelmap(bindings):
     the wizard didn't show (the inactive transmission mode's) and steps
     skipped with BACKSPACE keep their previous binding, so switching
     transmission modes never costs the other mode's binds."""
-    cp = configparser.ConfigParser()
-    cp.read(CFG)
-    merged = dict(cp["wheelmap"]) if "wheelmap" in cp else {}
-    merged.update(bindings)
-    cp["wheelmap"] = merged
-    os.makedirs(os.path.dirname(CFG), exist_ok=True)
-    with open(CFG, "w") as f:
-        cp.write(f)
+    settings_view.update_section(CFG, "wheelmap", bindings, ".before-bindings.bak")
 
 
 def render_shot(path, page=None, game=None, selected_row=0):
@@ -998,9 +1009,10 @@ def profile_label(state):
     return f"{PROFILE_LABELS.get(n, 'TUNE ' + str(n))} ({n})"
 
 
-SETTINGS_TITLE = {"root": "SETTINGS", "display": "DISPLAY",
-                  "ffb": "FORCE FEEDBACK", "controls": "CONTROLS",
-                  "support": "SUPPORT", "graphics": "EXPERIMENTS",
+SETTINGS_TITLE = {"root": "WHEEL SETTINGS", "setup": "SETUP", "cameras": "CAMERAS",
+                  "telemetry": "TELEMETRY", "buttons": "BUTTON BINDINGS", "display": "DISPLAY",
+                  "ffb": "FFB", "controls": "CONTROLS",
+                  "support": "HELP", "graphics": "EXPERIMENTS",
                   "impacts": "EXPERIMENTAL IMPACT CUES", "cheats": "CHEATS"}
 
 
@@ -1018,7 +1030,89 @@ def cheat_rows(cat, selected):
                    ('back', 'BACK', '', '')]
 
 
+def binding_label(value):
+    if not value or '|' not in value:
+        return 'Not bound'
+    device, spec = value.split('|', 1)
+    parts = spec.split(':')
+    try:
+        if parts[0] == 'btn': return f'{device} / Button {int(parts[1])+1}'
+        if parts[0] == 'axis': return f'{device} / Axis {int(parts[1])+1}'
+        if parts[0] == 'key': return parts[1].replace('KEYCODE_', 'Keyboard / ')
+    except (ValueError, IndexError):
+        pass
+    return 'Saved binding / check setup'
+
+
 def settings_rows(page, state, diag, version):
+    """One settings store, two presentation views; navigation has no runtime effect."""
+    selected = settings_view.view(state.get('settings_view'))
+    page = settings_view.page(page, selected)
+    advanced = selected == 'advanced'
+    bindings = state.get('bindings', {})
+    back = ('back', 'Back', '', '')
+    def bind(key, label):
+        value = binding_label(bindings.get(key))
+        return ('bind_'+key, label, value,
+                'Bind: '+value+'. Enter binds; Delete clears. Esc cancels capture without replacing the saved binding.')
+    if page == 'root':
+        rows = [(key, SETTINGS_TITLE[key].title() if key != 'ffb' else 'FFB', 'Open', '') for key in settings_view.CORE]
+        if advanced:
+            rows += [('display', 'Display', 'Open', 'CRT, widescreen and resolution.'),
+                     ('graphics', 'Experiments', 'Shared / per game', 'Candidate options; changes apply next launch.')]
+        rows += [('back', 'Close', '', '')]
+    elif page == 'setup':
+        missing = next((key for key in ('steer', 'gas', 'brake') if key not in bindings), None)
+        rows = [('readiness', 'Setup', 'Bind '+{'steer':'Steering','gas':'Throttle','brake':'Brake'}[missing]
+                 if missing else 'Axes assigned / check direction',
+                 'Assignments do not prove a connected device. Check direction and pedal release before driving.'),
+                ('wizard', 'Controls setup', 'Start', 'Bind axes and desired buttons. Skipped steps retain saved assignments.'),
+                ('controls', 'Controls', 'Open', 'Bind an individual axis or button.'),
+                ('ffb', 'FFB', 'Open', 'Check strength before driving.'), back]
+    elif page == 'controls':
+        rows = [bind('steer', 'Steering'), bind('gas', 'Throttle'), bind('brake', 'Brake'),
+                ('buttons', 'Driving / menu / shifter buttons', 'Open', 'Independent saved button assignments.'),
+                next(row for row in _settings_rows(page, state, diag, version) if row[0]=='trans'),
+                ('calibration', 'Game calibration', 'F2 in game', 'Arcade ADC range calibration uses the game service menu; no separate handbrake action is exposed.'), back]
+    elif page == 'buttons':
+        skip = {'shiftup','shiftdn'} if state.get('transmission')=='hpattern' else {'gear1','gear2','gear3','gear4'}
+        rows = [bind(key, label.title()) for label,key,kind in WIZARD_STEPS if kind=='button' and key not in skip]+[back]
+    elif page == 'cameras':
+        rows = [bind('view1', 'View 1'), bind('view2', 'View 2'), bind('view3', 'View 3'),
+                ('camera_info', 'Native arcade views', 'Game controlled',
+                 'These ROMs select native views. No verified mounted-camera position or FOV adjustment is exposed.'), back]
+    elif page == 'telemetry':
+        telemetry = state.get('telemetry', {})
+        target = telemetry.get('forza', '').strip()
+        if target.lower() in ('1','on','true','yes'): target='127.0.0.1:5300'
+        rows = [('telemetry_status', 'Forza / SimHub destination', target or 'Off',
+                 'Saved destination: '+(target or 'Off')+'. Configure the receiver for Forza Horizon 5 Data Out; sending is not receiver confirmation.'),
+                ('telemetry_info', 'Signal details', 'Per game', 'Speed and gears are game-derived; displayed RPM is arcade-derived. Physical receiver acceptance is separate.'),
+                ('recording_info', 'Recorded drives', 'Prepared separately', 'A developer prepares a bounded recording with an external clock; settings view does not start or stop it.'), back]
+        if advanced and telemetry.get('udp'):
+            rows.insert(-1, ('udp', 'Diagnostic UDP destination', telemetry['udp'], telemetry['udp']))
+    else:
+        rows = _settings_rows(page, state, diag, version)
+        if page == 'ffb':
+            if not advanced: rows=[row for row in rows if row[0] in ('ffb','back')]
+            wheel = bindings.get('steer', '').split('|',1)[0]
+            rows.insert(0, ('ffb_device', 'FFB device', wheel or 'Steering not bound',
+                           'Follows the saved steering device. Legacy selection uses device names; strict identity replacement remains unqualified.'))
+        if page == 'support' and not advanced:
+            rows=[row for row in rows if row[0]!='diag']
+    custom = settings_view.custom_sections(state, diag)
+    if not advanced:
+        relevant = [(key, text) for key, text in custom if page in ('setup','root') or key==page]
+        if relevant:
+            key,text=relevant[0]
+            rows.insert(len(rows)-1, ('advanced_'+key, text, 'Review in Advanced',
+                         'Existing tuning remains active. Changing view does not reset it.'))
+    selector = ('view', 'View', '[Simple]  Advanced' if not advanced else 'Simple  [Advanced]',
+                'Left / right or Enter changes view. Saved settings remain active in both views.')
+    return [selector]+rows
+
+
+def _settings_rows(page, state, diag, version):
     """(id, label, value, hint) for one settings page.
 
     Grouped by when a setting is actually touched: DISPLAY and CONTROLS get
@@ -1140,7 +1234,7 @@ GAME_ALIASES = {
 
 def settings_back(page, state):
     """Return to the containing menu with the branch just left selected."""
-    parent = {'impacts':'ffb'}.get(page, 'root')
+    parent = {'impacts':'ffb', 'buttons':'controls'}.get(page, 'root')
     rows = settings_rows(parent, state, False, '')
     selected = next((i for i,row in enumerate(rows) if row[0] == page), 0)
     return parent, selected, rows
@@ -1313,6 +1407,26 @@ def main():
             actions.append(dbg("keyboard", key))
 
     glfw.set_key_callback(win, on_key)
+    def on_mouse(_, button, action, mods):
+        nonlocal ssel, spage, settings_error
+        if button != glfw.MOUSE_BUTTON_LEFT or action != glfw.PRESS or mode != "settings":
+            return
+        x,y = glfw.get_cursor_pos(win)
+        ww,wh = glfw.get_window_size(win)
+        rows = settings_rows(spage,state,run_rig.ffb_diag_enabled(),upd_version)
+        requested = settings_view.hit_page(ww,wh,x,y)
+        if requested:
+            try:
+                spage = settings_view.change(state,CFG,state["settings_view"],requested)
+                ssel = 0; settings_error = ""
+            except (OSError,ValueError) as error:
+                settings_error = "Page not saved: " + str(error)
+            return
+        hit = settings_view.hit_row(ww,wh,x,y,ssel,len(rows))
+        if hit is not None:
+            ssel = hit
+            actions.append(glfw.KEY_ENTER if hit else (glfw.KEY_LEFT if x < ww*.5 else glfw.KEY_RIGHT))
+    glfw.set_mouse_button_callback(win, on_mouse)
     hat_prev = 0
     joy_prev = {}
     joy_seen = {}
@@ -1454,13 +1568,17 @@ def main():
                          "< 2.4 (MANUAL+AUTO) >" if wr == "crusnwld24"
                          else "< 2.5 (AUTO ONLY) >", VER_HINT))
         rows.append(("back", "BACK", "", ""))
+        if settings_view.view(state.get("settings_view")) == "simple":
+            rows = [r for r in rows if r[0] not in ("sens", "curve", "version")]
+            if sv not in (None,100) or cv not in (None,100):
+                rows.insert(-1, ("advanced_card", "Custom steering tuning active", "Advanced", "Review saved steering values in Advanced; switching view preserves them."))
         return rows
 
     # -- steering-wheel / gas menu navigation (uses the wizard's axis
     # bindings from [wheelmap]; nothing here reads axes in wizard mode) --
     def parse_navspec():
         cp = configparser.ConfigParser()
-        cp.read(CFG)
+        cp.read(CFG, encoding="utf-8-sig")
         out = {}
         if "wheelmap" in cp:
             for k in ("steer", "gas", "brake"):
@@ -1600,7 +1718,8 @@ def main():
     mode = "menu"        # menu | game | settings | wizard
     row = 0              # menu: 0 = game cards, 1 = SETTINGS
     ssel = 0             # settings: row index within the current page
-    spage = "root"       # settings page: root/display/ffb/controls/support
+    spage = state["settings_page"]
+    settings_error = ""
     gsel = 0             # game submenu: item index
     cheat_sel = 0
     cheat_cat = {'entries':[]}
@@ -1618,6 +1737,9 @@ def main():
     wiz_last = ""
     wiz_base = None      # axis baselines {jid: axes tuple}
     wiz_ready = False    # gate screen: capture starts on Enter, not entry
+    wiz_review = False
+    wiz_error = ""
+    wiz_deadline = 0.0
     wiz_cool = 0.0       # ignore-everything deadline after each bind/skip
     wiz_settle = None    # last axis sample while waiting for rest
     wiz_settle_t = 0.0
@@ -1689,18 +1811,47 @@ def main():
                 for ev in nav_events(not (mode == "menu" and row == 0)):
                     actions.append(ev)
 
+        if glfw.KEY_F6 in actions and mode != "wizard":
+            actions.remove(glfw.KEY_F6)
+            mode = "menu" if mode == "settings" else "settings"
+            spage = settings_view.page(state.get("settings_page"), state.get("settings_view"))
+            ssel = 0
+
         if mode == "wizard":
             now = time.time()
             # drain the raw HID queue every iteration; only the armed
             # button-step branch below consumes it, everything else
             # discards so stale presses can never fire later
             rawp = rawlis.get_presses() if rawlis is not None else []
-            if not wiz_ready:
+            if glfw.KEY_ESCAPE in actions:
+                mode = "settings"
+                actions.clear()
+            elif wiz_review:
+                for key in actions:
+                    if key == glfw.KEY_ESCAPE:
+                        mode = "settings"
+                    elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER):
+                        try:
+                            save_wheelmap(wiz_bind)
+                            state.setdefault("bindings", {}).update(wiz_bind)
+                            nav_spec = parse_navspec()
+                            ok_buttons = parse_okbuttons()
+                            mode = "settings"
+                            wiz_error = ""
+                        except (OSError, ValueError) as error:
+                            wiz_error = "Binding not saved: " + str(error)
+                actions.clear()
+            elif wiz_ready and now > wiz_deadline:
+                mode = "settings"
+                settings_error = "Binding timed out; previous assignments retained."
+                actions.clear()
+            elif not wiz_ready:
                 # gate screen: nothing is read until the player says go
                 for key in actions:
                     if key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER,
                                glfw.KEY_SPACE):
                         wiz_ready = True
+                        wiz_deadline = now + 30
                         wiz_cool = now + 1.8
                         audio.blip("select")
                     elif key == glfw.KEY_ESCAPE:
@@ -1718,6 +1869,7 @@ def main():
                     if key == glfw.KEY_BACKSPACE:       # skip this binding
                         audio.blip("nav")
                         wiz_idx += 1
+                        wiz_deadline = now + 30
                         wiz_base = wiz_settle = None
                         wiz_cool = now + 1.8
                     elif key == glfw.KEY_ESCAPE:        # cancel wizard
@@ -1730,6 +1882,7 @@ def main():
                                     f"{KEYCODES[key].replace('KEYCODE_', '')}")
                         audio.blip("nav")
                         wiz_idx += 1
+                        wiz_deadline = now + 30
                         wiz_base = wiz_settle = None
                         wiz_cool = now + 2.0
                         break
@@ -1749,6 +1902,7 @@ def main():
                         wiz_last = f"{label}  =  {name}  BUTTON {btn + 1}"
                         audio.blip("nav")
                         wiz_idx += 1
+                        wiz_deadline = now + 30
                         wiz_base = wiz_settle = None
                         wiz_cool = now + 2.0
                     elif kind == "axis":
@@ -1795,17 +1949,15 @@ def main():
                                 sgn = ("pos" if cur[jid][i] - base[i] > 0
                                        else "neg")
                                 wiz_bind[ikey] = f"{name}|axis:{i}:{gp}:{sgn}"
-                                wiz_last = f"{label.split('(')[0].strip()}  =  {name}  AXIS {i}"
+                                wiz_last = f"{label.split('(')[0].strip()}  =  {name}  AXIS {i+1}"
                                 audio.blip("nav")
                                 wiz_idx += 1
+                                wiz_deadline = now + 30
                                 wiz_base = wiz_settle = None
                                 wiz_cool = now + 2.0
-            if mode == "wizard" and wiz_idx >= len(wiz_steps):
-                save_wheelmap(wiz_bind)
-                nav_spec = parse_navspec()   # steering/gas nav follows
-                ok_buttons = parse_okbuttons()   # ... and so does menu OK
+            if mode == "wizard" and wiz_idx >= len(wiz_steps) and not wiz_review:
+                wiz_review = True
                 audio.blip("select")
-                mode = "settings"
         if rawlis is not None and mode != "wizard":
             rawlis.stop()
             rawlis = None
@@ -1820,14 +1972,18 @@ def main():
                 right = key == glfw.KEY_RIGHT
                 enter = key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER,
                                 glfw.KEY_SPACE)
-                if key in (glfw.KEY_UP, glfw.KEY_W):
+                if key == glfw.KEY_TAB:
+                    index = settings_view.CORE.index(spage) if spage in settings_view.CORE else -1
+                    spage = settings_view.CORE[(index+1)%len(settings_view.CORE)]
+                    ssel = 0
+                elif key in (glfw.KEY_UP, glfw.KEY_W):
                     ssel = (ssel - 1) % len(srows)
                     audio.blip("nav")
                 elif key in (glfw.KEY_DOWN, glfw.KEY_S):
                     ssel = (ssel + 1) % len(srows)
                     audio.blip("nav")
                 elif key == glfw.KEY_ESCAPE or (enter and rid == "back"):
-                    if spage == "root":
+                    if key == glfw.KEY_ESCAPE or spage == "root":
                         mode = "menu"
                     else:
                         # back to the root page, landing on the branch just
@@ -1836,7 +1992,18 @@ def main():
                         spage, ssel, srows = settings_back(leaving, state)
                         dbg("settings", f"page {leaving} -> {spage}")
                     audio.blip("nav")
-                elif enter and rid in ("display", "ffb", "controls", "support", "graphics", "impacts"):
+                elif (rid == "view" and (lr or enter)) or (enter and rid.startswith("advanced_")):
+                    target = ("advanced" if rid.startswith("advanced_") or (lr and right) else "simple" if lr
+                              else "advanced" if state["settings_view"] == "simple" else "simple")
+                    target_page = rid.removeprefix("advanced_") if rid.startswith("advanced_") else spage
+                    try:
+                        spage = settings_view.change(state, CFG, target, target_page)
+                        ssel = 0
+                        settings_error = ""
+                        audio.blip("nav")
+                    except (OSError, ValueError) as error:
+                        settings_error = "View not saved: " + str(error)
+                elif enter and rid in (*settings_view.CORE, "root", "display", "graphics", "impacts", "buttons"):
                     dbg("settings", f"page -> {rid}")
                     spage, ssel = rid, 0
                     if rid == "graphics":
@@ -1924,12 +2091,24 @@ def main():
                         else "hpattern")
                     save_config(state)
                     audio.blip("nav")
-                elif rid == "wizard" and enter:
+                elif rid.startswith("bind_") and key == glfw.KEY_DELETE:
+                    binding = rid.removeprefix("bind_")
+                    try:
+                        save_wheelmap({binding:None})
+                        state.setdefault("bindings",{}).pop(binding,None)
+                        nav_spec = parse_navspec(); ok_buttons = parse_okbuttons()
+                        settings_error = ""
+                    except (OSError,ValueError) as error:
+                        settings_error = "Binding not cleared: " + str(error)
+                elif (rid == "wizard" or rid.startswith("bind_")) and enter:
                     mode = "wizard"
                     wiz_idx = 0
                     wiz_bind = {}
                     wiz_last = ""
                     wiz_ready = False
+                    wiz_review = False
+                    wiz_error = ""
+                    wiz_deadline = now + 30
                     wiz_base = wiz_settle = None
                     wiz_cool = 0.0
                     # the wizard only asks for the ACTIVE transmission mode's
@@ -1938,7 +2117,11 @@ def main():
                              if state.get("transmission",
                                           "hpattern") == "hpattern"
                              else {"gear1", "gear2", "gear3", "gear4"})
-                    wiz_steps = [s for s in WIZARD_STEPS if s[1] not in skipk]
+                    wiz_steps = ([s for s in WIZARD_STEPS if s[1] == rid.removeprefix("bind_")]
+                                 if rid.startswith("bind_") else [s for s in WIZARD_STEPS if s[1] not in skipk])
+                    if rid.startswith("bind_"):
+                        wiz_ready = True
+                        wiz_cool = now + 1.8
                     if rawjoy is not None and rawlis is None:
                         try:
                             rawlis = rawjoy.RawButtonListener()
@@ -1953,6 +2136,12 @@ def main():
                     audio.blip("nav")
                     update_step(upd)
                 if mode == "settings":
+                    if spage != state.get("settings_page"):
+                        try:
+                            settings_view.change(state, CFG, state["settings_view"], spage)
+                            settings_error = ""
+                        except (OSError, ValueError) as error:
+                            settings_error = "Page not saved: " + str(error)
                     srows = settings_rows(spage, state,
                                           run_rig.ffb_diag_enabled(),
                                           upd_version)
@@ -2022,6 +2211,11 @@ def main():
                     if key == glfw.KEY_ESCAPE or (enter and rid == "back"):
                         mode = "menu"
                         audio.blip("nav")
+                    elif enter and rid == "advanced_card":
+                        try:
+                            settings_view.change(state, CFG, "advanced", "controls")
+                        except (OSError, ValueError) as error:
+                            notice = "View not saved: " + str(error); notice_until = now + 15
                     elif enter and rid == "play":
                         launch = card
                         mode = "menu"
@@ -2114,6 +2308,10 @@ def main():
         t = time.time() % 3600
         if launching is not None:
             shell.draw_loading(launching["name"], t)
+        elif mode == "wizard" and wiz_review:
+            shell.draw_settings(1, "SAVE BINDINGS", [("View", "Finish or cancel to change view"),
+                ("Save bindings", "Enter"), ("Cancel / keep previous bindings", "Esc")],
+                wiz_error or wiz_last, t)
         elif mode == "wizard" and not wiz_ready:
             shell.draw_wizard_begin(t)
         elif mode == "wizard" and wiz_idx < len(wiz_steps):
@@ -2130,7 +2328,7 @@ def main():
             shell.draw_settings(
                 ssel, SETTINGS_TITLE.get(spage, "SETTINGS"),
                 [(r[1], r[2]) for r in srows], srows[ssel][3], t,
-                notice=upd["msg"] if time.time() < upd["until"] else "")
+                notice=settings_error or (upd["msg"] if time.time() < upd["until"] else ""))
         elif mode == 'cheats':
             rows = cheat_rows(cheat_cat,cheat_selected)
             cheat_sel = min(cheat_sel,len(rows)-1)

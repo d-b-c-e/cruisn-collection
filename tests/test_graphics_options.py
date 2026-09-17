@@ -349,6 +349,7 @@ class LauncherGraphicsTests(unittest.TestCase):
             self.assertEqual(cp["collection"]["marginfill"], "0")
             self.assertEqual(cp["collection"]["custom_note"], "keep")
             self.assertEqual(cp["wheelmap"]["steer"], "wheel|axis:0:0:pos")
+            restored["settings_view"] = "advanced"
             rows = collection.settings_rows("display", restored, False, "")
             self.assertNotIn("marginfill", [r[0] for r in rows])
             self.assertNotIn("crackfill", [r[0] for r in rows])
@@ -357,10 +358,10 @@ class LauncherGraphicsTests(unittest.TestCase):
             restored["graphics_rom"] = "offroadc"
             rows = {r[0]: r[2] for r in collection.settings_rows("graphics", restored, False, "")}
             self.assertEqual(rows["seam_alignment"], "ON")
-            self.assertEqual(set(rows), {'graphics_game','seam_alignment','offroad_distance','back'})
+            self.assertEqual(set(rows), {'view','graphics_game','seam_alignment','offroad_distance','back'})
             restored['graphics_rom'] = 'shared'
             shared = {r[0]:r[2] for r in collection.settings_rows('graphics',restored,False,'')}
-            self.assertEqual(set(shared), {'graphics_game','crackfill','back'})
+            self.assertEqual(set(shared), {'view','graphics_game','crackfill','back'})
             self.assertEqual(shared['crackfill'], 'ON')
             restored['graphics_rom'] = 'crusnwld'
             restored['world_rom'] = 'crusnwld24'
@@ -372,5 +373,5 @@ class LauncherGraphicsTests(unittest.TestCase):
             self.assertIn('world_distance',world25)
             restored['graphics_rom'] = 'crusnexo'
             exotica = collection.settings_rows('graphics',restored,False,'')
-            self.assertEqual([r[0] for r in exotica], ['graphics_game','menu_feedback','wide_visibility','back'])
+            self.assertEqual([r[0] for r in exotica], ['view','graphics_game','menu_feedback','wide_visibility','back'])
             self.assertTrue(restored['crackfill'])

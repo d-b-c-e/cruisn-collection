@@ -1,6 +1,21 @@
 # Cruis'n Collection — agent instructions
 
-## Current work: release parity, September 16
+## Isolated frontend review worktree, September 17
+
+This checkout is E:/Source/cruisn-collection-ux-review, branch
+codex/ux-simple-advanced. The personal source launcher is in the separate clean
+E:/Source/cruisn-collection checkout. DO NOT merge or deploy this candidate there.
+Read docs/UX-OVERNIGHT-2026-09-16.md. Shared UX guidance at dbce-wheel-mod-toolkit
+CONSUMER-UX.md / CONSUMER-SETTINGS-VIEWS.md owns frontend placement, not renderer
+or user-overridden force behavior. Coordinator01a07ac3-e639-7762-a698-5365d447ee7e
+holds game/GPU tests; CPU-only isolated frontend build authorized.
+Simple/Advanced and direct binding candidate builds (SHA e84adba72078b6f1ed8f8cc50cf389e205c8d906492b74a279b5328b40d85dee), fresh/legacy frozen
+configuration checks pass;6new+22graphics+11launcher tests pass. CPU layout10
+fixtures720p/4K pass; no GL/game/physical acceptance. Next telemetry config UI.
+Keep native parity evidence below separate; native4df727db105 timing qualifier
+awaits the coordinated rig slot. No personal/public deployment or torque.
+
+## Rendering checkpoint inherited from master, September 16
 
 Latest: docs/reviews/2026-09-16-exotica-lifetime-timing.md.
 One remaining-profile replay8209inputs/136native/4completed4K images exact.
