@@ -163,3 +163,23 @@ legacy zero, diagnostic Off and no World gate. No physical output was enabled.
 Fourteen CPU fixtures in `layout-v4` pass bounds and row-collision checks at 720p
 and 4K, including both telemetry views. These are layout tests, not GPU or mouse
 interaction acceptance.
+
+
+## Final isolated frontend build
+
+Frontend commit `3229661` is packaged separately in local
+`results/diagnostics/ux-20260916/frontend-build-v3/dist/CruisnCollection`.
+Executable SHA256:
+`33b1144542b827e3603cc5cb8f17bd598cf39cc94be738f8c82a4deaf845791b`.
+Its `qualified.json` attests source hashes and the build log. The reusable
+`harness/qualify_frontend_config.py` runs only `--config-report` against isolated
+fresh, legacy and explicit saved-Off fixtures. All three pass; configuration bytes
+remain unchanged. Fresh defaults include Simple/Setup, CRT On and 4x. Legacy
+zero remains force Off; explicit Off retains 65% strength and a custom profile.
+Telemetry destinations and saved Off survive. No synthetic rig is placed in the
+candidate distribution; fixtures live separately under `config-smoke`.
+
+The candidate is reviewable, not deployed. Source, native emulator, Stream Deck
+installation and public release remain unchanged outside the isolated worktree.
+This does not qualify physical force, modal input interaction, active-game F8,
+rendering parity or a release package.

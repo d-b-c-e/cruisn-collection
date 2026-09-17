@@ -12,8 +12,9 @@ holds game/GPU tests; CPU-only isolated frontend build authorized.
 Simple/Advanced, direct binding capture, atomic telemetry connection and saved
 FFB On/Off are implemented. Off retains strength/tuning; World force exception
 unchanged. Read the UX document for evidence and explicit remaining gaps.
-Fourteen CPU layout fixtures pass at 720p/4K. Final frozen rebuild pending;
-previous view-only executable is not the latest frontend. No hardware acceptance.
+Fourteen CPU layout fixtures pass at 720p/4K. Frozen frontend 3229661 builds and passes fresh/legacy/saved-Off configuration
+checks; SHA33b1144542b827e3603cc5cb8f17bd598cf39cc94be738f8c82a4deaf845791b.
+No hardware acceptance. See frontend-build-v3/qualified.json under UX results.
 Keep native parity evidence below separate; native4df727db105 timing qualifier
 awaits the coordinated rig slot. No personal/public deployment or torque.
 
