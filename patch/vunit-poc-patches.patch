@@ -49071,3 +49071,253 @@ index b87aba388dd..aeb70d89a6a 100644
 -- 
 2.55.0.windows.3
 
+From 8b52a38fd525ed1348070af20d4fba1970d046af Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 20:43:41 -0500
+Subject: [PATCH] Add bounded deferred Exotica CPU phase timings
+
+---
+ src/mame/midway/cruisn/phase_timing.h | 60 +++++++++++++++++++++++++++
+ src/mame/midway/midzeus.cpp           | 22 ++++++++++
+ 2 files changed, 82 insertions(+)
+ create mode 100644 src/mame/midway/cruisn/phase_timing.h
+
+diff --git a/src/mame/midway/cruisn/phase_timing.h b/src/mame/midway/cruisn/phase_timing.h
+new file mode 100644
+index 00000000000..4bae65e4d01
+--- /dev/null
++++ b/src/mame/midway/cruisn/phase_timing.h
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: BSD-3-Clause
++// Opt-in bounded CPU profiling. No file writes or allocations during sampling.
++#pragma once
++#include <cmath>
++#include <cstdint>
++#include <cstdio>
++#include <vector>
++namespace cruisn {
++class PhaseTiming {
++public:
++    enum Phase : uint32_t { source, waiting_build, future_build, future_material,
++        active_seal, waiting_ready, active_build, active_material, phase_count };
++    struct Row { uint32_t frame; uint64_t scene; Phase phase; double us; uint64_t units; };
++    static constexpr size_t capacity=65536;
++private:
++    uint32_t m_first=0,m_last=0;
++    bool m_configured=false,m_failed=false;
++    std::vector<Row> m_rows;
++public:
++    bool configure(const char *text) {
++        if(m_configured)return false;
++        m_configured=true;
++        if(!text)return true;
++        auto number=[](const char *&p,uint32_t &out) {
++            uint64_t n=0;
++            if(*p<'0' || *p>'9')return false;
++            while(*p>='0' && *p<='9') {
++                n=n*10+unsigned(*p++-'0');if(n>UINT32_MAX)return false;
++            }
++            out=uint32_t(n);return true;
++        };
++        const char *p=text;uint32_t first,last;
++        if(!number(p,first) || *p++!=':' || !number(p,last) || *p || !first || last<first || last-first>=2000)return false;
++        m_rows.reserve(capacity);m_first=first;m_last=last;return true;
++    }
++    bool enabled()const{return m_first!=0;}
++    bool contains(uint32_t frame)const{return enabled() && frame>=m_first && frame<=m_last;}
++    uint32_t first()const{return m_first;}
++    uint32_t last()const{return m_last;}
++    size_t size()const{return m_rows.size();}
++    bool good(uint32_t final_frame)const {
++        return enabled() && !m_failed && !m_rows.empty() && final_frame>=m_last;
++    }
++    void add(uint32_t frame,uint64_t scene,Phase phase,double us,uint64_t units=0) {
++        if(!contains(frame))return;
++        if(!scene || phase>=phase_count || !std::isfinite(us) || us<0 || m_rows.size()==capacity) {m_failed=true;return;}
++        m_rows.push_back({frame,scene,phase,us,units});
++    }
++    bool write(FILE *file,uint32_t final_frame)const {
++        if(!file || !enabled())return false;
++        static const char *names[]={"source","waiting_build","future_build","future_material",
++            "active_seal","waiting_ready","active_build","active_material"};
++        if(std::fprintf(file,"frame,scene,phase,microseconds,units\n")<0)return false;
++        for(const auto &r:m_rows)
++            if(std::fprintf(file,"%u,%llu,%s,%.3f,%llu\n",r.frame,(unsigned long long)r.scene,
++                names[r.phase],r.us,(unsigned long long)r.units)<0)return false;
++        return good(final_frame) && !std::ferror(file);
++    }
++};
++}
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 29086ac62f5..aba9ea52963 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -28,6 +28,7 @@ The Grid         v1.2   10/18/2000
+ 
+ #include "emu.h"
+ #include "cruisn/exotica_journal_policy.h"
++#include "cruisn/phase_timing.h"
+ #include "cruisn/diagnostic_count.h"
+ #include "cruisn/exotica_bootstrap.h"
+ #include "cruisn/exotica_runtime.h"
+@@ -240,6 +241,7 @@ private:
+ 	cruisn::exotica_admissions::Ledger m_endpoint_admissions;
+ 	uint32_t m_endpoint_admit_from=0;
+ 	uint64_t m_endpoint_admit_sequence=0,m_endpoint_admit_bytes=0;
++	cruisn::PhaseTiming m_host_timing;
+ 	cruisn::DiagnosticJournal::Policy m_journal_policy=cruisn::DiagnosticJournal::Policy::capture;
+ 	cruisn::DiagnosticJournal m_endpoint_admit_packets,m_endpoint_admit_log;
+ 	struct EndpointPending {
+@@ -1193,6 +1195,8 @@ void crusnexo_state::endpoint_admit(uint64_t scene,uint32_t frame,uint64_t realm
+ 
+ void crusnexo_state::scene_observer_start()
+ {
++	if(!m_host_timing.configure(std::getenv("MIDZ_HOST_TIMING")))fatalerror("Invalid Exotica timing range (FIRST:LAST, at most2000frames)\n");
++	if(m_host_timing.enabled())fprintf(stderr,"MIDZ_HOST_TIMING first=%u last=%u\n",m_host_timing.first(),m_host_timing.last());
+ 	const char *journal_mode=std::getenv("MIDZ_HOST_JOURNALS");
+ 	if(!cruisn::exotica_journals::select(journal_mode,[](const char *key){return std::getenv(key);},m_journal_policy))
+ 		fatalerror("Invalid Exotica journal policy or missing combined-renderer requirements\n");
+@@ -1204,6 +1208,7 @@ void crusnexo_state::scene_observer_start()
+ 		if(waiting && strcmp(waiting,"0"))fatalerror("Exotica waiting observation requires host scene mode\n");
+ 		const char *handover=std::getenv("MIDZ_HOST_HANDOVER");
+ 		if(handover && strcmp(handover,"0"))fatalerror("Exotica waiting completion requires host scene mode\n");
++		if(m_host_timing.enabled())fatalerror("Exotica timing requires host scene mode\n");
+ 		return;
+ 	}
+ 	const char *ffb=std::getenv("MIDV_FFB");
+@@ -1610,6 +1615,7 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 			m_handover_geometry=std::move(proposed);
+ 		}
+ 	}
++	const auto waiting_built=std::chrono::steady_clock::now();
+ 	cruisn::exotica_scene::Result scene;
+ 	p.early_depth=m_scene_depth_mode;
+ 	const bool injected=m_scene_inject_frame && p.frame>=m_scene_inject_frame;
+@@ -1731,6 +1737,10 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 		(unsigned long long)pending.scene,pending.scene_frame,pending.scene_time,unsigned(p.frustum_bounds),unsigned(scene.culled_bounds),us(hashed,materials_done),
+ 		m_scene_source_mode,m_scene_depth_mode,unsigned(scene.depth_tests),unsigned(scene.depth_verified),unsigned(scene.depth_skipped))<0)
+ 		fatalerror("Exotica host scene log write\n");
++	m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::source,us(started,ready),sources.sources.size());
++	m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::waiting_build,us(ready,waiting_built),m_handover_geometry.quads.size());
++	m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::future_build,us(waiting_built,built),scene.quads.size());
++	m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::future_material,us(hashed,materials_done),material_wire.size());
+ 	++m_scene_matched;m_scene_quads+=scene.quads.size();
+ }
+ 
+@@ -1793,6 +1803,7 @@ void crusnexo_state::scene_fence_ready(bool immediate)
+ 
+ void crusnexo_state::scene_waiting_ready()
+ {
++	const auto timing_started=std::chrono::steady_clock::now();
+ 	const auto cycles=m_maincpu->total_cycles();
+ 	const auto frame=renderer_frame();const double now=machine().time().as_double();
+ 	if(m_handover_scene!=m_scene_fence_scene || !m_handover_end_records ||
+@@ -1924,6 +1935,7 @@ void crusnexo_state::scene_waiting_ready()
+ 	m_handover_geometry=cruisn::exotica_scene::Result{};
+ 	m_handover_control={};m_handover_early=false;
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica waiting completion changed CPU cycles\n");
++	m_host_timing.add(frame,m_handover_scene,cruisn::PhaseTiming::waiting_ready,std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-timing_started).count(),completion.items.size());
+ }
+ 
+ void crusnexo_state::scene_active_list(uint32_t entry,uint32_t head)
+@@ -1997,6 +2009,7 @@ void crusnexo_state::scene_active_seal()
+ 	}
+ 	if(m_maincpu->total_cycles()!=cycles)fatalerror("Exotica active sealing changed CPU cycles\n");
+ 	m_active_seal_us=std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-started).count();
++	m_host_timing.add(renderer_frame(),m_scene_fence_scene,cruisn::PhaseTiming::active_seal,m_active_seal_us);
+ }
+ 
+ void crusnexo_state::scene_active_ready()
+@@ -2234,11 +2247,20 @@ void crusnexo_state::scene_active_ready()
+ 		unsigned(selected.objects),unsigned(selected.candidates),unsigned(selected.already_submitted),unsigned(scene.instances.size()),unsigned(scene.quads.size()),unsigned(excluded),
+ 		(unsigned long long)hash,us(started,assembled),us(assembled,committed),m_scene_fence_end_frame,unsigned(camera_advanced),changed_objects,binding_checks,m_active_seal_us,
+ 		bindings_advanced,unsigned(model_checks),(unsigned long long)model_bytes,unsigned(scene.instances.size()),unsigned(coverage.count()),lease_us,unsigned(ram_models),m_active_seal_pages,unsigned(m_active_seal_verified))<0)fatalerror("Exotica active scene log write\n");
++	m_host_timing.add(renderer_frame(),m_scene_fence_scene,cruisn::PhaseTiming::active_build,us(started,assembled),scene.quads.size());
++	m_host_timing.add(renderer_frame(),m_scene_fence_scene,cruisn::PhaseTiming::active_material,us(assembled,committed),material_wire.size());
+ 	++m_active_scenes;m_active_quads+=scene.quads.size();
+ }
+ 
+ void crusnexo_state::scene_observer_exit()
+ {
++	if(m_host_timing.enabled()) {
++		FILE *file=fopen("exotica-host-timing.csv","w");
++		const bool written=m_host_timing.write(file,renderer_frame());
++		const int closed=file?fclose(file):EOF;
++		fprintf(stderr,"MIDZ_HOST_TIMING_RESULT complete=%u rows=%u final_frame=%u\n",
++			unsigned(written && !closed),unsigned(m_host_timing.size()),renderer_frame());
++	}
+ 	if(!m_scene_log)return;
+ 	if(m_compose_log) {
+ 		const bool good=!m_compose_log.error();const int closed=m_compose_log.close();
+-- 
+2.55.0.windows.3
+
+From 44388a202e132af0875046a3a7485dcb2a3e73bd Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 20:50:46 -0500
+Subject: [PATCH] Separate Exotica material preparation from graphics queue
+ submission
+
+---
+ src/mame/midway/cruisn/phase_timing.h |  6 ++++--
+ src/mame/midway/midzeus.cpp           | 12 +++++++++++-
+ 2 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/phase_timing.h b/src/mame/midway/cruisn/phase_timing.h
+index 4bae65e4d01..d480a6ea483 100644
+--- a/src/mame/midway/cruisn/phase_timing.h
++++ b/src/mame/midway/cruisn/phase_timing.h
+@@ -9,7 +9,8 @@ namespace cruisn {
+ class PhaseTiming {
+ public:
+     enum Phase : uint32_t { source, waiting_build, future_build, future_material,
+-        active_seal, waiting_ready, active_build, active_material, phase_count };
++        active_seal, waiting_ready, active_build, active_material,
++        future_stage, future_encode, future_submit, future_commit, phase_count };
+     struct Row { uint32_t frame; uint64_t scene; Phase phase; double us; uint64_t units; };
+     static constexpr size_t capacity=65536;
+ private:
+@@ -49,7 +50,8 @@ public:
+     bool write(FILE *file,uint32_t final_frame)const {
+         if(!file || !enabled())return false;
+         static const char *names[]={"source","waiting_build","future_build","future_material",
+-            "active_seal","waiting_ready","active_build","active_material"};
++            "active_seal","waiting_ready","active_build","active_material",
++            "future_stage","future_encode","future_submit","future_commit"};
+         if(std::fprintf(file,"frame,scene,phase,microseconds,units\n")<0)return false;
+         for(const auto &r:m_rows)
+             if(std::fprintf(file,"%u,%llu,%s,%.3f,%llu\n",r.frame,(unsigned long long)r.scene,
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index aba9ea52963..d6853485876 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -1679,8 +1679,16 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 				}
+ 			}
+ 			std::vector<uint8_t> encoded;
+-			if(!cruisn::zeus_wide::encode(future,encoded,material_frame_policy()) || !m_zeus->midz_host_future(encoded.data(),encoded.size()))
++			if(!cruisn::zeus_wide::encode(future,encoded,material_frame_policy()))
++				fatalerror("Exotica future owned encoding rejected\n");
++			const auto submit_started=std::chrono::steady_clock::now();
++			if(!m_zeus->midz_host_future(encoded.data(),encoded.size()))
+ 				fatalerror("Exotica future owned queue rejected\n");
++			const auto submitted_at=std::chrono::steady_clock::now();
++			m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::future_encode,
++				std::chrono::duration<double,std::micro>(submit_started-material_staged).count(),encoded.size());
++			m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::future_submit,
++				std::chrono::duration<double,std::micro>(submitted_at-submit_started).count(),encoded.size());
+ 			if(packet.snapshot) {
+ 				const auto name="exotica-future-"+std::to_string(p.frame)+".xwd";
+ 				FILE *file=fopen(name.c_str(),"wb");if(!file)fatalerror("Exotica future packet snapshot open\n");
+@@ -1699,6 +1707,8 @@ void crusnexo_state::scene_observer_model(uint32_t base,uint32_t count,uint32_t
+ 		if(m_scene_material_pages)m_zeus->midz_host_wave_commit();
+ 		const auto material_committed=std::chrono::steady_clock::now();
+ 		auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
++		m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::future_stage,us(material_start,material_staged),packet.wave.pages.size());
++		m_host_timing.add(p.frame,pending.scene,cruisn::PhaseTiming::future_commit,us(material_queued,material_committed),packet.wave.pages.size());
+ 		if(m_scene_material_log.print("%llu,%u,%llu,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f\n",
+ 			(unsigned long long)pending.scene,p.frame,(unsigned long long)packet.wave.generation,
+ 			unsigned(packet.wave.pages.size()),unsigned(packet.rows.size()),unsigned(wire.size()),
+-- 
+2.55.0.windows.3
+

@@ -45,6 +45,7 @@ import vunit_bootstrap
 import vunit_runtime
 import exotica_host_failure
 import exotica_journals
+import exotica_timing
 import exotica_bootstrap
 import exotica_reset
 import binary_provenance
@@ -56,6 +57,7 @@ from display_target import parse_size
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
+    exotica_timing.add_arguments(ap)
     ap.add_argument("case", type=Path)
     ap.add_argument("--output", help="new evidence directory (must not exist)")
     ap.add_argument('--prepare-only',action='store_true',
@@ -305,6 +307,8 @@ def main(argv=None):
         if sky_trial:report['zeus_sky']=sky_trial
         scene_trial=exotica_scene_options.configure(args,manifest['rom'],manifest['settings'])
         if scene_trial:report['exotica_host_scene']=scene_trial
+        timing_trial=exotica_timing.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
+        if timing_trial:report['exotica_timing']=timing_trial
         lifetime_trial=exotica_lifetimes.configure(args,manifest['rom'],manifest['settings'])
         if lifetime_trial:report['exotica_lifetimes']=lifetime_trial
         depth_trial=zeus_depth_mirror.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
@@ -556,6 +560,8 @@ def main(argv=None):
             if receipt not in (runtime / "launch.log").read_text(encoding="utf-8", errors="replace"):
                 raise ValueError("late game patch application receipt missing")
         worker_result=ffb_worker.verify_receipt(worker_trial,runtime)
+        timing_result=exotica_timing.verify(timing_trial,runtime)
+        if timing_result:report['exotica_timing']['result']=timing_result
         if worker_result:report['ffb_worker']['result']=worker_result
         # Preserve independent teardown evidence even when an intentionally
         # interrupted replay subsequently fails its full-input comparison.

@@ -46,6 +46,8 @@ def load_plan(directory):
         raise ValueError('prepared recording must disable physical force and external telemetry')
     if any(k.endswith(('_HOST_FAILURE_FRAME','_GL_STOP_FRAME')) or '_GL_STALL_' in k for k in env):
         raise ValueError('live recording cannot inherit failure injection or consumer stalls')
+    if 'MIDZ_HOST_TIMING' in env:
+        raise ValueError('live recording cannot inherit CPU timing diagnostics')
     if ('SNAP_PROBE_SCRIPT' in env or any(k.endswith(('_GL_SNAP','_CAPTURE','_STATEDUMP_DIR','_RAMDUMP_DIR','_QUADLOG')) for k in env)
             or any(env.get(k) for k in ('MIDZ_HOST_SNAPSHOTS','MIDZ_DEPTH_SNAPSHOTS'))
             or env.get('MIDZ_MODEL_ENDPOINT_SNAPSHOT','0')!='0'):
