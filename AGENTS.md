@@ -2,6 +2,28 @@
 
 ## Current work: release parity, September 16
 
+CRASH INVESTIGATION: attended Exotica retry2 exited3 at frame8088/scene6655.
+Original failed case and all dumps retained at
+results/diagnostics/drive-exotica-mars-3x-20260916-retry2.
+Active bbb8 slot1c426 model09c63832 incorrectly failed host descriptor bounds;
+C32 bus is24bits, three current animated slots retain high-byte tags.
+Canonical active-only dereference fix preserves full captured identity and future
+exclusions. Offline21instances/176quads exact independentPython,16632leased
+modelbytes exact. Focused native scene boundary test PASS.
+Native dd60206a0ee built/frozen/attested;264patches. Export receipt
+tagged-pointer-native-export.json in that directory; export already run ONCE.
+ONE bounded recorded replay PASS: original8089input/time rows and8090INP rows
+exact(excepthostspeed),134nativeimages exact,120scripted frames beyondfailure.
+6739scenes/23549endpoints/0reject, joined/drained12659551200bytes. Four4Kcompleted
+images8088/8090/8092/8094;8094viewed,game1:29.38/90MPH/4AUTO. No blanketvisualclaim.
+See docs/reviews/2026-09-16-exotica-mars-recording-crash.md. Threefocusednative
+tests plusindependentPythonactualgeometry PASS. Originalfailureintact.
+Pauses separate/unresolved: same7810..7820hitchpattern repeats inreplay without
+livewheelinput orclock. NEXT targetedCPU scene-phase timing for thissavedroute;
+do not repeat full visual suites or askuserredo just to investigate thiscrash.
+No game/build/test active. Heartbeat paused;personal87d/publicv0.5.0unchanged.
+
+
 Latest: read docs/reviews/2026-09-16-matched-host-capture.md.
 Native07e9eb25de5 frozen263patches/attested;
 SHA1adac2fd14f4443b0c41366bfd8be144abfe42320c2ae539d50ec963488e830e.
@@ -19,10 +41,10 @@ Saved8760 existing516hostDMAexact;31billboards with449originalcommands change10
 indices in4x3region, NOTmatchedcompletedacceptance. 3360isolatedonly.
 LOCALW/offroad-billboard-completed2524,offroad-billboard-ordered8760.
 Standalonehelpers a7e64cc397sources/DMAexact remainuseful, damaged/dynamicexcluded.
-WAITING for useful next attended visual input: askeduserchooseExoticaopen/tworaces,
-Offroadopen,orWorldNewYorkrepro. No attendedlaunchuntilresponse. Wheel/FFBacceptance
-also needsmaintainer. Do not repeat currenthiddenviews seekingpositivecounts.
-Recoveryheartbeat PAUSED atthisvalidationboundary; no paritycompletionclaim.
+Fresh attended Exotica input now received; crash/replay results are above.
+Another attended launch still needs the user; wheel/FFBacceptance also needs
+maintainer. Do not repeat currenthiddenviews seekingpositivecounts.
+Recoveryheartbeat PAUSED; no paritycompletionclaim.
 Unresolved: broadercourses,visibleouterhandover,FFBnormalization/finalpackage;
 Exotica interrupted/degradedreset remainsstrict,notuniversallyaccepted.
 Personal87d/publicv0.5.0unchanged.
@@ -165,12 +187,12 @@ laterscheduledactionrejects. NEXT Exoticamachine-reset CPU/GPUownership usingnew
 fixturemechanism; notyetextendedrenderresetacceptance. No activegame/build/test.
 
 
-Current frozen native: `569549d9aee75a78c004c3ad78f99e68080229fd`,
-`build/candidates/569549d9aee/vunit.exe`, SHA256
-`e9c477fa7c575bf77e8c6d42f1a246e817fb03300744cf37e8cec28ee9227fb1`.
-255 patches reconstruct `dd5e248097adfd6aea546517d4ed0e3f48de865e`.
-`late-retirement-native-export.json` under
-`results/diagnostics/world25-roads-20260914` is the current export receipt.
+Current frozen native: `dd60206a0eee09a47d82d2b55451f034d8cf5c04`,
+`build/candidates/dd60206a0ee/vunit.exe`, SHA256
+`0cc6efdddb931604bf858bf679cea3a3cec90303bef63d03a2d418f096ca0f89`.
+264 patches reconstruct `f34e8274375946637385053a52fb02e6f5d96f78`.
+`tagged-pointer-native-export.json` under
+`results/diagnostics/drive-exotica-mars-3x-20260916-retry2` is the current export receipt.
 **All existing export scripts have already run. Never rerun an export against
 its appended patch baseline.** Create a new export for a new native commit.
 

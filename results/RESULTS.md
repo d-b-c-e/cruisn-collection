@@ -4478,3 +4478,19 @@ fixing checksum failures caused by automatic line-ending conversion. Git-index
 hashes and all six verification scripts pass. Older archived proof layouts were
 excluded from the direct-file audit. No release/deployment/physicalFFB; continue
 with live guarded margin integration and then farther-distance composition.
+
+
+## 2026-09-16 — Exotica Mars attended crash and bounded correction
+
+Restarted attended drive failed at8088/scene6655, code3. Original case remains
+failed. A tagged current model pointer was incorrectly treated as a32bit address
+instead of the C32's24bit bus address. Native dd60206a0ee corrects active-only
+dereferences, preserving captured identity and future animation exclusions.
+Saved21instances/176quads match independent Python exactly; all16632leased model
+bytes match. Three focused native contracts pass. One isolated recovery run
+preserves8089input/time frames and8090INP rows(excepthostspeed),134native images;
+adds120explicit scripted frames.6739scenes/23549endpoints/0reject, all12659551200
+queued bytes drain and workers join. Four completed4K images around the old
+failure;8094 viewed. No whole-course or physical wheel acceptance. Repeated
+late-route timing spikes remain unresolved. Personal87d/publicv0.5.0 unchanged.
+[Crash investigation and evidence](../docs/reviews/2026-09-16-exotica-mars-recording-crash.md).

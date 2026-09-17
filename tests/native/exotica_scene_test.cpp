@@ -51,6 +51,22 @@ int main()
     assert(exotica_scene::build_active({active},p,read,models,result));
     assert(result.instances.size()==1 && result.instances[0].entry==active.entry && result.instances[0].source==active.source);
     assert(result.quads.size()==1 && !std::memcmp(result.quads.data(),one_quad.data(),sizeof(one_quad[0])));
+    // Tagged current animation pointers are ordinary 24-bit CPU addresses.
+    // Keep the captured tag intact, and do not admit future animated sources.
+    auto tagged=active;tagged.words[17]|=0x09000000;
+    assert(exotica_scene::build_active({tagged},p,read,models,result));
+    assert(tagged.words[17]==0x09a10000 && result.instances[0].descriptor==0xa10000 &&
+        result.quads.size()==1 && !std::memcmp(result.quads.data(),one_quad.data(),sizeof(one_quad[0])));
+    auto future_tagged=source;future_tagged.words[17]=tagged.words[17];
+    assert(!exotica_scene::build({future_tagged},p,read,models,selected,result));
+    tagged.words[3]=f(30000);memory[0xa10000]=0x07a10010;
+    memory[0xa10013]=0x100;memory[0xa10014]=6;
+    assert(exotica_scene::build_active({tagged},p,read,models,result) && result.instances[0].descriptor==0xa10010);
+    memory[0xa10000]=0;
+    for(auto low:{0u,0x30000u,0x880000u,0xfffffbu}) {
+        tagged.words[17]=0x09000000|low;
+        assert(!exotica_scene::build_active({tagged},p,read,models,result));
+    }
     // A generated descriptor belongs to the sealed current scene, not to the
     // future ROM source path. Root and alternate pointers both need bounds.
     auto generated=active;generated.words[17]=0x10000;
