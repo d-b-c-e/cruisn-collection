@@ -33,6 +33,7 @@ import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
 import graphics_options
 import settings_view
 import telemetry_preferences
+import ffb_preferences
 import force_options
 import cheats
 try:
@@ -802,6 +803,7 @@ def load_config():
             "steersens": sens,
             "steercurve": curve,
             "margin": int(mg) if mg.isdigit() else None,
+            "ffb_enabled": ffb_preferences.enabled(sec),
             "ffb": 50 if ffb is None else max(0, min(100, ffb)),   # 50: a direct-drive base at 100 fights itself
             "scale": int(sec.get("scale", 4)),
             # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
@@ -829,6 +831,7 @@ def save_config(state):
            "margin": ("" if state["margin"] is None
                       else str(state["margin"])),
            "ffb": str(state.get("ffb", 100)),
+           "ffb_enabled": "1" if state.get("ffb_enabled", state.get("ffb", 50) > 0) else "0",
            "transmission": state.get("transmission", "hpattern"),
            "scale": str(state["scale"]), "rom": state["rom"],
            "ffb_invert": str(state.get("ffbinvert", 0)),
@@ -1108,6 +1111,9 @@ def settings_rows(page, state, diag, version):
         rows = _settings_rows(page, state, diag, version)
         if page == 'ffb':
             if not advanced: rows=[row for row in rows if row[0] in ('ffb','back')]
+            rows.insert(0, ('ffb_enabled', 'Force feedback',
+                           'On' if state.get('ffb_enabled', state.get('ffb',50)>0) else 'Off',
+                           'Applies at the next game launch. Turning Off keeps your strength and tuning.'))
             wheel = bindings.get('steer', '').split('|',1)[0]
             rows.insert(0, ('ffb_device', 'FFB device', wheel or 'Steering not bound',
                            'Follows Steering. Use Controls to bind your wheel. Device replacement is not available on this page yet.'))
@@ -2026,6 +2032,14 @@ def main():
                                           run_rig.ffb_diag_enabled(),
                                           upd_version)
                     audio.blip("select")
+                elif rid == 'ffb_enabled' and (lr or enter):
+                    try:
+                        selected = not state.get('ffb_enabled', state.get('ffb',50)>0)
+                        ffb_preferences.set_enabled(CFG, selected)
+                        state['ffb_enabled'] = selected
+                        settings_error = ""
+                    except OSError as error:
+                        settings_error = "Force feedback not changed: " + str(error)
                 elif rid == 'telemetry_enabled' and (lr or enter):
                     try:
                         telemetry_preferences.set_enabled(CFG,state.get('telemetry',{}),

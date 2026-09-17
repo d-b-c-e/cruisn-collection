@@ -52,7 +52,7 @@ def main():
     state['bindings']={'steer':'A very long racing wheel name|axis:0:0:pos','gas':'Separate USB pedals|axis:1:0:neg','brake':'Separate USB pedals|axis:2:0:neg'}
     report=dict(scope='CPU execution of actual settings layout; no GPU, device or input acceptance',images=[])
     for width,height in ((1280,720),(3840,2160)):
-        for selected,page in (('simple','setup'),('simple','controls'),('simple','ffb'),('advanced','root'),('advanced','buttons')):
+        for selected,page in (('simple','setup'),('simple','controls'),('simple','ffb'),('simple','telemetry'),('advanced','telemetry'),('advanced','root'),('advanced','buttons')):
             state['settings_view']=selected
             rows=collection.settings_rows(page,state,False,'Fixture')
             focus=len(rows)-2 if page=='buttons' else 1

@@ -109,7 +109,7 @@ short Simple setup, cancellation and common labels; it is not runtime evidence.
 | UX-01 | Partial | Launcher F6/core navigation implemented; active game is a separate native process with Esc pause menu. Cross-process shared settings is not implemented, not an inherent ROM restriction |
 | UX-04 | Gap | Existing capture detects axis/direction; it does not yet provide endpoint/deadzone/inversion calibration with live final-input bars. F2 operator calibration is an explicit interim route |
 | UX-04-H | Not applicable to verified routes | These ROM bindings expose steering, throttle and brake; no verified handbrake game action. No physics action invented |
-| UX-05/D | Gap | Existing force selection uses the saved steering name. Stable-identity dropdown, explicit override, dedicated saved Off/On and latched F8 stop are not implemented by the view split |
+| UX-05/D | Gap | Existing force selection uses the saved steering name. Dedicated saved Off/On now implemented below. Stable-identity dropdown, explicit override and latched in-game F8 stop remain separate native work |
 | UX-05/06 | Owner exception | World menu/race-end force passthrough remains by the owner's explicit instruction to undo menu gating and leave its normalization issue open |
 | UX-06/K | Partial / unavailable mounts | Native View1/2/3 can be rebound. No verified host-owned Bonnet/Bumper pose seam exists; no fake pose sliders or numpad actions are offered |
 | UX-07 | Partial | Saved Off/On and atomic connection editing implemented below; receiver/live-dialog acceptance remains separate |
@@ -144,3 +144,22 @@ intercepted before any emulator starts. The existing 11 release/configuration
 checks pass. No receiver, modal UI interaction or frozen successor build is
 claimed from these checks. The earlier frozen executable remains the view-only
 checkpoint until the final frontend rebuild.
+
+
+## Persistent force switch
+
+The FFB page now offers Force feedback Off/On in both views, separately from
+Strength. Off retains strength, spring, direction, profile, impact selections and
+steering assignment. A missing switch migrates legacy strength zero to Off;
+fresh installs retain the existing On default. A saved Off overrides an inherited
+force-enable environment variable, removes force-test injection, and reaches the
+common launcher for every ROM. An explicit diagnostic MIDV_FFB=0 remains Off.
+The change does not alter any game tune, Exotica output trim or World's menu
+force passthrough. This is a next-launch preference, not an in-game emergency stop.
+
+Two new preference tests and five process-boundary test methods pass, including
+all five ROM profiles, retained 65% strength, the existing Exotica 52% output trim,
+legacy zero, diagnostic Off and no World gate. No physical output was enabled.
+Fourteen CPU fixtures in `layout-v4` pass bounds and row-collision checks at 720p
+and 4K, including both telemetry views. These are layout tests, not GPU or mouse
+interaction acceptance.

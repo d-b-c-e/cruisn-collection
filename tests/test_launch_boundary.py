@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 
 @unittest.skipUnless(sys.platform == 'win32', 'launcher uses Windows APIs')
 class LaunchBoundaryTests(unittest.TestCase):
-    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None):
+    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None, strength=0, expected_ffb="0", environment=None):
         import cheats
         import run_rig
 
@@ -34,7 +34,7 @@ class LaunchBoundaryTests(unittest.TestCase):
             cheats.save(rig, cat, {'1': 1} if enabled else {})
             for target, value in (('POC', str(root)), ('ROMPATH', str(root/'roms'))):
                 stack.enter_context(mock.patch.object(run_rig, target, value))
-            stack.enter_context(mock.patch.dict('os.environ', {'MIDV_CHEATS': 'stale-parent-selection'}, clear=True))
+            stack.enter_context(mock.patch.dict('os.environ', {'MIDV_CHEATS': 'stale-parent-selection', **(environment or {})}, clear=True))
             stack.enter_context(mock.patch.object(run_rig, 'prepare_rig', return_value=(str(rig), str(rig))))
             stack.enter_context(mock.patch.object(run_rig, 'sanitized_ctrlrpath', return_value=str(rig)))
             stack.enter_context(mock.patch.object(run_rig, 'kill_stale_vunit'))
@@ -48,11 +48,11 @@ class LaunchBoundaryTests(unittest.TestCase):
                 stack.enter_context(mock.patch('session_case.Recording.prepare',
                     side_effect=lambda command, env, source: (command, env, rig)))
             with self.assertRaises(SpawnReached):
-                run_rig.launch_game_async(rom=rom, ffb=0, windowed=True,
+                run_rig.launch_game_async(rom=rom, ffb=strength, windowed=True,
                                           mame=str(root/'vunit.exe'), **options)
             command = spawn.call_args.args[0]
             env = spawn.call_args.kwargs['env']
-            self.assertEqual(env['MIDV_FFB'], '0')
+            self.assertEqual(env['MIDV_FFB'], expected_ffb)
             self.assertEqual('-cheat' in command, imported)
             self.assertEqual('-nocheat' in command, not imported)
             self.assertEqual('MIDV_CHEATS' in env, imported)
@@ -60,6 +60,23 @@ class LaunchBoundaryTests(unittest.TestCase):
                 self.assertTrue((Path(env['MIDV_CHEATS'])/'settings.lua').is_file())
                 self.assertIn('-autoboot_script', command)
             return env
+
+    def test_saved_ffb_switch_and_explicit_diagnostic_off(self):
+        for rom in ('crusnusa','crusnwld24','crusnwld','offroadc','crusnexo'):
+            for on in (False, True):
+                with self.subTest(rom=rom,on=on):
+                    env=self.exercise_launch(rom,False,imported=False,strength=65,
+                        expected_ffb='1' if on else '0',
+                        config={'ffb':'65','ffb_enabled':'1' if on else '0'})
+                    if on:
+                        self.assertEqual(env['MIDV_FFB_STRENGTH'],'52' if rom=='crusnexo' else '65')
+                    if rom.startswith('crusnwld'):
+                        self.assertNotEqual(env.get('MIDV_FFB_GAME_GATE'),'1')
+            self.exercise_launch(rom,False,imported=False,strength=65,
+                config={'ffb_enabled':'1'},environment={'MIDV_FFB':'0'})
+            env=self.exercise_launch(rom,False,imported=False,strength=None,
+                config={'ffb':'0'},environment={'MIDV_FFB':'1','MIDV_FFB_TEST':'1'})
+            self.assertNotIn('MIDV_FFB_TEST',env)
 
     def test_saved_telemetry_switch_reaches_all_game_launches(self):
         for rom in ('crusnusa','crusnwld24','crusnwld','offroadc','crusnexo'):
