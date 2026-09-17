@@ -1,11 +1,11 @@
 # Cruis'n Collection: overnight UX candidate
 
-Guidance: UX-1 / UX-01-S, revised2026-09-16, toolkit commit
+Guidance: UX-1 / UX-01-S, revised 2026-09-16, toolkit commit
 `a84bebab5ec2abdcd5140b9c63c139ccff86a7d3`. All five CONSUMER-UX,
 SETTINGS-VIEWS, CONTROLS-CAMERAS, SETUP and UX-CHECKLIST documents were read.
 Work is on `codex/ux-simple-advanced` in `E:/Source/cruisn-collection-ux-review`.
-The personal source launcher, native87d installation and publicv0.5.0 are not
-updated. Native rendering work remains on master839dc7c/native4df727db105;
+The personal source launcher, native 87d installation and public v0.5.0 are not
+updated. Native rendering work remains on master 839dc7c / native 4df727db105;
 the latter's timing-only qualification is held for a coordinated rig slot.
 
 ## Implemented frontend changes
@@ -76,13 +76,13 @@ controls or silently reset. The retired `marginfill` behavior is unchanged.
 
 ## Checks and acceptance boundaries
 
-Six new presentation/persistence/binding tests pass. Existing22 graphics-option
-and11 launcher/release contracts pass with the deliberate Advanced placement
+Six new presentation/persistence/binding tests pass. Existing 22 graphics-option
+and 11 launcher/release contracts pass with the deliberate Advanced placement
 expectations updated. These use disposable settings and mocked launches; no
 game or physical force was exercised. Python compilation and diff checks pass.
 
 `harness/render_settings_fixture.py` runs the actual settings draw method using
-a CPU image backend. Ten720p/4K images pass extent/row-overlap checks;720p Controls
+a CPU image backend. Ten 720p/4K images pass extent/row-overlap checks; 720p Controls
 and Advanced root were viewed. Evidence: local
 `results/diagnostics/ux-20260916/layout-v2`. This is layout evidence, not GL,
 packaged mouse/keyboard or physical acceptance. Native GPU/game testing is held.
@@ -98,7 +98,7 @@ Current layout evidence is `layout-v3` (updated Esc footer); ten images still
 pass. Examples: [720p Controls](../results/diagnostics/ux-20260916/layout-v3/1280-simple-controls.png),
 [4K Setup](../results/diagnostics/ux-20260916/layout-v3/3840-simple-setup.png).
 These large local fixtures are not in the public source tree. The shared HTML
-reference/README published at toolkit95cbd89 was reviewed for hierarchy,
+reference/README published at toolkit 95cbd89 was reviewed for hierarchy,
 short Simple setup, cancellation and common labels; it is not runtime evidence.
 
 ## Explicit gaps and game limitations
@@ -112,10 +112,35 @@ short Simple setup, cancellation and common labels; it is not runtime evidence.
 | UX-05/D | Gap | Existing force selection uses the saved steering name. Stable-identity dropdown, explicit override, dedicated saved Off/On and latched F8 stop are not implemented by the view split |
 | UX-05/06 | Owner exception | World menu/race-end force passthrough remains by the owner's explicit instruction to undo menu gating and leave its normalization issue open |
 | UX-06/K | Partial / unavailable mounts | Native View1/2/3 can be rebound. No verified host-owned Bonnet/Bumper pose seam exists; no fake pose sliders or numpad actions are offered |
-| UX-07 | Gap | Actual destinations are shown; editable atomic connection UI and receiver preset need a separate change |
+| UX-07 | Partial | Saved Off/On and atomic connection editing implemented below; receiver/live-dialog acceptance remains separate |
 | UX-08 | Partial | View/binding saves atomic and failure-visible; older tuning save paths still need the same recovery treatment |
 | UX-09/10/11 | Not tested | No installer/update/uninstall or attended first-drive acceptance was performed |
 
 Do not call the overall UX rollout or rendering parity complete from these
 fixture results. Next continue the generic configuration gaps without changing
 the personal installation or claiming hardware acceptance.
+
+
+## Telemetry follow-up
+
+The first view split is commit `dd4e7ff`. The next scoped change adds a saved
+Telemetry Off/On control in Simple. First enable uses the local Forza/SimHub
+preset only when no destination is saved; toggling Off retains custom Forza and
+JSON destinations. Advanced Connection settings uses one modal draft with Apply
+connection/Cancel and validates both addresses before atomic persistence.
+
+The native sender supports numeric IPv4, one JSON destination and up to four
+Forza destinations. The UI matches those limits; unsupported hostnames/IPv6 and
+invalid ports are rejected rather than passed to the native parser. Existing
+explicit diagnostic environment overrides still win. A malformed saved target
+reports an error at launch; the user can correct it in Connection settings.
+The launcher dashboard-reset sender honors saved Off and reconfigures only after
+an explicit telemetry change, never because of a view/page switch.
+
+Five new no-socket tests pass, covering Off/custom settings, atomic failure,
+native address bounds and receiver rows. Four process-boundary test methods
+pass, including both telemetry states on all five ROM revisions; Popen is
+intercepted before any emulator starts. The existing 11 release/configuration
+checks pass. No receiver, modal UI interaction or frozen successor build is
+claimed from these checks. The earlier frozen executable remains the view-only
+checkpoint until the final frontend rebuild.

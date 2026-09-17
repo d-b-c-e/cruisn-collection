@@ -1432,19 +1432,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     #           port SimHub's Forza Horizon page listens on)
     if "MIDV_TELEM_UDP" not in env or "MIDV_TELEM_FORZA" not in env:
         import configparser
-        cp = configparser.ConfigParser()
-        cp.read(os.path.join(rig, "collection.ini"))
-        if "MIDV_TELEM_UDP" not in env:
-            telem = cp.get("telemetry", "udp", fallback=None)
-            if telem:
-                env["MIDV_TELEM_UDP"] = telem
-        if "MIDV_TELEM_FORZA" not in env:
-            forza = cp.get("telemetry", "forza", fallback=None)
-            if forza:
-                forza = forza.strip()
-                if forza.lower() in ("1", "on", "true", "yes"):
-                    forza = "127.0.0.1:5300"
-                env["MIDV_TELEM_FORZA"] = forza
+        from telemetry_preferences import launch_overrides as telemetry_overrides
+        cp = configparser.ConfigParser(interpolation=None)
+        cp.read(os.path.join(rig, "collection.ini"), encoding="utf-8-sig")
+        env.update(telemetry_overrides(cp['telemetry'] if 'telemetry' in cp else {},env))
 
     if ffb_diag_enabled():
         env["MIDV_FFB_TRACE"] = os.path.join(rig, "ffb_trace.csv")

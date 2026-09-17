@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 
 @unittest.skipUnless(sys.platform == 'win32', 'launcher uses Windows APIs')
 class LaunchBoundaryTests(unittest.TestCase):
-    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None):
+    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None):
         import cheats
         import run_rig
 
@@ -22,8 +22,9 @@ class LaunchBoundaryTests(unittest.TestCase):
             root = Path(td)
             rig = root/'rig'
             rig.mkdir()
-            if config:
-                (rig/'collection.ini').write_text('[collection]\n'+''.join(f'{k}={v}\n' for k,v in config.items()),encoding='utf-8')
+            if config or telemetry:
+                (rig/'collection.ini').write_text('[collection]\n'+''.join(f'{k}={v}\n' for k,v in (config or {}).items())+
+                    '[telemetry]\n'+''.join(f'{k}={v}\n' for k,v in (telemetry or {}).items()),encoding='utf-8')
             (root/'lua').mkdir()
             (root/'lua/cheats.lua').write_text('-- fixture, never executed')
             (rig/'cheats').mkdir()
@@ -59,6 +60,16 @@ class LaunchBoundaryTests(unittest.TestCase):
                 self.assertTrue((Path(env['MIDV_CHEATS'])/'settings.lua').is_file())
                 self.assertIn('-autoboot_script', command)
             return env
+
+    def test_saved_telemetry_switch_reaches_all_game_launches(self):
+        for rom in ('crusnusa','crusnwld24','crusnwld','offroadc','crusnexo'):
+            for on in (False,True):
+                with self.subTest(rom=rom,on=on):
+                    env=self.exercise_launch(rom,False,imported=False,
+                        telemetry=dict(enabled='1' if on else '0',forza='192.0.2.5:5300',udp='127.0.0.1:20777'))
+                    self.assertEqual('MIDV_TELEM_FORZA' in env,on)
+                    self.assertEqual('MIDV_TELEM_UDP' in env,on)
+                    if on:self.assertEqual(env['MIDV_TELEM_FORZA'],'192.0.2.5:5300')
 
     def test_every_game_reaches_process_creation_with_cheats_on_and_off(self):
         import cheats

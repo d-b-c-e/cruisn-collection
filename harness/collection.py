@@ -32,6 +32,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_rig  # noqa: E402  (importable launcher; also win32 focus helpers)
 import graphics_options
 import settings_view
+import telemetry_preferences
 import force_options
 import cheats
 try:
@@ -495,29 +496,31 @@ class ForzaKeeper:
     included. Inert when no forza target is configured."""
 
     def __init__(self):
-        import socket
         import struct
         self.game_active = threading.Event()
-        self.targets = []
-        try:
-            cp = configparser.ConfigParser()
-            cp.read(CFG, encoding="utf-8-sig")
-            v = cp.get("telemetry", "forza", fallback="").strip()
-            if v.lower() in ("1", "on", "true", "yes"):
-                v = "127.0.0.1:5300"
-            for part in v.split(","):
-                part = part.strip()
-                if not part:
-                    continue
-                host, _, port = part.partition(":")
-                self.targets.append((host or "127.0.0.1", int(port or "5300")))
-        except Exception:
-            self.targets = []
-        if not self.targets:
-            return
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.targets = ()
+        self._sock = None
         self._struct = struct
-        threading.Thread(target=self._loop, daemon=True).start()
+        self.error = ""
+        cp = configparser.ConfigParser(interpolation=None)
+        cp.read(CFG, encoding="utf-8-sig")
+        self.configure(cp['telemetry'] if 'telemetry' in cp else {})
+
+    def configure(self, section):
+        import socket
+        try:
+            value = (telemetry_preferences.destination(section.get('forza',''),forza=True)
+                     if telemetry_preferences.enabled(section) else '')
+            targets = tuple((host,int(port)) for host,port in
+                            (part.split(':') for part in value.split(',') if part))
+            if targets and self._sock is None:
+                self._sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+                threading.Thread(target=self._loop,daemon=True).start()
+            self.targets = targets
+            self.error = ""
+        except (OSError,ValueError) as error:
+            self.targets = ()
+            self.error = str(error)
 
     def _loop(self):
         ms = 0
@@ -748,7 +751,7 @@ def _keycode_table():
 
 
 def load_config():
-    cp = configparser.ConfigParser()
+    cp = configparser.ConfigParser(interpolation=None)
     cp.read(CFG, encoding="utf-8-sig")
     sec = cp["collection"] if "collection" in cp else {}
     mg = str(sec.get("margin", "")).strip()
@@ -818,7 +821,7 @@ def load_config():
 
 
 def save_config(state):
-    cp = configparser.ConfigParser()
+    cp = configparser.ConfigParser(interpolation=None)
     cp.read(CFG, encoding="utf-8-sig")   # preserve other sections (wheelmap)
     sec = {"crt": "1" if state["crt"] else "0",
            "crackfill": "1" if state["crackfill"] else "0",
@@ -1064,8 +1067,8 @@ def settings_rows(page, state, diag, version):
     elif page == 'setup':
         missing = next((key for key in ('steer', 'gas', 'brake') if key not in bindings), None)
         rows = [('readiness', 'Setup', 'Bind '+{'steer':'Steering','gas':'Throttle','brake':'Brake'}[missing]
-                 if missing else 'Axes assigned / check direction',
-                 'Assignments do not prove a connected device. Check direction and pedal release before driving.'),
+                 if missing else 'Check axes before driving',
+                 'Turn the wheel left and right, then press and release both pedals before driving.'),
                 ('wizard', 'Controls setup', 'Start', 'Bind axes and desired buttons. Skipped steps retain saved assignments.'),
                 ('controls', 'Controls', 'Open', 'Bind an individual axis or button.'),
                 ('ffb', 'FFB', 'Open', 'Check strength before driving.'), back]
@@ -1080,24 +1083,34 @@ def settings_rows(page, state, diag, version):
     elif page == 'cameras':
         rows = [bind('view1', 'View 1'), bind('view2', 'View 2'), bind('view3', 'View 3'),
                 ('camera_info', 'Native arcade views', 'Game controlled',
-                 'These ROMs select native views. No verified mounted-camera position or FOV adjustment is exposed.'), back]
+                 'Select the native arcade views. Camera position and field of view cannot be adjusted here.'), back]
     elif page == 'telemetry':
         telemetry = state.get('telemetry', {})
-        target = telemetry.get('forza', '').strip()
-        if target.lower() in ('1','on','true','yes'): target='127.0.0.1:5300'
-        rows = [('telemetry_status', 'Forza / SimHub destination', target or 'Off',
-                 'Saved destination: '+(target or 'Off')+'. Configure the receiver for Forza Horizon 5 Data Out; sending is not receiver confirmation.'),
-                ('telemetry_info', 'Signal details', 'Per game', 'Speed and gears are game-derived; displayed RPM is arcade-derived. Physical receiver acceptance is separate.'),
-                ('recording_info', 'Recorded drives', 'Prepared separately', 'A developer prepares a bounded recording with an external clock; settings view does not start or stop it.'), back]
-        if advanced and telemetry.get('udp'):
-            rows.insert(-1, ('udp', 'Diagnostic UDP destination', telemetry['udp'], telemetry['udp']))
+        active = telemetry_preferences.enabled(telemetry)
+        try:target = telemetry_preferences.destination(telemetry.get('forza',''),forza=True)
+        except ValueError:target = telemetry.get('forza','')
+        rows = [('telemetry_enabled','Telemetry','On' if active else 'Off',
+                 'Controls saved dashboard streams. Changes apply to the next game; launcher dashboard resets follow this choice.'),
+                ('telemetry_receiver','Receiver','Forza Horizon 5 / SimHub',
+                 'In SimHub, select Forza Horizon 5 and match the port below. Default: 127.0.0.1:5300.'),
+                ('telemetry_status', 'Forza destination', target or 'Not configured',
+                 'Saved destination: '+(target or 'Not configured')+'. Enabled does not confirm a connected receiver.'),
+                ('connection' if advanced else 'advanced_telemetry','Connection settings', 'Open' if advanced else 'Advanced',
+                 'Edit destinations together with Apply connection or Cancel; saved custom ports are retained.'),
+                ('recording_info', 'Recorded drives', 'Prepared separately',
+                 'A prepared recording uses an external clock; changing settings view does not start or stop it.'), back]
+        if advanced:
+            rows.insert(-1, ('udp', 'Diagnostic UDP destination', telemetry.get('udp','') or 'Off',
+                             'Optional JSON stream. Change it in Connection settings.'))
+        if state.get('telemetry_error'):
+            rows.insert(1, ('telemetry_error','Telemetry unavailable','Connection settings',state['telemetry_error']))
     else:
         rows = _settings_rows(page, state, diag, version)
         if page == 'ffb':
             if not advanced: rows=[row for row in rows if row[0] in ('ffb','back')]
             wheel = bindings.get('steer', '').split('|',1)[0]
             rows.insert(0, ('ffb_device', 'FFB device', wheel or 'Steering not bound',
-                           'Follows the saved steering device. Legacy selection uses device names; strict identity replacement remains unqualified.'))
+                           'Follows Steering. Use Controls to bind your wheel. Device replacement is not available on this page yet.'))
         if page == 'support' and not advanced:
             rows=[row for row in rows if row[0]!='diag']
     custom = settings_view.custom_sections(state, diag)
@@ -1382,6 +1395,7 @@ def main():
     actions = []
     audio = Audio()
     keeper = ForzaKeeper()   # zeroes the SimHub dash whenever no game runs
+    state["telemetry_error"] = keeper.error
     audio.start_music(GAMES[sel][0])
     music_sel = sel   # track highlight changes to switch the per-game loop
 
@@ -1577,7 +1591,7 @@ def main():
     # -- steering-wheel / gas menu navigation (uses the wizard's axis
     # bindings from [wheelmap]; nothing here reads axes in wizard mode) --
     def parse_navspec():
-        cp = configparser.ConfigParser()
+        cp = configparser.ConfigParser(interpolation=None)
         cp.read(CFG, encoding="utf-8-sig")
         out = {}
         if "wheelmap" in cp:
@@ -1610,7 +1624,7 @@ def main():
         Empty map (nothing bound yet) = accept any button, so a fresh install
         still works with a pad or wheel out of the box."""
         import configparser
-        cp = configparser.ConfigParser()
+        cp = configparser.ConfigParser(interpolation=None)
         cp.read(os.path.join(run_rig.POC, "rig", "collection.ini"))
         out = {}
         if "wheelmap" not in cp:
@@ -2012,6 +2026,30 @@ def main():
                                           run_rig.ffb_diag_enabled(),
                                           upd_version)
                     audio.blip("select")
+                elif rid == 'telemetry_enabled' and (lr or enter):
+                    try:
+                        telemetry_preferences.set_enabled(CFG,state.get('telemetry',{}),
+                            not telemetry_preferences.enabled(state.get('telemetry',{})))
+                        state['telemetry'] = load_config()['telemetry']
+                        keeper.configure(state['telemetry'])
+                        state['telemetry_error'] = keeper.error
+                        settings_error = ""
+                    except (OSError,ValueError) as error:
+                        state['telemetry_error'] = str(error)
+                        settings_error = "Telemetry not changed: " + str(error)
+                elif rid == 'connection' and enter:
+                    try:
+                        changed = telemetry_preferences.connection_dialog(state.get('telemetry',{}))
+                        actions.clear()  # Dialog keys must not activate launcher rows.
+                        if changed is not None:
+                            telemetry_preferences.apply_connection(CFG,*changed)
+                            state['telemetry'] = load_config()['telemetry']
+                            keeper.configure(state['telemetry'])
+                            state['telemetry_error'] = keeper.error
+                            settings_error = ""
+                    except (OSError,ValueError) as error:
+                        state['telemetry_error'] = str(error)
+                        settings_error = "Connection not changed: " + str(error)
                 # ---- display
                 elif rid in ("crt", "crackfill") and (lr or enter):
                     state[rid] = not state[rid]
