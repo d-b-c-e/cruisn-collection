@@ -8,7 +8,9 @@ from verification import sha256_file
 KEY='MIDZ_HOST_TIMING'
 PHASES=('source','waiting_build','future_build','future_material',
         'active_seal','waiting_ready','active_build','active_material',
-        'future_stage','future_encode','future_submit','future_commit')
+        'future_stage','future_encode','future_submit','future_commit',
+        'lifetime_install','lifetime_complete')
+EVENTS={'lifetime_install','lifetime_complete'}
 NESTED={'future_stage','future_encode','future_submit','future_commit'}
 
 
@@ -52,8 +54,8 @@ def verify(trial,directory):
     seen=set();phases={};frames={}
     for row in rows:
         frame,scene,units=int(row['frame']),int(row['scene']),int(row['units'])
-        us=float(row['microseconds']);phase=row['phase'];key=(scene,phase)
-        if (None in row or not trial['first']<=frame<=trial['last'] or not 0<scene<2**64 or not 0<=units<2**64
+        us=float(row['microseconds']);phase=row['phase'];key=(scene,phase,frame if phase in EVENTS else None)
+        if (None in row or not trial['first']<=frame<=trial['last'] or not (0 if phase in EVENTS else 1)<=scene<2**64 or not (1 if phase in EVENTS else 0)<=units<2**64
                 or phase not in PHASES or not math.isfinite(us) or us<0 or key in seen):
             raise ValueError('invalid or duplicate CPU timing row')
         seen.add(key);phases.setdefault(phase,[]).append(us)

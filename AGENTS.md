@@ -2,7 +2,15 @@
 
 ## Current work: release parity, September 16
 
-Latest: docs/reviews/2026-09-16-exotica-mars-phase-timing.md.
+Latest: docs/reviews/2026-09-16-exotica-lifetime-timing.md.
+One remaining-profile replay8209inputs/136native/4completed4K images exact.
+Source/stage/queue phases do not explain remaining30-35ms pauses. New bounded
+lifetime callback timers native4df727db105 built/frozen/attested268patches;
+Python3/native1 PASS, live timing qualification awaiting coordinated rig slot.
+Previous qualified native1fccd423f39 below. Shared UX rollout also authorized
+by owner through coordinator task01a07ac3-e639-7762-a698-5365d447ee7e; read five
+CONSUMER UX documents in dbce-wheel-mod-toolkit, preserve rendering scope.
+Details of previous improvement: docs/reviews/2026-09-16-exotica-mars-phase-timing.md.
 Existing Mars recording sufficient; no redo needed. Profiling window7780..7840
 found future graphics-queue submission blocking emulation up to20.824ms.
 Native1fccd423f39 skips ONLY disabled per-scene diagnostic hashes on CPU/GPU;
@@ -18,7 +26,8 @@ Crash fix dd60206a0ee retained; original failedretry2 intact. No newattendedrun.
 NEXT use this recovered route for remaining scene/performance/margin work;
 remaining isolated pauses and broader route/FFB gates still open. No repeat
 broad suite or extra drive merely for the already-fixed pointer/queue issue.
-No game/build/test active. Heartbeat paused;personal87d/publicv0.5.0unchanged.
+Overnight continuation authorized; recovery heartbeat ACTIVE, not a work cadence.
+Investigating remaining repeatable Mars pauses;personal87d/publicv0.5.0unchanged.
 
 
 Latest: read docs/reviews/2026-09-16-matched-host-capture.md.
@@ -41,7 +50,7 @@ Standalonehelpers a7e64cc397sources/DMAexact remainuseful, damaged/dynamicexclud
 Fresh attended Exotica input now received; crash/replay results are above.
 Another attended launch still needs the user; wheel/FFBacceptance also needs
 maintainer. Do not repeat currenthiddenviews seekingpositivecounts.
-Recoveryheartbeat PAUSED; no paritycompletionclaim.
+Recoveryheartbeat ACTIVE; no paritycompletionclaim.
 Unresolved: broadercourses,visibleouterhandover,FFBnormalization/finalpackage;
 Exotica interrupted/degradedreset remainsstrict,notuniversallyaccepted.
 Personal87d/publicv0.5.0unchanged.

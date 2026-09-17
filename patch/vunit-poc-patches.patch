@@ -49393,3 +49393,113 @@ index d6853485876..4657b18888c 100644
 -- 
 2.55.0.windows.3
 
+From 4df727db10580c5c1b6177fe80f810a866b08624 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 16 Sep 2026 23:53:37 -0500
+Subject: [PATCH] Measure scenery lifetime observer overhead in bounded timing
+ windows
+
+---
+ src/mame/midway/cruisn/phase_timing.h | 26 +++++++++++++++++++++++---
+ src/mame/midway/midzeus.cpp           |  6 ++++++
+ 2 files changed, 29 insertions(+), 3 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/phase_timing.h b/src/mame/midway/cruisn/phase_timing.h
+index d480a6ea483..1761302461a 100644
+--- a/src/mame/midway/cruisn/phase_timing.h
++++ b/src/mame/midway/cruisn/phase_timing.h
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause
+ // Opt-in bounded CPU profiling. No file writes or allocations during sampling.
+ #pragma once
++#include <array>
+ #include <cmath>
+ #include <cstdint>
+ #include <cstdio>
+@@ -10,14 +11,17 @@ class PhaseTiming {
+ public:
+     enum Phase : uint32_t { source, waiting_build, future_build, future_material,
+         active_seal, waiting_ready, active_build, active_material,
+-        future_stage, future_encode, future_submit, future_commit, phase_count };
++        future_stage, future_encode, future_submit, future_commit,
++        lifetime_install, lifetime_complete, phase_count };
+     struct Row { uint32_t frame; uint64_t scene; Phase phase; double us; uint64_t units; };
+     static constexpr size_t capacity=65536;
+ private:
+     uint32_t m_first=0,m_last=0;
+     bool m_configured=false,m_failed=false;
+     std::vector<Row> m_rows;
++    std::array<size_t,phase_count> m_accumulated;
+ public:
++    PhaseTiming() { m_accumulated.fill(capacity); }
+     bool configure(const char *text) {
+         if(m_configured)return false;
+         m_configured=true;
+@@ -44,14 +48,30 @@ public:
+     }
+     void add(uint32_t frame,uint64_t scene,Phase phase,double us,uint64_t units=0) {
+         if(!contains(frame))return;
+-        if(!scene || phase>=phase_count || !std::isfinite(us) || us<0 || m_rows.size()==capacity) {m_failed=true;return;}
++        if((!scene && phase!=lifetime_install && phase!=lifetime_complete) || phase>=phase_count || !std::isfinite(us) || us<0 || m_rows.size()==capacity) {m_failed=true;return;}
+         m_rows.push_back({frame,scene,phase,us,units});
+     }
++    // Object callbacks can repeat within a scene/frame. Aggregate only the
++    // latest bucket for each event kind; no hot-path allocation or file I/O.
++    // units counts callbacks, not objects retained by the renderer.
++    void accumulate(uint32_t frame,uint64_t scene,Phase phase,double us) {
++        if(!contains(frame))return;
++        if((phase!=lifetime_install && phase!=lifetime_complete) || !std::isfinite(us) || us<0) {m_failed=true;return;}
++        const auto index=m_accumulated[phase];
++        if(index<m_rows.size() && m_rows[index].frame==frame && m_rows[index].scene==scene) {
++            auto &row=m_rows[index];
++            if(row.units==UINT64_MAX || !std::isfinite(row.us+us)) {m_failed=true;return;}
++            row.us+=us;++row.units;return;
++        }
++        const auto next=m_rows.size();add(frame,scene,phase,us,1);
++        if(m_rows.size()>next)m_accumulated[phase]=next;
++    }
+     bool write(FILE *file,uint32_t final_frame)const {
+         if(!file || !enabled())return false;
+         static const char *names[]={"source","waiting_build","future_build","future_material",
+             "active_seal","waiting_ready","active_build","active_material",
+-            "future_stage","future_encode","future_submit","future_commit"};
++            "future_stage","future_encode","future_submit","future_commit",
++            "lifetime_install","lifetime_complete"};
+         if(std::fprintf(file,"frame,scene,phase,microseconds,units\n")<0)return false;
+         for(const auto &r:m_rows)
+             if(std::fprintf(file,"%u,%llu,%s,%.3f,%llu\n",r.frame,(unsigned long long)r.scene,
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 4657b18888c..0c47a7ec353 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -866,6 +866,7 @@ void crusnexo_state::lifetime_start()
+ 	m_lifetime_owner_tap=space.install_read_tap(0x67c4,0x67c4,"exotica_lifetime_source",
+ 		[this](offs_t,uint32_t &,uint32_t) {
+ 			if(!lifetime_scope() || m_maincpu->state_int(TMS320C3X_PC)!=0xb85a)return;
++			const auto timing_started=std::chrono::steady_clock::now();
+ 			if(m_lifetime_owner_slot)fatalerror("Exotica lifetime nested source constructor\n");
+ 			m_lifetime_owner_slot=uint32_t(m_maincpu->state_int(TMS320C3X_AR4));
+ 			m_lifetime_owner_source=uint32_t(m_maincpu->state_int(TMS320C3X_AR5))-4;m_lifetime_owner_entry=m_ram_base[0x597];
+@@ -874,6 +875,7 @@ void crusnexo_state::lifetime_start()
+ 			m_lifetime_ready_tap=m_maincpu->space(AS_PROGRAM).install_read_tap(m_lifetime_owner_slot+29,m_lifetime_owner_slot+29,"exotica_lifetime_source_ready",
+ 				[this](offs_t,uint32_t &,uint32_t) {
+ 					if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0xb8cc)return;
++					const auto timing_started=std::chrono::steady_clock::now();
+ 					if(!m_lifetime_owner_slot || m_lifetime_owner_slot!=uint32_t(m_maincpu->state_int(TMS320C3X_AR4)))
+ 						fatalerror("Exotica lifetime source completion\n");
+ 					const uint32_t bank=m_disk_asic_jr[5]&3,table=m_ram_base[0xe9]+m_ram_base[0x1fbc];
+@@ -888,7 +890,11 @@ void crusnexo_state::lifetime_start()
+ 					if(!m_lifetime_owners.emplace(m_lifetime_owner_slot,owner).second)fatalerror("Exotica lifetime duplicate owner map\n");
+ 					lifetime_emit('B',m_lifetime_owner_slot,owner.handle.generation,owner.serial,key,0,m_ram_base[m_lifetime_owner_slot+15]);
+ 					m_lifetime_owner_slot=0;m_lifetime_ready_tap.remove();
++					m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_complete,
++						std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-timing_started).count());
+ 				});
++			m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_install,
++				std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-timing_started).count());
+ 		});
+ 	m_lifetime_submit_tap=space.install_write_tap(0x46e,0x46e,"exotica_lifetime_model_commit",
+ 		[this](offs_t,uint32_t &data,uint32_t mask) {
+-- 
+2.55.0.windows.3
+

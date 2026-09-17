@@ -7,6 +7,19 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'harness'))
 from exotica_timing import configure,verify
 
 class Timing(unittest.TestCase):
+    def test_callback_buckets_can_span_frames_before_first_scene(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);trial=dict(first=10,last=12,scope='CPU only')
+            (root/'stderr.log').write_text('MIDZ_HOST_TIMING first=10 last=12\nMIDZ_HOST_TIMING_RESULT complete=1 rows=2 final_frame=14\n',encoding='utf-8')
+            data='frame,scene,phase,microseconds,units\n10,0,lifetime_install,2.5,5\n11,0,lifetime_install,3,2\n'
+            path=root/'exotica-host-timing.csv';path.write_text(data,encoding='utf-8')
+            result=verify(trial,root)
+            self.assertEqual(result['phases']['lifetime_install']['count'],2)
+            path.write_text(data.replace('11,0','10,0'),encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'duplicate'):verify(trial,root)
+            path.write_text(data.replace('3,2','3,0'),encoding='utf-8')
+            with self.assertRaises(ValueError):verify(trial,root)
+
     def test_explicit_bounds_and_game(self):
         args=SimpleNamespace(exotica_timing='7800:7830',candidate='test.exe',headless=False,native_renderer=False)
         settings=dict(MIDZ_HOST_SCENE='1',MIDZ_GL='1',MIDV_FFB='0')

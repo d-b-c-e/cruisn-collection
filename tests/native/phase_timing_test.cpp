@@ -2,6 +2,7 @@
 #include "phase_timing.h"
 #include <cassert>
 #include <limits>
+#include <string>
 using cruisn::PhaseTiming;
 int main() {
     PhaseTiming off;assert(off.configure(nullptr));off.add(1,1,PhaseTiming::source,1);
@@ -20,4 +21,15 @@ int main() {
     PhaseTiming full;assert(full.configure("1:1"));
     for(size_t i=0;i<PhaseTiming::capacity;++i)full.add(1,1,PhaseTiming::source,0);
     assert(full.good(1));full.add(1,1,PhaseTiming::source,0);assert(!full.good(1));
+    PhaseTiming events;assert(events.configure("1:3"));
+    events.accumulate(1,0,PhaseTiming::lifetime_install,2);
+    events.add(1,1,PhaseTiming::source,5);
+    events.accumulate(1,0,PhaseTiming::lifetime_install,3);
+    events.accumulate(1,0,PhaseTiming::lifetime_complete,4);
+    events.accumulate(2,0,PhaseTiming::lifetime_install,6);
+    assert(events.size()==4 && events.good(3));
+    f=std::tmpfile();assert(f && events.write(f,3));std::rewind(f);
+    char line[200];assert(std::fgets(line,sizeof(line),f));assert(std::fgets(line,sizeof(line),f));
+    assert(std::string(line)=="1,0,lifetime_install,5.000,2\n");std::fclose(f);
+    events.accumulate(3,1,PhaseTiming::source,2);assert(!events.good(3));
 }
