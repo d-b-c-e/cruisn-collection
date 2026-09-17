@@ -32,3 +32,20 @@ Evidence is under `results/diagnostics/exotica-mars-timing-20260916`.
 Live qualification of this additional measurement is pending a serialized rig
 slot coordinated with the overnight UX task. The previous qualified candidate
 remains1fccd423f39. Personal87d/publicv0.5.0 are unchanged.
+
+
+## Callback analysis preparation, September 17
+
+The analyzer now separates event bucket count from callback count, reports total
+callback time and a callback-weighted mean, and retains the ten largest buckets
+with exact native frame/scene and callback count. A bucket duration must not be
+presented as the maximum individual callback latency. This makes the pending
+measurement useful for distinguishing a large object burst from expensive
+per-object tracking without joining unrelated clocks.
+
+Three focused parser/receipt tests pass, including unequal bucket counts and
+pre-scene events. Reanalysis of the existing 23,736-row remaining-profile control
+passes unchanged; it correctly reports no lifetime event coverage because that
+older binary did not capture it. The new report is
+`timing-event-analyzer-existing-control.json`; original reports are preserved.
+No game rerun or native build was performed for this analyzer change.

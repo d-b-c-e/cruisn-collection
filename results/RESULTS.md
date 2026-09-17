@@ -4511,3 +4511,11 @@ isolated; personal87d/publicv0.5.0 unchanged.
 [Timing evidence and limitations](../docs/reviews/2026-09-16-exotica-mars-phase-timing.md).
 
 2026-09-16: remaining Mars phase profile8209 inputs/136 native/4completed4KGL exact PASS. Source/staging/queue costs do not account for repeatable30-35ms pauses. Added bounded lifetime callback timing; native4df727db105 build/export268 and3Python/1native checks PASS, live qualification pending coordinated rig slot. See docs/reviews/2026-09-16-exotica-lifetime-timing.md.
+
+
+### 2026-09-17 — Exotica callback timing analysis
+
+Three focused timing tests pass; existing remaining-profile control reanalysis
+passes 23,736 rows with no event coverage claimed. The event report now distinguishes
+callback counts from frame/scene buckets and labels aggregate latency accurately.
+See docs/reviews/2026-09-16-exotica-lifetime-timing.md. No game/build/deployment.

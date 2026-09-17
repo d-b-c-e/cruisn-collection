@@ -51,7 +51,7 @@ def verify(trial,directory):
         if reader.fieldnames!=['frame','scene','phase','microseconds','units']:raise ValueError('CPU timing columns')
         rows=list(reader)
     if not 0<len(rows)<=65536 or len(rows)!=int(end[0][1]):raise ValueError('CPU timing row count')
-    seen=set();phases={};frames={}
+    seen=set();phases={};frames={};events={}
     for row in rows:
         frame,scene,units=int(row['frame']),int(row['scene']),int(row['units'])
         us=float(row['microseconds']);phase=row['phase'];key=(scene,phase,frame if phase in EVENTS else None)
@@ -59,8 +59,17 @@ def verify(trial,directory):
                 or phase not in PHASES or not math.isfinite(us) or us<0 or key in seen):
             raise ValueError('invalid or duplicate CPU timing row')
         seen.add(key);phases.setdefault(phase,[]).append(us)
+        if phase in EVENTS:
+            events.setdefault(phase,[]).append(dict(frame=frame,scene=scene,callbacks=units,microseconds=us))
         if phase not in NESTED:frames[frame]=frames.get(frame,0)+us
     return dict(passed=True,rows=len(rows),sha256=sha256_file(path),
                 phases={k:dict(count=len(v),mean_us=sum(v)/len(v),max_us=max(v)) for k,v in phases.items()},
+                callback_events={k:dict(
+                    buckets=len(v),callbacks=sum(r['callbacks'] for r in v),
+                    total_us=sum(r['microseconds'] for r in v),
+                    mean_us_per_callback=sum(r['microseconds'] for r in v)/sum(r['callbacks'] for r in v),
+                    largest_buckets=sorted(v,key=lambda r:r['microseconds'],reverse=True)[:10],
+                    scope='Aggregate callback time; bucket duration is not the maximum individual callback latency')
+                    for k,v in events.items()},
                 largest_cpu_frames=sorted(frames.items(),key=lambda p:p[1],reverse=True)[:10],
                 scope=trial['scope'])

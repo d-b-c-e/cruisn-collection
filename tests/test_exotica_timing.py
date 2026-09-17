@@ -15,6 +15,11 @@ class Timing(unittest.TestCase):
             path=root/'exotica-host-timing.csv';path.write_text(data,encoding='utf-8')
             result=verify(trial,root)
             self.assertEqual(result['phases']['lifetime_install']['count'],2)
+            event=result['callback_events']['lifetime_install']
+            self.assertEqual(event['callbacks'],7)
+            self.assertEqual(event['total_us'],5.5)
+            self.assertEqual(event['mean_us_per_callback'],5.5/7)
+            self.assertEqual(event['largest_buckets'][0],dict(frame=11,scene=0,callbacks=2,microseconds=3.0))
             path.write_text(data.replace('11,0','10,0'),encoding='utf-8')
             with self.assertRaisesRegex(ValueError,'duplicate'):verify(trial,root)
             path.write_text(data.replace('3,2','3,0'),encoding='utf-8')
