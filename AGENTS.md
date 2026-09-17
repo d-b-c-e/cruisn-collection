@@ -2,16 +2,22 @@
 
 ## Current work: release parity, September 16
 
-Latest profiling: docs/reviews/2026-09-16-exotica-mars-phase-timing.md.
-Existing Mars recording is sufficient; no redo needed. Two targeted8209frame
-replays PASS inputs/time/native images and four4KGL images EXACT. Window7780..7840
-shows future queue submission blocks emulation up to20.824ms (2.994MB packet).
-Bounded deferred --exotica-timing added; 1native+2Python focusedtestsPASS.
-Native44388a202e1 frozen266patches/attested, receipt material-timing-native-export.json
-under results/diagnostics/exotica-mars-timing-20260916. Both exports ALREADY RUN.
-NEXT remove journal-only CPU/GPU geometry hashing in quiet mode; preserve resource
-hashes, capture output and ownership. Then one matched replay/timing comparison.
-Crash fix dd60206a0ee remains qualified; originalfailed retry2 case intact.
+Latest: docs/reviews/2026-09-16-exotica-mars-phase-timing.md.
+Existing Mars recording sufficient; no redo needed. Profiling window7780..7840
+found future graphics-queue submission blocking emulation up to20.824ms.
+Native1fccd423f39 skips ONLY disabled per-scene diagnostic hashes on CPU/GPU;
+material/lease/ownership/capture checks unchanged, V-Unit rollinghash untouched.
+One matched candidate8209frame replay PASS input/time,136nativeimages,4completed
+4KGL images EXACT100.0000%. Queue max20.824->0.187ms;62frame window >25ms 6->0,
+max35.683->18.850ms. Broader >25ms 61->44 but maximum66ms remains; no claim all
+stutters fixed or physical wheel acceptance. Continuous receipts/drained/joined.
+LOCAL results/diagnostics/exotica-mars-timing-20260916/quiet-hash-profile,
+timing-before-after-qualified.json. 267patches exported/attested; all three
+export scripts ALREADY RUN. Timing native/Python contracts andjournal testPASS.
+Crash fix dd60206a0ee retained; original failedretry2 intact. No newattendedrun.
+NEXT use this recovered route for remaining scene/performance/margin work;
+remaining isolated pauses and broader route/FFB gates still open. No repeat
+broad suite or extra drive merely for the already-fixed pointer/queue issue.
 No game/build/test active. Heartbeat paused;personal87d/publicv0.5.0unchanged.
 
 
@@ -178,11 +184,11 @@ laterscheduledactionrejects. NEXT Exoticamachine-reset CPU/GPUownership usingnew
 fixturemechanism; notyetextendedrenderresetacceptance. No activegame/build/test.
 
 
-Current frozen native: `44388a202e132af0875046a3a7485dcb2a3e73bd`,
-`build/candidates/44388a202e1/vunit.exe`, SHA256
-`bef04e5c110207143bb20670d6fe606a7eece6a55faaa752f25cd392ab8fc3a1`.
-266 patches reconstruct `aa052acd116bf126886cc1149da2fef28f703493`.
-`material-timing-native-export.json` under
+Current frozen native: `1fccd423f3930d1919137ee37feb61045dba21df`,
+`build/candidates/1fccd423f39/vunit.exe`, SHA256
+`5e56d183e2e59b79c0cb352fc8d260ddc7a1ed6a6a706a028b76e52ff30f2755`.
+267 patches reconstruct `3abf205db375d9a16d72b6578cc2fe6fe087f705`.
+`quiet-hash-native-export.json` under
 `results/diagnostics/exotica-mars-timing-20260916` is the current export receipt.
 **All existing export scripts have already run. Never rerun an export against
 its appended patch baseline.** Create a new export for a new native commit.

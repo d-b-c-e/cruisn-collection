@@ -38,3 +38,42 @@ per-event journal. The next isolated optimization will suppress those diagnostic
 calculations in quiet mode, retaining all material/resource validation and all
 capture-mode hashes. Compare against this timing baseline and the saved pixels.
 Personal installation/publicv0.5.0 remain unchanged.
+
+## Quiet-mode optimization
+
+Native1fccd423f39 now omits five CPU journal-only hashes and the GPU worker's
+per-polygon journal hash when capture is disabled. These hashes did not feed
+rendering, admission, resource leases or summary integrity receipts. All of
+those checks remain active. Capture-mode hashes remain unchanged, including the
+first GPU packet whose journal opens lazily. V-Unit's separate rolling geometry
+fingerprint is untouched because it does feed its quiet-mode receipts.
+
+One subsequent replay (`quiet-hash-profile`) passes8209input/time frames, all136
+native snapshots, and all four completed4K GL images at100.0000% pixel equality.
+The continuous transaction and joined/drained shutdown checks pass. The existing
+native capture/quiet journal contract passes. No broad game suite was repeated.
+The first launch command accidentally selected MSYS Python after the compiler
+PATH override and failed importing PIL before any game launched. Explicitly
+selecting the regular Python runtime corrected the invocation; this did not
+require another drive.
+
+| Measure | Prior candidate | Quiet hash optimization |
+| --- | ---: | ---: |
+| Maximum future queue submission,7780..7840 |20.824ms|0.187ms|
+| Mean future queue submission,61samples |1.114ms|0.101ms|
+| Maximum callback interval,7780..7841 |35.683ms|18.850ms|
+| Callback intervals above25ms in that62frame window |6|0|
+| Callback intervals above25ms,3000..8079 |61|44|
+
+This is one local pair with the same settings and profiling schedule, not a
+multi-run benchmark or proof of physical wheel latency. Other spikes remain:
+the maximum callback interval across3000..8079 was60.716ms before and66.329ms
+after. Do not call all stutter eliminated. The repeatable late-route queue stall
+has nevertheless been substantially reduced without changing the sampled output.
+
+`compare_timings.py` and `timing-before-after-qualified.json` retain the exact
+CSV/report identities, measurement windows and counts. Native267patches are
+frozen/attested in `quiet-hash-native-export.json`; that export has already run.
+Candidate SHA256 is
+`5e56d183e2e59b79c0cb352fc8d260ddc7a1ed6a6a706a028b76e52ff30f2755`.
+No deployment, publication, physical FFB or new attended recording was performed.

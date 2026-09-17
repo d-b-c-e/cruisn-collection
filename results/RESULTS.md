@@ -4494,3 +4494,18 @@ queued bytes drain and workers join. Four completed4K images around the old
 failure;8094 viewed. No whole-course or physical wheel acceptance. Repeated
 late-route timing spikes remain unresolved. Personal87d/publicv0.5.0 unchanged.
 [Crash investigation and evidence](../docs/reviews/2026-09-16-exotica-mars-recording-crash.md).
+
+
+## 2026-09-16 — Mars queue-stall profiling and quiet-mode improvement
+
+Bounded CPU timing isolated a20.824ms future graphics-queue submission stall.
+Native1fccd423f39 suppresses unused journal-only CPU/GPU hashes in quiet mode;
+resource integrity and capture-mode hashes remain active. One matched8209frame
+replay passes inputs/time,136nativeimages and4completed4K images at100.0000%
+pixel equality. Target window queue maximum falls to0.187ms; callback intervals
+above25ms fall6to0. Other isolated pauses remain (broader maximum66ms). This is
+one local before/after observation, not full physical wheel or course acceptance.
+Two preceding profiling runs informed the change; no broad suite or new attended
+drive. Focused buffer/options/receipt/journal checks pass. Source/export267 are
+isolated; personal87d/publicv0.5.0 unchanged.
+[Timing evidence and limitations](../docs/reviews/2026-09-16-exotica-mars-phase-timing.md).
