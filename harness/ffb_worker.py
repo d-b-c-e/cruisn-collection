@@ -23,16 +23,21 @@ def add_arguments(parser):
                         help='explicit real force worker with a device-free sink; physical FFB stays off')
     parser.add_argument('--ffb-worker-strength', type=int, help='nominal 0..100; Exotica current 0.8 trim is explicit')
     parser.add_argument('--ffb-worker-impacts', choices=('off', 'on'), help='legacy or enhanced steering impacts')
+    parser.add_argument('--ffb-worker-stop-frame', type=int,
+                        help='device-free stop test at frame: conditions 20%%, rumble 40%%, legacy impacts')
 
 
 def configure(args, rom, settings):
     mode = getattr(args, 'ffb_worker', None)
     strength = getattr(args, 'ffb_worker_strength', None)
     impacts = getattr(args, 'ffb_worker_impacts', None)
+    stop_frame = getattr(args, 'ffb_worker_stop_frame', None)
+    if settings.get('MIDV_FFB_USER_STOP_FRAME') is not None:
+        raise ValueError('stop schedule requires explicit replay option, not inherited settings')
     if mode is None and settings.get('MIDV_FFB_OBSERVE_WORKER', '0') != '0':
         raise ValueError('worker observation requires an explicit replay option')
     if mode != 'observe':
-        if strength is not None or impacts is not None:
+        if strength is not None or impacts is not None or stop_frame is not None:
             raise ValueError('worker strength/impacts require observation')
         settings['MIDV_FFB_OBSERVE_WORKER'] = '0'
         return None if mode is None else dict(mode='off')
@@ -42,6 +47,11 @@ def configure(args, rom, settings):
     strength = 50 if strength is None else strength
     if not 0 <= strength <= 100:
         raise ValueError('worker strength must be 0..100')
+    if stop_frame is not None:
+        if not 1 <= stop_frame <= 1000000 or strength == 0 or impacts == 'on':
+            raise ValueError('stop coverage requires frame1..1000000, positive strength and legacy impacts')
+        settings.update(MIDV_FFB_USER_STOP_FRAME=str(stop_frame), MIDV_FFB_DAMPER='20',
+                        MIDV_FFB_FRICTION='20', MIDV_FFB_SPRING='20', MIDV_FFB_RUMBLE='40')
     effective = (strength * 80 + 50) // 100 if rom == 'crusnexo' else strength
     profiles = Path(candidate).resolve().parent
     if ((profiles/'force-profiles.user.ini').exists() or
@@ -62,7 +72,7 @@ def configure(args, rom, settings):
         if not 0 <= value <= maximum:
             raise ValueError('invalid recorded worker '+key)
         wanted[key] = bool(value) if key == 'invert' else value
-    return dict(mode=mode, nominal_strength=strength, effective_strength=effective,
+    return dict(mode=mode, nominal_strength=strength, effective_strength=effective, stop_frame=stop_frame,
                 profiles=str(profiles), profiles_sha256=sha256_file(profiles/'force-profiles.ini'),
                 expected=wanted, physical_output=False, physical_acceptance=False)
 
@@ -170,4 +180,7 @@ def verify_receipt(trial, directory):
                   hashes={name:sha256_file(directory/name) for name in FILES},
                   mailbox_causality_verified=False, physical_acceptance=False,
                   scope='Actual observed conditioning inputs/clocks; sink acceptance is not physical delivery')
+    if trial.get('stop_frame') is not None:
+        from verify_ffb_stop import verify
+        result['user_stop'] = verify(directory)
     return result

@@ -28,9 +28,14 @@ Seven focused settings tests PASS; successor frontend packaging is next.
 Frontend79a192b is now deployed via mastereb78f4f (master doc has receipts).
 THIS worktree stages the NEXT undeployed F8/stop-marker integration.3preference,
 5launch-boundary,11session,7settings tests and14CPU layouts PASS. Native candidate
-6dde90ff16a in E:/Source/mame-ux/codex/ux-native is committed/pushed, unbuilt,
+0913925c858 in E:/Source/mame-ux/codex/ux-native is committed/pushed, building,
 from accepted4ac plus device-free worker observeraa9eeea7041. Full checkout/build
-preparation underway; no game launch or native deployment. Primary4df untouched.
+underway (-j8, local build session12673); no game launch or native deployment.
+Primary4df untouched. Read docs/reviews/2026-09-19-native-ffb-stop.md. New all-family
+observer journal and explicit stop replay option have7policy/4verifier/11session
+tests PASS. Existing USA event3067 allows bounded3300prefix/stop3070 after build;
+no live slot granted. Independent device-selection/calibration audit requested
+from coordinator, no overlapping source edits. Do not restart the cold build.
 
 ## Rendering checkpoint inherited from master, September 16
 

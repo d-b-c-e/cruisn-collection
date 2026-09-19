@@ -357,6 +357,9 @@ def main(argv=None):
             report['exotica_runtime']=runtime_trial
             journal_trial['continuous']=True
         worker_trial=ffb_worker.configure(args,manifest['rom'],manifest['settings'])
+        if worker_trial and worker_trial.get('stop_frame') is not None:
+            if not worker_trial['stop_frame'] < reference['frames']-30:
+                raise ValueError('force stop needs at least 30 later replay frames')
         if worker_trial:report['ffb_worker']=worker_trial
         # A screenshot can finish before later private scenes/materials. Drain
         # through the last completed Zeus frame, including runs without captures.
