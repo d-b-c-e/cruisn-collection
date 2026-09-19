@@ -23,7 +23,7 @@ using Sint32=int;
 enum { SDL_TRUE=1, SDL_JOYSTICK_TYPE_WHEEL=2, SDL_HAPTIC_CONSTANT=4 };
 struct SDL_Joystick { int index; } joystick;
 struct SDL_Haptic {} haptic;
-struct Device { SDL_Joystick *js=nullptr;SDL_Haptic *hp=nullptr;unsigned caps=0;bool is_wheel=false;std::string name; };
+struct Device { SDL_Joystick *js=nullptr;SDL_Haptic *hp=nullptr;unsigned caps=0;bool is_wheel=false;std::string name;Sint32 instance=-1;std::string path; };
 static std::atomic<bool> s_user_stopped{false};
 static std::vector<cruisn::force_device_identity> devices;
 static int locks=0,joystick_opens=0,haptic_opens=0,joystick_closes=0,haptic_closes=0;
@@ -103,7 +103,7 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     original = args.native_source.read_text(encoding='utf-8')
     first = original.index('static bool select_device(Device &d)')
-    last = original.index('static void apply(Device &d', first)
+    last = next(original.index(marker, first) for marker in ('static bool latch_user_stop(', '// Sole output-owner thread', 'static void apply(Device &d') if marker in original[first:])
     body = original[first:last]
     source = args.output/'selector.cpp'
     source.write_text(PREFIX + body + SUFFIX, encoding='utf-8')

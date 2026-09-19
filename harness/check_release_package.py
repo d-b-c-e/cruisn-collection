@@ -28,6 +28,8 @@ FREEPLAY = {'crusnusa':('nvram',(0x190,0x195,0x19a,0x19f)), 'crusnwld24':('nvram
 
 
 def inspect(package, candidate, *, media=True):
+    if Path(str(candidate)+'.rejected.json').exists():
+        raise ValueError('candidate has a retained rejection; use a qualified successor')
     with zipfile.ZipFile(package) as archive:
         entries={}; roots=set()
         for info in archive.infolist():

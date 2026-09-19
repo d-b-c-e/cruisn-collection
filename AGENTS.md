@@ -31,23 +31,28 @@ One granted091 headlessUSA replay ran and was released:3300inputs/55native512x40
 images EXACT,3829worker ticks, active constant/rumble/three-condition stop,
 324zero ticks despite227nonzero later requests. No physical/4K/live-key claim.
 Do not repeat it for Python edits. Read2026-09-19-native-ffb-stop.md.
-Native33d44e2c85c built/frozen/attested140patches, candidate
-build/candidates/ux-33d44e2c85c/vunit.exe SHA33670eed264ddb3c4ac6266b8aa9f8eab9836cbf6031e25dc647efff5e283729.
-Its export and091export ALREADY RAN; never overwrite/re-export either baseline.
+Current isolated UX native707fd6a8f0a built/frozen/attested142patches, candidate
+build/candidates/ux-707fd6a8f0a/vunit.exe SHAf1f908e66784b657d892e651850693c99e606ffcf093397f9a994975f1c51c01.
+091/33/e5/707 exports ALREADY RAN; never overwrite/re-export their baselines.
+e5builtcandidate is explicitly rejected: owner persisted Off before SDL stop.
+707 separates latch/service/persistence; actual extracted functions prove all
+stop attempts precede blocked filesystem flush, with retry/failure distinctions.
+Independent exact-source review closed. Read2026-09-19-output-disconnect-ordering.md.
 Read2026-09-19-native-control-calibration.md and2026-09-19-control-launch-transport.md.
-Native57goldens/actualbackend-core pipelinev2 pass. Model24/control-launch6/
-session12/launch-boundary6 focused tests PASS. Capability receipt binds new
-controls to exact binary; launcher emits strict GUID mappings and local profile.
-Clear uses tombstone to block inherited binding fallback. Whole-axis conflicts
-fail before save. INP playback strips physical mappings/calibration only in its
-private run; original case retains identity/hash and gets an explicit receipt.
-No device or rig use for this transport work. No activegame/build, no rig slot.
-Coordinator UI agent owns collection.py/control_setup.py/test_control_setup.py
-in cruisn-collection-control-setup-20260919; do not edit those files here until
-integration. Our control_launch APIs and save_legacy_bindings are its boundary.
-Next integrate UI, focused live qualification when slot granted, scoped local
-UX deployment with backups. Personal87d/publicv0.5.0 and primary4df unchanged.
-No unattended torque, release publication or rendering candidate deployment.
+Native57goldens/actualbackend-core pipelinev2 pass. Model24/control-launch8/
+reader4/session12/launch-boundary6 focused tests PASS. Capability receipt binds
+controls to exact binary; package selects matching source series and receipts.
+Clear blocks inherited fallback. Explicit axes remove only superseded game cfg
+standard/reverse overrides with backups; sensitivity/DIPs/keyboard increments stay.
+Reader preprocessing matches MAME. INP replay consumes effective ports without
+physical-device/calibration dependency; original case stays hashed/unchanged.
+UI db6b5a2+a1ba5a9 integrated asde4a6b3/cead380;21fake-reader/modal tests and18CPU
+720p/4K layouts PASS. Shared guidance94dc3a1/12df6b3 read; no new renderer scope.
+No activegame/build; no live slot granted. Coordinator01a07ac3-e639-7762-a698-5365d447ee7e
+queues bounded no-output live acceptance after other products. Next offline
+package, live preview/F8/menu/focus check, then scoped local UX deployment with
+backups. Personal87d/publicv0.5.0 and primary4df unchanged. No unattended torque,
+release publication or rendering candidate deployment. Continue useful work.
 
 ## Rendering checkpoint inherited from master, September 16
 

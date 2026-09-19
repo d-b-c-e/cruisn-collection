@@ -11,6 +11,8 @@ from verification import sha256_file
 
 def stage(binary, destination, source_root):
     binary, destination, source_root = map(Path, (binary, destination, source_root))
+    if Path(str(binary)+'.rejected.json').exists():
+        raise ValueError('Candidate has a retained rejection; use a qualified successor.')
     receipt = binary_provenance.read(binary)
     features = Path(str(binary)+'.features.json')
     if features.exists() and (receipt is None or not supported(binary)):
