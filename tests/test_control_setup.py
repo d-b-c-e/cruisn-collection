@@ -91,6 +91,157 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(S.device_label(DEVICE,[DEVICE]),'Fixture wheel')
         self.assertEqual(self.path.read_bytes(), self.original)
 
+    def test_legacy_saved_on_requires_strict_choice_in_simple_setup_and_ffb(self):
+        from test_graphics_options import import_shell_module
+        shell=import_shell_module('collection')
+        original=self.original.replace(b'ffb_enabled=0',b'ffb_enabled=1')+b'steer=Legacy wheel|axis:0:0\n'
+        self.path.write_bytes(original)
+        with mock.patch.object(shell,'CFG',str(self.path)), mock.patch.object(shell.run_rig.dinput_axes,'inventory',side_effect=AssertionError('passive paint enumerated')):
+            state=shell.load_config()
+            # Legacy completeness must never substitute for an exact Steering identity.
+            state['bindings'].update(steer='Legacy wheel|axis:0:0', brake='Pedal|axis:0:0')
+            for _ in range(3):
+                setup={row[0]:row for row in shell.settings_rows('setup',state,False,'fixture')}
+                ffb={row[0]:row for row in shell.settings_rows('ffb',state,False,'fixture')}
+                self.assertEqual(setup['readiness'][2],'Choose your steering wheel')
+                self.assertEqual(setup['ffb'][2],'Choose your steering wheel')
+                self.assertEqual(ffb['ffb_device'][2],'Choose your steering wheel')
+                self.assertEqual(ffb['ffb_enabled'][2],'On')
+            state['ffb_selection']=dict(mode='invalid',identity=None)
+            self.assertEqual(next(r[2] for r in shell.settings_rows('setup',state,False,'fixture') if r[0]=='readiness'),'Confirm FFB device')
+            state['ffb_enabled']=False
+            self.assertNotEqual(next(r[2] for r in shell.settings_rows('setup',state,False,'fixture') if r[0]=='readiness'),'Confirm FFB device')
+        self.assertEqual(self.path.read_bytes(),original)
+
+    def test_ffb_modal_native_support_alone_is_not_device_readiness(self):
+        self.session.supported=lambda _:True
+        self.session.open('ffb',0)
+        self.session.inventory_provider=mock.Mock(side_effect=AssertionError('paint enumerated'))
+        rows={r[0]:r for r in self.session.rows()}
+        self.assertEqual(rows['status'][2],'Choose your steering wheel')
+        self.assertEqual(rows['current'][2],'Choose your steering wheel')
+        self.session.activate('follow')
+        self.assertEqual(next(r[2] for r in self.session.rows() if r[0]=='status'),'Choose your steering wheel')
+        self.session.records={'steer':dict(identity=IDENTITY,axis='XAXIS')}
+        self.assertEqual(next(r[2] for r in self.session.rows() if r[0]=='status'),'Ready for next launch')
+        self.session.devices=[]
+        self.assertEqual(next(r[2] for r in self.session.rows() if r[0]=='status'),'Confirm FFB device')
+        self.assertEqual(self.path.read_bytes(),self.original)
+
+    def test_ffb_exact_identity_readiness_never_uses_saved_path_or_name_fallback(self):
+        selected=dict(mode='explicit',identity=IDENTITY)
+        self.assertEqual(S.ffb_readiness(selected,{})['label'],'Device saved')
+        missing=deepcopy(DEVICE);missing['identity']['instance_guid']='aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee'
+        no_path=deepcopy(DEVICE);no_path['identity'].pop('hid_path')
+        no_ffb=deepcopy(DEVICE);no_ffb['identity']['ffb_capable']=False
+        for inventory in ([],[missing],[DEVICE,DEVICE],[no_path],[no_ffb]):
+            result=S.ffb_readiness(selected,{},inventory=inventory)
+            self.assertTrue(result['needs_confirmation'])
+            self.assertEqual(result['label'],'Confirm FFB device')
+        self.assertEqual(S.ffb_readiness(selected,{},inventory=[DEVICE])['label'],'Ready for next launch')
+
+    def test_launch_preflight_off_legacy_on_resolved_missing_and_inventory_failure_no_writes(self):
+        provider=mock.Mock(return_value=[deepcopy(DEVICE)])
+        native=mock.Mock(return_value=True)
+        check=lambda:S.launch_ffb_warning(self.path,'fixture',provider,supported=native)
+        self.assertIsNone(check());provider.assert_not_called();native.assert_not_called()
+        self.path.write_bytes(self.original.replace(b'ffb_enabled=0',b'ffb_enabled=1'))
+        original=self.path.read_bytes()
+        self.assertEqual(check()['label'],'Choose your steering wheel');provider.assert_not_called()
+        self.assertEqual(self.path.read_bytes(),original)
+        self.steering();self.session.activate('save');self.session.close()
+        original=self.path.read_bytes()
+        self.assertIsNone(check());provider.assert_called_once()
+        self.assertEqual(self.path.read_bytes(),original)
+        provider.return_value=[]
+        self.assertEqual(check()['label'],'Confirm FFB device')
+        provider.side_effect=OSError('inventory unavailable')
+        self.assertIn('inventory unavailable',check()['hint'])
+        provider.reset_mock();native.return_value=False
+        self.assertEqual(check()['label'],'Update required');provider.assert_not_called()
+        self.assertEqual(self.path.read_bytes(),original)
+        self.assertFalse(any(not reader.closed for reader in self.readers))
+
+    def test_launch_preflight_panic_off_and_invalid_explicit_are_read_only(self):
+        import ffb_preferences
+        self.path.write_bytes(self.original.replace(b'ffb_enabled=0',b'ffb_enabled=1')+b'\n[control_preferences]\nversion=1\n')
+        original=self.path.read_bytes()
+        marker=ffb_preferences.stop_file(self.path);marker.write_bytes(b'fixture panic')
+        provider=mock.Mock(side_effect=AssertionError('must not enumerate'))
+        self.assertIsNone(S.launch_ffb_warning(self.path,'fixture',provider))
+        self.assertEqual(marker.read_bytes(),b'fixture panic');marker.unlink()
+        self.path.write_bytes(original.replace(b'ffb_enabled=1',b'ffb_enabled=1\nffb_device_mode=explicit\nffb_device_identity=malformed'))
+        invalid=self.path.read_bytes()
+        self.assertEqual(S.launch_ffb_warning(self.path,'fixture',provider)['label'],'Confirm FFB device')
+        provider.assert_not_called();self.assertEqual(self.path.read_bytes(),invalid)
+
+    def test_warning_requires_release_and_cannot_replay_opening_key_or_focus_loss(self):
+        warning=dict(label='Choose your steering wheel',hint='Fixture recovery')
+        for choice in ('configure','without','cancel'):
+            dialog=S.LaunchWarning('crusnusa',warning)
+            dialog.activate('without');self.assertIsNone(dialog.pending)
+            for _ in range(3):self.assertIsNone(dialog.tick(focused=True,held=True))
+            self.assertIsNone(dialog.tick(focused=True,held=False));self.assertFalse(dialog.ready)
+            self.assertIsNone(dialog.tick(focused=True,held=False));self.assertTrue(dialog.ready)
+            dialog.activate(choice)
+            dialog.activate('without')  # a second queued key cannot replace the choice.
+            self.assertIsNone(dialog.tick(focused=True,held=True))
+            self.assertIsNone(dialog.tick(focused=True,held=False))
+            self.assertEqual(dialog.tick(focused=True,held=False),choice)
+            self.assertIsNone(dialog.tick(focused=True,held=False))
+        dialog=S.LaunchWarning('crusnusa',warning)
+        dialog.tick(focused=True,held=False);dialog.tick(focused=True,held=False)
+        dialog.activate('without');dialog.tick(focused=False,held=False)
+        dialog.tick(focused=True,held=False)
+        self.assertEqual(dialog.tick(focused=True,held=False),'cancel')
+        self.assertEqual(self.path.read_bytes(),self.original)
+
+    def test_direct_shortcut_warning_is_visible_and_transient_off_reaches_launch(self):
+        from test_graphics_options import import_shell_module
+        shell=import_shell_module('collection')
+        state=dict(world_rom='crusnwld24',scale=4,crt=True,crackfill=True,steersens={},steercurve={},margin=0,ffb=72)
+        warning=dict(label='Choose your steering wheel',hint='No confirmed FFB device')
+        process=mock.Mock();process.poll.return_value=0
+        with mock.patch.object(shell,'CFG',str(self.path)), mock.patch.object(shell,'load_config',return_value=state), \
+             mock.patch.object(shell.run_rig,'vunit_processes',return_value=[]), \
+             mock.patch.object(shell.run_rig,'boot_rom_note',return_value=None), \
+             mock.patch.object(S,'launch_ffb_warning',return_value=warning), \
+             mock.patch.object(shell.ctypes.windll.user32,'MessageBoxW',return_value=7) as message, \
+             mock.patch.object(shell.run_rig,'launch_game_async',return_value=(process,0)) as launch, \
+             mock.patch.object(shell.run_rig,'wait_or_kill',return_value=0):
+            self.assertEqual(shell.direct_launch('crusnusa'),0)
+            self.assertTrue(launch.call_args.kwargs['force_ffb_off'])
+            self.assertIn('Continue without FFB',message.call_args.args[1])
+            launch.reset_mock();message.return_value=6
+            self.assertIsNone(shell.direct_launch('crusnusa'));launch.assert_not_called()
+            message.return_value=2
+            self.assertEqual(shell.direct_launch('crusnusa'),0);launch.assert_not_called()
+            with mock.patch.object(S,'launch_ffb_warning',return_value=None):
+                message.reset_mock();shell.direct_launch('crusnusa')
+                message.assert_not_called();self.assertNotIn('force_ffb_off',launch.call_args.kwargs)
+        self.assertEqual(self.path.read_bytes(),self.original)
+
+    def test_shell_worker_carries_explicit_one_launch_off_without_changing_normal_call(self):
+        # Execute the actual nested worker in isolation: no shell/game/device.
+        import ast
+        from test_graphics_options import import_shell_module
+        shell=import_shell_module('collection')
+        source=ast.parse(Path(shell.__file__).read_text(encoding='utf-8'))
+        worker=next(n for n in ast.walk(source) if isinstance(n,ast.FunctionDef) and n.name=='_do_launch')
+        state=dict(scale=4,crt=True,crackfill=True,steersens={},steercurve={},margin=0,ffb=72)
+        for off in (False,True):
+            box=dict(done=False,err=None,result=None)
+            runtime=mock.Mock();runtime.launch_game_async.return_value=('fixture-process',123)
+            namespace=dict(launching=box,real_rom='crusnusa',launch='crusnusa',one_launch_no_ffb=off,
+                           run_rig=runtime,state=state,args=type('Args',(),dict(windowed=False))())
+            exec(compile(ast.fix_missing_locations(ast.Module(body=[worker],type_ignores=[])),shell.__file__,'exec'),namespace)
+            namespace['_do_launch']()
+            self.assertTrue(box['done']);self.assertIsNone(box['err'])
+            self.assertEqual(box['result'],('fixture-process',123))
+            self.assertEqual(runtime.launch_game_async.call_args.kwargs.get('force_ffb_off',False),off)
+            self.assertEqual(runtime.launch_game_async.call_args.kwargs['ffb'],72)
+        self.assertEqual(self.path.read_bytes(),self.original)
+
     def test_steering_staged_save_preserves_other_roles_off_and_unknown(self):
         self.steering()
         self.assertEqual(self.path.read_bytes(), self.original)
@@ -370,6 +521,18 @@ class SetupTests(unittest.TestCase):
         self.session.ffb_save=mock.Mock(side_effect=OSError('Fixture save unavailable; the last saved settings were retained.'))
         self.session.activate('save_ffb');remember('retry')
         self.session.cancel();remember('release')
+        self.session.close();self.session.supported=lambda _:True
+        self.session.open('ffb',self.now);remember('ffb-confirm-steering')
+        warning=S.ffb_readiness(dict(mode='steering',identity=None),{})
+        dialog=S.LaunchWarning('crusnusa',warning)
+        for selected in (1,2,3):
+            cases.append((f'ffb-before-launch-{selected}','FFB BEFORE LAUNCH',dialog.rows(),selected,''))
+        with mock.patch.object(shell,'CFG',str(self.path)):
+            state=shell.load_config()
+        state['ffb_enabled']=True
+        for page in ('setup','ffb'):
+            rows=shell.settings_rows(page,state,False,'fixture')
+            cases.append(('simple-'+page,shell.SETTINGS_TITLE[page],rows,1,''))
         report=[]
         output=Path(os.environ['CRUISN_CONTROL_LAYOUT_OUTPUT']) if os.environ.get('CRUISN_CONTROL_LAYOUT_OUTPUT') else None
         if output:output.mkdir(parents=True,exist_ok=True)

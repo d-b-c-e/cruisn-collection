@@ -73,6 +73,100 @@ def load_ffb(path):
         return dict(mode=mode, identity=preferences.canonical_identity(identity) if identity else None)
 
 
+def ffb_readiness(selection, records, *, inventory=None):
+    """Pure presentation: saved identity is not evidence of current connectivity.
+
+    Only an explicit setup/launch action supplies inventory. Rendering must not
+    enumerate devices, infer a legacy name match, or change a saved preference.
+    """
+    def issue(label, hint):
+        return dict(needs_confirmation=True, label=label, hint=hint)
+    mode = selection.get('mode')
+    steering = records.get('steer')
+    if mode == 'steering' and not steering:
+        return issue('Choose your steering wheel',
+                     'Open Controls setup and save Steering, or choose an explicit FFB device. Legacy bindings stay saved.')
+    identity = steering.get('identity') if mode == 'steering' else selection.get('identity')
+    try:
+        if mode not in ('steering', 'explicit') or mode == 'steering' and selection.get('identity') is not None:
+            raise ValueError('Invalid device choice')
+        preferences.canonical_identity(identity)
+    except (TypeError, ValueError):
+        return issue('Confirm FFB device', 'Open FFB device and save a valid choice. Previous settings stay saved.')
+    if inventory is None:
+        return dict(needs_confirmation=False, label='Device saved',
+                    hint='The saved device will be checked when you launch. This does not confirm forces are working.')
+    resolution = preferences.resolve_device(identity, inventory)
+    if not preferences.output_path(resolution):
+        reason = {'missing':'is disconnected', 'ambiguous':'has more than one matching device',
+                  'invalid':'could not be identified'}.get(resolution['status'], 'has no usable FFB output path')
+        return issue('Confirm FFB device', 'The saved device '+reason+'. Reconnect it and Refresh, or choose another FFB device.')
+    return dict(needs_confirmation=False, label='Ready for next launch',
+                hint='Device found. This screen does not test forces; check FFB in game after saving.')
+
+
+def launch_ffb_warning(path, binary, inventory, *, supported=native_status):
+    """Read-only on-demand preflight. Call only with no game or reader active.
+
+    Saved Off (including the panic marker) never enumerates. Valid choices have
+    no extra acknowledgement. The native launch path still resolves again and
+    fails closed if a device disconnects after this check.
+    """
+    import ffb_preferences
+    try:
+        cp = configparser.ConfigParser(interpolation=None)
+        cp.read(path, encoding='utf-8-sig')
+        section = cp['collection'] if cp.has_section('collection') else {}
+        if not ffb_preferences.enabled(section, path):
+            return None
+        records = preferences.load_records(path)
+        selection = load_ffb(path)
+        status = ffb_readiness(selection, records)
+        if not status['needs_confirmation']:
+            if not supported(binary):
+                status = dict(needs_confirmation=True, label='Update required',
+                              hint='Update the collection runtime before using the saved FFB device.')
+            else:
+                status = ffb_readiness(selection, records, inventory=list(inventory()))
+        if not status['needs_confirmation']:
+            return None
+    except (OSError, ValueError, KeyError, TypeError, configparser.Error) as error:
+        status = dict(needs_confirmation=True, label='Confirm FFB device',
+                      hint='The saved device could not be checked. '+str(error))
+    return {**status, 'hint':status['hint']+' Continue without FFB affects this launch only; saved values are unchanged.'}
+
+
+class LaunchWarning:
+    """Existing settings surface, with neutral handoff on open and close."""
+    def __init__(self, card, warning):
+        self.card, self.warning = card, warning
+        self.selected = 1
+        self.ready = False
+        self.pending = None
+        self.neutral_frames = 0
+
+    def rows(self):
+        return [('header', 'FFB', self.warning['label'], self.warning['hint']),
+                ('configure', 'Configure device', 'Open settings', self.warning['hint']),
+                ('without', 'Continue without FFB', 'This launch only', 'No forces for this launch. Saved FFB On/Off, strength and tuning remain unchanged.'),
+                ('cancel', 'Cancel', 'Return to launcher', 'No game starts and saved settings remain unchanged.')]
+
+    def activate(self, action):
+        if self.ready and action in ('configure', 'without', 'cancel'):
+            self.pending, self.ready, self.neutral_frames = action, False, 0
+
+    def tick(self, *, focused, held):
+        if not focused:
+            self.pending, self.ready = 'cancel', False
+        self.neutral_frames = self.neutral_frames+1 if focused and not held else 0
+        if self.neutral_frames >= 2:
+            if self.pending:
+                result, self.pending = self.pending, None
+                return result
+            self.ready = True
+        return None
+
+
 def save_ffb(path, mode, identity=None, **kwargs):
     try:
         import control_launch
@@ -417,6 +511,9 @@ class Session:
         status = 'Ready for next launch' if ready else 'Update required'
         hint = ('Save, then launch a game to check the controls. This screen previews the device and does not test forces.' if ready else
                 'Update the collection runtime before using these saved controls. Your assignments stay saved; this screen can still preview the device.')
+        if ready and self.role == 'ffb':
+            ffb_status = ffb_readiness(self.ffb_proposal or self.ffb, self.records, inventory=self.devices)
+            status, hint = ffb_status['label'], ffb_status['hint']
         add('status', 'Setup status', status, hint)
         if self.mode == 'devices':
             for i, device in enumerate(self.devices):
@@ -450,6 +547,8 @@ class Session:
             add('save_clear', 'Clear '+title, 'Save clear', 'Removes this role including its legacy fallback. Other roles stay saved.')
         elif self.mode == 'ffb':
             current = 'Invalid saved choice' if self.ffb['mode'] == 'invalid' else 'Use steering wheel'
+            if self.ffb['mode'] == 'steering' and not self.records.get('steer'):
+                current = 'Choose your steering wheel'
             if self.ffb['mode'] == 'explicit':
                 match = preferences.resolve_device(self.ffb['identity'], self.devices)
                 current = (device_label(match['device'], self.devices) if match['device'] else

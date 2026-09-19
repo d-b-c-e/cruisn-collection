@@ -419,7 +419,7 @@ class Shell:
         view_label, view_value = rows[0]
         self.center_text(view_label + ": " + view_value, max(16, self.h // 38), self.h * 0.305,
                          (1.0, 0.85, 0.4, 1.0) if ssel == 0 else (0.75, 0.75, 0.8, 1.0))
-        if title not in ("SAVE BINDINGS", "CONTROL SETUP", "FFB DEVICE"):
+        if title not in ("SAVE BINDINGS", "CONTROL SETUP", "FFB DEVICE", "FFB BEFORE LAUNCH"):
             for i, key in enumerate(settings_view.CORE):
                 label = SETTINGS_TITLE[key].title() if key != 'ffb' else 'FFB'
                 color = GOLD if SETTINGS_TITLE[key] == title else (0.65,0.65,0.72,1.0)
@@ -450,7 +450,7 @@ class Shell:
             self.center_text(line, max(14, self.h // 52), self.h * (0.835 + i * 0.035),
                              (1.0,0.85,0.4,1.0) if notice else (0.65,0.65,0.72,1.0))
         foot = self.footer_tex(
-            "^ v  ROWS    < >  ADJUST    ENTER  CHOOSE    ESC / F6  CANCEL" if title in ("CONTROL SETUP", "FFB DEVICE") else
+            "^ v  ROWS    < >  ADJUST    ENTER  CHOOSE    ESC / F6  CANCEL" if title in ("CONTROL SETUP", "FFB DEVICE", "FFB BEFORE LAUNCH") else
             "^ v  ROWS    < >  ADJUST    TAB  PAGE    ENTER  OK    ESC / F6  CLOSE")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
@@ -805,9 +805,15 @@ def load_config():
         control_error = ''
     except (OSError, ValueError) as error:
         controls, control_error = {}, str(error)
+    try:
+        ffb_selection = control_setup.load_ffb(CFG)
+    except (OSError, ValueError, KeyError, configparser.Error):
+        ffb_selection = dict(mode='invalid', identity=None)
     return {**settings_view.load(sec), "crt": str(sec.get("crt", "1")) == "1",
             "controls": controls, "control_error": control_error,
             "ffb_device_mode": sec.get('ffb_device_mode', 'steering'),
+            "ffb_selection": ffb_selection,
+            "ffb_checked_status": None,
             "bindings": dict(cp["wheelmap"]) if "wheelmap" in cp else {},
             "telemetry": dict(cp["telemetry"]) if "telemetry" in cp else {},
             "transmission": tr,
@@ -1075,6 +1081,12 @@ def settings_rows(page, state, diag, version):
     page = settings_view.page(page, selected)
     advanced = selected == 'advanced'
     bindings = state.get('bindings', {})
+    ffb_status = control_setup.ffb_readiness(
+        state.get('ffb_selection', dict(mode=state.get('ffb_device_mode', 'steering'), identity=None)),
+        state.get('controls', {}))
+    if state.get('ffb_checked_status'):
+        ffb_status = state['ffb_checked_status']
+    ffb_attention = state.get('ffb_enabled', state.get('ffb', 50)>0) and ffb_status['needs_confirmation']
     back = ('back', 'Back', '', '')
     def bind(key, label):
         record = state.get('controls', {}).get(key)
@@ -1090,12 +1102,13 @@ def settings_rows(page, state, diag, version):
         rows += [('back', 'Close', '', '')]
     elif page == 'setup':
         missing = next((key for key in ('steer', 'gas', 'brake') if key not in bindings and key not in state.get('controls', {})), None)
-        rows = [('readiness', 'Setup', 'Bind '+{'steer':'Steering','gas':'Throttle','brake':'Brake'}[missing]
+        rows = [('readiness', 'Setup', ffb_status['label'] if ffb_attention else 'Bind '+{'steer':'Steering','gas':'Throttle','brake':'Brake'}[missing]
                  if missing else 'Check axes before driving',
-                 'Turn the wheel left and right, then press and release both pedals before driving.'),
+                 ffb_status['hint'] if ffb_attention else 'Turn the wheel left and right, then press and release both pedals before driving.'),
                 ('controls', 'Controls setup', 'Open', 'Choose a device for each axis, calibrate and check the device preview.'),
                 ('buttons', 'Buttons setup', 'Open', 'Keep existing keyboard, wheel and shifter button assignments.'),
-                ('ffb', 'FFB', 'Open', 'Check strength before driving.'), back]
+                ('ffb', 'FFB', ffb_status['label'] if ffb_attention else 'Open',
+                 ffb_status['hint'] if ffb_attention else 'Check strength before driving.'), back]
     elif page == 'controls':
         rows = [bind('steer', 'Steering'), bind('gas', 'Throttle'), bind('brake', 'Brake'),
                 ('buttons', 'Driving / menu / shifter buttons', 'Open', 'Independent saved button assignments.'),
@@ -1137,8 +1150,10 @@ def settings_rows(page, state, diag, version):
                            'On' if state.get('ffb_enabled', state.get('ffb',50)>0) else 'Off',
                            'Applies at the next game launch. Turning Off keeps your strength and tuning.'))
             wheel = 'Explicit device' if state.get('ffb_device_mode') == 'explicit' else 'Use steering wheel'
+            if ffb_status['needs_confirmation']:
+                wheel = ffb_status['label']
             rows.insert(0, ('ffb_device', 'FFB device', wheel,
-                           'Choose Use steering wheel or an explicit connected output device. Saved Off and strength remain unchanged.'))
+                           ffb_status['hint']+' Saved Off and strength remain unchanged.'))
         if page == 'support' and not advanced:
             rows=[row for row in rows if row[0]!='diag']
     if state.get('control_error') and page in ('setup', 'controls'):
@@ -1289,12 +1304,32 @@ def resolve_game_alias(name):
     return GAME_ALIASES.get((name or "").strip().lower())
 
 
+def direct_ffb_choice(warning):
+    """Visible recovery for shortcuts/frozen builds that have no console."""
+    text = (warning['label']+'\n\n'+warning['hint']+
+            '\n\nYes: Configure device\nNo: Continue without FFB for this launch\nCancel: Do not start')
+    result = ctypes.windll.user32.MessageBoxW(None, text, "Cruis'n Collection — FFB", 0x10000 | 0x200 | 0x30 | 3)
+    return {6:'configure', 7:'without'}.get(result, 'cancel')
+
+
 def direct_launch(card, windowed=False):
     """--game: run one game with the launcher's saved settings and no shell
     window at all (frontends: LaunchBox, Stream Deck, shortcuts). Returns
     the process exit code; Esc-menu Exit / F12 end the game and this
     process alike."""
     state = load_config()
+    if run_rig.vunit_processes():
+        ctypes.windll.user32.MessageBoxW(None, 'Close the current game before starting another.', "Cruis'n Collection", 0x10000 | 0x30)
+        return 2
+    warning = control_setup.launch_ffb_warning(CFG, run_rig.VUNIT, run_rig.dinput_axes.inventory)
+    force_ffb_off = False
+    if warning:
+        choice = direct_ffb_choice(warning)
+        if choice == 'configure':
+            return None  # main opens the existing FFB settings surface.
+        if choice != 'without':
+            return 0
+        force_ffb_off = True
     real_rom = (state.get("world_rom", "crusnwld24")
                 if card == "crusnwld" else card)
     if card == "crusnwld":
@@ -1311,6 +1346,7 @@ def direct_launch(card, windowed=False):
         steersens=state["steersens"].get(card),
         steercurve=state["steercurve"].get(card),
         margin=state["margin"], ffb=int(state.get("ffb", 50)),
+        **({'force_ffb_off': True} if force_ffb_off else {}),
         )
     gaks = ctypes.windll.user32.GetAsyncKeyState
     while proc.poll() is None and run_rig.u32.IsWindow(_hwnd):
@@ -1347,6 +1383,7 @@ def main():
     ap.add_argument('--config-report', metavar='JSON',
                     help='write effective launcher settings and exit without opening devices or a game')
     args = ap.parse_args()
+    start_ffb_setup = False
     if args.shot_page and not args.shot:
         ap.error("--shot-page requires --shot")
     if args.shot_context and not args.shot:
@@ -1367,7 +1404,10 @@ def main():
         if not card:
             sys.exit(f"unknown game {args.game!r} - use usa, world, "
                      f"offroad or exotica")
-        return direct_launch(card, windowed=args.windowed)
+        result = direct_launch(card, windowed=args.windowed)
+        if result is not None:
+            return result
+        start_ffb_setup = True
     if args.shot:
         render_shot(args.shot, page=args.shot_page, game=args.shot_context)
         return 0
@@ -1471,6 +1511,16 @@ def main():
             return
         x,y = glfw.get_cursor_pos(win)
         ww,wh = glfw.get_window_size(win)
+        if mode == 'ffb_launch':
+            fixed = settings_view.hit_action(ww, wh, x, y)
+            if fixed:
+                actions.append(glfw.KEY_F8 if fixed == 'stop_ffb' else glfw.KEY_ESCAPE)
+                return
+            hit = settings_view.hit_row(ww, wh, x, y, launch_warning.selected, len(launch_warning.rows()))
+            if hit is not None and hit > 0:
+                launch_warning.selected = hit
+                actions.append(glfw.KEY_ENTER)
+            return
         if mode == 'control_setup':
             fixed = settings_view.hit_action(ww, wh, x, y)
             if fixed:
@@ -1780,6 +1830,8 @@ def main():
 
     KEYCODES = _keycode_table()
     launch = None
+    launch_warning = None
+    launch_without_ffb = False
     launching = None     # in-flight launch box (background thread)
     notice = ""          # transient menu status line
     notice_until = 0.0
@@ -1795,6 +1847,10 @@ def main():
     ssel = 0             # settings: row index within the current page
     spage = state["settings_page"]
     settings_error = ""
+    if start_ffb_setup:
+        mode, spage = 'settings', 'ffb'
+        ssel = next(i for i, item in enumerate(settings_rows(spage, state, False, upd_version)) if item[0] == 'ffb_device')
+        settings_error = 'Confirm your FFB device, or choose Off to play without forces. Saved settings are unchanged.'
 
     def save_settings():
         nonlocal settings_error, notice, notice_until
@@ -1932,13 +1988,37 @@ def main():
             if mode == 'control_setup':
                 control_session.message = settings_error + ' Cancel and reopen this edit before saving.'
 
-        if glfw.KEY_F6 in actions and mode not in ("wizard", "control_setup"):
+        if glfw.KEY_F6 in actions and mode not in ("wizard", "control_setup", "ffb_launch"):
             actions.remove(glfw.KEY_F6)
             mode = "menu" if mode == "settings" else "settings"
             spage = settings_view.page(state.get("settings_page"), state.get("settings_view"))
             ssel = 0
 
-        if mode == 'control_setup':
+        if mode == 'ffb_launch':
+            decision = launch_warning.tick(focused=bool(glfw.get_window_attrib(win, glfw.FOCUSED)), held=setup_held())
+            if decision:
+                mode = 'menu'
+                if decision == 'configure':
+                    mode, spage = 'settings', ('controls' if launch_warning.warning['label'] == 'Choose your steering wheel' else 'ffb')
+                    wanted = 'bind_steer' if spage == 'controls' else 'ffb_device'
+                    ssel = next(i for i, item in enumerate(settings_rows(spage, state, False, upd_version)) if item[0] == wanted)
+                    settings_error = launch_warning.warning['hint']
+                elif decision == 'without':
+                    launch, launch_without_ffb = launch_warning.card, True
+                actions.clear()
+                nav_state.update(dir=0, gas=True)
+                armed_at = time.time()+.5
+            else:
+                for key in actions:
+                    if key in (glfw.KEY_ESCAPE, glfw.KEY_F6):
+                        launch_warning.activate('cancel')
+                    elif launch_warning.ready and key in (glfw.KEY_UP, glfw.KEY_DOWN):
+                        launch_warning.selected = max(1, min(3, launch_warning.selected + (1 if key == glfw.KEY_DOWN else -1)))
+                    elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
+                        launch_warning.activate(launch_warning.rows()[launch_warning.selected][0])
+            actions.clear()
+            ok_pending.clear()
+        elif mode == 'control_setup':
             setup_frame += 1
             focused = bool(glfw.get_window_attrib(win, glfw.FOCUSED))
             control_session.tick(time.monotonic(), focused=focused,
@@ -2500,6 +2580,11 @@ def main():
         t = time.time() % 3600
         if launching is not None:
             shell.draw_loading(launching["name"], t)
+        elif mode == 'ffb_launch':
+            rows = launch_warning.rows()
+            shell.draw_settings(launch_warning.selected, 'FFB BEFORE LAUNCH',
+                [(r[1], r[2]) for r in rows], rows[launch_warning.selected][3], t,
+                notice='' if launch_warning.ready else 'Release controls to continue.')
         elif mode == 'control_setup':
             rows = control_session.rows()
             control_session.selected = min(control_session.selected, len(rows)-1)
@@ -2547,7 +2632,12 @@ def main():
                        notice if time.time() < notice_until else "")
         glfw.swap_buffers(win)
 
-        if launch and launching is None and mode != 'control_setup':
+        if launch and launching is None and mode not in ('control_setup', 'ffb_launch'):
+            one_launch_no_ffb, launch_without_ffb = launch_without_ffb, False
+            if control_session.reader is not None or game_proc is not None and game_proc.poll() is None or run_rig.vunit_processes():
+                notice, notice_until = 'Wait for the current game or device setup to close before launching.', time.time()+8
+                launch = None
+                continue
             # a pedal that reads pressed with nobody's foot on it (a Moza
             # load-cell brake comes up latched at full until pressed once)
             # makes the game burn out in 2nd gear with the tyres squealing
@@ -2571,6 +2661,14 @@ def main():
                 audio.blip("nav")
                 launch = None
                 continue
+            if not one_launch_no_ffb:
+                warning = control_setup.launch_ffb_warning(CFG, run_rig.VUNIT, setup_inventory)
+                if warning:
+                    state['ffb_checked_status'] = {**warning, 'hint':'Last launch check: '+warning['hint']}
+                    launch_warning = control_setup.LaunchWarning(launch, warning)
+                    launch, mode = None, 'ffb_launch'
+                    actions.clear(); ok_pending.clear()
+                    continue
             state["rom"] = launch
             if not save_settings():
                 launch = None
@@ -2609,7 +2707,7 @@ def main():
                 launch = None
                 audio.blip("nav")
 
-            def _do_launch(box=launching, rom=real_rom, card=launch):
+            def _do_launch(box=launching, rom=real_rom, card=launch, no_ffb=one_launch_no_ffb):
                 # background thread: the shell keeps rendering LAUNCHING
                 # instead of vanishing to the desktop while MAME boots
                 try:
@@ -2620,6 +2718,7 @@ def main():
                         steersens=state["steersens"].get(card),
                         steercurve=state["steercurve"].get(card),
                         margin=state["margin"], ffb=int(state.get("ffb", 50)),
+                        **({'force_ffb_off': True} if no_ffb else {}),
                         )
                 except BaseException as e:
                     box["err"] = str(e) or repr(e)
