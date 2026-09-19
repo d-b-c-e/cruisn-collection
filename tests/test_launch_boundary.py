@@ -55,9 +55,12 @@ class LaunchBoundaryTests(unittest.TestCase):
                 # exercise the launch branches without reading ROMs or executables.
                 stack.enter_context(mock.patch('session_case.Recording.prepare',
                     side_effect=lambda command, env, source: (command, env, rig)))
+            preference = rig/'collection.ini'
+            saved = preference.read_bytes() if preference.exists() else None
             with self.assertRaises(SpawnReached):
                 run_rig.launch_game_async(rom=rom, ffb=strength, windowed=True,
                                           mame=str(root/'vunit.exe'), **options)
+            self.assertEqual(preference.read_bytes() if preference.exists() else None, saved)
             command = spawn.call_args.args[0]
             env = spawn.call_args.kwargs['env']
             self.assertEqual(env['MIDV_FFB'], expected_ffb)
@@ -87,6 +90,13 @@ class LaunchBoundaryTests(unittest.TestCase):
             self.assertEqual(env['MIDV_FFB'], '0')
             self.assertNotIn('MIDV_FFB_DEVICE', env)
             self.assertNotIn('MIDV_INPUT_PROFILE', env)
+            # Device is now resolved, but a prior explicit Continue without FFB
+            # cannot be undone by that change or inherited environment values.
+            env = self.exercise_launch(rom, False, imported=False, capable=True, inventory=inventory,
+                controls=True, strength=65, config={'ffb_enabled': '1', 'ffb': '65'},
+                trial={'force_ffb_off': True}, environment={'MIDV_FFB': '1', 'MIDV_FFB_TEST': '50'})
+            self.assertEqual(env['MIDV_FFB'], '0')
+            self.assertNotIn('MIDV_FFB_TEST', env)
 
     def test_saved_ffb_switch_and_explicit_diagnostic_off(self):
         for rom in ('crusnusa','crusnwld24','crusnwld','offroadc','crusnexo'):

@@ -1258,7 +1258,7 @@ def apply_wheelmap(tree, rig):
 # ---- launch -----------------------------------------------------------------
 def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                       crackfill=True, steersens=None, steercurve=None,
-                      margin=None, ffb=None, marginfill=False,
+                      margin=None, ffb=None, marginfill=False, force_ffb_off=False,
                       mame=VUNIT, record_case=None, record_every=60, record_frames=0, record_with_ffb=False, record_clock=False,
                       record_world_trial=None, record_usa_trial=None, record_exotica_trial=None, record_offroad_trial=None):
     """Launch one game through the GL overlay; returns (proc, hwnd) once the
@@ -1359,7 +1359,9 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         'ffb': _collection_ini_get('collection', 'ffb', '50'),
         **({'ffb_enabled': _collection_ini_get('collection', 'ffb_enabled', '')}
            if _collection_ini_get('collection', 'ffb_enabled', '') != '' else {})}, force_config)
-    ffb_allowed = ffb_allowed and (ffb is None or int(ffb) > 0)
+    # A launch-only Continue without FFB choice is authoritative even if the
+    # selected device appears after the UI preflight. Saved On/tunes stay intact.
+    ffb_allowed = ffb_allowed and (ffb is None or int(ffb) > 0) and not force_ffb_off
     if not ffb_allowed:
         env["MIDV_FFB"] = "0"
         env.pop("MIDV_FFB_TEST", None)
