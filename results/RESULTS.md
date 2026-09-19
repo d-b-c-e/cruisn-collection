@@ -4562,3 +4562,5 @@ fresh/legacy/saved-Off frozen config PASS; UI29/common-launch7/settings7 PASS.
 CRLF distinction, intentional newer analyzer retained. Two pre-copy verifier
 failures retained. Native4df renderer source/publicv0.5.0 unchanged. Live UI and
 physical wheel acceptance pending; see docs/UX-OVERNIGHT-2026-09-16.md.
+
+2026-09-19 upstream refresh: new Zeus programmed-vsync/IRQ pulse change #16178 and instance-Wave-RAM cleanup identified, source-audited and retained as separate compatibility work. Neither backported before the pending matched Mars lifetime measurement. No native build/game or visual improvement claim. See [review](../docs/reviews/2026-09-19-zeus-upstream-refresh.md).
