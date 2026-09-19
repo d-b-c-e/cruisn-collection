@@ -105,6 +105,8 @@ $Version | Set-Content (Join-Path $rel "version.txt")   # the in-app updater com
 
 # 3. emulator + force-feedback runtime (SDL2, loaded at run time by vunit.exe)
 Copy-Item $vunit (Join-Path $rel "vunit.exe")
+& python (Join-Path $root 'harness\stage_native_receipts.py') $vunit $rel --source-root $root
+if ($LASTEXITCODE -ne 0) { throw 'Native provenance/capability staging failed' }
 Copy-Item (Join-Path $vdir 'COPYING') (Join-Path $rel 'MAME-COPYING.txt')
 New-Item -ItemType Directory -Force (Join-Path $rel 'licenses') | Out-Null
 Copy-Item -Recurse (Join-Path $vdir 'docs\legal') (Join-Path $rel 'licenses\mame')

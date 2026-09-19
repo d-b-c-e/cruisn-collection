@@ -68,3 +68,11 @@ legacy-only installation needs an explicit identity selection before Follow
 Steering enables output on this native; there is no silent migration from a
 friendly name. Existing personal preferences are retained. A hash-qualified
 package/deployment must include the capability receipt with the exact executable.
+
+Follow-up: fresh-install and legacy-only clear/rebind fixtures found absent INI
+section handling that the original six tests did not cover. `04d6782` fixes those
+guards; seven control-launch tests now pass. Package staging now copies native
+build/capability receipts and selects the exact exported source series by its
+attested hash. Focused staging and ZIP-content tests reject a missing/mismatched
+capability, wrong patch lineage, and leaked calibration/Off-marker state. No
+full package was built for this transport-only change.

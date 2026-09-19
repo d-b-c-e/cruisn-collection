@@ -36,6 +36,15 @@ it is an explicit request to reuse that binary, not a freshness check. `-MameRoo
 a release or runs GitHub Actions. `make_release.ps1` also accepts `-Emulator` and
 `-RuntimeRoot` separately, so a candidate need not live beside SDL/BGFX resources.
 
+An attested isolated native candidate also carries `vunit.exe.build.json` and,
+when supported, `vunit.exe.features.json`. Packaging verifies those against the
+executable and copies the exact matching tracked patch series to the package's
+canonical `patch/vunit-poc-patches.patch`. It refuses a missing source series,
+stale capability receipt or lost candidate capability file. A native candidate
+from a UX worktree must not accidentally ship the independent renderer parity
+series as its reconstruction instructions. Personal calibration and the saved
+FFB stop marker are forbidden package contents.
+
 ## Development checks
 
 Install the test dependencies once in the Python environment used for this repo:
