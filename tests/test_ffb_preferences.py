@@ -12,6 +12,26 @@ from test_graphics_options import import_shell_module
 
 
 class FeedbackPreferences(unittest.TestCase):
+    def test_native_stop_survives_restart_view_changes_and_failed_resume(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td)/'collection.ini'
+            path.write_text('[collection]\nffb=80\nffb_enabled=1\n', encoding='utf-8')
+            F.stop_file(path).write_bytes(b'')
+            self.assertFalse(F.enabled({'ffb_enabled':'1'}, path))
+            shell = import_shell_module('collection')
+            with mock.patch.object(shell, 'CFG', str(path)):
+                state = shell.load_config()
+                self.assertFalse(state['ffb_enabled'])
+                V.change(state, path, 'advanced', 'ffb')
+                self.assertTrue(F.stopped(path))
+                with mock.patch.object(V.os, 'replace', side_effect=OSError('denied')):
+                    with self.assertRaises(OSError): F.set_enabled(path, True)
+                self.assertTrue(F.stopped(path))
+                F.set_enabled(path, True)
+                self.assertFalse(F.stopped(path))
+                self.assertTrue(shell.load_config()['ffb_enabled'])
+                self.assertEqual(shell.load_config()['ffb'], 80)
+
     def test_legacy_and_explicit_off(self):
         self.assertTrue(F.enabled({}))
         self.assertFalse(F.enabled({'ffb':'0'}))

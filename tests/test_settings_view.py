@@ -39,6 +39,9 @@ class SettingsView(unittest.TestCase):
                 self.assertFalse(list(path.parent.glob('*.tmp')))
 
     def test_fixed_navigation_and_scrolled_row_hit_regions(self):
+        self.assertEqual(V.hit_action(1280,720,1280*.20,720*.80),'close')
+        self.assertEqual(V.hit_action(1280,720,1280*.75,720*.80),'stop_ffb')
+        self.assertIsNone(V.hit_action(1280,720,1280*.50,720*.80))
         self.assertEqual(V.hit_page(1280,720,1280*.39,720*.36),'ffb')
         self.assertEqual(V.hit_row(1280,720,640,720*.32,14,18),0)
         self.assertEqual(V.hit_row(1280,720,640,720*.401,14,18),7)

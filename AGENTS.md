@@ -25,6 +25,12 @@ awaits the coordinated rig slot. No public release or unattended torque.
 No live timing/game slot is granted. Ordinary tuning saves are now atomic with
 backup, failed-edit rollback, visible errors and refusal to launch on failure.
 Seven focused settings tests PASS; successor frontend packaging is next.
+Frontend79a192b is now deployed via mastereb78f4f (master doc has receipts).
+THIS worktree stages the NEXT undeployed F8/stop-marker integration.3preference,
+5launch-boundary,11session,7settings tests and14CPU layouts PASS. Native candidate
+6dde90ff16a in E:/Source/mame-ux/codex/ux-native is committed/pushed, unbuilt,
+from accepted4ac plus device-free worker observeraa9eeea7041. Full checkout/build
+preparation underway; no game launch or native deployment. Primary4df untouched.
 
 ## Rendering checkpoint inherited from master, September 16
 

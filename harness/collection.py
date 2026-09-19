@@ -439,6 +439,8 @@ class Shell:
         if len(body) > 8:
             self.center_text(f"{first+1}-{min(first+8,len(body))} / {len(body)}", max(14,self.h//52), self.h*0.80,
                              (0.65,0.65,0.72,1.0))
+        self.text_at('Close (Esc)', max(16,self.h//48), self.w*.18, self.h*.80, GOLD)
+        self.text_at('Stop FFB (F8)', max(16,self.h//48), self.w*.82, self.h*.80, GOLD, align='r')
         import textwrap
         message = notice or hint
         for i, line in enumerate(textwrap.wrap(message, width=110)[:2]):
@@ -803,7 +805,7 @@ def load_config():
             "steersens": sens,
             "steercurve": curve,
             "margin": int(mg) if mg.isdigit() else None,
-            "ffb_enabled": ffb_preferences.enabled(sec),
+            "ffb_enabled": ffb_preferences.enabled(sec, CFG),
             "ffb": 50 if ffb is None else max(0, min(100, ffb)),   # 50: a direct-drive base at 100 fights itself
             "scale": int(sec.get("scale", 4)),
             # FFB PEAK LIMIT: 0 = off, else cap of the force kicks (of 127)
@@ -1439,6 +1441,10 @@ def main():
         x,y = glfw.get_cursor_pos(win)
         ww,wh = glfw.get_window_size(win)
         rows = settings_rows(spage,state,run_rig.ffb_diag_enabled(),upd_version)
+        fixed_action = settings_view.hit_action(ww,wh,x,y)
+        if fixed_action:
+            actions.append(glfw.KEY_F8 if fixed_action=='stop_ffb' else glfw.KEY_ESCAPE)
+            return
         requested = settings_view.hit_page(ww,wh,x,y)
         if requested:
             try:
@@ -1846,6 +1852,17 @@ def main():
             if armed:
                 for ev in nav_events(not (mode == "menu" and row == 0)):
                     actions.append(ev)
+
+        if glfw.KEY_F8 in actions:
+            actions[:] = [key for key in actions if key != glfw.KEY_F8]
+            try:
+                ffb_preferences.set_enabled(CFG, False)
+                state['ffb_enabled'] = False
+                settings_error = 'FFB off. Choose On in FFB settings when ready.'
+            except (OSError,ValueError) as error:
+                settings_error = 'FFB preference not saved: ' + str(error)
+            notice = settings_error
+            notice_until = time.time() + 15
 
         if glfw.KEY_F6 in actions and mode != "wizard":
             actions.remove(glfw.KEY_F6)
@@ -2544,6 +2561,7 @@ def main():
                 threading.Thread(target=run_rig.wait_or_kill, args=(proc,),
                                  daemon=True).start()
                 keeper.game_active.clear()   # game gone: zero the dash again
+                state['ffb_enabled'] = load_config()['ffb_enabled']
                 # joystick states changed while we were blocked (buttons
                 # pressed in-game) - rebaseline or the first poll back
                 # reads them as fresh presses and instantly relaunches

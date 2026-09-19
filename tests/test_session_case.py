@@ -71,14 +71,17 @@ class SessionTests(unittest.TestCase):
             (case / "initial").mkdir(parents=True)
             (case / "record" / "input").mkdir(parents=True)
             (case / "record" / "input" / "session.inp").write_bytes(b"fixture")
-            manifest = dict(command=["vunit.exe", "crusnusa"], settings={"MIDV_FFB": "1", "MIDV_FFB_TEST": "50"},
+            manifest = dict(command=["vunit.exe", "crusnusa"], settings={"MIDV_FFB": "1", "MIDV_FFB_TEST": "50", "MIDV_FFB_STOP_FILE": str(Path(td)/'owner-stop')},
                             every=60, stop_frame=120, evidence={"frames":120}, attended_ffb=True, origin="live-input")
             _, replay_env = prepare_run(case, manifest, Path(td) / "replay", playback=True)
             self.assertEqual(replay_env["MIDV_FFB"], "0")
             self.assertNotIn("MIDV_FFB_TEST", replay_env)
+            self.assertEqual(replay_env['MIDV_FFB_STOP_FILE'], str(Path(td)/'replay/ffb-user-stopped'))
             _, record_env = prepare_run(case, manifest, Path(td) / "record", playback=False)
             self.assertEqual(record_env["MIDV_FFB"], "1")
             self.assertNotIn("MIDV_FFB_TEST", record_env)
+            self.assertEqual(record_env['MIDV_FFB_STOP_FILE'], str(Path(td)/'record/ffb-user-stopped'))
+            self.assertFalse((Path(td)/'owner-stop').exists())
             with self.assertRaisesRegex(ValueError, "force disabled"):
                 execute(["never-launched"], Path(td), record_env, 1)
 

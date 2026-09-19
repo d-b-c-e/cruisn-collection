@@ -366,6 +366,10 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
         elif k.endswith(("_SNAP", "_STATEDUMP_DIR", "_QUADLOG", "_CAPTURE", "_RAMDUMP_DIR")):
             del settings[k]
     env = diagnostic_env(settings)
+    # A recording/replay stop must never write the owner's ordinary preference.
+    # Bind the native durable stop marker to this private run, including attended
+    # captures; physical output policy remains independent below.
+    env['MIDV_FFB_STOP_FILE'] = str(runtime / 'ffb-user-stopped')
     from session_actions import configure as configure_actions
     env.update(configure_actions(runtime,manifest,int(settings['SNAP_STOP'])))
     if not playback and not headless and manifest.get("attended_ffb") and manifest.get("origin") == "live-input":

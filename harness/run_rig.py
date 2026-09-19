@@ -1327,11 +1327,13 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                    "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
-    from ffb_preferences import enabled as saved_ffb_enabled
+    from ffb_preferences import enabled as saved_ffb_enabled, stop_file
+    force_config = os.path.join(rig, 'collection.ini')
+    env['MIDV_FFB_STOP_FILE'] = str(stop_file(force_config))
     ffb_allowed = saved_ffb_enabled({
         'ffb': _collection_ini_get('collection', 'ffb', '50'),
         **({'ffb_enabled': _collection_ini_get('collection', 'ffb_enabled', '')}
-           if _collection_ini_get('collection', 'ffb_enabled', '') != '' else {})})
+           if _collection_ini_get('collection', 'ffb_enabled', '') != '' else {})}, force_config)
     ffb_allowed = ffb_allowed and (ffb is None or int(ffb) > 0)
     if not ffb_allowed:
         env["MIDV_FFB"] = "0"

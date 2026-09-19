@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 
 @unittest.skipUnless(sys.platform == 'win32', 'launcher uses Windows APIs')
 class LaunchBoundaryTests(unittest.TestCase):
-    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None, strength=0, expected_ffb="0", environment=None):
+    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None, strength=0, expected_ffb="0", environment=None, stopped=False):
         import cheats
         import run_rig
 
@@ -22,6 +22,7 @@ class LaunchBoundaryTests(unittest.TestCase):
             root = Path(td)
             rig = root/'rig'
             rig.mkdir()
+            if stopped: (rig/'ffb-user-stopped').write_bytes(b'')
             if config or telemetry:
                 (rig/'collection.ini').write_text('[collection]\n'+''.join(f'{k}={v}\n' for k,v in (config or {}).items())+
                     '[telemetry]\n'+''.join(f'{k}={v}\n' for k,v in (telemetry or {}).items()),encoding='utf-8')
@@ -53,6 +54,7 @@ class LaunchBoundaryTests(unittest.TestCase):
             command = spawn.call_args.args[0]
             env = spawn.call_args.kwargs['env']
             self.assertEqual(env['MIDV_FFB'], expected_ffb)
+            self.assertEqual(env['MIDV_FFB_STOP_FILE'], str(rig/'ffb-user-stopped'))
             self.assertEqual('-cheat' in command, imported)
             self.assertEqual('-nocheat' in command, not imported)
             self.assertEqual('MIDV_CHEATS' in env, imported)
@@ -72,6 +74,8 @@ class LaunchBoundaryTests(unittest.TestCase):
                         self.assertEqual(env['MIDV_FFB_STRENGTH'],'52' if rom=='crusnexo' else '65')
                     if rom.startswith('crusnwld'):
                         self.assertNotEqual(env.get('MIDV_FFB_GAME_GATE'),'1')
+            self.exercise_launch(rom,False,imported=False,strength=80,stopped=True,
+                config={'ffb_enabled':'1'},environment={'MIDV_FFB':'1'})
             self.exercise_launch(rom,False,imported=False,strength=65,
                 config={'ffb_enabled':'1'},environment={'MIDV_FFB':'0'})
             env=self.exercise_launch(rom,False,imported=False,strength=None,
