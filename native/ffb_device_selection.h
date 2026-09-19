@@ -66,7 +66,8 @@ inline force_device_selection select_force_device(std::string const &selector,
 	if (match<0) { result.reason="Selected FFB device is missing";return result; }
 	auto const &device=devices[match];
 	std::string const name=force_identity_fold(device.name);
-	if (device.virtual_device || name.find("VJOY")!=std::string::npos || name.find("VIGEM")!=std::string::npos) {
+	if (device.virtual_device || name.find("VJOY")!=std::string::npos || name.find("VIGEM")!=std::string::npos
+		|| name.find("VXBOX")!=std::string::npos || name.find("XOUTPUT")!=std::string::npos) {
 		result.reason="Virtual device cannot own FFB";return result;
 	}
 	result.index=match;result.reason="Exact unique FFB device";return result;

@@ -43,3 +43,18 @@ No game/device calls or native build have been made for this successor.
 Shared guidance483bebd and12df6b3 were read: transactional edits, held-input
 handoff and current/previous/effective disconnect neutralization remain required
 in the eventual UI/input integration. The owner's World force exceptions remain.
+
+Source review identified two additional cases, fixed in nativeccb6fc55655:
+negative SDL instance IDs now reject before haptic open (including both queries
+returning-1), and vXbox/XOutput are excluded without rejecting ordinary Xbox
+Controller names. Pure-policy and actual-function fakeSDL v2 tests pass, with
+the prior receipt retained. This successor is still unbuilt/undeployed.
+
+`harness/dinput_reader.py` now provides a separate, explicitly selected instance
+reader for eventual calibration. It checks both GUIDs, uses fixed DIJOYSTATE2
+slots/high buttons, reads advertised ranges and acquires non-exclusively. It
+never opens haptics or changes driver range/gain. A lost attachment/poll/read
+closes the reader, clears its ranges and returns no sample on subsequent calls;
+it does not pick a replacement. Three fake-reader tests cover layout/range math,
+actual read-method dispatch/high buttons and those failure paths. This reader
+has not been used with hardware or wired into the product calibration UI yet.

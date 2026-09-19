@@ -28,6 +28,7 @@ static std::atomic<bool> s_user_stopped{false};
 static std::vector<cruisn::force_device_identity> devices;
 static int locks=0,joystick_opens=0,haptic_opens=0,joystick_closes=0,haptic_closes=0;
 static bool attached=true,changed_instance=false,changed_path=false;
+static bool inventory_error=false,opened_error=false;
 static unsigned capabilities=SDL_HAPTIC_CONSTANT;
 void flog(char const *,...) {}
 void osd_printf_info(char const *,...) {}
@@ -38,7 +39,7 @@ char const *p_SDL_JoystickNameForIndex(int i) { return devices[i].name.c_str(); 
 char const *p_SDL_JoystickPathForIndex(int i) { return devices[i].path.c_str(); }
 unsigned p_SDL_JoystickGetDeviceVendor(int i) { return devices[i].vendor; }
 unsigned p_SDL_JoystickGetDeviceProduct(int i) { return devices[i].product; }
-Sint32 p_SDL_JoystickGetDeviceInstanceID(int i) { return i+100; }
+Sint32 p_SDL_JoystickGetDeviceInstanceID(int i) { return inventory_error?-1:i+100; }
 int p_SDL_JoystickIsVirtual(int i) { return devices[i].virtual_device; }
 SDL_Joystick *p_SDL_JoystickOpen(int i) { assert(locks==1);++joystick_opens;joystick.index=i;return &joystick; }
 void p_SDL_JoystickClose(SDL_Joystick *) { ++joystick_closes; }
@@ -47,7 +48,7 @@ char const *p_SDL_JoystickPath(SDL_Joystick *j) { return changed_path?"\\\\?\\hi
 unsigned p_SDL_JoystickGetVendor(SDL_Joystick *j) { return devices[j->index].vendor; }
 unsigned p_SDL_JoystickGetProduct(SDL_Joystick *j) { return devices[j->index].product; }
 bool p_SDL_JoystickGetAttached(SDL_Joystick *) { return attached; }
-Sint32 p_SDL_JoystickInstanceID(SDL_Joystick *j) { return j->index+(changed_instance?200:100); }
+Sint32 p_SDL_JoystickInstanceID(SDL_Joystick *j) { return opened_error?-1:j->index+(changed_instance?200:100); }
 SDL_Haptic *p_SDL_HapticOpenFromJoystick(SDL_Joystick *) { ++haptic_opens;return &haptic; }
 void p_SDL_HapticClose(SDL_Haptic *) { ++haptic_closes; }
 unsigned p_SDL_HapticQuery(SDL_Haptic *) { return capabilities; }
@@ -62,6 +63,7 @@ static void reset(char const *selector)
     devices={{"Wheel","\\\\?\\hid#one",0x1234,0xabcd,false},{"Wheel Pro","\\\\?\\hid#two",0x1234,0xabcd,false}};
     locks=joystick_opens=haptic_opens=joystick_closes=haptic_closes=0;
     attached=true;changed_instance=changed_path=false;s_user_stopped=false;capabilities=SDL_HAPTIC_CONSTANT;
+    inventory_error=opened_error=false;
 }
 int main()
 {
@@ -70,6 +72,15 @@ int main()
         reset(selector);assert(!select_device(d));assert(joystick_opens==0 && haptic_opens==0 && locks==0);
     }
     reset("Wheel");devices[1].name="Wheel";assert(!select_device(d));assert(joystick_opens==0 && haptic_opens==0);
+    for (auto name:{"vXbox","XOutput"}) {
+        reset(name);devices[0].name=name;assert(!select_device(d));assert(joystick_opens==0 && haptic_opens==0);
+    }
+    reset("Xbox Controller");devices[0].name="Xbox Controller";assert(select_device(d));assert(haptic_opens==1);
+    for (int mode=1;mode<=3;++mode) {
+        reset("Wheel");inventory_error=(mode&1)!=0;opened_error=(mode&2)!=0;
+        assert(!select_device(d));assert(haptic_opens==0);
+        assert(inventory_error?joystick_opens==0:joystick_closes==1);
+    }
     reset("path:\\\\?\\hid#one");devices[0].virtual_device=true;assert(!select_device(d));assert(haptic_opens==0 && joystick_opens==0);
     reset("path:\\\\?\\hid#one");attached=false;assert(!select_device(d));assert(haptic_opens==0 && joystick_closes==1);
     reset("path:\\\\?\\hid#one");changed_instance=true;assert(!select_device(d));assert(haptic_opens==0 && joystick_closes==1);
