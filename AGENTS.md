@@ -1,6 +1,26 @@
 # Cruis'n Collection — agent instructions
 
-## Current work: release parity, September 19
+## Current work: frontend UX deployment and rendering parity, September 19
+
+Owner authorizes local UX deployment through coordinator
+01a07ac3-e639-7762-a698-5365d447ee7e. Personal launcher target is this source
+checkout E:/Source/cruisn-collection; UX worktree is E:/Source/cruisn-collection-ux-review.
+Read docs/UX-OVERNIGHT-2026-09-16.md and the five toolkit CONSUMER UX guides.
+Scoped frontend merge is in progress with backup under
+results/diagnostics/ux-20260919-deployment/backup (22 owner configuration files).
+Frozen UX frontend79a192b built and passes fresh/legacy/saved-Off configuration;
+SHA0ed809c7adf0a65950c20c695c9ef132df5a24ab3f883236ad70bd695a252993.
+Ordinary settings saves are atomic, retain backup, restore saved values on
+failure and block game launch on save failure. Seven focused settings tests PASS.
+Native F8 stop, strict device identity and full axis calibration remain required
+stages. Do not claim overall UX complete from frontend deployment. Preserve
+World force passthrough. Personal native87d source is4ac6a84b51b4ae549399c81ffe1b9346e2c04758;
+do not import unrelated4df renderer changes into its UX successor. No public
+release, unattended torque or live timing/game slot is authorized. CPU packaging
+and closed-target frontend deployment are authorized without another permission.
+
+## Rendering checkpoint
+
 
 Latest: docs/reviews/2026-09-16-exotica-lifetime-timing.md.
 One remaining-profile replay8209inputs/136native/4completed4K images exact.
@@ -246,8 +266,8 @@ start an attended recording without a reply. Independent work still remains.
 
 ## Constraints and efficient validation
 
-- No deployment, release publication, hosted CI, physical FFB, or menu removal
-  during this parity work. The personal Stream Deck copy and publicv0.5.0 remain
+- No renderer deployment, release publication, hosted CI, physical FFB, or menu removal
+  during this parity work. The separately authorized frontend UX deployment above is allowed. The personal Stream Deck copy and publicv0.5.0 remain
   unchanged. Personal `E:/Source/mame-src/vunit.exe` SHA256 is
   `87d04de42d10a731f1d951a1fa378d784059d862063b224764ca6294fa5fe9d8`.
 - Serialize the rig, GPU and builds. No builds, patch exports or broad scans

@@ -1327,7 +1327,13 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                    "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
-    if ffb is not None and int(ffb) <= 0:
+    from ffb_preferences import enabled as saved_ffb_enabled
+    ffb_allowed = saved_ffb_enabled({
+        'ffb': _collection_ini_get('collection', 'ffb', '50'),
+        **({'ffb_enabled': _collection_ini_get('collection', 'ffb_enabled', '')}
+           if _collection_ini_get('collection', 'ffb_enabled', '') != '' else {})})
+    ffb_allowed = ffb_allowed and (ffb is None or int(ffb) > 0)
+    if not ffb_allowed:
         env["MIDV_FFB"] = "0"
         env.pop("MIDV_FFB_TEST", None)
     env.update(graphics)
@@ -1360,7 +1366,7 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     # level (0 = off entirely); the wizard's steering device names the wheel
     # base; [collection] ffb_invert = 1 flips the direction for a base whose
     # axis sign runs the other way.
-    if ffb is None or int(ffb) > 0:
+    if ffb_allowed:
         env.setdefault("MIDV_FFB", "1")
         if ffb is not None:
             env["MIDV_FFB_STRENGTH"] = str(max(0, min(100, int(ffb))))
@@ -1432,19 +1438,10 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     #           port SimHub's Forza Horizon page listens on)
     if "MIDV_TELEM_UDP" not in env or "MIDV_TELEM_FORZA" not in env:
         import configparser
-        cp = configparser.ConfigParser()
-        cp.read(os.path.join(rig, "collection.ini"))
-        if "MIDV_TELEM_UDP" not in env:
-            telem = cp.get("telemetry", "udp", fallback=None)
-            if telem:
-                env["MIDV_TELEM_UDP"] = telem
-        if "MIDV_TELEM_FORZA" not in env:
-            forza = cp.get("telemetry", "forza", fallback=None)
-            if forza:
-                forza = forza.strip()
-                if forza.lower() in ("1", "on", "true", "yes"):
-                    forza = "127.0.0.1:5300"
-                env["MIDV_TELEM_FORZA"] = forza
+        from telemetry_preferences import launch_overrides as telemetry_overrides
+        cp = configparser.ConfigParser(interpolation=None)
+        cp.read(os.path.join(rig, "collection.ini"), encoding="utf-8-sig")
+        env.update(telemetry_overrides(cp['telemetry'] if 'telemetry' in cp else {},env))
 
     if ffb_diag_enabled():
         env["MIDV_FFB_TRACE"] = os.path.join(rig, "ffb_trace.csv")

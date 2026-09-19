@@ -148,8 +148,10 @@ class ReleaseLauncherTests(unittest.TestCase):
 
     def test_experiments_are_a_root_branch_and_back_keeps_its_selection(self):
         state=self.shell.load_config()
+        state['settings_view']='advanced'
         root=self.shell.settings_rows('root',state,False,'')
-        self.assertEqual([r[1] for r in root[:2]], ['DISPLAY','EXPERIMENTS'])
+        self.assertEqual([r[0] for r in root[1:7]], ['setup','controls','ffb','cameras','telemetry','support'])
+        self.assertEqual([r[0] for r in root[7:9]], ['display','graphics'])
         self.assertNotIn('graphics',[r[0] for r in self.shell.settings_rows('display',state,False,'')])
         self.assertEqual(self.shell.SETTINGS_TITLE['graphics'],'EXPERIMENTS')
         for context in ('shared','crusnusa','crusnwld','offroadc','crusnexo'):
