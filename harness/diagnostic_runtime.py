@@ -60,7 +60,7 @@ def execute(command, directory, env, timeout):
             (key.upper() == "MIDV_FFB" and value != "0") or
             (key.upper() == "MIDV_FFB_TEST" and bool(value))
             for key, value in env.items())):
-        raise ValueError("timeout-capable diagnostics require literal MIDV_FFB=0 and no force test")
+        raise ValueError("timeout-capable diagnostics require physical force disabled: literal MIDV_FFB=0 and no force test")
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     command = [str(c) for c in command]
