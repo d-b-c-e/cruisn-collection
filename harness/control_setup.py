@@ -26,9 +26,13 @@ def record_label(record):
     return identity.get('display_name', 'DirectInput device') + ' / ' + record['axis']
 
 
-def device_label(record):
-    # Same-name twins stay distinguishable; this is display only, never matching.
-    return '[' + record['identity']['instance_guid'][:8] + '] ' + record.get('name', 'Device')
+def device_label(record, inventory=()):
+    # Identity remains the matching key; only same-name rows need it on screen.
+    name = record.get('name', 'Device')
+    if sum(row.get('name', 'Device').casefold() == name.casefold() for row in inventory) > 1:
+        shown = name if len(name) <= 22 else name[:19]+'...'
+        return shown+' ['+record['identity']['instance_guid'][:8]+']'
+    return name
 
 
 def preview_text(role, raw, calibration):
@@ -73,7 +77,7 @@ def save_ffb(path, mode, identity=None, **kwargs):
     try:
         import control_launch
     except ImportError as error:
-        raise ValueError('FFB selection save adapter is pending; previous choice retained.') from error
+        raise ValueError('Update the collection before saving an FFB device; previous choice retained.') from error
     return control_launch.save_ffb_selection(path, mode, identity, **kwargs)
 
 
@@ -82,7 +86,7 @@ def clear_role(path, role, **kwargs):
         import control_launch
         clear = control_launch.clear_control_selection
     except (ImportError, AttributeError) as error:
-        raise ValueError('Clear adapter is pending; previous assignment retained.') from error
+        raise ValueError('Update the collection before clearing this assignment; previous assignment retained.') from error
     return clear(path, role, **kwargs)
 
 
@@ -224,7 +228,7 @@ class Session:
                 # A committed save is still a save if the preview cannot reopen.
                 # No fallback device or background reacquisition is attempted.
                 self._close_reader()
-        self.cancel('Calibration saved for the next launch. Game input still needs verification.')
+        self.cancel('Calibration saved for the next launch. Check the controls in game.')
 
     def _start_calibration(self):
         self._read_selected()
@@ -409,21 +413,24 @@ class Session:
         rows = [('header', title, 'Finish or cancel to change view', '')]
         def add(key, label, value='', hint=''):
             rows.append((key, label, value, hint))
-        status = 'Native adapter supported' if getattr(self, 'ready_native', False) else 'Native support pending'
-        add('status', 'Next launch', status, 'Saved preferences only. Device preview is not verified game input. No force output runs here.')
+        ready = getattr(self, 'ready_native', False)
+        status = 'Ready for next launch' if ready else 'Update required'
+        hint = ('Save, then launch a game to check the controls. This screen previews the device and does not test forces.' if ready else
+                'Update the collection runtime before using these saved controls. Your assignments stay saved; this screen can still preview the device.')
+        add('status', 'Setup status', status, hint)
         if self.mode == 'devices':
             for i, device in enumerate(self.devices):
-                add(f'device:{i}', device_label(device), 'Choose', device_label(device)+': select for '+title+'. Other roles remain independent.')
+                add(f'device:{i}', device_label(device, self.devices), 'Choose', device.get('name', 'Device')+': select for '+title+'. Other roles remain independent.')
             add('refresh', 'Refresh devices')
         elif self.mode == 'axes':
             for axis in self.device.get('axes', ()):
-                add('axis:'+axis, axis, 'Choose', device_label(self.device)+' / choose one axis to calibrate.')
+                add('axis:'+axis, axis, 'Choose', device_label(self.device, self.devices)+' / choose one axis to calibrate.')
             add('bind', 'Choose another device')
         elif self.mode in ('role', 'capture', 'review'):
-            add('device', 'Device', device_label(self.device) if self.device else 'Missing', record_label(self.records.get(self.role)))
+            add('device', 'Device', device_label(self.device, self.devices) if self.device else 'Missing', record_label(self.records.get(self.role)))
             add('axis', 'Axis', self.axis or 'Not available')
             raw = self.last['axes'].get(self.axis) if self.last else None
-            add('preview', 'Device preview', preview_text(self.role, raw, self._calibration()), 'Device raw / calibrated input only; native final input remains unverified.')
+            add('preview', 'Device preview', preview_text(self.role, raw, self._calibration()), 'Shows the selected device before the game applies its own input settings. Check the controls in game after saving.')
             if self.mode == 'role':
                 add('bind', 'Bind', 'Choose device / axis')
                 if self.device is not None: add('calibrate', 'Calibrate')
@@ -445,19 +452,23 @@ class Session:
             current = 'Invalid saved choice' if self.ffb['mode'] == 'invalid' else 'Use steering wheel'
             if self.ffb['mode'] == 'explicit':
                 match = preferences.resolve_device(self.ffb['identity'], self.devices)
-                current = (device_label(match['device']) if match['device'] else
-                           '['+self.ffb['identity']['instance_guid'][:8]+'] '+match['status'])
+                current = (device_label(match['device'], self.devices) if match['device'] else
+                           self.ffb['identity'].get('display_name', 'Saved device')+' / '+match['status'])
             add('current', 'Saved choice', current, current+'. A missing explicit device never falls back to another wheel.')
             steering = self.records.get('steer')
             match = preferences.resolve_device(steering['identity'], self.devices) if steering else {'status':'unbound', 'device':None}
             path = preferences.output_path(match)
-            add('follow', 'Use steering wheel', 'Choose', record_label(steering)+(' / output path available; runtime unverified' if path else ' / bind Steering or refresh its output identity'))
+            add('follow', 'Use steering wheel', 'Choose', record_label(steering)+(' / device found. Check FFB in game after saving.' if path else ' / bind Steering, or reconnect its device and Refresh.'))
             for i, device in enumerate(self.devices):
                 if preferences.output_path(preferences.resolve_device(device['identity'], self.devices)):
-                    add(f'ffb:{i}', device_label(device), 'Choose', device_label(device)+': explicit output device; runtime force capability remains unverified.')
+                    add(f'ffb:{i}', device_label(device, self.devices), 'Choose', device.get('name', 'Device')+': select for FFB at the next launch. This screen does not test forces.')
             add('refresh', 'Refresh devices')
         elif self.mode == 'ffb_review':
-            add('choice', 'New choice', 'Use steering wheel' if self.ffb_proposal['mode'] == 'steering' else self.ffb_proposal['identity']['instance_guid'][:8])
+            chosen = 'Use steering wheel'
+            if self.ffb_proposal['mode'] == 'explicit':
+                match = preferences.resolve_device(self.ffb_proposal['identity'], self.devices)
+                chosen = device_label(match['device'], self.devices) if match['device'] else 'Saved device / '+match['status']
+            add('choice', 'New choice', chosen)
             add('save_ffb', 'Save FFB device', 'Save', 'Preserves saved Off, strength, tunes and all input assignments.')
         elif self.mode == 'save_error':
             add(self.retry, 'Retry save', 'Retry', self.error)

@@ -39,7 +39,7 @@ the controls/cameras workflow. Git blob IDs at that commit:
 | Surface | Placement / behavior |
 |---|---|
 | Controls setup | Simple Setup opens Controls. Steering, Throttle and Brake are independent rows. |
-| Bind | Enter opens the exact DirectInput device list, then the device's fixed axis slots. Friendly name plus instance suffix distinguishes same-name devices. No first-device or name fallback. |
+| Bind | Enter opens the exact DirectInput device list, then the device's fixed axis slots. Friendly names are shown by default; only duplicate names get a short instance suffix. No first-device or name fallback. |
 | Calibration | Simple on demand. Steering: centre, left, right, return. Pedals: released, full, return. Each position requires an explicit Capture after 350 ms stability. Restart discards only the draft. |
 | Device preview | Raw sample and calibrated Left / Centre / Right or Released / Pressed / Full. It is explicitly device input, not verified game-final input. |
 | Invert / Deadzone | Simple calibration review. Off/On and one percentage row, left/right changes 1%. Existing values are retained until explicitly changed; calibration and identity save together. |
@@ -139,3 +139,19 @@ before running the controls tests. Without it, fixtures write no images.
   legacy binding flow. No new camera capability or game physics hook is added.
 - World force behavior, release gating, tunes and primary renderer baseline
   are outside this scoped UI work and were not changed.
+
+## Wording follow-up
+
+The coordinator's bounded source review found no transactional blocker and
+requested simpler player language before packaging. The successor shows
+**Ready for next launch** or **Update required**, with a concrete save/launch
+or update instruction. Device preview explains that the game applies its own
+input settings; the FFB chooser explains that this screen does not test forces.
+Friendly names now lead all device choices; a short suffix appears only for
+duplicate display names, with exact identity matching unchanged internally.
+
+The focused readiness-label and duplicate-name tests pass. The actual CPU
+layout fixture reran its 18 images at 720p/4K for the wording change; evidence
+is in `C:/Users/antho/AppData/Local/Temp/cruisn-control-layout-20260919-wording`.
+No owner helper, lifecycle, save transaction or native/game code changed in
+this follow-up.

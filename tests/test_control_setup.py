@@ -81,7 +81,14 @@ class SetupTests(unittest.TestCase):
         self.session.open('steer', 0)
         self.assertEqual(self.session.mode, 'devices')
         self.assertFalse(self.readers)
-        self.assertIn('Native support pending', [r[2] for r in self.session.rows()])
+        status=next(row for row in self.session.rows() if row[0]=='status')
+        self.assertEqual(status[2],'Update required')
+        self.assertIn('Update the collection runtime',status[3])
+        self.session.ready_native=True
+        status=next(row for row in self.session.rows() if row[0]=='status')
+        self.assertEqual(status[2],'Ready for next launch')
+        self.assertIn('launch a game to check',status[3])
+        self.assertEqual(S.device_label(DEVICE,[DEVICE]),'Fixture wheel')
         self.assertEqual(self.path.read_bytes(), self.original)
 
     def test_steering_staged_save_preserves_other_roles_off_and_unknown(self):
@@ -225,6 +232,7 @@ class SetupTests(unittest.TestCase):
         self.session.open('steer',0)
         labels=[r[1] for r in self.session.rows() if r[0].startswith('device:')]
         self.assertEqual(len(set(labels)),2)
+        self.assertEqual(labels,['Fixture wheel [11111111]','Fixture wheel [aaaaaaaa]'])
 
     def test_clear_is_explicit_proposal_and_failure_retained(self):
         self.session.open('gas',0)
