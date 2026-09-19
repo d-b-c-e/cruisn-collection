@@ -4511,3 +4511,5 @@ isolated; personal87d/publicv0.5.0 unchanged.
 [Timing evidence and limitations](../docs/reviews/2026-09-16-exotica-mars-phase-timing.md).
 
 2026-09-16: remaining Mars phase profile8209 inputs/136 native/4completed4KGL exact PASS. Source/staging/queue costs do not account for repeatable30-35ms pauses. Added bounded lifetime callback timing; native4df727db105 build/export268 and3Python/1native checks PASS, live qualification pending coordinated rig slot. See docs/reviews/2026-09-16-exotica-lifetime-timing.md.
+
+2026-09-19 UX isolated native33d44e2c85c built and frozen,140patches/tree exact; personal87d and rendering parity series unchanged. Once-only calibration/strict identity transport passes6launch contracts,24model,12session,6mocked launch-boundary tests. Recording retains calibration; playback consumes effective INP ports without physical device dependency. No new game run or physical claim. See [transport review](../docs/reviews/2026-09-19-control-launch-transport.md).

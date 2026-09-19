@@ -26,32 +26,28 @@ No live timing/game slot is granted. Ordinary tuning saves are now atomic with
 backup, failed-edit rollback, visible errors and refusal to launch on failure.
 Seven focused settings tests PASS; successor frontend packaging is next.
 Frontend79a192b is now deployed via mastereb78f4f (master doc has receipts).
-THIS worktree stages the NEXT undeployed F8/stop-marker integration.3preference,
-5launch-boundary,11session,7settings tests and14CPU layouts PASS. Native candidate
-0913925c858 is frozen/attested (build finished0; export already ran), SHA69bf482f396b
-13687541b564076d9fe9313469f7ec262afdb2979dcba37e414b.137completepatches in
-patch/ux/0913925c858.patch reconstructexact mame0286->e5374f0cbdad. Candidatepath
-build/candidates/ux-0913925c858/vunit.exe. Native successor25ff0fa7947 is unbuilt:
-strict selector only, canonicalhelper and actual-function fakeSDL tests PASS.
-Read2026-09-19-strict-ffb-selection.md.3fakeCOMtestsPASS for new identityinventory.
-No game launch or native deployment. Do not overwrite/rebuild frozen091.
-Primary4df untouched. Read docs/reviews/2026-09-19-native-ffb-stop.md. New all-family
-observer journal and explicit stop replay option have7policy/4verifier/11session
-tests PASS. Existing USA event3067 allows bounded3300prefix/stop3070 after build;
-no live slot granted (coordinatorqueue OutRun/Art/Drive, then headlessUSA90s).
-Audit a14d50d integrated. Coordinator model agent now owns ONLY new control_preferences.py,
-its test, fixturecontrol-calibration.json and dated contractMD in separateworktree.
-We own native/input/UI integration; no overlap. Native091plan prepared at
-results/diagnostics/ux-20260919/stop-prefix-plan (notexecuted). No build active.
-
-UPDATE: granted091 headlessUSA replay ran ONCE and released. stop-prefix-run/report.json
-PASS3300inputs/55native512x400images exact,3829workerticks,activeall-family stop,
-324zero ticks despite227nonzero later requests; privateOffmarker/closedzero. No
-physical/4K/live-key claim or rerun. Native33d44e2c85c now includes strictselector
-and opt-in controladapter, unbuilt; frozen091unchanged. Read native-control-calibration
-review2026-09-19. Model7425655 tests24PASS; native57goldens andactualbackend/core
-pipelinev2 PASS. Next owner launcher/session transport; coordinator may assign
-exclusive collection.py/control_setup.py UI work. No activegame/build.
+This worktree stages undeployed native F8/identity/calibration and launcher transport.
+One granted091 headlessUSA replay ran and was released:3300inputs/55native512x400
+images EXACT,3829worker ticks, active constant/rumble/three-condition stop,
+324zero ticks despite227nonzero later requests. No physical/4K/live-key claim.
+Do not repeat it for Python edits. Read2026-09-19-native-ffb-stop.md.
+Native33d44e2c85c built/frozen/attested140patches, candidate
+build/candidates/ux-33d44e2c85c/vunit.exe SHA33670eed264ddb3c4ac6266b8aa9f8eab9836cbf6031e25dc647efff5e283729.
+Its export and091export ALREADY RAN; never overwrite/re-export either baseline.
+Read2026-09-19-native-control-calibration.md and2026-09-19-control-launch-transport.md.
+Native57goldens/actualbackend-core pipelinev2 pass. Model24/control-launch6/
+session12/launch-boundary6 focused tests PASS. Capability receipt binds new
+controls to exact binary; launcher emits strict GUID mappings and local profile.
+Clear uses tombstone to block inherited binding fallback. Whole-axis conflicts
+fail before save. INP playback strips physical mappings/calibration only in its
+private run; original case retains identity/hash and gets an explicit receipt.
+No device or rig use for this transport work. No activegame/build, no rig slot.
+Coordinator UI agent owns collection.py/control_setup.py/test_control_setup.py
+in cruisn-collection-control-setup-20260919; do not edit those files here until
+integration. Our control_launch APIs and save_legacy_bindings are its boundary.
+Next integrate UI, focused live qualification when slot granted, scoped local
+UX deployment with backups. Personal87d/publicv0.5.0 and primary4df unchanged.
+No unattended torque, release publication or rendering candidate deployment.
 
 ## Rendering checkpoint inherited from master, September 16
 

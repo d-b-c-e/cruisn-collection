@@ -12,6 +12,47 @@ from session_case import compare_evidence, read_trace, session_evidence, prepare
 
 class SessionTests(unittest.TestCase):
 
+    def test_calibration_is_frozen_for_recording_but_not_applied_twice_on_playback(self):
+        import json
+        from session_case import Recording
+        from verification import sha256_file
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); exe = root/'vunit.exe'; exe.write_bytes(b'fixture binary')
+            roms = root/'roms'; roms.mkdir(); (roms/'crusnusa.zip').write_bytes(b'fixture rom')
+            rig = root/'rig'; (rig/'ctrlr').mkdir(parents=True)
+            profile = rig/'ctrlr/control-calibration.txt'
+            profile.write_text('cruisn-calibration-v1\n', encoding='utf-8')
+            controller = rig/'ctrlr/fixture.cfg'
+            controller.write_text('<mameconfig><system name="default"><input>'
+                '<mapdevice device="strict-dinput:fixture" controller="JOYCODE_1"/>'
+                '<mapdevice device="Legacy shifter" controller="JOYCODE_2"/>'
+                '</input></system></mameconfig>', encoding='utf-8')
+            recording = Recording(root/'case')
+            with mock.patch('session_case.subprocess.check_output', return_value=b'<mame><machine name="crusnusa"/></mame>'), mock.patch('session_case.git_identity', return_value=None):
+                _, env, runtime = recording.prepare([str(exe), 'crusnusa', '-rompath', str(roms)],
+                      {'MIDV_FFB': '0', 'MIDV_INPUT_PROFILE': str(profile)}, rig)
+            manifest = recording.manifest
+            self.assertEqual(manifest['settings']['MIDV_INPUT_PROFILE'], '@initial/ctrlr/control-calibration.txt')
+            self.assertEqual(env['MIDV_INPUT_PROFILE'], str(runtime/'ctrlr/control-calibration.txt'))
+            original = (root/'case/initial/ctrlr/fixture.cfg').read_bytes()
+            self.assertEqual(controller.read_bytes(), original)
+            profile.unlink()  # original owner's path is no longer needed
+            (runtime/'input/session.inp').write_bytes(b'fixture effective input ports')
+            manifest['evidence'] = {'frames': 60}
+            _, env = prepare_run(root/'case', manifest, root/'replay', playback=True)
+            self.assertNotIn('MIDV_INPUT_PROFILE', env)
+            self.assertEqual(env['MIDV_FFB'], '0')
+            text = (root/'replay/ctrlr/fixture.cfg').read_text(encoding='utf-8')
+            self.assertNotIn('strict-dinput:', text)
+            self.assertIn('Legacy shifter', text)
+            self.assertEqual((root/'case/initial/ctrlr/fixture.cfg').read_bytes(), original)
+            policy = json.loads((root/'replay/input-playback-policy.json').read_text(encoding='utf-8'))
+            self.assertTrue(policy['effective_ports_from_inp'])
+            self.assertEqual(policy['calibration_sha256'], sha256_file(runtime/'ctrlr/control-calibration.txt'))
+            (root/'case/initial/ctrlr/control-calibration.txt').write_text('tampered', encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, 'calibration changed'):
+                prepare_run(root/'case', manifest, root/'tampered', playback=True)
+
     def test_recording_archives_binary_source_attestation_not_enclosing_repo(self):
         import binary_provenance
         import json

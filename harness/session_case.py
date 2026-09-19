@@ -229,6 +229,13 @@ class Recording:
         if self.with_ffb:
             settings["MIDV_FFB"] = env.get("MIDV_FFB", "0")
         # External paths whose contents affect emulation are retained and re-bound.
+        if settings.get('MIDV_INPUT_PROFILE'):
+            source = Path(settings['MIDV_INPUT_PROFILE'])
+            if source.resolve() != (rig/'ctrlr/control-calibration.txt').resolve():
+                raise ValueError('input calibration must be the prepared rig-local profile')
+            if sha256_file(source) != sha256_file(initial/'ctrlr/control-calibration.txt'):
+                raise ValueError('input calibration changed while freezing the recording')
+            settings['MIDV_INPUT_PROFILE'] = '@initial/ctrlr/control-calibration.txt'
         if settings.get("MIDV_PATCH"):
             shutil.copy2(settings["MIDV_PATCH"], initial / "game-patch.txt")
             settings["MIDV_PATCH"] = "@initial/game-patch.txt"
@@ -332,6 +339,37 @@ def prepare_run(case, manifest, runtime, *, playback, headless=False):
     command = set_option(command, "-frameskip", 0)
     command += ["-noplugins", "-noautosave", "-norewind", "-noautoframeskip"]
     settings = dict(manifest["settings"])
+    if 'MIDV_INPUT_PROFILE' in settings:
+        if settings['MIDV_INPUT_PROFILE'] != '@initial/ctrlr/control-calibration.txt':
+            raise ValueError('recording must retain its exact input calibration')
+        profile = runtime/'ctrlr/control-calibration.txt'
+        if sha256_file(profile) != manifest.get('initial_hashes', {}).get('ctrlr/control-calibration.txt'):
+            raise ValueError('recorded input calibration changed or is missing')
+        settings['MIDV_INPUT_PROFILE'] = str(profile)
+    if playback or manifest.get('origin') == 'synthetic-inp':
+        # INP stores effective game ports, after physical input normalization.
+        # Playback must not require the original wheel or normalize it again.
+        # The immutable initial tree remains intact; only this run's mapping is
+        # stripped, and the explicit receipt keeps this distinction reviewable.
+        from xml.etree import ElementTree as ET
+        removed = []
+        for config in sorted((runtime/'ctrlr').glob('*.cfg')):
+            tree = ET.parse(config)
+            changed = False
+            for inp in tree.getroot().iter('input'):
+                for mapping in list(inp.findall('mapdevice')):
+                    if mapping.get('device', '').startswith('strict-dinput:'):
+                        removed.append({'file': config.name, **mapping.attrib})
+                        inp.remove(mapping)
+                        changed = True
+            if changed:
+                tree.write(config, encoding='utf-8', xml_declaration=True)
+        if removed or 'MIDV_INPUT_PROFILE' in settings:
+            write_json(runtime/'input-playback-policy.json', {
+                'effective_ports_from_inp': True, 'removed_physical_mappings': removed,
+                'calibration_sha256': sha256_file(runtime/'ctrlr/control-calibration.txt')
+                    if 'MIDV_INPUT_PROFILE' in settings else None})
+        settings.pop('MIDV_INPUT_PROFILE', None)
     if settings.get('MIDV_CHEATS'):
         if settings['MIDV_CHEATS'] != '@initial/cheats':
             raise ValueError('cheat recording must retain its imported files and selections')

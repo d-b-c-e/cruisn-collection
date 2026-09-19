@@ -26,6 +26,7 @@ import ctypes
 import ctypes.wintypes as wt
 import json
 import os
+from pathlib import Path
 import re
 import shutil
 import subprocess
@@ -879,7 +880,7 @@ def apply_shifter_config(rig, rom):
     tree.write(path, encoding="utf-8", xml_declaration=True)
 
 
-def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False):
+def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False, control_inventory=None):
     """Rig-local TRANSLATED copy of EmuEzRacing.cfg.
 
     EmuEZ tokenizes high wheel buttons as JOYCODE_x_BUTTON33+, but MAME's
@@ -987,8 +988,16 @@ def sanitized_ctrlrpath(rig, rom="crusnusa", zeus_gl=False):
     set_port(dflt, "VOLUME_DOWN", "KEYCODE_MINUS")
 
     apply_wheelmap(tree, rig)
+    from control_launch import apply_controls
+    calibration = apply_controls(tree, os.path.join(rig, 'collection.ini'),
+        control_inventory or [], {'default': WHEELMAP_PORTS, 'crusnexo': WHEELMAP_PORTS_CRUSNEXO})
     out = os.path.join(rig, "ctrlr")
     os.makedirs(out, exist_ok=True)
+    profile = Path(out) / 'control-calibration.txt'
+    if calibration is not None:
+        profile.write_text(calibration, encoding='utf-8')
+    elif profile.exists():
+        profile.unlink()
     tree.write(os.path.join(out, "EmuEzRacing.cfg"),
                encoding="utf-8", xml_declaration=True)
     return out
@@ -1273,7 +1282,15 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
     if zeus_gl and _collection_ini_get("collection", "exotica_gl", "1") == "0":
         zeus_gl = False   # [collection] exotica_gl = 0: MAME's own renderer (glitch A/B)
     rig, ini = prepare_rig(rom, crt=crt, zeus_gl=zeus_gl)
-    ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl)
+    from control_launch import supported as controls_supported, resolve_output, load_ffb_selection
+    from control_preferences import load_records
+    control_config = Path(rig) / 'collection.ini'
+    records = load_records(control_config)
+    control_capable = controls_supported(mame)
+    if records and not control_capable:
+        raise ValueError('Saved calibrated controls require a compatible emulator; upgrade before launching.')
+    control_inventory = dinput_axes.inventory() if control_capable else []
+    ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl, control_inventory=control_inventory)
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
     apply_exotica_dips(rig, rom)
     kill_stale_vunit(mame, why="left-over")
@@ -1327,6 +1344,12 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
                    "MIDV_GL_MARGINFILL", "1" if marginfill else "0"),
                MIDV_GL_STATEFILE=statefile,
                MIDV_SKIP_STARTUP_SCREENS="1")
+    # Only this launch's generated profile is allowed; stale environment paths
+    # must not apply a different wheel's endpoints or double-normalize input.
+    env.pop('MIDV_INPUT_PROFILE', None)
+    input_profile = Path(ctrlr) / 'control-calibration.txt'
+    if records:
+        env['MIDV_INPUT_PROFILE'] = str(input_profile.resolve())
     from ffb_preferences import enabled as saved_ffb_enabled, stop_file
     force_config = os.path.join(rig, 'collection.ini')
     env['MIDV_FFB_STOP_FILE'] = str(stop_file(force_config))
@@ -1372,9 +1395,21 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         env.setdefault("MIDV_FFB", "1")
         if ffb is not None:
             env["MIDV_FFB_STRENGTH"] = str(max(0, min(100, int(ffb))))
-        dev = steer_device_name()
-        if dev:
-            env.setdefault("MIDV_FFB_DEVICE", dev)
+        if control_capable:
+            dev = resolve_output(control_config, control_inventory)
+            env.pop('MIDV_FFB_DEVICE', None)
+            if dev:
+                env['MIDV_FFB_DEVICE'] = dev
+            else:
+                env['MIDV_FFB'] = '0'
+                env.pop('MIDV_FFB_TEST', None)
+                print('Force feedback inactive: select a connected output device in Controls.')
+        else:
+            if load_ffb_selection(control_config)['mode'] == 'explicit':
+                raise ValueError('Explicit force-feedback selection requires a compatible emulator.')
+            dev = steer_device_name()
+            if dev:
+                env.setdefault("MIDV_FFB_DEVICE", dev)
         if _collection_ini_get("collection", "ffb_invert", "") == "1":
             env["MIDV_FFB_INVERT"] = "1"
         # [collection] ffb_profile = <name@version>: which tune in

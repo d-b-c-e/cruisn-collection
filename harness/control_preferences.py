@@ -352,6 +352,15 @@ def commit_proposals(path, proposals, *, expected_original, inventory):
             cp.set('wheelmap', keys[0] if keys else action, checked['legacy_binding'])
     if not pending:
         raise ValueError('There are no proposals to save.')
+    # The native adapter normalizes a physical axis once, before role mapping.
+    # Preflight the whole resulting configuration rather than saving a proposal
+    # that cannot launch because another role gives that axis different endpoints.
+    axes = {}
+    for action, record in {**saved, **pending}.items():
+        key = (*_identity_key(record['identity']), record['axis'])
+        if key in axes and axes[key] != record['calibration']:
+            raise ValueError('One physical axis cannot use two different calibrations.')
+        axes[key] = record['calibration']
     if not cp.has_section(ROOT_SECTION): cp.add_section(ROOT_SECTION)
     cp.set(ROOT_SECTION, 'version', str(VERSION))
     output = io.StringIO()
