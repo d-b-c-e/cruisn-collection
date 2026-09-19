@@ -7,7 +7,7 @@ Its source is `4ac6a84b51b4ae549399c81ffe1b9346e2c04758`. The separate
 observer and the new user-controlled stop. It does not include the undeployed
 extended-rendering lineage from `E:/Source/mame-src`.
 
-Native `0913925c858` is compiling locally with eight jobs. No native successor
+Native `0913925c858` built successfully locally with eight jobs. No native successor
 has been deployed or runtime-qualified. Source commits are pushed separately.
 The frontend stop-marker changes are also staged, not yet deployed; the previous
 Simple/Advanced frontend79a192b rollout remains the installed frontend baseline.
@@ -51,6 +51,19 @@ rumble candidate around frame3067; a prefix through3300 with stop3070 should
 provide bounded positive and post-stop coverage, subject to actual journal checks.
 No game slot is currently granted. Native build completion, binary/patch
 attestation and a coordinated output-free runtime check precede rollout.
+
+Build and attestation are now complete: candidate
+`build/candidates/ux-0913925c858/vunit.exe` SHA256
+`69bf482f396b13687541b564076d9fe9313469f7ec262afdb2979dcba37e414b`.
+All137 patches in `patch/ux/0913925c858.patch` reconstruct source tree
+`e5374f0cbdad80d2e678414911a0aedf4c5afe83` exactly frommame0286, including
+the original DIJOYSTATE2 change. Personal87d and the separate renderer patch
+series are unchanged. Local receipt is
+`results/diagnostics/ux-20260919/native-build/0913925c858-export.json`.
+The new freeze tool requires successful matching build status and rejects
+overwriting an existing candidate/patch/receipt. **This export already ran.**
+The3300-frame/stop3070 headless plan validates with literalFFB0 and a private
+marker; it has not executed. Requested coordinated runtime slot remains pending.
 
 Remaining acceptance includes live F8/menu delivery, persistence across the
 actual launcher route and attended physical wheel behavior. Stable device
