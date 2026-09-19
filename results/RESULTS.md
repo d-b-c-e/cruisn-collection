@@ -4552,3 +4552,13 @@ remain separate required work. See docs/UX-OVERNIGHT-2026-09-16.md.
 2026-09-19 UX isolated native33d44e2c85c built and frozen,140patches/tree exact; personal87d and rendering parity series unchanged. Once-only calibration/strict identity transport passes6launch contracts,24model,12session,6mocked launch-boundary tests. Recording retains calibration; playback consumes effective INP ports without physical device dependency. No new game run or physical claim. See [transport review](../docs/reviews/2026-09-19-control-launch-transport.md).
 
 2026-09-19 UX device-loss successor707fd6a8f0a built/export142 exact; prior e5build141 rejected for persisting before actuator cancellation. Actual-function blocked-flush/failed-stop fixture and independent source review close ordering; no physical or new gameplay claim. Controls UI db6b5a2+a1ba5a9 integrated; preview/game preprocessing and saved cfg overrides now consistent. Personal87d and publicv0.5.0 unchanged. See [disconnect ordering](../docs/reviews/2026-09-19-output-disconnect-ordering.md).
+
+
+2026-09-19: reviewed controls/FFB native707 and frontend6c4407e deployed locally
+through master1e6b4ec. Final development ZIP f6bf2ef6/source clean6c4407e,
+142patch native f1f908e6, frozen launcher21792461. Package/default checks and
+fresh/legacy/saved-Off frozen config PASS; UI29/common-launch7/settings7 PASS.
+43owner settings/wrapper/force profiles unchanged; source content verified with
+CRLF distinction, intentional newer analyzer retained. Two pre-copy verifier
+failures retained. Native4df renderer source/publicv0.5.0 unchanged. Live UI and
+physical wheel acceptance pending; see docs/UX-OVERNIGHT-2026-09-16.md.

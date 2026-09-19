@@ -4,12 +4,12 @@
 
 Owner authorizes local UX deployment through coordinator
 01a07ac3-e639-7762-a698-5365d447ee7e. Personal Stream Deck source target is this
-checkout E:/Source/cruisn-collection. UX source6c4407e is being merged with
+checkout E:/Source/cruisn-collection. UX source6c4407e is deployed through master1e6b4ec with
 reviewed native707fd6a8f0a (accepted4ac renderer lineage,142patches). No unrelated
 4df renderer changes are deployed. Exact package and closed-target backups are
-under results/diagnostics/ux-20260919-deployment-v2; verify deployment receipt.
+under results/diagnostics/ux-20260919-deployment-v2; verified.json PASS:43settings/wrapper/profiles unchanged.
 Prior frontend79a192b/eb78f4f deployment remains documented in
- docs/UX-OVERNIGHT-2026-09-16.md. Publicv0.5.0 unchanged; no unattended torque.
+docs/UX-OVERNIGHT-2026-09-16.md. Publicv0.5.0 unchanged; no unattended torque.
 
 Native707 SHA f1f908e66784b657d892e651850693c99e606ffcf093397f9a994975f1c51c01.
 091/33/e5/707 exports ALREADY RAN; never re-export their appended baselines.

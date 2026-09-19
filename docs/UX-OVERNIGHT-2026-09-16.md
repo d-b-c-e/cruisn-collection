@@ -298,3 +298,46 @@ Evidence is under local `results/diagnostics/ux-20260919/stop-layout`.
 These establish frontend policy/layout only. Native compile, observer stop
 qualification, live key/menu delivery and attended hardware checks remain open.
 No stable-identity picker or full calibration completion is claimed.
+
+## Reviewed native and controls stage deployed, September 19
+
+The final source6c4407e is merged into the actual Stream Deck source checkout
+through master1e6b4ec. The closed-target deployment replaces only personal
+`mame-src/vunit.exe` and adds its exact build/capability receipts. Native707 is
+based on the accepted4ac renderer; the separate rendering investigation's
+native4df source checkout and frozen candidate remain untouched.
+
+The complete development package is
+`CruisnCollection-dev-20260919-160053.zip`, SHA256
+`f6bf2ef6a4bd2f74473ea7d871a4e7b1c6514a3b74bf28c7c527bcdb69d95653`.
+Frozen launcher SHA256 is
+`217924616b75b9727128aa1939ace58b5b2e111cd647ca3404984aa366c104c4`;
+installed native SHA256 is
+`f1f908e66784b657d892e651850693c99e606ffcf093397f9a994975f1c51c01`.
+Package validation binds142 native patches, source tree and capability receipt.
+Fresh/legacy/saved-Off frozen configuration checks pass without fixture changes;
+29 setup,7 common-launch and7 settings tests pass on the integrated source.
+The earlier5810 development ZIP is retained unchanged.
+
+Backup and deployment receipts are in
+`results/diagnostics/ux-20260919-deployment-v2` in the personal checkout. All43
+owner settings files, wrapper, force profiles and runtime dependencies retain
+exact bytes. Changed launcher/native helper source has matching Git content;
+Windows CRLF checkout differences are recorded with both physical hashes.
+The existing newer rendering analyzer is explicitly retained against the
+pre-deployment master blob. Two pre-copy validation failures remain: raw LF/CRLF
+comparison, then the intentional analyzer divergence. Neither copied a binary;
+the corrected scoped verifier passes. Three merge conflicts were documentation
+only; both histories and the append-only results were preserved.
+
+Stop FFB remains latched until explicit On; strict axis identity/calibration
+and output selection are now carried through the common launch path. Legacy
+bindings/strength/tunes remain saved. Legacy owners must confirm their output
+device once; unresolved saved-On launches offer Configure, Continue without FFB,
+or Cancel. The force-free choice is per launch and cannot be overridden by a
+device appearing later. A resolved device has no additional per-race prompt.
+World's requested force pass-through is unchanged.
+
+Live menu/preview/key/focus checks are still queued with the coordinator, and
+physical wheel/force behavior remains unaccepted. This is local deployment,
+not public release publication or extended-rendering acceptance.
