@@ -15,6 +15,10 @@ immediately after acknowledged screenshots (max19.362ms). This rules out an
 immediate screenshot stall for those17, not delayed I/O or other host costs.
 Evidence remaining-cadence-20260919.json; no extra replay. Current monitor is
 DISPLAY1 primary3840x2160 only; --compare-gl selects it from reference size.
+Shared diagnostic execution now requires literal MIDV_FFB=0 even when callers
+omit the key, and rejects conflicting Windows case aliases or force tests
+before launch. Six focused runner tests PASS; no game/device run. See
+docs/reviews/2026-09-19-diagnostic-force-guard.md.
 Previous qualified native1fccd423f39 below. Shared UX rollout also authorized
 by owner through coordinator task01a07ac3-e639-7762-a698-5365d447ee7e; read five
 CONSUMER UX documents in dbce-wheel-mod-toolkit, preserve rendering scope.

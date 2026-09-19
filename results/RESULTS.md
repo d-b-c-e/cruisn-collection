@@ -4530,3 +4530,11 @@ Source hashes and clock/coverage checks retained in remaining-cadence-20260919.j
 Native4df timing replay remains queued without a rig grant; old reservation expired.
 Current primary is DISPLAY1 3840x2160. No game/build/deployment/physicalFFB.
 See docs/reviews/2026-09-16-exotica-lifetime-timing.md.
+
+### 2026-09-19 — Explicit diagnostic force-disable boundary
+
+Six focused diagnostic runner tests PASS. Missing/empty/nonzero MIDV_FFB,
+conflicting Windows case aliases and force-test settings now reject before
+process or directory creation. Existing safe Python-only timeout still retains
+partial output. No game, GPU, physical FFB, native build or deployment.
+See docs/reviews/2026-09-19-diagnostic-force-guard.md.

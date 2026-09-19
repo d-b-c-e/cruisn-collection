@@ -13,6 +13,19 @@ import run_oracle
 
 
 class RunnerTests(unittest.TestCase):
+    def test_force_disable_must_be_explicit_before_any_launch(self):
+        unsafe = ({}, {"MIDV_FFB": ""}, {"MIDV_FFB": "1"},
+                  {"MIDV_FFB": "0", "MIDV_FFB_TEST": "70"},
+                  {"MIDV_FFB": "0", "midv_ffb": "1"},
+                  {"MIDV_FFB": "0", "midv_ffb_test": "70"})
+        with tempfile.TemporaryDirectory() as td, patch("diagnostic_runtime.subprocess.run") as launch:
+            output = Path(td) / "must-not-exist"
+            for env in unsafe:
+                with self.subTest(env=env), self.assertRaisesRegex(ValueError, 'literal MIDV_FFB=0'):
+                    execute([sys.executable], output, env, 1)
+                self.assertFalse(output.exists())
+            launch.assert_not_called()
+
     def test_inherited_actuation_and_diagnostics_are_removed(self):
         with patch.dict(os.environ, {"MIDV_FFB": "1", "MIDV_FFB_TEST": "70",
                                      "MIDV_GL": "1", "MIDV_QUADLOG": "old-file",

@@ -54,8 +54,13 @@ def execute(command, directory, env, timeout):
     Only call with physical outputs disabled: subprocess.run terminates on timeout.
     Returns status instead of treating a missing executable as a passing test.
     """
-    if env.get("MIDV_FFB", "0") != "0" or env.get("MIDV_FFB_TEST"):
-        raise ValueError("timeout-capable diagnostics require physical force disabled")
+    # Missing is not an explicit disable. Windows environment names are case
+    # insensitive, so also reject conflicting aliases supplied by a caller.
+    if (env.get("MIDV_FFB") != "0" or any(
+            (key.upper() == "MIDV_FFB" and value != "0") or
+            (key.upper() == "MIDV_FFB_TEST" and bool(value))
+            for key, value in env.items())):
+        raise ValueError("timeout-capable diagnostics require literal MIDV_FFB=0 and no force test")
     directory = Path(directory)
     directory.mkdir(parents=True, exist_ok=True)
     command = [str(c) for c in command]
