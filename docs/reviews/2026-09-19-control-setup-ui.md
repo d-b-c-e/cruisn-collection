@@ -155,3 +155,28 @@ layout fixture reran its 18 images at 720p/4K for the wording change; evidence
 is in `C:/Users/antho/AppData/Local/Temp/cruisn-control-layout-20260919-wording`.
 No owner helper, lifecycle, save transaction or native/game code changed in
 this follow-up.
+
+
+## Live empty-inventory wording correction
+
+The exact frozen6c4407e frontend ran at3840x2160 with isolated settings and
+literalMIDV_FFB0. Warning/cancel, mouse opening, F6 modal cancellation, F8 Off
+with50% retained, and focus-loss cancellation/return worked. No game launched.
+Both frozen and source providers returned an empty inventory, so actual axis
+preview and endpoint capture remain unqualified. All43 owner settings, wrapper
+and deployed native/receipts/profiles stayed exact after normal launcher exit.
+
+That live observation found a misleading axis-picker row: native capability
+alone displayed Setup status: Ready for next launch, beside No devices found.
+The row now explicitly says Controls support: Available and instructs the
+player to choose a connected device before saving/checking in game. It makes
+no device/readiness claim. FFB's separately resolved identity status is retained.
+The focused opening/empty-inventory assertion and actual CPU layout fixture are
+the relevant checks; no repeated game or native rebuild is needed for wording.
+
+All29 focused setup tests pass; the updated layout test generates32 CPU images
+at720p/4K with no bounds/collision failures. The720p empty-device fixture was
+viewed. These files are software-rendered placement evidence. Actual live4K
+screenshots were inline Computer Use images only, without returned file paths.
+Evidence: local `results/diagnostics/ux-20260919/empty-readiness-layout` and
+`live-final-6c4407e/observed.json`.
