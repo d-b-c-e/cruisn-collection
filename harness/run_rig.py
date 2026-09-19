@@ -1688,7 +1688,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
 
 def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
                 crackfill=True, ffb=None, mame=VUNIT,
-                record_case=None, record_every=60, record_frames=0, record_with_ffb=False):
+                record_case=None, record_every=60, record_frames=0, record_with_ffb=False,
+                force_ffb_off=False):
     """Blocking wrapper: launch, wait for the player to quit, then return.
 
     Watch the WINDOW, not the process: wait_or_kill's timeout is for a
@@ -1697,7 +1698,7 @@ def launch_game(rom="crusnusa", scale=4, windowed=False, crt=False,
     and with force still on the wheel. The shell already watches the window
     this way; only this CLI path did not."""
     proc, hwnd = launch_game_async(rom=rom, scale=scale, windowed=windowed,
-                                   crt=crt, crackfill=crackfill, ffb=ffb,
+                                   crt=crt, crackfill=crackfill, ffb=ffb, force_ffb_off=force_ffb_off,
                                    mame=mame, record_case=record_case,
                                    record_every=record_every, record_frames=record_frames, record_with_ffb=record_with_ffb)
     while proc.poll() is None and (not hwnd or u32.IsWindow(hwnd)):

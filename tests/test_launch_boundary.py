@@ -11,6 +11,16 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 
 @unittest.skipUnless(sys.platform == 'win32', 'launcher uses Windows APIs')
 class LaunchBoundaryTests(unittest.TestCase):
+    def test_blocking_wrapper_forwards_launch_only_force_off(self):
+        import run_rig
+        process = mock.Mock(recording=None)
+        process.poll.return_value = 0
+        with mock.patch.object(run_rig, 'launch_game_async', return_value=(process, None)) as launch, \
+             mock.patch.object(run_rig, 'wait_or_kill', return_value=0):
+            self.assertEqual(run_rig.launch_game(ffb=65, force_ffb_off=True), 0)
+        self.assertIs(launch.call_args.kwargs['force_ffb_off'], True)
+        self.assertEqual(launch.call_args.kwargs['ffb'], 65)
+
     def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None, strength=0, expected_ffb="0", environment=None, stopped=False, capable=False, inventory=None, controls=False):
         import cheats
         import run_rig
