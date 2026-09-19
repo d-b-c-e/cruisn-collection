@@ -76,3 +76,13 @@ build/capability receipts and selects the exact exported source series by its
 attested hash. Focused staging and ZIP-content tests reject a missing/mismatched
 capability, wrong patch lineage, and leaked calibration/Off-marker state. No
 full package was built for this transport-only change.
+
+Integration also aligns the calibration reader's per-interface DirectInput
+deadzone/saturation with MAME's raw preprocessing, without changing axis ranges
+or force settings. Four fake-COM reader tests pass, including failure handling.
+An explicit calibrated binding now removes only superseded standard sequences
+and saved reverse overrides from MAME's later-loaded default/game cfg files;
+each changed file gets an exact backup. Sensitivity, keyboard increments, other
+buttons and DIPs remain intact. Eight control-launch tests and six mocked
+launch-boundary tests pass after this addition. No owner configuration changed
+while developing or testing it.

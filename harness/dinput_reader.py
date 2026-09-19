@@ -31,6 +31,25 @@ class Range(ctypes.Structure):
     _fields_ = [('header', di.DIPROPHEADER), ('minimum', wt.LONG), ('maximum', wt.LONG)]
 
 
+class PropertyDword(ctypes.Structure):
+    _fields_ = [('header', di.DIPROPHEADER), ('value', wt.DWORD)]
+
+
+def prepare_raw_axes(device):
+    """Match MAME's per-interface DirectInput preprocessing before calibration.
+
+    Device-level deadzone/saturation must not distort the UI samples while the
+    native reader removes them. These properties do not set FFB gain/effects or
+    alter the advertised axis ranges. DI_PROPNOEFFECT is accepted like MAME.
+    """
+    for property_id, value, name in ((5, 0, 'deadzone'), (6, 10000, 'saturation')):
+        prop = PropertyDword(di.DIPROPHEADER(ctypes.sizeof(PropertyDword),
+            ctypes.sizeof(di.DIPROPHEADER), 0, 0), value)
+        setter = di._method(device, 6, di._HRESULT, ctypes.c_void_p, ctypes.POINTER(di.DIPROPHEADER))
+        if setter(device, ctypes.c_void_p(property_id), ctypes.byref(prop.header)) not in (0, 1):
+            raise OSError('Cannot match game input preprocessing: device '+name)
+
+
 def data_format():
     """Same optional position-axis/button layout as DIJOYSTATE2; keep refs alive."""
     guids = {name: di.GUID.from_buffer_copy(raw) for raw, name in di.AXIS_GUIDS.items()}
@@ -90,6 +109,7 @@ class Reader:
                 raise OSError('Device does not support the calibration input format')
             if di._method(self.device, 13, di._HRESULT, ctypes.c_void_p, wt.DWORD)(self.device, window, 2 | 8) != 0:
                 raise OSError('Could not read the selected device non-exclusively')
+            prepare_raw_axes(self.device)
             for slot in record.get('axes', []):
                 index = di.SLOT_ORDER.index(slot)
                 value = Range()

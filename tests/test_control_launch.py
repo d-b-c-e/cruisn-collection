@@ -142,10 +142,39 @@ class LaunchTests(unittest.TestCase):
         receipt.write_text(json.dumps(dict(version=1, features=sorted(L.FEATURES),
                   sha256=hashlib.sha256(binary.read_bytes()).hexdigest())), encoding='utf-8')
         self.assertTrue(L.supported(binary))
+        rejection = Path(str(binary)+'.rejected.json')
+        rejection.write_text('{"reason":"fixture review failure"}', encoding='utf-8')
+        self.assertFalse(L.supported(binary))
+        rejection.unlink()
         binary.write_bytes(b'other native bytes!!')
         self.assertFalse(L.supported(binary))
         receipt.write_text('{}', encoding='utf-8')
         self.assertFalse(L.supported(binary))
+
+    def test_later_game_cfg_cannot_restore_old_axis_but_retains_other_preferences(self):
+        self.save_control()
+        rig = self.path.parent
+        (rig/'cfg').mkdir()
+        path = rig/'cfg/crusnusa.cfg'
+        original = b'''<mameconfig><system name="crusnusa"><input>
+          <port type="P1_PADDLE" tag=":WHEEL" sensitivity="20" reverse="yes">
+            <newseq type="standard">JOYCODE_2_XAXIS_NEG_ABSOLUTE</newseq>
+            <newseq type="increment">KEYCODE_RIGHT</newseq></port>
+          <port type="START1"><newseq type="standard">KEYCODE_1</newseq></port>
+          <port type="DIPSWITCH" value="0"/>
+          </input></system></mameconfig>'''
+        path.write_bytes(original)
+        self.assertEqual(L.synchronize_axis_overrides(rig, 'crusnusa', TABLES), [str(path)])
+        root = ET.fromstring(path.read_bytes())
+        port = root.find("system/input/port[@type='P1_PADDLE']")
+        self.assertEqual(port.get('sensitivity'), '20')
+        self.assertNotIn('reverse', port.attrib)
+        self.assertIsNone(port.find("newseq[@type='standard']"))
+        self.assertEqual(port.find("newseq[@type='increment']").text, 'KEYCODE_RIGHT')
+        self.assertEqual(root.find("system/input/port[@type='START1']/newseq").text, 'KEYCODE_1')
+        self.assertEqual(root.find("system/input/port[@type='DIPSWITCH']").get('value'), '0')
+        self.assertEqual(next((rig/'cfg').glob('*.bak')).read_bytes(), original)
+        self.assertEqual(L.synchronize_axis_overrides(rig, 'crusnusa', TABLES), [])
 
 
 if __name__ == '__main__':

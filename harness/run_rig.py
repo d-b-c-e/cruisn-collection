@@ -1291,6 +1291,8 @@ def launch_game_async(rom="crusnusa", scale=4, windowed=False, crt=False,
         raise ValueError('Saved calibrated controls require a compatible emulator; upgrade before launching.')
     control_inventory = dinput_axes.inventory() if control_capable else []
     ctrlr = sanitized_ctrlrpath(rig, rom, zeus_gl=zeus_gl, control_inventory=control_inventory)
+    from control_launch import synchronize_axis_overrides
+    synchronize_axis_overrides(rig, rom, {'default': WHEELMAP_PORTS, 'crusnexo': WHEELMAP_PORTS_CRUSNEXO})
     apply_shifter_config(rig, rom)   # G7: H-pattern + sitdown cab when bound
     apply_exotica_dips(rig, rom)
     kill_stale_vunit(mame, why="left-over")

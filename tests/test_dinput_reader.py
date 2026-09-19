@@ -9,6 +9,22 @@ import dinput_reader as reader
 
 
 class ReaderTests(unittest.TestCase):
+    def test_raw_preprocessing_matches_native_without_actuator_or_range_writes(self):
+        calls = []
+        def method(device, slot, *args):
+            self.assertEqual((device, slot), (20, 6))
+            def write(device, property_id, header):
+                prop = ctypes.cast(header, ctypes.POINTER(reader.PropertyDword)).contents
+                calls.append((property_id.value, prop.header.dwObj, prop.header.dwHow, prop.value))
+                return 1  # DI_PROPNOEFFECT is permitted by the native backend too.
+            return write
+        with patch.object(reader.di, '_method', side_effect=method):
+            reader.prepare_raw_axes(20)
+        self.assertEqual(calls, [(5, 0, 0, 0), (6, 0, 0, 10000)])
+        with patch.object(reader.di, '_method', return_value=lambda *args: -1):
+            with self.assertRaisesRegex(OSError, 'preprocessing'):
+                reader.prepare_raw_axes(20)
+
     def test_fixed_state_layout_and_ranges(self):
         self.assertEqual(ctypes.sizeof(reader.State), 272)
         self.assertEqual(reader.State.buttons.offset, 48)

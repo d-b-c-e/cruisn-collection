@@ -40,6 +40,8 @@ def supported(binary):
     """Cached hash-bound capability check; never enumerates/acquires devices."""
     try:
         path = Path(binary).resolve()
+        if Path(str(path)+'.rejected.json').exists():
+            return False
         signature = lambda p: (p.stat().st_size, p.stat().st_mtime_ns, p.stat().st_ctime_ns)
         return _supported(str(path), signature(path), signature(Path(str(path)+'.features.json')))
     except OSError:
@@ -97,6 +99,12 @@ def _edit(path, expected_original, mutate):
     output = io.StringIO()
     cp.write(output)
     payload = output.getvalue().encode('utf-8')
+    _replace_bytes(path, original, payload)
+    return result
+
+
+def _replace_bytes(path, original, payload):
+    """Replace one explicit configuration file with an exact recoverable backup."""
     path.parent.mkdir(parents=True, exist_ok=True)
     name = None
     try:
@@ -119,7 +127,6 @@ def _edit(path, expected_original, mutate):
     finally:
         if name and os.path.exists(name):
             os.unlink(name)
-    return result
 
 
 def save_ffb_selection(path, mode, identity=None, *, expected_original, inventory):
@@ -296,3 +303,46 @@ def apply_controls(tree, config, inventory, tables):
                   cal['full'] if pedal else cal['right'], int(cal['invert']), cal['deadzone']]
         lines.append('|'.join(str(field) for field in fields))
     return '\n'.join(lines)+'\n' if records else None
+
+
+def synchronize_axis_overrides(rig, rom, tables):
+    """Remove only superseded axis sequences from MAME's later-loaded cfg files.
+
+    A saved game/default cfg wins over the controller XML. New explicit primary
+    bindings must not be silently replaced by that older sequence or reverse
+    modifier. Preserve keyboard increments, DIPs, sensitivity and other ports.
+    """
+    rig = Path(rig)
+    config = rig/'collection.ini'
+    cp = _parse(config.read_bytes() if config.exists() else None)
+    records = load_records(config)
+    roles = records.keys() | {role for role, value in cp._sections.get('control_unbound', {}).items() if value == '1'}
+    changed = []
+    for name in ('default', rom):
+        table = tables.get(name, tables['default'])
+        claimed = {port for role in roles for port in table.get(role, ([], None))[0]}
+        calibrated = {port for role, record in records.items() if record['calibration'] is not None
+                      for port in table.get(role, ([], None))[0]}
+        path = rig/'cfg'/f'{name}.cfg'
+        if not claimed or not path.exists():
+            continue
+        original = path.read_bytes()
+        root = ET.fromstring(original)
+        dirty = False
+        for system in root.findall('system'):
+            if system.get('name') != name:
+                continue
+            for port in system.findall('input/port'):
+                if port.get('type') in claimed:
+                    for sequence in list(port.findall('newseq')):
+                        if sequence.get('type') == 'standard':
+                            port.remove(sequence)
+                            dirty = True
+                if port.get('type') in calibrated and 'reverse' in port.attrib:
+                    del port.attrib['reverse']
+                    dirty = True
+        if dirty:
+            payload = ET.tostring(root, encoding='utf-8', xml_declaration=True)
+            _replace_bytes(path, original, payload)
+            changed.append(str(path))
+    return changed
