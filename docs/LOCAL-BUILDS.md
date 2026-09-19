@@ -49,7 +49,10 @@ The isolated UX freeze helper checks the personal executable before and after
 export. After an authorized native deployment, pass its recorded accepted hash
 as `--personal-sha256` for a later successor freeze. Do not infer the expected
 hash from whatever happens to be installed, rerun an existing export, or overwrite
-a frozen candidate. The default remains the original native87d baseline.
+a frozen candidate. The default remains the original native87d baseline. The September19
+local UX deployment is now707 (`f1f908e66784b657d892e651850693c99e606ffcf093397f9a994975f1c51c01`);
+future UX freezes on this rig must explicitly pass that reviewed current hash.
+Do not substitute the primary rendering source HEAD for the installed lineage.
 
 ## Development checks
 

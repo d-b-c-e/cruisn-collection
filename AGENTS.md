@@ -36,6 +36,12 @@ Shared UX guidance94dc3a1 read. No new rendering scope or public release.
 
 ## Rendering checkpoint
 
+Dated findings below retain the personal87d baseline at the time of those runs.
+Current personal native is the reviewed UX707 described above; the rendering
+source and candidates remain separate. September19 lifetime prepare-only PASS
+at results/diagnostics/exotica-mars-timing-20260916/lifetime-prepared-20260919.
+No replay executed; wait for an explicit coordinated slot.
+
 
 Latest: docs/reviews/2026-09-16-exotica-lifetime-timing.md.
 One remaining-profile replay8209inputs/136native/4completed4K images exact.
@@ -282,9 +288,12 @@ start an attended recording without a reply. Independent work still remains.
 ## Constraints and efficient validation
 
 - No renderer deployment, release publication, hosted CI, physical FFB, or menu removal
-  during this parity work. The separately authorized frontend UX deployment above is allowed. The personal Stream Deck copy and publicv0.5.0 remain
-  unchanged. Personal `E:/Source/mame-src/vunit.exe` SHA256 is
-  `87d04de42d10a731f1d951a1fa378d784059d862063b224764ca6294fa5fe9d8`.
+  during this parity work. The separately authorized controls/FFB UX deployment
+  above is complete. Publicv0.5.0 remains unchanged. Current personal
+  `E:/Source/mame-src/vunit.exe` is UX707, SHA256
+  `f1f908e66784b657d892e651850693c99e606ffcf093397f9a994975f1c51c01`.
+  Original87d is backed up in ux-20260919-deployment-v2/backup/runtime.
+  Native source HEAD4df is NOT the installed binary's source lineage.
 - Serialize the rig, GPU and builds. No builds, patch exports or broad scans
   during a timed game. Use exact known result directories; the full diagnostics
   tree is enormous. Use `rg --files --no-ignore` for ignored case artifacts.
