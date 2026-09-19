@@ -4564,3 +4564,11 @@ failures retained. Native4df renderer source/publicv0.5.0 unchanged. Live UI and
 physical wheel acceptance pending; see docs/UX-OVERNIGHT-2026-09-16.md.
 
 2026-09-19 upstream refresh: new Zeus programmed-vsync/IRQ pulse change #16178 and instance-Wave-RAM cleanup identified, source-audited and retained as separate compatibility work. Neither backported before the pending matched Mars lifetime measurement. No native build/game or visual improvement claim. See [review](../docs/reviews/2026-09-19-zeus-upstream-refresh.md).
+
+2026-09-19 final UX successor: frozen6c live4K warning/cancel, pointer/F6/F8 and
+focus recovery PASS with isolated settings/FFB0; no game. Empty inventory blocks
+physical preview/calibration/FFB acceptance. Misleading capability label fixed
+in b8d2c49, deployed753b2de. Final162140 ZIP adbd5854/frozen10058cc0 retains707.
+Package/default/frozen-config checks PASS;29 setup tests/32 CPU layouts PASS.
+Read-only verified-wording.json:26 source blobs/43owner settings/wrapper/runtime
+PASS. Earlier receipts retained. Global desktop paused; no rendering replay.

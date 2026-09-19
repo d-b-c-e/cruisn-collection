@@ -1,5 +1,26 @@
 # Cruis'n Collection: overnight UX candidate
 
+## Current deployment — September19
+
+The personal Stream Deck source launcher now includes strict device selection,
+endpoint/deadzone/inversion calibration, explicit FFB device selection, and the
+latched Stop FFB implementation. Native707 (`f1f908e6`) is deployed from the
+accepted renderer lineage; the extended-rendering native4df remains isolated.
+All43 owner settings, force profiles and wrapper were preserved. Publicv0.5.0
+is unchanged. Exact source/package/deployment identities appear at the end.
+
+The bounded frozen4K live check passed warning/cancel, mouse navigation, modal
+F6 cancellation, F8 Off with strength retained, and focus-loss recovery. No
+devices were returned by either provider, so actual axis preview/calibration
+and physical force remain unaccepted. The empty axis picker exposed a misleading
+capability label; its correction is deployed through master753b2de and included
+in the final162140 development package. No native change was needed.
+
+**Historical record below:** the original September16 inventory and gap table
+are retained to explain the staged rollout. Their pending calibration/device
+picker/native-stop claims were superseded by the September19 deployment; they
+are not the current task list. Later sections preserve exact stage receipts.
+
 Guidance: UX-1 / UX-01-S, revised 2026-09-16, toolkit commit
 `a84bebab5ec2abdcd5140b9c63c139ccff86a7d3`. All five CONSUMER-UX,
 SETTINGS-VIEWS, CONTROLS-CAMERAS, SETUP and UX-CHECKLIST documents were read.
@@ -25,7 +46,7 @@ the latter's timing-only qualification is held for a coordinated rig slot.
   The old native game menus are retained. No renderer, force gate, calibration
   mathematics or game memory changes are included in this frontend commit.
 
-## Placement inventory
+## Initial September16 placement inventory (historical)
 
 The same values and launch path serve both views. There is no Simple tune.
 
@@ -101,7 +122,7 @@ These large local fixtures are not in the public source tree. The shared HTML
 reference/README published at toolkit 95cbd89 was reviewed for hierarchy,
 short Simple setup, cancellation and common labels; it is not runtime evidence.
 
-## Explicit gaps and game limitations
+## Initial September16 gaps and game limitations (historical)
 
 | Rule | State | Actual limitation / follow-up |
 |---|---|---|
@@ -338,6 +359,33 @@ or Cancel. The force-free choice is per launch and cannot be overridden by a
 device appearing later. A resolved device has no additional per-race prompt.
 World's requested force pass-through is unchanged.
 
-Live menu/preview/key/focus checks are still queued with the coordinator, and
-physical wheel/force behavior remains unaccepted. This is local deployment,
-not public release publication or extended-rendering acceptance.
+At this stage live checks were still queued. The subsequent bounded live check
+and wording successor below supersede that status; physical wheel/force behavior
+remains unaccepted. This is local deployment, not public release publication or
+extended-rendering acceptance.
+
+## Final wording package and bounded live check, September19
+
+The frozen6c4407e frontend ran at3840x2160 with literalMIDV_FFB0 and isolated
+settings. Warning/cancel, pointer navigation, F6 modal cancellation, F8 Off with
+50% strength retained, and focus-loss cancellation/return passed. No game ran.
+Both providers returned no devices; actual input preview/calibration and physical
+forces remain unqualified. Live screenshots were inline Computer Use images,
+not saved file captures. The misleading empty-picker readiness label is now
+Controls support: Available. FFB's independently resolved device status remains.
+
+Final sourceb8d2c4926aa5e3fa89c0313796a9e2f9fe666b83 is deployed by master753b2de.
+Package `CruisnCollection-dev-20260919-162140.zip` SHA256:
+`adbd5854869b5fd36da3347ca79e34082681c41c05457fcd724d5d0ca441f1b9`.
+Frozen launcher SHA256:
+`10058cc02de6b2e78a95511a582a1a01f43754e6c381b1c7930ef296df6aae21`.
+Package/default checks and frozen fresh/legacy/saved-Off checks pass. The29
+focused setup tests and32 software-rendered720p/4K layouts pass; these layouts
+are placement evidence, not live game captures. Earlier packages are retained.
+
+Read-only `verified-wording.json` under the deployment evidence directory passes
+all26 source blobs,43 owner settings, the Stream Deck wrapper and reviewed707
+runtime/receipts/profiles. No native binary was copied again. The separate4df
+rendering source is unchanged. Desktop testing is paused after the user's Escape
+in another coordinated test; the queued rendering replay awaits resumption and
+a separate rig grant. Nothing is publicly published.

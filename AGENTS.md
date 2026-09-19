@@ -4,7 +4,7 @@
 
 Owner authorizes local UX deployment through coordinator
 01a07ac3-e639-7762-a698-5365d447ee7e. Personal Stream Deck source target is this
-checkout E:/Source/cruisn-collection. UX source6c4407e is deployed through master1e6b4ec with
+checkout E:/Source/cruisn-collection. UX sourceb8d2c49 is deployed through master753b2de with
 reviewed native707fd6a8f0a (accepted4ac renderer lineage,142patches). No unrelated
 4df renderer changes are deployed. Exact package and closed-target backups are
 under results/diagnostics/ux-20260919-deployment-v2; verified.json PASS:43settings/wrapper/profiles unchanged.
@@ -25,13 +25,19 @@ is launch-only, saved strength/tunes retained. World force exception unchanged.
 Read2026-09-19-control-launch-transport.md and2026-09-19-control-setup-ui.md.
 
 Integrated UI29/settings7/common-launch7 tests pass. Final local package
-CruisnCollection-dev-20260919-160053.zip includes native707 with exact capability
+CruisnCollection-dev-20260919-162140.zip includes native707 with exact capability
 and142patch source receipt. Frozen launcher SHA
-217924616b75b9727128aa1939ace58b5b2e111cd647ca3404984aa366c104c4 passes
+10058cc02de6b2e78a95511a582a1a01f43754e6c381b1c7930ef296df6aae21 passes
 fresh/legacy/saved-Off configuration checks without changing fixture bytes.
 Model24/control-launch8/reader4/session12 focused contracts already pass.
-Thirty720p/4K CPU layouts pass. Actual live preview/key/menu/focus checks remain
-pending coordinator slot; no physical wheel feel/calibration acceptance yet.
+Thirty-two720p/4K CPU layouts pass. Frozen6c4407e actual4K frontend passed
+warning/cancel, pointer navigation, F6 modal cancel, F8 Off/strength retention
+and focus recovery. Empty inventory prevented real axis preview/calibration;
+no physical wheel/force or in-game key acceptance. Finalb8 wording removes the
+misleading capability-only Ready label; no native change or repeat live test.
+verified-wording.json PASS:26source blobs/43settings/wrapper/runtime preserved.
+GLOBAL DESKTOP PAUSED after user Escape in another coordinated test. No game,
+renderer replay or live frontend launch until coordinator confirms resumption.
 Shared UX guidance94dc3a1 read. No new rendering scope or public release.
 
 ## Rendering checkpoint
