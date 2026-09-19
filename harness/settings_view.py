@@ -94,6 +94,13 @@ def hit_page(width, height, x, y):
     return None
 
 
+def hit_action(width, height, x, y):
+    if height*.78 <= y < height*.83:
+        if width*.14 <= x <= width*.34: return 'close'
+        if width*.65 <= x <= width*.86: return 'stop_ffb'
+    return None
+
+
 def custom_sections(state, diag=False):
     sections = []
     if (state.get('ffbspring', 0) or state.get('ffbinvert', 0)

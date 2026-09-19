@@ -3,26 +3,36 @@
 ## Current work: frontend UX deployment and rendering parity, September 19
 
 Owner authorizes local UX deployment through coordinator
-01a07ac3-e639-7762-a698-5365d447ee7e. Personal launcher target is this source
-checkout E:/Source/cruisn-collection; UX worktree is E:/Source/cruisn-collection-ux-review.
-Read docs/UX-OVERNIGHT-2026-09-16.md and the five toolkit CONSUMER UX guides.
-Scoped frontend is deployed as mergeeb78f4f, with backup under
-results/diagnostics/ux-20260919-deployment/backup (22 owner configuration files).
-Frozen UX frontend79a192b built and passes fresh/legacy/saved-Off configuration;
-SHA0ed809c7adf0a65950c20c695c9ef132df5a24ab3f883236ad70bd695a252993.
-All22 settings files and personal87d are byte-exact;7 installed runtime source
-blobs match candidate. Five launch-boundary tests PASS on merged source (no game).
-See deployment verified.json and docs/UX-OVERNIGHT-2026-09-16.md.
-Ordinary settings saves are atomic, retain backup, restore saved values on
-failure and block game launch on save failure. Seven focused settings tests PASS.
-Native F8 stop, strict device identity and full axis calibration remain required
-stages. Do not claim overall UX complete from frontend deployment. Preserve
-World force passthrough. Personal native87d source is4ac6a84b51b4ae549399c81ffe1b9346e2c04758;
-do not import unrelated4df renderer changes into its UX successor. No public
-release, unattended torque or live timing/game slot is authorized. CPU packaging
-and closed-target frontend deployment are authorized without another permission.
-Native UX worktree E:/Source/mame-ux, codex/ux-native, starts exactly4ac6a84b51b4;
-sparse source checkout only so far. Primary mame-src/parity branch untouched.
+01a07ac3-e639-7762-a698-5365d447ee7e. Personal Stream Deck source target is this
+checkout E:/Source/cruisn-collection. UX source6c4407e is being merged with
+reviewed native707fd6a8f0a (accepted4ac renderer lineage,142patches). No unrelated
+4df renderer changes are deployed. Exact package and closed-target backups are
+under results/diagnostics/ux-20260919-deployment-v2; verify deployment receipt.
+Prior frontend79a192b/eb78f4f deployment remains documented in
+ docs/UX-OVERNIGHT-2026-09-16.md. Publicv0.5.0 unchanged; no unattended torque.
+
+Native707 SHA f1f908e66784b657d892e651850693c99e606ffcf093397f9a994975f1c51c01.
+091/33/e5/707 exports ALREADY RAN; never re-export their appended baselines.
+e5 is rejected for persistence before actuator stop;707 attempts all stops
+before filesystem persistence. Actual-function blocked-flush/failed-stop fixture
+and independent review pass. Read2026-09-19-output-disconnect-ordering.md.
+One earlier091 device-free stop replay passes3300inputs/55nativeimages exact,
+324zero worker ticks despite227nonzero requests; no physical/live-key claim.
+Native57 calibration goldens and actual backend/core fixtures pass. Strict
+identity has no name-only migration: legacy owners confirm an output device once.
+Unresolved saved-On gets Configure / Continue without FFB / Cancel; override
+is launch-only, saved strength/tunes retained. World force exception unchanged.
+Read2026-09-19-control-launch-transport.md and2026-09-19-control-setup-ui.md.
+
+Integrated UI29/settings7/common-launch7 tests pass. Final local package
+CruisnCollection-dev-20260919-160053.zip includes native707 with exact capability
+and142patch source receipt. Frozen launcher SHA
+217924616b75b9727128aa1939ace58b5b2e111cd647ca3404984aa366c104c4 passes
+fresh/legacy/saved-Off configuration checks without changing fixture bytes.
+Model24/control-launch8/reader4/session12 focused contracts already pass.
+Thirty720p/4K CPU layouts pass. Actual live preview/key/menu/focus checks remain
+pending coordinator slot; no physical wheel feel/calibration acceptance yet.
+Shared UX guidance94dc3a1 read. No new rendering scope or public release.
 
 ## Rendering checkpoint
 

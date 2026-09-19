@@ -15,3 +15,4 @@ results/proof/2026-09-07-exotica-force-polarity/** -text whitespace=cr-at-eol
 # These are archived text artifacts, not active source-code whitespace exceptions.
 docs/experiments/world-global-distance/*.patch -text whitespace=-blank-at-eol,-space-before-tab
 patch/vunit-poc-patches.patch -text whitespace=-blank-at-eol,-space-before-tab
+patch/ux/*.patch -text whitespace=-blank-at-eol,-space-before-tab

@@ -114,6 +114,33 @@ local treatment for small unwritten gaps; neither setting creates missing terrai
 
 ### Controls
 
+#### Development controls candidate
+
+The following applies to the new development candidate, not the public v0.5.0
+ZIP. Live interaction and physical wheel acceptance are still pending.
+
+Open **F6 → Controls** in Simple view. Choose Steering, Throttle or Brake,
+select the device and axis, and follow the centre/endpoints/return prompts.
+Use the preview to check direction and travel, then Save. Cancel keeps the
+previous assignment. Each role can use a different device. Clear leaves that
+role unbound; it does not restore an older mapping. Buttons and transmission
+bindings remain available through the existing binding flow described below.
+
+Under **FFB → FFB device**, choose **Use steering wheel** after saving its
+identity, or choose an explicit connected output device. Older name-only wheel
+settings are preserved but require this one-time confirmation; an absent or
+ambiguous device does not silently select another wheel. **Continue without
+FFB** applies only to that launch and retains saved On/Off, strength and tunes.
+The setup screen previews inputs and does not test physical forces.
+
+**F8 / Stop FFB** latches force output off. Device loss also latches it off;
+reconnection alone does not resume forces. To resume, explicitly turn FFB On
+and launch a new game. Failed preference saves retain the previous values and
+show an error. The game's own operator calibration and steering tuning still
+apply after the saved device calibration.
+
+#### Public v0.5.0 binding flow
+
 Keyboard works with nothing bound: **5** = coin, **1** = start, arrow keys
 steer / gas / brake, plus the in-game keys below.
 

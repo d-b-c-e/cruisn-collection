@@ -28,6 +28,8 @@ FREEPLAY = {'crusnusa':('nvram',(0x190,0x195,0x19a,0x19f)), 'crusnwld24':('nvram
 
 
 def inspect(package, candidate, *, media=True):
+    if Path(str(candidate)+'.rejected.json').exists():
+        raise ValueError('candidate has a retained rejection; use a qualified successor')
     with zipfile.ZipFile(package) as archive:
         entries={}; roots=set()
         for info in archive.infolist():
@@ -48,7 +50,8 @@ def inspect(package, candidate, *, media=True):
             if name.startswith(('roms/','rig/')) or name=='dinput8.dll':
                 raise ValueError(f'ROM, personal rig data or obsolete plugin in package: {name}')
             if (PurePosixPath(name).name in ('collection.ini', 'force-profiles.user.ini',
-                                             'ffb_trace.csv', 'gl_state.txt') or
+                                             'ffb_trace.csv', 'gl_state.txt',
+                                             'control-calibration.txt', 'ffb-user-stopped') or
                     name.startswith(('cfg/', 'nvram/', 'ctrlr/', 'cheats/', 'input/', 'state/'))):
                 raise ValueError(f'personal preferences or runtime state in package: {name}')
             if not media and name.startswith(('art/','audio/')):
@@ -57,6 +60,30 @@ def inspect(package, candidate, *, media=True):
                 raise ValueError(f'loose development bytecode in package: {name}')
         binary_hash=hashlib.sha256(archive.read(entries['vunit.exe'])).hexdigest()
         if binary_hash!=sha256_file(candidate): raise ValueError('packaged emulator differs from candidate')
+        from binary_provenance import validate as validate_build
+        from control_launch import FEATURES
+        source = None
+        if 'vunit.exe.build.json' in entries:
+            source = validate_build(json.loads(archive.read(entries['vunit.exe.build.json'])), binary_hash)
+            patch_hash = hashlib.sha256(archive.read(entries['patch/vunit-poc-patches.patch'])).hexdigest()
+            if patch_hash != source['patch_sha256']:
+                raise ValueError('packaged native patch does not reconstruct this executable source')
+        local_features = Path(str(candidate)+'.features.json')
+        if local_features.exists() and 'vunit.exe.features.json' not in entries:
+            raise ValueError('package dropped the candidate control capabilities')
+        if 'vunit.exe.features.json' in entries:
+            data = archive.read(entries['vunit.exe.features.json'])
+            feature = json.loads(data)
+            if (not isinstance(feature, dict) or source is None
+                    or type(feature.get('version')) is not int or feature['version'] != 1
+                    or not isinstance(feature.get('features'), list)
+                    or not all(isinstance(f, str) for f in feature['features'])
+                    or feature.get('sha256') != binary_hash
+                    or feature.get('native_commit') != source['native_commit']
+                    or not FEATURES.issubset(feature.get('features', ()))):
+                raise ValueError('packaged control capabilities do not match native source/bytes')
+            if local_features.exists() and data != local_features.read_bytes():
+                raise ValueError('packaged control capabilities differ from candidate')
         for rom,(filename,addresses) in FREEPLAY.items():
             data=archive.read(entries[f'fixtures/nvram-{rom}/{filename}'])
             if any(a>=len(data) or data[a]!=1 for a in addresses):

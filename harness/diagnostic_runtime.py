@@ -43,7 +43,7 @@ def diagnostic_env(overrides=None):
            if not k.upper().startswith(("MIDV_", "MIDZ_", "SNAP_"))}
     env.update(overrides or {})
     env["MIDV_FFB"] = "0"
-    for k in ("MIDV_FFB_TEST", "MIDV_TELEM_UDP", "MIDV_TELEM_FORZA", "MIDZ_TELEM_UDP"):
+    for k in ("MIDV_FFB_TEST", "MIDV_TELEM_UDP", "MIDV_TELEM_FORZA", "MIDZ_TELEM_UDP", "MIDV_FFB_STOP_FILE"):
         env.pop(k, None)
     return env
 

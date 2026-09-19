@@ -4548,3 +4548,7 @@ Frozenfrontend SHA0ed809c7adf0a65950c20c695c9ef132df5a24ab3f883236ad70bd695a2529
 Development frontend ZIP/complete payload manifest retained; no public release,
 livegame/hardware acceptance or renderer deployment. Native F8/identity/calibration
 remain separate required work. See docs/UX-OVERNIGHT-2026-09-16.md.
+
+2026-09-19 UX isolated native33d44e2c85c built and frozen,140patches/tree exact; personal87d and rendering parity series unchanged. Once-only calibration/strict identity transport passes6launch contracts,24model,12session,6mocked launch-boundary tests. Recording retains calibration; playback consumes effective INP ports without physical device dependency. No new game run or physical claim. See [transport review](../docs/reviews/2026-09-19-control-launch-transport.md).
+
+2026-09-19 UX device-loss successor707fd6a8f0a built/export142 exact; prior e5build141 rejected for persisting before actuator cancellation. Actual-function blocked-flush/failed-stop fixture and independent source review close ordering; no physical or new gameplay claim. Controls UI db6b5a2+a1ba5a9 integrated; preview/game preprocessing and saved cfg overrides now consistent. Personal87d and publicv0.5.0 unchanged. See [disconnect ordering](../docs/reviews/2026-09-19-output-disconnect-ordering.md).

@@ -11,7 +11,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'harness'))
 
 @unittest.skipUnless(sys.platform == 'win32', 'launcher uses Windows APIs')
 class LaunchBoundaryTests(unittest.TestCase):
-    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None, strength=0, expected_ffb="0", environment=None):
+    def test_blocking_wrapper_forwards_launch_only_force_off(self):
+        import run_rig
+        process = mock.Mock(recording=None)
+        process.poll.return_value = 0
+        with mock.patch.object(run_rig, 'launch_game_async', return_value=(process, None)) as launch, \
+             mock.patch.object(run_rig, 'wait_or_kill', return_value=0):
+            self.assertEqual(run_rig.launch_game(ffb=65, force_ffb_off=True), 0)
+        self.assertIs(launch.call_args.kwargs['force_ffb_off'], True)
+        self.assertEqual(launch.call_args.kwargs['ffb'], 65)
+
+    def exercise_launch(self, rom, enabled, recording=False, trial=None, imported=True, config=None, telemetry=None, strength=0, expected_ffb="0", environment=None, stopped=False, capable=False, inventory=None, controls=False):
         import cheats
         import run_rig
 
@@ -22,9 +32,15 @@ class LaunchBoundaryTests(unittest.TestCase):
             root = Path(td)
             rig = root/'rig'
             rig.mkdir()
+            if stopped: (rig/'ffb-user-stopped').write_bytes(b'')
             if config or telemetry:
                 (rig/'collection.ini').write_text('[collection]\n'+''.join(f'{k}={v}\n' for k,v in (config or {}).items())+
                     '[telemetry]\n'+''.join(f'{k}={v}\n' for k,v in (telemetry or {}).items()),encoding='utf-8')
+            if controls:
+                from control_preferences import commit_proposals, make_proposal
+                path = rig/'collection.ini'
+                commit_proposals(path, [make_proposal('steer', inventory[0]['identity'], 'XAXIS')],
+                    expected_original=path.read_bytes() if path.exists() else None, inventory=inventory)
             (root/'lua').mkdir()
             (root/'lua/cheats.lua').write_text('-- fixture, never executed')
             (rig/'cheats').mkdir()
@@ -39,6 +55,8 @@ class LaunchBoundaryTests(unittest.TestCase):
             stack.enter_context(mock.patch.object(run_rig, 'sanitized_ctrlrpath', return_value=str(rig)))
             stack.enter_context(mock.patch.object(run_rig, 'kill_stale_vunit'))
             stack.enter_context(mock.patch.object(run_rig, 'deploy_force_profiles'))
+            stack.enter_context(mock.patch('control_launch.supported', return_value=capable))
+            stack.enter_context(mock.patch.object(run_rig.dinput_axes, 'inventory', return_value=inventory or []))
             spawn = stack.enter_context(mock.patch.object(run_rig.subprocess, 'Popen', side_effect=SpawnReached))
             options = dict(trial or {})
             if recording:
@@ -47,12 +65,16 @@ class LaunchBoundaryTests(unittest.TestCase):
                 # exercise the launch branches without reading ROMs or executables.
                 stack.enter_context(mock.patch('session_case.Recording.prepare',
                     side_effect=lambda command, env, source: (command, env, rig)))
+            preference = rig/'collection.ini'
+            saved = preference.read_bytes() if preference.exists() else None
             with self.assertRaises(SpawnReached):
                 run_rig.launch_game_async(rom=rom, ffb=strength, windowed=True,
                                           mame=str(root/'vunit.exe'), **options)
+            self.assertEqual(preference.read_bytes() if preference.exists() else None, saved)
             command = spawn.call_args.args[0]
             env = spawn.call_args.kwargs['env']
             self.assertEqual(env['MIDV_FFB'], expected_ffb)
+            self.assertEqual(env['MIDV_FFB_STOP_FILE'], str(rig/'ffb-user-stopped'))
             self.assertEqual('-cheat' in command, imported)
             self.assertEqual('-nocheat' in command, not imported)
             self.assertEqual('MIDV_CHEATS' in env, imported)
@@ -60,6 +82,31 @@ class LaunchBoundaryTests(unittest.TestCase):
                 self.assertTrue((Path(env['MIDV_CHEATS'])/'settings.lua').is_file())
                 self.assertIn('-autoboot_script', command)
             return env
+
+    def test_verified_device_output_and_calibration_reach_launch_without_stale_paths(self):
+        identity = dict(backend='dinput', product_guid='0006346e-0000-0000-0000-504944564944',
+                        instance_guid='11111111-2222-3333-4444-555555555555',
+                        hid_path=r'\\?\HID#FIXTURE', ffb_capable=True)
+        inventory = [dict(identity=identity, name='Fixture wheel', axes=['XAXIS'])]
+        for rom in ('crusnusa', 'crusnwld24', 'offroadc', 'crusnexo'):
+            env = self.exercise_launch(rom, False, imported=False, capable=True, inventory=inventory,
+                controls=True, strength=50, expected_ffb='1', config={'ffb_enabled': '1'},
+                environment={'MIDV_FFB_DEVICE': 'wrong-wheel', 'MIDV_INPUT_PROFILE': 'owner-stale-path'})
+            self.assertEqual(env['MIDV_FFB_DEVICE'], 'path:'+identity['hid_path'])
+            self.assertTrue(env['MIDV_INPUT_PROFILE'].endswith('control-calibration.txt'))
+            env = self.exercise_launch(rom, False, imported=False, capable=True,
+                strength=50, config={'ffb_enabled': '1'},
+                environment={'MIDV_FFB_DEVICE': 'wrong-wheel', 'MIDV_INPUT_PROFILE': 'owner-stale-path'})
+            self.assertEqual(env['MIDV_FFB'], '0')
+            self.assertNotIn('MIDV_FFB_DEVICE', env)
+            self.assertNotIn('MIDV_INPUT_PROFILE', env)
+            # Device is now resolved, but a prior explicit Continue without FFB
+            # cannot be undone by that change or inherited environment values.
+            env = self.exercise_launch(rom, False, imported=False, capable=True, inventory=inventory,
+                controls=True, strength=65, config={'ffb_enabled': '1', 'ffb': '65'},
+                trial={'force_ffb_off': True}, environment={'MIDV_FFB': '1', 'MIDV_FFB_TEST': '50'})
+            self.assertEqual(env['MIDV_FFB'], '0')
+            self.assertNotIn('MIDV_FFB_TEST', env)
 
     def test_saved_ffb_switch_and_explicit_diagnostic_off(self):
         for rom in ('crusnusa','crusnwld24','crusnwld','offroadc','crusnexo'):
@@ -72,6 +119,8 @@ class LaunchBoundaryTests(unittest.TestCase):
                         self.assertEqual(env['MIDV_FFB_STRENGTH'],'52' if rom=='crusnexo' else '65')
                     if rom.startswith('crusnwld'):
                         self.assertNotEqual(env.get('MIDV_FFB_GAME_GATE'),'1')
+            self.exercise_launch(rom,False,imported=False,strength=80,stopped=True,
+                config={'ffb_enabled':'1'},environment={'MIDV_FFB':'1'})
             self.exercise_launch(rom,False,imported=False,strength=65,
                 config={'ffb_enabled':'1'},environment={'MIDV_FFB':'0'})
             env=self.exercise_launch(rom,False,imported=False,strength=None,

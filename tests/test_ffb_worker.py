@@ -57,6 +57,21 @@ class ForceWorkerTests(unittest.TestCase):
             for k in ('HOLD_MS','DAMPER','FRICTION','SPRING','RUMBLE','INVERT'):
                 with self.assertRaises(ValueError):w.configure(self.args(candidate=candidate),'crusnusa',{'MIDV_FFB_'+k:'-1'})
 
+    def test_explicit_stop_coverage_is_device_free_and_not_inherited(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            candidate=self.candidate(Path(tmp))
+            settings={}
+            trial=w.configure(self.args(candidate=candidate,ffb_worker_stop_frame=3120),'crusnusa',settings)
+            self.assertEqual(trial['stop_frame'],3120)
+            self.assertEqual(settings['MIDV_FFB'],'0')
+            self.assertEqual(settings['MIDV_FFB_USER_STOP_FRAME'],'3120')
+            self.assertEqual([trial['expected'][k] for k in ('damper','friction','spring','rumble')],[20,20,20,40])
+            with self.assertRaisesRegex(ValueError,'inherited'):
+                w.configure(self.args(candidate=candidate),'crusnusa',settings)
+            for kw in (dict(ffb_worker='off'),dict(ffb_worker_strength=0),dict(ffb_worker_impacts='on'),dict(ffb_worker_stop_frame=0)):
+                with self.assertRaises(ValueError):
+                    w.configure(self.args(candidate=candidate,**dict(dict(ffb_worker_stop_frame=3120),**kw)),'crusnusa',{})
+
     def test_disabled_does_not_accept_observer_artifacts(self):
         with tempfile.TemporaryDirectory() as tmp:
             root=Path(tmp)

@@ -1,4 +1,6 @@
 from pathlib import Path
+import hashlib
+import json
 import sys
 import tempfile
 import unittest
@@ -28,6 +30,25 @@ class PackageTests(unittest.TestCase):
                         if data is not None:z.writestr('CruisnCollection/'+name,data)
                 return inspect(root/'package.zip',exe)
             self.assertTrue(check({})['passed'])
+            source = dict(schema=1, executable_sha256=hashlib.sha256(b'candidate').hexdigest(),
+                          native_commit='a'*40, native_tree='b'*40,
+                          patch_sha256=hashlib.sha256(files['patch/vunit-poc-patches.patch']).hexdigest(),
+                          build_log_sha256='d'*64)
+            from control_launch import FEATURES
+            capability = json.dumps(dict(version=1, sha256=source['executable_sha256'],
+                                   native_commit=source['native_commit'], features=sorted(FEATURES))).encode('utf-8')
+            native = {'vunit.exe.build.json': json.dumps(source).encode('utf-8'),
+                      'vunit.exe.features.json': capability}
+            Path(str(exe)+'.features.json').write_bytes(capability)
+            self.assertTrue(check(native)['passed'])
+            for invalid in ({'vunit.exe.features.json': None},
+                            {'vunit.exe.features.json': b'[]'},
+                            {'vunit.exe.features.json': b'{}'},
+                            {'vunit.exe.build.json': None},
+                            {'patch/vunit-poc-patches.patch': b'wrong renderer lineage'}):
+                with self.assertRaises(ValueError):
+                    check({**native, **invalid})
+            Path(str(exe)+'.features.json').unlink()
             invalid_sum = bytearray(files['fixtures/nvram-offroadc/nvram'])
             invalid_sum[0x35c] ^= 1
             with self.assertRaisesRegex(ValueError, 'checksum'):
@@ -37,6 +58,7 @@ class PackageTests(unittest.TestCase):
                         {'source/harness/__pycache__/private.pyc':b'stale'},
                         {'roms/game.zip':b'rom'}, {'collection.ini':b'personal'},
                         {'force-profiles.user.ini':b'personal'}, {'source/harness/collection.ini':b'personal'},
+                        {'control-calibration.txt':b'personal'}, {'ffb-user-stopped':b'owner off marker'},
                         {'cfg/crusnusa.cfg':b'bindings'}, {'cheats/settings.json':b'personal'},{'../outside':b'bad'}, {'dinput8.dll':b'old plugin'},
                         {'fixtures/nvram-crusnexo/m48t35':bytes(0x74)},
                         {'fixtures/nvram-offroadc/nvram':bytes(0x8000)}):

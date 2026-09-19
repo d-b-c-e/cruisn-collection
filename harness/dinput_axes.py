@@ -27,6 +27,7 @@ import ctypes
 import ctypes.wintypes as wt
 import json
 import sys
+import uuid
 
 _HRESULT = ctypes.c_long
 
@@ -51,6 +52,9 @@ class GUID(ctypes.Structure):
     def key(self):
         return bytes(self)
 
+    def text(self):
+        return str(uuid.UUID(bytes_le=bytes(self))).upper()
+
 
 class DIDEVICEINSTANCEW(ctypes.Structure):
     _fields_ = [("dwSize", wt.DWORD), ("guidInstance", GUID), ("guidProduct", GUID),
@@ -66,6 +70,37 @@ class DIDEVICEOBJECTINSTANCEW(ctypes.Structure):
                 ("wCollectionNumber", wt.WORD), ("wDesignatorIndex", wt.WORD),
                 ("wUsagePage", wt.WORD), ("wUsage", wt.WORD), ("dwDimension", wt.DWORD),
                 ("wExponent", wt.WORD), ("wReportId", wt.WORD)]
+
+
+class DIPROPHEADER(ctypes.Structure):
+    _fields_ = [(name, wt.DWORD) for name in ('dwSize', 'dwHeaderSize', 'dwObj', 'dwHow')]
+
+
+class DIPROPGUIDANDPATH(ctypes.Structure):
+    _fields_ = [('diph', DIPROPHEADER), ('guidClass', GUID), ('wszPath', wt.WCHAR * 260)]
+
+
+class DIDEVCAPS(ctypes.Structure):
+    _fields_ = [(name, wt.DWORD) for name in ('dwSize', 'dwFlags', 'dwDevType', 'dwAxes',
+        'dwButtons', 'dwPOVs', 'dwFFSamplePeriod', 'dwFFMinTimeResolution',
+        'dwFirmwareRevision', 'dwHardwareRevision', 'dwFFDriverVersion')]
+
+
+def device_metadata(dev):
+    """Read identity/capabilities only: never acquire, create or start effects.
+
+    SDL2's DirectInput backend reads the same DIPROP_GUIDANDPATH property.
+    Missing path remains unverified; a friendly name is not substituted for it.
+    """
+    path = DIPROPGUIDANDPATH()
+    path.diph = DIPROPHEADER(ctypes.sizeof(path), ctypes.sizeof(DIPROPHEADER), 0, 0)
+    get_property = _method(dev, 5, _HRESULT, ctypes.c_void_p, ctypes.POINTER(DIPROPHEADER))
+    hr = get_property(dev, ctypes.c_void_p(12), ctypes.byref(path.diph))  # DIPROP_GUIDANDPATH
+    hid_path = path.wszPath.upper() if hr == 0 and path.wszPath.startswith('\\\\?\\') else None
+    caps = DIDEVCAPS()
+    caps.dwSize = ctypes.sizeof(caps)
+    hr = _method(dev, 3, _HRESULT, ctypes.POINTER(DIDEVCAPS))(dev, ctypes.byref(caps))
+    return dict(hid_path=hid_path, ffb_capable=bool(caps.dwFlags & 0x100) if hr == 0 else None)
 
 
 IID_IDirectInput8W = GUID.from_str("BF798031-483A-4DA2-AA99-5D64ED369700")
@@ -98,12 +133,15 @@ def _method(obj, index, restype, *argtypes):
     return proto(vtbl[index])
 
 
-def layout():
-    """{instance name: [present axis tokens in slot order]} for every attached
-    game controller. {} when DirectInput is unavailable."""
-    out = {}
+def inventory():
+    """Attached DirectInput instance records; no ambiguous names collapsed.
+
+    GUIDs are backend-qualified identities. HID paths permit an explicit SDL
+    output association. No haptic interface is opened by this inventory.
+    """
+    out = []
     try:
-        dinput8 = ctypes.WinDLL("dinput8.dll")
+        dinput8 = ctypes.WinDLL("dinput8.dll", winmode=0x800)  # System32 only.
         k32 = ctypes.windll.kernel32
         k32.GetModuleHandleW.restype = ctypes.c_void_p      # 64-bit HMODULE, not int
         k32.GetModuleHandleW.argtypes = [ctypes.c_wchar_p]
@@ -116,11 +154,12 @@ def layout():
                                         ctypes.byref(di), None)
         if hr != 0 or not di:
             print(f"dinput_axes: DirectInput8Create failed (hr 0x{hr & 0xffffffff:08x})", file=sys.stderr)
-            return {}
+            return []
         instances = []
 
         def on_device(inst, _ref):
             instances.append((GUID.from_buffer_copy(bytes(inst.contents.guidInstance)),
+                              GUID.from_buffer_copy(bytes(inst.contents.guidProduct)),
                               inst.contents.tszInstanceName))
             return DIENUM_CONTINUE
         # IDirectInput8W::EnumDevices(dwDevType, callback, pvRef, dwFlags)
@@ -132,7 +171,7 @@ def layout():
             print(f"dinput_axes: EnumDevices failed (hr 0x{hr & 0xffffffff:08x})", file=sys.stderr)
         create_device = _method(di.value, 3, _HRESULT, ctypes.POINTER(GUID),
                                 ctypes.POINTER(ctypes.c_void_p), ctypes.c_void_p)
-        for guid, name in instances:
+        for guid, product, name in instances:
             dev = ctypes.c_void_p()
             if create_device(di.value, ctypes.byref(guid), ctypes.byref(dev), None) != 0 or not dev:
                 continue
@@ -152,15 +191,28 @@ def layout():
             enum_objects = _method(dev.value, 4, _HRESULT, ENUM_OBJECTS_CB, ctypes.c_void_p, wt.DWORD)
             ocb = ENUM_OBJECTS_CB(on_object)
             enum_objects(dev.value, ocb, None, DIDFT_AXIS)
+            metadata = device_metadata(dev.value)
             _method(dev.value, 2, ctypes.c_ulong)(dev.value)   # Release
             present.sort(key=SLOT_ORDER.index)
-            # duplicate instance names (Fanatec bases expose two): first wins,
-            # matching MAME's mapdevice (first device whose id matches)
-            out.setdefault(name, present)
+            out.append(dict(name=name, axes=present, identity=dict(backend='dinput',
+                            product_guid=product.text(), instance_guid=guid.text(),
+                            **{key: value for key, value in metadata.items() if value is not None})))
         _method(di.value, 2, ctypes.c_ulong)(di.value)       # Release
     except Exception as e:   # any COM/ctypes trouble: caller falls back
         print(f"dinput_axes: {e}", file=sys.stderr)
-        return {}
+        return []
+    return out
+
+
+def layout():
+    """Legacy name-indexed axis layout; new identity consumers use inventory().
+
+    Preserve legacy behavior until a player explicitly saves an identity-bound
+    assignment. This compatibility view does not establish unique ownership.
+    """
+    out = {}
+    for record in inventory():
+        out.setdefault(record['name'], record['axes'])
     return out
 
 

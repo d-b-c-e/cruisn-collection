@@ -271,3 +271,30 @@ Native F8 stop, strict identity and full calibration are the next separate stage
 starting in `E:/Source/mame-ux` from accepted native4ac6a84b51b4. The primary native
 parity tree and its frozen profiling candidate are untouched. World menu/race-end
 passthrough remains an owner exception. The overall UX reconciliation is incomplete.
+
+## Native stop follow-up in progress
+
+The frontend79a192b stage was deployed separately through mastereb78f4f; consult
+the master copy of this document for its exact backup/package verification.
+This worktree now stages a successor, not yet deployed:
+
+- F8/Stop FFB in the launcher saves Off without changing Strength or tuning.
+  Close and Stop FFB remain visible on every settings page.
+- A durable `ffb-user-stopped` marker from the native process overrides saved On
+  on restart. Only an explicit On clears it, after the settings write succeeds.
+- The common launch path binds the marker to the owner's rig. Recording/replay
+  preparation removes an inherited owner path and binds a private run marker;
+  an unattended experiment cannot change the owner's force preference.
+- Native candidate6dde90ff16a in `E:/Source/mame-ux` is based on accepted4ac6a84b51b4,
+  plus only the device-free force-worker observer and the new stop implementation.
+  It adds a process latch, worker-owned effect cancellation, both renderer F8
+  routes, an Esc Stop FFB action, persistence/failure indication and an explicit
+  device-free scheduled-stop test seam. It is not built or runtime-qualified yet.
+
+Three force-preference tests, five launch-boundary methods, eleven session tests
+and seven settings tests pass without game/device execution. Fourteen CPU layout
+fixtures at720p/4K pass bounds/overlap checks; the720p FFB view was inspected.
+Evidence is under local `results/diagnostics/ux-20260919/stop-layout`.
+These establish frontend policy/layout only. Native compile, observer stop
+qualification, live key/menu delivery and attended hardware checks remain open.
+No stable-identity picker or full calibration completion is claimed.

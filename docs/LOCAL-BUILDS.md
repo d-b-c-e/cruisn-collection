@@ -36,6 +36,21 @@ it is an explicit request to reuse that binary, not a freshness check. `-MameRoo
 a release or runs GitHub Actions. `make_release.ps1` also accepts `-Emulator` and
 `-RuntimeRoot` separately, so a candidate need not live beside SDL/BGFX resources.
 
+An attested isolated native candidate also carries `vunit.exe.build.json` and,
+when supported, `vunit.exe.features.json`. Packaging verifies those against the
+executable and copies the exact matching tracked patch series to the package's
+canonical `patch/vunit-poc-patches.patch`. It refuses a missing source series,
+stale capability receipt or lost candidate capability file. A native candidate
+from a UX worktree must not accidentally ship the independent renderer parity
+series as its reconstruction instructions. Personal calibration and the saved
+FFB stop marker are forbidden package contents.
+
+The isolated UX freeze helper checks the personal executable before and after
+export. After an authorized native deployment, pass its recorded accepted hash
+as `--personal-sha256` for a later successor freeze. Do not infer the expected
+hash from whatever happens to be installed, rerun an existing export, or overwrite
+a frozen candidate. The default remains the original native87d baseline.
+
 ## Development checks
 
 Install the test dependencies once in the Python environment used for this repo:
