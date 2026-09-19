@@ -5,6 +5,18 @@ engineering log with numbers and proof images is `results/RESULTS.md`.
 
 ## Unreleased — renderer candidates and diagnostics
 
+### Launcher UX, September 19
+
+- Add persistent Simple/Advanced Wheel settings, six common pages and direct
+  binding capture with cancellation. F6 opens the launcher panel; the game's
+  existing Esc menu remains separate.
+- Add saved FFB Off/On independent of Strength, and telemetry Off/On with atomic
+  connection editing. Preserve existing tunes, destinations and saved Off.
+- Save ordinary settings atomically with a retained backup. Failed edits restore
+  saved values, show an error and block launch until settings can be saved.
+- Native F8 stop, stable device selection and full axis calibration remain separate
+  work. No new public release or extended-renderer promotion is implied.
+
 ### Added and fixed, September 12–16
 
 - Add verified V-Unit scene startup, continuous scenery, quiet journals and

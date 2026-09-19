@@ -214,3 +214,28 @@ Read-only audit against native `4df727db105` identifies concrete follow-ups:
 
 No native code, package or FFB behavior was changed for this audit. This is an
 implementation boundary, not acceptance inferred from frontend tests.
+
+## Authorized deployment stage, September 19
+
+The owner authorized local consumer UX deployment through the coordinating task,
+superseding this document's earlier no-deploy scope. Public release and unattended
+torque are not authorized by that request. The five guidance documents and HTML
+reference at toolkit e1f0e3f were reread. Native gaps above remain required work;
+frontend rollout alone is not overall UX completion.
+
+Ordinary launcher tuning saves now use the existing atomic section writer and a
+`.before-settings.bak` backup. A failed save restores saved values, reports an
+error in the launcher and refuses a launch that could otherwise use unsaved
+settings. Seven focused settings tests pass, including injected replacement
+failure, retained original bytes, backup, unknown keys, independent bindings and
+custom telemetry. This closes the direct-write gap in UX-08; live interaction
+and broader installer lifecycle remain separate.
+
+Stream Deck's existing Launch-Cruisn.bat launches the source checkout at
+`E:/Source/cruisn-collection/harness/collection.py`. A scoped source merge is
+therefore a local frontend deployment. It must retain owner rig data and the
+personal emulator87d. That emulator's recorded source is native4ac6a84b51b4,
+separate from the unqualified4df renderer profiling candidate. Do not deploy the
+latest native build using the generic Personal target as part of this frontend
+stage. The staged frozen frontend, exact rollout/backup paths and retained
+configuration hashes will be recorded after build and installation.

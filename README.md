@@ -1,5 +1,16 @@
 # Cruis'n Collection
 
+Development launcher update: **F6 → Wheel settings** now opens a saved
+**Simple / Advanced** view with Setup, Controls, FFB, Cameras, Telemetry and Help.
+Simple includes direct binding, saved FFB Off/On and telemetry destination status;
+Advanced holds detailed tuning, Display and Experiments. Switching views preserves
+your settings. Failed saves retain the prior configuration and report an error.
+The active game's **Esc** menu remains separate. Native F8 stop, device selection
+and full axis calibration are still being implemented; the launcher update does
+not establish completion of those features or rendering parity. See the
+[UX adoption record](docs/UX-OVERNIGHT-2026-09-16.md) for exact package/deployment
+evidence and limitations. The public download remains v0.5.0.
+
 Enhanced PC build of the Midway Cruis'n arcade games — **Cruis'n USA, Cruis'n
 World, Off Road Challenge** (V-Unit) and **Cruis'n Exotica** (Zeus2) — built
 as a renderer replacement over MAME. One fullscreen launcher, all four games,

@@ -1,10 +1,15 @@
 # Cruis'n Collection — agent instructions
 
-## Isolated frontend review worktree, September 17
+## Frontend deployment stage, September 19
 
 This checkout is E:/Source/cruisn-collection-ux-review, branch
 codex/ux-simple-advanced. The personal source launcher is in the separate clean
-E:/Source/cruisn-collection checkout. DO NOT merge or deploy this candidate there.
+E:/Source/cruisn-collection checkout. Owner now authorizes local UX deployment
+through coordinator01a07ac3-e639-7762-a698-5365d447ee7e. Merge scoped frontend
+changes only after backup/process/config checks; preserve personal native87d.
+Do not use Personal build target to copy the unrelated4df renderer candidate.
+Native F8/identity/calibration are separate required stages, not completed by
+frontend deployment. Native87d source is4ac6a84b51b4ae549399c81ffe1b9346e2c04758.
 Read docs/UX-OVERNIGHT-2026-09-16.md. Shared UX guidance at dbce-wheel-mod-toolkit
 CONSUMER-UX.md / CONSUMER-SETTINGS-VIEWS.md owns frontend placement, not renderer
 or user-overridden force behavior. Coordinator01a07ac3-e639-7762-a698-5365d447ee7e
@@ -16,7 +21,10 @@ Fourteen CPU layout fixtures pass at 720p/4K. Frozen frontend 3229661 builds and
 checks; SHA33b1144542b827e3603cc5cb8f17bd598cf39cc94be738f8c82a4deaf845791b.
 No hardware acceptance. See frontend-build-v3/qualified.json under UX results.
 Keep native parity evidence below separate; native4df727db105 timing qualifier
-awaits the coordinated rig slot. No personal/public deployment or torque.
+awaits the coordinated rig slot. No public release or unattended torque.
+No live timing/game slot is granted. Ordinary tuning saves are now atomic with
+backup, failed-edit rollback, visible errors and refusal to launch on failure.
+Seven focused settings tests PASS; successor frontend packaging is next.
 
 ## Rendering checkpoint inherited from master, September 16
 

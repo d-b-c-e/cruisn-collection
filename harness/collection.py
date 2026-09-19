@@ -823,8 +823,6 @@ def load_config():
 
 
 def save_config(state):
-    cp = configparser.ConfigParser(interpolation=None)
-    cp.read(CFG, encoding="utf-8-sig")   # preserve other sections (wheelmap)
     sec = {"crt": "1" if state["crt"] else "0",
            "crackfill": "1" if state["crackfill"] else "0",
            "marginfill": "0",  # retired: old sky stretching must not return on save
@@ -850,13 +848,20 @@ def save_config(state):
     # MERGE into the section: keys the shell does not own (ffb_diag,
     # exotica_gl, gamepatch_<rom>, anything a user or tool adds) must
     # survive a save - replacing the section wiped them at every launch
-    if not cp.has_section("collection"):
-        cp.add_section("collection")
-    for k, v in sec.items():
-        cp.set("collection", k, v)
-    os.makedirs(os.path.dirname(CFG), exist_ok=True)
-    with open(CFG, "w", encoding="utf-8") as f:
-        cp.write(f)
+    settings_view.update_section(CFG, "collection", sec, ".before-settings.bak")
+
+
+def persist_config(state):
+    """Retain the last saved values when a launcher edit cannot be persisted."""
+    previous = None
+    try:
+        previous = load_config()
+        save_config(state)
+        return True, ""
+    except (OSError, ValueError, configparser.Error) as error:
+        if previous is not None:
+            state.update(previous)
+        return False, "Settings not saved: " + str(error)
 
 
 def save_wheelmap(bindings):
@@ -1740,6 +1745,17 @@ def main():
     ssel = 0             # settings: row index within the current page
     spage = state["settings_page"]
     settings_error = ""
+
+    def save_settings():
+        nonlocal settings_error, notice, notice_until
+        saved, error = persist_config(state)
+        settings_error = error
+        if not saved:
+            notice = error
+            notice_until = time.time() + 15
+            print(error, file=sys.stderr)
+        return saved
+
     gsel = 0             # game submenu: item index
     cheat_sel = 0
     cheat_cat = {'entries':[]}
@@ -2067,12 +2083,12 @@ def main():
                 # ---- display
                 elif rid in ("crt", "crackfill") and (lr or enter):
                     state[rid] = not state[rid]
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid == "aspect" and (lr or enter):
                     state["margin"] = aspect_cycle(state["margin"],
                                                    right or enter)
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid == "graphics_game" and (lr or enter):
                     game = state.get("graphics_rom", "shared")
@@ -2086,7 +2102,7 @@ def main():
                     if graphics_options.toggle(state.setdefault("graphics", {}), game, rid,
                             state.get("world_rom", "crusnwld24") if game == "crusnwld" else game,
                             direction=1 if right or enter else -1):
-                        save_config(state)
+                        save_settings()
                         audio.blip("nav")
                 elif rid == "scale" and (lr or enter):
                     # internal render scale 2x-4x (GPU load ~ scale^2)
@@ -2094,19 +2110,19 @@ def main():
                     state["scale"] = max(2, min(4,
                                                 cur + (1 if (right or enter)
                                                        else -1)))
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 # ---- force feedback
                 elif rid.startswith("impact_") and (lr or enter):
                     card = rid.removeprefix("impact_")
                     values = state.setdefault("ffbimpacts", {})
                     values[card] = not values.get(card, False)
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid == "ffb" and (lr or enter):
                     step = 10 if (right or enter) else -10
                     state["ffb"] = max(0, min(100, state.get("ffb", 50) + step))
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid == "spring" and (lr or enter):
                     # OFF then 10..100 in tens; it is scaled by STRENGTH in
@@ -2118,11 +2134,11 @@ def main():
                     i = max(0, min(len(steps) - 1,
                                    i + (1 if (right or enter) else -1)))
                     state["ffbspring"] = steps[i]
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid == "invert" and (lr or enter):
                     state["ffbinvert"] = 0 if state.get("ffbinvert", 0) else 1
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid == "feel" and (lr or enter):
                     names = run_rig.cruisn_profiles()
@@ -2130,7 +2146,7 @@ def main():
                     i = names.index(cur) if cur in names else 0
                     state["ffbprofile"] = names[
                         (i + (1 if (right or enter) else -1)) % len(names)]
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid == "diag" and (lr or enter):
                     toggle_diag(upd)
@@ -2141,7 +2157,7 @@ def main():
                         "sequential"
                         if state.get("transmission", "hpattern") == "hpattern"
                         else "hpattern")
-                    save_config(state)
+                    save_settings()
                     audio.blip("nav")
                 elif rid.startswith("bind_") and key == glfw.KEY_DELETE:
                     binding = rid.removeprefix("bind_")
@@ -2283,7 +2299,7 @@ def main():
                         nxt = (100 if cur is None else cur) + step
                         state["steersens"][card] = (None if nxt == 100
                                                     else max(50, min(nxt, 300)))
-                        save_config(state)
+                        save_settings()
                         audio.blip("nav")
                     elif lr and rid == "curve":
                         step = 10 if key == glfw.KEY_RIGHT else -10
@@ -2291,7 +2307,7 @@ def main():
                         nxt = (100 if cur is None else cur) + step
                         state["steercurve"][card] = (None if nxt == 100
                                                      else max(50, min(nxt, 200)))
-                        save_config(state)
+                        save_settings()
                         audio.blip("nav")
                     elif lr and rid == "volume" and card in VOLUME_CMOS:
                         fname, addrs, vmax = VOLUME_CMOS[card]
@@ -2316,7 +2332,7 @@ def main():
                             "crusnwld" if state.get("world_rom",
                                                     "crusnwld24")
                             == "crusnwld24" else "crusnwld24")
-                        save_config(state)
+                        save_settings()
                         cmos_cache.clear()
                         audio.blip("nav")
                     elif enter:
@@ -2425,7 +2441,9 @@ def main():
                 launch = None
                 continue
             state["rom"] = launch
-            save_config(state)
+            if not save_settings():
+                launch = None
+                continue
             fg_stop.set()   # the game owns the foreground now, stop fighting
             keeper.game_active.set()   # hand the telemetry stream to the game
             # fade the menu music out as the LAUNCHING screen comes up and
@@ -2546,7 +2564,7 @@ def main():
                         newcrt = txt.split("crt=")[1][:1] == "1"
                         if newcrt != state["crt"]:
                             state["crt"] = newcrt
-                            save_config(state)
+                            save_settings()
                 except OSError:
                     pass
                 glfw.focus_window(win)
@@ -2559,7 +2577,7 @@ def main():
             launching = None
 
     audio.stop_music()
-    save_config(state)
+    save_settings()
     glfw.terminate()
     return 0
 

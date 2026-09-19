@@ -12,6 +12,32 @@ from test_graphics_options import import_shell_module
 
 
 class SettingsView(unittest.TestCase):
+    def test_full_settings_save_is_atomic_and_failed_edit_rolls_back(self):
+        shell = import_shell_module('collection')
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'collection.ini'
+            original = b'[collection]\nffb=0\ncustom_note=100%\n[wheelmap]\nsteer=Owner wheel|axis:0:0:pos\n[telemetry]\nforza=192.0.2.4:9876\n'
+            path.write_bytes(original)
+            with mock.patch.object(shell, 'CFG', str(path)):
+                state = shell.load_config()
+                state['ffb'] = 80
+                with mock.patch.object(V.os, 'replace', side_effect=OSError('disk denied')):
+                    saved, error = shell.persist_config(state)
+                self.assertFalse(saved)
+                self.assertIn('disk denied', error)
+                self.assertEqual(state['ffb'], 0)
+                self.assertEqual(path.read_bytes(), original)
+                self.assertEqual(path.with_name(path.name+'.before-settings.bak').read_bytes(), original)
+                state['scale'] = 3
+                self.assertEqual(shell.persist_config(state), (True, ''))
+                cp = configparser.ConfigParser(interpolation=None)
+                cp.read(path, encoding='utf-8')
+                self.assertEqual(cp['collection']['scale'], '3')
+                self.assertEqual(cp['collection']['custom_note'], '100%')
+                self.assertEqual(cp['wheelmap']['steer'], 'Owner wheel|axis:0:0:pos')
+                self.assertEqual(cp['telemetry']['forza'], '192.0.2.4:9876')
+                self.assertFalse(list(path.parent.glob('*.tmp')))
+
     def test_fixed_navigation_and_scrolled_row_hit_regions(self):
         self.assertEqual(V.hit_page(1280,720,1280*.39,720*.36),'ffb')
         self.assertEqual(V.hit_row(1280,720,640,720*.32,14,18),0)
