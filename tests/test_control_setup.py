@@ -86,8 +86,12 @@ class SetupTests(unittest.TestCase):
         self.assertIn('Update the collection runtime',status[3])
         self.session.ready_native=True
         status=next(row for row in self.session.rows() if row[0]=='status')
-        self.assertEqual(status[2],'Ready for next launch')
-        self.assertIn('launch a game to check',status[3])
+        self.assertEqual(status[1:3],('Controls support','Available'))
+        self.assertIn('Choose a connected device',status[3])
+        self.session.devices=[]
+        empty_status=next(row for row in self.session.rows() if row[0]=='status')
+        self.assertEqual(empty_status[1:3],('Controls support','Available'))
+        self.assertNotIn('Ready',empty_status[2])
         self.assertEqual(S.device_label(DEVICE,[DEVICE]),'Fixture wheel')
         self.assertEqual(self.path.read_bytes(), self.original)
 
@@ -522,7 +526,10 @@ class SetupTests(unittest.TestCase):
         self.session.activate('save_ffb');remember('retry')
         self.session.cancel();remember('release')
         self.session.close();self.session.supported=lambda _:True
-        self.session.open('ffb',self.now);remember('ffb-confirm-steering')
+        self.session.open('steer',self.now);self.session.devices=[]
+        self.session.error='No devices found. Connect hardware, then Refresh.'
+        remember('empty-devices-supported')
+        self.session.close();self.session.open('ffb',self.now);remember('ffb-confirm-steering')
         warning=S.ffb_readiness(dict(mode='steering',identity=None),{})
         dialog=S.LaunchWarning('crusnusa',warning)
         for selected in (1,2,3):

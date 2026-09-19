@@ -508,13 +508,13 @@ class Session:
         def add(key, label, value='', hint=''):
             rows.append((key, label, value, hint))
         ready = getattr(self, 'ready_native', False)
-        status = 'Ready for next launch' if ready else 'Update required'
-        hint = ('Save, then launch a game to check the controls. This screen previews the device and does not test forces.' if ready else
+        status = 'Available' if ready else 'Update required'
+        hint = ('This build supports device selection and calibration. Choose a connected device, save, then check the controls in game. No forces are tested here.' if ready else
                 'Update the collection runtime before using these saved controls. Your assignments stay saved; this screen can still preview the device.')
         if ready and self.role == 'ffb':
             ffb_status = ffb_readiness(self.ffb_proposal or self.ffb, self.records, inventory=self.devices)
             status, hint = ffb_status['label'], ffb_status['hint']
-        add('status', 'Setup status', status, hint)
+        add('status', 'Setup status' if self.role == 'ffb' else 'Controls support', status, hint)
         if self.mode == 'devices':
             for i, device in enumerate(self.devices):
                 add(f'device:{i}', device_label(device, self.devices), 'Choose', device.get('name', 'Device')+': select for '+title+'. Other roles remain independent.')
