@@ -28,14 +28,21 @@ Seven focused settings tests PASS; successor frontend packaging is next.
 Frontend79a192b is now deployed via mastereb78f4f (master doc has receipts).
 THIS worktree stages the NEXT undeployed F8/stop-marker integration.3preference,
 5launch-boundary,11session,7settings tests and14CPU layouts PASS. Native candidate
-0913925c858 in E:/Source/mame-ux/codex/ux-native is committed/pushed, building,
-from accepted4ac plus device-free worker observeraa9eeea7041. Full checkout/build
-underway (-j8, local build session12673); no game launch or native deployment.
+0913925c858 is frozen/attested (build finished0; export already ran), SHA69bf482f396b
+13687541b564076d9fe9313469f7ec262afdb2979dcba37e414b.137completepatches in
+patch/ux/0913925c858.patch reconstructexact mame0286->e5374f0cbdad. Candidatepath
+build/candidates/ux-0913925c858/vunit.exe. Native successor25ff0fa7947 is unbuilt:
+strict selector only, canonicalhelper and actual-function fakeSDL tests PASS.
+Read2026-09-19-strict-ffb-selection.md.3fakeCOMtestsPASS for new identityinventory.
+No game launch or native deployment. Do not overwrite/rebuild frozen091.
 Primary4df untouched. Read docs/reviews/2026-09-19-native-ffb-stop.md. New all-family
 observer journal and explicit stop replay option have7policy/4verifier/11session
 tests PASS. Existing USA event3067 allows bounded3300prefix/stop3070 after build;
-no live slot granted. Independent device-selection/calibration audit requested
-from coordinator, no overlapping source edits. Do not restart the cold build.
+no live slot granted (coordinatorqueue OutRun/Art/Drive, then headlessUSA90s).
+Audit a14d50d integrated. Coordinator model agent now owns ONLY new control_preferences.py,
+its test, fixturecontrol-calibration.json and dated contractMD in separateworktree.
+We own native/input/UI integration; no overlap. Native091plan prepared at
+results/diagnostics/ux-20260919/stop-prefix-plan (notexecuted). No build active.
 
 ## Rendering checkpoint inherited from master, September 16
 
