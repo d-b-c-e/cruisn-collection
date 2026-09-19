@@ -136,12 +136,16 @@ CRUIS'N COLLECTION
    identified by their contents. The window also health-checks the
    emulator and force feedback.
 2. Hit "Launch Collection" (or double-click CruisnCollection.exe).
-3. Have a wheel? SETTINGS > CONTROLS SETUP binds it in a minute; force
-   feedback then goes to that wheel automatically (SETTINGS > FFB STRENGTH).
+3. Have a wheel? F6 > Controls selects and calibrates each input device.
+   FFB > FFB device selects the output wheel. Existing name-only settings
+   require one identity confirmation; strength and tunes are preserved.
+   Continue without FFB disables output for one launch only.
 
-In-game: 5 = coin, 1 = start, Esc = menu (resume / CRT / cheats / exit),
-F9 = CRT toggle, F12 = quit to the launcher, Shift+F12 = quit to the
+In-game: 5 = coin, 1 = start, Esc = menu (resume / CRT / cheats / exit / stop FFB),
+F8 = stop FFB, F9 = CRT toggle, F12 = quit to the launcher, Shift+F12 = quit to the
 desktop.
+After Stop FFB or device loss, explicitly turn FFB On and launch a new game
+to resume. Reconnecting a device alone never resumes forces.
 Frontends / shortcuts: "CruisnCollection.exe --game usa" (or world,
 offroad, exotica) starts that game with no launcher screen.
 Full guide (wheel, force feedback, steering feel, troubleshooting):

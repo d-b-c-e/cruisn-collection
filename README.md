@@ -5,11 +5,15 @@ Development launcher update: **F6 → Wheel settings** now opens a saved
 Simple includes direct binding, saved FFB Off/On and telemetry destination status;
 Advanced holds detailed tuning, Display and Experiments. Switching views preserves
 your settings. Failed saves retain the prior configuration and report an error.
-The active game's **Esc** menu remains separate. Native F8 stop, device selection
-and full axis calibration are still being implemented; the launcher update does
-not establish completion of those features or rendering parity. See the
+The active game's **Esc** menu remains separate. The isolated development
+candidate now includes F8/Stop FFB, explicit wheel identity and guided axis
+calibration; live interaction and physical wheel acceptance are still pending.
+Upgrading a legacy wheel setup requires confirming the output device once.
+These changes do not establish rendering parity. See the
 [UX adoption record](docs/UX-OVERNIGHT-2026-09-16.md) for exact package/deployment
 evidence and limitations. The public download remains v0.5.0.
+The [development controls guide](docs/INSTALL.md#development-controls-candidate)
+describes the new setup and its boundaries.
 
 Enhanced PC build of the Midway Cruis'n arcade games — **Cruis'n USA, Cruis'n
 World, Off Road Challenge** (V-Unit) and **Cruis'n Exotica** (Zeus2) — built
