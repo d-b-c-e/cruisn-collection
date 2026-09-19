@@ -44,6 +44,15 @@ its test, fixturecontrol-calibration.json and dated contractMD in separateworktr
 We own native/input/UI integration; no overlap. Native091plan prepared at
 results/diagnostics/ux-20260919/stop-prefix-plan (notexecuted). No build active.
 
+UPDATE: granted091 headlessUSA replay ran ONCE and released. stop-prefix-run/report.json
+PASS3300inputs/55native512x400images exact,3829workerticks,activeall-family stop,
+324zero ticks despite227nonzero later requests; privateOffmarker/closedzero. No
+physical/4K/live-key claim or rerun. Native33d44e2c85c now includes strictselector
+and opt-in controladapter, unbuilt; frozen091unchanged. Read native-control-calibration
+review2026-09-19. Model7425655 tests24PASS; native57goldens andactualbackend/core
+pipelinev2 PASS. Next owner launcher/session transport; coordinator may assign
+exclusive collection.py/control_setup.py UI work. No activegame/build.
+
 ## Rendering checkpoint inherited from master, September 16
 
 Latest: docs/reviews/2026-09-16-exotica-lifetime-timing.md.

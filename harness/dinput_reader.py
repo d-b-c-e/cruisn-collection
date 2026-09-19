@@ -9,6 +9,7 @@ import ctypes.wintypes as wt
 import math
 
 import dinput_axes as di
+from control_preferences import canonical_identity
 
 
 class State(ctypes.Structure):
@@ -53,12 +54,10 @@ def normalized(value, low, high):
 
 
 class Reader:
-    def __init__(self, identity, window):
+    def __init__(self, record, window):
         self.api = self.device = None
         self.ranges = {}
-        self.identity = dict(identity)
-        if identity.get('backend') != 'dinput8':
-            raise ValueError('This calibration reader requires a DirectInput identity')
+        identity = self.identity = canonical_identity(record['identity'])
         self.instance = di.GUID.from_str(identity['instance_guid'])
         self.product = di.GUID.from_str(identity['product_guid'])
         try:
@@ -91,7 +90,7 @@ class Reader:
                 raise OSError('Device does not support the calibration input format')
             if di._method(self.device, 13, di._HRESULT, ctypes.c_void_p, wt.DWORD)(self.device, window, 2 | 8) != 0:
                 raise OSError('Could not read the selected device non-exclusively')
-            for slot in identity.get('axes', []):
+            for slot in record.get('axes', []):
                 index = di.SLOT_ORDER.index(slot)
                 value = Range()
                 value.header = di.DIPROPHEADER(ctypes.sizeof(value), ctypes.sizeof(di.DIPROPHEADER), index*4, 1)

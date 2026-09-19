@@ -68,3 +68,23 @@ marker; it has not executed. Requested coordinated runtime slot remains pending.
 Remaining acceptance includes live F8/menu delivery, persistence across the
 actual launcher route and attended physical wheel behavior. Stable device
 selection and ordinary calibration are separate open consumer UX requirements.
+
+## One bounded runtime qualification
+
+The coordinator granted one headless USA prefix, now completed and released.
+Local `results/diagnostics/ux-20260919/stop-prefix-run/report.json` passes3300
+recorded inputs/times and55 native512×400 snapshots with zero mismatches.
+This is native input/image regression evidence, not a new4K renderer test.
+
+The actual worker independently verifies3829 ticks and2857 source writes. At
+stop3070, constant output was-12848, the active unexpired rumble request was
+0.165080726, and all three condition effects were active. Following cancellation,
+324 worker ticks remain zero despite227 nonzero game requests. The private Off
+marker exists, all final logical sinks are zero and shutdown completes normally.
+The measured0.0334ms software acknowledgment is **not** physical stop latency.
+LiteralFFB0 and observer1 were verified in the actual invocation; SDL haptics
+were not loaded. No rerun or broader force/graphics suite was needed.
+
+Live key/menu delivery and actual actuator cancellation remain unaccepted. This
+result does not accept the newer strict-selection/calibration source, which is
+being developed separately from frozen091.

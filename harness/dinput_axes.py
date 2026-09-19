@@ -194,8 +194,9 @@ def inventory():
             metadata = device_metadata(dev.value)
             _method(dev.value, 2, ctypes.c_ulong)(dev.value)   # Release
             present.sort(key=SLOT_ORDER.index)
-            out.append(dict(backend='dinput8', name=name, product_guid=product.text(),
-                            instance_guid=guid.text(), axes=present, **metadata))
+            out.append(dict(name=name, axes=present, identity=dict(backend='dinput',
+                            product_guid=product.text(), instance_guid=guid.text(),
+                            **{key: value for key, value in metadata.items() if value is not None})))
         _method(di.value, 2, ctypes.c_ulong)(di.value)       # Release
     except Exception as e:   # any COM/ctypes trouble: caller falls back
         print(f"dinput_axes: {e}", file=sys.stderr)

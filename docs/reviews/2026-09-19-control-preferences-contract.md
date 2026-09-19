@@ -11,8 +11,11 @@ Worktree: `E:/Source/cruisn-collection-control-preferences-20260919`.
 Branch: `codex/ux-control-preferences-20260919`.
 
 The 2026-09-19 identity audit remains the rationale. Shared guidance is UX-04,
-UX-05 and UX-01-S, observed at toolkit commit
-`6f9c662e330af1ab790ca291a799265e0a50ef8a`. Device selection must use saved exact
+UX-05 and UX-01-S. The audit initially recorded the toolkit root HEAD
+`6f9c662e330af1ab790ca291a799265e0a50ef8a`; that checkout's mirrored guidance is
+newer. Integration follows published guidance12df6b3 and earlier483bebd/a84beba
+in the mirrored `docs/CONSUMER-*.md` files, not the stale root HEAD as document
+provenance. See the identity audit for observed document hashes. Device selection must use saved exact
 identity; unknown/missing/ambiguous selection is inactive. Calibration stays in
 Simple, with a proposal, readable normalized preview, Save calibration and
 Cancel. This module supplies the contract and persistence, not the renderer.
