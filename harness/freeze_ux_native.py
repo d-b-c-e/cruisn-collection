@@ -28,7 +28,11 @@ def main():
     parser.add_argument('--candidate', type=Path, required=True)
     parser.add_argument('--patch', type=Path, required=True)
     parser.add_argument('--receipt', type=Path, required=True)
+    parser.add_argument('--personal-sha256', default=PERSONAL,
+                        help='explicit expected deployed native hash; defaults to the original UX baseline')
     args = parser.parse_args()
+    if not re.fullmatch('[0-9a-f]{64}', args.personal_sha256):
+        raise ValueError('personal native hash must be an explicit lowercase SHA256')
     root = Path(__file__).resolve().parents[1]
     native = args.native.resolve()
     def git(*words, **kw):
@@ -51,7 +55,7 @@ def main():
     if status.get('returncode') != 0 or status.get('native_commit') != commit:
         raise ValueError('successful matching build completion required')
     personal = Path('E:/Source/mame-src/vunit.exe')
-    if sha256_file(personal) != PERSONAL:
+    if sha256_file(personal) != args.personal_sha256:
         raise ValueError('personal binary changed; investigate rather than replace it')
     parity = root/'patch/vunit-poc-patches.patch'
     parity_sha = sha256_file(parity)
@@ -75,14 +79,14 @@ def main():
     args.patch.parent.mkdir(parents=True, exist_ok=True)
     with args.patch.open('xb') as stream:
         stream.write(patch)
-    if sha256_file(parity) != parity_sha or sha256_file(personal) != PERSONAL:
+    if sha256_file(parity) != parity_sha or sha256_file(personal) != args.personal_sha256:
         raise ValueError('protected parity series/personal binary changed')
     receipt = dict(passed=True, native_commit=commit, tree=tree, accepted_base=BASE,
                    patch_count=count, patch_sha256=sha256_file(args.patch), patch=str(args.patch.resolve()),
                    candidate=str((args.candidate/'vunit.exe').resolve()),
                    candidate_sha256=sha256_file(args.candidate/'vunit.exe'),
                    profile_sha256=sha256_file(args.candidate/'force-profiles.ini'),
-                   personal_sha256=PERSONAL, build_log_sha256=sha256_file(args.build_log),
+                   personal_sha256=args.personal_sha256, build_log_sha256=sha256_file(args.build_log),
                    parity_patch_unchanged_sha256=parity_sha)
     with args.receipt.open('x', encoding='utf-8') as stream:
         json.dump(receipt, stream, indent=2)

@@ -45,6 +45,12 @@ from a UX worktree must not accidentally ship the independent renderer parity
 series as its reconstruction instructions. Personal calibration and the saved
 FFB stop marker are forbidden package contents.
 
+The isolated UX freeze helper checks the personal executable before and after
+export. After an authorized native deployment, pass its recorded accepted hash
+as `--personal-sha256` for a later successor freeze. Do not infer the expected
+hash from whatever happens to be installed, rerun an existing export, or overwrite
+a frozen candidate. The default remains the original native87d baseline.
+
 ## Development checks
 
 Install the test dependencies once in the Python environment used for this repo:
