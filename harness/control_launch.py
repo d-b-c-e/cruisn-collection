@@ -24,7 +24,10 @@ FEATURES = frozenset(('strict-dinput-v1', 'control-calibration-v1', 'ffb-path-v1
 def _supported(binary, binary_stat, receipt_stat):
     try:
         receipt = json.loads(Path(binary + '.features.json').read_text(encoding='utf-8'))
-        if receipt.get('version') != 1 or not FEATURES.issubset(receipt.get('features', ())):
+        if (not isinstance(receipt, dict) or type(receipt.get('version')) is not int
+                or receipt['version'] != 1 or not isinstance(receipt.get('features'), list)
+                or not all(isinstance(f, str) for f in receipt['features'])
+                or not FEATURES.issubset(receipt['features'])):
             return False
         with open(binary, 'rb') as stream:
             digest = hashlib.file_digest(stream, 'sha256').hexdigest()
@@ -150,7 +153,8 @@ def clear_control_selection(path, role, *, expected_original):
         raise ValueError('Unsupported control role.')
     def mutate(cp):
         cp.remove_section('control:'+role)
-        cp.remove_option('wheelmap', _key(cp, 'wheelmap', role))
+        if cp.has_section('wheelmap'):
+            cp.remove_option('wheelmap', _key(cp, 'wheelmap', role))
         # A tombstone overrides inherited controller mappings at launch too.
         if not cp.has_section('control_unbound'):
             cp.add_section('control_unbound')
@@ -184,7 +188,8 @@ def save_legacy_bindings(path, bindings):
             if value is not None and (not isinstance(value, str) or not value or any(c in value for c in '\r\n\0')):
                 raise ValueError('Invalid binding value.')
             cp.remove_section('control:'+role)
-            cp.remove_option('control_unbound', _key(cp, 'control_unbound', role))
+            if cp.has_section('control_unbound'):
+                cp.remove_option('control_unbound', _key(cp, 'control_unbound', role))
             key = _key(cp, 'wheelmap', role)
             if value is None:
                 cp.remove_option('wheelmap', key)

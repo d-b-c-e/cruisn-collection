@@ -89,6 +89,16 @@ class LaunchTests(unittest.TestCase):
         self.assertNotIn('steer = 1', self.path.read_text(encoding='utf-8'))
         self.assertIn('start = Wheel|btn:0', self.path.read_text(encoding='utf-8'))
 
+    def test_fresh_install_clear_and_ordinary_legacy_rebind(self):
+        L.save_legacy_bindings(self.path, {'gas': 'Pedals|axis:0:0:pos'})
+        self.assertIn('gas = Pedals|axis:0:0:pos', self.path.read_text(encoding='utf-8'))
+        self.path.unlink()
+        L.clear_control_selection(self.path, 'steer', expected_original=None)
+        self.assertIn('steer = 1', self.path.read_text(encoding='utf-8'))
+        self.path.unlink()
+        L.save_legacy_bindings(self.path, {'start': 'KEYBOARD|key:KEYCODE_1'})
+        self.assertIn('start = KEYBOARD|key:KEYCODE_1', self.path.read_text(encoding='utf-8'))
+
     def test_native_overlay_retains_button_slot_and_has_no_double_axis_transform(self):
         self.save_control()
         pedal = dict(version=1, kind='pedal', released=.2, full=1., invert=False, deadzone=.1)
