@@ -2,7 +2,28 @@
 
 All four games have host scenery implementations, but the current candidate is
 not yet accepted for release. The newer adapters are still diagnostic CLI
-features; the personal installation and public v0.5.0 package are unchanged.
+features. The public v0.5.0 package is unchanged. The September19 personal UX
+update uses the accepted renderer lineage, not these extended-scenery candidates.
+
+## September19 next decisions
+
+1. Finish the bounded live controls/FFB-stop interaction check for the separate
+   UX update. Physical force and endpoint calibration still require the owner.
+2. Run the already-prepared Mars lifetime timing candidate once when the shared
+   rig is free. Existing8209-input footage is sufficient. Compare input/time,
+   original images, completed4K images and resource/shutdown receipts before
+   interpreting the new measurements. Do not deploy it as the personal emulator.
+3. Use that measurement to decide whether lifecycle tracking explains the
+   remaining pauses. If not, retain the negative result and narrow the remaining
+   emulation/host cost; do not repeat drives for a better timing number.
+4. Return to a visibly demonstrated distance transition and interrupted-work
+   reset recovery. New York's reported artifacts/crash and broader courses
+   remain their own acceptance gaps. A common3x label alone is not release parity.
+
+The [lifetime timing review](2026-09-16-exotica-lifetime-timing.md) records the
+pending candidate and the negative immediate-screenshot-cost finding. The
+[local UX deployment record](../UX-OVERNIGHT-2026-09-16.md) records the separate
+installed build, settings preservation and remaining human acceptance.
 
 September16 update: [verified V-Unit scene startup](2026-09-16-vunit-scene-bootstrap.md)
 and [continuous operation with owned graphics shutdown](2026-09-16-vunit-continuous-runtime.md)
