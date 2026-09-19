@@ -239,3 +239,35 @@ separate from the unqualified4df renderer profiling candidate. Do not deploy the
 latest native build using the generic Personal target as part of this frontend
 stage. The staged frozen frontend, exact rollout/backup paths and retained
 configuration hashes will be recorded after build and installation.
+
+### Frontend stage deployed
+
+Source79a192b is deployed through mergeeb78f4f to the verified Stream Deck source
+target. The installed profile's Keypad7,2 opens Launch-Cruisn.bat, which starts
+`python harness/collection.py` in `E:/Source/cruisn-collection`. No button or wrapper
+was changed. This is a source-checkout rollout, not a player-installer acceptance.
+
+The launcher/game was closed. Backup is
+`E:/Source/cruisn-collection/results/diagnostics/ux-20260919-deployment/backup`.
+The22 owner configuration files are byte-exact after deployment and config-report
+execution, as are personal emulator87d and the wrapper. Seven installed runtime
+source blobs match the candidate. `before.json` and `verified.json` retain paths,
+hashes and source identity. An initial backup-script separator lookup error stopped
+before deployment; its script/failure record remain beside corrected preparation.
+The source merge required only an AGENTS documentation conflict resolution.
+
+The frozen frontend is
+`E:/Source/cruisn-collection-ux-review/results/diagnostics/ux-20260919/frontend/dist/CruisnCollection/CruisnCollection.exe`,
+SHA256 `0ed809c7adf0a65950c20c695c9ef132df5a24ab3f883236ad70bd695a252993`.
+The adjacent frontend-only development ZIP `CruisnCollection-frontend-79a192b.zip`
+has SHA256 `e8264bd579803ad7af0b10007064c5baff165d80ee9037ea6b84a2d505163c49`.
+It requires an existing runtime/assets and is not a public player package.
+`qualified.json` retains all payload hashes and build/source/config receipts.
+Fresh, legacy and saved-Off frozen fixtures pass. Five merged-source launch-boundary
+tests pass with process creation intercepted. No live menu, physical input/force,
+installer/uninstaller or broad rendering acceptance is claimed.
+
+Native F8 stop, strict identity and full calibration are the next separate stage,
+starting in `E:/Source/mame-ux` from accepted native4ac6a84b51b4. The primary native
+parity tree and its frozen profiling candidate are untouched. World menu/race-end
+passthrough remains an owner exception. The overall UX reconciliation is incomplete.

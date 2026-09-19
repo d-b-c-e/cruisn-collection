@@ -4538,3 +4538,13 @@ conflicting Windows case aliases and force-test settings now reject before
 process or directory creation. Existing safe Python-only timeout still retains
 partial output. No game, GPU, physical FFB, native build or deployment.
 See docs/reviews/2026-09-19-diagnostic-force-guard.md.
+
+### 2026-09-19 — Local launcher UX stage deployed
+
+Merged UX79a192b as eb78f4f into Stream Deck source target.22ownerconfigfiles,
+personalnative87d and wrapper retain exact bytes.7runtime source blobs match.
+Frozenfrontend SHA0ed809c7adf0a65950c20c695c9ef132df5a24ab3f883236ad70bd695a252993;
+3fresh/legacy/saved-Off fixtures PASS,7settings/5launch-boundary tests PASS.
+Development frontend ZIP/complete payload manifest retained; no public release,
+livegame/hardware acceptance or renderer deployment. Native F8/identity/calibration
+remain separate required work. See docs/UX-OVERNIGHT-2026-09-16.md.

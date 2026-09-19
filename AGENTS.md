@@ -6,10 +6,13 @@ Owner authorizes local UX deployment through coordinator
 01a07ac3-e639-7762-a698-5365d447ee7e. Personal launcher target is this source
 checkout E:/Source/cruisn-collection; UX worktree is E:/Source/cruisn-collection-ux-review.
 Read docs/UX-OVERNIGHT-2026-09-16.md and the five toolkit CONSUMER UX guides.
-Scoped frontend merge is in progress with backup under
+Scoped frontend is deployed as mergeeb78f4f, with backup under
 results/diagnostics/ux-20260919-deployment/backup (22 owner configuration files).
 Frozen UX frontend79a192b built and passes fresh/legacy/saved-Off configuration;
 SHA0ed809c7adf0a65950c20c695c9ef132df5a24ab3f883236ad70bd695a252993.
+All22 settings files and personal87d are byte-exact;7 installed runtime source
+blobs match candidate. Five launch-boundary tests PASS on merged source (no game).
+See deployment verified.json and docs/UX-OVERNIGHT-2026-09-16.md.
 Ordinary settings saves are atomic, retain backup, restore saved values on
 failure and block game launch on save failure. Seven focused settings tests PASS.
 Native F8 stop, strict device identity and full axis calibration remain required
@@ -18,6 +21,8 @@ World force passthrough. Personal native87d source is4ac6a84b51b4ae549399c81ffe1
 do not import unrelated4df renderer changes into its UX successor. No public
 release, unattended torque or live timing/game slot is authorized. CPU packaging
 and closed-target frontend deployment are authorized without another permission.
+Native UX worktree E:/Source/mame-ux, codex/ux-native, starts exactly4ac6a84b51b4;
+sparse source checkout only so far. Primary mame-src/parity branch untouched.
 
 ## Rendering checkpoint
 
