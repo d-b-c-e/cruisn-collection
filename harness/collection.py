@@ -16,6 +16,7 @@ Usage: python harness/collection.py [--shot out.png] [--windowed]
   (automation/preview; no window, no input).
 """
 import argparse
+import atexit
 import configparser
 import ctypes
 import math
@@ -36,6 +37,8 @@ import telemetry_preferences
 import ffb_preferences
 import force_options
 import cheats
+import control_setup
+import control_preferences
 try:
     import rawjoy  # noqa: E402  (Raw Input HID: >32-button wizard capture)
 except Exception:
@@ -416,7 +419,7 @@ class Shell:
         view_label, view_value = rows[0]
         self.center_text(view_label + ": " + view_value, max(16, self.h // 38), self.h * 0.305,
                          (1.0, 0.85, 0.4, 1.0) if ssel == 0 else (0.75, 0.75, 0.8, 1.0))
-        if title != "SAVE BINDINGS":
+        if title not in ("SAVE BINDINGS", "CONTROL SETUP", "FFB DEVICE"):
             for i, key in enumerate(settings_view.CORE):
                 label = SETTINGS_TITLE[key].title() if key != 'ffb' else 'FFB'
                 color = GOLD if SETTINGS_TITLE[key] == title else (0.65,0.65,0.72,1.0)
@@ -447,6 +450,7 @@ class Shell:
             self.center_text(line, max(14, self.h // 52), self.h * (0.835 + i * 0.035),
                              (1.0,0.85,0.4,1.0) if notice else (0.65,0.65,0.72,1.0))
         foot = self.footer_tex(
+            "^ v  ROWS    < >  ADJUST    ENTER  CHOOSE    ESC / F6  CANCEL" if title in ("CONTROL SETUP", "FFB DEVICE") else
             "^ v  ROWS    < >  ADJUST    TAB  PAGE    ENTER  OK    ESC / F6  CLOSE")
         fh = self.h / 36 * 1.9
         fw = foot.width * fh / foot.height
@@ -796,7 +800,14 @@ def load_config():
         tr = "sequential" if (seq and not hpat) else "hpattern"
 
     ffb = _num("ffb")
+    try:
+        controls = control_preferences.load_records(CFG)
+        control_error = ''
+    except (OSError, ValueError) as error:
+        controls, control_error = {}, str(error)
     return {**settings_view.load(sec), "crt": str(sec.get("crt", "1")) == "1",
+            "controls": controls, "control_error": control_error,
+            "ffb_device_mode": sec.get('ffb_device_mode', 'steering'),
             "bindings": dict(cp["wheelmap"]) if "wheelmap" in cp else {},
             "telemetry": dict(cp["telemetry"]) if "telemetry" in cp else {},
             "transmission": tr,
@@ -873,7 +884,8 @@ def save_wheelmap(bindings):
     the wizard didn't show (the inactive transmission mode's) and steps
     skipped with BACKSPACE keep their previous binding, so switching
     transmission modes never costs the other mode's binds."""
-    settings_view.update_section(CFG, "wheelmap", bindings, ".before-bindings.bak")
+    import control_launch
+    control_launch.save_legacy_bindings(CFG, bindings)
 
 
 def render_shot(path, page=None, game=None, selected_row=0):
@@ -1065,9 +1077,11 @@ def settings_rows(page, state, diag, version):
     bindings = state.get('bindings', {})
     back = ('back', 'Back', '', '')
     def bind(key, label):
-        value = binding_label(bindings.get(key))
+        record = state.get('controls', {}).get(key)
+        value = control_setup.record_label(record) if record else binding_label(bindings.get(key))
         return ('bind_'+key, label, value,
-                'Bind: '+value+'. Enter binds; Delete clears. Esc cancels capture without replacing the saved binding.')
+                ('Enter opens device selection, calibration and live device preview. Delete reviews Clear. ' if key in control_setup.ROLES else 'Enter binds; Delete clears. ')+
+                value+'. Cancel keeps the saved assignment.')
     if page == 'root':
         rows = [(key, SETTINGS_TITLE[key].title() if key != 'ffb' else 'FFB', 'Open', '') for key in settings_view.CORE]
         if advanced:
@@ -1075,17 +1089,18 @@ def settings_rows(page, state, diag, version):
                      ('graphics', 'Experiments', 'Shared / per game', 'Candidate options; changes apply next launch.')]
         rows += [('back', 'Close', '', '')]
     elif page == 'setup':
-        missing = next((key for key in ('steer', 'gas', 'brake') if key not in bindings), None)
+        missing = next((key for key in ('steer', 'gas', 'brake') if key not in bindings and key not in state.get('controls', {})), None)
         rows = [('readiness', 'Setup', 'Bind '+{'steer':'Steering','gas':'Throttle','brake':'Brake'}[missing]
                  if missing else 'Check axes before driving',
                  'Turn the wheel left and right, then press and release both pedals before driving.'),
-                ('wizard', 'Controls setup', 'Start', 'Bind axes and desired buttons. Skipped steps retain saved assignments.'),
-                ('controls', 'Controls', 'Open', 'Bind an individual axis or button.'),
+                ('controls', 'Controls setup', 'Open', 'Choose a device for each axis, calibrate and check the device preview.'),
+                ('buttons', 'Buttons setup', 'Open', 'Keep existing keyboard, wheel and shifter button assignments.'),
                 ('ffb', 'FFB', 'Open', 'Check strength before driving.'), back]
     elif page == 'controls':
         rows = [bind('steer', 'Steering'), bind('gas', 'Throttle'), bind('brake', 'Brake'),
                 ('buttons', 'Driving / menu / shifter buttons', 'Open', 'Independent saved button assignments.'),
                 next(row for row in _settings_rows(page, state, diag, version) if row[0]=='trans'),
+                ('wizard', 'Legacy binding setup', 'Start', 'Original button/gamepad setup. Explicitly rebinding a role replaces its calibrated assignment; skipped roles remain saved.'),
                 ('calibration', 'Game calibration', 'F2 in game', 'Arcade ADC range calibration uses the game service menu; no separate handbrake action is exposed.'), back]
     elif page == 'buttons':
         skip = {'shiftup','shiftdn'} if state.get('transmission')=='hpattern' else {'gear1','gear2','gear3','gear4'}
@@ -1121,11 +1136,13 @@ def settings_rows(page, state, diag, version):
             rows.insert(0, ('ffb_enabled', 'Force feedback',
                            'On' if state.get('ffb_enabled', state.get('ffb',50)>0) else 'Off',
                            'Applies at the next game launch. Turning Off keeps your strength and tuning.'))
-            wheel = bindings.get('steer', '').split('|',1)[0]
-            rows.insert(0, ('ffb_device', 'FFB device', wheel or 'Steering not bound',
-                           'Follows Steering. Use Controls to bind your wheel. Device replacement is not available on this page yet.'))
+            wheel = 'Explicit device' if state.get('ffb_device_mode') == 'explicit' else 'Use steering wheel'
+            rows.insert(0, ('ffb_device', 'FFB device', wheel,
+                           'Choose Use steering wheel or an explicit connected output device. Saved Off and strength remain unchanged.'))
         if page == 'support' and not advanced:
             rows=[row for row in rows if row[0]!='diag']
+    if state.get('control_error') and page in ('setup', 'controls'):
+        rows.insert(0, ('control_error', 'Controls need attention', 'Saved data unreadable', state['control_error']))
     custom = settings_view.custom_sections(state, diag)
     if not advanced:
         relevant = [(key, text) for key, text in custom if page in ('setup','root') or key==page]
@@ -1414,6 +1431,20 @@ def main():
 
     # a Stream Deck launch has no foreground rights; claim them for the shell
     shell_hwnd = int(glfw.get_win32_window(win))
+    def setup_inventory():
+        import dinput_axes
+        return dinput_axes.inventory()
+    def setup_reader(record, window):
+        import dinput_reader
+        return dinput_reader.Reader(record, window)
+    control_session = control_setup.Session(CFG, setup_inventory, setup_reader,
+        shell_hwnd, binary=run_rig.VUNIT)
+    atexit.register(control_session.close)
+    glfw.set_window_close_callback(win, lambda _: control_session.close())
+    def setup_focus(_, focused):
+        if not focused and control_session.mode != 'closed':
+            control_session.tick(time.monotonic(), focused=False)
+    glfw.set_window_focus_callback(win, setup_focus)
     fg_stop = threading.Event()
     threading.Thread(target=run_rig.enforce_foreground,
                      args=(shell_hwnd, 10), kwargs={"stop": fg_stop},
@@ -1436,10 +1467,23 @@ def main():
     glfw.set_key_callback(win, on_key)
     def on_mouse(_, button, action, mods):
         nonlocal ssel, spage, settings_error
-        if button != glfw.MOUSE_BUTTON_LEFT or action != glfw.PRESS or mode != "settings":
+        if button != glfw.MOUSE_BUTTON_LEFT or action != glfw.PRESS:
             return
         x,y = glfw.get_cursor_pos(win)
         ww,wh = glfw.get_window_size(win)
+        if mode == 'control_setup':
+            fixed = settings_view.hit_action(ww, wh, x, y)
+            if fixed:
+                actions.append(glfw.KEY_F8 if fixed == 'stop_ffb' else glfw.KEY_ESCAPE)
+                return
+            rows = control_session.rows()
+            hit = settings_view.hit_row(ww, wh, x, y, control_session.selected, len(rows))
+            if hit is not None and hit > 0:
+                control_session.selected = hit
+                actions.append(glfw.KEY_ENTER)
+            return
+        if mode != 'settings':
+            return
         rows = settings_rows(spage,state,run_rig.ffb_diag_enabled(),upd_version)
         fixed_action = settings_view.hit_action(ww,wh,x,y)
         if fixed_action:
@@ -1788,6 +1832,28 @@ def main():
     ok_pending = {}      # (jid, btn) -> hat_changes count at press
     hat_changes = 0
     rawlis = None        # Raw Input HID listener, wizard-scoped (>32 buttons)
+    setup_frame = 0
+    def setup_held():
+        # Only menu-relevant inputs from other devices. Latched shifter gears
+        # and unrelated resting axes must not prevent returning to settings.
+        if any(glfw.get_key(win, key) == glfw.PRESS for key in range(glfw.KEY_SPACE, glfw.KEY_LAST+1)):
+            return True
+        if any(glfw.get_mouse_button(win, button) == glfw.PRESS for button in range(8)):
+            return True
+        for jid in range(16):
+            if not glfw.joystick_present(jid): continue
+            if joy_hat(jid): return True
+            name = glfw.get_joystick_name(jid)
+            if isinstance(name, bytes): name = name.decode(errors='replace')
+            if any(value and ok_button(jid, name, i) for i, value in enumerate(joy_buttons(jid))):
+                return True
+        for role in ('steer', 'gas', 'brake'):
+            value, sign = nav_axis(role)
+            if value is None: continue
+            if role == 'steer' and abs(value) > .3: return True
+            if role != 'steer' and ((-value if sign == 'neg' else value) > .3 if sign in ('pos', 'neg') else abs(value) > .3):
+                return True
+        return False
     while not glfw.window_should_close(win):
         glfw.poll_events()
         presses, releases = joy_presses()
@@ -1863,14 +1929,45 @@ def main():
                 settings_error = 'FFB preference not saved: ' + str(error)
             notice = settings_error
             notice_until = time.time() + 15
+            if mode == 'control_setup':
+                control_session.message = settings_error + ' Cancel and reopen this edit before saving.'
 
-        if glfw.KEY_F6 in actions and mode != "wizard":
+        if glfw.KEY_F6 in actions and mode not in ("wizard", "control_setup"):
             actions.remove(glfw.KEY_F6)
             mode = "menu" if mode == "settings" else "settings"
             spage = settings_view.page(state.get("settings_page"), state.get("settings_view"))
             ssel = 0
 
-        if mode == "wizard":
+        if mode == 'control_setup':
+            setup_frame += 1
+            focused = bool(glfw.get_window_attrib(win, glfw.FOCUSED))
+            control_session.tick(time.monotonic(), focused=focused,
+                external_held=setup_held(), frame=setup_frame)
+            if control_session.mode not in ('closing', 'closed'):
+                for key in actions:
+                    rows = control_session.rows()
+                    if key in (glfw.KEY_ESCAPE, glfw.KEY_F6):
+                        control_session.cancel()
+                        break
+                    if key in (glfw.KEY_UP, glfw.KEY_DOWN):
+                        control_session.selected = max(1, min(len(rows)-1,
+                            control_session.selected + (1 if key == glfw.KEY_DOWN else -1)))
+                    elif key in (glfw.KEY_LEFT, glfw.KEY_RIGHT) and rows[control_session.selected][0] == 'deadzone':
+                        control_session.activate('deadzone:'+('0.01' if key == glfw.KEY_RIGHT else '-0.01'))
+                    elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER, glfw.KEY_SPACE):
+                        index = min(control_session.selected, len(rows)-1)
+                        control_session.activate(rows[index][0])
+                        if control_session.mode == 'closing': break
+            actions.clear()
+            ok_pending.clear()
+            if control_session.mode == 'closed':
+                mode = 'settings'
+                state.update(load_config())
+                nav_spec = parse_navspec(); ok_buttons = parse_okbuttons()
+                nav_state.update(dir=0, gas=True)
+                armed_at = time.time()+.5
+                settings_error = control_session.message
+        elif mode == "wizard":
             now = time.time()
             # drain the raw HID queue every iteration; only the armed
             # button-step branch below consumes it, everything else
@@ -1886,7 +1983,7 @@ def main():
                     elif key in (glfw.KEY_ENTER, glfw.KEY_KP_ENTER):
                         try:
                             save_wheelmap(wiz_bind)
-                            state.setdefault("bindings", {}).update(wiz_bind)
+                            state.update(load_config())
                             nav_spec = parse_navspec()
                             ok_buttons = parse_okbuttons()
                             mode = "settings"
@@ -2169,6 +2266,16 @@ def main():
                     toggle_diag(upd)
                     audio.blip("nav")
                 # ---- controls
+                elif ((rid in ('bind_steer', 'bind_gas', 'bind_brake') and
+                       (enter or key == glfw.KEY_DELETE)) or rid == 'ffb_device' and enter):
+                    if launching is not None or game_proc is not None and game_proc.poll() is None:
+                        settings_error = 'Wait for the game to close before device setup.'
+                    else:
+                        mode = 'control_setup'
+                        control_session.open('ffb' if rid == 'ffb_device' else rid.removeprefix('bind_'), time.monotonic())
+                        if key == glfw.KEY_DELETE: control_session.activate('clear')
+                        actions.clear(); ok_pending.clear()
+                        break
                 elif rid == "trans" and (lr or enter):
                     state["transmission"] = (
                         "sequential"
@@ -2356,7 +2463,7 @@ def main():
                         audio.blip("nav")
             actions.clear()
 
-        else:   # menu
+        elif mode == 'menu':
             for key in actions:
                 if key in (glfw.KEY_LEFT, glfw.KEY_A):
                     if row == 0:
@@ -2393,6 +2500,13 @@ def main():
         t = time.time() % 3600
         if launching is not None:
             shell.draw_loading(launching["name"], t)
+        elif mode == 'control_setup':
+            rows = control_session.rows()
+            control_session.selected = min(control_session.selected, len(rows)-1)
+            shell.draw_settings(control_session.selected,
+                'FFB DEVICE' if control_session.role == 'ffb' else 'CONTROL SETUP',
+                [(r[1], r[2]) for r in rows], rows[control_session.selected][3], t,
+                notice=control_session.error or control_session.message)
         elif mode == "wizard" and wiz_review:
             shell.draw_settings(1, "SAVE BINDINGS", [("View", "Finish or cancel to change view"),
                 ("Save bindings", "Enter"), ("Cancel / keep previous bindings", "Esc")],
@@ -2433,7 +2547,7 @@ def main():
                        notice if time.time() < notice_until else "")
         glfw.swap_buffers(win)
 
-        if launch and launching is None:
+        if launch and launching is None and mode != 'control_setup':
             # a pedal that reads pressed with nobody's foot on it (a Moza
             # load-cell brake comes up latched at full until pressed once)
             # makes the game burn out in 2nd gear with the tyres squealing
@@ -2594,6 +2708,7 @@ def main():
                                  daemon=True).start()
             launching = None
 
+    control_session.close()
     audio.stop_music()
     save_settings()
     glfw.terminate()
