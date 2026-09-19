@@ -1,12 +1,20 @@
 # Cruis'n Collection — agent instructions
 
-## Current work: release parity, September 16
+## Current work: release parity, September 19
 
 Latest: docs/reviews/2026-09-16-exotica-lifetime-timing.md.
 One remaining-profile replay8209inputs/136native/4completed4K images exact.
 Source/stage/queue phases do not explain remaining30-35ms pauses. New bounded
 lifetime callback timers native4df727db105 built/frozen/attested268patches;
 Python3/native1 PASS, live timing qualification awaiting coordinated rig slot.
+September19: coordinator explicitly says old quiet-slot hold expired and new
+request is NOT granted. Do not launch pending lifetime-profile until a fresh
+slot grant. Native/frontend candidates untouched. Offline cadence analyzer
+and3focusedtests PASS: existing3700..5690 has17>25ms intervals, none of33
+immediately after acknowledged screenshots (max19.362ms). This rules out an
+immediate screenshot stall for those17, not delayed I/O or other host costs.
+Evidence remaining-cadence-20260919.json; no extra replay. Current monitor is
+DISPLAY1 primary3840x2160 only; --compare-gl selects it from reference size.
 Previous qualified native1fccd423f39 below. Shared UX rollout also authorized
 by owner through coordinator task01a07ac3-e639-7762-a698-5365d447ee7e; read five
 CONSUMER UX documents in dbce-wheel-mod-toolkit, preserve rendering scope.
@@ -258,8 +266,8 @@ start an attended recording without a reply. Independent work still remains.
 - Exact renderer claims require zero differing pixels (100.0000%, four decimal
   places). Never assume a scene occurs on every frame or is always nonempty.
   Do not accept missing requested work just because native execution returned0.
-- Current monitor selection is DISPLAY2,3840×2160 primary; DISPLAY1,3440×1440
-  secondary. Verify actual completed dimensions. V-Unit maximized client is
+- September19 monitor inventory is DISPLAY1,3840×2160 primary only (previous
+  runs used DISPLAY2). Verify actual completed dimensions. V-Unit maximized client is
  3824×2073; Zeus covers3840×2160. Do not describe older3440 tests as final4K.
 
 ## Source, build and export

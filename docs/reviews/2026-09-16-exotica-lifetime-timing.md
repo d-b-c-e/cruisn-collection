@@ -49,3 +49,39 @@ passes unchanged; it correctly reports no lifetime event coverage because that
 older binary did not capture it. The new report is
 `timing-event-analyzer-existing-control.json`; original reports are preserved.
 No game rerun or native build was performed for this analyzer change.
+
+## Saved callback cadence, September 19
+
+The shared rig coordinator confirmed that the earlier reservation expired and
+the new timing replay is queued, not granted. The frozen native and frontend
+candidates remain untouched. Current Windows inventory contains one primary
+3840×2160 display, now named DISPLAY1. The existing Zeus `--compare-gl` path
+explicitly chooses the monitor matching the reference dimensions; it does not
+depend on the old DISPLAY2 name in the recording.
+
+`harness/analyze_frame_cadence.py` now checks an existing callback trace against
+its actual snapshot acknowledgments and saved invocation. The logger timestamps
+before taking a snapshot, so immediate snapshot cost appears in the next
+callback interval. The analyzer validates consecutive frames, finite monotonic
+host time, complete requested coverage and snapshot cadence, and preserves
+source hashes. It refuses an emulated-clock discontinuity within the requested
+window and refuses to overwrite a prior report.
+
+For the existing `remaining-profile/run`, frames3700..5690 contain1,991intervals:
+
+| Group | Intervals | Over25ms | Maximum |
+| --- | ---: | ---: | ---: |
+| All callbacks | 1,991 | 17 | 35.514ms |
+| Immediately after acknowledged snapshots | 33 | 0 | 19.362ms |
+
+This rules out immediate scheduled-screenshot work as the source of those17
+long intervals. It does not exclude delayed I/O, logging elsewhere, scheduling,
+or graphics costs, and callback time is not presented-frame or wheel latency.
+No native scene-clock alignment is inferred. The pending lifetime measurement
+still matters; even cheap install/remove callbacks would not alone rule out
+deferred address-cache effects outside their timer boundaries.
+
+Three focused tests pass: correct next-callback attribution, missing evidence
+and coverage rejection, and corrupt/discontinuous clocks or duplicate frames.
+The retained report is `remaining-cadence-20260919.json` under the timing evidence
+directory. No new game run, native build, deployment or physical FFB test.

@@ -4519,3 +4519,14 @@ Three focused timing tests pass; existing remaining-profile control reanalysis
 passes 23,736 rows with no event coverage claimed. The event report now distinguishes
 callback counts from frame/scene buckets and labels aggregate latency accurately.
 See docs/reviews/2026-09-16-exotica-lifetime-timing.md. No game/build/deployment.
+
+### 2026-09-19 — Saved callback cadence, no additional drive
+
+New analyze_frame_cadence.py and three focused tests PASS. Existing Mars
+remaining-profile3700..5690 has1,991intervals and17over25ms. None of33intervals
+immediately after acknowledged snapshots exceeds25ms (max19.362ms). This weakens
+the immediate screenshot explanation, not all instrumentation or host causes.
+Source hashes and clock/coverage checks retained in remaining-cadence-20260919.json.
+Native4df timing replay remains queued without a rig grant; old reservation expired.
+Current primary is DISPLAY1 3840x2160. No game/build/deployment/physicalFFB.
+See docs/reviews/2026-09-16-exotica-lifetime-timing.md.
