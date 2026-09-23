@@ -132,7 +132,48 @@ comparison. The anomaly is in the overlay's per-present monitor rectangle,
 which supplies the framebuffer viewport and readback size; the recorded
 evidence does not establish whether Windows transiently exposed a combined
 monitor or why the parent window's nearest monitor changed. The source
-currently reselects that rectangle each present. The two raw reports and
+at that candidate reselected that rectangle each present. The two raw reports and
 `captures.csv` files are retained under `amazon-slot-run` and
 `amazon-opcode-run`. A narrow one-monitor guard is being evaluated separately;
 do not rerun the whole drive just to seek a favorable frame.
+
+## Triple-monitor presentation trials, later September 23
+
+The host's display enumeration changed during this work. It initially showed
+three separate 2560×1440 monitors, then one 7680×1440 monitor, then one
+2560×1440 monitor, and later the merged 7680×1440 monitor again. The oversized
+Amazon frame matches the merged desktop width, but there is no timestamped
+Windows mode-change record proving exactly when the switch happened in that
+run. The renderer's rectangle is obtained from Windows monitor information;
+the failure cannot be attributed to the opcode hook from current evidence.
+
+Native `7ba534e7b5e` pins the default overlay to its launch monitor and rejects
+a later rectangle more than twice its launch dimensions. Its271-patch build and
+export are attested; no personal deployment occurred. An Amazon replay with
+this candidate **FAILS** at presented frame2646 with an owned waiting-queue
+consumer timeout, before requested images. That raw failure remains in
+`amazon-guard-run/report.json`; it does not validate the guard or condemn the
+opcode hook. The graphics log shows zero dropped quads and one dropped state
+message on teardown, and the shutdown joins after the fatal queue rejection.
+
+Native `4c6af67ae1a` adds an opt-in `MIDZ_GL_PRESENT_SIZE=WIDTH:HEIGHT`.
+At the exact physical size it uses the monitor; on an exact three-panel-wide
+merged monitor of the same height it uses the center third. Other geometries
+are rejected. The replay harness now permits this merged layout only for
+explicit Zeus `--display-size`, passes the target size to native and still
+requires completed captures at the requested size. A standalone compiled
+region test covers physical, merged, offset and invalid geometries; the
+17 focused Python display/lifetime tests pass. Its272-patch export is attested.
+
+The first Mars replay under the merged 7680×1440 desktop logs the expected
+selected rectangle, `(2560,0)..(5120,1440)`. It then **FAILS** at presented
+frame706 with an owned future-queue consumer timeout before any requested GL
+capture. The original input comparison could not complete. Preserve
+`mars-single-panel-run/report.json` and its native log. This proves the
+initial panel-selection calculation ran in the real emulator; it does **not**
+qualify a full drive, topology transition, or stable presentation. The two
+queue failures occurred at different frames and have no established common
+cause. Repeating long routes while the host changes display layout would be
+low-value. Resume a bounded visual replay when the monitor topology is stable,
+then return to the pending exact 4K candidate comparison when a 4K display is
+available. Neither candidate is promoted to the Stream Deck installation.

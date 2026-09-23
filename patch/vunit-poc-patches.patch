@@ -49770,3 +49770,167 @@ index 98acd240f6d..4246c610a74 100644
 -- 
 2.55.0.windows.3
 
+From 4c6af67ae1afb32016f28fa7f565d9817b593066 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:04:54 -0500
+Subject: [PATCH] Support fixed Zeus presentation panel across merged triple
+ displays
+
+---
+ src/devices/video/zeus2.cpp                  | 61 +++++++++++++++++---
+ src/mame/midway/cruisn/zeus_display_region.h | 35 +++++++++++
+ 2 files changed, 87 insertions(+), 9 deletions(-)
+ create mode 100644 src/mame/midway/cruisn/zeus_display_region.h
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 4246c610a74..893878f7c6b 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -30,6 +30,7 @@
+ #include <vector>
+ #include "../../mame/midway/cruisn/capture_bitmap.h"
+ #include "../../mame/midway/cruisn/capture_writer.h"
++#include "../../mame/midway/cruisn/zeus_display_region.h"
+ 
+ // MIDZ_GL in-process renderer (Windows-only, env-gated; see mzgl below)
+ #ifdef _WIN32
+@@ -789,21 +790,53 @@ void thread_main()
+ 	// the overlay covers the MONITOR, not MAME's window: MAME's gdi window
+ 	// stays small (its software stretch to 4K cost ~3% emulation speed),
+ 	// it just holds keyboard focus and DirectInput foreground under us
+-	// Keep the display chosen at launch. Re-querying the nearest monitor from
+-	// the MAME window on every present can briefly select the entire desktop
+-	// while Windows rearranges multiple displays.
++	int panel_width = 0, panel_height = 0;
++	if (char const *target = std::getenv("MIDZ_GL_PRESENT_SIZE"))
++	{
++		char trailing = 0;
++		if (sscanf(target, "%d:%d%c", &panel_width, &panel_height, &trailing) != 2 ||
++			panel_width < 320 || panel_height < 240)
++		{
++			std::fprintf(stderr, "MIDZ invalid presentation size: %s\n", target);
++			return;
++		}
++	}
++	// Without an explicit panel target, retain the launch monitor. With one,
++	// follow topology changes and select the center panel of a merged triple.
+ 	HMONITOR const overlay_monitor = MonitorFromWindow(parent, MONITOR_DEFAULTTONEAREST);
+ 	auto monitor_rect = [&]() -> RECT
+ 	{
+ 		MONITORINFO mi{};
+ 		mi.cbSize = sizeof(mi);
+-		GetMonitorInfoA(overlay_monitor, &mi);
++		HMONITOR const monitor = panel_width ? MonitorFromWindow(parent, MONITOR_DEFAULTTONEAREST) : overlay_monitor;
++		GetMonitorInfoA(monitor, &mi);
+ 		return mi.rcMonitor;
+ 	};
+-	RECT rc = monitor_rect();
++	auto panel_rect = [&](RECT monitor, RECT &selected) -> bool
++	{
++		if (!panel_width) { selected = monitor; return true; }
++		auto const region = cruisn::zeus_display::select(
++			{monitor.left, monitor.top, monitor.right, monitor.bottom}, panel_width, panel_height);
++		if (region.mode == cruisn::zeus_display::Mode::invalid) return false;
++		selected = {region.rect.left, region.rect.top, region.rect.right, region.rect.bottom};
++		return true;
++	};
++	RECT const launch_monitor_rect = monitor_rect();
++	RECT rc{};
++	if (!panel_rect(launch_monitor_rect, rc) || rc.right <= rc.left || rc.bottom <= rc.top)
++	{
++		std::fprintf(stderr, "MIDZ presentation target %dx%d does not fit launch monitor %ldx%ld\n",
++			panel_width, panel_height, long(launch_monitor_rect.right - launch_monitor_rect.left),
++			long(launch_monitor_rect.bottom - launch_monitor_rect.top));
++		return;
++	}
+ 	RECT const launch_rc = rc;
+ 	int64_t const launch_width = int64_t(launch_rc.right) - launch_rc.left;
+ 	int64_t const launch_height = int64_t(launch_rc.bottom) - launch_rc.top;
++	zlogf("overlay launch raw=%ld,%ld..%ld,%ld selected=%ld,%ld..%ld,%ld requested=%dx%d",
++		long(launch_monitor_rect.left), long(launch_monitor_rect.top),
++		long(launch_monitor_rect.right), long(launch_monitor_rect.bottom),
++		long(rc.left), long(rc.top), long(rc.right), long(rc.bottom), panel_width, panel_height);
+ 	bool bad_monitor_rect_reported = false;
+ 	HWND child = CreateWindowExA(
+ 		WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW,
+@@ -1714,22 +1747,32 @@ void thread_main()
+ 			}
+ 			s_zpause.store(menu_open ? 1 : 0);
+ 		}
+-		RECT const next_rc = monitor_rect();
++		RECT const raw_next_rc = monitor_rect();
++		RECT next_rc{};
++		bool const panel_valid = panel_rect(raw_next_rc, next_rc);
+ 		// A transient virtual-desktop rectangle must not turn a single-monitor
+ 		// overlay (and its framebuffer/readback) into a three-monitor canvas.
+ 		// Preserve the last valid rectangle; a normal resolution change on the
+ 		// same display remains possible.
+ 		int64_t const next_width = int64_t(next_rc.right) - next_rc.left;
+ 		int64_t const next_height = int64_t(next_rc.bottom) - next_rc.top;
+-		if (next_width > 0 && next_height > 0 && next_width <= launch_width * 2 && next_height <= launch_height * 2)
++		if (panel_valid && next_width > 0 && next_height > 0 &&
++			next_width <= launch_width * 2 && next_height <= launch_height * 2)
+ 		{
++			if (next_rc.left != rc.left || next_rc.top != rc.top ||
++				next_rc.right != rc.right || next_rc.bottom != rc.bottom)
++				zlogf("overlay moved raw=%ld,%ld..%ld,%ld selected=%ld,%ld..%ld,%ld",
++					long(raw_next_rc.left), long(raw_next_rc.top), long(raw_next_rc.right), long(raw_next_rc.bottom),
++					long(next_rc.left), long(next_rc.top), long(next_rc.right), long(next_rc.bottom));
+ 			rc = next_rc;
+ 			bad_monitor_rect_reported = false;
+ 		}
+ 		else if (!bad_monitor_rect_reported)
+ 		{
+-			zlogf("ignored overlay monitor resize %lldx%lld (launch %lldx%lld)",
+-				(long long)next_width, (long long)next_height, (long long)launch_width, (long long)launch_height);
++			zlogf("ignored overlay monitor resize %lldx%lld (raw %ldx%ld, launch %lldx%lld, requested %dx%d)",
++				(long long)next_width, (long long)next_height,
++				long(raw_next_rc.right - raw_next_rc.left), long(raw_next_rc.bottom - raw_next_rc.top),
++				(long long)launch_width, (long long)launch_height, panel_width, panel_height);
+ 			bad_monitor_rect_reported = true;
+ 		}
+ 		RECT crc; GetWindowRect(child, &crc);
+diff --git a/src/mame/midway/cruisn/zeus_display_region.h b/src/mame/midway/cruisn/zeus_display_region.h
+new file mode 100644
+index 00000000000..4045a259bff
+--- /dev/null
++++ b/src/mame/midway/cruisn/zeus_display_region.h
+@@ -0,0 +1,35 @@
++#pragma once
++
++#include <cstdint>
++
++namespace cruisn::zeus_display {
++
++struct Rect {
++	int32_t left, top, right, bottom;
++};
++
++enum class Mode { invalid, full_monitor, center_of_three };
++
++struct Selection {
++	Rect rect;
++	Mode mode;
++};
++
++// A merged triple display exposes one monitor to Windows. An explicit
++// single-panel target may use its center third; all other mismatches fail.
++inline Selection select(Rect monitor, int width, int height) noexcept
++{
++	int64_t const actual_width = int64_t(monitor.right) - monitor.left;
++	int64_t const actual_height = int64_t(monitor.bottom) - monitor.top;
++	if (width < 320 || height < 240 || actual_width <= 0 || actual_height <= 0)
++		return {{}, Mode::invalid};
++	if (actual_width == width && actual_height == height)
++		return {monitor, Mode::full_monitor};
++	if (actual_width == int64_t(width) * 3 && actual_height == height)
++		return {{int32_t(int64_t(monitor.left) + width), monitor.top,
++			int32_t(int64_t(monitor.left) + int64_t(width) * 2), monitor.bottom},
++			Mode::center_of_three};
++	return {{}, Mode::invalid};
++}
++
++} // namespace cruisn::zeus_display
+-- 
+2.55.0.windows.3
+

@@ -4598,3 +4598,13 @@ long intervals12->6. Amazon11260-input slot control PASS; opcode raw report
 FAIL display validation: one frame6300 was7680×1440, other six2560×1440
 images byte-exact, recorded inputs/native/shutdown match. Retain raw failure;
 investigate one-monitor overlay guard. See dated review.
+
+2026-09-23 triple-monitor overlay trials: Windows enumeration varied between
+three2560×1440 monitors, one7680×1440 merged monitor and one2560×1440 monitor.
+Native7ba guard built/exported271patches; Amazon raw replay FAIL at present2646
+with owned waiting-queue timeout before images. Native4c6 explicit2560×1440
+center-panel selection built/exported272patches. Real merged-desktop Mars log
+confirms selected(2560,0)..(5120,1440), but raw replay FAIL at present706 with
+owned future-queue timeout before images. No full visual acceptance or common
+cause claim. Compiled geometry test and17 focused Python checks PASS. Personal
+UX707/publicv0.5.0 unchanged. See dated review and retained reports.

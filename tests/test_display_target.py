@@ -36,6 +36,18 @@ class CaptureDisplayTests(unittest.TestCase):
         self.assertEqual(choose_size((3840,2160),displays)['selected']['device'],'4k')
         with self.assertRaises(ValueError):choose_size((2560,1440),displays)
 
+    def test_explicit_zeus_size_can_select_center_panel_of_exact_triple(self):
+        merged=[dict(device='surround',primary=True,size=[7680,1440])]
+        target=choose_size((2560,1440),merged,allow_merged_triple=True)
+        self.assertTrue(target['merged_center_panel'])
+        self.assertEqual(target['selected']['device'],'surround')
+        with self.assertRaises(ValueError):choose_size((2560,1440),merged)
+        for width,height in ((5120,1440),(7680,2160),(8000,1440)):
+            with self.subTest(width=width,height=height):
+                with self.assertRaises(ValueError):choose_size(
+                    (2560,1440),[dict(device='other',primary=True,size=[width,height])],
+                    allow_merged_triple=True)
+
     def test_4k_reference_cannot_silently_choose_a_1080p_monitor(self):
         reference={5400:{'size':[3840,2160]},5401:{'size':[3840,2160]}}
         available=[{'device':'secondary','primary':False,'size':[1920,1080]},

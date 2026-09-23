@@ -14,11 +14,16 @@ def parse_size(text):
     raise argparse.ArgumentTypeError('expected display WIDTH:HEIGHT, at least 320:240')
 
 
-def choose_size(size,available):
+def choose_size(size,available,*,allow_merged_triple=False):
     matching=[m for m in available if tuple(m['size'])==tuple(size)]
+    merged=False
+    if not matching and allow_merged_triple:
+        matching=[m for m in available if tuple(m['size'])==(size[0]*3,size[1])]
+        merged=bool(matching)
     if not matching:
         raise ValueError(f'No display matches requested {size[0]}x{size[1]}; captures cannot silently use another display size')
-    return {'reference_size':list(size),'selected':next((m for m in matching if m['primary']),matching[0]),'available':available}
+    return {'reference_size':list(size),'selected':next((m for m in matching if m['primary']),matching[0]),
+            'available':available,'merged_center_panel':merged}
 
 
 def apply_window_target(command, target, *, zeus_overlay=False):

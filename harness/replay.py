@@ -376,11 +376,16 @@ def main(argv=None):
         command, env = prepare_run(case, manifest, runtime, playback=True, headless=args.headless)
         if args.display_size:
             from display_target import choose_size,monitors,apply_window_target
-            target=choose_size(args.display_size,monitors())
             zeus_overlay=gl_key=='MIDZ' and env.get('MIDZ_GL')=='1' and not args.native_renderer
+            target=choose_size(args.display_size,monitors(),allow_merged_triple=zeus_overlay)
             command=apply_window_target(command,target,zeus_overlay=zeus_overlay)
+            if zeus_overlay:
+                # Keep one completed-frame size if Windows merges/splits three
+                # panels after preflight. Native selects the center third only
+                # when the actual monitor is exactly three panels wide.
+                env['MIDZ_GL_PRESENT_SIZE']=f'{args.display_size[0]}:{args.display_size[1]}'
             report['display_target']=target
-            report['display_owner_policy']='native-size owner, monitor-sized Zeus overlay' if zeus_overlay else 'maximized presentation window'
+            report['display_owner_policy']='native-size owner, fixed-size Zeus panel overlay' if zeus_overlay else 'maximized presentation window'
         if args.zeus_capture_frame is not None:
             zeus_capture_directory=runtime/'zeus-capture';zeus_capture_directory.mkdir()
             env.update(MIDZ_CAPTURE=str(zeus_capture_directory),MIDZ_CAPTURE_FRAME=str(args.zeus_capture_frame),MIDZ_CAPTURE_MINQUADS='0')

@@ -11,13 +11,19 @@ all14 next callback intervals were>25ms. Native54df isolated removal at
 completed1440 images exact. New nativebbcb opt-in fixed opcode hook preserves
 the same lifetime counts/input/visible pixels and drops completion to0.5454ms;
 next callback intervals>25ms fall14->1. Six other long intervals remain.
-270patches exported/attested, personal UX707 unchanged, FFB0. An11260-input
+272patches exported/attested through native4c6, personal UX707 unchanged, FFB0. An11260-input
 Amazon/next-race comparison passes input/native and six of seven GL images
 byte-exact; raw opcode report FAILS because frame6300 captured7680×1440 across
 three monitors. Do not recast that raw failure as a pass. Source overlay
-reselects monitor rectangle every present; a narrow guard is in progress.
-Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md. NEXT qualify overlay
-guard in isolated candidate; preserve exact4K replay for later display session.
+reselected monitor rectangle every present. Windows enumeration then alternated
+three2560 screens, one7680 merged screen and one2560 screen. Native7ba guard
+Amazon run FAILS owned queue timeout at2646 before images. Native4c6 adds
+explicit single-panel selection from a merged triple; compiled geometry and
+17Python tests PASS; its real Mars log selects center2560 rect but run FAILS
+owned queue timeout at706 before images. Preserve both raw failures; do not
+qualify full replay or blame a particular code path without evidence.
+Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md. NEXT stable-topology
+bounded replay and queue diagnosis; preserve exact4K replay for later display session.
 No personal renderer deployment.
 The previous global desktop pause is superseded by the owner's September23
 explicit autonomous continuation; serialize shared rig and keep FFB0.
