@@ -5,7 +5,8 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
-from analyze_vunit_margin_gap import projected_box, intersects, gap_distance, native_box, original_evidence
+from analyze_vunit_margin_gap import (projected_box, projected_column_span, intersects,
+                                      gap_distance, native_box, original_evidence)
 
 
 class ProjectedBoundsTests(unittest.TestCase):
@@ -28,6 +29,16 @@ class ProjectedBoundsTests(unittest.TestCase):
             gap_distance((0, 0, -1, 0), (0, 0, 1, 1))
         with self.assertRaisesRegex(ValueError,'unqualified fine/native'):
             native_box((60,956,60,964),2736,1600,4,0,400)
+
+    def test_projected_column_span_handles_tilt_and_degenerate_quad(self):
+        def quad(vertices):
+            return [0, 0] + [value & 0xffff for pair in vertices for value in pair] + [0] * 6
+
+        host = quad([(-137,146), (-141,97), (-50,106), (-47,145)])
+        ground = quad([(-203,172), (-199,165), (-43,172), (-203,172)])
+        self.assertEqual(projected_column_span(host, -71), [103.92307692307692, 145.26666666666668])
+        self.assertEqual(projected_column_span(ground, -71), [170.74358974358975, 172.0])
+        self.assertIsNone(projected_column_span(host, 0))
 
     def test_original_command_join_rejects_failed_or_unrelated_run(self):
         with tempfile.TemporaryDirectory() as directory:

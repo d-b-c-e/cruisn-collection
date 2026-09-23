@@ -27,6 +27,20 @@ def projected_box(words):
             max(coords[::2]), max(coords[1::2]))
 
 
+def projected_column_span(words, x):
+    """Continuous polygon/column intersection; a projection bound, not raster ownership."""
+    projected_box(words)  # Validate the same packet contract as projected_box.
+    coords = struct.unpack('<8h', struct.pack('<8H', *words[2:10]))
+    vertices = list(zip(coords[::2], coords[1::2]))
+    crossings = []
+    for (ax, ay), (bx, by) in zip(vertices, vertices[1:] + vertices[:1]):
+        if ax == bx == x:
+            crossings.extend((float(ay), float(by)))
+        elif min(ax, bx) <= x <= max(ax, bx) and ax != bx:
+            crossings.append(ay + (by - ay) * (x - ax) / (bx - ax))
+    return [min(crossings), max(crossings)] if crossings else None
+
+
 def intersects(a, b):
     return a[0] <= b[2] and b[0] <= a[2] and a[1] <= b[3] and b[1] <= a[3]
 
@@ -93,6 +107,7 @@ def original_evidence(original_case, reference_case, reference_report, reference
     nearby.sort(key=lambda pair: (max(box[1] - pair[1][3], pair[1][1] - box[3], 0), pair[0]))
     return dict(current_group=current, intersecting_ordinals=hits,
                 nearby_projected=[dict(ordinal=i, bounds=list(bounds),
+                                       column_span=projected_column_span([int(v) for v in selected.current[i]], box[0]),
                                        flags=int(selected.current[i][0]),
                                        palette=int(selected.current[i][1]),
                                        texture=int(selected.current[i][14]))
@@ -156,6 +171,7 @@ def analyze(case, samples, fine_box, original_case=None):
                                     scope='Conservative bottom-up fine-to-coarse interval'),
                 intersecting_packet_ordinals=hits,
                 nearby_host=[dict(ordinal=i, distance=gap_distance(boxes[i], box),
+                                  column_span=projected_column_span(packets[i][3:19], box[0]),
                                   bounds=list(boxes[i]), flags=int(packets[i][3]),
                                   palette=int(packets[i][4]), texture=int(packets[i][17]))
                              for i in nearest_host],

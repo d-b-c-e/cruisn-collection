@@ -56,6 +56,20 @@ separation agrees with the indexed sky run growing from about 40 to 102 fine
 pixels at x60. It does
 not identify a safe polygon continuation.
 
+The source analyzer now also intersects projected polygon edges with the
+sampled native column `x=-71`, rather than comparing only bounding rectangles.
+At 3120 the nearest host quad spans `y=125.00..154.11` and the nearby original
+non-backdrop quad spans `y=163.95..175.17`, leaving about 9.85 native units
+between their projected edges. At 3136, the respective spans are
+`103.92..145.27` and `170.74..172.00`, a 25.48-unit separation. The widening
+agrees with the completed indexed sky and temporal contact sheet. These are
+continuous projected outlines of selected neighboring quads, not proof that
+either quad owns every pixel along that column, or that extending either
+material would be correct. The second original quad has a different palette
+from the first, further arguing against a single copied texture strip. The
+read-only reports are `left-gap-source-analysis-v6.json` and
+`left-gap-3136-source-analysis-v2.json`; earlier reports remain intact.
+
 The 32-coarse-pixel [sky-gap screen](2026-09-23-vunit-sky-gap-screen.md)
 finds a 7,438-pixel host-bounded span at 3136 and a connected 11,649-pixel
 envelope. Its original 16-coarse-pixel threshold reported zero at this frame,
@@ -76,6 +90,7 @@ Local evidence is under `results/diagnostics/offroad-full-20260910`:
 `left-gap-temporal-control-run/report.json`,
 `left-gap-3136-source-run/report.json`,
 `left-gap-3136-source-analysis.json`,
+`left-gap-3136-source-analysis-v2.json`,
 `left-gap-temporal-screen-v4.json`,
 `left-gap-temporal-screen-contact.png`, and
 `left-gap-temporal-control-comparison-v3.png`.
