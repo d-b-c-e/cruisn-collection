@@ -57,6 +57,11 @@ byte-exact (121/3,442,032 pixels differ by >1 channel unit). Four targeted
 pen-copy fills produce visible repeated bands/cutoffs and leave the wedge tip.
 All rejected; no runtime fix. Read
 docs/reviews/2026-09-23-offroad-gap-fill-screen.md before revisiting.
+Saved3116 Off-Road billboard screen independently reconstructs all708 existing
+host packets byte-exact;469 eligible static future sources yield46 material-
+valid projected extras, none intersect the left gap (nearest103 native units).
+This rules out only that undamaged static class in this scene, not custom or
+dynamic geometry. Read the billboard section in the margin-source review.
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with

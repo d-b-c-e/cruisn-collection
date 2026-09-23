@@ -92,6 +92,26 @@ bounds tests pass for the analyzer extension. The separate [offline fill
 screen](2026-09-23-offroad-gap-fill-screen.md) rejects four visible pen-copy
 variants without changing the renderer.
 
+## Missing static billboards do not cover this opening
+
+The separately decoded Off-Road static billboard class was screened from the
+saved scene-3116 ROM and RAM using `harness/offroad_gap_billboard_screen.py`.
+Its ordinary scene reconstruction matches **all 708 captured host packets in
+order and bytes**, so the projected test uses the same source scene as the
+completed frame. Of 469 undamaged future static candidates, 423 lie beyond
+the current 3× sphere; the remaining 46 pass this source, projection and
+material screen. None of their conservative projected bounds intersects the
+sampled native gap box `(-71,158)..(-71,161)`. The nearest is 103 native
+units away, on the opposite side of the view. An independent saved-scene
+generator reports the same 469/423/46 counts.
+
+This rules out **these qualified static billboards** as a direct fill for this
+sample; it does not rule out damaged, dynamic or custom scenery or a different
+course. It supplies no new completed-pixel benefit and does not justify
+enabling the billboard adapter. The local
+`left-gap-billboard-screen.json` preserves resource, run and packet hashes,
+candidate bounds and rejection counts. No game replay or native build ran.
+
 ## Why the old Margin Fill is not a safe repair
 
 The currently tested renderer has `MIDV_GL_MARGINFILL=0` and crack fill on.
