@@ -2,6 +2,20 @@
 
 ## Current work: frontend UX deployment and rendering parity, September 19
 
+September23 owner resumed autonomous overnight work. Rig now has three
+2560×1440 displays, DISPLAY1 primary; no 4K display is connected. The frozen
+4K Mars exact comparison is still pending. A separate 1440p run of native4df
+passed8209 input/native frames, six completed1440 GL captures and owned exit,
+FFB0. Its14 lifetime-completion bursts contain1236 callbacks/206.3874ms,
+versus1.5049ms installing taps. All14 subsequent callback intervals exceed
+25ms, as at the same frame ordinals in older4K control;12 other long1440
+intervals remain. Cross-clock association, not causal attribution or matched
+4K performance. Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md.
+NEXT isolate ready-tap removal cost in an isolated profiler candidate; preserve
+exact4K replay for a later display session. No personal renderer deployment.
+The previous global desktop pause is superseded by the owner's September23
+explicit autonomous continuation; serialize shared rig and keep FFB0.
+
 Owner authorizes local UX deployment through coordinator
 01a07ac3-e639-7762-a698-5365d447ee7e. Personal Stream Deck source target is this
 checkout E:/Source/cruisn-collection. UX sourceb8d2c49 is deployed through master753b2de with
@@ -36,8 +50,8 @@ and focus recovery. Empty inventory prevented real axis preview/calibration;
 no physical wheel/force or in-game key acceptance. Finalb8 wording removes the
 misleading capability-only Ready label; no native change or repeat live test.
 verified-wording.json PASS:26source blobs/43settings/wrapper/runtime preserved.
-GLOBAL DESKTOP PAUSED after user Escape in another coordinated test. No game,
-renderer replay or live frontend launch until coordinator confirms resumption.
+The September19 global desktop pause was in force until the owner resumed
+autonomous work September23; retain its historical evidence below.
 Shared UX guidance94dc3a1 read. No new rendering scope or public release.
 
 ## Rendering checkpoint

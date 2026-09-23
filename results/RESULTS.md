@@ -4572,3 +4572,12 @@ in b8d2c49, deployed753b2de. Final162140 ZIP adbd5854/frozen10058cc0 retains707.
 Package/default/frozen-config checks PASS;29 setup tests/32 CPU layouts PASS.
 Read-only verified-wording.json:26 source blobs/43owner settings/wrapper/runtime
 PASS. Earlier receipts retained. Global desktop paused; no rendering replay.
+
+2026-09-23 Exotica Mars1440 lifetime diagnostic: owner-resumed overnight work on
+triple1440 setup; frozen4K comparison remains pending. Existing8209-input
+continuous3x replay with native4df PASS input/native, six completed1440GL captures,
+FFB0 and joined shutdown. In3700..5690,1236 completions/14bursts cost206.3874ms;
+temporary tap installs1.5049ms. All14 next callback intervals exceed25ms,
+including same frame ordinals in older4K control;12 other1440 intervals remain.
+Association is cross-clock, not causal or resolution-matched timing proof.
+Two focused analyzer tests PASS. See docs/reviews/2026-09-23-exotica-lifetime-stutter.md.
