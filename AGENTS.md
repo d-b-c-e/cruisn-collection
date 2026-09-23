@@ -2,6 +2,9 @@
 
 ## Current work: frontend UX deployment and rendering parity, September 19
 
+Read docs/reviews/2026-09-23-rendering-parity-checkpoint.md for the compact
+four-game status, remaining evidence gates and next efficient sequence.
+
 September23 Hawaii offline skirt trial REJECTED: single-edge extension makes a
 narrow hanging strip; seven-edge continuation makes a rectangular wall and
 1,092 new near-black pixels in saved World2.5 scene5900. The authored gap is
@@ -44,13 +47,14 @@ The source-backed Margin Fill screen predicts ground-column smearing, not
 geometric repair: row960 has194 sky pixels from x0 with ground pen27207 at
 boundary x344. Keep retired global Margin Fill off; no live on/off image was
 run. Read the source review for seven-row evidence.
-Reusable V-Unit sky-gap triage now screens9 saved indexed gameplay captures:
+Reusable V-Unit sky-gap triage now screens10 saved indexed gameplay captures:
 Off-Road3120 has one5841-pixel host-bounded region and915 connected ordinary
 sky pixels (6756-pixel envelope ending x228); four other Off-Road plus two World and
-two USA captures have zero by this narrow predicate. Duplicated views are not
+two USA captures have zero by this narrow predicate; later Off-Road3136 is
+positive at the32-coarse default. Duplicated views are not
 independent routes. No fill enabled. Read
 docs/reviews/2026-09-23-vunit-sky-gap-screen.md and preserve source-hashed
-local vunit-sky-gap-screen-v3.json; v2 remains the narrow first report.
+local vunit-sky-gap-screen-v5.json; v2/v3 remain narrow predecessors.
 
 Offline palette reconstruction of the saved Off-Road3120 frame is near but not
 byte-exact (121/3,442,032 pixels differ by >1 channel unit). Four targeted
@@ -75,6 +79,12 @@ Source-hashed temporal-screen-v4 reports3x changes529..37898 completed pixels
 per frame and reduces sky-like left-ROI counts by3..3377 paired pixels in all11;
 the lower blue wedge still visibly persists. These are heuristic color counts,
 not exact geometry area. Paired contact image is local. No product promotion.
+Second source-joined Off-Road3132/display3136 PASS3138 inputs and completed BMP
+byte-exact to temporal capture;689 host packets, sampled native(-71,156..158)
+remains original sky with no host bounds. Sky-gap screen default now32 coarse:
+strict7438 and connected11649 pixels at3136; former16 default missed it.
+Read2026-09-23-offroad-margin-temporal.md. First source-prepare rawFAIL from
+host-last3150 beyond drain3136 retained; corrected last3136 passed.
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with

@@ -1,5 +1,9 @@
 # Extended scenery: remaining release work
 
+The current cross-game decisions and September 23 Off-Road temporal evidence are
+in the [new parity checkpoint](2026-09-23-rendering-parity-checkpoint.md).
+The dated findings below retain their original scope and failures.
+
 All four games have host scenery implementations, but the current candidate is
 not yet accepted for release. The newer adapters are still diagnostic CLI
 features. The public v0.5.0 package is unchanged. The September19 personal UX
