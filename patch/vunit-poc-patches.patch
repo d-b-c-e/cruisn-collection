@@ -50102,3 +50102,300 @@ index 233f1202d6d..042a00a4f0f 100644
 -- 
 2.55.0.windows.3
 
+From 71ff55b0021b5a180ec634efa47960b59d3c28b1 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:30:55 -0500
+Subject: [PATCH] Locate Zeus consumer stalls by processing stage
+
+---
+ src/devices/video/zeus2.cpp | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 042a00a4f0f..1a6fa0450c9 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -553,6 +553,13 @@ static uint8_t *s_ringbuf = nullptr;
+ static std::atomic<uint64_t> s_rw{0}, s_rr{0};
+ // Current decoded record, for bounded backpressure diagnostics only.
+ static std::atomic<uint64_t> s_consumer_record{0};
++enum { STAGE_START, STAGE_WINDOW, STAGE_RING, STAGE_FLUSH, STAGE_MIRROR, STAGE_PRESENT, STAGE_IDLE };
++static std::atomic<unsigned> s_consumer_stage{STAGE_START};
++static const char *stage_name(unsigned stage)
++{
++	static const char *names[] = { "start", "window", "ring", "flush", "mirror", "present", "idle" };
++	return stage < sizeof(names) / sizeof(names[0]) ? names[stage] : "unknown";
++}
+ static std::atomic<bool> s_on{false}, s_stopz{false}, s_donez{true};
+ static std::atomic<uint32_t> s_presented_frame{0};
+ // Host-only diagnostics. A single atomic preserves the phase/start-time pair
+@@ -615,7 +622,8 @@ static bool ring_push2(uint32_t type, const void *p1, uint32_t n1,
+ 			s_drops_state.fetch_add(1);
+ 			s_stopz.store(true);
+ 			uint64_t const active = s_consumer_record.load(std::memory_order_relaxed);
+-			osd_printf_info("MIDZ consumer record: type=%u bytes=%u\n",
++			osd_printf_info("MIDZ consumer state: stage=%s type=%u bytes=%u\n",
++				stage_name(s_consumer_stage.load(std::memory_order_relaxed)),
+ 				unsigned(active >> 32), unsigned(active));
+ 			osd_printf_error("MIDZ render stream failed: consumer timeout; native presentation fallback; "
+ 				"presented=%u type=%u need=%llu queued=%llu capacity=%llu consumer_bytes=%llu wait_ms=%llu phase=%s phase_ms=%llu\n",
+@@ -1699,6 +1707,7 @@ void thread_main()
+ 	ULONGLONG menu_test_next = 0;
+ 	while (IsWindow(parent) && !s_stopz.load())
+ 	{
++		s_consumer_stage.store(STAGE_WINDOW, std::memory_order_relaxed);
+ 		MSG msg;
+ 		while (PeekMessageA(&msg, child, 0, 0, PM_REMOVE)) DispatchMessageA(&msg);
+ 
+@@ -1807,6 +1816,7 @@ void thread_main()
+ 			if (n > first) memcpy((uint8_t *)dst + first, s_ringbuf, n - first);
+ 			r += n;
+ 		};
++		s_consumer_stage.store(STAGE_RING, std::memory_order_relaxed);
+ 		while (r < w)
+ 		{
+ 			uint32_t hdr[2];
+@@ -2052,18 +2062,24 @@ void thread_main()
+             if (frame_ready) break; // never consume the next frame before presenting this one
+ 		}
+ 		s_rr.store(r, std::memory_order_release);
++		s_consumer_stage.store(STAGE_FLUSH, std::memory_order_relaxed);
+ 		flush();
+ 
+         if(frame_ready && !endpoint_order.complete()) {
+ 			private_failed=true;s_stopz.store(true);zlogf("endpoint model incomplete at frame boundary");break;
+ 		}
+-        if(frame_ready && !mirror_frame(completed_frame)) {
++		s_consumer_stage.store(STAGE_MIRROR, std::memory_order_relaxed);
++		if(frame_ready && !mirror_frame(completed_frame)) {
+ 			mirror_failed=true;s_stopz.store(true);zlogf("depth mirror comparison failed at frame%u",completed_frame);break;
+ 		}
+ 		if(frame_ready && !stream_boundary(completed_frame)) {
+ 			stream_failed=true;s_stopz.store(true);zlogf("Zeus command capture boundary failure");break;
+ 		}
+-		if (!frame_ready && !menu_open && !ui_changed) { Sleep(1); continue; }
++		if (!frame_ready && !menu_open && !ui_changed) {
++			s_consumer_stage.store(STAGE_IDLE, std::memory_order_relaxed);
++			Sleep(1); continue;
++		}
++		s_consumer_stage.store(STAGE_PRESENT, std::memory_order_relaxed);
+         if (frame_ready && !stall_applied && stall_frame > 0 && completed_frame >= uint32_t(stall_frame))
+         {
+             stall_applied = true;
+@@ -2410,6 +2426,7 @@ void start()
+ 	s_donez.store(false);
+ 	s_presented_frame.store(0);
+ 	s_consumer_record.store(0);
++	s_consumer_stage.store(STAGE_START);
+ 	s_phase_trace = std::getenv("MIDZ_GL_LOG") != nullptr;
+ 	s_phase_stamp.store(0);
+ 	begin_phase(PHASE_OTHER);
+-- 
+2.55.0.windows.3
+
+From 5b6898731a24e76156345ffdeceda392339945eb Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:33:32 -0500
+Subject: [PATCH] Pinpoint Zeus presentation call stalls
+
+---
+ src/devices/video/zeus2.cpp | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 1a6fa0450c9..593deb487d0 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -553,11 +553,13 @@ static uint8_t *s_ringbuf = nullptr;
+ static std::atomic<uint64_t> s_rw{0}, s_rr{0};
+ // Current decoded record, for bounded backpressure diagnostics only.
+ static std::atomic<uint64_t> s_consumer_record{0};
+-enum { STAGE_START, STAGE_WINDOW, STAGE_RING, STAGE_FLUSH, STAGE_MIRROR, STAGE_PRESENT, STAGE_IDLE };
++enum { STAGE_START, STAGE_WINDOW, STAGE_RING, STAGE_FLUSH, STAGE_MIRROR,
++	STAGE_PRESENT_SETUP, STAGE_PRESENT_DRAW, STAGE_PRESENT_AFTER_DRAW, STAGE_IDLE };
+ static std::atomic<unsigned> s_consumer_stage{STAGE_START};
+ static const char *stage_name(unsigned stage)
+ {
+-	static const char *names[] = { "start", "window", "ring", "flush", "mirror", "present", "idle" };
++	static const char *names[] = { "start", "window", "ring", "flush", "mirror",
++		"present_setup", "present_draw", "present_after_draw", "idle" };
+ 	return stage < sizeof(names) / sizeof(names[0]) ? names[stage] : "unknown";
+ }
+ static std::atomic<bool> s_on{false}, s_stopz{false}, s_donez{true};
+@@ -2079,7 +2081,7 @@ void thread_main()
+ 			s_consumer_stage.store(STAGE_IDLE, std::memory_order_relaxed);
+ 			Sleep(1); continue;
+ 		}
+-		s_consumer_stage.store(STAGE_PRESENT, std::memory_order_relaxed);
++		s_consumer_stage.store(STAGE_PRESENT_SETUP, std::memory_order_relaxed);
+         if (frame_ready && !stall_applied && stall_frame > 0 && completed_frame >= uint32_t(stall_frame))
+         {
+             stall_applied = true;
+@@ -2138,7 +2140,9 @@ void thread_main()
+ 		}
+ 		gl.Viewport((cw - vw) / 2, (ch - vh) / 2, vw, vh);
+ 		gl.BindVertexArray(vao_empty);
++		s_consumer_stage.store(STAGE_PRESENT_DRAW, std::memory_order_relaxed);
+ 		gl.DrawArrays(0x0004, 0, 3);
++		s_consumer_stage.store(STAGE_PRESENT_AFTER_DRAW, std::memory_order_relaxed);
+ 
+ 		if (menu_open)
+ 		{
+-- 
+2.55.0.windows.3
+
+From ea70010e1a759d08c3da019d691ee966fdf7ec16 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:35:46 -0500
+Subject: [PATCH] Identify Zeus presentation setup stalls by GL call boundary
+
+---
+ src/devices/video/zeus2.cpp | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 593deb487d0..69d46d30d8b 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -554,12 +554,14 @@ static std::atomic<uint64_t> s_rw{0}, s_rr{0};
+ // Current decoded record, for bounded backpressure diagnostics only.
+ static std::atomic<uint64_t> s_consumer_record{0};
+ enum { STAGE_START, STAGE_WINDOW, STAGE_RING, STAGE_FLUSH, STAGE_MIRROR,
+-	STAGE_PRESENT_SETUP, STAGE_PRESENT_DRAW, STAGE_PRESENT_AFTER_DRAW, STAGE_IDLE };
++	STAGE_PRESENT_SETUP, STAGE_PRESENT_BIND, STAGE_PRESENT_CLEAR,
++	STAGE_PRESENT_UNIFORMS, STAGE_PRESENT_DRAW, STAGE_PRESENT_AFTER_DRAW, STAGE_IDLE };
+ static std::atomic<unsigned> s_consumer_stage{STAGE_START};
+ static const char *stage_name(unsigned stage)
+ {
+ 	static const char *names[] = { "start", "window", "ring", "flush", "mirror",
+-		"present_setup", "present_draw", "present_after_draw", "idle" };
++		"present_setup", "present_bind", "present_clear", "present_uniforms",
++		"present_draw", "present_after_draw", "idle" };
+ 	return stage < sizeof(names) / sizeof(names[0]) ? names[stage] : "unknown";
+ }
+ static std::atomic<bool> s_on{false}, s_stopz{false}, s_donez{true};
+@@ -2115,16 +2117,19 @@ void thread_main()
+ 		if (frame_ready) had_quads_iter = had_writes_iter = false;
+ 
+ 		int const cw = rc.right - rc.left, ch = rc.bottom - rc.top;
++		s_consumer_stage.store(STAGE_PRESENT_BIND, std::memory_order_relaxed);
+ 		gl.BindFramebuffer(FRAMEBUFFER, 0);
+ 		gl.Disable(GLDEPTH_TEST);
+ 		gl.Disable(GLSCISSOR_TEST);
+ 		gl.Viewport(0, 0, cw, ch);
+ 		gl.ClearColor(0, 0, 0, 1);
++		s_consumer_stage.store(STAGE_PRESENT_CLEAR, std::memory_order_relaxed);
+ 		gl.Clear(0x4000);
+ 		// PAR ~1.0: 512x400 4:3-ish; 16:9 spans the full CWW canvas
+ 		float const aspect = wide_mode ? (16.0f / 9.0f) : (4.0f / 3.0f);
+ 		int vw = cw, vh = int(cw / aspect + 0.5f);
+ 		if (vh > ch) { vh = ch; vw = int(ch * aspect + 0.5f); }
++		s_consumer_stage.store(STAGE_PRESENT_UNIFORMS, std::memory_order_relaxed);
+ 		gl.UseProgram(present);
+ 		gl.Uniform1i(uBaseRow, int((zb38 >> 16) & (CH - 1)));
+ 		gl.Uniform1i(uCrt, crt ? 1 : 0);
+-- 
+2.55.0.windows.3
+
+From cc74b52777aae1c1ef94647d4f52e2853f455d84 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:37:58 -0500
+Subject: [PATCH] Cache Zeus presentation uniforms and isolate GL setup stages
+
+---
+ src/devices/video/zeus2.cpp | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 69d46d30d8b..d45a3b76aba 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -555,12 +555,14 @@ static std::atomic<uint64_t> s_rw{0}, s_rr{0};
+ static std::atomic<uint64_t> s_consumer_record{0};
+ enum { STAGE_START, STAGE_WINDOW, STAGE_RING, STAGE_FLUSH, STAGE_MIRROR,
+ 	STAGE_PRESENT_SETUP, STAGE_PRESENT_BIND, STAGE_PRESENT_CLEAR,
+-	STAGE_PRESENT_UNIFORMS, STAGE_PRESENT_DRAW, STAGE_PRESENT_AFTER_DRAW, STAGE_IDLE };
++	STAGE_PRESENT_PROGRAM, STAGE_PRESENT_VALUES, STAGE_PRESENT_TEXTURE,
++	STAGE_PRESENT_DRAW, STAGE_PRESENT_AFTER_DRAW, STAGE_IDLE };
+ static std::atomic<unsigned> s_consumer_stage{STAGE_START};
+ static const char *stage_name(unsigned stage)
+ {
+ 	static const char *names[] = { "start", "window", "ring", "flush", "mirror",
+-		"present_setup", "present_bind", "present_clear", "present_uniforms",
++		"present_setup", "present_bind", "present_clear", "present_program",
++		"present_values", "present_texture",
+ 		"present_draw", "present_after_draw", "idle" };
+ 	return stage < sizeof(names) / sizeof(names[0]) ? names[stage] : "unknown";
+ }
+@@ -1022,6 +1024,8 @@ void thread_main()
+ 	gl.Uniform1f(gl.GetUniformLocation(present, "uSrcH"), float(DISPH));
+ 	int const uBaseRow = gl.GetUniformLocation(present, "uBaseRow");
+ 	int const uCrt = gl.GetUniformLocation(present, "uCrt");
++	int const uSampW = gl.GetUniformLocation(present, "uSampW");
++	int const uSampX0 = gl.GetUniformLocation(present, "uSampX0");
+ 
+ 	// menu (labels shared with the V-Unit overlay)
+ 	struct Label { uint tex; int w, h; };
+@@ -2129,14 +2133,16 @@ void thread_main()
+ 		float const aspect = wide_mode ? (16.0f / 9.0f) : (4.0f / 3.0f);
+ 		int vw = cw, vh = int(cw / aspect + 0.5f);
+ 		if (vh > ch) { vh = ch; vw = int(ch * aspect + 0.5f); }
+-		s_consumer_stage.store(STAGE_PRESENT_UNIFORMS, std::memory_order_relaxed);
++		s_consumer_stage.store(STAGE_PRESENT_PROGRAM, std::memory_order_relaxed);
+ 		gl.UseProgram(present);
++		s_consumer_stage.store(STAGE_PRESENT_VALUES, std::memory_order_relaxed);
+ 		gl.Uniform1i(uBaseRow, int((zb38 >> 16) & (CH - 1)));
+ 		gl.Uniform1i(uCrt, crt ? 1 : 0);
+-		gl.Uniform1f(gl.GetUniformLocation(present, "uSampW"),
++		gl.Uniform1f(uSampW,
+ 			wide_mode ? float(CWW) : 512.0f);
+-		gl.Uniform1f(gl.GetUniformLocation(present, "uSampX0"),
++		gl.Uniform1f(uSampX0,
+ 			wide_mode ? 0.0f : float(MARGIN));
++		s_consumer_stage.store(STAGE_PRESENT_TEXTURE, std::memory_order_relaxed);
+ 		gl.ActiveTexture(TEXTURE0 + 3);
+ 		gl.BindTexture(0x0DE1, future_present && (!retire_frame || completed_frame<retire_frame)?mirror_color:fbTex);
+ 		if(retire_frame && completed_frame>=retire_frame && !retire_presented) {
+-- 
+2.55.0.windows.3
+
+From 0068ac8586746bba370131001e61299e64a197bb Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:40:27 -0500
+Subject: [PATCH] Restore default Zeus ring ownership after negative trial
+
+---
+ src/devices/video/zeus2.cpp | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index d45a3b76aba..88f5de0b0e5 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -1832,11 +1832,8 @@ void thread_main()
+ 			rec.resize(hdr[1]);
+ 			if (hdr[1]) ring_get(rec.data(), hdr[1]);
+ 			r = (r + 7) & ~7ull;
+-			// The record now lives in this thread's private buffer. Release its
+-			// ring bytes immediately, even if validation/drawing takes a long time;
+-			// the producer must never wait for the entire frame batch to finish.
+-			s_rr.store(r, std::memory_order_release);
+-			s_consumer_record.store((uint64_t(hdr[0]) << 32) | hdr[1], std::memory_order_relaxed);
++			if (s_phase_trace)
++				s_consumer_record.store((uint64_t(hdr[0]) << 32) | hdr[1], std::memory_order_relaxed);
+ 			if(stream_active) {
+ 				if(hdr[0]<1 || hdr[0]>6 || hdr[1]>(16u<<20)+8 || stream_count>=131072 ||
+ 					stream_records.size()+8+rec.size()>64u*1024u*1024u) {
+@@ -2066,7 +2063,8 @@ void thread_main()
+ 				break;
+ 			}
+ 			if(private_failed)break;
+-			s_consumer_record.store(0, std::memory_order_relaxed);
++			if (s_phase_trace)
++				s_consumer_record.store(0, std::memory_order_relaxed);
+             if (frame_ready) break; // never consume the next frame before presenting this one
+ 		}
+ 		s_rr.store(r, std::memory_order_release);
+-- 
+2.55.0.windows.3
+
