@@ -7,6 +7,22 @@ uploaded ZIP was downloaded/hash-verified. See [v0.5.0 approval](releases/v0.5.0
 Its 41 human-coverage waivers remain accepted limitations, not new observed passes.
 The v0.4.0 discussion below documents the earlier baseline and reusable protocol.
 
+**Extended-drawing candidate status, September 23:** continuous3x remains a
+diagnostic candidate, separate from the published v0.5.0 and the personal
+Stream Deck build. Recorded race transitions now cover all four games, but
+outer-distance visibility, broader courses and the attended wheel checks remain
+open. The opt-in Exotica fixed completion hook substantially reduced one
+measured stutter source while preserving six completed1440p Mars images. A
+later triple-monitor test exposed an oversized7680×1440 capture and then
+repeatable graphics-consumer stalls under a merged7680-wide desktop; no full
+merged-mode drive qualifies. Before promoting extended rendering, use a stable
+single-panel or4K display for one bounded exact input/completed-pixel/shutdown
+comparison, then revisit World New York and Exotica's outer sightlines. The
+[current parity assessment](reviews/2026-09-15-parity-remaining-work.md) and
+[September23 diagnostic](reviews/2026-09-23-exotica-lifetime-stutter.md) retain
+the route-specific evidence and failed reports. Keep fresh-install distance
+experiments off until a visible benefit and regression scope justify a change.
+
 Owner: maintainer + attended testers. Updated 2026-09-08. **v0.4.0 is published**
 with maintainer sign-off and all renewed automated gates passing.
 See [release evidence](../results/proof/2026-09-08-v0.4.0-release/README.md).
@@ -70,6 +86,7 @@ distribution review and keep personal configuration out of release packages.
 | Force feedback | Toolkit signal fixtures and per-game source traces; automated output always off | Correct direction, comparable default weight, distinct car/wall impacts, no oscillation; pause/exit releases torque |
 | Telemetry | Actual private-loopback UDP compared with independent game-memory probes in all seven cases; active coverage and speed thresholds; World/Exotica force-state checks | All four games: auto/manual gears, loaded upshift rev drops, speed/tach gauges, SimHub/Buttkicker response; menus/end-of-race clear appropriately |
 | Graphics | Default full widescreen + CRT; native exactness and completed GL evidence | Selection screens and a whole race: margins, sky, shadows, seams, sharp turns, collisions; no visibility defect that prevents driving |
+| Display topology | Check captured dimensions against the selected screen and reject unsupported merged-triple candidates before launch | On the intended main panel, verify 1440p and 4K modes separately; if triple-monitor spanning is supported, confirm the game stays on its selected single panel through a complete race |
 | Menu/exit | V-Unit real menu-handler diagnostic and controller remapping | Physical Esc opens menu/resumes/exits; F12 fallback; clean relaunch; Exotica menu separately |
 | Package/upgrade | Exact ZIP/file hashes; four frozen boots, menu pages, setup/support; real Windows updater and preservation checks | Clean Windows profile without Python, no development paths; import/upgrade retains calibration, bindings and scores |
 
