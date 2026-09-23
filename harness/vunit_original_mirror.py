@@ -97,6 +97,8 @@ def configure(args, rom, settings, frames):
             raise ValueError('fade metadata requires qualified far coverage')
         settings[prefix+'FADE_METADATA'] = '1'
         result.update(fade_metadata=True, first=first, last=last)
+        if settings.get('MIDV_HOST_RUNTIME') == 'continuous':
+            result['metadata_runtime_stop'] = frames - 1
         if game != 'world':
             result['metadata_game'] = game
     elif settings.get(prefix+'FADE_METADATA', '0') != '0':
@@ -227,7 +229,11 @@ def verify_metadata(trial, directory):
         roads += policy
     with (directory/f'{game}-host-scenes.csv').open(encoding='utf-8', newline='') as stream:
         scenes = list(csv.DictReader(stream))
-    if not scenes or any(not trial['first'] <= int(s['frame']) <= trial['last'] for s in scenes):
+    if not trial['first'] <= captured_frame <= trial['last']:
+        raise ValueError('fade metadata capture outside selected interval')
+    runtime_stop = trial.get('metadata_runtime_stop')
+    if (not scenes or any(not (1 <= int(s['frame']) <= runtime_stop if runtime_stop is not None
+                              else trial['first'] <= int(s['frame']) <= trial['last']) for s in scenes)):
         raise ValueError('fade scene interval differs')
     totals = tuple(map(int, receipt[0]))
     expected_totals = (sum(int(s['quads']) for s in scenes), sum(int(s['road_quads']) for s in scenes) if game == 'world' else 0, len(packets))

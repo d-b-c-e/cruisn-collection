@@ -4680,3 +4680,13 @@ extended host contributes32066 left-band pixels but does not close the opening.
 Initial quiet-preset+mirror launch FAILS immediately, preserved; new preflight
 rejects it. Capture-mode replay PASS;15 focused tests PASS. See
 docs/reviews/2026-09-23-offroad-left-margin-gap.md. No renderer fix/deploy.
+
+2026-09-23 Off-Road matched margin source: initial3118 metadata capture raw
+FAILS because visible completed3120 page1 belongs to source3116; continuous
+scene-window verifier was also too narrow. Corrected bounded3116/3120 run PASSes
+3200inputs/native,708exact host packets, completed physical1440 capture and
+page ownership. At fine(60,960), original/extended sky pen6970 is unchanged;
+at y940 ground, at y990 auxiliary terrain. No captured host quad bounding box
+covers native(15,159..162). Reusable source-coverage analyzer saves
+left-gap-source-analysis.json;17 focused tests PASS. This is one local gap, no
+accepted visual fix. See docs/reviews/2026-09-23-offroad-left-margin-source.md.

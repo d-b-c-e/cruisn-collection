@@ -151,6 +151,8 @@ class OriginalMirrorTests(unittest.TestCase):
                         MIDV_OFFROAD_HOST_DISTANCE='3', MIDV_OFFROAD_HOST_FIRST='80', MIDV_OFFROAD_HOST_LAST='150')
         trial = configure(args, 'offroadc', settings.copy(), 200)
         self.assertEqual(trial['metadata_game'], 'offroad')
+        self.assertEqual(configure(args, 'offroadc', dict(settings, MIDV_HOST_RUNTIME='continuous'), 200)
+                         ['metadata_runtime_stop'], 199)
         for changes in ({'MIDV_OFFROAD_HOST_DISTANCE':'2'}, {'MIDV_OFFROAD_HOST_CLIP_ADMISSION':'1'}):
             with self.assertRaises(ValueError):
                 configure(args, 'offroadc', settings | changes, 200)
@@ -174,6 +176,27 @@ class OriginalMirrorTests(unittest.TestCase):
                 else:
                     with self.assertRaises(ValueError):
                         verify_metadata(trial,root)
+
+    def test_continuous_metadata_counts_scenes_outside_capture_window(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);quad=list(range(16))
+            words=[F.integer(z).store() for z in (503, 141888, 167308, 191039)]
+            raw=b'VFD1'+struct.pack('<IHH16HI4II',100,513,3,*quad,191040,*words,0)
+            for name in ('producer','consumer'):
+                (root/f'vunit-fade-{name}.bin').write_bytes(raw)
+            fingerprint=14695981039346656037
+            for byte in struct.pack('<16H',*quad):
+                fingerprint=((fingerprint^byte)*1099511628211)&0xffffffffffffffff
+            rows='frame,page,quads,quads_hash\n'+''.join(
+                f'{frame},513,1,{fingerprint:016x}\n' for frame in (70,100,170))
+            (root/'offroad-host-scenes.csv').write_text(rows,encoding='utf-8')
+            (root/'stderr.log').write_text('MIDV_FADE_METADATA packets=3 roads=0 captured=1\n',encoding='utf-8')
+            trial=dict(frame=100,first=80,last=150,fade_metadata=True,metadata_game='offroad')
+            with self.assertRaisesRegex(ValueError,'scene interval'):
+                verify_metadata(trial,root)
+            self.assertEqual(verify_metadata(dict(trial,metadata_runtime_stop=199),root)['total_packets'],3)
+            with self.assertRaisesRegex(ValueError,'scene interval'):
+                verify_metadata(dict(trial,metadata_runtime_stop=169),root)
 
     def test_metadata_boundaries_depths_order_and_consumer_coverage(self):
         with tempfile.TemporaryDirectory() as root:
