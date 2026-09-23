@@ -9,6 +9,12 @@ not fixed by more distance or a generic skirt. Read
 docs/reviews/2026-09-23-world-hawaii-skirt-trial.md before revisiting. No
 native build, live game or deployment resulted.
 
+Completed-frame `gl_frames.py --details` now emits near-black and 3×3 spatial
+review hints. Existing Exotica Mars, World Hawaii and Off-Road El Paso saved
+pairs were reanalyzed without gameplay; intended changes still fail exact
+equality. Read docs/reviews/2026-09-23-completed-frame-triage.md. Dark pixels
+in added scenery are not automatically a texture defect or a parity pass.
+
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with
 DISPLAY1 primary. Earlier it alternated a7680×1440 merged monitor and one

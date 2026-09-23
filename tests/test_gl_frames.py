@@ -137,6 +137,27 @@ class CompletedGlTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'filename was reused'):
                 read_completed_frames(b)
 
+    def test_dark_pixel_triage_keeps_exact_comparison_strict(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp); a,b=root/'a',root/'b'
+            self.fixture(a, (30,), color='white')
+            self.fixture(b, (30,), color='white')
+            with Image.open(a/'0.png') as im:
+                im.putpixel((0,0),(0,0,0))
+                im.save(a/'0.png')
+            with Image.open(b/'0.png') as im:
+                im.putpixel((1,1),(3,3,3))
+                im.save(b/'0.png')
+            report=compare_completed_frames(a,b,(30,),details=True)
+            self.assertFalse(report['passed'])
+            self.assertEqual(report['different_frames'],[30])
+            row=report['pixel_changes'][0]
+            self.assertEqual(row['changed_pixels'],2)
+            self.assertEqual(row['candidate_new_near_black'],1)
+            self.assertEqual(row['candidate_recovered_near_black'],1)
+            self.assertEqual(row['new_near_black_bounds_xyxy_exclusive'],[1,1,2,2])
+            self.assertEqual(sum(map(sum,row['changed_pixels_by_thirds'])),2)
+
     def test_sparse_cadence_matches_global_native_frames(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

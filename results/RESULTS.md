@@ -4665,3 +4665,10 @@ reconstructs the original indexed scene but yields a rectangular wall and
 hanging strip with98 new near-black pixels. Both visual candidates REJECTED;
 no game, native build or personal deployment. See
 docs/reviews/2026-09-23-world-hawaii-skirt-trial.md and local trial images.
+
+2026-09-23 completed-frame triage: focused12 gl_frames tests PASS. Saved
+Exotica Mars2x/3x compares15frames,4different,0candidate-new near-black;
+World2.5 Hawaii far-bound pair12/4/237; Off-Road El Paso2x/3x66/22/1397.
+All intended pixel changes retain exact-comparison FAIL. Dark counts are review
+hints, not artifact verdicts. No game launched. See
+docs/reviews/2026-09-23-completed-frame-triage.md.

@@ -128,6 +128,10 @@ def compare_completed_frames(reference, candidate, expected=None, details=False)
     result['size_mismatches']=[{'frame':n,'reference':a[n]['size'],'candidate':b[n]['size']}
                               for n in different if a[n]['size']!=b[n]['size']]
     if details:
+        result['pixel_triage_scope'] = ('Review hints only: candidate-new near-black means all RGB channels '
+            '<=8 where the reference has a channel >=32; recovered is the reverse. '
+            'Thirds partition the full completed image. Dark scenery can be intentional, '
+            'and matching black defects in both images are invisible to this comparison.')
         import numpy as np
         from PIL import Image
         paths = [capture_paths(p) for p in (reference, candidate)]
@@ -142,8 +146,28 @@ def compare_completed_frames(reference, candidate, expected=None, details=False)
                         arrays.append(np.asarray(im.convert('RGB')))
                 mask = np.any(arrays[0] != arrays[1], axis=2)
                 ys, xs = np.where(mask)
+                # Review hints only: legitimate shaded scenery can also be dark.
+                # Require the other image to be visibly brighter so ordinary
+                # near-black variation is not counted as a new black artifact.
+                a_dark = np.all(arrays[0] <= 8, axis=2)
+                b_dark = np.all(arrays[1] <= 8, axis=2)
+                a_bright = np.any(arrays[0] >= 32, axis=2)
+                b_bright = np.any(arrays[1] >= 32, axis=2)
+                new_dark = b_dark & a_bright
+                recovered_dark = a_dark & b_bright
+                dark_y, dark_x = np.where(new_dark)
+                height, width = mask.shape
+                spatial = []
+                for y0, y1 in ((0, height//3), (height//3, 2*height//3), (2*height//3, height)):
+                    spatial.append([int(mask[y0:y1, x0:x1].sum()) for x0, x1 in
+                                    ((0, width//3), (width//3, 2*width//3), (2*width//3, width))])
                 row.update(changed_pixels=int(mask.sum()),
-                    bounds_xyxy_exclusive=[int(xs.min()), int(ys.min()), int(xs.max())+1, int(ys.max())+1])
+                    bounds_xyxy_exclusive=[int(xs.min()), int(ys.min()), int(xs.max())+1, int(ys.max())+1],
+                    candidate_new_near_black=int(new_dark.sum()),
+                    candidate_recovered_near_black=int(recovered_dark.sum()),
+                    new_near_black_bounds_xyxy_exclusive=[int(dark_x.min()), int(dark_y.min()),
+                        int(dark_x.max())+1, int(dark_y.max())+1] if len(dark_x) else None,
+                    changed_pixels_by_thirds=spatial)
             else:
                 row['size_mismatch'] = True
             result['pixel_changes'].append(row)
