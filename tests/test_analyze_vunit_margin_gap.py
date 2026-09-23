@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
-from analyze_vunit_margin_gap import projected_box, intersects, native_box, original_evidence
+from analyze_vunit_margin_gap import projected_box, intersects, gap_distance, native_box, original_evidence
 
 
 class ProjectedBoundsTests(unittest.TestCase):
@@ -21,6 +21,11 @@ class ProjectedBoundsTests(unittest.TestCase):
     def test_fine_sample_uses_widescreen_margin_and_bottom_up_y(self):
         self.assertEqual(native_box((60,956,60,964),2736,1600,4,86,400),(-71,158,-71,161))
         self.assertFalse(intersects((-109,122,-69,156),(-71,158,-71,161)))
+        self.assertEqual(gap_distance((-109,122,-69,156),(-71,158,-71,161)), 2)
+        self.assertEqual(gap_distance((-117,163,-3,176),(-71,158,-71,161)), 2)
+        self.assertEqual(gap_distance((-71,158,-71,161),(-71,158,-71,161)), 0)
+        with self.assertRaisesRegex(ValueError, 'invalid projected rectangle'):
+            gap_distance((0, 0, -1, 0), (0, 0, 1, 1))
         with self.assertRaisesRegex(ValueError,'unqualified fine/native'):
             native_box((60,956,60,964),2736,1600,4,0,400)
 

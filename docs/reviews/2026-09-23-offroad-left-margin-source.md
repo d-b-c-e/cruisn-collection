@@ -73,12 +73,24 @@ stretching it would need material and transparency checks before any live trial.
 `harness/analyze_vunit_margin_gap.py --original-run` validates the separate
 replay's case, executable, completed GL image, all mirror planes and DMA
 capture receipt before reporting original and host projected bounds. The
-combined `left-gap-source-analysis-v4.json` is the current report;
+combined `left-gap-source-analysis-v5.json` is the current report;
 `left-gap-source-analysis-v2.json` remains the correct host-only predecessor.
 The first combined report v3 lacked an independent original-run source-hash
 check; it is retained, and v4 adds that check. Twenty-four focused
 analyzer/mirror/runtime/original-scene tests pass. No
 source or renderer correction is accepted from this single frame.
+
+The v5 report also ranks neighboring projected host packets by rectangle gap.
+Host quad 470 is two native units above the sampled opening, with masked
+texture mode `0x900`, palette 27648 and texture 14336. Original near-ground
+quad 66 starts two units below, with mode `0x100`, palette 18688 and texture
+10513. Their source materials differ, so even a geometrically plausible direct
+weld is not a texture-continuity fix. The ranking is conservative bounds, not
+proof of exact visible-pixel ownership; the saved indexed page establishes the
+actual color and coverage at the sampled fine pixels. Three focused projected-
+bounds tests pass for the analyzer extension. The separate [offline fill
+screen](2026-09-23-offroad-gap-fill-screen.md) rejects four visible pen-copy
+variants without changing the renderer.
 
 ## Why the old Margin Fill is not a safe repair
 

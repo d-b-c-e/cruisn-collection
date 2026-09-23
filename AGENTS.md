@@ -37,7 +37,8 @@ prefixes. Original completed3120 pixels and8indexed planes are exact to the
 matched run;499 page1 original commands span3116..3117. At native(-71,158..161)
 only backdrop command1 intersects; nearest original ground starts y163, host
 masked-texture quad470 ends y156. Combined source report is
-left-gap-source-analysis-v4.json;
+left-gap-source-analysis-v5.json; neighboring host470 and original ground66
+are each two native units from the sample but use different palettes/textures;
 no renderer fix or general gap policy qualified.
 The source-backed Margin Fill screen predicts ground-column smearing, not
 geometric repair: row960 has194 sky pixels from x0 with ground pen27207 at

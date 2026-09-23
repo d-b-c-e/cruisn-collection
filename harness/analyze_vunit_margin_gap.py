@@ -31,6 +31,15 @@ def intersects(a, b):
     return a[0] <= b[2] and b[0] <= a[2] and a[1] <= b[3] and b[1] <= a[3]
 
 
+def gap_distance(a, b):
+    """Manhattan distance between conservative projected rectangles."""
+    if any(rect[0] > rect[2] or rect[1] > rect[3] for rect in (a, b)):
+        raise ValueError('invalid projected rectangle')
+    dx = max(a[0] - b[2], b[0] - a[2], 0)
+    dy = max(a[1] - b[3], b[1] - a[3], 0)
+    return dx + dy
+
+
 def native_box(fine_box, width, height, scale, margin, native_height):
     if (not 1 <= scale <= 6 or not 0 <= margin <= 256 or native_height not in (400, 401)
             or width != (512 + 2 * margin) * scale or height != native_height * scale
@@ -124,6 +133,7 @@ def analyze(case, samples, fine_box, original_case=None):
     box = native_box(fine_box, width, height, scale, margin, native_height)
     boxes = [projected_box(p[3:19]) for p in packets]
     hits = [i for i, candidate in enumerate(boxes) if intersects(candidate, box)]
+    nearest_host = sorted(range(len(packets)), key=lambda i: (gap_distance(boxes[i], box), i))[:20]
     prefix = f'vunit-mirror-{mirror["frame"]}-page{page}-plane'
     paths = [run/(prefix+str(n)+'.bin') for n in range(4)]
     extended = np.fromfile(paths[0], dtype='<u2').reshape(height, width)
@@ -145,6 +155,10 @@ def analyze(case, samples, fine_box, original_case=None):
                 native_mapping=dict(scale=scale, margin=margin, height=native_height,
                                     scope='Conservative bottom-up fine-to-coarse interval'),
                 intersecting_packet_ordinals=hits,
+                nearby_host=[dict(ordinal=i, distance=gap_distance(boxes[i], box),
+                                  bounds=list(boxes[i]), flags=int(packets[i][3]),
+                                  palette=int(packets[i][4]), texture=int(packets[i][17]))
+                             for i in nearest_host],
                 samples=pixels, evidence_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                                                 for p in (report_path,run/'invocation.json',*paths,
                                                           run/'vunit-fade-producer.bin')})
