@@ -50,7 +50,10 @@ show backdrop sky; at `(60,1030)` auxiliary terrain replaces ordinary sky.
 The sampled center maps to native `(-71,156)..(-71,158)`. No host projected
 bounds intersect that small box; the nearest host masked-texture quad ends at
 y146, while an original non-backdrop polygon begins at y165 in that x band.
-This corroborates a wider surface separation as the turn progresses. It does
+At 3120, the analogous host bound ended at y156 and original near ground
+began at y163. These are conservative projected bounds, but their widening
+separation agrees with the indexed sky run growing from about 40 to 102 fine
+pixels at x60. It does
 not identify a safe polygon continuation.
 
 The 32-coarse-pixel [sky-gap screen](2026-09-23-vunit-sky-gap-screen.md)
