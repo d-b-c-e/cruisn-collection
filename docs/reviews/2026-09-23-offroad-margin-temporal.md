@@ -39,6 +39,28 @@ screen](2026-09-23-offroad-gap-fill-screen.md) rejects simple copies. A broad
 static billboard admission also cannot fill the sampled opening. The current
 3× distance remains a diagnostic candidate, not a shipped treatment.
 
+## Second source-joined frame
+
+One additional bounded capture joins source 3132 to completed page/frame 3136,
+including the original DMA journal and indexed mirror in the same run. It
+passes the 3,138-input prefix and normal worker shutdown; the completed
+3136 BMP is byte-exact to the earlier temporal 3× capture. The source has
+689 host packets. At fine `(60,970)`, the extended and original index both
+show backdrop sky; at `(60,1030)` auxiliary terrain replaces ordinary sky.
+The sampled center maps to native `(-71,156)..(-71,158)`. No host projected
+bounds intersect that small box; the nearest host masked-texture quad ends at
+y146, while an original non-backdrop polygon begins at y165 in that x band.
+This corroborates a wider surface separation as the turn progresses. It does
+not identify a safe polygon continuation.
+
+The 32-coarse-pixel [sky-gap screen](2026-09-23-vunit-sky-gap-screen.md)
+finds a 7,438-pixel host-bounded span at 3136 and a connected 11,649-pixel
+envelope. Its original 16-coarse-pixel threshold reported zero at this frame,
+because the sky run reaches about 102 fine pixels. The first 3136 prepare-only
+plan failed the existing finite-scene-bounds preflight: host last 3150 exceeded
+the requested drain at 3136. The corrected plan ends host observation at
+3136; no game ran from the failed plan, and its raw report is retained.
+
 The first prepare-only plan accidentally used the shared preset's Off-Road
 host-last frame 2250, which would have disabled host drawing during this turn.
 No game ran from it. A second prepare-only attempt correctly rejected an
@@ -49,6 +71,8 @@ apart from capture/journal policy. These preflight attempts are retained.
 Local evidence is under `results/diagnostics/offroad-full-20260910`:
 `left-gap-temporal-run/report.json`,
 `left-gap-temporal-control-run/report.json`,
+`left-gap-3136-source-run/report.json`,
+`left-gap-3136-source-analysis.json`,
 `left-gap-temporal-screen-v4.json`,
 `left-gap-temporal-screen-contact.png`, and
 `left-gap-temporal-control-comparison-v3.png`.

@@ -936,4 +936,7 @@ The replay must contain both a completed `vunit-mirror.json` and same-run
 `capture/quads.bin`; the screen verifies their receipts and never launches a
 game. Its short backdrop-between-surfaces regions are diagnostic candidates,
 not an accepted fill or a substitute for temporal/visual review. See
-[the saved nine-image screen](reviews/2026-09-23-vunit-sky-gap-screen.md).
+[the saved ten-image screen](reviews/2026-09-23-vunit-sky-gap-screen.md).
+The default maximum gap is now 32 coarse pixels, which catches the longer
+El Paso 3136 opening; the report also shows ordinary sky runs connected to a
+host-bounded seed. Disconnected ordinary sky remains unclassified.

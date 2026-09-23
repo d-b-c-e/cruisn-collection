@@ -108,7 +108,7 @@ def components(mask):
     return output
 
 
-def screen(case, max_gap_coarse=16):
+def screen(case, max_gap_coarse=32):
     case = Path(case)
     if not 1 <= max_gap_coarse <= 32:
         raise ValueError('gap span must be 1..32 coarse pixels')
@@ -181,7 +181,7 @@ def screen(case, max_gap_coarse=16):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('cases', nargs='+', type=Path)
-    parser.add_argument('--max-gap-coarse', type=int, default=16)
+    parser.add_argument('--max-gap-coarse', type=int, default=32)
     parser.add_argument('--report', type=Path, required=True)
     args = parser.parse_args()
     if args.report.exists():

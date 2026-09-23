@@ -51,6 +51,14 @@ class SkyGapScreenTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'connected gap masks'):
             connected_envelopes(host, ordinary[:, :5])
 
+    def test_wider_turn_gap_needs_more_than_sixteen_coarse_pixels(self):
+        sky = np.zeros((132, 2), dtype=bool)
+        tags = np.ones((132, 2), dtype='u1')
+        sky[10:112, 0] = True
+        tags[112, 0] = 5
+        self.assertEqual(int(candidates(sky, tags, 1, 2, 64).sum()), 0)
+        self.assertEqual(int(candidates(sky, tags, 1, 2, 128).sum()), 102)
+
 
 if __name__ == '__main__':
     unittest.main()
