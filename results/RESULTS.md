@@ -4654,5 +4654,7 @@ amazon-stable1440-run reports; preserve the previous raw failures.
 2026-09-23 replay topology instrumentation: opt-in --display-watch records
 ordered monitor-layout transitions during emulator execution and rejects a
 requested stable-display trial on a change or polling failure. Ordinary replays
-are unchanged. Nine focused display/watch contracts PASS; no live watched game
-run, transient-under-500ms detection or merged-mode acceptance is claimed.
+are unchanged. Ten focused display/watch contracts PASS. A short180-frame
+ordinary Exotica replay also PASSes original input/time/native comparison with
+FFB0, stable physical1440 preflight and zero observed layout changes. No
+extended-renderer, transient-under-500ms or merged-mode acceptance is claimed.

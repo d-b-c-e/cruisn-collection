@@ -335,6 +335,11 @@ execution, compares the first sample with replay preflight, records transitions
 and fails a requested stable-display trial if the layout changes or enumeration
 fails. Polls can miss a shorter transition, so
 completed-frame size checks still apply. Nine focused display/watch contracts
-pass; this watcher has not been used in a live replay and adds no polling to
-ordinary runs. It is for future diagnosis if the host layout starts changing
-again, without repeating an already-qualified route now.
+passed before a later worker-poll contract made ten. One short ordinary
+180-frame Exotica replay then passed input/time/native comparison and the
+scheduled soft resets with `--display-watch`, physical DISPLAY1, FFB0 and no
+observed topology change. This smoke uses the ordinary renderer and does not
+qualify the extended renderer, a long drive or transitions shorter than a
+poll. Local evidence is `display-watch-smoke-prepared/launch-plan.json` and
+`display-watch-smoke-run/report.json`. The watch adds no polling to ordinary
+replays and is for future diagnosis if the host layout starts changing again.

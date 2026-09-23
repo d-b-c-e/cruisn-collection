@@ -20,7 +20,8 @@ pass with the optional opcode hook, exact inputs and six and seven completed
 images byte-exact to their controls, respectively. The frozen4K comparison remains,
 followed by World New York and Exotica's outer sightlines. Optional
 `--display-watch` records monitor topology changes during a diagnostic replay;
-it has focused tests but has not been qualified in a live game. The
+ten focused tests and a short ordinary-renderer Exotica smoke pass, while a
+long extended-renderer watched route remains untested. The
 [current parity assessment](reviews/2026-09-15-parity-remaining-work.md) and
 [September23 diagnostic](reviews/2026-09-23-exotica-lifetime-stutter.md) retain
 the route-specific evidence and failed reports. Keep fresh-install distance

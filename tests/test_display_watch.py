@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import time
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
@@ -46,6 +47,16 @@ class DisplayWatchTests(unittest.TestCase):
         report = watch.close()
         self.assertFalse(report['passed'])
         self.assertIn('no monitors', report['error'])
+
+    def test_worker_polls_after_initial_sample(self):
+        watch = DisplayWatch(poll=lambda: [display('main', 2560)], interval=0.005)
+        watch.start()
+        deadline = time.monotonic() + 1
+        while watch._polls < 2 and time.monotonic() < deadline:
+            time.sleep(0.005)
+        report = watch.close()
+        self.assertTrue(report['passed'])
+        self.assertGreaterEqual(report['polls'], 2)
 
 
 if __name__ == '__main__':

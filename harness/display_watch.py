@@ -26,6 +26,7 @@ class DisplayWatch:
         self._previous = None
         self._expected = topology(expected) if expected is not None else None
         self._samples = []
+        self._polls = 0
         self._error = None
 
     def sample(self):
@@ -33,6 +34,7 @@ class DisplayWatch:
             current = topology(self.poll())
             if not current:
                 raise ValueError('no monitors enumerated')
+            self._polls += 1
         except (OSError, ValueError, AttributeError, TypeError, KeyError) as exc:
             self._error = f'{type(exc).__name__}: {exc}'
             self._stop.set()
@@ -72,6 +74,7 @@ class DisplayWatch:
         return {
             'passed': self._error is None and initial_matches and len(self._samples) == 1,
             'initial_matches_preflight': initial_matches,
+            'polls': self._polls,
             'changes': max(0, len(self._samples) - 1),
             'samples': self._samples,
             'error': self._error,

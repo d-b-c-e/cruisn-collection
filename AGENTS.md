@@ -40,8 +40,10 @@ parity issue; avoid more repeated full drives without a changed hypothesis.
 Personal UX707, publicv0.5.0 and force settings are unchanged; all diagnostic
 runs use literal MIDV_FFB=0. Read
 docs/reviews/2026-09-23-exotica-lifetime-stutter.md for exact local evidence.
-The replay harness also has opt-in --display-watch topology polling; its
-synthetic contracts pass, but no watched game run has yet been claimed.
+The replay harness also has opt-in --display-watch topology polling. Ten focused
+display/watch contracts and one short180-frame ordinary Exotica replay pass
+with FFB0, stable physical1440 preflight and zero observed layout changes;
+that smoke has no extended-renderer or long-drive claim.
 Merged-display replay preflight now rejects old Zeus binaries without the
 single-panel capability; bbcb fails prepare-only,006 prepares, no game run.
 Merged-center selection requires explicit --zeus-merged-panel; without it,
