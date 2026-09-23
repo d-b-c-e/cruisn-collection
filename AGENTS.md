@@ -45,11 +45,12 @@ geometric repair: row960 has194 sky pixels from x0 with ground pen27207 at
 boundary x344. Keep retired global Margin Fill off; no live on/off image was
 run. Read the source review for seven-row evidence.
 Reusable V-Unit sky-gap triage now screens9 saved indexed gameplay captures:
-Off-Road3120 has one5841-pixel region, four other Off-Road plus two World and
+Off-Road3120 has one5841-pixel host-bounded region and915 connected ordinary
+sky pixels (6756-pixel envelope ending x228); four other Off-Road plus two World and
 two USA captures have zero by this narrow predicate. Duplicated views are not
 independent routes. No fill enabled. Read
 docs/reviews/2026-09-23-vunit-sky-gap-screen.md and preserve source-hashed
-local vunit-sky-gap-screen-v2.json.
+local vunit-sky-gap-screen-v3.json; v2 remains the narrow first report.
 
 Offline palette reconstruction of the saved Off-Road3120 frame is near but not
 byte-exact (121/3,442,032 pixels differ by >1 channel unit). Four targeted

@@ -9,15 +9,22 @@ immediately above and non-sky original content immediately below. It validates
 the mirror, original command receipt, native scale and margin before reporting
 candidate connected regions. The default maximum run is 16 coarse pixels.
 
-The source-hashed local `vunit-sky-gap-screen-v2.json` screens nine saved
+The source-hashed local `vunit-sky-gap-screen-v3.json` screens nine saved
 completed views without launching MAME:
 
-| Game / saved view | Candidate pixels | Regions |
+| Game / saved view | Host-bounded pixels | Connected sky envelope |
 | --- | ---: | ---: |
-| Off-Road El Paso, completed 3120 | 5,841 | 1, fine bbox `(0,941)..(163,982)` |
+| Off-Road El Paso, completed 3120 | 5,841 | 6,756 pixels; fine bbox `(0,941)..(228,982)` |
 | Off-Road, completed 2520/2524/3360/3360 | 0 each | 0 |
 | World 2.4 Germany, completed 7280/7340 | 0 each | 0 |
 | USA, completed 3501 in two controls | 0 each | 0 |
+
+The extra 915 pixels are adjacent ordinary-only sky runs that connect directly
+to the verified host-bounded region. This includes the right tip left visible
+by the four [offline fill trials](2026-09-23-offroad-gap-fill-screen.md).
+Ordinary-only pockets elsewhere in the nine views are deliberately excluded;
+without a host-bounded seed they are too ambiguous to label as this gap.
+The v2 report retains the narrower first screen.
 
 The positive region covers the exact blue opening investigated in
 [the source review](2026-09-23-offroad-left-margin-source.md). Four Off-Road
@@ -37,6 +44,6 @@ sampled sky band, explaining why simply enabling it is not the next step.
 
 The saved local one-scene scripts `left-gap-marginfill-screen.py` and
 `left-gap-gap-policy-screen.py` remain exploratory evidence. The reusable
-`harness/screen_vunit_sky_gaps.py` has two focused candidate/component tests;
+`harness/screen_vunit_sky_gaps.py` has three focused candidate/component tests;
 the adjacent ten-test analyzer/original-scene selection run passes. No MAME
 binary, default setting, installed build or public release changed.

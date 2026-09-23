@@ -5,7 +5,7 @@ import unittest
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
-from screen_vunit_sky_gaps import candidates, components
+from screen_vunit_sky_gaps import candidates, components, ordinary_extensions, connected_envelopes
 
 
 class SkyGapScreenTests(unittest.TestCase):
@@ -34,6 +34,22 @@ class SkyGapScreenTests(unittest.TestCase):
         tags[5, 0] = 5
         found = candidates(sky, tags, 1, 4, 4)
         self.assertEqual(components(found), [dict(pixels=3, box=[4, 2, 4, 4])])
+
+    def test_only_ordinary_sky_connected_to_a_host_gap_extends_envelope(self):
+        sky = np.zeros((10, 6), dtype=bool)
+        tags = np.ones((10, 6), dtype='u1')
+        sky[3:6, 0:2] = True
+        sky[3:6, 5] = True
+        tags[6, 0] = 5
+        host = candidates(sky, tags, 2, 5, 4)
+        ordinary = ordinary_extensions(sky, tags, 2, 5, 4)
+        self.assertEqual(int(host.sum()), 3)
+        self.assertEqual(int(ordinary.sum()), 6)
+        self.assertEqual(connected_envelopes(host, ordinary),
+                         [dict(pixels=6, host_bounded_pixels=3,
+                               adjoining_ordinary_pixels=3, box=[0, 3, 1, 5])])
+        with self.assertRaisesRegex(ValueError, 'connected gap masks'):
+            connected_envelopes(host, ordinary[:, :5])
 
 
 if __name__ == '__main__':

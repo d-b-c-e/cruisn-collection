@@ -35,6 +35,56 @@ def candidates(sky, tags, left, right, max_gap):
     return result
 
 
+def ordinary_extensions(sky, tags, left, right, max_gap):
+    """Sky between two ordinary materials; meaningful only beside a host gap."""
+    if (sky.shape != tags.shape or sky.ndim != 2 or
+            not 0 <= left <= right <= sky.shape[1] or max_gap < 1):
+        raise ValueError('invalid gap-screen geometry')
+    height, width = sky.shape
+    result = np.zeros((height, width), dtype=bool)
+    for x in list(range(left)) + list(range(right, width)):
+        edges = np.flatnonzero(np.diff(np.r_[False, sky[:, x], False].astype('i1')))
+        for low, high in edges.reshape(-1, 2):
+            if (low < 1 or high >= height or high - low > max_gap or
+                    tags[low - 1, x] != 1 or sky[low - 1, x] or
+                    tags[high, x] != 1 or sky[high, x]):
+                continue
+            result[low:high, x] = True
+    return result
+
+
+def connected_envelopes(host_gap, ordinary):
+    if host_gap.shape != ordinary.shape or host_gap.ndim != 2:
+        raise ValueError('invalid connected gap masks')
+    remaining = set(zip(*np.where(host_gap | ordinary)))
+    output = []
+    while remaining:
+        start = remaining.pop()
+        stack = [start]
+        xmin = xmax = start[1]
+        ymin = ymax = start[0]
+        host_pixels = other_pixels = 0
+        while stack:
+            y, x = stack.pop()
+            xmin, xmax = min(xmin, x), max(xmax, x)
+            ymin, ymax = min(ymin, y), max(ymax, y)
+            if host_gap[y, x]:
+                host_pixels += 1
+            else:
+                other_pixels += 1
+            for point in ((y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)):
+                if point in remaining:
+                    remaining.remove(point)
+                    stack.append(point)
+        if host_pixels:
+            output.append(dict(pixels=host_pixels + other_pixels,
+                               host_bounded_pixels=host_pixels,
+                               adjoining_ordinary_pixels=other_pixels,
+                               box=list(map(int, (xmin, ymin, xmax, ymax)))))
+    output.sort(key=lambda item: (-item['pixels'], item['box']))
+    return output
+
+
 def components(mask):
     remaining = set(zip(*np.where(mask)))
     output = []
@@ -109,16 +159,22 @@ def screen(case, max_gap_coarse=16):
     found = candidates(sky, tags, margin_fine, width - margin_fine,
                        max_gap_coarse * scale)
     regions = components(found)
+    adjacent = ordinary_extensions(sky, tags, margin_fine, width - margin_fine,
+                                   max_gap_coarse * scale)
+    envelopes = connected_envelopes(found, adjacent)
     return dict(case=str(case.resolve()), rom=rom, completed_frame=mirror['frame'],
                 visible_page=page, width=width, height=height,
                 sky_palettes=sorted(sky_palettes), max_gap_coarse=max_gap_coarse,
                 total_pixels=int(found.sum()), components=len(regions),
                 largest=regions[:20],
+                connected_envelopes=envelopes[:20],
+                connected_envelope_pixels=sum(item['pixels'] for item in envelopes),
                 source_sha256={path.name: hashlib.sha256(path.read_bytes()).hexdigest()
                                for path in (report_path, invocation, index_path, mask_path,
                                             journal)},
                 scope='Possible sky intervals in 16:9 margins with auxiliary above and '
-                      'non-sky original below; saved-frame screen only. No visual repair or '
+                      'non-sky original below, plus only ordinary sky intervals connected '
+                      'to them; saved-frame screen only. No visual repair or '
                       'cross-game acceptance.')
 
 
