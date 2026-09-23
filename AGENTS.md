@@ -39,6 +39,10 @@ only backdrop command1 intersects; nearest original ground starts y163, host
 masked-texture quad470 ends y156. Combined source report is
 left-gap-source-analysis-v4.json;
 no renderer fix or general gap policy qualified.
+The source-backed Margin Fill screen predicts ground-column smearing, not
+geometric repair: row960 has194 sky pixels from x0 with ground pen27207 at
+boundary x344. Keep retired global Margin Fill off; no live on/off image was
+run. Read the source review for seven-row evidence.
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with

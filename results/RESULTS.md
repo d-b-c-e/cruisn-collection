@@ -4703,3 +4703,11 @@ nearest ground begins y163 and masked-texture host quad470 ends y156. Current
 report left-gap-source-analysis-v4.json verifies the cross-run join and source
 hash.24 focused tests
 PASS. This does not qualify a fill; see the dated source review.
+
+2026-09-23 Off-Road Margin Fill source screen: original backdrop class0x7f
+would be suppressed in the widescreen margin if enabled. At completed3120
+fine row960, sky occupies194 left-prefix pixels while the4:3 boundary x344
+is ground pen27207. Seven rows show146..224 sky-prefix pixels and ground
+at the boundary. Native shader policy predicts a ground-column smear, not
+terrain reconstruction. Local left-gap-marginfill-screen.json/script retained;
+no live on/off replay or renderer change. See the source review.

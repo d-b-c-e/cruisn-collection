@@ -80,6 +80,23 @@ check; it is retained, and v4 adds that check. Twenty-four focused
 analyzer/mirror/runtime/original-scene tests pass. No
 source or renderer correction is accepted from this single frame.
 
+## Why the old Margin Fill is not a safe repair
+
+The currently tested renderer has `MIDV_GL_MARGINFILL=0` and crack fill on.
+The original backdrop command is the verified Off-Road sky class: texture-base
+low byte `0x7f`, projected wider than 200 coarse pixels. The native shader's
+Margin Fill path suppresses that class throughout the widescreen margin, then
+redirects unwritten pixels to the first covered 4:3 boundary column. At fine
+row 960, 194 consecutive left-margin pixels are sky indices beginning at x=0,
+while boundary x=344 is ground pen 27207. Across seven nearby rows the sky
+prefix is 146–224 pixels and every boundary sample is ground. Thus the current
+policy would replace this blue opening with a horizontal run of one ground
+column per row, a plausible **smear**, not restored terrain geometry. This is
+a shader-source prediction against saved indexed pixels, not a live Margin
+Fill on/off image. It supports leaving the retired global setting off while
+investigating a source-aware join. Local reproducible screen:
+`left-gap-marginfill-screen.py` and `left-gap-marginfill-screen.json`.
+
 Local evidence is under `results/diagnostics/offroad-full-20260910`:
 `left-gap-source-run/report.json` retains the verifier failure on the wrong
 capture window, while `left-gap-matched-run/report.json` passes. The latter
