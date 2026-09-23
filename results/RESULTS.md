@@ -4623,3 +4623,12 @@ present17 before screenshots: future packet cannot enter full ring; only24bytes
 published during922ms, consumer reports no active record, broad other phase
 531ms. Per-record cursor publication alone does not solve this host stall.
 See dated review; no product/default promotion.
+
+2026-09-23 stage-qualified failures under merged7680 desktop: native71f
+frame17 timeout while presenting, native5b6 before fullscreen draw, nativeea7
+during uniform setup. Each raw bounded prefix FAILS before image capture.
+Nativecc7 caches two presentation uniform locations but still FAILS at frame17,
+now blocked in SwapBuffers453ms with the same queue pressure. Native006 restores
+default batch-end ring cursor after negative copied-byte trial and gates packet
+diagnostics; built/exported279patches, no replay. These are diagnostic candidates,
+not accepted merged/4K product output. Personal UX707/publicv0.5.0 unchanged.

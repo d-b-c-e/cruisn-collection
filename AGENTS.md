@@ -2,39 +2,33 @@
 
 ## Current work: frontend UX deployment and rendering parity, September 19
 
-September23 owner resumed autonomous overnight work. Rig now has three
-2560×1440 displays, DISPLAY1 primary; no 4K display is connected. The frozen
-4K Mars exact comparison is still pending. Native4df lifetime profiling found
-14 completion bursts/1236 callbacks/206.3874ms on an8209-input Mars replay;
-all14 next callback intervals were>25ms. Native54df isolated removal at
-208.0799/209.3094ms (99.4126%) of completion. Both pass input/native and six
-completed1440 images exact. New nativebbcb opt-in fixed opcode hook preserves
-the same lifetime counts/input/visible pixels and drops completion to0.5454ms;
-next callback intervals>25ms fall14->1. Six other long intervals remain.
-274patches exported/attested through nativee468, personal UX707 unchanged, FFB0. An11260-input
-Amazon/next-race comparison passes input/native and six of seven GL images
-byte-exact; raw opcode report FAILS because frame6300 captured7680×1440 across
-three monitors. Do not recast that raw failure as a pass. Source overlay
-reselected monitor rectangle every present. Windows enumeration then alternated
-three2560 screens, one7680 merged screen and one2560 screen. Native7ba guard
-Amazon run FAILS owned queue timeout at2646 before images. Native4c6 adds
-explicit single-panel selection from a merged triple; compiled geometry and
-17Python tests PASS; its real Mars log selects center2560 rect but run FAILS
-owned queue timeout at706 before images. Preserve both raw failures; do not
-qualify full replay or blame a particular code path without evidence.
-Native64e opt-in128MiB ring reaches frame4700 with three byte-exact2560 images,
-then FAILS after938ms with zero published consumer progress and a full128MiB
-ring. Do not make128MiB default. Source publishes read cursor only after an
-entire ring snapshot; next targeted trial is per-record copied-byte progress
-plus current-packet diagnosis. No full-drive repeat without changed behavior.
-That nativee468 trial FAILS at presented17 under merged monitor: only24bytes
-published in922ms, consumer record type0/bytes0 (between records), broad other
-phase531ms. No images. Per-record progress is not sufficient. NEXT split the
-consumer's broad other stage to identify window/ring/private/mirror/present
-cost before another long route. Keep source candidates isolated.
-Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md. NEXT stable-topology
-bounded replay and queue diagnosis; preserve exact4K replay for later display session.
-No personal renderer deployment.
+September23 owner resumed autonomous overnight work. Three2560×1440 panels
+are attached; Windows enumeration alternated three separate monitors, one
+7680×1440 merged monitor and one2560×1440 monitor. No 4K display is connected.
+The frozen4K Mars comparison remains pending. Native4df profiling found14
+completion bursts/1236callbacks; native54df isolated tap removal at99.4126%
+of their cost. Opt-in nativebbcb fixed opcode hook preserves all8209 Mars inputs,
+six completed1440 images and lifetime counts while reducing completion time
+209.3094->0.5454ms; next callback intervals>25ms fall14->1. Six other long
+intervals remain. Its Amazon11260-input run preserves input/native and6/7
+completed images exact but raw report FAILS one7680×1440 capture at6300.
+Do not recast that failure as a pass.
+
+Native4c6 opt-in single-panel geometry selects center2560 from merged7680;
+compiled geometry and17Python contracts PASS. Subsequent merged-mode native
+replays FAIL owned queue timeouts before full qualification. Native64e opt-in
+128MiB ring reaches4700 with three byte-exact2560 images, then fills/stalls;
+do not make128MiB default. Nativee468 copied-byte cursor trial also FAILS at
+frame17. Stage diagnostics locate repeated frame17 stalls in GL presentation
+setup, and after uniform caching in SwapBuffers. Source does not establish a
+specific faulty GL call or driver. Native006 restores default batch-end cursor
+publication, built/exported279patches and not replayed. Preserve raw failures.
+
+Stop live testing while display topology is changing. NEXT one bounded replay
+on a stable single-panel/4K setup; compare input, completed pixels, queue and
+shutdown before promotion. Personal UX707, publicv0.5.0 and force settings are
+unchanged; all diagnostic runs use literal MIDV_FFB=0. Read
+docs/reviews/2026-09-23-exotica-lifetime-stutter.md for exact local evidence.
 The previous global desktop pause is superseded by the owner's September23
 explicit autonomous continuation; serialize shared rig and keep FFB0.
 

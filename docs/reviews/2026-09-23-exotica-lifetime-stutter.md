@@ -219,3 +219,46 @@ release is wrong, but it rejects it as a sufficient fix under this host state.
 The next diagnostic should identify whether the consumer is in window
 management, ring drain, private render, mirror or presentation before another
 long route is attempted. Raw report: `mars-consumer-progress-run/report.json`.
+
+## Locate the repeated early consumer stall
+
+Three successive isolated native commits add progressively narrower diagnostic
+stage markers without changing the scene stream. `71ff55b0021` identifies the
+frame17 timeout as `present`, between record processing and buffer swap.
+`5b6898731a2` narrows the same failure to `present_setup`, before the full-screen
+draw and capture readback. `ea70010e1a7` places it in `present_uniforms`, after
+the default-framebuffer clear but before the draw. Each bounded run requests
+the same source prefix and **FAILS** before any requested image, with about
+53MiB queued, a16MiB future packet needing admission, and almost no
+consumer cursor progress. The native exports are275,276 and277patches;
+original failures are retained in `mars-consumer-stage-run` and
+`mars-present-call-run`. A first plan included `--gl-log` even though the
+scenery preset owns it and failed before launch; it was corrected without a
+game run.
+
+`cc74b52777a` caches two presentation shader uniform locations at link time
+instead of querying them on every present, and separates program/value/texture
+stages. The same short prefix still **FAILS** at frame17; this time the measured
+phase is `swap` for453ms and the stage is after the full-screen draw. Caching
+uniforms is a low-risk source cleanup but is **not** a demonstrated fix for the
+host stall. The candidate has278patches. The differing observed call boundary
+at the same frame suggests graphics/driver presentation can block at multiple
+GL synchronization points, not that the prior particular uniform lookup was
+proven faulty. `mars-uniform-cache-run/report.json` retains the raw result.
+
+Native `0068ac85867` restores the original read-cursor publication after the
+whole ring batch because the copied-byte trial was negative, and gates the
+per-record diagnostic state update behind logging. Its279-patch build/export
+are attested; no gameplay run is claimed for this restoration. The normal ring
+capacity remains64MiB, with128MiB still an explicit diagnostic option. The
+personal UX707 executable and publicv0.5.0 remain unchanged throughout.
+
+**Stop live replay in the changing merged-display setup.** The panel-size
+selection itself is verified at launch and three completed frames in the128MiB
+run are exact, but no full merged-mode drive qualifies. Next use a stable
+single-panel 2560×1440 or restored4K display, then run one bounded candidate
+comparison with the current optional opcode hook and explicit panel size. If
+the consumer stalls there too, investigate GL present/driver behavior and
+host resource load; if it does not, treat the merged desktop as the leading
+environmental variable. Do not change default torque, rendering experiments
+or public release settings from these failed diagnostics.
