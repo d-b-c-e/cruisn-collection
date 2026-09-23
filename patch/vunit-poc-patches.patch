@@ -50037,3 +50037,68 @@ index 893878f7c6b..233f1202d6d 100644
 -- 
 2.55.0.windows.3
 
+From e468dad0b64b3bc4000890ff822dd5de83c126ce Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:27:07 -0500
+Subject: [PATCH] Publish copied Zeus ring records before drawing
+
+---
+ src/devices/video/zeus2.cpp | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 233f1202d6d..042a00a4f0f 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -551,6 +551,8 @@ constexpr size_t DEFAULT_RING = 64u << 20;
+ static size_t s_ring_capacity = DEFAULT_RING;
+ static uint8_t *s_ringbuf = nullptr;
+ static std::atomic<uint64_t> s_rw{0}, s_rr{0};
++// Current decoded record, for bounded backpressure diagnostics only.
++static std::atomic<uint64_t> s_consumer_record{0};
+ static std::atomic<bool> s_on{false}, s_stopz{false}, s_donez{true};
+ static std::atomic<uint32_t> s_presented_frame{0};
+ // Host-only diagnostics. A single atomic preserves the phase/start-time pair
+@@ -612,6 +614,9 @@ static bool ring_push2(uint32_t type, const void *p1, uint32_t n1,
+ 		{
+ 			s_drops_state.fetch_add(1);
+ 			s_stopz.store(true);
++			uint64_t const active = s_consumer_record.load(std::memory_order_relaxed);
++			osd_printf_info("MIDZ consumer record: type=%u bytes=%u\n",
++				unsigned(active >> 32), unsigned(active));
+ 			osd_printf_error("MIDZ render stream failed: consumer timeout; native presentation fallback; "
+ 				"presented=%u type=%u need=%llu queued=%llu capacity=%llu consumer_bytes=%llu wait_ms=%llu phase=%s phase_ms=%llu\n",
+ 				s_presented_frame.load(), type, (unsigned long long)need, (unsigned long long)(w-r),
+@@ -1809,6 +1814,11 @@ void thread_main()
+ 			rec.resize(hdr[1]);
+ 			if (hdr[1]) ring_get(rec.data(), hdr[1]);
+ 			r = (r + 7) & ~7ull;
++			// The record now lives in this thread's private buffer. Release its
++			// ring bytes immediately, even if validation/drawing takes a long time;
++			// the producer must never wait for the entire frame batch to finish.
++			s_rr.store(r, std::memory_order_release);
++			s_consumer_record.store((uint64_t(hdr[0]) << 32) | hdr[1], std::memory_order_relaxed);
+ 			if(stream_active) {
+ 				if(hdr[0]<1 || hdr[0]>6 || hdr[1]>(16u<<20)+8 || stream_count>=131072 ||
+ 					stream_records.size()+8+rec.size()>64u*1024u*1024u) {
+@@ -2037,7 +2047,8 @@ void thread_main()
+ 				}
+ 				break;
+ 			}
+-            if(private_failed)break;
++			if(private_failed)break;
++			s_consumer_record.store(0, std::memory_order_relaxed);
+             if (frame_ready) break; // never consume the next frame before presenting this one
+ 		}
+ 		s_rr.store(r, std::memory_order_release);
+@@ -2398,6 +2409,7 @@ void start()
+ 	s_stopz.store(false);
+ 	s_donez.store(false);
+ 	s_presented_frame.store(0);
++	s_consumer_record.store(0);
+ 	s_phase_trace = std::getenv("MIDZ_GL_LOG") != nullptr;
+ 	s_phase_stamp.store(0);
+ 	begin_phase(PHASE_OTHER);
+-- 
+2.55.0.windows.3
+

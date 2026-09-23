@@ -205,3 +205,17 @@ processing, and log the current packet type/size at a timeout. This is a
 specific ownership/queue hypothesis, not proof that it explains the two
 existing failures. No further full-drive repeat is justified without a changed
 queue behavior or sharper diagnostic.
+
+Native `e468dad0b64` tests the copied-byte hypothesis directly: the consumer
+publishes the read cursor after copying each record into its private buffer,
+before processing that record. It also logs its current record at a producer
+timeout. The normal64MiB ring and ordered processing remain. The274-patch
+build/export are attested. A bounded Mars prefix to5700, planned to cross the
+earlier4700 failure, instead **FAILS** at presented frame17 with a future-packet
+queue timeout. The producer sees24bytes of progress in922ms, while the
+consumer reports `type=0 bytes=0` (between records) and `other` phase531ms.
+No requested completed images exist. This does not prove the copied-byte
+release is wrong, but it rejects it as a sufficient fix under this host state.
+The next diagnostic should identify whether the consumer is in window
+management, ring drain, private render, mirror or presentation before another
+long route is attempted. Raw report: `mars-consumer-progress-run/report.json`.

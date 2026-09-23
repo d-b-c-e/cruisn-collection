@@ -4616,3 +4616,10 @@ older1440 opcode control. Raw replay FAILS owned waiting-queue timeout with
 134,217,648/134,217,728 bytes queued and zero published progress in938ms;
 consumer broad other phase969ms. Bigger ring delays but does not fix stall.
 See dated review; no full route/4K/physical FFB acceptance.
+
+2026-09-23 nativee468 copied-byte ring progress:274patches exported, default
+64MiB and personal UX707 unchanged. Bounded Mars prefix replay raw FAIL at
+present17 before screenshots: future packet cannot enter full ring; only24bytes
+published during922ms, consumer reports no active record, broad other phase
+531ms. Per-record cursor publication alone does not solve this host stall.
+See dated review; no product/default promotion.
