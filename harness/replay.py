@@ -386,6 +386,9 @@ def main(argv=None):
             from display_target import choose_size,monitors,apply_window_target
             zeus_overlay=gl_key=='MIDZ' and env.get('MIDZ_GL')=='1' and not args.native_renderer
             target=choose_size(args.display_size,monitors(),allow_merged_triple=zeus_overlay)
+            if target['merged_center_panel'] and (not args.candidate or
+                    b'MIDZ_GL_PRESENT_SIZE' not in args.candidate.read_bytes()):
+                raise ValueError('Merged triple display requires a Zeus candidate with explicit single-panel presentation')
             command=apply_window_target(command,target,zeus_overlay=zeus_overlay)
             if zeus_overlay:
                 # Keep one completed-frame size if Windows merges/splits three

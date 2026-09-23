@@ -262,3 +262,12 @@ the consumer stalls there too, investigate GL present/driver behavior and
 host resource load; if it does not, treat the merged desktop as the leading
 environmental variable. Do not change default torque, rendering experiments
 or public release settings from these failed diagnostics.
+
+The replay preflight now rejects a merged triple display when the selected
+Zeus executable lacks the explicit panel-size capability. With Windows
+reporting7680×1440, the older `bbcb` candidate fails before launch with that
+specific error, while the frozen `006` candidate prepares a 2560×1440
+center-panel plan with FFB0. No game was launched for either preflight. This
+prevents an older binary from silently rendering across all three panels in a
+long test; completed-image size verification remains required for supported
+candidates. Seventeen focused display/lifetime tests pass.

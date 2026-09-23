@@ -4632,3 +4632,8 @@ now blocked in SwapBuffers453ms with the same queue pressure. Native006 restores
 default batch-end ring cursor after negative copied-byte trial and gates packet
 diagnostics; built/exported279patches, no replay. These are diagnostic candidates,
 not accepted merged/4K product output. Personal UX707/publicv0.5.0 unchanged.
+
+2026-09-23 merged-display preflight: with7680×1440 exposed by Windows, older
+bbcb candidate FAILS prepare-only as lacking single-panel capability;006
+candidate PREPARED2560×1440/FFB0. No game launched, no output acceptance.
+Seventeen focused display/lifetime tests PASS. See dated review.

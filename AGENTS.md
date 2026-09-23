@@ -29,6 +29,8 @@ on a stable single-panel/4K setup; compare input, completed pixels, queue and
 shutdown before promotion. Personal UX707, publicv0.5.0 and force settings are
 unchanged; all diagnostic runs use literal MIDV_FFB=0. Read
 docs/reviews/2026-09-23-exotica-lifetime-stutter.md for exact local evidence.
+Merged-display replay preflight now rejects old Zeus binaries without the
+single-panel capability; bbcb fails prepare-only,006 prepares, no game run.
 The previous global desktop pause is superseded by the owner's September23
 explicit autonomous continuation; serialize shared rig and keep FFB0.
 
