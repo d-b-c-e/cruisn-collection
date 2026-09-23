@@ -1,6 +1,6 @@
 # Cruis'n Collection — agent instructions
 
-## Current work: frontend UX deployment and rendering parity, September 19
+## Current work: rendering parity, September 23
 
 Read docs/reviews/2026-09-23-rendering-parity-checkpoint.md for the compact
 four-game status, remaining evidence gates and next efficient sequence.
@@ -40,9 +40,12 @@ prefixes. Original completed3120 pixels and8indexed planes are exact to the
 matched run;499 page1 original commands span3116..3117. At native(-71,158..161)
 only backdrop command1 intersects; nearest original ground starts y163, host
 masked-texture quad470 ends y156. Combined source report is
-left-gap-source-analysis-v5.json; neighboring host470 and original ground66
+left-gap-source-analysis-v6.json; neighboring host470 and original ground66
 are each two native units from the sample but use different palettes/textures;
-no renderer fix or general gap policy qualified.
+their projected column outlines leave about9.85 native units. At source3132/
+display3136, that separation grows to25.48 units. The saved3116 ordinary
+reconstruction has zero projection/material rejections and all708 packets
+match. No renderer fix or general gap policy qualified.
 The source-backed Margin Fill screen predicts ground-column smearing, not
 geometric repair: row960 has194 sky pixels from x0 with ground pen27207 at
 boundary x344. Keep retired global Margin Fill off; no live on/off image was
