@@ -112,6 +112,17 @@ enabling the billboard adapter. The local
 `left-gap-billboard-screen.json` preserves resource, run and packet hashes,
 candidate bounds and rejection counts. No game replay or native build ran.
 
+The saved 3116 ordinary host reconstruction also matches all 708 captured
+packets after reporting its admission reasons. It has **zero** whole-object
+projection rejections and zero material-allocation rejections; 85 candidates
+are near-rejected, 2,118 are beyond the selected 3× admission range, and 693
+are unsupported or skipped by class/flags. This rules out a failed
+`host_project` pass over an otherwise admitted ordinary model as the direct
+cause in this scene. It does not establish which near/far/unsupported object,
+if any, should occupy the opening. The additional counts are in
+`left-gap-billboard-screen-v2.json`, whose ordinary packets are checked against
+the actual producer bytes. The older screen report is retained.
+
 ## Why the old Margin Fill is not a safe repair
 
 The currently tested renderer has `MIDV_GL_MARGINFILL=0` and crack fill on.

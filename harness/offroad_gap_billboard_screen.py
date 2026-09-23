@@ -40,7 +40,7 @@ def screen():
     ram_path = RESOURCE / 'run/offroad-resource-3116-ram.bin'
     rom_path = RESOURCE / 'run/offroad-resource-rom.bin'
     memory = Memory(rom_path.read_bytes(), ram_path.read_bytes())
-    counts, ordinary = scene(memory, 3, True, retain_depths=True)
+    ordinary_counts, ordinary = scene(memory, 3, True, retain_depths=True)
     actual = list(PACKET.iter_unpack((MATCHED / 'run/vunit-fade-producer.bin').read_bytes()[4:]))
     decoded = [q for obj in ordinary for q in obj['quads']]
     if (len(decoded) != len(actual) or
@@ -142,7 +142,8 @@ def screen():
                 completed_frame=source['completed_frame'], native_gap_box=list(box),
                 ordinary_host_objects=len(ordinary), ordinary_host_quads=len(decoded),
                 ordinary_host_packet_bytes_exact=True,
-                source_hash=source['source_hash'], counts=dict(counts),
+                source_hash=source['source_hash'],
+                ordinary_selection_counts=dict(ordinary_counts), counts=dict(counts),
                 material_valid_extra_billboards=len(projected),
                 bounds_intersecting_gap=sum(item['distance'] == 0 for item in projected),
                 nearest=nearest[:20],
