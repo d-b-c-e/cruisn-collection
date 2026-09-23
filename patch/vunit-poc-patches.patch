@@ -49503,3 +49503,73 @@ index 4657b18888c..0c47a7ec353 100644
 -- 
 2.55.0.windows.3
 
+From 54dfc723b0424fabf6ea2c9e491574b412f11c3b Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 01:25:43 -0500
+Subject: [PATCH] Profile Exotica lifetime tap removal inside completion
+
+---
+ src/mame/midway/cruisn/phase_timing.h | 8 ++++----
+ src/mame/midway/midzeus.cpp           | 6 +++++-
+ 2 files changed, 9 insertions(+), 5 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/phase_timing.h b/src/mame/midway/cruisn/phase_timing.h
+index 1761302461a..7cb3b8b1dca 100644
+--- a/src/mame/midway/cruisn/phase_timing.h
++++ b/src/mame/midway/cruisn/phase_timing.h
+@@ -12,7 +12,7 @@ public:
+     enum Phase : uint32_t { source, waiting_build, future_build, future_material,
+         active_seal, waiting_ready, active_build, active_material,
+         future_stage, future_encode, future_submit, future_commit,
+-        lifetime_install, lifetime_complete, phase_count };
++        lifetime_install, lifetime_complete, lifetime_remove, phase_count };
+     struct Row { uint32_t frame; uint64_t scene; Phase phase; double us; uint64_t units; };
+     static constexpr size_t capacity=65536;
+ private:
+@@ -48,7 +48,7 @@ public:
+     }
+     void add(uint32_t frame,uint64_t scene,Phase phase,double us,uint64_t units=0) {
+         if(!contains(frame))return;
+-        if((!scene && phase!=lifetime_install && phase!=lifetime_complete) || phase>=phase_count || !std::isfinite(us) || us<0 || m_rows.size()==capacity) {m_failed=true;return;}
++        if((!scene && phase!=lifetime_install && phase!=lifetime_complete && phase!=lifetime_remove) || phase>=phase_count || !std::isfinite(us) || us<0 || m_rows.size()==capacity) {m_failed=true;return;}
+         m_rows.push_back({frame,scene,phase,us,units});
+     }
+     // Object callbacks can repeat within a scene/frame. Aggregate only the
+@@ -56,7 +56,7 @@ public:
+     // units counts callbacks, not objects retained by the renderer.
+     void accumulate(uint32_t frame,uint64_t scene,Phase phase,double us) {
+         if(!contains(frame))return;
+-        if((phase!=lifetime_install && phase!=lifetime_complete) || !std::isfinite(us) || us<0) {m_failed=true;return;}
++        if((phase!=lifetime_install && phase!=lifetime_complete && phase!=lifetime_remove) || !std::isfinite(us) || us<0) {m_failed=true;return;}
+         const auto index=m_accumulated[phase];
+         if(index<m_rows.size() && m_rows[index].frame==frame && m_rows[index].scene==scene) {
+             auto &row=m_rows[index];
+@@ -71,7 +71,7 @@ public:
+         static const char *names[]={"source","waiting_build","future_build","future_material",
+             "active_seal","waiting_ready","active_build","active_material",
+             "future_stage","future_encode","future_submit","future_commit",
+-            "lifetime_install","lifetime_complete"};
++            "lifetime_install","lifetime_complete","lifetime_remove"};
+         if(std::fprintf(file,"frame,scene,phase,microseconds,units\n")<0)return false;
+         for(const auto &r:m_rows)
+             if(std::fprintf(file,"%u,%llu,%s,%.3f,%llu\n",r.frame,(unsigned long long)r.scene,
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 0c47a7ec353..42637bb935b 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -889,7 +889,11 @@ void crusnexo_state::lifetime_start()
+ 						fatalerror("Endpoint admission source binding\n");
+ 					if(!m_lifetime_owners.emplace(m_lifetime_owner_slot,owner).second)fatalerror("Exotica lifetime duplicate owner map\n");
+ 					lifetime_emit('B',m_lifetime_owner_slot,owner.handle.generation,owner.serial,key,0,m_ram_base[m_lifetime_owner_slot+15]);
+-					m_lifetime_owner_slot=0;m_lifetime_ready_tap.remove();
++					m_lifetime_owner_slot=0;
++					const auto removal_started=std::chrono::steady_clock::now();
++					m_lifetime_ready_tap.remove();
++					m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_remove,
++						std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-removal_started).count());
+ 					m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_complete,
+ 						std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-timing_started).count());
+ 				});
+-- 
+2.55.0.windows.3
+

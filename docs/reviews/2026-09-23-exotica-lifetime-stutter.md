@@ -54,3 +54,39 @@ binding/logging portion. Reuse the recording, keep FFB0, and require matching
 input/visible pixels before treating an optimization as a product change. The
 pending exact 4K comparison remains for a 4K display session. Do not deploy
 this profiler to the personal build.
+
+## Removal subphase, later September 23
+
+Native `54dfc723b04` adds one nested timer around `m_lifetime_ready_tap.remove()`.
+Canonical `native/phase_timing.h` is synced to MAME. The new build passes the
+focused six Python timing/adjacency checks and the compiled native boundary
+test; its269-patch export is attested in `lifetime-removal-native-export.json`.
+The personal UX707 binary is unchanged. The first direct PowerShell invocation
+of MSYS `g++` returned1 before an executable was produced; the project-standard
+MINGW64 login-shell compile and test passed. The postcommit MAME build linked
+successfully, and its log is retained. Prior export scripts were not rerun.
+
+One matching 1440p replay of the same8,209 inputs passes input/time/native
+comparison, six completed1440p GL frames **byte-exact** against the prior1440
+profiler, zero dropped frames, and quiescent joined shutdown. Its1,236
+completion callbacks still occupy14 buckets. The nested removal timer records
+208.0799 ms of209.3094 ms completion time, **99.4126%**. The other binding,
+logging and state checks account for the remaining1.2295 ms of the measured
+callback interval. Temporary tap installation is1.5364 ms total. All14
+subsequent callback intervals exceed25 ms again. This isolates where the
+observer spends time; it does not yet prove how much full-frame time will be
+recovered by replacing removal or establish matched 4K performance.
+
+Local new evidence under `results/diagnostics/exotica-mars-timing-20260923`:
+`removal-1440-prepared`, `removal-1440-run/report.json`,
+`removal-1440-qualified.json`, native export and two build logs. The first
+qualified adjacency report retains its source hash; the new report validates
+that nested removal cannot exceed its enclosing completion bucket. Seven
+focused Python timing/adjacency tests pass after that analyzer change.
+
+Next trial: retain the verified owner/source keys but replace per-object tap
+installation/removal with one fixed hook at the known constructor-completion
+instruction. Keep it opt-in and reject the exact ROM signature if it differs.
+The C31 fetch path uses an opcode cache, so a fixed read tap may fail to observe
+the instruction; an early bounded replay must prove coverage before any longer
+trial. Preserve the dynamic path as control and do not deploy the trial.

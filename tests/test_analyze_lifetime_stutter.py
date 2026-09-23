@@ -19,6 +19,25 @@ class LifetimeAdjacency(unittest.TestCase):
         self.assertAlmostEqual(result["details"][0]["next_callback_interval_ms"], 33)
         self.assertEqual(result["control_same_ordinal"]["next_callback_over_threshold"], 1)
 
+    def test_nested_removal_must_fit_and_pair_with_completion(self):
+        frames = {f: f * .01 for f in range(1, 7)}
+        phases = {"lifetime_install": {3: dict(scene=2, callbacks=2, microseconds=1)},
+                  "lifetime_complete": {3: dict(scene=2, callbacks=2, microseconds=100)},
+                  "lifetime_remove": {3: dict(scene=2, callbacks=2, microseconds=99)}}
+        result = analyze(frames, phases, 2, 5)
+        self.assertEqual(result["removal_measurement"]["share_percent"], 99)
+        phases["lifetime_remove"][3]["microseconds"] = 101
+        with self.assertRaisesRegex(ValueError, "exceeds"):
+            from analyze_lifetime_stutter import load_lifetime
+            import tempfile
+            with tempfile.TemporaryDirectory() as tmp:
+                path = Path(tmp) / "timing.csv"
+                path.write_text('frame,scene,phase,microseconds,units\n'
+                                '3,2,lifetime_install,1,2\n'
+                                '3,2,lifetime_complete,100,2\n'
+                                '3,2,lifetime_remove,101,2\n', encoding="utf-8")
+                load_lifetime(path)
+
     def test_missing_bounded_next_interval_rejected(self):
         frames = {1: 0, 2: .01, 3: .02, 4: .03}
         phases = {"lifetime_install": {4: dict(scene=2, callbacks=1, microseconds=1)},

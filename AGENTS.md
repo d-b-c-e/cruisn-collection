@@ -13,6 +13,12 @@ intervals remain. Cross-clock association, not causal attribution or matched
 4K performance. Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md.
 NEXT isolate ready-tap removal cost in an isolated profiler candidate; preserve
 exact4K replay for a later display session. No personal renderer deployment.
+That subphase is now isolated: native54dfc723b04/269patches built, frozen and
+attested; same8209-input1440p run PASS with six completed images byte-exact to
+the previous1440 candidate. Removal208.0799/complete209.3094ms=99.4126%;14/14
+event-adjacent callbacks>25ms again. Seven focused Python and native boundary
+checks PASS. NEXT opt-in fixed opcode hook trial with exact signature and early
+coverage proof; dynamic path retained. Read same September23 review's new section.
 The previous global desktop pause is superseded by the owner's September23
 explicit autonomous continuation; serialize shared rig and keep FFB0.
 

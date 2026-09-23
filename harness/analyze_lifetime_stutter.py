@@ -30,7 +30,7 @@ def load_frames(path):
 
 
 def load_lifetime(path):
-    phases = {"lifetime_install": {}, "lifetime_complete": {}}
+    phases = {"lifetime_install": {}, "lifetime_complete": {}, "lifetime_remove": {}}
     with path.open(encoding="utf-8", newline="") as stream:
         reader = csv.DictReader(stream)
         if reader.fieldnames != ["frame", "scene", "phase", "microseconds", "units"]:
@@ -54,6 +54,14 @@ def load_lifetime(path):
             raise ValueError("lifetime install/completion pairing differs")
     if phases["lifetime_install"].keys() != phases["lifetime_complete"].keys():
         raise ValueError("unpaired lifetime install bucket")
+    if phases["lifetime_remove"]:
+        if phases["lifetime_remove"].keys() != phases["lifetime_complete"].keys():
+            raise ValueError("unpaired lifetime removal bucket")
+        for frame, removal in phases["lifetime_remove"].items():
+            complete = phases["lifetime_complete"][frame]
+            if ((removal["scene"], removal["callbacks"]) != (complete["scene"], complete["callbacks"])
+                    or removal["microseconds"] > complete["microseconds"]):
+                raise ValueError("lifetime removal exceeds or differs from completion")
     return phases
 
 
@@ -68,12 +76,16 @@ def analyze(frames, phases, first, last, threshold_ms=25.0, control_frames=None)
         if frame < first or frame + 1 > last:
             continue
         install = phases["lifetime_install"][frame]
+        removal = phases.get("lifetime_remove", {}).get(frame)
         event_next[frame + 1] = frame
-        detail.append(dict(native_frame=frame, scene=complete["scene"], callbacks=complete["callbacks"],
+        entry = dict(native_frame=frame, scene=complete["scene"], callbacks=complete["callbacks"],
                            completion_ms=round(complete["microseconds"] / 1000, 4),
                            installation_ms=round(install["microseconds"] / 1000, 4),
                            same_callback_interval_ms=round(intervals[frame], 4),
-                           next_callback_interval_ms=round(intervals[frame + 1], 4)))
+                           next_callback_interval_ms=round(intervals[frame + 1], 4))
+        if removal is not None:
+            entry["removal_ms"] = round(removal["microseconds"] / 1000, 4)
+        detail.append(entry)
     if not detail:
         raise ValueError("no complete lifetime event in callback window")
     with_event = [intervals[f] for f in event_next]
@@ -88,6 +100,15 @@ def analyze(frames, phases, first, last, threshold_ms=25.0, control_frames=None)
                 other_callback_max_ms=round(max(without_event), 4),
                 details=detail,
                 interpretation="One-frame adjacency across distinct clocks; no per-callback latency or causal attribution")
+    if phases.get("lifetime_remove"):
+        completion_us = sum(phases["lifetime_complete"][d["native_frame"]]["microseconds"] for d in detail)
+        removal_us = sum(phases["lifetime_remove"][d["native_frame"]]["microseconds"] for d in detail)
+        result["removal_measurement"] = dict(
+            total_ms=round(removal_us / 1000, 4),
+            completion_total_ms=round(completion_us / 1000, 4),
+            other_completion_ms=round((completion_us - removal_us) / 1000, 4),
+            share_percent=round(removal_us / completion_us * 100, 4),
+            scope="Nested wall-clock interval inside completion; observational, not isolated causal speedup")
     if control_frames is not None:
         if last > len(control_frames):
             raise ValueError("control callback window incomplete")

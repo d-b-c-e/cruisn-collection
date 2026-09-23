@@ -4581,3 +4581,11 @@ temporary tap installs1.5049ms. All14 next callback intervals exceed25ms,
 including same frame ordinals in older4K control;12 other1440 intervals remain.
 Association is cross-clock, not causal or resolution-matched timing proof.
 Two focused analyzer tests PASS. See docs/reviews/2026-09-23-exotica-lifetime-stutter.md.
+
+2026-09-23 native54dfc723b04 nested removal timer:269patches exported and
+attested, personal707 unchanged. Matching8209-input1440p replay passes native
+comparison, six completed GL images byte-exact to previous1440 profiler, joined
+shutdown/FFB0.1,236 callbacks/14bursts: removal208.0799ms of completion209.3094ms
+(99.4126%); all14 following callbacks>25ms again. This isolates observer cost,
+not yet a corrected frame-rate or4K acceptance. Seven targeted Python timing/
+adjacency checks and one native boundary check PASS. See dated review.
