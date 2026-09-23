@@ -62,6 +62,14 @@ host packets byte-exact;469 eligible static future sources yield46 material-
 valid projected extras, none intersect the left gap (nearest103 native units).
 This rules out only that undamaged static class in this scene, not custom or
 dynamic geometry. Read the billboard section in the margin-source review.
+One bounded Off-Road El Paso temporal replay PASS3200inputs/native/11 completed
+2544×1353 views at3100..3140 every4, stable physical1440 display, literalFFB0
+and owned stop. Frame3120 is byte-exact to prior source-joined capture. Blue
+opening visibly shifts/widens across the turn; paired CRT-color counts are
+heuristic, not exact sky area. Read
+docs/reviews/2026-09-23-offroad-margin-temporal.md; source-hashed v2 report and
+contact sheet are local. The first preset prepare-only plan ended host drawing
+at2250, and an attempted override rejected; neither launched MAME.
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with
