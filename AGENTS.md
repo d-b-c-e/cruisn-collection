@@ -70,6 +70,11 @@ heuristic, not exact sky area. Read
 docs/reviews/2026-09-23-offroad-margin-temporal.md; source-hashed v2 report and
 contact sheet are local. The first preset prepare-only plan ended host drawing
 at2250, and an attempted override rejected; neither launched MAME.
+Matched no-host replay also PASS3200 inputs/native and11 completed images.
+Source-hashed temporal-screen-v4 reports3x changes529..37898 completed pixels
+per frame and reduces sky-like left-ROI counts by3..3377 paired pixels in all11;
+the lower blue wedge still visibly persists. These are heuristic color counts,
+not exact geometry area. Paired contact image is local. No product promotion.
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with

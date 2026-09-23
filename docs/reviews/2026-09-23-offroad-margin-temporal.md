@@ -19,6 +19,18 @@ mask can include other blue material and omit some sky after CRT distortion.
 The visual sequence and the source-joined indexed frame are the stronger
 evidence of a persistent surface-continuity problem.
 
+A second bounded replay turns host scenery off while keeping the same recorded
+inputs, emulator, window, CRT and 11-frame capture schedule. It also passes
+all 3,200 input/time and native-image rows, completed capture receipts,
+display watch and normal exit. The paired completed images differ at
+529–37,898 pixels per frame. In the fixed left ROI, 3× has 3–3,377 fewer
+sky-like paired pixels than no-host in every sampled frame. The
+`left-gap-temporal-control-comparison-v3.png` contact sheet confirms the
+direction: added terrain covers part of the sky, but the lower opening remains
+visible and changes shape. Color counts do not establish the exact amount of
+missing ground or whether every blue pixel is a defect. The game-state/native
+comparisons and the image receipts are independent gates.
+
 This changes the repair requirement: a proposal needs a coherent moving
 surface/material transition across the turn, not a frame-3120 pen substitution.
 The [source review](2026-09-23-offroad-left-margin-source.md) shows the two
@@ -36,10 +48,13 @@ apart from capture/journal policy. These preflight attempts are retained.
 
 Local evidence is under `results/diagnostics/offroad-full-20260910`:
 `left-gap-temporal-run/report.json`,
-`left-gap-temporal-screen-v2.json`, and
-`left-gap-temporal-screen-contact.png`.
+`left-gap-temporal-control-run/report.json`,
+`left-gap-temporal-screen-v4.json`,
+`left-gap-temporal-screen-contact.png`, and
+`left-gap-temporal-control-comparison-v3.png`.
 `harness/offroad_gap_temporal_screen.py` verifies every completed image against
-the replay's pixel receipt, checks the 3120 byte match, and reproduces the
-color counts and contact sheet. The v1 screen report is preserved; v2 adds
-per-image receipt verification. No native source, installed build, release or
+both replay pixel receipts, checks the 3120 byte match, and reproduces the
+color counts and contact sheets. The v1–v3 screen reports are preserved;
+v2 added per-image receipt verification, v3 added the no-host control,
+and v4 also verifies its visible page. No native source, installed build, release or
 wheel settings changed.
