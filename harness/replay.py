@@ -78,6 +78,8 @@ def main(argv=None):
     ap.add_argument("--gl-stall", help="explicit consumer stall FRAME:MILLISECONDS, for recovery tests")
     ap.add_argument("--gl-capture-pacing", action="store_true", help="explicit offline wait for bounded screenshot storage; requires candidate and capture range")
     ap.add_argument("--gl-queue-mb", type=int, help="explicit stream capacity experiment, 16..128 MiB")
+    ap.add_argument("--zeus-queue-mb", type=int, choices=(128,),
+                    help="Exotica diagnostic: use a 128 MiB graphics ring instead of the default 64 MiB")
     ap.add_argument("--gl-scale", type=int, help="explicit internal-scale experiment, 1..6")
     ap.add_argument("--gl-crt", choices=('on','off'), help="explicit CRT override for completed-frame testing")
     ap.add_argument("--gl-height", type=int, choices=(400,401), help="explicit V-Unit native-height override; preserve old recordings")
@@ -155,7 +157,7 @@ def main(argv=None):
         ap.error('--display-size requires visible replay without --small-window or --compare-gl')
     if args.gl_every < 1 or args.gl_max < 1 or (args.gl_scale is not None and not 1 <= args.gl_scale <= 6):
         ap.error("GL intervals/budget must be positive and scale must be 1..6")
-    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.gl_crt is not None or args.gl_height is not None or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.no_vram_batching or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
+    gl_experiment = args.gl_capture or args.gl_log or args.gl_scale is not None or args.gl_crt is not None or args.gl_height is not None or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.no_vram_batching or args.align_tjunctions or args.gl_stall or args.gl_queue_mb or args.zeus_queue_mb or args.zeus_native or args.zeus_stop_frame is not None
     if args.headless and args.compare_gl:
         ap.error("GL pixel comparison requires live presentation")
     if args.headless and (gl_experiment or args.video or args.native_renderer):
@@ -183,6 +185,8 @@ def main(argv=None):
             raise ValueError('screenshot pacing requires a candidate, live GL and explicit capture range')
         if gl_key == 'MIDZ' and (args.gl_queue_mb or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions):
             raise ValueError('requested renderer experiment is V-Unit-only')
+        if args.zeus_queue_mb and gl_key != 'MIDZ':
+            raise ValueError('Zeus queue capacity experiment requires Exotica')
         if (args.zeus_native or args.zeus_stop_frame is not None) and gl_key != 'MIDZ':
             raise ValueError('Zeus diagnostics require Exotica')
         if args.capture_state and gl_key=='MIDZ':
@@ -227,6 +231,10 @@ def main(argv=None):
                 if not 16 <= args.gl_queue_mb <= 128:
                     raise ValueError("GL stream capacity must be 16..128 MiB")
                 overrides["MIDV_GL_QUEUE_MB"] = str(args.gl_queue_mb)
+            if args.zeus_queue_mb:
+                overrides['MIDZ_GL_QUEUE_MB'] = str(args.zeus_queue_mb)
+                overrides['MIDZ_GL_LOG'] = '1'
+                report['zeus_queue_mb'] = args.zeus_queue_mb
             if args.gl_stall:
                 stall_frame, stall_ms = map(int, args.gl_stall.split(":"))
                 if not 0 <= stall_frame < reference["frames"] or not 0 < stall_ms <= 5000:

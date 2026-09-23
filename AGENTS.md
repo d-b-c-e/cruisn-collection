@@ -11,7 +11,7 @@ all14 next callback intervals were>25ms. Native54df isolated removal at
 completed1440 images exact. New nativebbcb opt-in fixed opcode hook preserves
 the same lifetime counts/input/visible pixels and drops completion to0.5454ms;
 next callback intervals>25ms fall14->1. Six other long intervals remain.
-272patches exported/attested through native4c6, personal UX707 unchanged, FFB0. An11260-input
+273patches exported/attested through native64e, personal UX707 unchanged, FFB0. An11260-input
 Amazon/next-race comparison passes input/native and six of seven GL images
 byte-exact; raw opcode report FAILS because frame6300 captured7680×1440 across
 three monitors. Do not recast that raw failure as a pass. Source overlay
@@ -22,6 +22,11 @@ explicit single-panel selection from a merged triple; compiled geometry and
 17Python tests PASS; its real Mars log selects center2560 rect but run FAILS
 owned queue timeout at706 before images. Preserve both raw failures; do not
 qualify full replay or blame a particular code path without evidence.
+Native64e opt-in128MiB ring reaches frame4700 with three byte-exact2560 images,
+then FAILS after938ms with zero published consumer progress and a full128MiB
+ring. Do not make128MiB default. Source publishes read cursor only after an
+entire ring snapshot; next targeted trial is per-record copied-byte progress
+plus current-packet diagnosis. No full-drive repeat without changed behavior.
 Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md. NEXT stable-topology
 bounded replay and queue diagnosis; preserve exact4K replay for later display session.
 No personal renderer deployment.

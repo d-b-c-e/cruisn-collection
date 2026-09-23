@@ -4608,3 +4608,11 @@ confirms selected(2560,0)..(5120,1440), but raw replay FAIL at present706 with
 owned future-queue timeout before images. No full visual acceptance or common
 cause claim. Compiled geometry test and17 focused Python checks PASS. Personal
 UX707/publicv0.5.0 unchanged. See dated review and retained reports.
+
+2026-09-23 native64e opt-in128MiB Zeus ring:273patches built/exported, default
+64MiB and personal UX707 unchanged. Merged-display Mars run selects center2560
+panel and reaches frame4700; completed3900/4200/4500 images byte-exact to
+older1440 opcode control. Raw replay FAILS owned waiting-queue timeout with
+134,217,648/134,217,728 bytes queued and zero published progress in938ms;
+consumer broad other phase969ms. Bigger ring delays but does not fix stall.
+See dated review; no full route/4K/physical FFB acceptance.

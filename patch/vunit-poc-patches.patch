@@ -49934,3 +49934,106 @@ index 00000000000..4045a259bff
 -- 
 2.55.0.windows.3
 
+From 64e005780e639565ac948067ea6c03952113c1bf Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 02:11:50 -0500
+Subject: [PATCH] Allow opt-in larger Zeus graphics ring for backpressure
+ diagnosis
+
+---
+ src/devices/video/zeus2.cpp | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/src/devices/video/zeus2.cpp b/src/devices/video/zeus2.cpp
+index 893878f7c6b..233f1202d6d 100644
+--- a/src/devices/video/zeus2.cpp
++++ b/src/devices/video/zeus2.cpp
+@@ -547,7 +547,8 @@ struct GL
+ };
+ 
+ // ---- in-process ring (single producer: emu thread; single consumer) ----
+-constexpr size_t RING = 64u << 20;
++constexpr size_t DEFAULT_RING = 64u << 20;
++static size_t s_ring_capacity = DEFAULT_RING;
+ static uint8_t *s_ringbuf = nullptr;
+ static std::atomic<uint64_t> s_rw{0}, s_rr{0};
+ static std::atomic<bool> s_on{false}, s_stopz{false}, s_donez{true};
+@@ -586,12 +587,12 @@ static bool ring_push2(uint32_t type, const void *p1, uint32_t n1,
+ 	uint64_t w = s_rw.load(std::memory_order_relaxed);
+ 	uint64_t r = s_rr.load(std::memory_order_acquire);
+ 	uint64_t const need = 8 + ((uint64_t(bytes) + 7) & ~7ull);
+-	if (w - r + need > RING)
++	if (w - r + need > s_ring_capacity)
+ 	{
+ 		const uint64_t initial_r = r, started = GetTickCount64();
+ 		// Quads, clears and direct writes all mutate persistent framebuffer/depth
+ 		// state. Losing any one of them cannot be repaired by a texture refresh.
+-		for (int i = 0; i < 500 && w - r + need > RING && GetTickCount64()-started < 10000;)
++		for (int i = 0; i < 500 && w - r + need > s_ring_capacity && GetTickCount64()-started < 10000;)
+ 		{
+ 			// Explicit offline capture pacing is bounded separately; a real
+ 			// consumer stall still gets the original500 ordinary wait iterations.
+@@ -607,22 +608,22 @@ static bool ring_push2(uint32_t type, const void *p1, uint32_t n1,
+ 			osd_printf_info("MIDZ stream wait: presented=%u type=%u need=%llu queued=%llu consumer_bytes=%llu wait_ms=%llu phase=%s phase_ms=%llu\n",
+ 				s_presented_frame.load(), type, (unsigned long long)need, (unsigned long long)(w-r),
+ 				(unsigned long long)(r-initial_r), (unsigned long long)(now-started), phase, (unsigned long long)phase_ms);
+-		if (w - r + need > RING)
++		if (w - r + need > s_ring_capacity)
+ 		{
+ 			s_drops_state.fetch_add(1);
+ 			s_stopz.store(true);
+ 			osd_printf_error("MIDZ render stream failed: consumer timeout; native presentation fallback; "
+ 				"presented=%u type=%u need=%llu queued=%llu capacity=%llu consumer_bytes=%llu wait_ms=%llu phase=%s phase_ms=%llu\n",
+ 				s_presented_frame.load(), type, (unsigned long long)need, (unsigned long long)(w-r),
+-				(unsigned long long)RING, (unsigned long long)(r-initial_r),
++				(unsigned long long)s_ring_capacity, (unsigned long long)(r-initial_r),
+ 				(unsigned long long)(now-started), phase, (unsigned long long)phase_ms);
+ 			return false;
+ 		}
+ 	}
+ 	auto put = [&](const void *src, uint32_t n)
+ 	{
+-		uint32_t const o = uint32_t(w % RING);
+-		uint32_t const first = std::min(n, uint32_t(RING - o));
++		uint32_t const o = uint32_t(w % s_ring_capacity);
++		uint32_t const first = std::min(n, uint32_t(s_ring_capacity - o));
+ 		memcpy(s_ringbuf + o, src, first);
+ 		if (n > first)
+ 			memcpy(s_ringbuf, (const uint8_t *)src + first, n - first);
+@@ -1795,8 +1796,8 @@ void thread_main()
+ 		uint64_t r = s_rr.load(std::memory_order_relaxed);
+ 		auto ring_get = [&](void *dst, uint32_t n)
+ 		{
+-			uint32_t const o = uint32_t(r % RING);
+-			uint32_t const first = std::min(n, uint32_t(RING - o));
++			uint32_t const o = uint32_t(r % s_ring_capacity);
++			uint32_t const first = std::min(n, uint32_t(s_ring_capacity - o));
+ 			memcpy(dst, s_ringbuf + o, first);
+ 			if (n > first) memcpy((uint8_t *)dst + first, s_ringbuf, n - first);
+ 			r += n;
+@@ -2379,10 +2380,21 @@ void start()
+ {
+ 	if (s_on.load())
+ 		return;
++	if (char const *capacity = std::getenv("MIDZ_GL_QUEUE_MB"))
++	{
++		if (strcmp(capacity, "128"))
++		{
++			std::fprintf(stderr, "MIDZ invalid diagnostic graphics queue size: %s\n", capacity);
++			return;
++		}
++		s_ring_capacity = 128u << 20;
++	}
+ 	if (!s_ringbuf)
+-		s_ringbuf = (uint8_t *)malloc(RING);
++		s_ringbuf = (uint8_t *)malloc(s_ring_capacity);
+ 	if (!s_ringbuf)
+ 		return;
++	if (s_ring_capacity != DEFAULT_RING)
++		std::fprintf(stderr, "MIDZ_GL_QUEUE_MB=128\n");
+ 	s_stopz.store(false);
+ 	s_donez.store(false);
+ 	s_presented_frame.store(0);
+-- 
+2.55.0.windows.3
+

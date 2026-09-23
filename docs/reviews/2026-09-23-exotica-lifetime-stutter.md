@@ -177,3 +177,31 @@ cause. Repeating long routes while the host changes display layout would be
 low-value. Resume a bounded visual replay when the monitor topology is stable,
 then return to the pending exact 4K candidate comparison when a 4K display is
 available. Neither candidate is promoted to the Stream Deck installation.
+
+## Bounded queue-capacity hypothesis
+
+The two early failures attempted to admit large owned future/waiting packets
+into the fixed64MiB Zeus command ring. Native `64e005780e6` adds an **opt-in**
+128MiB diagnostic ring; the default64MiB path is unchanged. Its273-patch build
+and export are attested. The harness exposes `--zeus-queue-mb 128` only for
+Exotica, retaining literal FFB0 in this replay.
+
+The matched Mars run under the merged display selects the center2560×1440
+panel and reaches presented frame4700, beyond the earlier frame706 failure.
+Completed frames3900,4200 and4500 are all byte-exact to the prior1440p opcode
+control. It then **FAILS** with a waiting-queue timeout:134,217,648 bytes
+queued in the134,217,728-byte ring, zero bytes of consumer progress during a
+938ms wait, and the consumer in its broad `other` phase for969ms. No full input
+or shutdown qualification follows from this failed run. A larger buffer can
+delay the failure but does not resolve the consumer stall, so128MiB is **not**
+a proposed product default. Raw report: `mars-queue128-run/report.json`.
+
+Source inspection finds that the GL consumer publishes its read cursor only
+after draining a whole snapshot of ring messages. It may copy and process
+multiple records without letting the producer see progress, and one large
+future packet may itself take a long time. The next targeted trial should
+publish copied-byte progress after each record while retaining ordered
+processing, and log the current packet type/size at a timeout. This is a
+specific ownership/queue hypothesis, not proof that it explains the two
+existing failures. No further full-drive repeat is justified without a changed
+queue behavior or sharper diagnostic.
