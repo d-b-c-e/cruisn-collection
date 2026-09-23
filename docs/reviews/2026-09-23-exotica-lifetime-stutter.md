@@ -320,4 +320,17 @@ Local evidence: `mars-stable1440-prepared/launch-plan.json`,
 and `amazon-stable1440-run/report.json`, all under
 `results/diagnostics/exotica-mars-timing-20260923`. The saved reports contain
 the exact capture hashes, dimensions, input comparison and shutdown receipts.
+The reusable `gl_frames.py --run-directories` checker also writes passing
+`mars-stable1440-pixels.json` and `amazon-stable1440-pixels.json`, validating
+the requested completion schedules and image bytes rather than comparing
+filenames alone.
 Further full-route repetition has low value without a changed hypothesis.
+
+The replay harness now offers opt-in `--display-watch` with an explicit
+`--display-size`: it samples Windows monitor topology every 500 ms during game
+execution, records transitions and fails a requested stable-display trial if
+topology changes or enumeration fails. Polls can miss a shorter transition, so
+completed-frame size checks still apply. Nine focused display/watch contracts
+pass; this watcher has not been used in a live replay and adds no polling to
+ordinary runs. It is for future diagnosis if the host layout starts changing
+again, without repeating an already-qualified route now.

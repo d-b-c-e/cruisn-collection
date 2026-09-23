@@ -67,6 +67,8 @@ def main(argv=None):
     ap.add_argument("--headless", action="store_true", help="native snapshots, no GL presentation")
     ap.add_argument("--small-window", action="store_true", help="disable window maximization for cheaper dense GL captures")
     ap.add_argument('--display-size',type=parse_size,help='select an actual WIDTH:HEIGHT display and maximize; captured client pixels may exclude borders')
+    ap.add_argument('--display-watch',action='store_true',
+                    help='opt-in monitor-topology polling during replay; fail if it changes or cannot be observed')
     ap.add_argument('--zeus-merged-panel',action='store_true',
                     help='explicit Exotica diagnostic: center the requested panel within an exact triple-wide merged display')
     ap.add_argument("--clock", action="store_true", help="show external emulation time and frame; uses current diagnostic script")
@@ -489,6 +491,8 @@ def main(argv=None):
                 env.update(MIDV_RAMDUMP_DIR=str(capture), MIDV_RAMDUMP_EVERY=str(args.until_frame - 2))
         executable_digest=sha256_file(command[0])
         report['emulator_source']=binary_provenance.read(command[0],executable_digest)
+        if args.display_watch and not args.display_size:
+            raise ValueError('--display-watch requires an explicit --display-size')
         if args.prepare_only:
             if args.telemetry_loopback:
                 raise ValueError('prepare-only does not allocate telemetry loopback sockets')
@@ -514,9 +518,16 @@ def main(argv=None):
             from telemetry_loopback import TelemetryLoopback
             telemetry = TelemetryLoopback(runtime)
             telemetry.start(env)
+        display_watch = None
         try:
+            if args.display_watch:
+                from display_watch import DisplayWatch
+                display_watch = DisplayWatch()
+                display_watch.start()
             invocation = execute(command, runtime, env, args.timeout)
         finally:
+            if display_watch:
+                report['display_watch'] = display_watch.close()
             clock.close()
             if telemetry:
                 report['telemetry_loopback']=telemetry.close()
@@ -612,6 +623,9 @@ def main(argv=None):
             report['display_target']['completed']=verify_completed_size(
                 args.display_size,report['evidence']['gl_captures']['files'])
         report["passed"] = report["comparison"]["passed"]
+        if display_watch and not report['display_watch']['passed']:
+            report['passed'] = False
+            report['error'] = 'display topology changed or could not be observed during replay'
         if journal_error:
             report['passed']=False
             report['error']=journal_error

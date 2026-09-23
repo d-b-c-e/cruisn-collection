@@ -15,9 +15,12 @@ open. The opt-in Exotica fixed completion hook substantially reduced one
 measured stutter source while preserving six completed1440p Mars images. A
 later triple-monitor test exposed an oversized7680×1440 capture and then
 repeatable graphics-consumer stalls under a merged7680-wide desktop; no full
-merged-mode drive qualifies. Before promoting extended rendering, use a stable
-single-panel or4K display for one bounded exact input/completed-pixel/shutdown
-comparison, then revisit World New York and Exotica's outer sightlines. The
+merged-mode drive qualifies. Stable physical1440p Mars and Amazon replays now
+pass with the optional opcode hook, exact inputs and six and seven completed
+images byte-exact to their controls, respectively. The frozen4K comparison remains,
+followed by World New York and Exotica's outer sightlines. Optional
+`--display-watch` records monitor topology changes during a diagnostic replay;
+it has focused tests but has not been qualified in a live game. The
 [current parity assessment](reviews/2026-09-15-parity-remaining-work.md) and
 [September23 diagnostic](reviews/2026-09-23-exotica-lifetime-stutter.md) retain
 the route-specific evidence and failed reports. Keep fresh-install distance

@@ -32,12 +32,16 @@ input Amazon/name-entry replay also PASSes; seven completed2560×1440 images,
 including frame6300, are byte-exact to the saved slot-hook control and shutdown
 is quiescent. Earlier merged-display failures remain failures. These runs qualify
 the optional opcode hook on two routes at1440p, not merged-mode stability,4K,
-machine reset, physical FFB or product promotion. NEXT investigate Exotica reset
-ownership with the existing scheduled-reset fixture, or another independent
+interrupted-work reset, physical FFB or product promotion. Pristine startup and
+quiescent active Exotica resets already qualify on separate recorded routes,
+including a pre-device FIFO check; consult the September16 reset reviews before
+new work. NEXT investigate genuinely interrupted work or another independent
 parity issue; avoid more repeated full drives without a changed hypothesis.
 Personal UX707, publicv0.5.0 and force settings are unchanged; all diagnostic
 runs use literal MIDV_FFB=0. Read
 docs/reviews/2026-09-23-exotica-lifetime-stutter.md for exact local evidence.
+The replay harness also has opt-in --display-watch topology polling; its
+synthetic contracts pass, but no watched game run has yet been claimed.
 Merged-display replay preflight now rejects old Zeus binaries without the
 single-panel capability; bbcb fails prepare-only,006 prepares, no game run.
 Merged-center selection requires explicit --zeus-merged-panel; without it,

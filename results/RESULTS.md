@@ -4650,3 +4650,9 @@ control, including frame6300 that was7680 wide in the earlier failed trial.
 No merged-mode,4K, reset, physical FFB or product promotion claim. See
 2026-09-23-exotica-lifetime-stutter.md and local mars-stable1440-run and
 amazon-stable1440-run reports; preserve the previous raw failures.
+
+2026-09-23 replay topology instrumentation: opt-in --display-watch records
+ordered monitor-layout transitions during emulator execution and rejects a
+requested stable-display trial on a change or polling failure. Ordinary replays
+are unchanged. Nine focused display/watch contracts PASS; no live watched game
+run, transient-under-500ms detection or merged-mode acceptance is claimed.
