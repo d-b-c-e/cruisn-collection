@@ -29,7 +29,21 @@ def intersects(a, b):
     return a[0] <= b[2] and b[0] <= a[2] and a[1] <= b[3] and b[1] <= a[3]
 
 
-def analyze(case, samples, box):
+def native_box(fine_box, width, height, scale, margin, native_height):
+    if (not 1 <= scale <= 6 or not 0 <= margin <= 256 or native_height not in (400, 401)
+            or width != (512 + 2 * margin) * scale or height != native_height * scale
+            or not 0 <= fine_box[0] <= fine_box[2] < width
+            or not 0 <= fine_box[1] <= fine_box[3] < height):
+        raise ValueError('unqualified fine/native page geometry')
+    # The indexed planes are bottom-up; retain both possible coarse boundary
+    # rows so a one-pixel raster convention cannot falsely exclude a polygon.
+    return (fine_box[0] // scale - margin,
+            (height - 1 - fine_box[3]) // scale,
+            fine_box[2] // scale - margin,
+            (height - fine_box[1]) // scale)
+
+
+def analyze(case, samples, fine_box):
     case = Path(case)
     report_path = case/'report.json'
     report = json.loads(report_path.read_text(encoding='utf-8'))
@@ -53,9 +67,13 @@ def analyze(case, samples, box):
         raise ValueError('captured host packet count differs')
     if any(p[0] != source['frame'] or p[1] != source['page_control'] for p in packets):
         raise ValueError('host packet source/page differs from completed scene')
+    env = json.loads((run/'invocation.json').read_text(encoding='utf-8'))['environment']
+    scale, margin, native_height = (int(env[key]) for key in
+        ('MIDV_GL_SCALE', 'MIDV_GL_MARGIN', 'MIDV_GL_HEIGHT'))
+    width, height, page = (mirror[k] for k in ('width','height','visible_page'))
+    box = native_box(fine_box, width, height, scale, margin, native_height)
     boxes = [projected_box(p[3:19]) for p in packets]
     hits = [i for i, candidate in enumerate(boxes) if intersects(candidate, box)]
-    width, height, page = (mirror[k] for k in ('width','height','visible_page'))
     prefix = f'vunit-mirror-{mirror["frame"]}-page{page}-plane'
     paths = [run/(prefix+str(n)+'.bin') for n in range(4)]
     extended = np.fromfile(paths[0], dtype='<u2').reshape(height, width)
@@ -73,9 +91,13 @@ def analyze(case, samples, box):
                 'for one verified source/display pair; no polygon raster/texture or temporal acceptance.',
                 source_frame=source['frame'], completed_frame=mirror['frame'], page=page,
                 source_hash=source['prepared_quads_hash'], packets=len(packets),
-                native_box=list(box), intersecting_packet_ordinals=hits,
+                fine_box=list(fine_box), native_box=list(box),
+                native_mapping=dict(scale=scale, margin=margin, height=native_height,
+                                    scope='Conservative bottom-up fine-to-coarse interval'),
+                intersecting_packet_ordinals=hits,
                 samples=pixels, evidence_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest()
-                                                for p in (report_path,*paths,run/'vunit-fade-producer.bin')})
+                                                for p in (report_path,run/'invocation.json',*paths,
+                                                          run/'vunit-fade-producer.bin')})
 
 
 def point(text):
@@ -102,12 +124,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('case', type=Path)
     parser.add_argument('--sample', action='append', type=point, required=True)
-    parser.add_argument('--native-box', type=rectangle, required=True)
+    parser.add_argument('--fine-box', type=rectangle, required=True,
+                        help='indexed mirror X0:Y0:X1:Y1; native box is derived from verified scale/margin')
     parser.add_argument('--report', type=Path, required=True)
     args = parser.parse_args()
     if args.report.exists():
         raise ValueError('refusing to overwrite prior diagnostic')
-    result = analyze(args.case, args.sample, args.native_box)
+    result = analyze(args.case, args.sample, args.fine_box)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(result, indent=2)+'\n',encoding='utf-8')
     print(json.dumps({k:result[k] for k in ('passed','source_frame','completed_frame','packets',

@@ -4687,6 +4687,8 @@ scene-window verifier was also too narrow. Corrected bounded3116/3120 run PASSes
 3200inputs/native,708exact host packets, completed physical1440 capture and
 page ownership. At fine(60,960), original/extended sky pen6970 is unchanged;
 at y940 ground, at y990 auxiliary terrain. No captured host quad bounding box
-covers native(15,159..162). Reusable source-coverage analyzer saves
-left-gap-source-analysis.json;17 focused tests PASS. This is one local gap, no
+covers native(-71,158..161) after widescreen-margin mapping. The original
+x15 coverage report is superseded and preserved; the corrected reusable
+source-coverage analyzer saves left-gap-source-analysis-v2.json.18 focused
+tests PASS. This is one local gap, no
 accepted visual fix. See docs/reviews/2026-09-23-offroad-left-margin-source.md.

@@ -30,16 +30,21 @@ same x, y=940 is textured ground pen 18744, while y=990 is an auxiliary
 terrain pen replacing original sky. The gap thus lies **between** covered
 host terrain and near ground; it is visible in the completed image. Decoding
 all 708 captured projected quads finds no bounding box covering native
-`x=15, y=159..162` (the corresponding narrow strip). This is a conservative
+`x=-71, y=158..161` (the corresponding narrow strip after subtracting the
+86-coarse-pixel widescreen margin). This is a conservative
 bounds test; it does not identify which unsupported or authored source would
 ideally continue that terrain. A larger global distance limit alone cannot
 make an absent projected polygon fill this sampled strip.
 
 The reusable `harness/analyze_vunit_margin_gap.py` independently checks the
 passing replay, mirror/source join and producer bytes before reporting sampled
-indices and projected coverage. Its saved report is
-`left-gap-source-analysis.json`; the analyzer does not rasterize or fill
-geometry. Seventeen focused analyzer/mirror/runtime tests pass.
+indices and projected coverage. Its corrected report is
+`left-gap-source-analysis-v2.json`; it derives the native box from the verified
+scale, margin and bottom-up page geometry. The original
+`left-gap-source-analysis.json` remains as a **superseded coordinate analysis**:
+it used x=15 without subtracting the widescreen margin and therefore did not
+test the sampled x=60 opening. The revised analyzer does not rasterize or fill
+geometry. Eighteen focused analyzer/mirror/runtime tests pass.
 
 Local evidence is under `results/diagnostics/offroad-full-20260910`:
 `left-gap-source-run/report.json` retains the verifier failure on the wrong

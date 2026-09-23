@@ -25,7 +25,9 @@ docs/reviews/2026-09-23-offroad-left-margin-gap.md before proposing a fix.
 
 Matched source3116/display3120 confirms Off-Road gap is ordinary sky between
 3x auxiliary terrain and near ground at fine(60,960), with no projected host
-quad bounds at native(15,159..162). First wrong-source3118 raw run FAILS;
+quad bounds at native(-71,158..161) after accounting for the86-coarse margin.
+The initial x15 coverage report is superseded, preserved locally.
+First wrong-source3118 raw run FAILS;
 corrected run passes3200 inputs,708 packets and page join. The continuous
 metadata verifier now bounds all scene rows by runtime stop while keeping
 exact capture-window and packet checks. Read
