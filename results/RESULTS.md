@@ -4672,3 +4672,11 @@ World2.5 Hawaii far-bound pair12/4/237; Off-Road El Paso2x/3x66/22/1397.
 All intended pixel changes retain exact-comparison FAIL. Dark counts are review
 hints, not artifact verdicts. No game launched. See
 docs/reviews/2026-09-23-completed-frame-triage.md.
+
+2026-09-23 Off-Road El Paso sharp-turn frame3120: saved4K ordinary and3x
+images both show a blue far-left ground opening. A bounded3200-input physical
+1440 replay PASSes input/native, one completed image and indexed mirror;
+extended host contributes32066 left-band pixels but does not close the opening.
+Initial quiet-preset+mirror launch FAILS immediately, preserved; new preflight
+rejects it. Capture-mode replay PASS;15 focused tests PASS. See
+docs/reviews/2026-09-23-offroad-left-margin-gap.md. No renderer fix/deploy.

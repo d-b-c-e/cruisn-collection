@@ -48,6 +48,8 @@ class OriginalMirrorTests(unittest.TestCase):
                 configure(SimpleNamespace(**(vars(args) | changes)), 'crusnwld', settings.copy(), 200)
         host = dict(settings, MIDV_WORLD_HOST_SCENERY='2', MIDV_WORLD_HOST_LAYER='3')
         self.assertTrue(configure(args, 'crusnwld24', host, 200)['auxiliary'])
+        with self.assertRaisesRegex(ValueError, 'capture journals'):
+            configure(args, 'crusnwld24', dict(host, MIDV_HOST_JOURNALS='quiet'), 200)
 
     def test_other_vunit_ownership_without_world_fade(self):
         args = SimpleNamespace(vunit_original_mirror_frame=100, candidate='candidate.exe')

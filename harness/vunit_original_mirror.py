@@ -66,6 +66,8 @@ def configure(args, rom, settings, frames):
             or settings.get('MIDV_GL_BATCH_VRAM', '1') != '1'
             or not 1 <= frame < frames - 1):
         raise ValueError('original mirror requires candidate V-Unit GL, FFB0, batched CPU and a frame before drain')
+    if settings.get('MIDV_HOST_JOURNALS') == 'quiet':
+        raise ValueError('original mirror requires V-Unit capture journals; quiet mode excludes mirror evidence')
     prefix = 'MIDV_' + GAMES[rom] + '_HOST_'
     host = settings.get(prefix+'SCENERY', '0') == '2'
     if host and settings.get(prefix+'LAYER') != '3':
