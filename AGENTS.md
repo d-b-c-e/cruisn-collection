@@ -50,6 +50,12 @@ independent routes. No fill enabled. Read
 docs/reviews/2026-09-23-vunit-sky-gap-screen.md and preserve source-hashed
 local vunit-sky-gap-screen-v2.json.
 
+Offline palette reconstruction of the saved Off-Road3120 frame is near but not
+byte-exact (121/3,442,032 pixels differ by >1 channel unit). Four targeted
+pen-copy fills produce visible repeated bands/cutoffs and leave the wedge tip.
+All rejected; no runtime fix. Read
+docs/reviews/2026-09-23-offroad-gap-fill-screen.md before revisiting.
+
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with
 DISPLAY1 primary. Earlier it alternated a7680×1440 merged monitor and one
