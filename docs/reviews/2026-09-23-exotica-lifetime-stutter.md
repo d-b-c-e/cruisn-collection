@@ -90,3 +90,49 @@ instruction. Keep it opt-in and reject the exact ROM signature if it differs.
 The C31 fetch path uses an opcode cache, so a fixed read tap may fail to observe
 the instruction; an early bounded replay must prove coverage before any longer
 trial. Preserve the dynamic path as control and do not deploy the trial.
+
+## Fixed completion opcode trial, later September 23
+
+Native `bbcb4db7bd9` retains the dynamic slot tap by default and adds an
+explicit Exotica-only `MIDZ_LIFETIME_READY=opcode` trial. It validates the exact
+ROM instruction signature before installing one fixed opcode read hook and
+still checks the dynamic owner and source key before completing a lifetime.
+The collection wrapper accepts `--exotica-lifetime-ready opcode|slot` only
+with the exact frozen candidate, Exotica, and literal `MIDV_FFB=0`. The
+270-patch export is attested in `fixed-ready-native-export.json`; the personal
+UX707 binary remains untouched.
+
+The original Mars 8,209-input case passes input/time/native comparison, joined
+quiet shutdown and six completed 2560×1440 GL captures **byte-exact** to the
+removal-profile control. The fixed hook observes the same 1,236 completions in
+14 buckets; total completion time falls from 209.3094 to 0.5454 ms. Subsequent
+callback intervals above 25 ms at those buckets fall from 14 to 1. Other
+long intervals fall from 12 to 6, including a 65.4718 ms outlier next to a
+0.0392 ms hook bucket. This is a substantial matched 1440p improvement, not
+proof that every remaining pause is fixed or that 4K behaves identically.
+One scheduling-dependent depth-mirror batch count differs; all requested
+visible images and deterministic source/ownership evidence match.
+
+The first short replay plan failed **before launch** because its frame limit
+conflicted with the preset's mandatory reference endpoint. The full case was
+then used once; the failed plan remains in `fixed-ready-scout-prepared`.
+The passing run and analysis are `fixed-ready-full-run/report.json` and
+`fixed-ready-1440-qualified.json`. The native boundary test and focused Python
+timing/wrapper contracts pass.
+
+For a second route, the existing Amazon/name-entry/next-race recording ran
+11,260 inputs with the same binary and explicit slot control, then with the
+opcode option. The slot run passes. The opcode run preserves all recorded
+inputs/timing/native images, lifetime counters, quiescent shutdown and six of
+seven completed GL images **byte-exact**. Its raw report correctly **FAILS**
+display-size validation: at frame 6300 the overlay captured 7680×1440,
+spanning the width of all three 2560×1440 monitors. Frames 5400 and
+7200–10800 were 2560×1440 and exact. This cannot be called a passing visible
+comparison. The anomaly is in the overlay's per-present monitor rectangle,
+which supplies the framebuffer viewport and readback size; the recorded
+evidence does not establish whether Windows transiently exposed a combined
+monitor or why the parent window's nearest monitor changed. The source
+currently reselects that rectangle each present. The two raw reports and
+`captures.csv` files are retained under `amazon-slot-run` and
+`amazon-opcode-run`. A narrow one-monitor guard is being evaluated separately;
+do not rerun the whole drive just to seek a favorable frame.

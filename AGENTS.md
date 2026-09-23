@@ -4,21 +4,21 @@
 
 September23 owner resumed autonomous overnight work. Rig now has three
 2560×1440 displays, DISPLAY1 primary; no 4K display is connected. The frozen
-4K Mars exact comparison is still pending. A separate 1440p run of native4df
-passed8209 input/native frames, six completed1440 GL captures and owned exit,
-FFB0. Its14 lifetime-completion bursts contain1236 callbacks/206.3874ms,
-versus1.5049ms installing taps. All14 subsequent callback intervals exceed
-25ms, as at the same frame ordinals in older4K control;12 other long1440
-intervals remain. Cross-clock association, not causal attribution or matched
-4K performance. Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md.
-NEXT isolate ready-tap removal cost in an isolated profiler candidate; preserve
-exact4K replay for a later display session. No personal renderer deployment.
-That subphase is now isolated: native54dfc723b04/269patches built, frozen and
-attested; same8209-input1440p run PASS with six completed images byte-exact to
-the previous1440 candidate. Removal208.0799/complete209.3094ms=99.4126%;14/14
-event-adjacent callbacks>25ms again. Seven focused Python and native boundary
-checks PASS. NEXT opt-in fixed opcode hook trial with exact signature and early
-coverage proof; dynamic path retained. Read same September23 review's new section.
+4K Mars exact comparison is still pending. Native4df lifetime profiling found
+14 completion bursts/1236 callbacks/206.3874ms on an8209-input Mars replay;
+all14 next callback intervals were>25ms. Native54df isolated removal at
+208.0799/209.3094ms (99.4126%) of completion. Both pass input/native and six
+completed1440 images exact. New nativebbcb opt-in fixed opcode hook preserves
+the same lifetime counts/input/visible pixels and drops completion to0.5454ms;
+next callback intervals>25ms fall14->1. Six other long intervals remain.
+270patches exported/attested, personal UX707 unchanged, FFB0. An11260-input
+Amazon/next-race comparison passes input/native and six of seven GL images
+byte-exact; raw opcode report FAILS because frame6300 captured7680×1440 across
+three monitors. Do not recast that raw failure as a pass. Source overlay
+reselects monitor rectangle every present; a narrow guard is in progress.
+Read docs/reviews/2026-09-23-exotica-lifetime-stutter.md. NEXT qualify overlay
+guard in isolated candidate; preserve exact4K replay for later display session.
+No personal renderer deployment.
 The previous global desktop pause is superseded by the owner's September23
 explicit autonomous continuation; serialize shared rig and keep FFB0.
 

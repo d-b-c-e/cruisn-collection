@@ -49573,3 +49573,133 @@ index 0c47a7ec353..42637bb935b 100644
 -- 
 2.55.0.windows.3
 
+From bbcb4db7bd92527526e02231e92f5fa3358d78f2 Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Wed, 23 Sep 2026 01:36:26 -0500
+Subject: [PATCH] Try fixed Exotica constructor completion opcode hook
+
+---
+ src/mame/midway/midzeus.cpp | 75 +++++++++++++++++++++++--------------
+ 1 file changed, 47 insertions(+), 28 deletions(-)
+
+diff --git a/src/mame/midway/midzeus.cpp b/src/mame/midway/midzeus.cpp
+index 42637bb935b..22a33ee393b 100644
+--- a/src/mame/midway/midzeus.cpp
++++ b/src/mame/midway/midzeus.cpp
+@@ -309,7 +309,7 @@ private:
+ 	std::map<uint32_t,LifetimeOwner> m_lifetime_owners;
+ 	uint32_t m_lifetime_first=0,m_lifetime_last=0,m_lifetime_owner_slot=0,m_lifetime_owner_source=0,m_lifetime_owner_entry=0;
+ 	uint32_t m_lifetime_initial_head=0,m_lifetime_initial_count=0,m_lifetime_pool_base=0;
+-	bool m_lifetime_started=false;
++	bool m_lifetime_started=false,m_lifetime_ready_static=false;
+ 	uint64_t m_lifetime_records=0,m_lifetime_bindings=0,m_lifetime_emissions=0,m_lifetime_owned=0;
+ 	uint64_t m_lifetime_first_draws=0,m_lifetime_fading_draws=0,m_lifetime_opaque=0,m_lifetime_draw_records=0;
+ 	cruisn::DiagnosticJournal m_lifetime_log;
+@@ -742,10 +742,17 @@ bool crusnexo_state::lifetime_scope()
+ void crusnexo_state::lifetime_start()
+ {
+ 	const char *mode=std::getenv("MIDZ_LIFETIME");
+-	if(!mode || !strcmp(mode,"0"))return;
++	const char *ready_mode=std::getenv("MIDZ_LIFETIME_READY");
++	if(!mode || !strcmp(mode,"0")) {
++		if(ready_mode)fatalerror("Exotica lifetime ready hook requires the lifetime observer\n");
++		return;
++	}
+ 	const char *ffb=std::getenv("MIDV_FFB");
+ 	if(strcmp(mode,"1") || !ffb || strcmp(ffb,"0") || strcmp(machine().system().name,"crusnexo"))
+ 		fatalerror("Exotica lifetime observation requires crusnexo, MIDZ_LIFETIME=1 and MIDV_FFB=0\n");
++	if(ready_mode && strcmp(ready_mode,"slot") && strcmp(ready_mode,"opcode"))
++		fatalerror("Invalid Exotica lifetime ready hook\n");
++	m_lifetime_ready_static=ready_mode && !strcmp(ready_mode,"opcode");
+ 	auto number=[](const char *name) {
+ 		const char *value=std::getenv(name);if(!value || !*value)fatalerror("Missing Exotica lifetime bound %s\n",name);
+ 		for(const char *p=value;*p;++p)if(*p<'0' || *p>'9')fatalerror("Invalid Exotica lifetime bound %s\n",name);
+@@ -863,8 +870,42 @@ void crusnexo_state::lifetime_start()
+ 			lifetime_emit(p.kind==1?'A':'F',p.slot,generation,0,{},unsigned(unknown),data);
+ 			p=LifetimePending();
+ 		});
++	const auto ready_handler=[this](offs_t address,uint32_t &data,uint32_t mask) {
++		if(machine().side_effects_disabled())return;
++		const auto pc=m_maincpu->state_int(TMS320C3X_PC);
++		if(m_lifetime_ready_static) {
++			if(!m_lifetime_owner_slot || pc!=0xb8cb)return;
++			if(address!=0xb8cb || data!=0x0840041d || mask!=UINT32_MAX)
++				fatalerror("Exotica fixed completion opcode signature\n");
++		} else if(pc!=0xb8cc)return;
++		const auto timing_started=std::chrono::steady_clock::now();
++		if(!m_lifetime_owner_slot || m_lifetime_owner_slot!=uint32_t(m_maincpu->state_int(TMS320C3X_AR4)))
++			fatalerror("Exotica lifetime source completion\n");
++		const uint32_t bank=m_disk_asic_jr[5]&3,table=m_ram_base[0xe9]+m_ram_base[0x1fbc];
++		if(bank>2 || !cruisn::exotica_future::span(table,1))fatalerror("Exotica lifetime source realm\n");
++		cruisn::scenery_lifetimes::Key key;key.realm=(uint64_t(bank+1)<<32)|table;key.section=m_lifetime_owner_entry;key.source=m_lifetime_owner_source;
++		LifetimeOwner owner;
++		if(!m_lifetimes.bind(m_lifetime_owner_slot,key,owner.handle) || !cruisn::diagnostic_count::add(m_lifetime_bindings,1,m_journal_policy,10000))
++			fatalerror("Exotica lifetime source binding\n");
++		owner.serial=m_lifetime_bindings;
++		if(m_endpoint_admissions.epoch() && m_endpoint_admissions.bind(owner.handle)==cruisn::exotica_admissions::Status::invalid)
++			fatalerror("Endpoint admission source binding\n");
++		if(!m_lifetime_owners.emplace(m_lifetime_owner_slot,owner).second)fatalerror("Exotica lifetime duplicate owner map\n");
++		lifetime_emit('B',m_lifetime_owner_slot,owner.handle.generation,owner.serial,key,0,m_ram_base[m_lifetime_owner_slot+15]);
++		m_lifetime_owner_slot=0;
++		if(!m_lifetime_ready_static) {
++			const auto removal_started=std::chrono::steady_clock::now();
++			m_lifetime_ready_tap.remove();
++			m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_remove,
++				std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-removal_started).count());
++		}
++		m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_complete,
++			std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-timing_started).count());
++	};
++	if(m_lifetime_ready_static)
++		m_lifetime_ready_tap=space.install_read_tap(0xb8cb,0xb8cb,"exotica_lifetime_opcode_ready",ready_handler);
+ 	m_lifetime_owner_tap=space.install_read_tap(0x67c4,0x67c4,"exotica_lifetime_source",
+-		[this](offs_t,uint32_t &,uint32_t) {
++		[this,ready_handler](offs_t,uint32_t &,uint32_t) {
+ 			if(!lifetime_scope() || m_maincpu->state_int(TMS320C3X_PC)!=0xb85a)return;
+ 			const auto timing_started=std::chrono::steady_clock::now();
+ 			if(m_lifetime_owner_slot)fatalerror("Exotica lifetime nested source constructor\n");
+@@ -872,31 +913,8 @@ void crusnexo_state::lifetime_start()
+ 			m_lifetime_owner_source=uint32_t(m_maincpu->state_int(TMS320C3X_AR5))-4;m_lifetime_owner_entry=m_ram_base[0x597];
+ 			if(!lifetime_slot(m_lifetime_owner_slot) || !cruisn::exotica_future::span(m_lifetime_owner_source,6) ||
+ 				!cruisn::exotica_future::span(m_lifetime_owner_entry,4))fatalerror("Exotica lifetime source bounds\n");
+-			m_lifetime_ready_tap=m_maincpu->space(AS_PROGRAM).install_read_tap(m_lifetime_owner_slot+29,m_lifetime_owner_slot+29,"exotica_lifetime_source_ready",
+-				[this](offs_t,uint32_t &,uint32_t) {
+-					if(machine().side_effects_disabled() || m_maincpu->state_int(TMS320C3X_PC)!=0xb8cc)return;
+-					const auto timing_started=std::chrono::steady_clock::now();
+-					if(!m_lifetime_owner_slot || m_lifetime_owner_slot!=uint32_t(m_maincpu->state_int(TMS320C3X_AR4)))
+-						fatalerror("Exotica lifetime source completion\n");
+-					const uint32_t bank=m_disk_asic_jr[5]&3,table=m_ram_base[0xe9]+m_ram_base[0x1fbc];
+-					if(bank>2 || !cruisn::exotica_future::span(table,1))fatalerror("Exotica lifetime source realm\n");
+-					cruisn::scenery_lifetimes::Key key;key.realm=(uint64_t(bank+1)<<32)|table;key.section=m_lifetime_owner_entry;key.source=m_lifetime_owner_source;
+-					LifetimeOwner owner;
+-					if(!m_lifetimes.bind(m_lifetime_owner_slot,key,owner.handle) || !cruisn::diagnostic_count::add(m_lifetime_bindings,1,m_journal_policy,10000))
+-						fatalerror("Exotica lifetime source binding\n");
+-					owner.serial=m_lifetime_bindings;
+-					if(m_endpoint_admissions.epoch() && m_endpoint_admissions.bind(owner.handle)==cruisn::exotica_admissions::Status::invalid)
+-						fatalerror("Endpoint admission source binding\n");
+-					if(!m_lifetime_owners.emplace(m_lifetime_owner_slot,owner).second)fatalerror("Exotica lifetime duplicate owner map\n");
+-					lifetime_emit('B',m_lifetime_owner_slot,owner.handle.generation,owner.serial,key,0,m_ram_base[m_lifetime_owner_slot+15]);
+-					m_lifetime_owner_slot=0;
+-					const auto removal_started=std::chrono::steady_clock::now();
+-					m_lifetime_ready_tap.remove();
+-					m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_remove,
+-						std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-removal_started).count());
+-					m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_complete,
+-						std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-timing_started).count());
+-				});
++			if(!m_lifetime_ready_static)
++				m_lifetime_ready_tap=m_maincpu->space(AS_PROGRAM).install_read_tap(m_lifetime_owner_slot+29,m_lifetime_owner_slot+29,"exotica_lifetime_source_ready",ready_handler);
+ 			m_host_timing.accumulate(renderer_frame(),m_scene_serial,cruisn::PhaseTiming::lifetime_install,
+ 				std::chrono::duration<double,std::micro>(std::chrono::steady_clock::now()-timing_started).count());
+ 		});
+@@ -919,6 +937,7 @@ void crusnexo_state::lifetime_start()
+ 		});
+ 	machine().add_notifier(MACHINE_NOTIFY_EXIT,machine_notify_delegate(&crusnexo_state::lifetime_exit,this));
+ 	if(!m_bootstrap_lifetimes)fprintf(stderr,"MIDZ_LIFETIME=1 first=%u last=%u\n",m_lifetime_first,m_lifetime_last);
++	if(m_lifetime_ready_static)fprintf(stderr,"MIDZ_LIFETIME_READY=opcode\n");
+ }
+ 
+ void crusnexo_state::lifetime_exit()
+-- 
+2.55.0.windows.3
+

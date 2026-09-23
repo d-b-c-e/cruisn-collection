@@ -4589,3 +4589,12 @@ shutdown/FFB0.1,236 callbacks/14bursts: removal208.0799ms of completion209.3094m
 (99.4126%); all14 following callbacks>25ms again. This isolates observer cost,
 not yet a corrected frame-rate or4K acceptance. Seven targeted Python timing/
 adjacency checks and one native boundary check PASS. See dated review.
+
+2026-09-23 nativebbcb4db7bd9 opt-in fixed Exotica opcode hook:270patches
+exported/attested, personal707 unchanged. Mars8209-input1440p comparison PASS:
+six completed GL images byte-exact;1236 lifetime completions total0.5454ms,
+versus209.3094ms dynamic tap control; adjacent>25ms intervals14->1, other
+long intervals12->6. Amazon11260-input slot control PASS; opcode raw report
+FAIL display validation: one frame6300 was7680×1440, other six2560×1440
+images byte-exact, recorded inputs/native/shutdown match. Retain raw failure;
+investigate one-monitor overlay guard. See dated review.
