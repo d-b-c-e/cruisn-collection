@@ -9,9 +9,9 @@ KEY='MIDZ_HOST_TIMING'
 PHASES=('source','waiting_build','future_build','future_material',
         'active_seal','waiting_ready','active_build','active_material',
         'future_stage','future_encode','future_submit','future_commit',
-        'lifetime_install','lifetime_complete')
-EVENTS={'lifetime_install','lifetime_complete'}
-NESTED={'future_stage','future_encode','future_submit','future_commit'}
+        'lifetime_install','lifetime_complete','lifetime_remove')
+EVENTS={'lifetime_install','lifetime_complete','lifetime_remove'}
+NESTED={'future_stage','future_encode','future_submit','future_commit','lifetime_remove'}
 
 
 def add_arguments(parser):

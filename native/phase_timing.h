@@ -12,7 +12,7 @@ public:
     enum Phase : uint32_t { source, waiting_build, future_build, future_material,
         active_seal, waiting_ready, active_build, active_material,
         future_stage, future_encode, future_submit, future_commit,
-        lifetime_install, lifetime_complete, phase_count };
+        lifetime_install, lifetime_complete, lifetime_remove, phase_count };
     struct Row { uint32_t frame; uint64_t scene; Phase phase; double us; uint64_t units; };
     static constexpr size_t capacity=65536;
 private:
@@ -48,7 +48,7 @@ public:
     }
     void add(uint32_t frame,uint64_t scene,Phase phase,double us,uint64_t units=0) {
         if(!contains(frame))return;
-        if((!scene && phase!=lifetime_install && phase!=lifetime_complete) || phase>=phase_count || !std::isfinite(us) || us<0 || m_rows.size()==capacity) {m_failed=true;return;}
+        if((!scene && phase!=lifetime_install && phase!=lifetime_complete && phase!=lifetime_remove) || phase>=phase_count || !std::isfinite(us) || us<0 || m_rows.size()==capacity) {m_failed=true;return;}
         m_rows.push_back({frame,scene,phase,us,units});
     }
     // Object callbacks can repeat within a scene/frame. Aggregate only the
@@ -56,7 +56,7 @@ public:
     // units counts callbacks, not objects retained by the renderer.
     void accumulate(uint32_t frame,uint64_t scene,Phase phase,double us) {
         if(!contains(frame))return;
-        if((phase!=lifetime_install && phase!=lifetime_complete) || !std::isfinite(us) || us<0) {m_failed=true;return;}
+        if((phase!=lifetime_install && phase!=lifetime_complete && phase!=lifetime_remove) || !std::isfinite(us) || us<0) {m_failed=true;return;}
         const auto index=m_accumulated[phase];
         if(index<m_rows.size() && m_rows[index].frame==frame && m_rows[index].scene==scene) {
             auto &row=m_rows[index];
@@ -71,7 +71,7 @@ public:
         static const char *names[]={"source","waiting_build","future_build","future_material",
             "active_seal","waiting_ready","active_build","active_material",
             "future_stage","future_encode","future_submit","future_commit",
-            "lifetime_install","lifetime_complete"};
+            "lifetime_install","lifetime_complete","lifetime_remove"};
         if(std::fprintf(file,"frame,scene,phase,microseconds,units\n")<0)return false;
         for(const auto &r:m_rows)
             if(std::fprintf(file,"%u,%llu,%s,%.3f,%llu\n",r.frame,(unsigned long long)r.scene,

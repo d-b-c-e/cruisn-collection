@@ -25,6 +25,18 @@ class Timing(unittest.TestCase):
             path.write_text(data.replace('3,2','3,0'),encoding='utf-8')
             with self.assertRaises(ValueError):verify(trial,root)
 
+    def test_removal_is_nested_inside_completion_total(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);trial=dict(first=10,last=12,scope='CPU only')
+            (root/'stderr.log').write_text('MIDZ_HOST_TIMING first=10 last=12\nMIDZ_HOST_TIMING_RESULT complete=1 rows=3 final_frame=14\n',encoding='utf-8')
+            (root/'exotica-host-timing.csv').write_text(
+                'frame,scene,phase,microseconds,units\n'
+                '10,2,source,50,1\n10,2,lifetime_complete,20,2\n'
+                '10,2,lifetime_remove,15,2\n',encoding='utf-8')
+            result=verify(trial,root)
+            self.assertEqual(result['callback_events']['lifetime_remove']['total_us'],15)
+            self.assertEqual(result['largest_cpu_frames'],[(10,70.0)])
+
     def test_explicit_bounds_and_game(self):
         args=SimpleNamespace(exotica_timing='7800:7830',candidate='test.exe',headless=False,native_renderer=False)
         settings=dict(MIDZ_HOST_SCENE='1',MIDZ_GL='1',MIDV_FFB='0')

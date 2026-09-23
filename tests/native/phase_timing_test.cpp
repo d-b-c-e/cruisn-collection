@@ -26,8 +26,9 @@ int main() {
     events.add(1,1,PhaseTiming::source,5);
     events.accumulate(1,0,PhaseTiming::lifetime_install,3);
     events.accumulate(1,0,PhaseTiming::lifetime_complete,4);
+    events.accumulate(1,0,PhaseTiming::lifetime_remove,1);
     events.accumulate(2,0,PhaseTiming::lifetime_install,6);
-    assert(events.size()==4 && events.good(3));
+    assert(events.size()==5 && events.good(3));
     f=std::tmpfile();assert(f && events.write(f,3));std::rewind(f);
     char line[200];assert(std::fgets(line,sizeof(line),f));assert(std::fgets(line,sizeof(line),f));
     assert(std::string(line)=="1,0,lifetime_install,5.000,2\n");std::fclose(f);
