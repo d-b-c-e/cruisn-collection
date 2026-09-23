@@ -16,7 +16,7 @@ def topology(value):
 
 
 class DisplayWatch:
-    def __init__(self, poll=monitors, interval=0.5, clock=time.monotonic):
+    def __init__(self, poll=monitors, interval=0.5, clock=time.monotonic, expected=None):
         if interval <= 0:
             raise ValueError('display watch interval must be positive')
         self.poll, self.interval, self.clock = poll, interval, clock
@@ -24,6 +24,7 @@ class DisplayWatch:
         self._thread = None
         self._started = None
         self._previous = None
+        self._expected = topology(expected) if expected is not None else None
         self._samples = []
         self._error = None
 
@@ -66,8 +67,11 @@ class DisplayWatch:
             self._thread.join(timeout=2)
             if self._thread.is_alive():
                 self._error = 'display enumeration did not stop within two seconds'
+        initial_matches = (self._expected is None or bool(self._samples) and
+                           topology(self._samples[0]['monitors']) == self._expected)
         return {
-            'passed': self._error is None and len(self._samples) == 1,
+            'passed': self._error is None and initial_matches and len(self._samples) == 1,
+            'initial_matches_preflight': initial_matches,
             'changes': max(0, len(self._samples) - 1),
             'samples': self._samples,
             'error': self._error,

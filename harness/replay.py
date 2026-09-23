@@ -522,7 +522,7 @@ def main(argv=None):
         try:
             if args.display_watch:
                 from display_watch import DisplayWatch
-                display_watch = DisplayWatch()
+                display_watch = DisplayWatch(expected=report['display_target']['available'])
                 display_watch.start()
             invocation = execute(command, runtime, env, args.timeout)
         finally:

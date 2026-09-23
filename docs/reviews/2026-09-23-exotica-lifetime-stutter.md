@@ -314,6 +314,9 @@ claim from those figures. The earlier isolated lifetime-hook cost comparison
 remains the direct evidence for the opcode optimization. Neither route is a
 physical wheel/FFB test, a completed 4K comparison, reset acceptance or a
 promotion of the diagnostic renderer to the personal/public build.
+`analyze_frame_cadence.py` has written all four source-hashed cadence reports
+alongside these replay results; the Mars candidate has one 115.5 ms interval
+immediately after a native snapshot, so recurring pauses are still open.
 
 Local evidence: `mars-stable1440-prepared/launch-plan.json`,
 `mars-stable1440-run/report.json`, `amazon-stable1440-prepared/launch-plan.json`
@@ -328,8 +331,9 @@ Further full-route repetition has low value without a changed hypothesis.
 
 The replay harness now offers opt-in `--display-watch` with an explicit
 `--display-size`: it samples Windows monitor topology every 500 ms during game
-execution, records transitions and fails a requested stable-display trial if
-topology changes or enumeration fails. Polls can miss a shorter transition, so
+execution, compares the first sample with replay preflight, records transitions
+and fails a requested stable-display trial if the layout changes or enumeration
+fails. Polls can miss a shorter transition, so
 completed-frame size checks still apply. Nine focused display/watch contracts
 pass; this watcher has not been used in a live replay and adds no polling to
 ordinary runs. It is for future diagnosis if the host layout starts changing

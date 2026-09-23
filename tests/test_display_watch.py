@@ -26,10 +26,18 @@ class DisplayWatchTests(unittest.TestCase):
                          ['main', 'merged', 'main'])
 
     def test_stable_layout_and_enumeration_failure(self):
-        watch = DisplayWatch(poll=lambda: [display('main', 2560)], interval=3600)
+        watch = DisplayWatch(poll=lambda: [display('main', 2560)], interval=3600,
+                             expected=[display('main', 2560)])
         watch.start()
         watch.sample()
         self.assertTrue(watch.close()['passed'])
+
+        watch = DisplayWatch(poll=lambda: [display('merged', 7680)], interval=3600,
+                             expected=[display('main', 2560)])
+        watch.start()
+        report = watch.close()
+        self.assertFalse(report['passed'])
+        self.assertFalse(report['initial_matches_preflight'])
 
         views = [[display('main', 2560)], []]
         watch = DisplayWatch(poll=lambda: views.pop(0), interval=3600)
