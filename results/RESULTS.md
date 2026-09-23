@@ -4641,3 +4641,12 @@ Seventeen focused display/lifetime tests PASS. See dated review.
 2026-09-23 strict merged-display selection: requested2560 without explicit
 --zeus-merged-panel FAILS prepare-only on7680 desktop; explicit mode with old
 bbcb FAILS capability; explicit mode with006 PREPARED. No game launched.
+
+2026-09-23 stable physical1440 primary: native006/optional opcode/64MiB ring
+Mars prefix PASS5700 original inputs and six completed2560×1440 captures exact
+to prior opcode control; all queue bytes drained, joined. Amazon continuation
+PASS11260 inputs and seven completed2560×1440 captures byte-exact to slot
+control, including frame6300 that was7680 wide in the earlier failed trial.
+No merged-mode,4K, reset, physical FFB or product promotion claim. See
+2026-09-23-exotica-lifetime-stutter.md and local mars-stable1440-run and
+amazon-stable1440-run reports; preserve the previous raw failures.

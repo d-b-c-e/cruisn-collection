@@ -279,3 +279,45 @@ has that size. Explicit merged mode with the older `bbcb` binary fails the
 capability gate; explicit merged mode with `006` prepares successfully. All
 three checks are prepare-only and launch no game. This keeps a future stable
 single-panel comparison from silently using the unqualified merged mode.
+
+## Stable physical 1440p replays, later September 23
+
+The owner restored a stable 2560×1440 primary monitor; Windows enumerated three
+separate 2560×1440 displays before launch. Native `0068ac85867`, with the
+optional fixed opcode hook and the ordinary 64 MiB ring, ran the existing Mars
+case for 5,700 inputs. The plan and run used physical DISPLAY1,
+`MIDZ_GL_PRESENT_SIZE=2560:1440` and literal `MIDV_FFB=0`. Input/time and native
+image comparisons pass. The six completed captures at frames 3900, 4200,
+4500, 4800, 5100 and 5400 are **byte-exact** to `fixed-ready-full-run`, with
+the same 2560×1440 dimensions. The renderer submitted and wrote all six,
+reported zero ring drops, drained 5,864,660,648 of 5,864,660,648 queued bytes
+and joined. The prior merged-display frame-17 and frame-4700 stalls did not
+recur in this one physical-monitor trial. This supports display topology or
+presentation conditions as a factor; it does not identify a specific driver
+call or prove merged-mode stability.
+
+One full Amazon/name-entry continuation then ran 11,260 inputs on the same
+physical display and candidate. Input/time and native comparisons pass. All
+seven requested completed captures at frames 5400 through 10800 are
+2560×1440 and **byte-exact** to the saved `amazon-slot-run` control. Frame
+6300, previously captured at 7680×1440 in the raw failed opcode run, is now
+the correct size and byte-exact. The renderer reports zero ring drops, all
+seven files written, 13,477,710,552 queued bytes drained and a quiescent join.
+The old `amazon-opcode-run` report remains **FAIL**; this new successful trial
+does not rewrite that evidence.
+
+Frame-cadence counts vary between these runs and their controls. In the Mars
+3700..5690 window, intervals above 25 ms are 7 in the older opcode control
+and 12 in this new run; Amazon 4800..11100 has 54 in the slot control and 20
+here. Different host conditions and binaries preclude a matched performance
+claim from those figures. The earlier isolated lifetime-hook cost comparison
+remains the direct evidence for the opcode optimization. Neither route is a
+physical wheel/FFB test, a completed 4K comparison, reset acceptance or a
+promotion of the diagnostic renderer to the personal/public build.
+
+Local evidence: `mars-stable1440-prepared/launch-plan.json`,
+`mars-stable1440-run/report.json`, `amazon-stable1440-prepared/launch-plan.json`
+and `amazon-stable1440-run/report.json`, all under
+`results/diagnostics/exotica-mars-timing-20260923`. The saved reports contain
+the exact capture hashes, dimensions, input comparison and shutdown receipts.
+Further full-route repetition has low value without a changed hypothesis.

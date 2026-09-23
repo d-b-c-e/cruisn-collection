@@ -3,9 +3,10 @@
 ## Current work: frontend UX deployment and rendering parity, September 19
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
-are attached; Windows enumeration alternated three separate monitors, one
-7680×1440 merged monitor and one2560×1440 monitor. No 4K display is connected.
-The frozen4K Mars comparison remains pending. Native4df profiling found14
+are attached and Windows currently enumerates three separate monitors with
+DISPLAY1 primary. Earlier it alternated a7680×1440 merged monitor and one
+2560×1440 monitor. No 4K display is connected; the frozen4K Mars comparison
+remains pending. Native4df profiling found14
 completion bursts/1236callbacks; native54df isolated tap removal at99.4126%
 of their cost. Opt-in nativebbcb fixed opcode hook preserves all8209 Mars inputs,
 six completed1440 images and lifetime counts while reducing completion time
@@ -22,17 +23,25 @@ do not make128MiB default. Nativee468 copied-byte cursor trial also FAILS at
 frame17. Stage diagnostics locate repeated frame17 stalls in GL presentation
 setup, and after uniform caching in SwapBuffers. Source does not establish a
 specific faulty GL call or driver. Native006 restores default batch-end cursor
-publication, built/exported279patches and not replayed. Preserve raw failures.
+publication and is built/exported as279patches. Preserve raw failures.
 
-Stop live testing while display topology is changing. NEXT one bounded replay
-on a stable single-panel/4K setup; compare input, completed pixels, queue and
-shutdown before promotion. Personal UX707, publicv0.5.0 and force settings are
-unchanged; all diagnostic runs use literal MIDV_FFB=0. Read
+On stable physical DISPLAY1 at2560×1440, native006 now PASSes a bounded5700-input
+Mars replay: six completed captures exact to the prior1440 opcode control,
+input/native comparisons exact,64MiB ring drained and GPU joined. A full11260-
+input Amazon/name-entry replay also PASSes; seven completed2560×1440 images,
+including frame6300, are byte-exact to the saved slot-hook control and shutdown
+is quiescent. Earlier merged-display failures remain failures. These runs qualify
+the optional opcode hook on two routes at1440p, not merged-mode stability,4K,
+machine reset, physical FFB or product promotion. NEXT investigate Exotica reset
+ownership with the existing scheduled-reset fixture, or another independent
+parity issue; avoid more repeated full drives without a changed hypothesis.
+Personal UX707, publicv0.5.0 and force settings are unchanged; all diagnostic
+runs use literal MIDV_FFB=0. Read
 docs/reviews/2026-09-23-exotica-lifetime-stutter.md for exact local evidence.
 Merged-display replay preflight now rejects old Zeus binaries without the
 single-panel capability; bbcb fails prepare-only,006 prepares, no game run.
 Merged-center selection requires explicit --zeus-merged-panel; without it,
-the current7680 desktop fails a requested2560 display before launch.
+a7680 desktop fails a requested2560 display before launch.
 The previous global desktop pause is superseded by the owner's September23
 explicit autonomous continuation; serialize shared rig and keep FFB0.
 
