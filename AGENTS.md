@@ -43,6 +43,12 @@ The source-backed Margin Fill screen predicts ground-column smearing, not
 geometric repair: row960 has194 sky pixels from x0 with ground pen27207 at
 boundary x344. Keep retired global Margin Fill off; no live on/off image was
 run. Read the source review for seven-row evidence.
+Reusable V-Unit sky-gap triage now screens9 saved indexed gameplay captures:
+Off-Road3120 has one5841-pixel region, four other Off-Road plus two World and
+two USA captures have zero by this narrow predicate. Duplicated views are not
+independent routes. No fill enabled. Read
+docs/reviews/2026-09-23-vunit-sky-gap-screen.md and preserve source-hashed
+local vunit-sky-gap-screen-v2.json.
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with

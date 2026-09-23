@@ -929,3 +929,11 @@ the completed visible page to contain the complete S scene; a mismatch fails
 verification. The existing behavior remains available when the option is omitted,
 but the report explicitly states whether its source matches the visible page.
 The option requires the game's existing depth-metadata mode and physical FFB0.
+
+For a source-aware screen of blue margin openings, use
+`python harness/screen_vunit_sky_gaps.py PASSING_REPLAY_DIR --report NEW_REPORT.json`.
+The replay must contain both a completed `vunit-mirror.json` and same-run
+`capture/quads.bin`; the screen verifies their receipts and never launches a
+game. Its short backdrop-between-surfaces regions are diagnostic candidates,
+not an accepted fill or a substitute for temporal/visual review. See
+[the saved nine-image screen](reviews/2026-09-23-vunit-sky-gap-screen.md).

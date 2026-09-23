@@ -4711,3 +4711,12 @@ is ground pen27207. Seven rows show146..224 sky-prefix pixels and ground
 at the boundary. Native shader policy predicts a ground-column smear, not
 terrain reconstruction. Local left-gap-marginfill-screen.json/script retained;
 no live on/off replay or renderer change. See the source review.
+
+2026-09-23 V-Unit sky-gap triage: reusable screen validates passing mirrors,
+same-run DMA, backdrop palette and physical margin/scale. Nine saved indexed
+captures yield one5841-pixel region at Off-Road El Paso completed3120,
+fine bbox(0,941)..(163,982); four other Off-Road, two World2.4 and two USA
+captures yield zero. Several controls repeat a view, so not nine routes or
+general defect clearance. vunit-sky-gap-screen-v2.json and local exploratory
+screens retained.10 focused analyzer/original-scene tests PASS. No rendering
+change or live game. See docs/reviews/2026-09-23-vunit-sky-gap-screen.md.
