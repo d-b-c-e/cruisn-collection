@@ -31,6 +31,8 @@ unchanged; all diagnostic runs use literal MIDV_FFB=0. Read
 docs/reviews/2026-09-23-exotica-lifetime-stutter.md for exact local evidence.
 Merged-display replay preflight now rejects old Zeus binaries without the
 single-panel capability; bbcb fails prepare-only,006 prepares, no game run.
+Merged-center selection requires explicit --zeus-merged-panel; without it,
+the current7680 desktop fails a requested2560 display before launch.
 The previous global desktop pause is superseded by the owner's September23
 explicit autonomous continuation; serialize shared rig and keep FFB0.
 

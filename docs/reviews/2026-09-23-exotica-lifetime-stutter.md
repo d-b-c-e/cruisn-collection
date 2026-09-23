@@ -271,3 +271,11 @@ center-panel plan with FFB0. No game was launched for either preflight. This
 prevents an older binary from silently rendering across all three panels in a
 long test; completed-image size verification remains required for supported
 candidates. Seventeen focused display/lifetime tests pass.
+
+Merged-center selection now also requires the explicit
+`--zeus-merged-panel` diagnostic flag. Under the current7680×1440 desktop, a
+normal 2560×1440 candidate request fails preflight because no physical monitor
+has that size. Explicit merged mode with the older `bbcb` binary fails the
+capability gate; explicit merged mode with `006` prepares successfully. All
+three checks are prepare-only and launch no game. This keeps a future stable
+single-panel comparison from silently using the unqualified merged mode.

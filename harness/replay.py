@@ -67,6 +67,8 @@ def main(argv=None):
     ap.add_argument("--headless", action="store_true", help="native snapshots, no GL presentation")
     ap.add_argument("--small-window", action="store_true", help="disable window maximization for cheaper dense GL captures")
     ap.add_argument('--display-size',type=parse_size,help='select an actual WIDTH:HEIGHT display and maximize; captured client pixels may exclude borders')
+    ap.add_argument('--zeus-merged-panel',action='store_true',
+                    help='explicit Exotica diagnostic: center the requested panel within an exact triple-wide merged display')
     ap.add_argument("--clock", action="store_true", help="show external emulation time and frame; uses current diagnostic script")
     ap.add_argument("--clock-position", type=position, default=(12, 12), help="X:Y in screen pixels")
     ap.add_argument("--candidate", type=Path, help="explicit candidate executable for regression experiments")
@@ -185,6 +187,8 @@ def main(argv=None):
             raise ValueError('screenshot pacing requires a candidate, live GL and explicit capture range')
         if gl_key == 'MIDZ' and (args.gl_queue_mb or args.no_crackfill or args.no_marginfill or args.no_ui_assets or args.align_tjunctions):
             raise ValueError('requested renderer experiment is V-Unit-only')
+        if args.zeus_merged_panel and (gl_key != 'MIDZ' or not args.display_size or not args.candidate):
+            raise ValueError('merged Zeus panel requires Exotica, an explicit display size and candidate')
         if args.zeus_queue_mb and gl_key != 'MIDZ':
             raise ValueError('Zeus queue capacity experiment requires Exotica')
         if (args.zeus_native or args.zeus_stop_frame is not None) and gl_key != 'MIDZ':
@@ -385,7 +389,10 @@ def main(argv=None):
         if args.display_size:
             from display_target import choose_size,monitors,apply_window_target
             zeus_overlay=gl_key=='MIDZ' and env.get('MIDZ_GL')=='1' and not args.native_renderer
-            target=choose_size(args.display_size,monitors(),allow_merged_triple=zeus_overlay)
+            target=choose_size(args.display_size,monitors(),
+                               allow_merged_triple=zeus_overlay and args.zeus_merged_panel)
+            if args.zeus_merged_panel and not target['merged_center_panel']:
+                raise ValueError('requested merged Zeus panel is not present')
             if target['merged_center_panel'] and (not args.candidate or
                     b'MIDZ_GL_PRESENT_SIZE' not in args.candidate.read_bytes()):
                 raise ValueError('Merged triple display requires a Zeus candidate with explicit single-panel presentation')

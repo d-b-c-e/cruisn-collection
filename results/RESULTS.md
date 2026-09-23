@@ -4637,3 +4637,7 @@ not accepted merged/4K product output. Personal UX707/publicv0.5.0 unchanged.
 bbcb candidate FAILS prepare-only as lacking single-panel capability;006
 candidate PREPARED2560×1440/FFB0. No game launched, no output acceptance.
 Seventeen focused display/lifetime tests PASS. See dated review.
+
+2026-09-23 strict merged-display selection: requested2560 without explicit
+--zeus-merged-panel FAILS prepare-only on7680 desktop; explicit mode with old
+bbcb FAILS capability; explicit mode with006 PREPARED. No game launched.
