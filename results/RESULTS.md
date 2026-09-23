@@ -4658,3 +4658,10 @@ are unchanged. Ten focused display/watch contracts PASS. A short180-frame
 ordinary Exotica replay also PASSes original input/time/native comparison with
 FFB0, stable physical1440 preflight and zero observed layout changes. No
 extended-renderer, transient-under-500ms or merged-mode acceptance is claimed.
+
+2026-09-23 World2.5 Hawaii offline scene5900: seven-edge terrain skirt
+reconstructs the original indexed scene but yields a rectangular wall and
+1,092 new near-black completed pixels. Single-edge extension is a narrow
+hanging strip with98 new near-black pixels. Both visual candidates REJECTED;
+no game, native build or personal deployment. See
+docs/reviews/2026-09-23-world-hawaii-skirt-trial.md and local trial images.
