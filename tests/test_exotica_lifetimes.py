@@ -47,6 +47,25 @@ class ExoticaLifetimes(unittest.TestCase):
             with self.subTest(args=args,rom=rom,settings=settings),self.assertRaises(ValueError):
                 configure(self.args(*args),rom,settings)
 
+    def test_fixed_opcode_hook_requires_explicit_force_free_candidate(self):
+        base=['--candidate','test.exe','--exotica-lifetimes','observe',
+              '--exotica-lifetime-first','1799','--exotica-lifetime-last','8858',
+              '--exotica-lifetime-ready','opcode']
+        settings={'MIDV_FFB':'0'}
+        trial=configure(self.args(*base),'crusnexo',settings)
+        self.assertEqual(trial['ready_hook'],'opcode')
+        self.assertEqual(settings['MIDZ_LIFETIME_READY'],'opcode')
+        with self.assertRaisesRegex(ValueError,'inherited'):
+            configure(self.args(),'crusnexo',settings)
+        with self.assertRaises(ValueError):
+            configure(self.args(*base),'crusnexo',{'MIDV_FFB':'1'})
+        with self.assertRaises(ValueError):
+            configure(self.args(*base[:-2], '--exotica-lifetime-ready','opcode'), 'offroadc', {'MIDV_FFB':'0'})
+        rows,text=self.fixture()
+        self.assertTrue(self.verify(rows,text+'MIDZ_LIFETIME_READY=opcode\n',trial)['passed'])
+        with self.assertRaisesRegex(ValueError,'acknowledgment'):
+            self.verify(rows,text,trial)
+
     def fixture(self):
         def row(event,**kwargs):
             return dict.fromkeys(FIELDS,0)|dict(event=event,frame=1800,time=31.5,epoch=1)|kwargs

@@ -11,10 +11,18 @@ def add_arguments(parser):
     parser.add_argument('--exotica-lifetimes',choices=('off','observe'),help='observe original pool/source/model lifetimes without extra rendering')
     parser.add_argument('--exotica-lifetime-first',type=int,help='first native frame, inclusive')
     parser.add_argument('--exotica-lifetime-last',type=int,help='last native frame, inclusive')
+    parser.add_argument('--exotica-lifetime-ready',choices=('slot','opcode'),
+        help='candidate-only source-completion hook; opcode uses one fixed read tap instead of a temporary object-slot tap')
 
 def configure(args,rom,settings):
     mode=getattr(args,'exotica_lifetimes',None)
     bounds=[getattr(args,'exotica_lifetime_'+name,None) for name in ('first','last')]
+    ready=getattr(args,'exotica_lifetime_ready',None)
+    if ready is not None and (ready not in ('slot','opcode') or not getattr(args,'candidate',None)
+            or rom!='crusnexo' or settings.get('MIDV_FFB')!='0'):
+        raise ValueError('Exotica ready hook requires an explicit force-free Exotica candidate')
+    if ready is None and 'MIDZ_LIFETIME_READY' in settings:
+        raise ValueError('inherited Exotica ready hook requires explicit selection')
     if mode is not None:
         if mode not in ('off','observe'):raise ValueError('invalid Exotica lifetime mode')
         if not getattr(args,'candidate',None):raise ValueError('Exotica lifetimes require an explicit candidate')
@@ -30,7 +38,7 @@ def configure(args,rom,settings):
         bounds=[int(settings[k]) for k in KEYS]
     if rom!='crusnexo':raise ValueError('Exotica lifetimes support Exotica2.4 only')
     if mode=='off':
-        if any(v is not None for v in bounds):raise ValueError('disabled Exotica lifetimes do not take bounds')
+        if any(v is not None for v in bounds) or ready is not None:raise ValueError('disabled Exotica lifetimes do not take bounds or a ready hook')
         settings['MIDZ_LIFETIME']='0'
         for k in KEYS:settings.pop(k,None)
         return dict(mode='off')
@@ -38,7 +46,10 @@ def configure(args,rom,settings):
     if first is None or last is None or not 1799<=first<=last<=15999 or last-first>10000:
         raise ValueError('Exotica lifetime frame bounds')
     settings.update(MIDZ_LIFETIME='1',MIDZ_LIFETIME_FIRST=str(first),MIDZ_LIFETIME_LAST=str(last))
-    return dict(mode='observe',first=first,last=last)
+    if ready is not None:settings['MIDZ_LIFETIME_READY']=ready
+    result=dict(mode='observe',first=first,last=last)
+    if ready is not None:result['ready_hook']=ready
+    return result
 
 def verify_receipt(trial,text,directory):
     path=Path(directory)/'exotica-lifetime-events.csv'
@@ -48,6 +59,9 @@ def verify_receipt(trial,text,directory):
         return None
     start=re.findall(r'^MIDZ_LIFETIME=1 first=(\d+) last=(\d+)$',text,re.M)
     if start!=[(str(trial['first']),str(trial['last']))]:raise ValueError('Exotica lifetime start acknowledgment')
+    ready_ack=re.findall(r'^MIDZ_LIFETIME_READY=([^\r\n]+)$',text,re.M)
+    if ready_ack!=(['opcode'] if trial.get('ready_hook')=='opcode' else []):
+        raise ValueError('Exotica fixed ready hook acknowledgment')
     names=('complete','records','transitions','bindings','emissions','owned','draws','first_draws','fading','opaque','epochs')
     final=re.findall(r'^MIDZ_LIFETIME_RESULT '+' '.join(n+r'=(\d+)' for n in names)+r'$',text,re.M)
     if len(final)!=1:raise ValueError('missing Exotica lifetime completion')
