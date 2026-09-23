@@ -120,8 +120,12 @@ are unsupported or skipped by class/flags. This rules out a failed
 `host_project` pass over an otherwise admitted ordinary model as the direct
 cause in this scene. It does not establish which near/far/unsupported object,
 if any, should occupy the opening. The additional counts are in
-`left-gap-billboard-screen-v2.json`, whose ordinary packets are checked against
-the actual producer bytes. The older screen report is retained.
+`left-gap-billboard-screen-v3.json`, whose ordinary packets are checked against
+the actual producer bytes. The saved future-section flag census contains 644
+unsupported definitions: 424 in the separately screened static billboard class
+`0x800804` and 220 spread among other flags. Those 220 need class and transform
+identification before any gap-coverage claim; their mere presence is not a
+candidate renderer fix. Older screen reports are retained.
 
 ## Why the old Margin Fill is not a safe repair
 

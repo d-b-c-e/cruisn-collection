@@ -65,7 +65,10 @@ def screen():
 
     counts = Counter()
     candidates = []
-    for section in sections(memory)['sources']:
+    future_sources = sections(memory)['sources']
+    unsupported_future_flags = Counter(source['flags'] for source in future_sources
+                                       if not source['supported'])
+    for section in future_sources:
         definition = section['definition']
         hit_index = definition[3] >> 16
         flags = definition[0]
@@ -144,6 +147,8 @@ def screen():
                 ordinary_host_packet_bytes_exact=True,
                 source_hash=source['source_hash'],
                 ordinary_selection_counts=dict(ordinary_counts), counts=dict(counts),
+                unsupported_future_flags={hex(flag): count for flag, count in
+                                          sorted(unsupported_future_flags.items())},
                 material_valid_extra_billboards=len(projected),
                 bounds_intersecting_gap=sum(item['distance'] == 0 for item in projected),
                 nearest=nearest[:20],
