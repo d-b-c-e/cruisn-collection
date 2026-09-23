@@ -4692,3 +4692,14 @@ x15 coverage report is superseded and preserved; the corrected reusable
 source-coverage analyzer saves left-gap-source-analysis-v2.json.18 focused
 tests PASS. This is one local gap, no
 accepted visual fix. See docs/reviews/2026-09-23-offroad-left-margin-source.md.
+
+2026-09-23 Off-Road original edge cross-check: resource and original-DMA bounded
+replays both PASS3200 recorded inputs/native prefix. Native source3116 has708
+host quads/hash6d3888267d377a9d. The original-command replay's completed3120
+image and8indexed planes match the prior source run exactly. Selected page1
+original group has499 commands, frames3116..3117. At corrected native
+(-71,158..161), original projected bounds admit backdrop command1 only;
+nearest ground begins y163 and masked-texture host quad470 ends y156. Current
+report left-gap-source-analysis-v4.json verifies the cross-run join and source
+hash.24 focused tests
+PASS. This does not qualify a fill; see the dated source review.

@@ -4,6 +4,7 @@ Reports conservative projected-quad bounds and exact saved fine pixels.
 It does not infer missing source geometry or approve a visual repair.
 """
 import argparse
+import csv
 import hashlib
 import json
 from pathlib import Path
@@ -12,6 +13,7 @@ import struct
 import numpy as np
 
 from vunit_original_mirror import verify as verify_mirror
+from vunit_display_scene import load as load_original_scene
 
 
 PACKET = struct.Struct('<IHH16HI4II')
@@ -43,7 +45,55 @@ def native_box(fine_box, width, height, scale, margin, native_height):
             (height - fine_box[1]) // scale)
 
 
-def analyze(case, samples, fine_box):
+def original_evidence(original_case, reference_case, reference_report, reference_mirror, source, box):
+    other = Path(original_case)
+    report = json.loads((other/'report.json').read_text(encoding='utf-8'))
+    run = other/'run'
+    if report.get('passed') is not True or report.get('case') != reference_report.get('case'):
+        raise ValueError('original-command capture does not match the passing recording')
+    if (json.loads((run/'invocation.json').read_text(encoding='utf-8'))['executable_sha256'] !=
+            json.loads((Path(reference_case)/'run'/'invocation.json').read_text(encoding='utf-8'))['executable_sha256']):
+        raise ValueError('original-command executable differs')
+    mirror = verify_mirror(report['vunit_original_mirror'], run)
+    if (any(mirror[k] != reference_mirror[k] for k in ('frame','width','height','visible_page')) or
+            mirror['sha256'] != reference_mirror['sha256'] or
+            report['evidence']['gl_captures']['files'] != reference_report['evidence']['gl_captures']['files']):
+        raise ValueError('original-command capture differs from matched completed image')
+    game = reference_report['vunit_original_mirror']['metadata_game']
+    with (run/f'{game}-host-scenes.csv').open(encoding='utf-8', newline='') as stream:
+        scene_rows = [row for row in csv.DictReader(stream)
+                      if int(row['frame']) == source['frame']]
+    if (len(scene_rows) != 1 or int(scene_rows[0]['page']) != source['page_control'] or
+            int(scene_rows[0]['quads']) != source['prepared_quads'] or
+            scene_rows[0]['quads_hash'] != source['prepared_quads_hash']):
+        raise ValueError('original-command run host source differs')
+    log = run/'capture/quads.bin'
+    if hashlib.sha256(log.read_bytes()).hexdigest() != report['capture']['sha256']['quads.bin']:
+        raise ValueError('original-command journal differs from capture receipt')
+    selected = load_original_scene(run)
+    current = selected.report['current']
+    if (not current['first_frame'] <= source['frame'] <= current['last_frame'] or
+            current['physical_draw_page'] != reference_mirror['visible_page'] or
+            current['page_control'] != source['page_control']):
+        raise ValueError('original-command group does not match source/page')
+    boxes = [projected_box([int(v) for v in quad]) for quad in selected.current]
+    hits = [i for i, candidate in enumerate(boxes) if intersects(candidate, box)]
+    nearby = [(i, candidate) for i, candidate in enumerate(boxes)
+              if candidate[0] <= box[0] <= candidate[2] and
+                 candidate[1] <= box[3] + 16 and candidate[3] >= box[1] - 16]
+    nearby.sort(key=lambda pair: (max(box[1] - pair[1][3], pair[1][1] - box[3], 0), pair[0]))
+    return dict(current_group=current, intersecting_ordinals=hits,
+                nearby_projected=[dict(ordinal=i, bounds=list(bounds),
+                                       flags=int(selected.current[i][0]),
+                                       palette=int(selected.current[i][1]),
+                                       texture=int(selected.current[i][14]))
+                                  for i, bounds in nearby[:20]],
+                journal_sha256=report['capture']['sha256']['quads.bin'],
+                source_scene_sha256=hashlib.sha256((run/f'{game}-host-scenes.csv').read_bytes()).hexdigest(),
+                scope='Matching completed pixels and same-page DMA group; conservative bounds only, not raster ownership.')
+
+
+def analyze(case, samples, fine_box, original_case=None):
     case = Path(case)
     report_path = case/'report.json'
     report = json.loads(report_path.read_text(encoding='utf-8'))
@@ -87,7 +137,7 @@ def analyze(case, samples, fine_box):
         pixels.append(dict(x=x, y=y, extended_pen=int(extended[y,x]),
                            original_pen=int(original[y,x]), extended_tag=int(mask[y,x]),
                            original_tag=int(original_mask[y,x])))
-    return dict(passed=True, scope='Conservative projected host bounds and indexed fine pixels '
+    result = dict(passed=True, scope='Conservative projected host bounds and indexed fine pixels '
                 'for one verified source/display pair; no polygon raster/texture or temporal acceptance.',
                 source_frame=source['frame'], completed_frame=mirror['frame'], page=page,
                 source_hash=source['prepared_quads_hash'], packets=len(packets),
@@ -98,6 +148,9 @@ def analyze(case, samples, fine_box):
                 samples=pixels, evidence_sha256={p.name:hashlib.sha256(p.read_bytes()).hexdigest()
                                                 for p in (report_path,run/'invocation.json',*paths,
                                                           run/'vunit-fade-producer.bin')})
+    if original_case is not None:
+        result['original_commands'] = original_evidence(original_case, case, report, mirror, source, box)
+    return result
 
 
 def point(text):
@@ -126,11 +179,13 @@ def main():
     parser.add_argument('--sample', action='append', type=point, required=True)
     parser.add_argument('--fine-box', type=rectangle, required=True,
                         help='indexed mirror X0:Y0:X1:Y1; native box is derived from verified scale/margin')
+    parser.add_argument('--original-run', type=Path,
+                        help='passing same-case completed mirror with an exact original DMA capture')
     parser.add_argument('--report', type=Path, required=True)
     args = parser.parse_args()
     if args.report.exists():
         raise ValueError('refusing to overwrite prior diagnostic')
-    result = analyze(args.case, args.sample, args.fine_box)
+    result = analyze(args.case, args.sample, args.fine_box, args.original_run)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(result, indent=2)+'\n',encoding='utf-8')
     print(json.dumps({k:result[k] for k in ('passed','source_frame','completed_frame','packets',

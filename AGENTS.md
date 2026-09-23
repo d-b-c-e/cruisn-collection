@@ -32,6 +32,13 @@ corrected run passes3200 inputs,708 packets and page join. The continuous
 metadata verifier now bounds all scene rows by runtime stop while keeping
 exact capture-window and packet checks. Read
 docs/reviews/2026-09-23-offroad-left-margin-source.md before future work.
+Subsequent same-source RAM/resource and original DMA captures PASS3200-input
+prefixes. Original completed3120 pixels and8indexed planes are exact to the
+matched run;499 page1 original commands span3116..3117. At native(-71,158..161)
+only backdrop command1 intersects; nearest original ground starts y163, host
+masked-texture quad470 ends y156. Combined source report is
+left-gap-source-analysis-v4.json;
+no renderer fix or general gap policy qualified.
 
 September23 owner resumed autonomous overnight work. Three2560×1440 panels
 are attached and Windows currently enumerates three separate monitors with

@@ -1,7 +1,7 @@
 # Off-Road left opening: matched source and completed page
 
 The El Paso sharp-turn opening at completed frame 3120 persists because the
-sampled 3× host scene has no polygon reaching a narrow strip between distant
+sampled 3× host scene has no scenery polygon reaching a narrow strip between distant
 terrain and near ground. This is stronger than counting distant admissions,
 but it is still a **single scene**, not a general source-level fix.
 
@@ -46,11 +46,48 @@ it used x=15 without subtracting the widescreen margin and therefore did not
 test the sampled x=60 opening. The revised analyzer does not rasterize or fill
 geometry. Eighteen focused analyzer/mirror/runtime tests pass.
 
+## Original command and saved-source cross-check
+
+One further 3,200-input read-only resource replay captures Off-Road RAM, ROM,
+texture and palette state at the **actual** source callback 3116. Its scene row
+matches the prior replay's page 516, 708 quads and exact hash
+`6d3888267d377a9d`. Independent saved-RAM reconstruction yields 245 accepted
+host objects and the same 708 quads. Of 3,010 future definitions, 693 have
+unsupported class flags; 424 of these are static billboard class `0x800804`.
+Those counts do not make the skipped classes terrain or show they would fill
+the observed opening.
+
+A separate bounded replay captures the original DMA journal and an indexed
+mirror at completed frame 3120. It passes the recorded input and native-image
+prefix; its completed 2544×1353 image and all eight indexed mirror planes have
+the **same hashes** as the matched host-source run. The completed-page selector
+chooses 499 original commands drawn to page 1 over frames 3116–3117. In the
+conservative native box `(-71,158)..(-71,161)`, only original backdrop command
+1 intersects. The closest original near-ground command 66 begins at y=163;
+the nearest host command 470 ends at y=156. Thus the indexed sky pen in this
+small opening is consistent with a gap between two rendered surfaces, rather
+than a black material sample or a dropped host command in that strip. The
+host quad uses masked-texture mode (`0x900`), so joining these surfaces by
+stretching it would need material and transparency checks before any live trial.
+
+`harness/analyze_vunit_margin_gap.py --original-run` validates the separate
+replay's case, executable, completed GL image, all mirror planes and DMA
+capture receipt before reporting original and host projected bounds. The
+combined `left-gap-source-analysis-v4.json` is the current report;
+`left-gap-source-analysis-v2.json` remains the correct host-only predecessor.
+The first combined report v3 lacked an independent original-run source-hash
+check; it is retained, and v4 adds that check. Twenty-four focused
+analyzer/mirror/runtime/original-scene tests pass. No
+source or renderer correction is accepted from this single frame.
+
 Local evidence is under `results/diagnostics/offroad-full-20260910`:
 `left-gap-source-run/report.json` retains the verifier failure on the wrong
 capture window, while `left-gap-matched-run/report.json` passes. The latter
 contains `vunit-fade-producer.bin`, byte-identical consumer metadata,
 `offroad-host-scenes.csv`, verified mirror planes and the completed image.
+`left-gap-resource-run` and `left-gap-original-run` hold the two later passing
+cross-checks, and `left-gap-original-selection.json` records the current DMA
+group. The original command journal and ROM/material operands stay local.
 The earlier [margin diagnosis](2026-09-23-offroad-left-margin-gap.md) retains
 the ordinary/3× 4K images and the first capture-mode run. No renderer code,
 installed build or public release changed. Next investigate the active ground

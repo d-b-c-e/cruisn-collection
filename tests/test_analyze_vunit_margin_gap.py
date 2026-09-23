@@ -1,9 +1,11 @@
 from pathlib import Path
+import json
 import sys
+import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
-from analyze_vunit_margin_gap import projected_box, intersects, native_box
+from analyze_vunit_margin_gap import projected_box, intersects, native_box, original_evidence
 
 
 class ProjectedBoundsTests(unittest.TestCase):
@@ -21,6 +23,18 @@ class ProjectedBoundsTests(unittest.TestCase):
         self.assertFalse(intersects((-109,122,-69,156),(-71,158,-71,161)))
         with self.assertRaisesRegex(ValueError,'unqualified fine/native'):
             native_box((60,956,60,964),2736,1600,4,0,400)
+
+    def test_original_command_join_rejects_failed_or_unrelated_run(self):
+        with tempfile.TemporaryDirectory() as directory:
+            case = Path(directory)
+            (case/'report.json').write_text(json.dumps({'passed': False, 'case': 'same'}),
+                                            encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'does not match'):
+                original_evidence(case, case, {'case': 'same'}, {}, {}, (0,0,0,0))
+            (case/'report.json').write_text(json.dumps({'passed': True, 'case': 'other'}),
+                                            encoding='utf-8')
+            with self.assertRaisesRegex(ValueError,'does not match'):
+                original_evidence(case, case, {'case': 'same'}, {}, {}, (0,0,0,0))
 
 
 if __name__ == '__main__':
