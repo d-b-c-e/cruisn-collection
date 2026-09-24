@@ -8,11 +8,25 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw
 
+from offroad_gap_temporal_screen import ROI
+
 ROOT = Path(__file__).resolve().parents[1]
 HERE = ROOT / 'results/diagnostics/offroad-full-20260910'
 CONTROL = HERE / 'left-gap-temporal-run'
 TRIAL = HERE / 'left-gap-resident-temporal-run'
 FRAMES = list(range(3100, 3141, 4))
+BLUE_SCREEN = HERE / 'left-gap-temporal-screen-v4.json'
+
+
+def blue_pairs(rgb):
+    """Same CRT-color review heuristic as the prior no-host/3x screen."""
+    x0, y0, x1, y1 = ROI
+    patch = rgb[y0:y1, x0:x1].astype('i2')
+    pair = (patch[:, ::2, :] + patch[:, 1::2, :]) / 2
+    return int(((pair[:, :, 2] > pair[:, :, 0] + 10) &
+                (pair[:, :, 1] > pair[:, :, 0] + 5) &
+                (pair[:, :, 2] > pair[:, :, 1] + 3) &
+                (pair[:, :, 0] > 35)).sum())
 
 
 def captures(path, frames):
@@ -45,6 +59,11 @@ def screen(contact=None, *, control=CONTROL, trial=TRIAL, frames=FRAMES,
     if any(inv['environment'].get('MIDV_FFB') != '0' for inv in invocations):
         raise ValueError('physical force must be disabled')
     rows = [captures(path, frames) for path in (control, trial)]
+    old_blue = json.loads(BLUE_SCREEN.read_text(encoding='utf-8'))
+    if (old_blue.get('passed') is not True or old_blue.get('completed_frames') != frames or
+            old_blue.get('roi_xyxy') != list(ROI)):
+        raise ValueError('saved blue-color screen does not match this temporal schedule')
+    expected_blue = {row['frame']: row for row in old_blue['samples']}
     output = []
     contact_images = []
     # The hardware 4:3 left edge maps to about x370 in the completed client.
@@ -61,10 +80,18 @@ def screen(contact=None, *, control=CONTROL, trial=TRIAL, frames=FRAMES,
             raise ValueError(f'frame {frame} has no required gain or changes outside the permitted margin')
         old_dark = np.max(images[0], axis=2) < 40
         new_dark = np.max(images[1], axis=2) < 40
+        control_blue, resident_blue = (blue_pairs(rgb) for rgb in images)
+        if (frame not in expected_blue or
+                expected_blue[frame]['image_sha256'] != hashlib.sha256(paths[0].read_bytes()).hexdigest() or
+                expected_blue[frame]['heuristic_blue_pair_pixels'] != control_blue):
+            raise ValueError(f'frame {frame} differs from retained blue-color screen')
         output.append(dict(frame=frame, changed_pixels=int(different.sum()),
                            box=[int(xx.min()), int(yy.min()), int(xx.max()), int(yy.max())] if len(xx) else None,
                            new_near_black=int((different & new_dark & ~old_dark).sum()),
                            removed_near_black=int((different & old_dark & ~new_dark).sum()),
+                           control_blue_pair_pixels=control_blue,
+                           resident_blue_pair_pixels=resident_blue,
+                           blue_pair_reduction=control_blue-resident_blue,
                            control_sha256=hashlib.sha256(paths[0].read_bytes()).hexdigest(),
                            trial_sha256=hashlib.sha256(paths[1].read_bytes()).hexdigest()))
         if contact is not None and frame in (3100, 3120, 3136, 3140):
@@ -83,11 +110,16 @@ def screen(contact=None, *, control=CONTROL, trial=TRIAL, frames=FRAMES,
     return dict(frames=output, changed_range=[min(r['changed_pixels'] for r in output),
                                                max(r['changed_pixels'] for r in output)],
                 new_near_black_total=sum(r['new_near_black'] for r in output),
+                blue_pair_reduction_range=[min(r['blue_pair_reduction'] for r in output),
+                                           max(r['blue_pair_reduction'] for r in output)],
+                blue_reduced_all_frames=all(r['blue_pair_reduction'] > 0 for r in output),
+                blue_heuristic_roi=list(ROI),
+                blue_screen_sha256=hashlib.sha256(BLUE_SCREEN.read_bytes()).hexdigest(),
                 changed_outside_permitted_margins=0, margin_sides=margin_sides,
                 cutoff_completed_x=cutoff,
                 control_binary_sha256=invocations[0]['executable_sha256'],
                 trial_binary_sha256=invocations[1]['executable_sha256'],
-                scope=f'{len(frames)} exact completed-frame pairs at physical 1440p; dark threshold is heuristic, not full visual acceptance')
+                scope=f'{len(frames)} exact completed-frame pairs at physical 1440p; dark and blue-color thresholds are heuristics, not full visual acceptance')
 
 
 def main():
