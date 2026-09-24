@@ -60,6 +60,24 @@ before its build-revision string changed. Reports and contact sheet are
 `left-gap-resident-temporal-compare-v1.json`, and
 `left-gap-resident-temporal-contact-v1.png` in the same local directory.
 
+The frozen committed binary also completes the **full 9,644-input El Paso
+recording** with quiet scene journals, all original input/native comparisons,
+stable physical 1440p display watch, literal force zero and owned shutdown.
+It prepares 4,249 host scenes / 3,931,158 quads through frame 9642 and drains
+the graphics worker at 9643. The sparse capture request yielded completed
+frames 4000, 6000 and 8000 (the recorder aligns to its frame modulus), all
+at 2544×1353 on visible page 1. A matched 8,002-input control using the same
+frozen binary and 3× settings without resident margins also passes. At 4000
+the candidate changes 20 pixels in completed x2318–2323, inside the **right**
+widescreen margin; the 6000 and 8000 images are byte-exact to control. None
+of those three frames changes center pixels. The images show no obvious new
+defect on inspection, but three still frames are not whole-course visual
+acceptance. The saved reports are `resident-full-elpaso-run/report.json`,
+`resident-late-control-run/report.json` and `resident-late-compare-v2.json`.
+The first late comparison failed because its predicate required a positive
+**left** margin change in every frame; it remains a raw analyzer failure,
+not a failed game replay.
+
 Two raw trial failures remain part of the record. Trial v1 clipped every
 resident fragment because it reused the disabled legacy Margin Fill width;
 an independent resident clip uniform fixed that. Trial v2 rendered the
@@ -69,8 +87,9 @@ build attempt also failed on an existing raw-string generator issue; normal
 incremental compilation and linking succeeded. None of these failed reports
 has been relabeled a pass.
 
-This result is limited to one recorded El Paso turn at physical 1440p. It does
-not qualify other Off-Road courses, 4K, physical wheel/force feedback, menu
+The live candidate completes one recorded El Paso course at physical 1440p;
+its detailed visual gain is demonstrated for the sharp turn. It does not
+qualify other Off-Road courses, 4K, physical wheel/force feedback, menu
 integration, or the analogous behavior in USA and World. The candidate stays
 diagnostic only; the personal UX707 executable, public v0.5.0, launcher
 settings and default force profile remain unchanged. A second route and 4K

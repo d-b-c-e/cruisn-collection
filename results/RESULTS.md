@@ -4785,3 +4785,14 @@ project-file changes. This avoids the September24 raw REGENIE generator
 failure during header-only iteration. PowerShell parse PASS; no release
 package, personal deployment or fresh-checkout build was run. Fresh-checkout
 generation remains an open release gate.
+
+2026-09-24 Off-Road resident full-route boundary: frozen native03123d5b272
+PASSes full recorded El Paso9644 inputs/native comparison,4249 quiet host
+scenes/3931158 quads, physical1440 display-watch0, FFB0 and owned worker
+shutdown. Three completed2544×1353 images at4000/6000/8000 have a matched
+3x no-resident control through8002 inputs. Candidate changes20 pixels inside
+the far-right margin at4000 and zero at6000/8000; center pixels exact in all
+three. Raw late-comparison v1 failed an over-narrow left-only/positive-gain
+predicate; v2 PASS with both margins and exact-frame support. Three sparse
+views do not establish full-course visual acceptance; other courses,4K and
+physical force remain open. See the September24 resident-margin review.

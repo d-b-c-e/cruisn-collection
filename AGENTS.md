@@ -11,6 +11,13 @@ Independent Python/native cold/warm projection of saved3116/3132 source RAM
 matches ordered876/795 quads, all counters and live candidate fingerprints
 bd235ef2e6f97f0d/c2b6df8a213d9853. Raw independent v1/v2 failures
 retained; v4 PASS. No fresh RAM snapshot in final committed-binary replay.
+Frozen committed binary also PASSes full9644-input El Paso with4249 quiet
+scenes/3931158 quads, FFB0, stable physical1440 and owned shutdown. Sparse
+completed4000/6000/8000 compared to matched3x control:20 right-margin pixels
+change at4000, latter two byte-exact; no center changes. First late analyzer
+failed its left-only/positive-change predicate, retained; generalized v2 PASS.
+Read the resident-margin review for exact limits. This is one course, with
+detailed visual evidence only around the sharp turn.
 Separate11-frame temporal trial changes only the left widescreen margin and
 visually closes the moving blue opening;1997 newly near-black pixels are a
 review hint, not texture-defect proof. Rawv1/v2 failures retained. Read
