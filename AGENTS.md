@@ -19,6 +19,9 @@ No live reset/game replay, release package or renderer deployment.
 Off-Road resident 3136 indexed verifier now PASS: all7,438 strict and11,649
 connected backdrop-gap pixels acquire host ownership; original-only planes
 byte-exact, native center untouched. Local resident-indexed-gap-3136-v2.json.
+The saved11-frame resident turn also reduces the prior CRT-blue heuristic from
+863..3903 to0..16 paired pixels in every frame (v3 temporal report); still not
+an exact texture-defect area or 4K/course acceptance.
 Read docs/reviews/2026-09-24-makedep-reset-shader.md. Both 280/281 one-time
 exporters already ran; never rerun them. Personal UX707/publicv0.5.0 unchanged.
 

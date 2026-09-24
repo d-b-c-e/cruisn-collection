@@ -74,6 +74,17 @@ capture-validated result is local `resident-dark-triage-v2.json` (v1 retained).
 Neither threshold sees a defect shared by both images or establishes temporal
 quality between the eleven samples.
 
+The same 11 pairs now also use the exact CRT-blue signature and fixed left ROI
+from the earlier no-host comparison. The new analysis verifies every control
+BMP hash and reproduces its saved blue count before comparing the resident
+candidate. Control counts span 863–3,903 paired-column pixels; the resident
+candidate has 0–16 in those frames. The reduction is positive in all 11,
+between 861 and 3,903 paired pixels; frames 3128, 3132, 3136 and 3140 have
+zero remaining pixels under this signature. Local
+`left-gap-resident-temporal-compare-v3.json` contains the per-frame counts and
+source hash for the earlier screen. This is a paired CRT-color heuristic, not
+an exact sky/ground area or a guarantee against other texture artifacts.
+
 The committed candidate's source-joined 3136 capture now has a repeatable
 indexed-page check, `harness/verify_vunit_resident_gap.py`. It first validates
 the passing control's same-run original DMA and backdrop command, both replay

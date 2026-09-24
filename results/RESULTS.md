@@ -4862,3 +4862,12 @@ envelope or in the native center. Displayed indexed color changes total
 24,346, all in a widescreen margin. Capture-validated/source-hashed local
 resident-indexed-gap-3136-v2.json PASS; v1 before an extra envelope assertion
 also retained. No new game replay, physical 4K test or renderer promotion.
+
+2026-09-24 Off-Road resident turn color screen: the existing 11 completed
+El Paso pairs were reanalyzed using the exact earlier no-host/3x CRT-blue ROI
+signature. Every control BMP hash and blue count matches the saved baseline.
+Control blue counts span863..3903 paired-column pixels; resident counts0..16,
+with positive reductions861..3903 in all11 frames. Four late frames3128..3140
+have zero under this heuristic. Source-hashed local temporal-compare-v3 report;
+no new game replay. These color counts do not establish exact geometry area or
+full-course visual acceptance.
