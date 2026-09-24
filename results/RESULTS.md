@@ -4832,3 +4832,11 @@ b536e95039ba2c5c8f4be18179e11ceecd5da9f41e8027b713cb8af71c984d06;
 `-listfull offroadc` exits0 and names Off Road Challenge1.63. Source/log/binary
 hashes are in local fresh-worktree-build-attestation.json. This is not a
 separate network clone or a release package; no live game/FFB or deployment.
+
+2026-09-24 Public native patch replay: a second detached worktree at local
+MAME0.286 commit ca48656c92325c821b85984952e96241d60c7aef applied all281
+exported commits with plain `git am` and has a clean working tree. Its final
+tree066d00100d6633ae994a5060fe3e1e33135feb22 exactly equals the native
+source that passed the clean build. Local patch-replay-attestation.json binds
+base, patch/log hashes, commit count and final tree. No second build or network
+clone was run; this is a source-reconstruction check, not product acceptance.

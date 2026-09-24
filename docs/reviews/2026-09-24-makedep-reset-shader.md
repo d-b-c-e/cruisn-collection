@@ -47,3 +47,14 @@ shader source. It is not a separate network clone, a new live machine-reset
 replay, a release package or a renderer promotion. The personal Stream Deck
 executable remains UX707 and public v0.5.0 is unchanged. Packaging and
 attended product checks remain separate release gates.
+
+The documented patch route also passes locally. A second detached worktree at
+MAME 0.286 commit `ca48656c92325c821b85984952e96241d60c7aef` accepted the
+exported patch file using plain `git am` with the host's normal Windows Git
+configuration. All **281 commits** applied, the worktree is clean, and its
+final Git tree is exactly
+`066d00100d6633ae994a5060fe3e1e33135feb22`—the tree of the native
+source that passed the clean build. Local `patch-replay-attestation.json`
+preserves the base, patch/log hashes, count and exact tree comparison. This
+uses a local tag rather than a new network clone, but verifies the patch
+application and resulting source content of the published build instructions.

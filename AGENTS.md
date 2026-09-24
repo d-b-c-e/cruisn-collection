@@ -11,6 +11,10 @@ Clean detached worktree build at same commit now PASS:34/34 projects regenerated
 empty-tree compile/link,115650978-byte binary SHA
 b536e95039ba2c5c8f4be18179e11ceecd5da9f41e8027b713cb8af71c984d06,
 `-listfull offroadc` exit0. Local attestation under offroad-full-20260910.
+Separate local MAME0.286 patch-replay worktree applied all281 exported patches
+with plain `git am`; clean final tree066d00100d6633ae994a5060fe3e1e33135feb22
+equals built native. `patch-replay-attestation.json` is local. No second build
+or network clone was needed.
 No live reset/game replay, release package or renderer deployment.
 Read docs/reviews/2026-09-24-makedep-reset-shader.md. Both 280/281 one-time
 exporters already ran; never rerun them. Personal UX707/publicv0.5.0 unchanged.

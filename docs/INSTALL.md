@@ -415,6 +415,8 @@ Advanced / scripted setup (custom paths, no GUI): `setup.ps1` in the zip.
    string. The shader is now byte-identical ordinary literals; a subsequent
    `REGENIE=1` run regenerated all 34 projects and linked on the development
    checkout and in a clean detached source worktree with an empty build tree.
+   The exported 281-patch series also applies with plain `git am` to the local
+   MAME 0.286 tag and reconstructs that exact built source tree.
    Release packaging and attended validation remain separate gates.
    Put `SDL2.dll` beside it for wheel force feedback (the
    MSYS2 package `mingw-w64-x86_64-SDL2` supplies both the headers the
