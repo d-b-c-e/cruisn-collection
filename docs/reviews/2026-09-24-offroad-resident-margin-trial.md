@@ -30,6 +30,21 @@ plane hashes match the prior source-joined control. Source commit
 The 280-patch export and binary attestation are in
 `resident-native-export.json` and the candidate's `.build.json` file.
 
+The independent Python scene projector was extended to reconstruct the
+resident selection and margin pruning from saved RAM/ROM. A standalone native
+CLI using the shipped helper produces **exactly the same ordered 876 and 795
+quads**, counters and objects on cold and warm caches at source 3116 and
+3132. Its ordered quad fingerprints, `bd235ef2e6f97f0d` and
+`c2b6df8a213d9853`, also equal the committed candidate's live scene journal
+at those frames. This joins the independent source calculation to the live
+producer receipt without another game replay. The saved resource captures
+come from matching recorded-input runs; the final run did not save a fresh
+RAM snapshot. This is exact ordered-scene evidence at two frames, not a
+byte-for-byte comparison of every graphics packet in the full course. The
+qualified report is `resident-independent-v4.json`. Its v1 failed on a
+Python-only synthetic object owner, and v2 failed to locate the CLI's MSYS2
+runtime DLLs; both raw reports remain saved.
+
 An additional single 3,142-input trial captured 11 completed frames from
 3100 through 3140, every four frames. Compared with the saved 3× control,
 each changes 6,192–16,894 pixels, all left of completed x370; the center and
@@ -60,5 +75,5 @@ integration, or the analogous behavior in USA and World. The candidate stays
 diagnostic only; the personal UX707 executable, public v0.5.0, launcher
 settings and default force profile remain unchanged. A second route and 4K
 completed-image review are the next visual gates before considering product
-promotion. Independent host-packet reconstruction for the new resident class
-would strengthen the harness before broadening the policy.
+promotion. A detailed live packet comparison over a second route would
+strengthen the harness before broadening the policy.

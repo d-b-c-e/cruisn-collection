@@ -7,11 +7,15 @@ September24 Off-Road opt-in resident-ground margin trial now PASSes an El Paso
 mirror and owned shutdown. Frozen committed native03123d5b272 SHA
 cb6a4697528e27b492f65b023c60dac66a83798fbdbd7465dd1c30f0c484f24a;
 280-patch export attested. Two completed images are byte-exact to trialv3.
+Independent Python/native cold/warm projection of saved3116/3132 source RAM
+matches ordered876/795 quads, all counters and live candidate fingerprints
+bd235ef2e6f97f0d/c2b6df8a213d9853. Raw independent v1/v2 failures
+retained; v4 PASS. No fresh RAM snapshot in final committed-binary replay.
 Separate11-frame temporal trial changes only the left widescreen margin and
 visually closes the moving blue opening;1997 newly near-black pixels are a
 review hint, not texture-defect proof. Rawv1/v2 failures retained. Read
 docs/reviews/2026-09-24-offroad-resident-margin-trial.md. Do NOT deploy:
-another course,4K,independent packet reconstruction and physical FFB remain.
+another course,4K,detailed packet coverage and physical FFB remain.
 Personal UX707/publicv0.5.0 unchanged. The one-time native export already ran;
 never rerun it.
 

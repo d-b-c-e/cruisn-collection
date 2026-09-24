@@ -4768,3 +4768,13 @@ is heuristic. Raw v1 (all resident fragments clipped), v2 (verifier partition)
 and REGENIE generator failure remain failures. Only El Paso1440 is qualified;
 no personal deployment, release,4K/other-course or physical-force claim. See
 docs/reviews/2026-09-24-offroad-resident-margin-trial.md.
+
+2026-09-24 Off-Road resident independent producer check: saved source3116
+and3132 RAM/ROM reconstructed by Python match native C++ cold/warm scenes
+exactly:876/795 ordered quads and all counters. FNV quad fingerprints
+bd235ef2e6f97f0d/c2b6df8a213d9853 match the committed candidate's live
+scene journal at those same frame numbers. Qualified local report
+resident-independent-v4.json; v1 invalid Python synthetic owner and v2 missing
+MSYS2 runtime DLLs remain raw failures. This strengthens two-frame producer
+evidence without another MAME replay; it is not detailed packet, whole-course,
+4K or product acceptance.
