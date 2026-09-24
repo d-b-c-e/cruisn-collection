@@ -96,7 +96,13 @@ def check(control, candidate):
     center = slice(margin, width - margin)
     strict_host = int(((tags[1] & 4) != 0)[strict].sum())
     connected_host = int(((tags[1] & 4) != 0)[connected].sum())
+    changed_strict_index = int(changed_index[strict].sum())
+    candidate_sky_index = np.zeros((height, width), dtype=bool)
+    for palette in source['sky_palettes']:
+        candidate_sky_index |= (indices[1] >= palette) & (indices[1] < palette + 256)
+    remaining_strict_sky_index = int(candidate_sky_index[strict].sum())
     if (strict_host != int(strict.sum()) or connected_host != int(connected.sum()) or
+            changed_strict_index != int(strict.sum()) or remaining_strict_sky_index or
             int((indices[1][strict] == 0).sum()) or
             changed_index[:, center].any() or changed_tags[:, center].any()):
         raise ValueError('resident pixels did not cover gap or changed native center')
@@ -107,6 +113,8 @@ def check(control, candidate):
                   source_connected_envelope_pixels=int(connected.sum()),
                   candidate_host_owned_strict_pixels=strict_host,
                   candidate_host_owned_envelope_pixels=connected_host,
+                  candidate_changed_index_strict_pixels=changed_strict_index,
+                  candidate_remaining_sky_index_strict_pixels=remaining_strict_sky_index,
                   candidate_zero_index_strict_pixels=int((indices[1][strict] == 0).sum()),
                   candidate_tags_on_strict={str(int(k)): int(v) for k, v in zip(tag_values, tag_counts)},
                   changed_index_pixels=int(changed_index.sum()),
