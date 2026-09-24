@@ -414,7 +414,8 @@ Advanced / scripted setup (custom paths, no GUI): `setup.ps1` in the zip.
    24 trial initially failed in MAME's dependency parser on a raw Exotica GLSL
    string. The shader is now byte-identical ordinary literals; a subsequent
    `REGENIE=1` run regenerated all 34 projects and linked on the development
-   checkout. Treat a clean-clone build as a separate open release gate.
+   checkout and in a clean detached source worktree with an empty build tree.
+   Release packaging and attended validation remain separate gates.
    Put `SDL2.dll` beside it for wheel force feedback (the
    MSYS2 package `mingw-w64-x86_64-SDL2` supplies both the headers the
    build needs and `/mingw64/bin/SDL2.dll`; the emulator loads it at run

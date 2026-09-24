@@ -4823,3 +4823,12 @@ retained as raw log. One-time281-patch export reconstructs native tree
 1ed851dd17836d56e36c2c4699f3200fb67e173f590155d55f65df39fcaec238.
 No live game/reset, deployment, release or clean-clone build. See
 docs/reviews/2026-09-24-makedep-reset-shader.md.
+
+2026-09-24 Clean-worktree V-Unit source build: detached native46e14e33547
+at E:/Source/mame-fresh-build-20260924 has an empty build tree and no tracked
+changes. `REGENIE=1` regenerated34/34 projects, compiled and linked with no
+error lines. Native binary115650978 bytes, SHA
+b536e95039ba2c5c8f4be18179e11ceecd5da9f41e8027b713cb8af71c984d06;
+`-listfull offroadc` exits0 and names Off Road Challenge1.63. Source/log/binary
+hashes are in local fresh-worktree-build-attestation.json. This is not a
+separate network clone or a release package; no live game/FFB or deployment.

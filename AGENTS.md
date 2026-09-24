@@ -7,7 +7,11 @@ GLSL literals with byte-identical adjacent C++ strings so MAME makedep can
 scan them. REGENIE regenerated34/34 projects and linked; postcommit binary
 SHA1ed851dd17836d56e36c2c4699f3200fb67e173f590155d55f65df39fcaec238,
 281-patch export attested. Python hash/GL compile and native reset fixture pass.
-No live reset/game replay or renderer deployment; clean-clone build still open.
+Clean detached worktree build at same commit now PASS:34/34 projects regenerated,
+empty-tree compile/link,115650978-byte binary SHA
+b536e95039ba2c5c8f4be18179e11ceecd5da9f41e8027b713cb8af71c984d06,
+`-listfull offroadc` exit0. Local attestation under offroad-full-20260910.
+No live reset/game replay, release package or renderer deployment.
 Read docs/reviews/2026-09-24-makedep-reset-shader.md. Both 280/281 one-time
 exporters already ran; never rerun them. Personal UX707/publicv0.5.0 unchanged.
 
@@ -37,7 +41,7 @@ never rerun it.
 `build_local.ps1` now defaults to incremental MAME project reuse; explicit
 `-RegenerateProjects` is reserved for project-file changes. The original raw
 REGENIE failure is fixed in native46e and regenerated successfully on this
-checkout, while a clean fresh-checkout build remains a release gate.
+checkout and the isolated clean worktree. Packaging/attended checks remain.
 World2.4 New York attended recording is still needed. September24 plan
 `results/diagnostics/world-new-york-20260924/recording-plan` and
 `record-preflight` both PREPARED/not executed, using frozen03123 native,

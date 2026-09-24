@@ -29,8 +29,10 @@ configuration; it adds `REGENIE=1` to the build. Header, shader, and ordinary
 source edits do not need project regeneration. The September 24 raw-string
 blocker in `exotica_reset.h` was corrected without changing shader bytes;
 `REGENIE=1` now regenerates all 34 projects and links on this checkout. See
-[the regeneration review](reviews/2026-09-24-makedep-reset-shader.md). A
-clean-clone build is still a separate release gate.
+[the regeneration review](reviews/2026-09-24-makedep-reset-shader.md). A clean
+detached source worktree also regenerated all projects and built the native
+target from an empty build tree. Release packaging and attended product
+checks remain separate gates.
 
 The Personal target copies only the compiled emulator to `mame-src/vunit.exe`,
 keeping a hash-named backup under `build/personal/previous/`. It refuses deployment

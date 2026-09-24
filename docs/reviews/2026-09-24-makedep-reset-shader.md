@@ -31,8 +31,19 @@ candidate is `build/candidates/46e14e33547/vunit.exe`, SHA-256
 Local receipt `regenie-shader-native-export.json` binds the build and patch
 series. **Do not rerun its exporter.**
 
-This proves project regeneration and native linking from the current working
-checkout, plus byte-identical reset shader source. It is not a clean-clone
-build, a new live machine-reset replay, a renderer promotion or a release.
-The personal Stream Deck executable remains UX707 and public v0.5.0 is
-unchanged. Fresh-clone build and packaging remain separate release gates.
+An independent **clean detached Git worktree** at native commit `46e14e33547`
+then built V-Unit from an empty build tree with `REGENIE=1`. It regenerated
+34/34 projects, compiled and linked with no error lines, and produced a
+115,650,978-byte binary (SHA-256
+`b536e95039ba2c5c8f4be18179e11ceecd5da9f41e8027b713cb8af71c984d06`).
+The binary answers `-listfull offroadc` with exit 0 and the expected game
+name. Local `fresh-worktree-build-attestation.json` binds the source commit,
+build log and binary hashes. The worktree is isolated at
+`E:/Source/mame-fresh-build-20260924`; it has not replaced the frozen
+candidate or personal emulator.
+
+This proves a clean source-tree build on this PC and byte-identical reset
+shader source. It is not a separate network clone, a new live machine-reset
+replay, a release package or a renderer promotion. The personal Stream Deck
+executable remains UX707 and public v0.5.0 is unchanged. Packaging and
+attended product checks remain separate release gates.
