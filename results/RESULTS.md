@@ -4720,3 +4720,22 @@ captures yield zero. Several controls repeat a view, so not nine routes or
 general defect clearance. vunit-sky-gap-screen-v2.json and local exploratory
 screens retained.10 focused analyzer/original-scene tests PASS. No rendering
 change or live game. See docs/reviews/2026-09-23-vunit-sky-gap-screen.md.
+
+2026-09-23 Off-Road temporal and second-source follow-up: matched 3× and no-host
+El Paso replays each PASS 3,200 recorded inputs/native comparisons, 11 completed
+2544×1353 frames 3100..3140 every four frames, stable physical 1440p display
+and normal owned shutdown with FFB disabled. The 3× run changes 529..37,898
+completed pixels per paired frame and reduces a left-ROI sky-like color count,
+but a moving blue opening persists; the color metric is not exact sky area or
+visual acceptance. Source3132/display3136 also PASS with a byte-exact completed
+image and 689 host packets. Its indexed screen finds 7,438 strict host-bounded
+sky pixels and an 11,649-pixel connected envelope, versus 5,841/6,756 at
+3120. At native x=-71, selected neighboring projected quad edges leave about
+9.85 units at 3120 and 25.48 at 3136; raster/material ownership is unproven.
+Saved source3116 reconstructs all 708 host packet bytes, with zero whole-object
+projection/material rejections. Of 644 unsupported future definitions, 424
+belong to the separately screened static-billboard class and 220 remain to
+classify. None of the 46 qualified extra static billboards cover the sampled
+gap. Earlier preflight/raw failures remain unchanged. Local reports and limits
+are in docs/reviews/2026-09-23-offroad-margin-temporal.md and
+docs/reviews/2026-09-23-offroad-left-margin-source.md; no renderer promotion.
