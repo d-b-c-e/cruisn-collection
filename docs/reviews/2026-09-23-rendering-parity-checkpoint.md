@@ -11,7 +11,7 @@ the diagnostic results below.
 | --- | --- | --- |
 | USA | Continuous 3× and Continue/Golden Gate transition preserve 12,212 inputs, original motion and owned shutdown; distant geometry changes checked completed 4K frames. | Broader courses, transition appearance and final integrated settings/4K acceptance. No claim that 3× eliminates pop-in. |
 | World 2.4/2.5 | Both revisions have continuous race transitions; 2.5 adds distant coverage in 18/21 saved 4K frames. Sampled Germany road holes are repaired by a separate gated road treatment. | New York's reported distant black flashes and finish-line crash need a recorded reproduction. Hawaii has an authored terrain edge: the offline skirt trial made it worse. Broader track and 4K integration remain open. |
-| Off-Road | Continuous 3× and El Paso restart qualify. In a matched 11-frame sharp turn, 3× changes 529–37,898 completed pixels per frame and partly covers distant sky while preserving all 3,200 recorded inputs. Source/display joins at 3120 and 3136 both find an uncovered center. A September 24 offline screen finds authored loaded ground absent from both draw lists that covers the flagged gap in both scenes. | The moving left-margin blue opening remains in the live renderer. A gated current-resident ground path needs native draw-order and temporal qualification; simple pixel fills and the qualified static billboard class cannot repair it. Other courses and final visual acceptance remain open. |
+| Off-Road | Continuous 3× and El Paso restart qualify. In a matched 11-frame sharp turn, 3× partly covers distant sky while preserving 3,200 recorded inputs. Source/display joins at 3120 and 3136 find authored loaded ground absent from both draw lists. An opt-in resident-ground candidate closes the sampled blue opening through 11 completed 1440p views; changes remain left of the original 4:3 edge, and a focused replay of the committed binary matches the passing trial byte-exact. | The resident policy is diagnostic only. Another course, 4K visual acceptance, physical wheel/force feedback and independent host-packet reconstruction remain open. Simple pixel fills and the qualified static billboard class cannot repair the sampled opening. |
 | Exotica | Amazon/race transition and Mars evidence show a small, real 3× completed-image gain. The current native006 passes the Mars 5,700-input and Amazon 11,260-input routes on a stable physical 1440p monitor with exact requested completed images and owned shutdown. | Useful outer appearance/fade, remaining irregular pauses, other courses, reset/failure boundaries and renewed 4K capture. Earlier merged-display failures remain failures; no physical-wheel acceptance. |
 
 The September 23 Off-Road investigation is unusually source-specific:
@@ -32,12 +32,10 @@ These are route-specific facts, not a safe general renderer policy.
 
 The next efficient sequence is:
 
-1. For Off-Road, use the [loaded ground screen](2026-09-24-offroad-loaded-ground.md)
-   to design a gated current-resident margin candidate. It must preserve
-   material/depth ownership and be checked over the 11 already captured views;
-   do not enable legacy Margin Fill or a global skirt. A second attended course
-   is useful later, but the current recorded El Paso drive is sufficient for
-   the immediate source question.
+1. For Off-Road, retain the [resident-margin candidate](2026-09-24-offroad-resident-margin-trial.md)
+   as a gated diagnostic. Reconstruct its new host packets independently, then
+   check a second attended course and physical 4K completed frames before
+   considering promotion. Do not enable legacy Margin Fill or a global skirt.
 2. For World, obtain a representative New York recording through the finish
    with the external clock; disable FFB in unattended diagnostic replays. The
    old crash report cannot be called fixed from Germany/Hawaii data. Reproduce it with

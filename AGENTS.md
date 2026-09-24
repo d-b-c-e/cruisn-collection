@@ -2,12 +2,25 @@
 
 ## Current work: rendering parity, September 23
 
+September24 Off-Road opt-in resident-ground margin trial now PASSes an El Paso
+3138-input native replay on stable physical1440 with FFB0, exact original
+mirror and owned shutdown. Frozen committed native03123d5b272 SHA
+cb6a4697528e27b492f65b023c60dac66a83798fbdbd7465dd1c30f0c484f24a;
+280-patch export attested. Two completed images are byte-exact to trialv3.
+Separate11-frame temporal trial changes only the left widescreen margin and
+visually closes the moving blue opening;1997 newly near-black pixels are a
+review hint, not texture-defect proof. Rawv1/v2 failures retained. Read
+docs/reviews/2026-09-24-offroad-resident-margin-trial.md. Do NOT deploy:
+another course,4K,independent packet reconstruction and physical FFB remain.
+Personal UX707/publicv0.5.0 unchanged. The one-time native export already ran;
+never rerun it.
+
 September24 Off-Road source discovery: at El Paso source3116/display3120 and
 source3132/display3136, existing authored **loaded** ground descriptors absent
 from both original DMA and the current future-host list cover all5841/7438
 strict indexed gap pixels in isolated GPU screens. The top later sources match
-allocated RAM objects; offline sky-only previews look coherent. This is NOT a
-native ordered draw or product fix. New3132 resource replay PASS3138 inputs,
+allocated RAM objects; offline sky-only previews look coherent. This alone is
+NOT a native ordered draw or product fix; see the subsequent trial above. New3132 resource replay PASS3138 inputs,
 FFB0 and stable physical1440. Read
 docs/reviews/2026-09-24-offroad-loaded-ground.md before any candidate;
 preserve raw orientation-failed screen v1. Personal UX707/publicv0.5.0 unchanged.

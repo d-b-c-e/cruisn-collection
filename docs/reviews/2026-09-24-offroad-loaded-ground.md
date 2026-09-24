@@ -5,7 +5,9 @@ missing future section or a texture that needs copying. In two saved turns,
 ordinary section descriptors already loaded by the game project ground into
 the blue opening, but those polygons appear in neither the game's captured
 original DMA list nor the existing 3× future-scene host list. This is an
-**offline candidate**, not a renderer fix or product acceptance.
+**offline source screen**. A subsequent gated live trial is documented in
+[the resident-margin review](2026-09-24-offroad-resident-margin-trial.md); it
+is not product acceptance.
 
 At source 3116/display 3120, the original near-ground DMA quad 66 matches all
 16 reconstructed words from loaded section 9, source `0xec31ed`. A neighboring
@@ -14,7 +16,8 @@ same ground material (mode `0x100`, palette 18688, texture 10513), matches a
 unique allocated RAM object, and is absent from both the 499 original DMA quads
 and all 708 existing host packets. Isolated rendering of that one quad covers
 5,550 of the 5,841 strict gap pixels. There are 28 loaded, unsubmitted quads
-projecting into the left margin in this saved scene; together they cover all
+projecting into the left margin in this saved scene. All 28 match allocated
+objects; together they cover all
 5,841 strict gap pixels and 7,330 ordinary-sky indexed pixels. The existing
 708-packet host reconstruction remains byte-exact.
 
@@ -27,7 +30,8 @@ RAM matches all 689 host packets. Here 17 loaded, unsubmitted quads enter the
 left margin; their isolated GPU draw covers all 7,438 strict gap pixels and
 11,649 ordinary-sky indexed pixels. Four nearby ground polygons from loaded
 sources `0xec3219`, `0xec31f8` and `0xec323a` use palette 27136/texture 13990.
-Each source matches an allocated RAM object. The earlier `0xec320e` quad is
+All 17 eligible margin quads match allocated RAM objects. The earlier
+`0xec320e` quad is
 already in a draw list at this point, so a policy targeting only that one source
 would fail as the gap moves.
 
@@ -40,23 +44,19 @@ material ownership, clip or mask additions outside the affected margin, and
 avoid duplicating geometry the game already drew. The offline palette resolve
 differs from the saved completed BMP by more than one channel unit at 121 of
 3,442,032 pixels at 3120 and 120 at 3136. Therefore neither preview is an
-exact completed-image prediction. Broad course behavior and motion across the
-other nine captured views remain unchecked for this candidate.
+exact completed-image prediction. The later live trial checks motion across
+11 views, but broad course behavior remains unchecked.
 
-The probable next implementation experiment is a **gated current-resident
-ground path** in the Off-Road host producer, distinct from its future-section
-3× path. Admit only verified ordinary loaded descriptors with ready materials,
-and only their otherwise missing margin pixels after original-scene ownership
-is known. Verify unchanged input/camera/ADC/native output, joined shutdown,
-exact control pixels outside the margin, the 11 saved temporal views and at
-least one other route before any promotion. Simply drawing all loaded geometry
-would duplicate many original polygons and is not supported by this evidence.
-The analogous resident-source question in USA and World is worth screening,
-but no cross-game policy is justified yet.
+The gated current-resident ground path now passes its El Paso trial; see the
+linked review for exact completed-pixel and shutdown evidence. At least one
+other route and 4K visual acceptance remain before promotion. Simply drawing
+all loaded geometry would duplicate many original polygons and is not
+supported by this evidence. The analogous resident-source question in USA and
+World is worth screening, but no cross-game policy is justified yet.
 
 Evidence is local under `results/diagnostics/offroad-full-20260910`:
-`left-gap-loaded-ground-screen-v4.json`,
-`left-gap-loaded-ground-3136-v4.json`,
+`left-gap-loaded-ground-screen-v6.json`,
+`left-gap-loaded-ground-3136-v6.json`,
 `left-gap-loaded-ground-visual-v2/comparison-crop.png`,
 `left-gap-loaded-ground-3136-visual-v1/comparison-crop.png`, and
 `left-gap-resource-3132-run/report.json`. The first 3120 screen report `v1`
@@ -64,7 +64,9 @@ incorrectly flipped the bottom-up GL readback and reported zero overlap; it is
 retained as a failed analysis. `v2` corrected orientation, `v3` added the
 single-source preview, and `v4` added the all-left comparison. The 3136 `v1`
 is the source screen, `v2` adds per-source contributions, `v3` adds a preview,
-and `v4` verifies allocated objects. Source and material hashes are in the
+and `v4` verifies nearby allocated objects. `v5`/`v6` restrict the screen to
+loaded descriptors and check all eligible allocated margin quads. Source and material hashes are in the
 reports. `harness/offroad_gap_loaded_screen.py` and
 `harness/offroad_gap_loaded_temporal.py` reproduce them from saved evidence.
-No native source, installed game, force setting, launcher or release changed.
+The subsequent native trial changed source, while the installed game, force
+setting, launcher and release remain unchanged.

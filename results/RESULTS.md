@@ -4752,3 +4752,19 @@ offline previews are visually coherent but not native draw-order acceptance;
 offline palette baseline differs from saved BMP at120–121 pixels by>1 channel.
 Raw3120 orientation-failed v1 retained. Local reports and hashes in
 docs/reviews/2026-09-24-offroad-loaded-ground.md. No renderer or release change.
+
+2026-09-24 Off-Road resident-margin candidate: source-backed screens at El Paso
+3120/3136 confirm all28/17 eligible loaded ground margin quads match allocated
+objects and cover5841/7438 strict indexed gap pixels. Native03123d5b272 adds
+an opt-in allocated current-ground path, clipped to widescreen margins.
+Committed source rebuilt and exported once as280 patches; frozen candidate
+SHA cb6a4697528e27b492f65b023c60dac66a83798fbdbd7465dd1c30f0c484f24a.
+Its focused3138-input physical1440 replay PASSes original input/native mirror,
+two completed images byte-exact to the passing source trial, display-watch0,
+FFB0 and owned stop. Separate3142-input/11-frame source trial changes6192–16894
+pixels per frame, none right of completed x370; contact sheet shows continuous
+ground replacing the blue opening during the turn. New near-black count1997
+is heuristic. Raw v1 (all resident fragments clipped), v2 (verifier partition)
+and REGENIE generator failure remain failures. Only El Paso1440 is qualified;
+no personal deployment, release,4K/other-course or physical-force claim. See
+docs/reviews/2026-09-24-offroad-resident-margin-trial.md.
