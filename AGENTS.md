@@ -2,6 +2,16 @@
 
 ## Current work: rendering parity, September 23
 
+September24 Off-Road source discovery: at El Paso source3116/display3120 and
+source3132/display3136, existing authored **loaded** ground descriptors absent
+from both original DMA and the current future-host list cover all5841/7438
+strict indexed gap pixels in isolated GPU screens. The top later sources match
+allocated RAM objects; offline sky-only previews look coherent. This is NOT a
+native ordered draw or product fix. New3132 resource replay PASS3138 inputs,
+FFB0 and stable physical1440. Read
+docs/reviews/2026-09-24-offroad-loaded-ground.md before any candidate;
+preserve raw orientation-failed screen v1. Personal UX707/publicv0.5.0 unchanged.
+
 Read docs/reviews/2026-09-23-rendering-parity-checkpoint.md for the compact
 four-game status, remaining evidence gates and next efficient sequence.
 

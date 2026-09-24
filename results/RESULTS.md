@@ -4739,3 +4739,16 @@ classify. None of the 46 qualified extra static billboards cover the sampled
 gap. Earlier preflight/raw failures remain unchanged. Local reports and limits
 are in docs/reviews/2026-09-23-offroad-margin-temporal.md and
 docs/reviews/2026-09-23-offroad-left-margin-source.md; no renderer promotion.
+
+2026-09-24 Off-Road loaded-ground source screen: matched resource/DMA evidence
+at El Paso source3116/display3120 finds an authored loaded ground quad absent
+from original and3x host, exactly adjacent to original near ground, covering
+5550/5841 strict gap pixels. All28 unsubmitted left-margin loaded quads cover
+5841/5841. New source3132 resource replay PASS3138-input prefix, native images,
+FFB0, stable physical1440 and owned shutdown. Its reconstructed host packets
+match all689. At display3136,17 unsubmitted left-margin loaded quads cover
+7438/7438 strict gap pixels; nearby sources match allocated objects. Sky-only
+offline previews are visually coherent but not native draw-order acceptance;
+offline palette baseline differs from saved BMP at120–121 pixels by>1 channel.
+Raw3120 orientation-failed v1 retained. Local reports and hashes in
+docs/reviews/2026-09-24-offroad-loaded-ground.md. No renderer or release change.
