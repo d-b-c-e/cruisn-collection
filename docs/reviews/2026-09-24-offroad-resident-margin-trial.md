@@ -117,6 +117,11 @@ of those three frames changes center pixels. The images show no obvious new
 defect on inspection, but three still frames are not whole-course visual
 acceptance. The saved reports are `resident-full-elpaso-run/report.json`,
 `resident-late-control-run/report.json` and `resident-late-compare-v2.json`.
+The common stricter completed-frame dark screen finds zero new near-black
+pixels among the 20 changed right-margin pixels at 4000 (and exact images at
+6000/8000); the earlier loose `<40` comparison counted five. This offline
+`resident-late-dark-triage-v1.json` remains an exact-comparison FAIL because
+the 4000 scenery difference is intentional, not because a capture is missing.
 The first late comparison failed because its predicate required a positive
 **left** margin change in every frame; it remains a raw analyzer failure,
 not a failed game replay.
