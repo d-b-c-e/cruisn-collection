@@ -23,6 +23,15 @@ cheat database, bindings, calibration or user force profile. Factory CRT, full
 widescreen, scale4, World2.4, 50% force and CRISP profile are checked inside the
 frozen executable. Packaging rejects personal config/profile/runtime files.
 
+Normal local builds reuse the generated MAME project files. Pass
+`-RegenerateProjects` only after changing the MAME source-file list or build
+configuration; it adds `REGENIE=1` to the build. Header, shader, and ordinary
+source edits do not need project regeneration. A September 24 diagnostic
+regeneration attempt failed in the existing generator while processing a Zeus
+header, whereas incremental compilation and linking passed; the native
+candidate was frozen from the successful incremental build. Resolve that
+generator failure before relying on a fresh-checkout release build.
+
 The Personal target copies only the compiled emulator to `mame-src/vunit.exe`,
 keeping a hash-named backup under `build/personal/previous/`. It refuses deployment
 while that game is running and does not change settings. Stream Deck continues

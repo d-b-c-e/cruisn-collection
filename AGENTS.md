@@ -18,6 +18,11 @@ docs/reviews/2026-09-24-offroad-resident-margin-trial.md. Do NOT deploy:
 another course,4K,detailed packet coverage and physical FFB remain.
 Personal UX707/publicv0.5.0 unchanged. The one-time native export already ran;
 never rerun it.
+`build_local.ps1` now defaults to incremental MAME project reuse; explicit
+`-RegenerateProjects` is reserved for project-file changes. A September24
+REGENIE trial failed in the generator at an existing Zeus header, so a clean
+fresh-checkout build remains a release gate; the committed resident candidate
+was compiled and linked incrementally.
 
 September24 Off-Road source discovery: at El Paso source3116/display3120 and
 source3132/display3136, existing authored **loaded** ground descriptors absent

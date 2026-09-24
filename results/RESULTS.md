@@ -4778,3 +4778,10 @@ resident-independent-v4.json; v1 invalid Python synthetic owner and v2 missing
 MSYS2 runtime DLLs remain raw failures. This strengthens two-frame producer
 evidence without another MAME replay; it is not detailed packet, whole-course,
 4K or product acceptance.
+
+2026-09-24 Local MAME build target: `build_local.ps1` now performs ordinary
+incremental builds by default and exposes explicit `-RegenerateProjects` for
+project-file changes. This avoids the September24 raw REGENIE generator
+failure during header-only iteration. PowerShell parse PASS; no release
+package, personal deployment or fresh-checkout build was run. Fresh-checkout
+generation remains an open release gate.

@@ -6,6 +6,7 @@ param(
     [string]$MsysRoot = 'E:\msys64',
     [ValidateRange(1, 64)][int]$Jobs = 18,
     [switch]$SkipNativeBuild,
+    [switch]$RegenerateProjects,
     [switch]$NoMedia,
     [string]$Version = 'dev'
 )
@@ -20,7 +21,9 @@ if (-not $SkipNativeBuild) {
     $oldMsystem = $env:MSYSTEM
     try {
         $env:MSYSTEM = 'MINGW64'
-        & (Join-Path $MsysRoot 'usr\bin\bash.exe') -lc 'export OS=Windows_NT; cd "$(cygpath -u "$1")" && make SUBTARGET=vunit SOURCES=src/mame/midway/midvunit.cpp,src/mame/midway/midzeus.cpp NOWERROR=1 TOOLS=0 SEPARATE_BIN=1 REGENIE=1 -j"$2"' -- $nativeRoot $Jobs
+        $projectGeneration = if ($RegenerateProjects) { ' REGENIE=1' } else { '' }
+        $buildCommand = 'export OS=Windows_NT; cd "$(cygpath -u "$1")" && make SUBTARGET=vunit SOURCES=src/mame/midway/midvunit.cpp,src/mame/midway/midzeus.cpp NOWERROR=1 TOOLS=0 SEPARATE_BIN=1' + $projectGeneration + ' -j"$2"'
+        & (Join-Path $MsysRoot 'usr\bin\bash.exe') -lc $buildCommand -- $nativeRoot $Jobs
         if ($LASTEXITCODE -ne 0) { throw 'Native build failed' }
     } finally { $env:MSYSTEM = $oldMsystem }
 }

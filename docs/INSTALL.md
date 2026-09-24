@@ -408,7 +408,12 @@ Advanced / scripted setup (custom paths, no GUI): `setup.ps1` in the zip.
         REGENIE=1 NOWERROR=1 TOOLS=0 -j$(nproc)
    ```
    Product: `vunit.exe` (~110 MB, statically linked). Later builds drop
-   `REGENIE=1`. Put `SDL2.dll` beside it for wheel force feedback (the
+   `REGENIE=1`; `build_local.ps1` does so by default and accepts
+   `-RegenerateProjects` when the project file list changes. The current
+   patch series has not yet passed a fresh-checkout regeneration: a September
+   24 trial failed in the MAME project generator while incremental compilation
+   and linking passed. Treat fresh-checkout building as an open release gate.
+   Put `SDL2.dll` beside it for wheel force feedback (the
    MSYS2 package `mingw-w64-x86_64-SDL2` supplies both the headers the
    build needs and `/mingw64/bin/SDL2.dll`; the emulator loads it at run
    time and runs without it, force feedback off).
