@@ -23,6 +23,12 @@ screen finds 5,841 and 7,438 host-bounded sky pixels at those two frames;
 connected ordinary runs expand the respective envelopes to 6,756 and 11,649.
 The 11-frame contact sheet demonstrates motion;
 the separate no-host control shows that 3× helps but does not close it.
+The September 24 resident candidate changes all 7,438 strict and 11,649
+connected 3136 indexed gap pixels to host-owned terrain while preserving every
+original-only plane and the native center. In the paired 11-frame completed
+turn, the earlier CRT-blue review signature falls from 863–3,903 to 0–16
+paired pixels in every frame. These are source-joined single-frame and sampled
+temporal findings, not another-course, physical 4K or full texture acceptance.
 At the sampled column, projected neighboring edges separate by about 9.85
 native units at 3120 and 25.48 at 3136; those outlines do not establish
 raster ownership or a safe material join. The saved 3116 source reconstruction
