@@ -7,6 +7,7 @@ from offroad_sections import frontier, sections, span
 from offroad_transform import prepare, select_lod, CONSTANTS
 from offroad_model import quads
 from offroad_partial import recover as recover_partial_sources
+from verify_offroad_future import allocated_pool
 
 
 def position_and_order(obj, view, scale):
@@ -51,13 +52,15 @@ def host_project(vertices, matrix, origin, read, multiplier, *, camera_depths=No
 
 
 def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=False,
-          recover_partial=False, loaded_sections=False):
+          recover_partial=False, loaded_sections=False, resident_margins=False):
     if multiplier not in (1, 2, 3) or (clip_admission and (multiplier != 3 or not use_future)):
         raise ValueError('host multiplier')
     if recover_partial and (multiplier != 3 or not use_future or loaded_sections):
         raise ValueError('partial recovery requires 3x future scenery')
     if loaded_sections and not use_future:
         raise ValueError('loaded section projection requires source descriptors')
+    if resident_margins and (multiplier != 3 or not use_future or retain_depths or loaded_sections):
+        raise ValueError('resident margin projection requires 3x future scenery without depth metadata')
     f = frontier(read)
     counts = Counter(dict(pending=0, future=0, unsupported=0, near=0, far=0,
                           projection=0, material=0, pretrack=int(f['pretrack']), partial=int(f['partial']), deferred=0))
@@ -95,6 +98,23 @@ def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=F
                 continue
             candidates.append((0x80000000 | source['source'], source['words']))
             counts['future'] += 1
+    if resident_margins:
+        allocation = allocated_pool(read)
+        for source in sections(read, loaded=True)['sources']:
+            if not source['supported']:
+                continue
+            obj = source['words']
+            owners = allocation.get(obj[6], [])
+            if len(owners) != 1 or (owners[0][5] & 0x7fffffff) != (obj[5] & 0x7fffffff):
+                continue
+            if any(owners[0][i] != obj[i] for i in (*range(6, 9), *range(11, 21))):
+                continue
+            owner = 0x40000000 | source['source']
+            if owner in seen:
+                raise ValueError('duplicate resident source')
+            seen.add(owner)
+            candidates.append((owner, obj))
+            counts['resident_candidates'] += 1
     trig = [read(0xc23e97+i) for i in range(-1, 16385)]
     output = []
     for owner, obj in candidates:
@@ -125,7 +145,7 @@ def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=F
             continue
         palettes = [read(obj[17]+(polygons[6*i] >> 16)) for i in range(np)]
         r.update(matrix=matrix, model=obj[20], lod=d, lod_words=dw, vertices=nv, polygons=np,
-                 object=0 if owner & 0x80000000 else owner, vertex_words=vertices, polygon_words=polygons,
+                 object=0 if owner & 0xc0000000 else owner, vertex_words=vertices, polygon_words=polygons,
                  palette_words=palettes, projected=[0]*(3*nv), origin_x=read(0x11230), path=0x1e03,
                  extra_flags=0x2000 if obj[5] & read(0x11249) else 0)
         qs = quads(r, points)
@@ -139,6 +159,15 @@ def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=F
         if not bound:
             counts['material'] += 1
             continue
+        resident = bool(owner & 0x40000000)
+        if resident:
+            qs = [q for q in qs if q[0] == 0x100 and not
+                  (min(signed(q[i]) for i in (2, 4, 6, 8)) >= 0 and
+                   max(signed(q[i]) for i in (2, 4, 6, 8)) < 512)]
+            if not qs:
+                counts['resident_pruned'] += 1
+                continue
+            counts['resident_margin'] += len(qs)
         output.append(dict(id=owner, model=obj[20], lod=lod, depth=pos[2].reload().fix(), order=order, quads=qs))
         if retain_depths:
             selected = []
