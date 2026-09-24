@@ -16,16 +16,19 @@ def add_arguments(parser):
                         help='candidate-only 3x admission to the existing projection limit')
     parser.add_argument('--offroad-host-partial', choices=('stock', 'recover'),
                         help='candidate-only recovery of unallocated ordinary sources during partial frontiers')
+    parser.add_argument('--offroad-host-resident-margins', action='store_true',
+                        help='candidate-only allocated current ground in widescreen margins')
 
 
 def configure(args, rom, settings):
     mode = getattr(args, 'offroad_host_scenery', None)
     admission = getattr(args, 'offroad_host_admission', None)
     partial = getattr(args, 'offroad_host_partial', None)
+    resident = getattr(args, 'offroad_host_resident_margins', False)
     first, last, distance, trace, layer, source = [getattr(args, 'offroad_host_'+name, None)
                                      for name in ('first', 'last', 'distance', 'log', 'layer', 'source')]
     if mode is None:
-        if any(v is not None for v in (first, last, distance, trace, layer, source, admission, partial)):
+        if resident or any(v is not None for v in (first, last, distance, trace, layer, source, admission, partial)):
             raise ValueError('Off Road host controls require an explicit mode')
         saved = settings.get(PREFIX+'SCENERY', '0')
         if saved == '0':
@@ -33,6 +36,8 @@ def configure(args, rom, settings):
                 raise ValueError('orphan Off Road admission')
             if settings.get(PREFIX+'RECOVER_PARTIAL', '0') != '0':
                 raise ValueError('orphan Off Road partial recovery')
+            if settings.get(PREFIX+'RESIDENT_MARGINS', '0') != '0':
+                raise ValueError('orphan Off Road resident margins')
             return None
         if saved not in ('1', '2'):
             raise ValueError('invalid recorded Off Road host mode')
@@ -45,14 +50,17 @@ def configure(args, rom, settings):
             source = {'0': 'pending', '1': 'future'}[settings[PREFIX+'FUTURE']] if PREFIX+'FUTURE' in settings else None
             admission = {'0': 'stock', '1': 'clip'}[settings[PREFIX+'CLIP_ADMISSION']] if PREFIX+'CLIP_ADMISSION' in settings else None
             partial = {'0': 'stock', '1': 'recover'}[settings[PREFIX+'RECOVER_PARTIAL']] if PREFIX+'RECOVER_PARTIAL' in settings else None
+            resident = settings.get(PREFIX+'RESIDENT_MARGINS', '0') == '1'
+            if settings.get(PREFIX+'RESIDENT_MARGINS', '0') not in ('0', '1'):
+                raise ValueError('invalid resident margin flag')
         except (ValueError, KeyError) as error:
             raise ValueError('invalid recorded Off Road host controls') from error
     if rom != 'offroadc' or mode not in MODES:
         raise ValueError('Off Road host scenery requires Off Road 1.63')
     if mode == 'off':
-        if any(v is not None for v in (first, last, distance, trace, layer, source, admission, partial)):
+        if resident or any(v is not None for v in (first, last, distance, trace, layer, source, admission, partial)):
             raise ValueError('Off Road host off does not take additional controls')
-        for key in ('FIRST', 'LAST', 'DISTANCE', 'QUADS', 'LAYER', 'FUTURE', 'CLIP_ADMISSION', 'RECOVER_PARTIAL'):
+        for key in ('FIRST', 'LAST', 'DISTANCE', 'QUADS', 'LAYER', 'FUTURE', 'CLIP_ADMISSION', 'RECOVER_PARTIAL', 'RESIDENT_MARGINS'):
             settings.pop(PREFIX+key, None)
         settings[PREFIX+'SCENERY'] = '0'
         return dict(mode='off')
@@ -74,6 +82,10 @@ def configure(args, rom, settings):
     if partial == 'recover' and (mode != 'draw' or distance != 3 or actual_source != 'future'
             or not getattr(args, 'candidate', None) or settings.get('MIDV_FFB') != '0'):
         raise ValueError('Off Road partial recovery requires candidate 3x future draw and physical FFB0')
+    if resident and (mode != 'draw' or distance != 3 or actual_source != 'future' or layer != 'both'
+            or not getattr(args, 'candidate', None) or settings.get('MIDV_FFB') != '0'
+            or getattr(args, 'offroad_host_fade_metadata', False)):
+        raise ValueError('Off Road resident margins require candidate 3x future draw, both layers, no depth metadata and FFB0')
     if settings.get('MIDV_OFFROAD_DISTANCE', '0') != '0' or getattr(args, 'offroad_distance', None) not in (None, 0):
         raise ValueError('Off Road host requires stock guest distance/residency')
     if mode == 'draw' and (getattr(args, 'headless', False) or getattr(args, 'native_renderer', False) or settings.get('MIDV_GL') != '1'):
@@ -95,4 +107,9 @@ def configure(args, rom, settings):
     else:
         settings[PREFIX+'RECOVER_PARTIAL'] = '1' if partial == 'recover' else '0'
         result['partial'] = partial
+    if resident:
+        settings[PREFIX+'RESIDENT_MARGINS'] = '1'
+        result['resident_margins'] = True
+    else:
+        settings.pop(PREFIX+'RESIDENT_MARGINS', None)
     return result

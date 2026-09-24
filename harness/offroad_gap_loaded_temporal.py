@@ -10,7 +10,7 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from analyze_vunit_margin_gap import PACKET, analyze, projected_box
-from offroad_gap_loaded_screen import render_quads, resolve, LOADED_SOURCE, sha
+from offroad_gap_loaded_screen import allocated_match, render_quads, resolve, LOADED_SOURCE, sha
 from offroad_scene import scene
 from offroad_sections import sections
 from screen_vunit_sky_gaps import candidates
@@ -46,9 +46,11 @@ def screen(preview_dir=None):
     original = load_original(SOURCE / 'run').current
     original_keys = {tuple(map(int, quad)) for quad in original}
     host_keys = {tuple(quad) for quad in host}
-    loaded_quads = [quad for item in loaded for quad in item['quads']]
+    loaded_quads = [quad for item in loaded if item['id'] & 0x80000000
+                    for quad in item['quads']]
     absent = [quad for quad in loaded_quads if tuple(quad) not in original_keys and tuple(quad) not in host_keys]
-    margin_items = [(item, quad) for item in loaded for quad in item['quads']
+    margin_items = [(item, quad) for item in loaded if item['id'] & 0x80000000
+                    for quad in item['quads']
                     if tuple(quad) not in original_keys and tuple(quad) not in host_keys
                     and projected_box(quad)[0] < 0 and projected_box(quad)[2] >= -86]
     margin = [quad for _, quad in margin_items]
@@ -63,6 +65,11 @@ def screen(preview_dir=None):
     sky = (old >= 6912) & (old < 7168) & (old_tags == 1)
     gap = candidates(sky, old_tags, 344, 2736-344, 128)
     covered = tags != 0
+    descriptors = {item['source']: item for item in sections(memory, loaded=True)['sources']}
+    allocation = allocated_pool(memory)
+    eligible = [quad for item, quad in margin_items
+                if allocated_match(descriptors[item['id'] & 0x7fffffff], allocation)]
+    _, eligible_tags = render_quads(eligible, texture.read_bytes())
     preview = None
     if preview_dir is not None:
         preview_dir.mkdir(parents=True, exist_ok=False)
@@ -93,8 +100,6 @@ def screen(preview_dir=None):
                        max_baseline_channel_difference=int(delta.max()), palette_sha256=sha(palette_path),
                        scope='Sky-only offline composite; native draw order and exact completed acceptance unproven')
     relevant = []
-    descriptors = {item['source']: item for item in sections(memory, loaded=True)['sources']}
-    allocation = allocated_pool(memory)
     for item, quad in margin_items:
         box = projected_box(quad)
         if not (box[0] <= -71 <= box[2] and box[1] <= 172 and box[3] >= 145):
@@ -102,13 +107,11 @@ def screen(preview_dir=None):
         _, own_tags = render_quads([quad], texture.read_bytes())
         source_id = item['id'] & 0x7fffffff
         descriptor = descriptors[source_id]
-        owners = allocation.get(descriptor['words'][6], [])
-        allocated_match = len(owners) == 1 and owners[0][5] & 0x7fffffff == descriptor['words'][5] and all(
-            owners[0][i] == descriptor['words'][i] for i in (*range(6, 9), *range(11, 21)))
+        matched = allocated_match(descriptor, allocation)
         relevant.append(dict(source=hex(item['id'] & 0x7fffffff), model=hex(item['model']),
                              depth=item['depth'], box=box, material=[quad[0], quad[1], quad[14]],
                              section=descriptor['number'], ordinal=descriptor['ordinal'],
-                             allocated_object_match=allocated_match,
+                             allocated_object_match=matched,
                              gap_overlap=int(((own_tags != 0) & gap).sum()),
                              sky_overlap=int(((own_tags != 0) & sky).sum())))
     relevant.sort(key=lambda row: -row['gap_overlap'])
@@ -128,6 +131,8 @@ def screen(preview_dir=None):
                 loaded_quads=len(loaded_quads), original_loaded_matches=sum(tuple(q) in original_keys for q in loaded_quads),
                 host_loaded_matches=sum(tuple(q) in host_keys for q in loaded_quads),
                 absent_loaded_quads=len(absent), absent_left_margin_quads=len(margin),
+                allocated_left_margin_quads=len(eligible),
+                allocated_gap_covered=int(((eligible_tags != 0) & gap).sum()),
                 gap_pixels=int(gap.sum()), gap_covered=int((covered & gap).sum()),
                 sky_covered=int((covered & sky).sum()),
                 relevant_loaded_sources=relevant,

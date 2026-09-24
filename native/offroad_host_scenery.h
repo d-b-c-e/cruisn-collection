@@ -17,12 +17,16 @@ struct Object
 {
     uint32_t id=0,model=0,lod=0;
     int32_t depth=0,order=0;
+    bool resident_margin=false;
     std::vector<Quad> quads;
     std::vector<std::array<uint32_t,4>> depths;
 };
 struct Scene
 {
     uint32_t pending=0,future=0,unsupported=0,near=0,far=0,projection=0,material=0;
+    uint32_t resident_margin=0;
+    uint32_t resident_candidates=0;
+    uint32_t resident_pruned=0;
     uint32_t partial_recovered=0;
     bool pretrack=false,partial=false,deferred=false;
     std::vector<Object> objects;
@@ -87,11 +91,13 @@ inline bool material_bound(const Quad &q,const MaterialState &state)
 }
 
 template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache,
-    bool clip_admission=false,bool retain_depths=false,bool recover_partial=false)
+    bool clip_admission=false,bool retain_depths=false,bool recover_partial=false,
+    bool resident_margins=false)
 {
     result=Scene{};Scene scene;
     if(!offroad_distance::valid_multiplier(multiplier) || (clip_admission && (multiplier!=3 || !use_future)))return false;
     if(recover_partial && (multiplier!=3 || !use_future))return false;
+    if(resident_margins && (multiplier!=3 || !use_future || retain_depths))return false;
     offroad_future::Frontier f;if(!offroad_future::frontier(read,f))return false;
     if(f.pretrack){cache.clear();scene.pretrack=true;result=scene;return true;}
     if(cache.track!=f.track){cache.clear();cache.track=f.track;}
@@ -127,6 +133,40 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
             candidates.emplace_back(id,source.words);++scene.future;
         }
     }
+    if(resident_margins)
+    {
+        // The loader has already materialized these ordinary descriptors. Only
+        // allocated instances may contribute; a section header alone is not
+        // evidence that its textures and object have become resident.
+        const uint32_t free_head=read(0x111f6);
+        if(free_head>=0x20000)return false;
+        std::set<uint32_t> free;
+        for(uint32_t p=read(free_head);p;p=read(p))
+            if(p<pool || p>=pool+1200*22 || (p-pool)%22 || !free.insert(p).second)return false;
+        std::map<uint32_t,uint32_t> allocated;
+        for(uint32_t p=pool;p<pool+1200*22;p+=22)if(!free.count(p))
+        {
+            const auto key=read(p+6);
+            if(!allocated.emplace(key,p).second)allocated[key]=0xffffffff;
+        }
+        offroad_future::Result loaded;if(!offroad_future::build(read,loaded,true))return false;
+        for(const auto &source:loaded.sources)
+        {
+            if(!source.supported)continue;
+            const auto owner=allocated.find(source.words[6]);
+            if(owner==allocated.end() || owner->second==0xffffffff)continue;
+            const uint32_t p=owner->second;
+            if((read(p+5)&0x7fffffff)!=(source.words[5]&0x7fffffff))continue;
+            bool match=true;
+            for(unsigned i:{6U,7U,8U,11U,12U,13U,14U,15U,16U,17U,18U,19U,20U})
+                if(read(p+i)!=source.words[i]){match=false;break;}
+            if(!match)continue;
+            const uint32_t id=0x40000000|source.source;
+            if(!seen.insert(id).second)return false;
+            candidates.emplace_back(id,source.words);
+            ++scene.resident_candidates;
+        }
+    }
     for(const auto &entry:candidates)
     {
         const auto &o=entry.second;
@@ -152,11 +192,23 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
         for(const auto &poly:model->polygons)if(!offroad_future::rom_span(o[17]+(poly[0]>>16),1))return false;
         Object out;out.id=entry.first;out.model=o[20];out.lod=lod;out.depth=position[2].reload().fix();
         out.order=order(position,Float::load(read(0x11238)));
+        out.resident_margin=bool(out.id&0x40000000);
         if(!offroad_model::quads(*model,projected,(o[5]&read(0x11249))?0x2000:0,o[18],o[19],
             [&](uint32_t index){return read(o[17]+index);},out.quads,
             retain_depths?&camera_depths:nullptr,retain_depths?&out.depths:nullptr))return false;
         if(std::any_of(out.quads.begin(),out.quads.end(),[&](const Quad &q){return !material_bound(q,materials);}))
         {++scene.material;continue;}
+        if(out.resident_margin)
+        {
+            out.quads.erase(std::remove_if(out.quads.begin(),out.quads.end(),[](const Quad &q){
+                if(q[0]!=0x100)return true; // opaque ordinary textured ground only
+                int16_t minx=int16_t(q[2]),maxx=minx;
+                for(unsigned i:{4U,6U,8U}){minx=std::min(minx,int16_t(q[i]));maxx=std::max(maxx,int16_t(q[i]));}
+                return minx>=0 && maxx<512;
+            }),out.quads.end());
+            if(out.quads.empty()){++scene.resident_pruned;continue;}
+            scene.resident_margin+=uint32_t(out.quads.size());
+        }
         scene.objects.push_back(std::move(out));
     }
     std::sort(scene.objects.begin(),scene.objects.end(),[](const Object &a,const Object &b){

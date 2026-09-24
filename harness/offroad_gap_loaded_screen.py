@@ -36,6 +36,12 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def allocated_match(descriptor, allocation):
+    owners = allocation.get(descriptor['words'][6], [])
+    return len(owners) == 1 and owners[0][5] & 0x7fffffff == descriptor['words'][5] and all(
+        owners[0][i] == descriptor['words'][i] for i in (*range(6, 9), *range(11, 21)))
+
+
 def render_quads(quads, texture_bytes):
     ctx = moderngl.create_context(standalone=True, require=430)
     program = ctx.program(vertex_shader=R.VS, fragment_shader=R.FS)
@@ -135,22 +141,29 @@ def screen(preview_dir=None):
         raise ValueError('ground adjacency or absence changed')
     descriptor = next(item for item in sections(memory, loaded=True)['sources']
                       if item['source'] == LOADED_SOURCE)
-    allocated = allocated_pool(memory).get(descriptor['words'][6], [])
-    if len(allocated) != 1 or allocated[0][5] & 0x7fffffff != descriptor['words'][5] or any(
-            allocated[0][i] != descriptor['words'][i] for i in (*range(6, 9), *range(11, 21))):
+    allocation = allocated_pool(memory)
+    if not allocated_match(descriptor, allocation):
         raise ValueError('loaded descriptor does not match the unique allocated object')
     texture_bytes = texture.read_bytes()
     added, tag = render_quads([candidate], texture_bytes)
     original_keys = {tuple(map(int, quad)) for quad in original}
     host_keys = {tuple(quad) for quad in flat}
-    loaded_quads = [quad for item in loaded for quad in item['quads']]
+    loaded_quads = [quad for item in loaded if item['id'] & 0x80000000
+                    for quad in item['quads']]
     unsubmitted = [quad for quad in loaded_quads if tuple(quad) not in original_keys
                    and tuple(quad) not in host_keys]
-    margin = [quad for quad in unsubmitted if projected_box(quad)[0] < 0
-              and projected_box(quad)[2] >= -86]
+    margin_items = [(item, quad) for item in loaded if item['id'] & 0x80000000
+                    for quad in item['quads'] if tuple(quad) not in original_keys
+                    and tuple(quad) not in host_keys and projected_box(quad)[0] < 0
+                    and projected_box(quad)[2] >= -86]
+    margin = [quad for _, quad in margin_items]
     if candidate not in margin:
         raise ValueError('target ground quad is absent from the missing left-margin set')
     all_added, all_tag = render_quads(margin, texture_bytes)
+    descriptors = {item['source']: item for item in sections(memory, loaded=True)['sources']}
+    eligible = [quad for item, quad in margin_items
+                if allocated_match(descriptors[item['id'] & 0x7fffffff], allocation)]
+    _, eligible_tag = render_quads(eligible, texture_bytes)
     old = np.fromfile(ORIGINAL / 'run/vunit-mirror-3120-page1-plane0.bin',
                       dtype='<u2').reshape(1600, 2736)
     old_tag = np.fromfile(ORIGINAL / 'run/vunit-mirror-3120-page1-plane1.bin',
@@ -211,6 +224,8 @@ def screen(preview_dir=None):
                 exact_host_loaded_quads=sum(tuple(quad) in host_keys for quad in loaded_quads),
                 unsubmitted_loaded_quads=len(unsubmitted),
                 unsubmitted_left_margin_quads=len(margin),
+                allocated_left_margin_quads=len(eligible),
+                allocated_left_margin_gap_overlap=int(((eligible_tag != 0) & gap).sum()),
                 all_left_margin_pixels=int(all_covered.sum()),
                 all_left_margin_sky_overlap=int((all_covered & sky).sum()),
                 all_left_margin_gap_overlap=int((all_covered & gap).sum()),

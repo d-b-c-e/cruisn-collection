@@ -50399,3 +50399,345 @@ index d45a3b76aba..88f5de0b0e5 100644
 -- 
 2.55.0.windows.3
 
+From 03123d5b27202d96045ecdd8f67f16986ff062fb Mon Sep 17 00:00:00 2001
+From: d-b-c-e <anthony.mason1@gmail.com>
+Date: Thu, 24 Sep 2026 01:09:46 -0500
+Subject: [PATCH] Add opt-in Off Road resident ground margin trial
+
+---
+ src/mame/midway/cruisn/offroad_host_scenery.h | 54 ++++++++++++++++++-
+ src/mame/midway/midvunit.cpp                  | 24 +++++++--
+ src/mame/midway/midvunit.h                    |  3 +-
+ src/mame/midway/midvunit_gl_shaders.h         | 18 +++++++
+ src/mame/midway/midvunit_v.cpp                | 11 ++--
+ 5 files changed, 99 insertions(+), 11 deletions(-)
+
+diff --git a/src/mame/midway/cruisn/offroad_host_scenery.h b/src/mame/midway/cruisn/offroad_host_scenery.h
+index 67e3f7034bc..ad4b5894935 100644
+--- a/src/mame/midway/cruisn/offroad_host_scenery.h
++++ b/src/mame/midway/cruisn/offroad_host_scenery.h
+@@ -17,12 +17,16 @@ struct Object
+ {
+     uint32_t id=0,model=0,lod=0;
+     int32_t depth=0,order=0;
++    bool resident_margin=false;
+     std::vector<Quad> quads;
+     std::vector<std::array<uint32_t,4>> depths;
+ };
+ struct Scene
+ {
+     uint32_t pending=0,future=0,unsupported=0,near=0,far=0,projection=0,material=0;
++    uint32_t resident_margin=0;
++    uint32_t resident_candidates=0;
++    uint32_t resident_pruned=0;
+     uint32_t partial_recovered=0;
+     bool pretrack=false,partial=false,deferred=false;
+     std::vector<Object> objects;
+@@ -87,11 +91,13 @@ inline bool material_bound(const Quad &q,const MaterialState &state)
+ }
+ 
+ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool use_future,Cache &cache,
+-    bool clip_admission=false,bool retain_depths=false,bool recover_partial=false)
++    bool clip_admission=false,bool retain_depths=false,bool recover_partial=false,
++    bool resident_margins=false)
+ {
+     result=Scene{};Scene scene;
+     if(!offroad_distance::valid_multiplier(multiplier) || (clip_admission && (multiplier!=3 || !use_future)))return false;
+     if(recover_partial && (multiplier!=3 || !use_future))return false;
++    if(resident_margins && (multiplier!=3 || !use_future || retain_depths))return false;
+     offroad_future::Frontier f;if(!offroad_future::frontier(read,f))return false;
+     if(f.pretrack){cache.clear();scene.pretrack=true;result=scene;return true;}
+     if(cache.track!=f.track){cache.clear();cache.track=f.track;}
+@@ -127,6 +133,40 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
+             candidates.emplace_back(id,source.words);++scene.future;
+         }
+     }
++    if(resident_margins)
++    {
++        // The loader has already materialized these ordinary descriptors. Only
++        // allocated instances may contribute; a section header alone is not
++        // evidence that its textures and object have become resident.
++        const uint32_t free_head=read(0x111f6);
++        if(free_head>=0x20000)return false;
++        std::set<uint32_t> free;
++        for(uint32_t p=read(free_head);p;p=read(p))
++            if(p<pool || p>=pool+1200*22 || (p-pool)%22 || !free.insert(p).second)return false;
++        std::map<uint32_t,uint32_t> allocated;
++        for(uint32_t p=pool;p<pool+1200*22;p+=22)if(!free.count(p))
++        {
++            const auto key=read(p+6);
++            if(!allocated.emplace(key,p).second)allocated[key]=0xffffffff;
++        }
++        offroad_future::Result loaded;if(!offroad_future::build(read,loaded,true))return false;
++        for(const auto &source:loaded.sources)
++        {
++            if(!source.supported)continue;
++            const auto owner=allocated.find(source.words[6]);
++            if(owner==allocated.end() || owner->second==0xffffffff)continue;
++            const uint32_t p=owner->second;
++            if((read(p+5)&0x7fffffff)!=(source.words[5]&0x7fffffff))continue;
++            bool match=true;
++            for(unsigned i:{6U,7U,8U,11U,12U,13U,14U,15U,16U,17U,18U,19U,20U})
++                if(read(p+i)!=source.words[i]){match=false;break;}
++            if(!match)continue;
++            const uint32_t id=0x40000000|source.source;
++            if(!seen.insert(id).second)return false;
++            candidates.emplace_back(id,source.words);
++            ++scene.resident_candidates;
++        }
++    }
+     for(const auto &entry:candidates)
+     {
+         const auto &o=entry.second;
+@@ -152,11 +192,23 @@ template<class Read> bool build(Read read,Scene &result,uint32_t multiplier,bool
+         for(const auto &poly:model->polygons)if(!offroad_future::rom_span(o[17]+(poly[0]>>16),1))return false;
+         Object out;out.id=entry.first;out.model=o[20];out.lod=lod;out.depth=position[2].reload().fix();
+         out.order=order(position,Float::load(read(0x11238)));
++        out.resident_margin=bool(out.id&0x40000000);
+         if(!offroad_model::quads(*model,projected,(o[5]&read(0x11249))?0x2000:0,o[18],o[19],
+             [&](uint32_t index){return read(o[17]+index);},out.quads,
+             retain_depths?&camera_depths:nullptr,retain_depths?&out.depths:nullptr))return false;
+         if(std::any_of(out.quads.begin(),out.quads.end(),[&](const Quad &q){return !material_bound(q,materials);}))
+         {++scene.material;continue;}
++        if(out.resident_margin)
++        {
++            out.quads.erase(std::remove_if(out.quads.begin(),out.quads.end(),[](const Quad &q){
++                if(q[0]!=0x100)return true; // opaque ordinary textured ground only
++                int16_t minx=int16_t(q[2]),maxx=minx;
++                for(unsigned i:{4U,6U,8U}){minx=std::min(minx,int16_t(q[i]));maxx=std::max(maxx,int16_t(q[i]));}
++                return minx>=0 && maxx<512;
++            }),out.quads.end());
++            if(out.quads.empty()){++scene.resident_pruned;continue;}
++            scene.resident_margin+=uint32_t(out.quads.size());
++        }
+         scene.objects.push_back(std::move(out));
+     }
+     std::sort(scene.objects.begin(),scene.objects.end(),[](const Object &a,const Object &b){
+diff --git a/src/mame/midway/midvunit.cpp b/src/mame/midway/midvunit.cpp
+index 9eb59fec4a1..4b0bbdc04fd 100644
+--- a/src/mame/midway/midvunit.cpp
++++ b/src/mame/midway/midvunit.cpp
+@@ -256,6 +256,14 @@ void midvunit_base_state::offroad_host_start()
+ 		if(m_offroad_host_recover_partial && (m_host_mode!=2 || m_offroad_host_multiplier!=3 || !m_host_future || !ffb || strcmp(ffb,"0")))
+ 			fatalerror("Off Road partial recovery requires 3x future draw and physical FFB0\n");
+ 	}
++	if(const char *resident=std::getenv("MIDV_OFFROAD_HOST_RESIDENT_MARGINS"))
++	{
++		if(strcmp(resident,"0") && strcmp(resident,"1"))fatalerror("Invalid Off Road resident margin policy\n");
++		m_offroad_host_resident_margins=!strcmp(resident,"1");
++		const char *ffb=std::getenv("MIDV_FFB");
++		if(m_offroad_host_resident_margins && (m_host_mode!=2 || m_offroad_host_multiplier!=3 || !m_host_future || !ffb || strcmp(ffb,"0")))
++			fatalerror("Off Road resident margins require candidate 3x future draw and FFB0\n");
++	}
+ 	if(const char *layer=std::getenv("MIDV_OFFROAD_HOST_LAYER"))
+ 	{
+ 		if(strlen(layer)!=1 || *layer<'0' || *layer>'3')fatalerror("Invalid Off Road host layer\n");
+@@ -277,6 +285,8 @@ void midvunit_base_state::offroad_host_start()
+ 		if(!m_host_fade_log || fwrite("VFD1",1,4,m_host_fade_log)!=4)fatalerror("Cannot create Off Road metadata evidence\n");
+ 		setvbuf(m_host_fade_log,nullptr,_IOFBF,65536);
+ 	}
++	if(m_offroad_host_resident_margins && (m_host_fade_metadata || m_host_layer!=3))
++		fatalerror("Off Road resident margins require both host layers without depth metadata\n");
+ 	bool trace=false;
+ 	if(const char *text=std::getenv("MIDV_OFFROAD_HOST_QUADS"))
+ 	{
+@@ -287,7 +297,7 @@ void midvunit_base_state::offroad_host_start()
+ 	if(trace)m_host_quad_log=fopen("offroad-host-quads.csv","w");
+ 	if(!m_host_scene_log || (trace && !m_host_quad_log))fatalerror("Cannot create Off Road host evidence\n");
+ 	if(m_host_scene_log.buffer(nullptr,_IOFBF,65536))fatalerror("Cannot buffer host scene journal\n");
+-	m_host_scene_log.print("frame,time,page,mode,multiplier,future_enabled,pending,future,future_definitions,unsupported,near,far,projection,material,decoded,pretrack,partial,deferred,quads,quads_hash,guard_us,prepare_us,pack_us,log_us,submit_us,microseconds\n");
++	m_host_scene_log.print("frame,time,page,mode,multiplier,future_enabled,pending,future,future_definitions,unsupported,near,far,projection,material,decoded,pretrack,partial,deferred,quads,quads_hash,guard_us,prepare_us,pack_us,log_us,submit_us,microseconds,resident_candidates,resident_margin,resident_pruned\n");
+ 	if(m_host_quad_log)
+ 	{
+ 		setvbuf(m_host_quad_log,nullptr,_IOFBF,65536);
+@@ -314,11 +324,12 @@ void midvunit_base_state::offroad_host_start()
+ 			const auto guarded=std::chrono::steady_clock::now();
+ 			cruisn::offroad_host::Scene scene;
+ 			if(host_injected_failure(frame,cycles))return;
+-			if(!cruisn::offroad_host::build(read,scene,m_offroad_host_multiplier,m_host_future,m_offroad_host_cache,m_offroad_host_clip_admission,m_host_fade_metadata,m_offroad_host_recover_partial))
++			if(!cruisn::offroad_host::build(read,scene,m_offroad_host_multiplier,m_host_future,m_offroad_host_cache,m_offroad_host_clip_admission,m_host_fade_metadata,m_offroad_host_recover_partial,m_offroad_host_resident_margins))
+ 			{host_prepare_failed(frame,cycles,3,"Off Road host scene/model/material guard failed");return;}
+ 			host_bootstrap_ready(frame);
+ 			const auto prepared=std::chrono::steady_clock::now();
+ 			std::vector<std::array<uint16_t,16>> quads;
++			std::vector<uint8_t> resident_flags;
+ 			uint64_t hash=cruisn::world_host::hash_seed;
+ 			std::vector<std::array<uint32_t,4>> depths;
+ 			for(const auto &o:scene.objects)
+@@ -328,6 +339,7 @@ void midvunit_base_state::offroad_host_start()
+ 				{
+ 					if(m_host_fade_metadata)depths.push_back(o.depths[i]);
+ 					quads.push_back(o.quads[i]);hash=cruisn::world_host::quad_hash(hash,o.quads[i]);
++					if(m_offroad_host_resident_margins)resident_flags.push_back(o.resident_margin?1:0);
+ 				}
+ 			}
+ 			const auto packed=std::chrono::steady_clock::now();
+@@ -341,18 +353,20 @@ void midvunit_base_state::offroad_host_start()
+ 			const auto logged=std::chrono::steady_clock::now();
+ 			std::vector<uint32_t> policies;
+ 			if(m_host_fade_metadata)policies.assign(quads.size(),0);
+-			if(m_host_mode==2)world_host_submit(quads,m_host_fade_metadata?&depths:nullptr,m_host_fade_metadata?&policies:nullptr);
++			if(m_host_mode==2)world_host_submit(quads,m_host_fade_metadata?&depths:nullptr,m_host_fade_metadata?&policies:nullptr,
++				nullptr,m_offroad_host_resident_margins?&resident_flags:nullptr);
+ 			if(m_maincpu->total_cycles()!=cycles)fatalerror("Off Road host inspection changed guest cycles\n");
+ 			host_scene_record(frame,quads.size(),hash);
+ 			const auto submitted=std::chrono::steady_clock::now();
+ 			auto us=[](auto a,auto b){return std::chrono::duration<double,std::micro>(b-a).count();};
+ 			const unsigned definitions=m_host_future && !scene.pretrack && !scene.deferred ? unsigned(m_offroad_host_cache.future.value.sources.size())+scene.partial_recovered:0;
+ 			if(scene.partial_recovered && m_host_journal_policy==cruisn::DiagnosticJournal::Policy::capture)osd_printf_info("OFFROAD_PARTIAL frame=%llu sources=%u\n",(unsigned long long)frame,scene.partial_recovered);
+-			m_host_scene_log.print("%llu,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n",
++			m_host_scene_log.print("%llu,%.12f,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,%016llx,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%u,%u,%u\n",
+ 				(unsigned long long)frame,time,m_page_control,m_host_mode,m_offroad_host_multiplier,unsigned(m_host_future),
+ 				scene.pending,scene.future,definitions,scene.unsupported,scene.near,scene.far,scene.projection,scene.material,unsigned(scene.objects.size()),
+ 				unsigned(scene.pretrack),unsigned(scene.partial),unsigned(scene.deferred),unsigned(quads.size()),(unsigned long long)hash,
+-				us(started,guarded),us(guarded,prepared),us(prepared,packed),us(packed,logged),us(logged,submitted),us(started,submitted));
++				us(started,guarded),us(guarded,prepared),us(prepared,packed),us(packed,logged),us(logged,submitted),us(started,submitted),
++				scene.resident_candidates,scene.resident_margin,scene.resident_pruned);
+ 		});
+ 	osd_printf_info("Off Road host mode=%u frames=%u..%u distance=%ux future=%u; guest state unchanged\n",m_host_mode,m_host_first,m_host_last,m_offroad_host_multiplier,unsigned(m_host_future));
+ }
+diff --git a/src/mame/midway/midvunit.h b/src/mame/midway/midvunit.h
+index beb68d54189..4b6b17ae6b5 100644
+--- a/src/mame/midway/midvunit.h
++++ b/src/mame/midway/midvunit.h
+@@ -122,7 +122,7 @@ protected:
+ 	void world_host_exit();
+ 	void world_host_submit(const std::vector<std::array<uint16_t,16>> &quads,
+ 		const std::vector<std::array<uint32_t,4>> *depths=nullptr, const std::vector<uint32_t> *policies=nullptr,
+-		const std::vector<uint8_t> *margins=nullptr);
++		const std::vector<uint8_t> *margins=nullptr, const std::vector<uint8_t> *residents=nullptr);
+ 	void usa_distance_start();
+ 	void usa_distance_tick();
+ 	void usa_distance_exit();
+@@ -224,6 +224,7 @@ protected:
+ 	uint32_t m_offroad_host_multiplier = 1;
+ 	bool m_offroad_host_clip_admission = false;
+ 	bool m_offroad_host_recover_partial = false;
++	bool m_offroad_host_resident_margins = false;
+ 	memory_passthrough_handler m_usa_far_tap, m_usa_reciprocal_tap, m_usa_residency_tap;
+ 	uint32_t m_usa_far = 0, m_usa_max_index = 0;
+ 	bool m_usa_residency = false;
+diff --git a/src/mame/midway/midvunit_gl_shaders.h b/src/mame/midway/midvunit_gl_shaders.h
+index c22294eb972..82bc49c5e5f 100644
+--- a/src/mame/midway/midvunit_gl_shaders.h
++++ b/src/mame/midway/midvunit_gl_shaders.h
+@@ -35,6 +35,7 @@ static const char *MVGL_FS =
+ 	"uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded\n"
+ 	"                           // inside the margins so extend fills from the\n"
+ 	"                           // 4:3 boundary (sky above, terrain below). 0=off.\n"
++	"uniform int  uResidentMargin; // 4:3 boundary for opt-in resident-only packets\n"
+ 	"uniform int  uClipW;       // coarse canvas width (for the right margin)\n"
+ 	"uniform int  uFarCoverage; // private V-Unit trial; zero preserves ordinary coverage\n"
+ 	"layout(std430, binding=3) readonly buffer FarCoverage { vec4 farMask[]; };\n"
+@@ -226,6 +227,11 @@ static const char *MVGL_FS =
+ 	"    // \"water through the ground\" reveal). Terrain/rock quads are unaffected.\n"
+ 	"    if (backdrop && uBgMargin > 0 && (px < uBgMargin || px >= uClipW - uBgMargin))\n"
+ 	"        discard;\n"
++	"    // Candidate current-resident ground is needed only where the game's\n"
++	"    // 4:3 raster could not draw it. Keep original on-screen geometry authoritative.\n"
++	"    if ((meta.z & 32u) != 0u &&\n"
++	"        (uResidentMargin == 0 || (px >= uResidentMargin && px < uClipW - uResidentMargin)))\n"
++	"        discard;\n"
+ 	"    // dither = the hardware's 50% translucency (shadows, HUD boxes, the\n"
+ 	"    // radio panel, sprite backboards). At native scale the mask is the\n"
+ 	"    // authentic coarse checkerboard (identical to fine there - exact mode\n"
+@@ -515,6 +521,7 @@ static const char *MVGL_MIRROR_FS =
+ 	"uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded\n"
+ 	"                           // inside the margins so extend fills from the\n"
+ 	"                           // 4:3 boundary (sky above, terrain below). 0=off.\n"
++	"uniform int  uResidentMargin; // 4:3 boundary for opt-in resident-only packets\n"
+ 	"uniform int  uClipW;       // coarse canvas width (for the right margin)\n"
+ 	"uniform int  uFarCoverage; // private V-Unit trial; zero preserves ordinary coverage\n"
+ 	"layout(std430, binding=3) readonly buffer FarCoverage { vec4 farMask[]; };\n"
+@@ -706,6 +713,11 @@ static const char *MVGL_MIRROR_FS =
+ 	"    // \"water through the ground\" reveal). Terrain/rock quads are unaffected.\n"
+ 	"    if (backdrop && uBgMargin > 0 && (px < uBgMargin || px >= uClipW - uBgMargin))\n"
+ 	"        discard;\n"
++	"    // Candidate current-resident ground is needed only where the game's\n"
++	"    // 4:3 raster could not draw it. Keep original on-screen geometry authoritative.\n"
++	"    if ((meta.z & 32u) != 0u &&\n"
++	"        (uResidentMargin == 0 || (px >= uResidentMargin && px < uClipW - uResidentMargin)))\n"
++	"        discard;\n"
+ 	"    // dither = the hardware's 50% translucency (shadows, HUD boxes, the\n"
+ 	"    // radio panel, sprite backboards). At native scale the mask is the\n"
+ 	"    // authentic coarse checkerboard (identical to fine there - exact mode\n"
+@@ -807,6 +819,7 @@ static const char *MVGL_FADE_FS =
+ 	"uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded\n"
+ 	"                           // inside the margins so extend fills from the\n"
+ 	"                           // 4:3 boundary (sky above, terrain below). 0=off.\n"
++	"uniform int  uResidentMargin; // 4:3 boundary for opt-in resident-only packets\n"
+ 	"uniform int  uClipW;       // coarse canvas width (for the right margin)\n"
+ 	"uniform int  uFarCoverage; // private V-Unit trial; zero preserves ordinary coverage\n"
+ 	"layout(std430, binding=3) readonly buffer FarCoverage { vec4 farMask[]; };\n"
+@@ -1000,6 +1013,11 @@ static const char *MVGL_FADE_FS =
+ 	"    // \"water through the ground\" reveal). Terrain/rock quads are unaffected.\n"
+ 	"    if (backdrop && uBgMargin > 0 && (px < uBgMargin || px >= uClipW - uBgMargin))\n"
+ 	"        discard;\n"
++	"    // Candidate current-resident ground is needed only where the game's\n"
++	"    // 4:3 raster could not draw it. Keep original on-screen geometry authoritative.\n"
++	"    if ((meta.z & 32u) != 0u &&\n"
++	"        (uResidentMargin == 0 || (px >= uResidentMargin && px < uClipW - uResidentMargin)))\n"
++	"        discard;\n"
+ 	"    // dither = the hardware's 50% translucency (shadows, HUD boxes, the\n"
+ 	"    // radio panel, sprite backboards). At native scale the mask is the\n"
+ 	"    // authentic coarse checkerboard (identical to fine there - exact mode\n"
+diff --git a/src/mame/midway/midvunit_v.cpp b/src/mame/midway/midvunit_v.cpp
+index 15261d9f211..bddf4624bef 100644
+--- a/src/mame/midway/midvunit_v.cpp
++++ b/src/mame/midway/midvunit_v.cpp
+@@ -960,7 +960,7 @@ static size_t build_vertices(const std::vector<QuadMsg> &quads, float xoff,
+ 			f[14] = us[2]; f[15] = vs[2]; f[16] = us[3]; f[17] = vs[3];
+ 			for (int i = 0; i < 4; i++) f[18 + i] = bounds[i];
+ 			uint32_t *u = &udata[(q * 6 + k) * 4];
+-			u[0] = pixdata; u[1] = mode; u[2] = dither | ((quads[q].pad & 1) ? 8u : 0u) | ((quads[q].pad & 4) ? 16u : 0u); u[3] = uint32_t(dma[14]) * 256;
++			u[0] = pixdata; u[1] = mode; u[2] = dither | ((quads[q].pad & 1) ? 8u : 0u) | ((quads[q].pad & 4) ? 16u : 0u) | ((quads[q].pad & 8) ? 32u : 0u); u[3] = uint32_t(dma[14]) * 256;
+ 		}
+ 	}
+ 	return joined.aligned;
+@@ -1332,6 +1332,7 @@ void thread_main()
+ 	bool const bg_gate = margin_on &&
+ 		!(std::getenv("MIDV_GL_CRACKFILL") && atoi(std::getenv("MIDV_GL_CRACKFILL")) == 0);
+ 	gl.Uniform1i(gl.GetUniformLocation(prog, "uBgMargin"), bg_gate ? MARGIN : 0);
++	gl.Uniform1i(gl.GetUniformLocation(prog, "uResidentMargin"), MARGIN);
+ 	gl.UseProgram(pal);
+ 	gl.Uniform1i(gl.GetUniformLocation(pal, "idxTex"), 1);
+ 	gl.Uniform1i(gl.GetUniformLocation(pal, "palTex"), 2);
+@@ -1491,7 +1492,7 @@ void thread_main()
+ 		bool const auxiliary = original_mirror && (run.front().pad & 2);
+ 		if(original_mirror)
+ 		{
+-			for(auto const &q:run)if(auxiliary?(q.pad!=3 && q.pad!=7):q.pad!=0)fatalerror("Original mirror unqualified layer ownership\n");
++			for(auto const &q:run)if(auxiliary?((q.pad&3)!=3 || (q.pad&~15)!=0):q.pad!=0)fatalerror("Original mirror unqualified layer ownership\n");
+ 			if(auxiliary)mirror_auxiliary+=run.size();
+ 			else {mirror_ordinary+=run.size();original_cpu_written[pg]=0;}
+ 		}
+@@ -3489,7 +3490,7 @@ void midvunit_base_state::observe_numeric_hud()
+ 
+ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_t,16>> &quads,
+ 	const std::vector<std::array<uint32_t,4>> *depths, const std::vector<uint32_t> *policies,
+-	const std::vector<uint8_t> *margins)
++	const std::vector<uint8_t> *margins, const std::vector<uint8_t> *residents)
+ {
+ 	if(!live().enabled)fatalerror("World host scenery drawing requires the live GL renderer\n");
+ 	if(quads.empty())return;
+@@ -3497,6 +3498,8 @@ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_
+ 	if(policies && (!m_host_fade_metadata || !depths || policies->size()!=quads.size()))fatalerror("Host fade policies mismatch\n");
+ 	if(margins && (m_host_layer!=3 || margins->size()!=quads.size() ||
+ 		std::any_of(margins->begin(),margins->end(),[](uint8_t v){return v>1;})))fatalerror("Host margin permissions mismatch\n");
++	if(residents && (m_host_layer!=3 || residents->size()!=quads.size() || policies ||
++		std::any_of(residents->begin(),residents->end(),[](uint8_t v){return v>1;})))fatalerror("Host resident permissions mismatch\n");
+ 	const uint32_t frame=uint32_t(m_screen->frame_number());
+ 	live().last_frame=frame;
+ 	live().sync_state(frame,m_paletteram.target(),uint32_t(m_paletteram.bytes()),
+@@ -3507,7 +3510,7 @@ void midvunit_base_state::world_host_submit(const std::vector<std::array<uint16_
+ 	int const fade_frame=capture_text?atoi(capture_text):0;
+ 	for(size_t i=0;i<quads.size();++i)
+ 	{
+-		h.pad=m_host_layer | ((margins && (*margins)[i])?4:0);
++		h.pad=m_host_layer | ((margins && (*margins)[i])?4:0) | ((residents && (*residents)[i])?8:0);
+ 		if(policies)
+ 		{
+ 			cruisn::vunit_fade::Packet packet;
+-- 
+2.55.0.windows.3
+

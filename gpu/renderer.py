@@ -74,6 +74,7 @@ uniform int  uDbgQuadId;   // debug: if 1, outIndex = quad id (gl_PrimitiveID/2)
 uniform int  uBgMargin;    // coarse margin width; backdrop quads discarded
                            // inside the margins so extend fills from the
                            // 4:3 boundary (sky above, terrain below). 0=off.
+uniform int  uResidentMargin; // 4:3 boundary for opt-in resident-only packets
 uniform int  uClipW;       // coarse canvas width (for the right margin)
 uniform int  uFarCoverage; // private V-Unit trial; zero preserves ordinary coverage
 layout(std430, binding=3) readonly buffer FarCoverage { vec4 farMask[]; };
@@ -264,6 +265,11 @@ void main() {
     // column - sky in the upper margin, terrain in the lower (covers the
     // "water through the ground" reveal). Terrain/rock quads are unaffected.
     if (backdrop && uBgMargin > 0 && (px < uBgMargin || px >= uClipW - uBgMargin))
+        discard;
+    // Candidate current-resident ground is needed only where the game's
+    // 4:3 raster could not draw it. Keep original on-screen geometry authoritative.
+    if ((meta.z & 32u) != 0u &&
+        (uResidentMargin == 0 || (px >= uResidentMargin && px < uClipW - uResidentMargin)))
         discard;
     // dither = the hardware's 50% translucency (shadows, HUD boxes, the
     // radio panel, sprite backboards). At native scale the mask is the

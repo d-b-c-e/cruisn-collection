@@ -33,19 +33,26 @@ def evidence(run, retain_geometry=False):
             or any(a[0] >= b[0] or a[1] >= b[1] for a, b in zip(keys, keys[1:]))):
         raise ValueError('invalid or duplicate Off Road host clocks')
     for r in records:
+        resident_candidates = int(r.get('resident_candidates', 0))
+        resident_margin = int(r.get('resident_margin', 0))
+        resident_pruned = int(r.get('resident_pruned', 0))
         if (int(r['mode']) not in (1, 2) or int(r['multiplier']) not in (1, 2, 3)
                 or any(int(r[n]) < 0 for n in COUNTERS)
+                or resident_candidates < 0 or resident_margin < 0 or resident_pruned < 0
+                or resident_pruned > resident_candidates or resident_margin > int(r['quads'])
                 or any(int(r[n]) not in (0, 1) for n in ('future_enabled', 'pretrack', 'partial', 'deferred'))
                 or len(r['quads_hash']) != 16 or any(c not in '0123456789abcdef' for c in r['quads_hash'])):
             raise ValueError('invalid Off Road host mode/count/fingerprint')
         if (int(r['future']) > int(r['future_definitions'])
                 or not int(r['future_enabled']) and int(r['future_definitions'])
-                or int(r['pending'])+int(r['future_definitions']) !=
-                sum(int(r[n]) for n in ('unsupported', 'near', 'far', 'projection', 'material', 'decoded'))):
+                or int(r['pending'])+int(r['future_definitions'])+resident_candidates !=
+                sum(int(r[n]) for n in ('unsupported', 'near', 'far', 'projection', 'material', 'decoded')) + resident_pruned):
             raise ValueError('Off Road source decisions do not partition descriptors')
         if (int(r['pretrack']) or int(r['deferred'])) and any(int(r[n]) for n in
                 ('pending', 'future', 'future_definitions', 'decoded', 'quads')):
             raise ValueError('Off Road deferred scene contains geometry')
+        if (int(r['pretrack']) or int(r['deferred'])) and (resident_candidates or resident_margin or resident_pruned):
+            raise ValueError('Off Road deferred scene contains resident geometry')
         if abs(sum(float(r[p]) for p in PHASES)-float(r['microseconds'])) > .01:
             raise ValueError('Off Road phase costs do not sum to total')
     geometry = {} if retain_geometry else None

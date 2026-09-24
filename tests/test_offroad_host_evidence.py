@@ -54,6 +54,23 @@ class OffroadHostEvidenceTests(unittest.TestCase):
             self.write(run, [record], [quad])
             with self.assertRaisesRegex(ValueError, 'deferred'): evidence(run)
 
+    def test_opt_in_resident_sources_partition_separately(self):
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory); record, quad = self.fixture()
+            record.update(resident_candidates=1, resident_margin=1, decoded=2)
+            self.write(run, [record], [quad])
+            self.assertEqual(evidence(run)[2]['totals']['quads'], 1)
+            record['resident_candidates'] = 0
+            self.write(run, [record], [quad])
+            with self.assertRaisesRegex(ValueError, 'partition'): evidence(run)
+            record['resident_candidates'] = 1
+            record['resident_margin'] = 2
+            self.write(run, [record], [quad])
+            with self.assertRaisesRegex(ValueError, 'mode/count'): evidence(run)
+            record.update(resident_margin=1, resident_pruned=1, decoded=1)
+            self.write(run, [record], [quad])
+            self.assertEqual(evidence(run)[2]['totals']['quads'], 1)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -103,6 +103,28 @@ class OffroadHostOptionsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             configure(self.args(), 'offroadc', dict(MIDV_OFFROAD_HOST_CLIP_ADMISSION='1'))
 
+    def test_resident_margin_gate(self):
+        args = self.trial(); args.candidate = 'private-candidate'
+        args.offroad_host_resident_margins = True
+        settings = dict(MIDV_GL='1', MIDV_FFB='0')
+        self.assertTrue(configure(args, 'offroadc', settings)['resident_margins'])
+        self.assertEqual(settings['MIDV_OFFROAD_HOST_RESIDENT_MARGINS'], '1')
+        inherited = self.args(); inherited.candidate = args.candidate
+        self.assertTrue(configure(inherited, 'offroadc', settings)['resident_margins'])
+        for field, value in [('candidate', None), ('offroad_host_distance', 2),
+                             ('offroad_host_source', 'pending'), ('offroad_host_scenery', 'observe'),
+                             ('offroad_host_layer', 'legacy')]:
+            bad = copy.copy(args); setattr(bad, field, value)
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                configure(bad, 'offroadc', dict(MIDV_GL='1', MIDV_FFB='0'))
+        with self.assertRaises(ValueError):
+            configure(args, 'offroadc', dict(MIDV_GL='1', MIDV_FFB='1'))
+        configure(self.args('--offroad-host-scenery', 'off'), 'offroadc', settings)
+        self.assertNotIn('MIDV_OFFROAD_HOST_RESIDENT_MARGINS', settings)
+        with self.assertRaisesRegex(ValueError, 'orphan'):
+            configure(self.args(), 'offroadc', dict(MIDV_OFFROAD_HOST_SCENERY='0',
+                                                  MIDV_OFFROAD_HOST_RESIDENT_MARGINS='1'))
+
 
 if __name__ == '__main__':
     unittest.main()
