@@ -3,6 +3,7 @@
 #include <cassert>
 int main() {
     using namespace cruisn::exotica_reset;
+    assert(std::strlen(seed_vertex)==126 && std::strlen(seed_fragment)==335);
     Request r{18001,3,75000,225000,0xfedcba9876543210ull},out;
     auto wire=encode(r);assert(decode(wire.data(),sizeof(wire),out));
     assert(out.frame==r.frame && out.index==r.index && out.scene==r.scene && out.generation==r.generation && out.hash==r.hash);

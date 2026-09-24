@@ -1,6 +1,8 @@
 """Exhaustive D24 reset seeding check on an idle GPU; no game resources."""
 import argparse
+import ast
 import ctypes as C
+import hashlib
 from pathlib import Path
 import re
 import moderngl
@@ -8,11 +10,27 @@ import numpy as np
 from verify_zeus_margin_depth import GL,UINT,FBO,TEX,DEPTH
 from verification import write_json,sha256_file
 
+SHADER_SHA256=(
+    '062afa7aad80669dd38762b31012df91963755941a2977699ea11db2324cbdf3',
+    '1efda9e80bd807ef99963d09db03573a6256dfb8f6d077c9ae9af94216ec47d4',
+)
+
+def shader_sources(source):
+    shaders=[]
+    for name in ('seed_vertex','seed_fragment'):
+        match=re.search(r'\b'+name+r'\s*=\s*((?:"(?:\\.|[^"\\])*"\s*)+);',source)
+        if not match:raise ValueError('reset shader source extent: '+name)
+        parts=re.findall(r'"(?:\\.|[^"\\])*"',match[1])
+        shader=''.join(ast.literal_eval(part) for part in parts)
+        shaders.append(shader)
+    if tuple(hashlib.sha256(s.encode()).hexdigest() for s in shaders)!=SHADER_SHA256:
+        raise ValueError('reset shader bytes changed')
+    return shaders
+
 def check():
     header=Path(__file__).resolve().parents[1]/'native/exotica_reset.h'
     source=header.read_text(encoding='utf-8')
-    shaders=re.findall(r'R"GLSL\((.*?)\)GLSL"',source,re.S)
-    if len(shaders)!=2:raise ValueError('reset shader source extent')
+    shaders=shader_sources(source)
     ctx=moderngl.create_standalone_context(require=430);gl=GL();size=(4096,4096)
     codes=np.arange(1<<24,dtype=np.uint32).reshape(size)
     upload=((codes.astype(np.uint64)*0xffffffff+0x7fffff)//0xffffff).astype(np.uint32)

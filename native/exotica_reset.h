@@ -43,21 +43,23 @@ inline bool gpu_matches(const Request &r,uint64_t previous,uint32_t frame,uint64
 }
 // Copy at identical texels. Convert ordinary D24 to the private 26-bit depth
 // scale; preserve the all-ones clear code. Never write the ordinary target.
-static const char *const seed_vertex=R"GLSL(#version 330 core
-void main() {
-    vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);
-    gl_Position=vec4(p*2.0-1.0,0.0,1.0);
-}
-)GLSL";
-static const char *const seed_fragment=R"GLSL(#version 330 core
-uniform sampler2D original_color;
-uniform sampler2D original_depth;
-out vec4 color;
-void main() {
-    ivec2 p=ivec2(gl_FragCoord.xy);
-    color=texelFetch(original_color,p,0);
-    uint code=uint(round(texelFetch(original_depth,p,0).r*16777215.0));
-    gl_FragDepth=code==16777215u?1.0:float(code)*(1.0/67108864.0);
-}
-)GLSL";
+// MAME's makedep lexer does not recognize C++ raw string delimiters. Ordinary
+// adjacent literals keep the compiled GLSL bytes identical on project regen.
+static const char *const seed_vertex=
+    "#version 330 core\n"
+    "void main() {\n"
+    "    vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);\n"
+    "    gl_Position=vec4(p*2.0-1.0,0.0,1.0);\n"
+    "}\n";
+static const char *const seed_fragment=
+    "#version 330 core\n"
+    "uniform sampler2D original_color;\n"
+    "uniform sampler2D original_depth;\n"
+    "out vec4 color;\n"
+    "void main() {\n"
+    "    ivec2 p=ivec2(gl_FragCoord.xy);\n"
+    "    color=texelFetch(original_color,p,0);\n"
+    "    uint code=uint(round(texelFetch(original_depth,p,0).r*16777215.0));\n"
+    "    gl_FragDepth=code==16777215u?1.0:float(code)*(1.0/67108864.0);\n"
+    "}\n";
 } }
