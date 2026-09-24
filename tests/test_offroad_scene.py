@@ -19,6 +19,11 @@ class OffroadSceneTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'upload state'):
             scene(lambda p: m.get(p, 0), 3, True)
         self.assertEqual(scene(lambda p: 0, 1, True)[0]['pretrack'], 1)
+        self.assertEqual(scene(lambda p: 0, 1, True, loaded_sections=True)[0]['pretrack'], 1)
+        with self.assertRaisesRegex(ValueError, 'requires source descriptors'):
+            scene(lambda p: 0, 1, False, loaded_sections=True)
+        with self.assertRaisesRegex(ValueError, 'partial recovery requires'):
+            scene(lambda p: 0, 3, True, recover_partial=True, loaded_sections=True)
 
     def test_radial_order_and_host_projection_limits(self):
         obj = [0]*22; obj[11:14] = [F.integer(v).store() for v in (3000, 4000, 12000)]

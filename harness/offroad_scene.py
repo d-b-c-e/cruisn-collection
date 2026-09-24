@@ -50,11 +50,14 @@ def host_project(vertices, matrix, origin, read, multiplier, *, camera_depths=No
     return points
 
 
-def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=False, recover_partial=False):
+def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=False,
+          recover_partial=False, loaded_sections=False):
     if multiplier not in (1, 2, 3) or (clip_admission and (multiplier != 3 or not use_future)):
         raise ValueError('host multiplier')
-    if recover_partial and (multiplier != 3 or not use_future):
+    if recover_partial and (multiplier != 3 or not use_future or loaded_sections):
         raise ValueError('partial recovery requires 3x future scenery')
+    if loaded_sections and not use_future:
+        raise ValueError('loaded section projection requires source descriptors')
     f = frontier(read)
     counts = Counter(dict(pending=0, future=0, unsupported=0, near=0, far=0,
                           projection=0, material=0, pretrack=int(f['pretrack']), partial=int(f['partial']), deferred=0))
@@ -83,7 +86,7 @@ def scene(read, multiplier, use_future, *, clip_admission=False, retain_depths=F
         seen.add(p); obj = [read(p+i) for i in range(22)]; candidates.append((p, obj)); p = obj[0]
         counts['pending'] += 1
     if use_future:
-        future = sections(read)
+        future = sections(read, loaded=loaded_sections)
         if recover_partial:
             future = recover_partial_sources(read,future)
         for source in future['sources']:
