@@ -74,6 +74,24 @@ capture-validated result is local `resident-dark-triage-v2.json` (v1 retained).
 Neither threshold sees a defect shared by both images or establishes temporal
 quality between the eleven samples.
 
+The committed candidate's source-joined 3136 capture now has a repeatable
+indexed-page check, `harness/verify_vunit_resident_gap.py`. It first validates
+the passing control's same-run original DMA and backdrop command, both replay
+input comparisons and indexed-mirror receipts, and all four original-only
+plane hashes across both pages. The original planes are byte-identical between
+control and resident candidate. The control has 7,438 strict backdrop-gap
+pixels within an 11,649-pixel connected sky envelope. In the candidate, **all
+7,438 strict pixels and all 11,649 connected pixels have auxiliary ownership**;
+the strict pixels all carry tag 5 and none has index zero. The candidate
+changes 24,346 displayed indexed colors and 11,649 ownership tags, with zero
+changes inside the native center; all ownership-tag changes are within that
+connected envelope. Local `resident-indexed-gap-3136-v2.json` preserves hashes
+and counts. The first v1 report passed before an added connected-envelope
+equality assertion; both are retained. This is an exact single-frame native
+indexed result, not physical 4K, post-CRT, full-course or texture-quality
+acceptance. The existing completed-image pair supplies the separate display
+view.
+
 The frozen committed binary also completes the **full 9,644-input El Paso
 recording** with quiet scene journals, all original input/native comparisons,
 stable physical 1440p display watch, literal force zero and owned shutdown.

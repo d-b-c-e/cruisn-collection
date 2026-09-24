@@ -4851,3 +4851,14 @@ intentionally differ, so the exact checker reports FAIL with no dimension or
 cadence error. Initial v1 wrong-directory invocation failed before reading
 images; corrected capture-validated v2 is local under offroad-full-20260910. No
 game replay, code change or renderer promotion.
+
+2026-09-24 Off-Road live indexed gap closure: a new offline verifier joins the
+source-backed 3136 control DMA and both passing replay mirrors. The candidate
+preserves all four original-only plane hashes across both pages. Of 7,438
+strict backdrop-gap pixels, all 7,438 become auxiliary-owned (tag 5), with
+zero index-0 pixels; all 11,649 pixels of the connected sky envelope are
+auxiliary-owned. Exactly 11,649 ownership tags change, none outside the
+envelope or in the native center. Displayed indexed color changes total
+24,346, all in a widescreen margin. Capture-validated/source-hashed local
+resident-indexed-gap-3136-v2.json PASS; v1 before an extra envelope assertion
+also retained. No new game replay, physical 4K test or renderer promotion.
