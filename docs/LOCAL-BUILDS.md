@@ -104,7 +104,7 @@ Python/docs-only changes do not need a MAME rebuild.
 1. Commit the intended source and native patch export. Run all local checks on
    that source and keep their output directory. Commit documentation separately
    if needed; changing product/check inputs requires renewed evidence.
-2. Assemble a candidate locally with `./build_local.ps1 -Target Release -Version v0.4.1-rc1`
+2. Assemble a candidate locally with `./build_local.ps1 -Target Release -Version v0.5.1-rc1`
    (example next candidate label, **not** an instruction to publish). Use the explicit candidate options on `make_release.ps1` when packaging another binary.
    Packaging freezes launcher/setup, checks fresh CRT/widescreen defaults,
    verifies the ZIP and emits its file manifest. It does not build MAME.
@@ -124,7 +124,7 @@ Python/docs-only changes do not need a MAME rebuild.
 
 Keep the ZIP and its `.check.json`, `.defaults.json`, `.manifest.json`, local check
 directory and acceptance evidence together. No new release was created by this
-migration; v0.4.0 remains the published baseline. Historical cross-platform CI
+migration; v0.5.0 is the published baseline. Historical cross-platform CI
 receipts remain valid evidence for their recorded revisions, not current passes.
 
 GitHub documents [uploading local files with `gh release create`](https://cli.github.com/manual/gh_release_create).

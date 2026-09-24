@@ -183,7 +183,7 @@ Off Road and Exotica drives are useful regressions but insufficient release cove
 
 ## Candidate packaging and promotion
 
-Build from a clean committed checkout with `./make_release.ps1 -Version v0.4.1-rc1`
+Build from a clean committed checkout with `./make_release.ps1 -Version v0.5.1-rc1`
 (example next candidate label). Do not dispatch the disabled hosted workflow. The
 version is a candidate label, not a published tag. ZIP names include a timestamp;
 previous packages remain available. `-NoMedia` deliberately omits artwork/music.
