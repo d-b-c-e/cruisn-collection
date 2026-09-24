@@ -4840,3 +4840,14 @@ tree066d00100d6633ae994a5060fe3e1e33135feb22 exactly equals the native
 source that passed the clean build. Local patch-replay-attestation.json binds
 base, patch/log hashes, commit count and final tree. No second build or network
 clone was run; this is a source-reconstruction check, not product acceptance.
+
+2026-09-24 Off-Road resident-margin dark-pixel triage: the common completed-frame
+checker reread the existing 11 saved El Paso turn pairs at 3100..3140. With
+candidate RGB <=8 and reference channel >=32, only three candidate-new
+near-black pixels qualify, all at 3140 within completed x72..73/y528..538;
+seven inverse recovered pixels. The prior loose <40 metric counted 1,997 new
+dark pixels and does not mean 1,997 new black defects. All 11 images
+intentionally differ, so the exact checker reports FAIL with no dimension or
+cadence error. Initial v1 wrong-directory invocation failed before reading
+images; corrected capture-validated v2 is local under offroad-full-20260910. No
+game replay, code change or renderer promotion.

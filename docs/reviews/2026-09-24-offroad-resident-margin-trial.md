@@ -60,6 +60,20 @@ before its build-revision string changed. Reports and contact sheet are
 `left-gap-resident-temporal-compare-v1.json`, and
 `left-gap-resident-temporal-contact-v1.png` in the same local directory.
 
+A later offline pass applied the common completed-frame triage threshold to
+those exact 11 saved pairs. It counts only pixels whose candidate RGB channels
+are all at most 8 while a reference channel is at least 32. **Three** pixels
+qualify, all within completed `(72,528)..(73,538)` at frame 3140; the other
+ten frames have zero. Seven pixels meet the inverse recovered criterion. This
+explains why the earlier 1,997 count under a loose `<40` threshold should not
+be read as 1,997 new black artifacts. The common checker correctly returns
+`passed=false` for all 11 intentionally different images, with no size or
+capture-cadence mismatch. Its first invocation pointed at the case directory
+instead of its `run` directory and failed before reading images; the corrected
+capture-validated result is local `resident-dark-triage-v2.json` (v1 retained).
+Neither threshold sees a defect shared by both images or establishes temporal
+quality between the eleven samples.
+
 The frozen committed binary also completes the **full 9,644-input El Paso
 recording** with quiet scene journals, all original input/native comparisons,
 stable physical 1440p display watch, literal force zero and owned shutdown.
