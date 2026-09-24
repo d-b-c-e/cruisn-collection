@@ -4810,3 +4810,16 @@ results/diagnostics/offroad-next-course-20260924 both validate without
 execution. They retain the El Paso source's wheel setup and freeze native03123,
 physical1440 and FFB0. An owner-selected contrasting course is needed before
 resident-margin cross-course replay; no second route has been recorded.
+
+2026-09-24 MAME project-regeneration repair: native46e14e33547 replaces
+the raw Exotica reset GLSL strings with ordinary adjacent literals. The
+vertex/fragment byte hashes remain 062afa7a... and1efda9e8...; Python
+source/GL compilation and the compiled native reset fixture PASS. Correctly
+configured MSYS2 MinGW64 `REGENIE=1` regenerated34/34 MAME projects, compiled
+affected sources and linked; postcommit incremental build also linked. The
+first corrected-source invocation lacked MSYSTEM and failed before generation,
+retained as raw log. One-time281-patch export reconstructs native tree
+066d00100d6633ae994a5060fe3e1e33135feb22; frozen binary SHA
+1ed851dd17836d56e36c2c4699f3200fb67e173f590155d55f65df39fcaec238.
+No live game/reset, deployment, release or clean-clone build. See
+docs/reviews/2026-09-24-makedep-reset-shader.md.

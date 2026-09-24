@@ -2,6 +2,15 @@
 
 ## Current work: rendering parity, September 23
 
+September24 build-only native successor46e14e33547 replaces raw Exotica reset
+GLSL literals with byte-identical adjacent C++ strings so MAME makedep can
+scan them. REGENIE regenerated34/34 projects and linked; postcommit binary
+SHA1ed851dd17836d56e36c2c4699f3200fb67e173f590155d55f65df39fcaec238,
+281-patch export attested. Python hash/GL compile and native reset fixture pass.
+No live reset/game replay or renderer deployment; clean-clone build still open.
+Read docs/reviews/2026-09-24-makedep-reset-shader.md. Both 280/281 one-time
+exporters already ran; never rerun them. Personal UX707/publicv0.5.0 unchanged.
+
 September24 Off-Road opt-in resident-ground margin trial now PASSes an El Paso
 3138-input native replay on stable physical1440 with FFB0, exact original
 mirror and owned shutdown. Frozen committed native03123d5b272 SHA
@@ -26,10 +35,9 @@ another course,4K,detailed packet coverage and physical FFB remain.
 Personal UX707/publicv0.5.0 unchanged. The one-time native export already ran;
 never rerun it.
 `build_local.ps1` now defaults to incremental MAME project reuse; explicit
-`-RegenerateProjects` is reserved for project-file changes. A September24
-REGENIE trial failed in the generator at an existing Zeus header, so a clean
-fresh-checkout build remains a release gate; the committed resident candidate
-was compiled and linked incrementally.
+`-RegenerateProjects` is reserved for project-file changes. The original raw
+REGENIE failure is fixed in native46e and regenerated successfully on this
+checkout, while a clean fresh-checkout build remains a release gate.
 World2.4 New York attended recording is still needed. September24 plan
 `results/diagnostics/world-new-york-20260924/recording-plan` and
 `record-preflight` both PREPARED/not executed, using frozen03123 native,

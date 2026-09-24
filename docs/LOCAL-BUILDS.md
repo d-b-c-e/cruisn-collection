@@ -26,11 +26,11 @@ frozen executable. Packaging rejects personal config/profile/runtime files.
 Normal local builds reuse the generated MAME project files. Pass
 `-RegenerateProjects` only after changing the MAME source-file list or build
 configuration; it adds `REGENIE=1` to the build. Header, shader, and ordinary
-source edits do not need project regeneration. A September 24 diagnostic
-regeneration attempt failed in the existing generator while processing a Zeus
-header, whereas incremental compilation and linking passed; the native
-candidate was frozen from the successful incremental build. Resolve that
-generator failure before relying on a fresh-checkout release build.
+source edits do not need project regeneration. The September 24 raw-string
+blocker in `exotica_reset.h` was corrected without changing shader bytes;
+`REGENIE=1` now regenerates all 34 projects and links on this checkout. See
+[the regeneration review](reviews/2026-09-24-makedep-reset-shader.md). A
+clean-clone build is still a separate release gate.
 
 The Personal target copies only the compiled emulator to `mame-src/vunit.exe`,
 keeping a hash-named backup under `build/personal/previous/`. It refuses deployment
