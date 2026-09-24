@@ -35,7 +35,11 @@ The next efficient sequence is:
 1. For Off-Road, retain the [resident-margin candidate](2026-09-24-offroad-resident-margin-trial.md)
    as a gated diagnostic. Extend the two-frame independent source proof to
    detailed packets on another route, then check that course and physical 4K completed frames before
-   considering promotion. Do not enable legacy Margin Fill or a global skirt.
+   considering promotion. A September 24 continuous-3× recording plan and
+   live-input preflight for a contrasting Off-Road course are prepared locally
+   at `results/diagnostics/offroad-next-course-20260924`; neither ran the game.
+   Replay the resulting drive with the resident switch after the owner records
+   it. Do not enable legacy Margin Fill or a global skirt.
 2. For World, obtain a representative New York recording through the finish
    with the external clock; disable FFB in unattended diagnostic replays. The
    old crash report cannot be called fixed from Germany/Hawaii data. Reproduce it with

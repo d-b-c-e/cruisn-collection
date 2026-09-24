@@ -36,6 +36,12 @@ World2.4 New York attended recording is still needed. September24 plan
 continuous3x, physical1440 primary, FFB0 and external clock. Do not call this
 a gameplay or crash reproduction, and do not start the attended recording
 until the owner returns.
+An Off-Road contrasting-course recording plan and live-input preflight are
+also PREPARED/not executed under
+`results/diagnostics/offroad-next-course-20260924`, using current native03123,
+3x, physical1440 and FFB0. Record an owner-selected second course when ready,
+then replay it with opt-in resident margins for the cross-course gate. Do not
+start an attended recording while the owner is away.
 
 September24 Off-Road source discovery: at El Paso source3116/display3120 and
 source3132/display3136, existing authored **loaded** ground descriptors absent

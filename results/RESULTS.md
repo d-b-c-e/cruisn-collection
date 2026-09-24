@@ -4803,3 +4803,10 @@ physical2560×1440 primary display and FFB0. `record_prepared.py --prepare-only`
 validates a fresh live-input case with the external clock. Both reports are
 PREPARED/unexecuted under results/diagnostics/world-new-york-20260924; no
 New York drive, graphic finding or finish-line crash reproduction is claimed.
+
+2026-09-24 Off-Road second-course recording preparation: a new continuous3x
+launch plan and live-input preflight under
+results/diagnostics/offroad-next-course-20260924 both validate without
+execution. They retain the El Paso source's wheel setup and freeze native03123,
+physical1440 and FFB0. An owner-selected contrasting course is needed before
+resident-margin cross-course replay; no second route has been recorded.
