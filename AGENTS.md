@@ -18,7 +18,9 @@ or network clone was needed.
 No live reset/game replay, release package or renderer deployment.
 Off-Road resident 3136 indexed verifier now PASS: all7,438 strict and11,649
 connected backdrop-gap pixels acquire host ownership; original-only planes
-byte-exact, native center untouched. Local resident-indexed-gap-3136-v2.json.
+byte-exact, native center untouched. Strengthened
+resident-indexed-gap-3136-v3.json also verifies all7,438 indices differ from
+control and none remain in the source-qualified sky palette; v1/v2 retained.
 The saved11-frame resident turn also reduces the prior CRT-blue heuristic from
 863..3903 to0..16 paired pixels in every frame (v3 temporal report); still not
 an exact texture-defect area or 4K/course acceptance.

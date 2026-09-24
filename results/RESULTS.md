@@ -4863,6 +4863,13 @@ envelope or in the native center. Displayed indexed color changes total
 resident-indexed-gap-3136-v2.json PASS; v1 before an extra envelope assertion
 also retained. No new game replay, physical 4K test or renderer promotion.
 
+2026-09-24 Resident indexed verifier strengthened: merely acquiring host
+ownership could still leave a sky-colored pixel. The same saved 3136 pair now
+requires every strict gap index to differ from control and leave the validated
+sky-palette range. All7,438 satisfy both; zero strict pixels remain sky-colored
+or index0, original planes and center unchanged. Local
+resident-indexed-gap-3136-v3.json PASS; v1/v2 retained. No game replay.
+
 2026-09-24 Off-Road resident turn color screen: the existing 11 completed
 El Paso pairs were reanalyzed using the exact earlier no-host/3x CRT-blue ROI
 signature. Every control BMP hash and blue count matches the saved baseline.

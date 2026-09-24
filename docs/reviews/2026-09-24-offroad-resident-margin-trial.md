@@ -96,9 +96,12 @@ pixels within an 11,649-pixel connected sky envelope. In the candidate, **all
 the strict pixels all carry tag 5 and none has index zero. The candidate
 changes 24,346 displayed indexed colors and 11,649 ownership tags, with zero
 changes inside the native center; all ownership-tag changes are within that
-connected envelope. Local `resident-indexed-gap-3136-v2.json` preserves hashes
-and counts. The first v1 report passed before an added connected-envelope
-equality assertion; both are retained. This is an exact single-frame native
+connected envelope. A strengthened verifier also requires every strict gap
+index to differ from control and leave the qualified sky-palette range. All
+7,438 do; none remains sky or index zero. Local
+`resident-indexed-gap-3136-v3.json` preserves hashes and counts. Earlier v1
+and v2 passing reports remain; v2 preceded this color-index condition. This
+is an exact single-frame native
 indexed result, not physical 4K, post-CRT, full-course or texture-quality
 acceptance. The existing completed-image pair supplies the separate display
 view.
