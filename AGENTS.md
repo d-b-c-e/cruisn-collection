@@ -30,6 +30,12 @@ never rerun it.
 REGENIE trial failed in the generator at an existing Zeus header, so a clean
 fresh-checkout build remains a release gate; the committed resident candidate
 was compiled and linked incrementally.
+World2.4 New York attended recording is still needed. September24 plan
+`results/diagnostics/world-new-york-20260924/recording-plan` and
+`record-preflight` both PREPARED/not executed, using frozen03123 native,
+continuous3x, physical1440 primary, FFB0 and external clock. Do not call this
+a gameplay or crash reproduction, and do not start the attended recording
+until the owner returns.
 
 September24 Off-Road source discovery: at El Paso source3116/display3120 and
 source3132/display3136, existing authored **loaded** ground descriptors absent

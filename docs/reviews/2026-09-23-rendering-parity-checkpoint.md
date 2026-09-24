@@ -40,7 +40,10 @@ The next efficient sequence is:
    with the external clock; disable FFB in unattended diagnostic replays. The
    old crash report cannot be called fixed from Germany/Hawaii data. Reproduce it with
    a bounded 3×/control pair before any source change, then isolate guest,
-   renderer and shutdown evidence.
+   renderer and shutdown evidence. A September 24 World2.4 continuous-3×
+   recording plan and live-input preflight are saved locally at
+   `results/diagnostics/world-new-york-20260924`; both are prepared only, and
+   no New York gameplay or crash reproduction has occurred.
 3. For Exotica, reuse the stable-1440 native006 results. A changed hypothesis
    or a physical 4K display is needed before repeating whole Mars/Amazon
    drives. Continue source/visibility work on a demonstrably visible outer

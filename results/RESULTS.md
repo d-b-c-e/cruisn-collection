@@ -4796,3 +4796,10 @@ three. Raw late-comparison v1 failed an over-narrow left-only/positive-gain
 predicate; v2 PASS with both margins and exact-frame support. Three sparse
 views do not establish full-course visual acceptance; other courses,4K and
 physical force remain open. See the September24 resident-margin review.
+
+2026-09-24 World2.4 New York recording preparation: a new continuous3x
+World2.4 launch plan freezes native03123, the recorded Germany wheel setup,
+physical2560×1440 primary display and FFB0. `record_prepared.py --prepare-only`
+validates a fresh live-input case with the external clock. Both reports are
+PREPARED/unexecuted under results/diagnostics/world-new-york-20260924; no
+New York drive, graphic finding or finish-line crash reproduction is claimed.
