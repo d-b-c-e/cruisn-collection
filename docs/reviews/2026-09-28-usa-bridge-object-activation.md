@@ -6,6 +6,12 @@ red pixels now have exact host packet sources. The objects entered the host
 submission stream at different times; this helps locate a source-side cause
 of uneven appearance, but does not yet prove why the whole bridge looks sparse.
 
+Follow-up: the [partial far-coverage trial](2026-09-28-usa-bridge-farcoverage-trial.md)
+uses a saved end-of-frame pre-activation state and a matched 11-image live
+interval. One ready object is projection-rejected in that saved state, and the
+existing opt-in coverage path makes bridge structure visible earlier at the
+far left. This refines the gate below without proving a global fix.
+
 A new bounded replay of the saved 12,212-input Golden Gate drive stopped after
 10,502 inputs on the frozen `f762e01d63b` binary, physical 2560×1440 primary
 and literal FFB0. It used the same continuous 3× USA controls as the earlier

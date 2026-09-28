@@ -82,8 +82,13 @@ submitted geometry, read the
    far boundary, but ROM radii show each already passes the sphere cutoff by
    10k–28k units; the far rule is not isolated. Confirm pre-admission vertex,
    descriptor and material evidence before trying a larger global limit.
-   Object completeness and intervening occlusion
-   still require a targeted gate before any policy change.
+   A new [matched partial-coverage trial](2026-09-28-usa-bridge-farcoverage-trial.md)
+   shows a ready bridge source projection-rejected in saved end-of-frame RAM;
+   the already gated mode brings far-left red structure into view earlier in
+   all 11 completed 1440p interval images, with center/right exact. The first
+   source-time operands and each changed pixel are not yet attributed.
+   Object completeness and intervening occlusion still require a targeted
+   gate before any policy change.
    The dark right panel is original game output, a separate issue.
 5. **Exotica useful distance:** find a saved open-sightline interval with an
    actual completed outer-boundary change. Measure source activation and

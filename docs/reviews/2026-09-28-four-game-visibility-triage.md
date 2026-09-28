@@ -9,6 +9,7 @@ scores across routes, resolutions or different interventions.
 | Saved comparison | Completed images with a difference | Changed frame-pixels | What is actually established |
 | --- | ---: | ---: | --- |
 | USA Golden Gate continuation, original case vs continuous 3×, 3824×2073 CRT | 11/13; the two Continue/menu views are exact | 377,941 | Same 12,212 inputs, camera and ADC trace; extra distant bridge/roadside geometry appears, but some sampled new dark pixels and start-letter overlap remain to inspect. |
+| USA Golden Gate late bridge, continuous 3× with partial far coverage off vs on, 2544×1353 CRT | 11/11 | 51,553 | Matched 40-frame interval: extra red bridge structure is visible earlier only at far left. The sparse appearance and full transition remain open. |
 | World 2.4 New York turn, control vs active non-road margins on top of 3×, 2544×1353 CRT | 9/9 | 258,118 | Moving right-edge wall/shoulder gap is visibly reduced. Source-joined frame 3600 fills 24,759 formerly unowned pixels and replaces 25,631 original backdrop pixels; ten indexed edge pixels remain unowned. |
 | World 2.4 Germany early turn, same margin toggle, 2544×1353 CRT | 9/9 | 67,482 | Distant left-edge scenery appears. At source-checked frame 7280, the building replaces only upper panorama strips and fills no gap. It does not address mountain activation or reported road holes. |
 | World 2.5 Hawaii, same margin toggle, 2544×1353 CRT | 6/9 | 36,204 | Extra far-left foliage. At source-checked frame 5775, changes replace sky/ocean panorama and 972 prior host pixels, with no newly owned gap. The dark authored rectangle at 5900 is exact in both modes. |
@@ -32,8 +33,11 @@ The next evidence gates should target different uncertainties:
    The later [packet check](2026-09-28-usa-bridge-object-activation.md)
    finds three sampled future objects entering the host stream at staggered
    frames 9855/10039/10475. Its skeletal appearance remains a potential 3×
-   quality regression despite more visible geometry. Preserve the raw USA
-   verifier FAIL and separate posthoc pass.
+   quality regression despite more visible geometry. The
+   [partial-coverage interval](2026-09-28-usa-bridge-farcoverage-trial.md)
+   demonstrates a bounded earlier left-edge appearance and exact center/right,
+   but does not prove the whole bridge fades or enters smoothly. Preserve the
+   raw USA verifier FAIL and separate posthoc pass.
 2. **World:** keep active non-road margins gated. The New York gap is a real
    positive case, but source/ordered ownership and transitions on another
    defect-bearing course remain before promotion. Do not use Hawaii/Germany

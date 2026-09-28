@@ -1,5 +1,24 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA partial far-coverage checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-farcoverage-trial.md`. Frozenf762
+matched USA Golden Gate partial-far-coverage off/on interval PASSes both10502
+recorded inputs/native/display/owned shutdown at physical1440/FFB0, with
+identical frame clocks. Eleven completed10460..10500 CRT images all change
+only far left (51553 frame-pixels, x103..243); center/right exact. Red bridge
+structure appears earlier. Control10500 is exact to prior source capture.
+Saved end10470 RAM/ROM has target0x800a0040 ready before first logged10475
+submission; offline ordinary projection rejects it, existing gated partial
+coverage emits3 textured quads. End-of-frame operands are NOT exact source-time
+camera proof; new completed pixels lack indexed/source-packet attribution.
+The bridge remains sparse; no global/pop-in,4K,other-course/performance/FFB or
+release acceptance. Generic RGB exact comparator FAIL expected, first CLI and
+quiet-camera analyzer FAIL retained; focused paired qualifier PASS. No renderer,
+personal installation or release changed. Next gate is member-by-member
+transition/occlusion and source-time pre-admission projection, not another broad
+replay without a changed hypothesis.
+
 ## September 28 USA bridge object checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-object-activation.md`. A new bounded
