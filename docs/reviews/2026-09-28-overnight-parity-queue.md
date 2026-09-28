@@ -124,6 +124,10 @@ submitted geometry, read the
    [Completed frame 10476](2026-09-28-usa-bridge-pixel-source.md) now has
    selected center samples from two new bridge objects: 1,779 red points from
    `0x800a0040` and 779 from `0x800a0042`, source/page/packet/index matched.
+   A [control-coverage screen](2026-09-28-usa-bridge-red-coverage.md)
+   separates those 2,558 genuinely new isolated host samples from 2,304
+   candidate-only red CRT samples whose ordinary source packets already
+   produce the same index. Screenshot redness is not new-geometry area.
    The [saved-trace timing census](2026-09-28-usa-bridge-member-timing.md)
    puts the first member's auxiliary submission 294 frames earlier with the
    gated option; the second is absent from ordinary auxiliary output through

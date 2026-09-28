@@ -115,6 +115,8 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
     quad_words = [row['words'] for row in traced]
     isolated_index, isolated_tag = render_quads(quad_words, texture.read_bytes())
     isolated_id, id_tag = render_quads(quad_words, texture.read_bytes(), debug_quad_id=True)
+    control_host_index, control_host_tag = render_quads(
+        [row[3:19] for row in old], texture.read_bytes())
     x0, y0, x1, y1 = ROI
     with Image.open(prior_off / 'run/gl-snap/mvgl_004.bmp') as image:
         ordinary_rgb = np.asarray(image.convert('RGB'))
@@ -126,12 +128,22 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
         mapped.setdefault(screen_to_indexed(*point), point)
     exact, added, target, examples = 0, 0, 0, []
     by_object = Counter()
+    by_object_all = Counter()
+    control_relation = {'new': Counter(), 'existing': Counter()}
     for (x, y), screen_point in mapped.items():
         if (not (planes[1][y, x] & 4) or not isolated_tag[y, x] or not id_tag[y, x] or
                 isolated_index[y, x] != planes[0][y, x]):
             continue
         exact += 1
         ordinal = int(isolated_id[y, x])
+        by_object_all[hex(traced[ordinal]['object'])] += 1
+        relation = control_relation['new' if ordinal in extra else 'existing']
+        if not control_host_tag[y, x]:
+            relation['uncovered'] += 1
+        elif control_host_index[y, x] == planes[0][y, x]:
+            relation['same_index'] += 1
+        else:
+            relation['different_index'] += 1
         if ordinal not in extra:
             continue
         added += 1
@@ -154,7 +166,7 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
                 examples[-1] = item
     if not candidates.size or not added or not target:
         raise ValueError('no screenshot-selected red center sample traces to target extra packets')
-    return dict(schema=1, passed=True,
+    return dict(schema=3, passed=True,
                 scope='One 1440p completed USA Golden Gate frame 10476. Red-color CRT '
                       'screen points are center samples; only exact indexed auxiliary '
                       'matches receive new packet IDs. No full silhouette, CRT neighbor '
@@ -170,6 +182,10 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
                 unique_indexed_center_samples=len(mapped), exact_host_center_samples=exact,
                 new_packet_center_samples=added, target_center_samples=target,
                 new_packet_samples_by_object=dict(sorted(by_object.items())),
+                all_host_center_samples_by_object=dict(by_object_all.most_common()),
+                existing_packet_center_samples=exact - added,
+                control_isolated_host_relation={key: dict(value) for key, value in
+                                                control_relation.items()},
                 examples=examples, selected_host=selected,
                 sha256={'detailed_report': sha(detailed / 'report.json'),
                         'prior_control_report': sha(prior_off / 'report.json'),

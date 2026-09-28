@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA bridge red-coverage checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-red-coverage.md`. Reanalysis of
+saved USA Golden Gate10476 source-qualified frame PASSes:4906 candidate-only
+red CRT center samples,4862 exact candidate host indexed samples. Of these,
+2558 come from two newly admitted objects and isolated ordinary host has no
+coverage;2304 come from existing packets and isolated ordinary host gives
+the same index.44 are not exact center-host matches. This narrows genuine
+early geometry benefit; CRT screenshot redness is not a new-geometry area.
+No new GPU/game/native run, product/deployment change. Full compositor,
+control indexed mirror, transition and4K remain open.
+
 ## September 28 Pike's Peak snowy-turn checkpoint
 
 Read `docs/reviews/2026-09-28-offroad-pikes-snow-turn-screen.md`. Frozen03123

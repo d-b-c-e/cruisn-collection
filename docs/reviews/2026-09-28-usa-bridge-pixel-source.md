@@ -81,3 +81,9 @@ The later [two-member timing census](2026-09-28-usa-bridge-member-timing.md)
 finds a 294-frame auxiliary submission lead for `0x800a0040`; the ordinary
 auxiliary trace has no `0x800a0042` submission through source frame 10499.
 Submission time alone is not first visible time.
+
+The subsequent [control-coverage screen](2026-09-28-usa-bridge-red-coverage.md)
+separates the 2,558 genuinely new isolated host center samples from 2,304
+candidate-only red CRT samples whose ordinary source packets already produce
+the same indexed host value. The full 4,906 red screenshot count is therefore
+not a new-geometry area measure.
