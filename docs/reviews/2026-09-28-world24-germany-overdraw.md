@@ -36,9 +36,16 @@ trace their game-owned changes to panorama strips, but these three frames do
 not qualify every World scene or transition. Hawaii alone in this set has a
 small prior-host overlap, still without exact host-packet attribution.
 
+Saved callback timestamps over frames 7200–7280 show 41 of 81 intervals above
+25 ms in both control and candidate. Total interval time is 1410.21 versus
+1411.30 ms, with maxima 30.13 versus 30.61 ms. This short, instrumented
+window shows no added threshold-count spike at the building reveal; callback
+time is not GPU presentation or physical wheel latency.
+
 The source-hashed report is
 `results/diagnostics/world-new-york-20260927-live-1/germany-7280-overdraw-v1.json`;
 the three raw replay reports and `germany-7280-mirror-paired-v1.json` are in
-the same local directory. The reusable screen is
+the same local directory, along with both `germany-7280-*-cadence-v1.json`
+source-hashed timing reports. The reusable screen is
 `harness/screen_vunit_margin_overdraw.py`. No new native code, binary,
 renderer deployment, personal installation or public release changed.

@@ -30,6 +30,12 @@ prior host pixels have **not** been attributed to exact prior host packets by
 this screen; they remain a separate overlap risk, though the inspected image
 does not show a clear defect.
 
+Saved callback timestamps over frames 5750–5775 show 13 of 26 intervals above
+25 ms in both control and candidate. Total interval time is 453.25 versus
+458.90 ms, with maxima 31.80 versus 32.37 ms. These short, instrumented
+callback windows show no new threshold-count spike at this reveal. They do
+not measure GPU presentation or physical wheel latency.
+
 This is visible coverage but only a small outer-edge gain. The nine-frame
 Hawaii interval and this source-qualified frame do not show earlier appearance
 of the distant mountains, repair of the authored dark rectangle at 5900, or
@@ -55,5 +61,6 @@ local. The corrected prepared plans and all passing replays are retained.
 Local reports are under `results/diagnostics/world-new-york-20260927-live-1`:
 `world25-5775-mirror-{control,nonroads}-run`,
 `world25-5775-original-dma-run`, `world25-5775-mirror-paired-v2.json`, and
-`world25-5775-overdraw-v1.json`. No native source, binary, renderer deployment,
+`world25-5775-overdraw-v1.json`; the two `world25-5775-*-cadence-v1.json`
+reports hold source-hashed callback timing. No native source, binary, renderer deployment,
 personal Stream Deck installation or public release changed.
