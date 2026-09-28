@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 Pike's Peak sharp-turn screen
+
+Read `docs/reviews/2026-09-28-offroad-pikes-sharp-turn-screen.md`. A saved
+wheel-trace-selected fast turn5100..5280 was surveyed with19 completed CRT
+frames on frozen03123:5300 inputs/native and owned shutdown PASS, physical1440,
+FFB0. Inspected5180/5220/5280 show no clear El Paso-like blue/black margin
+gap. Near-black counts include foliage/HUD/rock. No resident candidate rerun:
+there is no source-qualified positive gap to measure in this window, and prior
+sparse Pike pairs were exact. This does not clear the whole route. Initial
+preset-owned-CRT CLI error failed before launch. No product change. Seek a
+specific defect/timestamp before another Pike resident pair.
+
 ## September 28 Germany appearance checkpoint
 
 Read `docs/reviews/2026-09-28-world-germany-margin-onset.md`. The World2.4
