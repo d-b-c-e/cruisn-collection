@@ -63,10 +63,11 @@ submitted geometry, read the
    scene first. A credible candidate must retain terrain silhouette/material
    and beat the rejected skirt's visible wall; more global distance cannot
    create a lower mesh edge already within the 3× plane.
-4. **USA useful distance:** inspect the saved Golden Gate bridge-onset interval
-   before any policy change. The positive ROI is early auxiliary structure;
-   the dark right panel is original game output. A changed-pixel count alone
-   does not decide whether 3× looks better.
+4. **USA useful distance:** the saved completed-frame interval now locates
+   candidate-only red bridge appearance at 10500/10800/11100, absent in the
+   sampled left ROI by 11400; source-sample pixels are auxiliary-owned.
+   Identify bridge object/material completeness before any policy change.
+   The dark right panel is original game output, a separate issue.
 5. **Exotica useful distance:** find a saved open-sightline interval with an
    actual completed outer-boundary change. Measure source activation and
    transition cadence before another broad 3× run.

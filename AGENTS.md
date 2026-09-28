@@ -13,8 +13,10 @@ tests pass. Separate posthoc input/native/display/host/mirror/owned-stop check
 passes10502 inputs,5481 host scenes and one completed image, but raw FAIL is
 preserved. Original DMA ordinal2233 draws all33000 sampled indexed pixels of
 the dithered right panel; zero are host-owned. The new left bridge has sampled
-host ownership. No renderer/product change. Next inspect bridge onset from
-saved evidence, then seek distinct Exotica/World safety gates.
+host ownership. A source-hashed 13-frame 4K ROI scan finds candidate-only red
+at 10500/10800/11100, none at 11400/11700/12000; sparse cadence cannot prove
+continuous object completeness. No renderer/product change. Next identify
+bridge source/material or seek distinct Exotica/World safety gates.
 
 ## September 28 four-game visibility triage
 

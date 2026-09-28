@@ -41,6 +41,19 @@ sampled red bridge pixels in the 1440p candidate carry auxiliary tag 5 over
 original sky/tag 1. The 3× experiment is drawing that distant structure
 earlier, while its completeness and transition quality need a targeted gate.
 
+An offline scan of all 13 matched saved 4K completed frames narrows the bridge
+appearance without another replay. In a fixed left ROI `(80,550)..(700,1250)`,
+frames 8400..9900 are exact; frame 10200 changes only 307 pixels and adds no
+new red by a deliberately simple RGB predicate. Frames 10500, 10800 and 11100
+change 29,964/20,392/16,211 pixels and add 12,741/9,341/6,761 candidate-only
+red pixels. At 11400 the ROI changes 211 pixels with no candidate-only red;
+11700 and 12000 are exact in that ROI. The saved images show intervening trees
+occluding more of the distant structure. They do **not** establish whether its
+full object was ever drawn between these roughly five-second samples or exactly
+when the ordinary game takes over. The predicate is a visual locator, not an
+object/material segmentation. The source-hashed local report is
+`usa-golden-gate-bridge-onset-v1.json` alongside the other diagnostic evidence.
+
 Local source-hashed evidence:
 `results/diagnostics/race-transitions-20260916/usa-golden-gate-panel-run/report.json`
 (raw FAIL), `posthoc-qualification-v1.json`, `panel-source-screen-v1.json`,
@@ -52,7 +65,7 @@ resolves whether the panel is intentional, nor proves smooth bridge fade or
 release-ready 3× quality. No renderer, personal installation or release was
 changed.
 
-Next bounded gate: inspect the saved Golden Gate interval where the bridge
-first becomes visible and identify which original/auxiliary fragments appear
-before a product rule is considered. Do not treat the left ROI's changed count
+Next bounded gate: identify the bridge's source object/material at a frame in
+10500..11100 and determine whether its missing-looking members are actually
+absent or hidden by the track/trees. Do not treat the left ROI's changed count
 as a quality pass. The panel is a separate, source-owned visual issue.
