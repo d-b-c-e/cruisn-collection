@@ -53,6 +53,8 @@ submitted geometry, read the
   throughout, with no candidate-new near-black pixels by the narrow color
   heuristic. The changed footprint contracts through the turn. This adds
   local motion evidence, not full-course, 4K or fragment-depth acceptance.
+  Its saved callback screen retains one 69 ms candidate interval after a
+  scheduled native snapshot; this instrumented pair is not a pacing pass.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check

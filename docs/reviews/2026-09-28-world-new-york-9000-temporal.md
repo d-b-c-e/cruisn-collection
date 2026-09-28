@@ -29,6 +29,17 @@ same defect. The adjacent-step analyzer **PASS**es 12 pairs; its counts locate
 motion transitions and do not establish geometry identity or visual quality
 on their own.
 
+A read-only callback-cadence screen of the saved frame 8800..9010 logs has
+211 intervals in each run. Both cover essentially the same 3,649 ms of host
+time. The control has 14 intervals over 25 ms and a 25.87 ms maximum; the
+candidate has 13 and a 69.03 ms maximum. The candidate maximum is the single
+interval immediately after a scheduled native snapshot at 8940. That is an
+**unresolved isolated timing outlier**, not evidence of a sustained speed
+regression or a clean pacing pass. Screenshot/snapshot I/O and host scheduling
+are present, and these callback timestamps do not measure GPU presentation or
+wheel latency. Source-hashed `new-york-9000-{control,trial}-cadence-v1.json`
+retain the exact distinction without another replay.
+
 Local evidence under `results/diagnostics/world-new-york-20260927-live-1`:
 `new-york-9000-temporal-{control,trial}-{prepared,run}` (plans and raw
 receipts), `new-york-9000-temporal-paired-v1.json` and
