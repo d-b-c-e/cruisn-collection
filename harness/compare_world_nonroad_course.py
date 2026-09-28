@@ -14,7 +14,16 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def compare(control, trial):
+def require_presentation(invocations, required):
+    """Reject an internally matched pair that omits a requested display mode."""
+    for key, expected in required.items():
+        observed = [run['environment'].get(key) for run in invocations]
+        if observed != [expected, expected]:
+            raise ValueError(f'required {key}={expected} absent or differs: {observed}')
+    return required
+
+
+def compare(control, trial, required_presentation=None):
     paths = [root/'report.json' for root in (control,trial)]
     reports = [json.loads(path.read_text(encoding='utf-8')) for path in paths]
     a,b = reports
@@ -32,6 +41,7 @@ def compare(control, trial):
                    for root in (control,trial)]
     if any(i['environment'].get('MIDV_FFB') != '0' or i['returncode'] != 0 for i in invocations):
         raise ValueError('both replays must finish with physical FFB off')
+    verified_presentation = require_presentation(invocations, required_presentation or {})
     if any(not r['passed'] or not r['comparison']['passed'] or
            not r['display_watch']['passed'] or
            r['vunit_runtime']['result']['completion'] != 'owned-worker-stop'
@@ -59,6 +69,7 @@ def compare(control, trial):
             'host_quads_control':runtime[0]['quads'],
             'host_quads_trial':runtime[1]['quads'],
             'additional_submitted_quads':runtime[1]['quads']-runtime[0]['quads'],
+            'verified_presentation':verified_presentation,
             'completed_center_third_changed_pixels':center_changed,
             'completed':images,
             'sha256':{'control_report':sha(paths[0]),'trial_report':sha(paths[1]),
@@ -71,10 +82,23 @@ def main():
     ap.add_argument('--control',type=Path,required=True)
     ap.add_argument('--trial',type=Path,required=True)
     ap.add_argument('--report',type=Path,required=True)
+    ap.add_argument('--require-crt-on',action='store_true',
+                    help='require explicit MIDV_GL_CRT=1 in both raw invocations')
+    ap.add_argument('--require-gl-scale',type=int,
+                    help='require explicit internal GL scale in both raw invocations')
+    ap.add_argument('--require-native-height',type=int,choices=(400,401),
+                    help='require explicit native V-Unit height in both raw invocations')
     args=ap.parse_args()
     if args.report.exists():
         raise ValueError('refusing to overwrite paired evidence')
-    result=compare(args.control,args.trial)
+    required = {}
+    if args.require_crt_on:
+        required['MIDV_GL_CRT'] = '1'
+    if args.require_gl_scale is not None:
+        required['MIDV_GL_SCALE'] = str(args.require_gl_scale)
+    if args.require_native_height is not None:
+        required['MIDV_GL_HEIGHT'] = str(args.require_native_height)
+    result=compare(args.control,args.trial,required)
     args.report.parent.mkdir(parents=True,exist_ok=True)
     args.report.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
     print('PASS',result['rom'],result['completed']['frames'],'completed images',

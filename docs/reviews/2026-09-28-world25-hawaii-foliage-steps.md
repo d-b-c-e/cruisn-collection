@@ -46,6 +46,17 @@ repeatability evidence. This was a diagnostic setup error, not demonstrated
 gameplay divergence. The corrected `world25-5773-crt-*` reports, paired
 comparison and adjacent-step analysis are the evidence for the table above.
 
+To prevent the same omission from passing a default-view gate silently,
+`harness/compare_world_nonroad_course.py` now accepts explicit required CRT,
+GL-scale and native-height values and checks both raw invocation environments
+before reading images. The corrected pair passes with CRT=1, scale=4 and
+height=400 (`world25-5773-crt-paired-v2.json` records these requirements).
+The earlier matched CRT-off pair fails that same gate with observed
+`MIDV_GL_CRT=[None, None]`; its raw rejection is retained. Three focused
+presentation-contract tests and Python compilation pass. The flags are
+optional so intentionally raw-mode comparisons remain possible and honestly
+labeled.
+
 No native build, renderer deployment, personal Stream Deck installation or
 public release changed. The interval is one World 2.5 course at physical
 1440p without wheel force, and does not qualify 4K or other scenery types.

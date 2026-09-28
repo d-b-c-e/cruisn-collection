@@ -11,6 +11,9 @@ guardrail change appears5773–5774. Center remains exact, but this does not
 establish a fade/no-pop claim or fix the authored5900 terrain rectangle.
 Initial matched CRT-off pair passed internally but is not default-view
 repeatability evidence; preserve it separately. No product/deployment change.
+The World paired comparator now offers explicit CRT, scale and native-height
+requirements for default-view checks: corrected
+Hawaii pair PASSes, preliminary CRT-off pair correctly FAILs this gate.
 
 ## September 28 New York frame 6311 source-overlap checkpoint
 
