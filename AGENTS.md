@@ -370,6 +370,18 @@ preflight FAIL retained and first comparator error documented. No native/product
 
 ## September 28 overnight parity queue
 
+USA Golden Gate now has a matched dense10468..10484 control/partial-far pair:
+both10488-input raw replays PASS input/native, physical1440/FFB0/display and
+owned shutdown; all17 completed changes stay far-left with exact center/right.
+Main red tower already appears in candidate at10476 and in both by10478;
+mode-difference footprint contracts7627→2504 with5169 lost/46 gained
+locations, and the tower stays visible through10484. Read
+`docs/reviews/2026-09-28-usa-bridge-dense-handover.md`. The new reusable
+paired USA qualifier PASSes; exact-image comparator intentionally FAILs.
+The 10476 BMPs are exact to prior source-attributed runs. This narrows only
+main-tower handover, not all bridge pieces, 4K, course or release. No product
+change. Continue distinct positive-defect/cross-course parity work.
+
 World2.4 New York late-wall turn now has a matched one-frame 6298..6312
 control/active-nonroad pair: both6320-input raw replays PASS input/native,
 physical1440/FFB0/display and owned shutdown; all15 completed differences

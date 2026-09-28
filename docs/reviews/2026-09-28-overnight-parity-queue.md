@@ -164,6 +164,12 @@ submitted geometry, read the
    while the synchronized host interval remains near 8.1 seconds in both
    runs. This is not a GPU/stutter/4K benchmark.
    The dark right panel is original game output, a separate issue.
+   A [one-frame handover pair](2026-09-28-usa-bridge-dense-handover.md)
+   at10468..10484 shows the main red tower in the candidate at10476 and in
+   both modes by10478. The between-mode footprint drops7627→2504 with no
+   change outside the far-left third. This narrows the
+   main-tower handover risk, but distant fragments and full-course quality
+   remain open.
 5. **Exotica useful distance:** find a saved open-sightline interval with an
    actual completed outer-boundary change. Measure source activation and
    transition cadence before another broad 3× run.
