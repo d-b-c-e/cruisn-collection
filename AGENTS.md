@@ -1,5 +1,26 @@
 # Cruis'n Collection — agent instructions
 
+## September 27 World active-margin candidate
+
+Read `docs/reviews/2026-09-27-world-active-margin-trial.md` and
+`docs/reviews/2026-09-27-new-york-pikes-peak.md` before further parity work.
+World2.4 New York source-qualified active `0x1000` non-road geometry now has a
+separately gated diagnostic native candidate `f762e01d63b` (SHA256
+`db019f5c62fd75bccfc451bb85b0da14344a0492b6b6167a8bd6a1082e8704d7`).
+At frame6000 it fills both measured margin components exactly (8117 left,
+11651 right), leaving original indexed planes and 4:3 center exact. Nine sparse
+completed frames show margin-only changes and exact center; frame3600 fills
+24759/24769 right-gap pixels but overwrites 25631 previously host-owned margin
+pixels. This is New York/physical1440/FFB0 only, not World-wide or 4K product
+acceptance. No renderer deployment, release or public patch replacement.
+Preserve failed first native fade replay, failed Python-reader raw report,
+invalid frame6000 paired RGB v1 and corrected v2. The one-time 282/283 exports
+already ran; do not rerun. Next independent gate is a second World course and
+World2.5, especially overlaps/scene transitions, before any promotion. Off-Road
+Pike's Peak's ten sparse resident images remain byte-exact to control despite
+268381 added quads, so no visual benefit was shown there. Personal UX707 and
+publicv0.5.0 are unchanged.
+
 ## Current work: rendering parity, September 23
 
 September27 New York + Pike's Peak attended recordings are qualified; read

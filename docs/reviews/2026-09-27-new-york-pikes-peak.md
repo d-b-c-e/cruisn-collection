@@ -1,5 +1,10 @@
 # New York and Pike's Peak recorded drives — September 27
 
+The subsequent opt-in native World active non-road trial is documented in
+`2026-09-27-world-active-margin-trial.md`. Its live results supersede the
+"next experiment" language below; the original recording/source findings
+remain the baseline.
+
 The maintainer recorded a World 2.4 New York drive and an Off-Road Pike's Peak
 drive on the physical 2560×1440 primary monitor. Both used the frozen native
 `03123d5b272` candidate, continuous 3× scenery, CRT4×, an external recording
