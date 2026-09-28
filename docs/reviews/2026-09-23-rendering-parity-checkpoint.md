@@ -9,7 +9,9 @@ gaps. Pike's Peak passes a second-route resident-margin safety screen, but ten
 sparse completed views are all exact to control despite 268,381 extra submitted
 quads. A matched World source RAM census finds 335 active non-road objects and
 zero eligible objects for the existing active-road margin path at New York
-frame 5997. Neither candidate has been deployed.
+frame 5997. An exploratory active-object projection fails its exact original
+DMA baseline (0/2,086), so no candidate pixels are qualified. Neither candidate
+has been deployed.
 
 Continuous diagnostic 3× scenery runs across USA, World, Off-Road and Exotica,
 but it is **not ready for product promotion**. A shared multiplier does not
@@ -60,7 +62,9 @@ The next efficient sequence is:
    zero index and ownership tags in original and extended pages; conservative
    projected bounds miss tight samples. Source RAM at 5997 shows zero eligible
    active-road objects, so the next offline pass should project the 335
-   active non-road objects and check their material lifetime. Do not infer all artifacts are the
+   active non-road objects, first obtaining source-time camera/operand data:
+   the end-of-frame C31 snapshot produces zero exact original-DMA matches.
+   Check material lifetime only after that baseline passes. Do not infer all artifacts are the
    same or say the historical finish crash is fixed from one clean finish.
 3. For Exotica, reuse the stable-1440 native006 results. A changed hypothesis
    or a physical 4K display is needed before repeating whole Mars/Amazon

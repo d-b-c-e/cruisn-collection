@@ -60,7 +60,8 @@ about distant object pop-in or defects elsewhere.
 
 The emulator already had an opt-in program-RAM dump hook. The replay harness
 now exposes an exact `--ramdump-frame` alongside `--capture-state`, verifies
-the requested 512 KiB file and hashes it into the report. A third bounded
+the requested 512 KiB program RAM and 8 KiB C31 internal RAM, and hashes both
+into subsequent reports. A third bounded
 6002-input replay captures source frame 5997 RAM (SHA-256 `af3202e1…8652d05`),
 while preserving the same completed BMP and all indexed mirror plane hashes
 as the passing source run. The read-only World 2.4 list census validates the
@@ -71,18 +72,31 @@ existing active-road margin eligibility (`0x1001` with bound resources).
 The loader is at stage 0 with 96 definitions in its current section and
 3,082 future definitions. The offline frontier exactly matches the native
 source-scene start, stage, cursor, definition and skipped counts; the native
-scene itself reports zero road objects/quads. Thus the current gated active-*road* route has no
-eligible object to cover this sampled frame. The census does not project the
-335 active non-road objects, prove texture residency, or identify a safe
-replacement. That is the next source experiment.
+scene itself reports zero road objects/quads. Thus the current gated
+active-*road* route has no eligible object to cover this sampled frame. The
+census does not project the 335 active non-road objects, prove texture
+residency, or identify a safe replacement.
+
+The same RAM hook also saved 8 KiB of C31 internal RAM at frame 5997, so an
+offline active-object projection was attempted without another game replay.
+The conservative scout decodes 255 active objects and 2,086 candidate quads
+after excluding 68 objects by depth; several projected boxes cross the left
+or right sample. **Its baseline fails:** zero candidate quads match the
+captured original DMA exactly. The raw
+`margin-6000-active-projection-raw-v1.json` is retained with `passed=false`.
+The cause could be source-time versus end-of-frame camera state or a decoder
+detail; the data do not distinguish those possibilities. Projected-box hits
+cannot be used as evidence of a safe gap repair until original geometry is
+reconstructed exactly. A source-time camera/operand capture inside the
+emulator's scene hook is the next instrumentation step.
 
 Evidence: `gl-survey-run/report.json`, `margin-3600-dma-run/report.json`,
 `margin-3600-geometry-v3.json`, and `margin-3600-point-geometry.json` in the
 World local directory. Frame 6000 is in `margin-6000-dma-run-v2/report.json`,
 `margin-6000-{left,right}-geometry.json` and
 `margin-6000-{left,right}-point.json`. The RAM capture and census are
-`margin-6000-ram-run/report.json` and `margin-6000-active-census-v2.json`
-(v1 retained before the native scene cross-check).
+`margin-6000-ram-run/report.json` and `margin-6000-active-census-v3.json`
+(v1/v2 retained before the native-scene and C31-file checks).
 The first 6000 run is preserved as
 `margin-6000-dma-run/report.json`: it **failed** before comparison because
 the requested source frame 5996 was not on the completed visible page.
@@ -120,10 +134,11 @@ are `paired-control-run/report.json`, `paired-resident-run/report.json`, and
 the comparator are only review hints, not texture-defect proof.
 
 Neither recording qualifies 4K, physical wheel/FFB, every course, or a public
-renderer deployment. The next efficient World step is to reconstruct and
-project the active non-road candidates at source 5997, qualify any candidate's
-materials, and compare its ordered pixels against the saved two-sided indexed
-and completed frames. The existing active-road path has no eligible object in
+renderer deployment. The next efficient World step is to capture source-time
+projection operands for active non-road objects, establish an exact original
+DMA baseline, qualify candidate materials, and only then compare ordered pixels
+against the saved two-sided indexed and completed frames. The existing
+active-road path has no eligible object in
 that source scene. For Off-Road, target a known Pike's Peak margin
 defect or a denser short interval before inferring that the resident candidate
 improves this route; avoid another full-drive replay merely for more sparse

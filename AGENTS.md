@@ -19,7 +19,12 @@ image and indexed mirror remain byte-exact. Read-only World2.4 active-list
 census finds335 objects,323 flag0x1000/12 flag0x1800 and ZERO eligible
 active-road-margin objects in this source scene;96 current-section and3,082
 future descriptors. This does not prove that non-road objects can cover the
-gap or have valid materials. Next project those active non-road candidates.
+gap or have valid materials. Generic RAM hook also saved8KiB C31 internal RAM;
+offline active-object projection raw FAILS exact original DMA baseline0/2,086
+quads. Bbox hits near the gaps are UNQUALIFIED. Could be snapshot timing or
+decoder mismatch; get source-time camera/operand capture inside scene hook
+before candidate or material work. Preserve local raw
+margin-6000-active-projection-raw-v1.json.
 Pike's Peak
 attended Off-Road recording passes9,657 inputs. Matched9,002-input
 resident/control pair passes original motion and owned shutdown;10 completed
