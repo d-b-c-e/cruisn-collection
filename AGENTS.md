@@ -1,5 +1,20 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA bridge object checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-object-activation.md`. A new bounded
+f762 physical1440/FFB0 detailed-trace USA replay PASSes10502 recorded
+inputs/native/display/owned stop and has a completed10500 image byte-exact to
+the prior source capture. Completed prefix selects source10497/page513 with
+3710 quads, exact old summary fingerprint. Three red bridge sample pixels
+independently raster-match three textured future-list objects; their first
+host submissions are9855,10039,10475. Their visible far-left pixel counts
+at10500 are649/2140/4569. This is source activation, not a full bridge or
+smooth pop-in proof. Prior source raw FAIL and separate posthoc PASS remain.
+No renderer/deployment/release change. Next gate is missing-member versus
+occlusion/completeness on a narrow interval, not another broad replay without
+a changed hypothesis.
+
 ## September 28 Hawaii prior-host source checkpoint
 
 Read `docs/reviews/2026-09-28-world25-hawaii-prior-host-source.md`. At

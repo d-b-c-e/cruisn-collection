@@ -69,3 +69,9 @@ Next bounded gate: identify the bridge's source object/material at a frame in
 10500..11100 and determine whether its missing-looking members are actually
 absent or hidden by the track/trees. Do not treat the left ROI's changed count
 as a quality pass. The panel is a separate, source-owned visual issue.
+
+The subsequent [bridge object check](2026-09-28-usa-bridge-object-activation.md)
+qualifies three red sample pixels to three future-list objects at completed
+10500 and measures their staggered first host submissions. It narrows source
+activation, but still cannot establish full bridge completeness or occlusion
+through the approach.

@@ -29,9 +29,11 @@ The next evidence gates should target different uncertainties:
 1. **USA:** the Golden Gate frame-10500 source screen now distinguishes an
    unchanged original-game dithered right-sky panel from an earlier auxiliary
    red bridge at the left. See the [source check](2026-09-28-usa-golden-gate-panel-source.md).
-   Inspect the saved interval where that bridge first appears; its skeletal
-   appearance is a potential 3× quality regression despite more visible
-   geometry. Preserve the raw USA verifier FAIL and separate posthoc pass.
+   The later [packet check](2026-09-28-usa-bridge-object-activation.md)
+   finds three sampled future objects entering the host stream at staggered
+   frames 9855/10039/10475. Its skeletal appearance remains a potential 3×
+   quality regression despite more visible geometry. Preserve the raw USA
+   verifier FAIL and separate posthoc pass.
 2. **World:** keep active non-road margins gated. The New York gap is a real
    positive case, but source/ordered ownership and transitions on another
    defect-bearing course remain before promotion. Do not use Hawaii/Germany

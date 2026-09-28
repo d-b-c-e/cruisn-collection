@@ -75,8 +75,12 @@ submitted geometry, read the
    create a lower mesh edge already within the 3× plane.
 4. **USA useful distance:** the saved completed-frame interval now locates
    candidate-only red bridge appearance at 10500/10800/11100, absent in the
-   sampled left ROI by 11400; source-sample pixels are auxiliary-owned.
-   Identify bridge object/material completeness before any policy change.
+   sampled left ROI by 11400. The new
+   [source packet check](2026-09-28-usa-bridge-object-activation.md) attributes
+   three red pixels to three textured future-list objects first submitted at
+   frames 9855, 10039 and 10475. This narrows activation timing, but object
+   completeness and intervening occlusion still require a targeted gate before
+   any policy change.
    The dark right panel is original game output, a separate issue.
 5. **Exotica useful distance:** find a saved open-sightline interval with an
    actual completed outer-boundary change. Measure source activation and
