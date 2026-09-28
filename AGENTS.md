@@ -21,13 +21,15 @@ Pike's Peak's ten sparse resident images remain byte-exact to control despite
 268381 added quads, so no visual benefit was shown there. Personal UX707 and
 publicv0.5.0 are unchanged. World2.5 Hawaii matched control/nonroad6000-input
 replays also PASS at physical1440/FFB0 with one completed5900 image byte-exact,
-despite108249 added quads. See `world25-nonroads-paired-v2.json` locally. This
+despite108249 added quads. See `world25-nonroads-paired-v3.json` locally. This
 is preservation at one sparse point, not World2.5 visual benefit or course
 acceptance; the existing dark distant rectangle is in both images. Germany
 World2.4 cross-course pair also PASSes7350 inputs/2837 scenes with FFB0:
 144797 extra quads, one of four completed images changes only at far left
 (13727 pixels at7280) revealing a small building; the other three are exact.
-Read `germany-nonroads-paired-v1.json`; no full-race safety claim.
+Read `germany-nonroads-paired-v2.json`; no full-race safety claim. Paired
+comparator now explicitly rejects center-third pixel changes; saved pairs
+were requalified without another game replay.
 
 ## Current work: rendering parity, September 23
 

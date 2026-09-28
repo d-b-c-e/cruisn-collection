@@ -105,10 +105,11 @@ that sparse point, not a visual repair or broad World 2.5 acceptance. The
 initial prepare-only attempt with stop6002 failed because the recording ends
 at6000; corrected stop6000 prepared and both live replays passed. Local raw
 reports are `world25-{control,nonroads}-run/report.json`, with the source-hashed
-pair in `world25-nonroads-paired-v2.json` (v1 preceded an explicit
-display-target equality check). The reusable
+pair in `world25-nonroads-paired-v3.json` (v1 preceded an explicit
+display-target equality check; v2 preceded a center-third damage gate). The reusable
 `harness/compare_world_nonroad_course.py` enforces binary, controls, FFB0,
-input/native, display, shutdown and completed-image receipt gates.
+input/native, display, shutdown, completed-image receipt and unchanged
+center-third gates.
 
 A second World 2.4 course check reuses the saved Germany race without a new
 attended drive. A control/non-road pair passes 7,350 recorded inputs on the
@@ -121,7 +122,7 @@ are byte-exact. The center third is exact in all four. The paired image was
 inspected; 53 newly near-black pixels are within added building details and
 are a color hint, not a proven defect. Local evidence is
 `germany-{control,nonroads}-run/report.json` and
-`germany-nonroads-paired-v1.json`. This is a bounded cross-course preservation
+`germany-nonroads-paired-v2.json` (v1 before the center-third gate). This is a bounded cross-course preservation
 and visibility check, not a full-race geometry/transition verdict.
 
 Next, inspect a denser World 2.5 interval or a World 2.4 transition where
