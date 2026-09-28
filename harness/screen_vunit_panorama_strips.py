@@ -12,6 +12,14 @@ from pathlib import Path
 from vunit_display_scene import load
 
 
+def sha(path):
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1 << 20), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def signed(value):
     value = int(value)
     return value - 65536 if value >= 32768 else value
@@ -73,11 +81,9 @@ def screen(runs):
                            strips=strips(scene.current),
                            raw_replay_passed=report.get('passed') if report else None,
                            raw_replay_error=report.get('error') if report else None,
-                           sha256={'original_dma': hashlib.sha256(
-                               (run / 'capture/quads.bin').read_bytes()).hexdigest(),
-                                   'mirror_receipt': hashlib.sha256(
-                               (run / 'vunit-mirror.json').read_bytes()).hexdigest(),
-                                   'raw_report': hashlib.sha256(raw.read_bytes()).hexdigest()
+                           sha256={'original_dma': sha(run / 'capture/quads.bin'),
+                                   'mirror_receipt': sha(run / 'vunit-mirror.json'),
+                                   'raw_report': sha(raw)
                                    if report else None}))
     return dict(schema=1, analysis_completed=True,
                 scope='Selected saved original DMA only. Axis-aligned consecutive '

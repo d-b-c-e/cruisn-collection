@@ -17,7 +17,11 @@ from vunit_display_scene import load as original_scene
 
 
 def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for chunk in iter(lambda: stream.read(1 << 20), b''):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def probe(run, points):
