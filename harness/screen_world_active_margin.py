@@ -33,8 +33,12 @@ def analyze(run, rom_path, revision):
     source = report['vunit_original_mirror']['result']['host_completion']['visible']['frame']
     receipt = report['capture']['source_ram']
     ram_path = run / 'run/capture' / receipt['file']
+    fast_path = run / 'run/capture' / f'ram3_{source:06d}.bin'
     if receipt['frame'] != source or receipt['bytes'] != 0x80000 or sha(ram_path) != receipt['sha256']:
         raise ValueError('program RAM does not match visible source')
+    if fast_path.stat().st_size != 0x2000 or (receipt.get('c31_sha256') and
+                                             sha(fast_path) != receipt['c31_sha256']):
+        raise ValueError('C31 internal RAM is incomplete or differs from receipt')
     ram, rom = ram_path.read_bytes(), rom_path.read_bytes()
     if len(ram) != 0x80000 or len(rom) != 0x1000000:
         raise ValueError('incomplete World RAM or ROM')
@@ -101,6 +105,7 @@ def analyze(run, rom_path, revision):
                          'road_objects': int(native['road_objects']),
                          'road_quads': int(native['road_quads'])},
         'source_sha256': {'report': sha(report_path), 'program_ram': sha(ram_path),
+                          'c31_ram': sha(fast_path),
                           'program_rom': sha(rom_path),
                           'native_scene': sha(native_scene_path)},
         'scope': 'Exact RAM/list membership at one source frame; no model projection, material lifetime, '

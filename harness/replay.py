@@ -656,12 +656,22 @@ def main(argv=None):
                                  "sha256": {n: sha256_file(capture / n) for n in ARTIFACTS}}
             if args.ramdump_frame is not None:
                 program_ram = capture / f'ram_{args.ramdump_frame:06d}.bin'
-                required_files(capture, (program_ram.name,))
-                if program_ram.stat().st_size != 0x80000:
-                    raise ValueError('source program RAM has unexpected size')
+                work_ram = capture / f'ram2_{args.ramdump_frame:06d}.bin'
+                fast_ram = capture / f'ram3_{args.ramdump_frame:06d}.bin'
+                required_files(capture, (program_ram.name, fast_ram.name))
+                if program_ram.stat().st_size != 0x80000 or fast_ram.stat().st_size != 0x2000:
+                    raise ValueError('source program/C31 RAM has unexpected size')
                 report['capture']['source_ram'] = {'frame': args.ramdump_frame,
                     'file': program_ram.name, 'bytes': program_ram.stat().st_size,
-                    'sha256': sha256_file(program_ram)}
+                    'sha256': sha256_file(program_ram),
+                    'c31_file': fast_ram.name, 'c31_bytes': fast_ram.stat().st_size,
+                    'c31_sha256': sha256_file(fast_ram)}
+                if work_ram.exists():
+                    if work_ram.stat().st_size != 0x80000:
+                        raise ValueError('source work RAM has unexpected size')
+                    report['capture']['source_ram'].update(
+                        work_file=work_ram.name, work_bytes=work_ram.stat().st_size,
+                        work_sha256=sha256_file(work_ram))
             if args.patch or trial or usa_trial:
                 program_ram = capture / f"ram_{args.until_frame - 2:06d}.bin"
                 report["effective_patch"] = verify_patch_ram(program_ram, patch_entries)
