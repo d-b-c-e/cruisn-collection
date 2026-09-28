@@ -48,7 +48,11 @@ submitted geometry, read the
   finds 4,776 newly owned gap pixels, 184 original panorama replacements
   and 1,370 prior-host replacements with all added-object center depths
   nearer. Exact added packets reproduce all 6,330 candidate indices.
-  This is a later-course one-frame attribution, not temporal or 4K acceptance.
+  A [13-frame temporal screen](2026-09-28-world-new-york-9000-temporal.md)
+  at 8994..9006 repeats frame 9000 exactly and shows left-third-only changes
+  throughout, with no candidate-new near-black pixels by the narrow color
+  heuristic. The changed footprint contracts through the turn. This adds
+  local motion evidence, not full-course, 4K or fragment-depth acceptance.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check

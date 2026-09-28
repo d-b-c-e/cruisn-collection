@@ -1,5 +1,18 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York frame 9000 temporal checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-9000-temporal.md`. Frozen f762
+matched 9010-input continuous3x/control and active-nonroad candidate replays
+PASS native/input, explicit CRT-on/4x/height400, physical1440/FFB0/display
+watch and owned stop. Thirteen completed 8994..9006 images change only left
+third (2550..4751 RGB pixels each); center/right exact. Candidate-new
+near-black heuristic is zero; frame9000 BMPs repeat prior source-qualified
+captures byte-exact. The left road-edge repair remains visible through the
+sampled turn, not a full-course, 4K, fragment-depth or other-game pass.
+No renderer deployment, release or personal Stream Deck change. Continue
+distinct parity gates using saved evidence before more GPU replays.
+
 ## September 28 New York frame 9000 source checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-9000-source.md` before active
