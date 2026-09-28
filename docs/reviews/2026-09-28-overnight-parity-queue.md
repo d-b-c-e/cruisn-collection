@@ -137,6 +137,12 @@ submitted geometry, read the
    now reproduces all 7,058 changed indices from 19 of the 76 newly admitted
    packets across five objects, with zero missing or mismatched pixels. This
    is one-frame material attribution, not full bridge/occlusion safety.
+   An [exact original-DMA check](2026-09-28-usa-bridge-original-panorama.md)
+   now attributes all 7,058 replaced game pixels to two repeated panorama-like
+   bands, with no source-qualified road or foreground overwrite at 10476.
+   The structural strip detector now handles both legitimate V-Unit vertex
+   orders; five earlier World scene classifications stay unchanged. This
+   narrows one-frame overlap risk but does not establish the visual handover.
    The [saved-trace timing census](2026-09-28-usa-bridge-member-timing.md)
    puts the first member's auxiliary submission 294 frames earlier with the
    gated option; the second is absent from ordinary auxiliary output through

@@ -1,6 +1,6 @@
 """Find structurally repeated original V-Unit backdrop-strip candidates.
 
-This is a conservative saved-DMA screen for World margin safety experiments,
+This is a conservative saved-DMA screen for V-Unit margin safety experiments,
 not a renderer classifier. Matching a strip does not prove its material is
 background or that overwriting it is safe in another frame/course.
 """
@@ -29,12 +29,16 @@ def candidate(ordinal, quad):
     q = [int(v) for v in quad]
     x = [signed(q[i]) for i in (2, 4, 6, 8)]
     y = [signed(q[i]) for i in (3, 5, 7, 9)]
-    if (q[0] != 0x100 or x[0] != x[3] or x[1] != x[2] or
-            y[0] != y[1] or y[2] != y[3] or
-            not 200 <= x[1] - x[0] <= 300 or
-            not 100 <= y[2] - y[0] <= 280 or y[0] > 240 or y[2] > 400):
+    left, right, top, bottom = min(x), max(x), min(y), max(y)
+    corners = {(left, top), (right, top), (left, bottom), (right, bottom)}
+    if (q[0] != 0x100 or len(corners) != 4 or
+            set(zip(x, y)) != corners or
+            not all(x[i] == x[(i + 1) % 4] or y[i] == y[(i + 1) % 4]
+                    for i in range(4)) or
+            not 200 <= right - left <= 300 or
+            not 100 <= bottom - top <= 280 or top > 240 or bottom > 400):
         return None
-    return dict(ordinal=ordinal, left=x[0], right=x[1], top=y[0], bottom=y[2],
+    return dict(ordinal=ordinal, left=left, right=right, top=top, bottom=bottom,
                 pixdata=q[1], texture_base=q[14], texture_low_byte=q[14] & 255)
 
 

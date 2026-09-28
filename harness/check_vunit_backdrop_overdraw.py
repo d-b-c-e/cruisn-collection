@@ -1,4 +1,4 @@
-"""Screen source-attributed World margin changes against repeated backdrop strips.
+"""Screen source-attributed V-Unit margin changes against repeated backdrop strips.
 
 This joins already-qualified overdraw reports with saved original DMA. It is a
 negative diagnostic gate, not permission to promote or render a candidate.

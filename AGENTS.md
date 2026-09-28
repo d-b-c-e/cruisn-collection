@@ -381,6 +381,18 @@ release acceptance. No gameplay replay or product change. Next USA gate is
 intermediate completed-frame/object handover or a distinct course, not another
 red screenshot count at10476.
 
+An additional matched10480-input original-DMA capture for USA frame10476
+PASSes input/native/display/image/mirror with physical1440/FFB0. Current DMA
+exactly reconstructs all7058 replaced game indices from ordinals3 and18,
+within two repeated panorama-like bands; no prior host/unowned pixel is
+changed. Read `docs/reviews/2026-09-28-usa-bridge-original-panorama.md`.
+Capture-state source reports lack `vunit_runtime`, so do not claim its owned
+worker stop; control/candidate do have that receipt. First offline checker
+KeyError retained, corrected v4 PASS. Offline strip classifier now accepts
+both valid quad vertex orders; five earlier World scene classifications are
+unchanged. No product change or release promotion. Next USA gate remains
+intermediate-frame bridge shape/handover or another course.
+
 Read `docs/reviews/2026-09-28-overnight-parity-queue.md` for the current
 four-game evidence and next bounded gates. The September28 source/temporal
 World checks and Pike control screen below are complete, documented, committed

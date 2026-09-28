@@ -21,14 +21,26 @@ def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def source_lifecycle(report, invocation):
+    if report.get('vunit_runtime', {}).get('result', {}).get('completion') == 'owned-worker-stop':
+        return 'owned-worker-stop receipt', False
+    capture = report.get('capture', {})
+    if (invocation.get('returncode') != 0 or
+            not capture.get('sha256', {}).get('quads.bin')):
+        raise ValueError('source lacks owned worker stop or passing capture/process receipt')
+    return 'passing capture/process receipt; no vunit_runtime owned-worker-stop receipt', True
+
+
 def screen(control, trial, source):
     roots=(control,trial,source)
     reports=[json.loads((root/'report.json').read_text(encoding='utf-8')) for root in roots]
     a,b,s=reports
+    source_invocation=json.loads((source/'run/invocation.json').read_text(encoding='utf-8'))
+    source_basis,source_capture=source_lifecycle(s,source_invocation)
     if (not all(r['passed'] and r['comparison']['passed'] and
-                r['display_watch']['passed'] and
-                r['vunit_runtime']['result']['completion']=='owned-worker-stop'
-                for r in reports) or
+                r['display_watch']['passed'] for r in reports) or
+            not all(r['vunit_runtime']['result']['completion']=='owned-worker-stop'
+                    for r in (a,b)) or
             any(json.loads((root/'run/invocation.json').read_text(encoding='utf-8'))
                 ['environment'].get('MIDV_FFB')!='0' for root in roots) or
             len({r['case'] for r in reports})!=1 or
@@ -73,11 +85,15 @@ def screen(control, trial, source):
     ys,xs=np.where(changed)
     return {'passed':True,
             'scope':'One matched completed V-Unit indexed page and current original DMA. '
+                    'Source lifecycle basis: '+source_basis+'. '
                     'Prior host pixel source, full compositing and temporal safety are unqualified.',
             'rom':json.loads((Path(a['case'])/'case.json').read_text(encoding='utf-8'))['rom'],
             'frame':frame,'visible_page':page,
             'input_frames':[r['comparison_scope']['last_frame'] for r in reports],
             'completed_control_equals_original_source':True,
+            'source_capture_mode_without_vunit_runtime':source_capture and
+                'vunit_runtime' not in s,
+            'source_lifecycle_basis':source_basis,
             'original_only_planes_exact':True,'center_4by3_exact':True,
             'changed_indexed_pixels':int(changed.sum()),
             'changed_newly_owned_pixels':int(fresh.sum()),
