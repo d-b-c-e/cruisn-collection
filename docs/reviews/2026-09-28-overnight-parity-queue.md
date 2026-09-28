@@ -87,6 +87,9 @@ submitted geometry, read the
    the already gated mode brings far-left red structure into view earlier in
    all 11 completed 1440p interval images, with center/right exact. The first
    source-time operands and each changed pixel are not yet attributed.
+   A fixed-ROI red-color screen of those saved images stays candidate-positive
+   in every sample; its count narrows as control scenery appears. This is a
+   visibility hint, not bridge-object segmentation or smoothness proof.
    Object completeness and intervening occlusion still require a targeted
    gate before any policy change.
    The dark right panel is original game output, a separate issue.

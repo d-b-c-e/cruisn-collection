@@ -46,6 +46,18 @@ Only 20 candidate-new near-black frame-pixels are detected by a color
 heuristic; it is not a texture-defect count. The path submits 190,652 extra
 auxiliary quads across the full prefix, but this count is not a quality score.
 
+A separate offline color screen of these same 11 completed images uses the
+fixed far-left `(70,450)..(290,710)` ROI, which contains all paired changes.
+With the explicit predicate `R>110`, `100R>135G`, `100R>125B`, the candidate
+has 4,461–4,906 red pixels absent in control at 10460..10476, then 1,423–1,956
+at 10480..10500 as the control gains more red. The candidate's total red count
+in this ROI remains 6,054–9,776; control ranges 1,593–5,996. In each sampled
+frame, the control has at most one red pixel absent in the candidate. This
+supports a persistent earlier *color appearance* across the sampled interval,
+not continuous object identity or a smooth frame-by-frame handover. It may
+include CRT color bleed or other red scenery. The source-hashed offline report
+is `usa-bridge-red-transition-v1.json`; no additional game run was made.
+
 These captures do not have an indexed original mirror or source-time packet
 trace for the *new* pixels. Thus the visible result and offline three-quad
 reconstruction are separate evidence, not an exact attribution of each
@@ -61,7 +73,7 @@ Source-hashed local reports live under
 `results/diagnostics/race-transitions-20260916/`:
 `usa-bridge-preactivation-screen-v1.json`,
 `usa-bridge-farcoverage-qualified-v1.json`, both paired run directories and
-`usa-bridge-farcoverage-rgb-v2.json`. The pre-activation capture has its own
+`usa-bridge-farcoverage-rgb-v2.json`, plus the red-transition screen. The pre-activation capture has its own
 raw **PASS** report; the prepared-only plan did not launch a game. The first
 RGB comparator invocation **FAILed** CLI usage (`rgb-v1`), and the first
 generic paired analyzer **FAILed** because quiet journals omit `usa-camera.csv`.

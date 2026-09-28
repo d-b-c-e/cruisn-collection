@@ -18,6 +18,10 @@ quiet-camera analyzer FAIL retained; focused paired qualifier PASS. No renderer,
 personal installation or release changed. Next gate is member-by-member
 transition/occlusion and source-time pre-admission projection, not another broad
 replay without a changed hypothesis.
+Saved-frame red-color screen PASS on11 samples: candidate-only red ROI pixels
+4461..4906 through10476,1423..1956 from10480..10500 as control catches up;
+at most one control-only red pixel/sample. Heuristic color, not object identity
+or smoothness proof. No extra gameplay run for this screen.
 
 ## September 28 USA bridge object checkpoint
 
