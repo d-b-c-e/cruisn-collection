@@ -1,5 +1,22 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 World 2.5 dense Hawaii transition checkpoint
+
+Read `docs/reviews/2026-09-28-world25-hawaii-dense-transition.md`. Frozenf762
+matched World2.5 Hawaii control/nonroad pair PASSes5820 inputs/native,
+physical1440/FFB0, display watch and owned shutdown. Eleven completed views
+5750..5800 every5: eight differ,74557 total frame-pixels, center-third exact.
+5760 uniquely extends the right guardrail by5656 right-third pixels; 5770
+adds673 left-edge pixels,5775 adds24339 and 5780..5800 retain left foliage.
+The matched5775/5800 images are byte-identical to prior sparse captures. The
+5775 prior-host attribution remains one-frame only; the new5760 guardrail
+extension is visually coherent but lacks indexed/source ownership. This does
+not establish fade, eliminate pop-in, repair Hawaii's authored5900 rectangle,
+or qualify4K/other courses. No native/product/deployment change. Next bounded
+World gate: qualify5760 ownership if assessing policy promotion, or search
+for a concrete harmful overlap on another scene. Do not rerun the dense pair
+without a changed hypothesis.
+
 ## September 28 USA partial-coverage cost checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-cost-screen.md`. Offline matched

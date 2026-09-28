@@ -31,7 +31,11 @@ submitted geometry, read the
   the known authored terrain rectangle at frame 5900 is exact in both modes.
   The source-checked 5775 image adds trees over authored sky/ocean panorama
   strips and 972 prior host pixels; it fills no unowned gap. The rejected
-  generic skirt and missing ordinary mesh neighbor remain relevant.
+  generic skirt and missing ordinary mesh neighbor remain relevant. A new
+  [five-frame-cadence transition check](2026-09-28-world25-hawaii-dense-transition.md)
+  finds a visually coherent right guardrail extension at 5760 and then
+  left-edge foliage through 5800; eleven matched completed views preserve the
+  center. The 5760 change still needs indexed/source ownership attribution.
 - **Off-Road Pike's Peak:** ten sparse resident/control views are exact despite
   extra work. A focused 19-frame control-only sharp-turn survey found no clear
   El Paso-like opening. El Paso remains the positive resident-ground example;
@@ -59,7 +63,9 @@ submitted geometry, read the
    source-qualified samples belong to repeated panorama strips; it finds no
    unclassified foreground overwrite there. Hawaii's 972 prior host pixels
    now have [exact old/new packet attribution](2026-09-28-world25-hawaii-prior-host-source.md)
-   at one frame, with all new logged depths nearer. Transitions remain open.
+   at one frame, with all new logged depths nearer. The denser Hawaii check
+   narrows the transition but does not source-qualify its separate right-side
+   guardrail extension at 5760 or establish full-course occlusion safety.
    Keep any raw failures and do
    not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
@@ -90,7 +96,7 @@ submitted geometry, read the
    reproduces the full 3,706-quad ordinary scene and confirms projection
    rejection of ready object `0x800a0040`; partial coverage adds its three
    quads, preserving every old ordered quad. A matched native candidate source
-   replay agrees on all 3,782 quads and its ordered fingerprint. Each changed
+   replay agrees on all 3,782 quads and its ordered fingerprint.
    [Completed frame 10476](2026-09-28-usa-bridge-pixel-source.md) now has
    selected center samples from two new bridge objects: 1,779 red points from
    `0x800a0040` and 779 from `0x800a0042`, source/page/packet/index matched.
