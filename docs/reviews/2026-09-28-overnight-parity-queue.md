@@ -128,6 +128,11 @@ submitted geometry, read the
    separates those 2,558 genuinely new isolated host samples from 2,304
    candidate-only red CRT samples whose ordinary source packets already
    produce the same index. Screenshot redness is not new-geometry area.
+   A [matched control indexed mirror](2026-09-28-usa-bridge-control-indexed.md)
+   confirms 7,058 left-margin game-to-host pixel changes at 10476, exact
+   original-only/4:3 center, and identical completed index/tag for 2,348
+   of the 4,906 candidate-only red CRT centers. The 2,558 genuinely new
+   red centers trace to the two earlier identified source objects.
    The [saved-trace timing census](2026-09-28-usa-bridge-member-timing.md)
    puts the first member's auxiliary submission 294 frames earlier with the
    gated option; the second is absent from ordinary auxiliary output through

@@ -40,7 +40,8 @@ def mirror_planes(run, receipt):
     return result
 
 
-def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candidate_screen):
+def screen(detailed, prior_on, prior_off, source, rom_path, source_screen,
+           candidate_screen, control_mirror=None):
     reports = [json.loads((root / 'report.json').read_text(encoding='utf-8'))
                for root in (detailed, prior_on, prior_off, source)]
     run_report, on_report, off_report, source_report = reports
@@ -104,6 +105,31 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
     if sum(remaining.values()) or len(extra) != 76:
         raise ValueError('new packet classification differs')
     planes = mirror_planes(run, receipt)
+    control_planes = None
+    if control_mirror is not None:
+        mirror_report = json.loads((control_mirror / 'report.json').read_text(encoding='utf-8'))
+        mirror_invocation = json.loads((control_mirror / 'run/invocation.json').read_text(encoding='utf-8'))
+        control_receipt = json.loads((control_mirror / 'run/vunit-mirror.json').read_text(encoding='utf-8'))
+        if (not mirror_report['passed'] or not mirror_report['comparison']['passed'] or
+                not mirror_report['display_watch']['passed'] or
+                mirror_report['vunit_runtime']['result']['completion'] != 'owned-worker-stop' or
+                mirror_report['case'] != run_report['case'] or
+                mirror_report['emulator_source']['executable_sha256'] !=
+                run_report['emulator_source']['executable_sha256'] or
+                mirror_report['display_target'] != run_report['display_target'] or
+                mirror_invocation['environment'].get('MIDV_FFB') != '0' or
+                (control_receipt['frame'], control_receipt['visible_page']) !=
+                (FRAME, receipt['visible_page']) or
+                mirror_report['usa_host_scenery']['far_coverage'] != 'off' or
+                sha(control_mirror / 'run/gl-snap/mvgl_000.bmp') !=
+                sha(prior_off / 'run/gl-snap/mvgl_004.bmp')):
+            raise ValueError('control indexed mirror does not reproduce ordinary completed image')
+        control_planes = mirror_planes(control_mirror / 'run', control_receipt)
+        if not all(np.array_equal(a, b) for a, b in zip(control_planes[2:], planes[2:])):
+            raise ValueError('original-only indexed planes differ between modes')
+        if not all(np.array_equal(a[:, 344:2392], b[:, 344:2392])
+                   for a, b in zip(control_planes[:2], planes[:2])):
+            raise ValueError('4:3 indexed center changed')
     with Image.open(captured) as source_image:
         actual_rgb = np.asarray(source_image.convert('RGB'))
     palette = run / f'usa-source-{SOURCE_FRAME}-palettes.bin'
@@ -130,14 +156,24 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
     by_object = Counter()
     by_object_all = Counter()
     control_relation = {'new': Counter(), 'existing': Counter()}
+    completed_relation = Counter()
+    completed_by_packet_class = {'new': Counter(), 'existing': Counter()}
     for (x, y), screen_point in mapped.items():
+        if control_planes is not None:
+            relation = 'same_index_tag' if (
+                control_planes[0][y, x] == planes[0][y, x] and
+                control_planes[1][y, x] == planes[1][y, x]) else 'changed_index_tag'
+            completed_relation[relation] += 1
         if (not (planes[1][y, x] & 4) or not isolated_tag[y, x] or not id_tag[y, x] or
                 isolated_index[y, x] != planes[0][y, x]):
             continue
         exact += 1
         ordinal = int(isolated_id[y, x])
         by_object_all[hex(traced[ordinal]['object'])] += 1
-        relation = control_relation['new' if ordinal in extra else 'existing']
+        packet_class = 'new' if ordinal in extra else 'existing'
+        if control_planes is not None:
+            completed_by_packet_class[packet_class][relation] += 1
+        relation = control_relation[packet_class]
         if not control_host_tag[y, x]:
             relation['uncovered'] += 1
         elif control_host_index[y, x] == planes[0][y, x]:
@@ -166,7 +202,7 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
                 examples[-1] = item
     if not candidates.size or not added or not target:
         raise ValueError('no screenshot-selected red center sample traces to target extra packets')
-    return dict(schema=3, passed=True,
+    result = dict(schema=4 if control_planes is not None else 3, passed=True,
                 scope='One 1440p completed USA Golden Gate frame 10476. Red-color CRT '
                       'screen points are center samples; only exact indexed auxiliary '
                       'matches receive new packet IDs. No full silhouette, CRT neighbor '
@@ -198,6 +234,32 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen, candi
                         'trace_scenes': trace['sha256']['scenes'],
                         'trace_quads': trace['sha256']['quads'],
                         'texture': sha(texture), 'palette': sha(palette)})
+    if control_planes is not None:
+        changed = (control_planes[0] != planes[0]) | (control_planes[1] != planes[1])
+        if not changed.any():
+            raise ValueError('matched control indexed page has no candidate change')
+        ys, xs = np.where(changed)
+        tags, counts = np.unique(control_planes[1][changed], return_counts=True)
+        trial_tags, trial_counts = np.unique(planes[1][changed], return_counts=True)
+        result.update(control_indexed_changed_pixels=int(changed.sum()),
+                      control_indexed_changed_bounds_xyxy_inclusive=[
+                          int(xs.min()), int(ys.min()), int(xs.max()), int(ys.max())],
+                      control_indexed_left_margin_changed_pixels=int(changed[:, :344].sum()),
+                      control_indexed_right_margin_changed_pixels=int(changed[:, 2392:].sum()),
+                      control_indexed_center_changed_pixels=int(changed[:, 344:2392].sum()),
+                      control_changed_prior_tags={str(int(tag)): int(count)
+                                                  for tag, count in zip(tags, counts)},
+                      control_changed_candidate_tags={str(int(tag)): int(count)
+                                                      for tag, count in zip(trial_tags, trial_counts)},
+                      red_centers_completed_relation=dict(completed_relation),
+                      exact_host_centers_completed_relation_by_packet_class={
+                          key: dict(value) for key, value in completed_by_packet_class.items()})
+        result['sha256']['control_mirror_report'] = sha(control_mirror / 'report.json')
+        result['sha256']['control_mirror_receipt'] = sha(control_mirror / 'run/vunit-mirror.json')
+        for i in range(4):
+            result['sha256'][f'control_mirror_plane{i}'] = sha(
+                control_mirror / 'run' / f'vunit-mirror-{FRAME}-page0-plane{i}.bin')
+    return result
 
 
 def main():
@@ -205,11 +267,13 @@ def main():
     for name in ('detailed', 'prior_on', 'prior_off', 'source', 'rom',
                  'source_screen', 'candidate_screen', 'report'):
         ap.add_argument('--' + name.replace('_', '-'), dest=name, type=Path, required=True)
+    ap.add_argument('--control-mirror', type=Path)
     args = ap.parse_args()
     if args.report.exists():
         raise ValueError('refusing to overwrite USA pixel attribution')
     result = screen(args.detailed, args.prior_on, args.prior_off, args.source,
-                    args.rom, args.source_screen, args.candidate_screen)
+                    args.rom, args.source_screen, args.candidate_screen,
+                    args.control_mirror)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     print('PASS', result['new_packet_center_samples'], result['target_center_samples'])

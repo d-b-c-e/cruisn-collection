@@ -32,9 +32,12 @@ This classification uses one sampled 1440p frame, a fixed red predicate and
 isolated host rasterization. It does not measure the whole bridge silhouette,
 prove smooth entry, reconstruct the full ordered original/host compositor,
 or qualify 4K, another USA course, GPU pacing or a release default. In
-particular, no matching *control indexed mirror* was captured at 10476, so
-the 2,304 same-index source points are not a claim that the completed control
-pixel was identical. The partial-far-coverage option remains gated.
+particular, this original source-only screen had no matching *control indexed
+mirror* at 10476, so it could not claim that the completed control pixel was
+identical. The subsequent [matched control indexed check](2026-09-28-usa-bridge-control-indexed.md)
+shows 2,348 candidate-only red CRT centers with identical completed
+index/tag, including those 2,304 source-attributed points. The
+partial-far-coverage option remains gated.
 
 No game/GPU replay, native build, deployed renderer, personal installation
 or public release changed. Python compilation and the source-hashed offline

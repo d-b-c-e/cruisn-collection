@@ -1,5 +1,21 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA bridge control-indexed checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-control-indexed.md`. Frozenf762
+ordinary USA Golden Gate control mirror PASSes10480 inputs/native,
+physical1440/FFB0/display watch/owned shutdown; completed10476 image is
+byte-exact to prior ordinary pair. Candidate detailed mirror matches prior
+candidate. Visible-page original-only planes and4:3 indexed center exact.
+Candidate changes7058 indexed pixels, all left margin x45..183/y792..1023,
+all game-tag1 to host-tag5. Of4906 candidate-only red CRT center samples,
+2558 have changed completed index/tag and trace to two newly admitted
+objects;2348
+have identical completed index/tag, including2304 from already existing
+host packets and44 unmatched isolated host centers. Source-hashed v5
+checker PASS. This is one frame, not complete bridge/transition,4K or
+release. No product/deployment change.
+
 ## September 28 USA bridge red-coverage checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-red-coverage.md`. Reanalysis of
