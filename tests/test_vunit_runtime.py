@@ -2,7 +2,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import sys,tempfile,unittest
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'harness'))
-from vunit_runtime import configure,verify
+from vunit_runtime import configure,quad_log_notice,verify
 
 
 class RuntimeTests(unittest.TestCase):
@@ -47,6 +47,17 @@ class RuntimeTests(unittest.TestCase):
             configure(SimpleNamespace(candidate='x',vunit_runtime='continuous'),
                       'crusnusa',{'MIDV_HOST_BOOTSTRAP':'1','MIDV_GL':'1','MIDV_FFB':'0',
                                   'MIDV_HOST_JOURNALS':'quiet'},302,bootstrap.copy())
+
+    def test_continuous_detailed_log_scope_is_explicit(self):
+        args=SimpleNamespace(candidate='x',vunit_runtime='continuous',vunit_journals='capture')
+        settings={'MIDV_HOST_BOOTSTRAP':'1','MIDV_GL':'1','MIDV_FFB':'0',
+                  'MIDV_USA_HOST_QUADS':'1'}
+        trial=configure(args,'crusnusa',settings,302,{'last':200,'first':100})
+        notice=quad_log_notice(trial,'crusnusa',settings)
+        self.assertIn('first actual guarded scene',notice)
+        self.assertIn('not a detailed quad-log window',notice)
+        self.assertIsNone(quad_log_notice(trial,'crusnusa',settings|{'MIDV_USA_HOST_QUADS':'0'}))
+        self.assertIsNone(quad_log_notice(trial|{'journals':'quiet'},'crusnusa',settings))
 
     def test_quiet_aggregate_does_not_pretend_operand_capture(self):
         from vunit_bootstrap import verify as verify_bootstrap

@@ -58,7 +58,9 @@ logging. **Continuous bootstrap starts at the first actual scene despite that
 capture reference bound**, so the run produced a 1.5 GB detailed quad journal.
 The raw run nevertheless passed and the packet evidence is useful. Do not
 repeat this approach expecting a short log; the harness should state the
-effective continuous journal scope in its preflight. The prepared-only plan
+effective continuous journal scope in its preflight. That
+[preflight notice](2026-09-28-vunit-continuous-journal-scope.md) is now added
+and checked without another game run. The prepared-only plan
 and raw run stay separate.
 
 Source-hashed local evidence under

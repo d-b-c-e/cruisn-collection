@@ -359,6 +359,10 @@ def main(argv=None):
         if vunit_bootstrap_trial:report['vunit_bootstrap']=vunit_bootstrap_trial
         vunit_runtime_trial=vunit_runtime.configure(args,manifest['rom'],manifest['settings'],reference['frames'],vunit_bootstrap_trial)
         if vunit_runtime_trial:report['vunit_runtime']=vunit_runtime_trial
+        quad_log_notice=vunit_runtime.quad_log_notice(vunit_runtime_trial,manifest['rom'],manifest['settings'])
+        if quad_log_notice:
+            report['diagnostic_notice']=quad_log_notice
+            print('NOTICE: '+quad_log_notice,flush=True)
         mirror_trial=vunit_original_mirror.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
         if mirror_trial:report['vunit_original_mirror']=mirror_trial
         host_failure_trial=vunit_host_failure.configure(args,manifest['rom'],manifest['settings'],reference['frames'])
@@ -515,6 +519,7 @@ def main(argv=None):
                     if (Path(command[0]).parent/name).is_file()},
                 case=str(case),case_sha256=sha256_file(case/'case.json'),
                 scope='Validated launch preparation only; no emulator execution, renderer acceptance or replay completion.')
+            if quad_log_notice:plan['diagnostic_notice']=quad_log_notice
             write_json(work/'launch-plan.json',plan)
             report.update(prepared_only=True,executed=False,launch_plan_sha256=sha256_file(work/'launch-plan.json'))
             write_json(work/'report.json',report)

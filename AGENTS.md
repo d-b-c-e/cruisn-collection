@@ -14,8 +14,10 @@ including1779 from object0x800a0040 and779 from0x800a0042. This is selected
 center-sample attribution, not full silhouette, smooth handover,4K,other
 course,performance or release parity. No renderer/deployment change. Attempted
 late host-first still produced a1.5GB full quad log because continuous bootstrap
-starts at first actual scene; don't repeat as a short-log tactic. Next add a
-clear preflight scope note and assess member transitions/cost from saved data.
+starts at first actual scene; don't repeat as a short-log tactic. Harness now
+prints and saves a [continuous-journal preflight notice](docs/reviews/2026-09-28-vunit-continuous-journal-scope.md),
+focused6 tests and actual prepared-only plan PASS. No game rerun for that.
+Next assess member transitions/cost from saved data.
 
 ## September 28 USA exact source-projection checkpoint
 

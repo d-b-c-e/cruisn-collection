@@ -14,6 +14,18 @@ def add_arguments(parser):
                         help='explicit continuous journal policy; capture restores source and indexed-mirror evidence')
 
 
+def quad_log_notice(trial, rom, settings):
+    """Explain the effective log span before a continuous detailed replay."""
+    if not trial or trial.get('mode') != 'continuous' or trial.get('journals') == 'quiet':
+        return None
+    game = PROFILES.get(rom, ('',))[0]
+    if settings.get('MIDV_'+game.upper()+'_HOST_QUADS') != '1':
+        return None
+    return ('Continuous V-Unit bootstrap starts at the first actual guarded scene. '
+            f'--{game}-host-first/last are finite capture references, not a detailed '
+            'quad-log window; this journal runs through the owned stop and may be large.')
+
+
 def configure(args,rom,settings,frames,bootstrap):
     mode=getattr(args,'vunit_runtime',None)
     journals=getattr(args,'vunit_journals',None)
