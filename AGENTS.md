@@ -1,5 +1,18 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York frame 9000 source checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-9000-source.md` before active
+non-road promotion. Frozen f762 matched original-DMA/control, candidate
+mirror and source-tap9002-input replays PASS input/native, physical1440/FFB0,
+display watch and owned stop; completed9000 BMPs repeat prior quiet images.
+Of6330 changed left indexed pixels,4776 were unowned gap,184 original upper
+panorama,1370 earlier host. Exact source8996 packets reproduce all6330
+candidate indices; all1370 prior-host replacements have nearer added-object
+center depth. This is one-frame source/object-depth evidence, not complete
+fragment-depth, temporal, other-course or4K safety. No renderer deployment,
+release or personal Stream Deck change. Continue distinct parity gates.
+
 ## September 28 New York frame 9000 visual wedge checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-9000-wedge.md`. Frozen f762

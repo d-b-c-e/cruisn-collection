@@ -38,3 +38,9 @@ promote the option or conflate its extra submitted quads with visible gain.
 No renderer deployment, personal Stream Deck installation or public release
 changed. Next bounded gate: matched indexed mirrors and current original DMA
 at frame 9000; if prior host pixels change, inspect their exact source/depth.
+
+Follow-up: the [indexed/source qualification](2026-09-28-world-new-york-9000-source.md)
+finds 4,776 genuinely newly owned pixels, 184 original panorama replacements
+and 1,370 nearer-by-center-depth prior-host replacements, with all 6,330
+candidate indices reproduced by exact added source packets. The option
+remains diagnostic pending temporal and cross-course safety.

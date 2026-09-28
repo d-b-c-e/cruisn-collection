@@ -44,7 +44,11 @@ submitted geometry, read the
   or course safety. A later [frame-9000 left-edge check](2026-09-28-world-new-york-9000-wedge.md)
   finds the saved dark opening exact under continuous 3× alone and visibly
   reduced by active non-road margins: 3,719 left-third RGB changes, center
-  exact. Its indexed/source ownership is the next gate.
+  exact. Its [indexed/source gate](2026-09-28-world-new-york-9000-source.md)
+  finds 4,776 newly owned gap pixels, 184 original panorama replacements
+  and 1,370 prior-host replacements with all added-object center depths
+  nearer. Exact added packets reproduce all 6,330 candidate indices.
+  This is a later-course one-frame attribution, not temporal or 4K acceptance.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
