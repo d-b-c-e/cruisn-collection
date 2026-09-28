@@ -370,6 +370,20 @@ preflight FAIL retained and first comparator error documented. No native/product
 
 ## September 28 overnight parity queue
 
+World2.4 New York late-wall turn now has a matched one-frame 6298..6312
+control/active-nonroad pair: both6320-input raw replays PASS input/native,
+physical1440/FFB0/display and owned shutdown; all15 completed differences
+stay right-third with exact center/left. At6302→6303 the mode-difference
+footprint contracts71586→19309 as ordinary tower scenery catches up; at
+6310→6311 it expands19018→61100 where control shows a sky/road opening and
+candidate keeps textured wall/shoulder. Read
+`docs/reviews/2026-09-28-world-new-york-late-wall-dense.md`. The new
+source-hashed adjacent-step checker distinguishes CRT-wide frame motion from
+paired difference-footprint turnover; raw v1 hash mismatch and three
+prelaunch failures preserved. No new source attribution at6303/6311, 4K,
+product change or release. Next World gate is source/depth safety on a
+distinct active-nonroad transition, not another identical wide replay.
+
 USA Golden Gate frame10476 now has full changed-pixel source attribution:
 saved control/candidate indexed pages differ at7058 left-margin game-to-host
 pixels, and an isolated raster of the exact newly admitted source packets

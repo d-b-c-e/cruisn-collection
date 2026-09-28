@@ -44,6 +44,10 @@ its `run` directory and produced retained missing-evidence **FAIL** reports;
 the corrected source-hashed v2 reports pass. The later
 [source-time packet check](2026-09-28-world-new-york-late-wall-source.md)
 explains all candidate indices at frame 6300, but not the other eight views.
+The later [one-frame interval](2026-09-28-world-new-york-late-wall-dense.md)
+locates the large visual handover at 6302→6303 and a renewed control-only
+road-edge opening at 6310→6311; it remains a completed-image screen, not
+source attribution at those two steps.
 
 No native code, renderer deployment, personal installation or public release
 changed. Local evidence under

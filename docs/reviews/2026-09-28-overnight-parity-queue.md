@@ -31,6 +31,12 @@ submitted geometry, read the
   depth and intermediate-frame safety remain open. The same short callback
   window has 21/41 intervals above 25 ms in both modes; this is not a GPU or
   full-course pacing pass.
+  A [one-frame completed interval](2026-09-28-world-new-york-late-wall-dense.md)
+  at 6298..6312 now localizes the major difference-footprint contraction to
+  6302→6303, when ordinary scenery catches up, and a renewed control sky/road
+  opening to 6310→6311. The candidate preserves the right-side wall in the
+  inspected views; all changes remain right-third only. These are not
+  source/depth-qualified at the new frames.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
