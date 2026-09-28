@@ -1,5 +1,15 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 Pike's Peak snowy-turn checkpoint
+
+Read `docs/reviews/2026-09-28-offroad-pikes-snow-turn-screen.md`. Frozen03123
+saved Pike's Peak control-only continuous3x replay PASSes6540 inputs/native,
+physical1440/FFB0/display watch/owned shutdown. Nineteen completed CRT
+views6340..6520 every10 show snowy left turn without a clear El Paso-like
+blue/black lower-margin opening. No resident candidate rerun was warranted;
+earlier sparse Pike candidate/control images remain exact. This does not
+clear subtle snowy textures or the full course. No native/product change.
+
 ## September 28 Germany added-packet checkpoint
 
 Read `docs/reviews/2026-09-28-world24-germany-packet-source.md`. Reusing

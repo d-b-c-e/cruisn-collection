@@ -51,8 +51,11 @@ submitted geometry, read the
   there. Cross-course safety remains open.
 - **Off-Road Pike's Peak:** ten sparse resident/control views are exact despite
   extra work. A focused 19-frame control-only sharp-turn survey found no clear
-  El Paso-like opening. El Paso remains the positive resident-ground example;
-  Pike's Peak supplies no demonstrated benefit yet.
+  El Paso-like opening. A second
+  [snowy left-turn survey](2026-09-28-offroad-pikes-snow-turn-screen.md)
+  at 6340..6520 also finds no clear positive margin gap. El Paso remains the
+  positive resident-ground example; Pike's Peak supplies no demonstrated
+  benefit yet.
 - **USA and Exotica:** earlier continuous 3×, motion, completed-image and owned
   shutdown gates remain. A new USA 1440p original-DMA source capture attributes
   the unchanged right-sky panel to a game-drawn dithered quad; the saved 4K
