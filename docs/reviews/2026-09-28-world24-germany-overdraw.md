@@ -36,6 +36,11 @@ trace their game-owned changes to panorama strips, but these three frames do
 not qualify every World scene or transition. Hawaii alone in this set has a
 small prior-host overlap, still without exact host-packet attribution.
 
+The later [packet-source screen](2026-09-28-world24-germany-packet-source.md)
+uses these saved detailed traces to attribute all 19,471 candidate indices
+to 230 added active packets. It is still a one-frame isolated raster, not a
+full compositor or course-wide safety result.
+
 Saved callback timestamps over frames 7200–7280 show 41 of 81 intervals above
 25 ms in both control and candidate. Total interval time is 1410.21 versus
 1411.30 ms, with maxima 30.13 versus 30.61 ms. This short, instrumented

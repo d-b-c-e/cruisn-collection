@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 Germany added-packet checkpoint
+
+Read `docs/reviews/2026-09-28-world24-germany-packet-source.md`. Reusing
+saved detailed frozenf762 World2.4 Germany7280 traces, the completed
+source7277/page513 selects2485 control and2715 candidate packets with exact
+live fingerprints and old ordered subsequence.230 added packets from85
+objects isolate to all19471 changed candidate indexed pixels; nine objects
+contribute, top0xc0010e20 contributes11867. Prior original-DMA screen maps
+all replaced game pixels to upper panorama strips0/1. No new GPU/game run,
+native/product/deployment change. This is one-frame source/material
+attribution, not full compositor/depth, mountain/road fix,4K or release.
+
 ## September 28 New York late-wall source checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-late-wall-source.md`.

@@ -34,7 +34,9 @@ submitted geometry, read the
   activation are separate problems. An original-DMA-qualified 7280 check
   shows the building replaces only two upper panorama strips, with zero
   newly owned or prior host-owned changed pixels; it is not proof that those
-  separate problems are fixed.
+  separate problems are fixed. A saved-trace
+  [packet screen](2026-09-28-world24-germany-packet-source.md) now identifies
+  230 added packets and reproduces every changed candidate index at 7280.
 - **World 2.5 Hawaii:** six of nine matched frames add only left-edge foliage;
   the known authored terrain rectangle at frame 5900 is exact in both modes.
   The source-checked 5775 image adds trees over authored sky/ocean panorama
