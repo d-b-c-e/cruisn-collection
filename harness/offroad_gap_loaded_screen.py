@@ -42,11 +42,12 @@ def allocated_match(descriptor, allocation):
         owners[0][i] == descriptor['words'][i] for i in (*range(6, 9), *range(11, 21)))
 
 
-def render_quads(quads, texture_bytes):
+def render_quads(quads, texture_bytes, *, debug_quad_id=False):
     ctx = moderngl.create_context(standalone=True, require=430)
     program = ctx.program(vertex_shader=R.VS, fragment_shader=R.FS)
     for key, value in dict(uCanvas=(684., 400.), uScale=4, uClipRight=683,
-                           texram=0, texMask=len(texture_bytes)-1, uDbgQuadId=0,
+                           texram=0, texMask=len(texture_bytes)-1,
+                           uDbgQuadId=int(debug_quad_id),
                            uBgMargin=0, uClipW=684).items():
         program[key].value = value
     texture = ctx.texture((4096, len(texture_bytes)//4096), 1, texture_bytes, dtype='u1')

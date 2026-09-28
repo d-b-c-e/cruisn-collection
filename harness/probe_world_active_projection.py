@@ -73,7 +73,10 @@ def probe(run, rom_path, revision, points, source_tap_run=None, boxes=None):
     view = [read(read(0x43)+i) for i in range(9)]
     origin = read(0x47)+2
     table = read(0x4d)
-    reciprocal = reciprocal_table({i: read(table+i) for i in range(-80,5000)}, 240000)
+    # Near-plane vertices in the saved New York 3596 scene reach index -95.
+    # Read the surrounding original C31 table words rather than treating a
+    # narrower diagnostic capture window as a projection failure.
+    reciprocal = reciprocal_table({i: read(table+i) for i in range(-128,5000)}, 240000)
     original = original_scene(run / 'run').current
     original_keys = {tuple(map(int, quad)) for quad in original}
     packet_path = run / 'run/vunit-fade-producer.bin'
