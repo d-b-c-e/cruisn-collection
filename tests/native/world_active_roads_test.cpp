@@ -17,13 +17,25 @@ int main()
         }
         ram[0x1000]=0x1100;ram[0x1100]=0x1200;ram[0x110e]=0x10001001;
         ram[0x120e]=0x1000; // an ordinary active object is excluded
-        auto read=[&](uint32_t p){assert(p<0x20000);return ram[p];};
+        using F=cruisn::world_host::Float;
+        ram[0x41]=0x1300;ram[0x43]=0x809800;ram[0x47]=0x809a00-2;
+        ram[0x4d]=cruisn::world_host::layout(revision)->table;
+        for(unsigned i=0;i<3;++i)ram[0x1300+i]=F::integer(0).store();
+        for(unsigned i=0;i<9;++i)ram[0x809800+i]=F::integer(i%4==0?1:0).store();
+        ram[0x809a00]=F::integer(0).store();
+        ram[0x1201]=F::integer(-300).store();ram[0x1202]=F::integer(0).store();
+        ram[0x1203]=F::integer(3000).store();ram[0x120d]=0xc00000;
+        ram[0xc00000]=100;
+        ram[ram[0x4d]+(3000>>4)]=F::integer(1).store();
+        auto read=[&](uint32_t p){assert(p<0x1000000);return ram[p];};
         std::vector<Descriptor> out;
         assert(cruisn::world_active_roads::code_matches(read,revision));
         assert(!cruisn::world_active_roads::code_matches(read,23));
         assert(cruisn::world_active_roads::collect(read,out,revision) && out.size()==1);
         assert(out[0].id==0xc0001100 && out[0].active_margin && out[0].words[14]==0x10001001);
         const auto saved=out;
+        out.clear();assert(cruisn::world_active_roads::collect(read,out,revision,true) && out.size()==2);
+        assert(out[1].id==0xc0001200 && out[1].active_margin && out[1].words[14]==0x1000);
         // Changing allocation/list membership is observed on every collection.
         ram[0x1100]=0;out.clear();assert(cruisn::world_active_roads::collect(read,out,revision) && out.size()==1);
         ram[0x1000]=0;out.clear();assert(cruisn::world_active_roads::collect(read,out,revision) && out.empty());

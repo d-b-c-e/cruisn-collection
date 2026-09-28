@@ -95,7 +95,10 @@ template<class Read> bool build(Read read,Scene &scene,uint32_t far=80000,
         // other alternate/dynamic codecs remain excluded.
         if(active_margin)
         {
-            if(!roads || full_roads || (obj[14]&0x3861)!=0x1001 ||
+            // The new non-road membership is separately gated at collection;
+            // both classes still need stock horizontal rejection below.
+            const uint32_t klass=obj[14]&0x3861;
+            if(!roads || full_roads || (klass!=0x1001 && klass!=0x1000) ||
                 obj[16]>65535 || obj[17]>65535 || (object_id&0xfffe0000)!=0xc0000000)return false;
         }
         else if((obj[14]&0x3000)!=0x2000)return false;

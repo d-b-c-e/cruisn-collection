@@ -223,6 +223,21 @@ class OriginalMirrorTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'identity or policy'):
                 verify_metadata(trial,root)
             self.assertEqual(verify_metadata(dict(trial,margin_coverage=True),root)['captured_roads'],1)
+            nonroad = b'VFD1'+struct.pack('<IHH16HI4II',100,513,7,*quad,240000,*words,2)
+            for name in ('producer','consumer'):
+                (root/f'vunit-fade-{name}.bin').write_bytes(nonroad)
+            stderr.write_text('MIDV_FADE_METADATA packets=1 roads=0 captured=1\n')
+            row['road_quads']=0
+            with (root/'world-host-scenes.csv').open('w', newline='') as stream:
+                writer=csv.DictWriter(stream,fieldnames=list(row));writer.writeheader();writer.writerow(row)
+            with self.assertRaisesRegex(ValueError,'identity or policy'):
+                verify_metadata(dict(trial,margin_coverage=True),root)
+            admitted=verify_metadata(dict(trial,margin_coverage=True,nonroad_margin_coverage=True),root)
+            self.assertEqual((admitted['captured_roads'],admitted['captured_nonroad_margins']),(0,1))
+            stderr.write_text('MIDV_FADE_METADATA packets=1 roads=1 captured=1\n')
+            row['road_quads']=1
+            with (root/'world-host-scenes.csv').open('w', newline='') as stream:
+                writer=csv.DictWriter(stream,fieldnames=list(row));writer.writeheader();writer.writerow(row)
             for name in ('producer','consumer'):
                 (root/f'vunit-fade-{name}.bin').write_bytes(raw)
             mirror = dict(frame=100, width=512, height=256, visible_page=0,

@@ -7,7 +7,7 @@ namespace cruisn { namespace vunit_fade {
 // Retain the entire existing quad/coverage prefix; never encode ownership in UVs.
 struct Packet {
     vunit_far::Packet quad;
-    uint32_t policy=0; // bit0: authored road, preserve full opacity
+    uint32_t policy=0; // 1: authored road/full opacity; 2: gated active non-road margin
 };
 static_assert(sizeof(Packet)==64 && offsetof(Packet,policy)==60,"distance-fade wire layout");
 
@@ -17,15 +17,16 @@ enum class Profile { world_usa, offroad };
 // Unlike the crossing-only codec, this also permits wholly inside host quads.
 // A completely outside quad is not eligible; the producer must omit it.
 inline bool decode(const Packet &packet,std::array<float,4> &depths,bool &crossing,
-    Profile profile=Profile::world_usa)
+    Profile profile=Profile::world_usa,bool allow_nonroad_margin=false)
 {
     depths={};crossing=false;
     if(profile!=Profile::world_usa && profile!=Profile::offroad)return false;
     const bool offroad=profile==Profile::offroad;
     const auto &q=packet.quad;
-    if(!q.frame || (q.pad!=3 && q.pad!=7) || packet.policy>1 || q.coverage.far_limit!=(offroad?191040U:240000U))return false;
+    if(!q.frame || (q.pad!=3 && q.pad!=7) || packet.policy>2 || q.coverage.far_limit!=(offroad?191040U:240000U))return false;
     if(offroad && (q.pad!=3 || packet.policy))return false;
-    if(q.pad==7 && packet.policy!=1)return false; // margin coverage is an authored-road permission
+    if(packet.policy==2 && (!allow_nonroad_margin || offroad || q.pad!=7))return false;
+    if(q.pad==7 && packet.policy!=1 && packet.policy!=2)return false;
     std::array<float,4> values{};unsigned inside=0;
     for(unsigned i=0;i<4;++i)
     {

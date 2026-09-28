@@ -28,14 +28,16 @@ int main(int argc,char **argv)
         }
         return 0;
     }
-    if((argc<6 || argc>11) || (std::string(argv[1])!="--descriptors" && std::string(argv[1])!="--scene"))return 2;
-    bool roads=false,full_roads=false,far_coverage=false,active_roads=false;uint32_t revision=24;
+    if((argc<6 || argc>12) || (std::string(argv[1])!="--descriptors" && std::string(argv[1])!="--scene"))return 2;
+    bool roads=false,full_roads=false,far_coverage=false,active_roads=false,active_nonroads=false;uint32_t revision=24;
     for(int i=6;i<argc;++i){if(std::string(argv[i])=="--roads")roads=true;
         else if(std::string(argv[i])=="--world25")revision=25;
         else if(std::string(argv[i])=="--full-roads")full_roads=true;
         else if(std::string(argv[i])=="--far-coverage")far_coverage=true;
-        else if(std::string(argv[i])=="--active-roads")active_roads=true;else return 2;}
+        else if(std::string(argv[i])=="--active-roads")active_roads=true;
+        else if(std::string(argv[i])=="--active-nonroads")active_nonroads=true;else return 2;}
     if(active_roads && (!roads || full_roads || std::string(argv[1])!="--scene"))return 2;
+    if(active_nonroads && !active_roads)return 2;
     if(full_roads && !roads)return 2;
     try
     {
@@ -72,7 +74,7 @@ int main(int argc,char **argv)
         else
         {
             cruisn::world_host::Scene scene;
-            if(active_roads && !cruisn::world_active_roads::collect(read,descriptors,revision))
+            if(active_roads && !cruisn::world_active_roads::collect(read,descriptors,revision,active_nonroads))
                 throw std::runtime_error("active road membership guard failed");
             if(!cruisn::world_host::build(read,scene,uint32_t(std::stoul(argv[5])),&descriptors,roads,revision,full_roads,far_coverage))
                 throw std::runtime_error("future projection guard failed");

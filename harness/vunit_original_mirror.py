@@ -79,6 +79,8 @@ def configure(args, rom, settings, frames):
     result = dict(frame=frame, auxiliary=host)
     if game == 'world' and settings.get('MIDV_WORLD_HOST_ACTIVE_ROADS') == '1':
         result['margin_coverage'] = True
+        if settings.get('MIDV_WORLD_HOST_ACTIVE_NONROADS') == '1':
+            result['nonroad_margin_coverage'] = True
     if metadata:
         first = int(settings.get(prefix+'FIRST', '0'))
         last = int(settings.get(prefix+'LAST', '0'))
@@ -207,12 +209,14 @@ def verify_metadata(trial, directory):
         raise ValueError('unsupported fade metadata game')
     offroad = game == 'offroad'
     expected_limit, minimum, maximum, minimum_exponent = (191040, 503, 191040, 8) if offroad else (240000, 1000, 480000, 9)
-    crossings = roads = 0
+    crossings = roads = nonroad_margins = 0
     for packet in packets:
         frame, pc, pad = packet[:3]
         limit, *words, policy = packet[19:]
-        valid_layer = pad == 3 or (pad == 7 and trial.get('margin_coverage') is True and policy == 1)
-        if frame != captured_frame or not valid_layer or limit != expected_limit or policy not in (0, 1):
+        valid_layer = ((pad == 3 and policy in (0, 1)) or
+                       (pad == 7 and trial.get('margin_coverage') is True and
+                        (policy == 1 or (policy == 2 and trial.get('nonroad_margin_coverage') is True))))
+        if frame != captured_frame or not valid_layer or limit != expected_limit:
             raise ValueError('invalid fade metadata identity or policy')
         if game != 'world' and (policy or pad != 3):
             raise ValueError('metadata profile has no authored-road or margin permission')
@@ -226,7 +230,8 @@ def verify_metadata(trial, directory):
         if all(z >= limit for z in depths):
             raise ValueError('outside-only fade quad')
         crossings += any(z >= limit for z in depths)
-        roads += policy
+        roads += policy & 1
+        nonroad_margins += policy == 2
     with (directory/f'{game}-host-scenes.csv').open(encoding='utf-8', newline='') as stream:
         scenes = list(csv.DictReader(stream))
     if not trial['first'] <= captured_frame <= trial['last']:
@@ -242,7 +247,7 @@ def verify_metadata(trial, directory):
     at = 0
     for scene in (s for s in scenes if int(s['frame']) == captured_frame):
         group = packets[at:at+int(scene['quads'])];at += len(group)
-        if len(group) != int(scene['quads']) or sum(p[-1] for p in group) != (int(scene['road_quads']) if game == 'world' else 0):
+        if len(group) != int(scene['quads']) or sum(p[-1] & 1 for p in group) != (int(scene['road_quads']) if game == 'world' else 0):
             raise ValueError('fade scene road/count mismatch')
         fingerprint = 14695981039346656037
         for packet in group:
@@ -255,7 +260,8 @@ def verify_metadata(trial, directory):
     if at != len(packets):
         raise ValueError('unclaimed fade packets')
     result = dict(passed=True, total_packets=totals[0], total_roads=totals[1], captured=len(packets),
-                  captured_roads=roads, captured_crossings=crossings, sha256=hashlib.sha256(data).hexdigest())
+                  captured_roads=roads, captured_nonroad_margins=nonroad_margins,
+                  captured_crossings=crossings, sha256=hashlib.sha256(data).hexdigest())
     if not packets:
         result['capture_scope'] = 'No host quads at this completed frame; aggregate coverage only'
     return result

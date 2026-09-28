@@ -7,6 +7,31 @@ from world_host_options import add_arguments,configure
 
 
 class FutureSectionTests(unittest.TestCase):
+    def test_active_nonroad_margin_trial_requires_separate_candidate_gate(self):
+        parser=argparse.ArgumentParser();add_arguments(parser)
+        base=['--world-host-scenery','draw','--world-host-first','1800',
+              '--world-host-last','6000','--world-host-source','future',
+              '--world-host-layer','both','--world-host-roads','on',
+              '--world-host-active-roads','margins']
+        for rom in ('crusnwld24','crusnwld'):
+            settings={'MIDV_GL':'1','MIDV_FFB':'0'}
+            args=parser.parse_args(base+['--world-host-active-nonroads','margins'])
+            with self.assertRaisesRegex(ValueError,'candidate'):
+                configure(args,rom,dict(settings))
+            args.candidate='candidate.exe'
+            expected=configure(args,rom,settings)
+            self.assertEqual(settings['MIDV_WORLD_HOST_ACTIVE_NONROADS'],'1')
+            inherited=parser.parse_args([]);inherited.candidate='candidate.exe'
+            self.assertEqual(configure(inherited,rom,settings),expected)
+            without_roads=parser.parse_args(base[:-2]+['--world-host-active-nonroads','margins'])
+            without_roads.candidate='candidate.exe'
+            with self.assertRaisesRegex(ValueError,'active non-roads'):
+                configure(without_roads,rom,dict(settings))
+            configure(parser.parse_args(['--world-host-scenery','off']),rom,settings)
+            self.assertNotIn('MIDV_WORLD_HOST_ACTIVE_NONROADS',settings)
+        with self.assertRaisesRegex(ValueError,'orphan active non-roads'):
+            configure(parser.parse_args([]),'crusnwld24',{'MIDV_WORLD_HOST_ACTIVE_NONROADS':'1'})
+
     def test_full_road_detail_requires_candidate_and_freezes_separately(self):
         parser=argparse.ArgumentParser();add_arguments(parser)
         base=['--world-host-scenery','draw','--world-host-first','1','--world-host-last','2']
