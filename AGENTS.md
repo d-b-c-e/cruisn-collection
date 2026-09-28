@@ -1,5 +1,18 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 Germany appearance checkpoint
+
+Read `docs/reviews/2026-09-28-world-germany-margin-onset.md`. The World2.4
+Germany saved drive now has a matched7290-input/9-completed-frame7200..7280
+control and active-nonroad candidate pair on frozenf762, physical1440, FFB0.
+Both PASS original inputs/native/display/owned shutdown. All9 images differ
+only in left third,67482 total frame-pixels/142640 extra submitted quads;
+middle third exact. Distant edge scenery appears in each sample, but this does
+not prove one object continuous or cure Germany road/mountain defects. The
+first wrong-case-path report FAILed before launch, retained. Exact GL
+comparator's difference FAIL is expected; route comparator PASS. No product
+promotion/deployment. Continue independent parity work.
+
 ## September 28 New York temporal checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-overlap-temporal.md` before
