@@ -94,6 +94,10 @@ submitted geometry, read the
    [Completed frame 10476](2026-09-28-usa-bridge-pixel-source.md) now has
    selected center samples from two new bridge objects: 1,779 red points from
    `0x800a0040` and 779 from `0x800a0042`, source/page/packet/index matched.
+   The [saved-trace timing census](2026-09-28-usa-bridge-member-timing.md)
+   puts the first member's auxiliary submission 294 frames earlier with the
+   gated option; the second is absent from ordinary auxiliary output through
+   source10499. This is not first visible time.
    This does not qualify the full silhouette or smooth handover.
    A fixed-ROI red-color screen of those saved images stays candidate-positive
    in every sample; its count narrows as control scenery appears. This is a

@@ -76,3 +76,8 @@ for the separate source and temporal gates.
 Next inspect the other bridge members and a denser handover interval before
 any default-policy change. The currently demonstrated benefit remains
 game/route-specific and the partial-coverage option remains gated.
+
+The later [two-member timing census](2026-09-28-usa-bridge-member-timing.md)
+finds a 294-frame auxiliary submission lead for `0x800a0040`; the ordinary
+auxiliary trace has no `0x800a0042` submission through source frame 10499.
+Submission time alone is not first visible time.

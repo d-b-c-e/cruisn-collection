@@ -1,5 +1,20 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA bridge member timing checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-member-timing.md`. An offline
+source-hashed census of the two existing1.5GB detailed traces finds gated
+object0x800a0040 first submitted at10181 vs ordinary auxiliary at10475,
+294 source frames earlier. Gated object0x800a0042 first at10281; ordinary
+auxiliary trace has NONE through its prepared frame10499 (lead strictly more
+than218 frames). At source10473 gated packets3/25, ordinary0/0; completed
+10476 already attributes1779/779 candidate-only red center samples to them.
+Submission is NOT first visible time or proof of smoothness; game's original
+DMA may differ. Raw checker FAIL that wrongly required both ordinary objects
+is retained; corrected v2 PASS. No new gameplay/GPU/native/product change.
+Next: assess transition and cost from saved evidence or obtain a contrasting
+course/4K gate when owner is available.
+
 ## September 28 USA packet-to-pixel checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-pixel-source.md`. A frozenf762
