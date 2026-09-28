@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York frame 9000 visual wedge checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-9000-wedge.md`. Frozen f762
+matched 9004-input continuous 3× control/active-nonroad candidate PASS input,
+native, physical1440/FFB0/display watch and owned shutdown. Control CRT-on
+completed9000 image is byte-exact to earlier survey and retains a far-left
+dark opening; active non-road margins visibly reduce it with3719 changed
+left-third RGB pixels, zero center/right changes. The2434 recovered
+near-black count is a heuristic. No indexed owner/source qualification or
+temporal/4K/FFB/product acceptance yet. Next bounded gate is matched indexed
+mirrors and original DMA at9000; no deployment/release/Stream Deck change.
+
 ## September 28 World 2.5 foliage handover checkpoint
 
 Read `docs/reviews/2026-09-28-world25-hawaii-foliage-steps.md`. Frozen f762

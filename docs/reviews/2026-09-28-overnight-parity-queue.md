@@ -41,7 +41,10 @@ submitted geometry, read the
   72,172 replace the game's repeated upper panorama and 13,382 replace
   earlier host scenery, with all logged added-object center depths nearer.
   That is one-frame source and object-depth evidence, not full fragment-depth
-  or course safety.
+  or course safety. A later [frame-9000 left-edge check](2026-09-28-world-new-york-9000-wedge.md)
+  finds the saved dark opening exact under continuous 3× alone and visibly
+  reduced by active non-road margins: 3,719 left-third RGB changes, center
+  exact. Its indexed/source ownership is the next gate.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
