@@ -2,6 +2,22 @@
 
 ## Current work: rendering parity, September 23
 
+September27 New York + Pike's Peak attended recordings are qualified; read
+docs/reviews/2026-09-27-new-york-pikes-peak.md first. World2.4 New York
+6000/5997 has exact two-sided unowned black components (8117 left,11651
+right). Source-time read-only Lua tap now passes6002 inputs and captures C31,
+program RAM, texture/palette; resources equal completed. Offline active
+projection reconstructs2030/2144 original quads exactly. Ten missing quads in
+three non-road active objects all have source-time stock horizontal rejection;
+isolated GPU raster covers **all** indexed pixels in both sampled gap
+components. This is one masked offline frame, NOT an ordered native renderer,
+temporal/cross-course fix or deployable result. Next bounded step is an opt-in
+native active-nonroad margin trial with original-input/image and center safety.
+Raw end-of-frame projection failure and point-only partial screens preserved.
+Pike's Peak control/resident pair passes9002 inputs and10 completed1440 images
+but all images exact despite268381 extra quads; no visible benefit shown on
+sparse sampled frames. Personal UX707/publicv0.5.0 unchanged; FFB0.
+
 September27 recorded drives supersede the prepared-only World New York and
 Off-Road second-course notes below. World2.4 New York passes9,695 attended
 inputs through the finish with continuous3x/FFB0; prior3x/+12 finish crash

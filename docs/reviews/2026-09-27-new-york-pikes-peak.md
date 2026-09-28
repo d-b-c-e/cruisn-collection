@@ -90,6 +90,46 @@ cannot be used as evidence of a safe gap repair until original geometry is
 reconstructed exactly. A source-time camera/operand capture inside the
 emulator's scene hook is the next instrumentation step.
 
+That instrumentation step is now complete. A read-only Lua tap at the World
+2.4 scene boundary (`PC=0x6a`, global `0x61ee`, source frame 5997) captured
+program RAM, C31 internal RAM, texture RAM and palette RAM. Its bounded
+6002-input replay passes and produces the exact same native images, completed
+BMP and all eight indexed mirror planes as the earlier run. Both source-time
+resource dumps are byte-identical to the completed-frame texture/palette
+capture. Reconstructing active objects from these **source-time** operands
+matches **2,030 of 2,144** projected quads exactly to original DMA, with no
+projection errors; none of the 10,555 host packets is misidentified as an
+active-object quad. This resolves the prior end-of-frame failure without
+discarding its raw report.
+
+The source-qualified projection finds ten original-DMA-absent, host-absent
+quads in three active objects whose conservative bounds intersect the two
+measured gap regions. All three objects independently fail the stock
+horizontal sphere test at the captured scene moment; the ten quads are not
+chosen by track-specific IDs. An isolated GPU raster using the exact saved
+source texture RAM, masked only over each four-connected zero-index/zero-tag
+component, covers **8,117/8,117 left** and **11,651/11,651 right** indexed
+pixels. The source-time palette-resolved preview joins the adjacent walls and
+road shoulders more plausibly than the original black wedges. The baseline
+palette resolve differs from the saved completed BMP by more than one channel
+unit in 163/3,442,032 pixels, so the preview is a useful visual screen, not
+byte-exact completed-image evidence. The first five-point scout covered only
+8,116 left and 8,664 right pixels; it remains saved as v1. Widening to the
+full conservative native ROI found the other five quads and achieved full
+coverage in v2–v4. The final screen requires every candidate to have
+source-time stock-horizontal-rejection proof and carries the ROM revision,
+visible page and source hashes explicitly.
+
+This is a **single New York scene**, not an ordered native draw, temporal
+handover or World-wide fix. The isolated quads also rasterize outside the
+measured zero-owned components; masking them offline protects the untouched
+center in the preview but does not establish that the current native
+margin-only compositor would preserve every original pixel or use correct
+polygon ordering. A separate opt-in native path for active non-road margins,
+with full original-input/image checks and sparse completed captures, is the
+next bounded experiment. Do not promote it to the personal build or release
+without temporal and cross-course safety.
+
 Evidence: `gl-survey-run/report.json`, `margin-3600-dma-run/report.json`,
 `margin-3600-geometry-v3.json`, and `margin-3600-point-geometry.json` in the
 World local directory. Frame 6000 is in `margin-6000-dma-run-v2/report.json`,
@@ -97,6 +137,12 @@ World local directory. Frame 6000 is in `margin-6000-dma-run-v2/report.json`,
 `margin-6000-{left,right}-point.json`. The RAM capture and census are
 `margin-6000-ram-run/report.json` and `margin-6000-active-census-v3.json`
 (v1/v2 retained before the native-scene and C31-file checks).
+The source-time replay and material receipt are in
+`source-tap-resources-run/report.json`; `margin-6000-source-tap-projection-v6.json`
+and `margin-6000-active-gap-screen-v4.json` contain the final source-hashed
+projection and isolated raster gates. Local `margin-6000-active-gap-preview-v2`
+contains the saved/composite comparison. Earlier source-tap projection and
+screen reports v1–v5 are preserved, including the point-only partial coverage.
 The first 6000 run is preserved as
 `margin-6000-dma-run/report.json`: it **failed** before comparison because
 the requested source frame 5996 was not on the completed visible page.
@@ -134,12 +180,10 @@ are `paired-control-run/report.json`, `paired-resident-run/report.json`, and
 the comparator are only review hints, not texture-defect proof.
 
 Neither recording qualifies 4K, physical wheel/FFB, every course, or a public
-renderer deployment. The next efficient World step is to capture source-time
-projection operands for active non-road objects, establish an exact original
-DMA baseline, qualify candidate materials, and only then compare ordered pixels
-against the saved two-sided indexed and completed frames. The existing
-active-road path has no eligible object in
-that source scene. For Off-Road, target a known Pike's Peak margin
+renderer deployment. The existing World active-*road* path has no eligible
+object in this source scene; the new non-road candidate needs a gated native
+trial before it can be judged against the saved two-sided indexed and completed
+frames. For Off-Road, target a known Pike's Peak margin
 defect or a denser short interval before inferring that the resident candidate
 improves this route; avoid another full-drive replay merely for more sparse
 identical samples.
