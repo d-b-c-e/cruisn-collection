@@ -102,6 +102,8 @@ def main(argv=None):
     ap.add_argument("--snapshot-mode", choices=("png", "raw"), help="explicit capture experiment; raw defers PNG encoding until exit")
     ap.add_argument("--until-frame", type=int, help="explicit prefix replay ending at this frame")
     ap.add_argument("--capture-state", action="store_true", help="capture quads/RAM two frames before --until-frame")
+    ap.add_argument('--ramdump-frame', type=int,
+                    help='also capture V-Unit program RAM at this exact source frame; requires --capture-state')
     ap.add_argument("--patch", type=Path, help="explicit game-code patch experiment; replaces the recorded patch")
     ap.add_argument("--probe-script", type=Path, help="explicit Lua frame callback for a bounded diagnostic experiment")
     ap.add_argument("--numeric-speed", action="store_true", help="explicit USA numeric HUD telemetry experiment")
@@ -170,6 +172,9 @@ def main(argv=None):
         ap.error("native renderer control cannot enable GL diagnostics")
     if args.capture_state and (args.until_frame is None or args.until_frame < 3):
         ap.error("state capture requires --until-frame of at least 3")
+    if args.ramdump_frame is not None and (not args.capture_state or not args.candidate or
+            args.until_frame is None or not 1 <= args.ramdump_frame <= args.until_frame-2):
+        ap.error('--ramdump-frame requires a candidate, --capture-state and a source frame before the stop')
     if args.patch_at_frame is not None and (not args.patch or args.probe_script):
         ap.error("--patch-at-frame requires --patch and cannot combine with --probe-script")
     try:
@@ -457,6 +462,11 @@ def main(argv=None):
             capture.mkdir()
             env.update(MIDV_QUADLOG=str(capture / "quads.bin"),
                        MIDV_STATEDUMP_FRAME=str(args.until_frame - 2), MIDV_STATEDUMP_DIR=str(capture))
+            if args.ramdump_frame is not None:
+                if manifest['rom'] not in ('crusnusa','crusnwld24','crusnwld','offroadc') or args.patch or trial or usa_trial:
+                    raise ValueError('--ramdump-frame requires an unpatched V-Unit source replay')
+                env.update(MIDV_RAMDUMP_DIR=str(capture),
+                           MIDV_RAMDUMP_EVERY=str(args.ramdump_frame))
         if args.patch:
             patch_entries = read_patch(args.patch)
             patch_file = runtime / "experiment-patch.txt"
@@ -644,6 +654,14 @@ def main(argv=None):
             required_files(capture, ARTIFACTS)
             report["capture"] = {"directory": str(capture), "requested_dump_frame": args.until_frame - 2,
                                  "sha256": {n: sha256_file(capture / n) for n in ARTIFACTS}}
+            if args.ramdump_frame is not None:
+                program_ram = capture / f'ram_{args.ramdump_frame:06d}.bin'
+                required_files(capture, (program_ram.name,))
+                if program_ram.stat().st_size != 0x80000:
+                    raise ValueError('source program RAM has unexpected size')
+                report['capture']['source_ram'] = {'frame': args.ramdump_frame,
+                    'file': program_ram.name, 'bytes': program_ram.stat().st_size,
+                    'sha256': sha256_file(program_ram)}
             if args.patch or trial or usa_trial:
                 program_ram = capture / f"ram_{args.until_frame - 2:06d}.bin"
                 report["effective_patch"] = verify_patch_ram(program_ram, patch_entries)
