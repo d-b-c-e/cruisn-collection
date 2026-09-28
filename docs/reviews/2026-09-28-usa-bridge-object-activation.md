@@ -24,11 +24,11 @@ isolated raster reproduces the host index of all three screenshot-selected
 red pixels over original sky. They belong to three distinct future-list
 objects:
 
-| Object | First submitted frame in detailed trace | Packets at 10497 | Exact visible far-left indexed pixels at 10500 |
-| --- | ---: | ---: | ---: |
-| `0x800a0022` | 9855 | 2 | 649 |
-| `0x800a0031` | 10039 | 8 | 2140 |
-| `0x800a0040` | 10475 | 3 | 4569 |
+| Object | First submitted frame | First logged depth | Packets at 10497 | Exact visible far-left indexed pixels at 10500 |
+| --- | ---: | ---: | ---: | ---: |
+| `0x800a0022` | 9855 | 238,059 | 2 | 649 |
+| `0x800a0031` | 10039 | 235,257 | 8 | 2140 |
+| `0x800a0040` | 10475 | 236,333 | 3 | 4569 |
 
 All three sampled pixels use palette base 24064 and textured packets. The
 individual objects use distinct texture bases. The source object at `0x800a0040`
@@ -36,15 +36,19 @@ first submits only 22 emulated frames before the source scene for the saved
 10500 image. The other two were already in the host stream earlier, including
 before the saved 10200 view where the left ROI gained no new red pixels. The
 saved views cannot tell whether those objects were off-screen, occluded by
-trees or visually incomplete then. The activation timing is consistent with
-staggered future-object availability or admission, **not** proof of a missing
-texture or that expanding the far plane alone can make the entire structure
-appear at once.
+trees or visually incomplete then. All three first-submission depths are near
+the configured 240,000-unit 3× host limit. That strongly suggests separate
+pieces crossing the host admission boundary, though it does not prove the
+descriptors and texture resources were already available at larger distances.
+The next decisive gate is source-time residency/material evidence *before*
+each crossing, then an isolated larger-limit trial if that evidence survives.
+The trace is not proof of a missing texture or that expanding the far plane
+alone can make the entire structure appear at once.
 
 The source-hashed local evidence is under
 `results/diagnostics/race-transitions-20260916`:
 `usa-bridge-quadtrace-run/report.json`, `usa-bridge-packet-source-v3.json`
-and `usa-bridge-activation-v2.json`. Packet-source v1/v2 and activation v1
+and `usa-bridge-activation-v3.json`. Packet-source v1/v2 and activation v1/v2
 remain as earlier successful checks; v3 additionally binds the posthoc raw
 report, case, binary and completed-image hashes. The first diagnostic source replay and
 its raw failure remain under `usa-golden-gate-panel-run`. The prepared-only

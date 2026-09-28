@@ -78,9 +78,10 @@ submitted geometry, read the
    sampled left ROI by 11400. The new
    [source packet check](2026-09-28-usa-bridge-object-activation.md) attributes
    three red pixels to three textured future-list objects first submitted at
-   frames 9855, 10039 and 10475. This narrows activation timing, but object
-   completeness and intervening occlusion still require a targeted gate before
-   any policy change.
+   frames 9855, 10039 and 10475, each near the 240,000-unit 3× far boundary.
+   Confirm descriptor/material residency before crossing that boundary before
+   trying a larger global limit. Object completeness and intervening occlusion
+   still require a targeted gate before any policy change.
    The dark right panel is original game output, a separate issue.
 5. **Exotica useful distance:** find a saved open-sightline interval with an
    actual completed outer-boundary change. Measure source activation and

@@ -24,6 +24,7 @@ def screen(source_report, traced):
     path = traced / 'run/usa-host-quads.csv'
     digest = hashlib.sha256()
     counts = defaultdict(int)
+    depths = {}
     with path.open('rb') as stream:
         header = stream.readline()
         digest.update(header)
@@ -31,10 +32,14 @@ def screen(source_report, traced):
             raise ValueError('unexpected USA detailed trace schema')
         for line in stream:
             digest.update(line)
-            fields = line.split(b',', 4)
+            fields = line.split(b',', 6)
             object_id = int(fields[3])
             if object_id in target:
-                counts[(object_id, int(fields[0]), int(fields[2]))] += 1
+                key = (object_id, int(fields[0]), int(fields[2]))
+                counts[key] += 1
+                depth = int(fields[5])
+                low, high = depths.get(key, (depth, depth))
+                depths[key] = (min(low, depth), max(high, depth))
     if digest.hexdigest() != report['traced_host']['sha256']['quads']:
         raise ValueError('detailed geometry source hash differs')
     selected = report['selected_host']
@@ -43,12 +48,13 @@ def screen(source_report, traced):
             raise ValueError('source-scene object count differs from sampled source')
     objects = []
     for object_id in sorted(target):
-        scenes = [dict(frame=frame, page_control=page, packets=n)
+        scenes = [dict(frame=frame, page_control=page, packets=n,
+                       source_depth_range=list(depths[(obj, frame, page)]))
                   for (obj, frame, page), n in sorted(counts.items()) if obj == object_id]
         objects.append(dict(object=hex(object_id), first_scene=scenes[0],
                             last_scene=scenes[-1], scenes=len(scenes),
                             sampled_scene_packets=target[object_id], timeline=scenes))
-    return dict(schema=1, passed=True,
+    return dict(schema=2, passed=True,
                 scope='Host submission of three screenshot-selected objects; '
                       'not completed visibility, occlusion, LOD or whole bridge.',
                 completed_sample_frame=report['completed_frame'],
