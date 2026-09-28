@@ -1,5 +1,22 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York late-wall source checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-late-wall-source.md`.
+Frozenf762 read-only World2.4 New York source replay PASSes6302 inputs/native,
+physical1440/FFB0/display watch/owned shutdown. Completed6300 control image
+and all8 indexed planes are byte-exact to prior mirror. Source6296 C31 PC6a
+tap captured RAM/fast/texture/palette; texture equals completed resource.
+Fresh standalone native helper reconstructs4832 control/5913 candidate
+packets with exact live selected-scene fingerprints and old ordered
+subsequence.1081 added active nonroad packets from132 objects isolate to
+all98129 candidate-changed indices at6300, over original upper panorama
+ordinal3. Largest object0xc0011788 accounts for57980. Reusable checker
+and mutated-packet rejection PASS. Stale prior offline helper access violation,
+failed quiet-quad preflight and omitted-metadata preflight retained; corrected
+source run passes. No full compositor/depth, every intermediate frame,4K or
+release safety. No product/deployment change.
+
 ## September 28 New York late-wall temporal checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-late-wall-temporal.md`.

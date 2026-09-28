@@ -26,7 +26,9 @@ submitted geometry, read the
   [nine-frame turn sequence](2026-09-28-world-new-york-late-wall-temporal.md)
   at 6280..6320 shows right-margin-only changes and an apparent continuation
   through the turn, with exact center and repeatable 6300 images. Candidate
-  packet/depth attribution and intermediate-frame safety remain open.
+  [source-packet attribution](2026-09-28-world-new-york-late-wall-source.md)
+  now accounts for all 98,129 changed indexed pixels at 6300. Full ordered
+  depth and intermediate-frame safety remain open.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
@@ -79,8 +81,9 @@ submitted geometry, read the
    isolated raster does not establish full per-fragment depth or
    full-course occlusion safety. The New York 6300 wall sample adds another
    source-qualified upper-panorama replacement, and its nine-frame turn
-   screen shows a moving right-side change. Its candidate packet/depth source
-   and intervening-frame handover remain open. Keep any raw failures and do
+   screen shows a moving right-side change. Exact source-time native packets
+   account for the candidate indices at 6300, while full ordered depth and
+   intervening-frame handover remain open. Keep any raw failures and do
    not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
    second course before running another resident/control pair. The saved Pike's
