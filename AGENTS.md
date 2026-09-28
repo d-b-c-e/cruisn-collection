@@ -1,5 +1,18 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York late-wall temporal checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-late-wall-temporal.md`.
+Frozenf762 World2.4 New York matched control/nonroad prefixes PASS6340
+inputs/native, physical1440/FFB0/display watch/owned shutdown. Nine
+completed6280..6320 views all differ only in right third (395233 total
+RGB frame-pixels), exact center/left. The inspected sequence shows the
+right wall/roadside scene persisting through the turn; sampled control
+6315/6320 has sky/dark outer-edge openings. Both6300 images are byte-exact
+to the prior single-frame pair. This is a five-frame cadence, not every
+intermediate frame, candidate packet/depth attribution, full-course
+foreground safety,4K or release parity. No native/product/deployment change.
+
 ## September 28 New York late-wall checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-late-wall.md`. Frozenf762

@@ -22,8 +22,11 @@ submitted geometry, read the
   not recur on this recorded drive; its old 3×/+12 or intermittent cause is
   still open. A separate [late wall sample](2026-09-28-world-new-york-late-wall.md)
   at 6300 replaces 98,129 original upper-panorama indexed pixels with a
-  visually continuous right wall/building; it fills no unowned pixel and
-  still needs a moving transition and candidate-packet attribution.
+  visually continuous right wall/building; it fills no unowned pixel. A
+  [nine-frame turn sequence](2026-09-28-world-new-york-late-wall-temporal.md)
+  at 6280..6320 shows right-margin-only changes and an apparent continuation
+  through the turn, with exact center and repeatable 6300 images. Candidate
+  packet/depth attribution and intermediate-frame safety remain open.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
@@ -75,8 +78,9 @@ submitted geometry, read the
    frame's added packets reproduce every changed indexed pixel, but the
    isolated raster does not establish full per-fragment depth or
    full-course occlusion safety. The New York 6300 wall sample adds another
-   source-qualified upper-panorama replacement, but its candidate packet/depth
-   source and temporal handover remain open. Keep any raw failures and do
+   source-qualified upper-panorama replacement, and its nine-frame turn
+   screen shows a moving right-side change. Its candidate packet/depth source
+   and intervening-frame handover remain open. Keep any raw failures and do
    not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
    second course before running another resident/control pair. The saved Pike's
