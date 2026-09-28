@@ -9,6 +9,7 @@ import hashlib
 import json
 from pathlib import Path
 import struct
+from collections import deque
 
 import numpy as np
 
@@ -68,6 +69,39 @@ def native_box(fine_box, width, height, scale, margin, native_height):
             (height - fine_box[1]) // scale)
 
 
+def unowned_component(extended, mask, original, original_mask, fine_box, seed):
+    """Count the exact four-connected zero-index/zero-tag region inside a box."""
+    x0, y0, x1, y1 = fine_box
+    x, y = seed
+    if not x0 <= x <= x1 or not y0 <= y <= y1:
+        raise ValueError('component seed outside fine box')
+    zero = ((extended[y0:y1+1, x0:x1+1] == 0) &
+            (mask[y0:y1+1, x0:x1+1] == 0) &
+            (original[y0:y1+1, x0:x1+1] == 0) &
+            (original_mask[y0:y1+1, x0:x1+1] == 0))
+    start = (x-x0, y-y0)
+    if not zero[start[1], start[0]]:
+        raise ValueError('component seed has drawn ownership or nonzero index')
+    seen = np.zeros_like(zero, dtype=bool)
+    seen[start[1], start[0]] = True
+    queue = deque([start])
+    count = 0
+    bounds = [x, y, x, y]
+    while queue:
+        cx, cy = queue.popleft()
+        count += 1
+        bounds = [min(bounds[0], cx+x0), min(bounds[1], cy+y0),
+                  max(bounds[2], cx+x0), max(bounds[3], cy+y0)]
+        for nx, ny in ((cx-1,cy), (cx+1,cy), (cx,cy-1), (cx,cy+1)):
+            if (0 <= nx < zero.shape[1] and 0 <= ny < zero.shape[0] and
+                    zero[ny,nx] and not seen[ny,nx]):
+                seen[ny,nx] = True
+                queue.append((nx,ny))
+    return dict(seed=[x,y], pixels=count, fine_bounds=bounds,
+                roi=list(fine_box), connectivity=4,
+                scope='Clipped to ROI; zero index and zero tag in both extended and original indexed planes.')
+
+
 def original_evidence(original_case, reference_case, reference_report, reference_mirror, source, box):
     other = Path(original_case)
     report = json.loads((other/'report.json').read_text(encoding='utf-8'))
@@ -82,7 +116,9 @@ def original_evidence(original_case, reference_case, reference_report, reference
             mirror['sha256'] != reference_mirror['sha256'] or
             report['evidence']['gl_captures']['files'] != reference_report['evidence']['gl_captures']['files']):
         raise ValueError('original-command capture differs from matched completed image')
-    game = reference_report['vunit_original_mirror']['metadata_game']
+    # World is the historical default in the mirror receipt; only USA and
+    # Off-Road need an explicit metadata game field.
+    game = reference_report['vunit_original_mirror'].get('metadata_game', 'world')
     with (run/f'{game}-host-scenes.csv').open(encoding='utf-8', newline='') as stream:
         scene_rows = [row for row in csv.DictReader(stream)
                       if int(row['frame']) == source['frame']]
@@ -117,7 +153,7 @@ def original_evidence(original_case, reference_case, reference_report, reference
                 scope='Matching completed pixels and same-page DMA group; conservative bounds only, not raster ownership.')
 
 
-def analyze(case, samples, fine_box, original_case=None):
+def analyze(case, samples, fine_box, original_case=None, component_seed=None):
     case = Path(case)
     report_path = case/'report.json'
     report = json.loads(report_path.read_text(encoding='utf-8'))
@@ -180,6 +216,9 @@ def analyze(case, samples, fine_box, original_case=None):
                                                           run/'vunit-fade-producer.bin')})
     if original_case is not None:
         result['original_commands'] = original_evidence(original_case, case, report, mirror, source, box)
+    if component_seed is not None:
+        result['unowned_component'] = unowned_component(
+            extended, mask, original, original_mask, fine_box, component_seed)
     return result
 
 
@@ -209,13 +248,16 @@ def main():
     parser.add_argument('--sample', action='append', type=point, required=True)
     parser.add_argument('--fine-box', type=rectangle, required=True,
                         help='indexed mirror X0:Y0:X1:Y1; native box is derived from verified scale/margin')
+    parser.add_argument('--unowned-component-seed', type=point,
+                        help='measure a four-connected zero-index/zero-tag component inside the fine box')
     parser.add_argument('--original-run', type=Path,
                         help='passing same-case completed mirror with an exact original DMA capture')
     parser.add_argument('--report', type=Path, required=True)
     args = parser.parse_args()
     if args.report.exists():
         raise ValueError('refusing to overwrite prior diagnostic')
-    result = analyze(args.case, args.sample, args.fine_box, args.original_run)
+    result = analyze(args.case, args.sample, args.fine_box, args.original_run,
+                     args.unowned_component_seed)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(result, indent=2)+'\n',encoding='utf-8')
     print(json.dumps({k:result[k] for k in ('passed','source_frame','completed_frame','packets',

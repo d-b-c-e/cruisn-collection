@@ -10,17 +10,17 @@ JOURNALS='MIDV_HOST_JOURNALS'
 def add_arguments(parser):
     parser.add_argument('--vunit-runtime',choices=('continuous',),
                         help='candidate continuous scenery with owned graphics-worker shutdown')
-    parser.add_argument('--vunit-journals',choices=('quiet',),
-                        help='explicit continuous operation without scene journals or bootstrap RAM dumps')
+    parser.add_argument('--vunit-journals',choices=('quiet','capture'),
+                        help='explicit continuous journal policy; capture restores source and indexed-mirror evidence')
 
 
 def configure(args,rom,settings,frames,bootstrap):
     mode=getattr(args,'vunit_runtime',None)
-    quiet=getattr(args,'vunit_journals',None)
-    if quiet is None and JOURNALS in settings:
+    journals=getattr(args,'vunit_journals',None)
+    if journals is None and JOURNALS in settings:
         raise ValueError('V-Unit journals require explicit replay selection')
     if mode is None:
-        if KEY in settings or quiet:raise ValueError('V-Unit runtime requires explicit replay selection')
+        if KEY in settings or journals:raise ValueError('V-Unit runtime requires explicit replay selection')
         return None
     if (mode!='continuous' or rom not in PROFILES or not bootstrap or
             not getattr(args,'candidate',None) or getattr(args,'headless',False) or
@@ -29,15 +29,21 @@ def configure(args,rom,settings,frames,bootstrap):
         raise ValueError('continuous V-Unit requires candidate verified bootstrap, live GL and FFB0')
     settings[KEY]=mode
     bootstrap['runtime_last']=frames-1
-    if quiet:
+    if journals == 'quiet':
         game=PROFILES[rom][0]
-        if quiet!='quiet' or settings.get('MIDV_'+game.upper()+'_HOST_QUADS')!='0' or any(
+        if settings.get('MIDV_'+game.upper()+'_HOST_QUADS')!='0' or any(
                 settings.get(k,'0')!='0' for k in ('MIDV_WORLD_HOST_FADE_METADATA','MIDV_GL_ORIGINAL_MIRROR',
                     'MIDV_WORLD_HOST_QUADS','MIDV_USA_HOST_QUADS','MIDV_OFFROAD_HOST_QUADS')):
             raise ValueError('quiet V-Unit requires summary geometry without detailed mirror/fade capture')
         settings[JOURNALS]='quiet'
         bootstrap['journals']='quiet'
-    return dict(mode=mode,rom=rom,journals=quiet or 'capture',reference_last=bootstrap['last'],verification_last=frames-1,
+    elif journals == 'capture':
+        # A recorded quiet drive can be replayed with full source diagnostics.
+        # The native default is capture; leaving quiet in the inherited case
+        # would silently suppress the requested mirror and scene receipts.
+        settings.pop(JOURNALS,None)
+        bootstrap.pop('journals',None)
+    return dict(mode=mode,rom=rom,journals=journals or 'capture',reference_last=bootstrap['last'],verification_last=frames-1,
                 completion='owned-worker-stop',capture_completed=False)
 
 

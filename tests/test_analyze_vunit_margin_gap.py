@@ -3,10 +3,12 @@ import json
 import sys
 import tempfile
 import unittest
+import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'harness'))
 from analyze_vunit_margin_gap import (projected_box, projected_column_span, intersects,
-                                      gap_distance, native_box, original_evidence)
+                                      gap_distance, native_box, original_evidence,
+                                      unowned_component)
 
 
 class ProjectedBoundsTests(unittest.TestCase):
@@ -51,6 +53,22 @@ class ProjectedBoundsTests(unittest.TestCase):
                                             encoding='utf-8')
             with self.assertRaisesRegex(ValueError,'does not match'):
                 original_evidence(case, case, {'case': 'same'}, {}, {}, (0,0,0,0))
+
+    def test_unowned_component_is_four_connected_and_requires_zero_in_both_planes(self):
+        pens = np.ones((4, 5), dtype='<u2')
+        tags = np.ones((4, 5), dtype='u1')
+        for x, y in ((1, 1), (2, 1), (2, 2), (3, 3)):
+            pens[y, x] = 0
+            tags[y, x] = 0
+        result = unowned_component(pens, tags, pens, tags, (0, 0, 4, 3), (1, 1))
+        self.assertEqual(result['pixels'], 3)
+        self.assertEqual(result['fine_bounds'], [1, 1, 2, 2])
+        original = pens.copy()
+        original[2, 2] = 4
+        self.assertEqual(unowned_component(pens, tags, original, tags,
+                                           (0, 0, 4, 3), (1, 1))['pixels'], 2)
+        with self.assertRaisesRegex(ValueError, 'drawn ownership'):
+            unowned_component(pens, tags, original, tags, (0, 0, 4, 3), (2, 2))
 
 
 if __name__ == '__main__':

@@ -34,6 +34,20 @@ class RuntimeTests(unittest.TestCase):
         for change in ({'MIDV_USA_HOST_QUADS':'1'},{'MIDV_GL_ORIGINAL_MIRROR':'1'},{'MIDV_WORLD_HOST_FADE_METADATA':'1'}):
             with self.assertRaises(ValueError):configure(args,'crusnusa',settings|change,302,bootstrap.copy())
 
+    def test_explicit_capture_restores_inherited_quiet_case(self):
+        args=SimpleNamespace(candidate='x',vunit_runtime='continuous',vunit_journals='capture')
+        settings={'MIDV_HOST_BOOTSTRAP':'1','MIDV_GL':'1','MIDV_FFB':'0',
+                  'MIDV_HOST_JOURNALS':'quiet','MIDV_USA_HOST_QUADS':'0'}
+        bootstrap={'last':200,'first':100,'journals':'quiet'}
+        trial=configure(args,'crusnusa',settings,302,bootstrap)
+        self.assertEqual(trial['journals'],'capture')
+        self.assertNotIn('MIDV_HOST_JOURNALS',settings)
+        self.assertNotIn('journals',bootstrap)
+        with self.assertRaises(ValueError):
+            configure(SimpleNamespace(candidate='x',vunit_runtime='continuous'),
+                      'crusnusa',{'MIDV_HOST_BOOTSTRAP':'1','MIDV_GL':'1','MIDV_FFB':'0',
+                                  'MIDV_HOST_JOURNALS':'quiet'},302,bootstrap.copy())
+
     def test_quiet_aggregate_does_not_pretend_operand_capture(self):
         from vunit_bootstrap import verify as verify_bootstrap
         trial=dict(rom='crusnusa',reference_last=200,verification_last=301,journals='quiet')
