@@ -84,6 +84,12 @@ review hint, not an exact texture or coverage oracle. The replay harness should
 keep live GPU/native runs serialized and literal FFB0. Do not change the
 personal installation or public release during this diagnostic queue.
 
+For a specific V-Unit black/colored pixel in a saved original-mirror capture,
+the new [indexed-pixel provenance probe](2026-09-28-vunit-pixel-provenance.md)
+reports original, auxiliary and current-DMA status without another game run.
+It requires bottom-up indexed coordinates and does not attribute the auxiliary
+source or completed CRT color.
+
 The September 28 detailed reviews are the [New York source overlap](2026-09-28-world-new-york-overlap-source.md),
 [New York turn sequence](2026-09-28-world-new-york-overlap-temporal.md),
 [Germany appearance](2026-09-28-world-germany-margin-onset.md),

@@ -1,5 +1,16 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 indexed pixel source probe
+
+Read `docs/reviews/2026-09-28-vunit-pixel-provenance.md` for the reusable
+`harness/probe_vunit_pixel.py` source-hashed V-Unit point diagnostic. Its USA
+10500 sample identifies game DMA2233 for the unchanged dark panel and auxiliary
+ownership over original sky for the red bridge; its independent Off-Road3120
+sample identifies original DMA1 at the left opening. It consumes saved indexed
+mirrors/current DMA, no new gameplay. Coordinates are bottom-up indexed, not
+CRT display pixels; it does not prove an auxiliary object source or temporal
+safety. USA raw replay FAIL is still explicit alongside separate posthoc PASS.
+
 ## September 28 USA Golden Gate source checkpoint
 
 Read `docs/reviews/2026-09-28-usa-golden-gate-panel-source.md` before treating
