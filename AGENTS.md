@@ -12,9 +12,11 @@ host submissions are9855,10039,10475. Their visible far-left pixel counts
 at10500 are649/2140/4569. This is source activation, not a full bridge or
 smooth pop-in proof. Prior source raw FAIL and separate posthoc PASS remain.
 Their first logged depths238059/235257/236333 sit near the current240000
-host far limit, consistent with separate parts crossing the3x boundary.
-Pre-admission descriptor/material residency remains unproved; require that
-before a larger global far-limit trial.
+host far limit, BUT ROM radii8241/18133/24370 put their depth-minus-radius
+already10182/22876/28037 inside the sphere cutoff at first submission.
+Therefore the simple far sphere rule is NOT isolated as the cause. Vertex
+projection, source residency or material binding remain. Need source-time
+pre-admission operands before a larger global far-limit trial.
 No renderer/deployment/release change. Next gate is missing-member versus
 occlusion/completeness on a narrow interval, not another broad replay without
 a changed hypothesis.
