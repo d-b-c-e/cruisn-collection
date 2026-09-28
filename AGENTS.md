@@ -1,5 +1,19 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 World 2.5 guardrail ownership checkpoint
+
+Read `docs/reviews/2026-09-28-world25-hawaii-guardrail-ownership.md`. Two
+5770-input mirrors and one5762-input frozenf762 World2.5 Hawaii source replay
+PASS recorded input/native,
+physical1440/FFB0, display watch and owned shutdown. Completed5760 images
+are byte-exact to the prior dense pair. Candidate changes8209 right-margin
+indexed pixels, all formerly game-owned/tag1 and now host-tagged, with exact
+original-only planes and4:3 center. Exact current original DMA+texture
+reproduces all8209 from one lower panorama strip quad, ordinal9; structural
+backdrop checker has zero unclassified original pixels. CRT crop shows a
+coherent guardrail continuation. Exact new candidate packet/depth source,
+other frames/courses,4K and release safety remain open. No product change.
+
 ## September 28 World 2.5 dense Hawaii transition checkpoint
 
 Read `docs/reviews/2026-09-28-world25-hawaii-dense-transition.md`. Frozenf762
@@ -10,11 +24,12 @@ physical1440/FFB0, display watch and owned shutdown. Eleven completed views
 adds673 left-edge pixels,5775 adds24339 and 5780..5800 retain left foliage.
 The matched5775/5800 images are byte-identical to prior sparse captures. The
 5775 prior-host attribution remains one-frame only; the new5760 guardrail
-extension is visually coherent but lacks indexed/source ownership. This does
+extension replaces a source-qualified original lower panorama strip, while
+its exact candidate packet source remains open. This does
 not establish fade, eliminate pop-in, repair Hawaii's authored5900 rectangle,
 or qualify4K/other courses. No native/product/deployment change. Next bounded
-World gate: qualify5760 ownership if assessing policy promotion, or search
-for a concrete harmful overlap on another scene. Do not rerun the dense pair
+World gate: qualify candidate packets at5760 if assessing policy promotion,
+or search for a concrete harmful overlap on another scene. Do not rerun the dense pair
 without a changed hypothesis.
 
 ## September 28 USA partial-coverage cost checkpoint
