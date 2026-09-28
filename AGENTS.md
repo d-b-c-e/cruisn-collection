@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 ultrawide World checkpoint
+
+Primary display is now one physical3440×1440 ultrawide (DISPLAY9). Read
+`docs/reviews/2026-09-28-world-new-york-ultrawide-check.md`. Frozenf762
+matched New York3608-input control/candidate PASS original/native, CRT-on/4x,
+FFB0, display watch and owned shutdown. Seven completed3598..3604 images
+change only in right third. At3600 both new3424×1353 BMPs are exact centered
+copies of prior2544×1353 control/candidate with 440 black pixels per side.
+This is display-stability evidence, not 21:9 view, 4K, release or full-course
+parity. The new centered-capture checker and two negative/positive tests pass.
+No deployment, Stream Deck or public release change.
+
 ## September 28 New York frame 9000 temporal checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-9000-temporal.md`. Frozen f762

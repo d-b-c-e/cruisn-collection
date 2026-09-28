@@ -55,6 +55,12 @@ submitted geometry, read the
   local motion evidence, not full-course, 4K or fragment-depth acceptance.
   Its saved callback screen retains one 69 ms candidate interval after a
   scheduled native snapshot; this instrumented pair is not a pacing pass.
+  On the newly connected physical 3440×1440 ultrawide, a separate
+  [frame-3600 check](2026-09-28-world-new-york-ultrawide-check.md) passes a
+  seven-frame matched pair with right-third-only changes. Both control and
+  candidate completed frame-3600 images are exact centered copies of their
+  earlier 2544×1353 captures with 440 black pixels per side. This validates
+  the monitor transition for that sample but does not add 21:9 game view.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
