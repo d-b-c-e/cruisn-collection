@@ -36,7 +36,9 @@ The next evidence gates should target different uncertainties:
    quality regression despite more visible geometry. The
    [partial-coverage interval](2026-09-28-usa-bridge-farcoverage-trial.md)
    demonstrates a bounded earlier left-edge appearance and exact center/right,
-   but does not prove the whole bridge fades or enters smoothly. Preserve the
+   while the [exact source tap](2026-09-28-usa-bridge-source-projection.md)
+   confirms one ready member is rejected by ordinary projection. This does not
+   prove the whole bridge fades or enters smoothly. Preserve the
    raw USA verifier FAIL and separate posthoc pass.
 2. **World:** keep active non-road margins gated. The New York gap is a real
    positive case, but source/ordered ownership and transitions on another

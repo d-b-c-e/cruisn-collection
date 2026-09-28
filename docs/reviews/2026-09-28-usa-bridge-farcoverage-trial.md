@@ -19,10 +19,13 @@ stable physical 2560×1440 display, literal FFB0 and owned shutdown. Its
 future source `0x800a0040`, with a valid material, before its first logged host
 submission at 10475. Independent offline reconstruction at the existing
 240,000 limit emits zero ordinary target quads with a projection rejection;
-the already gated partial-coverage mode emits three textured target quads at
+the already gated partial-coverage mode emits three target quads at
 native x −61..−42, y 144..185. This distinguishes a projection limitation in
 that saved RAM state from missing residency. It is **not** exact source-time
 camera/operand evidence at 10470 and does not classify the other bridge pieces.
+The later [exact scene-hook capture](2026-09-28-usa-bridge-source-projection.md)
+resolves that timing limit for frame 10473 and independently reproduces the
+entire ordinary native scene before screening the same three target quads.
 
 ## Matched completed-image result
 

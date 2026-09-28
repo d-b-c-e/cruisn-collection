@@ -11,6 +11,9 @@ uses a saved end-of-frame pre-activation state and a matched 11-image live
 interval. One ready object is projection-rejected in that saved state, and the
 existing opt-in coverage path makes bridge structure visible earlier at the
 far left. This refines the gate below without proving a global fix.
+The subsequent [exact frame-10473 scene tap](2026-09-28-usa-bridge-source-projection.md)
+reproduces all 3,706 ordinary native quads and confirms projection rejection
+for that ready object at the actual host read; other members remain open.
 
 A new bounded replay of the saved 12,212-input Golden Gate drive stopped after
 10,502 inputs on the frozen `f762e01d63b` binary, physical 2560×1440 primary

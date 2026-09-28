@@ -1,5 +1,23 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA exact source-projection checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-source-projection.md`. A new read-only
+Lua tap at USA C31 PC81/address40 captures exact source frame10473 on the
+Golden Gate recording. Frozenf762 replay PASSes10477 inputs/native, stable
+physical1440/FFB0, owned shutdown. Its host scene time/page/3706 quads/hash
+exactly match the prior detailed trace. Independent RAM+ROM reconstruction
+matches all6 native counters and full ordered hash. Ready future object
+0x800a0040 is projection-rejected ordinary at10473, before first logged10475
+submission. Existing gated partial coverage offline adds76 quads including3
+target quads and preserves all3706 old16-word quads in relative order. This
+is exact source state but still not candidate live-packet/completed-pixel
+attribution, other-member smoothness,4K,other-course,performance or release.
+Initial raw checker FAIL compared native resident pending264 to total4468;
+corrected v2 PASS and raw failure retained. No product/deployment change.
+Next gate: bounded candidate-packet attribution and visual transition/cost,
+not larger global limit or broad repeat without a changed hypothesis.
+
 ## September 28 USA partial far-coverage checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-farcoverage-trial.md`. Frozenf762

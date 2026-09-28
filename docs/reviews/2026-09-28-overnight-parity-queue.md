@@ -85,13 +85,17 @@ submitted geometry, read the
    A new [matched partial-coverage trial](2026-09-28-usa-bridge-farcoverage-trial.md)
    shows a ready bridge source projection-rejected in saved end-of-frame RAM;
    the already gated mode brings far-left red structure into view earlier in
-   all 11 completed 1440p interval images, with center/right exact. The first
-   source-time operands and each changed pixel are not yet attributed.
+   all 11 completed 1440p interval images, with center/right exact. An
+   [exact source-time tap](2026-09-28-usa-bridge-source-projection.md) at 10473
+   reproduces the full 3,706-quad ordinary scene and confirms projection
+   rejection of ready object `0x800a0040`; partial coverage adds its three
+   quads, preserving every old ordered quad. Each changed completed pixel is
+   not yet attributed to a new packet.
    A fixed-ROI red-color screen of those saved images stays candidate-positive
    in every sample; its count narrows as control scenery appears. This is a
    visibility hint, not bridge-object segmentation or smoothness proof.
-   Object completeness and intervening occlusion still require a targeted
-   gate before any policy change.
+   Other members, object completeness and intervening occlusion still require
+   a targeted gate before any policy change.
    The dark right panel is original game output, a separate issue.
 5. **Exotica useful distance:** find a saved open-sightline interval with an
    actual completed outer-boundary change. Measure source activation and
