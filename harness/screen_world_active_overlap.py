@@ -11,8 +11,9 @@ from pathlib import Path
 
 import numpy as np
 
-from analyze_vunit_margin_gap import PACKET
+from analyze_vunit_margin_gap import PACKET, projected_box
 from offroad_gap_loaded_screen import render_quads
+from vunit_display_scene import load as original_scene
 
 
 def sha(path):
@@ -98,7 +99,23 @@ def screen(control,trial,source,projection,native_control,native_trial):
         raise ValueError('debug quad IDs changed isolated raster coverage')
     changed=(aa[0]!=bb[0])|(aa[1]!=bb[1])
     covered=tags!=0
-    prior=changed & (aa[1]!=0)
+    # Mirror tags use bit 2 for auxiliary host geometry (5/7), while 1/3
+    # denotes an ordinary game pixel. Occupied does not mean host-owned.
+    prior_game=changed & (aa[1]!=0) & ((aa[1]&4)==0)
+    prior_host=changed & ((aa[1]&4)!=0)
+    prior_original_exact=prior_game & (aa[0]==aa[2]) & (aa[1]==aa[3])
+    original=original_scene(control/'run').current
+    original_index,original_tag=render_quads(original,texture_bytes)
+    original_ids,original_idtags=render_quads(original,texture_bytes,debug_quad_id=True)
+    original_current_exact=(prior_original_exact & (original_tag!=0) &
+                            (original_idtags!=0) & (aa[0]==original_index))
+    original_ordinals,original_counts=np.unique(original_ids[original_current_exact],return_counts=True)
+    original_attribution=[{'original_dma_ordinal':int(ordinal),
+                           'changed_pixels':int(count),
+                           'native_box':projected_box(tuple(map(int,original[int(ordinal)]))),
+                           'quad_sha256':hashlib.sha256(np.asarray(original[int(ordinal)],dtype='<u2').tobytes()).hexdigest()}
+                          for ordinal,count in zip(original_ordinals,original_counts)]
+    original_attribution.sort(key=lambda row:row['changed_pixels'],reverse=True)
     fresh=changed & (aa[1]==0) & (bb[1]!=0)
     ys,xs=np.where(changed)
     qualified_hits={tuple(h['quad_words']):h['object'] for region in p['probes']
@@ -125,18 +142,28 @@ def screen(control,trial,source,projection,native_control,native_trial):
     all_indices_equal=int((changed&covered&(bb[0]==index)).sum())==int(changed.sum())
     return {'passed':bool(changed.any() and all_covered and all_indices_equal),
             'scope':'Exact native source-scene/live-packet join and isolated added-quad raster '
-                    'at one completed World frame. No full ordered compositing or temporal acceptance.',
+                    'at one completed World frame. No full ordered compositing, occlusion safety '
+                    'or temporal acceptance.',
             'source_frame':source_frame,'completed_frame':frame,'visible_page':page,
             'control_packets':len(old),'trial_packets':len(new),'added_packets':len(added),
             'native_scene_packet_order_exact':True,
             'added_packets_all_active_objects':True,
             'source_qualified_roi_added_packets':matched,
             'changed_indexed_pixels':int(changed.sum()),
-            'changed_prior_host_owned_pixels':int(prior.sum()),
+            'changed_prior_game_owned_pixels':int(prior_game.sum()),
+            'changed_prior_host_owned_pixels':int(prior_host.sum()),
+            'changed_prior_game_identical_to_original_only_pixels':int(prior_original_exact.sum()),
+            'changed_prior_game_dither_pixels':int((prior_game & ((aa[1]&3)==3)).sum()),
+            'changed_prior_game_current_dma_exact_pixels':int(original_current_exact.sum()),
+            'changed_prior_game_current_dma_attribution':original_attribution,
+            'guest_overdraw_requires_review':bool(prior_game.any()),
             'changed_newly_owned_pixels':int(fresh.sum()),
+            'changed_control_tag_counts':{str(int(tag)):int(count) for tag,count in zip(*np.unique(aa[1][changed],return_counts=True))},
+            'changed_candidate_tag_counts':{str(int(tag)):int(count) for tag,count in zip(*np.unique(bb[1][changed],return_counts=True))},
             'changed_pixels_inside_isolated_added_coverage':int((changed&covered).sum()),
             'changed_pixels_outside_isolated_added_coverage':int((changed&~covered).sum()),
-            'prior_host_changes_inside_isolated_added_coverage':int((prior&covered).sum()),
+            'prior_game_changes_inside_isolated_added_coverage':int((prior_game&covered).sum()),
+            'prior_host_changes_inside_isolated_added_coverage':int((prior_host&covered).sum()),
             'candidate_index_equal_isolated_on_covered_changes':int((changed&covered&(bb[0]==index)).sum()),
             'changed_pixels_inside_source_qualified_roi_quads':int((changed&qcovered).sum()),
             'changed_pixels_outside_source_qualified_roi_quads':int((changed&~qcovered).sum()),
@@ -149,6 +176,7 @@ def screen(control,trial,source,projection,native_control,native_trial):
             'changed_bounds':([int(xs.min()),int(ys.min()),int(xs.max()),int(ys.max())] if len(xs) else None),
             'sha256':{'control_report':sha(control/'report.json'),'trial_report':sha(trial/'report.json'),
                       'source_report':sha(source/'report.json'),'projection':sha(projection),
+                      'original_dma':sha(control/'run/capture/quads.bin'),
                       'control_packets':sha(old_path),'trial_packets':sha(new_path),
                       'source_texture':sha(texture),
                       'native_control':sha(native_control),'native_trial':sha(native_trial),

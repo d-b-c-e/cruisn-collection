@@ -10,8 +10,11 @@ diagnostics. No tested multiplier eliminates guest scene-list pop-in globally.
 
 - **World 2.4 New York:** the active non-road path recovers both measured
   unowned wedges at frame 6000 and all but ten indexed edge pixels at 3600.
-  Source-time packets explain every 3600 indexed change, including the overlap
-  with prior host geometry. Nine matched frames on each side of 3600 and 6000
+  Source-time packets explain every 3600 indexed change, including 25,631
+  pixels previously drawn by the game. The corrected mask-tag check shows
+  zero changed pixels previously belonged to host geometry; all 25,631
+  trace to one original backdrop strip in this scene. Nine matched
+  frames on each side of 3600 and 6000
   preserve the center and show moving margin repair. The older finish crash did
   not recur on this recorded drive; its old 3×/+12 or intermittent cause is
   still open.
@@ -35,7 +38,7 @@ diagnostics. No tested multiplier eliminates guest scene-list pop-in globally.
 
 1. **World active non-road admission:** use saved source/packet evidence to
    search for a concrete case where new policy-2 geometry incorrectly covers
-   previously correct host scenery. Source-time New York 3600 is an attribution
+   previously correct game scenery. Source-time New York 3600 is an attribution
    pass, not a universal occlusion test. A negative screen of a distinct scene
    or course is more useful than another full New York drive. Keep any raw
    failures and do not promote the option from changed-pixel counts alone.

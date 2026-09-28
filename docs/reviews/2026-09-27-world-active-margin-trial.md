@@ -66,8 +66,10 @@ The independent earlier New York source3596/display3600 right wedge also
 passes a 3,602-input candidate replay. The matched indexed component acquires
 host ownership at **24,759 of 24,769** pixels; ten isolated pixels remain.
 The original indexed planes and 4:3 center are exact. Unlike frame6000, this
-scene changes 25,631 previously host-owned margin pixels as new geometry
-overlays existing host scenery; the finished image was visually inspected and
+scene changes 25,631 previously game-owned margin pixels as new geometry
+overlays an original backdrop strip (corrected by the later
+[source-time ownership check](2026-09-28-world-new-york-overlap-source.md));
+the finished image was visually inspected and
 the right wall/shoulder looks continuous. This is a larger overlap and needs
 more temporal/course scrutiny before product promotion. It is not a proof
 that every missing texture or distant pop-in is fixed.
@@ -129,7 +131,8 @@ are a color hint, not a proven defect. Local evidence is
 and visibility check, not a full-race geometry/transition verdict.
 
 Next, inspect a denser World 2.5 interval or a World 2.4 transition where
-newly admitted objects can overlap prior host scenery. 4K and physical-wheel
+newly admitted objects can overlap original game pixels; here they replace
+one backdrop strip, but broader occlusion safety remains open. 4K and physical-wheel
 acceptance remain open.
 The New York result addresses **black widescreen coverage gaps**, not the
 distance at which mountains/trees enter the guest's scene list; global pop-in

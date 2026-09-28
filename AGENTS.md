@@ -11,6 +11,13 @@ positive-defect searches using saved evidence; reserve new GPU/native runs for
 changed hypotheses. No personal renderer/public release changes. Recovery
 heartbeat ACTIVE every30 minutes only as a backup.
 
+**Ownership correction:** New York 3600's 25,631 overlapping pixels are
+original game pixels, not prior host scenery. Earlier overlap v1–v5 reports
+misread nonzero mask tags; source-hashed v8 attributes all of these pixels to
+one original backdrop strip (DMA ordinal3) in this scene. It does not show
+road/foreground damage here, but cross-scene occlusion safety remains open.
+No candidate promotion follows from the attribution PASS.
+
 ## September 28 World 2.5 Hawaii interval checkpoint
 
 Read `docs/reviews/2026-09-28-world25-active-margin-interval.md`. Frozenf762
@@ -73,7 +80,7 @@ the one narrow guest-projection ROI hit contributes **zero** changed pixels;
 do not claim it repaired the wedge. Standalone native source scenes exactly
 match all 2452/3263 live packet words and order. The 811 added policy-2
 packets are active non-road objects; isolated source-texture raster matches
-all50390 changed indexed pixels (24759 newly owned +25631 prior host-owned).
+all50390 changed indexed pixels (24759 newly owned +25631 prior game-owned).
 180 visible added packets across39 objects contribute, full4:3 indexed center
 and original planes exact. Ten edge pixels remain unowned. This is one-frame
 attribution/material evidence, not temporal/release acceptance. Next bounded
@@ -94,7 +101,7 @@ separately gated diagnostic native candidate `f762e01d63b` (SHA256
 At frame6000 it fills both measured margin components exactly (8117 left,
 11651 right), leaving original indexed planes and 4:3 center exact. Nine sparse
 completed frames show margin-only changes and exact center; frame3600 fills
-24759/24769 right-gap pixels but overwrites 25631 previously host-owned margin
+24759/24769 right-gap pixels but overwrites 25631 previously game-owned margin
 pixels. This is New York/physical1440/FFB0 only, not World-wide or 4K product
 acceptance. No renderer deployment, release or public patch replacement.
 Preserve failed first native fade replay, failed Python-reader raw report,

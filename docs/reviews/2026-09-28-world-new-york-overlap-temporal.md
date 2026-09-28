@@ -31,7 +31,11 @@ the entire course. It does not establish a fade or eliminate scenery pop-in.
 
 The prior source-time overlap report remains the exact material attribution
 for frame 3600: added active non-road packets explain all 50,390 changed
-indexed pixels there, including 25,631 already host-owned pixels. The present
+indexed pixels there, including 25,631 already game-owned pixels. The corrected
+[ownership analysis](2026-09-28-world-new-york-overlap-source.md) shows these
+pixels exactly match the original-only mirror before the host candidate draws.
+All 25,631 trace to one original backdrop strip in this frame.
+The present
 completed images strengthen temporal visual evidence but do not replace that
 indexed/source check, and nine sampled frames cannot prove that active host
 overlap never causes a wrong occlusion elsewhere. The narrow ten-pixel indexed
