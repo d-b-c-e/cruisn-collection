@@ -1,5 +1,14 @@
 # Rendering parity checkpoint — September 23
 
+**September 27 update:** New York and Pike's Peak attended recordings and
+focused replays are now available. Read
+[their source-backed review](2026-09-27-new-york-pikes-peak.md) before using the
+September 23 next-step text below. New York completed without reproducing the
+earlier finish crash; its sampled black wedges on both sides are unowned draw
+gaps. Pike's Peak passes a second-route resident-margin safety screen, but ten
+sparse completed views are all exact to control despite 268,381 extra submitted
+quads. Neither candidate has been deployed.
+
 Continuous diagnostic 3× scenery runs across USA, World, Off-Road and Exotica,
 but it is **not ready for product promotion**. A shared multiplier does not
 produce equal visible gain or guarantee complete courses. The installed
@@ -10,8 +19,8 @@ the diagnostic results below.
 | Game | Demonstrated with recorded input | Highest-value remaining gap |
 | --- | --- | --- |
 | USA | Continuous 3× and Continue/Golden Gate transition preserve 12,212 inputs, original motion and owned shutdown; distant geometry changes checked completed 4K frames. | Broader courses, transition appearance and final integrated settings/4K acceptance. No claim that 3× eliminates pop-in. |
-| World 2.4/2.5 | Both revisions have continuous race transitions; 2.5 adds distant coverage in 18/21 saved 4K frames. Sampled Germany road holes are repaired by a separate gated road treatment. | New York's reported distant black flashes and finish-line crash need a recorded reproduction. Hawaii has an authored terrain edge: the offline skirt trial made it worse. Broader track and 4K integration remain open. |
-| Off-Road | Continuous 3× and El Paso restart qualify. Source/display joins at 3120 and 3136 find authored loaded ground absent from both draw lists. An opt-in resident-ground candidate closes the sampled blue opening through 11 completed 1440p views; a full 9,644-input El Paso replay preserves original input/native evidence and owned shutdown. Independent Python/native ordered scenes match live fingerprints at both source frames. Three matched later views change only 20 right-margin pixels at 4000 and are exact at 6000/8000. | The resident policy is diagnostic only. Another course, 4K visual acceptance, physical wheel/force feedback and detailed packet coverage remain open. Simple pixel fills and the qualified static billboard class cannot repair the sampled opening. |
+| World 2.4/2.5 | Both revisions have continuous race transitions; 2.5 adds distant coverage in 18/21 saved 4K frames. Sampled Germany road holes are repaired by a separate gated road treatment. New York 2.4 now has a 9,695-input attended drive and source-joined right and two-sided black-wedge samples. | Test source-qualified geometry for New York's unowned margin pixels. The older finish crash did not recur on the recorded continuous-3× route; intermittent or +12-specific failure remains unresolved. Hawaii's generic skirt trial made its authored edge worse. Broader track and 4K integration remain open. |
+| Off-Road | Continuous 3× and El Paso restart qualify. Source/display joins at 3120 and 3136 find authored loaded ground absent from both draw lists. An opt-in resident-ground candidate closes the sampled blue opening through 11 completed 1440p views; a full 9,644-input El Paso replay preserves original input/native evidence and owned shutdown. Independent Python/native ordered scenes match live fingerprints at both source frames. The new 9,657-input Pike's Peak drive passes a matched 9,002-input resident/control pair, with ten exact completed images despite 268,381 extra submitted quads. | The resident policy is diagnostic only. Pike's Peak safety samples show no visible gain; a known defect interval, 4K visual acceptance, physical wheel/force feedback and detailed packet coverage remain open. Simple pixel fills and the qualified static billboard class cannot repair the sampled El Paso opening. |
 | Exotica | Amazon/race transition and Mars evidence show a small, real 3× completed-image gain. The current native006 passes the Mars 5,700-input and Amazon 11,260-input routes on a stable physical 1440p monitor with exact requested completed images and owned shutdown. | Useful outer appearance/fade, remaining irregular pauses, other courses, reset/failure boundaries and renewed 4K capture. Earlier merged-display failures remain failures; no physical-wheel acceptance. |
 
 The September 23 Off-Road investigation is unusually source-specific:
@@ -39,21 +48,16 @@ These are route-specific facts, not a safe general renderer policy.
 The next efficient sequence is:
 
 1. For Off-Road, retain the [resident-margin candidate](2026-09-24-offroad-resident-margin-trial.md)
-   as a gated diagnostic. Extend the two-frame independent source proof to
-   detailed packets on another route, then check that course and physical 4K completed frames before
-   considering promotion. A September 24 continuous-3× recording plan and
-   live-input preflight for a contrasting Off-Road course are prepared locally
-   at `results/diagnostics/offroad-next-course-20260924`; neither ran the game.
-   Replay the resulting drive with the resident switch after the owner records
-   it. Do not enable legacy Margin Fill or a global skirt.
-2. For World, obtain a representative New York recording through the finish
-   with the external clock; disable FFB in unattended diagnostic replays. The
-   old crash report cannot be called fixed from Germany/Hawaii data. Reproduce it with
-   a bounded 3×/control pair before any source change, then isolate guest,
-   renderer and shutdown evidence. A September 24 World2.4 continuous-3×
-   recording plan and live-input preflight are saved locally at
-   `results/diagnostics/world-new-york-20260924`; both are prepared only, and
-   no New York gameplay or crash reproduction has occurred.
+   as a gated diagnostic. The new Pike's Peak route is recorded and replays
+   cleanly with the policy, but its ten sparse pairs show no completed-image
+   difference. Find a positive margin defect on that course, then extend
+   source/packet and physical 4K checks before considering promotion. Do not
+   enable legacy Margin Fill or a global skirt.
+2. For World, use the New York recording and its source-joined frame 3600/6000
+   gaps to test an authored-geometry policy. Both sides at 6000 have exact
+   zero index and ownership tags in original and extended pages; conservative
+   projected bounds miss tight samples. Do not infer all artifacts are the
+   same or say the historical finish crash is fixed from one clean finish.
 3. For Exotica, reuse the stable-1440 native006 results. A changed hypothesis
    or a physical 4K display is needed before repeating whole Mars/Amazon
    drives. Continue source/visibility work on a demonstrably visible outer
@@ -62,7 +66,8 @@ The next efficient sequence is:
    default-settings, full 4K and attended wheel/FFB gates before promotion.
    Current host scenery switches are diagnostic controls, not shipped menus.
 
-Relevant detailed evidence: [remaining release work](2026-09-15-parity-remaining-work.md),
+Relevant detailed evidence: [New York and Pike's Peak](2026-09-27-new-york-pikes-peak.md),
+[remaining release work](2026-09-15-parity-remaining-work.md),
 [USA transition](2026-09-16-usa-race-transition.md),
 [World transition](2026-09-16-world-race-transition.md),
 [Off-Road transition](2026-09-16-offroad-race-transition.md),

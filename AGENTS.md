@@ -2,6 +2,32 @@
 
 ## Current work: rendering parity, September 23
 
+September27 recorded drives supersede the prepared-only World New York and
+Off-Road second-course notes below. World2.4 New York passes9,695 attended
+inputs through the finish with continuous3x/FFB0; prior3x/+12 finish crash
+did not recur, not fixed. A9,302-input survey has25 completed1440p views.
+Source-joined frame3600 right margin has24,769 ROI-clipped connected
+zero-index/zero-tag pixels in both original and extended pages; exact sampled
+points have no original/host projected coverage. At frame6000, matched source
+5997/visible page0/10,555 host packets produces byte-exact survey BMP;
+left/right zero-owned components span8,117/11,651 ROI-clipped pixels, and
+tight point probes on both sides have no original or host bounds. Initial
+source5996 run FAILED; raw report retained, corrected5997 v2 PASS. These are
+geometry coverage samples, not a global texture or pop-in fix. Pike's Peak
+attended Off-Road recording passes9,657 inputs. Matched9,002-input
+resident/control pair passes original motion and owned shutdown;10 completed
+frames are byte-exact despite268,381 extra resident quads. Cross-course
+safety screen has no demonstrated visual benefit. No4K, physical FFB,
+deployment or release. Read
+docs/reviews/2026-09-27-new-york-pikes-peak.md and the revised parity
+checkpoint before further work. Local evidence is under
+results/diagnostics/world-new-york-20260927-live-1 and
+results/diagnostics/offroad-pikes-peak-20260927-live-1. Personal UX707 and
+publicv0.5.0 unchanged. Next: source-qualified World geometry experiment
+against the saved two-sided gaps; for Pike's Peak, identify a positive defect
+interval before another broad replay. Continue useful independent work,
+serialize the shared GPU, keep MIDV_FFB=0, do not redeploy.
+
 September24 build-only native successor46e14e33547 replaces raw Exotica reset
 GLSL literals with byte-identical adjacent C++ strings so MAME makedep can
 scan them. REGENIE regenerated34/34 projects and linked; postcommit binary
