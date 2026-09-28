@@ -13,7 +13,14 @@ points have no original/host projected coverage. At frame6000, matched source
 left/right zero-owned components span8,117/11,651 ROI-clipped pixels, and
 tight point probes on both sides have no original or host bounds. Initial
 source5996 run FAILED; raw report retained, corrected5997 v2 PASS. These are
-geometry coverage samples, not a global texture or pop-in fix. Pike's Peak
+geometry coverage samples, not a global texture or pop-in fix. Exact source
+5997 program-RAM capture now PASS,512KiB SHA af3202e1…8652d05; completed
+image and indexed mirror remain byte-exact. Read-only World2.4 active-list
+census finds335 objects,323 flag0x1000/12 flag0x1800 and ZERO eligible
+active-road-margin objects in this source scene;96 current-section and3,082
+future descriptors. This does not prove that non-road objects can cover the
+gap or have valid materials. Next project those active non-road candidates.
+Pike's Peak
 attended Off-Road recording passes9,657 inputs. Matched9,002-input
 resident/control pair passes original motion and owned shutdown;10 completed
 frames are byte-exact despite268,381 extra resident quads. Cross-course

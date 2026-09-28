@@ -58,11 +58,32 @@ the exact ownership values establish the missing pixels. The two-sided result
 supports a draw-coverage mechanism in this part of New York, but says nothing
 about distant object pop-in or defects elsewhere.
 
+The emulator already had an opt-in program-RAM dump hook. The replay harness
+now exposes an exact `--ramdump-frame` alongside `--capture-state`, verifies
+the requested 512 KiB file and hashes it into the report. A third bounded
+6002-input replay captures source frame 5997 RAM (SHA-256 `af3202e1…8652d05`),
+while preserving the same completed BMP and all indexed mirror plane hashes
+as the passing source run. The read-only World 2.4 list census validates the
+four known list-walker instructions and uses a previously captured 16 MiB
+World 2.4 ROM (SHA-256 `1ce593ed…de15b`). At source 5997 it finds 335 active
+objects: 323 in flag class `0x1000`, 12 in `0x1800`, and **zero** meeting the
+existing active-road margin eligibility (`0x1001` with bound resources).
+The loader is at stage 0 with 96 definitions in its current section and
+3,082 future definitions. The offline frontier exactly matches the native
+source-scene start, stage, cursor, definition and skipped counts; the native
+scene itself reports zero road objects/quads. Thus the current gated active-*road* route has no
+eligible object to cover this sampled frame. The census does not project the
+335 active non-road objects, prove texture residency, or identify a safe
+replacement. That is the next source experiment.
+
 Evidence: `gl-survey-run/report.json`, `margin-3600-dma-run/report.json`,
 `margin-3600-geometry-v3.json`, and `margin-3600-point-geometry.json` in the
 World local directory. Frame 6000 is in `margin-6000-dma-run-v2/report.json`,
 `margin-6000-{left,right}-geometry.json` and
-`margin-6000-{left,right}-point.json`. The first 6000 run is preserved as
+`margin-6000-{left,right}-point.json`. The RAM capture and census are
+`margin-6000-ram-run/report.json` and `margin-6000-active-census-v2.json`
+(v1 retained before the native scene cross-check).
+The first 6000 run is preserved as
 `margin-6000-dma-run/report.json`: it **failed** before comparison because
 the requested source frame 5996 was not on the completed visible page.
 The source journal identified 5997; only v2 is qualified. The initial 3600
@@ -99,9 +120,11 @@ are `paired-control-run/report.json`, `paired-resident-run/report.json`, and
 the comparator are only review hints, not texture-defect proof.
 
 Neither recording qualifies 4K, physical wheel/FFB, every course, or a public
-renderer deployment. The next efficient World step is to test a
-source-qualified geometry policy against the saved two-sided indexed and
-completed frames without repeating an attended drive. For Off-Road, target a known Pike's Peak margin
+renderer deployment. The next efficient World step is to reconstruct and
+project the active non-road candidates at source 5997, qualify any candidate's
+materials, and compare its ordered pixels against the saved two-sided indexed
+and completed frames. The existing active-road path has no eligible object in
+that source scene. For Off-Road, target a known Pike's Peak margin
 defect or a denser short interval before inferring that the resident candidate
 improves this route; avoid another full-drive replay merely for more sparse
 identical samples.
