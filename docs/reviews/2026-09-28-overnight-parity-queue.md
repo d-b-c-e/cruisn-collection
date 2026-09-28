@@ -58,7 +58,12 @@ submitted geometry, read the
   [five-frame-cadence transition check](2026-09-28-world25-hawaii-dense-transition.md)
   finds a visually coherent right guardrail extension at 5760 and then
   left-edge foliage through 5800; eleven matched completed views preserve the
-  center. Its [5760 ownership check](2026-09-28-world25-hawaii-guardrail-ownership.md)
+  center. A [one-frame-cadence foliage screen](2026-09-28-world25-hawaii-foliage-steps.md)
+  at 5768..5778 narrows the left-edge entrance to steps at 5771 and 5773,
+  with a separate right guardrail change at 5773–5774. Its explicit CRT-on
+  frame 5775 repeats the earlier saved BMPs exactly; the preliminary CRT-off
+  pair is retained but is not default-view evidence. The
+  [5760 ownership check](2026-09-28-world25-hawaii-guardrail-ownership.md)
   traces all 8,209 replaced indexed pixels to the game's lower panorama strip;
   the exact source scene and two added objects explain all candidate indices
   there. Cross-course safety remains open.

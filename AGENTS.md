@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 World 2.5 foliage handover checkpoint
+
+Read `docs/reviews/2026-09-28-world25-hawaii-foliage-steps.md`. Frozen f762
+matched World2.5 Hawaii 5768..5778 one-frame CRT-on pair PASSes 5782
+inputs/native, physical1440/FFB0/display watch and owned shutdown. Frame5775
+control/trial BMPs are byte-exact to the earlier five-frame pair. Added
+foliage enters at left in visible steps 5771 and5773; a separate right
+guardrail change appears5773–5774. Center remains exact, but this does not
+establish a fade/no-pop claim or fix the authored5900 terrain rectangle.
+Initial matched CRT-off pair passed internally but is not default-view
+repeatability evidence; preserve it separately. No product/deployment change.
+
 ## September 28 New York frame 6311 source-overlap checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-6311-source-overlap.md` and the
