@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 four-game visibility triage
+
+Read `docs/reviews/2026-09-28-four-game-visibility-triage.md` before another
+distance or margin experiment. It compares saved matched completed-image
+returns with explicit non-equivalent baselines: USA original→3x11/13 images,
+Exotica2x→3x4/15 (985 frame-pixels), World nonroad margin New York9/9,
+Germany9/9,Hawaii6/9, and Off-Road Pike resident0/10 despite268381 extras.
+These are separate routes/resolutions/interventions, not quality scores.
+Next USA source/overlay dark-pixel gate is the best saved visible 3x case;
+World needs cross-scene safety, Pike needs a positive second-course defect,
+and Exotica needs an open sightline. No new game run in the triage.
+
 ## September 28 World 2.4 Germany ownership checkpoint
 
 Read `docs/reviews/2026-09-28-world24-germany-overdraw.md`. Matched frozenf762

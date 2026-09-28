@@ -5,6 +5,9 @@ route-specific. The personal Stream Deck renderer and public v0.5.0 remain on
 their accepted baselines. The World active non-road margin path in frozen
 native `f762e01d63b` and the Off-Road resident-ground path remain opt-in
 diagnostics. No tested multiplier eliminates guest scene-list pop-in globally.
+For a compact cross-game comparison of **visible** returns rather than
+submitted geometry, read the
+[four-game visibility triage](2026-09-28-four-game-visibility-triage.md).
 
 ## What the new recorded drives establish
 
