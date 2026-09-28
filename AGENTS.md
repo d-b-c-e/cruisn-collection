@@ -1,5 +1,16 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 World 2.5 Hawaii interval checkpoint
+
+Read `docs/reviews/2026-09-28-world25-active-margin-interval.md`. Frozenf762
+matched Hawaii5970-input control/nonroad pair PASSes original/native,
+physical1440/FFB0 and owned shutdown. Nine completed5750..5950 views: six
+change only left third,36204 total frame-pixels/107824 extra quads, center
+exact;5775 adds far-left trees.5750/5900/5950 exact. The known authored dark
+rectangle at5900 persists. Expected exact-GL difference FAIL retained;
+route/preservation PASS. This is cross-revision visibility/safety evidence,
+not a Hawaii terrain repair or 4K/release acceptance. No native/product change.
+
 ## September 28 Pike's Peak sharp-turn screen
 
 Read `docs/reviews/2026-09-28-offroad-pikes-sharp-turn-screen.md`. A saved
