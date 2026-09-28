@@ -13,6 +13,13 @@ Hawaii5775; selected USA/Off-Road source contrasts have zero detections. No
 renderer change, native build or live game run. A structural tile is not proof
 of safe occlusion; next gate is broader source/transition validation before
 an opt-in original-mask policy.
+The new source-hashed backdrop-overdraw gate joins matched original DMA and
+qualified changed-pixel attribution: NY3600 25631/25631, Germany7280
+19471/19471 and Hawaii5775 34666/34666 prior game pixels are in repeated
+backdrop strips, with zero unclassified foreground pixels in these samples.
+Hawaii still has972 prior host pixels unresolved by this gate. Four focused
+positive/negative tests PASS; no live run or product change. This is a useful
+negative regression check, not a general safety or release pass.
 
 ## September 28 indexed pixel source probe
 

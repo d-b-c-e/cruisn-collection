@@ -50,3 +50,33 @@ at transition frames. The structural screen alone does not establish that a
 tile is sky/ocean, that host depth order is correct, or that foreground is safe
 throughout either World revision. Do not promote the active non-road candidate
 from these five scenes.
+
+## Source-attributed foreground gate
+
+`harness/check_vunit_backdrop_overdraw.py` now joins an existing qualified
+original-DMA overdraw report to that frame's saved source DMA. It verifies the
+source hash and completed frame, then requires the count of attributed game
+pixels to be complete. It reports each game-owned pixel that the candidate
+replaces whose source ordinal is **not** in a structurally repeated backdrop
+strip. This is a reusable negative screen; a zero count is not permission to
+turn on the renderer policy.
+
+The three available source-qualified positive-overdraw frames all have zero
+unclassified game pixels: New York 3600 has 25,631/25,631 in the upper strip;
+Germany 7280 has 19,471/19,471 in the upper strip; Hawaii 5775 has
+34,666/34,666 across the upper and lower strips. Hawaii separately replaces
+972 prior auxiliary pixels whose packet identity this screen does not resolve.
+New York 6000 adds only formerly unowned pixels, so it is not a foreground
+overdraw test. The local source-hashed
+`world-backdrop-overdraw-screen-v2.json` contains the three joins. The v1
+screen is preserved but superseded by v2's explicit source-report hash check;
+the overlap report's separate source-time tap must not be mistaken for its
+matched original-DMA replay. Four focused
+tests include a foreground-ordinal negative and reject incomplete/failed
+source attribution; no new game replay or native build was used.
+
+This gate catches a source-attributed foreground overlap if a later scene
+shows one. Its structural rule can still misclassify a repeated foreground
+pattern, and the present samples do not cover transitions, other courses,
+depth correctness or completed 4K appearance. Prior host overdraw needs a
+separate source/order test. Keep the active non-road option diagnostic.

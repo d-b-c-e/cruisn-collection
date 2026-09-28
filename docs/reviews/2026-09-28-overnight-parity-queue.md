@@ -54,8 +54,12 @@ submitted geometry, read the
    [panorama safety screen](2026-09-28-world-panorama-safety-screen.md) shows
    why the existing `0xc5` sky heuristic would reject 550 legitimate-looking
    Hawaii lower-band overdraw pixels; structural backdrop recognition remains
-   diagnostic. Keep any raw failures and do not promote the option from
-   changed-pixel counts alone.
+   diagnostic. The [source-attributed backdrop gate](2026-09-28-world-panorama-safety-screen.md)
+   now checks that all previously game-owned changed pixels in three saved
+   source-qualified samples belong to repeated panorama strips; it finds no
+   unclassified foreground overwrite there, but leaves Hawaii's 972 prior
+   host pixels and unobserved transitions open. Keep any raw failures and do
+   not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
    second course before running another resident/control pair. The saved Pike's
    Peak wheel trace and original snapshots can choose turns cheaply, but native
