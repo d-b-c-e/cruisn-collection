@@ -1,5 +1,19 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York temporal checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-overlap-temporal.md` before
+promoting the World active non-road margin candidate. A matched nine-frame
+World2.4 New York turn at3560..3640 passes both3650-input native replays,
+FFB0/physical1440/owned shutdown, and center-third preservation. All nine
+completed differences lie in the right third, totaling258118 frame-pixels;
+heuristic recovered near-black112386, candidate-new56. Inspected sequence
+shows wall/road-edge repair continuing through the turn, not full-course or
+4K acceptance. Corrected exact comparator reports FAIL because intentional
+pixels differ; raw wrong-folder failure also retained. Source-time3600 overlap
+and ten residual unowned edge pixels remain as below. No binary/deployment,
+release or personal Stream Deck change. Continue independent parity gates.
+
 ## September 28 overnight overlap checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-overlap-source.md` before more
