@@ -80,3 +80,12 @@ shows one. Its structural rule can still misclassify a repeated foreground
 pattern, and the present samples do not cover transitions, other courses,
 depth correctness or completed 4K appearance. Prior host overdraw needs a
 separate source/order test. Keep the active non-road option diagnostic.
+
+The later [Hawaii 5760 guardrail check](2026-09-28-world25-hawaii-guardrail-ownership.md)
+adds a fourth source-qualified positive-overdraw frame. It replaces 8,209
+original game pixels, all from lower panorama ordinal 9. A new source-hashed
+`world-backdrop-overdraw-screen-v3.json` joins all four samples: 87,977
+replaced game pixels across the sampled frames, all structurally classified
+as backdrop, zero unclassified. This is still a selected-sample negative
+screen, not a measured foreground false-negative rate or an acceptance of
+the candidate renderer.

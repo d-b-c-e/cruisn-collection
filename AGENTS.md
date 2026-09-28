@@ -13,6 +13,10 @@ reproduces all8209 from one lower panorama strip quad, ordinal9; structural
 backdrop checker has zero unclassified original pixels. CRT crop shows a
 coherent guardrail continuation. Exact new candidate packet/depth source,
 other frames/courses,4K and release safety remain open. No product change.
+Combined structural backdrop screen v3 joins New York3600, Germany7280,
+Hawaii5775 and Hawaii5760:87977/87977 source-attributed changed game pixels
+are in repeated panorama strips, zero unclassified. This is four selected
+frames, not a global foreground-safety proof.
 
 ## September 28 World 2.5 dense Hawaii transition checkpoint
 
