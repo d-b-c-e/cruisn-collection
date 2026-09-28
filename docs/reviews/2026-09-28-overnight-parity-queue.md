@@ -24,7 +24,9 @@ diagnostics. No tested multiplier eliminates guest scene-list pop-in globally.
   those are fixed.
 - **World 2.5 Hawaii:** six of nine matched frames add only left-edge foliage;
   the known authored terrain rectangle at frame 5900 is exact in both modes.
-  The rejected generic skirt and missing ordinary mesh neighbor remain relevant.
+  The source-checked 5775 image adds trees over authored sky/ocean panorama
+  strips and 972 prior host pixels; it fills no unowned gap. The rejected
+  generic skirt and missing ordinary mesh neighbor remain relevant.
 - **Off-Road Pike's Peak:** ten sparse resident/control views are exact despite
   extra work. A focused 19-frame control-only sharp-turn survey found no clear
   El Paso-like opening. El Paso remains the positive resident-ground example;
@@ -74,4 +76,5 @@ The September 28 detailed reviews are the [New York source overlap](2026-09-28-w
 [New York turn sequence](2026-09-28-world-new-york-overlap-temporal.md),
 [Germany appearance](2026-09-28-world-germany-margin-onset.md),
 [Pike's Peak turn](2026-09-28-offroad-pikes-sharp-turn-screen.md), and
-[World 2.5 Hawaii interval](2026-09-28-world25-active-margin-interval.md).
+[World 2.5 Hawaii interval](2026-09-28-world25-active-margin-interval.md),
+plus the [Hawaii ownership check](2026-09-28-world25-hawaii-overdraw.md).

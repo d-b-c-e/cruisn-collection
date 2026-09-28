@@ -1,5 +1,18 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 World 2.5 Hawaii ownership checkpoint
+
+Read `docs/reviews/2026-09-28-world25-hawaii-overdraw.md`. Matched frozenf762
+physical1440/FFB0 indexed captures at completed5775 pass5780 inputs/native,
+display and owned shutdown; separate5777-input original-DMA control image and
+all indexed planes match. Of35638 changed left-margin pixels,34666 replace
+original game pixels (34116 upper panorama strip,550 lower),972 replace prior
+host pixels, zero fill a previously unowned gap. Center exact. This is one
+original-DMA-qualified Hawaii frame, not mountain distance, dark-rectangle repair,
+cross-scene occlusion safety,4K or release parity. New generic overdraw screen
+and paired comparator's omitted/explicit-Off correction pass; initial cadence
+preflight FAIL retained and first comparator error documented. No native/product change.
+
 ## September 28 overnight parity queue
 
 Read `docs/reviews/2026-09-28-overnight-parity-queue.md` for the current

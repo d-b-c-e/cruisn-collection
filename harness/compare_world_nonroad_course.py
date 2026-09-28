@@ -20,7 +20,11 @@ def compare(control, trial):
     a,b = reports
     options_a = dict(a['world_host_scenery'])
     options_b = dict(b['world_host_scenery'])
-    if options_b.pop('active_nonroads',None) != 'margins' or options_a != options_b:
+    # Older controls omit the disabled option; explicit replay controls report
+    # it as "off". Both describe the same renderer state.
+    control_nonroads=options_a.pop('active_nonroads',None)
+    trial_nonroads=options_b.pop('active_nonroads',None)
+    if control_nonroads not in (None,'off') or trial_nonroads != 'margins' or options_a != options_b:
         raise ValueError('replays differ in more than active non-road margin selection')
     if options_a.get('active_roads') != 'margins' or options_a.get('mode') != 'draw':
         raise ValueError('control is not the active-road draw baseline')
