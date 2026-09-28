@@ -41,7 +41,9 @@ def mirror_planes(run, receipt):
 
 
 def screen(detailed, prior_on, prior_off, source, rom_path, source_screen,
-           candidate_screen, control_mirror=None):
+           candidate_screen, control_mirror=None, require_full_added_coverage=False):
+    if require_full_added_coverage and control_mirror is None:
+        raise ValueError('full added-packet coverage requires a matched control mirror')
     reports = [json.loads((root / 'report.json').read_text(encoding='utf-8'))
                for root in (detailed, prior_on, prior_off, source)]
     run_report, on_report, off_report, source_report = reports
@@ -259,6 +261,33 @@ def screen(detailed, prior_on, prior_off, source, rom_path, source_screen,
         for i in range(4):
             result['sha256'][f'control_mirror_plane{i}'] = sha(
                 control_mirror / 'run' / f'vunit-mirror-{FRAME}-page0-plane{i}.bin')
+        if require_full_added_coverage:
+            added_rows = [traced[i] for i in sorted(extra)]
+            added_words = [row['words'] for row in added_rows]
+            added_index, added_tag = render_quads(added_words, texture.read_bytes())
+            added_id, added_id_tag = render_quads(
+                added_words, texture.read_bytes(), debug_quad_id=True)
+            covered = changed & (added_tag != 0)
+            exact_added = covered & (added_index == planes[0]) & (added_id_tag != 0)
+            ids, id_counts = np.unique(added_id[exact_added], return_counts=True)
+            object_counts, model_counts = Counter(), Counter()
+            for ordinal, count in zip(ids, id_counts):
+                row = added_rows[int(ordinal)]
+                object_counts[hex(row['object'])] += int(count)
+                model_counts[hex(row['model'])] += int(count)
+            result.update(schema=5,
+                          full_changed_indexed_added_covered=int(covered.sum()),
+                          full_changed_indexed_added_exact=int(exact_added.sum()),
+                          full_changed_indexed_added_nonmatching=int((covered & ~exact_added).sum()),
+                          full_changed_indexed_added_uncovered=int((changed & ~covered).sum()),
+                          full_changed_indexed_exact_by_object=dict(sorted(object_counts.items())),
+                          full_changed_indexed_exact_by_model=dict(sorted(model_counts.items())),
+                          full_changed_indexed_added_packet_ids=[int(v) for v in ids],
+                          full_changed_indexed_added_pixel_counts=[int(v) for v in id_counts],
+                          passed=int(exact_added.sum()) == int(changed.sum()))
+            result['scope'] += (' Full changed indexed pixels are also screened against '
+                                'added source packets in isolation; this is not a full '
+                                'original/host ordered compositor or CRT ownership proof.')
     return result
 
 
@@ -268,15 +297,20 @@ def main():
                  'source_screen', 'candidate_screen', 'report'):
         ap.add_argument('--' + name.replace('_', '-'), dest=name, type=Path, required=True)
     ap.add_argument('--control-mirror', type=Path)
+    ap.add_argument('--require-full-added-coverage', action='store_true')
     args = ap.parse_args()
     if args.report.exists():
         raise ValueError('refusing to overwrite USA pixel attribution')
     result = screen(args.detailed, args.prior_on, args.prior_off, args.source,
                     args.rom, args.source_screen, args.candidate_screen,
-                    args.control_mirror)
+                    args.control_mirror, args.require_full_added_coverage)
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
-    print('PASS', result['new_packet_center_samples'], result['target_center_samples'])
+    print('PASS' if result['passed'] else 'FAIL',
+          result.get('full_changed_indexed_added_exact', result['new_packet_center_samples']),
+          result.get('control_indexed_changed_pixels', result['target_center_samples']))
+    if not result['passed']:
+        raise SystemExit(1)
 
 
 if __name__ == '__main__':

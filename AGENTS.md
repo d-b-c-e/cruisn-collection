@@ -370,6 +370,17 @@ preflight FAIL retained and first comparator error documented. No native/product
 
 ## September 28 overnight parity queue
 
+USA Golden Gate frame10476 now has full changed-pixel source attribution:
+saved control/candidate indexed pages differ at7058 left-margin game-to-host
+pixels, and an isolated raster of the exact newly admitted source packets
+reproduces all7058, with zero uncovered/mismatched. Nineteen of76 additions
+from five objects contribute. Read
+`docs/reviews/2026-09-28-usa-bridge-full-indexed-source.md`. This is one
+physical1440/FFB0 frame, not full bridge shape, handover, 4K, performance or
+release acceptance. No gameplay replay or product change. Next USA gate is
+intermediate completed-frame/object handover or a distinct course, not another
+red screenshot count at10476.
+
 Read `docs/reviews/2026-09-28-overnight-parity-queue.md` for the current
 four-game evidence and next bounded gates. The September28 source/temporal
 World checks and Pike control screen below are complete, documented, committed

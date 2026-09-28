@@ -39,8 +39,10 @@ assign a unique cause to those 2,348 colors.
 The result sharpens the earlier bridge claim: the partial-coverage option
 does bring additional geometry into the completed left margin, but the
 4,906 red screenshot count overstates the amount of newly covered red
-center-sampled geometry. The 7,058 full-page ownership changes are not all
-identified as bridge objects by this fixed-color source test. One frame
+center-sampled geometry. The subsequent
+[full indexed source check](2026-09-28-usa-bridge-full-indexed-source.md)
+attributes all 7,058 changes to five newly admitted source objects at this
+frame. One frame
 does not establish a complete bridge silhouette, smooth handover, another
 USA course, 4K, GPU pacing or release safety. The option remains diagnostic.
 

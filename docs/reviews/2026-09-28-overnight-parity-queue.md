@@ -133,6 +133,10 @@ submitted geometry, read the
    original-only/4:3 center, and identical completed index/tag for 2,348
    of the 4,906 candidate-only red CRT centers. The 2,558 genuinely new
    red centers trace to the two earlier identified source objects.
+   A [full changed-pixel source screen](2026-09-28-usa-bridge-full-indexed-source.md)
+   now reproduces all 7,058 changed indices from 19 of the 76 newly admitted
+   packets across five objects, with zero missing or mismatched pixels. This
+   is one-frame material attribution, not full bridge/occlusion safety.
    The [saved-trace timing census](2026-09-28-usa-bridge-member-timing.md)
    puts the first member's auxiliary submission 294 frames earlier with the
    gated option; the second is absent from ordinary auxiliary output through
