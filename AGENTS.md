@@ -1,5 +1,21 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York frame 6311 source-overlap checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-6311-source-overlap.md` and the
+overnight parity queue before World active-nonroad promotion. Frozen f762
+matched control/trial/source-tap 6313-input replays PASS input/native,
+physical1440/FFB0/display watch and owned shutdown; completed 6311 BMPs
+match the prior dense pair. All 85,554 changed indexed pixels come from exact
+source-time added packets; 72,172 replace the game's repeated upper panorama,
+13,382 replace earlier host scenery. Exact old/new isolated host indices and
+logged object-center depth show all 13,382 new objects nearer. This is one
+transition sample, not full per-fragment depth, course or 4K safety. Raw
+metadata-preflight and mutated-packet negative failures remain local. No
+renderer deployment/release/Stream Deck change. Continue a distinct
+source-qualified overlap or course gate using saved evidence before broad
+replay. Recovery heartbeat remains active, not work cadence.
+
 ## September 28 USA bridge control-indexed checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-control-indexed.md`. Frozenf762

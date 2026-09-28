@@ -35,8 +35,13 @@ submitted geometry, read the
   at 6298..6312 now localizes the major difference-footprint contraction to
   6302→6303, when ordinary scenery catches up, and a renewed control sky/road
   opening to 6310→6311. The candidate preserves the right-side wall in the
-  inspected views; all changes remain right-third only. These are not
-  source/depth-qualified at the new frames.
+  inspected views; all changes remain right-third only. A separate
+  [6311 source/overlap check](2026-09-28-world-new-york-6311-source-overlap.md)
+  now attributes all 85,554 changed indexed pixels to exact added packets:
+  72,172 replace the game's repeated upper panorama and 13,382 replace
+  earlier host scenery, with all logged added-object center depths nearer.
+  That is one-frame source and object-depth evidence, not full fragment-depth
+  or course safety.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
@@ -96,7 +101,11 @@ submitted geometry, read the
    source-qualified upper-panorama replacement, and its nine-frame turn
    screen shows a moving right-side change. Exact source-time native packets
    account for the candidate indices at 6300, while full ordered depth and
-   intervening-frame handover remain open. Keep any raw failures and do
+   intervening-frame handover remain open. The distinct 6311 sample now has
+   exact game-panorama and prior-host source attribution, with all 13,382
+   prior-host changed positions nearer by logged object-center depth. That
+   narrows this transition's risk without proving fragment-depth or other
+   courses. Keep any raw failures and do
    not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
    second course before running another resident/control pair. The saved Pike's
