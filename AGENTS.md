@@ -1,5 +1,16 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA partial-coverage cost checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-cost-screen.md`. Offline matched
+summary window10000..10469 has235 exact source clocks/inputs, physical1440/
+FFB0, no GL captures. Candidate adds9360 quads; native host-scene mean
+2289.16->2492.38us (+203.22us,8.9%), median2267.4->2476.1us. Both host
+elapsed windows ~8.106s at near100% sync, so no GPU/stutter/4K throughput or
+release cost pass. Source-hashed local report PASS, no new game run, native or
+product change. Weigh this bounded cost against visible USA bridge gain; do
+not infer it is free or unacceptable across courses.
+
 ## September 28 USA bridge member timing checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-member-timing.md`. An offline

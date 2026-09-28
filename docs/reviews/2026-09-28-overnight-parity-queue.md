@@ -104,6 +104,10 @@ submitted geometry, read the
    visibility hint, not bridge-object segmentation or smoothness proof.
    Other members, object completeness and intervening occlusion still require
    a targeted gate before any policy change.
+   A [bounded cost screen](2026-09-28-usa-bridge-cost-screen.md) finds about
+   +203 µs mean native host-scene work over 235 matched scenes near the bridge,
+   while the synchronized host interval remains near 8.1 seconds in both
+   runs. This is not a GPU/stutter/4K benchmark.
    The dark right panel is original game output, a separate issue.
 5. **Exotica useful distance:** find a saved open-sightline interval with an
    actual completed outer-boundary change. Measure source activation and
