@@ -1,0 +1,77 @@
+"""Compare two passing World replays that differ only in active non-road margins.
+
+Completed-pixel equality is evidence of preservation, not visible improvement.
+"""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+
+from gl_frames import compare_completed_frames
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def compare(control, trial):
+    paths = [root/'report.json' for root in (control,trial)]
+    reports = [json.loads(path.read_text(encoding='utf-8')) for path in paths]
+    a,b = reports
+    options_a = dict(a['world_host_scenery'])
+    options_b = dict(b['world_host_scenery'])
+    if options_b.pop('active_nonroads',None) != 'margins' or options_a != options_b:
+        raise ValueError('replays differ in more than active non-road margin selection')
+    if options_a.get('active_roads') != 'margins' or options_a.get('mode') != 'draw':
+        raise ValueError('control is not the active-road draw baseline')
+    invocations = [json.loads((root/'run/invocation.json').read_text(encoding='utf-8'))
+                   for root in (control,trial)]
+    if any(i['environment'].get('MIDV_FFB') != '0' or i['returncode'] != 0 for i in invocations):
+        raise ValueError('both replays must finish with physical FFB off')
+    if any(not r['passed'] or not r['comparison']['passed'] or
+           not r['display_watch']['passed'] or
+           r['vunit_runtime']['result']['completion'] != 'owned-worker-stop'
+           for r in reports):
+        raise ValueError('input/native/display/shutdown replay gate failed')
+    if (a['case'] != b['case'] or a['emulator_source'] != b['emulator_source'] or
+            a['display_target'] != b['display_target'] or
+            a['presentation_overrides'] != b['presentation_overrides'] or
+            a['comparison_scope'] != b['comparison_scope']):
+        raise ValueError('source, binary, presentation or prefix differs')
+    images = compare_completed_frames(control/'run/gl-snap', trial/'run/gl-snap', details=True)
+    runtime = [r['vunit_runtime']['result'] for r in reports]
+    if runtime[0]['scenes'] != runtime[1]['scenes']:
+        raise ValueError('host scene count differs')
+    return {'passed':True,
+            'scope':'One recorded World course prefix on the same binary/display with physical FFB0. '
+                    'Sparse completed images do not prove full-course visual safety or benefit.',
+            'rom':json.loads((Path(a['case'])/'case.json').read_text(encoding='utf-8'))['rom'],
+            'input_frames':a['comparison_scope']['last_frame'],
+            'host_scenes':runtime[0]['scenes'],
+            'host_quads_control':runtime[0]['quads'],
+            'host_quads_trial':runtime[1]['quads'],
+            'additional_submitted_quads':runtime[1]['quads']-runtime[0]['quads'],
+            'completed':images,
+            'sha256':{'control_report':sha(paths[0]),'trial_report':sha(paths[1]),
+                      'control_capture_index':sha(control/'run/gl-snap/captures.csv'),
+                      'trial_capture_index':sha(trial/'run/gl-snap/captures.csv')}}
+
+
+def main():
+    ap=argparse.ArgumentParser(description=__doc__)
+    ap.add_argument('--control',type=Path,required=True)
+    ap.add_argument('--trial',type=Path,required=True)
+    ap.add_argument('--report',type=Path,required=True)
+    args=ap.parse_args()
+    if args.report.exists():
+        raise ValueError('refusing to overwrite paired evidence')
+    result=compare(args.control,args.trial)
+    args.report.parent.mkdir(parents=True,exist_ok=True)
+    args.report.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    print('PASS',result['rom'],result['completed']['frames'],'completed images',
+          result['additional_submitted_quads'],'added quads',
+          len(result['completed']['different_frames']),'different images')
+
+
+if __name__=='__main__':
+    main()
