@@ -69,6 +69,7 @@ The source-hashed local evidence is under
 trace was source-hashed by the earlier activation report and was not rescanned
 for this gate.
 
-Next, attribute a candidate completed pixel to its new source packet in a
-bounded interval, then assess member-by-member visual transitions and cost.
-Do not broaden the global limit on the basis of a single projected member.
+The [packet-to-pixel follow-up](2026-09-28-usa-bridge-pixel-source.md) now joins
+selected new object packets to the already matched completed 10476 image.
+Remaining gates are member-by-member visual transitions and cost. Do not
+broaden the global limit on the basis of this narrow bridge sample.

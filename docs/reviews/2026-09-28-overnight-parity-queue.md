@@ -91,7 +91,10 @@ submitted geometry, read the
    rejection of ready object `0x800a0040`; partial coverage adds its three
    quads, preserving every old ordered quad. A matched native candidate source
    replay agrees on all 3,782 quads and its ordered fingerprint. Each changed
-   completed pixel is not yet attributed to a new packet.
+   [Completed frame 10476](2026-09-28-usa-bridge-pixel-source.md) now has
+   selected center samples from two new bridge objects: 1,779 red points from
+   `0x800a0040` and 779 from `0x800a0042`, source/page/packet/index matched.
+   This does not qualify the full silhouette or smooth handover.
    A fixed-ROI red-color screen of those saved images stays candidate-positive
    in every sample; its count narrows as control scenery appears. This is a
    visibility hint, not bridge-object segmentation or smoothness proof.

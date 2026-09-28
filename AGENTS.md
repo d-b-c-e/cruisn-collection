@@ -1,5 +1,22 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA packet-to-pixel checkpoint
+
+Read `docs/reviews/2026-09-28-usa-bridge-pixel-source.md`. A frozenf762
+coverage-on detailed replay PASSes10480 recorded inputs/native, physical1440/
+FFB0, original mirror and owned shutdown. Source10473 RAM/fast/texture/palette
+exact to control tap; completed10476 CRT image byte-exact to prior continuous
+candidate. Visible-page receipt consumes all3782 source quads/hash
+cad18ecde19865f8. Indexed/palette reconstruction has123/3442032 pixels
+>1 channel unit. Within one far-left red ROI,4906 candidate-only CRT pixels;
+4862 map to exact isolated host center samples,2558 to newly admitted packets,
+including1779 from object0x800a0040 and779 from0x800a0042. This is selected
+center-sample attribution, not full silhouette, smooth handover,4K,other
+course,performance or release parity. No renderer/deployment change. Attempted
+late host-first still produced a1.5GB full quad log because continuous bootstrap
+starts at first actual scene; don't repeat as a short-log tactic. Next add a
+clear preflight scope note and assess member transitions/cost from saved data.
+
 ## September 28 USA exact source-projection checkpoint
 
 Read `docs/reviews/2026-09-28-usa-bridge-source-projection.md`. A new read-only
