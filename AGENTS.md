@@ -17,6 +17,12 @@ Initial raw checker FAIL compared native resident pending264 to total4468;
 corrected v2 PASS and raw failure retained. No product/deployment change.
 Next gate: bounded candidate-packet attribution and visual transition/cost,
 not larger global limit or broad repeat without a changed hypothesis.
+Matched live coverage-on source scene now PASSes10477 inputs/native/display/
+owned shutdown, identical control frame clocks; native source10473 submits
+3782 quads, hash cad18ecde19865f8, exactly matching independent reconstruction
+and all six counters. Prepared-only plan and source-hashed local candidate
+scene report retained. This closes native geometry agreement at one scene,
+not candidate packet-to-pixel attribution or full-course acceptance.
 
 ## September 28 USA partial far-coverage checkpoint
 

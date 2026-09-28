@@ -35,9 +35,15 @@ detail trace first submits its quads at frame 10475. Ordinary projection has
 quads. Partial coverage reduces that counter to zero and emits 76 additional
 quads in the full scene, including three from the target at native
 x −61..−42, y 144..185. All 3,706 ordinary 16-word quads remain byte-identical
-and in their original relative order. The candidate result is an **offline
-counterfactual** from exact source operands; no live candidate packet trace or
-indexed pixel attribution was captured at 10473.
+and in their original relative order. This initially was an **offline
+counterfactual** from exact source operands. A separate, matched 10,477-input
+live replay with the gated option on now **PASS**es input/native, stable
+physical1440 display and owned shutdown. At source10473 its native scene
+submits **3,782** quads with fingerprint `cad18ecde19865f8`; independent
+source reconstruction matches the full count, all six counters and ordered
+fingerprint exactly. The original and candidate frame clocks and inputs match.
+This qualifies the native candidate geometry at this source scene, not a
+candidate packet-to-completed-pixel attribution or a visual acceptance.
 
 The separate [matched completed-image trial](2026-09-28-usa-bridge-farcoverage-trial.md)
 shows earlier red structure in 11 far-left 1440p views with center/right
@@ -53,9 +59,13 @@ The source-hashed local evidence is under
 `usa-bridge-source-10473-prepared` (preflight only),
 `usa-bridge-source-10473-run` (raw replay PASS),
 `usa-bridge-source-tap-raw-v1.json` (counter-label checker failure),
-and `usa-bridge-source-tap-v2.json` (corrected exact-source PASS). The tap is
+`usa-bridge-source-tap-v2.json` (corrected exact-source PASS),
+`usa-bridge-coverage-10473-prepared` (preflight only),
+`usa-bridge-coverage-10473-run` (raw replay PASS), and
+`usa-bridge-candidate-scene-v1.json` (native/offline candidate PASS). The tap is
 `lua/usa_source_scene_capture.lua` and the checker is
-`harness/screen_usa_bridge_source_tap.py`. The existing 1.5 GB detailed quad
+`harness/screen_usa_bridge_source_tap.py`; candidate matching uses
+`harness/qualify_usa_bridge_candidate_scene.py`. The existing 1.5 GB detailed quad
 trace was source-hashed by the earlier activation report and was not rescanned
 for this gate.
 

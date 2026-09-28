@@ -89,8 +89,9 @@ submitted geometry, read the
    [exact source-time tap](2026-09-28-usa-bridge-source-projection.md) at 10473
    reproduces the full 3,706-quad ordinary scene and confirms projection
    rejection of ready object `0x800a0040`; partial coverage adds its three
-   quads, preserving every old ordered quad. Each changed completed pixel is
-   not yet attributed to a new packet.
+   quads, preserving every old ordered quad. A matched native candidate source
+   replay agrees on all 3,782 quads and its ordered fingerprint. Each changed
+   completed pixel is not yet attributed to a new packet.
    A fixed-ROI red-color screen of those saved images stays candidate-positive
    in every sample; its count narrows as control scenery appears. This is a
    visibility hint, not bridge-object segmentation or smoothness proof.
