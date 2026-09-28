@@ -50,8 +50,12 @@ submitted geometry, read the
    search for a concrete case where new policy-2 geometry incorrectly covers
    previously correct game scenery. Source-time New York 3600 is an attribution
    pass, not a universal occlusion test. A negative screen of a distinct scene
-   or course is more useful than another full New York drive. Keep any raw
-   failures and do not promote the option from changed-pixel counts alone.
+   or course is more useful than another full New York drive. The new
+   [panorama safety screen](2026-09-28-world-panorama-safety-screen.md) shows
+   why the existing `0xc5` sky heuristic would reject 550 legitimate-looking
+   Hawaii lower-band overdraw pixels; structural backdrop recognition remains
+   diagnostic. Keep any raw failures and do not promote the option from
+   changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
    second course before running another resident/control pair. The saved Pike's
    Peak wheel trace and original snapshots can choose turns cheaply, but native

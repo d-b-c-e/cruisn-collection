@@ -1,5 +1,19 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 World panorama safety checkpoint
+
+Read `docs/reviews/2026-09-28-world-panorama-safety-screen.md`. An offline
+foreground-veto hypothesis using only the current `0xc5` upper-sky classifier
+FAILS Hawaii5775: 550 of its 35638 changed indexed pixels replace original
+lower ocean panorama `0xb60`, while972 replace prior host and34116 upper sky.
+NY3600,NY6000,Germany7280 source reports fit the naive rule; this is four
+sampled frames, not general safety. New structural strip screen detects only
+five-tile upper panorama in NY3600/6000,Germany7280/7340 and upper+lower in
+Hawaii5775; selected USA/Off-Road source contrasts have zero detections. No
+renderer change, native build or live game run. A structural tile is not proof
+of safe occlusion; next gate is broader source/transition validation before
+an opt-in original-mask policy.
+
 ## September 28 indexed pixel source probe
 
 Read `docs/reviews/2026-09-28-vunit-pixel-provenance.md` for the reusable
