@@ -27,6 +27,11 @@ whole-image palette reconstruction (USA128 and Off-Road121 pixels >1 of3442032).
 Those are center samples, not all blur contributors. It does not prove an
 auxiliary object source or temporal safety. USA raw replay FAIL is still
 explicit alongside separate posthoc PASS.
+World2.4 New York completed6000 provides a third saved check: screenshot points
+(95,940)/(2450,935) map to indexed(24,472)/(2713,478), both control unowned
+and candidate auxiliary-tagged with original-only still zero. Control CRT
+reconstruction differs >1 at163/3442032 pixels. Candidate raw policy2-reader
+FAIL remains, with separate posthoc PASS; see the probe review.
 
 ## September 28 USA Golden Gate source checkpoint
 

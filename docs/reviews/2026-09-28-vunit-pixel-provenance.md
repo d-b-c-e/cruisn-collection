@@ -46,6 +46,20 @@ An Off-Road screenshot point `(120,545)` maps to indexed `(58,962)`, also
 original DMA ordinal 1. That screenshot's independent palette reconstruction
 differs by more than one channel unit at 121 of 3,442,032 pixels.
 
+The same screenshot path also checks the positive World 2.4 New York repair at
+completed frame 6000. Visually chosen black-margin points `(95,940)` and
+`(2450,935)` map to indexed `(24,472)` and `(2713,478)` after a near-exact
+whole-image reconstruction (163 of 3,442,032 pixels differ by more than one
+channel unit). Both control pixels are index/tag `(0,0)` with no current
+original DMA coverage. In the separately qualified active non-road candidate,
+they become `(17634,5)` and `(17491,5)` while its original-only plane stays
+`(0,0)`. The candidate raw replay is still **FAIL** from the older policy-2
+reader; `active-nonroads-fade-qualified-v1.json` passes its posthoc input/native,
+mirror, completed-image and owned-stop checks. Local
+`ny6000-screen-points-qualified-v1.json` hashes both sources and limits the
+new claim to two screenshot-selected points, rather than relabeling the full
+8,117/11,651-pixel components as new evidence.
+
 This tool does not infer source ownership for auxiliary packets, support other
 CRT screenshot sizes without calibration, prove a whole region or establish
 temporal safety.
