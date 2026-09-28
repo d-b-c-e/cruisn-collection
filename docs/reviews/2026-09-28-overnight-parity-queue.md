@@ -37,9 +37,12 @@ submitted geometry, read the
   El Paso-like opening. El Paso remains the positive resident-ground example;
   Pike's Peak supplies no demonstrated benefit yet.
 - **USA and Exotica:** earlier continuous 3×, motion, completed-image and owned
-  shutdown gates remain; no new candidate or 4K display check was made in this
-  September 28 pass. Exotica's stable physical 1440p Mars/Amazon receipts and
-  the old merged-display failures must both remain visible in decisions.
+  shutdown gates remain. A new USA 1440p original-DMA source capture attributes
+  the unchanged right-sky panel to a game-drawn dithered quad; the saved 4K
+  pair shows an earlier but skeletal-looking left bridge under 3×. See the
+  [Golden Gate source check](2026-09-28-usa-golden-gate-panel-source.md).
+  Exotica's stable physical 1440p Mars/Amazon receipts and old merged-display
+  failures must both remain visible in decisions.
 
 ## Highest-value independent steps
 
@@ -60,11 +63,14 @@ submitted geometry, read the
    scene first. A credible candidate must retain terrain silhouette/material
    and beat the rejected skirt's visible wall; more global distance cannot
    create a lower mesh edge already within the 3× plane.
-4. **Exotica/USA useful distance:** pick a saved completed interval with an
-   actual visible outer-boundary change. Measure source activation, completed
-   pixels and transition cadence together. Avoid broad 3× reruns whose only
-   result is additional offscreen quads.
-5. **Promotion gates after a candidate survives:** independent clean native
+4. **USA useful distance:** inspect the saved Golden Gate bridge-onset interval
+   before any policy change. The positive ROI is early auxiliary structure;
+   the dark right panel is original game output. A changed-pixel count alone
+   does not decide whether 3× looks better.
+5. **Exotica useful distance:** find a saved open-sightline interval with an
+   actual completed outer-boundary change. Measure source activation and
+   transition cadence before another broad 3× run.
+6. **Promotion gates after a candidate survives:** independent clean native
    build/patch receipt, 4K matched captures, another course per game, overlay
    and menu/race transition appearance, frame pacing, and attended wheel/FFB.
    The current rig has a stable physical 1440p primary but no connected 4K

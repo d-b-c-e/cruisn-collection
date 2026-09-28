@@ -1,5 +1,21 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 USA Golden Gate source checkpoint
+
+Read `docs/reviews/2026-09-28-usa-golden-gate-panel-source.md` before treating
+USA 3x visible gain as quality acceptance. Saved matched4K frame10500 has
+an unchanged right-sky rectangle (zero changed pixels in fixed ROI), while
+the 3x left red bridge appears earlier but looks skeletal. A separate frozen
+f762 physical1440/FFB0 source replay captured10500; raw report FAILs the USA
+host scene analyzer's old same-frame ordering check at8015. Corrected guard
+allows same-frame/different-time scenes with strict time order; ten focused
+tests pass. Separate posthoc input/native/display/host/mirror/owned-stop check
+passes10502 inputs,5481 host scenes and one completed image, but raw FAIL is
+preserved. Original DMA ordinal2233 draws all33000 sampled indexed pixels of
+the dithered right panel; zero are host-owned. The new left bridge has sampled
+host ownership. No renderer/product change. Next inspect bridge onset from
+saved evidence, then seek distinct Exotica/World safety gates.
+
 ## September 28 four-game visibility triage
 
 Read `docs/reviews/2026-09-28-four-game-visibility-triage.md` before another

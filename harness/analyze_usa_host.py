@@ -21,7 +21,10 @@ def key(row):
 def evidence(run, retain_geometry=True):
     _, scenes = rows(run/'usa-host-scenes.csv')
     keys = [key(r) for r in scenes]
-    if len(set(keys)) != len(keys) or any(a[0] >= b[0] for a, b in zip(keys, keys[1:])):
+    # A page transition can prepare two ordered scenes during one emulated
+    # frame. Their full scene keys and strictly increasing emulated times still
+    # prevent duplicate or reordered work.
+    if len(set(keys)) != len(keys) or any(a[0] > b[0] for a, b in zip(keys, keys[1:])):
         raise ValueError('duplicate or unordered USA host scenes')
     times = [Decimal(k[1]) for k in keys]
     if any(not t.is_finite() or t < 0 for t in times) or any(a >= b for a, b in zip(times, times[1:])):

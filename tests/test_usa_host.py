@@ -126,6 +126,17 @@ class UsaHostEvidenceTests(unittest.TestCase):
                 self.write(run, scenes, [quad])
                 with self.assertRaises(ValueError): evidence(run)
 
+    def test_same_frame_page_transition_has_a_distinct_scene_clock(self):
+        with tempfile.TemporaryDirectory() as directory:
+            run = Path(directory)
+            scene, quad = self.fixture()
+            next_scene = dict(scene, time='60.140000000000', page=516)
+            next_quad = dict(quad, time=next_scene['time'], page=next_scene['page'])
+            self.write(run, [scene, next_scene], [quad, next_quad])
+            self.assertEqual(evidence(run)[2]['scenes'], 2)
+            self.write(run, [next_scene, scene], [next_quad, quad])
+            with self.assertRaises(ValueError): evidence(run)
+
     def test_common_interval_preserves_clock_and_geometry_checks(self):
         scene, _ = self.fixture()
         later = dict(scene, frame=3503, time='60.2')
