@@ -21,9 +21,12 @@ Read `docs/reviews/2026-09-28-vunit-pixel-provenance.md` for the reusable
 10500 sample identifies game DMA2233 for the unchanged dark panel and auxiliary
 ownership over original sky for the red bridge; its independent Off-Road3120
 sample identifies original DMA1 at the left opening. It consumes saved indexed
-mirrors/current DMA, no new gameplay. Coordinates are bottom-up indexed, not
-CRT display pixels; it does not prove an auxiliary object source or temporal
-safety. USA raw replay FAIL is still explicit alongside separate posthoc PASS.
+mirrors/current DMA, no new gameplay. Direct points are bottom-up indexed; new
+`--screen-point` maps calibrated2544x1353 CRT screenshot positions after
+whole-image palette reconstruction (USA128 and Off-Road121 pixels >1 of3442032).
+Those are center samples, not all blur contributors. It does not prove an
+auxiliary object source or temporal safety. USA raw replay FAIL is still
+explicit alongside separate posthoc PASS.
 
 ## September 28 USA Golden Gate source checkpoint
 

@@ -10,11 +10,15 @@ quad ordinal only when its index and material tag match the original-only
 pixel. It includes source hashes and the raw replay status; a raw FAIL remains
 visible even if a separate posthoc qualification exists.
 
-Points use bottom-up fine indexed coordinates, **not** CRT screenshot pixels.
-For example:
+Direct `--point` coordinates use bottom-up fine indexed pixels. The optional
+`--screen-point` accepts top-down pixels from the **2544×1353** completed CRT
+screenshot in the same run. It maps the center sample through the calibrated
+viewport/curvature only after the saved indexed page and palette reproduce the
+whole screenshot within a strict tolerance. For example:
 
 ```text
 python harness/probe_vunit_pixel.py RUN --point 2308,891 --point 115,924 --report RESULT.json
+python harness/probe_vunit_pixel.py RUN --screen-point 2100,600 --screen-point 170,575 --report RESULT.json
 ```
 
 The frozen USA Golden Gate source at completed 10500 yields original DMA
@@ -25,6 +29,12 @@ DMA ordinal 3 underneath. That USA raw replay remains **FAIL** from the
 formerly overstrict same-frame host-scene analyzer; the separate posthoc
 input/native/host/mirror qualification is in the Golden Gate review. The
 probe's local `indexed-point-probe-v2.json` preserves the raw FAIL status.
+The screenshot-point variant maps those two visible positions to indexed
+`(2309,892)` and `(116,924)`, with the same panel/auxiliary ownership. Its
+whole-image color reconstruction differs by more than one channel unit at
+128 of 3,442,032 pixels; the local `screen-point-probe-v1.json` binds the
+screenshot, palette, mirror and source hashes. The mapping identifies a center
+indexed sample, **not** every CRT blur/dither contributor to that display pixel.
 
 On a different game's passing Off-Road El Paso source, `(60,960)` in the
 known left opening is original game output from DMA ordinal 1. The local
@@ -32,9 +42,13 @@ known left opening is original game output from DMA ordinal 1. The local
 mirror, DMA and texture hashes. These two runs exercise both auxiliary-over-
 original and original-only classifications. The helper compiled and both
 actual-source probes completed; no native or gameplay replay was performed.
+An Off-Road screenshot point `(120,545)` maps to indexed `(58,962)`, also
+original DMA ordinal 1. That screenshot's independent palette reconstruction
+differs by more than one channel unit at 121 of 3,442,032 pixels.
 
-This tool does not infer source ownership for auxiliary packets, map completed
-CRT pixels automatically, prove a whole region or establish temporal safety.
+This tool does not infer source ownership for auxiliary packets, support other
+CRT screenshot sizes without calibration, prove a whole region or establish
+temporal safety.
 An original DMA ordinal means this current isolated raster matches the saved
 original-only value at that point. Read the replay, input/native, resource,
 completed-image and shutdown receipts before using such a point to justify a

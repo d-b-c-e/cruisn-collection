@@ -91,8 +91,10 @@ personal installation or public release during this diagnostic queue.
 For a specific V-Unit black/colored pixel in a saved original-mirror capture,
 the new [indexed-pixel provenance probe](2026-09-28-vunit-pixel-provenance.md)
 reports original, auxiliary and current-DMA status without another game run.
-It requires bottom-up indexed coordinates and does not attribute the auxiliary
-source or completed CRT color.
+It accepts bottom-up indexed coordinates or calibrated top-down points in a
+2544×1353 completed CRT screenshot. The latter requires a near-exact full-image
+palette reconstruction and returns a center sample, not every CRT blur/dither
+contributor. It does not attribute the auxiliary source.
 
 The September 28 detailed reviews are the [New York source overlap](2026-09-28-world-new-york-overlap-source.md),
 [New York turn sequence](2026-09-28-world-new-york-overlap-temporal.md),
