@@ -22,6 +22,15 @@ all replaced game pixels to upper panorama strips0/1. No new GPU/game run,
 native/product/deployment change. This is one-frame source/material
 attribution, not full compositor/depth, mountain/road fix,4K or release.
 
+## September 28 New York late-wall callback timing
+
+The saved frozenf762 temporal pair's frame6280..6320 callback clocks give
+21/41 intervals>25ms in each mode,718.78ms control/719.09ms candidate,
+max28.67/29.34ms. Read the updated
+`docs/reviews/2026-09-28-world-new-york-late-wall-temporal.md`. This is no
+GPU presentation, wheel latency or course-long stutter pass. Raw v1 analyzer
+FAIL from wrong root path retained; corrected source-hashed v2 reports PASS.
+
 ## September 28 New York late-wall source checkpoint
 
 Read `docs/reviews/2026-09-28-world-new-york-late-wall-source.md`.

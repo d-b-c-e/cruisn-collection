@@ -28,7 +28,9 @@ submitted geometry, read the
   through the turn, with exact center and repeatable 6300 images. Candidate
   [source-packet attribution](2026-09-28-world-new-york-late-wall-source.md)
   now accounts for all 98,129 changed indexed pixels at 6300. Full ordered
-  depth and intermediate-frame safety remain open.
+  depth and intermediate-frame safety remain open. The same short callback
+  window has 21/41 intervals above 25 ms in both modes; this is not a GPU or
+  full-course pacing pass.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check

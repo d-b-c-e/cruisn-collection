@@ -34,11 +34,24 @@ does not identify the candidate packets/depth for the other eight frames,
 prove foreground safety through the full route, fix the older finish crash,
 or qualify 4K, physical wheel output, product deployment or release.
 
+An offline analysis of the same saved callback clocks over frames 6280..6320
+finds 21/41 intervals above 25 ms in both modes. Total callback interval time
+is 718.78 ms control versus 719.09 ms candidate; maxima are 28.67 and
+29.34 ms. This window shows no additional threshold-count spike at the wall
+reveal. It is not a synchronized GPU presentation, wheel-latency or full-race
+stutter benchmark. The first analyzer calls passed the replay root instead of
+its `run` directory and produced retained missing-evidence **FAIL** reports;
+the corrected source-hashed v2 reports pass. The later
+[source-time packet check](2026-09-28-world-new-york-late-wall-source.md)
+explains all candidate indices at frame 6300, but not the other eight views.
+
 No native code, renderer deployment, personal installation or public release
 changed. Local evidence under
 `results/diagnostics/world-new-york-20260927-live-1`:
 `active-nonroads-6300-temporal-{control,trial}-run/report.json`,
 `active-nonroads-6300-temporal-paired-v1.json`, and
-`active-nonroads-6300-temporal-contact-v1.png`. Both prepare-only plans passed
+`active-nonroads-6300-temporal-contact-v1.png`, plus the two
+`active-nonroads-6300-temporal-{control,trial}-cadence-v2.json` reports.
+Both prepare-only plans passed
 before gameplay. The paired report hashes the two raw reports and capture
 indexes; the contact sheet is a local visual aid.
