@@ -1,5 +1,16 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 Hawaii prior-host source checkpoint
+
+Read `docs/reviews/2026-09-28-world25-hawaii-prior-host-source.md`. At
+completed5775 the972 pixels where new trees replace prior host output are
+now source-qualified: completed auxiliary prefix selects source5772/raw page513
+(physical0), with3022 control and3628 candidate packets and606 ordered new
+ones. Independent rasters match all972 control and candidate indices; logged
+new object depth is nearer at all972. Raw wrong-page v1/v2 FAILs are preserved;
+corrected manual/automatic v3-v6 PASS. This is one indexed frame, not temporal,
+4K, other-course or release acceptance. No live replay/native/product change.
+
 ## September 28 World panorama safety checkpoint
 
 Read `docs/reviews/2026-09-28-world-panorama-safety-screen.md`. An offline

@@ -30,6 +30,11 @@ prior host pixels have **not** been attributed to exact prior host packets by
 this screen; they remain a separate overlap risk, though the inspected image
 does not show a clear defect.
 
+The subsequent [prior-host source check](2026-09-28-world25-hawaii-prior-host-source.md)
+attributes all 972 pixels to exact old and new packets in the completed-page
+source scene. This paragraph records the scope of the original screen; see the
+later check for the stronger one-frame evidence.
+
 Saved callback timestamps over frames 5750–5775 show 13 of 26 intervals above
 25 ms in both control and candidate. Total interval time is 453.25 versus
 458.90 ms, with maxima 31.80 versus 32.37 ms. These short, instrumented

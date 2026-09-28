@@ -57,8 +57,10 @@ submitted geometry, read the
    diagnostic. The [source-attributed backdrop gate](2026-09-28-world-panorama-safety-screen.md)
    now checks that all previously game-owned changed pixels in three saved
    source-qualified samples belong to repeated panorama strips; it finds no
-   unclassified foreground overwrite there, but leaves Hawaii's 972 prior
-   host pixels and unobserved transitions open. Keep any raw failures and do
+   unclassified foreground overwrite there. Hawaii's 972 prior host pixels
+   now have [exact old/new packet attribution](2026-09-28-world25-hawaii-prior-host-source.md)
+   at one frame, with all new logged depths nearer. Transitions remain open.
+   Keep any raw failures and do
    not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
    second course before running another resident/control pair. The saved Pike's
