@@ -20,7 +20,10 @@ submitted geometry, read the
   frames on each side of 3600 and 6000
   preserve the center and show moving margin repair. The older finish crash did
   not recur on this recorded drive; its old 3×/+12 or intermittent cause is
-  still open.
+  still open. A separate [late wall sample](2026-09-28-world-new-york-late-wall.md)
+  at 6300 replaces 98,129 original upper-panorama indexed pixels with a
+  visually continuous right wall/building; it fills no unowned pixel and
+  still needs a moving transition and candidate-packet attribution.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
   activation are separate problems. An original-DMA-qualified 7280 check
@@ -62,7 +65,7 @@ submitted geometry, read the
    why the existing `0xc5` sky heuristic would reject 550 legitimate-looking
    Hawaii lower-band overdraw pixels; structural backdrop recognition remains
    diagnostic. The [source-attributed backdrop gate](2026-09-28-world-panorama-safety-screen.md)
-   now checks that all previously game-owned changed pixels in three saved
+   now checks that all previously game-owned changed pixels in five saved
    source-qualified samples belong to repeated panorama strips; it finds no
    unclassified foreground overwrite there. Hawaii's 972 prior host pixels
    now have [exact old/new packet attribution](2026-09-28-world25-hawaii-prior-host-source.md)
@@ -71,8 +74,9 @@ submitted geometry, read the
    5760 replaces only a source-qualified original lower panorama strip. That
    frame's added packets reproduce every changed indexed pixel, but the
    isolated raster does not establish full per-fragment depth or
-   full-course occlusion safety.
-   Keep any raw failures and do
+   full-course occlusion safety. The New York 6300 wall sample adds another
+   source-qualified upper-panorama replacement, but its candidate packet/depth
+   source and temporal handover remain open. Keep any raw failures and do
    not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
    second course before running another resident/control pair. The saved Pike's

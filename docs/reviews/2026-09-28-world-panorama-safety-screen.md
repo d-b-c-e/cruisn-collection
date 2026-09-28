@@ -89,3 +89,11 @@ replaced game pixels across the sampled frames, all structurally classified
 as backdrop, zero unclassified. This is still a selected-sample negative
 screen, not a measured foreground false-negative rate or an acceptance of
 the candidate renderer.
+
+The later [New York 6300 wall check](2026-09-28-world-new-york-late-wall.md)
+adds a fifth positive-overdraw view. All 98,129 changed game pixels in that
+view trace to upper panorama ordinal 3. Combined source-hashed
+`world-backdrop-overdraw-screen-v4.json` now has 186,106/186,106 changed
+game pixels in structural panorama strips across the five selected frames,
+zero unclassified. This remains a selected-sample screen, not a general
+foreground-preservation or depth guarantee.

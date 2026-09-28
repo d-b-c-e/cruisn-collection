@@ -1,5 +1,23 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 New York late-wall checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-late-wall.md`. Frozenf762
+World2.4 New York frame6300 control/nonroad pair PASSes6320 inputs/native,
+physical1440/FFB0/display watch/owned shutdown; control image byte-exact to
+the prior survey. Candidate changes70605 right-third completed RGB pixels,
+center exact; visually extends right wall/building. Matched indexed pair
+PASSes6310 inputs, changes98129 right-margin pixels, all prior game/tag1 to
+host/tag5, original-only planes/4:3 center exact. A third6302-input
+original-DMA run reproduces control; all98129 replaced original indices
+trace to upper panorama ordinal3 within repeated strip0..4. No unowned gap
+was filled at this frame. Candidate exact packets, temporal handover,4K and
+broader safety remain open. First prepare-only pair FAILed before launch on
+missing explicit inherited host-failure policy; corrected plans PASS. No
+native/product/deployment change. Combined structural backdrop screen v4 has
+186106/186106 changed game pixels in five selected World views, zero
+unclassified; this is not global foreground safety.
+
 ## September 28 World 2.5 guardrail ownership checkpoint
 
 Read `docs/reviews/2026-09-28-world25-hawaii-guardrail-ownership.md`. Two
