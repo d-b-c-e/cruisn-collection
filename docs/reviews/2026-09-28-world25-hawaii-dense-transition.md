@@ -36,16 +36,15 @@ cliff/tree occupies much of that edge, which is consistent with an occlusion
 transition; five-frame sampling does not establish a fade or prove that the
 object never pops. The exact old/new packet and depth attribution from the
 [5775 source check](2026-09-28-world25-hawaii-prior-host-source.md) applies
-only to that completed view. The newly identified 5760 rail change has no
-exact candidate packet attribution yet. The candidate-new
+only to that completed view. A later check attributes all 5760 changes to
+two added active objects from the exact source scene. The candidate-new
 near-black color count across the eight differing images is 454, but dark
 scenery is not automatically a texture defect.
 
 This pair expands World 2.5 transition evidence without demonstrating a
 mountain draw-distance gain or repairing the authored dark rectangle at 5900.
 It is one route at physical 1440p, with 5-frame sampling and no physical FFB.
-Before any policy promotion, identify the exact candidate packets at 5760
-if needed for occlusion safety, search for a concrete harmful overdraw, and
+Before any policy promotion, search for a concrete harmful overdraw and
 retain 4K/other-course gates.
 No native source, binary, renderer deployment, personal installation or
 public release changed.

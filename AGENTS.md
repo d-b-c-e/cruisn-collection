@@ -11,8 +11,14 @@ indexed pixels, all formerly game-owned/tag1 and now host-tagged, with exact
 original-only planes and4:3 center. Exact current original DMA+texture
 reproduces all8209 from one lower panorama strip quad, ordinal9; structural
 backdrop checker has zero unclassified original pixels. CRT crop shows a
-coherent guardrail continuation. Exact new candidate packet/depth source,
+coherent guardrail continuation. Full ordered compositing/depth,
 other frames/courses,4K and release safety remain open. No product change.
+Saved detailed source5756/page513 scenes match both completed5760 fingerprints:
+2951 old packets,3298 candidate,347 added, old ordered subsequence exact.
+Reusable `harness/screen_world_added_packet_coverage.py` isolates those added
+packets with saved texture and matches8209/8209 candidate indices. Two active
+objects0xc001094a/0xc001099e contribute6195/2014 pixels. This attributes
+packets/material at one indexed frame, not full compositor/depth/temporal safety.
 Combined structural backdrop screen v3 joins New York3600, Germany7280,
 Hawaii5775 and Hawaii5760:87977/87977 source-attributed changed game pixels
 are in repeated panorama strips, zero unclassified. This is four selected

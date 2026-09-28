@@ -37,7 +37,8 @@ submitted geometry, read the
   left-edge foliage through 5800; eleven matched completed views preserve the
   center. Its [5760 ownership check](2026-09-28-world25-hawaii-guardrail-ownership.md)
   traces all 8,209 replaced indexed pixels to the game's lower panorama strip;
-  exact candidate packets and cross-course safety remain open.
+  the exact source scene and two added objects explain all candidate indices
+  there. Cross-course safety remains open.
 - **Off-Road Pike's Peak:** ten sparse resident/control views are exact despite
   extra work. A focused 19-frame control-only sharp-turn survey found no clear
   El Paso-like opening. El Paso remains the positive resident-ground example;
@@ -68,8 +69,9 @@ submitted geometry, read the
    at one frame, with all new logged depths nearer. The denser Hawaii check
    narrows the transition, and its separate right-side guardrail extension at
    5760 replaces only a source-qualified original lower panorama strip. That
-   frame still lacks exact candidate packet/depth attribution and does not
-   establish full-course occlusion safety.
+   frame's added packets reproduce every changed indexed pixel, but the
+   isolated raster does not establish full per-fragment depth or
+   full-course occlusion safety.
    Keep any raw failures and do
    not promote the option from changed-pixel counts alone.
 2. **Off-Road resident margins:** find a visibly positive defect interval on a
