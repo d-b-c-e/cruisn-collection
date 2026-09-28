@@ -12,6 +12,7 @@ scores across routes, resolutions or different interventions.
 | USA Golden Gate late bridge, continuous 3× with partial far coverage off vs on, 2544×1353 CRT | 11/11 | 51,553 | Matched 40-frame interval: extra red bridge structure is visible earlier only at far left. The sparse appearance and full transition remain open. |
 | World 2.4 New York turn, control vs active non-road margins on top of 3×, 2544×1353 CRT | 9/9 | 258,118 | Moving right-edge wall/shoulder gap is visibly reduced. Source-joined frame 3600 fills 24,759 formerly unowned pixels and replaces 25,631 original backdrop pixels; ten indexed edge pixels remain unowned. |
 | World 2.4 New York later turn at 6280..6320, same margin toggle, 2544×1353 CRT | 9/9 | 395,233 | The right wall/building continues through sampled turn views, with exact center/left. At 6300, 98,129 source-qualified original upper-panorama indexed pixels are replaced; exact added source packets reproduce all candidate indices. This is backdrop replacement at one attributed view, not full-course safety. |
+| World 2.4 New York late left opening at 8994..9006, same margin toggle, 2544×1353 CRT | 13/13 | 47,860 | A second part of the course has a measured 4,776-pixel unowned gap at frame 9000. Exact source packets account for all 6,330 changed indices there; the completed left-edge repair persists through 13 adjacent views with exact center/right. Per-fragment depth and the whole race remain unqualified. |
 | World 2.4 Germany early turn, same margin toggle, 2544×1353 CRT | 9/9 | 67,482 | Distant left-edge scenery appears. At source-checked frame 7280, the building replaces only upper panorama strips; 230 added packets reproduce every changed candidate index. It fills no gap and does not address mountain activation or reported road holes. |
 | World 2.5 Hawaii, same margin toggle, 2544×1353 CRT | 6/9 | 36,204 | Extra far-left foliage. At source-checked frame 5775, changes replace sky/ocean panorama and 972 prior host pixels, with no newly owned gap. The dark authored rectangle at 5900 is exact in both modes. |
 | Off-Road Pike's Peak, control vs resident ground margins over 3×, 2544×1353 CRT | 0/10 | 0 | 268,381 extra submitted quads but no visible gain in sparse samples. A denser fast-turn control screen also found no clear El Paso-like gap; no reason yet for another resident pair. |
@@ -44,8 +45,10 @@ The next evidence gates should target different uncertainties:
    prove the whole bridge fades or enters smoothly. Preserve the
    raw USA verifier FAIL and separate posthoc pass.
 2. **World:** keep active non-road margins gated. The New York gap is a real
-   positive case, but source/ordered ownership and transitions on another
-   defect-bearing course remain before promotion. Do not use Hawaii/Germany
+   positive case at two separated portions of the course, but source/ordered
+   ownership and transitions on another defect-bearing course remain before
+   promotion. The [late wedge interval](2026-09-28-world-new-york-9000-temporal.md)
+   is a local motion screen, not route-wide safety. Do not use Hawaii/Germany
    backdrop replacement as proof that mountains appear earlier.
 3. **Off-Road:** retain El Paso as the positive resident-ground route. Seek a
    precise second-course gap or owner timestamp before another Pike's Peak
