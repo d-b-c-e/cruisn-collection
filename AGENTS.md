@@ -1,5 +1,16 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 overnight parity queue
+
+Read `docs/reviews/2026-09-28-overnight-parity-queue.md` for the current
+four-game evidence and next bounded gates. The September28 source/temporal
+World checks and Pike control screen below are complete, documented, committed
+and pushed. Do not treat policy2 overlap attribution, more submitted quads,
+or sparse exact frames as release parity. Continue source-qualified safety and
+positive-defect searches using saved evidence; reserve new GPU/native runs for
+changed hypotheses. No personal renderer/public release changes. Recovery
+heartbeat ACTIVE every30 minutes only as a backup.
+
 ## September 28 World 2.5 Hawaii interval checkpoint
 
 Read `docs/reviews/2026-09-28-world25-active-margin-interval.md`. Frozenf762
