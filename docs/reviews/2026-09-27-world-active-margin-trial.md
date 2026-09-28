@@ -110,9 +110,23 @@ display-target equality check). The reusable
 `harness/compare_world_nonroad_course.py` enforces binary, controls, FFB0,
 input/native, display, shutdown and completed-image receipt gates.
 
-Next, inspect another World course or World 2.5 interval with matched sparse
-completed images, especially transitions where newly admitted objects can
-overlap prior host scenery. 4K and physical-wheel acceptance remain open.
+A second World 2.4 course check reuses the saved Germany race without a new
+attended drive. A control/non-road pair passes 7,350 recorded inputs on the
+same frozen binary and stable physical1440 display with FFB0 and owned
+shutdown. The candidate submits 144,797 extra host quads across the same
+2,837 scenes; four completed images at 7280, 7300, 7320 and 7340 were compared.
+Only 7280 changes: 13,727 RGB pixels in the far-left margin, image bounds
+`(68,455)..(299,637)`, revealing a small distant building. The other three
+are byte-exact. The center third is exact in all four. The paired image was
+inspected; 53 newly near-black pixels are within added building details and
+are a color hint, not a proven defect. Local evidence is
+`germany-{control,nonroads}-run/report.json` and
+`germany-nonroads-paired-v1.json`. This is a bounded cross-course preservation
+and visibility check, not a full-race geometry/transition verdict.
+
+Next, inspect a denser World 2.5 interval or a World 2.4 transition where
+newly admitted objects can overlap prior host scenery. 4K and physical-wheel
+acceptance remain open.
 The New York result addresses **black widescreen coverage gaps**, not the
 distance at which mountains/trees enter the guest's scene list; global pop-in
 remains a separate problem. Off-Road Pike's Peak's saved ten-frame resident
