@@ -27,8 +27,8 @@ existing road-only call unchanged. The native margin compositor accepts this
 class behind `MIDV_WORLD_HOST_ACTIVE_NONROADS=1`; fade policy 2 encodes its
 permission separately from the existing authored-road policy 1. The replay
 CLI requires candidate, active-road margin settings and FFB0. The normal
-product path is off. World 2.5 uses the same guarded code but has no live
-evidence from this trial.
+product path is off. World 2.5 uses the same guarded code; its subsequent
+single-frame Hawaii check is reported below.
 
 The standalone source scene qualifies first: all 10,555 old host quads and
 their order are preserved; 58 non-road quads from 11 active objects are added,
@@ -95,7 +95,22 @@ was not modified. Focused native projection/fade fixtures pass; 26 Python
 tests plus compilation of four new evidence tools pass. A bounded build linked
 the candidate; no fresh clean worktree build or public package was made.
 
-Next, inspect a second World course and World 2.5 with matched sparse
+One World 2.5 Hawaii cross-revision check has now run on the same candidate.
+Matched control/non-road 6,000-input replays both pass recorded input/native
+comparisons, stable physical1440 display and owned worker stop. The option
+submits 108,249 more host quads across the same 1,967 scenes, yet their one
+completed frame at 5900 is **byte-exact**. The conspicuous dark rectangle in
+the distance is present in both images. This proves execution/preservation at
+that sparse point, not a visual repair or broad World 2.5 acceptance. The
+initial prepare-only attempt with stop6002 failed because the recording ends
+at6000; corrected stop6000 prepared and both live replays passed. Local raw
+reports are `world25-{control,nonroads}-run/report.json`, with the source-hashed
+pair in `world25-nonroads-paired-v2.json` (v1 preceded an explicit
+display-target equality check). The reusable
+`harness/compare_world_nonroad_course.py` enforces binary, controls, FFB0,
+input/native, display, shutdown and completed-image receipt gates.
+
+Next, inspect another World course or World 2.5 interval with matched sparse
 completed images, especially transitions where newly admitted objects can
 overlap prior host scenery. 4K and physical-wheel acceptance remain open.
 The New York result addresses **black widescreen coverage gaps**, not the
