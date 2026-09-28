@@ -39,6 +39,10 @@ def compare(control, trial):
             a['comparison_scope'] != b['comparison_scope']):
         raise ValueError('source, binary, presentation or prefix differs')
     images = compare_completed_frames(control/'run/gl-snap', trial/'run/gl-snap', details=True)
+    center_changed = sum(row[1] for frame in images['pixel_changes']
+                         for row in frame['changed_pixels_by_thirds'])
+    if center_changed:
+        raise ValueError(f'non-road margin trial changed {center_changed} center-third pixels')
     runtime = [r['vunit_runtime']['result'] for r in reports]
     if runtime[0]['scenes'] != runtime[1]['scenes']:
         raise ValueError('host scene count differs')
@@ -51,6 +55,7 @@ def compare(control, trial):
             'host_quads_control':runtime[0]['quads'],
             'host_quads_trial':runtime[1]['quads'],
             'additional_submitted_quads':runtime[1]['quads']-runtime[0]['quads'],
+            'completed_center_third_changed_pixels':center_changed,
             'completed':images,
             'sha256':{'control_report':sha(paths[0]),'trial_report':sha(paths[1]),
                       'control_capture_index':sha(control/'run/gl-snap/captures.csv'),
