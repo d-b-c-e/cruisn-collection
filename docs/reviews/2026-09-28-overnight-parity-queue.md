@@ -20,8 +20,10 @@ diagnostics. No tested multiplier eliminates guest scene-list pop-in globally.
   still open.
 - **World 2.4 Germany:** nine matched early turn frames add left-edge scenery
   with exact center. The saved black-road report and distant mountain/tree
-  activation are separate problems; a building at the edge is not proof that
-  those are fixed.
+  activation are separate problems. An original-DMA-qualified 7280 check
+  shows the building replaces only two upper panorama strips, with zero
+  newly owned or prior host-owned changed pixels; it is not proof that those
+  separate problems are fixed.
 - **World 2.5 Hawaii:** six of nine matched frames add only left-edge foliage;
   the known authored terrain rectangle at frame 5900 is exact in both modes.
   The source-checked 5775 image adds trees over authored sky/ocean panorama
@@ -75,6 +77,7 @@ personal installation or public release during this diagnostic queue.
 The September 28 detailed reviews are the [New York source overlap](2026-09-28-world-new-york-overlap-source.md),
 [New York turn sequence](2026-09-28-world-new-york-overlap-temporal.md),
 [Germany appearance](2026-09-28-world-germany-margin-onset.md),
+[Germany ownership](2026-09-28-world24-germany-overdraw.md),
 [Pike's Peak turn](2026-09-28-offroad-pikes-sharp-turn-screen.md), and
 [World 2.5 Hawaii interval](2026-09-28-world25-active-margin-interval.md),
 plus the [Hawaii ownership check](2026-09-28-world25-hawaii-overdraw.md).

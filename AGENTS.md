@@ -1,5 +1,17 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 World 2.4 Germany ownership checkpoint
+
+Read `docs/reviews/2026-09-28-world24-germany-overdraw.md`. Matched frozenf762
+7285-input control/nonroad and7282-input original-DMA control all PASS
+input/native/physical1440/FFB0/owned shutdown; completed7280 images match
+the earlier nine-frame pair. All19471 indexed changes replace ordinary game
+pixels from two adjacent upper panorama strips (19327+144), with zero
+previously unowned or host-owned changes, center exact. The visible building
+adds13727 RGB pixels on the left. This is one backdrop-overdraw sample, not
+Germany road/mountain repair, transition safety,4K or release parity. No
+native/product change.
+
 ## September 28 World 2.5 Hawaii ownership checkpoint
 
 Read `docs/reviews/2026-09-28-world25-hawaii-overdraw.md`. Matched frozenf762
