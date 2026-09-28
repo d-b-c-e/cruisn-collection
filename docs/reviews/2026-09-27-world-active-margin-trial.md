@@ -71,6 +71,9 @@ overlays existing host scenery; the finished image was visually inspected and
 the right wall/shoulder looks continuous. This is a larger overlap and needs
 more temporal/course scrutiny before product promotion. It is not a proof
 that every missing texture or distant pop-in is fixed.
+The later [source-time overlap check](2026-09-28-world-new-york-overlap-source.md)
+attributes all 50,390 changed indexed pixels to the new active-object packets;
+it does not close the temporal gate.
 
 The paired screenshot comparator's initial `active-nonroads-6000-paired-v1.json`
 was **invalid for RGB evidence**: it joined frame6000 indexed planes to the

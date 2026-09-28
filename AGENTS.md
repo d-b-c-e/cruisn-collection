@@ -1,5 +1,28 @@
 # Cruis'n Collection — agent instructions
 
+## September 28 overnight overlap checkpoint
+
+Read `docs/reviews/2026-09-28-world-new-york-overlap-source.md` before more
+World work. New York source3596/completed3600 has an exact source-time tap:
+3,602-input control and all completed/indexed evidence match saved control.
+The first offline projection FAIL is retained (old reciprocal capture starts
+at -80 but two near-plane objects read -95/-87); bounded -128 read-only
+window passes with 1029/1874 exact original DMA and zero errors. Crucially,
+the one narrow guest-projection ROI hit contributes **zero** changed pixels;
+do not claim it repaired the wedge. Standalone native source scenes exactly
+match all 2452/3263 live packet words and order. The 811 added policy-2
+packets are active non-road objects; isolated source-texture raster matches
+all50390 changed indexed pixels (24759 newly owned +25631 prior host-owned).
+180 visible added packets across39 objects contribute, full4:3 indexed center
+and original planes exact. Ten edge pixels remain unowned. This is one-frame
+attribution/material evidence, not temporal/release acceptance. Next bounded
+World gate: denser matched completed views near3600, then assess overlap
+transitions; no broad repeat without changed hypothesis. No native build,
+renderer deployment, release, public patch or personal Stream Deck change.
+Overnight recovery heartbeat is ACTIVE at30 minutes; it is recovery only,
+not the pace of continuous work. Continue independent parity work, FFB0 for
+diagnostics, separate commits/push, no attended recording without owner.
+
 ## September 27 World active-margin candidate
 
 Read `docs/reviews/2026-09-27-world-active-margin-trial.md` and
